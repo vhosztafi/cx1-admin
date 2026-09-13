@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-13T22:52:13Z"
-last_activity: 2026-09-13
+last_updated: "2026-09-13T23:13:44Z"
+last_activity: 2026-09-14
 progress:
   total_phases: 13
   completed_phases: 1
@@ -25,9 +25,9 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 ## Current Position
 
 Phase: 2 of 13 (Application and persistence foundation)
-Plan: 02-06 of 6 next; 02-01 through 02-05 complete
+Plan: 02-06 of 6 in progress; CI/result gate added; formal reviews and final verification pending
 Status: In progress — autonomous
-Last activity: 2026-09-13 — 02-05 complete: SQL/process recovery and operational/shell browser checks pass; mobile table and selector fixes verified
+Last activity: 2026-09-14 — native full suite passes 46 cases/nine SQL scenarios; CI definitions and no-skip result gate verified locally
 
 Progress: Phase 1 complete; 1/13 phases. SQL, local authentication, shell and durable operations verified; foundation gate pending.
 
@@ -54,7 +54,7 @@ Progress: Phase 1 complete; 1/13 phases. SQL, local authentication, shell and du
 ## Session Continuity
 
 Last session: 2026-09-13
-Stopped at: Read 02-05-SUMMARY.md, then execute 02-06-PLAN.md. Operational APIs/UI and actual process/browser recovery verified. Native SQL profile only; Docker runtime and human UAT not claimed. Test servers stopped; secret stays in ignored .local/demo-password.txt.
+Stopped at: Read 02-06-PROGRESS.md. CI/result gate in 591a914; native 46 cases pass. Resume formal code/security/UI reviews, setup/demo documentation and final foundation verification. GitHub-hosted runs unperformed. Servers stopped; password ignored.
 Resume file: None
 
 ## Autonomous continuation
