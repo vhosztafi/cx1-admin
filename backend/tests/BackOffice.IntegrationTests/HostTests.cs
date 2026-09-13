@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace BackOffice.IntegrationTests;
 
@@ -8,7 +9,9 @@ namespace BackOffice.IntegrationTests;
 public class HostTests : IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly WebApplicationFactory<Program> factory;
-    public HostTests(WebApplicationFactory<Program> factory) => this.factory = factory.WithWebHostBuilder(builder => builder.UseEnvironment("Development"));
+    public HostTests(WebApplicationFactory<Program> factory) => this.factory = factory.WithWebHostBuilder(builder =>
+        builder.UseEnvironment("Development").ConfigureAppConfiguration((_, configuration) =>
+            configuration.AddInMemoryCollection(new Dictionary<string,string?> {{"Cover:DiagnosticWorkerEnabled","false"}})));
 
     [Fact]
     public async Task LivenessIsPublicButNoPlaceholderBusinessRouteExists()

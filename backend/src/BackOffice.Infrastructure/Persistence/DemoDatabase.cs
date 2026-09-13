@@ -63,6 +63,13 @@ public static class DemoDatabase
         }
         if (!await db.Set<SettingVersion>().AnyAsync(x => x.Scope == "demo-adapters" && x.Version == 1,cancellationToken))
             db.Add(new SettingVersion {Scope="demo-adapters",Version=1,EffectiveFrom=effective,Values="{\"demo\":true,\"scenario\":\"success\"}"});
+        foreach (var scenario in new[] {"success","reject","fail-once","timeout-after-success"})
+        {
+            var scope="diagnostic-probe/"+scenario;
+            if (!await db.Set<SettingVersion>().AnyAsync(x => x.Scope==scope && x.Version==1,cancellationToken))
+                db.Add(new SettingVersion {Scope=scope,Version=1,EffectiveFrom=effective,
+                    Values=JsonSerializer.Serialize(new {kind="diagnostic-probe",scenario})});
+        }
         if (!await db.Set<DemoClock>().AnyAsync(cancellationToken)) db.Add(new DemoClock {FrozenAt=new DateTimeOffset(2026,9,13,12,0,0,TimeSpan.Zero)});
         await db.SaveChangesAsync(cancellationToken);
         await transaction.CommitAsync(cancellationToken);

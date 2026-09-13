@@ -16,6 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddProblemDetails();
 builder.Services.AddHealthChecks();
 builder.AddLocalIdentity();
+DiagnosticDispatcher.Register(builder);
 var app = builder.Build();
 app.UseExceptionHandler(handler => handler.Run(context =>
 {

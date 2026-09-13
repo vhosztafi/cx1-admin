@@ -43,6 +43,7 @@ public sealed class SqlFoundationTests
                 Assert.Equal(6,await reloaded.Set<StaffUser>().CountAsync());
                 Assert.Equal(6,await reloaded.Set<UserRole>().CountAsync());
                 Assert.Equal(3,await reloaded.Set<ProductVersion>().CountAsync());
+                Assert.Equal(4,await reloaded.Set<SettingVersion>().CountAsync(x => x.Scope.StartsWith("diagnostic-probe/")));
                 Assert.Single(await reloaded.Set<DemoClock>().ToListAsync());
                 var credential = await reloaded.Set<UserCredential>().FirstAsync();
                 var user = await reloaded.Set<StaffUser>().SingleAsync(x => x.Id == credential.UserId);
