@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-13T21:13:48Z"
+last_updated: "2026-09-13T21:44:00Z"
 last_activity: 2026-09-13
 progress:
   total_phases: 13
@@ -25,9 +25,9 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 ## Current Position
 
 Phase: 2 of 13 (Application and persistence foundation)
-Plan: 02-05 of 6 in progress; job/audit lists verified; operational settings/retry and UI pending
+Plan: 02-05 of 6 in progress; single-job manual recovery verified; settings/batch retry and UI pending
 Status: In progress — autonomous
-Last activity: 2026-09-13 — 02-05 protected job/audit lists verified; 21 unit/13 integration suite and final focused SQL checks pass
+Last activity: 2026-09-13 — 02-05 bounded manual recovery verified; 32 unit/13 integration suite and focused SQL retry-cycle checks pass
 
 Progress: Phase 1 complete; 1/13 phases. SQL, local authentication and shell verified; durable workers and foundation gate pending.
 
@@ -54,7 +54,7 @@ Progress: Phase 1 complete; 1/13 phases. SQL, local authentication and shell ver
 ## Session Continuity
 
 Last session: 2026-09-13
-Stopped at: Read 02-05-PROGRESS.md; resume operational settings/retry API and admin UI. Protected job/audit lists complete in 4df95e1; diagnostic routes and hosted recovery already verified. Demo credentials remain in ignored .local/demo-password.txt; test servers stopped.
+Stopped at: Read 02-05-PROGRESS.md; resume settings and atomic batch retry API, then admin UI. Single-job recovery complete in f2c546f; SQL migration applied; lists and hosted recovery verified. Demo credentials remain in ignored .local/demo-password.txt; test servers stopped.
 Resume file: None
 
 ## Autonomous continuation
