@@ -1,4 +1,17 @@
 export function addFormContracts({schemas:s,ref:r,text:t,enumeration:e,object:o,array:a,id,instant,date,boolean:b,integer,decimal,operation:op,paths}){
+ const settlementFields={termsVersionId:id,collector:e('agency','mga'),settlementMode:e('net-remittance','separate-payment'),brokerFeeShare:decimal,mgaFeeIncome:decimal,remunerationPayable:decimal,invoiceDue:decimal};
+ Object.assign(s.Invoice.properties,settlementFields);s.Invoice.required.push(...Object.keys(settlementFields));
+ s.Invoice.properties.debtorKind=e('agency','client');s.Invoice.properties.debtorRelationshipId=id;s.Invoice.required.push('debtorKind');
+ s.Receipt.properties.payerKind=e('unidentified','agency','client');s.Receipt.properties.relationshipId=id;s.Receipt.required.push('payerKind');
+ const receipt=paths['/finance/receipts'].post.requestBody.content['application/json'].schema;
+ receipt.properties.payerKind=s.Receipt.properties.payerKind;receipt.properties.relationshipId=id;receipt.required.push('payerKind');
+ const assign=paths['/finance/receipts/{receiptId}/assign-payer'].post.requestBody.content['application/json'].schema;
+ assign.properties.payerKind=e('agency','client');assign.properties.relationshipId=id;assign.required.push('payerKind');
+ s.Refund.properties.payeeKind=e('agency','client');s.Refund.properties.payeeRelationshipId=id;s.Refund.required.push('payeeKind');
+ s.BrokerRemuneration=o({id,agencyId:id,transactionId:id,termsVersionId:id,commission:decimal,feeShare:decimal,amount:decimal,settledAmount:decimal,outstanding:decimal,currency:{const:'GBP'},state:e('payable','part-paid','paid','clawback')});
+ op('get','/finance/remunerations','listBrokerRemuneration','finance-read',{query:[['agencyId',id],['cursor',t(2048)]],output:o({items:a(r('BrokerRemuneration')),nextCursor:t(2048)},['items'])});
+ op('get','/finance/remunerations/{remunerationId}','getBrokerRemuneration','finance-read',{output:r('BrokerRemuneration')});
+ op('post','/finance/remunerations/{remunerationId}/payments','payBrokerRemuneration','finance-remuneration-pay',{existing:true,input:o({amount:decimal,reason:t(1000)}),output:r('Job'),status:202});
  const namedContact=o({name:t(),email:{type:'string',format:'email'},telephone:t(50)},[]);
  const optionalAddress=o(s.Address.properties,[]);
  const details={

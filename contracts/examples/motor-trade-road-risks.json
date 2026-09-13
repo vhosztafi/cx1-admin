@@ -160,7 +160,19 @@
     "taxBasisPoints": 1200,
     "commissionBasisPoints": 1000,
     "ratingResultId": "00000000-0000-4000-8000-000000000030",
-    "ruleVersion": "demo-rate-1"
+    "ruleVersion": "demo-rate-1",
+    "settlement": {
+      "termsVersionId": "00000000-0000-4000-8000-000000000033",
+      "collector": "agency",
+      "mode": "net-remittance",
+      "feeShareBasisPoints": 0,
+      "brokerFeeShare": "0.00",
+      "mgaFeeIncome": "35.00",
+      "brokerRemuneration": "120.00",
+      "invoiceDue": "1259.00",
+      "remunerationPayable": "0.00",
+      "netEconomicDue": "1259.00"
+    }
   },
   "provenance": {
     "source": "demo-seed",

@@ -1087,6 +1087,55 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 100
+        },
+        "settlement": {
+          "$ref": "#/$defs/Settlement"
+        }
+      }
+    },
+    "Settlement": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "termsVersionId": {
+          "$ref": "#/$defs/Id"
+        },
+        "collector": {
+          "type": "string",
+          "enum": [
+            "agency",
+            "mga"
+          ]
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "net-remittance",
+            "separate-payment"
+          ]
+        },
+        "feeShareBasisPoints": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "brokerFeeShare": {
+          "$ref": "#/$defs/Amount"
+        },
+        "mgaFeeIncome": {
+          "$ref": "#/$defs/Amount"
+        },
+        "brokerRemuneration": {
+          "$ref": "#/$defs/Amount"
+        },
+        "invoiceDue": {
+          "$ref": "#/$defs/Amount"
+        },
+        "remunerationPayable": {
+          "$ref": "#/$defs/Amount"
+        },
+        "netEconomicDue": {
+          "$ref": "#/$defs/Amount"
         }
       }
     }

@@ -4,7 +4,7 @@ All rates are fictional demo configuration, not legal or commercial advice. Curr
 
 ## Bases
 
-Agency onboarding's “commission basis” selects per-product rates or one flat rate across products. It does not select a gross/net calculation base. Approved agency terms pin the actual basis-point rate, fee-sharing percentage, premium collector and net-remittance versus separate commission settlement. Changing agreed terms requires independent approval; existing policy movements retain original terms. For a 35.00 fee with 20% agency sharing, broker fee share is 7.00 and MGA retained fee is 28.00. Net-remittance receivable decreases by that 7.00; separate settlement records a 7.00 agency payable instead. These additional components need explicit movement/invoice columns and corresponding posting fixtures before finance implementation; the current simple examples below assume zero fee sharing and net remittance.
+Agency onboarding's “commission basis” selects per-product rates or one flat rate across products. It does not select a gross/net calculation base. Approved agency terms pin the actual basis-point rate, fee-sharing percentage, premium collector and net-remittance versus separate commission settlement. Changing agreed terms requires independent approval; existing policy movements retain original terms. The simple examples below assume zero fee sharing and net remittance; the separate-settlement examples follow them.
 
 Contract terms are half-open local calendar intervals. Prorated premium = annual change × remaining local calendar days / term calendar days. For an MTA use the annualised premium difference, not the full new premium. For cancellation compute the return against the applicable remaining premium exposure, accounting for earlier adjustments; the simple case below has no prior MTA. For a general adjusted term, calculate each effective premium segment and reverse only unearned exposure once; do not simply multiply the original premium after amendments.
 
@@ -51,6 +51,18 @@ The prototype's cancellation numbers do not consistently reconcile; use these co
 For cancellation after adjustments, prorate each original posted premium/tax/commission component over its own coverage interval, round per component per movement, then aggregate. This preserves original rates/rounding and prevents reversing an amount twice. After the above MTA, cancellation on 1 October has 92 days remaining: original premium return 302.47 plus MTA return 151.23 = 453.70; tax return 36.30 + 18.14 = 54.44; commission reversal 30.25 + 15.12 = 45.37; net credit 462.77. Fees remain retained. Store coverage interval and original component lineage on each financial movement. The cancellation operation key prevents a second reversal of the same remaining exposure.
 
 ## Receipt allocation and refunds
+
+### Shared fee and separate settlement
+
+On the 1,379.00 gross invoice above, 20% sharing of the 35.00 fee gives a 7.00 broker fee share and 28.00 MGA retained fee. Broker remuneration is 120.00 commission + 7.00 fee share = 127.00. Insurer due remains 1,224.00.
+
+For net agency remittance: Dr agency receivable 1,252.00; Cr insurer payable 1,224.00; Cr retained fee income 28.00. No separate broker payable is created.
+
+For separate commission payment: Dr agency receivable 1,379.00; Cr insurer payable 1,224.00; Cr retained fee income 28.00; Cr broker remuneration payable 127.00. If the MGA collects directly, use the insured/client relationship receivable instead of agency receivable and always keep the broker remuneration payable separate. Distribution agency stays linked for authority/reporting; it is not necessarily the debtor. Paying the 127.00 is Dr broker remuneration payable / Cr cash, with unique payment identity and residual locking. A negative remuneration correction is a clawback receivable, not a negative outgoing payment.
+
+Separate-settlement cancellation in the unadjusted example creates gross debtor credit 397.68 and broker commission clawback 35.51; economic net credit remains 362.17. The retained shared fee is not refunded under the example rule, so no additional 7.00 reversal is created. Whether previously collected cash can be refunded follows the actual debtor/payee account balance; do not pay agency credit to the insured or vice versa.
+
+`settlementAmounts` exercises both settlement modes and direct collection using exact pennies. Relational InvoiceDue is actual debtor due, NetDue is economic net after remuneration, and BrokerRemuneration retains separate obligations. SQL posting and payment-worker verification remain implementation work.
 
 Receipt 1,240.00 allocated 900.00 to invoice A leaves 340.00. A concurrent attempted 400.00 allocation must fail and preserve both residuals. Unallocation appends a reversal; resulting receipt availability becomes 1,240.00 again if no other allocations exist. No allocation may cross agencies.
 

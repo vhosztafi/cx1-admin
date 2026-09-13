@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
-import {days,financials,minorUnits,roundRatio,versionAt,issueErrors,cancellationReturn,commandDecision,allocationDecision} from '../scripts/design-rules.mjs';
+import {days,financials,minorUnits,roundRatio,versionAt,issueErrors,cancellationReturn,commandDecision,allocationDecision,settlementAmounts} from '../scripts/design-rules.mjs';
 const read=async name=>JSON.parse(await readFile(new URL(`../contracts/${name}`,import.meta.url),'utf8'));
 const ajv=new Ajv2020({allErrors:true,strict:true});addFormats(ajv);
 const validate=ajv.compile(await read('schemas/policy.schema.json'));
@@ -83,4 +83,21 @@ test('dated slices of a single MTA do not introduce later cover before its effec
  assert.equal(versionAt(versions,'2026-09-20T12:00:00Z','2026-09-20T12:00:00Z').stockLimit,'75000.00');
  assert.equal(versionAt(versions,'2026-10-02T12:00:00Z','2026-10-02T12:00:00Z').stockLimit,'125000.00');
  assert.equal(versionAt(versions,'2026-10-02T12:00:00Z','2026-09-12T12:00:00Z'),null);
+});
+test('fee sharing balances both net agency remittance and direct gross collection',()=>{
+ const components=financials({annualPremium:'1200.00',effectiveDate:'2026-01-01',termStart:'2026-01-01',termEnd:'2027-01-01',fee:'35.00'});
+ assert.deepEqual(settlementAmounts(components,{feeShareBasisPoints:2000}),{debtorKind:'agency',effectiveMode:'net-remittance',brokerFeeShare:'7.00',mgaFeeIncome:'28.00',brokerRemuneration:'127.00',invoiceDue:'1252.00',remunerationPayable:'0.00',netEconomicDue:'1252.00'});
+ for(const settings of [{mode:'separate-payment'},{collector:'mga'}]){
+  const result=settlementAmounts(components,{...settings,feeShareBasisPoints:2000});
+  assert.equal(result.invoiceDue,'1379.00');assert.equal(result.remunerationPayable,'127.00');
+  assert.equal(minorUnits(result.invoiceDue),minorUnits(components.insurerDue)+minorUnits(result.mgaFeeIncome)+minorUnits(result.remunerationPayable));
+ }
+ assert.equal(settlementAmounts(components,{collector:'mga'}).debtorKind,'client');
+ assert.throws(()=>settlementAmounts(components,{feeShareBasisPoints:10001}));
+});
+test('separate-settlement cancellation reverses earned components without refunding retained shared fees',()=>{
+ const credit=financials({annualPremium:'-1200.00',effectiveDate:'2026-09-15',termStart:'2026-01-01',termEnd:'2027-01-01'});
+ const result=settlementAmounts(credit,{feeShareBasisPoints:2000,mode:'separate-payment'});
+ assert.equal(result.brokerFeeShare,'0.00');assert.equal(result.invoiceDue,'-397.68');
+ assert.equal(result.remunerationPayable,'-35.51');assert.equal(result.netEconomicDue,'-362.17');
 });

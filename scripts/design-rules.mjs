@@ -18,6 +18,18 @@ export function financials({annualPremium,effectiveDate,termStart,termEnd,fee='0
  const tax=roundRatio(premium*BigInt(taxBasisPoints),10000n),commission=roundRatio(premium*BigInt(commissionBasisPoints),10000n),fees=minorUnits(fee);
  return Object.fromEntries(Object.entries({premium,tax,fee:fees,brokerCommission:commission,grossPayable:premium+tax+fees,netBrokerDue:premium+tax+fees-commission,insurerDue:premium+tax-commission}).map(([k,v])=>[k,money(v)]));
 }
+export function settlementAmounts(components,{feeShareBasisPoints=0,mode='net-remittance',collector='agency'}={}){
+ if(!Number.isInteger(feeShareBasisPoints)||feeShareBasisPoints<0||feeShareBasisPoints>10000)throw new Error('Invalid fee share');
+ if(!['net-remittance','separate-payment'].includes(mode)||!['agency','mga'].includes(collector))throw new Error('Invalid settlement mode');
+ const fee=minorUnits(components.fee),commission=minorUnits(components.brokerCommission),gross=minorUnits(components.grossPayable),insurer=minorUnits(components.insurerDue);
+ const feeShare=roundRatio(fee*BigInt(feeShareBasisPoints),10000n),remuneration=commission+feeShare,retainedFee=fee-feeShare;
+ // Direct collection creates the insured's gross receivable; remuneration is
+ // paid separately even if the agency normally remits net for other business.
+ const netted=collector==='agency'&&mode==='net-remittance';
+ const invoiceDue=netted?gross-remuneration:gross,remunerationPayable=netted?0n:remuneration;
+ if(invoiceDue!==insurer+retainedFee+remunerationPayable)throw new Error('Components do not balance');
+ return {debtorKind:collector==='agency'?'agency':'client',effectiveMode:netted?'net-remittance':'separate-payment',...Object.fromEntries(Object.entries({brokerFeeShare:feeShare,mgaFeeIncome:retainedFee,brokerRemuneration:remuneration,invoiceDue,remunerationPayable,netEconomicDue:gross-remuneration}).map(([key,value])=>[key,money(value)]))};
+}
 export function versionAt(versions,effectiveAt,knownAt){
  const instant=v=>{const n=Date.parse(v);if(!Number.isFinite(n))throw new Error('Invalid instant');return n;};
  const effective=instant(effectiveAt),known=instant(knownAt);
