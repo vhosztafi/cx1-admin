@@ -44,6 +44,7 @@ public sealed class BackOfficeDbContext(DbContextOptions<BackOfficeDbContext> op
         credentials.HasIndex(x => new {x.Provider,x.ProviderSubject}).IsUnique();
         credentials.HasIndex(x => new {x.UserId,x.Provider}).IsUnique();
         credentials.HasOne<StaffUser>().WithMany().HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.NoAction);
+        Check(credentials,"FailedAttempts","[FailedAttempts] BETWEEN 0 AND 5");
         var sessions = Record<UserSession>(model,"Session");
         Text(sessions,("DeviceLabel",200),("SecurityStamp",100)); Hash(sessions,"TokenHash");
         sessions.HasIndex(x => x.TokenHash).IsUnique(); sessions.HasIndex(x => new {x.UserId,x.ExpiresAt});

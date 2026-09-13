@@ -87,6 +87,12 @@
           "xunit.extensibility.core": "[2.9.3]"
         }
       },
+      "backoffice.application": {
+        "type": "Project",
+        "dependencies": {
+          "BackOffice.Domain": "[1.0.0, )"
+        }
+      },
       "backoffice.domain": {
         "type": "Project"
       }

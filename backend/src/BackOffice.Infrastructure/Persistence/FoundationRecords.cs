@@ -43,6 +43,8 @@ public sealed class UserCredential : MutableRecord
     public string? PasswordHash { get; set; }
     public byte[]? MfaSecretCiphertext { get; set; }
     public bool MustReset { get; set; }
+    public int FailedAttempts { get; set; }
+    public DateTimeOffset? LockedUntil { get; set; }
 }
 public sealed class UserSession : MutableRecord
 {
@@ -53,6 +55,7 @@ public sealed class UserSession : MutableRecord
     public DateTimeOffset LastSeenAt { get; set; }
     public string DeviceLabel { get; set; } = "";
     public string SecurityStamp { get; set; } = "";
+    public byte[] TicketCiphertext { get; set; } = [];
 }
 public sealed class CapacityProvider : MutableRecord
 {
