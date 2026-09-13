@@ -232,7 +232,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | Phase | Plans complete | Status | Completed |
 |---|---|---|---|
 | 1. Data and API design | 4/4 | Complete | 2026-09-13 |
-| 2. Application and persistence foundation | 0/TBD | Not started | — |
+| 2. Application and persistence foundation | 0/6 | In progress | — |
 | 3. Clients and contact servicing | 0/TBD | Not started | — |
 | 4. Agency onboarding and access | 0/TBD | Not started | — |
 | 5. Motor Trade quote capture | 0/TBD | Not started | — |

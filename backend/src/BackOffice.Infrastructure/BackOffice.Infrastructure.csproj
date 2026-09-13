@@ -1,0 +1,3 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup><ProjectReference Include="../BackOffice.Application/BackOffice.Application.csproj" /></ItemGroup>
+</Project>
