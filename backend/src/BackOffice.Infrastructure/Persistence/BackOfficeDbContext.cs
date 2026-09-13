@@ -77,11 +77,17 @@ public sealed class BackOfficeDbContext(DbContextOptions<BackOfficeDbContext> op
         audit.HasOne<StaffUser>().WithMany().HasForeignKey(x => x.ActorId).OnDelete(DeleteBehavior.NoAction);
         audit.HasIndex(x => new {x.SubjectRecordId,x.OccurredAt}); audit.HasIndex(x => new {x.ActorId,x.OccurredAt});
         var work = Record<OutboxWork>(model,"OutboxWork");
+        Text(work,("ErrorCode",100));
+        work.HasOne<SettingVersion>().WithMany().HasForeignKey(x => x.ScenarioVersionId).OnDelete(DeleteBehavior.NoAction);
+        Check(work,"DiagnosticScenario","[Kind] <> 'diagnostic-probe' OR [ScenarioVersionId] IS NOT NULL");
         Text(work,("Kind",60),("OperationKey",200),("State",20)); Json(work,"Payload"); Json(work,"Result",true);
         work.Property(x => x.OperationKey).UseCollation("Latin1_General_100_BIN2");
         work.HasIndex(x => new {x.Kind,x.OperationKey}).IsUnique(); work.HasIndex(x => new {x.State,x.NextAttemptAt});
         Check(work,"State","[State] IN ('pending','leased','succeeded','failed')");
         Check(work,"Attempts","[Attempts] >= 0");
+        var exceptions = Record<JobException>(model,"JobException");
+        Text(exceptions,("Code",100)); exceptions.HasIndex(x => x.WorkId).IsUnique();
+        exceptions.HasOne<OutboxWork>().WithMany().HasForeignKey(x => x.WorkId).OnDelete(DeleteBehavior.NoAction);
         var attempts = Record<AdapterAttempt>(model,"AdapterAttempt");
         Text(attempts,("Outcome",30),("ErrorCode",100)); Json(attempts,"Request"); Json(attempts,"Response",true);
         attempts.HasIndex(x => new {x.WorkId,x.AttemptNumber}).IsUnique();

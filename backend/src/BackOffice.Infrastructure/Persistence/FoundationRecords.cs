@@ -112,8 +112,18 @@ public sealed class OutboxWork : MutableRecord
     public string State { get; set; } = "pending";
     public DateTimeOffset NextAttemptAt { get; set; }
     public DateTimeOffset? LeaseExpiresAt { get; set; }
+    public Guid? LeaseToken { get; set; }
+    public Guid? ScenarioVersionId { get; set; }
+    public DateTimeOffset? CompletedAt { get; set; }
+    public string? ErrorCode { get; set; }
     public int Attempts { get; set; }
     public string? Result { get; set; }
+}
+public sealed class JobException : StoredRecord
+{
+    public Guid WorkId { get; set; }
+    public string Code { get; set; } = "";
+    public DateTimeOffset OccurredAt { get; set; }
 }
 public sealed class AdapterAttempt : MutableRecord
 {
