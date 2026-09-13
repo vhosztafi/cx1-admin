@@ -10,12 +10,12 @@ Core value: complete persistent insurance and servicing journeys with consistent
 
 ### Design contracts
 
-- [ ] **DES-01**: Reviewer can trace every prototype screen, tab, modal, link, command and disabled-state rule to an implementation requirement and acceptance scenario.
-- [ ] **DES-02**: Reviewer can inspect an ERD, relational data dictionary, keys, indexes and retention rules that distinguish clients, people, quotes, policies, terms, transactions, versions and financial entries.
-- [ ] **DES-03**: Reviewer can validate versioned JSON schemas and realistic examples for both Motor Trade products and Commercial Combined, including extension and migration rules.
-- [ ] **DES-04**: Reviewer can inspect OpenAPI request/response/error examples, permissions, pagination, concurrency and idempotency rules for every feature command.
-- [ ] **DES-05**: Reviewer can inspect state-transition and authority tables plus worked examples for issue, amendment, renewal, cancellation, effective dates and financial calculations.
-- [ ] **DES-06**: Reviewer can trace Motor Trade fields and option identities to the read-only funnel reference, with missing or conflicting evidence explicitly recorded.
+- [x] **DES-01**: Reviewer can trace every prototype screen, tab, modal, link, command and disabled-state rule to an implementation requirement and acceptance scenario.
+- [x] **DES-02**: Reviewer can inspect an ERD, relational data dictionary, keys, indexes and retention rules that distinguish clients, people, quotes, policies, terms, transactions, versions and financial entries.
+- [x] **DES-03**: Reviewer can validate versioned JSON schemas and realistic examples for both Motor Trade products and Commercial Combined, including extension and migration rules.
+- [x] **DES-04**: Reviewer can inspect OpenAPI request/response/error examples, permissions, pagination, concurrency and idempotency rules for every feature command.
+- [x] **DES-05**: Reviewer can inspect state-transition and authority tables plus worked examples for issue, amendment, renewal, cancellation, effective dates and financial calculations.
+- [x] **DES-06**: Reviewer can trace Motor Trade fields and option identities to the read-only funnel reference, with missing or conflicting evidence explicitly recorded.
 
 ### Persistent foundation
 

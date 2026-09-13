@@ -1,6 +1,6 @@
 # Plan 01-03 working checkpoint
 
-Status: in progress, not a completion summary. User authorises autonomous continuation; do not ask to proceed.
+Status: historical working log. Plan completed; see 01-03-SUMMARY.md and 01-VERIFICATION.md. Earlier checkpoints below are retained as history and are no longer current.
 
 ## Latest autonomous run
 
