@@ -1,0 +1,102 @@
+name: Foundation checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: foundation-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  web-and-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.19.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: node scripts/validate-contracts.mjs
+      - run: pnpm web:test
+      - run: pnpm web:lint
+      - run: pnpm web:build
+      - run: pnpm web:typecheck
+
+  sql-container:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      sql:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          ACCEPT_EULA: Y
+          MSSQL_PID: Developer
+          MSSQL_SA_PASSWORD: Cover-CI-Only!${{ github.run_id }}aA
+        ports:
+          - 1433:1433
+        options: >-
+          --health-cmd="/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$MSSQL_SA_PASSWORD\" -C -b -Q \"SELECT 1\""
+          --health-interval=10s --health-timeout=5s --health-retries=12
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      COVER_SQL_TEST_CONNECTION: Server=localhost,1433;Database=CoverMGA_Demo;User ID=sa;Password=Cover-CI-Only!${{ github.run_id }}aA;Encrypt=true;TrustServerCertificate=true
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+      - run: dotnet restore backend/BackOffice.slnx --configfile NuGet.Config --packages .local/nuget --locked-mode
+      # Production cookie/key tests exercise Windows DPAPI and run in full below.
+      # This job still runs real SQL migration, scope, batch, lease, inbox and OS restart tests.
+      - run: dotnet test backend/BackOffice.slnx --no-restore --logger trx --results-directory .local/test-results --filter 'FullyQualifiedName!~AuthenticationTests&FullyQualifiedName!~OperationalJobTests'
+      - name: Reject missing, skipped or failed tests
+        shell: pwsh
+        run: ./scripts/assert-test-results.ps1 -ResultsDirectory .local/test-results -MinimumTests 44 -MinimumSqlTests 7
+
+  windows-sql-and-identity:
+    runs-on: windows-2025
+    timeout-minutes: 20
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      COVER_SQL_TEST_CONNECTION: Server=(localdb)\CoverMGA_CI;Database=CoverMGA_Demo;Integrated Security=true;Encrypt=true;TrustServerCertificate=true
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+      - name: Start owned SQL LocalDB instance
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $versions = & sqllocaldb versions
+          if ($LASTEXITCODE -ne 0) { throw 'SQL LocalDB is required.' }
+          $supported = $versions | Where-Object { $_ -match '^\d+\.\d+' } | ForEach-Object { [version]$_ } | Where-Object { $_.Major -ge 16 } | Sort-Object -Descending
+          if (!$supported) { throw 'SQL Server 2022+ LocalDB is required; SQL tests will not be skipped.' }
+          & sqllocaldb create CoverMGA_CI ($supported[0].ToString()) -s
+          if ($LASTEXITCODE -ne 0) { throw 'Could not start the owned CI SQL instance.' }
+      - run: dotnet restore backend/BackOffice.slnx --configfile NuGet.Config --packages .local/nuget --locked-mode
+      - run: dotnet test backend/BackOffice.slnx --no-restore --logger trx --results-directory .local/test-results
+      - name: Exercise result-gate rejection cases
+        shell: pwsh
+        run: ./scripts/test-result-gate.ps1
+      - name: Reject missing, skipped or failed tests
+        shell: pwsh
+        run: ./scripts/assert-test-results.ps1 -ResultsDirectory .local/test-results -MinimumTests 46 -MinimumSqlTests 9
+      - name: Stop owned CI instance
+        if: always()
+        shell: pwsh
+        run: |
+          & sqllocaldb stop CoverMGA_CI
+          if ($LASTEXITCODE -ne 0) { throw 'Owned CI SQL instance did not stop cleanly.' }

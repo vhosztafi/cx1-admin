@@ -1,6 +1,6 @@
 # Local setup
 
-Current status: SQL foundation is implemented. The API supports local authentication and the web app has a protected prototype-based shell. Business workflows and durable worker implementation remain pending.
+Current status: SQL persistence, local authentication, prototype shell and durable diagnostic operations are implemented and locally verified. Business workflows remain for later phases. The foundation-wide acceptance gate is in progress.
 
 Prerequisites: .NET SDK 10.0.401, Node 24 and pnpm 11.19.0. Version pins live in global.json and package manifests; pnpm-lock.yaml covers the workspace. Do not change frontend-code, which is reference material.
 
@@ -9,7 +9,7 @@ From the repository root in PowerShell:
 ```powershell
 $env:DOTNET_CLI_HOME = Join-Path (Get-Location) '.local/dotnet'
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
-dotnet restore backend/BackOffice.slnx --configfile NuGet.Config --packages .local/nuget
+dotnet restore backend/BackOffice.slnx --configfile NuGet.Config --packages .local/nuget --locked-mode
 dotnet build backend/BackOffice.slnx --no-restore
 pnpm install --frozen-lockfile
 pnpm --filter @cover/backoffice build
@@ -17,7 +17,7 @@ pnpm --filter @cover/backoffice typecheck
 node scripts/validate-contracts.mjs
 ```
 
-Run API and web in separate terminals:
+Complete SQL initialization below before starting the API. Then run API and web in separate terminals:
 
 ```powershell
 $env:ASPNETCORE_ENVIRONMENT = 'Development'
@@ -87,3 +87,10 @@ The Development worker runs unless Cover__DiagnosticWorkerEnabled=false. Product
 Run pnpm web:browser:operations with the same native SQL/API/web preview to exercise the operational screens in Chrome. The harness requires sqlcmd and integrated access to .\SQL2022/CoverMGA_Demo. scripts/seed-browser-recovery.sql refuses every other database and inserts two explicitly fictional exhausted jobs with six simulated attempt records each; it does not reset or delete existing data. Each run uses new IDs. Fixtures and audit remain as demo history; their request JSON and audit reason label them as browser fixtures. Never run this harness against a production database.
 
 The operational journey verifies success/rejection/timeout recovery, reload persistence, bulk recovery with a deliberately lost successful HTTP response, safe list failure recovery, audit filtering, mobile table scrolling and role denial. It exercises job paging when the seeded history exceeds a page. Screenshots are saved under ignored .local/browser-evidence/admin-*.png. Human UAT and later business workflow acceptance remain separate.
+## Continuous integration
+
+.github/workflows/foundation.yml has three jobs: web/contracts; Linux with an actual SQL Server 2022 service container; Windows with an owned SQL Server 2022+ LocalDB instance and the full DPAPI/production-cookie suite. Linux excludes the two test classes that exercise Windows production key protection; the Windows job runs all cases. Neither job silently skips unavailable SQL. Windows explicitly fails if a suitable LocalDB runtime cannot start. Tests always replace the database name with their own CoverMGA_Test_<guid> and delete only that owned database.
+
+scripts/assert-test-results.ps1 requires both unit/integration TRX reports, passing counters with no skipped cases, a minimum total and named real-SQL scenarios. scripts/test-result-gate.ps1 verifies rejection of skipped/failed/missing/undersized reports. The native run on this host passed 46 cases, including nine real-SQL scenarios. The workflow YAML and Windows startup script were parsed locally; GitHub-hosted execution and its container/LocalDB provisioning have not been run here. These are CI definitions, not a claim of a hosted green build.
+
+The split follows GitHub's [Linux-only service-container requirement](https://docs.github.com/en/actions/tutorials/use-containerized-services/use-docker-service-containers). The [Windows runner inventory](https://github.com/actions/runner-images/blob/main/images/windows/Windows2025-Readme.md) lists the Visual Studio LocalDB component; the workflow checks the actual available engine version before testing. Setup actions follow official [setup-dotnet](https://github.com/actions/setup-dotnet) and [setup-node](https://github.com/actions/setup-node) usage. The SQL container password is a run-specific disposable CI value, never a production credential. The workflow has read-only repository permission and performs no deployment.
