@@ -105,6 +105,7 @@ public sealed class AuditEvent : StoredRecord
 }
 public sealed class OutboxWork : MutableRecord
 {
+    public Guid CorrelationId { get; set; } = Guid.NewGuid();
     public string Kind { get; set; } = "";
     public Guid? SubjectRecordId { get; set; }
     public string OperationKey { get; set; } = "";
@@ -118,6 +119,20 @@ public sealed class OutboxWork : MutableRecord
     public string? ErrorCode { get; set; }
     public int Attempts { get; set; }
     public string? Result { get; set; }
+}
+public sealed class DiagnosticReceipt : StoredRecord
+{
+    public Guid WorkId { get; set; }
+    public Guid ProviderOperationId { get; set; }
+    public string Reference { get; set; } = "";
+    public DateTimeOffset CompletedAt { get; set; }
+}
+public sealed class AdapterQuarantine : StoredRecord
+{
+    public Guid InboxId { get; set; }
+    public byte[] ObservedHash { get; set; } = [];
+    public DateTimeOffset ReceivedAt { get; set; }
+    public string Reason { get; set; } = "";
 }
 public sealed class JobException : StoredRecord
 {

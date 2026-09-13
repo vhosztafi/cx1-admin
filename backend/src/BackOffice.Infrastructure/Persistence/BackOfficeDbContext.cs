@@ -105,6 +105,14 @@ public sealed class BackOfficeDbContext(DbContextOptions<BackOfficeDbContext> op
         inbox.HasIndex(x => new {x.Provider,x.EventId}).IsUnique();
         inbox.HasOne<OutboxWork>().WithMany().HasForeignKey(x => x.WorkId).OnDelete(DeleteBehavior.NoAction);
         Check(inbox,"State","[State] IN ('received','applied','quarantined')");
+        var quarantine = Record<AdapterQuarantine>(model,"AdapterQuarantine");
+        Hash(quarantine,"ObservedHash"); Text(quarantine,("Reason",1000));
+        quarantine.HasIndex(x => new {x.InboxId,x.ObservedHash}).IsUnique();
+        quarantine.HasOne<AdapterInbox>().WithMany().HasForeignKey(x => x.InboxId).OnDelete(DeleteBehavior.NoAction);
+        var receipts = Record<DiagnosticReceipt>(model,"DiagnosticReceipt");
+        Text(receipts,("Reference",100)); receipts.HasIndex(x => x.WorkId).IsUnique(); receipts.HasIndex(x => x.ProviderOperationId).IsUnique();
+        receipts.HasOne<OutboxWork>().WithMany().HasForeignKey(x => x.WorkId).OnDelete(DeleteBehavior.NoAction);
+        receipts.HasOne<DemoProviderOperation>().WithMany().HasForeignKey(x => x.ProviderOperationId).OnDelete(DeleteBehavior.NoAction);
         var idempotency = Record<IdempotencyRecord>(model,"IdempotencyRecord");
         idempotency.ToTable(t => t.UseSqlOutputClause(false));
         idempotency.Property(x => x.Key).UseCollation("Latin1_General_100_BIN2");

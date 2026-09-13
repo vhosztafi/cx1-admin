@@ -81,3 +81,5 @@ With these local processes running, pnpm web:browser executes the Chrome journey
 The durable command transaction helper is implemented and SQL-tested, including rollback after flushed writes, concurrent replay, changed-intent conflict and append-only audit/receipt enforcement. It is not yet connected to public operational commands. The hosted worker, provider recovery, callback deduplication and operational UI remain pending in 02-05; this checkpoint does not claim job processing is available.
 
 Worker lease claiming, fencing, retry timing and durable exception records are now SQL-tested. The diagnostic dispatcher/provider/callback application and hosted worker remain unfinished; no operational job-processing availability is claimed yet.
+
+The persistent diagnostic provider and fenced inbox application are SQL-tested, including provider success before timeout, independent-service recovery, local rollback after SQL writes, concurrent duplicate application, changed callback quarantine and terminal rejection. Hosted dispatch and operational HTTP/UI access are still pending, so the diagnostic is not yet available from the browser.

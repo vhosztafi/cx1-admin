@@ -75,7 +75,7 @@ public sealed class SqlJobLeases(IDbContextFactory<BackOfficeDbContext> factory,
         db.Set<OutboxWork>().FromSqlInterpolated($"SELECT * FROM [OutboxWork] WITH (UPDLOCK,ROWLOCK) WHERE [Id]={lease.WorkId} AND [State]='leased' AND [LeaseToken]={lease.Token} AND [LeaseExpiresAt]>{now} AND [Attempts]={lease.Attempt}")
             .SingleOrDefaultAsync(cancellationToken);
 
-    private static async Task MarkTerminalAsync(BackOfficeDbContext db,OutboxWork job,string code,DateTimeOffset now,CancellationToken cancellationToken)
+    internal static async Task MarkTerminalAsync(BackOfficeDbContext db,OutboxWork job,string code,DateTimeOffset now,CancellationToken cancellationToken)
     {
         job.State="failed"; job.CompletedAt=now; job.ErrorCode=code; job.LeaseToken=null; job.LeaseExpiresAt=null;
         if (!await db.Set<JobException>().AnyAsync(x => x.WorkId==job.Id,cancellationToken))
