@@ -1,0 +1,2556 @@
+{
+  "version": 1,
+  "note": "Reference mapping, not an assertion that canonical unknowns are resolved or a promise to reproduce the customer funnel UI.",
+  "mappings": [
+    {
+      "owner": "MTS-01-Q01",
+      "source": "frontend-code/src/contracts/questions.ts",
+      "rawPath": "consentTo",
+      "label": "Yes (A clear YES or NO answer to be given)",
+      "optionCollection": null,
+      "proposedSection": "insured",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-01-Q02",
+      "source": "frontend-code/src/contracts/questions.ts",
+      "rawPath": "marketingConsent",
+      "label": "Marketing Consent",
+      "optionCollection": null,
+      "proposedSection": "insured",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-01-Q03",
+      "source": "frontend-code/src/contracts/questions.ts",
+      "rawPath": "marketingMethod",
+      "label": "If so, how would you like to be contacted...",
+      "optionCollection": "marketingMethods",
+      "proposedSection": "insured",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-01-Q04",
+      "source": "frontend-code/src/contracts/questions.ts",
+      "rawPath": "proposerPolicyStartDate",
+      "label": "When do you want the policy to start?",
+      "optionCollection": null,
+      "proposedSection": "term",
+      "representation": "ISO date; contractual time handled separately, never silently shifted.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-01-Q05",
+      "source": "frontend-code/src/contracts/questions.ts",
+      "rawPath": "isShortTerm",
+      "label": "The standard policy term is 12 months. Do you wish to change this to 6 months?",
+      "optionCollection": null,
+      "proposedSection": "term",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-01-Q06",
+      "source": "frontend-code/src/contracts/questions.ts",
+      "rawPath": "proposerCompanyTypeId",
+      "label": "What type of company/legal entity is used?",
+      "optionCollection": "companyTypes",
+      "proposedSection": "insured",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-01-Q07",
+      "source": "frontend-code/src/contracts/questions.ts",
+      "rawPath": "proposerTitleId",
+      "label": "Title:",
+      "optionCollection": "proposerTitles",
+      "proposedSection": "insured",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-01-Q08",
+      "source": "frontend-code/src/contracts/questions.ts",
+      "rawPath": "proposerName",
+      "label": "First Name:",
+      "optionCollection": null,
+      "proposedSection": "insured",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-01-Q09",
+      "source": "frontend-code/src/contracts/questions.ts",
+      "rawPath": "proposerSurname",
+      "label": "Surname:",
+      "optionCollection": null,
+      "proposedSection": "insured",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-01-Q10",
+      "source": "frontend-code/src/contracts/questions.ts",
+      "rawPath": "proposerTradingName",
+      "label": "Trading Name (if applicable):",
+      "optionCollection": null,
+      "proposedSection": "insured",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-01-Q11",
+      "source": "frontend-code/src/contracts/questions.ts",
+      "rawPath": "proposerCompanyPartnershipName",
+      "label": "Company Name:",
+      "optionCollection": null,
+      "proposedSection": "insured",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-01-Q12",
+      "source": "frontend-code/src/contracts/questions.ts",
+      "rawPath": "proposerEmail",
+      "label": "Email Address: ",
+      "optionCollection": null,
+      "proposedSection": "insured",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-01-Q13",
+      "source": "frontend-code/src/contracts/questions.ts",
+      "rawPath": "proposerTelephoneNumber",
+      "label": "Telephone Number:",
+      "optionCollection": null,
+      "proposedSection": "insured",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-01-Q14",
+      "source": "frontend-code/src/contracts/questions.ts",
+      "rawPath": "proposerMobileNumber",
+      "label": "Mobile Number:",
+      "optionCollection": null,
+      "proposedSection": "insured",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-01-Q15",
+      "source": "frontend-code/src/contracts/questions.ts",
+      "rawPath": "proposerPostcode",
+      "label": "Postcode:",
+      "optionCollection": null,
+      "proposedSection": "insured",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-01-Q16",
+      "source": "frontend-code/src/contracts/questions.ts",
+      "rawPath": "proposerHouseNumber",
+      "label": "House Number",
+      "optionCollection": null,
+      "proposedSection": "insured",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-01-Q17",
+      "source": "frontend-code/src/contracts/questions.ts",
+      "rawPath": "proposerStreet",
+      "label": "Street",
+      "optionCollection": null,
+      "proposedSection": "insured",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-01-Q18",
+      "source": "frontend-code/src/contracts/questions.ts",
+      "rawPath": "proposerTown",
+      "label": "Town",
+      "optionCollection": null,
+      "proposedSection": "insured",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-01-Q19",
+      "source": "frontend-code/src/contracts/questions.ts",
+      "rawPath": "proposerCity",
+      "label": "City",
+      "optionCollection": null,
+      "proposedSection": "insured",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-01-Q20",
+      "source": "frontend-code/src/contracts/questions.ts",
+      "rawPath": "proposerCounty",
+      "label": "County",
+      "optionCollection": null,
+      "proposedSection": "insured",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-03-Q01",
+      "source": "frontend-code/src/domain/business.ts",
+      "rawPath": "businessStartedDate",
+      "label": "Date Business Started Trading:",
+      "optionCollection": null,
+      "proposedSection": "risk.business",
+      "representation": "ISO date; contractual time handled separately, never silently shifted.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-03-Q02",
+      "source": "frontend-code/src/domain/business.ts",
+      "rawPath": "businessAnnualTurnover",
+      "label": "Annual Turnover:",
+      "optionCollection": null,
+      "proposedSection": "risk.business",
+      "representation": "Explicit decimal/units, derived from actual field semantics.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-03-Q03",
+      "source": "frontend-code/src/domain/business.ts",
+      "rawPath": "businessAnnualWageRoll",
+      "label": "Annual Wage Roll:",
+      "optionCollection": null,
+      "proposedSection": "risk.business",
+      "representation": "Explicit decimal/units, derived from actual field semantics.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-03-Q04",
+      "source": "frontend-code/src/domain/business.ts",
+      "rawPath": "businessIsTradeAssociationMember",
+      "label": "Are you a member of any trade associations?",
+      "optionCollection": null,
+      "proposedSection": "risk.business",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-03-Q05",
+      "source": "frontend-code/src/domain/business.ts",
+      "rawPath": "businessTradeAssociationName",
+      "label": "Trade Association:",
+      "optionCollection": null,
+      "proposedSection": "risk.business",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-03-Q06",
+      "source": "frontend-code/src/domain/business.ts",
+      "rawPath": "businessIsVATRegistered",
+      "label": "Is the company VAT registered?",
+      "optionCollection": null,
+      "proposedSection": "risk.business",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-03-Q07",
+      "source": "frontend-code/src/domain/business.ts",
+      "rawPath": "businessVATNumber",
+      "label": "VAT Number:",
+      "optionCollection": null,
+      "proposedSection": "risk.business",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-03-Q08",
+      "source": "frontend-code/src/domain/business.ts",
+      "rawPath": "businessNumberOfVehiclesHandlePerYear",
+      "label": "Number of vehicles handled per year:",
+      "optionCollection": null,
+      "proposedSection": "risk.business",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-03-Q09",
+      "source": "frontend-code/src/domain/business.ts",
+      "rawPath": "businessNumberOfVehicleCapacity",
+      "label": "Motor Insurance Policy Database (MIPD) Vehicle Limit:",
+      "optionCollection": null,
+      "proposedSection": "risk.business",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-05-Q01",
+      "source": "frontend-code/src/domain/cover.ts",
+      "rawPath": "coverLevelID",
+      "label": "Cover Level:",
+      "optionCollection": "coverLevels",
+      "proposedSection": "cover.motorTrade",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-05-Q02",
+      "source": "frontend-code/src/domain/cover.ts",
+      "rawPath": "coverIndemnityLimitOwnVehiclesID",
+      "label": "Own vehicles:",
+      "optionCollection": "indemnityOwnVehicles",
+      "proposedSection": "cover.motorTrade",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-05-Q03",
+      "source": "frontend-code/src/domain/cover.ts",
+      "rawPath": "coverIndemnityLimitCustomerVehiclesID",
+      "label": "Customer vehicles",
+      "optionCollection": "indemnityCustomerVehicles",
+      "proposedSection": "cover.motorTrade",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-05-Q04",
+      "source": "frontend-code/src/domain/cover.ts",
+      "rawPath": "coverExcessID",
+      "label": "Excess Required:",
+      "optionCollection": null,
+      "proposedSection": "cover.motorTrade",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-05-Q05",
+      "source": "frontend-code/src/domain/cover.ts",
+      "rawPath": "coverAddAllSectionsExcess",
+      "label": "Do you want to add an all-sections excess? ",
+      "optionCollection": null,
+      "proposedSection": "cover.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-05-Q06",
+      "source": "frontend-code/src/domain/cover.ts",
+      "rawPath": "coverExcessLateID",
+      "label": "Do you want to add a late notification excess?",
+      "optionCollection": "excessLates",
+      "proposedSection": "cover.motorTrade",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-05-Q07",
+      "source": "frontend-code/src/domain/cover.ts",
+      "rawPath": "coverRemoveCoInsuraneExcess",
+      "label": "Do you want to delete the 10% co-insurance excess? ",
+      "optionCollection": null,
+      "proposedSection": "cover.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-05-Q08",
+      "source": "frontend-code/src/domain/cover.ts",
+      "rawPath": "requireCustomerLoanCover",
+      "label": "Do you require customer loan vehicle cover? ",
+      "optionCollection": null,
+      "proposedSection": "cover.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-05-Q09",
+      "source": "frontend-code/src/domain/cover.ts",
+      "rawPath": "customerLoanCoverLevelID",
+      "label": "Customer loan vehicles cover level :",
+      "optionCollection": "customerLoanCoverLevels",
+      "proposedSection": "cover.motorTrade",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-05-Q10",
+      "source": "frontend-code/src/domain/cover.ts",
+      "rawPath": "coverNCBID",
+      "label": "No Claims Bonus held (years):",
+      "optionCollection": "noClaimBonuses",
+      "proposedSection": "cover.motorTrade",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-05-Q11",
+      "source": "frontend-code/src/domain/cover.ts",
+      "rawPath": "coverNCBEarnedID",
+      "label": "How was the No Claims Bonus earned? ",
+      "optionCollection": "noClaimBonusesEarned",
+      "proposedSection": "cover.motorTrade",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-05-Q12",
+      "source": "frontend-code/src/domain/cover.ts",
+      "rawPath": "coverNCBExpiryDate",
+      "label": "Expiry Date of the No Claims Bonus: ",
+      "optionCollection": null,
+      "proposedSection": "cover.motorTrade",
+      "representation": "ISO date; contractual time handled separately, never silently shifted.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-05-Q13",
+      "source": "frontend-code/src/domain/cover.ts",
+      "rawPath": "coverNCBPreviousInsurerId",
+      "label": "Previous Insurer:",
+      "optionCollection": "noClaimBonusPreviousInsurers",
+      "proposedSection": "cover.motorTrade",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-05-Q14",
+      "source": "frontend-code/src/domain/cover.ts",
+      "rawPath": "hasCoverNCBIntroRenewal",
+      "label": "Has the client been insured with Tradex/Watford for the last 12 months where an introductory discount was given?",
+      "optionCollection": null,
+      "proposedSection": "cover.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-05-Q15",
+      "source": "frontend-code/src/domain/cover.ts",
+      "rawPath": "coverNCBIntroRenewalYearID",
+      "label": "How many years discount was the introductory discount based on?",
+      "optionCollection": "noClaimBonusIntroRenewalYears",
+      "proposedSection": "cover.motorTrade",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-05-Q16",
+      "source": "frontend-code/src/domain/cover.ts",
+      "rawPath": "coverNCBPreviousInsurerOther",
+      "label": "Please provide details",
+      "optionCollection": null,
+      "proposedSection": "cover.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-05-Q17",
+      "source": "frontend-code/src/domain/cover.ts",
+      "rawPath": "coverIsNCBProtected",
+      "label": "Would you like to protect the No Claims Bonus?",
+      "optionCollection": null,
+      "proposedSection": "cover.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q01",
+      "source": "frontend-code/src/domain/driver-workflow.ts",
+      "rawPath": "driverPlanId",
+      "label": "Driver Plan:",
+      "optionCollection": "driverPlans",
+      "proposedSection": "risk.motorTrade.driverBasis",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q02",
+      "source": "frontend-code/src/domain/driver-workflow.ts",
+      "rawPath": "aadDriverNumber",
+      "label": "Number of Drivers:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.driverBasis",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q03",
+      "source": "frontend-code/src/domain/driver-workflow.ts",
+      "rawPath": "aadDriverMinAgeId",
+      "label": "Minimum Driver Age:",
+      "optionCollection": "aadDriverMinAge",
+      "proposedSection": "risk.motorTrade.driverBasis",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q04",
+      "source": "frontend-code/src/domain/driver-workflow.ts",
+      "rawPath": "aadDriverMaxAgeId",
+      "label": "Maximum Driver Age:",
+      "optionCollection": "aadDriverMaxAge",
+      "proposedSection": "risk.motorTrade.driverBasis",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q05",
+      "source": "frontend-code/src/domain/driver-workflow.ts",
+      "rawPath": "aadMaxVehicleGroupingID",
+      "label": "Maximum vehicle grouping:",
+      "optionCollection": "aadMaxVehicleGrouping",
+      "proposedSection": "risk.motorTrade.driverBasis",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q06",
+      "source": "frontend-code/src/domain/driver-workflow.ts",
+      "rawPath": "aadMaxVehicleGvwID",
+      "label": "Maximum Gross Vehicle Weight Handled:",
+      "optionCollection": "aadMaxVehicleGvw",
+      "proposedSection": "risk.motorTrade.driverBasis",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q07",
+      "source": "frontend-code/src/domain/driver-workflow.ts",
+      "rawPath": "aadMaxMotorcycleCcID",
+      "label": "Maximum Motorcycle CC Handled:",
+      "optionCollection": "aadMaxMotorcycleCc",
+      "proposedSection": "risk.motorTrade.driverBasis",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-02-Q01",
+      "source": "frontend-code/src/domain/premises.ts",
+      "rawPath": "tradingFromId",
+      "label": "Where are you trading from?",
+      "optionCollection": "tradingFroms",
+      "proposedSection": "risk.motorTrade",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-02-Q02",
+      "source": "frontend-code/src/domain/premises.ts",
+      "rawPath": "tradingPremisePostcode",
+      "label": "Postcode:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-02-Q03",
+      "source": "frontend-code/src/domain/premises.ts",
+      "rawPath": "tradingPremiseTypeId",
+      "label": "What type of premises are you trading from? ",
+      "optionCollection": "tradingPremiseTypes",
+      "proposedSection": "risk.motorTrade",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-02-Q04",
+      "source": "frontend-code/src/domain/premises.ts",
+      "rawPath": "tradingPremiseYearsTrading",
+      "label": "How long have you been trading from these premises? (years) ",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-02-Q05",
+      "source": "frontend-code/src/domain/premises.ts",
+      "rawPath": "tradingPremiseIsSharedWorksite",
+      "label": "Is this a shared worksite? ",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-02-Q06",
+      "source": "frontend-code/src/domain/premises.ts",
+      "rawPath": "tradingPremiseHouseNo",
+      "label": "House No",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-02-Q07",
+      "source": "frontend-code/src/domain/premises.ts",
+      "rawPath": "tradingPremiseStreet",
+      "label": "Street",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-02-Q08",
+      "source": "frontend-code/src/domain/premises.ts",
+      "rawPath": "tradingPremiseTown",
+      "label": "Town",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-02-Q09",
+      "source": "frontend-code/src/domain/premises.ts",
+      "rawPath": "tradingPremiseCity",
+      "label": "City",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-02-Q10",
+      "source": "frontend-code/src/domain/premises.ts",
+      "rawPath": "tradingPremiseCounty",
+      "label": "County",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-04-Q01",
+      "source": "frontend-code/src/domain/occupations.ts",
+      "rawPath": "occupationId",
+      "label": "occupationId",
+      "optionCollection": "mtOccupations",
+      "proposedSection": "risk.motorTrade",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-04-Q02",
+      "source": "frontend-code/src/domain/occupations.ts",
+      "rawPath": "percentage",
+      "label": "Occupation Percentage: ",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-07-Q01",
+      "source": "frontend-code/src/domain/trade-plates.ts",
+      "rawPath": "tradePlateCovered",
+      "label": "Do you require Trade Plates to be covered?",
+      "optionCollection": null,
+      "proposedSection": "cover.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-07-Q02",
+      "source": "frontend-code/src/domain/trade-plates.ts",
+      "rawPath": "tradePlateMaxNumber",
+      "label": "How Many?",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.tradePlates",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-07-Q03",
+      "source": "frontend-code/src/domain/trade-plates.ts",
+      "rawPath": "tradePlateNumbers",
+      "label": "Trade Plate Number:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.tradePlates",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-13-Q01",
+      "source": "frontend-code/src/domain/additional-information.ts",
+      "rawPath": "essentialRiskInformation",
+      "label": "Please provide any information that you think is essential to the risk: ",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-13-Q02",
+      "source": "frontend-code/src/domain/additional-information.ts",
+      "rawPath": "carJockeyRadiusID",
+      "label": "What is the maximum radius you require to operate within?",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-13-Q03",
+      "source": "frontend-code/src/domain/additional-information.ts",
+      "rawPath": "restrictShuntersPolicyRadius",
+      "label": "Do you wish to restrict the policy to a 100 metre radius? ",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q08",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "titleID",
+      "label": "Driver Title:",
+      "optionCollection": "driverTitles",
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q09",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "firstName",
+      "label": "First Name:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q10",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "surname",
+      "label": "Surname:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q11",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "dateOfBirth",
+      "label": "Date of Birth:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "ISO date; contractual time handled separately, never silently shifted.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q12",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "relationshipPolicyholderID",
+      "label": "Driver Relationship to Policyholder:",
+      "optionCollection": "driverRelationshipsPolicyHolder",
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q13",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "postCode",
+      "label": "Postcode:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q14",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "houseNo",
+      "label": "House Number:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q15",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "street",
+      "label": "Street:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q16",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "town",
+      "label": "Town:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q17",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "city",
+      "label": "City:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q18",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "county",
+      "label": "County:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q19",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "usageID",
+      "label": "Vehicle Usage Required:",
+      "optionCollection": "driverUsages",
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q20",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "gvwLimitID",
+      "label": "Gross vehicle weight limit:",
+      "optionCollection": "driverGVWLimits",
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q21",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "isUKResidentSinceBirth",
+      "label": "Have you been a UK resident since birth?",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "ISO date; contractual time handled separately, never silently shifted.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q22",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "ukResidenceSince",
+      "label": "Length of UK residency:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q23",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "licenceTypeID",
+      "label": "Type of Licence:",
+      "optionCollection": "driverLicenceTypes",
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q24",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "licenseIssueDate",
+      "label": "Driving Licence Issue:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "ISO date; contractual time handled separately, never silently shifted.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q25",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "motorcycleCoverID",
+      "label": "Is Motorcycle Cover Required?",
+      "optionCollection": "driverMotorcycleCovers",
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q26",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "motorcycleLicenceIssueDate",
+      "label": "Motorcycle Licence Issue Date:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "ISO date; contractual time handled separately, never silently shifted.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q27",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "maxABIGroupID",
+      "label": "What is the maximum ABI Group cover required for this driver?",
+      "optionCollection": "driverMaxABIGroups",
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q28",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "tradeEmploymentBasisID",
+      "label": "Is the driver in the motor trade on a full time or part time basis? ",
+      "optionCollection": "driverTradeEmploymentBasises",
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q29",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "driverOccupations[].motortradeRoadRisksOccupationID",
+      "label": "Additional Occupation",
+      "optionCollection": "occupations",
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q30",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "driverOccupations[].isBusinessUseRequired",
+      "label": "Business Use Required",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q31",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "coverPersonalVehicle",
+      "label": "Does this driver require cover for Personally Owned Vehicles? ",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q32",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "coverDrivingOtherVehicles",
+      "label": "Does this driver require cover to drive other vehicles? ",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q33",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "hasMotoringConvictions",
+      "label": "Has this driver been convicted of ANY motoring offences (other than parking) in the last 5 years, or have prosecutions or inquiries pending? ",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q34",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "driverMotortradingConvictions[].convictionDate",
+      "label": "Conviction Date:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "ISO date; contractual time handled separately, never silently shifted.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q35",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "driverMotortradingConvictions[].driverMotortradingConvictionCodeID",
+      "label": "Conviction Code:",
+      "optionCollection": "driverMTConvictionCodes",
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q36",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "driverMotortradingConvictions[].fineAmount",
+      "label": "Fine Amount:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q37",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "driverMotortradingConvictions[].points",
+      "label": "Points:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q38",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "driverMotortradingConvictions[].disqualified",
+      "label": "Disqualified",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q39",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "driverMotortradingConvictions[].banLength",
+      "label": "Ban Length (months):",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q40",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "hasClaimsOrAccidents",
+      "label": "Has the driver had any accidents or claims in the past 5 years, regardless of fault or whether a claim was made? ",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q41",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "driverClaims[].claimDate",
+      "label": "Claim Date:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "ISO date; contractual time handled separately, never silently shifted.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q42",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "driverClaims[].claimTypeID",
+      "label": "Claim Type:",
+      "optionCollection": "driverClaimTypes",
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q43",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "driverClaims[].description",
+      "label": "Description:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q44",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "driverClaims[].totalCost",
+      "label": "Total Cost:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q45",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "driverClaims[].claimStatusID",
+      "label": "Claim Status:",
+      "optionCollection": "driverClaimStatuses",
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q46",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "hasReportedDisability",
+      "label": "Does the driver have any disability that has been reported to the DVLA and/or hold a restricted licence? ",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q47",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "hasReportedDisabilityDetails",
+      "label": "Please provide details:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q48",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "hasCriminalConvictions",
+      "label": "Does this driver have any criminal conviction not spent under the Rehabilitation of Offenders Act or have any prosecutions pending? ",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q49",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "criminalConvictions[].convictionDate",
+      "label": "Conviction Date:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "ISO date; contractual time handled separately, never silently shifted.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q50",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "criminalConvictions[].criminalConvictionCodeID",
+      "label": "Conviction Code:",
+      "optionCollection": "driverCriminalConvictionCodes",
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q51",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "criminalConvictions[].sentenceLengthYear",
+      "label": "Sentence Length (years):",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q52",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "criminalConvictions[].sentenceLengthMonth",
+      "label": "Sentence Length (months):",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q53",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "hasCCJs",
+      "label": "Has the driver ever been the subject of a County Court Judgement and/or ever been cited in any unsatisfied court judgments (or the Scottish equivalent)? ",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q54",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "countyCourtJudgements[].ccjDate",
+      "label": "Date:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "ISO date; contractual time handled separately, never silently shifted.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q55",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "countyCourtJudgements[].countyCourtJudgementStatusID",
+      "label": "Status:",
+      "optionCollection": "driverCCJStatuses",
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q56",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "countyCourtJudgements[].amount",
+      "label": "Amount:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q57",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "countyCourtJudgements[].circumstances",
+      "label": "Circumstances:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q58",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "ageAdditionalExcess",
+      "label": "An additional excess of {{additionalExcess}} will apply to {{firstName || ''}} {{surname || ''}} due to their age.  Do you wish to remove this excess for an additional premium? ",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q59",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "ageIndemnityLimitID",
+      "label": "ageIndemnityLimitID",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q60",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "ageIncreaseVehicleCCID",
+      "label": "{{fullName}} is restricted to drive vehicles up to a maximum of {{defaultCc}}. Do you wish to increase this restriction for an additional premium?",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q61",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "experienceBasedExcessID",
+      "label": "experienceBasedExcessID",
+      "optionCollection": "driverExperienceBasedExcesses",
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-06-Q62",
+      "source": "frontend-code/src/contracts/driver/questions.json",
+      "rawPath": "experienceIncreaseVehicleCCLimitID",
+      "label": "experienceIncreaseVehicleCCLimitID",
+      "optionCollection": "driverExperienceBasedVehicleCCLimits",
+      "proposedSection": "risk.motorTrade.drivers[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q01",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "regNumber",
+      "label": "Vehicle Registration",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q02",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "make",
+      "label": "Make:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q03",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "model",
+      "label": "Model:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q04",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "abiCode",
+      "label": "ABI Code:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q05",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "abiGroup",
+      "label": "ABI Group:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q06",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "vehicleTypeID",
+      "label": "Vehicle Type:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q07",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "bodyType",
+      "label": "Body Type:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q08",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "gvw",
+      "label": "Gross Vehicle Weight:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q09",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "seats",
+      "label": "Seats:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q10",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "doors",
+      "label": "Doors:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q11",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "fuelType",
+      "label": "Fuel Type:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q12",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "transmission",
+      "label": "Transmission:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q13",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "engineSize",
+      "label": "Engine Size:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q14",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "registrationYear",
+      "label": "Registration Year:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q15",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "registrationDate",
+      "label": "Registration Date:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "ISO date; contractual time handled separately, never silently shifted.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q16",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "isImported",
+      "label": "Imported:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q17",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "vehicleValue",
+      "label": "Vehicle Value:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Explicit decimal/units, derived from actual field semantics.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q18",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "purchaseDate",
+      "label": "Purchase Date:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "ISO date; contractual time handled separately, never silently shifted.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q19",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "ownerTypeID",
+      "label": "Vehicle Owner:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q20",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "keptOvernightTypeID",
+      "label": "Where is the vehicle kept overnight?",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q21",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "vehicleKeptAddress",
+      "label": "Vehicle Overnight Address:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q22",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "isPartLeaseAgreement",
+      "label": "Is this vehicle part of a lease agreement?",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q23",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "leaseLengthYears",
+      "label": "Length of Lease (years):",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q24",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "isCustomerLoan",
+      "label": "Is this a Customer Loan Vehicle?",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q25",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "hasModification",
+      "label": "Is this vehicle modified?",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-08-Q26",
+      "source": "frontend-code/src/contracts/vehicle/questions.json",
+      "rawPath": "vehicleModifications[].modificationId",
+      "label": "What modifications have been made?",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q01",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "addSpecifiedVehicle",
+      "label": "Do you want to add specified vehicle?",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q02",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "regNumber",
+      "label": "Vehicle Registration",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q03",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "make",
+      "label": "Make:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q04",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "model",
+      "label": "Model:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q05",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "abiCode",
+      "label": "ABI Code:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q06",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "abiGroup",
+      "label": "ABI Group:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q07",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "vehicleTypeID",
+      "label": "Vehicle Type:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q08",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "bodyType",
+      "label": "Body Type:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q09",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "gvw",
+      "label": "Gross Vehicle Weight:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q10",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "seats",
+      "label": "Seats:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q11",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "doors",
+      "label": "Doors:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q12",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "fuelType",
+      "label": "Fuel Type:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q13",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "transmission",
+      "label": "Transmission:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q14",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "engineSize",
+      "label": "Engine Size:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q15",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "registrationYear",
+      "label": "Registration Year:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q16",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "registrationDate",
+      "label": "Registration Date:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "ISO date; contractual time handled separately, never silently shifted.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q17",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "isImported",
+      "label": "Imported:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q18",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "vehicleValue",
+      "label": "Vehicle Value:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Explicit decimal/units, derived from actual field semantics.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q19",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "purchaseDate",
+      "label": "Purchase Date:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "ISO date; contractual time handled separately, never silently shifted.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q20",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "ownerTypeID",
+      "label": "Vehicle Owner:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q21",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "keptOvernightTypeID",
+      "label": "Where is the vehicle kept overnight?",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q22",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "vehicleKeptAddress",
+      "label": "Vehicle Overnight Address:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q23",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "isPartLeaseAgreement",
+      "label": "Is this vehicle part of a lease agreement?",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q24",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "leaseLengthYears",
+      "label": "Length of Lease (years):",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q25",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "hasModification",
+      "label": "Is this vehicle modified?",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-09-Q26",
+      "source": "frontend-code/src/contracts/vehicle/specified-questions.json",
+      "rawPath": "modifications[].modificationID",
+      "label": "What modifications have been made?",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade.vehicles[]",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-11-Q01",
+      "source": "frontend-code/src/contracts/extras/questions.json",
+      "rawPath": "demonstrationCover",
+      "label": "Demonstration cover",
+      "optionCollection": null,
+      "proposedSection": "cover.extras",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-11-Q02",
+      "source": "frontend-code/src/contracts/extras/questions.json",
+      "rawPath": "demonstrationCoverTypeID",
+      "label": "What level of demonstration cover is required?",
+      "optionCollection": null,
+      "proposedSection": "cover.extras",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-11-Q03",
+      "source": "frontend-code/src/contracts/extras/questions.json",
+      "rawPath": "demonstrationCoverForMotorcycles",
+      "label": "Do you want to add demonstration cover for motorcycles?",
+      "optionCollection": null,
+      "proposedSection": "cover.extras",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-11-Q04",
+      "source": "frontend-code/src/contracts/extras/questions.json",
+      "rawPath": "windscreenCover",
+      "label": "Windscreen cover",
+      "optionCollection": null,
+      "proposedSection": "cover.extras",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-11-Q05",
+      "source": "frontend-code/src/contracts/extras/questions.json",
+      "rawPath": "windscreenCoverTypeID",
+      "label": "Cover Limit:",
+      "optionCollection": null,
+      "proposedSection": "cover.extras",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-11-Q06",
+      "source": "frontend-code/src/contracts/extras/questions.json",
+      "rawPath": "isAdditionalWindscreenCoverRequired",
+      "label": "Is additional windscreen cover required for stock and customer vehicles?",
+      "optionCollection": null,
+      "proposedSection": "cover.extras",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-11-Q07",
+      "source": "frontend-code/src/contracts/extras/questions.json",
+      "rawPath": "lossOfUseCover",
+      "label": "Is loss of use cover required? ",
+      "optionCollection": null,
+      "proposedSection": "cover.extras",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-11-Q08",
+      "source": "frontend-code/src/contracts/extras/questions.json",
+      "rawPath": "vehiclesAtSubcontractorsCover",
+      "label": "Vehicles at subcontractor’s cover:",
+      "optionCollection": null,
+      "proposedSection": "cover.extras",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-11-Q09",
+      "source": "frontend-code/src/contracts/extras/questions.json",
+      "rawPath": "thirdPartyPropertyDamageCoverTypeID",
+      "label": "Third party property damage limit:",
+      "optionCollection": null,
+      "proposedSection": "cover.extras",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-11-Q10",
+      "source": "frontend-code/src/contracts/extras/questions.json",
+      "rawPath": "annualEuropeanCover",
+      "label": "Do you require Annual Green Card?",
+      "optionCollection": null,
+      "proposedSection": "cover.extras",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-11-Q11",
+      "source": "frontend-code/src/contracts/extras/questions.json",
+      "rawPath": "europeanCoverAnnualExtras[].regNumber",
+      "label": "Vehicle Registration:",
+      "optionCollection": null,
+      "proposedSection": "cover.extras",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-11-Q12",
+      "source": "frontend-code/src/contracts/extras/questions.json",
+      "rawPath": "europeanCoverAnnualExtras[].europeanCoverUsageTypeID",
+      "label": "What is the purpose for the requirement of the Annual Green Card?",
+      "optionCollection": null,
+      "proposedSection": "cover.extras",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-11-Q13",
+      "source": "frontend-code/src/contracts/extras/questions.json",
+      "rawPath": "temporaryEuropeanCover",
+      "label": "Do you require Temporary Green Card?",
+      "optionCollection": null,
+      "proposedSection": "cover.extras",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-11-Q14",
+      "source": "frontend-code/src/contracts/extras/questions.json",
+      "rawPath": "europeanCoverTemporaryExtras[].regNumber",
+      "label": "Vehicle Registration:",
+      "optionCollection": null,
+      "proposedSection": "cover.extras",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-11-Q15",
+      "source": "frontend-code/src/contracts/extras/questions.json",
+      "rawPath": "europeanCoverTemporaryExtras[].startDateEuropeanTrip",
+      "label": "Start Date of Trip:",
+      "optionCollection": null,
+      "proposedSection": "cover.extras",
+      "representation": "ISO date; contractual time handled separately, never silently shifted.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-11-Q16",
+      "source": "frontend-code/src/contracts/extras/questions.json",
+      "rawPath": "europeanCoverTemporaryExtras[].endDateEuropeanTrip",
+      "label": "End Date of Trip:",
+      "optionCollection": null,
+      "proposedSection": "cover.extras",
+      "representation": "ISO date; contractual time handled separately, never silently shifted.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-11-Q17",
+      "source": "frontend-code/src/contracts/extras/questions.json",
+      "rawPath": "europeanCoverTemporaryExtras[].europeanAreaID",
+      "label": "Countries being visited:",
+      "optionCollection": null,
+      "proposedSection": "cover.extras",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-11-Q18",
+      "source": "frontend-code/src/contracts/extras/questions.json",
+      "rawPath": "europeanCoverTemporaryExtras[].europeanCoverDriverGuids",
+      "label": "Any driver between the ages of ${youngestDriver?.text} and ${oldestDriver?.text}",
+      "optionCollection": null,
+      "proposedSection": "cover.extras",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-11-Q19",
+      "source": "frontend-code/src/contracts/extras/questions.json",
+      "rawPath": "europeanCoverTemporaryExtras[].europeanCoverTypeID",
+      "label": "Cover requested:",
+      "optionCollection": null,
+      "proposedSection": "cover.extras",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-11-Q20",
+      "source": "frontend-code/src/contracts/extras/questions.json",
+      "rawPath": "europeanCoverTemporaryExtras[].europeanCoverUsageTypeID",
+      "label": "Usage for Trip:",
+      "optionCollection": null,
+      "proposedSection": "cover.extras",
+      "representation": "Typed reference: preserve legacy ID value and type, collection, label and reference-data version.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-12-Q01",
+      "source": "frontend-code/src/contracts/declaration/pairs.json",
+      "rawPath": "haveAnyOfDriversHadSpecialTermsApplied",
+      "label": "Has anyone on this policy, or any company director ever had insurance declined, cancelled, avoided or special terms imposed?",
+      "optionCollection": null,
+      "proposedSection": "risk.declarations",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-12-Q02",
+      "source": "frontend-code/src/contracts/declaration/pairs.json",
+      "rawPath": "anyOfDriversHadSpecialTermsAppliedDetails",
+      "label": "Please provide details",
+      "optionCollection": null,
+      "proposedSection": "risk.declarations",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-12-Q03",
+      "source": "frontend-code/src/contracts/declaration/pairs.json",
+      "rawPath": "haveAnyOfDriversHadClaimRefused",
+      "label": "Has anyone on this policy, or any company director ever had a claim repudiated or refused?",
+      "optionCollection": null,
+      "proposedSection": "risk.declarations",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-12-Q04",
+      "source": "frontend-code/src/contracts/declaration/pairs.json",
+      "rawPath": "anyOfDriversHadClaimRefusedDetails",
+      "label": "Please provide details",
+      "optionCollection": null,
+      "proposedSection": "risk.declarations",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-12-Q05",
+      "source": "frontend-code/src/contracts/declaration/pairs.json",
+      "rawPath": "haveAnyOfNotListedDriversHaveCCJS",
+      "label": "Has anyone on this policy, or any company director been the subject of a County Court Judgement and/or ever been cited in any unsatisfiled court judgements (or the Scottish equivalent)",
+      "optionCollection": null,
+      "proposedSection": "risk.declarations",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-12-Q06",
+      "source": "frontend-code/src/contracts/declaration/pairs.json",
+      "rawPath": "anyOfNotListedDriversHaveCCJSDetails",
+      "label": "Please provide details",
+      "optionCollection": null,
+      "proposedSection": "risk.declarations",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-12-Q07",
+      "source": "frontend-code/src/contracts/declaration/pairs.json",
+      "rawPath": "haveAnyOfDriversOrPartnerDirectorBankrupted",
+      "label": "Has anyone on this policy, or any company director been the subject of an individual voluntary arrangement with creditors, voluntary liquidation, a winding up or administrative proceeding or declared bankrupt?",
+      "optionCollection": null,
+      "proposedSection": "risk.declarations",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-12-Q08",
+      "source": "frontend-code/src/contracts/declaration/pairs.json",
+      "rawPath": "anyOfDriversOrPartnerDirectorBankruptedDetails",
+      "label": "Please provide details",
+      "optionCollection": null,
+      "proposedSection": "risk.declarations",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-12-Q09",
+      "source": "frontend-code/src/contracts/declaration/pairs.json",
+      "rawPath": "haveAnyOfDriversHadDisabilitiesNotReported",
+      "label": "Has anyone on this policy, or any company director suffered a disability that has a requirement to contact the DVLA but which has not been reported to the DVLA?",
+      "optionCollection": null,
+      "proposedSection": "risk.declarations",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-12-Q10",
+      "source": "frontend-code/src/contracts/declaration/pairs.json",
+      "rawPath": "anyOfDriversHadDisabilitiesNotReportedDetails",
+      "label": "Please provide details",
+      "optionCollection": null,
+      "proposedSection": "risk.declarations",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-12-Q11",
+      "source": "frontend-code/src/contracts/declaration/pairs.json",
+      "rawPath": "haveAnyOfPartnerDirectorHadCriminalConviction",
+      "label": "Has anyone on this policy, or any company director been convicted of any criminal conviction not spent under the Rehabilitation of Offenders Act or have any prosecutions pending?",
+      "optionCollection": null,
+      "proposedSection": "risk.declarations",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-12-Q12",
+      "source": "frontend-code/src/contracts/declaration/pairs.json",
+      "rawPath": "anyOfPartnerDirectorHadCriminalConvictionDetails",
+      "label": "Please provide details",
+      "optionCollection": null,
+      "proposedSection": "risk.declarations",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-12-Q13",
+      "source": "frontend-code/src/contracts/declaration/pairs.json",
+      "rawPath": "hasAnyoneBeenDirectorOrPartnerOtherThanMotortrade",
+      "label": "Has anyone on this policy, or any company director been a director or business partner of a business or company other than the motor trade business proposed here?",
+      "optionCollection": null,
+      "proposedSection": "risk.declarations",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-12-Q14",
+      "source": "frontend-code/src/contracts/declaration/pairs.json",
+      "rawPath": "anyoneBeenDirectorOrPartnerOtherThanMotortradeDetails",
+      "label": "Please provide details",
+      "optionCollection": null,
+      "proposedSection": "risk.declarations",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-12-Q15",
+      "source": "frontend-code/src/contracts/declaration/pairs.json",
+      "rawPath": "hasAnyoneBeenVehicleRentalHireLeasingCompany",
+      "label": "Has anyone on this policy, or any company director been involved in a vehicle rental, self drive hire, vehicle leasing, vehicle broking or accident claims management?",
+      "optionCollection": null,
+      "proposedSection": "risk.declarations",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-12-Q16",
+      "source": "frontend-code/src/contracts/declaration/pairs.json",
+      "rawPath": "anyoneBeenVehicleRentalHireLeasingCompanyDetails",
+      "label": "Please provide details",
+      "optionCollection": null,
+      "proposedSection": "risk.declarations",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-12-Q17",
+      "source": "frontend-code/src/contracts/declaration/pairs.json",
+      "rawPath": "haveAnyoneBeenDisqualifiedForActingAsDirector",
+      "label": "Has anyone on this policy, or any company director been disqualified from acting as a company director for any period of time?",
+      "optionCollection": null,
+      "proposedSection": "risk.declarations",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-12-Q18",
+      "source": "frontend-code/src/contracts/declaration/pairs.json",
+      "rawPath": "anyoneBeenDisqualifiedForActingAsDirectorDetails",
+      "label": "Please provide details",
+      "optionCollection": null,
+      "proposedSection": "risk.declarations",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-12-Q19",
+      "source": "frontend-code/src/contracts/declaration/pairs.json",
+      "rawPath": "haveAnyOfDirectorGoneIntoLiquidation",
+      "label": "Has anyone on this policy, or any company director been a director of a company that has gone into liquidation or dissolved within the last ten years?",
+      "optionCollection": null,
+      "proposedSection": "risk.declarations",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-12-Q20",
+      "source": "frontend-code/src/contracts/declaration/pairs.json",
+      "rawPath": "anyOfDirectorGoneIntoLiquidationDetails",
+      "label": "Please provide details",
+      "optionCollection": null,
+      "proposedSection": "risk.declarations",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q01",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "standardCars",
+      "label": "Standard Cars",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q02",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "percentageOfStandardCars",
+      "label": "Percentage of Standard Cars:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q03",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "sportsPerformanceVehicles",
+      "label": "Sport Performance Cars",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q04",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "percentageOfSportsPerformanceVehicles",
+      "label": "Percentage of Sport Performance Cars:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q05",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "commercialVehicles",
+      "label": "Commercial Vehicles",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q06",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "percentageOfCommercialVehicles",
+      "label": "Percentage of Commercial Vehicles:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q07",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "motorcycles",
+      "label": "Motorcycles",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q08",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "percentageOfMotorcycles",
+      "label": "Percentage of Motorcycles:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q09",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "classicsOver25Years",
+      "label": "Classics over 25 years",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q10",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "percentageOfClassicsOver25Years",
+      "label": "Percentage of Classics over 25 years:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q11",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "importedVehicles",
+      "label": "Imported Vehicles",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q12",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "percentageOfImportedVehicles",
+      "label": "Percentage of Imported Vehicles:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q13",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "modifiedVehicles",
+      "label": "Modified Vehicles",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q14",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "percentageOfModifiedVehicles",
+      "label": "Percentage of Modified Vehicles:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q15",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "horseboxesAgriculturalPlantMachinery",
+      "label": "Horseboxes / Agricultural / Plan Machinery",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q16",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "percentageOfHorseboxesAgriculturalPlantMachinery",
+      "label": "Percentage of Horseboxes / Agricultural / Plan Machinery:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q17",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "rallyTrackKitCarsTrikes",
+      "label": "Rally / Track / Kit Cars / Trikes ",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q18",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "percentageOfRallyTrackKitCarsTrikes",
+      "label": "Percentage of Rally / Track / Kit Cars / Trikes :",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q19",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "transportersCarryingMoreThan2Vehicles",
+      "label": "Transporters carrying more than 2 vehicles",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q20",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "percentageOfTransportersCarryingMoreThan2Vehicles",
+      "label": "Percentage of Transporters carrying more than 2 vehicles:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q21",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "maxVehiclesCarriedByTransporter",
+      "label": "Maximum number of vehicles that can be carried by transporter: ",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q22",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "quadBikes",
+      "label": "Quad Bikes",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q23",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "percentageOfQuadBikes",
+      "label": "Percentage of Quad Bikes:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q24",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "motorhomes",
+      "label": "Motorhomes",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q25",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "percentageOfMotorhomes",
+      "label": "Percentage of Motorhomes:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q26",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "vehiclesWithMoreThan7Seats",
+      "label": "Vehicles with more than 7 seats",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q27",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "percentageOfVehiclesWithMoreThan7Seats",
+      "label": "Percentage of Vehicles with more than 7 seats:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q28",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "taxis",
+      "label": "Taxis",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q29",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "percentageOfTaxis",
+      "label": "Percentage of Taxis:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q30",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "vehiclesCarryingCorrosiveToxicExplosiveFlammableGoods",
+      "label": "Vehicles carrying corrosive, toxic, explosive or flammable goods/substances",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q31",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "percentageOfVehiclesCarryingCorrosiveToxicExplosiveFlammableGoods",
+      "label": "Percentage of Vehicles carrying corrosive, toxic, explosive or flammable goods/substances:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q32",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "corrosiveToxicExplosiveFlammableGoodsDetails",
+      "label": "Please provide details for Vehicles carrying corrosive, toxic, explosive or flammable goods/substances",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q33",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "airsideOrHazardousLocations",
+      "label": "Airside or Hazardous Locations",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q34",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "percentageOfAirsideOrHazardousLocations",
+      "label": "Percentage of Airside or Hazardous Locations:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q35",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "airsideOrHazardousLocationsDetails",
+      "label": "Please provide details for Airside or Hazardous Locations",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q36",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "tankers",
+      "label": "Tankers",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    },
+    {
+      "owner": "MTS-10-Q37",
+      "source": "frontend-code/src/contracts/vehicle-types/categories.json",
+      "rawPath": "percentageOfTankers",
+      "label": "Percentage of Tankers:",
+      "optionCollection": null,
+      "proposedSection": "risk.motorTrade",
+      "representation": "Preserve raw value separately from any calculated/display projection.",
+      "status": "reference-mapped; new API schema owns validation, no funnel integration in v1"
+    }
+  ]
+}
