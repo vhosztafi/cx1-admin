@@ -47,6 +47,7 @@ public sealed class DiagnosticDispatcher(
     public static void Register(WebApplicationBuilder builder)
     {
         builder.Services.AddSingleton<SqlCommandBoundary>();
+        builder.Services.AddSingleton<OperationalPaging>();
         builder.Services.AddSingleton<SqlJobLeases>();
         builder.Services.AddSingleton<DiagnosticDemoProvider>();
         builder.Services.AddSingleton<DiagnosticInbox>();

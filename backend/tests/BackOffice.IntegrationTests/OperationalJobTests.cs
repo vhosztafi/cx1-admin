@@ -95,6 +95,66 @@ public sealed class OperationalJobTests
             using (var response = await admin.GetAsync(route)) Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
             using (var response = await servicing.GetAsync(route)) Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
 
+            await using (var db = new BackOfficeDbContext(options))
+            {
+                var scenario = await db.Set<SettingVersion>().SingleAsync(x => x.Scope == "diagnostic-probe/success");
+                for (var index = 0; index < 3; index++) db.Add(new OutboxWork
+                {
+                    Kind = "diagnostic-probe", OperationKey = "list-" + index, ScenarioVersionId = scenario.Id, CreatedBy = servicingId,
+                    CreatedAt = DateTimeOffset.UtcNow.AddMinutes(-1), NextAttemptAt = DateTimeOffset.UtcNow,
+                    State = index == 2 ? "failed" : "pending", Payload = "{\"internal\":\"must-not-be-returned\"}"
+                });
+                db.Add(new AuditEvent {ActorId = servicingId, SubjectRecordId = jobId, EventType = "diagnostic.completed", OccurredAt = DateTimeOffset.UtcNow.AddMinutes(-1),
+                    CorrelationId = Guid.NewGuid(), Reason = "internal-sensitive-reason", After = "{\"secret\":\"must-not-be-returned\"}"});
+                db.Add(new AuditEvent {EventType = "unreviewed-event", OccurredAt = DateTimeOffset.UtcNow, CorrelationId = Guid.NewGuid()});
+                await db.SaveChangesAsync();
+            }
+            foreach (var path in new[] {"/api/v1/admin/jobs", "/api/v1/admin/audit"})
+                using (var response = await servicing.GetAsync(path)) Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+            string cursor;
+            Guid firstId;
+            using (var response = await admin.GetAsync("/api/v1/admin/jobs?pageSize=1&state=pending"))
+            {
+                response.EnsureSuccessStatusCode();
+                var text = await response.Content.ReadAsStringAsync(); Assert.DoesNotContain("must-not-be-returned", text);
+                using var json = JsonDocument.Parse(text);
+                Assert.Equal(2, json.RootElement.GetProperty("totalCount").GetInt32());
+                firstId = json.RootElement.GetProperty("items")[0].GetProperty("id").GetGuid();
+                cursor = Uri.EscapeDataString(json.RootElement.GetProperty("nextCursor").GetString()!);
+            }
+            using (var response = await admin.GetAsync("/api/v1/admin/jobs?pageSize=1&state=pending&cursor=" + cursor))
+            {
+                response.EnsureSuccessStatusCode(); using var json = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+                Assert.NotEqual(firstId, json.RootElement.GetProperty("items")[0].GetProperty("id").GetGuid());
+                Assert.False(json.RootElement.TryGetProperty("nextCursor", out _));
+            }
+            foreach (var path in new[] {"/api/v1/admin/jobs?cursor=broken", "/api/v1/admin/jobs?pageSize=101", "/api/v1/admin/jobs?state=unknown", "/api/v1/admin/jobs?state=", "/api/v1/admin/audit?eventType=", "/api/v1/admin/jobs?unknown=1",
+                "/api/v1/admin/jobs?state=pending&state=failed", "/api/v1/admin/jobs?pageSize=1&state=failed&cursor=" + cursor,
+                "/api/v1/admin/audit?pageSize=1&cursor=" + cursor, "/api/v1/admin/audit?from=not-a-date", "/api/v1/admin/audit?from=2026-09-13T00:00:00", "/api/v1/admin/audit?actorId=invalid"})
+                using (var response = await admin.GetAsync(path)) Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            using (var response = await admin.GetAsync("/api/v1/admin/jobs?kind=email"))
+            {
+                response.EnsureSuccessStatusCode(); using var json = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+                Assert.Equal(0, json.RootElement.GetProperty("totalCount").GetInt32());
+            }
+            using (var response = await admin.GetAsync("/api/v1/admin/audit?eventType=diagnostic.completed&from=2020-01-01T00:00:00Z&to=2099-01-01T00:00:00Z&subjectRecordId=" + jobId))
+            {
+                response.EnsureSuccessStatusCode(); var text = await response.Content.ReadAsStringAsync();
+                Assert.DoesNotContain("internal-sensitive", text); Assert.DoesNotContain("must-not-be-returned", text);
+                using var json = JsonDocument.Parse(text); Assert.Equal(1, json.RootElement.GetProperty("totalCount").GetInt32());
+                Assert.Equal("Demo probe completed.", json.RootElement.GetProperty("items")[0].GetProperty("summary").GetString());
+            }
+            using (var response = await admin.GetAsync("/api/v1/admin/audit?eventType=unreviewed-event"))
+            {
+                response.EnsureSuccessStatusCode(); using var json = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+                Assert.Equal(0, json.RootElement.GetProperty("totalCount").GetInt32());
+            }
+            await using (var db = new BackOfficeDbContext(options))
+            {
+                Assert.Equal(3, await db.Set<AuditEvent>().CountAsync(x => x.EventType == "operations.jobs-read"));
+                Assert.Equal(2, await db.Set<AuditEvent>().CountAsync(x => x.EventType == "operations.audit-read"));
+            }
+
             using var production = Factory(connection.ConnectionString, keys, "Production");
             using var productionAdmin = production.CreateClient(new WebApplicationFactoryClientOptions { BaseAddress = new Uri("https://localhost") });
             var productionCsrf = await Login(productionAdmin, "system-admin", password);

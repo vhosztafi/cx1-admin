@@ -61,6 +61,10 @@ The foundation implementation of `GET /api/v1/jobs/{id}` exposes diagnostic jobs
 
 ## Contract verification
 
+Foundation operational lists: `GET /api/v1/admin/jobs` requires integration administration and currently lists diagnostic work only; `GET /api/v1/admin/audit` requires internal system-admin audit access and includes only event types with reviewed fixed summaries. Both record a safe inspection audit before returning data. Audit response projection excludes raw reasons and before/after JSON. New business event types require a reviewed projection before inclusion.
+
+List parameters are strict: unknown/repeated parameters, invalid states, malformed IDs, invalid dates or invalid page sizes return 400. Audit instants require a time-zone offset. Page size is 1–100 (default 25). Opaque Data Protection cursors expire after 15 minutes and bind the authenticated user, endpoint, filters and page size; changing any of these requires restarting pagination. Filters and access restrictions apply before counts and pages. Pages use a fixed creation/event time cutoff, descending time plus ID ordering and an offset. New records after the cutoff do not enter subsequent pages; job state changes remain live, so changing states can move results while browsing. This is a browsing cursor, not a transactional export snapshot.
+
 OpenAPI 3.1.1 is chosen to share JSON Schema 2020-12 policy shapes. Validate the document, local references, unique operation IDs, schemas/examples, security declarations and control-to-operation mappings. Schema checks do not prove authorization, SQL locks or runtime OpenAPI conformance; feature phases require direct API and integration tests.
 
 References: [OpenAPI 3.1.1](https://spec.openapis.org/oas/v3.1.1.html), [OpenAPI security](https://learn.openapis.org/specification/security.html), [EF Core concurrency](https://learn.microsoft.com/en-us/ef/core/saving/concurrency), [EF Core transactions](https://learn.microsoft.com/en-us/ef/core/saving/transactions).

@@ -72,7 +72,7 @@ public static class OperationalJobEndpoints
         return Results.Json(View(job) with { ResultResourceId = job.State == "succeeded" ? receiptId : null }, Json);
     }
 
-    private static JobView View(OutboxWork job) => new(job.Id, job.Kind, job.State, job.Attempts,
+    internal static JobView View(OutboxWork job) => new(job.Id, job.Kind, job.State, job.Attempts,
         job.State == "pending" ? job.NextAttemptAt : null, job.CompletedAt, null, SafeCode(job.ErrorCode));
 
     private static string? SafeCode(string? code) => code switch
@@ -82,6 +82,6 @@ public static class OperationalJobEndpoints
         _ => "job-failed"
     };
     public sealed record ProbeInput([property: JsonRequired] string Scenario);
-    private sealed record JobView(Guid Id, string Kind, string State, int Attempts, DateTimeOffset? NextAttemptAt, DateTimeOffset? CompletedAt, Guid? ResultResourceId, string? ErrorCode);
+    internal sealed record JobView(Guid Id, string Kind, string State, int Attempts, DateTimeOffset? NextAttemptAt, DateTimeOffset? CompletedAt, Guid? ResultResourceId, string? ErrorCode);
     private sealed class DiagnosticConfigurationException : Exception;
 }
