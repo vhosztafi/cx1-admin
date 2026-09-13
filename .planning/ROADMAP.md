@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Approved by the user on 2026-09-13. Autonomous research, planning, implementation and transitions authorised. Phase 1 design is complete; Phase 2 local authentication is verified; prototype shell is next.
+**Status:** Approved by the user on 2026-09-13. Autonomous research, planning, implementation and transitions authorised. Phase 1 design is complete; Phase 2 shell is verified; durable platform behavior is next.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
@@ -232,7 +232,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | Phase | Plans complete | Status | Completed |
 |---|---|---|---|
 | 1. Data and API design | 4/4 | Complete | 2026-09-13 |
-| 2. Application and persistence foundation | 3/6 | In progress | — |
+| 2. Application and persistence foundation | 4/6 | In progress | — |
 | 3. Clients and contact servicing | 0/TBD | Not started | — |
 | 4. Agency onboarding and access | 0/TBD | Not started | — |
 | 5. Motor Trade quote capture | 0/TBD | Not started | — |
@@ -244,6 +244,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 11. Configuration and account administration | 0/TBD | Not started | — |
 | 12. Dashboards, search and reports | 0/TBD | Not started | — |
 | 13. Complete demo and acceptance | 0/TBD | Not started | — |
+
 
 
 
