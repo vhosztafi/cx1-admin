@@ -12,7 +12,44 @@ public static class OperationalRetryEndpoints
     public static void MapOperationalRetries(this WebApplication app)
     {
         if (app.Environment.IsDevelopment())
+        {
             app.MapPost("/api/v1/jobs/{jobId:guid}/retry", Retry).RequireAuthorization("integration-retry");
+            app.MapPost("/api/v1/admin/jobs/retry-batch", RetryBatch).RequireAuthorization("integration-retry");
+        }
+    }
+
+    private static async Task<IResult> RetryBatch(BatchInput input, HttpContext context, SqlCommandBoundary commands, TimeProvider time)
+    {
+        if (string.IsNullOrWhiteSpace(input.Reason) || input.Reason.Length > 1000 || input.Jobs is not {Length: >= 1 and <= 100} ||
+            input.Jobs.Any(x => x is null || x.JobId == Guid.Empty) || input.Jobs.Select(x => x.JobId).Distinct().Count() != input.Jobs.Length)
+            return IdentityEndpoints.Problem(context, 422, "invalid-retry-batch", "Select 1 to 100 distinct jobs and supply a reason.");
+        var keys = context.Request.Headers["Idempotency-Key"];
+        if (keys.Count != 1 || keys[0] is not {Length: >= 16 and <= 200} key || key != key.Trim())
+            return IdentityEndpoints.Problem(context, 400, "idempotency-key-required", "Supply one command key of 16 to 200 characters.");
+        var jobs = input.Jobs.OrderBy(x => x.JobId).ToArray();
+        var versions = new Dictionary<Guid,byte[]>();
+        foreach (var job in jobs)
+        {
+            if (!TryVersion(job.Etag, out var version)) return IdentityEndpoints.Problem(context, 400, "invalid-version", "Supply every selected job's exact ETag.");
+            versions.Add(job.JobId, version);
+        }
+        var actor = LocalIdentityService.Actor(context.User); var correlation = Guid.NewGuid();
+        var reason = input.Reason.Trim(); var jobIds = jobs.Select(x => x.JobId).ToArray();
+        try
+        {
+            var outcome = await commands.ExecuteAsync(new CommandIdentity(actor.UserId, "/api/v1/admin/jobs/retry-batch", key, correlation),
+                new {jobIds, reason}, "diagnostic.batch-retry-requested", async (db, token) =>
+                {
+                    // Stable lock order prevents overlapping batches taking opposite row locks.
+                    var now = time.GetUtcNow();
+                    foreach (var job in jobs) await SqlJobRetry.ApplyAsync(db, job.JobId, versions[job.JobId], actor.UserId, correlation, reason, now, token);
+                    return new CommandOutcome(jobIds[0], 200, JsonSerializer.Serialize(new {jobIds}, Json));
+                }, context.RequestAborted);
+            return Results.Content(outcome.Body, "application/json", statusCode: outcome.Status);
+        }
+        catch (JobRetryException failure) { return IdentityEndpoints.Problem(context, failure.Status, failure.Code, "No jobs were queued; refresh the selection and retry."); }
+        catch (CommandKeyConflictException) { return IdentityEndpoints.Problem(context, 409, "idempotency-conflict", "This command key was used with different input."); }
+        catch (CommandBusyException) { return IdentityEndpoints.Problem(context, 409, "command-busy", "Retry with the same command key."); }
     }
 
     private static async Task<IResult> Retry(Guid jobId, RetryInput input, HttpContext context, SqlCommandBoundary commands, TimeProvider time)
@@ -53,4 +90,6 @@ public static class OperationalRetryEndpoints
         catch (FormatException) { return false; }
     }
     public sealed record RetryInput([property: JsonRequired] string Reason);
+    public sealed record BatchJob([property: JsonRequired] Guid JobId, [property: JsonRequired] string Etag);
+    public sealed record BatchInput([property: JsonRequired] BatchJob[] Jobs, [property: JsonRequired] string Reason);
 }

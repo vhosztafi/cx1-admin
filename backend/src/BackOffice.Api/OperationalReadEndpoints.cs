@@ -17,6 +17,7 @@ public static class OperationalReadEndpoints
         ["diagnostic.completed"] = "Demo probe completed.", ["diagnostic.rejected"] = "Demo probe rejected.",
         ["diagnostic.callback-quarantined"] = "Changed demo callback quarantined.", ["diagnostic.inspected"] = "Demo job inspected by an administrator.",
         ["diagnostic.retry-authorized"] = "A bounded demo recovery cycle was authorized.", ["diagnostic.retry-requested"] = "Demo recovery queued.",
+        ["diagnostic.batch-retry-requested"] = "A batch of demo recovery jobs was queued.",
         ["operations.jobs-read"] = "Operational job list inspected.", ["operations.audit-read"] = "Audit list inspected."
     };
     private static readonly string[] Kinds = ["rating","document","storage","email","lookup","mid","claims","payment","bordereau","export","diagnostic-probe"];

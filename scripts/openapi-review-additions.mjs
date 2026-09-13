@@ -63,7 +63,7 @@ export function addReviewedApi({schemas:s,ref:r,text:t,enumeration:e,object:o,ar
  op('post','/account/security-reports','reportUnrecognisedActivity','self',{input:o({sessionId:id,description:t(2000)},['description']),output:r('Task'),status:201});
  op('post','/admin/users/{userId}/password-reset','adminRequestPasswordReset','user-admin',{existing:true,input:reason,output:r('Job'),status:202});
  op('post','/admin/templates/{configurationId}/preview','previewTemplate','template-admin',{existing:true,input:o({sourceVersionId:id,audience:e('internal','agency','insurer')}),output:r('Job'),status:202});
- op('post','/admin/jobs/retry-batch','retryIntegrationBatch','integration-retry',{input:o({jobs:a(o({jobId:id,etag:t(100)})),reason:t(1000)}),output:o({jobIds:a(id)}),summary:'Retry selected failed jobs atomically after checking every scope and version'});
+ op('post','/admin/jobs/retry-batch','retryIntegrationBatch','integration-retry',{input:o({jobs:{...a(o({jobId:id,etag:t(100)})),minItems:1,maxItems:100},reason:t(1000)}),output:o({jobIds:a(id)}),summary:'Retry 1–100 distinct failed jobs atomically after checking every scope and version'});
  s.ProposalEvidence=o({id,documentVersionId:id,requirementCode:t(100),riskItemId:id,state:e('pending','accepted','rejected','withdrawn'),reason:t(1000),targetRevision:integer},['id','documentVersionId','requirementCode','state','reason','targetRevision']);
  for(const [path,name,permission] of [['/quotes/{quoteId}','Quote','quote-write'],['/drafts/{draftId}','Draft','policy-draft-write']]){
   list(`${path}/evidence`,`list${name}Evidence`,permission,r('ProposalEvidence'));

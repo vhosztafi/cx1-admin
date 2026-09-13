@@ -44806,7 +44806,7 @@
     "/admin/jobs/retry-batch": {
       "post": {
         "operationId": "retryIntegrationBatch",
-        "summary": "Retry selected failed jobs atomically after checking every scope and version",
+        "summary": "Retry 1–100 distinct failed jobs atomically after checking every scope and version",
         "description": "Requires integration-retry. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
         "tags": [
           "admin"
@@ -44996,7 +44996,8 @@
                         "etag"
                       ]
                     },
-                    "maxItems": 1000
+                    "maxItems": 100,
+                    "minItems": 1
                   },
                   "reason": {
                     "type": "string",

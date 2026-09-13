@@ -204,7 +204,7 @@ public sealed class OperationalJobTests
         }
     }
 
-    private static WebApplicationFactory<Program> Factory(string connection, string keys, string environment = "Development") => new WebApplicationFactory<Program>()
+    internal static WebApplicationFactory<Program> Factory(string connection, string keys, string environment = "Development") => new WebApplicationFactory<Program>()
         .WithWebHostBuilder(builder => builder.UseEnvironment(environment).UseSetting("Cover:SqlConnection", connection)
             .UseSetting("Cover:DataProtectionPath", keys).UseSetting("Cover:DiagnosticWorkerEnabled", "false"));
 
@@ -215,7 +215,7 @@ public sealed class OperationalJobTests
         return json.RootElement.GetProperty("requestToken").GetString()!;
     }
 
-    private static async Task<string> Login(HttpClient client, string role, string password)
+    internal static async Task<string> Login(HttpClient client, string role, string password)
     {
         using var request = new HttpRequestMessage(HttpMethod.Post, "/api/v1/auth/login") { Content = JsonContent.Create(new { email = role + "@cover.example", password }) };
         request.Headers.Add("X-CSRF-Token", await Csrf(client));
@@ -223,7 +223,7 @@ public sealed class OperationalJobTests
         return await Csrf(client);
     }
 
-    private static async Task<HttpResponseMessage> Post(HttpClient client, string? csrf, string? key, object body, string path = Probe, string? etag = null)
+    internal static async Task<HttpResponseMessage> Post(HttpClient client, string? csrf, string? key, object body, string path = Probe, string? etag = null)
     {
         using var request = new HttpRequestMessage(HttpMethod.Post, path) { Content = JsonContent.Create(body) };
         if (etag is not null) request.Headers.Add("If-Match", etag);
