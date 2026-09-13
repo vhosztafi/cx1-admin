@@ -205,3 +205,16 @@ test('evidence associations retain item scope and withdrawal cannot masquerade a
   assert.deepEqual(withdraw.required,['reason']);assert.equal(withdraw.additionalProperties,false);
  }
 });
+test('MFA verification and activation are separate contracts with explicit acknowledgement',()=>{
+ const confirm=getOperation('confirmMfaEnrolment');
+ const request=confirm.requestBody.content['application/json'].schema;
+ const check=ajv.compile(request);
+ assert.ok(check({code:'012345'}));assert.equal(check({code:'12345'}),false);assert.equal(check({code:'abcdef'}),false);
+ const response=confirm.responses['200'].content['application/json'].schema;
+ assert.equal(response.properties.state.const,'verified-pending-activation');
+ const activate=getOperation('activateMfaEnrolment');
+ const acknowledge=ajv.compile(activate.requestBody.content['application/json'].schema);
+ assert.ok(acknowledge({recoveryCodesSaved:true}));assert.equal(acknowledge({recoveryCodesSaved:false}),false);assert.equal(acknowledge({}),false);
+ assert.ok(getOperation('cancelMfaEnrolment'));
+ assert.ok(document.components.schemas.Agency.properties.state.enum.includes('abandoned'));
+});

@@ -4,6 +4,9 @@ Status: in progress, not a completion summary. User authorises autonomous contin
 
 ## Latest autonomous run
 
+Onboarding-wizard continuation: 794/949 reviewed (155 pending), 282 operations lint cleanly, 44 tests pass. Added draft-agency abandonment retaining history/revoking invitations; all onboarding navigation/product-toggle controls mapped. MFA confirm now verifies TOTP and returns one-time codes without enabling MFA; explicit activation requires saved-code acknowledgement, with pending-enrolment cancellation and optional device name. SQL dictionary/lifecycle align with pending hashes and temporary secret cleanup. Contract tests reject malformed codes and false/missing acknowledgement. Runtime cryptography, throttling and SQL transitions remain Phase 2 work. Next: dynamic row navigation, list/search/report filters, incident capture fields, conditional branches and adapters. No phase completion.
+
+
 User-requested continuation: 763/949 controls reviewed (186 pending); all currently inventoried pNewQuote controls mapped. 279 API operations lint cleanly, 43 tests pass. Added per-driver/location evidence scope and quote/draft evidence withdrawal preserving documents/history. Received is attachment, not underwriting acceptance. Source combined licence evidence requires BOTH photocard and DVLA record. Added evidence catalog, 23 explicit typed quote value questions, activity percentage bindings, derived register/MID counts, trade plate/BI basis mappings and 11 child removal variants. All field paths resolve against policy schemas. Removals require stable IDs and reject dangling references; they never delete issued history. Remaining other-screen controls and unobserved conditional source branches still require review (e.g. no-NCD reason composer); inventory completion will not by itself prove full source coverage. Then finish adapter schemas/examples and 01-04. No running application or human UAT claimed.
 
 

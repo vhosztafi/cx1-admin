@@ -8893,5 +8893,271 @@
       }
     ],
     "reason": "Remove the selected stable child ID from the enclosing draft collection, then persist with If-Match; never delete issued history. Reject dangling risk/owner/specification references and require explicit reassignment or removal. Driver removal includes its nested convictions/losses only after explicit confirmation; location removal requires loss reassignment. Shared source row is driver conviction for MT and loss for CC, selected by product/stage, not row index. Recompute totals and invalidate rating/acceptance."
+  },
+  {
+    "controlId": "CTL-0055900cc624",
+    "status": "reviewed",
+    "disposition": "wizard-command",
+    "operationIds": [
+      "saveAgencyDraft",
+      "listAgencies"
+    ],
+    "reason": "Save incomplete onboarding and navigate only on success; preserve edits on conflict."
+  },
+  {
+    "controlId": "CTL-4090c19baded",
+    "status": "reviewed",
+    "disposition": "wizard-command",
+    "operationIds": [
+      "saveAgencyDraft"
+    ],
+    "reason": "Persist dirty incomplete onboarding and bounded step before navigation; on failure keep edits and current step. Visited steps do not satisfy compliance."
+  },
+  {
+    "controlId": "CTL-be3f8cc4fdae",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Progress style changes local presentation only and does not mark compliance requirements satisfied."
+  },
+  {
+    "controlId": "CTL-29556062abd6",
+    "status": "reviewed",
+    "disposition": "wizard-command",
+    "operationIds": [
+      "saveAgencyDraft"
+    ],
+    "reason": "Persist dirty incomplete onboarding and bounded step before navigation; on failure keep edits and current step. Visited steps do not satisfy compliance."
+  },
+  {
+    "controlId": "CTL-d2f71f466af3",
+    "status": "reviewed",
+    "disposition": "wizard-command",
+    "operationIds": [
+      "saveAgencyDraft"
+    ],
+    "reason": "Persist dirty incomplete onboarding and bounded step before navigation; on failure keep edits and current step. Visited steps do not satisfy compliance."
+  },
+  {
+    "controlId": "CTL-76fd4cd82107",
+    "status": "reviewed",
+    "disposition": "wizard-command",
+    "operationIds": [
+      "saveAgencyDraft"
+    ],
+    "reason": "Persist dirty incomplete onboarding and bounded step before navigation; on failure keep edits and current step. Visited steps do not satisfy compliance."
+  },
+  {
+    "controlId": "CTL-be9c8427a905",
+    "status": "reviewed",
+    "disposition": "wizard-command",
+    "operationIds": [
+      "saveAgencyDraft"
+    ],
+    "reason": "Persist dirty incomplete onboarding and bounded step before navigation; on failure keep edits and current step. Visited steps do not satisfy compliance."
+  },
+  {
+    "controlId": "CTL-cf26f89cf732",
+    "status": "reviewed",
+    "disposition": "wizard-command",
+    "operationIds": [
+      "saveAgencyDraft"
+    ],
+    "reason": "Persist dirty incomplete onboarding and bounded step before navigation; on failure keep edits and current step. Visited steps do not satisfy compliance."
+  },
+  {
+    "controlId": "CTL-eac0eca8e1d6",
+    "status": "reviewed",
+    "disposition": "wizard-command",
+    "operationIds": [
+      "saveAgencyDraft"
+    ],
+    "reason": "Persist dirty incomplete onboarding and bounded step before navigation; on failure keep edits and current step. Visited steps do not satisfy compliance."
+  },
+  {
+    "controlId": "CTL-9b4b674f0fcc",
+    "status": "reviewed",
+    "disposition": "wizard-command",
+    "operationIds": [
+      "saveAgencyDraft"
+    ],
+    "reason": "Persist incomplete typed onboarding with current step and ETag."
+  },
+  {
+    "controlId": "CTL-6017f06cf201",
+    "status": "reviewed",
+    "disposition": "wizard-command",
+    "operationIds": [
+      "abandonAgencyDraft",
+      "listAgencies"
+    ],
+    "reason": "Abandon only draft state with reason, retain record and evidence, revoke pending invitations."
+  },
+  {
+    "controlId": "CTL-1fa0848d9221",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Open a fresh empty onboarding form without changing the activated agency. First persisted save creates a new identity."
+  },
+  {
+    "controlId": "CTL-e4c247b163b3",
+    "status": "reviewed",
+    "disposition": "wizard-command",
+    "operationIds": [
+      "saveAgencyDraft"
+    ],
+    "reason": "Persist dirty incomplete onboarding and bounded step before navigation; on failure keep edits and current step. Visited steps do not satisfy compliance."
+  },
+  {
+    "controlId": "CTL-7442850b6ef1",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Open invite-user modal. Its separately reviewed confirm creates the scoped persistent invitation using the deterministic demo delivery adapter."
+  },
+  {
+    "controlId": "CTL-f41622633e22",
+    "status": "reviewed",
+    "disposition": "wizard-command",
+    "operationIds": [
+      "replaceAgencyProducts"
+    ],
+    "reason": "Toggle the selected product-version ID in draft onboarding and save with ETag. Active agencies require independently approved terms changes; labels and row indexes are not identities."
+  },
+  {
+    "controlId": "CTL-1933ce1acddb",
+    "status": "reviewed",
+    "disposition": "wizard-command",
+    "operationIds": [
+      "replaceAgencyProducts"
+    ],
+    "reason": "Toggle the selected product-version ID in draft onboarding and save with ETag. Active agencies require independently approved terms changes; labels and row indexes are not identities."
+  },
+  {
+    "controlId": "CTL-1b1eaa015853",
+    "status": "reviewed",
+    "disposition": "wizard-command",
+    "operationIds": [
+      "replaceAgencyProducts"
+    ],
+    "reason": "Toggle the selected product-version ID in draft onboarding and save with ETag. Active agencies require independently approved terms changes; labels and row indexes are not identities."
+  },
+  {
+    "controlId": "CTL-182459f3feb7",
+    "status": "reviewed",
+    "disposition": "wizard-command",
+    "operationIds": [
+      "saveAgencyDraft",
+      "activateAgency"
+    ],
+    "reason": "Persist answers then request activation; server checks all compliance, products, terms and authority. Show field-specific missing requirements and keep draft on failure."
+  },
+  {
+    "controlId": "CTL-a0bc1139dfb9",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Authenticator-app choice supplies setup instructions only; all offered compatible apps use the same TOTP protocol."
+  },
+  {
+    "controlId": "CTL-f42db530136f",
+    "status": "reviewed",
+    "disposition": "wizard-command",
+    "operationIds": [
+      "startMfaEnrolment"
+    ],
+    "reason": "Device name is optional enrolment metadata; persist at setup start with recent-auth proof."
+  },
+  {
+    "controlId": "CTL-e17512c0f03a",
+    "status": "reviewed",
+    "disposition": "wizard-command",
+    "operationIds": [
+      "startMfaEnrolment",
+      "confirmMfaEnrolment"
+    ],
+    "reason": "Advance by current stage: start pending enrolment once, then verify six-digit code at verification stage. Never enable MFA based on local UI state."
+  },
+  {
+    "controlId": "CTL-37ac8f55741b",
+    "status": "reviewed",
+    "disposition": "wizard-command",
+    "operationIds": [
+      "cancelMfaEnrolment"
+    ],
+    "reason": "Cancel any pending enrolment; before one exists only close setup. Destroy temporary secret/code hashes and clear local secrets."
+  },
+  {
+    "controlId": "CTL-ccdd7bd72bdb",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Display static MFA help without sending credentials or modifying enrolment."
+  },
+  {
+    "controlId": "CTL-cd1aa2b17992",
+    "status": "reviewed",
+    "disposition": "wizard-command",
+    "operationIds": [
+      "startMfaEnrolment",
+      "confirmMfaEnrolment"
+    ],
+    "reason": "Reuse current unexpired enrolment on stage changes; confirm TOTP before showing one-time recovery codes."
+  },
+  {
+    "controlId": "CTL-61d9eb5ae433",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Move back within the same unexpired enrolment; do not regenerate secrets or recover already-cleared codes."
+  },
+  {
+    "controlId": "CTL-60474f988911",
+    "status": "reviewed",
+    "disposition": "wizard-command",
+    "operationIds": [
+      "cancelMfaEnrolment"
+    ],
+    "reason": "Cancel pending setup server-side and clear displayed secret/recovery codes; never disable existing active MFA."
+  },
+  {
+    "controlId": "CTL-f6ee6e414ad3",
+    "status": "reviewed",
+    "disposition": "wizard-command",
+    "operationIds": [
+      "confirmMfaEnrolment"
+    ],
+    "reason": "Six-digit code is transient secret input; submit to rate-limited enrolment verification, never persist in form history/logs."
+  },
+  {
+    "controlId": "CTL-bf00dc2dbf93",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Show manual setup key derived from the currently held otpauth URI; never put the secret in analytics, URLs or local storage."
+  },
+  {
+    "controlId": "CTL-3117235789fa",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Copy only currently displayed one-time recovery codes with user gesture. Clipboard failure is shown; no server retrieval of plaintext hashes."
+  },
+  {
+    "controlId": "CTL-2648097bf60e",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Local acknowledgement gates activation and maps to recoveryCodesSaved=true; toggling alone does not enable MFA."
+  },
+  {
+    "controlId": "CTL-f593365902af",
+    "status": "reviewed",
+    "disposition": "wizard-command",
+    "operationIds": [
+      "activateMfaEnrolment"
+    ],
+    "reason": "Activate only verified unexpired enrolment after saved-code acknowledgement. Promote secret/hashes atomically and clear plaintext. Retry reads current account state; it never returns codes again."
   }
 ]

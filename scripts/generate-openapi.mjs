@@ -81,8 +81,10 @@ op('post','/auth/password-reset/complete','completePasswordReset','reset-token-o
 op('get','/account','getAccount','authenticated',{output:ref('Actor')});
 op('put','/account','updateProfile','self',{existing:true,input:object({displayName:text()}),output:ref('Actor')});
 op('post','/account/password','changePassword','self-recent-auth',{input:object({currentPassword:text(1024),newPassword:text(1024)})});
-op('post','/account/mfa/enrolments','startMfaEnrolment','self-recent-auth',{input:object({password:text(1024)}),output:object({enrolmentId:id,otpauthUri:{type:'string',format:'uri'},expiresAt:instant}),status:201});
-op('post','/account/mfa/enrolments/{enrolmentId}/confirm','confirmMfaEnrolment','enrolment-owner',{input:object({code:text(6)}),output:object({recoveryCodes:array(text(100))})});
+op('post','/account/mfa/enrolments','startMfaEnrolment','self-recent-auth',{input:object({password:text(1024),deviceName:text(100)},['password']),output:object({enrolmentId:id,otpauthUri:{type:'string',format:'uri'},expiresAt:instant}),status:201});
+op('post','/account/mfa/enrolments/{enrolmentId}/confirm','confirmMfaEnrolment','enrolment-owner',{input:object({code:{type:'string',pattern:'^[0-9]{6}$'}}),output:object({state:{const:'verified-pending-activation'},recoveryCodes:array(text(100))})});
+op('post','/account/mfa/enrolments/{enrolmentId}/activate','activateMfaEnrolment','enrolment-owner',{input:object({recoveryCodesSaved:{const:true}}),summary:'Enable MFA only after a verified unexpired enrolment and explicit recovery-code acknowledgement; atomically promote secret and code hashes'});
+op('post','/account/mfa/enrolments/{enrolmentId}/cancel','cancelMfaEnrolment','enrolment-owner',{summary:'Cancel pending enrolment and destroy temporary secret/code hashes; do not disable already active MFA'});
 op('post','/account/mfa/recovery-codes','replaceRecoveryCodes','self-recent-auth',{input:object({password:text(1024),code:text(100)}),output:object({recoveryCodes:array(text(100))})});
 op('post','/account/mfa/disable','disableMfa','self-policy-permitting',{input:object({password:text(1024),code:text(100),reason:text(1000)})});
 list('/account/sessions','listSessions','self',ref('SessionView'));

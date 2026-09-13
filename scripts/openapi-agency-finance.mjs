@@ -2,7 +2,7 @@ export function addAgencyFinanceApi({schemas:s,ref:r,text:t,enumeration:e,object
  const reason=o({reason:t(1000)}),currency={const:'GBP'};
  const contact=o({name:t(),email:{type:'string',format:'email'},telephone:t(50)});
  s.AgencyWrite=o({legalName:t(),regulatoryReference:t(30),address:r('Address'),mainContact:contact,complianceContact:contact,accountsContact:contact,paymentTermsDays:{type:'integer',minimum:0,maximum:365},creditLimit:decimal},[]);
- s.Agency=o({id,reference:t(40),state:e('draft','active','suspended'),onboardingStep:{type:'integer',minimum:1,maximum:6},details:r('AgencyWrite'),validation:r('ValidationResult')});
+ s.Agency=o({id,reference:t(40),state:e('draft','active','suspended','abandoned'),onboardingStep:{type:'integer',minimum:1,maximum:6},details:r('AgencyWrite'),validation:r('ValidationResult')});
  s.AgencyProduct=o({id,productVersionId:id,effectiveFrom:instant,effectiveTo:instant,brokerCommissionBasisPoints:{type:'integer',minimum:0,maximum:10000}},['id','productVersionId','effectiveFrom','brokerCommissionBasisPoints']);
  s.AgencyEvidence=o({id,kind:e('fca','toba','professional-indemnity','financial-check','other'),documentId:id,state:e('missing','pending','verified','rejected','expired'),verifiedAt:instant,notes:t(1000)},['id','kind','state']);
  s.Invitation=o({id,userId:id,agencyId:id,email:{type:'string',format:'email'},state:e('pending','sent','accepted','expired','revoked'),expiresAt:instant},['id','userId','email','state','expiresAt']);
@@ -16,6 +16,7 @@ export function addAgencyFinanceApi({schemas:s,ref:r,text:t,enumeration:e,object
  op('post','/agencies/{agencyId}/evidence','recordAgencyEvidence','agency-admin',{existing:true,input:o({kind:s.AgencyEvidence.properties.kind,documentId:id,notes:t(1000)},['kind','notes']),output:r('AgencyEvidence'),status:201});
  op('post','/agencies/{agencyId}/checks','runAgencyCheck','agency-admin',{existing:true,input:o({kind:e('fca','financial-check'),evidenceId:id},['kind']),output:r('Job'),status:202});
  op('post','/agencies/{agencyId}/activate','activateAgency','agency-activate',{existing:true,input:reason,output:r('Agency')});
+ op('post','/agencies/{agencyId}/abandon','abandonAgencyDraft','agency-admin',{existing:true,input:reason,output:r('Agency'),summary:'Abandon draft onboarding only, revoke pending invitations and retain audit/evidence; active agencies require suspension'});
  op('post','/agencies/{agencyId}/suspend','suspendAgency','agency-admin',{existing:true,input:reason,output:r('Agency')});
  op('post','/agencies/{agencyId}/reactivate','reactivateAgency','agency-activate',{existing:true,input:reason,output:r('Agency')});
  list('/agencies/{agencyId}/users','listAgencyUsers','agency-user-admin',r('Actor'));
