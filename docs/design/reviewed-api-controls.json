@@ -6178,7 +6178,7 @@
     ],
     "fieldBindings": [
       {
-        "targetPath": "risk.business.responses.answers",
+        "targetPath": "cover.responses.answers",
         "questionId": "prototype.quote.2beaf3b8d546"
       }
     ],
@@ -6193,7 +6193,7 @@
     ],
     "fieldBindings": [
       {
-        "targetPath": "risk.business.responses.answers",
+        "targetPath": "cover.responses.answers",
         "questionId": "prototype.quote.d9dd069a314c"
       }
     ],
@@ -6208,7 +6208,7 @@
     ],
     "fieldBindings": [
       {
-        "targetPath": "risk.business.responses.answers",
+        "targetPath": "cover.responses.answers",
         "questionId": "prototype.quote.b4c7e25f7781"
       }
     ],
@@ -6223,7 +6223,7 @@
     ],
     "fieldBindings": [
       {
-        "targetPath": "risk.business.responses.answers",
+        "targetPath": "cover.responses.answers",
         "questionId": "prototype.quote.00216de47ab5"
       }
     ],
@@ -6238,7 +6238,7 @@
     ],
     "fieldBindings": [
       {
-        "targetPath": "risk.business.responses.answers",
+        "targetPath": "cover.responses.answers",
         "questionId": "prototype.quote.becc2653d0de"
       }
     ],
@@ -6253,7 +6253,7 @@
     ],
     "fieldBindings": [
       {
-        "targetPath": "risk.business.responses.answers",
+        "targetPath": "cover.responses.answers",
         "questionId": "prototype.quote.4c5df77ffba1"
       }
     ],
@@ -7630,5 +7630,431 @@
       }
     ],
     "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-b05c609fb19a",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "listQuotes"
+    ],
+    "reason": "Save incomplete typed proposal with If-Match; navigate only after success. Retain edits and show errors on failure."
+  },
+  {
+    "controlId": "CTL-7d04a7f95e27",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-bced6e519228",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "reason": "Persist incomplete proposal; replace toast reference with returned quote identity and revision."
+  },
+  {
+    "controlId": "CTL-36b43c0519b3",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "listPolicies",
+      "clonePolicyToQuote"
+    ],
+    "reason": "Select authorised issued version and relationship; create a distinct draft with lineage and no inherited acceptance/rating/decisions. Do not silently overwrite the current draft."
+  },
+  {
+    "controlId": "CTL-34fef62548c5",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "withdrawQuote",
+      "listQuotes"
+    ],
+    "reason": "Record withdrawal reason and retain audit/history. Navigate only after successful withdrawal."
+  },
+  {
+    "controlId": "CTL-ee3368ee8a32",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Progress indicator style is local presentation; changing it never marks questions complete or changes persisted risk."
+  },
+  {
+    "controlId": "CTL-6cc6a4e7f4c7",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-f165477c4019",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-5e1b4f516113",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-b86839cd73b2",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-37151078068c",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-25aa9040ac6e",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-75298690dcf5",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-cf37062ccbab",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-2451fac535ea",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-cfab43a913ce",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-e29a40c53e65",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "reason": "Composer changes edit the typed proposal; onSend persists the whole current proposal using If-Match. A toast alone does not count as saving.",
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.description"
+      }
+    ]
+  },
+  {
+    "controlId": "CTL-1eb374a6eccc",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Open the reviewed risk-detail modal. Opening/cancelling writes nothing; its separately mapped confirmation validates and saves through saveQuoteProposal. Preserve own-versus-sale vehicle mode."
+  },
+  {
+    "controlId": "CTL-0abdcfa335e7",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Open the reviewed risk-detail modal. Opening/cancelling writes nothing; its separately mapped confirmation validates and saves through saveQuoteProposal. Preserve own-versus-sale vehicle mode."
+  },
+  {
+    "controlId": "CTL-7319197087e6",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Open the reviewed risk-detail modal. Opening/cancelling writes nothing; its separately mapped confirmation validates and saves through saveQuoteProposal. Preserve own-versus-sale vehicle mode."
+  },
+  {
+    "controlId": "CTL-9387056d9fac",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Open the reviewed risk-detail modal. Opening/cancelling writes nothing; its separately mapped confirmation validates and saves through saveQuoteProposal. Preserve own-versus-sale vehicle mode."
+  },
+  {
+    "controlId": "CTL-49edfbf20fae",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Open the reviewed risk-detail modal. Opening/cancelling writes nothing; its separately mapped confirmation validates and saves through saveQuoteProposal. Preserve own-versus-sale vehicle mode."
+  },
+  {
+    "controlId": "CTL-27261fc05988",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "validateQuote",
+      "rateQuote"
+    ],
+    "reason": "Save first, validate the returned revision, then queue rating for that same revision. Server revalidates; missing answers link to their stages. Display actual persisted rating job/result."
+  },
+  {
+    "controlId": "CTL-fbcf28cc54fc",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "reason": "Composer changes edit the typed proposal; onSend persists the whole current proposal using If-Match. A toast alone does not count as saving.",
+    "fieldBindings": [
+      {
+        "targetPath": "risk.materialFacts"
+      }
+    ]
+  },
+  {
+    "controlId": "CTL-0baa80a84bde",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-e35262c37c7b",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-7b35b2d5a6c9",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-7e8ddda44883",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-9baddce66026",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Open the reviewed risk-detail modal. Opening/cancelling writes nothing; its separately mapped confirmation validates and saves through saveQuoteProposal. Preserve own-versus-sale vehicle mode."
+  },
+  {
+    "controlId": "CTL-7b091112a28e",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-0b7d4a4f3bd3",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-33bfe3df1db5",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-677f9821a5f0",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-c733f58674ce",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-24a6e1dda676",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-2b3f5c1f7dba",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-38847462c9ce",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-c7e79a944bfa",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-2a7c03bd9994",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal",
+      "getQuote"
+    ],
+    "reason": "Save dirty incomplete proposal before moving to the bounded product-specific step; keep current step/edits on failure. Completion derives from required answers, not visited steps. Resume from persisted answers; route step is presentation state."
+  },
+  {
+    "controlId": "CTL-82ebf22fee24",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "reason": "Composer changes edit the typed proposal; onSend persists the whole current proposal using If-Match. A toast alone does not count as saving.",
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.description"
+      }
+    ]
+  },
+  {
+    "controlId": "CTL-da0f5084a3cc",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Open the reviewed risk-detail modal. Opening/cancelling writes nothing; its separately mapped confirmation validates and saves through saveQuoteProposal. Preserve own-versus-sale vehicle mode."
+  },
+  {
+    "controlId": "CTL-6801d1d0ee05",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Open the reviewed risk-detail modal. Opening/cancelling writes nothing; its separately mapped confirmation validates and saves through saveQuoteProposal. Preserve own-versus-sale vehicle mode."
+  },
+  {
+    "controlId": "CTL-83e66f0c876b",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Open the reviewed risk-detail modal. Opening/cancelling writes nothing; its separately mapped confirmation validates and saves through saveQuoteProposal. Preserve own-versus-sale vehicle mode."
+  },
+  {
+    "controlId": "CTL-6a617e77cc8e",
+    "status": "reviewed",
+    "disposition": "command-or-navigation",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "reason": "Composer changes edit the typed proposal; onSend persists the whole current proposal using If-Match. A toast alone does not count as saving.",
+    "fieldBindings": [
+      {
+        "targetPath": "risk.materialFacts"
+      }
+    ]
   }
 ]

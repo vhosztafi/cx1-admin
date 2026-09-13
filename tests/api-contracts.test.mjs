@@ -185,3 +185,10 @@ test('servicing input bindings resolve to their actual command payload fields',a
  const details={fullName:'Alex Morgan Example',role:'Director',isPrimary:true,marketingConsent:{email:false,telephone:false,recordedAt:'2026-09-13T12:00:00Z',source:'demo-contact-form'}};
  assert.ok(contact(details));delete details.fullName;assert.equal(contact(details),false);
 });
+test('Motor Trade Combined step eight is cover rather than previous insurance',async()=>{
+ const catalog=await read('examples/prototype-quote-questions.json');
+ const cover=catalog.questions.filter(q=>q.stages.includes('Motor Trade Combined:step-8'));
+ assert.ok(cover.length>0);
+ assert.ok(cover.every(q=>q.targetContainer==='cover.responses'));
+ assert.ok(!catalog.questions.some(q=>q.stages.some(s=>s.startsWith('Motor Trade Combined:'))&&q.targetContainer==='risk.previousInsurance.responses'));
+});

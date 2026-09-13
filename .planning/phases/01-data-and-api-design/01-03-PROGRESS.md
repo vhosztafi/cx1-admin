@@ -4,6 +4,9 @@ Status: in progress, not a completion summary. User authorises autonomous contin
 
 ## Latest autonomous run
 
+Quote-action continuation: 702/949 controls reviewed (247 pending); 40 design tests pass. Reviewed save/exit, draft save, source-policy cloning, withdrawal, rate command chain, all product wizard jumps/back/continue, risk-modal launch controls and four description/material-facts composers. Navigation saves dirty incomplete proposals and retains edits on failure; modal launch alone is client-only. Corrected main-quote catalog: Combined has cover at step 8, not 9; it has no separate previous-insurance stage. Added regression test. Remaining quote dates/short-term handling, evidence controls, numeric/text inputs and child removals need explicit review, followed by other filters/navigation and adapter schemas/examples. Do not mark design or application complete. Known next semantic detail: source NCD option is '5 or more', so preserve capped-category meaning rather than asserting exactly five years.
+
+
 Main-quote continuation: 658/949 controls reviewed (291 pending), 277 operations lint without warnings, 39 tests pass. Added explicit typed proposer/contact/business/previous-insurance/liability mappings and 111 pinned option questions with original product stages and complete categorical choices. Policy schema now captures ordered proposer names and contact details; Commercial Combined BI permits estimated gross profit. Tests resolve all detail and quote field bindings against the policy schema and compare quote options with source render data. Catalog entries are design inputs for product definitions; applicability and runtime validation are not implemented. Remaining free-text/date/composer quote controls, wizard navigation/filter behavior, adapter schemas/examples and final design verification remain pending.
 
 

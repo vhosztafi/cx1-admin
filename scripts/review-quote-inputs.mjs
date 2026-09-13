@@ -26,9 +26,10 @@ for(const c of inventory.controls.filter(x=>x.method==='pNewQuote'&&x.kind==='in
  // Reviewed stage boundaries: product-specific capture may have different
  // numbers, but each retains the original stage and scope in this catalog.
  const isCc=steps.every(t=>t.startsWith('Commercial Combined:'));
- const isCover=steps.every(t=>isCc?/:step-(7|10)$/.test(t):t.startsWith('Motor Trade Road Risks:')?/:step-8$/.test(t):/:step-9$/.test(t));
- const previous=steps.every(t=>t.startsWith('Motor Trade Road Risks:step-7')||t.startsWith('Motor Trade Combined:step-8'));
- const container=isCover?'cover.responses':previous?'risk.previousInsurance.responses':isCc?'risk.declarations':'risk.business.responses';
+ const isCover=steps.every(t=>isCc?/:step-(7|10)$/.test(t):/:step-8$/.test(t));
+ const previous=steps.every(t=>t==='Motor Trade Road Risks:step-7');
+ const declarations=steps.every(t=>!t.startsWith('Commercial Combined:')&&/:step-(9|10)$/.test(t));
+ const container=isCover?'cover.responses':previous?'risk.previousInsurance.responses':(isCc||declarations)?'risk.declarations':'risk.business.responses';
  const yesNo=item.options.length===2&&item.options.some(v=>/^Yes(?:\b|$)/.test(v))&&item.options.some(v=>/^No(?:\b|$)/.test(v));
  const kind=yesNo?'boolean':'reference';const questionId=`prototype.quote.${suffix}`;
  const question={questionId,label:c.label,kind,targetContainer:container,sourceControlId:c.id,sourceOptions:item.options,stages:steps,referenceValues:yesNo?[]:item.options.map((label,index)=>({value:index+1,label})),requiredWhenApplicable:true};

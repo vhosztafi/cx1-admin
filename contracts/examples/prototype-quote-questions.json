@@ -550,7 +550,7 @@
       "questionId": "prototype.quote.2beaf3b8d546",
       "label": "Cover basis",
       "kind": "reference",
-      "targetContainer": "risk.business.responses",
+      "targetContainer": "cover.responses",
       "sourceControlId": "CTL-2beaf3b8d546",
       "sourceOptions": [
         "Comprehensive",
@@ -581,7 +581,7 @@
       "questionId": "prototype.quote.d9dd069a314c",
       "label": "Indemnity limit — own vehicles, any one vehicle",
       "kind": "reference",
-      "targetContainer": "risk.business.responses",
+      "targetContainer": "cover.responses",
       "sourceControlId": "CTL-d9dd069a314c",
       "sourceOptions": [
         "£7,500",
@@ -632,7 +632,7 @@
       "questionId": "prototype.quote.b4c7e25f7781",
       "label": "Indemnity limit — customer vehicles, any one vehicle",
       "kind": "reference",
-      "targetContainer": "risk.business.responses",
+      "targetContainer": "cover.responses",
       "sourceControlId": "CTL-b4c7e25f7781",
       "sourceOptions": [
         "£7,500",
@@ -683,7 +683,7 @@
       "questionId": "prototype.quote.00216de47ab5",
       "label": "Accidental damage, fire and theft excess",
       "kind": "reference",
-      "targetContainer": "risk.business.responses",
+      "targetContainer": "cover.responses",
       "sourceControlId": "CTL-00216de47ab5",
       "sourceOptions": [
         "£250",
@@ -719,7 +719,7 @@
       "questionId": "prototype.quote.becc2653d0de",
       "label": "Demonstration cover",
       "kind": "boolean",
-      "targetContainer": "risk.business.responses",
+      "targetContainer": "cover.responses",
       "sourceControlId": "CTL-becc2653d0de",
       "sourceOptions": [
         "No",
@@ -736,7 +736,7 @@
       "questionId": "prototype.quote.4c5df77ffba1",
       "label": "Private use in addition to motor trade use",
       "kind": "boolean",
-      "targetContainer": "risk.business.responses",
+      "targetContainer": "cover.responses",
       "sourceControlId": "CTL-4c5df77ffba1",
       "sourceOptions": [
         "Yes",
