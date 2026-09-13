@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-13T19:54:22.7680981Z"
+last_updated: "2026-09-13T20:15:32.0884453Z"
 last_activity: 2026-09-13
 progress:
   total_phases: 13
@@ -25,9 +25,9 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 ## Current Position
 
 Phase: 2 of 13 (Application and persistence foundation)
-Plan: 02-05 of 6 in progress; atomic commands and lease fencing verified; provider/inbox pending
+Plan: 02-05 of 6 in progress; provider/inbox recovery verified; hosted dispatch and operational API/UI pending
 Status: In progress — autonomous
-Last activity: 2026-09-13 — 02-05 fenced SQL leases/retries verified; 21 unit and nine integration cases pass
+Last activity: 2026-09-13 — 02-05 provider/inbox SQL recovery verified; 21 unit and 11 integration cases pass
 
 Progress: Phase 1 complete; 1/13 phases. SQL, local authentication and shell verified; durable workers and foundation gate pending.
 
@@ -54,7 +54,7 @@ Progress: Phase 1 complete; 1/13 phases. SQL, local authentication and shell ver
 ## Session Continuity
 
 Last session: 2026-09-13
-Stopped at: Read latest 02-05-PROGRESS.md checkpoint; resume independent provider results and fenced inbox application, then hosted worker/API/UI. Demo credentials remain in ignored .local/demo-password.txt; test servers stopped.
+Stopped at: Read rewritten 02-05-PROGRESS.md; resume reviewed diagnostic contract, hosted dispatcher, operational API/UI and actual process restart checks. Demo credentials remain in ignored .local/demo-password.txt; test servers stopped.
 Resume file: None
 
 ## Autonomous continuation
@@ -62,6 +62,7 @@ Resume file: None
 User approved requirements/roadmap and autonomous choices/progression on 2026-09-13. Routine confirmation is no longer required. Keep checks enabled; fix gaps instead of silently deferring them. Mode and auto_advance verified through GSD init.
 
 Thread heartbeat: continue-cover-mga-back-office-mvp, active every 10 minutes. Resume unfinished work in this same task; notify meaningful progress/blockers only; pause on actual milestone completion, user stop or persistent external blocker with no remaining useful work.
+
 
 
 
