@@ -1,0 +1,944 @@
+{
+  "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
+  "captures": [
+    {
+      "controlId": "CTL-9b21bc4b4158",
+      "routes": [
+        {
+          "route": "task",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-aab579a02eec",
+      "routes": [
+        {
+          "route": "tasks",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-87b388c7c8df",
+      "routes": [
+        {
+          "route": "tasks",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-9b1705e6a351",
+      "routes": [
+        {
+          "route": "tasks",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-f1e307baa432",
+      "routes": [
+        {
+          "route": "tasks",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-9727252e7836",
+      "routes": [
+        {
+          "route": "mta",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-edda1f6aa46a",
+      "routes": [
+        {
+          "route": "quote",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-1fad476114e9",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": "Transactions"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-5b50e8eb46fa",
+      "routes": [
+        {
+          "route": "agency",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-29c128398a46",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": "Vehicles"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-721a19d5dbfa",
+      "routes": [
+        {
+          "route": "mta",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-44e9e414e2c2",
+      "routes": [
+        {
+          "route": "task",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-dcd53246e184",
+      "routes": [
+        {
+          "route": "tasks",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-60ba3b194aa0",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": "Vehicles"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-9f19b2755047",
+      "routes": [
+        {
+          "route": "task",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-607dadbd889b",
+      "routes": [
+        {
+          "route": "tasks",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-b8980c2b5423",
+      "routes": [
+        {
+          "route": "tasks",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-8985852d89f3",
+      "routes": [
+        {
+          "route": "tasks",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-d32d3244fb5d",
+      "routes": [
+        {
+          "route": "vehicle",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-92991f22c2a4",
+      "routes": [
+        {
+          "route": "accounting",
+          "tab": "Broker accounts"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-d2bf3015d449",
+      "routes": [
+        {
+          "route": "task",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-e39aeff1b11d",
+      "routes": [
+        {
+          "route": "escalation",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-754f0498bd39",
+      "routes": [
+        {
+          "route": "tasks",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-8a66a5c20198",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": null
+        },
+        {
+          "route": "quote",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-b4fa09cd9056",
+      "routes": [
+        {
+          "route": "ccpolicy",
+          "tab": null
+        },
+        {
+          "route": "match",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-80230239bc79",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": null
+        },
+        {
+          "route": "quote",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-54896cbfe7ce",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": null
+        },
+        {
+          "route": "quote",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-e9cae754ebc1",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": null
+        },
+        {
+          "route": "quote",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-50a2db5d342c",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": null
+        },
+        {
+          "route": "quote",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-0436ba1e87f5",
+      "routes": [
+        {
+          "route": "client",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-740fccae8fe1",
+      "routes": [
+        {
+          "route": "client",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-8904ade3f3bf",
+      "routes": [
+        {
+          "route": "client",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-3ead194d88bf",
+      "routes": [
+        {
+          "route": "client",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-5c292de6f861",
+      "routes": [
+        {
+          "route": "client",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-0ba9758c138b",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-ef047b0099e6",
+      "routes": [
+        {
+          "route": "match",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-e246dc281442",
+      "routes": [
+        {
+          "route": "mta",
+          "tab": null
+        },
+        {
+          "route": "policy",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-ee7614ae0ce6",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": "Messages"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-08cbeb6ced0b",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": "Transactions"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-fde5701b6044",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": "Claims"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-85001cc04bcb",
+      "routes": [
+        {
+          "route": "agency",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-dc3b5099dba9",
+      "routes": [
+        {
+          "route": "agency",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-1ddde99c816e",
+      "routes": [
+        {
+          "route": "agency",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-bc44b9bd000c",
+      "routes": [
+        {
+          "route": "agency",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-6ac923e115a1",
+      "routes": [
+        {
+          "route": "agency",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-370e7b1c7480",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-29220498fb90",
+      "routes": [
+        {
+          "route": "task",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-5a3269df5606",
+      "routes": [
+        {
+          "route": "task",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-a9cbff4ebe72",
+      "routes": [
+        {
+          "route": "task",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-3c5e95611bdd",
+      "routes": [
+        {
+          "route": "task",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-18b64a8de0f9",
+      "routes": [
+        {
+          "route": "task",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-5779d07ee892",
+      "routes": [
+        {
+          "route": "task",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-abcd385e28c9",
+      "routes": [
+        {
+          "route": "agency",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-e2d56c8dcbb7",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-20afc88f9936",
+      "routes": [
+        {
+          "route": "client",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-2110da92d9ef",
+      "routes": [
+        {
+          "route": "client",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-40fcfd970a2d",
+      "routes": [
+        {
+          "route": "client",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-81abf50e788b",
+      "routes": [
+        {
+          "route": "client",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-a59acda98567",
+      "routes": [
+        {
+          "route": "client",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-88ec1711f348",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-4d7db22b2eb6",
+      "routes": [
+        {
+          "route": "ccpolicy",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-c90c38f496a0",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-6df898998fb4",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-ab627cc29c4c",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-1a16847c47fd",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-c9f6bbebf1c5",
+      "routes": [
+        {
+          "route": "quote",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-143c4a9be1c6",
+      "routes": [
+        {
+          "route": "match",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-04b07c7fde97",
+      "routes": [
+        {
+          "route": "quote",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-7bb21bab60fd",
+      "routes": [
+        {
+          "route": "quote",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-4be52ebec533",
+      "routes": [
+        {
+          "route": "quote",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-826642db3a1c",
+      "routes": [
+        {
+          "route": "quote",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-f56493b673b3",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": "Vehicles"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-8ae3c103cb9b",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": "Vehicles"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-a809ba59943d",
+      "routes": [
+        {
+          "route": "agency",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-d021643b2324",
+      "routes": [
+        {
+          "route": "agency",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-b1d64f59e832",
+      "routes": [
+        {
+          "route": "agency",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-fd3e0a56ce5d",
+      "routes": [
+        {
+          "route": "agency",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-41e4cb693a72",
+      "routes": [
+        {
+          "route": "agency",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-f5d7587f3dea",
+      "routes": [
+        {
+          "route": "accounting",
+          "tab": "Payments"
+        },
+        {
+          "route": "policy",
+          "tab": "Vehicles"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-6a2ad506c5b6",
+      "routes": [
+        {
+          "route": "accounting",
+          "tab": "Reconciliation"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-35a9de20c7a1",
+      "routes": [
+        {
+          "route": "accounting",
+          "tab": "Bordereaux"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-74e24a6ada25",
+      "routes": [
+        {
+          "route": "accounting",
+          "tab": "Refunds"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-51b56a6368c9",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": null
+        },
+        {
+          "route": "agency",
+          "tab": "Broker accounts"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-33913bc8d7ea",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": null
+        },
+        {
+          "route": "accounting",
+          "tab": "Broker accounts"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-c0aa6fc018d4",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": null
+        },
+        {
+          "route": "accounting",
+          "tab": "Broker accounts"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-8f570efb8f02",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": null
+        },
+        {
+          "route": "accounting",
+          "tab": "Broker accounts"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-ba2332ce84de",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-4c1e47f2f86f",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-d722319a699d",
+      "routes": [
+        {
+          "route": "risks",
+          "tab": "Quotes"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-ffe580c5746e",
+      "routes": [
+        {
+          "route": "risks",
+          "tab": "Quotes"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-42d2acd90eed",
+      "routes": [
+        {
+          "route": "risks",
+          "tab": "Quotes"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-ba14915ded51",
+      "routes": [
+        {
+          "route": "risks",
+          "tab": "Quotes"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-24e0517ea487",
+      "routes": [
+        {
+          "route": "risks",
+          "tab": "Quotes"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-d25a22b2d718",
+      "routes": [
+        {
+          "route": "risks",
+          "tab": "Quotes"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-a3d0b2052a2b",
+      "routes": [
+        {
+          "route": "match",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-95c96867f896",
+      "routes": [
+        {
+          "route": "ccpolicy",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-76ad64b9c550",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-026efb151c2a",
+      "routes": [
+        {
+          "route": "policy",
+          "tab": null
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-a1b61a461082",
+      "routes": [
+        {
+          "route": "agency",
+          "tab": null
+        }
+      ]
+    }
+  ]
+}

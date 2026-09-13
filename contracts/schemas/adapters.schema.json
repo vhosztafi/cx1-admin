@@ -1,0 +1,2547 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.cover-mga.example/adapters/1.0",
+  "title": "Internal durable adapter envelopes",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "rating"
+        },
+        "direction": {
+          "const": "request"
+        },
+        "operationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "operationKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sourceVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scenarioVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "correlationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "recordedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "source": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "recordId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "versionId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "contentHash": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "recordId",
+                "versionId",
+                "contentHash"
+              ]
+            },
+            "productVersionId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "binderVersionId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "ratingRuleVersionId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "proposal": {
+              "$ref": "./policy-draft.schema.json"
+            },
+            "effectiveSlices": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "effectiveAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "proposal": {
+                    "$ref": "./policy-draft.schema.json"
+                  }
+                },
+                "required": [
+                  "effectiveAt",
+                  "proposal"
+                ]
+              },
+              "maxItems": 1000
+            }
+          },
+          "required": [
+            "source",
+            "productVersionId",
+            "binderVersionId",
+            "ratingRuleVersionId",
+            "proposal",
+            "effectiveSlices"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "direction",
+        "operationId",
+        "operationKey",
+        "sourceVersionId",
+        "scenarioVersionId",
+        "correlationId",
+        "recordedAt",
+        "payload"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "rating"
+        },
+        "direction": {
+          "const": "result"
+        },
+        "operationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "operationKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sourceVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scenarioVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "correlationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "recordedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload": {
+          "$ref": "#/$defs/RatingResult"
+        }
+      },
+      "required": [
+        "kind",
+        "direction",
+        "operationId",
+        "operationKey",
+        "sourceVersionId",
+        "scenarioVersionId",
+        "correlationId",
+        "recordedAt",
+        "payload"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "document-generation"
+        },
+        "direction": {
+          "const": "request"
+        },
+        "operationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "operationKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sourceVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scenarioVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "correlationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "recordedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "source": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "recordId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "versionId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "contentHash": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "recordId",
+                "versionId",
+                "contentHash"
+              ]
+            },
+            "templateVersionId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "kind": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "audience": {
+              "type": "string",
+              "enum": [
+                "internal",
+                "agency",
+                "insurer"
+              ]
+            },
+            "merge": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "policyReference": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 40
+                },
+                "insuredName": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "agencyName": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "startsAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "endsAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "sections": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "label": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      "value": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 4000
+                      }
+                    },
+                    "required": [
+                      "label",
+                      "value"
+                    ]
+                  },
+                  "maxItems": 1000
+                }
+              },
+              "required": [
+                "policyReference",
+                "insuredName",
+                "agencyName",
+                "startsAt",
+                "endsAt",
+                "sections"
+              ]
+            }
+          },
+          "required": [
+            "source",
+            "templateVersionId",
+            "kind",
+            "audience",
+            "merge"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "direction",
+        "operationId",
+        "operationKey",
+        "sourceVersionId",
+        "scenarioVersionId",
+        "correlationId",
+        "recordedAt",
+        "payload"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "document-generation"
+        },
+        "direction": {
+          "const": "result"
+        },
+        "operationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "operationKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sourceVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scenarioVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "correlationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "recordedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "documentVersionId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "bytes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "contentType": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          },
+          "required": [
+            "documentVersionId",
+            "sha256",
+            "bytes",
+            "contentType"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "direction",
+        "operationId",
+        "operationKey",
+        "sourceVersionId",
+        "scenarioVersionId",
+        "correlationId",
+        "recordedAt",
+        "payload"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "document-storage"
+        },
+        "direction": {
+          "const": "request"
+        },
+        "operationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "operationKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sourceVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scenarioVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "correlationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "recordedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "temporaryObjectId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "destinationDocumentVersionId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "expectedSha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "expectedBytes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "contentType": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          },
+          "required": [
+            "temporaryObjectId",
+            "destinationDocumentVersionId",
+            "expectedSha256",
+            "expectedBytes",
+            "contentType"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "direction",
+        "operationId",
+        "operationKey",
+        "sourceVersionId",
+        "scenarioVersionId",
+        "correlationId",
+        "recordedAt",
+        "payload"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "document-storage"
+        },
+        "direction": {
+          "const": "result"
+        },
+        "operationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "operationKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sourceVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scenarioVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "correlationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "recordedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "documentVersionId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "storageObjectId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "bytes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "state": {
+              "const": "ready"
+            }
+          },
+          "required": [
+            "documentVersionId",
+            "storageObjectId",
+            "sha256",
+            "bytes",
+            "state"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "direction",
+        "operationId",
+        "operationKey",
+        "sourceVersionId",
+        "scenarioVersionId",
+        "correlationId",
+        "recordedAt",
+        "payload"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "email"
+        },
+        "direction": {
+          "const": "request"
+        },
+        "operationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "operationKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sourceVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scenarioVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "correlationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "recordedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "messageId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "templateVersionId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "recipients": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "contactId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "displayName": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  }
+                },
+                "required": [
+                  "contactId",
+                  "email",
+                  "displayName"
+                ]
+              },
+              "maxItems": 1000
+            },
+            "subject": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            "body": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "attachments": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "documentVersionId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "bytes": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "contentType": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  }
+                },
+                "required": [
+                  "documentVersionId",
+                  "sha256",
+                  "bytes",
+                  "contentType"
+                ]
+              },
+              "maxItems": 1000
+            }
+          },
+          "required": [
+            "messageId",
+            "templateVersionId",
+            "recipients",
+            "subject",
+            "body",
+            "attachments"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "direction",
+        "operationId",
+        "operationKey",
+        "sourceVersionId",
+        "scenarioVersionId",
+        "correlationId",
+        "recordedAt",
+        "payload"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "email"
+        },
+        "direction": {
+          "const": "result"
+        },
+        "operationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "operationKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sourceVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scenarioVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "correlationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "recordedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "deliveryReference": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "completedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "recipients": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "contactId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "delivered",
+                      "rejected"
+                    ]
+                  },
+                  "code": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  }
+                },
+                "required": [
+                  "contactId",
+                  "status",
+                  "code"
+                ]
+              },
+              "maxItems": 1000
+            }
+          },
+          "required": [
+            "deliveryReference",
+            "completedAt",
+            "recipients"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "direction",
+        "operationId",
+        "operationKey",
+        "sourceVersionId",
+        "scenarioVersionId",
+        "correlationId",
+        "recordedAt",
+        "payload"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "lookup"
+        },
+        "direction": {
+          "const": "request"
+        },
+        "operationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "operationKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sourceVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scenarioVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "correlationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "recordedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload": {
+          "$ref": "#/$defs/LookupRequest"
+        }
+      },
+      "required": [
+        "kind",
+        "direction",
+        "operationId",
+        "operationKey",
+        "sourceVersionId",
+        "scenarioVersionId",
+        "correlationId",
+        "recordedAt",
+        "payload"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "lookup"
+        },
+        "direction": {
+          "const": "result"
+        },
+        "operationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "operationKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sourceVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scenarioVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "correlationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "recordedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload": {
+          "$ref": "#/$defs/LookupResult"
+        }
+      },
+      "required": [
+        "kind",
+        "direction",
+        "operationId",
+        "operationKey",
+        "sourceVersionId",
+        "scenarioVersionId",
+        "correlationId",
+        "recordedAt",
+        "payload"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "mid"
+        },
+        "direction": {
+          "const": "request"
+        },
+        "operationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "operationKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sourceVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scenarioVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "correlationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "recordedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "action": {
+              "type": "string",
+              "enum": [
+                "add",
+                "change",
+                "remove"
+              ]
+            },
+            "source": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "recordId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "versionId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "contentHash": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "recordId",
+                "versionId",
+                "contentHash"
+              ]
+            },
+            "registration": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20
+            },
+            "itemKind": {
+              "type": "string",
+              "enum": [
+                "vehicle",
+                "trade-plate"
+              ]
+            },
+            "policyReference": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 40
+            },
+            "startsAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "endsAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "productCode": {
+              "type": "string",
+              "enum": [
+                "motor-trade-road-risks",
+                "motor-trade-combined"
+              ]
+            }
+          },
+          "required": [
+            "action",
+            "source",
+            "registration",
+            "itemKind",
+            "policyReference",
+            "startsAt",
+            "endsAt",
+            "productCode"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "direction",
+        "operationId",
+        "operationKey",
+        "sourceVersionId",
+        "scenarioVersionId",
+        "correlationId",
+        "recordedAt",
+        "payload"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "mid"
+        },
+        "direction": {
+          "const": "result"
+        },
+        "operationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "operationKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sourceVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scenarioVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "correlationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "recordedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "accepted",
+                "rejected"
+              ]
+            },
+            "reference": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "acknowledgedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "reasonCodes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "maxItems": 1000
+            }
+          },
+          "required": [
+            "status",
+            "reference",
+            "acknowledgedAt",
+            "reasonCodes"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "direction",
+        "operationId",
+        "operationKey",
+        "sourceVersionId",
+        "scenarioVersionId",
+        "correlationId",
+        "recordedAt",
+        "payload"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "claims"
+        },
+        "direction": {
+          "const": "request"
+        },
+        "operationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "operationKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sourceVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scenarioVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "correlationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "recordedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "incidentId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "source": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "recordId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "versionId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "contentHash": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "recordId",
+                "versionId",
+                "contentHash"
+              ]
+            },
+            "productCode": {
+              "type": "string",
+              "enum": [
+                "motor-trade-road-risks",
+                "motor-trade-combined",
+                "commercial-combined"
+              ]
+            },
+            "incident": {
+              "$ref": "#/$defs/IncidentWrite"
+            }
+          },
+          "required": [
+            "incidentId",
+            "source",
+            "productCode",
+            "incident"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "direction",
+        "operationId",
+        "operationKey",
+        "sourceVersionId",
+        "scenarioVersionId",
+        "correlationId",
+        "recordedAt",
+        "payload"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "claims"
+        },
+        "direction": {
+          "const": "result"
+        },
+        "operationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "operationKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sourceVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scenarioVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "correlationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "recordedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "providerReference": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "state": {
+              "type": "string",
+              "enum": [
+                "received",
+                "open",
+                "closed",
+                "rejected"
+              ]
+            },
+            "asOf": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "paid": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            "reserved": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            "reasonCodes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "maxItems": 1000
+            }
+          },
+          "required": [
+            "providerReference",
+            "state",
+            "asOf",
+            "paid",
+            "reserved",
+            "reasonCodes"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "direction",
+        "operationId",
+        "operationKey",
+        "sourceVersionId",
+        "scenarioVersionId",
+        "correlationId",
+        "recordedAt",
+        "payload"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "payment"
+        },
+        "direction": {
+          "const": "request"
+        },
+        "operationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "operationKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sourceVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scenarioVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "correlationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "recordedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "obligationKind": {
+              "type": "string",
+              "enum": [
+                "refund",
+                "broker-remuneration"
+              ]
+            },
+            "obligationId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "paymentKey": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "amount": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            "currency": {
+              "const": "GBP"
+            },
+            "payeeReference": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          },
+          "required": [
+            "obligationKind",
+            "obligationId",
+            "paymentKey",
+            "amount",
+            "currency",
+            "payeeReference"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "direction",
+        "operationId",
+        "operationKey",
+        "sourceVersionId",
+        "scenarioVersionId",
+        "correlationId",
+        "recordedAt",
+        "payload"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "payment"
+        },
+        "direction": {
+          "const": "result"
+        },
+        "operationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "operationKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sourceVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scenarioVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "correlationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "recordedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "state": {
+              "type": "string",
+              "enum": [
+                "confirmed",
+                "rejected",
+                "unknown"
+              ]
+            },
+            "paymentKey": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "providerReference": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "amount": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            "currency": {
+              "const": "GBP"
+            },
+            "asOf": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "reasonCode": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          },
+          "required": [
+            "state",
+            "paymentKey",
+            "providerReference",
+            "amount",
+            "currency",
+            "asOf",
+            "reasonCode"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "direction",
+        "operationId",
+        "operationKey",
+        "sourceVersionId",
+        "scenarioVersionId",
+        "correlationId",
+        "recordedAt",
+        "payload"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "bordereau"
+        },
+        "direction": {
+          "const": "request"
+        },
+        "operationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "operationKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sourceVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scenarioVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "correlationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "recordedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "batchId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "providerId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "from": {
+              "type": "string",
+              "format": "date"
+            },
+            "to": {
+              "type": "string",
+              "format": "date"
+            },
+            "export": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "documentVersionId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "contentType": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              },
+              "required": [
+                "documentVersionId",
+                "sha256",
+                "bytes",
+                "contentType"
+              ]
+            },
+            "validationVersion": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          },
+          "required": [
+            "batchId",
+            "providerId",
+            "from",
+            "to",
+            "export",
+            "validationVersion"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "direction",
+        "operationId",
+        "operationKey",
+        "sourceVersionId",
+        "scenarioVersionId",
+        "correlationId",
+        "recordedAt",
+        "payload"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "bordereau"
+        },
+        "direction": {
+          "const": "result"
+        },
+        "operationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "operationKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sourceVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scenarioVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "correlationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "recordedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "accepted",
+                "rejected"
+              ]
+            },
+            "reference": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "submittedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "exportSha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "rowErrors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "rowId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "code": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "message": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1000
+                  }
+                },
+                "required": [
+                  "rowId",
+                  "code",
+                  "message"
+                ]
+              },
+              "maxItems": 1000
+            }
+          },
+          "required": [
+            "status",
+            "reference",
+            "submittedAt",
+            "exportSha256",
+            "rowErrors"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "direction",
+        "operationId",
+        "operationKey",
+        "sourceVersionId",
+        "scenarioVersionId",
+        "correlationId",
+        "recordedAt",
+        "payload"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "rating",
+            "document-generation",
+            "document-storage",
+            "email",
+            "lookup",
+            "mid",
+            "claims",
+            "payment",
+            "bordereau"
+          ]
+        },
+        "direction": {
+          "const": "failure"
+        },
+        "operationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "operationKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sourceVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scenarioVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "correlationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "recordedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "classification": {
+              "type": "string",
+              "enum": [
+                "rejected",
+                "transient",
+                "unknown-outcome"
+              ]
+            },
+            "retryable": {
+              "type": "boolean"
+            },
+            "safeMessage": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000
+            },
+            "providerReference": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          },
+          "required": [
+            "code",
+            "classification",
+            "retryable",
+            "safeMessage"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "direction",
+        "operationId",
+        "operationKey",
+        "sourceVersionId",
+        "scenarioVersionId",
+        "correlationId",
+        "recordedAt",
+        "payload"
+      ]
+    }
+  ],
+  "$defs": {
+    "RatingResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "inputHash": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "targetRevision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "ruleVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "premium": {
+          "$ref": "./policy.schema.json#/$defs/Premium"
+        },
+        "factors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 500
+              },
+              "factor": {
+                "type": "string",
+                "pattern": "^[0-9]+(\\.[0-9]{1,6})?$"
+              }
+            },
+            "required": [
+              "code",
+              "description",
+              "factor"
+            ]
+          },
+          "maxItems": 1000
+        },
+        "referralIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "maxItems": 1000
+        },
+        "effectiveSlices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "effectiveAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "premiumChange": {
+                "type": "string",
+                "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+              },
+              "taxChange": {
+                "type": "string",
+                "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+              },
+              "commissionChange": {
+                "type": "string",
+                "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+              },
+              "currency": {
+                "const": "GBP"
+              }
+            },
+            "required": [
+              "effectiveAt",
+              "premiumChange",
+              "taxChange",
+              "commissionChange",
+              "currency"
+            ]
+          },
+          "maxItems": 1000
+        }
+      },
+      "required": [
+        "id",
+        "inputHash",
+        "targetRevision",
+        "ruleVersion",
+        "expiresAt",
+        "premium",
+        "factors",
+        "referralIds",
+        "effectiveSlices"
+      ]
+    },
+    "LookupRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "subjectRecordId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "referenceDataVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "query": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "const": "address"
+                },
+                "postcode": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 20
+                },
+                "building": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              },
+              "required": [
+                "kind",
+                "postcode"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "const": "company"
+                },
+                "companyNumber": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 30
+                }
+              },
+              "required": [
+                "kind",
+                "companyNumber"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "const": "fca"
+                },
+                "regulatoryReference": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 30
+                }
+              },
+              "required": [
+                "kind",
+                "regulatoryReference"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "const": "vehicle"
+                },
+                "registration": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 20
+                }
+              },
+              "required": [
+                "kind",
+                "registration"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "const": "licence"
+                },
+                "driverId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "licenceNumber": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              },
+              "required": [
+                "kind",
+                "driverId",
+                "licenceNumber"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "referenceDataVersionId",
+        "query"
+      ]
+    },
+    "LookupResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "address",
+            "company",
+            "fca",
+            "vehicle",
+            "licence"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "matched",
+            "no-match",
+            "multiple-matches",
+            "rejected"
+          ]
+        },
+        "referenceDataVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "asOf": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "candidates": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "address"
+                  },
+                  "address": {
+                    "$ref": "#/$defs/Address"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "address"
+                ]
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "company"
+                  },
+                  "companyNumber": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 30
+                  },
+                  "legalName": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "address": {
+                    "$ref": "#/$defs/Address"
+                  },
+                  "state": {
+                    "type": "string",
+                    "enum": [
+                      "active",
+                      "dissolved"
+                    ]
+                  }
+                },
+                "required": [
+                  "kind",
+                  "companyNumber",
+                  "legalName",
+                  "address",
+                  "state"
+                ]
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "fca"
+                  },
+                  "regulatoryReference": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 30
+                  },
+                  "legalName": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "state": {
+                    "type": "string",
+                    "enum": [
+                      "authorised",
+                      "inactive",
+                      "not-found"
+                    ]
+                  }
+                },
+                "required": [
+                  "kind",
+                  "regulatoryReference",
+                  "legalName",
+                  "state"
+                ]
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "vehicle"
+                  },
+                  "registration": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 20
+                  },
+                  "make": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "model": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "year": {
+                    "type": "integer",
+                    "minimum": 1900,
+                    "maximum": 2200
+                  },
+                  "bodyTypeCode": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  }
+                },
+                "required": [
+                  "kind",
+                  "registration",
+                  "make",
+                  "model",
+                  "year",
+                  "bodyTypeCode"
+                ]
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "licence"
+                  },
+                  "driverId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "valid": {
+                    "type": "boolean"
+                  },
+                  "categories": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 30
+                    },
+                    "maxItems": 1000
+                  },
+                  "expiresOn": {
+                    "type": "string",
+                    "format": "date"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "driverId",
+                  "valid",
+                  "categories",
+                  "expiresOn"
+                ]
+              }
+            ]
+          },
+          "maxItems": 1000
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "status",
+        "referenceDataVersionId",
+        "asOf",
+        "expiresAt",
+        "candidates"
+      ]
+    },
+    "Address": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "line1": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "line2": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "town": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "county": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "postcode": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20
+        },
+        "country": {
+          "const": "GB"
+        }
+      },
+      "required": [
+        "line1",
+        "town",
+        "postcode",
+        "country"
+      ]
+    },
+    "IncidentWrite": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "policyId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "versionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "riskItemId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "road-accident",
+            "vehicle-theft",
+            "premises-theft",
+            "fire",
+            "malicious-damage",
+            "third-party-injury",
+            "customer-vehicle-damage",
+            "other"
+          ]
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8000
+        },
+        "contact": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "email": {
+              "type": "string",
+              "format": "email"
+            },
+            "telephone": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 50
+            }
+          },
+          "required": [
+            "name"
+          ]
+        },
+        "evidenceDocumentIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "maxItems": 1000
+        },
+        "motorDetails": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "registration": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20
+            },
+            "driverId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "thirdPartyInvolved": {
+              "type": "boolean"
+            },
+            "policeReference": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          },
+          "required": [
+            "thirdPartyInvolved"
+          ]
+        },
+        "propertyDetails": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "locationId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "affectedCoverCodes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "maxItems": 1000
+            },
+            "estimatedLoss": {
+              "type": "string",
+              "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            }
+          },
+          "required": [
+            "locationId",
+            "affectedCoverCodes"
+          ]
+        },
+        "occurredOn": {
+          "type": "string",
+          "format": "date"
+        },
+        "approximateLocalTime": {
+          "type": "string",
+          "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+        },
+        "involvement": {
+          "type": "string",
+          "enum": [
+            "registered-vehicle",
+            "stock-or-customer-vehicle",
+            "premises",
+            "third-party-only"
+          ]
+        },
+        "locationDescription": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "policeReference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "itemDescription": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "owner": {
+          "type": "string",
+          "enum": [
+            "insured",
+            "customer",
+            "third-party"
+          ]
+        },
+        "estimatedValueAtRisk": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+        },
+        "thirdPartyInvolvement": {
+          "type": "string",
+          "enum": [
+            "yes",
+            "no",
+            "unknown"
+          ]
+        },
+        "thirdPartyName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "thirdPartyInsurerOrRegistration": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "reportedBy": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "reportingRoute": {
+          "type": "string",
+          "enum": [
+            "agency",
+            "insured-direct",
+            "third-party-or-insurer",
+            "police-or-recovery"
+          ]
+        },
+        "bestContactDescription": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        }
+      },
+      "required": [
+        "policyId",
+        "versionId",
+        "kind",
+        "description",
+        "contact",
+        "evidenceDocumentIds",
+        "occurredOn"
+      ]
+    }
+  }
+}

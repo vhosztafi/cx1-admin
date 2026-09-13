@@ -1,4 +1,17 @@
 export function addFormContracts({schemas:s,ref:r,text:t,enumeration:e,object:o,array:a,id,instant,date,boolean:b,integer,decimal,operation:op,paths}){
+ function query(path,name,schema){const operation=paths[path].get;if(!operation.parameters.some(p=>p.name===name))operation.parameters.push({in:'query',name,required:false,schema});}
+ for(const path of ['/policies','/quotes'])query(path,'productCode',s.Quote.properties.productCode);
+ query('/policies','status',e('active','renewing','cancelled','expired'));
+ query('/quotes','status',e('draft','referral-required','quoted','declined','expired'));
+ query('/clients','entityType',s.AgencyWrite.properties.entityType??e('limited-company','sole-trader','partnership','llp'));
+ query('/agencies','relationshipManagerId',id);
+ query('/tasks','kind',t(100));query('/tasks','dueWindow',e('overdue','today','next-seven-days'));
+ for(const [name,schema] of Object.entries({status:t(60),productCode:s.Quote.properties.productCode,agencyId:id,providerId:id,underwriterId:id,inceptionFrom:date,reference:t(100)}))query('/search',name,schema);
+ s.ReportFilters.properties.underwriterId=id;
+ for(const path of ['/finance/journals','/finance/agency-statements','/finance/receipts','/finance/bank-lines','/finance/bordereaux','/finance/refunds']){
+  if(!paths[path])continue;
+  query(path,'from',date);query(path,'to',date);query(path,'agencyId',id);query(path,'filterStatus',e('outstanding','paid','allocated','exception'));
+ }
  s.PolicyDraft.properties.cancellationReasonCode=t(100);
  paths['/drafts/{draftId}/proposal'].put.requestBody.content['application/json'].schema.properties.cancellationReasonCode=t(100);
  paths['/terms/{termId}/drafts'].post.requestBody.content['application/json'].schema.properties.cancellationReasonCode=t(100);
@@ -50,6 +63,16 @@ export function addFormContracts({schemas:s,ref:r,text:t,enumeration:e,object:o,
   if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).map(([key,v])=>[key,key==='required'?[]:partial(v)]));
   return value;
  }
+ Object.assign(s.IncidentWrite.properties,{
+  occurredOn:date,approximateLocalTime:{type:'string',pattern:'^([01][0-9]|2[0-3]):[0-5][0-9]$'},
+  involvement:e('registered-vehicle','stock-or-customer-vehicle','premises','third-party-only'),
+  locationDescription:t(1000),policeReference:t(100),itemDescription:t(1000),owner:e('insured','customer','third-party'),
+  estimatedValueAtRisk:{type:'string',pattern:'^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$'},
+  thirdPartyInvolvement:e('yes','no','unknown'),thirdPartyName:t(),thirdPartyInsurerOrRegistration:t(300),
+  reportedBy:t(),reportingRoute:e('agency','insured-direct','third-party-or-insurer','police-or-recovery'),bestContactDescription:t(1000)
+ });
+ s.IncidentWrite.properties.kind.enum=['road-accident','vehicle-theft','premises-theft','fire','malicious-damage','third-party-injury','customer-vehicle-damage','other'];
+ s.IncidentWrite.required=s.IncidentWrite.required.filter(key=>key!=='occurredAt');s.IncidentWrite.required.push('occurredOn');
  s.IncidentDraftWrite=partial(s.IncidentWrite);
  s.IncidentDraftWrite.required=['policyId','versionId'];
  for(const path of ['/incidents','/incidents/{incidentId}']){

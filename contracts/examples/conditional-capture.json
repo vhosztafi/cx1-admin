@@ -1,0 +1,10 @@
+{
+  "version": "prototype-conditional-1",
+  "controls": [
+    {"id":"COND-NCD-REASON","sourceKey":"nqNcdReason","when":"nqNcdClaimed=No","operationId":"saveQuoteProposal","targetPath":"risk.previousInsurance.responses.answers","question":{"questionId":"prototype.no-claims.reason","kind":"text"},"acceptance":"A nonempty reason is required for rating when no discount is claimed; Save reason persists the draft and clears no data on failure."},
+    {"id":"COND-PART-TIME","sourceKey":"nqTraderType","when":"Part time","operationId":"validateQuote","acceptance":"Require main occupation; restrict driver eligibility and enforce 12500 vehicle limit; show the source condition notice."},
+    {"id":"COND-YOUNG-DRIVER","sourceKey":"youngest < 25","when":"Named driver younger than 25","operationId":"rateQuote","acceptance":"Show age referral notice and retain full driver licence/history requirements; a notice does not imply approval."},
+    {"id":"COND-SUBSIDENCE","sourceKey":"ccSubsCover","when":"Yes","operationId":"validateQuote","acceptance":"Require each subsidence answer and associated details/survey evidence; show conditional banner and block terms when required evidence is absent."},
+    {"id":"COND-NON-COMPREHENSIVE","sourceKey":"basis !== 'Comprehensive'","when":"Third party only or third party fire and theft","operationId":"rateQuote","acceptance":"Show basis-specific indemnity notice; invalidate incompatible own-damage limits and apply pinned product rules rather than comprehensive limits."}
+  ]
+}

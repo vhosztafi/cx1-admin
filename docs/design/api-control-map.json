@@ -1,8 +1,8 @@
 {
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
-  "reviewed": 794,
+  "reviewed": 949,
   "total": 949,
-  "complete": false,
+  "complete": true,
   "controls": [
     {
       "controlId": "CTL-65f74426ebeb",
@@ -10,9 +10,10 @@
       "label": "New Quote",
       "requirement": "RPT-03",
       "acceptanceId": "AT-65f74426ebeb",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "Open new-quote modal; its confirmed command is separately mapped. Opening alone does not create a quote."
     },
     {
       "controlId": "CTL-b724d74c4705",
@@ -59,9 +60,12 @@
       "label": ".sections[0].rows[0]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-9b21bc4b4158",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getTask"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-aab579a02eec",
@@ -69,9 +73,12 @@
       "label": ".sections[0].rows[1]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-aab579a02eec",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listTasks"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-87b388c7c8df",
@@ -79,9 +86,12 @@
       "label": ".sections[0].rows[2]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-87b388c7c8df",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listTasks"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-9b1705e6a351",
@@ -89,9 +99,12 @@
       "label": ".sections[0].rows[3]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-9b1705e6a351",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listTasks"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-f1e307baa432",
@@ -99,9 +112,12 @@
       "label": ".sections[0].rows[4]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-f1e307baa432",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listTasks"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-9727252e7836",
@@ -109,9 +125,12 @@
       "label": ".sections[2].rows[0]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-9727252e7836",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicyDraft"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-edda1f6aa46a",
@@ -119,9 +138,12 @@
       "label": ".sections[2].rows[1]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-edda1f6aa46a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getQuote"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-8045da3f31a1",
@@ -262,9 +284,12 @@
       "label": "In-force version",
       "requirement": "POL-01",
       "acceptanceId": "AT-1fad476114e9",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyVersions"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-5b50e8eb46fa",
@@ -272,9 +297,12 @@
       "label": "Agency",
       "requirement": "POL-01",
       "acceptanceId": "AT-5b50e8eb46fa",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getAgency"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-29c128398a46",
@@ -282,9 +310,12 @@
       "label": "Vehicle register",
       "requirement": "POL-01",
       "acceptanceId": "AT-29c128398a46",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-a599ed5f7746",
@@ -437,9 +468,12 @@
       "label": "Open referrals",
       "requirement": "POL-01",
       "acceptanceId": "AT-721a19d5dbfa",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicyDraft"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-40c2953f1cf1",
@@ -460,9 +494,12 @@
       "label": ".rail[2].rows[0]",
       "requirement": "POL-01",
       "acceptanceId": "AT-44e9e414e2c2",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getTask"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-dcd53246e184",
@@ -470,9 +507,12 @@
       "label": ".rail[2].rows[1]",
       "requirement": "POL-01",
       "acceptanceId": "AT-dcd53246e184",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listTasks"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-60ba3b194aa0",
@@ -480,9 +520,12 @@
       "label": ".rail[2].rows[2]",
       "requirement": "POL-01",
       "acceptanceId": "AT-60ba3b194aa0",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-1becc6b0d735",
@@ -490,9 +533,12 @@
       "label": "Add note",
       "requirement": "POL-01",
       "acceptanceId": "AT-1becc6b0d735",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command-or-navigation",
+      "operationIds": [
+        "addNote"
+      ],
+      "reason": "Trim and require note text, then persist with server actor/time; clear input only after success."
     },
     {
       "controlId": "CTL-73d14fdf3487",
@@ -659,9 +705,12 @@
       "label": ".sections[0].rows[0]",
       "requirement": "POL-01",
       "acceptanceId": "AT-9f19b2755047",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getTask"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-607dadbd889b",
@@ -669,9 +718,12 @@
       "label": ".sections[0].rows[1]",
       "requirement": "POL-01",
       "acceptanceId": "AT-607dadbd889b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listTasks"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-b8980c2b5423",
@@ -679,9 +731,12 @@
       "label": ".sections[0].rows[2]",
       "requirement": "POL-01",
       "acceptanceId": "AT-b8980c2b5423",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listTasks"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-8985852d89f3",
@@ -689,9 +744,12 @@
       "label": ".sections[0].rows[3]",
       "requirement": "POL-01",
       "acceptanceId": "AT-8985852d89f3",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listTasks"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-1c646d814d99",
@@ -796,9 +854,12 @@
       "label": ".sections[1].rows[0]",
       "requirement": "POL-01",
       "acceptanceId": "AT-d32d3244fb5d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicyVersion"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-833c66cac316",
@@ -847,9 +908,12 @@
       "label": "Broker account",
       "requirement": "POL-01",
       "acceptanceId": "AT-92991f22c2a4",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listAgencyStatements"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-5da00f228867",
@@ -857,9 +921,13 @@
       "label": "Send to agency",
       "requirement": "POL-01",
       "acceptanceId": "AT-5da00f228867",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command-or-navigation",
+      "operationIds": [
+        "createMessageDraft",
+        "sendMessage"
+      ],
+      "reason": "Persist the message in the scoped agency thread, then enqueue deterministic demo delivery. Clear input after successful save; show queued/failed status honestly."
     },
     {
       "controlId": "CTL-4c97724a5bfa",
@@ -880,9 +948,12 @@
       "label": ".sections[1].rows[0]",
       "requirement": "POL-01",
       "acceptanceId": "AT-ba17ee21e305",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command-or-navigation",
+      "operationIds": [
+        "getIncident"
+      ],
+      "reason": "Open the selected incident ID; never reuse fixed prototype claim reference."
     },
     {
       "controlId": "CTL-08231528f503",
@@ -890,9 +961,12 @@
       "label": ".sections[1].rows[1]",
       "requirement": "POL-01",
       "acceptanceId": "AT-08231528f503",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command-or-navigation",
+      "operationIds": [
+        "getIncident"
+      ],
+      "reason": "Open the selected incident ID; never reuse fixed prototype claim reference."
     },
     {
       "controlId": "CTL-1ef57f2aabee",
@@ -1206,9 +1280,12 @@
       "label": ".sections[3].rows[0]",
       "requirement": "POL-04",
       "acceptanceId": "AT-d2bf3015d449",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getTask"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-e39aeff1b11d",
@@ -1216,9 +1293,13 @@
       "label": ".sections[3].rows[1]",
       "requirement": "POL-04",
       "acceptanceId": "AT-e39aeff1b11d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getReferral",
+        "getEscalation"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-2221ef0bd60e",
@@ -1278,9 +1359,12 @@
       "label": "Add note",
       "requirement": "UWR-03",
       "acceptanceId": "AT-9afeb6d01b4e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command-or-navigation",
+      "operationIds": [
+        "listNotes"
+      ],
+      "reason": "Open quote Notes tab; composer separately persists an internal note."
     },
     {
       "controlId": "CTL-47ad572ff959",
@@ -1392,9 +1476,12 @@
       "label": "Add note",
       "requirement": "UWR-03",
       "acceptanceId": "AT-f7f1e5a729fd",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command-or-navigation",
+      "operationIds": [
+        "listNotes"
+      ],
+      "reason": "Open quote Notes tab without creating an empty note."
     },
     {
       "controlId": "CTL-7f2b0fedb3a8",
@@ -1519,9 +1606,12 @@
       "label": ".sections[0].rows[0]",
       "requirement": "UWR-03",
       "acceptanceId": "AT-754f0498bd39",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listTasks"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-9571bab22998",
@@ -1664,9 +1754,18 @@
       "label": ".filters[0]",
       "requirement": "QUO-02",
       "acceptanceId": "AT-f219d18ccb4a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "listPolicies"
+      ],
+      "queryFields": [
+        {
+          "operationId": "listPolicies",
+          "parameter": "status"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
     },
     {
       "controlId": "CTL-536ecaf3079e",
@@ -1674,9 +1773,23 @@
       "label": ".filters[1]",
       "requirement": "QUO-02",
       "acceptanceId": "AT-536ecaf3079e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "listPolicies",
+        "listQuotes"
+      ],
+      "queryFields": [
+        {
+          "operationId": "listPolicies",
+          "parameter": "productCode"
+        },
+        {
+          "operationId": "listQuotes",
+          "parameter": "productCode"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
     },
     {
       "controlId": "CTL-e9415f15b16e",
@@ -1684,9 +1797,23 @@
       "label": ".filters[2]",
       "requirement": "QUO-02",
       "acceptanceId": "AT-e9415f15b16e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "listPolicies",
+        "listQuotes"
+      ],
+      "queryFields": [
+        {
+          "operationId": "listPolicies",
+          "parameter": "agencyId"
+        },
+        {
+          "operationId": "listQuotes",
+          "parameter": "agencyId"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
     },
     {
       "controlId": "CTL-8a66a5c20198",
@@ -1694,9 +1821,14 @@
       "label": ".sections[0].rows[0]",
       "requirement": "QUO-02",
       "acceptanceId": "AT-8a66a5c20198",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt",
+        "getQuote"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-b4fa09cd9056",
@@ -1704,9 +1836,14 @@
       "label": ".sections[0].rows[1]",
       "requirement": "QUO-02",
       "acceptanceId": "AT-b4fa09cd9056",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt",
+        "getMatchReview"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-80230239bc79",
@@ -1714,9 +1851,14 @@
       "label": ".sections[0].rows[2]",
       "requirement": "QUO-02",
       "acceptanceId": "AT-80230239bc79",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt",
+        "getQuote"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-54896cbfe7ce",
@@ -1724,9 +1866,14 @@
       "label": ".sections[0].rows[3]",
       "requirement": "QUO-02",
       "acceptanceId": "AT-54896cbfe7ce",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt",
+        "getQuote"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-e9cae754ebc1",
@@ -1734,9 +1881,14 @@
       "label": ".sections[0].rows[4]",
       "requirement": "QUO-02",
       "acceptanceId": "AT-e9cae754ebc1",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt",
+        "getQuote"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-50a2db5d342c",
@@ -1744,9 +1896,14 @@
       "label": ".sections[0].rows[5]",
       "requirement": "QUO-02",
       "acceptanceId": "AT-50a2db5d342c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt",
+        "getQuote"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-9b502b0d13d3",
@@ -1754,9 +1911,10 @@
       "label": "New Quote",
       "requirement": "QUO-02",
       "acceptanceId": "AT-9b502b0d13d3",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "Open new-quote modal; no write until confirmed."
     },
     {
       "controlId": "CTL-006066201056",
@@ -1777,9 +1935,18 @@
       "label": ".filters[0]",
       "requirement": "QUO-02",
       "acceptanceId": "AT-7e3297dc0fdf",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "listQuotes"
+      ],
+      "queryFields": [
+        {
+          "operationId": "listQuotes",
+          "parameter": "status"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
     },
     {
       "controlId": "CTL-b98928311f91",
@@ -1800,9 +1967,18 @@
       "label": ".filters[0]",
       "requirement": "CLI-02",
       "acceptanceId": "AT-547b106bce55",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "listClients"
+      ],
+      "queryFields": [
+        {
+          "operationId": "listClients",
+          "parameter": "entityType"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
     },
     {
       "controlId": "CTL-0436ba1e87f5",
@@ -1810,9 +1986,12 @@
       "label": ".sections[0].rows[0]",
       "requirement": "CLI-02",
       "acceptanceId": "AT-0436ba1e87f5",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getClient"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-740fccae8fe1",
@@ -1820,9 +1999,12 @@
       "label": ".sections[0].rows[1]",
       "requirement": "CLI-02",
       "acceptanceId": "AT-740fccae8fe1",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getClient"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-8904ade3f3bf",
@@ -1830,9 +2012,12 @@
       "label": ".sections[0].rows[2]",
       "requirement": "CLI-02",
       "acceptanceId": "AT-8904ade3f3bf",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getClient"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-3ead194d88bf",
@@ -1840,9 +2025,12 @@
       "label": ".sections[0].rows[3]",
       "requirement": "CLI-02",
       "acceptanceId": "AT-3ead194d88bf",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getClient"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-5c292de6f861",
@@ -1850,9 +2038,12 @@
       "label": ".sections[0].rows[4]",
       "requirement": "CLI-02",
       "acceptanceId": "AT-5c292de6f861",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getClient"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-bdcd358d2e9b",
@@ -1873,9 +2064,13 @@
       "label": ".sections[1].rows[0]",
       "requirement": "CLI-02",
       "acceptanceId": "AT-0ba9758c138b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-ef047b0099e6",
@@ -1883,9 +2078,12 @@
       "label": ".sections[1].rows[1]",
       "requirement": "CLI-02",
       "acceptanceId": "AT-ef047b0099e6",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getMatchReview"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-e246dc281442",
@@ -1893,9 +2091,14 @@
       "label": ".sections[0].rows[0]",
       "requirement": "CLI-02",
       "acceptanceId": "AT-e246dc281442",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicyDraft",
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-ee7614ae0ce6",
@@ -1903,9 +2106,12 @@
       "label": ".sections[0].rows[1]",
       "requirement": "CLI-02",
       "acceptanceId": "AT-ee7614ae0ce6",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listThreads"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-08cbeb6ced0b",
@@ -1913,9 +2119,12 @@
       "label": ".sections[0].rows[2]",
       "requirement": "CLI-02",
       "acceptanceId": "AT-08cbeb6ced0b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyVersions"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-fde5701b6044",
@@ -1923,9 +2132,12 @@
       "label": ".sections[0].rows[3]",
       "requirement": "CLI-02",
       "acceptanceId": "AT-fde5701b6044",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listIncidents"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-69e98f1db2a7",
@@ -2408,9 +2620,18 @@
       "label": ".filters[0]",
       "requirement": "AGY-01",
       "acceptanceId": "AT-6ffa74bf0063",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "listAgencies"
+      ],
+      "queryFields": [
+        {
+          "operationId": "listAgencies",
+          "parameter": "state"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
     },
     {
       "controlId": "CTL-db272aea89f2",
@@ -2418,9 +2639,18 @@
       "label": ".filters[1]",
       "requirement": "AGY-01",
       "acceptanceId": "AT-db272aea89f2",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "listAgencies"
+      ],
+      "queryFields": [
+        {
+          "operationId": "listAgencies",
+          "parameter": "relationshipManagerId"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
     },
     {
       "controlId": "CTL-85001cc04bcb",
@@ -2428,9 +2658,12 @@
       "label": ".sections[0].rows[0]",
       "requirement": "AGY-01",
       "acceptanceId": "AT-85001cc04bcb",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getAgency"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-dc3b5099dba9",
@@ -2438,9 +2671,12 @@
       "label": ".sections[0].rows[1]",
       "requirement": "AGY-01",
       "acceptanceId": "AT-dc3b5099dba9",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getAgency"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-1ddde99c816e",
@@ -2448,9 +2684,12 @@
       "label": ".sections[0].rows[2]",
       "requirement": "AGY-01",
       "acceptanceId": "AT-1ddde99c816e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getAgency"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-bc44b9bd000c",
@@ -2458,9 +2697,12 @@
       "label": ".sections[0].rows[3]",
       "requirement": "AGY-01",
       "acceptanceId": "AT-bc44b9bd000c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getAgency"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-6ac923e115a1",
@@ -2468,9 +2710,12 @@
       "label": ".sections[0].rows[4]",
       "requirement": "AGY-01",
       "acceptanceId": "AT-6ac923e115a1",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getAgency"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-9dde2fa72331",
@@ -2580,9 +2825,13 @@
       "label": ".sections[1].rows[0]",
       "requirement": "AGY-01",
       "acceptanceId": "AT-370e7b1c7480",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-158574620277",
@@ -2614,9 +2863,18 @@
       "label": ".filters[0]",
       "requirement": "OPS-01",
       "acceptanceId": "AT-d6cec7d66670",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "listTasks"
+      ],
+      "queryFields": [
+        {
+          "operationId": "listTasks",
+          "parameter": "priority"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
     },
     {
       "controlId": "CTL-ed74b3103b7c",
@@ -2624,9 +2882,18 @@
       "label": ".filters[1]",
       "requirement": "OPS-01",
       "acceptanceId": "AT-ed74b3103b7c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "listTasks"
+      ],
+      "queryFields": [
+        {
+          "operationId": "listTasks",
+          "parameter": "kind"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
     },
     {
       "controlId": "CTL-429bddccb3a4",
@@ -2634,9 +2901,18 @@
       "label": ".filters[2]",
       "requirement": "OPS-01",
       "acceptanceId": "AT-429bddccb3a4",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "listTasks"
+      ],
+      "queryFields": [
+        {
+          "operationId": "listTasks",
+          "parameter": "dueWindow"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
     },
     {
       "controlId": "CTL-29220498fb90",
@@ -2644,9 +2920,12 @@
       "label": ".sections[1].rows[0]",
       "requirement": "OPS-01",
       "acceptanceId": "AT-29220498fb90",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getTask"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-1fc029a2f764",
@@ -2665,9 +2944,12 @@
       "label": ".sections[1].rows[1]",
       "requirement": "OPS-01",
       "acceptanceId": "AT-5a3269df5606",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getTask"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-99aaeed351bc",
@@ -2686,9 +2968,12 @@
       "label": ".sections[1].rows[2]",
       "requirement": "OPS-01",
       "acceptanceId": "AT-a9cbff4ebe72",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getTask"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-18d24939cef0",
@@ -2707,9 +2992,12 @@
       "label": ".sections[1].rows[3]",
       "requirement": "OPS-01",
       "acceptanceId": "AT-3c5e95611bdd",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getTask"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-3b63dda255aa",
@@ -2728,9 +3016,12 @@
       "label": ".sections[1].rows[4]",
       "requirement": "OPS-01",
       "acceptanceId": "AT-18b64a8de0f9",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getTask"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-8d144a7ab5a8",
@@ -2749,9 +3040,12 @@
       "label": ".sections[1].rows[5]",
       "requirement": "OPS-01",
       "acceptanceId": "AT-5779d07ee892",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getTask"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-9b62a0d11fe5",
@@ -2812,9 +3106,12 @@
       "label": "Agency",
       "requirement": "OPS-01",
       "acceptanceId": "AT-abcd385e28c9",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getAgency"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-e2d56c8dcbb7",
@@ -2822,9 +3119,13 @@
       "label": "Insured",
       "requirement": "OPS-01",
       "acceptanceId": "AT-e2d56c8dcbb7",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-1757c932af2d",
@@ -3000,9 +3301,18 @@
       "label": "Record type",
       "requirement": "RPT-03",
       "acceptanceId": "AT-19d3f582abf2",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "queryFields": [
+        {
+          "operationId": "searchRecords",
+          "parameter": "kind"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
     },
     {
       "controlId": "CTL-9bebc3693170",
@@ -3010,9 +3320,18 @@
       "label": "Status",
       "requirement": "RPT-03",
       "acceptanceId": "AT-9bebc3693170",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "queryFields": [
+        {
+          "operationId": "searchRecords",
+          "parameter": "status"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
     },
     {
       "controlId": "CTL-ba0bd4946547",
@@ -3020,9 +3339,18 @@
       "label": "Product",
       "requirement": "RPT-03",
       "acceptanceId": "AT-ba0bd4946547",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "queryFields": [
+        {
+          "operationId": "searchRecords",
+          "parameter": "productCode"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
     },
     {
       "controlId": "CTL-8c99b56d1a25",
@@ -3030,9 +3358,18 @@
       "label": "Agency",
       "requirement": "RPT-03",
       "acceptanceId": "AT-8c99b56d1a25",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "queryFields": [
+        {
+          "operationId": "searchRecords",
+          "parameter": "agencyId"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
     },
     {
       "controlId": "CTL-86419581e107",
@@ -3040,9 +3377,18 @@
       "label": "Insurer",
       "requirement": "RPT-03",
       "acceptanceId": "AT-86419581e107",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "queryFields": [
+        {
+          "operationId": "searchRecords",
+          "parameter": "providerId"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
     },
     {
       "controlId": "CTL-4c406f9de95c",
@@ -3050,9 +3396,18 @@
       "label": "Assigned underwriter",
       "requirement": "RPT-03",
       "acceptanceId": "AT-4c406f9de95c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "queryFields": [
+        {
+          "operationId": "searchRecords",
+          "parameter": "underwriterId"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
     },
     {
       "controlId": "CTL-56825612fb50",
@@ -3060,9 +3415,18 @@
       "label": "Inception from",
       "requirement": "RPT-03",
       "acceptanceId": "AT-56825612fb50",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "queryFields": [
+        {
+          "operationId": "searchRecords",
+          "parameter": "inceptionFrom"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
     },
     {
       "controlId": "CTL-b057804ffcf4",
@@ -3070,9 +3434,18 @@
       "label": "Reference number",
       "requirement": "RPT-03",
       "acceptanceId": "AT-b057804ffcf4",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "queryFields": [
+        {
+          "operationId": "searchRecords",
+          "parameter": "reference"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
     },
     {
       "controlId": "CTL-20afc88f9936",
@@ -3080,9 +3453,12 @@
       "label": ".sections[1].rows[0]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-20afc88f9936",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getClient"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-2110da92d9ef",
@@ -3090,9 +3466,12 @@
       "label": ".sections[1].rows[1]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-2110da92d9ef",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getClient"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-40fcfd970a2d",
@@ -3100,9 +3479,12 @@
       "label": ".sections[1].rows[2]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-40fcfd970a2d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getClient"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-81abf50e788b",
@@ -3110,9 +3492,12 @@
       "label": ".sections[1].rows[3]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-81abf50e788b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getClient"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-a59acda98567",
@@ -3120,9 +3505,12 @@
       "label": ".sections[1].rows[4]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-a59acda98567",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getClient"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-88ec1711f348",
@@ -3130,9 +3518,13 @@
       "label": ".sections[2].rows[0]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-88ec1711f348",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-4d7db22b2eb6",
@@ -3140,9 +3532,13 @@
       "label": ".sections[2].rows[1]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-4d7db22b2eb6",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-c90c38f496a0",
@@ -3150,9 +3546,13 @@
       "label": ".sections[2].rows[2]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-c90c38f496a0",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-6df898998fb4",
@@ -3160,9 +3560,13 @@
       "label": ".sections[2].rows[3]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-6df898998fb4",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-ab627cc29c4c",
@@ -3170,9 +3574,13 @@
       "label": ".sections[2].rows[4]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-ab627cc29c4c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-1a16847c47fd",
@@ -3180,9 +3588,13 @@
       "label": ".sections[2].rows[5]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-1a16847c47fd",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-c9f6bbebf1c5",
@@ -3190,9 +3602,12 @@
       "label": ".sections[3].rows[0]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-c9f6bbebf1c5",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getQuote"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-143c4a9be1c6",
@@ -3200,9 +3615,12 @@
       "label": ".sections[3].rows[1]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-143c4a9be1c6",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getMatchReview"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-04b07c7fde97",
@@ -3210,9 +3628,12 @@
       "label": ".sections[3].rows[2]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-04b07c7fde97",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getQuote"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-7bb21bab60fd",
@@ -3220,9 +3641,12 @@
       "label": ".sections[3].rows[3]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-7bb21bab60fd",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getQuote"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-4be52ebec533",
@@ -3230,9 +3654,12 @@
       "label": ".sections[3].rows[4]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-4be52ebec533",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getQuote"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-826642db3a1c",
@@ -3240,9 +3667,12 @@
       "label": ".sections[3].rows[5]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-826642db3a1c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getQuote"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-f56493b673b3",
@@ -3250,9 +3680,12 @@
       "label": ".sections[4].rows[0]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-f56493b673b3",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-8ae3c103cb9b",
@@ -3260,9 +3693,12 @@
       "label": ".sections[4].rows[1]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-8ae3c103cb9b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-a809ba59943d",
@@ -3270,9 +3706,12 @@
       "label": ".sections[5].rows[0]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-a809ba59943d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getAgency"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-d021643b2324",
@@ -3280,9 +3719,12 @@
       "label": ".sections[5].rows[1]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-d021643b2324",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getAgency"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-b1d64f59e832",
@@ -3290,9 +3732,12 @@
       "label": ".sections[5].rows[2]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-b1d64f59e832",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getAgency"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-fd3e0a56ce5d",
@@ -3300,9 +3745,12 @@
       "label": ".sections[5].rows[3]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-fd3e0a56ce5d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getAgency"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-41e4cb693a72",
@@ -3310,9 +3758,12 @@
       "label": ".sections[5].rows[4]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-41e4cb693a72",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getAgency"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-dc74aa65f196",
@@ -3346,9 +3797,13 @@
       "label": ".sections[2].rows[0]",
       "requirement": "FIN-01",
       "acceptanceId": "AT-f5d7587f3dea",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReceipts",
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-6a2ad506c5b6",
@@ -3356,9 +3811,12 @@
       "label": ".sections[2].rows[1]",
       "requirement": "FIN-01",
       "acceptanceId": "AT-6a2ad506c5b6",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listBankLines"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-35a9de20c7a1",
@@ -3366,9 +3824,12 @@
       "label": ".sections[2].rows[2]",
       "requirement": "FIN-01",
       "acceptanceId": "AT-35a9de20c7a1",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listBordereaux"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-74e24a6ada25",
@@ -3376,9 +3837,12 @@
       "label": ".sections[2].rows[3]",
       "requirement": "FIN-01",
       "acceptanceId": "AT-74e24a6ada25",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listRefunds"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-740ea920a861",
@@ -3386,9 +3850,43 @@
       "label": ".filters[0]",
       "requirement": "FIN-01",
       "acceptanceId": "AT-740ea920a861",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "listJournals",
+        "listAgencyStatements",
+        "listReceipts",
+        "listBankLines",
+        "listBordereaux",
+        "listRefunds"
+      ],
+      "queryFields": [
+        {
+          "operationId": "listJournals",
+          "parameter": "from"
+        },
+        {
+          "operationId": "listAgencyStatements",
+          "parameter": "from"
+        },
+        {
+          "operationId": "listReceipts",
+          "parameter": "from"
+        },
+        {
+          "operationId": "listBankLines",
+          "parameter": "from"
+        },
+        {
+          "operationId": "listBordereaux",
+          "parameter": "from"
+        },
+        {
+          "operationId": "listRefunds",
+          "parameter": "from"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
     },
     {
       "controlId": "CTL-d29d6b03b3a0",
@@ -3396,9 +3894,43 @@
       "label": ".filters[1]",
       "requirement": "FIN-01",
       "acceptanceId": "AT-d29d6b03b3a0",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "listJournals",
+        "listAgencyStatements",
+        "listReceipts",
+        "listBankLines",
+        "listBordereaux",
+        "listRefunds"
+      ],
+      "queryFields": [
+        {
+          "operationId": "listJournals",
+          "parameter": "agencyId"
+        },
+        {
+          "operationId": "listAgencyStatements",
+          "parameter": "agencyId"
+        },
+        {
+          "operationId": "listReceipts",
+          "parameter": "agencyId"
+        },
+        {
+          "operationId": "listBankLines",
+          "parameter": "agencyId"
+        },
+        {
+          "operationId": "listBordereaux",
+          "parameter": "agencyId"
+        },
+        {
+          "operationId": "listRefunds",
+          "parameter": "agencyId"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
     },
     {
       "controlId": "CTL-51b829721081",
@@ -3406,9 +3938,43 @@
       "label": ".filters[2]",
       "requirement": "FIN-01",
       "acceptanceId": "AT-51b829721081",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "listJournals",
+        "listAgencyStatements",
+        "listReceipts",
+        "listBankLines",
+        "listBordereaux",
+        "listRefunds"
+      ],
+      "queryFields": [
+        {
+          "operationId": "listJournals",
+          "parameter": "filterStatus"
+        },
+        {
+          "operationId": "listAgencyStatements",
+          "parameter": "filterStatus"
+        },
+        {
+          "operationId": "listReceipts",
+          "parameter": "filterStatus"
+        },
+        {
+          "operationId": "listBankLines",
+          "parameter": "filterStatus"
+        },
+        {
+          "operationId": "listBordereaux",
+          "parameter": "filterStatus"
+        },
+        {
+          "operationId": "listRefunds",
+          "parameter": "filterStatus"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
     },
     {
       "controlId": "CTL-51b56a6368c9",
@@ -3416,9 +3982,14 @@
       "label": ".sections[0].rows[0]",
       "requirement": "FIN-01",
       "acceptanceId": "AT-51b56a6368c9",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt",
+        "getAgencyStatement"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-33913bc8d7ea",
@@ -3426,9 +3997,14 @@
       "label": ".sections[0].rows[1]",
       "requirement": "FIN-01",
       "acceptanceId": "AT-33913bc8d7ea",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt",
+        "listAgencyStatements"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-c0aa6fc018d4",
@@ -3436,9 +4012,14 @@
       "label": ".sections[0].rows[2]",
       "requirement": "FIN-01",
       "acceptanceId": "AT-c0aa6fc018d4",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt",
+        "listAgencyStatements"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-8f570efb8f02",
@@ -3446,9 +4027,14 @@
       "label": ".sections[0].rows[3]",
       "requirement": "FIN-01",
       "acceptanceId": "AT-8f570efb8f02",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt",
+        "listAgencyStatements"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-ba2332ce84de",
@@ -3456,9 +4042,13 @@
       "label": ".sections[0].rows[4]",
       "requirement": "FIN-01",
       "acceptanceId": "AT-ba2332ce84de",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-4c1e47f2f86f",
@@ -3466,9 +4056,13 @@
       "label": ".sections[0].rows[5]",
       "requirement": "FIN-01",
       "acceptanceId": "AT-4c1e47f2f86f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-7c5cc131108a",
@@ -3776,9 +4370,18 @@
       "label": "Period",
       "requirement": "RPT-03",
       "acceptanceId": "AT-26a1d0f6ca7e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-command",
+      "operationIds": [
+        "runReport"
+      ],
+      "apiFields": [
+        {
+          "operationId": "runReport",
+          "field": "from"
+        }
+      ],
+      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
     },
     {
       "controlId": "CTL-0722bfd85b0e",
@@ -3786,9 +4389,18 @@
       "label": "Product",
       "requirement": "RPT-03",
       "acceptanceId": "AT-0722bfd85b0e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-command",
+      "operationIds": [
+        "runReport"
+      ],
+      "apiFields": [
+        {
+          "operationId": "runReport",
+          "field": "productCode"
+        }
+      ],
+      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
     },
     {
       "controlId": "CTL-66ec47549c4e",
@@ -3796,9 +4408,18 @@
       "label": "Agency",
       "requirement": "RPT-03",
       "acceptanceId": "AT-66ec47549c4e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-command",
+      "operationIds": [
+        "runReport"
+      ],
+      "apiFields": [
+        {
+          "operationId": "runReport",
+          "field": "agencyId"
+        }
+      ],
+      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
     },
     {
       "controlId": "CTL-e9bb1df559d8",
@@ -3806,9 +4427,18 @@
       "label": "Underwriter",
       "requirement": "RPT-03",
       "acceptanceId": "AT-e9bb1df559d8",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-command",
+      "operationIds": [
+        "runReport"
+      ],
+      "apiFields": [
+        {
+          "operationId": "runReport",
+          "field": "underwriterId"
+        }
+      ],
+      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
     },
     {
       "controlId": "CTL-d722319a699d",
@@ -3816,9 +4446,12 @@
       "label": ".sections[3].rows[0]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-d722319a699d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listQuotes"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-ffe580c5746e",
@@ -3826,9 +4459,12 @@
       "label": ".sections[3].rows[1]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-ffe580c5746e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listQuotes"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-42d2acd90eed",
@@ -3836,9 +4472,12 @@
       "label": ".sections[3].rows[2]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-42d2acd90eed",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listQuotes"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-ba14915ded51",
@@ -3846,9 +4485,12 @@
       "label": ".sections[3].rows[3]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-ba14915ded51",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listQuotes"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-24e0517ea487",
@@ -3856,9 +4498,12 @@
       "label": ".sections[3].rows[4]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-24e0517ea487",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listQuotes"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-d25a22b2d718",
@@ -3866,9 +4511,12 @@
       "label": ".sections[3].rows[5]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-d25a22b2d718",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listQuotes"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-884d9ce1ee34",
@@ -4046,9 +4694,18 @@
       "label": "Rule",
       "requirement": "ADM-03",
       "acceptanceId": "AT-55e62661c427",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-command",
+      "operationIds": [
+        "updateMatchingRule"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateMatchingRule",
+          "field": "duplicateQuotePolicy"
+        }
+      ],
+      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
     },
     {
       "controlId": "CTL-99ab620eb2d4",
@@ -4056,9 +4713,18 @@
       "label": "Broker of record period",
       "requirement": "ADM-03",
       "acceptanceId": "AT-99ab620eb2d4",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-command",
+      "operationIds": [
+        "updateMatchingRule"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateMatchingRule",
+          "field": "brokerOfRecordDays"
+        }
+      ],
+      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
     },
     {
       "controlId": "CTL-a3d0b2052a2b",
@@ -4066,9 +4732,12 @@
       "label": ".sections[4].rows[0]",
       "requirement": "ADM-03",
       "acceptanceId": "AT-a3d0b2052a2b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getMatchReview"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-95c96867f896",
@@ -4076,9 +4745,13 @@
       "label": ".sections[0].rows[2]",
       "requirement": "ADM-03",
       "acceptanceId": "AT-95c96867f896",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-595fa55cdbb5",
@@ -4099,9 +4772,19 @@
       "label": "Authority for",
       "requirement": "ADM-03",
       "acceptanceId": "AT-5f57ef7459cf",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "listAuthorityVersions",
+        "listProductVersions"
+      ],
+      "queryFields": [
+        {
+          "operationId": "listAuthorityVersions",
+          "parameter": "productVersionId"
+        }
+      ],
+      "reason": "Authority-for selects a published product version and loads its authority matrix. Product selection alone does not grant authority or change a binder."
     },
     {
       "controlId": "CTL-89449214fd17",
@@ -4109,9 +4792,18 @@
       "label": "Effective from",
       "requirement": "ADM-03",
       "acceptanceId": "AT-89449214fd17",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-command",
+      "operationIds": [
+        "createAuthorityVersion"
+      ],
+      "apiFields": [
+        {
+          "operationId": "createAuthorityVersion",
+          "field": "effectiveFrom"
+        }
+      ],
+      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
     },
     {
       "controlId": "CTL-261936502b06",
@@ -4119,9 +4811,18 @@
       "label": "Binder",
       "requirement": "ADM-03",
       "acceptanceId": "AT-261936502b06",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-command",
+      "operationIds": [
+        "createAuthorityVersion"
+      ],
+      "apiFields": [
+        {
+          "operationId": "createAuthorityVersion",
+          "field": "binderVersionId"
+        }
+      ],
+      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
     },
     {
       "controlId": "CTL-68b6e88e4b7b",
@@ -4520,9 +5221,13 @@
       "label": "Policy",
       "requirement": "POL-07",
       "acceptanceId": "AT-76ad64b9c550",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-6feeac107975",
@@ -4704,9 +5409,12 @@
       "label": "Retry data submission",
       "requirement": "POL-01",
       "acceptanceId": "AT-902e6ba91260",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command-or-navigation",
+      "operationIds": [
+        "retryMidSubmission"
+      ],
+      "reason": "Retry the selected failed eligible MID submission with its existing operation identity; no duplicate business effect."
     },
     {
       "controlId": "CTL-66cf696c0aa1",
@@ -5164,9 +5872,12 @@
       "label": "Sign back in",
       "requirement": "ADM-05",
       "acceptanceId": "AT-109f52e32998",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command-or-navigation",
+      "operationIds": [
+        "login"
+      ],
+      "reason": "Open sign-in and authenticate real local credentials; do not restore a hardcoded user or session."
     },
     {
       "controlId": "CTL-4a16c38ad19e",
@@ -5228,9 +5939,19 @@
       "label": "Date of loss",
       "requirement": "OPS-07",
       "acceptanceId": "AT-c4ffd43a8598",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createIncidentDraft",
+        "updateIncidentDraft"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "occurredOn"
+        }
+      ],
+      "reason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage."
     },
     {
       "controlId": "CTL-ee1c956b54f9",
@@ -5238,9 +5959,19 @@
       "label": "Approximate time",
       "requirement": "OPS-07",
       "acceptanceId": "AT-ee1c956b54f9",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createIncidentDraft",
+        "updateIncidentDraft"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "approximateLocalTime"
+        }
+      ],
+      "reason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage."
     },
     {
       "controlId": "CTL-89d11bb2324e",
@@ -5248,9 +5979,19 @@
       "label": "Incident type",
       "requirement": "OPS-07",
       "acceptanceId": "AT-89d11bb2324e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createIncidentDraft",
+        "updateIncidentDraft"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "kind"
+        }
+      ],
+      "reason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage."
     },
     {
       "controlId": "CTL-b61ed8c59966",
@@ -5258,9 +5999,19 @@
       "label": "What was involved",
       "requirement": "OPS-07",
       "acceptanceId": "AT-b61ed8c59966",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createIncidentDraft",
+        "updateIncidentDraft"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "involvement"
+        }
+      ],
+      "reason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage."
     },
     {
       "controlId": "CTL-4a54f9a1db70",
@@ -5268,9 +6019,19 @@
       "label": "Location of incident",
       "requirement": "OPS-07",
       "acceptanceId": "AT-4a54f9a1db70",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createIncidentDraft",
+        "updateIncidentDraft"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "locationDescription"
+        }
+      ],
+      "reason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage."
     },
     {
       "controlId": "CTL-a2a7451bd190",
@@ -5278,9 +6039,19 @@
       "label": "Police reference",
       "requirement": "OPS-07",
       "acceptanceId": "AT-a2a7451bd190",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createIncidentDraft",
+        "updateIncidentDraft"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "policeReference"
+        }
+      ],
+      "reason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage."
     },
     {
       "controlId": "CTL-73b607083ecb",
@@ -5288,9 +6059,19 @@
       "label": "Premises or item",
       "requirement": "OPS-07",
       "acceptanceId": "AT-73b607083ecb",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createIncidentDraft",
+        "updateIncidentDraft"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "itemDescription"
+        }
+      ],
+      "reason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage."
     },
     {
       "controlId": "CTL-dc4e9be87788",
@@ -5298,9 +6079,19 @@
       "label": "Owned by",
       "requirement": "OPS-07",
       "acceptanceId": "AT-dc4e9be87788",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createIncidentDraft",
+        "updateIncidentDraft"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "owner"
+        }
+      ],
+      "reason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage."
     },
     {
       "controlId": "CTL-5c7b088e78cd",
@@ -5308,9 +6099,19 @@
       "label": "Estimated value at risk",
       "requirement": "OPS-07",
       "acceptanceId": "AT-5c7b088e78cd",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createIncidentDraft",
+        "updateIncidentDraft"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "estimatedValueAtRisk"
+        }
+      ],
+      "reason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage."
     },
     {
       "controlId": "CTL-9d79d518cc70",
@@ -5318,9 +6119,19 @@
       "label": "Third party involved",
       "requirement": "OPS-07",
       "acceptanceId": "AT-9d79d518cc70",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createIncidentDraft",
+        "updateIncidentDraft"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "thirdPartyInvolvement"
+        }
+      ],
+      "reason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage."
     },
     {
       "controlId": "CTL-8b9319d7f822",
@@ -5328,9 +6139,19 @@
       "label": "Third party name",
       "requirement": "OPS-07",
       "acceptanceId": "AT-8b9319d7f822",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createIncidentDraft",
+        "updateIncidentDraft"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "thirdPartyName"
+        }
+      ],
+      "reason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage."
     },
     {
       "controlId": "CTL-41dbc7060484",
@@ -5338,9 +6159,19 @@
       "label": "Third party insurer or registration",
       "requirement": "OPS-07",
       "acceptanceId": "AT-41dbc7060484",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createIncidentDraft",
+        "updateIncidentDraft"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "thirdPartyInsurerOrRegistration"
+        }
+      ],
+      "reason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage."
     },
     {
       "controlId": "CTL-44501af9a5fa",
@@ -5348,9 +6179,19 @@
       "label": "Save description",
       "requirement": "OPS-07",
       "acceptanceId": "AT-44501af9a5fa",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createIncidentDraft",
+        "updateIncidentDraft"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "description"
+        }
+      ],
+      "reason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage."
     },
     {
       "controlId": "CTL-d7e5cf297a3f",
@@ -5358,9 +6199,19 @@
       "label": "Reported by",
       "requirement": "OPS-07",
       "acceptanceId": "AT-d7e5cf297a3f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createIncidentDraft",
+        "updateIncidentDraft"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "reportedBy"
+        }
+      ],
+      "reason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage."
     },
     {
       "controlId": "CTL-6a8b096871df",
@@ -5368,9 +6219,19 @@
       "label": "Route",
       "requirement": "OPS-07",
       "acceptanceId": "AT-6a8b096871df",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createIncidentDraft",
+        "updateIncidentDraft"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "reportingRoute"
+        }
+      ],
+      "reason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage."
     },
     {
       "controlId": "CTL-d4d9f1ee7792",
@@ -5378,9 +6239,19 @@
       "label": "Best contact for the insured",
       "requirement": "OPS-07",
       "acceptanceId": "AT-d4d9f1ee7792",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createIncidentDraft",
+        "updateIncidentDraft"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "bestContactDescription"
+        }
+      ],
+      "reason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage."
     },
     {
       "controlId": "CTL-026efb151c2a",
@@ -5388,9 +6259,13 @@
       "label": "Policy",
       "requirement": "OPS-07",
       "acceptanceId": "AT-026efb151c2a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-37f4631d197a",
@@ -5631,9 +6506,12 @@
       "label": "Agency",
       "requirement": "CC-04",
       "acceptanceId": "AT-a1b61a461082",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getAgency"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
     },
     {
       "controlId": "CTL-b2e4c6b1cfe9",

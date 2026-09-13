@@ -47,3 +47,7 @@ Exhaustion creates one linked exception task, not a new task on every poll. Auth
 ## Implementation verification
 
 Use separate worker/provider-result transaction boundaries in fault-injection tests; running all simulated steps in one transaction cannot exercise timeout-after-success. Kill/restart the worker after each boundary. Assert unique operation keys, balanced journals, unchanged issued hashes, recovered lease, no duplicate exception task and current download scope. Schema and design walkthroughs alone do not prove these runtime properties.
+
+## Machine-readable internal contracts
+
+contracts/schemas/adapters.schema.json defines nine discriminated request/result pairs plus a common typed failure envelope. Generate after OpenAPI so selected DTO dependencies stay aligned. Every envelope pins operation identity, source version, scenario version and correlation/time; failure classification distinguishes rejection, transient failure and unknown outcome. Only safeMessage may be exposed in diagnostics; provider raw exceptions are not payload fields. Unknown payment outcome must reconcile the existing paymentKey before retry. The rating proposal is validated against the pinned product questions before dispatch, and the projection excludes support flags; schema acceptance alone does not establish product completeness. Document merge sections are populated exclusively by reviewed template bindings for the declared audience, never arbitrary user-selected record fields.

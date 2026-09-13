@@ -218,3 +218,16 @@ test('MFA verification and activation are separate contracts with explicit ackno
  assert.ok(getOperation('cancelMfaEnrolment'));
  assert.ok(document.components.schemas.Agency.properties.state.enum.includes('abandoned'));
 });
+test('every reviewed filter binds to an actual API query parameter',async()=>{
+ const rows=JSON.parse(await readFile(new URL('../docs/design/reviewed-api-controls.json',import.meta.url),'utf8'));
+ for(const row of rows)for(const binding of row.queryFields??[]){
+  assert.ok(getOperation(binding.operationId).parameters.some(p=>p.in==='query'&&p.name===binding.parameter),`${row.controlId}: ${binding.parameter}`);
+ }
+});
+test('incident capture preserves unknown involvement and does not invent a time',()=>{
+ const check=ajv.getSchema(`${rootId}#/$defs/IncidentDraftWrite`);
+ const value={policyId:'11111111-1111-4111-8111-111111111111',versionId:'22222222-2222-4222-8222-222222222222',occurredOn:'2026-09-01',thirdPartyInvolvement:'unknown',estimatedValueAtRisk:'100.00'};
+ assert.ok(check(value));assert.equal(check({...value,approximateLocalTime:'25:00'}),false);
+ assert.equal(check({...value,estimatedValueAtRisk:'-1.00'}),false);
+ assert.equal(check({...value,thirdPartyInvolvement:false}),false);
+});

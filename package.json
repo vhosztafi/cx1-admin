@@ -10,8 +10,8 @@
   "scripts": {
     "test": "node --test tests/*.test.mjs",
     "design:extract": "node scripts/extract-prototype.mjs && node scripts/inspect-prototype.mjs && node scripts/build-design-inventory.mjs",
-    "contracts:generate": "node scripts/generate-policy-contracts.mjs && node scripts/generate-openapi.mjs",
-    "contracts:validate": "node scripts/lint-openapi.mjs && node --test tests/policy-contracts.test.mjs tests/api-contracts.test.mjs"
+    "contracts:generate": "node scripts/generate-policy-contracts.mjs && node scripts/generate-openapi.mjs && node scripts/generate-adapter-contracts.mjs",
+    "contracts:validate": "node scripts/lint-openapi.mjs && node --test tests/policy-contracts.test.mjs tests/api-contracts.test.mjs tests/adapter-contracts.test.mjs"
   },
   "devDependencies": {
     "@redocly/cli": "2.52.1",

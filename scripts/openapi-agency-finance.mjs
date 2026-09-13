@@ -71,6 +71,7 @@ export function addAgencyFinanceApi({schemas:s,ref:r,text:t,enumeration:e,object
  op('post','/finance/reconciliations/{reconciliationId}/matches/{matchId}/reverse','reverseBankMatch','finance-reconcile',{existing:true,input:reason});
  op('post','/finance/reconciliations/{reconciliationId}/complete','completeReconciliation','finance-reconcile',{existing:true,input:reason,output:r('Reconciliation')});
  op('get','/agencies/{agencyId}/statement','getAgencyStatement','agency-statement-read',{query:[['from',date],['to',date]],output:r('Statement')});
+ list('/finance/agency-statements','listAgencyStatements','finance-read',o({agencyId:id,reference:t(40),name:t(),asOf:date,currency,openingBalance:decimal,invoiced:decimal,received:decimal,closingBalance:decimal,overdue:decimal}),[['asOf',date],['q',t()]]);
  op('post','/agencies/{agencyId}/statement/export','exportAgencyStatement','agency-statement-read',{input:o({from:date,to:date,format:e('csv','pdf')}),output:r('Job'),status:202});
  list('/finance/bordereaux','listBordereaux','bordereau-read',r('Bordereau'),[['providerId',id],['periodId',id]]);
  op('post','/finance/bordereaux','createBordereau','bordereau-write',{input:o({providerId:id,periodId:id,correctsBatchId:id},['providerId','periodId']),output:r('Bordereau'),status:201});
