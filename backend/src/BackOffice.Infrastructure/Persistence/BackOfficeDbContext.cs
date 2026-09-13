@@ -72,11 +72,13 @@ public sealed class BackOfficeDbContext(DbContextOptions<BackOfficeDbContext> op
         Text(clock,("Name",20)); clock.HasIndex(x => x.Name).IsUnique(); Check(clock,"Singleton","[Name] = 'demo'");
 
         var audit = Record<AuditEvent>(model,"AuditEvent");
+        audit.ToTable(t => t.UseSqlOutputClause(false));
         Text(audit,("EventType",100),("Reason",1000)); Json(audit,"Before",true); Json(audit,"After",true);
         audit.HasOne<StaffUser>().WithMany().HasForeignKey(x => x.ActorId).OnDelete(DeleteBehavior.NoAction);
         audit.HasIndex(x => new {x.SubjectRecordId,x.OccurredAt}); audit.HasIndex(x => new {x.ActorId,x.OccurredAt});
         var work = Record<OutboxWork>(model,"OutboxWork");
         Text(work,("Kind",60),("OperationKey",200),("State",20)); Json(work,"Payload"); Json(work,"Result",true);
+        work.Property(x => x.OperationKey).UseCollation("Latin1_General_100_BIN2");
         work.HasIndex(x => new {x.Kind,x.OperationKey}).IsUnique(); work.HasIndex(x => new {x.State,x.NextAttemptAt});
         Check(work,"State","[State] IN ('pending','leased','succeeded','failed')");
         Check(work,"Attempts","[Attempts] >= 0");
@@ -88,14 +90,18 @@ public sealed class BackOfficeDbContext(DbContextOptions<BackOfficeDbContext> op
         Check(attempts,"Times","[EndedAt] IS NULL OR [EndedAt] >= [StartedAt]");
         var operations = Record<DemoProviderOperation>(model,"DemoProviderOperation");
         Text(operations,("Kind",60),("OperationKey",200),("State",30)); Hash(operations,"RequestHash"); Json(operations,"Result",true);
+        operations.Property(x => x.OperationKey).UseCollation("Latin1_General_100_BIN2");
         operations.HasIndex(x => new {x.Kind,x.OperationKey}).IsUnique();
         operations.HasOne<SettingVersion>().WithMany().HasForeignKey(x => x.ScenarioVersionId).OnDelete(DeleteBehavior.NoAction);
         var inbox = Record<AdapterInbox>(model,"AdapterInbox");
         Text(inbox,("Provider",60),("EventId",200),("State",20),("QuarantineReason",1000)); Hash(inbox,"ContentHash");
+        inbox.Property(x => x.EventId).UseCollation("Latin1_General_100_BIN2");
         inbox.HasIndex(x => new {x.Provider,x.EventId}).IsUnique();
         inbox.HasOne<OutboxWork>().WithMany().HasForeignKey(x => x.WorkId).OnDelete(DeleteBehavior.NoAction);
         Check(inbox,"State","[State] IN ('received','applied','quarantined')");
         var idempotency = Record<IdempotencyRecord>(model,"IdempotencyRecord");
+        idempotency.ToTable(t => t.UseSqlOutputClause(false));
+        idempotency.Property(x => x.Key).UseCollation("Latin1_General_100_BIN2");
         Text(idempotency,("ActorScope",150),("Route",200),("Key",200)); Hash(idempotency,"RequestHash"); Json(idempotency,"ResultBody");
         idempotency.HasIndex(x => new {x.ActorScope,x.Route,x.Key}).IsUnique();
         Check(idempotency,"Status","[ResultStatus] BETWEEN 100 AND 599");
