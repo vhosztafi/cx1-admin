@@ -45,6 +45,7 @@ defs.Driver.required=defs.Driver.required.filter(key=>!['firstName','surname'].i
 defs.Driver.anyOf=[{properties:{fullName:str(200)},required:['fullName']},{properties:{firstName:str(100),surname:str(100)},required:['firstName','surname']}];
 defs.Settlement=object({termsVersionId:ref('Id'),collector:enumeration('agency','mga'),mode:enumeration('net-remittance','separate-payment'),feeShareBasisPoints:{type:'integer',minimum:0,maximum:10000},brokerFeeShare:ref('Amount'),mgaFeeIncome:ref('Amount'),brokerRemuneration:ref('Amount'),invoiceDue:ref('Amount'),remunerationPayable:ref('Amount'),netEconomicDue:ref('Amount')});
 defs.Premium.properties.settlement=ref('Settlement');defs.Premium.required.push('settlement');
+defs.CommercialRisk.properties.businessInterruption.properties.basis.enum.push('estimated-gross-profit');
 const properties={
  schemaVersion:{const:'1.0'},productCode:enumeration('motor-trade-road-risks','motor-trade-combined','commercial-combined'),productVersionId:ref('Id'),
  insured:object({clientId:ref('Id'),clientAgencyRelationshipId:ref('Id'),entityType:enumeration('sole-trader','partnership','limited-company','llp'),legalName:str(200),tradingName:str(200),companyNumber:str(30),address:ref('Address')},['clientId','clientAgencyRelationshipId','entityType','legalName','address']),
@@ -52,6 +53,8 @@ const properties={
  risk:{oneOf:[ref('RoadRisk'),ref('CommercialRisk')]},cover:ref('Cover'),premium:ref('Premium'),
  provenance:object({source:enumeration('backoffice','demo-seed'),quoteRevisionId:ref('Id'),authorityVersionId:ref('Id')})
 };
+properties.insured.properties.proposerNames=array(str(200),1);
+properties.insured.properties.contact=object({telephone:str(50),email:{type:'string',format:'email'}},[]);
 const schema={
  $schema:'https://json-schema.org/draft/2020-12/schema',$id:'https://schemas.cover-mga.example/policy/1.0',title:'Issued policy risk snapshot v1.0',
  ...object(properties),$defs:defs,

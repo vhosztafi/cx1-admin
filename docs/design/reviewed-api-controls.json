@@ -5542,5 +5542,2093 @@
       "inviteInternalUser"
     ],
     "reason": "Role selection uses endpoint-specific allowlist and prohibits mixing internal/agency access."
+  },
+  {
+    "controlId": "CTL-3ba462f99580",
+    "status": "reviewed",
+    "disposition": "read-selection",
+    "operationIds": [
+      "listAgencies",
+      "createQuote"
+    ],
+    "reason": "Reviewed agency/contact/product/client selector resolves authorised stable identities. A displayed option label never grants scope, and changing an established quote relationship requires an explicit supported re-scope or new quote."
+  },
+  {
+    "controlId": "CTL-0f8fc7e35665",
+    "status": "reviewed",
+    "disposition": "read-selection",
+    "operationIds": [
+      "listContacts"
+    ],
+    "reason": "Reviewed agency/contact/product/client selector resolves authorised stable identities. A displayed option label never grants scope, and changing an established quote relationship requires an explicit supported re-scope or new quote."
+  },
+  {
+    "controlId": "CTL-f90bbda7baf4",
+    "status": "reviewed",
+    "disposition": "read-selection",
+    "operationIds": [
+      "listProductVersions",
+      "createQuote"
+    ],
+    "reason": "Reviewed agency/contact/product/client selector resolves authorised stable identities. A displayed option label never grants scope, and changing an established quote relationship requires an explicit supported re-scope or new quote."
+  },
+  {
+    "controlId": "CTL-74a9d7f987c5",
+    "status": "reviewed",
+    "disposition": "read-selection",
+    "operationIds": [
+      "listClients",
+      "createQuote"
+    ],
+    "reason": "Reviewed agency/contact/product/client selector resolves authorised stable identities. A displayed option label never grants scope, and changing an established quote relationship requires an explicit supported re-scope or new quote."
+  },
+  {
+    "controlId": "CTL-fb92851f2483",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "insured.proposerNames"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-54cd86bd3577",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "insured.proposerNames"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-ad6422c180bc",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "insured.proposerNames"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-ceac3f42ee3f",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "insured.tradingName"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-212ce9265e52",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "insured.entityType"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-f6a27f05ee04",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "insured.companyNumber"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-21ebcb37d76a",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "insured.address"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-d29cf683b746",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "insured.contact.telephone"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-07d3f2a4c5de",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "insured.contact.email"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-c6181a11c34c",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.c6181a11c34c"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-b68cb9b7bb57",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.startedOn"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-0552d5a68ba2",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.0552d5a68ba2"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-34613c23e95d",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.34613c23e95d"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-ea4580cbac7a",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.ea4580cbac7a"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-ba9d4158ae2c",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.ba9d4158ae2c"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-35350a32e79e",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.35350a32e79e"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-2ad460339240",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.2ad460339240"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-f5e77ab8ec93",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.f5e77ab8ec93"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-7fe8e3151553",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.7fe8e3151553"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-27322dcfabf5",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.27322dcfabf5"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-f856f5891026",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.f856f5891026"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-46414cc10100",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.46414cc10100"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-ef70e80708bb",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.ef70e80708bb"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-36da21d3c935",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.36da21d3c935"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-6c1927f561b8",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.6c1927f561b8"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-f7972c55f517",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.f7972c55f517"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-382ce4de8253",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.382ce4de8253"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-922ca15dc9ed",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.922ca15dc9ed"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-d7a75768e505",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.d7a75768e505"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-5f9e8331ac6f",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.5f9e8331ac6f"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-488ecf4bdc09",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.488ecf4bdc09"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-87fad6b4a9fe",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.87fad6b4a9fe"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-af67cb40b4de",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.af67cb40b4de"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-ac167725da1f",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.previousInsurance.insurer"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-6ca7d23ce712",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.previousInsurance.expiresOn"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-1bdc05ff8b3d",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.previousInsurance.responses.answers",
+        "questionId": "prototype.quote.1bdc05ff8b3d"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-ba4a89b86e80",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.previousInsurance.noClaimsYears"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-c0650c760167",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.previousInsurance.responses.answers",
+        "questionId": "prototype.quote.c0650c760167"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-61a13bb828b2",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.previousInsurance.responses.answers",
+        "questionId": "prototype.quote.61a13bb828b2"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-3fad63dd9abf",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.previousInsurance.responses.answers",
+        "questionId": "prototype.quote.3fad63dd9abf"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-2beaf3b8d546",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.2beaf3b8d546"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-d9dd069a314c",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.d9dd069a314c"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-b4c7e25f7781",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.b4c7e25f7781"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-00216de47ab5",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.00216de47ab5"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-becc2653d0de",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.becc2653d0de"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-4c5df77ffba1",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote.4c5df77ffba1"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-5b72b50e96bc",
+    "status": "reviewed",
+    "disposition": "read-selection",
+    "operationIds": [
+      "listProductVersions",
+      "createQuote"
+    ],
+    "reason": "Reviewed agency/contact/product/client selector resolves authorised stable identities. A displayed option label never grants scope, and changing an established quote relationship requires an explicit supported re-scope or new quote."
+  },
+  {
+    "controlId": "CTL-2dd04027e52d",
+    "status": "reviewed",
+    "disposition": "read-selection",
+    "operationIds": [
+      "listProductVersions",
+      "createQuote"
+    ],
+    "reason": "Reviewed agency/contact/product/client selector resolves authorised stable identities. A displayed option label never grants scope, and changing an established quote relationship requires an explicit supported re-scope or new quote."
+  },
+  {
+    "controlId": "CTL-0fabfac70c54",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "insured.proposerNames"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-485a887e9c09",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "insured.tradingName"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-013d2d83308a",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "insured.entityType"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-244d1e602d04",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "insured.companyNumber"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-b8c835b4be7d",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.liability.employersReferenceNumber"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-36ef01068295",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.36ef01068295"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-58ce136bec6e",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "insured.address"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-d1edba1174f6",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.d1edba1174f6"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-0837e6f73be3",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.0837e6f73be3"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-2d40a8dab2ab",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.2d40a8dab2ab"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-d5d492a9e1b4",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.turnover"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-cfb8d4a5494b",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.cfb8d4a5494b"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-eb57b4a6cc8b",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.eb57b4a6cc8b"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-96730bd9301a",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.96730bd9301a"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-4e601dd4932b",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.4e601dd4932b"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-f92e963f393c",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.f92e963f393c"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-8581de6c0b2a",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.8581de6c0b2a"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-0b0b63fca324",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.0b0b63fca324"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-385743089b72",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.385743089b72"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-ec38529cf3bd",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.ec38529cf3bd"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-b01896689f29",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.b01896689f29"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-755d136885fb",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.755d136885fb"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-cae14bccab65",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.cae14bccab65"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-c70fcdf94e4e",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.c70fcdf94e4e"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-1eb02b0beba5",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.1eb02b0beba5"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-2205e438b495",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.2205e438b495"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-5d2c84a6ef5d",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.5d2c84a6ef5d"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-b2bce40c1c39",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.b2bce40c1c39"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-e62d19571aec",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.e62d19571aec"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-ffef496a4941",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.ffef496a4941"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-97735e54bc94",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.97735e54bc94"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-cf8731449193",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.cf8731449193"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-3940cae87dfb",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.3940cae87dfb"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-9608e47f7b80",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.9608e47f7b80"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-eb37b8814a01",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.eb37b8814a01"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-575bf422116e",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.575bf422116e"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-baae85efce04",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.baae85efce04"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-48f5d2ed7ce2",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.48f5d2ed7ce2"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-ade0f3f0df5e",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.ade0f3f0df5e"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-c08c9ebaf825",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.c08c9ebaf825"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-a6ff9fdbe769",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.a6ff9fdbe769"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-04b74c2e0a69",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.04b74c2e0a69"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-9922d03ca861",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.9922d03ca861"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-be47c08f530f",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.be47c08f530f"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-aaccb5c97c33",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.aaccb5c97c33"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-8293bc041f81",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.8293bc041f81"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-02d9c6be528a",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.02d9c6be528a"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-a6a4579c177e",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.a6a4579c177e"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-7a732bc99a5f",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.7a732bc99a5f"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-fcc7e22c33ea",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.fcc7e22c33ea"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-923e600eb3a4",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.923e600eb3a4"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-4aa3e214f046",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "cover.responses.answers",
+        "questionId": "prototype.quote.4aa3e214f046"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-50189a73c61c",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "cover.responses.answers",
+        "questionId": "prototype.quote.50189a73c61c"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-0ea28064aade",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "cover.responses.answers",
+        "questionId": "prototype.quote.0ea28064aade"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-480819d83a08",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "cover.responses.answers",
+        "questionId": "prototype.quote.480819d83a08"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-c8c59a389166",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "cover.responses.answers",
+        "questionId": "prototype.quote.c8c59a389166"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-1638a58efb48",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "cover.responses.answers",
+        "questionId": "prototype.quote.1638a58efb48"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-d9c260f19d59",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "cover.responses.answers",
+        "questionId": "prototype.quote.d9c260f19d59"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-7660fc5eb42e",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "cover.responses.answers",
+        "questionId": "prototype.quote.7660fc5eb42e"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-a27790bacfc5",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.businessInterruption.sumInsured"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-be3540a2ad2e",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.businessInterruption.indemnityMonths"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-7bd824326d4c",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "cover.responses.answers",
+        "questionId": "prototype.quote.7bd824326d4c"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-9b4688f28580",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "cover.responses.answers",
+        "questionId": "prototype.quote.9b4688f28580"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-72cb884b6df1",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "cover.responses.answers",
+        "questionId": "prototype.quote.72cb884b6df1"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-a2f1dd35162a",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "cover.responses.answers",
+        "questionId": "prototype.quote.a2f1dd35162a"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-ab908171e40b",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "cover.responses.answers",
+        "questionId": "prototype.quote.ab908171e40b"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-901a02ca4441",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.901a02ca4441"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-8cc83c3a006f",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.8cc83c3a006f"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-185df2844c76",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.185df2844c76"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-473e38b699c4",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.liability.maximumHeightMetres"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-ed8870d17328",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.ed8870d17328"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-c329b4c60f47",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.c329b4c60f47"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-d7068d9c43bd",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.liability.employersLimit"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-092ac5f51b35",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.liability.publicLimit"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-631d675e32e2",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.liability.productsLimit"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-831e903a8f35",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.831e903a8f35"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-f538427148cf",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.f538427148cf"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-102cb08b7d6d",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.102cb08b7d6d"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-3d43cf2d782f",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.3d43cf2d782f"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-66437482d634",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.66437482d634"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-00fa2758dd8c",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.00fa2758dd8c"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-6d9a54d9e464",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.6d9a54d9e464"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-a5994aa6ce31",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.a5994aa6ce31"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-956ebc71fded",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.956ebc71fded"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-796bcb8ff723",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.796bcb8ff723"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-992fa2724da2",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.992fa2724da2"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-ca115cf242f7",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.ca115cf242f7"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-978fde66afb5",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote.978fde66afb5"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-17b8e4af6aef",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "cover.responses.answers",
+        "questionId": "prototype.quote.17b8e4af6aef"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-6517b7cd5c04",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "cover.responses.answers",
+        "questionId": "prototype.quote.6517b7cd5c04"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
+  },
+  {
+    "controlId": "CTL-4a288359be03",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "cover.responses.answers",
+        "questionId": "prototype.quote.4a288359be03"
+      }
+    ],
+    "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
   }
 ]

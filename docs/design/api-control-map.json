@@ -1,6 +1,6 @@
 {
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
-  "reviewed": 515,
+  "reviewed": 658,
   "total": 949,
   "complete": false,
   "controls": [
@@ -4182,9 +4182,13 @@
       "label": "Agency",
       "requirement": "CC-04",
       "acceptanceId": "AT-3ba462f99580",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "read-selection",
+      "operationIds": [
+        "listAgencies",
+        "createQuote"
+      ],
+      "reason": "Reviewed agency/contact/product/client selector resolves authorised stable identities. A displayed option label never grants scope, and changing an established quote relationship requires an explicit supported re-scope or new quote."
     },
     {
       "controlId": "CTL-0f8fc7e35665",
@@ -4192,9 +4196,12 @@
       "label": "Broker contact",
       "requirement": "CC-04",
       "acceptanceId": "AT-0f8fc7e35665",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "read-selection",
+      "operationIds": [
+        "listContacts"
+      ],
+      "reason": "Reviewed agency/contact/product/client selector resolves authorised stable identities. A displayed option label never grants scope, and changing an established quote relationship requires an explicit supported re-scope or new quote."
     },
     {
       "controlId": "CTL-f90bbda7baf4",
@@ -4202,9 +4209,13 @@
       "label": "Product",
       "requirement": "QUO-02",
       "acceptanceId": "AT-f90bbda7baf4",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "read-selection",
+      "operationIds": [
+        "listProductVersions",
+        "createQuote"
+      ],
+      "reason": "Reviewed agency/contact/product/client selector resolves authorised stable identities. A displayed option label never grants scope, and changing an established quote relationship requires an explicit supported re-scope or new quote."
     },
     {
       "controlId": "CTL-de4a2a5bf892",
@@ -4232,9 +4243,13 @@
       "label": "Existing client",
       "requirement": "CC-04",
       "acceptanceId": "AT-74a9d7f987c5",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "read-selection",
+      "operationIds": [
+        "listClients",
+        "createQuote"
+      ],
+      "reason": "Reviewed agency/contact/product/client selector resolves authorised stable identities. A displayed option label never grants scope, and changing an established quote relationship requires an explicit supported re-scope or new quote."
     },
     {
       "controlId": "CTL-bced6e519228",
@@ -9002,9 +9017,17 @@
       "label": "Proposer 1 full name",
       "requirement": "QUO-02",
       "acceptanceId": "AT-fb92851f2483",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "insured.proposerNames"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-54cd86bd3577",
@@ -9012,9 +9035,17 @@
       "label": "Proposer 2 full name",
       "requirement": "QUO-02",
       "acceptanceId": "AT-54cd86bd3577",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "insured.proposerNames"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-ad6422c180bc",
@@ -9022,9 +9053,17 @@
       "label": "Proposer 3 full name",
       "requirement": "QUO-02",
       "acceptanceId": "AT-ad6422c180bc",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "insured.proposerNames"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-ceac3f42ee3f",
@@ -9032,9 +9071,17 @@
       "label": "Trading name",
       "requirement": "QUO-02",
       "acceptanceId": "AT-ceac3f42ee3f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "insured.tradingName"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-212ce9265e52",
@@ -9042,9 +9089,17 @@
       "label": "Entity type",
       "requirement": "QUO-02",
       "acceptanceId": "AT-212ce9265e52",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "insured.entityType"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-f6a27f05ee04",
@@ -9052,9 +9107,17 @@
       "label": "Company number",
       "requirement": "QUO-02",
       "acceptanceId": "AT-f6a27f05ee04",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "insured.companyNumber"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-21ebcb37d76a",
@@ -9062,9 +9125,17 @@
       "label": "Business address",
       "requirement": "QUO-02",
       "acceptanceId": "AT-21ebcb37d76a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "insured.address"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-d29cf683b746",
@@ -9072,9 +9143,17 @@
       "label": "Telephone",
       "requirement": "CC-04",
       "acceptanceId": "AT-d29cf683b746",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "insured.contact.telephone"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-07d3f2a4c5de",
@@ -9082,9 +9161,17 @@
       "label": "Email",
       "requirement": "CC-04",
       "acceptanceId": "AT-07d3f2a4c5de",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "insured.contact.email"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-c6181a11c34c",
@@ -9092,9 +9179,18 @@
       "label": "Full time or part time motor trader",
       "requirement": "QUO-02",
       "acceptanceId": "AT-c6181a11c34c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.c6181a11c34c"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-b68cb9b7bb57",
@@ -9102,9 +9198,17 @@
       "label": "Date business established",
       "requirement": "QUO-02",
       "acceptanceId": "AT-b68cb9b7bb57",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.startedOn"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-0552d5a68ba2",
@@ -9112,9 +9216,18 @@
       "label": "Years experience in the motor trade",
       "requirement": "QUO-02",
       "acceptanceId": "AT-0552d5a68ba2",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.0552d5a68ba2"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-3fd9edd7e66e",
@@ -9132,9 +9245,18 @@
       "label": "Employment status in that occupation",
       "requirement": "QUO-02",
       "acceptanceId": "AT-34613c23e95d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.34613c23e95d"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-ea4580cbac7a",
@@ -9142,9 +9264,18 @@
       "label": "Any other business or directorship",
       "requirement": "QUO-02",
       "acceptanceId": "AT-ea4580cbac7a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.ea4580cbac7a"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-e29a40c53e65",
@@ -9242,9 +9373,18 @@
       "label": "Vehicle salvage, dismantling, breaking, scrap, sale of parts, or recovery for such purpose",
       "requirement": "QUO-02",
       "acceptanceId": "AT-ba9d4158ae2c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.ba9d4158ae2c"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-35350a32e79e",
@@ -9252,9 +9392,18 @@
       "label": "Selling, repairing, servicing or restoring motorcycles, scooters, quad bikes or trikes",
       "requirement": "QUO-02",
       "acceptanceId": "AT-35350a32e79e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.35350a32e79e"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-2ad460339240",
@@ -9262,9 +9411,18 @@
       "label": "Import or export of vehicles",
       "requirement": "QUO-02",
       "acceptanceId": "AT-2ad460339240",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.2ad460339240"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-f5e77ab8ec93",
@@ -9272,9 +9430,18 @@
       "label": "Specialise in sports, high performance or prestige cars",
       "requirement": "QUO-02",
       "acceptanceId": "AT-f5e77ab8ec93",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.f5e77ab8ec93"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-7fe8e3151553",
@@ -9282,9 +9449,18 @@
       "label": "Specialise in veteran, vintage or classic cars",
       "requirement": "QUO-02",
       "acceptanceId": "AT-7fe8e3151553",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.7fe8e3151553"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-27322dcfabf5",
@@ -9292,9 +9468,18 @@
       "label": "Specialise in vehicles other than cars or light commercials",
       "requirement": "QUO-02",
       "acceptanceId": "AT-27322dcfabf5",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.27322dcfabf5"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-f856f5891026",
@@ -9302,9 +9487,18 @@
       "label": "Specialise in grey imports",
       "requirement": "QUO-02",
       "acceptanceId": "AT-f856f5891026",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.f856f5891026"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-909e1c6eff8c",
@@ -9362,9 +9556,18 @@
       "label": "Convicted of, or charged but not tried with, a criminal offence",
       "requirement": "QUO-02",
       "acceptanceId": "AT-46414cc10100",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.46414cc10100"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-ef70e80708bb",
@@ -9372,9 +9575,18 @@
       "label": "Motoring conviction or pending prosecution in the last 5 years, including fixed penalties",
       "requirement": "QUO-02",
       "acceptanceId": "AT-ef70e80708bb",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.ef70e80708bb"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-36da21d3c935",
@@ -9382,9 +9594,18 @@
       "label": "Any accident, loss or claim in the last 3 years, whether or not a claim was made",
       "requirement": "QUO-02",
       "acceptanceId": "AT-36da21d3c935",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.36da21d3c935"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-6c1927f561b8",
@@ -9392,9 +9613,18 @@
       "label": "Any condition notifiable to the DVLA — vision, hearing, heart, epilepsy, diabetes, blackouts or fits",
       "requirement": "QUO-02",
       "acceptanceId": "AT-6c1927f561b8",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.6c1927f561b8"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-f7972c55f517",
@@ -9402,9 +9632,18 @@
       "label": "Motor insurance cancelled, refused, or special terms applied in the last 5 years",
       "requirement": "QUO-02",
       "acceptanceId": "AT-f7972c55f517",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.f7972c55f517"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-382ce4de8253",
@@ -9412,9 +9651,18 @@
       "label": "Any claim repudiated or refused",
       "requirement": "QUO-02",
       "acceptanceId": "AT-382ce4de8253",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.382ce4de8253"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-922ca15dc9ed",
@@ -9422,9 +9670,18 @@
       "label": "County court judgment served, or declared bankrupt, in the last 5 years",
       "requirement": "QUO-02",
       "acceptanceId": "AT-922ca15dc9ed",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.922ca15dc9ed"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-ede6aab29eed",
@@ -9512,9 +9769,18 @@
       "label": "Any vehicle adapted for disability",
       "requirement": "QUO-02",
       "acceptanceId": "AT-d7a75768e505",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.d7a75768e505"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-5f9e8331ac6f",
@@ -9522,9 +9788,18 @@
       "label": "Any vehicle modified or altered in any way",
       "requirement": "QUO-02",
       "acceptanceId": "AT-5f9e8331ac6f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.5f9e8331ac6f"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-488ecf4bdc09",
@@ -9532,9 +9807,18 @@
       "label": "Any left-hand drive vehicle",
       "requirement": "QUO-02",
       "acceptanceId": "AT-488ecf4bdc09",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.488ecf4bdc09"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-87fad6b4a9fe",
@@ -9542,9 +9826,18 @@
       "label": "Any vehicle imported other than by the manufacturer",
       "requirement": "QUO-02",
       "acceptanceId": "AT-87fad6b4a9fe",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.87fad6b4a9fe"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-2d662a3ec81d",
@@ -9562,9 +9855,18 @@
       "label": "Courtesy vehicles",
       "requirement": "QUO-02",
       "acceptanceId": "AT-af67cb40b4de",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.af67cb40b4de"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-ec9fcabe7952",
@@ -9652,9 +9954,17 @@
       "label": "Name of insurer",
       "requirement": "QUO-02",
       "acceptanceId": "AT-ac167725da1f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.previousInsurance.insurer"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-d31dfbce85a7",
@@ -9682,9 +9992,17 @@
       "label": "Expiry date",
       "requirement": "QUO-02",
       "acceptanceId": "AT-6ca7d23ce712",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.previousInsurance.expiresOn"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-1bdc05ff8b3d",
@@ -9692,9 +10010,18 @@
       "label": "Discount being claimed",
       "requirement": "QUO-02",
       "acceptanceId": "AT-1bdc05ff8b3d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.previousInsurance.responses.answers",
+          "questionId": "prototype.quote.1bdc05ff8b3d"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-ba4a89b86e80",
@@ -9702,9 +10029,17 @@
       "label": "Years claimed",
       "requirement": "QUO-02",
       "acceptanceId": "AT-ba4a89b86e80",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.previousInsurance.noClaimsYears"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-c0650c760167",
@@ -9712,9 +10047,18 @@
       "label": "Discount earned on",
       "requirement": "QUO-02",
       "acceptanceId": "AT-c0650c760167",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.previousInsurance.responses.answers",
+          "questionId": "prototype.quote.c0650c760167"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-61a13bb828b2",
@@ -9722,9 +10066,18 @@
       "label": "Protect the discount",
       "requirement": "QUO-02",
       "acceptanceId": "AT-61a13bb828b2",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.previousInsurance.responses.answers",
+          "questionId": "prototype.quote.61a13bb828b2"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-3fad63dd9abf",
@@ -9732,9 +10085,18 @@
       "label": "Introductory discount claimed",
       "requirement": "QUO-02",
       "acceptanceId": "AT-3fad63dd9abf",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.previousInsurance.responses.answers",
+          "questionId": "prototype.quote.3fad63dd9abf"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-f635873d20cd",
@@ -9752,9 +10114,18 @@
       "label": "Cover basis",
       "requirement": "QUO-02",
       "acceptanceId": "AT-2beaf3b8d546",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.2beaf3b8d546"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-d9dd069a314c",
@@ -9762,9 +10133,18 @@
       "label": "Indemnity limit — own vehicles, any one vehicle",
       "requirement": "QUO-02",
       "acceptanceId": "AT-d9dd069a314c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.d9dd069a314c"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-b4c7e25f7781",
@@ -9772,9 +10152,18 @@
       "label": "Indemnity limit — customer vehicles, any one vehicle",
       "requirement": "QUO-02",
       "acceptanceId": "AT-b4c7e25f7781",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.b4c7e25f7781"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-00216de47ab5",
@@ -9782,9 +10171,18 @@
       "label": "Accidental damage, fire and theft excess",
       "requirement": "QUO-02",
       "acceptanceId": "AT-00216de47ab5",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.00216de47ab5"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-becc2653d0de",
@@ -9792,9 +10190,18 @@
       "label": "Demonstration cover",
       "requirement": "QUO-02",
       "acceptanceId": "AT-becc2653d0de",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.becc2653d0de"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-4c5df77ffba1",
@@ -9802,9 +10209,18 @@
       "label": "Private use in addition to motor trade use",
       "requirement": "QUO-02",
       "acceptanceId": "AT-4c5df77ffba1",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote.4c5df77ffba1"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-27261fc05988",
@@ -9872,9 +10288,13 @@
       "label": "Product",
       "requirement": "QUO-02",
       "acceptanceId": "AT-5b72b50e96bc",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "read-selection",
+      "operationIds": [
+        "listProductVersions",
+        "createQuote"
+      ],
+      "reason": "Reviewed agency/contact/product/client selector resolves authorised stable identities. A displayed option label never grants scope, and changing an established quote relationship requires an explicit supported re-scope or new quote."
     },
     {
       "controlId": "CTL-0baa80a84bde",
@@ -9932,9 +10352,13 @@
       "label": "Product",
       "requirement": "CC-04",
       "acceptanceId": "AT-2dd04027e52d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "read-selection",
+      "operationIds": [
+        "listProductVersions",
+        "createQuote"
+      ],
+      "reason": "Reviewed agency/contact/product/client selector resolves authorised stable identities. A displayed option label never grants scope, and changing an established quote relationship requires an explicit supported re-scope or new quote."
     },
     {
       "controlId": "CTL-7b091112a28e",
@@ -10042,9 +10466,17 @@
       "label": "Proposer full name(s)",
       "requirement": "CC-04",
       "acceptanceId": "AT-0fabfac70c54",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "insured.proposerNames"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-485a887e9c09",
@@ -10052,9 +10484,17 @@
       "label": "Trading as",
       "requirement": "CC-04",
       "acceptanceId": "AT-485a887e9c09",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "insured.tradingName"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-013d2d83308a",
@@ -10062,9 +10502,17 @@
       "label": "Entity type",
       "requirement": "CC-04",
       "acceptanceId": "AT-013d2d83308a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "insured.entityType"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-244d1e602d04",
@@ -10072,9 +10520,17 @@
       "label": "Company number",
       "requirement": "CC-04",
       "acceptanceId": "AT-244d1e602d04",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "insured.companyNumber"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-b8c835b4be7d",
@@ -10082,9 +10538,17 @@
       "label": "Employers reference number (ERN)",
       "requirement": "CC-04",
       "acceptanceId": "AT-b8c835b4be7d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.liability.employersReferenceNumber"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-36ef01068295",
@@ -10092,9 +10556,18 @@
       "label": "Employers’ liability required",
       "requirement": "CC-04",
       "acceptanceId": "AT-36ef01068295",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.36ef01068295"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-58ce136bec6e",
@@ -10102,9 +10575,17 @@
       "label": "Correspondence address",
       "requirement": "CC-04",
       "acceptanceId": "AT-58ce136bec6e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "insured.address"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-82ebf22fee24",
@@ -10122,9 +10603,18 @@
       "label": "Years in business at these premises",
       "requirement": "CC-04",
       "acceptanceId": "AT-d1edba1174f6",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.d1edba1174f6"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-0837e6f73be3",
@@ -10132,9 +10622,18 @@
       "label": "Years in business elsewhere",
       "requirement": "CC-04",
       "acceptanceId": "AT-0837e6f73be3",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.0837e6f73be3"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-2d40a8dab2ab",
@@ -10142,9 +10641,18 @@
       "label": "Ever traded under another name",
       "requirement": "CC-04",
       "acceptanceId": "AT-2d40a8dab2ab",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.2d40a8dab2ab"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-d5d492a9e1b4",
@@ -10152,9 +10660,17 @@
       "label": "Estimated annual turnover",
       "requirement": "CC-04",
       "acceptanceId": "AT-d5d492a9e1b4",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.turnover"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-0b9bf2ac4b8f",
@@ -10182,9 +10698,18 @@
       "label": "Any insurer has declined a proposal, refused renewal, cancelled a policy or imposed special conditions",
       "requirement": "CC-04",
       "acceptanceId": "AT-cfb8d4a5494b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.cfb8d4a5494b"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-eb57b4a6cc8b",
@@ -10192,9 +10717,18 @@
       "label": "County court judgment, bankruptcy order, individual voluntary arrangement, liquidation, receivership, administration or insolvency",
       "requirement": "CC-04",
       "acceptanceId": "AT-eb57b4a6cc8b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.eb57b4a6cc8b"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-96730bd9301a",
@@ -10202,9 +10736,18 @@
       "label": "Subject of an investigation by any taxation authority",
       "requirement": "CC-04",
       "acceptanceId": "AT-96730bd9301a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.96730bd9301a"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-4e601dd4932b",
@@ -10212,9 +10755,18 @@
       "label": "Convicted of, cautioned for, or prosecution pending for any criminal offence other than motoring",
       "requirement": "CC-04",
       "acceptanceId": "AT-4e601dd4932b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.4e601dd4932b"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-f92e963f393c",
@@ -10222,9 +10774,18 @@
       "label": "Investigated or prosecuted for breach of health and safety, COSHH or employment legislation",
       "requirement": "CC-04",
       "acceptanceId": "AT-f92e963f393c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.f92e963f393c"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-8581de6c0b2a",
@@ -10232,9 +10793,18 @@
       "label": "Served with a prohibition notice under health and safety regulations",
       "requirement": "CC-04",
       "acceptanceId": "AT-8581de6c0b2a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.8581de6c0b2a"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-b99b3a5b3004",
@@ -10262,9 +10832,18 @@
       "label": "Any loss or damage in the last 5 years",
       "requirement": "CC-04",
       "acceptanceId": "AT-0b0b63fca324",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.0b0b63fca324"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-e48b5c40a127",
@@ -10282,9 +10861,18 @@
       "label": "Any circumstances that could give rise to a claim",
       "requirement": "CC-04",
       "acceptanceId": "AT-385743089b72",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.385743089b72"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-da0f5084a3cc",
@@ -10332,9 +10920,18 @@
       "label": "Any location left unoccupied for 30 consecutive days or more",
       "requirement": "CC-04",
       "acceptanceId": "AT-ec38529cf3bd",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.ec38529cf3bd"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-59c91e8db152",
@@ -10362,9 +10959,18 @@
       "label": "Locations occupied at night",
       "requirement": "CC-04",
       "acceptanceId": "AT-b01896689f29",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.b01896689f29"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-755d136885fb",
@@ -10372,9 +10978,18 @@
       "label": "Any burning of waste carried out at a location",
       "requirement": "CC-04",
       "acceptanceId": "AT-755d136885fb",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.755d136885fb"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-cae14bccab65",
@@ -10382,9 +10997,18 @@
       "label": "Any recycling carried out as a trade or business",
       "requirement": "CC-04",
       "acceptanceId": "AT-cae14bccab65",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.cae14bccab65"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-c70fcdf94e4e",
@@ -10392,9 +11016,18 @@
       "label": "Any mortgage or charge to be noted on the policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-c70fcdf94e4e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.c70fcdf94e4e"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-5fcb5378a1fd",
@@ -10412,9 +11045,18 @@
       "label": "Outer doors",
       "requirement": "CC-04",
       "acceptanceId": "AT-1eb02b0beba5",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.1eb02b0beba5"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-2205e438b495",
@@ -10422,9 +11064,18 @@
       "label": "Front windows",
       "requirement": "CC-04",
       "acceptanceId": "AT-2205e438b495",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.2205e438b495"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-5d2c84a6ef5d",
@@ -10432,9 +11083,18 @@
       "label": "Rear and side windows",
       "requirement": "CC-04",
       "acceptanceId": "AT-5d2c84a6ef5d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.5d2c84a6ef5d"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-b2bce40c1c39",
@@ -10442,9 +11102,18 @@
       "label": "Skylights, fanlights and roof openings",
       "requirement": "CC-04",
       "acceptanceId": "AT-b2bce40c1c39",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.b2bce40c1c39"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-e62d19571aec",
@@ -10452,9 +11121,18 @@
       "label": "Cellar flaps and basement entries",
       "requirement": "CC-04",
       "acceptanceId": "AT-e62d19571aec",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.e62d19571aec"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-ffef496a4941",
@@ -10462,9 +11140,18 @@
       "label": "Safe, strong room or security cage",
       "requirement": "CC-04",
       "acceptanceId": "AT-ffef496a4941",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.ffef496a4941"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-97735e54bc94",
@@ -10472,9 +11159,18 @@
       "label": "Other protections",
       "requirement": "CC-04",
       "acceptanceId": "AT-97735e54bc94",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.97735e54bc94"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-cf8731449193",
@@ -10482,9 +11178,18 @@
       "label": "Fire protections installed",
       "requirement": "CC-04",
       "acceptanceId": "AT-cf8731449193",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.cf8731449193"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-3940cae87dfb",
@@ -10492,9 +11197,18 @@
       "label": "Electrical installation inspected within the last 5 years",
       "requirement": "CC-04",
       "acceptanceId": "AT-3940cae87dfb",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.3940cae87dfb"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-9608e47f7b80",
@@ -10502,9 +11216,18 @@
       "label": "All C1 and C2 defects rectified",
       "requirement": "CC-04",
       "acceptanceId": "AT-9608e47f7b80",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.9608e47f7b80"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-eb37b8814a01",
@@ -10512,9 +11235,18 @@
       "label": "Heating linked to a thermostat activating below 6°C",
       "requirement": "CC-04",
       "acceptanceId": "AT-eb37b8814a01",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.eb37b8814a01"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-575bf422116e",
@@ -10522,9 +11254,18 @@
       "label": "All water tanks, apparatus and pipes fully lagged",
       "requirement": "CC-04",
       "acceptanceId": "AT-575bf422116e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.575bf422116e"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-baae85efce04",
@@ -10532,9 +11273,18 @@
       "label": "Buildings wind and weather proof and in good repair",
       "requirement": "CC-04",
       "acceptanceId": "AT-baae85efce04",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.baae85efce04"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-48f5d2ed7ce2",
@@ -10542,9 +11292,18 @@
       "label": "Buildings structurally altered or extended",
       "requirement": "CC-04",
       "acceptanceId": "AT-48f5d2ed7ce2",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.48f5d2ed7ce2"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-ade0f3f0df5e",
@@ -10552,9 +11311,18 @@
       "label": "Flood at a location, or within 250 metres, at any time",
       "requirement": "CC-04",
       "acceptanceId": "AT-ade0f3f0df5e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.ade0f3f0df5e"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-c08c9ebaf825",
@@ -10562,9 +11330,18 @@
       "label": "Rivers, streams, tidal waters or watercourses within 250 metres",
       "requirement": "CC-04",
       "acceptanceId": "AT-c08c9ebaf825",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.c08c9ebaf825"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-a6ff9fdbe769",
@@ -10572,9 +11349,18 @@
       "label": "Advised that a location is in a potential flood risk area",
       "requirement": "CC-04",
       "acceptanceId": "AT-a6ff9fdbe769",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.a6ff9fdbe769"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-04b74c2e0a69",
@@ -10582,9 +11368,18 @@
       "label": "Flood defences or mitigation in place",
       "requirement": "CC-04",
       "acceptanceId": "AT-04b74c2e0a69",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.04b74c2e0a69"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-9922d03ca861",
@@ -10592,9 +11387,18 @@
       "label": "Stock stored above floor level",
       "requirement": "CC-04",
       "acceptanceId": "AT-9922d03ca861",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.9922d03ca861"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-4799b8daa1ca",
@@ -10612,9 +11416,18 @@
       "label": "Subsidence, ground heave or landslip cover requested",
       "requirement": "CC-04",
       "acceptanceId": "AT-be47c08f530f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.be47c08f530f"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-aaccb5c97c33",
@@ -10622,9 +11435,18 @@
       "label": "Any signs of damage attributable to subsidence, heave or landslip",
       "requirement": "CC-04",
       "acceptanceId": "AT-aaccb5c97c33",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.aaccb5c97c33"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-8293bc041f81",
@@ -10632,9 +11454,18 @@
       "label": "Any building monitored, or previously monitored, for movement",
       "requirement": "CC-04",
       "acceptanceId": "AT-8293bc041f81",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.8293bc041f81"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-02d9c6be528a",
@@ -10642,9 +11473,18 @@
       "label": "Ever the subject of a survey mentioning settlement or movement",
       "requirement": "CC-04",
       "acceptanceId": "AT-02d9c6be528a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.02d9c6be528a"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-a6a4579c177e",
@@ -10652,9 +11492,18 @@
       "label": "Ever flooded from broken drains, or extensive drainage problems in 10 years",
       "requirement": "CC-04",
       "acceptanceId": "AT-a6a4579c177e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.a6a4579c177e"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-7a732bc99a5f",
@@ -10662,9 +11511,18 @@
       "label": "Trees or shrubs over 10 feet tall within 20 feet of any building",
       "requirement": "CC-04",
       "acceptanceId": "AT-7a732bc99a5f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.7a732bc99a5f"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-fcc7e22c33ea",
@@ -10672,9 +11530,18 @@
       "label": "Any neighbouring property subject to subsidence, heave or landslip",
       "requirement": "CC-04",
       "acceptanceId": "AT-fcc7e22c33ea",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.fcc7e22c33ea"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-923e600eb3a4",
@@ -10682,9 +11549,18 @@
       "label": "Subject to any river or coastal erosion",
       "requirement": "CC-04",
       "acceptanceId": "AT-923e600eb3a4",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.923e600eb3a4"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-4aa3e214f046",
@@ -10692,9 +11568,18 @@
       "label": "Buildings basis",
       "requirement": "CC-04",
       "acceptanceId": "AT-4aa3e214f046",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "cover.responses.answers",
+          "questionId": "prototype.quote.4aa3e214f046"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-50189a73c61c",
@@ -10702,9 +11587,18 @@
       "label": "Stock basis",
       "requirement": "CC-04",
       "acceptanceId": "AT-50189a73c61c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "cover.responses.answers",
+          "questionId": "prototype.quote.50189a73c61c"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-0ea28064aade",
@@ -10712,9 +11606,18 @@
       "label": "Index linking",
       "requirement": "CC-04",
       "acceptanceId": "AT-0ea28064aade",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "cover.responses.answers",
+          "questionId": "prototype.quote.0ea28064aade"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-5743fa7db272",
@@ -10742,9 +11645,18 @@
       "label": "Goods in transit",
       "requirement": "CC-04",
       "acceptanceId": "AT-480819d83a08",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "cover.responses.answers",
+          "questionId": "prototype.quote.480819d83a08"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-c8c59a389166",
@@ -10752,9 +11664,18 @@
       "label": "Money — cash on premises in business hours",
       "requirement": "CC-04",
       "acceptanceId": "AT-c8c59a389166",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "cover.responses.answers",
+          "questionId": "prototype.quote.c8c59a389166"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-1638a58efb48",
@@ -10762,9 +11683,18 @@
       "label": "Glass",
       "requirement": "CC-04",
       "acceptanceId": "AT-1638a58efb48",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "cover.responses.answers",
+          "questionId": "prototype.quote.1638a58efb48"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-d9c260f19d59",
@@ -10772,9 +11702,18 @@
       "label": "Theft cover basis",
       "requirement": "CC-04",
       "acceptanceId": "AT-d9c260f19d59",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "cover.responses.answers",
+          "questionId": "prototype.quote.d9c260f19d59"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-7660fc5eb42e",
@@ -10782,9 +11721,18 @@
       "label": "Business interruption required",
       "requirement": "CC-04",
       "acceptanceId": "AT-7660fc5eb42e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "cover.responses.answers",
+          "questionId": "prototype.quote.7660fc5eb42e"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-7fd9eb9a4c55",
@@ -10802,9 +11750,17 @@
       "label": "Sum insured",
       "requirement": "CC-04",
       "acceptanceId": "AT-a27790bacfc5",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.businessInterruption.sumInsured"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-be3540a2ad2e",
@@ -10812,9 +11768,17 @@
       "label": "Indemnity period",
       "requirement": "CC-04",
       "acceptanceId": "AT-be3540a2ad2e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.businessInterruption.indemnityMonths"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-7bd824326d4c",
@@ -10822,9 +11786,18 @@
       "label": "Time excess",
       "requirement": "CC-04",
       "acceptanceId": "AT-7bd824326d4c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "cover.responses.answers",
+          "questionId": "prototype.quote.7bd824326d4c"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-9b4688f28580",
@@ -10832,9 +11805,18 @@
       "label": "Suppliers or customers extension",
       "requirement": "CC-04",
       "acceptanceId": "AT-9b4688f28580",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "cover.responses.answers",
+          "questionId": "prototype.quote.9b4688f28580"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-72cb884b6df1",
@@ -10842,9 +11824,18 @@
       "label": "Reliance on any single customer above 25% of turnover",
       "requirement": "CC-04",
       "acceptanceId": "AT-72cb884b6df1",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "cover.responses.answers",
+          "questionId": "prototype.quote.72cb884b6df1"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-a2f1dd35162a",
@@ -10852,9 +11843,18 @@
       "label": "Denial of access extension",
       "requirement": "CC-04",
       "acceptanceId": "AT-a2f1dd35162a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "cover.responses.answers",
+          "questionId": "prototype.quote.a2f1dd35162a"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-ab908171e40b",
@@ -10862,9 +11862,18 @@
       "label": "Loss of attraction extension",
       "requirement": "CC-04",
       "acceptanceId": "AT-ab908171e40b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "cover.responses.answers",
+          "questionId": "prototype.quote.ab908171e40b"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-83e66f0c876b",
@@ -10942,9 +11951,18 @@
       "label": "Any work performed away from own premises, excluding collection and delivery",
       "requirement": "CC-04",
       "acceptanceId": "AT-901a02ca4441",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.901a02ca4441"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-8cc83c3a006f",
@@ -10952,9 +11970,18 @@
       "label": "Any work involving the use of heat away from own premises",
       "requirement": "CC-04",
       "acceptanceId": "AT-8cc83c3a006f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.8cc83c3a006f"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-185df2844c76",
@@ -10962,9 +11989,18 @@
       "label": "Any work at height above 2 metres",
       "requirement": "CC-04",
       "acceptanceId": "AT-185df2844c76",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.185df2844c76"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-473e38b699c4",
@@ -10972,9 +12008,17 @@
       "label": "Maximum working height",
       "requirement": "CC-04",
       "acceptanceId": "AT-473e38b699c4",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.liability.maximumHeightMetres"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-ed8870d17328",
@@ -10982,9 +12026,18 @@
       "label": "Work at refineries, offshore, aviation, railways or airports",
       "requirement": "CC-04",
       "acceptanceId": "AT-ed8870d17328",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.ed8870d17328"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-c329b4c60f47",
@@ -10992,9 +12045,18 @@
       "label": "All products sourced within the EU, Australia, USA or Canada",
       "requirement": "CC-04",
       "acceptanceId": "AT-c329b4c60f47",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.c329b4c60f47"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-d7068d9c43bd",
@@ -11002,9 +12064,17 @@
       "label": "Employers’ liability limit",
       "requirement": "CC-04",
       "acceptanceId": "AT-d7068d9c43bd",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.liability.employersLimit"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-092ac5f51b35",
@@ -11012,9 +12082,17 @@
       "label": "Public liability limit",
       "requirement": "CC-04",
       "acceptanceId": "AT-092ac5f51b35",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.liability.publicLimit"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-631d675e32e2",
@@ -11022,9 +12100,17 @@
       "label": "Products liability limit",
       "requirement": "CC-04",
       "acceptanceId": "AT-631d675e32e2",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.liability.productsLimit"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-831e903a8f35",
@@ -11032,9 +12118,18 @@
       "label": "Business conforms to the Health and Safety at Work Act 1974",
       "requirement": "CC-04",
       "acceptanceId": "AT-831e903a8f35",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.831e903a8f35"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-f538427148cf",
@@ -11042,9 +12137,18 @@
       "label": "Formal written health and safety policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-f538427148cf",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.f538427148cf"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-102cb08b7d6d",
@@ -11052,9 +12156,18 @@
       "label": "Nominated person responsible for health and safety",
       "requirement": "CC-04",
       "acceptanceId": "AT-102cb08b7d6d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.102cb08b7d6d"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-3d43cf2d782f",
@@ -11062,9 +12175,18 @@
       "label": "Documented induction and refresher training programme",
       "requirement": "CC-04",
       "acceptanceId": "AT-3d43cf2d782f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.3d43cf2d782f"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-66437482d634",
@@ -11072,9 +12194,18 @@
       "label": "Risk assessments carried out and documented",
       "requirement": "CC-04",
       "acceptanceId": "AT-66437482d634",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.66437482d634"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-00fa2758dd8c",
@@ -11082,9 +12213,18 @@
       "label": "Actions arising from risk assessments completed",
       "requirement": "CC-04",
       "acceptanceId": "AT-00fa2758dd8c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.00fa2758dd8c"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-6d9a54d9e464",
@@ -11092,9 +12232,18 @@
       "label": "Plant guarded, maintained and inspected to statutory requirements",
       "requirement": "CC-04",
       "acceptanceId": "AT-6d9a54d9e464",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.6d9a54d9e464"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-a5994aa6ce31",
@@ -11102,9 +12251,18 @@
       "label": "Personal protective equipment provided to all employees",
       "requirement": "CC-04",
       "acceptanceId": "AT-a5994aa6ce31",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.a5994aa6ce31"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-956ebc71fded",
@@ -11112,9 +12270,18 @@
       "label": "Employees sign for PPE and its use is enforced",
       "requirement": "CC-04",
       "acceptanceId": "AT-956ebc71fded",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.956ebc71fded"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-796bcb8ff723",
@@ -11122,9 +12289,18 @@
       "label": "Accident details recorded and maintained",
       "requirement": "CC-04",
       "acceptanceId": "AT-796bcb8ff723",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.796bcb8ff723"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-992fa2724da2",
@@ -11132,9 +12308,18 @@
       "label": "Sub-contractors hold insurance indemnifying the proposer as principal",
       "requirement": "CC-04",
       "acceptanceId": "AT-992fa2724da2",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.992fa2724da2"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-ca115cf242f7",
@@ -11142,9 +12327,18 @@
       "label": "Risk assessments documented for work away from own premises",
       "requirement": "CC-04",
       "acceptanceId": "AT-ca115cf242f7",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.ca115cf242f7"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-978fde66afb5",
@@ -11152,9 +12346,18 @@
       "label": "Recommendations made by the health and safety executive or an inspector",
       "requirement": "CC-04",
       "acceptanceId": "AT-978fde66afb5",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote.978fde66afb5"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-a0e5d1b910f8",
@@ -11172,9 +12375,18 @@
       "label": "Property damage excess",
       "requirement": "CC-04",
       "acceptanceId": "AT-17b8e4af6aef",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "cover.responses.answers",
+          "questionId": "prototype.quote.17b8e4af6aef"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-6517b7cd5c04",
@@ -11182,9 +12394,18 @@
       "label": "Escape of water excess",
       "requirement": "CC-04",
       "acceptanceId": "AT-6517b7cd5c04",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "cover.responses.answers",
+          "questionId": "prototype.quote.6517b7cd5c04"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-4a288359be03",
@@ -11192,9 +12413,18 @@
       "label": "Subsidence excess",
       "requirement": "CC-04",
       "acceptanceId": "AT-4a288359be03",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "cover.responses.answers",
+          "questionId": "prototype.quote.4a288359be03"
+        }
+      ],
+      "reason": "Reviewed source dropdown retains every option in the pinned question catalog. Binary yes/no becomes boolean; categorical choices retain versioned ordinal value and label. Declaration/risk/cover scope and original capture stage are recorded; no free-text type guessed."
     },
     {
       "controlId": "CTL-6a617e77cc8e",

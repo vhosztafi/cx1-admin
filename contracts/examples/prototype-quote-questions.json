@@ -1,0 +1,2655 @@
+{
+  "version": "prototype-quote-1",
+  "questions": [
+    {
+      "questionId": "prototype.quote.c6181a11c34c",
+      "label": "Full time or part time motor trader",
+      "kind": "reference",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-c6181a11c34c",
+      "sourceOptions": [
+        "Full time",
+        "Part time"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-2",
+        "Motor Trade Combined:step-2"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Full time"
+        },
+        {
+          "value": 2,
+          "label": "Part time"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.0552d5a68ba2",
+      "label": "Years experience in the motor trade",
+      "kind": "reference",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-0552d5a68ba2",
+      "sourceOptions": [
+        "Under 1",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6–10",
+        "Over 10"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-2",
+        "Motor Trade Combined:step-2"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Under 1"
+        },
+        {
+          "value": 2,
+          "label": "1"
+        },
+        {
+          "value": 3,
+          "label": "2"
+        },
+        {
+          "value": 4,
+          "label": "3"
+        },
+        {
+          "value": 5,
+          "label": "4"
+        },
+        {
+          "value": 6,
+          "label": "5"
+        },
+        {
+          "value": 7,
+          "label": "6–10"
+        },
+        {
+          "value": 8,
+          "label": "Over 10"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.34613c23e95d",
+      "label": "Employment status in that occupation",
+      "kind": "reference",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-34613c23e95d",
+      "sourceOptions": [
+        "Not applicable",
+        "Employed",
+        "Self employed"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-2",
+        "Motor Trade Combined:step-2"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Not applicable"
+        },
+        {
+          "value": 2,
+          "label": "Employed"
+        },
+        {
+          "value": 3,
+          "label": "Self employed"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.ea4580cbac7a",
+      "label": "Any other business or directorship",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-ea4580cbac7a",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-2",
+        "Motor Trade Combined:step-2"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.ba9d4158ae2c",
+      "label": "Vehicle salvage, dismantling, breaking, scrap, sale of parts, or recovery for such purpose",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-ba9d4158ae2c",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-3",
+        "Motor Trade Combined:step-3"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.35350a32e79e",
+      "label": "Selling, repairing, servicing or restoring motorcycles, scooters, quad bikes or trikes",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-35350a32e79e",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-3",
+        "Motor Trade Combined:step-3"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.2ad460339240",
+      "label": "Import or export of vehicles",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-2ad460339240",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-3",
+        "Motor Trade Combined:step-3"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.f5e77ab8ec93",
+      "label": "Specialise in sports, high performance or prestige cars",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-f5e77ab8ec93",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-3",
+        "Motor Trade Combined:step-3"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.7fe8e3151553",
+      "label": "Specialise in veteran, vintage or classic cars",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-7fe8e3151553",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-3",
+        "Motor Trade Combined:step-3"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.27322dcfabf5",
+      "label": "Specialise in vehicles other than cars or light commercials",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-27322dcfabf5",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-3",
+        "Motor Trade Combined:step-3"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.f856f5891026",
+      "label": "Specialise in grey imports",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-f856f5891026",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-3",
+        "Motor Trade Combined:step-3"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.46414cc10100",
+      "label": "Convicted of, or charged but not tried with, a criminal offence",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-46414cc10100",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-5",
+        "Motor Trade Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.ef70e80708bb",
+      "label": "Motoring conviction or pending prosecution in the last 5 years, including fixed penalties",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-ef70e80708bb",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-5",
+        "Motor Trade Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.36da21d3c935",
+      "label": "Any accident, loss or claim in the last 3 years, whether or not a claim was made",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-36da21d3c935",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-5",
+        "Motor Trade Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.6c1927f561b8",
+      "label": "Any condition notifiable to the DVLA — vision, hearing, heart, epilepsy, diabetes, blackouts or fits",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-6c1927f561b8",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-5",
+        "Motor Trade Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.f7972c55f517",
+      "label": "Motor insurance cancelled, refused, or special terms applied in the last 5 years",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-f7972c55f517",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-5",
+        "Motor Trade Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.382ce4de8253",
+      "label": "Any claim repudiated or refused",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-382ce4de8253",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-5",
+        "Motor Trade Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.922ca15dc9ed",
+      "label": "County court judgment served, or declared bankrupt, in the last 5 years",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-922ca15dc9ed",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-5",
+        "Motor Trade Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.d7a75768e505",
+      "label": "Any vehicle adapted for disability",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-d7a75768e505",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-6",
+        "Motor Trade Combined:step-7"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.5f9e8331ac6f",
+      "label": "Any vehicle modified or altered in any way",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-5f9e8331ac6f",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-6",
+        "Motor Trade Combined:step-7"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.488ecf4bdc09",
+      "label": "Any left-hand drive vehicle",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-488ecf4bdc09",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-6",
+        "Motor Trade Combined:step-7"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.87fad6b4a9fe",
+      "label": "Any vehicle imported other than by the manufacturer",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-87fad6b4a9fe",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-6",
+        "Motor Trade Combined:step-7"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.af67cb40b4de",
+      "label": "Courtesy vehicles",
+      "kind": "reference",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-af67cb40b4de",
+      "sourceOptions": [
+        "None",
+        "Insured under this policy",
+        "Covered by the customer’s own insurer"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-6",
+        "Motor Trade Combined:step-7"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "None"
+        },
+        {
+          "value": 2,
+          "label": "Insured under this policy"
+        },
+        {
+          "value": 3,
+          "label": "Covered by the customer’s own insurer"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.1bdc05ff8b3d",
+      "label": "Discount being claimed",
+      "kind": "boolean",
+      "targetContainer": "risk.previousInsurance.responses",
+      "sourceControlId": "CTL-1bdc05ff8b3d",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-7"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.c0650c760167",
+      "label": "Discount earned on",
+      "kind": "reference",
+      "targetContainer": "risk.previousInsurance.responses",
+      "sourceControlId": "CTL-c0650c760167",
+      "sourceOptions": [
+        "Motor trade",
+        "Private car",
+        "Commercial vehicle"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-7"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Motor trade"
+        },
+        {
+          "value": 2,
+          "label": "Private car"
+        },
+        {
+          "value": 3,
+          "label": "Commercial vehicle"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.61a13bb828b2",
+      "label": "Protect the discount",
+      "kind": "boolean",
+      "targetContainer": "risk.previousInsurance.responses",
+      "sourceControlId": "CTL-61a13bb828b2",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-7"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.3fad63dd9abf",
+      "label": "Introductory discount claimed",
+      "kind": "boolean",
+      "targetContainer": "risk.previousInsurance.responses",
+      "sourceControlId": "CTL-3fad63dd9abf",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-7"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.2beaf3b8d546",
+      "label": "Cover basis",
+      "kind": "reference",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-2beaf3b8d546",
+      "sourceOptions": [
+        "Comprehensive",
+        "Third party fire and theft",
+        "Third party only"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-8",
+        "Motor Trade Combined:step-8"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Comprehensive"
+        },
+        {
+          "value": 2,
+          "label": "Third party fire and theft"
+        },
+        {
+          "value": 3,
+          "label": "Third party only"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.d9dd069a314c",
+      "label": "Indemnity limit — own vehicles, any one vehicle",
+      "kind": "reference",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-d9dd069a314c",
+      "sourceOptions": [
+        "£7,500",
+        "£10,000",
+        "£12,500",
+        "£15,000",
+        "£20,000",
+        "£25,000",
+        "£30,000"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-8",
+        "Motor Trade Combined:step-8"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "£7,500"
+        },
+        {
+          "value": 2,
+          "label": "£10,000"
+        },
+        {
+          "value": 3,
+          "label": "£12,500"
+        },
+        {
+          "value": 4,
+          "label": "£15,000"
+        },
+        {
+          "value": 5,
+          "label": "£20,000"
+        },
+        {
+          "value": 6,
+          "label": "£25,000"
+        },
+        {
+          "value": 7,
+          "label": "£30,000"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.b4c7e25f7781",
+      "label": "Indemnity limit — customer vehicles, any one vehicle",
+      "kind": "reference",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-b4c7e25f7781",
+      "sourceOptions": [
+        "£7,500",
+        "£10,000",
+        "£12,500",
+        "£15,000",
+        "£20,000",
+        "£25,000",
+        "£30,000"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-8",
+        "Motor Trade Combined:step-8"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "£7,500"
+        },
+        {
+          "value": 2,
+          "label": "£10,000"
+        },
+        {
+          "value": 3,
+          "label": "£12,500"
+        },
+        {
+          "value": 4,
+          "label": "£15,000"
+        },
+        {
+          "value": 5,
+          "label": "£20,000"
+        },
+        {
+          "value": 6,
+          "label": "£25,000"
+        },
+        {
+          "value": 7,
+          "label": "£30,000"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.00216de47ab5",
+      "label": "Accidental damage, fire and theft excess",
+      "kind": "reference",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-00216de47ab5",
+      "sourceOptions": [
+        "£250",
+        "£500",
+        "£750",
+        "£1,000"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-8",
+        "Motor Trade Combined:step-8"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "£250"
+        },
+        {
+          "value": 2,
+          "label": "£500"
+        },
+        {
+          "value": 3,
+          "label": "£750"
+        },
+        {
+          "value": 4,
+          "label": "£1,000"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.becc2653d0de",
+      "label": "Demonstration cover",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-becc2653d0de",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-8",
+        "Motor Trade Combined:step-8"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.4c5df77ffba1",
+      "label": "Private use in addition to motor trade use",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-4c5df77ffba1",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-8",
+        "Motor Trade Combined:step-8"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.36ef01068295",
+      "label": "Employers’ liability required",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-36ef01068295",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "stages": [
+        "Commercial Combined:step-2"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.d1edba1174f6",
+      "label": "Years in business at these premises",
+      "kind": "reference",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-d1edba1174f6",
+      "sourceOptions": [
+        "Under 1",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6–10",
+        "Over 10"
+      ],
+      "stages": [
+        "Commercial Combined:step-2"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Under 1"
+        },
+        {
+          "value": 2,
+          "label": "1"
+        },
+        {
+          "value": 3,
+          "label": "2"
+        },
+        {
+          "value": 4,
+          "label": "3"
+        },
+        {
+          "value": 5,
+          "label": "4"
+        },
+        {
+          "value": 6,
+          "label": "5"
+        },
+        {
+          "value": 7,
+          "label": "6–10"
+        },
+        {
+          "value": 8,
+          "label": "Over 10"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.0837e6f73be3",
+      "label": "Years in business elsewhere",
+      "kind": "reference",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-0837e6f73be3",
+      "sourceOptions": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6–10",
+        "Over 10"
+      ],
+      "stages": [
+        "Commercial Combined:step-2"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "0"
+        },
+        {
+          "value": 2,
+          "label": "1"
+        },
+        {
+          "value": 3,
+          "label": "2"
+        },
+        {
+          "value": 4,
+          "label": "3"
+        },
+        {
+          "value": 5,
+          "label": "4"
+        },
+        {
+          "value": 6,
+          "label": "5"
+        },
+        {
+          "value": 7,
+          "label": "6–10"
+        },
+        {
+          "value": 8,
+          "label": "Over 10"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.2d40a8dab2ab",
+      "label": "Ever traded under another name",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-2d40a8dab2ab",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-2"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.cfb8d4a5494b",
+      "label": "Any insurer has declined a proposal, refused renewal, cancelled a policy or imposed special conditions",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-cfb8d4a5494b",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-2"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.eb57b4a6cc8b",
+      "label": "County court judgment, bankruptcy order, individual voluntary arrangement, liquidation, receivership, administration or insolvency",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-eb57b4a6cc8b",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-2"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.96730bd9301a",
+      "label": "Subject of an investigation by any taxation authority",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-96730bd9301a",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-2"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.4e601dd4932b",
+      "label": "Convicted of, cautioned for, or prosecution pending for any criminal offence other than motoring",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-4e601dd4932b",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-2"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.f92e963f393c",
+      "label": "Investigated or prosecuted for breach of health and safety, COSHH or employment legislation",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-f92e963f393c",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-2"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.8581de6c0b2a",
+      "label": "Served with a prohibition notice under health and safety regulations",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-8581de6c0b2a",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-2"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.0b0b63fca324",
+      "label": "Any loss or damage in the last 5 years",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-0b0b63fca324",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-3"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.385743089b72",
+      "label": "Any circumstances that could give rise to a claim",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-385743089b72",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-3"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.ec38529cf3bd",
+      "label": "Any location left unoccupied for 30 consecutive days or more",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-ec38529cf3bd",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-4"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.b01896689f29",
+      "label": "Locations occupied at night",
+      "kind": "reference",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-b01896689f29",
+      "sourceOptions": [
+        "No",
+        "Yes — security staff",
+        "Yes — resident caretaker"
+      ],
+      "stages": [
+        "Commercial Combined:step-4"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "No"
+        },
+        {
+          "value": 2,
+          "label": "Yes — security staff"
+        },
+        {
+          "value": 3,
+          "label": "Yes — resident caretaker"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.755d136885fb",
+      "label": "Any burning of waste carried out at a location",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-755d136885fb",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-4"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.cae14bccab65",
+      "label": "Any recycling carried out as a trade or business",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-cae14bccab65",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-4"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.c70fcdf94e4e",
+      "label": "Any mortgage or charge to be noted on the policy",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-c70fcdf94e4e",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-4"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.1eb02b0beba5",
+      "label": "Outer doors",
+      "kind": "reference",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-1eb02b0beba5",
+      "sourceOptions": [
+        "Five lever mortice deadlocks",
+        "Five lever deadlocks and shutters",
+        "Roller shutters, padlocked",
+        "Standard latch only",
+        "We don’t have these"
+      ],
+      "stages": [
+        "Commercial Combined:step-5"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Five lever mortice deadlocks"
+        },
+        {
+          "value": 2,
+          "label": "Five lever deadlocks and shutters"
+        },
+        {
+          "value": 3,
+          "label": "Roller shutters, padlocked"
+        },
+        {
+          "value": 4,
+          "label": "Standard latch only"
+        },
+        {
+          "value": 5,
+          "label": "We don’t have these"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.2205e438b495",
+      "label": "Front windows",
+      "kind": "reference",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-2205e438b495",
+      "sourceOptions": [
+        "Key operated locks",
+        "Bars or grilles",
+        "Shutters",
+        "No locks",
+        "We don’t have these"
+      ],
+      "stages": [
+        "Commercial Combined:step-5"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Key operated locks"
+        },
+        {
+          "value": 2,
+          "label": "Bars or grilles"
+        },
+        {
+          "value": 3,
+          "label": "Shutters"
+        },
+        {
+          "value": 4,
+          "label": "No locks"
+        },
+        {
+          "value": 5,
+          "label": "We don’t have these"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.5d2c84a6ef5d",
+      "label": "Rear and side windows",
+      "kind": "reference",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-5d2c84a6ef5d",
+      "sourceOptions": [
+        "Key operated locks",
+        "Bars or grilles",
+        "Shutters",
+        "No locks",
+        "We don’t have these"
+      ],
+      "stages": [
+        "Commercial Combined:step-5"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Key operated locks"
+        },
+        {
+          "value": 2,
+          "label": "Bars or grilles"
+        },
+        {
+          "value": 3,
+          "label": "Shutters"
+        },
+        {
+          "value": 4,
+          "label": "No locks"
+        },
+        {
+          "value": 5,
+          "label": "We don’t have these"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.b2bce40c1c39",
+      "label": "Skylights, fanlights and roof openings",
+      "kind": "reference",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-b2bce40c1c39",
+      "sourceOptions": [
+        "Bars or grilles",
+        "Key operated locks",
+        "No protection",
+        "We don’t have these"
+      ],
+      "stages": [
+        "Commercial Combined:step-5"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Bars or grilles"
+        },
+        {
+          "value": 2,
+          "label": "Key operated locks"
+        },
+        {
+          "value": 3,
+          "label": "No protection"
+        },
+        {
+          "value": 4,
+          "label": "We don’t have these"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.e62d19571aec",
+      "label": "Cellar flaps and basement entries",
+      "kind": "reference",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-e62d19571aec",
+      "sourceOptions": [
+        "Padlocked and barred",
+        "Key operated locks",
+        "No protection",
+        "We don’t have these"
+      ],
+      "stages": [
+        "Commercial Combined:step-5"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Padlocked and barred"
+        },
+        {
+          "value": 2,
+          "label": "Key operated locks"
+        },
+        {
+          "value": 3,
+          "label": "No protection"
+        },
+        {
+          "value": 4,
+          "label": "We don’t have these"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.ffef496a4941",
+      "label": "Safe, strong room or security cage",
+      "kind": "reference",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-ffef496a4941",
+      "sourceOptions": [
+        "None",
+        "Safe — cash only",
+        "Safe — cash and small tools",
+        "Security cage for high value stock",
+        "Strong room"
+      ],
+      "stages": [
+        "Commercial Combined:step-5"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "None"
+        },
+        {
+          "value": 2,
+          "label": "Safe — cash only"
+        },
+        {
+          "value": 3,
+          "label": "Safe — cash and small tools"
+        },
+        {
+          "value": 4,
+          "label": "Security cage for high value stock"
+        },
+        {
+          "value": 5,
+          "label": "Strong room"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.97735e54bc94",
+      "label": "Other protections",
+      "kind": "reference",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-97735e54bc94",
+      "sourceOptions": [
+        "None",
+        "CCTV, recorded locally",
+        "CCTV, monitored",
+        "Perimeter fencing and gates",
+        "Manned guarding out of hours"
+      ],
+      "stages": [
+        "Commercial Combined:step-5"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "None"
+        },
+        {
+          "value": 2,
+          "label": "CCTV, recorded locally"
+        },
+        {
+          "value": 3,
+          "label": "CCTV, monitored"
+        },
+        {
+          "value": 4,
+          "label": "Perimeter fencing and gates"
+        },
+        {
+          "value": 5,
+          "label": "Manned guarding out of hours"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.cf8731449193",
+      "label": "Fire protections installed",
+      "kind": "reference",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-cf8731449193",
+      "sourceOptions": [
+        "Extinguishers only",
+        "Extinguishers and hose reels",
+        "Sprinklers throughout",
+        "Sprinklers in part",
+        "None"
+      ],
+      "stages": [
+        "Commercial Combined:step-5"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Extinguishers only"
+        },
+        {
+          "value": 2,
+          "label": "Extinguishers and hose reels"
+        },
+        {
+          "value": 3,
+          "label": "Sprinklers throughout"
+        },
+        {
+          "value": 4,
+          "label": "Sprinklers in part"
+        },
+        {
+          "value": 5,
+          "label": "None"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.3940cae87dfb",
+      "label": "Electrical installation inspected within the last 5 years",
+      "kind": "reference",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-3940cae87dfb",
+      "sourceOptions": [
+        "Not confirmed",
+        "Confirmed"
+      ],
+      "stages": [
+        "Commercial Combined:step-5"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Not confirmed"
+        },
+        {
+          "value": 2,
+          "label": "Confirmed"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.9608e47f7b80",
+      "label": "All C1 and C2 defects rectified",
+      "kind": "reference",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-9608e47f7b80",
+      "sourceOptions": [
+        "Yes",
+        "No",
+        "Not applicable"
+      ],
+      "stages": [
+        "Commercial Combined:step-5"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Yes"
+        },
+        {
+          "value": 2,
+          "label": "No"
+        },
+        {
+          "value": 3,
+          "label": "Not applicable"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.eb37b8814a01",
+      "label": "Heating linked to a thermostat activating below 6°C",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-eb37b8814a01",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "stages": [
+        "Commercial Combined:step-5"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.575bf422116e",
+      "label": "All water tanks, apparatus and pipes fully lagged",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-575bf422116e",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "stages": [
+        "Commercial Combined:step-5"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.baae85efce04",
+      "label": "Buildings wind and weather proof and in good repair",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-baae85efce04",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "stages": [
+        "Commercial Combined:step-5"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.48f5d2ed7ce2",
+      "label": "Buildings structurally altered or extended",
+      "kind": "reference",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-48f5d2ed7ce2",
+      "sourceOptions": [
+        "No",
+        "Yes — within 20 years",
+        "Yes — over 20 years ago"
+      ],
+      "stages": [
+        "Commercial Combined:step-5"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "No"
+        },
+        {
+          "value": 2,
+          "label": "Yes — within 20 years"
+        },
+        {
+          "value": 3,
+          "label": "Yes — over 20 years ago"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.ade0f3f0df5e",
+      "label": "Flood at a location, or within 250 metres, at any time",
+      "kind": "reference",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-ade0f3f0df5e",
+      "sourceOptions": [
+        "No",
+        "Yes — at the location",
+        "Yes — within 250 metres"
+      ],
+      "stages": [
+        "Commercial Combined:step-6"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "No"
+        },
+        {
+          "value": 2,
+          "label": "Yes — at the location"
+        },
+        {
+          "value": 3,
+          "label": "Yes — within 250 metres"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.c08c9ebaf825",
+      "label": "Rivers, streams, tidal waters or watercourses within 250 metres",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-c08c9ebaf825",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.a6ff9fdbe769",
+      "label": "Advised that a location is in a potential flood risk area",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-a6ff9fdbe769",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.04b74c2e0a69",
+      "label": "Flood defences or mitigation in place",
+      "kind": "reference",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-04b74c2e0a69",
+      "sourceOptions": [
+        "None",
+        "Door barriers",
+        "Non-return valves",
+        "Raised stock storage",
+        "Permanent flood wall"
+      ],
+      "stages": [
+        "Commercial Combined:step-6"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "None"
+        },
+        {
+          "value": 2,
+          "label": "Door barriers"
+        },
+        {
+          "value": 3,
+          "label": "Non-return valves"
+        },
+        {
+          "value": 4,
+          "label": "Raised stock storage"
+        },
+        {
+          "value": 5,
+          "label": "Permanent flood wall"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.9922d03ca861",
+      "label": "Stock stored above floor level",
+      "kind": "reference",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-9922d03ca861",
+      "sourceOptions": [
+        "No",
+        "Yes — above 150mm",
+        "Yes — above 600mm"
+      ],
+      "stages": [
+        "Commercial Combined:step-6"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "No"
+        },
+        {
+          "value": 2,
+          "label": "Yes — above 150mm"
+        },
+        {
+          "value": 3,
+          "label": "Yes — above 600mm"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.be47c08f530f",
+      "label": "Subsidence, ground heave or landslip cover requested",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-be47c08f530f",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.aaccb5c97c33",
+      "label": "Any signs of damage attributable to subsidence, heave or landslip",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-aaccb5c97c33",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.8293bc041f81",
+      "label": "Any building monitored, or previously monitored, for movement",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-8293bc041f81",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.02d9c6be528a",
+      "label": "Ever the subject of a survey mentioning settlement or movement",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-02d9c6be528a",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.a6a4579c177e",
+      "label": "Ever flooded from broken drains, or extensive drainage problems in 10 years",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-a6a4579c177e",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.7a732bc99a5f",
+      "label": "Trees or shrubs over 10 feet tall within 20 feet of any building",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-7a732bc99a5f",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.fcc7e22c33ea",
+      "label": "Any neighbouring property subject to subsidence, heave or landslip",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-fcc7e22c33ea",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.923e600eb3a4",
+      "label": "Subject to any river or coastal erosion",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-923e600eb3a4",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.4aa3e214f046",
+      "label": "Buildings basis",
+      "kind": "reference",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-4aa3e214f046",
+      "sourceOptions": [
+        "Reinstatement",
+        "Indemnity",
+        "Day one reinstatement"
+      ],
+      "stages": [
+        "Commercial Combined:step-7"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Reinstatement"
+        },
+        {
+          "value": 2,
+          "label": "Indemnity"
+        },
+        {
+          "value": 3,
+          "label": "Day one reinstatement"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.50189a73c61c",
+      "label": "Stock basis",
+      "kind": "reference",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-50189a73c61c",
+      "sourceOptions": [
+        "Declared value",
+        "Monthly declaration",
+        "Average stock at risk"
+      ],
+      "stages": [
+        "Commercial Combined:step-7"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Declared value"
+        },
+        {
+          "value": 2,
+          "label": "Monthly declaration"
+        },
+        {
+          "value": 3,
+          "label": "Average stock at risk"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.0ea28064aade",
+      "label": "Index linking",
+      "kind": "boolean",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-0ea28064aade",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "stages": [
+        "Commercial Combined:step-7"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.480819d83a08",
+      "label": "Goods in transit",
+      "kind": "reference",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-480819d83a08",
+      "sourceOptions": [
+        "Not required",
+        "£5,000 any one load",
+        "£10,000 any one load",
+        "£25,000 any one load"
+      ],
+      "stages": [
+        "Commercial Combined:step-7"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Not required"
+        },
+        {
+          "value": 2,
+          "label": "£5,000 any one load"
+        },
+        {
+          "value": 3,
+          "label": "£10,000 any one load"
+        },
+        {
+          "value": 4,
+          "label": "£25,000 any one load"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.c8c59a389166",
+      "label": "Money — cash on premises in business hours",
+      "kind": "reference",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-c8c59a389166",
+      "sourceOptions": [
+        "Not required",
+        "£1,000",
+        "£2,500",
+        "£5,000"
+      ],
+      "stages": [
+        "Commercial Combined:step-7"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Not required"
+        },
+        {
+          "value": 2,
+          "label": "£1,000"
+        },
+        {
+          "value": 3,
+          "label": "£2,500"
+        },
+        {
+          "value": 4,
+          "label": "£5,000"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.1638a58efb48",
+      "label": "Glass",
+      "kind": "reference",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-1638a58efb48",
+      "sourceOptions": [
+        "Included",
+        "Excluded",
+        "Specified only"
+      ],
+      "stages": [
+        "Commercial Combined:step-7"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Included"
+        },
+        {
+          "value": 2,
+          "label": "Excluded"
+        },
+        {
+          "value": 3,
+          "label": "Specified only"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.d9c260f19d59",
+      "label": "Theft cover basis",
+      "kind": "reference",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-d9c260f19d59",
+      "sourceOptions": [
+        "Forcible and violent entry",
+        "Full theft including hold-up",
+        "Excluded"
+      ],
+      "stages": [
+        "Commercial Combined:step-7"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Forcible and violent entry"
+        },
+        {
+          "value": 2,
+          "label": "Full theft including hold-up"
+        },
+        {
+          "value": 3,
+          "label": "Excluded"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.7660fc5eb42e",
+      "label": "Business interruption required",
+      "kind": "boolean",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-7660fc5eb42e",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "stages": [
+        "Commercial Combined:step-7"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.7bd824326d4c",
+      "label": "Time excess",
+      "kind": "reference",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-7bd824326d4c",
+      "sourceOptions": [
+        "None",
+        "24 hours",
+        "48 hours",
+        "72 hours"
+      ],
+      "stages": [
+        "Commercial Combined:step-7"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "None"
+        },
+        {
+          "value": 2,
+          "label": "24 hours"
+        },
+        {
+          "value": 3,
+          "label": "48 hours"
+        },
+        {
+          "value": 4,
+          "label": "72 hours"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.9b4688f28580",
+      "label": "Suppliers or customers extension",
+      "kind": "reference",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-9b4688f28580",
+      "sourceOptions": [
+        "Not required",
+        "Unspecified suppliers",
+        "Named suppliers",
+        "Named customers"
+      ],
+      "stages": [
+        "Commercial Combined:step-7"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Not required"
+        },
+        {
+          "value": 2,
+          "label": "Unspecified suppliers"
+        },
+        {
+          "value": 3,
+          "label": "Named suppliers"
+        },
+        {
+          "value": 4,
+          "label": "Named customers"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.72cb884b6df1",
+      "label": "Reliance on any single customer above 25% of turnover",
+      "kind": "boolean",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-72cb884b6df1",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-7"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.a2f1dd35162a",
+      "label": "Denial of access extension",
+      "kind": "reference",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-a2f1dd35162a",
+      "sourceOptions": [
+        "Not required",
+        "Required"
+      ],
+      "stages": [
+        "Commercial Combined:step-7"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Not required"
+        },
+        {
+          "value": 2,
+          "label": "Required"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.ab908171e40b",
+      "label": "Loss of attraction extension",
+      "kind": "reference",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-ab908171e40b",
+      "sourceOptions": [
+        "Not required",
+        "Required"
+      ],
+      "stages": [
+        "Commercial Combined:step-7"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Not required"
+        },
+        {
+          "value": 2,
+          "label": "Required"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.901a02ca4441",
+      "label": "Any work performed away from own premises, excluding collection and delivery",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-901a02ca4441",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-8"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.8cc83c3a006f",
+      "label": "Any work involving the use of heat away from own premises",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-8cc83c3a006f",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-8"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.185df2844c76",
+      "label": "Any work at height above 2 metres",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-185df2844c76",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-8"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.ed8870d17328",
+      "label": "Work at refineries, offshore, aviation, railways or airports",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-ed8870d17328",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Commercial Combined:step-8"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.c329b4c60f47",
+      "label": "All products sourced within the EU, Australia, USA or Canada",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-c329b4c60f47",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "stages": [
+        "Commercial Combined:step-8"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.831e903a8f35",
+      "label": "Business conforms to the Health and Safety at Work Act 1974",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-831e903a8f35",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "stages": [
+        "Commercial Combined:step-9"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.f538427148cf",
+      "label": "Formal written health and safety policy",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-f538427148cf",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "stages": [
+        "Commercial Combined:step-9"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.102cb08b7d6d",
+      "label": "Nominated person responsible for health and safety",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-102cb08b7d6d",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "stages": [
+        "Commercial Combined:step-9"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.3d43cf2d782f",
+      "label": "Documented induction and refresher training programme",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-3d43cf2d782f",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "stages": [
+        "Commercial Combined:step-9"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.66437482d634",
+      "label": "Risk assessments carried out and documented",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-66437482d634",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "stages": [
+        "Commercial Combined:step-9"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.00fa2758dd8c",
+      "label": "Actions arising from risk assessments completed",
+      "kind": "reference",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-00fa2758dd8c",
+      "sourceOptions": [
+        "Yes",
+        "No",
+        "Some outstanding"
+      ],
+      "stages": [
+        "Commercial Combined:step-9"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Yes"
+        },
+        {
+          "value": 2,
+          "label": "No"
+        },
+        {
+          "value": 3,
+          "label": "Some outstanding"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.6d9a54d9e464",
+      "label": "Plant guarded, maintained and inspected to statutory requirements",
+      "kind": "reference",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-6d9a54d9e464",
+      "sourceOptions": [
+        "Yes",
+        "No",
+        "Not applicable"
+      ],
+      "stages": [
+        "Commercial Combined:step-9"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Yes"
+        },
+        {
+          "value": 2,
+          "label": "No"
+        },
+        {
+          "value": 3,
+          "label": "Not applicable"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.a5994aa6ce31",
+      "label": "Personal protective equipment provided to all employees",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-a5994aa6ce31",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "stages": [
+        "Commercial Combined:step-9"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.956ebc71fded",
+      "label": "Employees sign for PPE and its use is enforced",
+      "kind": "reference",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-956ebc71fded",
+      "sourceOptions": [
+        "Yes",
+        "No",
+        "Signed but not enforced"
+      ],
+      "stages": [
+        "Commercial Combined:step-9"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Yes"
+        },
+        {
+          "value": 2,
+          "label": "No"
+        },
+        {
+          "value": 3,
+          "label": "Signed but not enforced"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.796bcb8ff723",
+      "label": "Accident details recorded and maintained",
+      "kind": "boolean",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-796bcb8ff723",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "stages": [
+        "Commercial Combined:step-9"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.992fa2724da2",
+      "label": "Sub-contractors hold insurance indemnifying the proposer as principal",
+      "kind": "reference",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-992fa2724da2",
+      "sourceOptions": [
+        "Yes",
+        "No",
+        "No sub-contractors used"
+      ],
+      "stages": [
+        "Commercial Combined:step-9"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Yes"
+        },
+        {
+          "value": 2,
+          "label": "No"
+        },
+        {
+          "value": 3,
+          "label": "No sub-contractors used"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.ca115cf242f7",
+      "label": "Risk assessments documented for work away from own premises",
+      "kind": "reference",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-ca115cf242f7",
+      "sourceOptions": [
+        "Yes",
+        "No",
+        "No work away"
+      ],
+      "stages": [
+        "Commercial Combined:step-9"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Yes"
+        },
+        {
+          "value": 2,
+          "label": "No"
+        },
+        {
+          "value": 3,
+          "label": "No work away"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.978fde66afb5",
+      "label": "Recommendations made by the health and safety executive or an inspector",
+      "kind": "reference",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-978fde66afb5",
+      "sourceOptions": [
+        "No",
+        "Yes — all completed",
+        "Yes — some outstanding"
+      ],
+      "stages": [
+        "Commercial Combined:step-9"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "No"
+        },
+        {
+          "value": 2,
+          "label": "Yes — all completed"
+        },
+        {
+          "value": 3,
+          "label": "Yes — some outstanding"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.17b8e4af6aef",
+      "label": "Property damage excess",
+      "kind": "reference",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-17b8e4af6aef",
+      "sourceOptions": [
+        "£250",
+        "£500",
+        "£1,000",
+        "£2,500",
+        "£5,000"
+      ],
+      "stages": [
+        "Commercial Combined:step-10"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "£250"
+        },
+        {
+          "value": 2,
+          "label": "£500"
+        },
+        {
+          "value": 3,
+          "label": "£1,000"
+        },
+        {
+          "value": 4,
+          "label": "£2,500"
+        },
+        {
+          "value": 5,
+          "label": "£5,000"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.6517b7cd5c04",
+      "label": "Escape of water excess",
+      "kind": "reference",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-6517b7cd5c04",
+      "sourceOptions": [
+        "£1,000",
+        "£2,500",
+        "£5,000"
+      ],
+      "stages": [
+        "Commercial Combined:step-10"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "£1,000"
+        },
+        {
+          "value": 2,
+          "label": "£2,500"
+        },
+        {
+          "value": 3,
+          "label": "£5,000"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "questionId": "prototype.quote.4a288359be03",
+      "label": "Subsidence excess",
+      "kind": "reference",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-4a288359be03",
+      "sourceOptions": [
+        "Not applicable",
+        "£1,000",
+        "£2,500",
+        "£5,000"
+      ],
+      "stages": [
+        "Commercial Combined:step-10"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Not applicable"
+        },
+        {
+          "value": 2,
+          "label": "£1,000"
+        },
+        {
+          "value": 3,
+          "label": "£2,500"
+        },
+        {
+          "value": 4,
+          "label": "£5,000"
+        }
+      ],
+      "requiredWhenApplicable": true
+    }
+  ]
+}

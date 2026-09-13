@@ -55,6 +55,32 @@
         },
         "address": {
           "$ref": "#/$defs/Address"
+        },
+        "proposerNames": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "minItems": 1,
+          "maxItems": 1000
+        },
+        "contact": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "telephone": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 50
+            },
+            "email": {
+              "type": "string",
+              "format": "email"
+            }
+          },
+          "required": []
         }
       },
       "required": [
@@ -1183,7 +1209,8 @@
               "enum": [
                 "gross-profit",
                 "gross-revenue",
-                "increased-cost"
+                "increased-cost",
+                "estimated-gross-profit"
               ]
             },
             "sumInsured": {

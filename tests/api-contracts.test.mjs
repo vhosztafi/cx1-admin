@@ -133,7 +133,8 @@ test('reviewed agency option meanings match prototype choices and actual DTO enu
 });
 test('reviewed detail bindings resolve to policy fields and categorical answers retain source detail',async()=>{
  const reviews=JSON.parse(await readFile(new URL('../docs/design/reviewed-api-controls.json',import.meta.url),'utf8'));
- const catalog=await read('examples/prototype-detail-questions.json');
+ const catalogs=await Promise.all(['prototype-detail-questions.json','prototype-quote-questions.json'].map(name=>read(`examples/${name}`)));
+ const catalog={questions:catalogs.flatMap(c=>c.questions)};
  const definitions=policy.$defs;
  const dereference=s=>s.$ref?.startsWith('#/$defs/')?definitions[s.$ref.split('/').at(-1)]:s;
  function fields(schema,name){
@@ -157,6 +158,20 @@ test('reviewed detail bindings resolve to policy fields and categorical answers 
  for(const q of catalog.questions){
   if(q.kind==='boolean')assert.ok(q.sourceOptions.every(option=>/^(Yes|No)(\b|$)/.test(option)),q.questionId);
   if(q.kind==='reference')assert.ok(q.sourceOptions.length>0,q.questionId);
+ }
+});
+test('quote question choices preserve the source options and stable categorical values',async()=>{
+ const catalog=await read('examples/prototype-quote-questions.json');
+ const source=JSON.parse(await readFile(new URL('../docs/design/source/prototype-render-data.json',import.meta.url),'utf8'));
+ const inventory=JSON.parse(await readFile(new URL('../docs/design/control-inventory.json',import.meta.url),'utf8'));
+ for(const question of catalog.questions){
+  const control=inventory.controls.find(c=>c.id===question.sourceControlId);
+  const variants=source.items.filter(item=>item.method===control.method&&item.path===control.path&&item.label===control.label&&item.options?.length);
+  assert.ok(variants.some(item=>JSON.stringify(item.options)===JSON.stringify(question.sourceOptions)),question.questionId);
+  if(question.kind==='reference'){
+   assert.deepEqual(question.referenceValues.map(v=>v.label),question.sourceOptions);
+   assert.equal(new Set(question.referenceValues.map(v=>v.value)).size,question.sourceOptions.length);
+  }
  }
 });
 test('servicing input bindings resolve to their actual command payload fields',async()=>{
