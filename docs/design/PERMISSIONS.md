@@ -2,6 +2,8 @@
 
 Default deny. Local authentication maps a stable User ID to roles, agency scope, team and authority. Never trust client-supplied role/agency/actor IDs. Future Entra subject mapping changes authentication, not domain policy. Server applies authorisation before returning records or calculating exports; hiding a button is not a security control.
 
+Foundation operational mapping: `integration-admin` is granted only to internal `system-admin`, with external agency identities denied. Development diagnostic creation uses that capability. A diagnostic job can be read by its creator; another creator's job requires integration administration and records an inspection audit. This does not grant access to business job subjects, finance posting or underwriting. Existing command receipts do not bypass current role checks.
+
 | Capability | Servicing | Underwriter | Senior UW | Agency admin (internal) | Finance | System admin | Broker identities |
 |---|---|---|---|---|---|---|---|
 | Scoped business read/search | Yes | Yes | Yes | Agency/client admin data | Finance-related data | Support access audited | Own agency, safe fields |

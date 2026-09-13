@@ -10,6 +10,7 @@ public sealed class ActorContextTests
     {
         var administrator=new ActorContext(Guid.NewGuid(),null,null,new HashSet<string> {"system-admin"});
         Assert.True(administrator.HasCapability("platform-admin"));
+        Assert.True(administrator.HasCapability("integration-admin"));
         Assert.False(administrator.HasCapability("finance"));
         Assert.False(administrator.HasCapability("client-servicing"));
         Assert.False(administrator.HasCapability("policy-issue-within-authority"));
@@ -20,6 +21,7 @@ public sealed class ActorContextTests
     {
         var external=new ActorContext(Guid.NewGuid(),null,Guid.NewGuid(),new HashSet<string> {"system-admin","finance"});
         Assert.False(external.HasCapability("platform-admin"));
+        Assert.False(external.HasCapability("integration-admin"));
         Assert.False(external.HasCapability("finance"));
         var internalActor=external with {AgencyId=null};
         Assert.False(internalActor.HasCapability("unknown"));

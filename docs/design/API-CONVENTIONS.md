@@ -53,6 +53,12 @@ Uploads accept bounded multipart file bytes and typed metadata, default maximum 
 
 Published product/configuration versions are immutable. Edit a draft, validate, approve where required, then publish with non-overlapping effective dates. Commands pin configuration identities in downstream results. Admin cannot submit executable script/templates. Matching, workflow, authority and rating rules use typed versioned rule structures with bounded operators.
 
+## Foundation diagnostic operation
+
+`POST /api/v1/admin/diagnostic-probes` is a Development-only operational endpoint, absent from production routing. It requires a current internal system administrator (`integration-admin`), CSRF and one 16–200 character `Idempotency-Key`. The exact body is `{scenario: "success" | "reject" | "fail-once" | "timeout-after-success"}`. Unknown properties and unsupported scenarios are rejected. It queues a fictional foundation probe, not a business transaction. Initialization supplies four versioned scenarios; the command pins the latest effective version and commits job, audit and replay receipt together. A 202 response contains a Job DTO and a `/api/v1/jobs/{id}` Location. Identical replay returns the original accepted response even when the worker has since advanced; poll Location for current status. Changed input under the same key returns 409. Current authorization is checked before replay.
+
+The foundation implementation of `GET /api/v1/jobs/{id}` exposes diagnostic jobs only, to their creator or an internal integration administrator. Inspection of another creator's job writes a redacted audit event before returning it. Missing/inaccessible/business job IDs return 404 until the owning feature implements subject scope. Responses contain only the documented Job fields and a rowversion ETag: no raw request/result, provider operation key, lease token, exception message or credentials. Unknown internal error codes map to `job-failed`. The successful result resource ID comes from a committed diagnostic receipt. Operational lists, settings editing and manual retry are separate implementations; this endpoint does not implicitly grant them.
+
 ## Contract verification
 
 OpenAPI 3.1.1 is chosen to share JSON Schema 2020-12 policy shapes. Validate the document, local references, unique operation IDs, schemas/examples, security declarations and control-to-operation mappings. Schema checks do not prove authorization, SQL locks or runtime OpenAPI conformance; feature phases require direct API and integration tests.

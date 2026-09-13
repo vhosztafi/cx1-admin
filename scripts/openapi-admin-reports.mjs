@@ -77,6 +77,7 @@ export function addAdminReportsApi({schemas:s,ref:r,text:t,enumeration:e,object:
  list('/admin/integrations','listIntegrationSettings','integration-admin',r('IntegrationSetting'));
  op('put','/admin/integrations/{integrationId}','updateIntegrationSetting','integration-admin',{existing:true,input:o({...Object.fromEntries(Object.entries(s.IntegrationSetting.properties).filter(([key])=>!['id','version'].includes(key))),reason:t(1000)}),output:r('IntegrationSetting')});
  list('/admin/jobs','listIntegrationJobs','integration-admin',r('Job'),[['state',s.Job.properties.state],['kind',s.Job.properties.kind]]);
+ op('post','/admin/diagnostic-probes','startDiagnosticProbe','integration-admin',{input:o({scenario:e('success','reject','fail-once','timeout-after-success')}),output:r('Job'),status:202,summary:'Development only: queue a persisted fictional foundation probe; absent from production HTTP'});
  list('/admin/audit','listAuditEvents','audit-read',r('AuditEvent'),[['actorId',id],['subjectRecordId',id],['from',instant],['to',instant],['eventType',t(100)]]);
  list('/admin/users','listUsers','user-admin',r('UserAdmin'),[['q',t()],['state',s.UserAdmin.properties.state]]);
  op('get','/admin/users/{userId}','getUser','user-admin',{output:r('UserAdmin')});
