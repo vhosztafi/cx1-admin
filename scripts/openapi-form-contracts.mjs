@@ -2,17 +2,25 @@ export function addFormContracts({schemas:s,ref:r,text:t,enumeration:e,object:o,
  const namedContact=o({name:t(),email:{type:'string',format:'email'},telephone:t(50)},[]);
  const optionalAddress=o(s.Address.properties,[]);
  const details={
-  tradingName:t(),entityType:e('limited-company','partnership','sole-trader','other'),companyNumber:t(30),tradingAddress:optionalAddress,
-  regulatoryStatus:e('directly-authorised','appointed-representative','pending'),principalFirm:t(),clientMoneyBasis:e('risk-transfer','client-money','no-client-money'),arrangesGeneralInsurance:b,territory:e('UK','UK-and-EEA','other'),
+  tradingName:t(),entityType:e('limited-company','llp','partnership','sole-trader'),companyNumber:t(30),tradingAddress:optionalAddress,
+  regulatoryStatus:e('directly-authorised','appointed-representative','introducer-appointed-representative'),principalFirm:t(),clientMoneyBasis:e('risk-transfer','cass5-client-money','no-client-money'),arrangesGeneralInsurance:b,territory:e('UK','UK-and-EEA','other'),
   complaintsContact:namedContact,relationshipManagerId:id,correspondencePreference:e('email','post','both'),officeHours:t(200),
-  commercialTerms:o({effectiveFrom:date,commissionBasis:e('gross-written-premium','net-premium'),feeShareBasisPoints:{type:'integer',minimum:0,maximum:10000},volumeCommitment:decimal,minimumPremiumOverride:decimal,referralRouting:e('underwriting-team','relationship-manager')},[]),
+  commercialTerms:o({effectiveFrom:date,commissionBasis:e('per-product','flat-rate'),flatCommissionBasisPoints:{type:'integer',minimum:0,maximum:10000},feeShareBasisPoints:{type:'integer',minimum:0,maximum:10000},volumeCommitment:decimal,minimumPremiumOverride:decimal,referralRouting:e('underwriting-team','relationship-manager')},[]),
   compliance:o({tobaStatus:e('not-sent','sent','signed'),tobaVersion:t(100),tobaSignedOn:date,professionalIndemnityLimit:decimal,piExpiresOn:date,financialStanding:e('not-started','pending','passed','failed'),sanctionsCheck:e('not-started','pending','clear','refer'),beneficialOwnershipVerified:b,dataProcessingAgreement:e('not-sent','sent','signed'),evidenceIds:a(id)},[]),
   settlement:o({statementCycle:e('monthly','fortnightly'),method:e('bank-transfer','direct-debit'),premiumCollection:e('agency','mga'),commissionSettlement:e('net-remittance','separate-payment')},[])
  };
  Object.assign(s.AgencyWrite.properties,details);
+ s.ClientWrite.properties.entityType=e('sole-trader','partnership','limited-company','llp');
+ s.Client.properties.entityType=s.ClientWrite.properties.entityType;
  s.AgencyWrite.properties.address=optionalAddress;
  for(const key of ['mainContact','complianceContact','accountsContact'])s.AgencyWrite.properties[key]=namedContact;
  op('post','/agencies/{agencyId}/validate','validateAgency','agency-admin',{existing:true,output:r('ValidationResult')});
+ s.AgencyTermsRequest=o({id,agencyId:id,requestedBy:id,approvedBy:id,state:e('pending','approved','rejected','applied'),effectiveFrom:date,reason:t(1000),commercialTerms:details.commercialTerms,products:a(r('AgencyProduct'))},['id','agencyId','requestedBy','state','effectiveFrom','reason','commercialTerms','products']);
+ op('post','/agencies/{agencyId}/terms-requests','requestAgencyTermsChange','agency-commercial-propose',{existing:true,input:o({effectiveFrom:date,reason:t(1000),commercialTerms:details.commercialTerms,products:a(r('AgencyProduct'))}),output:r('AgencyTermsRequest'),status:201});
+ op('get','/agency-terms-requests/{requestId}','getAgencyTermsRequest','agency-commercial-read',{output:r('AgencyTermsRequest')});
+ op('post','/agency-terms-requests/{requestId}/decision','decideAgencyTermsChange','agency-commercial-approve-no-self-approval',{existing:true,input:o({outcome:e('approve','reject'),reason:t(1000)}),output:r('AgencyTermsRequest')});
+ paths['/agencies/{agencyId}/products'].put.description+=' Only draft onboarding may use this replacement. Active agency commission/product changes require requestAgencyTermsChange and independent approval.';
+ paths['/agencies/{agencyId}'].put.description+=' Active agency commercial terms cannot change through this endpoint; reject with 409 agency-terms-approval-required.';
  // Incomplete incident saving is separate from validation/log/handoff gates.
  function partial(value){
   if(Array.isArray(value))return value.map(partial);

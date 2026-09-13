@@ -120,3 +120,14 @@ test('draft onboarding and incidents permit incomplete forms without weakening v
  assert.ok(incident(proposal));assert.equal(ajv.getSchema(`${rootId}#/$defs/IncidentWrite`)(proposal),false);
  assert.equal(incident({...proposal,occurredAt:'yesterday'}),false);
 });
+test('reviewed agency option meanings match prototype choices and actual DTO enums',async()=>{
+ const mappings=await read('examples/agency-option-mapping.json');
+ const rendered=JSON.parse(await readFile(new URL('../docs/design/source/prototype-render-data.json',import.meta.url),'utf8'));
+ const p=document.components.schemas.AgencyWrite.properties;
+ const targets={'Entity type':p.entityType,'Regulatory status':p.regulatoryStatus,'Client money basis':p.clientMoneyBasis,'Commission basis':p.commercialTerms.properties.commissionBasis,'Statement cycle':p.settlement.properties.statementCycle,'Premium collection':p.settlement.properties.premiumCollection,'Commission settlement':p.settlement.properties.commissionSettlement};
+ for(const [label,mapping] of Object.entries(mappings)){
+  const source=rendered.items.find(item=>item.method==='pNewAgency'&&item.label===label&&item.options?.length);
+  assert.ok(source,label);assert.deepEqual(Object.keys(mapping),source.options,label);
+  assert.deepEqual(new Set(Object.values(mapping)),new Set(targets[label].enum),label);
+ }
+});

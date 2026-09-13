@@ -1,0 +1,9 @@
+{
+ "Entity type":{"Limited company":"limited-company","LLP":"llp","Partnership":"partnership","Sole trader":"sole-trader"},
+ "Regulatory status":{"Directly authorised":"directly-authorised","Appointed representative":"appointed-representative","Introducer appointed representative":"introducer-appointed-representative"},
+ "Client money basis":{"Risk transfer only":"risk-transfer","Client money with CASS 5 trust account":"cass5-client-money","No client money held":"no-client-money"},
+ "Commission basis":{"Per product, as above":"per-product","Flat rate across all products":"flat-rate"},
+ "Statement cycle":{"Monthly":"monthly","Fortnightly":"fortnightly"},
+ "Premium collection":{"Agency collects from the insured":"agency","Cover MGA collects direct":"mga"},
+ "Commission settlement":{"Net of commission on statement":"net-remittance","Paid separately":"separate-payment"}
+}
