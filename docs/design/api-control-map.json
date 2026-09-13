@@ -1,6 +1,6 @@
 {
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
-  "reviewed": 448,
+  "reviewed": 515,
   "total": 949,
   "complete": false,
   "controls": [
@@ -992,9 +992,18 @@
       "label": "Effective date (all changes)",
       "requirement": "POL-04",
       "acceptanceId": "AT-a5cbae9b8992",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "apiFields": [
+        {
+          "operationId": "savePolicyDraft",
+          "field": "effectiveAt"
+        }
+      ],
+      "reason": "Change timing and requestor are persisted with the lease/ETag; schedule timing changes invalidate rating and acceptance."
     },
     {
       "controlId": "CTL-60ada0e23106",
@@ -1002,9 +1011,18 @@
       "label": "Date basis",
       "requirement": "POL-04",
       "acceptanceId": "AT-60ada0e23106",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "apiFields": [
+        {
+          "operationId": "savePolicyDraft",
+          "field": "dateBasis"
+        }
+      ],
+      "reason": "Change timing and requestor are persisted with the lease/ETag; schedule timing changes invalidate rating and acceptance."
     },
     {
       "controlId": "CTL-37837fb0eb28",
@@ -1012,9 +1030,18 @@
       "label": "Requested by",
       "requirement": "POL-04",
       "acceptanceId": "AT-37837fb0eb28",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "apiFields": [
+        {
+          "operationId": "savePolicyDraft",
+          "field": "requestedBy"
+        }
+      ],
+      "reason": "Change timing and requestor are persisted with the lease/ETag; schedule timing changes invalidate rating and acceptance."
     },
     {
       "controlId": "CTL-f3fb94ad182a",
@@ -2823,9 +2850,18 @@
       "label": "Add comment",
       "requirement": "OPS-01",
       "acceptanceId": "AT-b1917d871627",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "addNote"
+      ],
+      "apiFields": [
+        {
+          "operationId": "addNote",
+          "field": "body"
+        }
+      ],
+      "reason": "Comment composer has onSend as well as onChange; explicit send saves an internal task note and rejects blank content."
     },
     {
       "controlId": "CTL-083355dcd818",
@@ -2873,9 +2909,18 @@
       "label": "Owner",
       "requirement": "OPS-01",
       "acceptanceId": "AT-340623a67370",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "updateTask"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateTask",
+          "field": "ownerId"
+        }
+      ],
+      "reason": "Selected owner and due instant save under task ETag and assignment scope."
     },
     {
       "controlId": "CTL-d3cef2ca0552",
@@ -2883,9 +2928,18 @@
       "label": "Due date",
       "requirement": "OPS-01",
       "acceptanceId": "AT-d3cef2ca0552",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "updateTask"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateTask",
+          "field": "dueAt"
+        }
+      ],
+      "reason": "Selected owner and due instant save under task ETag and assignment scope."
     },
     {
       "controlId": "CTL-bb257a94cac5",
@@ -2893,9 +2947,18 @@
       "label": "Status",
       "requirement": "OPS-01",
       "acceptanceId": "AT-bb257a94cac5",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "transitionTask"
+      ],
+      "apiFields": [
+        {
+          "operationId": "transitionTask",
+          "field": "state"
+        }
+      ],
+      "reason": "Changing status is an explicit lifecycle command with reason/checklist gates, not a generic task write."
     },
     {
       "controlId": "CTL-19d3f582abf2",
@@ -4611,9 +4674,9 @@
       "status": "reviewed",
       "disposition": "command",
       "operationIds": [
-        "requestOwnIdentityChange"
+        "requestAccountAdminChange"
       ],
-      "reason": "Request own email change for independent administrator approval."
+      "reason": "Generic account-change request supports email, role/team or authority routing; submitting it does not grant requested access."
     },
     {
       "controlId": "CTL-e9ca9b8ddf5f",
@@ -4621,9 +4684,18 @@
       "label": "Full name",
       "requirement": "ADM-05",
       "acceptanceId": "AT-e9ca9b8ddf5f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "updateProfile"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateProfile",
+          "field": "fullName"
+        }
+      ],
+      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
     },
     {
       "controlId": "CTL-fb7fd0380a0e",
@@ -4631,9 +4703,18 @@
       "label": "Display name",
       "requirement": "ADM-05",
       "acceptanceId": "AT-fb7fd0380a0e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "updateProfile"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateProfile",
+          "field": "displayName"
+        }
+      ],
+      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
     },
     {
       "controlId": "CTL-ae3dc91658bf",
@@ -4641,9 +4722,18 @@
       "label": "Contact number",
       "requirement": "ADM-05",
       "acceptanceId": "AT-ae3dc91658bf",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "updateProfile"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateProfile",
+          "field": "telephone"
+        }
+      ],
+      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
     },
     {
       "controlId": "CTL-6fa068333beb",
@@ -4651,9 +4741,18 @@
       "label": "Job title",
       "requirement": "ADM-05",
       "acceptanceId": "AT-6fa068333beb",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "updateProfile"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateProfile",
+          "field": "jobTitle"
+        }
+      ],
+      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
     },
     {
       "controlId": "CTL-a6317a500517",
@@ -4661,9 +4760,18 @@
       "label": "Out of office",
       "requirement": "ADM-05",
       "acceptanceId": "AT-a6317a500517",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "updateProfile"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateProfile",
+          "field": "outOfOffice"
+        }
+      ],
+      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
     },
     {
       "controlId": "CTL-10bc9f0e6f7c",
@@ -4671,9 +4779,18 @@
       "label": "Task digest",
       "requirement": "ADM-05",
       "acceptanceId": "AT-10bc9f0e6f7c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "updateProfile"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateProfile",
+          "field": "taskDigest"
+        }
+      ],
+      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
     },
     {
       "controlId": "CTL-04e58a7717f8",
@@ -4746,9 +4863,18 @@
       "label": "Current password",
       "requirement": "ADM-05",
       "acceptanceId": "AT-664235c9a920",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "changePassword"
+      ],
+      "apiFields": [
+        {
+          "operationId": "changePassword",
+          "field": "currentPassword"
+        }
+      ],
+      "reason": "Password input remains transient; explicit command uses framework verification/history and never caches secrets."
     },
     {
       "controlId": "CTL-1ca7dc6c8e73",
@@ -4756,9 +4882,18 @@
       "label": "New password",
       "requirement": "ADM-05",
       "acceptanceId": "AT-1ca7dc6c8e73",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "changePassword"
+      ],
+      "apiFields": [
+        {
+          "operationId": "changePassword",
+          "field": "newPassword"
+        }
+      ],
+      "reason": "Password input remains transient; explicit command uses framework verification/history and never caches secrets."
     },
     {
       "controlId": "CTL-84a03cc130a7",
@@ -4766,9 +4901,10 @@
       "label": "Confirm new password",
       "requirement": "ADM-05",
       "acceptanceId": "AT-84a03cc130a7",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "New-password confirmation is a transient equality check; only the actual password is submitted and server policy remains authoritative."
     },
     {
       "controlId": "CTL-8bb02d6fe5ae",
@@ -5209,9 +5345,12 @@
       "label": "Show the policy as at",
       "requirement": "POL-05",
       "acceptanceId": "AT-6e2b2ebf7bc6",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "read",
+      "operationIds": [
+        "getPolicyAsAt"
+      ],
+      "reason": "Effective-date selector sets effectiveAt; process-basis uses knownAt with E=K unless user explicitly supplies both."
     },
     {
       "controlId": "CTL-ff9e226baf10",
@@ -5219,9 +5358,10 @@
       "label": "Include draft transactions",
       "requirement": "POL-05",
       "acceptanceId": "AT-ff9e226baf10",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "The source offers only No for draft inclusion; render a fixed explanation. Drafts never enter issued as-at results."
     },
     {
       "controlId": "CTL-d27b77003a60",
@@ -5229,9 +5369,12 @@
       "label": "Basis",
       "requirement": "POL-05",
       "acceptanceId": "AT-d27b77003a60",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "read",
+      "operationIds": [
+        "getPolicyAsAt"
+      ],
+      "reason": "Basis controls conversion to effectiveAt/knownAt query semantics, not a stored policy mutation."
     },
     {
       "controlId": "CTL-f3387357521c",
@@ -5281,9 +5424,18 @@
       "label": "Submit referral",
       "requirement": "UWR-03",
       "acceptanceId": "AT-4aa26265290c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "sendEscalation"
+      ],
+      "apiFields": [
+        {
+          "operationId": "sendEscalation",
+          "field": "body"
+        }
+      ],
+      "reason": "Composer text is sent explicitly via its onSend handler; pin referral revision, provider and attachments."
     },
     {
       "controlId": "CTL-7aed007d8279",
@@ -6241,9 +6393,18 @@
       "label": "Cancellation reason",
       "requirement": "POL-09",
       "acceptanceId": "AT-bdb6e9ab15e0",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "apiFields": [
+        {
+          "operationId": "savePolicyDraft",
+          "field": "cancellationReasonCode"
+        }
+      ],
+      "reason": "Cancellation modal retains a structured reason selection and separate audit detail in command intent; neither control issues cancellation."
     },
     {
       "controlId": "CTL-c6ed3365f90b",
@@ -6251,9 +6412,18 @@
       "label": "Effective date",
       "requirement": "POL-09",
       "acceptanceId": "AT-c6ed3365f90b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "apiFields": [
+        {
+          "operationId": "savePolicyDraft",
+          "field": "effectiveAt"
+        }
+      ],
+      "reason": "Cancellation modal retains a structured reason selection and separate audit detail in command intent; neither control issues cancellation."
     },
     {
       "controlId": "CTL-9c276d4c11eb",
@@ -6261,9 +6431,18 @@
       "label": "Notes for audit trail",
       "requirement": "POL-09",
       "acceptanceId": "AT-9c276d4c11eb",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "apiFields": [
+        {
+          "operationId": "savePolicyDraft",
+          "field": "reason"
+        }
+      ],
+      "reason": "Cancellation modal retains a structured reason selection and separate audit detail in command intent; neither control issues cancellation."
     },
     {
       "controlId": "CTL-10248c38843b",
@@ -6284,9 +6463,18 @@
       "label": "Task type",
       "requirement": "OPS-01",
       "acceptanceId": "AT-912fdd744a9d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createTask"
+      ],
+      "apiFields": [
+        {
+          "operationId": "createTask",
+          "field": "typeCode"
+        }
+      ],
+      "reason": "Task modal values save only on confirmation with an authorised typed parent."
     },
     {
       "controlId": "CTL-deb1c93c9380",
@@ -6294,9 +6482,18 @@
       "label": "Title",
       "requirement": "OPS-01",
       "acceptanceId": "AT-deb1c93c9380",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createTask"
+      ],
+      "apiFields": [
+        {
+          "operationId": "createTask",
+          "field": "title"
+        }
+      ],
+      "reason": "Task modal values save only on confirmation with an authorised typed parent."
     },
     {
       "controlId": "CTL-3b92b95bf767",
@@ -6304,9 +6501,18 @@
       "label": "Assign to",
       "requirement": "OPS-01",
       "acceptanceId": "AT-3b92b95bf767",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createTask"
+      ],
+      "apiFields": [
+        {
+          "operationId": "createTask",
+          "field": "ownerId"
+        }
+      ],
+      "reason": "Task modal values save only on confirmation with an authorised typed parent."
     },
     {
       "controlId": "CTL-1244b13ffc62",
@@ -6314,9 +6520,18 @@
       "label": "Priority",
       "requirement": "OPS-01",
       "acceptanceId": "AT-1244b13ffc62",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createTask"
+      ],
+      "apiFields": [
+        {
+          "operationId": "createTask",
+          "field": "priority"
+        }
+      ],
+      "reason": "Task modal values save only on confirmation with an authorised typed parent."
     },
     {
       "controlId": "CTL-c1a4eed5f8d7",
@@ -6324,9 +6539,18 @@
       "label": "Due date",
       "requirement": "OPS-01",
       "acceptanceId": "AT-c1a4eed5f8d7",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createTask"
+      ],
+      "apiFields": [
+        {
+          "operationId": "createTask",
+          "field": "dueAt"
+        }
+      ],
+      "reason": "Task modal values save only on confirmation with an authorised typed parent."
     },
     {
       "controlId": "CTL-69897d577944",
@@ -6718,9 +6942,12 @@
       "label": "Driver",
       "requirement": "QUO-02",
       "acceptanceId": "AT-aba9e5f38f4e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "reason": "Driver selector chooses the stable parent driver ID for conviction or loss; never links by display-name equality."
     },
     {
       "controlId": "CTL-38011c457907",
@@ -8022,9 +8249,13 @@
       "label": "Full name",
       "requirement": "CLI-02",
       "acceptanceId": "AT-6cb19bd3e05c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createContact",
+        "inviteAgencyUser"
+      ],
+      "reason": "Shared full-name control belongs to contact or agency-invite context; use fullName for contact and displayName for invite without guessing surname."
     },
     {
       "controlId": "CTL-a824b6d082ef",
@@ -8032,9 +8263,18 @@
       "label": "Role",
       "requirement": "CLI-02",
       "acceptanceId": "AT-a824b6d082ef",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createContact"
+      ],
+      "apiFields": [
+        {
+          "operationId": "createContact",
+          "field": "role"
+        }
+      ],
+      "reason": "Agency-scoped contact values preserve primary uniqueness and distinct marketing consent channel/source."
     },
     {
       "controlId": "CTL-bbfeae72249c",
@@ -8042,9 +8282,18 @@
       "label": "Email",
       "requirement": "CLI-02",
       "acceptanceId": "AT-bbfeae72249c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createContact"
+      ],
+      "apiFields": [
+        {
+          "operationId": "createContact",
+          "field": "email"
+        }
+      ],
+      "reason": "Agency-scoped contact values preserve primary uniqueness and distinct marketing consent channel/source."
     },
     {
       "controlId": "CTL-768bb83c62f3",
@@ -8052,9 +8301,18 @@
       "label": "Telephone",
       "requirement": "CLI-02",
       "acceptanceId": "AT-768bb83c62f3",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createContact"
+      ],
+      "apiFields": [
+        {
+          "operationId": "createContact",
+          "field": "telephone"
+        }
+      ],
+      "reason": "Agency-scoped contact values preserve primary uniqueness and distinct marketing consent channel/source."
     },
     {
       "controlId": "CTL-af4438a7842d",
@@ -8062,9 +8320,18 @@
       "label": "Primary contact",
       "requirement": "CLI-02",
       "acceptanceId": "AT-af4438a7842d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createContact"
+      ],
+      "apiFields": [
+        {
+          "operationId": "createContact",
+          "field": "isPrimary"
+        }
+      ],
+      "reason": "Agency-scoped contact values preserve primary uniqueness and distinct marketing consent channel/source."
     },
     {
       "controlId": "CTL-44e8ab200a0e",
@@ -8072,9 +8339,18 @@
       "label": "Marketing consent",
       "requirement": "CLI-02",
       "acceptanceId": "AT-44e8ab200a0e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createContact"
+      ],
+      "apiFields": [
+        {
+          "operationId": "createContact",
+          "field": "marketingConsent"
+        }
+      ],
+      "reason": "Agency-scoped contact values preserve primary uniqueness and distinct marketing consent channel/source."
     },
     {
       "controlId": "CTL-12694b54dab5",
@@ -8095,9 +8371,18 @@
       "label": "Outcome",
       "requirement": "UWR-03",
       "acceptanceId": "AT-996063cc0f6f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "recordCapacityResponse"
+      ],
+      "apiFields": [
+        {
+          "operationId": "recordCapacityResponse",
+          "field": "outcome"
+        }
+      ],
+      "reason": "Provider outcome fields are recorded with evidence and received time; not treated as direct permission to issue."
     },
     {
       "controlId": "CTL-544b08dc9b9d",
@@ -8105,9 +8390,18 @@
       "label": "Their underwriter",
       "requirement": "UWR-03",
       "acceptanceId": "AT-544b08dc9b9d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "recordCapacityResponse"
+      ],
+      "apiFields": [
+        {
+          "operationId": "recordCapacityResponse",
+          "field": "providerUnderwriter"
+        }
+      ],
+      "reason": "Provider outcome fields are recorded with evidence and received time; not treated as direct permission to issue."
     },
     {
       "controlId": "CTL-4d20dd209c0d",
@@ -8115,9 +8409,18 @@
       "label": "Their reference",
       "requirement": "UWR-03",
       "acceptanceId": "AT-4d20dd209c0d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "recordCapacityResponse"
+      ],
+      "apiFields": [
+        {
+          "operationId": "recordCapacityResponse",
+          "field": "providerReference"
+        }
+      ],
+      "reason": "Provider outcome fields are recorded with evidence and received time; not treated as direct permission to issue."
     },
     {
       "controlId": "CTL-ae1b5b522c32",
@@ -8125,9 +8428,18 @@
       "label": "What they said",
       "requirement": "UWR-03",
       "acceptanceId": "AT-ae1b5b522c32",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "recordCapacityResponse"
+      ],
+      "apiFields": [
+        {
+          "operationId": "recordCapacityResponse",
+          "field": "body"
+        }
+      ],
+      "reason": "Provider outcome fields are recorded with evidence and received time; not treated as direct permission to issue."
     },
     {
       "controlId": "CTL-e7ea175c76d6",
@@ -8148,9 +8460,18 @@
       "label": "Email address",
       "requirement": "AGY-01",
       "acceptanceId": "AT-35c078b12b2f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "inviteAgencyUser"
+      ],
+      "apiFields": [
+        {
+          "operationId": "inviteAgencyUser",
+          "field": "email"
+        }
+      ],
+      "reason": "Onboarding invitation is agency-scoped and sends only when activation prerequisites hold."
     },
     {
       "controlId": "CTL-2b148516c13c",
@@ -8158,9 +8479,18 @@
       "label": "Role",
       "requirement": "AGY-01",
       "acceptanceId": "AT-2b148516c13c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "inviteAgencyUser"
+      ],
+      "apiFields": [
+        {
+          "operationId": "inviteAgencyUser",
+          "field": "role"
+        }
+      ],
+      "reason": "Onboarding invitation is agency-scoped and sends only when activation prerequisites hold."
     },
     {
       "controlId": "CTL-2843860a71f4",
@@ -8181,9 +8511,12 @@
       "label": "Contact",
       "requirement": "CLI-02",
       "acceptanceId": "AT-53fe844ca2f5",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createSupportFlag"
+      ],
+      "reason": "Contact choice resolves the person ID and current relationship in the endpoint path; no cross-agency person enumeration."
     },
     {
       "controlId": "CTL-fbf14ee7ae39",
@@ -8191,9 +8524,18 @@
       "label": "Flag type",
       "requirement": "CLI-02",
       "acceptanceId": "AT-fbf14ee7ae39",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createSupportFlag"
+      ],
+      "apiFields": [
+        {
+          "operationId": "createSupportFlag",
+          "field": "typeCode"
+        }
+      ],
+      "reason": "Flag modal stores restricted support evidence and separate safe wording; sharing remains explicit and excluded from rating."
     },
     {
       "controlId": "CTL-be8c44f83a57",
@@ -8201,9 +8543,18 @@
       "label": "Category",
       "requirement": "CLI-02",
       "acceptanceId": "AT-be8c44f83a57",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createSupportFlag"
+      ],
+      "apiFields": [
+        {
+          "operationId": "createSupportFlag",
+          "field": "internalCategory"
+        }
+      ],
+      "reason": "Flag modal stores restricted support evidence and separate safe wording; sharing remains explicit and excluded from rating."
     },
     {
       "controlId": "CTL-cdd26ca2bb50",
@@ -8211,9 +8562,18 @@
       "label": "Support need (internal)",
       "requirement": "CLI-02",
       "acceptanceId": "AT-cdd26ca2bb50",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createSupportFlag"
+      ],
+      "apiFields": [
+        {
+          "operationId": "createSupportFlag",
+          "field": "internalInstruction"
+        }
+      ],
+      "reason": "Flag modal stores restricted support evidence and separate safe wording; sharing remains explicit and excluded from rating."
     },
     {
       "controlId": "CTL-3d59fbcbb5d6",
@@ -8221,9 +8581,18 @@
       "label": "Shown to the agency",
       "requirement": "CLI-02",
       "acceptanceId": "AT-3d59fbcbb5d6",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createSupportFlag"
+      ],
+      "apiFields": [
+        {
+          "operationId": "createSupportFlag",
+          "field": "agencyInstruction"
+        }
+      ],
+      "reason": "Flag modal stores restricted support evidence and separate safe wording; sharing remains explicit and excluded from rating."
     },
     {
       "controlId": "CTL-737f31d19425",
@@ -8231,9 +8600,18 @@
       "label": "Consent to record",
       "requirement": "CLI-02",
       "acceptanceId": "AT-737f31d19425",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createSupportFlag"
+      ],
+      "apiFields": [
+        {
+          "operationId": "createSupportFlag",
+          "field": "consentBasis"
+        }
+      ],
+      "reason": "Flag modal stores restricted support evidence and separate safe wording; sharing remains explicit and excluded from rating."
     },
     {
       "controlId": "CTL-3aa3b6d10f6d",
@@ -8241,9 +8619,18 @@
       "label": "Review date",
       "requirement": "CLI-02",
       "acceptanceId": "AT-3aa3b6d10f6d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createSupportFlag"
+      ],
+      "apiFields": [
+        {
+          "operationId": "createSupportFlag",
+          "field": "reviewOn"
+        }
+      ],
+      "reason": "Flag modal stores restricted support evidence and separate safe wording; sharing remains explicit and excluded from rating."
     },
     {
       "controlId": "CTL-efe74f614e7d",
@@ -8251,9 +8638,18 @@
       "label": "Reason for recording",
       "requirement": "CLI-02",
       "acceptanceId": "AT-efe74f614e7d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "createSupportFlag"
+      ],
+      "apiFields": [
+        {
+          "operationId": "createSupportFlag",
+          "field": "reason"
+        }
+      ],
+      "reason": "Flag modal stores restricted support evidence and separate safe wording; sharing remains explicit and excluded from rating."
     },
     {
       "controlId": "CTL-e94274aa8d30",
@@ -8274,9 +8670,12 @@
       "label": "User",
       "requirement": "ADM-03",
       "acceptanceId": "AT-6024d631eea5",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "read",
+      "operationIds": [
+        "getUser"
+      ],
+      "reason": "Selected subject is the authorised target user ID for identity request; client input cannot select an inaccessible user."
     },
     {
       "controlId": "CTL-84ae08d2ace0",
@@ -8284,9 +8683,12 @@
       "label": "Current email",
       "requirement": "ADM-03",
       "acceptanceId": "AT-84ae08d2ace0",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "read",
+      "operationIds": [
+        "getUser"
+      ],
+      "reason": "Current email is read from server state and not trusted as proof or editable identity input."
     },
     {
       "controlId": "CTL-02d5a8374d81",
@@ -8294,9 +8696,18 @@
       "label": "New email address",
       "requirement": "ADM-03",
       "acceptanceId": "AT-02d5a8374d81",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "requestIdentityChange"
+      ],
+      "apiFields": [
+        {
+          "operationId": "requestIdentityChange",
+          "field": "newEmail"
+        }
+      ],
+      "reason": "Email-change proposal requires independent approval; routing approver is not proof of approval and required notifications cannot be suppressed."
     },
     {
       "controlId": "CTL-d8964d48425a",
@@ -8304,9 +8715,18 @@
       "label": "Second approver",
       "requirement": "ADM-03",
       "acceptanceId": "AT-d8964d48425a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "requestIdentityChange"
+      ],
+      "apiFields": [
+        {
+          "operationId": "requestIdentityChange",
+          "field": "requestedApproverId"
+        }
+      ],
+      "reason": "Email-change proposal requires independent approval; routing approver is not proof of approval and required notifications cannot be suppressed."
     },
     {
       "controlId": "CTL-50bae4c3910a",
@@ -8314,9 +8734,18 @@
       "label": "Notify the user",
       "requirement": "ADM-03",
       "acceptanceId": "AT-50bae4c3910a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "requestIdentityChange"
+      ],
+      "apiFields": [
+        {
+          "operationId": "requestIdentityChange",
+          "field": "notifyUser"
+        }
+      ],
+      "reason": "Email-change proposal requires independent approval; routing approver is not proof of approval and required notifications cannot be suppressed."
     },
     {
       "controlId": "CTL-dc47c1c54ea5",
@@ -8335,9 +8764,10 @@
       "label": "Codes",
       "requirement": "ADM-05",
       "acceptanceId": "AT-5ec6b96d9dd9",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "Codes are one-time secret display/copy state from successful generation, not an editable/persisted field."
     },
     {
       "controlId": "CTL-b18928254b6a",
@@ -8345,9 +8775,18 @@
       "label": "Confirm with your password",
       "requirement": "ADM-05",
       "acceptanceId": "AT-b18928254b6a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "replaceRecoveryCodes"
+      ],
+      "apiFields": [
+        {
+          "operationId": "replaceRecoveryCodes",
+          "field": "password"
+        }
+      ],
+      "reason": "Password is transient reauthentication for generating new codes; old plaintext codes cannot be retrieved."
     },
     {
       "controlId": "CTL-b88a29907695",
@@ -8368,9 +8807,18 @@
       "label": "Confirm with your password",
       "requirement": "ADM-05",
       "acceptanceId": "AT-1906c3818071",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "disableMfa"
+      ],
+      "apiFields": [
+        {
+          "operationId": "disableMfa",
+          "field": "password"
+        }
+      ],
+      "reason": "MFA disable requires verified password/code and role policy; never a client-side boolean toggle."
     },
     {
       "controlId": "CTL-ed9a5b84734d",
@@ -8378,9 +8826,18 @@
       "label": "Reason",
       "requirement": "ADM-05",
       "acceptanceId": "AT-ed9a5b84734d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "disableMfa"
+      ],
+      "apiFields": [
+        {
+          "operationId": "disableMfa",
+          "field": "reason"
+        }
+      ],
+      "reason": "MFA disable requires verified password/code and role policy; never a client-side boolean toggle."
     },
     {
       "controlId": "CTL-fd38a2890d20",
@@ -8401,9 +8858,12 @@
       "label": "Full name",
       "requirement": "POL-04",
       "acceptanceId": "AT-2be8051a493d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Driver fullName in proposed risk retains declared name without splitting or changing issued risk."
     },
     {
       "controlId": "CTL-006262166a6c",
@@ -8411,9 +8871,12 @@
       "label": "Date of birth",
       "requirement": "POL-04",
       "acceptanceId": "AT-006262166a6c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Driver dateOfBirth is an ISO date on selected stable draft driver."
     },
     {
       "controlId": "CTL-67729c63e82c",
@@ -8421,9 +8884,12 @@
       "label": "Licence type",
       "requirement": "POL-04",
       "acceptanceId": "AT-67729c63e82c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Driver licence.type is a versioned reference; data completeness differs from evidence verification."
     },
     {
       "controlId": "CTL-31515d181764",
@@ -8431,9 +8897,12 @@
       "label": "Licence number",
       "requirement": "POL-04",
       "acceptanceId": "AT-31515d181764",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Driver licence.number is retained on selected proposed risk, with restricted scope."
     },
     {
       "controlId": "CTL-48fcf50be539",
@@ -8441,9 +8910,12 @@
       "label": "Date of test",
       "requirement": "POL-04",
       "acceptanceId": "AT-48fcf50be539",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Driver licence.testDate is an ISO date checked against birth/inception; never accepts arbitrary text."
     },
     {
       "controlId": "CTL-3b28acf92b73",
@@ -8451,9 +8923,12 @@
       "label": "Claims in last 3 years",
       "requirement": "POL-04",
       "acceptanceId": "AT-3b28acf92b73",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Declared claims count is a typed driver question reconciled against detailed losses before rating."
     },
     {
       "controlId": "CTL-db8560576a23",
@@ -8475,9 +8950,13 @@
       "label": "Email address",
       "requirement": "AGY-01",
       "acceptanceId": "AT-2ae7c284ac04",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "inviteAgencyUser",
+        "inviteInternalUser"
+      ],
+      "reason": "Invite email routes according to authorised agency/internal context."
     },
     {
       "controlId": "CTL-0f97487577d1",
@@ -8485,9 +8964,13 @@
       "label": "Full name",
       "requirement": "AGY-01",
       "acceptanceId": "AT-0f97487577d1",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "inviteAgencyUser",
+        "inviteInternalUser"
+      ],
+      "reason": "Invite full name maps to initial displayName; user may later complete own profile."
     },
     {
       "controlId": "CTL-07f724941351",
@@ -8495,9 +8978,13 @@
       "label": "Role",
       "requirement": "AGY-01",
       "acceptanceId": "AT-07f724941351",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "inviteAgencyUser",
+        "inviteInternalUser"
+      ],
+      "reason": "Role selection uses endpoint-specific allowlist and prohibits mixing internal/agency access."
     },
     {
       "controlId": "CTL-cfab43a913ce",

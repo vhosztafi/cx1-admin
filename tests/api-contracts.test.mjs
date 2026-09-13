@@ -159,3 +159,14 @@ test('reviewed detail bindings resolve to policy fields and categorical answers 
   if(q.kind==='reference')assert.ok(q.sourceOptions.length>0,q.questionId);
  }
 });
+test('servicing input bindings resolve to their actual command payload fields',async()=>{
+ const rows=JSON.parse(await readFile(new URL('../docs/design/reviewed-api-controls.json',import.meta.url),'utf8'));
+ for(const row of rows)for(const binding of row.apiFields??[]){
+  let schema=getOperation(binding.operationId).requestBody.content['application/json'].schema;
+  if(schema.$ref)schema=document.components.schemas[schema.$ref.split('/').at(-1)];
+  assert.ok(schema.properties[binding.field],`${row.controlId}: ${binding.operationId}.${binding.field}`);
+ }
+ const contact=ajv.getSchema(`${rootId}#/$defs/ContactWrite`);
+ const details={fullName:'Alex Morgan Example',role:'Director',isPrimary:true,marketingConsent:{email:false,telephone:false,recordedAt:'2026-09-13T12:00:00Z',source:'demo-contact-form'}};
+ assert.ok(contact(details));delete details.fullName;assert.equal(contact(details),false);
+});

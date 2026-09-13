@@ -1,4 +1,14 @@
 export function addFormContracts({schemas:s,ref:r,text:t,enumeration:e,object:o,array:a,id,instant,date,boolean:b,integer,decimal,operation:op,paths}){
+ s.PolicyDraft.properties.cancellationReasonCode=t(100);
+ paths['/drafts/{draftId}/proposal'].put.requestBody.content['application/json'].schema.properties.cancellationReasonCode=t(100);
+ paths['/terms/{termId}/drafts'].post.requestBody.content['application/json'].schema.properties.cancellationReasonCode=t(100);
+ s.ContactWrite.properties.fullName=t();
+ s.ContactWrite.required=s.ContactWrite.required.filter(key=>!['firstName','surname'].includes(key));
+ s.ContactWrite.anyOf=[{properties:{fullName:t()},required:['fullName']},{properties:{firstName:t(100),surname:t(100)},required:['firstName','surname']}];
+ s.Contact.properties.fullName=t();
+ s.Contact.required=['id',...s.ContactWrite.required];s.Contact.anyOf=s.ContactWrite.anyOf;
+ s.AccountServiceRequest=o({id,userId:id,kind:e('email','role-team','authority'),details:t(2000),state:e('open','routed','completed','rejected')});
+ op('post','/account/change-requests','requestAccountAdminChange','self',{input:o({kind:s.AccountServiceRequest.properties.kind,details:t(2000)}),output:r('AccountServiceRequest'),status:201});
  const settlementFields={termsVersionId:id,collector:e('agency','mga'),settlementMode:e('net-remittance','separate-payment'),brokerFeeShare:decimal,mgaFeeIncome:decimal,remunerationPayable:decimal,invoiceDue:decimal};
  Object.assign(s.Invoice.properties,settlementFields);s.Invoice.required.push(...Object.keys(settlementFields));
  s.Invoice.properties.debtorKind=e('agency','client');s.Invoice.properties.debtorRelationshipId=id;s.Invoice.required.push('debtorKind');

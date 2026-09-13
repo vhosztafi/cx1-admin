@@ -88,9 +88,9 @@
     "status": "reviewed",
     "disposition": "command",
     "operationIds": [
-      "requestOwnIdentityChange"
+      "requestAccountAdminChange"
     ],
-    "reason": "Request own email change for independent administrator approval."
+    "reason": "Generic account-change request supports email, role/team or authority routing; submitting it does not grant requested access."
   },
   {
     "controlId": "CTL-5c6d766be16f",
@@ -4653,5 +4653,894 @@
       }
     ],
     "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-a5cbae9b8992",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "apiFields": [
+      {
+        "operationId": "savePolicyDraft",
+        "field": "effectiveAt"
+      }
+    ],
+    "reason": "Change timing and requestor are persisted with the lease/ETag; schedule timing changes invalidate rating and acceptance."
+  },
+  {
+    "controlId": "CTL-60ada0e23106",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "apiFields": [
+      {
+        "operationId": "savePolicyDraft",
+        "field": "dateBasis"
+      }
+    ],
+    "reason": "Change timing and requestor are persisted with the lease/ETag; schedule timing changes invalidate rating and acceptance."
+  },
+  {
+    "controlId": "CTL-37837fb0eb28",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "apiFields": [
+      {
+        "operationId": "savePolicyDraft",
+        "field": "requestedBy"
+      }
+    ],
+    "reason": "Change timing and requestor are persisted with the lease/ETag; schedule timing changes invalidate rating and acceptance."
+  },
+  {
+    "controlId": "CTL-b1917d871627",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "addNote"
+    ],
+    "apiFields": [
+      {
+        "operationId": "addNote",
+        "field": "body"
+      }
+    ],
+    "reason": "Comment composer has onSend as well as onChange; explicit send saves an internal task note and rejects blank content."
+  },
+  {
+    "controlId": "CTL-340623a67370",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "updateTask"
+    ],
+    "apiFields": [
+      {
+        "operationId": "updateTask",
+        "field": "ownerId"
+      }
+    ],
+    "reason": "Selected owner and due instant save under task ETag and assignment scope."
+  },
+  {
+    "controlId": "CTL-d3cef2ca0552",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "updateTask"
+    ],
+    "apiFields": [
+      {
+        "operationId": "updateTask",
+        "field": "dueAt"
+      }
+    ],
+    "reason": "Selected owner and due instant save under task ETag and assignment scope."
+  },
+  {
+    "controlId": "CTL-bb257a94cac5",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "transitionTask"
+    ],
+    "apiFields": [
+      {
+        "operationId": "transitionTask",
+        "field": "state"
+      }
+    ],
+    "reason": "Changing status is an explicit lifecycle command with reason/checklist gates, not a generic task write."
+  },
+  {
+    "controlId": "CTL-e9ca9b8ddf5f",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "updateProfile"
+    ],
+    "apiFields": [
+      {
+        "operationId": "updateProfile",
+        "field": "fullName"
+      }
+    ],
+    "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
+  },
+  {
+    "controlId": "CTL-fb7fd0380a0e",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "updateProfile"
+    ],
+    "apiFields": [
+      {
+        "operationId": "updateProfile",
+        "field": "displayName"
+      }
+    ],
+    "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
+  },
+  {
+    "controlId": "CTL-ae3dc91658bf",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "updateProfile"
+    ],
+    "apiFields": [
+      {
+        "operationId": "updateProfile",
+        "field": "telephone"
+      }
+    ],
+    "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
+  },
+  {
+    "controlId": "CTL-6fa068333beb",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "updateProfile"
+    ],
+    "apiFields": [
+      {
+        "operationId": "updateProfile",
+        "field": "jobTitle"
+      }
+    ],
+    "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
+  },
+  {
+    "controlId": "CTL-a6317a500517",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "updateProfile"
+    ],
+    "apiFields": [
+      {
+        "operationId": "updateProfile",
+        "field": "outOfOffice"
+      }
+    ],
+    "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
+  },
+  {
+    "controlId": "CTL-10bc9f0e6f7c",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "updateProfile"
+    ],
+    "apiFields": [
+      {
+        "operationId": "updateProfile",
+        "field": "taskDigest"
+      }
+    ],
+    "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
+  },
+  {
+    "controlId": "CTL-664235c9a920",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "changePassword"
+    ],
+    "apiFields": [
+      {
+        "operationId": "changePassword",
+        "field": "currentPassword"
+      }
+    ],
+    "reason": "Password input remains transient; explicit command uses framework verification/history and never caches secrets."
+  },
+  {
+    "controlId": "CTL-1ca7dc6c8e73",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "changePassword"
+    ],
+    "apiFields": [
+      {
+        "operationId": "changePassword",
+        "field": "newPassword"
+      }
+    ],
+    "reason": "Password input remains transient; explicit command uses framework verification/history and never caches secrets."
+  },
+  {
+    "controlId": "CTL-4aa26265290c",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "sendEscalation"
+    ],
+    "apiFields": [
+      {
+        "operationId": "sendEscalation",
+        "field": "body"
+      }
+    ],
+    "reason": "Composer text is sent explicitly via its onSend handler; pin referral revision, provider and attachments."
+  },
+  {
+    "controlId": "CTL-bdb6e9ab15e0",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "apiFields": [
+      {
+        "operationId": "savePolicyDraft",
+        "field": "cancellationReasonCode"
+      }
+    ],
+    "reason": "Cancellation modal retains a structured reason selection and separate audit detail in command intent; neither control issues cancellation."
+  },
+  {
+    "controlId": "CTL-c6ed3365f90b",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "apiFields": [
+      {
+        "operationId": "savePolicyDraft",
+        "field": "effectiveAt"
+      }
+    ],
+    "reason": "Cancellation modal retains a structured reason selection and separate audit detail in command intent; neither control issues cancellation."
+  },
+  {
+    "controlId": "CTL-9c276d4c11eb",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "apiFields": [
+      {
+        "operationId": "savePolicyDraft",
+        "field": "reason"
+      }
+    ],
+    "reason": "Cancellation modal retains a structured reason selection and separate audit detail in command intent; neither control issues cancellation."
+  },
+  {
+    "controlId": "CTL-912fdd744a9d",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "createTask"
+    ],
+    "apiFields": [
+      {
+        "operationId": "createTask",
+        "field": "typeCode"
+      }
+    ],
+    "reason": "Task modal values save only on confirmation with an authorised typed parent."
+  },
+  {
+    "controlId": "CTL-deb1c93c9380",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "createTask"
+    ],
+    "apiFields": [
+      {
+        "operationId": "createTask",
+        "field": "title"
+      }
+    ],
+    "reason": "Task modal values save only on confirmation with an authorised typed parent."
+  },
+  {
+    "controlId": "CTL-3b92b95bf767",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "createTask"
+    ],
+    "apiFields": [
+      {
+        "operationId": "createTask",
+        "field": "ownerId"
+      }
+    ],
+    "reason": "Task modal values save only on confirmation with an authorised typed parent."
+  },
+  {
+    "controlId": "CTL-1244b13ffc62",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "createTask"
+    ],
+    "apiFields": [
+      {
+        "operationId": "createTask",
+        "field": "priority"
+      }
+    ],
+    "reason": "Task modal values save only on confirmation with an authorised typed parent."
+  },
+  {
+    "controlId": "CTL-c1a4eed5f8d7",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "createTask"
+    ],
+    "apiFields": [
+      {
+        "operationId": "createTask",
+        "field": "dueAt"
+      }
+    ],
+    "reason": "Task modal values save only on confirmation with an authorised typed parent."
+  },
+  {
+    "controlId": "CTL-a824b6d082ef",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "createContact"
+    ],
+    "apiFields": [
+      {
+        "operationId": "createContact",
+        "field": "role"
+      }
+    ],
+    "reason": "Agency-scoped contact values preserve primary uniqueness and distinct marketing consent channel/source."
+  },
+  {
+    "controlId": "CTL-bbfeae72249c",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "createContact"
+    ],
+    "apiFields": [
+      {
+        "operationId": "createContact",
+        "field": "email"
+      }
+    ],
+    "reason": "Agency-scoped contact values preserve primary uniqueness and distinct marketing consent channel/source."
+  },
+  {
+    "controlId": "CTL-768bb83c62f3",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "createContact"
+    ],
+    "apiFields": [
+      {
+        "operationId": "createContact",
+        "field": "telephone"
+      }
+    ],
+    "reason": "Agency-scoped contact values preserve primary uniqueness and distinct marketing consent channel/source."
+  },
+  {
+    "controlId": "CTL-af4438a7842d",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "createContact"
+    ],
+    "apiFields": [
+      {
+        "operationId": "createContact",
+        "field": "isPrimary"
+      }
+    ],
+    "reason": "Agency-scoped contact values preserve primary uniqueness and distinct marketing consent channel/source."
+  },
+  {
+    "controlId": "CTL-44e8ab200a0e",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "createContact"
+    ],
+    "apiFields": [
+      {
+        "operationId": "createContact",
+        "field": "marketingConsent"
+      }
+    ],
+    "reason": "Agency-scoped contact values preserve primary uniqueness and distinct marketing consent channel/source."
+  },
+  {
+    "controlId": "CTL-996063cc0f6f",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "recordCapacityResponse"
+    ],
+    "apiFields": [
+      {
+        "operationId": "recordCapacityResponse",
+        "field": "outcome"
+      }
+    ],
+    "reason": "Provider outcome fields are recorded with evidence and received time; not treated as direct permission to issue."
+  },
+  {
+    "controlId": "CTL-544b08dc9b9d",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "recordCapacityResponse"
+    ],
+    "apiFields": [
+      {
+        "operationId": "recordCapacityResponse",
+        "field": "providerUnderwriter"
+      }
+    ],
+    "reason": "Provider outcome fields are recorded with evidence and received time; not treated as direct permission to issue."
+  },
+  {
+    "controlId": "CTL-4d20dd209c0d",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "recordCapacityResponse"
+    ],
+    "apiFields": [
+      {
+        "operationId": "recordCapacityResponse",
+        "field": "providerReference"
+      }
+    ],
+    "reason": "Provider outcome fields are recorded with evidence and received time; not treated as direct permission to issue."
+  },
+  {
+    "controlId": "CTL-ae1b5b522c32",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "recordCapacityResponse"
+    ],
+    "apiFields": [
+      {
+        "operationId": "recordCapacityResponse",
+        "field": "body"
+      }
+    ],
+    "reason": "Provider outcome fields are recorded with evidence and received time; not treated as direct permission to issue."
+  },
+  {
+    "controlId": "CTL-35c078b12b2f",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "inviteAgencyUser"
+    ],
+    "apiFields": [
+      {
+        "operationId": "inviteAgencyUser",
+        "field": "email"
+      }
+    ],
+    "reason": "Onboarding invitation is agency-scoped and sends only when activation prerequisites hold."
+  },
+  {
+    "controlId": "CTL-2b148516c13c",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "inviteAgencyUser"
+    ],
+    "apiFields": [
+      {
+        "operationId": "inviteAgencyUser",
+        "field": "role"
+      }
+    ],
+    "reason": "Onboarding invitation is agency-scoped and sends only when activation prerequisites hold."
+  },
+  {
+    "controlId": "CTL-fbf14ee7ae39",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "createSupportFlag"
+    ],
+    "apiFields": [
+      {
+        "operationId": "createSupportFlag",
+        "field": "typeCode"
+      }
+    ],
+    "reason": "Flag modal stores restricted support evidence and separate safe wording; sharing remains explicit and excluded from rating."
+  },
+  {
+    "controlId": "CTL-be8c44f83a57",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "createSupportFlag"
+    ],
+    "apiFields": [
+      {
+        "operationId": "createSupportFlag",
+        "field": "internalCategory"
+      }
+    ],
+    "reason": "Flag modal stores restricted support evidence and separate safe wording; sharing remains explicit and excluded from rating."
+  },
+  {
+    "controlId": "CTL-cdd26ca2bb50",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "createSupportFlag"
+    ],
+    "apiFields": [
+      {
+        "operationId": "createSupportFlag",
+        "field": "internalInstruction"
+      }
+    ],
+    "reason": "Flag modal stores restricted support evidence and separate safe wording; sharing remains explicit and excluded from rating."
+  },
+  {
+    "controlId": "CTL-3d59fbcbb5d6",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "createSupportFlag"
+    ],
+    "apiFields": [
+      {
+        "operationId": "createSupportFlag",
+        "field": "agencyInstruction"
+      }
+    ],
+    "reason": "Flag modal stores restricted support evidence and separate safe wording; sharing remains explicit and excluded from rating."
+  },
+  {
+    "controlId": "CTL-737f31d19425",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "createSupportFlag"
+    ],
+    "apiFields": [
+      {
+        "operationId": "createSupportFlag",
+        "field": "consentBasis"
+      }
+    ],
+    "reason": "Flag modal stores restricted support evidence and separate safe wording; sharing remains explicit and excluded from rating."
+  },
+  {
+    "controlId": "CTL-3aa3b6d10f6d",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "createSupportFlag"
+    ],
+    "apiFields": [
+      {
+        "operationId": "createSupportFlag",
+        "field": "reviewOn"
+      }
+    ],
+    "reason": "Flag modal stores restricted support evidence and separate safe wording; sharing remains explicit and excluded from rating."
+  },
+  {
+    "controlId": "CTL-efe74f614e7d",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "createSupportFlag"
+    ],
+    "apiFields": [
+      {
+        "operationId": "createSupportFlag",
+        "field": "reason"
+      }
+    ],
+    "reason": "Flag modal stores restricted support evidence and separate safe wording; sharing remains explicit and excluded from rating."
+  },
+  {
+    "controlId": "CTL-02d5a8374d81",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "requestIdentityChange"
+    ],
+    "apiFields": [
+      {
+        "operationId": "requestIdentityChange",
+        "field": "newEmail"
+      }
+    ],
+    "reason": "Email-change proposal requires independent approval; routing approver is not proof of approval and required notifications cannot be suppressed."
+  },
+  {
+    "controlId": "CTL-d8964d48425a",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "requestIdentityChange"
+    ],
+    "apiFields": [
+      {
+        "operationId": "requestIdentityChange",
+        "field": "requestedApproverId"
+      }
+    ],
+    "reason": "Email-change proposal requires independent approval; routing approver is not proof of approval and required notifications cannot be suppressed."
+  },
+  {
+    "controlId": "CTL-50bae4c3910a",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "requestIdentityChange"
+    ],
+    "apiFields": [
+      {
+        "operationId": "requestIdentityChange",
+        "field": "notifyUser"
+      }
+    ],
+    "reason": "Email-change proposal requires independent approval; routing approver is not proof of approval and required notifications cannot be suppressed."
+  },
+  {
+    "controlId": "CTL-b18928254b6a",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "replaceRecoveryCodes"
+    ],
+    "apiFields": [
+      {
+        "operationId": "replaceRecoveryCodes",
+        "field": "password"
+      }
+    ],
+    "reason": "Password is transient reauthentication for generating new codes; old plaintext codes cannot be retrieved."
+  },
+  {
+    "controlId": "CTL-1906c3818071",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "disableMfa"
+    ],
+    "apiFields": [
+      {
+        "operationId": "disableMfa",
+        "field": "password"
+      }
+    ],
+    "reason": "MFA disable requires verified password/code and role policy; never a client-side boolean toggle."
+  },
+  {
+    "controlId": "CTL-ed9a5b84734d",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "disableMfa"
+    ],
+    "apiFields": [
+      {
+        "operationId": "disableMfa",
+        "field": "reason"
+      }
+    ],
+    "reason": "MFA disable requires verified password/code and role policy; never a client-side boolean toggle."
+  },
+  {
+    "controlId": "CTL-84a03cc130a7",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "New-password confirmation is a transient equality check; only the actual password is submitted and server policy remains authoritative."
+  },
+  {
+    "controlId": "CTL-ff9e226baf10",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "The source offers only No for draft inclusion; render a fixed explanation. Drafts never enter issued as-at results."
+  },
+  {
+    "controlId": "CTL-6e2b2ebf7bc6",
+    "status": "reviewed",
+    "disposition": "read",
+    "operationIds": [
+      "getPolicyAsAt"
+    ],
+    "reason": "Effective-date selector sets effectiveAt; process-basis uses knownAt with E=K unless user explicitly supplies both."
+  },
+  {
+    "controlId": "CTL-d27b77003a60",
+    "status": "reviewed",
+    "disposition": "read",
+    "operationIds": [
+      "getPolicyAsAt"
+    ],
+    "reason": "Basis controls conversion to effectiveAt/knownAt query semantics, not a stored policy mutation."
+  },
+  {
+    "controlId": "CTL-aba9e5f38f4e",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "reason": "Driver selector chooses the stable parent driver ID for conviction or loss; never links by display-name equality."
+  },
+  {
+    "controlId": "CTL-6cb19bd3e05c",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "createContact",
+      "inviteAgencyUser"
+    ],
+    "reason": "Shared full-name control belongs to contact or agency-invite context; use fullName for contact and displayName for invite without guessing surname."
+  },
+  {
+    "controlId": "CTL-53fe844ca2f5",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "createSupportFlag"
+    ],
+    "reason": "Contact choice resolves the person ID and current relationship in the endpoint path; no cross-agency person enumeration."
+  },
+  {
+    "controlId": "CTL-6024d631eea5",
+    "status": "reviewed",
+    "disposition": "read",
+    "operationIds": [
+      "getUser"
+    ],
+    "reason": "Selected subject is the authorised target user ID for identity request; client input cannot select an inaccessible user."
+  },
+  {
+    "controlId": "CTL-84ae08d2ace0",
+    "status": "reviewed",
+    "disposition": "read",
+    "operationIds": [
+      "getUser"
+    ],
+    "reason": "Current email is read from server state and not trusted as proof or editable identity input."
+  },
+  {
+    "controlId": "CTL-5ec6b96d9dd9",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Codes are one-time secret display/copy state from successful generation, not an editable/persisted field."
+  },
+  {
+    "controlId": "CTL-2be8051a493d",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Driver fullName in proposed risk retains declared name without splitting or changing issued risk."
+  },
+  {
+    "controlId": "CTL-006262166a6c",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Driver dateOfBirth is an ISO date on selected stable draft driver."
+  },
+  {
+    "controlId": "CTL-67729c63e82c",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Driver licence.type is a versioned reference; data completeness differs from evidence verification."
+  },
+  {
+    "controlId": "CTL-31515d181764",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Driver licence.number is retained on selected proposed risk, with restricted scope."
+  },
+  {
+    "controlId": "CTL-48fcf50be539",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Driver licence.testDate is an ISO date checked against birth/inception; never accepts arbitrary text."
+  },
+  {
+    "controlId": "CTL-3b28acf92b73",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Declared claims count is a typed driver question reconciled against detailed losses before rating."
+  },
+  {
+    "controlId": "CTL-2ae7c284ac04",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "inviteAgencyUser",
+      "inviteInternalUser"
+    ],
+    "reason": "Invite email routes according to authorised agency/internal context."
+  },
+  {
+    "controlId": "CTL-0f97487577d1",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "inviteAgencyUser",
+      "inviteInternalUser"
+    ],
+    "reason": "Invite full name maps to initial displayName; user may later complete own profile."
+  },
+  {
+    "controlId": "CTL-07f724941351",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "inviteAgencyUser",
+      "inviteInternalUser"
+    ],
+    "reason": "Role selection uses endpoint-specific allowlist and prohibits mixing internal/agency access."
   }
 ]

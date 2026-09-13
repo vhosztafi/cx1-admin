@@ -9764,6 +9764,11 @@
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 1000
+                  },
+                  "cancellationReasonCode": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
                   }
                 },
                 "required": [
@@ -10632,6 +10637,11 @@
                       "$ref": "#/components/schemas/CoverChangeSchedule"
                     },
                     "maxItems": 1000
+                  },
+                  "cancellationReasonCode": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
                   }
                 },
                 "required": [
@@ -46081,6 +46091,184 @@
         }
       }
     },
+    "/account/change-requests": {
+      "post": {
+        "operationId": "requestAccountAdminChange",
+        "summary": "request Account Admin Change",
+        "description": "Requires self. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "tags": [
+          "account"
+        ],
+        "x-permission": "self",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": [],
+            "Csrf": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Resource created.",
+            "headers": {
+              "ETag": {
+                "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              },
+              "Location": {
+                "description": "Created resource or durable job URI.",
+                "schema": {
+                  "type": "string",
+                  "format": "uri-reference"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountServiceRequest"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "email",
+                      "role-team",
+                      "authority"
+                    ]
+                  },
+                  "details": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  }
+                },
+                "required": [
+                  "kind",
+                  "details"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
     "/finance/remunerations": {
       "get": {
         "operationId": "listBrokerRemuneration",
@@ -47977,14 +48165,49 @@
               "recordedAt",
               "source"
             ]
+          },
+          "fullName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
           }
         },
         "required": [
-          "firstName",
-          "surname",
           "role",
           "isPrimary",
           "marketingConsent"
+        ],
+        "anyOf": [
+          {
+            "properties": {
+              "fullName": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            },
+            "required": [
+              "fullName"
+            ]
+          },
+          {
+            "properties": {
+              "firstName": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "surname": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "firstName",
+              "surname"
+            ]
+          }
         ]
       },
       "Contact": {
@@ -48057,15 +48280,50 @@
           "endedAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "fullName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
           }
         },
         "required": [
           "id",
-          "firstName",
-          "surname",
           "role",
           "isPrimary",
           "marketingConsent"
+        ],
+        "anyOf": [
+          {
+            "properties": {
+              "fullName": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            },
+            "required": [
+              "fullName"
+            ]
+          },
+          {
+            "properties": {
+              "firstName": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "surname": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "firstName",
+              "surname"
+            ]
+          }
         ]
       },
       "FlagWrite": {
@@ -48615,6 +48873,11 @@
               "$ref": "#/components/schemas/CoverChangeSchedule"
             },
             "maxItems": 1000
+          },
+          "cancellationReasonCode": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
           }
         },
         "required": [
@@ -53966,6 +54229,49 @@
           "targetRevision",
           "reason",
           "policyEtag"
+        ]
+      },
+      "AccountServiceRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "email",
+              "role-team",
+              "authority"
+            ]
+          },
+          "details": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "routed",
+              "completed",
+              "rejected"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "userId",
+          "kind",
+          "details",
+          "state"
         ]
       },
       "BrokerRemuneration": {
