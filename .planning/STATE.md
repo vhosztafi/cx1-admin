@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-13T22:02:50Z"
+last_updated: "2026-09-13T22:24:33Z"
 last_activity: 2026-09-13
 progress:
   total_phases: 13
@@ -25,9 +25,9 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 ## Current Position
 
 Phase: 2 of 13 (Application and persistence foundation)
-Plan: 02-05 of 6 in progress; operational APIs verified; admin UI and browser checks pending
+Plan: 02-05 of 6 in progress; admin UI built and linted; browser/visual verification pending
 Status: In progress — autonomous
-Last activity: 2026-09-13 — 02-05 atomic batch/settings APIs verified; 32 unit/14 integration, 53 design and final focused SQL checks pass
+Last activity: 2026-09-13 — 02-05 admin UI implemented; six frontend tests, build/lint/typecheck, 53 design and focused SQL DTO checks pass
 
 Progress: Phase 1 complete; 1/13 phases. SQL, local authentication and shell verified; durable workers and foundation gate pending.
 
@@ -54,7 +54,7 @@ Progress: Phase 1 complete; 1/13 phases. SQL, local authentication and shell ver
 ## Session Continuity
 
 Last session: 2026-09-13
-Stopped at: Read 02-05-PROGRESS.md; resume prototype admin Integrations/Audit UI and browser checks. Operational APIs complete through 68def00; batch e805a35; hosted recovery verified. Demo credentials remain in ignored .local/demo-password.txt; test servers stopped.
+Stopped at: Read 02-05-PROGRESS.md; resume admin browser/visual checks and demo recovery fixture. UI built in 3b39c3f; APIs and hosted recovery verified. Demo credentials remain in ignored .local/demo-password.txt; test servers stopped.
 Resume file: None
 
 ## Autonomous continuation
