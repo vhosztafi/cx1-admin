@@ -100,3 +100,23 @@ test('reviewed control mappings point to real source controls and defined operat
  assert.equal(map.reviewed,map.controls.filter(c=>c.status==='reviewed').length);
  assert.equal(map.complete,map.reviewed===map.total);
 });
+test('onboarding field mappings resolve to real request properties',async()=>{
+ const rows=JSON.parse(await readFile(new URL('../docs/design/reviewed-api-controls.json',import.meta.url),'utf8'));
+ const request=getOperation('saveAgencyDraft').requestBody.content['application/json'].schema;
+ const dereference=s=>s.$ref?.startsWith('#/components/schemas/')?document.components.schemas[s.$ref.split('/').at(-1)]:s;
+ for(const row of rows.filter(r=>r.requestField)){
+  let schema=request;
+  for(const field of row.requestField.split('.')){
+   schema=dereference(schema).properties?.[field];assert.ok(schema,`${row.controlId}: missing ${row.requestField}`);
+  }
+ }
+});
+test('draft onboarding and incidents permit incomplete forms without weakening value types',()=>{
+ const agency=ajv.getSchema(`${rootId}#/$defs/AgencyWrite`);
+ assert.ok(agency({legalName:'Fictional Brokers',address:{postcode:'S1 1AA'},mainContact:{name:'Demo Contact'},compliance:{tobaStatus:'sent'}}));
+ assert.equal(agency({commercialTerms:{feeShareBasisPoints:10.5}}),false);
+ const incident=ajv.getSchema(`${rootId}#/$defs/IncidentDraftWrite`);
+ const proposal={policyId:'11111111-1111-4111-8111-111111111111',versionId:'22222222-2222-4222-8222-222222222222',contact:{name:'Demo Contact'}};
+ assert.ok(incident(proposal));assert.equal(ajv.getSchema(`${rootId}#/$defs/IncidentWrite`)(proposal),false);
+ assert.equal(incident({...proposal,occurredAt:'yesterday'}),false);
+});

@@ -3,6 +3,7 @@ import {addOperationsApi} from './openapi-operations.mjs';
 import {addAgencyFinanceApi} from './openapi-agency-finance.mjs';
 import {addAdminReportsApi} from './openapi-admin-reports.mjs';
 import {addReviewedApi} from './openapi-review-additions.mjs';
+import {addFormContracts} from './openapi-form-contracts.mjs';
 // Expand by bounded domain modules. Until control coverage is checked, this
 // document is explicitly a work-in-progress, not the completed DES-04 contract.
 export const schemas={};
@@ -149,6 +150,7 @@ addOperationsApi({schemas,ref,text,enumeration,object,array,id,instant,date,bool
 addAgencyFinanceApi({schemas,ref,text,enumeration,object,array,id,instant,date,boolean,integer,decimal,operation,list,paths});
 addAdminReportsApi({schemas,ref,text,enumeration,object,array,id,instant,date,boolean,integer,decimal,operation,list,paths});
 addReviewedApi({schemas,ref,text,enumeration,object,array,id,instant,date,boolean,integer,decimal,operation,list,paths});
+addFormContracts({schemas,ref,text,enumeration,object,array,id,instant,date,boolean,integer,decimal,operation,list,paths});
 const tags=[...new Set(Object.keys(paths).map(p=>p.split('/')[1]))].sort().map(name=>({name,description:`Scoped ${name} operations.`}));
 const document={openapi:'3.1.1',info:{title:'Cover MGA Back Office API',version:'1.0.0',description:'Phase 1 contract in progress: domain modules are drafted. Semantic review, additional examples and complete prototype-control coverage remain before DES-04 is complete.'},servers:[{url:'/api/v1',description:'Same-origin application API'}],tags,security:[{Session:[]}],paths,components:{securitySchemes:{Session:{type:'apiKey',in:'cookie',name:'__Host-cover-session',description:'Opaque server-side session; development cookie has a separate name.'},Csrf:{type:'apiKey',in:'header',name:'X-CSRF-Token',description:'ASP.NET antiforgery request token paired with the antiforgery cookie.'}},schemas}};
 await mkdir('contracts',{recursive:true});

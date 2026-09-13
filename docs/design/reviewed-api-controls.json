@@ -2798,5 +2798,765 @@
       "getClient"
     ],
     "reason": "Literal navigation to client; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-fadb1e093221",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.legalName",
+    "reason": "Reviewed onboarding field maps to typed details.legalName. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-02645abd866e",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.tradingName",
+    "reason": "Reviewed onboarding field maps to typed details.tradingName. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-3522c877f8a1",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.entityType",
+    "reason": "Reviewed onboarding field maps to typed details.entityType. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-1c01127f3db0",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.companyNumber",
+    "reason": "Reviewed onboarding field maps to typed details.companyNumber. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-fa6203fe6ff9",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.address",
+    "reason": "Reviewed onboarding field maps to typed details.address. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-635d2f273e0d",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.tradingAddress",
+    "reason": "Reviewed onboarding field maps to typed details.tradingAddress. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-4a061249b739",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.regulatoryReference",
+    "reason": "Reviewed onboarding field maps to typed details.regulatoryReference. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-9026c84be19e",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.regulatoryStatus",
+    "reason": "Reviewed onboarding field maps to typed details.regulatoryStatus. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-36ca4642579f",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.principalFirm",
+    "reason": "Reviewed onboarding field maps to typed details.principalFirm. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-a25bec67fe2d",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.clientMoneyBasis",
+    "reason": "Reviewed onboarding field maps to typed details.clientMoneyBasis. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-b3c29a849ac6",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.arrangesGeneralInsurance",
+    "reason": "Reviewed onboarding field maps to typed details.arrangesGeneralInsurance. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-c91f280de789",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.territory",
+    "reason": "Reviewed onboarding field maps to typed details.territory. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-9ba165615ca8",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.mainContact.name",
+    "reason": "Reviewed onboarding field maps to typed details.mainContact.name. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-1fafbf866252",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.mainContact.email",
+    "reason": "Reviewed onboarding field maps to typed details.mainContact.email. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-2436300130ef",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.mainContact.telephone",
+    "reason": "Reviewed onboarding field maps to typed details.mainContact.telephone. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-ebdff6a8b7cb",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.complianceContact",
+    "reason": "Reviewed onboarding field maps to typed details.complianceContact. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-e25a87aa84de",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.accountsContact",
+    "reason": "Reviewed onboarding field maps to typed details.accountsContact. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-450fbe926029",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.complaintsContact",
+    "reason": "Reviewed onboarding field maps to typed details.complaintsContact. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-c4094816021e",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.relationshipManagerId",
+    "reason": "Reviewed onboarding field maps to typed details.relationshipManagerId. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-37d1c9a22172",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.correspondencePreference",
+    "reason": "Reviewed onboarding field maps to typed details.correspondencePreference. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-72834edc3eea",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.officeHours",
+    "reason": "Reviewed onboarding field maps to typed details.officeHours. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-59615ca925de",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.commercialTerms.effectiveFrom",
+    "reason": "Reviewed onboarding field maps to typed details.commercialTerms.effectiveFrom. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-def86626e9ac",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.commercialTerms.commissionBasis",
+    "reason": "Reviewed onboarding field maps to typed details.commercialTerms.commissionBasis. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-c92492b714ab",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.commercialTerms.feeShareBasisPoints",
+    "reason": "Reviewed onboarding field maps to typed details.commercialTerms.feeShareBasisPoints. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-32e867330c06",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.commercialTerms.volumeCommitment",
+    "reason": "Reviewed onboarding field maps to typed details.commercialTerms.volumeCommitment. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-88d345cd8a7c",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.commercialTerms.minimumPremiumOverride",
+    "reason": "Reviewed onboarding field maps to typed details.commercialTerms.minimumPremiumOverride. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-922d25c88d32",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.commercialTerms.referralRouting",
+    "reason": "Reviewed onboarding field maps to typed details.commercialTerms.referralRouting. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-4adad545ddb8",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.compliance.tobaStatus",
+    "reason": "Reviewed onboarding field maps to typed details.compliance.tobaStatus. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-7db28158a9c9",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.compliance.tobaVersion",
+    "reason": "Reviewed onboarding field maps to typed details.compliance.tobaVersion. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-20213a260167",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.compliance.tobaSignedOn",
+    "reason": "Reviewed onboarding field maps to typed details.compliance.tobaSignedOn. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-cd31805e2ef0",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.compliance.professionalIndemnityLimit",
+    "reason": "Reviewed onboarding field maps to typed details.compliance.professionalIndemnityLimit. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-92d211344ad0",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.compliance.piExpiresOn",
+    "reason": "Reviewed onboarding field maps to typed details.compliance.piExpiresOn. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-cfc54c275306",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.compliance.financialStanding",
+    "reason": "Reviewed onboarding field maps to typed details.compliance.financialStanding. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-64e550b1e7a0",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.compliance.sanctionsCheck",
+    "reason": "Reviewed onboarding field maps to typed details.compliance.sanctionsCheck. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-6ffe23124c1e",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.compliance.beneficialOwnershipVerified",
+    "reason": "Reviewed onboarding field maps to typed details.compliance.beneficialOwnershipVerified. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-2bc0225cde9d",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.compliance.dataProcessingAgreement",
+    "reason": "Reviewed onboarding field maps to typed details.compliance.dataProcessingAgreement. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-cf080648263b",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.paymentTermsDays",
+    "reason": "Reviewed onboarding field maps to typed details.paymentTermsDays. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-ded2edfcba39",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.settlement.statementCycle",
+    "reason": "Reviewed onboarding field maps to typed details.settlement.statementCycle. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-5f0a27e96ab6",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.creditLimit",
+    "reason": "Reviewed onboarding field maps to typed details.creditLimit. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-536e0288d85f",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.settlement.method",
+    "reason": "Reviewed onboarding field maps to typed details.settlement.method. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-522293d94276",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.settlement.premiumCollection",
+    "reason": "Reviewed onboarding field maps to typed details.settlement.premiumCollection. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-4f360e7439d1",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveAgencyDraft",
+      "validateAgency"
+    ],
+    "requestField": "details.settlement.commissionSettlement",
+    "reason": "Reviewed onboarding field maps to typed details.settlement.commissionSettlement. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+  },
+  {
+    "controlId": "CTL-cb7e499f5ef9",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "createPolicyDraft",
+      "savePolicyDraft",
+      "getCancellationPreview"
+    ],
+    "reason": "Validate cancellation reason/date/audit notes and save cancellation intent, then read calculated review; disabled sample cannot bypass date rules."
+  },
+  {
+    "controlId": "CTL-10248c38843b",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "createTask"
+    ],
+    "reason": "Confirm new task with typed subject, owner, priority and due date; persist and return actual task ID."
+  },
+  {
+    "controlId": "CTL-69897d577944",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Close picker/product-selection modal without persisting a domain change."
+  },
+  {
+    "controlId": "CTL-9fcf0e4113a6",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Close picker/product-selection modal without persisting a domain change."
+  },
+  {
+    "controlId": "CTL-48357417c7d9",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Select supported driver/vehicle/premises/activity/cover/insured draft change; editor confirmation saves typed proposal and invalidates rating. No issued snapshot mutation."
+  },
+  {
+    "controlId": "CTL-d95a33ac4ba9",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Select supported driver/vehicle/premises/activity/cover/insured draft change; editor confirmation saves typed proposal and invalidates rating. No issued snapshot mutation."
+  },
+  {
+    "controlId": "CTL-06d9667cb5b0",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Select supported driver/vehicle/premises/activity/cover/insured draft change; editor confirmation saves typed proposal and invalidates rating. No issued snapshot mutation."
+  },
+  {
+    "controlId": "CTL-2ce7af342224",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Select supported driver/vehicle/premises/activity/cover/insured draft change; editor confirmation saves typed proposal and invalidates rating. No issued snapshot mutation."
+  },
+  {
+    "controlId": "CTL-8c4c56e91474",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Select supported driver/vehicle/premises/activity/cover/insured draft change; editor confirmation saves typed proposal and invalidates rating. No issued snapshot mutation."
+  },
+  {
+    "controlId": "CTL-d333e12d28da",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Select supported driver/vehicle/premises/activity/cover/insured draft change; editor confirmation saves typed proposal and invalidates rating. No issued snapshot mutation."
+  },
+  {
+    "controlId": "CTL-27a26f44394a",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Select supported driver/vehicle/premises/activity/cover/insured draft change; editor confirmation saves typed proposal and invalidates rating. No issued snapshot mutation."
+  },
+  {
+    "controlId": "CTL-b84c84a05598",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Select supported driver/vehicle/premises/activity/cover/insured draft change; editor confirmation saves typed proposal and invalidates rating. No issued snapshot mutation."
+  },
+  {
+    "controlId": "CTL-c55788c6143d",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "listProductVersions",
+      "createQuote"
+    ],
+    "reason": "Select a published eligible product and agency relationship before creating the typed quote draft; product label is not an API identity."
+  },
+  {
+    "controlId": "CTL-49a52324ce46",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "listProductVersions",
+      "createQuote"
+    ],
+    "reason": "Select a published eligible product and agency relationship before creating the typed quote draft; product label is not an API identity."
+  },
+  {
+    "controlId": "CTL-edd4bf8b620d",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "listProductVersions",
+      "createQuote"
+    ],
+    "reason": "Select a published eligible product and agency relationship before creating the typed quote draft; product label is not an API identity."
+  },
+  {
+    "controlId": "CTL-0668ac887c59",
+    "status": "reviewed",
+    "disposition": "read",
+    "operationIds": [
+      "listProducts",
+      "getProductVersion"
+    ],
+    "reason": "Draft Fleet selection displays the publication restriction and product configuration; it cannot create or bind a quote."
+  },
+  {
+    "controlId": "CTL-061a390a6d24",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "reason": "Confirm typed driver/conviction/incident/vehicle/location/wage/loss/premises item in the quote proposal. Preserve stable child IDs, field units and conditional validation; the enclosing quote save owns persistence."
+  },
+  {
+    "controlId": "CTL-7209efc79397",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "reason": "Confirm typed driver/conviction/incident/vehicle/location/wage/loss/premises item in the quote proposal. Preserve stable child IDs, field units and conditional validation; the enclosing quote save owns persistence."
+  },
+  {
+    "controlId": "CTL-abc0712b3b1a",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "reason": "Confirm typed driver/conviction/incident/vehicle/location/wage/loss/premises item in the quote proposal. Preserve stable child IDs, field units and conditional validation; the enclosing quote save owns persistence."
+  },
+  {
+    "controlId": "CTL-8355c466b4c3",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "reason": "Confirm typed driver/conviction/incident/vehicle/location/wage/loss/premises item in the quote proposal. Preserve stable child IDs, field units and conditional validation; the enclosing quote save owns persistence."
+  },
+  {
+    "controlId": "CTL-d46524a6c7e6",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "reason": "Confirm typed driver/conviction/incident/vehicle/location/wage/loss/premises item in the quote proposal. Preserve stable child IDs, field units and conditional validation; the enclosing quote save owns persistence."
+  },
+  {
+    "controlId": "CTL-52e3f70b9519",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "reason": "Confirm typed driver/conviction/incident/vehicle/location/wage/loss/premises item in the quote proposal. Preserve stable child IDs, field units and conditional validation; the enclosing quote save owns persistence."
+  },
+  {
+    "controlId": "CTL-3a75c3b303c4",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "reason": "Confirm typed driver/conviction/incident/vehicle/location/wage/loss/premises item in the quote proposal. Preserve stable child IDs, field units and conditional validation; the enclosing quote save owns persistence."
+  },
+  {
+    "controlId": "CTL-2c6b742f5f51",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "reason": "Confirm typed driver/conviction/incident/vehicle/location/wage/loss/premises item in the quote proposal. Preserve stable child IDs, field units and conditional validation; the enclosing quote save owns persistence."
+  },
+  {
+    "controlId": "CTL-17e744eccc12",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "createContact"
+    ],
+    "reason": "Create agency-scoped client contact, with primary uniqueness and separate marketing consent."
+  },
+  {
+    "controlId": "CTL-12694b54dab5",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "recordCapacityResponse"
+    ],
+    "reason": "Record provider outcome, named underwriter, reference and evidence on the exact escalation; decision cannot automatically issue cover."
+  },
+  {
+    "controlId": "CTL-e7ea175c76d6",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "inviteAgencyUser"
+    ],
+    "reason": "Add invitation while onboarding; delivery waits for activation and eligible broker-admin prerequisites."
+  },
+  {
+    "controlId": "CTL-2843860a71f4",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "createSupportFlag"
+    ],
+    "reason": "Confirm person-linked flag with restricted category, safe agency instruction, explicit consent/review/reason."
+  },
+  {
+    "controlId": "CTL-e94274aa8d30",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "requestIdentityChange"
+    ],
+    "reason": "Persist requested email change; nominated second approver is routing only, no fabricated approval. Required audit/security notifications cannot be disabled."
+  },
+  {
+    "controlId": "CTL-dc47c1c54ea5",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Copy newly generated recovery codes from current one-time UI state to clipboard after explicit click; no secret-retrieval API or plaintext persistence."
+  },
+  {
+    "controlId": "CTL-b88a29907695",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "disableMfa"
+    ],
+    "reason": "Verify recent password and MFA/recovery proof plus required-role policy before disabling."
+  },
+  {
+    "controlId": "CTL-fd38a2890d20",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Save actual edited driver values and completeness state, invalidate rating and approval; do not turn nonempty text into licence verification."
+  },
+  {
+    "controlId": "CTL-db8560576a23",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "inviteAgencyUser",
+      "inviteInternalUser"
+    ],
+    "reason": "Invitation confirmation chooses internal or agency endpoint from authorised parent context, never mixes role scopes."
   }
 ]

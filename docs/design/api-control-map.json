@@ -1,6 +1,6 @@
 {
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
-  "reviewed": 302,
+  "reviewed": 377,
   "total": 949,
   "complete": false,
   "controls": [
@@ -2043,9 +2043,14 @@
       "label": "Legal name",
       "requirement": "AGY-01",
       "acceptanceId": "AT-fadb1e093221",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.legalName",
+      "reason": "Reviewed onboarding field maps to typed details.legalName. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-02645abd866e",
@@ -2053,9 +2058,14 @@
       "label": "Trading name",
       "requirement": "AGY-01",
       "acceptanceId": "AT-02645abd866e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.tradingName",
+      "reason": "Reviewed onboarding field maps to typed details.tradingName. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-3522c877f8a1",
@@ -2063,9 +2073,14 @@
       "label": "Entity type",
       "requirement": "AGY-01",
       "acceptanceId": "AT-3522c877f8a1",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.entityType",
+      "reason": "Reviewed onboarding field maps to typed details.entityType. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-1c01127f3db0",
@@ -2073,9 +2088,14 @@
       "label": "Company number",
       "requirement": "AGY-01",
       "acceptanceId": "AT-1c01127f3db0",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.companyNumber",
+      "reason": "Reviewed onboarding field maps to typed details.companyNumber. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-fa6203fe6ff9",
@@ -2083,9 +2103,14 @@
       "label": "Registered address",
       "requirement": "AGY-01",
       "acceptanceId": "AT-fa6203fe6ff9",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.address",
+      "reason": "Reviewed onboarding field maps to typed details.address. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-635d2f273e0d",
@@ -2093,9 +2118,14 @@
       "label": "Trading address",
       "requirement": "AGY-01",
       "acceptanceId": "AT-635d2f273e0d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.tradingAddress",
+      "reason": "Reviewed onboarding field maps to typed details.tradingAddress. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-4a061249b739",
@@ -2103,9 +2133,14 @@
       "label": "FCA reference",
       "requirement": "AGY-01",
       "acceptanceId": "AT-4a061249b739",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.regulatoryReference",
+      "reason": "Reviewed onboarding field maps to typed details.regulatoryReference. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-9026c84be19e",
@@ -2113,9 +2148,14 @@
       "label": "Regulatory status",
       "requirement": "AGY-01",
       "acceptanceId": "AT-9026c84be19e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.regulatoryStatus",
+      "reason": "Reviewed onboarding field maps to typed details.regulatoryStatus. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-36ca4642579f",
@@ -2123,9 +2163,14 @@
       "label": "Principal firm",
       "requirement": "AGY-01",
       "acceptanceId": "AT-36ca4642579f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.principalFirm",
+      "reason": "Reviewed onboarding field maps to typed details.principalFirm. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-a25bec67fe2d",
@@ -2133,9 +2178,14 @@
       "label": "Client money basis",
       "requirement": "AGY-01",
       "acceptanceId": "AT-a25bec67fe2d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.clientMoneyBasis",
+      "reason": "Reviewed onboarding field maps to typed details.clientMoneyBasis. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-b3c29a849ac6",
@@ -2143,9 +2193,14 @@
       "label": "Permission to arrange general insurance",
       "requirement": "AGY-01",
       "acceptanceId": "AT-b3c29a849ac6",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.arrangesGeneralInsurance",
+      "reason": "Reviewed onboarding field maps to typed details.arrangesGeneralInsurance. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-c91f280de789",
@@ -2153,9 +2208,14 @@
       "label": "Territory",
       "requirement": "AGY-01",
       "acceptanceId": "AT-c91f280de789",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.territory",
+      "reason": "Reviewed onboarding field maps to typed details.territory. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-be3f8cc4fdae",
@@ -6166,9 +6226,14 @@
       "label": "Review cancellation",
       "requirement": "POL-09",
       "acceptanceId": "AT-cb7e499f5ef9",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "createPolicyDraft",
+        "savePolicyDraft",
+        "getCancellationPreview"
+      ],
+      "reason": "Validate cancellation reason/date/audit notes and save cancellation intent, then read calculated review; disabled sample cannot bypass date rules."
     },
     {
       "controlId": "CTL-bdb6e9ab15e0",
@@ -6206,9 +6271,12 @@
       "label": "Create task",
       "requirement": "OPS-01",
       "acceptanceId": "AT-10248c38843b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "createTask"
+      ],
+      "reason": "Confirm new task with typed subject, owner, priority and due date; persist and return actual task ID."
     },
     {
       "controlId": "CTL-912fdd744a9d",
@@ -6266,9 +6334,10 @@
       "label": "Done",
       "requirement": "POL-04",
       "acceptanceId": "AT-69897d577944",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "Close picker/product-selection modal without persisting a domain change."
     },
     {
       "controlId": "CTL-48357417c7d9",
@@ -6276,9 +6345,12 @@
       "label": "Add named driver",
       "requirement": "POL-04",
       "acceptanceId": "AT-48357417c7d9",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Select supported driver/vehicle/premises/activity/cover/insured draft change; editor confirmation saves typed proposal and invalidates rating. No issued snapshot mutation."
     },
     {
       "controlId": "CTL-d95a33ac4ba9",
@@ -6286,9 +6358,12 @@
       "label": "Remove named driver",
       "requirement": "POL-04",
       "acceptanceId": "AT-d95a33ac4ba9",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Select supported driver/vehicle/premises/activity/cover/insured draft change; editor confirmation saves typed proposal and invalidates rating. No issued snapshot mutation."
     },
     {
       "controlId": "CTL-06d9667cb5b0",
@@ -6296,9 +6371,12 @@
       "label": "Add vehicle to register",
       "requirement": "POL-04",
       "acceptanceId": "AT-06d9667cb5b0",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Select supported driver/vehicle/premises/activity/cover/insured draft change; editor confirmation saves typed proposal and invalidates rating. No issued snapshot mutation."
     },
     {
       "controlId": "CTL-2ce7af342224",
@@ -6306,9 +6384,12 @@
       "label": "Remove vehicle",
       "requirement": "POL-04",
       "acceptanceId": "AT-2ce7af342224",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Select supported driver/vehicle/premises/activity/cover/insured draft change; editor confirmation saves typed proposal and invalidates rating. No issued snapshot mutation."
     },
     {
       "controlId": "CTL-8c4c56e91474",
@@ -6316,9 +6397,12 @@
       "label": "Amend premises",
       "requirement": "POL-04",
       "acceptanceId": "AT-8c4c56e91474",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Select supported driver/vehicle/premises/activity/cover/insured draft change; editor confirmation saves typed proposal and invalidates rating. No issued snapshot mutation."
     },
     {
       "controlId": "CTL-d333e12d28da",
@@ -6326,9 +6410,12 @@
       "label": "Amend trade activities",
       "requirement": "POL-04",
       "acceptanceId": "AT-d333e12d28da",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Select supported driver/vehicle/premises/activity/cover/insured draft change; editor confirmation saves typed proposal and invalidates rating. No issued snapshot mutation."
     },
     {
       "controlId": "CTL-27a26f44394a",
@@ -6336,9 +6423,12 @@
       "label": "Cover, limits or excesses",
       "requirement": "POL-04",
       "acceptanceId": "AT-27a26f44394a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Select supported driver/vehicle/premises/activity/cover/insured draft change; editor confirmation saves typed proposal and invalidates rating. No issued snapshot mutation."
     },
     {
       "controlId": "CTL-b84c84a05598",
@@ -6346,9 +6436,12 @@
       "label": "Policyholder details",
       "requirement": "POL-04",
       "acceptanceId": "AT-b84c84a05598",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Select supported driver/vehicle/premises/activity/cover/insured draft change; editor confirmation saves typed proposal and invalidates rating. No issued snapshot mutation."
     },
     {
       "controlId": "CTL-9fcf0e4113a6",
@@ -6356,9 +6449,10 @@
       "label": "Cancel",
       "requirement": "QUO-02",
       "acceptanceId": "AT-9fcf0e4113a6",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "Close picker/product-selection modal without persisting a domain change."
     },
     {
       "controlId": "CTL-c55788c6143d",
@@ -6366,9 +6460,13 @@
       "label": "Motor Trade Road Risks",
       "requirement": "QUO-02",
       "acceptanceId": "AT-c55788c6143d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "listProductVersions",
+        "createQuote"
+      ],
+      "reason": "Select a published eligible product and agency relationship before creating the typed quote draft; product label is not an API identity."
     },
     {
       "controlId": "CTL-49a52324ce46",
@@ -6376,9 +6474,13 @@
       "label": "Motor Trade Combined",
       "requirement": "QUO-02",
       "acceptanceId": "AT-49a52324ce46",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "listProductVersions",
+        "createQuote"
+      ],
+      "reason": "Select a published eligible product and agency relationship before creating the typed quote draft; product label is not an API identity."
     },
     {
       "controlId": "CTL-edd4bf8b620d",
@@ -6386,9 +6488,13 @@
       "label": "Commercial Combined",
       "requirement": "QUO-02",
       "acceptanceId": "AT-edd4bf8b620d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "listProductVersions",
+        "createQuote"
+      ],
+      "reason": "Select a published eligible product and agency relationship before creating the typed quote draft; product label is not an API identity."
     },
     {
       "controlId": "CTL-0668ac887c59",
@@ -6396,9 +6502,13 @@
       "label": "Motor Trade Fleet",
       "requirement": "QUO-02",
       "acceptanceId": "AT-0668ac887c59",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "read",
+      "operationIds": [
+        "listProducts",
+        "getProductVersion"
+      ],
+      "reason": "Draft Fleet selection displays the publication restriction and product configuration; it cannot create or bind a quote."
     },
     {
       "controlId": "CTL-061a390a6d24",
@@ -6406,9 +6516,12 @@
       "label": "Add driver",
       "requirement": "QUO-02",
       "acceptanceId": "AT-061a390a6d24",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "reason": "Confirm typed driver/conviction/incident/vehicle/location/wage/loss/premises item in the quote proposal. Preserve stable child IDs, field units and conditional validation; the enclosing quote save owns persistence."
     },
     {
       "controlId": "CTL-36653774e70a",
@@ -6506,9 +6619,12 @@
       "label": "Add conviction",
       "requirement": "QUO-02",
       "acceptanceId": "AT-7209efc79397",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "reason": "Confirm typed driver/conviction/incident/vehicle/location/wage/loss/premises item in the quote proposal. Preserve stable child IDs, field units and conditional validation; the enclosing quote save owns persistence."
     },
     {
       "controlId": "CTL-aba9e5f38f4e",
@@ -6586,9 +6702,12 @@
       "label": "Add incident",
       "requirement": "QUO-02",
       "acceptanceId": "AT-abc0712b3b1a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "reason": "Confirm typed driver/conviction/incident/vehicle/location/wage/loss/premises item in the quote proposal. Preserve stable child IDs, field units and conditional validation; the enclosing quote save owns persistence."
     },
     {
       "controlId": "CTL-5d63ed17e63d",
@@ -6666,9 +6785,12 @@
       "label": "Add vehicle",
       "requirement": "QUO-02",
       "acceptanceId": "AT-8355c466b4c3",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "reason": "Confirm typed driver/conviction/incident/vehicle/location/wage/loss/premises item in the quote proposal. Preserve stable child IDs, field units and conditional validation; the enclosing quote save owns persistence."
     },
     {
       "controlId": "CTL-1595a2ef4a0a",
@@ -6776,9 +6898,12 @@
       "label": "Add location",
       "requirement": "CC-04",
       "acceptanceId": "AT-d46524a6c7e6",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "reason": "Confirm typed driver/conviction/incident/vehicle/location/wage/loss/premises item in the quote proposal. Preserve stable child IDs, field units and conditional validation; the enclosing quote save owns persistence."
     },
     {
       "controlId": "CTL-85b648dd41ef",
@@ -6986,9 +7111,12 @@
       "label": "Add category",
       "requirement": "CC-04",
       "acceptanceId": "AT-52e3f70b9519",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "reason": "Confirm typed driver/conviction/incident/vehicle/location/wage/loss/premises item in the quote proposal. Preserve stable child IDs, field units and conditional validation; the enclosing quote save owns persistence."
     },
     {
       "controlId": "CTL-8267db83f329",
@@ -7046,9 +7174,12 @@
       "label": "Add loss",
       "requirement": "CC-04",
       "acceptanceId": "AT-3a75c3b303c4",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "reason": "Confirm typed driver/conviction/incident/vehicle/location/wage/loss/premises item in the quote proposal. Preserve stable child IDs, field units and conditional validation; the enclosing quote save owns persistence."
     },
     {
       "controlId": "CTL-afe94e31caf7",
@@ -7126,9 +7257,12 @@
       "label": "Add premises",
       "requirement": "QUO-02",
       "acceptanceId": "AT-2c6b742f5f51",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "reason": "Confirm typed driver/conviction/incident/vehicle/location/wage/loss/premises item in the quote proposal. Preserve stable child IDs, field units and conditional validation; the enclosing quote save owns persistence."
     },
     {
       "controlId": "CTL-fc598bfe9e9b",
@@ -7206,9 +7340,12 @@
       "label": "Add contact",
       "requirement": "CLI-02",
       "acceptanceId": "AT-17e744eccc12",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "createContact"
+      ],
+      "reason": "Create agency-scoped client contact, with primary uniqueness and separate marketing consent."
     },
     {
       "controlId": "CTL-6cb19bd3e05c",
@@ -7276,9 +7413,12 @@
       "label": "Record response",
       "requirement": "UWR-03",
       "acceptanceId": "AT-12694b54dab5",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "recordCapacityResponse"
+      ],
+      "reason": "Record provider outcome, named underwriter, reference and evidence on the exact escalation; decision cannot automatically issue cover."
     },
     {
       "controlId": "CTL-996063cc0f6f",
@@ -7326,9 +7466,12 @@
       "label": "Add to invitation list",
       "requirement": "AGY-01",
       "acceptanceId": "AT-e7ea175c76d6",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "inviteAgencyUser"
+      ],
+      "reason": "Add invitation while onboarding; delivery waits for activation and eligible broker-admin prerequisites."
     },
     {
       "controlId": "CTL-35c078b12b2f",
@@ -7356,9 +7499,12 @@
       "label": "Add flag",
       "requirement": "CLI-02",
       "acceptanceId": "AT-2843860a71f4",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "createSupportFlag"
+      ],
+      "reason": "Confirm person-linked flag with restricted category, safe agency instruction, explicit consent/review/reason."
     },
     {
       "controlId": "CTL-53fe844ca2f5",
@@ -7446,9 +7592,12 @@
       "label": "Request change",
       "requirement": "ADM-03",
       "acceptanceId": "AT-e94274aa8d30",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "requestIdentityChange"
+      ],
+      "reason": "Persist requested email change; nominated second approver is routing only, no fabricated approval. Required audit/security notifications cannot be disabled."
     },
     {
       "controlId": "CTL-6024d631eea5",
@@ -7506,9 +7655,10 @@
       "label": "Copy all codes",
       "requirement": "ADM-05",
       "acceptanceId": "AT-dc47c1c54ea5",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "Copy newly generated recovery codes from current one-time UI state to clipboard after explicit click; no secret-retrieval API or plaintext persistence."
     },
     {
       "controlId": "CTL-5ec6b96d9dd9",
@@ -7536,9 +7686,12 @@
       "label": "Turn off",
       "requirement": "ADM-05",
       "acceptanceId": "AT-b88a29907695",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "disableMfa"
+      ],
+      "reason": "Verify recent password and MFA/recovery proof plus required-role policy before disabling."
     },
     {
       "controlId": "CTL-1906c3818071",
@@ -7566,9 +7719,12 @@
       "label": "Save change",
       "requirement": "POL-04",
       "acceptanceId": "AT-fd38a2890d20",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Save actual edited driver values and completeness state, invalidate rating and approval; do not turn nonempty text into licence verification."
     },
     {
       "controlId": "CTL-2be8051a493d",
@@ -7636,9 +7792,13 @@
       "label": "Send invitation",
       "requirement": "AGY-01",
       "acceptanceId": "AT-db8560576a23",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "inviteAgencyUser",
+        "inviteInternalUser"
+      ],
+      "reason": "Invitation confirmation chooses internal or agency endpoint from authorised parent context, never mixes role scopes."
     },
     {
       "controlId": "CTL-2ae7c284ac04",
@@ -9956,9 +10116,14 @@
       "label": "Main contact",
       "requirement": "AGY-01",
       "acceptanceId": "AT-9ba165615ca8",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.mainContact.name",
+      "reason": "Reviewed onboarding field maps to typed details.mainContact.name. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-1fafbf866252",
@@ -9966,9 +10131,14 @@
       "label": "Main contact email",
       "requirement": "AGY-01",
       "acceptanceId": "AT-1fafbf866252",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.mainContact.email",
+      "reason": "Reviewed onboarding field maps to typed details.mainContact.email. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-2436300130ef",
@@ -9976,9 +10146,14 @@
       "label": "Main contact telephone",
       "requirement": "AGY-01",
       "acceptanceId": "AT-2436300130ef",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.mainContact.telephone",
+      "reason": "Reviewed onboarding field maps to typed details.mainContact.telephone. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-ebdff6a8b7cb",
@@ -9986,9 +10161,14 @@
       "label": "Compliance contact",
       "requirement": "AGY-01",
       "acceptanceId": "AT-ebdff6a8b7cb",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.complianceContact",
+      "reason": "Reviewed onboarding field maps to typed details.complianceContact. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-e25a87aa84de",
@@ -9996,9 +10176,14 @@
       "label": "Accounts contact",
       "requirement": "AGY-01",
       "acceptanceId": "AT-e25a87aa84de",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.accountsContact",
+      "reason": "Reviewed onboarding field maps to typed details.accountsContact. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-450fbe926029",
@@ -10006,9 +10191,14 @@
       "label": "Complaints contact",
       "requirement": "AGY-01",
       "acceptanceId": "AT-450fbe926029",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.complaintsContact",
+      "reason": "Reviewed onboarding field maps to typed details.complaintsContact. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-c4094816021e",
@@ -10016,9 +10206,14 @@
       "label": "Relationship manager",
       "requirement": "AGY-01",
       "acceptanceId": "AT-c4094816021e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.relationshipManagerId",
+      "reason": "Reviewed onboarding field maps to typed details.relationshipManagerId. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-37d1c9a22172",
@@ -10026,9 +10221,14 @@
       "label": "Correspondence preference",
       "requirement": "AGY-01",
       "acceptanceId": "AT-37d1c9a22172",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.correspondencePreference",
+      "reason": "Reviewed onboarding field maps to typed details.correspondencePreference. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-72834edc3eea",
@@ -10036,9 +10236,14 @@
       "label": "Office hours",
       "requirement": "AGY-01",
       "acceptanceId": "AT-72834edc3eea",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.officeHours",
+      "reason": "Reviewed onboarding field maps to typed details.officeHours. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-7442850b6ef1",
@@ -10086,9 +10291,14 @@
       "label": "Effective from",
       "requirement": "AGY-01",
       "acceptanceId": "AT-59615ca925de",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.commercialTerms.effectiveFrom",
+      "reason": "Reviewed onboarding field maps to typed details.commercialTerms.effectiveFrom. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-def86626e9ac",
@@ -10096,9 +10306,14 @@
       "label": "Commission basis",
       "requirement": "AGY-01",
       "acceptanceId": "AT-def86626e9ac",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.commercialTerms.commissionBasis",
+      "reason": "Reviewed onboarding field maps to typed details.commercialTerms.commissionBasis. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-c92492b714ab",
@@ -10106,9 +10321,14 @@
       "label": "Fee sharing",
       "requirement": "AGY-01",
       "acceptanceId": "AT-c92492b714ab",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.commercialTerms.feeShareBasisPoints",
+      "reason": "Reviewed onboarding field maps to typed details.commercialTerms.feeShareBasisPoints. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-32e867330c06",
@@ -10116,9 +10336,14 @@
       "label": "Volume commitment",
       "requirement": "AGY-01",
       "acceptanceId": "AT-32e867330c06",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.commercialTerms.volumeCommitment",
+      "reason": "Reviewed onboarding field maps to typed details.commercialTerms.volumeCommitment. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-88d345cd8a7c",
@@ -10126,9 +10351,14 @@
       "label": "Minimum premium override",
       "requirement": "AGY-01",
       "acceptanceId": "AT-88d345cd8a7c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.commercialTerms.minimumPremiumOverride",
+      "reason": "Reviewed onboarding field maps to typed details.commercialTerms.minimumPremiumOverride. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-922d25c88d32",
@@ -10136,9 +10366,14 @@
       "label": "Referral routing",
       "requirement": "AGY-01",
       "acceptanceId": "AT-922d25c88d32",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.commercialTerms.referralRouting",
+      "reason": "Reviewed onboarding field maps to typed details.commercialTerms.referralRouting. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-4adad545ddb8",
@@ -10146,9 +10381,14 @@
       "label": "TOBA status",
       "requirement": "AGY-01",
       "acceptanceId": "AT-4adad545ddb8",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.compliance.tobaStatus",
+      "reason": "Reviewed onboarding field maps to typed details.compliance.tobaStatus. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-7db28158a9c9",
@@ -10156,9 +10396,14 @@
       "label": "TOBA version",
       "requirement": "AGY-01",
       "acceptanceId": "AT-7db28158a9c9",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.compliance.tobaVersion",
+      "reason": "Reviewed onboarding field maps to typed details.compliance.tobaVersion. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-20213a260167",
@@ -10166,9 +10411,14 @@
       "label": "Date signed",
       "requirement": "AGY-01",
       "acceptanceId": "AT-20213a260167",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.compliance.tobaSignedOn",
+      "reason": "Reviewed onboarding field maps to typed details.compliance.tobaSignedOn. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-cd31805e2ef0",
@@ -10176,9 +10426,14 @@
       "label": "Professional indemnity cover",
       "requirement": "AGY-01",
       "acceptanceId": "AT-cd31805e2ef0",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.compliance.professionalIndemnityLimit",
+      "reason": "Reviewed onboarding field maps to typed details.compliance.professionalIndemnityLimit. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-92d211344ad0",
@@ -10186,9 +10441,14 @@
       "label": "PI expiry date",
       "requirement": "AGY-01",
       "acceptanceId": "AT-92d211344ad0",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.compliance.piExpiresOn",
+      "reason": "Reviewed onboarding field maps to typed details.compliance.piExpiresOn. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-cfc54c275306",
@@ -10196,9 +10456,14 @@
       "label": "Financial standing check",
       "requirement": "AGY-01",
       "acceptanceId": "AT-cfc54c275306",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.compliance.financialStanding",
+      "reason": "Reviewed onboarding field maps to typed details.compliance.financialStanding. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-64e550b1e7a0",
@@ -10206,9 +10471,14 @@
       "label": "Sanctions and adverse media",
       "requirement": "AGY-01",
       "acceptanceId": "AT-64e550b1e7a0",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.compliance.sanctionsCheck",
+      "reason": "Reviewed onboarding field maps to typed details.compliance.sanctionsCheck. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-6ffe23124c1e",
@@ -10216,9 +10486,14 @@
       "label": "Beneficial ownership verified",
       "requirement": "AGY-01",
       "acceptanceId": "AT-6ffe23124c1e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.compliance.beneficialOwnershipVerified",
+      "reason": "Reviewed onboarding field maps to typed details.compliance.beneficialOwnershipVerified. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-2bc0225cde9d",
@@ -10226,9 +10501,14 @@
       "label": "Data processing agreement",
       "requirement": "AGY-01",
       "acceptanceId": "AT-2bc0225cde9d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.compliance.dataProcessingAgreement",
+      "reason": "Reviewed onboarding field maps to typed details.compliance.dataProcessingAgreement. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-cf080648263b",
@@ -10236,9 +10516,14 @@
       "label": "Credit terms",
       "requirement": "AGY-01",
       "acceptanceId": "AT-cf080648263b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.paymentTermsDays",
+      "reason": "Reviewed onboarding field maps to typed details.paymentTermsDays. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-ded2edfcba39",
@@ -10246,9 +10531,14 @@
       "label": "Statement cycle",
       "requirement": "AGY-01",
       "acceptanceId": "AT-ded2edfcba39",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.settlement.statementCycle",
+      "reason": "Reviewed onboarding field maps to typed details.settlement.statementCycle. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-5f0a27e96ab6",
@@ -10256,9 +10546,14 @@
       "label": "Credit limit",
       "requirement": "AGY-01",
       "acceptanceId": "AT-5f0a27e96ab6",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.creditLimit",
+      "reason": "Reviewed onboarding field maps to typed details.creditLimit. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-536e0288d85f",
@@ -10266,9 +10561,14 @@
       "label": "Settlement method",
       "requirement": "AGY-01",
       "acceptanceId": "AT-536e0288d85f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.settlement.method",
+      "reason": "Reviewed onboarding field maps to typed details.settlement.method. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-522293d94276",
@@ -10276,9 +10576,14 @@
       "label": "Premium collection",
       "requirement": "AGY-01",
       "acceptanceId": "AT-522293d94276",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.settlement.premiumCollection",
+      "reason": "Reviewed onboarding field maps to typed details.settlement.premiumCollection. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-4f360e7439d1",
@@ -10286,9 +10591,14 @@
       "label": "Commission settlement",
       "requirement": "AGY-01",
       "acceptanceId": "AT-4f360e7439d1",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveAgencyDraft",
+        "validateAgency"
+      ],
+      "requestField": "details.settlement.commissionSettlement",
+      "reason": "Reviewed onboarding field maps to typed details.settlement.commissionSettlement. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
     },
     {
       "controlId": "CTL-182459f3feb7",
