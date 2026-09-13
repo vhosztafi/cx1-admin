@@ -2,6 +2,16 @@
 
 Status: in progress, not a completion summary. User authorises autonomous continuation; do not ask to proceed.
 
+## Latest autonomous run
+
+253 operations now lint successfully; all inline request/response/parameter schemas compile strictly, and `pnpm test` passes 28 tests. Added `openapi-review-additions.mjs` for source-discovered gaps: full profile/preferences, manager-approved access changes, safe support projection, detail reads, account security reporting, admin reset/template-preview/batch-retry, evidence/condition decisions, typed lookups and rating definitions, typed rule values/units, report snapshot pagination/export and required servicing policy ETag.
+
+Added relational records for temporary authentication/MFA, password history/profile, access approval, rating versions, proposal/condition evidence, MID, lookup evidence and report runs/definitions; reconciliation reversals and correction batch lineage are now explicit. `REPORT-DEFINITIONS.md` pins six actual measure/cohort definitions. These remain design contracts, not implemented SQL.
+
+Started exact control mapping: `reviewed-api-controls.json` has 25 reviewed controls (account/admin/report action cases); `build-api-control-map.mjs` creates `api-control-map.json` with all 949 IDs and explicit pending status for the remaining 924. `--complete` intentionally fails until review is complete. Do not replace pending with method-level keyword guesses. Read handlers AND surrounding source fields; this review caught omitted profile fields and manager approvals. Recovery-code viewing deliberately becomes remaining-count/replacement because hashes cannot recover plaintext.
+
+Next: continue exact control review, including other controls/input handlers and modal confirmation paths, then fill remaining adapter schemas/examples and verify 01-03. Earlier checklist below is retained as context; several named gaps have now been closed as stated above. Specific remaining design consistency: self change-request purpose should support the prototype's generic role/team request, security reports need a restricted subject/audience model, config creation drafts must allow incomplete form saves, ETag ownership must be explicit for parent-vs-child commands, agency/lookup/report DTO examples and runtime-independent adapter replay cases need expansion. Do not mark Phase 1 complete.
+
 Completed draft work:
 
 - `docs/design/API-CONVENTIONS.md`: typed DTOs, cookie/CSRF, scope, preconditions, durable replay, security-response cache exclusion, errors, paging/files/configuration.

@@ -39,13 +39,18 @@ erDiagram
 | Table | Domain-specific columns | Constraints/indexes |
 |---|---|---|
 | User | Email text254, NormalizedEmail text254, DisplayName text200, State text20, AgencyId UUID?, TeamId UUID?, SecurityStamp text100 | Unique NormalizedEmail; State invited/active/suspended; AgencyId FK Agency; TeamId FK Team |
+| UserProfile | UserId UUID, FullName text200, Telephone text50, JobTitle text200, OutOfOffice bool, TaskDigest text30 | Unique UserId; digest daily-0800/twice-daily/off; out-of-office routes newly generated tasks only, existing tasks unchanged |
 | UserCredential | UserId UUID, Provider text30, ProviderSubject text300, PasswordHash text1000?, MfaSecretCiphertext varbinary(max)?, MustReset bool | Unique (Provider,ProviderSubject); FK User; local passwords use framework password hasher; Entra adds mapping later |
+| PasswordHistory | UserId UUID, PasswordHash text1000, ChangedAt instant | Index user/changed descending; retain last five framework hashes; verify candidate against current/recent hashes rather than comparing hashes or storing plaintext |
 | Role | Code text60, Scope text20 | Unique Code; Scope internal/agency |
 | UserRole | UserId UUID, RoleId UUID | Unique pair; role-mixing prohibited by transactional command |
 | Team | Name text100 | Unique Name |
 | Session | UserId UUID, TokenHash hash, ExpiresAt instant, RevokedAt instant?, LastSeenAt instant, DeviceLabel text200, SecurityStamp text100 | Unique TokenHash; index UserId/ExpiresAt; never persist raw session token |
 | RecoveryCode | UserId UUID, CodeHash hash, ConsumedAt instant? | Unique (UserId,CodeHash); consume atomically |
+| AuthenticationChallenge | UserId UUID, Purpose text30, TokenHash hash, ExpiresAt instant, ConsumedAt instant?, FailedAttempts int, SecurityStamp text100 | Purpose login-mfa/password-reset/recent-auth; unique TokenHash; check expiry, purpose, stamp and attempt limit while atomically consuming; no raw token |
+| MfaEnrolment | UserId UUID, SecretCiphertext varbinary(max), ExpiresAt instant, ConfirmedAt instant?, FailedAttempts int, SecurityStamp text100 | One active enrolment per user; replace atomically; enable UserCredential MFA only after verification; destroy unconfirmed secret on expiry |
 | IdentityApproval | SubjectUserId UUID, RequestedBy UUID, ApprovedBy UUID?, Kind text30, OldValue json, ProposedValue json, Reason text1000, State text20, AppliedAt instant? | Approver differs from requester; pending/approved/rejected/applied; session revocation atomically accompanies application |
+| AccessChangeRequest | SubjectUserId UUID, RequestedBy UUID, ApprovedBy UUID?, ProposedRoleCodes json, ProposedTeamId UUID?, ProposedState text20, ReassignTasksToUserId UUID?, Reason text1000, State text20, AppliedAt instant? | Manager approval differs from requester; pending/approved/rejected/applied; apply role/team/state, session revocation and required active-task reassignment atomically; no direct access-update bypass |
 | Invitation | UserId UUID, AgencyId UUID?, TokenHash hash, ExpiresAt instant, AcceptedAt instant?, RevokedAt instant?, SendJobId UUID? | Unique TokenHash; existing token invalidated on resend; user not active until accepted |
 
 Credential implementation should use ASP.NET Core's supported hashing/authentication primitives; schema mapping must preserve those library requirements. Never manually invent password hashing. Ciphertext encryption keys live outside the database and repository. Account changes and MFA events generate audit records without secrets.
@@ -77,6 +82,7 @@ Claim history can be linked at ClientAccount for internal matching context; it d
 | BinderVersion | ProviderId UUID, ProductId UUID, Version int, ValidFrom instant, ValidTo instant, Limits json, ApprovalEvidenceDocumentId UUID? | Unique provider/product/version; ValidTo>ValidFrom |
 | AuthorityVersion | ProductVersionId UUID, BinderVersionId UUID, Version int, EffectiveFrom instant, Rules json, ApprovedBy UUID, Reason text1000 | Unique product/version; all configured authority dimensions supported; no limit above binder |
 | ReferenceDataVersion | Collection text100, Version text100, Source text500, SourceHash hash?, Rows json | Unique collection/version; immutable published rows with typed original IDs |
+| RatingRuleVersion | ProductId UUID, Version int, State text20, EffectiveFrom instant, Definition json | Unique product/version; draft/published/retired; typed deterministic factors/conditions; historical results pin this ID |
 | TemplateVersion | Code text100, Version int, Kind text20, ProductId UUID?, State text20, Content nvarchar(max), EffectiveFrom instant | Unique code/version; document/message; safe template language, no arbitrary execution |
 | WorkflowRuleVersion | Code text100, Version int, EffectiveFrom instant, Definition json, State text20 | Unique code/version; event identity deduplicates generated tasks |
 | SettingVersion | Scope text100, Version int, EffectiveFrom instant, Values json | Unique scope/version; no secrets; includes matching/notification/organisation/demo defaults |
@@ -92,6 +98,8 @@ JSON configuration is validated against a versioned schema, not an arbitrary adm
 | RatingResult | QuoteRevisionId UUID?, DraftId UUID?, DraftRevision int?, InputHash hash, RuleVersion text100, ExpiresAt instant, ResultJson json, State text30, AttemptId UUID | Exactly one quote or draft target; index target/hash; completed result immutable |
 | Referral | QuoteRevisionId UUID?, DraftId UUID?, RuleCode text100, AuthorityVersionId UUID, Reason text2000, State text30, AssignedUserId UUID?, RequiredAuthority json | Exactly one target; unique target/rule/rating identity |
 | ReferralDecision | ReferralId UUID, Outcome text30, Conditions json, Reason text2000, EvidenceDocumentId UUID?, ActorId UUID, DecidedAt instant, TargetHash hash | Append-only; requestor/actor permissions checked; decisions bind exact target hash |
+| ReferralConditionEvidence | ReferralDecisionId UUID, ConditionId UUID, TargetHash hash, EvidenceDocumentVersionId UUID, Satisfied bool, Reason text1000, ActorId UUID, RecordedAt instant | Append-only evidence decisions; index decision/condition/time; no satisfaction survives a changed target hash |
+| ProposalEvidence | QuoteRevisionId UUID?, DraftId UUID?, DraftRevision int?, DocumentVersionId UUID, RequirementCode text100, State text20, Reason text1000 | Exactly one quote/draft target; pending/accepted/rejected; preserve revision and file lineage; never implicitly authorise issue |
 | Escalation | ReferralId UUID, ProviderId UUID, State text30, ProviderReference text100?, RequestJobId UUID? | FK referral/provider; context pins binder/authority version |
 | EscalationMessage | EscalationId UUID, Direction text10, AuthorLabel text200, Body text8000, Outcome text40?, RecordedAt instant, AttemptId UUID? | Append-only inbound/outbound thread |
 | Acceptance | QuoteRevisionId UUID?, DraftId UUID?, DraftRevision int?, RatingResultId UUID, TermsHash hash, AcceptedByLabel text200, AcceptedAt instant, Channel text30, EvidenceDocumentId UUID? | Exactly one target; immutable acceptance evidence |
@@ -124,6 +132,8 @@ Sequence is transaction processing order within a term, not effective-date order
 | MessageAttachment | MessageId UUID, DocumentVersionId UUID | Unique pair; both records visible to message audience |
 | Incident | WorkRecordId UUID, PolicyId UUID, VersionId UUID, RiskItemId UUID?, Kind text50, OccurredAt instant, Description text8000, Contact json, Details json, State text30, ProviderId UUID?, ProviderReference text100? | FK policy/version association; draft/logged/queued/handed-off/failed |
 | ClaimsSummary | IncidentId UUID, AsOf instant, Status text30, Paid money, Reserved money, ProviderPayload json, AttemptId UUID | Append-only provider snapshots; not local claim settlement authority |
+| MidSubmission | PolicyVersionId UUID, RiskItemId UUID, Registration text20, Action text10, EffectiveAt instant, State text20, ProviderReference text100?, ReasonCodes json, JobId UUID | Unique (PolicyVersionId,RiskItemId,Action); add/change/remove; pending/accepted/rejected/failed; separate attempt history; no retargeting later versions |
+| LookupEvidence | Kind text30, SubjectRecordId UUID?, ReferenceDataVersionId UUID, QueryHash hash, Result json, AsOf instant, ExpiresAt instant, JobId UUID | Immutable typed result; index subject/kind/time; lookup success is evidence, not declaration acceptance |
 
 WorkRecord supertype resolves earlier generic-link concern: enforce unique typed parent registration in an atomic application operation, plus FK to WorkRecord for shared records. A cleanup integrity check detects any unowned WorkRecord. Never expose an endpoint accepting arbitrary entity-type strings without validating the actual typed parent and permission.
 
@@ -144,8 +154,8 @@ Files use a persistent local volume initially. Upload writes a temporary object 
 | Refund | AgencyId UUID, TransactionId UUID, Amount money, State text30, ApprovedBy UUID?, ApprovalReason text1000?, PaymentOperationKey text200?, PaymentAttemptId UUID? | Unique transaction/refund-purpose; Amount>0; pending/approved/rejected/queued/paid/failed |
 | BankLine | Reference text200, OccurredOn date, Amount money, Currency char3, ImportKey text200 | Unique ImportKey; immutable import |
 | Reconciliation | PeriodId UUID, State text20, Reason text1000? | No completion with unexplained variance |
-| ReconciliationMatch | ReconciliationId UUID, BankLineId UUID, JournalLineId UUID, Amount money | Unique matching allocation identity; totals cannot overmatch |
-| BordereauBatch | ProviderId UUID, PeriodId UUID, Number int, State text30, ContentHash hash?, SubmitJobId UUID? | Unique provider/period/number; immutable after submitted |
+| ReconciliationMatch | ReconciliationId UUID, BankLineId UUID, JournalLineId UUID, Amount money, ReversalOfId UUID?, Reason text1000 | Amount>0; append-only original/reversal; unique filtered ReversalOfId prevents reversing twice; totals cannot overmatch; lock original on reversal |
+| BordereauBatch | ProviderId UUID, PeriodId UUID, Number int, State text30, ContentHash hash?, SubmitJobId UUID?, CorrectsBatchId UUID? | Unique provider/period/number; immutable after submitted; correction FK must refer to same provider and a submitted batch |
 | BordereauRow | BatchId UUID, TransactionId UUID, Snapshot json, ValidationErrors json, Excluded bool, ExclusionReason text1000? | Unique batch/transaction; excluded requires reason; pin exported source snapshot |
 
 ## Platform/read models
@@ -159,6 +169,8 @@ Files use a persistent local volume initially. Upload writes a temporary object 
 | AdapterInbox | Provider text60, EventId text200, ContentHash hash, WorkId UUID, State text20, AppliedAt instant?, QuarantineReason text1000? | Unique provider/event; received/applied/quarantined; event application and business result commit together; mismatched duplicate hash cannot overwrite applied content |
 | IdempotencyRecord | ActorScope text150, Route text200, Key text200, RequestHash hash, ResultStatus int, ResultBody json, ExpiresAt instant | Unique scope/route/key; command result and domain effect committed together; paid/issued operation uniqueness lasts beyond cache expiry |
 | SavedReport | UserId UUID, ReportCode text60, Name text200, Filters json, IsFavourite bool, LastRunAt instant? | Index user/favourite; server validates filter schema |
+| ReportDefinitionVersion | Code text60, Version int, Title text200, Measures json, FilterSchemaVersion text30, DefaultBasis text20, EffectiveFrom instant | Unique code/version; named report definitions seeded and immutable; effective/processed basis; definitions use allowlisted measures, never user SQL |
+| ReportRun | DefinitionVersionId UUID, UserId UUID, Filters json, AccessScopeHash hash, AsOf instant, ResultStorageKey text500?, ExpiresAt instant, ExportJobId UUID? | Immutable pinned run; cursor binds run and ordering; result download reauthorises current scope; contains only scoped projection |
 | Notification | UserId UUID, SubjectRecordId UUID?, Kind text60, Text text1000, ReadAt instant?, EventKey text200 | Unique user/event; visible only when underlying subject remains authorised |
 
 ## Retention, concurrency and migration

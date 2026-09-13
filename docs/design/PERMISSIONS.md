@@ -40,6 +40,10 @@ Local sign-in uses framework password hashing, secure HttpOnly cookie sessions a
 
 MFA enrolment requires recent authentication and successful code verification before enabling. Recovery codes are only displayed at creation, stored hashed and atomically consumed. Replacement/disable/reset records an event, revokes affected sessions where appropriate and follows role-required MFA policy. Prototype dates like 30/09/2026 become demo settings, not permanently hardcoded deadlines.
 
+Self-profile fields include full/display name, contact number, job title, out-of-office and digest preference. Out-of-office redirects newly assigned workflow tasks, leaving existing tasks intact. A manager approves role/team changes and deactivation; deactivation reassigns applicable open tasks and revokes sessions in the same transaction. A user administrator can propose these changes but cannot bypass their approval by calling a generic update endpoint.
+
+Password policy reproduces the prototype's stated requirements: at least 12 characters, upper/lower case, number and symbol, and no reuse of the last five passwords. Verify history using the framework hasher, not the mock substring test. UI confirmation must match before submission; the server validates the actual new password independently. Password change preserves a rotated current session after recent credential verification and revokes other sessions. Recovery-code views show a remaining count; lost codes require replacement, since plaintext recovery codes are not retrievable from hashes.
+
 ## Required denial cases
 
 For each relevant API: anonymous request, wrong agency, read-only broker mutation, suspended user, missing role, expired authority, exceeding one dimension, self-approval, stale session after identity change and attachment visibility mismatch. Denial must be tested on API calls directly, including download/export/search endpoints, independently of UI controls.

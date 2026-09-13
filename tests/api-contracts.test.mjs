@@ -20,6 +20,12 @@ const getOperation=id=>{const result=operations.find(op=>op.operationId===id);as
 test('API component schemas all compile strictly, including both external policy schemas',()=>{
  for(const name of Object.keys(document.components.schemas))assert.equal(typeof ajv.getSchema(`${rootId}#/$defs/${name}`),'function',name);
 });
+test('every inline request, response and parameter schema compiles strictly',()=>{
+ for(const op of operations){
+  const schemas=[...op.parameters.map(p=>p.schema),...Object.values(op.requestBody?.content??{}).map(c=>c.schema),...Object.values(op.responses).flatMap(response=>Object.values(response.content??{}).map(c=>c.schema))];
+  for(const schema of schemas)assert.equal(typeof ajv.compile(relocate(schema)),'function',op.operationId);
+ }
+});
 test('every defined operation has unique identity, permission and correct path parameters',()=>{
  assert.equal(new Set(operations.map(op=>op.operationId)).size,operations.length);
  for(const op of operations){
@@ -55,4 +61,37 @@ test('read contract never exposes storage paths or credential internals',()=>{
  function check(value){if(!value||typeof value!=='object')return;for(const [key,item] of Object.entries(value)){assert.ok(!banned.has(key),key);check(item);}}
  for(const op of operations)if(op.method==='get')check(op.responses);
  for(const name of ['Actor','SessionView','DocumentVersion','Job'])check(document.components.schemas[name]);
+});
+test('safe agency instructions exclude internal support categorisation and origin data',()=>{
+ const validate=ajv.getSchema(`${rootId}#/$defs/SafeSupportInstruction`);
+ const safe={id:'11111111-1111-4111-8111-111111111111',personId:'22222222-2222-4222-8222-222222222222',instruction:'Please offer written follow-up.',reviewOn:'2027-01-01'};
+ assert.ok(validate(safe));
+ assert.equal(validate({...safe,internalCategory:'Health'}),false);
+ assert.equal(validate({...safe,originRelationshipId:'33333333-3333-4333-8333-333333333333'}),false);
+});
+test('servicing issue requires the policy aggregate version and local profile cannot change access',()=>{
+ const validateIssue=ajv.getSchema(`${rootId}#/$defs/DraftIssueWrite`);
+ const command={ratingResultId:'11111111-1111-4111-8111-111111111111',acceptanceId:'22222222-2222-4222-8222-222222222222',targetRevision:4,reason:'Accepted adjustment'};
+ assert.equal(validateIssue(command),false);assert.ok(validateIssue({...command,policyEtag:'"v7"'}));
+ const validateProfile=ajv.getSchema(`${rootId}#/$defs/ProfileWrite`);
+ const profile={fullName:'Demo User',displayName:'Demo',telephone:'0114 000 0000',jobTitle:'Underwriter',outOfOffice:false,taskDigest:'daily-0800'};
+ assert.ok(validateProfile(profile));assert.equal(validateProfile({...profile,roleCodes:['system-admin']}),false);
+ const access=getOperation('requestUserAccessChange');assert.equal(access.responses[200].content['application/json'].schema.$ref,'#/components/schemas/AccessChangeRequest');
+});
+test('reviewed control mappings point to real source controls and defined operations',async()=>{
+ const inventory=JSON.parse(await readFile(new URL('../docs/design/control-inventory.json',import.meta.url),'utf8'));
+ const map=JSON.parse(await readFile(new URL('../docs/design/api-control-map.json',import.meta.url),'utf8'));
+ assert.equal(map.sourceSha256,inventory.sourceSha256);
+ assert.equal(map.total,inventory.controls.length);
+ assert.equal(new Set(map.controls.map(c=>c.controlId)).size,map.total);
+ for(const row of map.controls){
+  assert.ok(inventory.controls.some(c=>c.id===row.controlId));
+  if(row.status==='reviewed'){
+   assert.ok(row.reason.length>20);
+   if(row.disposition!=='client-only')assert.ok(row.operationIds.length>0);
+   for(const operationId of row.operationIds)getOperation(operationId);
+  }
+ }
+ assert.equal(map.reviewed,map.controls.filter(c=>c.status==='reviewed').length);
+ assert.equal(map.complete,map.reviewed===map.total);
 });
