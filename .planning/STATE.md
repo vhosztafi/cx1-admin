@@ -25,9 +25,9 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 ## Current Position
 
 Phase: 1 of 13 (Data and API design)
-Plan: 01-03 of 4 — next; source inventory and data/lifecycle contracts complete
+Plan: 01-03 of 4 — in progress; 221 API operations drafted, semantic/control coverage pending
 Status: In progress — autonomous
-Last activity: 2026-09-13 — Completed 01-01 and 01-02; 19 design tests pass; API contracts next
+Last activity: 2026-09-13 — API draft passes OpenAPI lint; 24 design tests pass; see 01-03-PROGRESS.md for required completion checks
 
 Progress: Phase 1 design plans 2/4; application implementation not started.
 
@@ -54,7 +54,7 @@ Progress: Phase 1 design plans 2/4; application implementation not started.
 ## Session Continuity
 
 Last session: 2026-09-13
-Stopped at: 01-02 completed. Continue 01-03-PLAN.md. Do not repeat source extraction; full API/action coverage and design verification remain.
+Stopped at: API modules drafted. Read 01-03-PROGRESS.md and continue semantic/control coverage review. Source extraction and 01-02 are complete.
 Resume file: None
 
 ## Autonomous continuation

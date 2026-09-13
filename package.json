@@ -4,14 +4,17 @@
   "private": true,
   "type": "module",
   "packageManager": "pnpm@11.19.0",
-  "engines": { "node": ">=24 <25" },
+  "engines": {
+    "node": ">=24 <25"
+  },
   "scripts": {
     "test": "node --test tests/*.test.mjs",
     "design:extract": "node scripts/extract-prototype.mjs && node scripts/inspect-prototype.mjs && node scripts/build-design-inventory.mjs",
-    "contracts:generate": "node scripts/generate-policy-contracts.mjs",
-    "contracts:validate": "node --test tests/policy-contracts.test.mjs"
+    "contracts:generate": "node scripts/generate-policy-contracts.mjs && node scripts/generate-openapi.mjs",
+    "contracts:validate": "node scripts/lint-openapi.mjs && node --test tests/policy-contracts.test.mjs tests/api-contracts.test.mjs"
   },
   "devDependencies": {
+    "@redocly/cli": "2.52.1",
     "ajv": "8.20.0",
     "ajv-formats": "3.0.1"
   }
