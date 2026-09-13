@@ -1,6 +1,6 @@
 # Durable platform checkpoint
 
-Plan 02-05 remains IN PROGRESS. Completed components: atomic commands (de573c0), lease fencing/retries (84bb124), independent provider outcomes and fenced inbox application (682c2bb), hosted dispatch and real API-process recovery (a938a66), authorized diagnostic start/status APIs and contract (299e8b5). Operational lists/retry and admin UI remain unfinished. Do not create a completed 02-05-SUMMARY or advance plan count yet.
+Plan 02-05 remains IN PROGRESS. Completed components: atomic commands (de573c0), lease fencing/retries (84bb124), independent provider outcomes and fenced inbox application (682c2bb), hosted dispatch and real API-process recovery (a938a66), authorized diagnostic start/status APIs and contract (299e8b5). Operational settings/retry and admin UI remain unfinished; protected job/audit lists are implemented in 4df95e1. Do not create a completed 02-05-SUMMARY or advance plan count yet.
 
 ## Implemented contracts
 
@@ -16,7 +16,7 @@ DiagnosticInbox locks the job, validates its recorded provider outcome and lease
 
 OperationalJobEndpoints maps Development-only POST /api/v1/admin/diagnostic-probes, requiring integration-admin (internal system-admin), CSRF and a 16–200 character Idempotency-Key. Exact typed body {scenario:<one of four supported values>}, unknown properties rejected. It pins latest effective SettingVersion and commits OutboxWork, audit and command receipt atomically. OperationKey is derived from the created job UUID. Cached replay returns original 202 Job body and Location /api/v1/jobs/{id}; different input conflicts. Role authorization precedes cached replay.
 
-GET /api/v1/jobs/{id} currently exposes diagnostic jobs only, creator or integration-admin. Non-owner admin inspection writes diagnostic.inspected audit before response. Other kinds and inaccessible/missing IDs return 404; future business subject scope must be implemented in the owning phase. Safe DTO only, rowversion ETag, whitelisted error codes, successful resultResourceId from DiagnosticReceipt rather than raw result JSON. No internal payloads, operation keys, tokens or exception text. Operational list/settings/retry routes remain unimplemented.
+GET /api/v1/jobs/{id} currently exposes diagnostic jobs only, creator or integration-admin. Non-owner admin inspection writes diagnostic.inspected audit before response. Other kinds and inaccessible/missing IDs return 404; future business subject scope must be implemented in the owning phase. Safe DTO only, rowversion ETag, whitelisted error codes, successful resultResourceId from DiagnosticReceipt rather than raw result JSON. No internal payloads, operation keys, tokens or exception text. Operational settings/retry routes remain unimplemented; job/audit lists are implemented below.
 
 OpenAPI now includes diagnostic-probe Job.kind and startDiagnosticProbe: 284 operations, 949 controls, five conditional rules. API-CONVENTIONS.md and PERMISSIONS.md document the development route, replay and scope. The nine business adapter ports remain unchanged; this probe is infrastructure evidence.
 
@@ -32,8 +32,18 @@ Earlier SQL scenarios cover command rollback after flushed writes, concurrent re
 
 ## Resume next
 
-1. Add scoped/paginated operational jobs and audit lists, safe diagnostic settings view and manual retry. Existing contracts: GET /admin/jobs, /admin/audit, /admin/integrations; POST /jobs/{id}/retry and /admin/jobs/retry-batch. Apply filters before paging/counts; strict bounded cursor validation. Audit-read/integration-retry policies still need explicit mappings. Retry preserves provider identity and rejects definite business rejection as new intent; keep bounded attempt budget semantics explicit. Do not expose unimplemented business adapters or return generic seeded demo-adapters settings as typed diagnostic settings.
+1. Add safe diagnostic settings view and manual retry. Existing remaining contracts: GET /admin/integrations; POST /jobs/{id}/retry and /admin/jobs/retry-batch. integration-retry policy still needs an explicit mapping. Retry preserves provider identity and rejects definite business rejection as new intent; keep bounded attempt budget semantics explicit. Do not expose unimplemented business adapters or return generic seeded demo-adapters settings as typed diagnostic settings.
 2. Implement prototype-style admin operational UI using these APIs and the now-working diagnostic POST/status routes. Preserve source tabs/density and demonstrate persisted scenarios. No raw payload/hash/ciphertext/provider errors.
 3. Verify new list/retry authorization and concurrency through real SQL/API tests, then browser operational flow. Hosted lifecycle and actual process restart already pass. Only then close 02-05 and continue 02-06 foundation gate.
 
 Ports: 5080 belongs to unrelated Docker service; prior tests used API 5087/web 3100 and stopped their own processes. No test servers are running. Demo password stays in ignored .local/demo-password.txt. Keep frontend-code unchanged. No production deployment or business-task deduplication claim.
+
+## Latest operational list increment (4df95e1)
+
+GET /api/v1/admin/jobs requires integration-admin and exposes diagnostic jobs only; GET /api/v1/admin/audit requires audit-read (internal system-admin). Both record a fixed safe inspection event before response. Audit projection uses an explicit event-summary allowlist, live actor label, IDs/timestamps and correlation; it never returns raw reason or before/after JSON. Unreviewed future event types stay excluded until their disclosure is designed.
+
+OperationalPaging uses Data Protection tokens bound to actor, route, filters and page size, with 15-minute expiry. Unknown/duplicate/empty query parameters, invalid page size (outside 1–100), malformed IDs/dates, offset-less dates, bad states and invalid/cross-route/filter-changed cursors return 400. Lists filter and scope before count/page. Fixed initial creation/event cutoff, descending time/ID, offset pagination; mutable job states remain live, so this is not a transactional export snapshot. Cursor has no arbitrary 100k truncation.
+
+Verification: full 21 unit/13 integration suite passed; focused real-SQL OperationalJobTests rerun after final date/empty-filter fixes also passed. It verifies two-page traversal, filtered totals, hidden business jobs, denied servicing access, malformed/changed cursors, strict query/date validation, safe fixed audit summaries, unreviewed event exclusion and inspection audit counts. Prior 53 design checks remain passing; OpenAPI unchanged by these implementations. No new migrations or demo mutations. All owned test hosts/databases cleaned up.
+
+Resume settings/retry, then admin UI and browser flow; 02-05 remains incomplete. Next implementation should consider replay-before-ETag checks and preserving provider operation identity for manual retry; do not reset attempt numbering or retry definitive rejection as a new effect.
