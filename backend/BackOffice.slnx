@@ -5,4 +5,8 @@
     <Project Path="src/BackOffice.Domain/BackOffice.Domain.csproj" />
     <Project Path="src/BackOffice.Infrastructure/BackOffice.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj" />
+    <Project Path="tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj" />
+  </Folder>
 </Solution>

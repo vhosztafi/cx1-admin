@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "dependencies": {
+    "net10.0": {
+      "backoffice.application": {
+        "type": "Project",
+        "dependencies": {
+          "BackOffice.Domain": "[1.0.0, )"
+        }
+      },
+      "backoffice.domain": {
+        "type": "Project"
+      },
+      "backoffice.infrastructure": {
+        "type": "Project",
+        "dependencies": {
+          "BackOffice.Application": "[1.0.0, )"
+        }
+      }
+    }
+  }
+}
