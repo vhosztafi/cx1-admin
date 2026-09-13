@@ -101,3 +101,8 @@ test('separate-settlement cancellation reverses earned components without refund
  assert.equal(result.brokerFeeShare,'0.00');assert.equal(result.invoiceDue,'-397.68');
  assert.equal(result.remunerationPayable,'-35.51');assert.equal(result.netEconomicDue,'-362.17');
 });
+test('driver full-name input is preserved without guessing first and surname',()=>{
+ const policy=structuredClone(road);const driver=policy.risk.drivers[0];
+ delete driver.firstName;delete driver.surname;driver.fullName='Alex Morgan Example';
+ assert.ok(validate(policy),JSON.stringify(validate.errors));delete driver.fullName;assert.equal(validate(policy),false);
+});

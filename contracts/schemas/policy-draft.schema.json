@@ -421,6 +421,9 @@
         },
         "riskItemId": {
           "$ref": "#/$defs/Id"
+        },
+        "responses": {
+          "$ref": "#/$defs/Responses"
         }
       }
     },
@@ -449,6 +452,9 @@
           "type": "integer",
           "minimum": 0,
           "maximum": 1200
+        },
+        "responses": {
+          "$ref": "#/$defs/Responses"
         }
       }
     },
@@ -516,8 +522,38 @@
         },
         "responses": {
           "$ref": "#/$defs/Responses"
+        },
+        "fullName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
         }
-      }
+      },
+      "anyOf": [
+        {
+          "properties": {
+            "fullName": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          }
+        },
+        {
+          "properties": {
+            "firstName": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "surname": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          }
+        }
+      ]
     },
     "Vehicle": {
       "type": "object",
@@ -863,6 +899,9 @@
         },
         "bonaFideSubcontractors": {
           "$ref": "#/$defs/Amount"
+        },
+        "responses": {
+          "$ref": "#/$defs/Responses"
         }
       }
     },

@@ -131,3 +131,31 @@ test('reviewed agency option meanings match prototype choices and actual DTO enu
   assert.deepEqual(new Set(Object.values(mapping)),new Set(targets[label].enum),label);
  }
 });
+test('reviewed detail bindings resolve to policy fields and categorical answers retain source detail',async()=>{
+ const reviews=JSON.parse(await readFile(new URL('../docs/design/reviewed-api-controls.json',import.meta.url),'utf8'));
+ const catalog=await read('examples/prototype-detail-questions.json');
+ const definitions=policy.$defs;
+ const dereference=s=>s.$ref?.startsWith('#/$defs/')?definitions[s.$ref.split('/').at(-1)]:s;
+ function fields(schema,name){
+  schema=dereference(schema);
+  if(schema.properties?.[name])return [schema.properties[name]];
+  return [...(schema.oneOf??[]),...(schema.anyOf??[])].flatMap(s=>fields(s,name));
+ }
+ for(const row of reviews)for(const binding of row.fieldBindings??[]){
+  const parts=binding.targetPath.split('.');const last=parts.pop();
+  for(const final of last.split('+')){
+   let candidates=[policy];
+   for(const part of [...parts,final]){
+    const isArray=part.endsWith('[]');const name=part.replace('[]','');
+    candidates=candidates.flatMap(s=>fields(s,name)).map(s=>isArray?dereference(s).items:s).filter(Boolean);
+   }
+   assert.ok(candidates.length,`${row.controlId}: ${binding.targetPath}`);
+  }
+  if(binding.questionId)assert.ok(catalog.questions.some(q=>q.questionId===binding.questionId));
+ }
+ assert.equal(new Set(catalog.questions.map(q=>q.questionId)).size,catalog.questions.length);
+ for(const q of catalog.questions){
+  if(q.kind==='boolean')assert.ok(q.sourceOptions.every(option=>/^(Yes|No)(\b|$)/.test(option)),q.questionId);
+  if(q.kind==='reference')assert.ok(q.sourceOptions.length>0,q.questionId);
+ }
+});

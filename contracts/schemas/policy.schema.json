@@ -512,6 +512,9 @@
         },
         "riskItemId": {
           "$ref": "#/$defs/Id"
+        },
+        "responses": {
+          "$ref": "#/$defs/Responses"
         }
       },
       "required": [
@@ -549,6 +552,9 @@
           "type": "integer",
           "minimum": 0,
           "maximum": 1200
+        },
+        "responses": {
+          "$ref": "#/$defs/Responses"
         }
       },
       "required": [
@@ -629,12 +635,15 @@
         },
         "responses": {
           "$ref": "#/$defs/Responses"
+        },
+        "fullName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
         }
       },
       "required": [
         "id",
-        "firstName",
-        "surname",
         "dateOfBirth",
         "address",
         "relationship",
@@ -643,6 +652,38 @@
         "convictions",
         "losses",
         "responses"
+      ],
+      "anyOf": [
+        {
+          "properties": {
+            "fullName": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "required": [
+            "fullName"
+          ]
+        },
+        {
+          "properties": {
+            "firstName": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "surname": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          },
+          "required": [
+            "firstName",
+            "surname"
+          ]
+        }
       ]
     },
     "Vehicle": {
@@ -1066,6 +1107,9 @@
         },
         "bonaFideSubcontractors": {
           "$ref": "#/$defs/Amount"
+        },
+        "responses": {
+          "$ref": "#/$defs/Responses"
         }
       },
       "required": [

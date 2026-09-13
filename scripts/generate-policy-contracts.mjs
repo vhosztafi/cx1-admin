@@ -38,6 +38,11 @@ const defs={
   Cover:object({sections:array(object({id:ref('Id'),code:str(100),limit:ref('Amount'),excess:ref('Amount')}),1),endorsements:array(object({code:str(100),version:str(50),text:str(8000)})),warranties:array(object({code:str(100),version:str(50),text:str(8000)})),responses:ref('Responses')}),
   Premium:object({currency:{const:'GBP'},annualPremium:ref('Amount'),termPremium:ref('Amount'),tax:ref('Amount'),fee:ref('Amount'),brokerCommission:ref('Amount'),grossPayable:ref('Amount'),netBrokerDue:ref('Amount'),insurerDue:ref('Amount'),taxBasisPoints:{type:'integer',minimum:0,maximum:10000},commissionBasisPoints:{type:'integer',minimum:0,maximum:10000},ratingResultId:ref('Id'),ruleVersion:str(100)}),
 };
+// Detail forms contain product questions beyond common loss/conviction columns.
+for(const name of ['Loss','Conviction','Wage'])defs[name].properties.responses=ref('Responses');
+defs.Driver.properties.fullName=str(200);
+defs.Driver.required=defs.Driver.required.filter(key=>!['firstName','surname'].includes(key));
+defs.Driver.anyOf=[{properties:{fullName:str(200)},required:['fullName']},{properties:{firstName:str(100),surname:str(100)},required:['firstName','surname']}];
 defs.Settlement=object({termsVersionId:ref('Id'),collector:enumeration('agency','mga'),mode:enumeration('net-remittance','separate-payment'),feeShareBasisPoints:{type:'integer',minimum:0,maximum:10000},brokerFeeShare:ref('Amount'),mgaFeeIncome:ref('Amount'),brokerRemuneration:ref('Amount'),invoiceDue:ref('Amount'),remunerationPayable:ref('Amount'),netEconomicDue:ref('Amount')});
 defs.Premium.properties.settlement=ref('Settlement');defs.Premium.required.push('settlement');
 const properties={
@@ -60,6 +65,7 @@ function partial(value){
  const result={};
  for(const [key,v] of Object.entries(value)){
   if(key==='required')continue;
+  if(['anyOf','oneOf'].includes(key)&&v.every(branch=>Object.keys(branch).every(k=>k==='required')))continue;
   result[key==='oneOf'?'anyOf':key]=key==='minItems'?0:partial(v);
  }
  return result;

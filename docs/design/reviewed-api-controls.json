@@ -3558,5 +3558,1100 @@
       "inviteInternalUser"
     ],
     "reason": "Invitation confirmation chooses internal or agency endpoint from authorised parent context, never mixes role scopes."
+  },
+  {
+    "controlId": "CTL-36653774e70a",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "adddriver",
+        "targetPath": "risk.drivers[].fullName"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-909dc95a6d87",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "adddriver",
+        "targetPath": "risk.drivers[].dateOfBirth"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-4574923e7c59",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "adddriver",
+        "targetPath": "risk.drivers[].responses.answers",
+        "questionId": "prototype.adddriver.residency-years"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-4460295e4600",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "adddriver",
+        "targetPath": "risk.drivers[].responses.answers",
+        "questionId": "prototype.adddriver.licence-years"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-95e2521d72f3",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "adddriver",
+        "targetPath": "risk.drivers[].responses.answers",
+        "questionId": "prototype.adddriver.occupation"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-e7838b90abda",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "adddriver",
+        "targetPath": "risk.drivers[].relationship"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-af53c0345061",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "adddriver",
+        "targetPath": "risk.drivers[].responses.answers",
+        "questionId": "prototype.adddriver.trade-employment"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-5d9076259527",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "adddriver",
+        "targetPath": "risk.drivers[].responses.answers",
+        "questionId": "prototype.adddriver.other-occupation"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-1624517d8aa7",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "adddriver",
+        "targetPath": "risk.drivers[].usage"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-38011c457907",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addconv",
+        "targetPath": "risk.drivers[].convictions[].occurredOn"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-7b5a86aac53f",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addconv",
+        "targetPath": "risk.drivers[].convictions[].code"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-ec5e5b0b71ad",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addconv",
+        "targetPath": "risk.drivers[].convictions[].fine"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-4cd88f5ef3d5",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addconv",
+        "targetPath": "risk.drivers[].convictions[].points"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-f40626183cda",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addconv",
+        "targetPath": "risk.drivers[].convictions[].banMonths"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-022959719b23",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addconv",
+        "targetPath": "risk.drivers[].convictions[].responses.answers",
+        "questionId": "prototype.addconv.prosecution-status"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-5d63ed17e63d",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addinc",
+        "targetPath": "risk.drivers[].losses[].occurredOn"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-83d6fe0f983f",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addinc",
+        "targetPath": "risk.drivers[].losses[].type"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-b5ec82596c2e",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addinc",
+        "targetPath": "risk.drivers[].losses[].responses.answers",
+        "questionId": "prototype.addinc.own-damage"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-b4085cf94a2b",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addinc",
+        "targetPath": "risk.drivers[].losses[].responses.answers",
+        "questionId": "prototype.addinc.third-party-damage"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-d032c5f5ac0f",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addinc",
+        "targetPath": "risk.drivers[].losses[].fault"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-ff933bc8115b",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addinc",
+        "targetPath": "risk.drivers[].losses[].responses.answers",
+        "questionId": "prototype.addinc.claim-made"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-ea1e4d50e4b0",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addinc",
+        "targetPath": "risk.drivers[].losses[].description"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-1595a2ef4a0a",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addveh",
+        "targetPath": "risk.vehicles[].registration"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-f20ddc71047e",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addveh",
+        "targetPath": "risk.vehicles[].make+model"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-6c4f6c3ca8c9",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addveh",
+        "targetPath": "risk.vehicles[].body"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-467f6581eab8",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addveh",
+        "targetPath": "risk.vehicles[].manufactureYear"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-f1de7df1850d",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addveh",
+        "targetPath": "risk.vehicles[].engineCc+grossWeightKg"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-be98e76cf1c5",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addveh",
+        "targetPath": "risk.vehicles[].purchasedOn"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-e27492b66aeb",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addveh",
+        "targetPath": "risk.vehicles[].purchasePrice"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-1236872e21bd",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addveh",
+        "targetPath": "risk.vehicles[].value"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-b9bd8f87ee50",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addveh",
+        "targetPath": "risk.vehicles[].responses.answers",
+        "questionId": "prototype.addveh.special-characteristics"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-f97ee713214d",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addveh",
+        "targetPath": "risk.vehicles[].responses.answers",
+        "questionId": "prototype.addveh.report-mid"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-85b648dd41ef",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloc",
+        "targetPath": "risk.locations[].address"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-ac78a40bf379",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloc",
+        "targetPath": "risk.locations[].occupancy"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-eddd76e84e6c",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloc",
+        "targetPath": "risk.locations[].responses.answers",
+        "questionId": "prototype.addloc.sole-occupier"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-42e96d372e0b",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloc",
+        "targetPath": "risk.locations[].responses.answers",
+        "questionId": "prototype.addloc.detached"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-a5e78a6ee6b0",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloc",
+        "targetPath": "risk.locations[].responses.answers",
+        "questionId": "prototype.addloc.year-built"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-e6e67be50457",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloc",
+        "targetPath": "risk.locations[].responses.answers",
+        "questionId": "prototype.addloc.storeys"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-b3e2c50057a2",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloc",
+        "targetPath": "risk.locations[].responses.answers",
+        "questionId": "prototype.addloc.wall-construction"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-36421d4e1119",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloc",
+        "targetPath": "risk.locations[].responses.answers",
+        "questionId": "prototype.addloc.roof-construction"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-3de8c7420b82",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloc",
+        "targetPath": "risk.locations[].responses.answers",
+        "questionId": "prototype.addloc.flat-roof"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-0f6311356da8",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloc",
+        "targetPath": "risk.locations[].responses.answers",
+        "questionId": "prototype.addloc.composite-panels"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-74cd9227a5c9",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloc",
+        "targetPath": "risk.locations[].responses.answers",
+        "questionId": "prototype.addloc.timber-frame"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-9df1a55e473e",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloc",
+        "targetPath": "risk.locations[].responses.answers",
+        "questionId": "prototype.addloc.heritage-listed"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-6e1391ebe64d",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloc",
+        "targetPath": "risk.locations[].responses.answers",
+        "questionId": "prototype.addloc.heating"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-348671532dea",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloc",
+        "targetPath": "risk.locations[].responses.answers",
+        "questionId": "prototype.addloc.basement"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-03fc40e5f3cc",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloc",
+        "targetPath": "risk.locations[].responses.answers",
+        "questionId": "prototype.addloc.intruder-alarm"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-2a59588da63c",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloc",
+        "targetPath": "risk.locations[].responses.answers",
+        "questionId": "prototype.addloc.police-response"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-7d01cde3f070",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloc",
+        "targetPath": "risk.locations[].responses.answers",
+        "questionId": "prototype.addloc.fire-alarm"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-96c0f3392b42",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloc",
+        "targetPath": "risk.locations[].buildings"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-22ad25bc3af8",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloc",
+        "targetPath": "risk.locations[].contents"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-7b5a7e85447e",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloc",
+        "targetPath": "risk.locations[].stock"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-8267db83f329",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addwage",
+        "targetPath": "risk.wages[].category"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-ccaca80b2c47",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addwage",
+        "targetPath": "risk.wages[].employees"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-eeb17245cdf0",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addwage",
+        "targetPath": "risk.wages[].labourOnlySubcontractors"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-c85c81ef415f",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addwage",
+        "targetPath": "risk.wages[].bonaFideSubcontractors"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-f768786add68",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addwage",
+        "targetPath": "risk.wages[].responses.answers",
+        "questionId": "prototype.addwage.headcount"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-afe94e31caf7",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloss",
+        "targetPath": "risk.losses[].occurredOn"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-f62b6bccaacf",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloss",
+        "targetPath": "risk.losses[].type"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-b71d30114229",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloss",
+        "targetPath": "risk.losses[].riskItemId"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-9df66ff8a4fb",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloss",
+        "targetPath": "risk.losses[].amount"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-08587a457fdc",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloss",
+        "targetPath": "risk.losses[].responses.answers",
+        "questionId": "prototype.addloss.insured"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-fc3f6612208c",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloss",
+        "targetPath": "risk.losses[].status"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-f1dd97e86a16",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addloss",
+        "targetPath": "risk.losses[].description"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-fc598bfe9e9b",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addprem",
+        "targetPath": "risk.premises[].address"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-196064c77a8f",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addprem",
+        "targetPath": "risk.premises[].use"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-7390fe5a19a7",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addprem",
+        "targetPath": "risk.premises[].security"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-9845906aba63",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addprem",
+        "targetPath": "risk.premises[].buildings"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-a077968127d4",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addprem",
+        "targetPath": "risk.premises[].contents"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-2cefab50c985",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addprem",
+        "targetPath": "risk.premises[].responses.answers",
+        "questionId": "prototype.addprem.overnight-vehicles"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
+  },
+  {
+    "controlId": "CTL-c375f28658c4",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "modal": "addprem",
+        "targetPath": "risk.premises[].responses.answers",
+        "questionId": "prototype.addprem.public-access"
+      }
+    ],
+    "reason": "Reviewed quote detail input is stored in its typed child item or explicitly defined versioned question. Stable parent/child IDs preserve linkage. Displayed names, combined make/model and CC/weight need explicit UI subfields; never silently split an ambiguous string."
   }
 ]

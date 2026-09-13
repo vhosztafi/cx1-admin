@@ -1,0 +1,374 @@
+{
+  "version": "prototype-detail-1",
+  "questions": [
+    {
+      "questionId": "prototype.adddriver.residency-years",
+      "label": "Years living in the UK",
+      "kind": "count",
+      "targetContainer": "risk.drivers[].responses",
+      "sourceControlId": "CTL-4574923e7c59",
+      "sourceOptions": [],
+      "unit": "years"
+    },
+    {
+      "questionId": "prototype.adddriver.licence-years",
+      "label": "Years full UK licence held",
+      "kind": "count",
+      "targetContainer": "risk.drivers[].responses",
+      "sourceControlId": "CTL-4460295e4600",
+      "sourceOptions": [],
+      "unit": "years"
+    },
+    {
+      "questionId": "prototype.adddriver.occupation",
+      "label": "Occupation",
+      "kind": "text",
+      "targetContainer": "risk.drivers[].responses",
+      "sourceControlId": "CTL-95e2521d72f3",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.adddriver.trade-employment",
+      "label": "Full or part time in the motor trade",
+      "kind": "reference",
+      "targetContainer": "risk.drivers[].responses",
+      "sourceControlId": "CTL-af53c0345061",
+      "sourceOptions": [
+        "Full time",
+        "Part time"
+      ],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.adddriver.other-occupation",
+      "label": "Other occupation if part time",
+      "kind": "text",
+      "targetContainer": "risk.drivers[].responses",
+      "sourceControlId": "CTL-5d9076259527",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.addconv.prosecution-status",
+      "label": "Pending or convicted",
+      "kind": "reference",
+      "targetContainer": "risk.drivers[].convictions[].responses",
+      "sourceControlId": "CTL-022959719b23",
+      "sourceOptions": [
+        "Convicted",
+        "Prosecution pending"
+      ],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.addinc.own-damage",
+      "label": "Cost of damage to own vehicle",
+      "kind": "money",
+      "targetContainer": "risk.drivers[].losses[].responses",
+      "sourceControlId": "CTL-b5ec82596c2e",
+      "sourceOptions": [],
+      "unit": "GBP"
+    },
+    {
+      "questionId": "prototype.addinc.third-party-damage",
+      "label": "Cost to third party",
+      "kind": "money",
+      "targetContainer": "risk.drivers[].losses[].responses",
+      "sourceControlId": "CTL-b4085cf94a2b",
+      "sourceOptions": [],
+      "unit": "GBP"
+    },
+    {
+      "questionId": "prototype.addinc.claim-made",
+      "label": "Was a claim made",
+      "kind": "boolean",
+      "targetContainer": "risk.drivers[].losses[].responses",
+      "sourceControlId": "CTL-ff933bc8115b",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.addveh.special-characteristics",
+      "label": "Modified, left-hand drive, imported or adapted",
+      "kind": "reference",
+      "targetContainer": "risk.vehicles[].responses",
+      "sourceControlId": "CTL-b9bd8f87ee50",
+      "sourceOptions": [
+        "None",
+        "Modified or altered",
+        "Left-hand drive",
+        "Imported other than by the manufacturer",
+        "Adapted for disability",
+        "More than one of these"
+      ],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.addveh.report-mid",
+      "label": "Report to the motor insurance database",
+      "kind": "boolean",
+      "targetContainer": "risk.vehicles[].responses",
+      "sourceControlId": "CTL-f97ee713214d",
+      "sourceOptions": [
+        "Yes",
+        "No — not used on a road or public place"
+      ],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.addloc.sole-occupier",
+      "label": "Sole occupier",
+      "kind": "boolean",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-eddd76e84e6c",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.addloc.detached",
+      "label": "Detached building",
+      "kind": "boolean",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-42e96d372e0b",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.addloc.year-built",
+      "label": "Approximate year built",
+      "kind": "count",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-a5e78a6ee6b0",
+      "sourceOptions": [],
+      "unit": "calendar-year"
+    },
+    {
+      "questionId": "prototype.addloc.storeys",
+      "label": "Number of storeys",
+      "kind": "reference",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-e6e67be50457",
+      "sourceOptions": [
+        "1",
+        "2",
+        "3",
+        "4 or more"
+      ],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.addloc.wall-construction",
+      "label": "Construction of external walls",
+      "kind": "reference",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-b3e2c50057a2",
+      "sourceOptions": [
+        "Brick",
+        "Brick and steel frame",
+        "Steel frame, profile clad",
+        "Concrete",
+        "Timber",
+        "Composite panel",
+        "Other"
+      ],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.addloc.roof-construction",
+      "label": "Construction of roof",
+      "kind": "reference",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-36421d4e1119",
+      "sourceOptions": [
+        "Profile steel sheet",
+        "Tile",
+        "Slate",
+        "Concrete",
+        "Felt",
+        "Asbestos cement",
+        "Other"
+      ],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.addloc.flat-roof",
+      "label": "Flat roof",
+      "kind": "reference",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-3de8c7420b82",
+      "sourceOptions": [
+        "None",
+        "Under 25% of roof area",
+        "25% to 50%",
+        "Over 50%"
+      ],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.addloc.composite-panels",
+      "label": "Composite panels present",
+      "kind": "reference",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-0f6311356da8",
+      "sourceOptions": [
+        "No",
+        "Yes — non-combustible core",
+        "Yes — core unknown"
+      ],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.addloc.timber-frame",
+      "label": "Timber framed",
+      "kind": "boolean",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-74cd9227a5c9",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.addloc.heritage-listed",
+      "label": "Heritage listed",
+      "kind": "reference",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-9df1a55e473e",
+      "sourceOptions": [
+        "No",
+        "Grade II",
+        "Grade II*",
+        "Grade I"
+      ],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.addloc.heating",
+      "label": "Method of heating",
+      "kind": "reference",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-6e1391ebe64d",
+      "sourceOptions": [
+        "Gas warm air",
+        "Gas central heating",
+        "Electric",
+        "Oil fired",
+        "Bottled gas heaters",
+        "Paraffin or exposed flame heaters"
+      ],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.addloc.basement",
+      "label": "Basement or cellar",
+      "kind": "reference",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-348671532dea",
+      "sourceOptions": [
+        "No",
+        "Yes — empty",
+        "Yes — property stored"
+      ],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.addloc.intruder-alarm",
+      "label": "Intruder alarm",
+      "kind": "reference",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-03fc40e5f3cc",
+      "sourceOptions": [
+        "None",
+        "Local bell only",
+        "SSAIB Grade 2, remote signalling",
+        "NSI Grade 2, remote signalling",
+        "NSI Grade 3, remote signalling",
+        "NSI Grade 3 with CCTV"
+      ],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.addloc.police-response",
+      "label": "Level 1 police response",
+      "kind": "boolean",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-2a59588da63c",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.addloc.fire-alarm",
+      "label": "Fire alarm",
+      "kind": "reference",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-7d01cde3f070",
+      "sourceOptions": [
+        "None",
+        "Yes — L1, maintained",
+        "Yes — L2, maintained",
+        "Yes — L3, maintained",
+        "Yes — not maintained"
+      ],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.addwage.headcount",
+      "label": "Number of people in this category",
+      "kind": "count",
+      "targetContainer": "risk.wages[].responses",
+      "sourceControlId": "CTL-f768786add68",
+      "sourceOptions": [],
+      "unit": "count"
+    },
+    {
+      "questionId": "prototype.addloss.insured",
+      "label": "Was it insured",
+      "kind": "boolean",
+      "targetContainer": "risk.losses[].responses",
+      "sourceControlId": "CTL-08587a457fdc",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.addprem.overnight-vehicles",
+      "label": "Vehicles kept overnight",
+      "kind": "boolean",
+      "targetContainer": "risk.premises[].responses",
+      "sourceControlId": "CTL-2cefab50c985",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.addprem.public-access",
+      "label": "Open to the public",
+      "kind": "boolean",
+      "targetContainer": "risk.premises[].responses",
+      "sourceControlId": "CTL-c375f28658c4",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "unit": "none"
+    }
+  ]
+}
