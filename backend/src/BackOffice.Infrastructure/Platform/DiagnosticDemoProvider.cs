@@ -50,7 +50,7 @@ public sealed class DiagnosticDemoProvider(IDbContextFactory<BackOfficeDbContext
         DiagnosticScenario scenario;
         try {scenario=JsonSerializer.Deserialize<DiagnosticScenario>(setting?.Values ?? "null",Json) ?? throw new JsonException();}
         catch (JsonException) {throw new DiagnosticProviderException(JobFailure.InvalidPayload);}
-        if (setting is null || !setting.Scope.StartsWith("diagnostic-probe/",StringComparison.Ordinal) || scenario.Kind!=SqlJobLeases.DiagnosticKind ||
+        if (setting is null || setting.Scope!="diagnostic-probe/"+scenario.Scenario || scenario.Kind!=SqlJobLeases.DiagnosticKind ||
             scenario.Scenario is not ("success" or "reject" or "fail-once" or "timeout-after-success")) throw new DiagnosticProviderException(JobFailure.InvalidPayload);
         operation=new DemoProviderOperation {Kind=lease.Kind,OperationKey=lease.OperationKey,RequestHash=requestHash,ScenarioVersionId=lease.ScenarioVersionId};
         db.Add(operation);

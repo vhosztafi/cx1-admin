@@ -63,6 +63,17 @@ public sealed class DiagnosticProviderTests
             var concurrent=Lease("concurrent",scenarios["success"]);
             var replies=await Task.WhenAll(provider.ExecuteAsync(concurrent),restarted.ExecuteAsync(concurrent));
             Assert.Equal(replies[0],replies[1]);
+            // A setting labelled success must not silently execute rejection behavior.
+            // Existing committed results still replay without consulting edited settings.
+            await using (var corrupt=new BackOfficeDbContext(options))
+            {
+                var setting=await corrupt.Set<SettingVersion>().SingleAsync(x => x.Id==scenarios["success"]);
+                setting.Values="{\"kind\":\"diagnostic-probe\",\"scenario\":\"reject\"}";
+                await corrupt.SaveChangesAsync();
+            }
+            var mismatched=await Assert.ThrowsAsync<DiagnosticProviderException>(() => provider.ExecuteAsync(Lease("mismatched",scenarios["success"])));
+            Assert.Equal(JobFailure.InvalidPayload,mismatched.Failure);
+            Assert.Equal(replies[0],await restarted.ExecuteAsync(concurrent));
             await using (var inspect=new BackOfficeDbContext(options))
             {
                 Assert.Equal(4,await inspect.Set<DemoProviderOperation>().CountAsync());
