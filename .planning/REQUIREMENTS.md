@@ -19,12 +19,12 @@ Core value: complete persistent insurance and servicing journeys with consistent
 
 ### Persistent foundation
 
-- [ ] **FND-01**: Developer can run the Next.js application, .NET API and SQL Server with documented commands, version pins, migrations and persistent volumes.
-- [ ] **FND-02**: Staff can sign in with seeded local accounts, keep a secure session across refresh, sign out and have API requests checked against server-side permissions.
-- [ ] **FND-03**: Staff can navigate a responsive shell matching the prototype's typography, blue record headers, sidebar, tabs, tables, action rails and meaningful loading/error/empty states.
-- [ ] **FND-04**: Developer can seed a repeatable fictional dataset with a consistent clock and reset only a designated demo database through an explicit command.
-- [ ] **FND-05**: Developer can run unit tests, API checks and SQL Server integration tests in the documented verification workflow.
-- [ ] **FND-06**: Staff can see audited mutations and durable demo-adapter jobs that survive application restart; sensitive values are excluded from ordinary logs.
+- [x] **FND-01**: Developer can run the Next.js application, .NET API and SQL Server with documented commands, version pins, migrations and persistent volumes.
+- [x] **FND-02**: Staff can sign in with seeded local accounts, keep a secure session across refresh, sign out and have API requests checked against server-side permissions.
+- [x] **FND-03**: Staff can navigate a responsive shell matching the prototype's typography, blue record headers, sidebar, tabs, tables, action rails and meaningful loading/error/empty states.
+- [x] **FND-04**: Developer can seed a repeatable fictional dataset with a consistent clock and reset only a designated demo database through an explicit command.
+- [x] **FND-05**: Developer can run unit tests, API checks and SQL Server integration tests in the documented verification workflow.
+- [x] **FND-06**: Staff can see audited mutations and durable demo-adapter jobs that survive application restart; sensitive values are excluded from ordinary logs.
 
 ### Clients and contacts
 
@@ -158,12 +158,12 @@ Every v1 requirement has one owning delivery phase; later phases may consume its
 | DES-04 | 1 | Pending |
 | DES-05 | 1 | Pending |
 | DES-06 | 1 | Pending |
-| FND-01 | 2 | Pending |
-| FND-02 | 2 | Pending |
-| FND-03 | 2 | Pending |
-| FND-04 | 2 | Pending |
-| FND-05 | 2 | Pending |
-| FND-06 | 2 | Pending |
+| FND-01 | 2 | Complete |
+| FND-02 | 2 | Complete |
+| FND-03 | 2 | Complete |
+| FND-04 | 2 | Complete |
+| FND-05 | 2 | Complete |
+| FND-06 | 2 | Complete |
 | CLI-01 | 3 | Pending |
 | CLI-02 | 3 | Pending |
 | CLI-03 | 3 | Pending |

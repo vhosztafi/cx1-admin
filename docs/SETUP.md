@@ -1,6 +1,8 @@
 # Local setup
 
-Current status: SQL persistence, local authentication, prototype shell and durable diagnostic operations are implemented and locally verified. Business workflows remain for later phases. The foundation-wide acceptance gate is in progress.
+Current status: SQL persistence, local authentication, prototype shell and durable diagnostic operations are implemented and locally verified. Business workflows remain for later phases. The native foundation acceptance gate passed on 2026-09-14; human UAT and hosted CI remain unperformed.
+
+For the verified native preview on API port 5087/web port 3100 and a short business-facing walkthrough, follow [DEMO.md](DEMO.md). The general development defaults below use API port 5080.
 
 Prerequisites: .NET SDK 10.0.401, Node 24 and pnpm 11.19.0. Version pins live in global.json and package manifests; pnpm-lock.yaml covers the workspace. Do not change frontend-code, which is reference material.
 
@@ -94,3 +96,15 @@ The operational journey verifies success/rejection/timeout recovery, reload pers
 scripts/assert-test-results.ps1 requires both unit/integration TRX reports, passing counters with no skipped cases, a minimum total and named real-SQL scenarios. scripts/test-result-gate.ps1 verifies rejection of skipped/failed/missing/undersized reports. The native run on this host passed 46 cases, including nine real-SQL scenarios. The workflow YAML and Windows startup script were parsed locally; GitHub-hosted execution and its container/LocalDB provisioning have not been run here. These are CI definitions, not a claim of a hosted green build.
 
 The split follows GitHub's [Linux-only service-container requirement](https://docs.github.com/en/actions/tutorials/use-containerized-services/use-docker-service-containers). The [Windows runner inventory](https://github.com/actions/runner-images/blob/main/images/windows/Windows2025-Readme.md) lists the Visual Studio LocalDB component; the workflow checks the actual available engine version before testing. Setup actions follow official [setup-dotnet](https://github.com/actions/setup-dotnet) and [setup-node](https://github.com/actions/setup-node) usage. The SQL container password is a run-specific disposable CI value, never a production credential. The workflow has read-only repository permission and performs no deployment.
+
+To reproduce the native report gate after restore, use a new results directory for each run so old reports cannot inflate the counts:
+
+```powershell
+$foundationResults = Join-Path '.local' ('test-results-' + [Guid]::NewGuid().ToString('N'))
+dotnet test backend/BackOffice.slnx --no-restore --logger trx --results-directory $foundationResults
+if ($LASTEXITCODE -ne 0) { throw 'Backend tests failed.' }
+./scripts/assert-test-results.ps1 -ResultsDirectory $foundationResults -MinimumTests 46 -MinimumSqlTests 9
+./scripts/test-result-gate.ps1
+```
+
+These minima describe the Phase 2 suite and should increase as subsequent phases add coverage. Compose configuration was validated with `docker compose config --quiet` and a disposable environment password; no SQL container was started for that check.

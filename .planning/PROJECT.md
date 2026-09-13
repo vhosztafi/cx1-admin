@@ -64,8 +64,8 @@ None shipped in this repository. The prototype is a behavioural/design reference
 | Motor Trade and Commercial Combined back office | User permits CC assumptions | Accepted; assumptions tracked |
 | Persistent deterministic external adapters | User's preferred demo approach | Accepted |
 | Internal agency visibility reference only | Explicit `pPortal()` source boundary | Source-derived |
-| SQL Server relational core + versioned JSON snapshots | Aligns experience, flexible risks and transactional issue | Proposed architecture |
-| Modular .NET solution in one deployment | Clear replacement boundaries without distributed transaction overhead | Proposed architecture |
+| SQL Server relational core + versioned JSON snapshots | Aligns experience, flexible risks and transactional issue | Accepted; foundation implemented, policy snapshots follow in feature phases |
+| Modular .NET solution in one deployment | Clear replacement boundaries without distributed transaction overhead | Accepted; API/Domain/Application/Infrastructure implemented |
 | Focused research before requirements | User selected research | Accepted |
 
 ## Evolution
@@ -81,3 +81,6 @@ Keep research, plan checks, unit tests, integration checks and verification enab
 Commit reviewed local work in manageable units. No production deployment, real payment/delivery or separate customer-facing funnel is authorised. Continue in this task; no additional user-owned tasks are needed.
 
 Last updated: 2026-09-13 — full requirements/roadmap approved; autonomous progression authorised.
+
+
+Phase 2 completed 2026-09-14: native SQL persistence, local authenticated shell and durable diagnostic operations verified. FND-01 through FND-06 complete; see phase verification for scope. Next: Phase 3 client/contact servicing. Business workflows, human UAT and hosted deployment remain pending.

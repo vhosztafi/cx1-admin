@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Approved by the user on 2026-09-13. Autonomous research, planning, implementation and transitions authorised. Phase 1 design is complete; Phase 2 plans 02-01 through 02-05 are complete; foundation-wide verification (02-06) is next.
+**Status:** Approved by the user on 2026-09-13. Autonomous research, planning, implementation and transitions authorised. Phases 1–2 are complete; native foundation verification passed on 2026-09-14. Phase 3 planning is next.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
@@ -11,7 +11,7 @@
 ## Phases
 
 - [x] **Phase 1: Data and API design** — Translate both references into implementable contracts.
-- [ ] **Phase 2: Application and persistence foundation** — Run a persistent authenticated system with the prototype shell.
+- [x] **Phase 2: Application and persistence foundation** — Run a persistent authenticated system with the prototype shell.
 - [ ] **Phase 3: Clients and contact servicing** — Maintain insured businesses and person-level servicing information.
 - [ ] **Phase 4: Agency onboarding and access** — Onboard agencies and enforce their sharing boundaries.
 - [ ] **Phase 5: Motor Trade quote capture** — Capture complete persistent Motor Trade risks in the back office.
@@ -232,7 +232,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | Phase | Plans complete | Status | Completed |
 |---|---|---|---|
 | 1. Data and API design | 4/4 | Complete | 2026-09-13 |
-| 2. Application and persistence foundation | 4/6 | In progress | — |
+| 2. Application and persistence foundation | 6/6 | Complete | 2026-09-14 |
 | 3. Clients and contact servicing | 0/TBD | Not started | — |
 | 4. Agency onboarding and access | 0/TBD | Not started | — |
 | 5. Motor Trade quote capture | 0/TBD | Not started | — |
@@ -244,7 +244,3 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 11. Configuration and account administration | 0/TBD | Not started | — |
 | 12. Dashboards, search and reports | 0/TBD | Not started | — |
 | 13. Complete demo and acceptance | 0/TBD | Not started | — |
-
-
-
-
