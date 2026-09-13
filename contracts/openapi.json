@@ -52260,6 +52260,34 @@
               "format": "uuid"
             },
             "maxItems": 1000
+          },
+          "shortPeriod": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "enabled": {
+                "type": "boolean"
+              },
+              "minimumDays": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 365
+              },
+              "maximumDays": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 365
+              },
+              "pricingBasis": {
+                "const": "annual-calendar-pro-rata"
+              }
+            },
+            "required": [
+              "enabled",
+              "minimumDays",
+              "maximumDays",
+              "pricingBasis"
+            ]
           }
         },
         "required": [
@@ -52272,7 +52300,8 @@
           "taxBasisPoints",
           "fee",
           "ratingRuleVersionId",
-          "templateVersionIds"
+          "templateVersionIds",
+          "shortPeriod"
         ]
       },
       "ProductVersion": {

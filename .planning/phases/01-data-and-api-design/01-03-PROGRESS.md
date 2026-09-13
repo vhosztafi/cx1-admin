@@ -4,6 +4,9 @@ Status: in progress, not a completion summary. User authorises autonomous contin
 
 ## Latest autonomous run
 
+Term/NCD continuation: 706/949 reviewed, 243 pending; 42 tests and OpenAPI lint pass. Added term.kind annual/short-period, pinned product short-period configuration and explicit end-date/calendar assumptions in LIFECYCLE.md. Fixed financial design oracle to divide annual premium by annual-anniversary days rather than short-term days; 90-day and leap-anniversary regression tests pass. No-claims '5 or more' now persists noClaimsYearsBasis at-least; exact values remain distinct. Added previous policy number/holder paths and generated fixtures. Cross-field term/date/product validation is specified but awaits implementation. SQL PolicyTerm dictionary includes Kind; database enforcement awaits implementation. Evidence controls and remaining quote text/numeric/removal controls are next; then remaining filters/navigation and adapter examples. Phase 1 remains incomplete.
+
+
 Quote-action continuation: 702/949 controls reviewed (247 pending); 40 design tests pass. Reviewed save/exit, draft save, source-policy cloning, withdrawal, rate command chain, all product wizard jumps/back/continue, risk-modal launch controls and four description/material-facts composers. Navigation saves dirty incomplete proposals and retains edits on failure; modal launch alone is client-only. Corrected main-quote catalog: Combined has cover at step 8, not 9; it has no separate previous-insurance stage. Added regression test. Remaining quote dates/short-term handling, evidence controls, numeric/text inputs and child removals need explicit review, followed by other filters/navigation and adapter schemas/examples. Do not mark design or application complete. Known next semantic detail: source NCD option is '5 or more', so preserve capped-category meaning rather than asserting exactly five years.
 
 

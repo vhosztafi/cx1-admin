@@ -15,6 +15,7 @@
     }
   },
   "term": {
+    "kind": "annual",
     "startsAt": "2026-01-01T00:00:00Z",
     "endsAt": "2027-01-01T00:00:00Z",
     "timeZone": "Europe/London"
@@ -119,6 +120,7 @@
       "insurer": "Demo Insurer",
       "expiresOn": "2025-12-31",
       "noClaimsYears": 5,
+      "noClaimsYearsBasis": "exact",
       "evidenceDocumentIds": [],
       "responses": {
         "questionSetVersion": "demo-1",

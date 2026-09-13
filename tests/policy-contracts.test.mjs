@@ -3,12 +3,31 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
-import {days,financials,minorUnits,roundRatio,versionAt,issueErrors,cancellationReturn,commandDecision,allocationDecision,settlementAmounts} from '../scripts/design-rules.mjs';
+import {days,financials,minorUnits,roundRatio,versionAt,issueErrors,cancellationReturn,commandDecision,allocationDecision,settlementAmounts,noClaimsSelection,annualEndDate} from '../scripts/design-rules.mjs';
 const read=async name=>JSON.parse(await readFile(new URL(`../contracts/${name}`,import.meta.url),'utf8'));
 const ajv=new Ajv2020({allErrors:true,strict:true});addFormats(ajv);
 const validate=ajv.compile(await read('schemas/policy.schema.json'));
 const draftValidate=ajv.compile(await read('schemas/policy-draft.schema.json'));
 const road=await read('examples/motor-trade-road-risks.json');
+test('short-period pricing uses the annual denominator, including leap anniversaries',()=>{
+ const result=financials({annualPremium:'1200.00',effectiveDate:'2026-01-01',termStart:'2026-01-01',termEnd:'2026-04-01'});
+ assert.equal(result.premium,'295.89');assert.equal(result.tax,'35.51');
+ assert.equal(annualEndDate('2024-02-29'),'2025-02-28');
+ assert.throws(()=>annualEndDate('2026-02-29'));
+ assert.throws(()=>financials({annualPremium:'1200.00',effectiveDate:'2026-01-01',termStart:'2026-01-01',termEnd:'2027-01-02'}));
+ const p=structuredClone(road);p.term.kind='short-period';p.term.endsAt='2026-04-01T00:00:00Z';
+ assert.ok(validate(p));p.term.kind='unspecified';assert.equal(validate(p),false);
+});
+test('capped no-claims choice remains a lower bound instead of invented exact years',()=>{
+ const p=structuredClone(road);
+ Object.assign(p.risk.previousInsurance,noClaimsSelection('5 or more'));
+ assert.equal(p.risk.previousInsurance.noClaimsYearsBasis,'at-least');
+ assert.ok(validate(p),JSON.stringify(validate.errors));
+ assert.deepEqual(noClaimsSelection('4'),{noClaimsYears:4,noClaimsYearsBasis:'exact'});
+ assert.throws(()=>noClaimsSelection('6'));
+ delete p.risk.previousInsurance.noClaimsYearsBasis;
+ assert.equal(validate(p),false);
+});
 for(const product of ['motor-trade-road-risks','motor-trade-combined','commercial-combined'])test(`${product} fixture satisfies issued schema`,async()=>{
  assert.ok(validate(await read(`examples/${product}.json`)),JSON.stringify(validate.errors));
 });

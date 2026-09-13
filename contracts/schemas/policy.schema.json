@@ -95,6 +95,13 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "annual",
+            "short-period"
+          ]
+        },
         "startsAt": {
           "$ref": "#/$defs/Instant"
         },
@@ -106,6 +113,7 @@
         }
       },
       "required": [
+        "kind",
         "startsAt",
         "endsAt",
         "timeZone"
@@ -890,6 +898,23 @@
         },
         "responses": {
           "$ref": "#/$defs/Responses"
+        },
+        "noClaimsYearsBasis": {
+          "type": "string",
+          "enum": [
+            "exact",
+            "at-least"
+          ]
+        },
+        "policyNumber": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "policyholderName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
         }
       },
       "required": [
@@ -897,7 +922,8 @@
         "expiresOn",
         "noClaimsYears",
         "evidenceDocumentIds",
-        "responses"
+        "responses",
+        "noClaimsYearsBasis"
       ]
     },
     "DriverBasis": {

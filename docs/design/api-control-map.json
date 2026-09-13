@@ -1,6 +1,6 @@
 {
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
-  "reviewed": 702,
+  "reviewed": 706,
   "total": 949,
   "complete": false,
   "controls": [
@@ -4231,9 +4231,17 @@
       "label": "Date insurance to start",
       "requirement": "CC-04",
       "acceptanceId": "AT-de4a2a5bf892",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "term.startsAt"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-de0dd91689d6",
@@ -4241,9 +4249,17 @@
       "label": "Term",
       "requirement": "CC-04",
       "acceptanceId": "AT-de0dd91689d6",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "term.kind+endsAt"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-74a9d7f987c5",
@@ -10045,9 +10061,17 @@
       "label": "Policy number",
       "requirement": "QUO-02",
       "acceptanceId": "AT-d31dfbce85a7",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.previousInsurance.policyNumber"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-fcea75d9c500",
@@ -10055,9 +10079,17 @@
       "label": "Policyholder name",
       "requirement": "QUO-02",
       "acceptanceId": "AT-fcea75d9c500",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.previousInsurance.policyholderName"
+        }
+      ],
+      "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
     },
     {
       "controlId": "CTL-6ca7d23ce712",
@@ -10109,7 +10141,7 @@
       ],
       "fieldBindings": [
         {
-          "targetPath": "risk.previousInsurance.noClaimsYears"
+          "targetPath": "risk.previousInsurance.noClaimsYears+noClaimsYearsBasis"
         }
       ],
       "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."

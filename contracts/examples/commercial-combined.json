@@ -15,6 +15,7 @@
     }
   },
   "term": {
+    "kind": "annual",
     "startsAt": "2026-01-01T00:00:00Z",
     "endsAt": "2027-01-01T00:00:00Z",
     "timeZone": "Europe/London"

@@ -1,5 +1,10 @@
 // Executable design examples, not a production rating engine. The .NET domain
 // must later satisfy the same worked cases and its own integration tests.
+export function noClaimsSelection(label){
+ if(label==='5 or more')return {noClaimsYears:5,noClaimsYearsBasis:'at-least'};
+ if(!['1','2','3','4'].includes(label))throw new Error('Unknown no-claims option');
+ return {noClaimsYears:Number(label),noClaimsYearsBasis:'exact'};
+}
 export function minorUnits(value){
  if(typeof value!=='string'||! /^-?(0|[1-9]\d*)\.\d{2}$/.test(value))throw new Error('Money must have exactly two decimal places');
  const negative=value.startsWith('-');const [whole,fraction]=value.replace('-','').split('.');
@@ -11,10 +16,18 @@ export function days(start,end){
  const parse=v=>{if(!/^\d{4}-\d{2}-\d{2}$/.test(v))throw new Error('ISO date required');const d=new Date(`${v}T00:00:00Z`);if(!Number.isFinite(+d)||d.toISOString().slice(0,10)!==v)throw new Error('Invalid date');return +d;};
  const result=(parse(end)-parse(start))/86400000;if(result<=0)throw new Error('End must follow start');return result;
 }
+export function annualEndDate(start){
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(start)||!Number.isFinite(Date.parse(`${start}T00:00:00Z`))||new Date(`${start}T00:00:00Z`).toISOString().slice(0,10)!==start)throw new Error('Invalid start date');
+ const year=Number(start.slice(0,4))+1;
+ const candidate=`${year}${start.slice(4)}`;
+ return new Date(`${candidate}T00:00:00Z`).toISOString().slice(0,10)===candidate?candidate:`${year}-02-28`;
+}
 export function financials({annualPremium,effectiveDate,termStart,termEnd,fee='0.00',taxBasisPoints=1200,commissionBasisPoints=1000}){
  if(effectiveDate<termStart||effectiveDate>=termEnd)throw new Error('Effective date outside term');
  for(const rate of [taxBasisPoints,commissionBasisPoints])if(!Number.isInteger(rate)||rate<0||rate>10000)throw new Error('Invalid rate');
- const premium=roundRatio(minorUnits(annualPremium)*BigInt(days(effectiveDate,termEnd)),BigInt(days(termStart,termEnd)));
+ const annualEnd=annualEndDate(termStart);
+ if(termEnd>annualEnd)throw new Error('Term exceeds annual pricing period');
+ const premium=roundRatio(minorUnits(annualPremium)*BigInt(days(effectiveDate,termEnd)),BigInt(days(termStart,annualEnd)));
  const tax=roundRatio(premium*BigInt(taxBasisPoints),10000n),commission=roundRatio(premium*BigInt(commissionBasisPoints),10000n),fees=minorUnits(fee);
  return Object.fromEntries(Object.entries({premium,tax,fee:fees,brokerCommission:commission,grossPayable:premium+tax+fees,netBrokerDue:premium+tax+fees-commission,insurerDue:premium+tax-commission}).map(([k,v])=>[k,money(v)]));
 }

@@ -4,8 +4,9 @@ const rendered=JSON.parse(await readFile('docs/design/source/prototype-render-da
 const file='docs/design/reviewed-api-controls.json';const reviews=JSON.parse(await readFile(file,'utf8'));
 const catalog=[];
 const direct={
+ de4a2a5bf892:'term.startsAt',de0dd91689d6:'term.kind+endsAt',
  fb92851f2483:'insured.proposerNames', '54cd86bd3577':'insured.proposerNames',ad6422c180bc:'insured.proposerNames',ceac3f42ee3f:'insured.tradingName','212ce9265e52':'insured.entityType',f6a27f05ee04:'insured.companyNumber','21ebcb37d76a':'insured.address',d29cf683b746:'insured.contact.telephone','07d3f2a4c5de':'insured.contact.email',b68cb9b7bb57:'risk.business.startedOn',
- ac167725da1f:'risk.previousInsurance.insurer','6ca7d23ce712':'risk.previousInsurance.expiresOn',ba4a89b86e80:'risk.previousInsurance.noClaimsYears',
+ ac167725da1f:'risk.previousInsurance.insurer','6ca7d23ce712':'risk.previousInsurance.expiresOn',ba4a89b86e80:'risk.previousInsurance.noClaimsYears+noClaimsYearsBasis',d31dfbce85a7:'risk.previousInsurance.policyNumber',fcea75d9c500:'risk.previousInsurance.policyholderName',
  '0fabfac70c54':'insured.proposerNames','485a887e9c09':'insured.tradingName','013d2d83308a':'insured.entityType','244d1e602d04':'insured.companyNumber',b8c835b4be7d:'risk.liability.employersReferenceNumber','58ce136bec6e':'insured.address',d5d492a9e1b4:'risk.business.turnover',
  a27790bacfc5:'risk.businessInterruption.sumInsured',be3540a2ad2e:'risk.businessInterruption.indemnityMonths','473e38b699c4':'risk.liability.maximumHeightMetres',d7068d9c43bd:'risk.liability.employersLimit','092ac5f51b35':'risk.liability.publicLimit','631d675e32e2':'risk.liability.productsLimit'
 };

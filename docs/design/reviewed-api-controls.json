@@ -6119,7 +6119,7 @@
     ],
     "fieldBindings": [
       {
-        "targetPath": "risk.previousInsurance.noClaimsYears"
+        "targetPath": "risk.previousInsurance.noClaimsYears+noClaimsYearsBasis"
       }
     ],
     "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
@@ -8056,5 +8056,61 @@
         "targetPath": "risk.materialFacts"
       }
     ]
+  },
+  {
+    "controlId": "CTL-d31dfbce85a7",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.previousInsurance.policyNumber"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-fcea75d9c500",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.previousInsurance.policyholderName"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-de4a2a5bf892",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "term.startsAt"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-de0dd91689d6",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "term.kind+endsAt"
+      }
+    ],
+    "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
   }
 ]
