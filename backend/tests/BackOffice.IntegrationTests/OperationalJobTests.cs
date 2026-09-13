@@ -82,7 +82,7 @@ public sealed class OperationalJobTests
                 using var json = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
                 Assert.Equal("job-failed", json.RootElement.GetProperty("errorCode").GetString());
                 var names = json.RootElement.EnumerateObject().Select(x => x.Name).ToHashSet();
-                Assert.True(names.SetEquals(new[] { "id", "kind", "state", "attempts", "nextAttemptAt", "errorCode" }));
+                Assert.True(names.SetEquals(new[] { "id", "kind", "state", "attempts", "nextAttemptAt", "errorCode", "attemptLimit", "retryAllowed" }));
             }
             using (var response = await admin.GetAsync(route)) Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             await using (var db = new BackOfficeDbContext(options))

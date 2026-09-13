@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using BackOffice.Application;
 using BackOffice.Infrastructure.Identity;
 using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Platform;
@@ -73,7 +74,8 @@ public static class OperationalJobEndpoints
     }
 
     internal static JobView View(OutboxWork job) => new(job.Id, job.Kind, job.State, job.Attempts,
-        job.State == "pending" ? job.NextAttemptAt : null, job.CompletedAt, null, SafeCode(job.ErrorCode));
+        job.State == "pending" ? job.NextAttemptAt : null, job.CompletedAt, null, SafeCode(job.ErrorCode), job.AttemptLimit,
+        JobRetryBudget.ExpandedLimit(job.State, job.ErrorCode, job.Attempts, job.AttemptLimit) is not null);
 
     private static string? SafeCode(string? code) => code switch
     {
@@ -82,6 +84,6 @@ public static class OperationalJobEndpoints
         _ => "job-failed"
     };
     public sealed record ProbeInput([property: JsonRequired] string Scenario);
-    internal sealed record JobView(Guid Id, string Kind, string State, int Attempts, DateTimeOffset? NextAttemptAt, DateTimeOffset? CompletedAt, Guid? ResultResourceId, string? ErrorCode);
+    internal sealed record JobView(Guid Id, string Kind, string State, int Attempts, DateTimeOffset? NextAttemptAt, DateTimeOffset? CompletedAt, Guid? ResultResourceId, string? ErrorCode, int AttemptLimit, bool RetryAllowed);
     private sealed class DiagnosticConfigurationException : Exception;
 }

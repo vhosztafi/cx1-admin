@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
 
-export function SectionTabs({ items, active }: { items: { key: string; label: string; href: string }[]; active: string }) {
-  return <nav className="section-tabs" aria-label="Account sections">{items.map(item => <Link key={item.key} href={item.href} aria-current={active === item.key ? 'page' : undefined}>{item.label}</Link>)}</nav>;
+export function SectionTabs({ items, active, label = 'Account sections' }: { items: { key: string; label: string; href: string }[]; active: string; label?: string }) {
+  return <nav className="section-tabs" aria-label={label}>{items.map(item => <Link key={item.key} href={item.href} aria-current={active === item.key ? 'page' : undefined}>{item.label}</Link>)}</nav>;
 }
 
 export function Status({ children, tone = 'muted' }: { children: ReactNode; tone?: 'muted' | 'info' | 'success' | 'warning' | 'error' }) {
