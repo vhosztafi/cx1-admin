@@ -76,3 +76,11 @@ test('local calendar earning is invariant across London 23 and 25 hour days',()=
  assert.equal(days('2026-03-29','2026-03-30'),1);
  assert.equal(days('2026-10-25','2026-10-26'),1);
 });
+test('dated slices of a single MTA do not introduce later cover before its effective date',()=>{
+ const recordedAt='2026-09-13T12:00:00Z';
+ const versions=[{sequence:7,transactionId:'mta-1',sliceOrdinal:1,status:'issued',effectiveAt:'2026-09-15T00:00:00+01:00',recordedAt,stockLimit:'75000.00'},
+ {sequence:8,transactionId:'mta-1',sliceOrdinal:2,status:'issued',effectiveAt:'2026-10-01T00:00:00+01:00',recordedAt,stockLimit:'125000.00'}];
+ assert.equal(versionAt(versions,'2026-09-20T12:00:00Z','2026-09-20T12:00:00Z').stockLimit,'75000.00');
+ assert.equal(versionAt(versions,'2026-10-02T12:00:00Z','2026-10-02T12:00:00Z').stockLimit,'125000.00');
+ assert.equal(versionAt(versions,'2026-10-02T12:00:00Z','2026-09-12T12:00:00Z'),null);
+});

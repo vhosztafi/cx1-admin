@@ -1,27 +1,2802 @@
 [
- {"controlId":"CTL-c1818cc49cbc","status":"reviewed","disposition":"opens-command-form","operationIds":["inviteInternalUser"],"reason":"Invite user opens the internal-user invitation form; only confirmation creates an invitation."},
- {"controlId":"CTL-7041753aef98","status":"reviewed","disposition":"opens-command-form","operationIds":["requestIdentityChange"],"reason":"Email-change form records a dual-control request, not a direct email edit."},
- {"controlId":"CTL-2b90710f6a2a","status":"reviewed","disposition":"command","operationIds":["requestIdentityChange","decideIdentityChange"],"reason":"MFA reset must follow identity approval and session revocation; replace toast with tracked request/outcome."},
- {"controlId":"CTL-d05ecf452764","status":"reviewed","disposition":"command","operationIds":["adminRequestPasswordReset"],"reason":"Queue a demo reset delivery to selected user; never display or log the reset token."},
- {"controlId":"CTL-595fa55cdbb5","status":"reviewed","disposition":"command","operationIds":["createProductVersion"],"reason":"Create a draft copy of the selected product version without changing the published version."},
- {"controlId":"CTL-68b6e88e4b7b","status":"reviewed","disposition":"command","operationIds":["createAuthorityVersion"],"reason":"Create selected product/binder authority proposal; approval is separate and cannot exceed binder."},
- {"controlId":"CTL-844267662a65","status":"reviewed","disposition":"command","operationIds":["previewTemplate","getJob","downloadDocumentVersion"],"reason":"Produce an actual preview artifact from pinned source/template and safe audience."},
- {"controlId":"CTL-5ba47a39e42b","status":"reviewed","disposition":"command","operationIds":["retryIntegrationBatch"],"reason":"Retry selected failed integration jobs with original operation identities and recorded reason."},
- {"controlId":"CTL-3e110cd282e0","status":"reviewed","disposition":"command","operationIds":["updateProfile"],"reason":"Save editable self-profile fields with current ETag; identity/access fields excluded."},
- {"controlId":"CTL-0a0a12156da2","status":"reviewed","disposition":"command","operationIds":["requestOwnIdentityChange"],"reason":"Request own email change for independent administrator approval."},
- {"controlId":"CTL-5c6d766be16f","status":"reviewed","disposition":"command","operationIds":["revokeSession"],"reason":"Revoke selected own session server-side, keeping other sessions intact."},
- {"controlId":"CTL-2bc7a5b6b24d","status":"reviewed","disposition":"command","operationIds":["revokeSession"],"reason":"Second rendered device row uses its own session identity."},
- {"controlId":"CTL-d163470a6c1c","status":"reviewed","disposition":"command","operationIds":["revokeOtherSessions"],"reason":"Atomically revoke all own sessions except current after recent authentication."},
- {"controlId":"CTL-51186f5e4460","status":"reviewed","disposition":"command","operationIds":["reportUnrecognisedActivity"],"reason":"Persist a restricted security task and administrator notification linked to the reported session."},
- {"controlId":"CTL-8bb02d6fe5ae","status":"reviewed","disposition":"command","operationIds":["requestPasswordReset"],"reason":"Queue a demo reset with non-enumerating response and single-use token."},
- {"controlId":"CTL-3759ca87f276","status":"reviewed","disposition":"command","operationIds":["revokeOtherSessions"],"reason":"Prototype handler explicitly signs out other sessions; current session retained and UI label clarifies that behaviour."},
- {"controlId":"CTL-f615857e583e","status":"reviewed","disposition":"opens-command-form","operationIds":["startMfaEnrolment","confirmMfaEnrolment"],"reason":"Enter enrolment flow; enabled state changes only after a valid code."},
- {"controlId":"CTL-2283b1209a4e","status":"reviewed","disposition":"opens-command-form","operationIds":["startMfaEnrolment","confirmMfaEnrolment"],"reason":"Equivalent authenticator setup entry point."},
- {"controlId":"CTL-5d467d2a008f","status":"reviewed","disposition":"client-only","operationIds":[],"reason":"Static explanation of MFA purpose; no read or domain mutation needed."},
- {"controlId":"CTL-881262a1851b","status":"reviewed","disposition":"opens-command-form","operationIds":["replaceRecoveryCodes"],"reason":"Security correction: previously issued plaintext codes cannot be retrieved from hashes. Show remaining count and offer recently authenticated replacement; reveal new codes once."},
- {"controlId":"CTL-481542e5fafd","status":"reviewed","disposition":"opens-command-form","operationIds":["replaceRecoveryCodes"],"reason":"Same recovery-code security correction; never add plaintext code storage to reproduce mock display."},
- {"controlId":"CTL-e16137244926","status":"reviewed","disposition":"command","operationIds":["replaceRecoveryCodes"],"reason":"Generate new single-use codes and atomically invalidate old codes after recent authentication."},
- {"controlId":"CTL-684745645736","status":"reviewed","disposition":"opens-command-form","operationIds":["startMfaEnrolment","confirmMfaEnrolment"],"reason":"Replacement leaves current authenticator effective until new enrolment is confirmed."},
- {"controlId":"CTL-1decc5a40bc7","status":"reviewed","disposition":"opens-command-form","operationIds":["disableMfa"],"reason":"Confirmation verifies credentials/code and role-required MFA policy before disabling."},
- {"controlId":"CTL-72186486df6f","status":"reviewed","disposition":"command","operationIds":["exportReport","getJob","downloadDocumentVersion"],"reason":"Persist scoped export from the selected report run and deliver actual CSV bytes."}
+  {
+    "controlId": "CTL-c1818cc49cbc",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "inviteInternalUser"
+    ],
+    "reason": "Invite user opens the internal-user invitation form; only confirmation creates an invitation."
+  },
+  {
+    "controlId": "CTL-7041753aef98",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "requestIdentityChange"
+    ],
+    "reason": "Email-change form records a dual-control request, not a direct email edit."
+  },
+  {
+    "controlId": "CTL-2b90710f6a2a",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "requestIdentityChange",
+      "decideIdentityChange"
+    ],
+    "reason": "MFA reset must follow identity approval and session revocation; replace toast with tracked request/outcome."
+  },
+  {
+    "controlId": "CTL-d05ecf452764",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "adminRequestPasswordReset"
+    ],
+    "reason": "Queue a demo reset delivery to selected user; never display or log the reset token."
+  },
+  {
+    "controlId": "CTL-595fa55cdbb5",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "createProductVersion"
+    ],
+    "reason": "Create a draft copy of the selected product version without changing the published version."
+  },
+  {
+    "controlId": "CTL-68b6e88e4b7b",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "createAuthorityVersion"
+    ],
+    "reason": "Create selected product/binder authority proposal; approval is separate and cannot exceed binder."
+  },
+  {
+    "controlId": "CTL-844267662a65",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "previewTemplate",
+      "getJob",
+      "downloadDocumentVersion"
+    ],
+    "reason": "Produce an actual preview artifact from pinned source/template and safe audience."
+  },
+  {
+    "controlId": "CTL-5ba47a39e42b",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "retryIntegrationBatch"
+    ],
+    "reason": "Retry selected failed integration jobs with original operation identities and recorded reason."
+  },
+  {
+    "controlId": "CTL-3e110cd282e0",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "updateProfile"
+    ],
+    "reason": "Save editable self-profile fields with current ETag; identity/access fields excluded."
+  },
+  {
+    "controlId": "CTL-0a0a12156da2",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "requestOwnIdentityChange"
+    ],
+    "reason": "Request own email change for independent administrator approval."
+  },
+  {
+    "controlId": "CTL-5c6d766be16f",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "revokeSession"
+    ],
+    "reason": "Revoke selected own session server-side, keeping other sessions intact."
+  },
+  {
+    "controlId": "CTL-2bc7a5b6b24d",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "revokeSession"
+    ],
+    "reason": "Second rendered device row uses its own session identity."
+  },
+  {
+    "controlId": "CTL-d163470a6c1c",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "revokeOtherSessions"
+    ],
+    "reason": "Atomically revoke all own sessions except current after recent authentication."
+  },
+  {
+    "controlId": "CTL-51186f5e4460",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "reportUnrecognisedActivity"
+    ],
+    "reason": "Persist a restricted security task and administrator notification linked to the reported session."
+  },
+  {
+    "controlId": "CTL-8bb02d6fe5ae",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "requestPasswordReset"
+    ],
+    "reason": "Queue a demo reset with non-enumerating response and single-use token."
+  },
+  {
+    "controlId": "CTL-3759ca87f276",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "revokeOtherSessions"
+    ],
+    "reason": "Prototype handler explicitly signs out other sessions; current session retained and UI label clarifies that behaviour."
+  },
+  {
+    "controlId": "CTL-f615857e583e",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "startMfaEnrolment",
+      "confirmMfaEnrolment"
+    ],
+    "reason": "Enter enrolment flow; enabled state changes only after a valid code."
+  },
+  {
+    "controlId": "CTL-2283b1209a4e",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "startMfaEnrolment",
+      "confirmMfaEnrolment"
+    ],
+    "reason": "Equivalent authenticator setup entry point."
+  },
+  {
+    "controlId": "CTL-5d467d2a008f",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Static explanation of MFA purpose; no read or domain mutation needed."
+  },
+  {
+    "controlId": "CTL-881262a1851b",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "replaceRecoveryCodes"
+    ],
+    "reason": "Security correction: previously issued plaintext codes cannot be retrieved from hashes. Show remaining count and offer recently authenticated replacement; reveal new codes once."
+  },
+  {
+    "controlId": "CTL-481542e5fafd",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "replaceRecoveryCodes"
+    ],
+    "reason": "Same recovery-code security correction; never add plaintext code storage to reproduce mock display."
+  },
+  {
+    "controlId": "CTL-e16137244926",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "replaceRecoveryCodes"
+    ],
+    "reason": "Generate new single-use codes and atomically invalidate old codes after recent authentication."
+  },
+  {
+    "controlId": "CTL-684745645736",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "startMfaEnrolment",
+      "confirmMfaEnrolment"
+    ],
+    "reason": "Replacement leaves current authenticator effective until new enrolment is confirmed."
+  },
+  {
+    "controlId": "CTL-1decc5a40bc7",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "disableMfa"
+    ],
+    "reason": "Confirmation verifies credentials/code and role-required MFA policy before disabling."
+  },
+  {
+    "controlId": "CTL-72186486df6f",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "exportReport",
+      "getJob",
+      "downloadDocumentVersion"
+    ],
+    "reason": "Persist scoped export from the selected report run and deliver actual CSV bytes."
+  },
+  {
+    "controlId": "CTL-9a93665d17ad",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "sendDocumentPack"
+    ],
+    "reason": "Send selected authorised existing document versions through one durable delivery; no regeneration of historical files."
+  },
+  {
+    "controlId": "CTL-21e20d4ce3cd",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "sendDocumentPack"
+    ],
+    "reason": "Send selected authorised existing document versions through one durable delivery; no regeneration of historical files."
+  },
+  {
+    "controlId": "CTL-94f70d0cd3fa",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "sendDocumentPack"
+    ],
+    "reason": "Send selected authorised existing document versions through one durable delivery; no regeneration of historical files."
+  },
+  {
+    "controlId": "CTL-41c6ab527690",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "createTask"
+    ],
+    "reason": "Open a task form linked to the current authorised record; persist only on confirmation."
+  },
+  {
+    "controlId": "CTL-737c18fda414",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "createTask"
+    ],
+    "reason": "Open a task form linked to the current authorised record; persist only on confirmation."
+  },
+  {
+    "controlId": "CTL-de77892116b5",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "createTask"
+    ],
+    "reason": "Open a task form linked to the current authorised record; persist only on confirmation."
+  },
+  {
+    "controlId": "CTL-ba63872f752a",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "createTask"
+    ],
+    "reason": "Open a task form linked to the current authorised record; persist only on confirmation."
+  },
+  {
+    "controlId": "CTL-7763e7b7f887",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "createTask"
+    ],
+    "reason": "Open a task form linked to the current authorised record; persist only on confirmation."
+  },
+  {
+    "controlId": "CTL-985ab2e4f5a0",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "createTask"
+    ],
+    "reason": "Open a task form linked to the current authorised record; persist only on confirmation."
+  },
+  {
+    "controlId": "CTL-36d0d597e5e9",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "createTask"
+    ],
+    "reason": "Open a task form linked to the current authorised record; persist only on confirmation."
+  },
+  {
+    "controlId": "CTL-c6af006ce244",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "clonePolicyToQuote"
+    ],
+    "reason": "Clone selected issued version into a new incomplete quote, remapping risk IDs and excluding rating/acceptance/decisions."
+  },
+  {
+    "controlId": "CTL-2bcbed5a8b35",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "clonePolicyToQuote"
+    ],
+    "reason": "Clone selected issued version into a new incomplete quote, remapping risk IDs and excluding rating/acceptance/decisions."
+  },
+  {
+    "controlId": "CTL-47ad572ff959",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "cloneQuote"
+    ],
+    "reason": "Clone selected source revision into a new incomplete quote under the permitted relationship."
+  },
+  {
+    "controlId": "CTL-7f2b0fedb3a8",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "cloneQuote"
+    ],
+    "reason": "Clone selected source revision into a new incomplete quote under the permitted relationship."
+  },
+  {
+    "controlId": "CTL-a90cc5e42de1",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "createPolicyDraft"
+    ],
+    "reason": "Prepare cancellation intent for the selected term; do not cancel cover on opening the form."
+  },
+  {
+    "controlId": "CTL-e0b763ff7753",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "createPolicyDraft"
+    ],
+    "reason": "Prepare cancellation intent for the selected term; do not cancel cover on opening the form."
+  },
+  {
+    "controlId": "CTL-c2f7efead94c",
+    "status": "reviewed",
+    "disposition": "read",
+    "operationIds": [
+      "comparePolicyVersions"
+    ],
+    "reason": "Compare selected transaction source/result versions after authorising both; render permitted field differences."
+  },
+  {
+    "controlId": "CTL-64a95d6b56a5",
+    "status": "reviewed",
+    "disposition": "read",
+    "operationIds": [
+      "comparePolicyVersions"
+    ],
+    "reason": "Compare selected transaction source/result versions after authorising both; render permitted field differences."
+  },
+  {
+    "controlId": "CTL-13581e1a3c26",
+    "status": "reviewed",
+    "disposition": "read",
+    "operationIds": [
+      "comparePolicyVersions"
+    ],
+    "reason": "Compare selected transaction source/result versions after authorising both; render permitted field differences."
+  },
+  {
+    "controlId": "CTL-a32dc8670b0a",
+    "status": "reviewed",
+    "disposition": "read",
+    "operationIds": [
+      "comparePolicyVersions"
+    ],
+    "reason": "Compare selected transaction source/result versions after authorising both; render permitted field differences."
+  },
+  {
+    "controlId": "CTL-600cfa71899e",
+    "status": "reviewed",
+    "disposition": "read",
+    "operationIds": [
+      "comparePolicyVersions"
+    ],
+    "reason": "Compare selected transaction source/result versions after authorising both; render permitted field differences."
+  },
+  {
+    "controlId": "CTL-a5137896520d",
+    "status": "reviewed",
+    "disposition": "read",
+    "operationIds": [
+      "comparePolicyVersions"
+    ],
+    "reason": "Compare selected transaction source/result versions after authorising both; render permitted field differences."
+  },
+  {
+    "controlId": "CTL-f7e2892adf6c",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "uploadDocument"
+    ],
+    "reason": "Choose evidence bytes, then upload under the authorised parent and typed metadata."
+  },
+  {
+    "controlId": "CTL-0e889362450f",
+    "status": "reviewed",
+    "disposition": "read-and-command",
+    "operationIds": [
+      "downloadDocumentVersion",
+      "sendDocumentPack"
+    ],
+    "reason": "Split compound preview/download/send cell into actual read and explicit send actions; never send on preview."
+  },
+  {
+    "controlId": "CTL-efe5919f52c7",
+    "status": "reviewed",
+    "disposition": "read-and-command",
+    "operationIds": [
+      "downloadDocumentVersion",
+      "sendDocumentPack"
+    ],
+    "reason": "Split compound preview/download/send cell into actual read and explicit send actions; never send on preview."
+  },
+  {
+    "controlId": "CTL-1ef57f2aabee",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "acquireDraftLease"
+    ],
+    "reason": "Takeover requires grant/reason; atomically replace holder, notify prior editor and preserve ETag conflict checks."
+  },
+  {
+    "controlId": "CTL-4215a62af861",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "acquireDraftLease"
+    ],
+    "reason": "Takeover requires grant/reason; atomically replace holder, notify prior editor and preserve ETag conflict checks."
+  },
+  {
+    "controlId": "CTL-5024c53b5eaf",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "acquireDraftLease"
+    ],
+    "reason": "Takeover requires grant/reason; atomically replace holder, notify prior editor and preserve ETag conflict checks."
+  },
+  {
+    "controlId": "CTL-811c233ef5c7",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Save proposed MTA with lease and ETag, preserving issued cover and invalidating material dependencies."
+  },
+  {
+    "controlId": "CTL-ee26e427d19a",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Save proposed MTA with lease and ETag, preserving issued cover and invalidating material dependencies."
+  },
+  {
+    "controlId": "CTL-bcb0e563f02d",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "ratePolicyDraft"
+    ],
+    "reason": "Persist current draft first and rate its exact revision; return durable rating job rather than toast success."
+  },
+  {
+    "controlId": "CTL-cc443272c9e7",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "ratePolicyDraft"
+    ],
+    "reason": "Persist current draft first and rate its exact revision; return durable rating job rather than toast success."
+  },
+  {
+    "controlId": "CTL-17cfb5f13bd1",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "ratePolicyDraft"
+    ],
+    "reason": "Persist current draft first and rate its exact revision; return durable rating job rather than toast success."
+  },
+  {
+    "controlId": "CTL-9085e4bbc3bb",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "releaseDraftLease"
+    ],
+    "reason": "Release current holder token; no policy or draft data is deleted."
+  },
+  {
+    "controlId": "CTL-f3fb94ad182a",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Picker selects supported risk change type; confirmed changes save the draft proposal with stable identities."
+  },
+  {
+    "controlId": "CTL-14cfcc4b503f",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Edit/remove this proposed change in the working copy; explicit save persists draft revision, not issued risk."
+  },
+  {
+    "controlId": "CTL-3a07d9af3916",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Edit/remove this proposed change in the working copy; explicit save persists draft revision, not issued risk."
+  },
+  {
+    "controlId": "CTL-c4a0292cbe34",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Edit/remove this proposed change in the working copy; explicit save persists draft revision, not issued risk."
+  },
+  {
+    "controlId": "CTL-0bb078b5d224",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Edit/remove this proposed change in the working copy; explicit save persists draft revision, not issued risk."
+  },
+  {
+    "controlId": "CTL-f53d17d61db1",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Edit/remove this proposed change in the working copy; explicit save persists draft revision, not issued risk."
+  },
+  {
+    "controlId": "CTL-909dc8df1733",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "submitPolicyDraft"
+    ],
+    "reason": "Submit exact current draft after completeness/rating checks; submission alone does not issue cover."
+  },
+  {
+    "controlId": "CTL-efe1569b8296",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "abandonPolicyDraft"
+    ],
+    "reason": "Confirm abandonment with reason and current lease/ETag; existing issued cover remains applicable."
+  },
+  {
+    "controlId": "CTL-2e6fe589364b",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "abandonPolicyDraft"
+    ],
+    "reason": "Confirm abandonment with reason and current lease/ETag; existing issued cover remains applicable."
+  },
+  {
+    "controlId": "CTL-0b1d8505538d",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "rateQuote"
+    ],
+    "reason": "Queue deterministic rating bound to current saved quote revision."
+  },
+  {
+    "controlId": "CTL-831d06857ca3",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "rateQuote"
+    ],
+    "reason": "Queue deterministic rating bound to current saved quote revision."
+  },
+  {
+    "controlId": "CTL-32b4f87c9518",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "withdrawQuote"
+    ],
+    "reason": "Collect withdrawal reason before persisting the quote transition."
+  },
+  {
+    "controlId": "CTL-807425c1bbac",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "withdrawQuote"
+    ],
+    "reason": "Collect withdrawal reason before persisting the quote transition."
+  },
+  {
+    "controlId": "CTL-950f2a4088a6",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "sendQuoteTerms"
+    ],
+    "reason": "Send current rated terms to authorised agency recipients with pinned documents and terms hash."
+  },
+  {
+    "controlId": "CTL-efcbbfb01992",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "sendQuoteTerms"
+    ],
+    "reason": "Send current rated terms to authorised agency recipients with pinned documents and terms hash."
+  },
+  {
+    "controlId": "CTL-8931890ed3f6",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "sendQuoteTerms"
+    ],
+    "reason": "Send current rated terms to authorised agency recipients with pinned documents and terms hash."
+  },
+  {
+    "controlId": "CTL-6bed59ad0e72",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "issueQuote"
+    ],
+    "reason": "Issue atomically only with current rating, acceptance, resolved referrals and authority; product derives from quote, not mock PN/CC string."
+  },
+  {
+    "controlId": "CTL-b6b101bf1420",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "issueQuote"
+    ],
+    "reason": "Issue atomically only with current rating, acceptance, resolved referrals and authority; product derives from quote, not mock PN/CC string."
+  },
+  {
+    "controlId": "CTL-9571bab22998",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "getQuote",
+      "saveQuoteProposal"
+    ],
+    "reason": "Reopen the appropriate capture step and save a new revision; editing invalidates applicable rating and acceptance."
+  },
+  {
+    "controlId": "CTL-31f5cd3c71f6",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "decideQuoteReferrals"
+    ],
+    "reason": "Approve selected referrals atomically, checking each dimension and pinning optional conditions to target hash."
+  },
+  {
+    "controlId": "CTL-9c747f3b26c3",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "decideQuoteReferrals"
+    ],
+    "reason": "Approve selected referrals atomically, checking each dimension and pinning optional conditions to target hash."
+  },
+  {
+    "controlId": "CTL-9febb5f22d93",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "decideQuoteReferrals",
+      "createThread",
+      "createMessageDraft",
+      "sendMessage"
+    ],
+    "reason": "Record query decisions and explicitly send a safe information request; unresolved referrals remain blocking."
+  },
+  {
+    "controlId": "CTL-696c000f3a53",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "createEscalation",
+      "sendEscalation"
+    ],
+    "reason": "Create provider escalation and explicitly submit safe revision-pinned evidence."
+  },
+  {
+    "controlId": "CTL-4d4d367d4f07",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "decideQuoteReferrals"
+    ],
+    "reason": "Record decline/reopen with reason and target versions; derive quote state from decisions rather than arbitrary status edit."
+  },
+  {
+    "controlId": "CTL-4a1e26f9bda1",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "decideQuoteReferrals"
+    ],
+    "reason": "Record decline/reopen with reason and target versions; derive quote state from decisions rather than arbitrary status edit."
+  },
+  {
+    "controlId": "CTL-67a650111cef",
+    "status": "reviewed",
+    "disposition": "read",
+    "operationIds": [
+      "compareQuoteRevisions"
+    ],
+    "reason": "Compare authorised immutable quote revisions; no current quote overwrite."
+  },
+  {
+    "controlId": "CTL-bdcd358d2e9b",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "createQuote"
+    ],
+    "reason": "Choose agency relationship/product for this client and create an incomplete quote."
+  },
+  {
+    "controlId": "CTL-69e98f1db2a7",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "createQuote"
+    ],
+    "reason": "Choose agency relationship/product for this client and create an incomplete quote."
+  },
+  {
+    "controlId": "CTL-71e959d26c91",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "createContact"
+    ],
+    "reason": "Capture a contact in the current client-agency relationship, not shared global contact data."
+  },
+  {
+    "controlId": "CTL-4bfcb9624abd",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "endContact"
+    ],
+    "reason": "End the selected contact with reason, preserve past correspondence and maintain active-primary uniqueness."
+  },
+  {
+    "controlId": "CTL-b309c31c4120",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "endContact"
+    ],
+    "reason": "End the selected contact with reason, preserve past correspondence and maintain active-primary uniqueness."
+  },
+  {
+    "controlId": "CTL-587d9cdf230e",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "endContact"
+    ],
+    "reason": "End the selected contact with reason, preserve past correspondence and maintain active-primary uniqueness."
+  },
+  {
+    "controlId": "CTL-d00d05db5c19",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "createSupportFlag"
+    ],
+    "reason": "Capture restricted person support evidence and explicit safe sharing grants."
+  },
+  {
+    "controlId": "CTL-c80b9b3688e8",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "endSupportFlag"
+    ],
+    "reason": "End active flag with reason and restricted audit; never erase historical evidence."
+  },
+  {
+    "controlId": "CTL-96df8ce81889",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "endSupportFlag"
+    ],
+    "reason": "End active flag with reason and restricted audit; never erase historical evidence."
+  },
+  {
+    "controlId": "CTL-9dde2fa72331",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "inviteAgencyUser"
+    ],
+    "reason": "Agency context chooses agency-scoped invitation, not internal user invitation."
+  },
+  {
+    "controlId": "CTL-3e52429e1a71",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "inviteAgencyUser"
+    ],
+    "reason": "Agency context chooses agency-scoped invitation, not internal user invitation."
+  },
+  {
+    "controlId": "CTL-2aa058086327",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "requestAgencySuspension"
+    ],
+    "reason": "Record manager-approved suspension request before applying agency access change."
+  },
+  {
+    "controlId": "CTL-e7a0096dd263",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "requestUserAccessChange"
+    ],
+    "reason": "Edit or deactivate agency user through scoped access proposal and confirmation/approval."
+  },
+  {
+    "controlId": "CTL-5337ca2ab8d2",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "resendInvitation"
+    ],
+    "reason": "Replace old token and queue invitation resend under the same agency."
+  },
+  {
+    "controlId": "CTL-2aefbeec3f5b",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "decideIdentityChange"
+    ],
+    "reason": "Approve/reject the selected identity-change request with audit and independent approver."
+  },
+  {
+    "controlId": "CTL-158574620277",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Select rows in the current scoped result page; selection has no persisted task mutation."
+  },
+  {
+    "controlId": "CTL-1fc029a2f764",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Select rows in the current scoped result page; selection has no persisted task mutation."
+  },
+  {
+    "controlId": "CTL-99aaeed351bc",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Select rows in the current scoped result page; selection has no persisted task mutation."
+  },
+  {
+    "controlId": "CTL-18d24939cef0",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Select rows in the current scoped result page; selection has no persisted task mutation."
+  },
+  {
+    "controlId": "CTL-3b63dda255aa",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Select rows in the current scoped result page; selection has no persisted task mutation."
+  },
+  {
+    "controlId": "CTL-8d144a7ab5a8",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Select rows in the current scoped result page; selection has no persisted task mutation."
+  },
+  {
+    "controlId": "CTL-9b62a0d11fe5",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Select rows in the current scoped result page; selection has no persisted task mutation."
+  },
+  {
+    "controlId": "CTL-1757c932af2d",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "updateTask"
+    ],
+    "reason": "Toggle the selected checklist item and persist task state; a tick cannot satisfy an independent referral decision."
+  },
+  {
+    "controlId": "CTL-1def7d3809c4",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "updateTask"
+    ],
+    "reason": "Toggle the selected checklist item and persist task state; a tick cannot satisfy an independent referral decision."
+  },
+  {
+    "controlId": "CTL-0f3e72d17e21",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "updateTask"
+    ],
+    "reason": "Toggle the selected checklist item and persist task state; a tick cannot satisfy an independent referral decision."
+  },
+  {
+    "controlId": "CTL-fae56e7ecb06",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "updateTask"
+    ],
+    "reason": "Toggle the selected checklist item and persist task state; a tick cannot satisfy an independent referral decision."
+  },
+  {
+    "controlId": "CTL-083355dcd818",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "transitionTask"
+    ],
+    "reason": "Complete task with reason after checklist checks; MTA still requires referral resolution and separate issue."
+  },
+  {
+    "controlId": "CTL-dc74aa65f196",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "exportReport"
+    ],
+    "reason": "Export the finance definition with selected period and processing basis, retaining run/source identities."
+  },
+  {
+    "controlId": "CTL-af1ae0986051",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "postJournal"
+    ],
+    "reason": "Collect balanced lines/open period/reason and apply finance posting authority."
+  },
+  {
+    "controlId": "CTL-7c5cc131108a",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "allocateReceipt"
+    ],
+    "reason": "Match receipt to invoice under both residual locks and compatible agency scope; no duplicate cash posting."
+  },
+  {
+    "controlId": "CTL-f6945a03e766",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "assignReceiptPayer"
+    ],
+    "reason": "Choose authorised payer and persist with current receipt ETag."
+  },
+  {
+    "controlId": "CTL-afa1f6836cbc",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "excludeDuplicateBankLine"
+    ],
+    "reason": "Exclude only a proven duplicate linked to original, retaining import/audit and prohibiting matched-line exclusion."
+  },
+  {
+    "controlId": "CTL-9722f94fe830",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "validateBordereau"
+    ],
+    "reason": "Revalidate pinned draft export rows; do not assume failures disappeared."
+  },
+  {
+    "controlId": "CTL-172f7f829df2",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "correctBordereauRow"
+    ],
+    "reason": "Correct permitted export reference mappings with reason, never issued financial components."
+  },
+  {
+    "controlId": "CTL-704dcdf1dd76",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "exportBordereau"
+    ],
+    "reason": "Generate actual CSV from selected pinned batch and retain document hash."
+  },
+  {
+    "controlId": "CTL-935c7ce672a6",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "excludeFailingBordereauRows"
+    ],
+    "reason": "Exclude explicitly selected failing rows with reason and batch ETag; retain their audit evidence."
+  },
+  {
+    "controlId": "CTL-40d27394607d",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "ratePolicyDraft"
+    ],
+    "reason": "Rate renewal draft exact revision; do not advance invitation/acceptance from mock step count alone."
+  },
+  {
+    "controlId": "CTL-6feeac107975",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Edit renewal terms and invalidate prior rating/acceptance while keeping expiring term immutable."
+  },
+  {
+    "controlId": "CTL-35c70199197b",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "lapseRenewal"
+    ],
+    "reason": "Record lapse reason and durable broker notification at term expiry."
+  },
+  {
+    "controlId": "CTL-879db9a21bfd",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Progress display/style and step jump only; actual stage commands remain independently gated by persisted state."
+  },
+  {
+    "controlId": "CTL-9914b0bf4f9f",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Progress display/style and step jump only; actual stage commands remain independently gated by persisted state."
+  },
+  {
+    "controlId": "CTL-f70a8d0246fc",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Progress display/style and step jump only; actual stage commands remain independently gated by persisted state."
+  },
+  {
+    "controlId": "CTL-07199cfc7aaf",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Progress display/style and step jump only; actual stage commands remain independently gated by persisted state."
+  },
+  {
+    "controlId": "CTL-5ebc3446d851",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Progress display/style and step jump only; actual stage commands remain independently gated by persisted state."
+  },
+  {
+    "controlId": "CTL-c85ad01a33e0",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "issuePolicyDraft"
+    ],
+    "reason": "Issue cancellation atomically with effective time, financial credit and durable side effects; no payment within business commit."
+  },
+  {
+    "controlId": "CTL-be7dce14a48f",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "issuePolicyDraft"
+    ],
+    "reason": "Issue cancellation atomically with effective time, financial credit and durable side effects; no payment within business commit."
+  },
+  {
+    "controlId": "CTL-bfe2f6136895",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "savePolicyDraft"
+    ],
+    "reason": "Amend cancellation reason/effective time and recompute preview before issue."
+  },
+  {
+    "controlId": "CTL-45919e221aad",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "createIncidentDraft",
+      "updateIncidentDraft"
+    ],
+    "reason": "Save incomplete incident without handoff; existing draft uses its ETag rather than creating a duplicate."
+  },
+  {
+    "controlId": "CTL-37f4631d197a",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "createIncidentDraft",
+      "updateIncidentDraft"
+    ],
+    "reason": "Save incomplete incident without handoff; existing draft uses its ETag rather than creating a duplicate."
+  },
+  {
+    "controlId": "CTL-ad5d48567dbf",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "logIncident",
+      "handoffIncident"
+    ],
+    "reason": "Disabled sample surfaces required fields; complete valid incident is logged then durably handed off with separate job state."
+  },
+  {
+    "controlId": "CTL-f66d2004123b",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "createThread",
+      "createMessageDraft",
+      "sendMessage"
+    ],
+    "reason": "Draft contact message to claims administrator; explicit send is a separate persistent demo action."
+  },
+  {
+    "controlId": "CTL-c7575e4e2213",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "exportPolicyReconstruction"
+    ],
+    "reason": "Export precisely selected effective and knowledge cutoff with immutable source version metadata."
+  },
+  {
+    "controlId": "CTL-f3387357521c",
+    "status": "reviewed",
+    "disposition": "read",
+    "operationIds": [
+      "listDocumentVersions",
+      "downloadDocumentVersion"
+    ],
+    "reason": "Open schedule bytes for selected historical version, never regenerate using current terms."
+  },
+  {
+    "controlId": "CTL-7aed007d8279",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "sendEscalation"
+    ],
+    "reason": "Submit provider escalation under the exact referral/target scope and durable operation key."
+  },
+  {
+    "controlId": "CTL-6c04b9b858a7",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft",
+      "ratePolicyDraft"
+    ],
+    "reason": "Reduce/remove the proposed stock change in draft and rerate; do not automatically clear unrelated referrals."
+  },
+  {
+    "controlId": "CTL-16da8d8485a7",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "savePolicyDraft",
+      "ratePolicyDraft"
+    ],
+    "reason": "Reduce/remove the proposed stock change in draft and rerate; do not automatically clear unrelated referrals."
+  },
+  {
+    "controlId": "CTL-7c4c701f7185",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "createPolicyDraft"
+    ],
+    "reason": "Create CC adjustment draft from selected term/version; display product-specific location/liability sections."
+  },
+  {
+    "controlId": "CTL-b2e4c6b1cfe9",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "createPolicyDraft"
+    ],
+    "reason": "Create CC adjustment draft from selected term/version; display product-specific location/liability sections."
+  },
+  {
+    "controlId": "CTL-972baee4e124",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "createPolicyDraft"
+    ],
+    "reason": "Create CC adjustment draft from selected term/version; display product-specific location/liability sections."
+  },
+  {
+    "controlId": "CTL-833069e59afb",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "createPolicyDraft"
+    ],
+    "reason": "Create CC adjustment draft from selected term/version; display product-specific location/liability sections."
+  },
+  {
+    "controlId": "CTL-04e2a11eab51",
+    "status": "reviewed",
+    "disposition": "opens-command-form",
+    "operationIds": [
+      "createIncidentDraft"
+    ],
+    "reason": "Open CC incident capture with property risk links; no Motor Trade-only assumptions."
+  },
+  {
+    "controlId": "CTL-525d2e108127",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "decideMatch"
+    ],
+    "reason": "Link/separate/decline requires recorded reason and permitted thin identity sharing; do not disclose competing agency terms."
+  },
+  {
+    "controlId": "CTL-5b07d3978b49",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "decideMatch"
+    ],
+    "reason": "Link/separate/decline requires recorded reason and permitted thin identity sharing; do not disclose competing agency terms."
+  },
+  {
+    "controlId": "CTL-853ce7f519a4",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "decideMatch"
+    ],
+    "reason": "Link/separate/decline requires recorded reason and permitted thin identity sharing; do not disclose competing agency terms."
+  },
+  {
+    "controlId": "CTL-e3d448532811",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "decideMatch",
+      "createThread",
+      "createMessageDraft",
+      "sendMessage"
+    ],
+    "reason": "Record queried match state and safe company-number request to the submitting agency."
+  },
+  {
+    "controlId": "CTL-dc77305d175b",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "sendRenewalInvitation"
+    ],
+    "reason": "Send current rated renewal terms with pinned invitation evidence."
+  },
+  {
+    "controlId": "CTL-fa18c029e256",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "decideReferral"
+    ],
+    "reason": "Resolve renewal referral within authority with explicit reason; no fake status-only approval."
+  },
+  {
+    "controlId": "CTL-7ef8d04057b2",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "recordDraftAcceptance"
+    ],
+    "reason": "Record exact renewal terms/rating acceptance; issuing cover remains a separate command."
+  },
+  {
+    "controlId": "CTL-d320aa79a17e",
+    "status": "reviewed",
+    "disposition": "command",
+    "operationIds": [
+      "issuePolicyDraft"
+    ],
+    "reason": "Issue renewal into new non-overlapping term while preserving previous term/history."
+  },
+  {
+    "controlId": "CTL-b724d74c4705",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "searchRecords"
+    ],
+    "reason": "Literal navigation to search; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-4d570852baac",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listTasks"
+    ],
+    "reason": "Literal navigation to tasks; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-fe8b9578bac9",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listTasks"
+    ],
+    "reason": "Literal navigation to tasks; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-8045da3f31a1",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listPolicyDrafts",
+      "getPolicyDraft"
+    ],
+    "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-9f0b18626d19",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listPolicyTerms",
+      "listPolicyDrafts"
+    ],
+    "reason": "Literal navigation to renewal; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-5a327c3b623f",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listNotes"
+    ],
+    "reason": "Literal pPolicy tab selection Notes; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-3cb0cf7677f1",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicyVersion"
+    ],
+    "reason": "Literal navigation to logclaim; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-6f298b5183b0",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listPolicyVersions"
+    ],
+    "reason": "Literal pPolicy tab selection Transactions; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-44449472c9d0",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listPolicyDrafts",
+      "getPolicyDraft"
+    ],
+    "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-a599ed5f7746",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listNotes"
+    ],
+    "reason": "Literal pPolicy tab selection Notes; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-d1cdc62aa154",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listDocuments"
+    ],
+    "reason": "Literal pPolicy tab selection Documents; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-d85e718d3878",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listPolicyDrafts",
+      "getPolicyDraft"
+    ],
+    "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-fb6a7c690bb9",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listPolicyTerms",
+      "listPolicyDrafts"
+    ],
+    "reason": "Literal navigation to renewal; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-9cd13ac877a5",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listNotes"
+    ],
+    "reason": "Literal pPolicy tab selection Notes; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-9ce9ceaff0ff",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicyVersion"
+    ],
+    "reason": "Literal navigation to logclaim; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-e230948b7fd9",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listPolicyVersions"
+    ],
+    "reason": "Literal pPolicy tab selection Transactions; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-40c2953f1cf1",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listTasks"
+    ],
+    "reason": "Literal pPolicy tab selection Tasks; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-73d14fdf3487",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listPolicyDrafts",
+      "getPolicyDraft"
+    ],
+    "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-865e4d442990",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to asat; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-1c646d814d99",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listPolicyDrafts",
+      "getPolicyDraft"
+    ],
+    "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-c6c247c8e374",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listPolicyDrafts",
+      "getPolicyDraft"
+    ],
+    "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-aedc83465580",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listPolicyDrafts",
+      "getPolicyDraft"
+    ],
+    "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-56e9c654446b",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listPolicyDrafts",
+      "getPolicyDraft"
+    ],
+    "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-bf0ca76b9d5d",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listPolicyDrafts",
+      "getPolicyDraft"
+    ],
+    "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-c7700e80208a",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listTasks"
+    ],
+    "reason": "Literal navigation to tasks; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-e121d4d60dfb",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listPolicyDrafts",
+      "getPolicyDraft"
+    ],
+    "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-833c66cac316",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicyVersion"
+    ],
+    "reason": "Literal navigation to driver; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-1583baae154f",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listPolicyDrafts",
+      "getPolicyDraft"
+    ],
+    "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-71af2ba1c4ce",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listPolicyDrafts",
+      "getPolicyDraft"
+    ],
+    "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-4c97724a5bfa",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicyVersion"
+    ],
+    "reason": "Literal navigation to logclaim; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-630153edbb1f",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-4c6212277cb7",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getReferral",
+      "getEscalation"
+    ],
+    "reason": "Literal navigation to escalation; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-2221ef0bd60e",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listReferrals"
+    ],
+    "reason": "Literal pQuote tab selection Underwriting; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-df0c0aba7253",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getQuote"
+    ],
+    "reason": "Literal pQuote tab selection Risk Details; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-3d003747c2ad",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listQuoteRevisions"
+    ],
+    "reason": "Literal pQuote tab selection History; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-ef363293a595",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listReferrals"
+    ],
+    "reason": "Literal pQuote tab selection Underwriting; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-2b226870f9d7",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listReferrals"
+    ],
+    "reason": "Literal pQuote tab selection Underwriting; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-a550e5d2bb1d",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getQuote"
+    ],
+    "reason": "Literal pQuote tab selection Risk Details; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-50c993937b6c",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listQuoteRevisions"
+    ],
+    "reason": "Literal pQuote tab selection History; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-064ae865d1eb",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listReferrals"
+    ],
+    "reason": "Literal pQuote tab selection Underwriting; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-2a42044574cd",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "searchRecords"
+    ],
+    "reason": "Literal navigation to search; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-006066201056",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "searchRecords"
+    ],
+    "reason": "Literal navigation to search; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-b98928311f91",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "searchRecords"
+    ],
+    "reason": "Literal navigation to search; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-2f3db8439abc",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listAgencies"
+    ],
+    "reason": "Literal navigation to agents; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-34029135fca1",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getAgency"
+    ],
+    "reason": "Literal navigation to agency; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-f46fd9330f9b",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Literal navigation to newagency; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-246d7ad59eb2",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Navigate to static internal sharing reference; prototype explicitly excludes a separate broker portal. No domain mutation."
+  },
+  {
+    "controlId": "CTL-e834b4734421",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getAgencyStatement"
+    ],
+    "reason": "Literal navigation to accounting / Broker accounts; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-786034b4a40f",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listPolicyDrafts",
+      "getPolicyDraft"
+    ],
+    "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-47453f96b730",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getTask",
+      "listNotes"
+    ],
+    "reason": "Literal pTask tab selection Task; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-7764c5c29640",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listPolicyDrafts",
+      "getPolicyDraft"
+    ],
+    "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-80b621a2936e",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listTasks"
+    ],
+    "reason": "Literal navigation to tasks; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-fa1cb7ce3ecc",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listPolicyDrafts",
+      "getPolicyDraft"
+    ],
+    "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-5f1aa84bef57",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getBordereau",
+      "listBordereauRows"
+    ],
+    "reason": "Literal pAccounting tab selection Batch BX-2026-08; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-7bc8cfc00566",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listBordereaux"
+    ],
+    "reason": "Literal pAccounting tab selection Bordereaux; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-f56bb23ea21a",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listReports",
+      "getReportDefinition"
+    ],
+    "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-cc3769bd3bdf",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listReports",
+      "getReportDefinition"
+    ],
+    "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-ebe3b087664a",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listReports",
+      "getReportDefinition"
+    ],
+    "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-24cf7d55af86",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listJournals",
+      "listReceipts"
+    ],
+    "reason": "Literal navigation to accounting; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-50981eb7306e",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listReports",
+      "getReportDefinition"
+    ],
+    "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-b6ddb24f81d1",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listReports",
+      "getReportDefinition"
+    ],
+    "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-3b59a2e0681f",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listReports",
+      "getReportDefinition"
+    ],
+    "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-aa34e10e0808",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listReports",
+      "getReportDefinition"
+    ],
+    "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-f1d572756754",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listReports",
+      "getReportDefinition"
+    ],
+    "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-01f8138dd157",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listReports",
+      "getReportDefinition"
+    ],
+    "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-ecba4b9c7a13",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listReports",
+      "getReportDefinition"
+    ],
+    "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-10e7fba9ce9c",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listReports"
+    ],
+    "reason": "Literal pReporting tab selection Report library; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-884d9ce1ee34",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listUsers"
+    ],
+    "reason": "Literal pAdmin tab selection Users & roles; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-f43c26ffcd36",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listMatchingRules"
+    ],
+    "reason": "Literal pAdmin tab selection Client matching; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-c1abeccbe48e",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listProducts"
+    ],
+    "reason": "Literal pAdmin tab selection Products & schemes; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-7a70deae880e",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listAuthorityVersions"
+    ],
+    "reason": "Literal pAdmin tab selection Delegated authority; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-5e8758709f33",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listWorkflowRules"
+    ],
+    "reason": "Literal pAdmin tab selection Workflow; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-062173aa3428",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listTemplateVersions"
+    ],
+    "reason": "Literal pAdmin tab selection Templates; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-f83ab9f84cce",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listIntegrationSettings"
+    ],
+    "reason": "Literal pAdmin tab selection Integrations; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-1f4136b08d57",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listAuditEvents"
+    ],
+    "reason": "Literal pAdmin tab selection Audit log; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-f6daa870681c",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getGeneralSettings"
+    ],
+    "reason": "Literal pAdmin tab selection Settings; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-f68f49a17b06",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listBordereaux"
+    ],
+    "reason": "Literal navigation to accounting / Bordereaux; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-2f8abde47bb7",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getDashboard"
+    ],
+    "reason": "Literal navigation to dashboard; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-a1d207a609ca",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-657eee864831",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-386b48061d53",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-3e9bec10fb71",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listPolicyVersions"
+    ],
+    "reason": "Literal navigation to policy / Transactions; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-66cf696c0aa1",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listTasks"
+    ],
+    "reason": "Literal navigation to tasks; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-7d9b07c0fc34",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getTask"
+    ],
+    "reason": "Literal navigation to task; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-d5646e53396b",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listThreads"
+    ],
+    "reason": "Literal navigation to policy / Messages; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-7db7432939a1",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getAgency"
+    ],
+    "reason": "Literal navigation to agency; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-0a807a86f240",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getDashboard"
+    ],
+    "reason": "Literal navigation to dashboard; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-04e58a7717f8",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getDashboard"
+    ],
+    "reason": "Literal navigation to dashboard; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-4a16c38ad19e",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listSessions"
+    ],
+    "reason": "Literal navigation to account / Sessions & activity; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-74c4fab0dc7a",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listIncidents"
+    ],
+    "reason": "Literal navigation to policy / Claims; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-39ca0b1a11ee",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listIncidents"
+    ],
+    "reason": "Literal navigation to policy / Claims; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-0e965122693a",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listPolicyVersions"
+    ],
+    "reason": "Literal navigation to policy / Transactions; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-2ce0c490faab",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listPolicyDrafts",
+      "getPolicyDraft"
+    ],
+    "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-43fe4f266852",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listPolicyDrafts",
+      "getPolicyDraft"
+    ],
+    "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-5b3f0138f6c3",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listProducts"
+    ],
+    "reason": "Literal navigation to admin / Products & schemes; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-56d3a14f67cc",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-6dd508169708",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-51a57548f0da",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-d0ef58c41321",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-40e9b30cb9e8",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-fb66601d6526",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal pCcPolicy tab selection Property schedule; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-2a6401be6234",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal pCcPolicy tab selection Liability & employees; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+  },
+  {
+    "controlId": "CTL-f1af905620b2",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-e5b1be5b9996",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-34224cd40d1e",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-ea8bce06f2ca",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-f483a775b1ff",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "listIncidents"
+    ],
+    "reason": "Literal navigation to policy / Claims; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-ccf03cbea8ce",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-6582dec68d30",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-33cbb4fde70a",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-f624f194dc37",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-1ecddbaea446",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-743a4287e25a",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-cbe49710cfe8",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-19725f9cbe05",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-0b75753873f5",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-7339369f0fea",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-6545b6a077fe",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-14ccc32045e0",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-22ba92c7b207",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-db1741cea8a9",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-9c62bb998e73",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-ac3cc5554379",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-3b06827603c7",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-aeb46a753796",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-3c64b7e2f4b2",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-6b8b84b168aa",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-2419bccb96e3",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-d1824bc06898",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-fc4c4f117cb8",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-456c5d7d3e24",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-3aca421b48c2",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-3bfd2ff06187",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-094aea684a7e",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-2fade7608c9f",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-230e5b43b051",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-867eb6cb506f",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-fb0864dfa704",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-2513acd4a118",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-f7115f67c06e",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-83691d36bdf8",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-673333da8426",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-c3988d689323",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-365f47865fcb",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-beb074e34531",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-53280ea4a21b",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-8ef56e33e01c",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getPolicy",
+      "getPolicyAsAt"
+    ],
+    "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  },
+  {
+    "controlId": "CTL-f027c3ba9873",
+    "status": "reviewed",
+    "disposition": "navigation-read",
+    "operationIds": [
+      "getClient"
+    ],
+    "reason": "Literal navigation to client; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+  }
 ]

@@ -1,6 +1,36 @@
 // Contract gaps identified by the semantic/source-control review.
 export function addReviewedApi({schemas:s,ref:r,text:t,enumeration:e,object:o,array:a,id,instant,date,boolean:b,integer,decimal,operation:op,list,paths}){
  const reason=o({reason:t(1000)});
+ s.CoverChangeSchedule=o({changeId:id,effectiveAt:instant,section:{$ref:'./schemas/policy.schema.json#/$defs/Cover/properties/sections/items'},action:e('add','replace','remove')});
+ const timing={dateBasis:e('shared','per-cover-change'),requestedBy:t(),coverChangeSchedule:a(r('CoverChangeSchedule'))};
+ Object.assign(s.PolicyDraft.properties,timing);s.PolicyDraft.required.push(...Object.keys(timing));
+ const saveDraft=paths['/drafts/{draftId}/proposal'].put.requestBody.content['application/json'].schema;
+ Object.assign(saveDraft.properties,timing);saveDraft.required.push(...Object.keys(timing));
+ s.IssueResult.properties.versionIds=a(id);s.IssueResult.required.push('versionIds');
+ s.RatingResult.properties.effectiveSlices=a(o({effectiveAt:instant,premiumChange:decimal,taxChange:decimal,commissionChange:decimal,currency:{const:'GBP'}}));
+ s.RatingResult.required.push('effectiveSlices');
+ op('post','/quotes/{quoteId}/clone','cloneQuote','quote-write',{existing:true,input:o({sourceRevisionId:id,relationshipId:id,reason:t(1000)}),output:r('Quote'),status:201});
+ op('post','/versions/{versionId}/clone-quote','clonePolicyToQuote','quote-write',{input:o({relationshipId:id,reason:t(1000)}),output:r('Quote'),status:201});
+ list('/quotes/{quoteId}/revisions','listQuoteRevisions','quote-read',o({id,number:integer,savedAt:instant,proposal:r('PolicyProposal')}));
+ s.VersionComparison=o({leftVersionId:id,rightVersionId:id,changes:a(o({path:t(500),kind:e('added','removed','changed'),beforeText:t(8000),afterText:t(8000)},['path','kind']))});
+ op('get','/versions/{versionId}/compare','comparePolicyVersions','policy-read',{query:[['otherVersionId',id]],output:r('VersionComparison')});
+ op('get','/quotes/{quoteId}/compare','compareQuoteRevisions','quote-read',{query:[['leftRevisionId',id],['rightRevisionId',id]],output:r('VersionComparison')});
+ op('post','/relationships/{relationshipId}/contacts/{contactId}/end','endContact','contact-write',{existing:true,input:reason,output:r('Contact')});
+ s.Contact.properties.endedAt=instant;
+ op('post','/quotes/{quoteId}/referral-decisions','decideQuoteReferrals','underwriting-decide-within-authority',{existing:true,input:o({decisions:a(o({referralId:id,etag:t(100),targetHash:t(64),outcome:e('approve','approve-with-conditions','query','decline','reopen'),reason:t(2000),conditions:a(o({description:t(1000),evidenceRequired:b}))}))}),output:o({referrals:a(r('Referral'))}),summary:'Decide selected referrals atomically after checking each authority and version'});
+ op('post','/records/{recordId}/document-deliveries','sendDocumentPack','document-send',{input:o({documentVersionIds:a(id),recipientContactIds:a(id),templateVersionId:id,subject:t(300),body:t(8000)}),output:r('Job'),status:202});
+ op('post','/terms/{termId}/as-at/export','exportPolicyReconstruction','policy-read',{input:o({effectiveAt:instant,knownAt:instant,format:{const:'pdf'}}),output:r('Job'),status:202});
+ s.AgencyStateRequest=o({id,agencyId:id,stateRequested:e('active','suspended'),reason:t(1000),requestedBy:id,approvedBy:id,state:e('pending','approved','rejected','applied')},['id','agencyId','stateRequested','reason','requestedBy','state']);
+ const suspension=paths['/agencies/{agencyId}/suspend'].post;
+ suspension.operationId='requestAgencySuspension';suspension.summary='Request manager approval to suspend an agency';suspension.description='Creates a suspension proposal; manager approval atomically suspends access and revokes agency sessions.';
+ suspension.responses[200].content['application/json'].schema=r('AgencyStateRequest');
+ list('/agencies/{agencyId}/state-requests','listAgencyStateRequests','agency-admin',r('AgencyStateRequest'));
+ op('get','/agency-state-requests/{requestId}','getAgencyStateRequest','agency-manager-approve',{output:r('AgencyStateRequest')});
+ op('post','/agency-state-requests/{requestId}/decision','decideAgencyStateRequest','agency-manager-approve-no-self-approval',{existing:true,input:o({outcome:e('approve','reject'),reason:t(1000)}),output:r('AgencyStateRequest')});
+ op('post','/finance/bank-lines/{bankLineId}/exclude','excludeDuplicateBankLine','finance-reconcile',{existing:true,input:o({duplicateOfBankLineId:id,reason:t(1000)}),output:r('BankLine')});
+ s.BankLine.properties.excludedAsDuplicate=b;s.BankLine.properties.duplicateOfBankLineId=id;
+ op('post','/finance/bordereaux/{batchId}/rows/{rowId}/correction','correctBordereauRow','bordereau-write',{existing:true,input:o({policyReference:t(40),providerProductCode:t(100),agencyReference:t(40),reason:t(1000)},['reason']),output:r('BordereauRow')});
+ op('post','/finance/bordereaux/{batchId}/exclude-failures','excludeFailingBordereauRows','bordereau-write',{existing:true,input:o({rowIds:a(id),reason:t(1000)}),output:r('Bordereau')});
  s.ProfileWrite=o({fullName:t(),displayName:t(),telephone:t(50),jobTitle:t(),outOfOffice:b,taskDigest:e('daily-0800','twice-daily','off')});
  s.AccountProfile=o({...s.Actor.properties,...s.ProfileWrite.properties,recoveryCodesRemaining:{type:'integer',minimum:0,maximum:10},passwordChangedAt:instant},[...new Set([...s.Actor.required,...s.ProfileWrite.required,'recoveryCodesRemaining','passwordChangedAt'])]);
  paths['/account'].get.responses[200].content['application/json'].schema=r('AccountProfile');

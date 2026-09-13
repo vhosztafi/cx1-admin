@@ -26,7 +26,7 @@ erDiagram
   Policy ||--|{ PolicyTerm : covers
   PolicyTerm ||--o{ PolicyDraft : proposes
   PolicyTerm ||--|{ PolicyTransaction : changes
-  PolicyTransaction ||--|| PolicyVersion : issues
+  PolicyTransaction ||--|{ PolicyVersion : issues
   PolicyTransaction ||--o{ Journal : posts
   Journal ||--|{ JournalLine : balances
   PolicyVersion ||--o{ DocumentVersion : supports
@@ -62,10 +62,11 @@ Credential implementation should use ASP.NET Core's supported hashing/authentica
 | ClientAccount | Reference text40, EntityType text30, LegalName text200, NormalizedName text200, CompanyNumber text30?, Address json, IdentityState text30 | Unique Reference; index CompanyNumber (filtered not null), NormalizedName; thin identity only |
 | ClientAgencyRelationship | ClientId UUID, AgencyId UUID, State text20 | Unique pair, unique (Id,ClientId,AgencyId); all three FK scopes checked by dependants |
 | Person | FirstName text100, Surname text100, DateOfBirth date? | Internal person identity; never public/global agency search |
-| Contact | RelationshipId UUID, PersonId UUID, Role text100, Email text254?, Telephone text50?, IsPrimary bool, MarketingConsent json | Unique filtered index RelationshipId WHERE IsPrimary=1; FKs relationship/person |
+| Contact | RelationshipId UUID, PersonId UUID, Role text100, Email text254?, Telephone text50?, IsPrimary bool, MarketingConsent json, EndedAt instant? | Unique filtered index RelationshipId WHERE IsPrimary=1 AND EndedAt IS NULL; FKs relationship/person; ending primary requires replacement or explicit empty active contact set |
 | SupportFlag | PersonId UUID, OriginRelationshipId UUID, TypeCode text60, InternalCategory text100, InternalInstruction text2000, AgencyInstruction text1000?, ConsentBasis text200, ReviewOn date, EndedAt instant?, Reason text1000 | Index PersonId/ReviewOn; no flag columns in rating/bordereau projections |
 | FlagVisibility | FlagId UUID, RelationshipId UUID | Unique pair; explicit sharing grant, no global agency visibility from person link |
 | Agency | Reference text40, LegalName text200, RegulatoryReference text30, Address json, State text20, OnboardingStep int, MainContact json, ComplianceContact json, AccountsContact json, PaymentTermsDays int, CreditLimit money | Unique Reference; State draft/active/suspended; Step 1..6; term/credit nonnegative |
+| AgencyStateRequest | AgencyId UUID, StateRequested text20, RequestedBy UUID, ApprovedBy UUID?, Reason text1000, State text20, AppliedAt instant? | Manager approves suspension separately; apply agency state/session revocation atomically; unique pending agency/state request |
 | AgencyEvidence | AgencyId UUID, Kind text40, DocumentId UUID?, State text30, VerifiedAt instant?, AdapterAttemptId UUID?, Notes text1000 | Index AgencyId/Kind; separate format validation from verified outcome |
 | AgencyProduct | AgencyId UUID, ProductVersionId UUID, EffectiveFrom instant, EffectiveTo instant?, BrokerCommissionRate rate | FK product version; rate 0..1; no overlapping applicable terms per agency/product |
 | MatchReview | SubmissionQuoteId UUID, CandidateClientId UUID, RuleVersionId UUID, Signals json, Confidence text30, State text30, DecisionReason text1000?, DecidedBy UUID?, DecidedAt instant? | Index State; no automatic destructive merge; keep original submission snapshot |
@@ -93,7 +94,7 @@ JSON configuration is validated against a versioned schema, not an arbitrary adm
 
 | Table | Domain-specific columns | Constraints/indexes |
 |---|---|---|
-| Quote | Reference text40, RelationshipId UUID, ProductId UUID, State text30, CurrentRevisionId UUID?, AssignedUserId UUID?, WithdrawReason text1000? | Unique Reference; index relationship/product/state; current revision FK must belong to quote |
+| Quote | Reference text40, RelationshipId UUID, ProductId UUID, State text30, CurrentRevisionId UUID?, AssignedUserId UUID?, WithdrawReason text1000?, ClonedFromQuoteRevisionId UUID?, ClonedFromPolicyVersionId UUID? | Unique Reference; index relationship/product/state; current revision FK must belong to quote; at most one clone source; cloning never grants source relationship access |
 | QuoteRevision | QuoteId UUID, Number int, ProductVersionId UUID, ProposalJson json, ContentHash hash, SchemaVersion text30, SavedAt instant | Unique quote/number; append-only revision snapshots; incomplete JSON uses draft schema |
 | RatingResult | QuoteRevisionId UUID?, DraftId UUID?, DraftRevision int?, InputHash hash, RuleVersion text100, ExpiresAt instant, ResultJson json, State text30, AttemptId UUID | Exactly one quote or draft target; index target/hash; completed result immutable |
 | Referral | QuoteRevisionId UUID?, DraftId UUID?, RuleCode text100, AuthorityVersionId UUID, Reason text2000, State text30, AssignedUserId UUID?, RequiredAuthority json | Exactly one target; unique target/rule/rating identity |
@@ -110,13 +111,13 @@ JSON configuration is validated against a versioned schema, not an arbitrary adm
 |---|---|---|
 | Policy | Reference text40, RelationshipId UUID, ProductId UUID, OriginQuoteId UUID?, State text30 | Unique Reference and filtered OriginQuoteId for bind dedupe; state projection, history authoritative |
 | PolicyTerm | PolicyId UUID, TermNumber int, StartsAt instant, EndsAt instant, TimeZone text60, PreviousTermId UUID? | Unique policy/term; EndsAt>StartsAt; no overlapping issued terms |
-| PolicyDraft | TermId UUID, Kind text30, Revision int, BaseVersionId UUID, EffectiveAt instant, ProposedTermEnd instant?, ProposalJson json, ContentHash hash, State text30, RequestedBy text200, Reason text1000?, IssuedTransactionId UUID? | Kind MTA/renewal/cancellation; mutable optimistic concurrency; base belongs to term |
+| PolicyDraft | TermId UUID, Kind text30, Revision int, BaseVersionId UUID, EffectiveAt instant, ProposedTermEnd instant?, ProposalJson json, CoverChangeSchedule json, DateBasis text20, ContentHash hash, State text30, RequestedBy text200, Reason text1000?, IssuedTransactionId UUID? | Kind MTA/renewal/cancellation; DateBasis shared/per-cover-change; mutable optimistic concurrency; base belongs to term; schedule part of hash/rating/acceptance |
 | EditLease | DraftId UUID, HolderUserId UUID, TokenHash hash, ExpiresAt instant, TakenOverFrom UUID?, Reason text1000? | Unique DraftId; atomically compare expiry/token; lease is not write concurrency token |
 | PolicyTransaction | TermId UUID, Sequence int, Kind text30, EffectiveAt instant, ProcessedAt instant, BaseVersionId UUID?, DraftId UUID?, QuoteRevisionId UUID?, RatingResultId UUID?, AcceptanceId UUID?, Reason text1000, OperationKey text200 | Unique term/sequence, unique OperationKey, unique filtered DraftId; append-only |
-| PolicyVersion | TermId UUID, TransactionId UUID, Sequence int, EffectiveAt instant, ProcessedAt instant, SnapshotJson json, SchemaVersion text30, ContentHash hash | Unique TransactionId and term/sequence; index term/effective/processed; immutable |
+| PolicyVersion | TermId UUID, TransactionId UUID, SliceOrdinal int, Sequence int, EffectiveAt instant, ProcessedAt instant, SnapshotJson json, SchemaVersion text30, ContentHash hash | Unique transaction/slice and term/sequence; index term/effective/processed; immutable; one full snapshot per distinct effective instant within transaction |
 | RiskSearchProjection | VersionId UUID, RiskItemId UUID, Kind text30, SearchValue text200, NormalizedValue text200 | Unique version/item/kind; index kind/normalized; FKs exact version; rebuilt from JSON |
 
-Sequence is transaction processing order within a term, not effective-date order. Version selection uses LIFE-01 rules in LIFECYCLE.md. Concurrency protection includes an update to the Policy aggregate rowversion during issue to serialize competing policy-wide commands (e.g. MTA vs renewal/cancel). Restrict application roles from general UPDATE/DELETE on issued snapshot and posted journal tables; migrations/controlled maintenance use a separate credential.
+Transaction Sequence is processing order within a term. PolicyVersion Sequence is a separate monotonically allocated version sequence; SliceOrdinal orders dated snapshots inside one transaction. A multi-date MTA has one PolicyTransaction and multiple PolicyVersions committed together. Version selection uses LIFE-01 rules in LIFECYCLE.md. Concurrency protection includes an update to the Policy aggregate rowversion during issue to serialize competing policy-wide commands (e.g. MTA vs renewal/cancel). Restrict application roles from general UPDATE/DELETE on issued snapshot and posted journal tables; migrations/controlled maintenance use a separate credential.
 
 ## Operational records and file storage
 
@@ -153,10 +154,12 @@ Files use a persistent local volume initially. Upload writes a temporary object 
 | Allocation | ReceiptId UUID, InvoiceId UUID, Amount money, ReversalOfId UUID?, Reason text1000 | Amount>0; append/reversal; lock/check receipt and invoice residuals atomically |
 | Refund | AgencyId UUID, TransactionId UUID, Amount money, State text30, ApprovedBy UUID?, ApprovalReason text1000?, PaymentOperationKey text200?, PaymentAttemptId UUID? | Unique transaction/refund-purpose; Amount>0; pending/approved/rejected/queued/paid/failed |
 | BankLine | Reference text200, OccurredOn date, Amount money, Currency char3, ImportKey text200 | Unique ImportKey; immutable import |
+| BankLineExclusion | BankLineId UUID, DuplicateOfBankLineId UUID, Reason text1000, ActorId UUID, RecordedAt instant | Unique BankLineId; distinct lines, same amount/currency/reference evidence required; no matched line may be excluded; append-only audit preserves imported bytes |
 | Reconciliation | PeriodId UUID, State text20, Reason text1000? | No completion with unexplained variance |
 | ReconciliationMatch | ReconciliationId UUID, BankLineId UUID, JournalLineId UUID, Amount money, ReversalOfId UUID?, Reason text1000 | Amount>0; append-only original/reversal; unique filtered ReversalOfId prevents reversing twice; totals cannot overmatch; lock original on reversal |
 | BordereauBatch | ProviderId UUID, PeriodId UUID, Number int, State text30, ContentHash hash?, SubmitJobId UUID?, CorrectsBatchId UUID? | Unique provider/period/number; immutable after submitted; correction FK must refer to same provider and a submitted batch |
 | BordereauRow | BatchId UUID, TransactionId UUID, Snapshot json, ValidationErrors json, Excluded bool, ExclusionReason text1000? | Unique batch/transaction; excluded requires reason; pin exported source snapshot |
+| BordereauRowCorrection | RowId UUID, PolicyReference text40?, ProviderProductCode text100?, AgencyReference text40?, Reason text1000, ActorId UUID, RecordedAt instant | Append-only draft export mapping correction; cannot change contractual premium/tax/commission; only unsubmitted batch; revalidation required |
 
 ## Platform/read models
 

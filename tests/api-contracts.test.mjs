@@ -69,6 +69,11 @@ test('safe agency instructions exclude internal support categorisation and origi
  assert.equal(validate({...safe,internalCategory:'Health'}),false);
  assert.equal(validate({...safe,originRelationshipId:'33333333-3333-4333-8333-333333333333'}),false);
 });
+test('per-change effective dates are typed cover changes, not arbitrary delayed driver edits',()=>{
+ const validate=ajv.getSchema(`${rootId}#/$defs/CoverChangeSchedule`);
+ const change={changeId:'11111111-1111-4111-8111-111111111111',effectiveAt:'2026-10-01T00:00:00+01:00',action:'replace',section:{id:'22222222-2222-4222-8222-222222222222',code:'stock-custody',limit:'125000.00',excess:'500.00'}};
+ assert.ok(validate(change));assert.equal(validate({...change,driverId:'33333333-3333-4333-8333-333333333333'}),false);
+});
 test('servicing issue requires the policy aggregate version and local profile cannot change access',()=>{
  const validateIssue=ajv.getSchema(`${rootId}#/$defs/DraftIssueWrite`);
  const command={ratingResultId:'11111111-1111-4111-8111-111111111111',acceptanceId:'22222222-2222-4222-8222-222222222222',targetRevision:4,reason:'Accepted adjustment'};

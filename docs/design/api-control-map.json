@@ -1,6 +1,6 @@
 {
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
-  "reviewed": 25,
+  "reviewed": 302,
   "total": 949,
   "complete": false,
   "controls": [
@@ -20,9 +20,12 @@
       "label": "Advanced Search",
       "requirement": "RPT-03",
       "acceptanceId": "AT-b724d74c4705",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "reason": "Literal navigation to search; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-4d570852baac",
@@ -30,9 +33,12 @@
       "label": "View My Tasks",
       "requirement": "RPT-03",
       "acceptanceId": "AT-4d570852baac",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listTasks"
+      ],
+      "reason": "Literal navigation to tasks; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-fe8b9578bac9",
@@ -40,9 +46,12 @@
       "label": "Open task dashboard",
       "requirement": "RPT-03",
       "acceptanceId": "AT-fe8b9578bac9",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listTasks"
+      ],
+      "reason": "Literal navigation to tasks; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-9b21bc4b4158",
@@ -120,9 +129,13 @@
       "label": "Make an Adjustment",
       "requirement": "POL-01",
       "acceptanceId": "AT-8045da3f31a1",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyDrafts",
+        "getPolicyDraft"
+      ],
+      "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-9f0b18626d19",
@@ -130,9 +143,13 @@
       "label": "Start Renewal",
       "requirement": "POL-01",
       "acceptanceId": "AT-9f0b18626d19",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyTerms",
+        "listPolicyDrafts"
+      ],
+      "reason": "Literal navigation to renewal; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-9a93665d17ad",
@@ -140,9 +157,12 @@
       "label": "Send Documents",
       "requirement": "POL-01",
       "acceptanceId": "AT-9a93665d17ad",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "sendDocumentPack"
+      ],
+      "reason": "Send selected authorised existing document versions through one durable delivery; no regeneration of historical files."
     },
     {
       "controlId": "CTL-41c6ab527690",
@@ -150,9 +170,12 @@
       "label": "Create Task",
       "requirement": "POL-01",
       "acceptanceId": "AT-41c6ab527690",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "createTask"
+      ],
+      "reason": "Open a task form linked to the current authorised record; persist only on confirmation."
     },
     {
       "controlId": "CTL-5a327c3b623f",
@@ -160,9 +183,12 @@
       "label": "Add Note",
       "requirement": "POL-01",
       "acceptanceId": "AT-5a327c3b623f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listNotes"
+      ],
+      "reason": "Literal pPolicy tab selection Notes; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-3cb0cf7677f1",
@@ -170,9 +196,12 @@
       "label": "Log an Incident",
       "requirement": "POL-01",
       "acceptanceId": "AT-3cb0cf7677f1",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicyVersion"
+      ],
+      "reason": "Literal navigation to logclaim; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-c6af006ce244",
@@ -180,9 +209,12 @@
       "label": "Clone to New Quote",
       "requirement": "POL-01",
       "acceptanceId": "AT-c6af006ce244",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "clonePolicyToQuote"
+      ],
+      "reason": "Clone selected issued version into a new incomplete quote, remapping risk IDs and excluding rating/acceptance/decisions."
     },
     {
       "controlId": "CTL-6f298b5183b0",
@@ -190,9 +222,12 @@
       "label": "View transactions & versions",
       "requirement": "POL-01",
       "acceptanceId": "AT-6f298b5183b0",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyVersions"
+      ],
+      "reason": "Literal pPolicy tab selection Transactions; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-a90cc5e42de1",
@@ -200,9 +235,12 @@
       "label": "Cancel Policy",
       "requirement": "POL-01",
       "acceptanceId": "AT-a90cc5e42de1",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "createPolicyDraft"
+      ],
+      "reason": "Prepare cancellation intent for the selected term; do not cancel cover on opening the form."
     },
     {
       "controlId": "CTL-44449472c9d0",
@@ -210,9 +248,13 @@
       "label": "Open MTA-007 workspace",
       "requirement": "POL-01",
       "acceptanceId": "AT-44449472c9d0",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyDrafts",
+        "getPolicyDraft"
+      ],
+      "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-1fad476114e9",
@@ -250,9 +292,12 @@
       "label": "All notes",
       "requirement": "POL-01",
       "acceptanceId": "AT-a599ed5f7746",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listNotes"
+      ],
+      "reason": "Literal pPolicy tab selection Notes; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-d1cdc62aa154",
@@ -260,9 +305,12 @@
       "label": "All documents",
       "requirement": "POL-01",
       "acceptanceId": "AT-d1cdc62aa154",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listDocuments"
+      ],
+      "reason": "Literal pPolicy tab selection Documents; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-d85e718d3878",
@@ -270,9 +318,13 @@
       "label": "Make an Adjustment",
       "requirement": "POL-01",
       "acceptanceId": "AT-d85e718d3878",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyDrafts",
+        "getPolicyDraft"
+      ],
+      "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-fb6a7c690bb9",
@@ -280,9 +332,13 @@
       "label": "Start Renewal",
       "requirement": "POL-01",
       "acceptanceId": "AT-fb6a7c690bb9",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyTerms",
+        "listPolicyDrafts"
+      ],
+      "reason": "Literal navigation to renewal; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-21e20d4ce3cd",
@@ -290,9 +346,12 @@
       "label": "Send Documents",
       "requirement": "POL-01",
       "acceptanceId": "AT-21e20d4ce3cd",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "sendDocumentPack"
+      ],
+      "reason": "Send selected authorised existing document versions through one durable delivery; no regeneration of historical files."
     },
     {
       "controlId": "CTL-737c18fda414",
@@ -300,9 +359,12 @@
       "label": "Create Task",
       "requirement": "POL-01",
       "acceptanceId": "AT-737c18fda414",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "createTask"
+      ],
+      "reason": "Open a task form linked to the current authorised record; persist only on confirmation."
     },
     {
       "controlId": "CTL-9cd13ac877a5",
@@ -310,9 +372,12 @@
       "label": "Add Note",
       "requirement": "POL-01",
       "acceptanceId": "AT-9cd13ac877a5",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listNotes"
+      ],
+      "reason": "Literal pPolicy tab selection Notes; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-9ce9ceaff0ff",
@@ -320,9 +385,12 @@
       "label": "Log an Incident",
       "requirement": "POL-01",
       "acceptanceId": "AT-9ce9ceaff0ff",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicyVersion"
+      ],
+      "reason": "Literal navigation to logclaim; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-2bcbed5a8b35",
@@ -330,9 +398,12 @@
       "label": "Clone to New Quote",
       "requirement": "POL-01",
       "acceptanceId": "AT-2bcbed5a8b35",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "clonePolicyToQuote"
+      ],
+      "reason": "Clone selected issued version into a new incomplete quote, remapping risk IDs and excluding rating/acceptance/decisions."
     },
     {
       "controlId": "CTL-e230948b7fd9",
@@ -340,9 +411,12 @@
       "label": "View transactions & versions",
       "requirement": "POL-01",
       "acceptanceId": "AT-e230948b7fd9",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyVersions"
+      ],
+      "reason": "Literal pPolicy tab selection Transactions; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-e0b763ff7753",
@@ -350,9 +424,12 @@
       "label": "Cancel Policy",
       "requirement": "POL-01",
       "acceptanceId": "AT-e0b763ff7753",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "createPolicyDraft"
+      ],
+      "reason": "Prepare cancellation intent for the selected term; do not cancel cover on opening the form."
     },
     {
       "controlId": "CTL-721a19d5dbfa",
@@ -370,9 +447,12 @@
       "label": "All",
       "requirement": "POL-01",
       "acceptanceId": "AT-40c2953f1cf1",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listTasks"
+      ],
+      "reason": "Literal pPolicy tab selection Tasks; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-44e9e414e2c2",
@@ -420,9 +500,13 @@
       "label": "Open draft",
       "requirement": "POL-01",
       "acceptanceId": "AT-73d14fdf3487",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyDrafts",
+        "getPolicyDraft"
+      ],
+      "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-865e4d442990",
@@ -430,9 +514,12 @@
       "label": "Policy as at a date",
       "requirement": "POL-01",
       "acceptanceId": "AT-865e4d442990",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to asat; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-c2f7efead94c",
@@ -440,9 +527,12 @@
       "label": ".sections[2].rows[0]",
       "requirement": "POL-01",
       "acceptanceId": "AT-c2f7efead94c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "read",
+      "operationIds": [
+        "comparePolicyVersions"
+      ],
+      "reason": "Compare selected transaction source/result versions after authorising both; render permitted field differences."
     },
     {
       "controlId": "CTL-64a95d6b56a5",
@@ -450,9 +540,12 @@
       "label": ".sections[2].rows[1]",
       "requirement": "POL-01",
       "acceptanceId": "AT-64a95d6b56a5",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "read",
+      "operationIds": [
+        "comparePolicyVersions"
+      ],
+      "reason": "Compare selected transaction source/result versions after authorising both; render permitted field differences."
     },
     {
       "controlId": "CTL-13581e1a3c26",
@@ -460,9 +553,12 @@
       "label": ".sections[2].rows[2]",
       "requirement": "POL-01",
       "acceptanceId": "AT-13581e1a3c26",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "read",
+      "operationIds": [
+        "comparePolicyVersions"
+      ],
+      "reason": "Compare selected transaction source/result versions after authorising both; render permitted field differences."
     },
     {
       "controlId": "CTL-a32dc8670b0a",
@@ -470,9 +566,12 @@
       "label": ".sections[2].rows[3]",
       "requirement": "POL-01",
       "acceptanceId": "AT-a32dc8670b0a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "read",
+      "operationIds": [
+        "comparePolicyVersions"
+      ],
+      "reason": "Compare selected transaction source/result versions after authorising both; render permitted field differences."
     },
     {
       "controlId": "CTL-600cfa71899e",
@@ -480,9 +579,12 @@
       "label": ".sections[2].rows[4]",
       "requirement": "POL-01",
       "acceptanceId": "AT-600cfa71899e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "read",
+      "operationIds": [
+        "comparePolicyVersions"
+      ],
+      "reason": "Compare selected transaction source/result versions after authorising both; render permitted field differences."
     },
     {
       "controlId": "CTL-a5137896520d",
@@ -490,9 +592,12 @@
       "label": ".sections[2].rows[5]",
       "requirement": "POL-01",
       "acceptanceId": "AT-a5137896520d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "read",
+      "operationIds": [
+        "comparePolicyVersions"
+      ],
+      "reason": "Compare selected transaction source/result versions after authorising both; render permitted field differences."
     },
     {
       "controlId": "CTL-f7e2892adf6c",
@@ -500,9 +605,12 @@
       "label": "Upload evidence",
       "requirement": "POL-01",
       "acceptanceId": "AT-f7e2892adf6c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "uploadDocument"
+      ],
+      "reason": "Choose evidence bytes, then upload under the authorised parent and typed metadata."
     },
     {
       "controlId": "CTL-0e889362450f",
@@ -510,9 +618,13 @@
       "label": "Preview · Download · Send",
       "requirement": "POL-01",
       "acceptanceId": "AT-0e889362450f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "read-and-command",
+      "operationIds": [
+        "downloadDocumentVersion",
+        "sendDocumentPack"
+      ],
+      "reason": "Split compound preview/download/send cell into actual read and explicit send actions; never send on preview."
     },
     {
       "controlId": "CTL-efe5919f52c7",
@@ -520,9 +632,13 @@
       "label": "Preview · Download · Send",
       "requirement": "POL-01",
       "acceptanceId": "AT-efe5919f52c7",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "read-and-command",
+      "operationIds": [
+        "downloadDocumentVersion",
+        "sendDocumentPack"
+      ],
+      "reason": "Split compound preview/download/send cell into actual read and explicit send actions; never send on preview."
     },
     {
       "controlId": "CTL-de77892116b5",
@@ -530,9 +646,12 @@
       "label": "Create task",
       "requirement": "POL-01",
       "acceptanceId": "AT-de77892116b5",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "createTask"
+      ],
+      "reason": "Open a task form linked to the current authorised record; persist only on confirmation."
     },
     {
       "controlId": "CTL-9f19b2755047",
@@ -580,9 +699,13 @@
       "label": "Propose a change",
       "requirement": "POL-01",
       "acceptanceId": "AT-1c646d814d99",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyDrafts",
+        "getPolicyDraft"
+      ],
+      "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-c6c247c8e374",
@@ -590,9 +713,13 @@
       "label": "Propose a change",
       "requirement": "POL-01",
       "acceptanceId": "AT-c6c247c8e374",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyDrafts",
+        "getPolicyDraft"
+      ],
+      "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-aedc83465580",
@@ -600,9 +727,13 @@
       "label": "Propose a change",
       "requirement": "POL-01",
       "acceptanceId": "AT-aedc83465580",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyDrafts",
+        "getPolicyDraft"
+      ],
+      "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-56e9c654446b",
@@ -610,9 +741,13 @@
       "label": "Propose a change",
       "requirement": "POL-01",
       "acceptanceId": "AT-56e9c654446b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyDrafts",
+        "getPolicyDraft"
+      ],
+      "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-bf0ca76b9d5d",
@@ -620,9 +755,13 @@
       "label": "Propose a change",
       "requirement": "POL-01",
       "acceptanceId": "AT-bf0ca76b9d5d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyDrafts",
+        "getPolicyDraft"
+      ],
+      "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-c7700e80208a",
@@ -630,9 +769,12 @@
       "label": "Open exception task",
       "requirement": "POL-01",
       "acceptanceId": "AT-c7700e80208a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listTasks"
+      ],
+      "reason": "Literal navigation to tasks; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-e121d4d60dfb",
@@ -640,9 +782,13 @@
       "label": "Propose a change",
       "requirement": "POL-01",
       "acceptanceId": "AT-e121d4d60dfb",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyDrafts",
+        "getPolicyDraft"
+      ],
+      "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-d32d3244fb5d",
@@ -660,9 +806,12 @@
       "label": "Open driver record",
       "requirement": "POL-01",
       "acceptanceId": "AT-833c66cac316",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicyVersion"
+      ],
+      "reason": "Literal navigation to driver; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-1583baae154f",
@@ -670,9 +819,13 @@
       "label": "Open MTA-007",
       "requirement": "POL-01",
       "acceptanceId": "AT-1583baae154f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyDrafts",
+        "getPolicyDraft"
+      ],
+      "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-71af2ba1c4ce",
@@ -680,9 +833,13 @@
       "label": "Propose a change",
       "requirement": "POL-01",
       "acceptanceId": "AT-71af2ba1c4ce",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyDrafts",
+        "getPolicyDraft"
+      ],
+      "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-92991f22c2a4",
@@ -710,9 +867,12 @@
       "label": "Log an incident",
       "requirement": "POL-01",
       "acceptanceId": "AT-4c97724a5bfa",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicyVersion"
+      ],
+      "reason": "Literal navigation to logclaim; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-ba17ee21e305",
@@ -740,9 +900,12 @@
       "label": "Take over draft",
       "requirement": "POL-04",
       "acceptanceId": "AT-1ef57f2aabee",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "acquireDraftLease"
+      ],
+      "reason": "Takeover requires grant/reason; atomically replace holder, notify prior editor and preserve ETag conflict checks."
     },
     {
       "controlId": "CTL-4215a62af861",
@@ -750,9 +913,12 @@
       "label": "Take over draft",
       "requirement": "POL-04",
       "acceptanceId": "AT-4215a62af861",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "acquireDraftLease"
+      ],
+      "reason": "Takeover requires grant/reason; atomically replace holder, notify prior editor and preserve ETag conflict checks."
     },
     {
       "controlId": "CTL-5024c53b5eaf",
@@ -760,9 +926,12 @@
       "label": "Take over draft",
       "requirement": "POL-04",
       "acceptanceId": "AT-5024c53b5eaf",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "acquireDraftLease"
+      ],
+      "reason": "Takeover requires grant/reason; atomically replace holder, notify prior editor and preserve ETag conflict checks."
     },
     {
       "controlId": "CTL-630153edbb1f",
@@ -770,9 +939,13 @@
       "label": "Back to policy",
       "requirement": "POL-04",
       "acceptanceId": "AT-630153edbb1f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-811c233ef5c7",
@@ -780,9 +953,12 @@
       "label": "Save draft",
       "requirement": "POL-04",
       "acceptanceId": "AT-811c233ef5c7",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Save proposed MTA with lease and ETag, preserving issued cover and invalidating material dependencies."
     },
     {
       "controlId": "CTL-bcb0e563f02d",
@@ -790,9 +966,12 @@
       "label": "Re-rate",
       "requirement": "POL-04",
       "acceptanceId": "AT-bcb0e563f02d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "ratePolicyDraft"
+      ],
+      "reason": "Persist current draft first and rate its exact revision; return durable rating job rather than toast success."
     },
     {
       "controlId": "CTL-9085e4bbc3bb",
@@ -800,9 +979,12 @@
       "label": "Release lock",
       "requirement": "POL-04",
       "acceptanceId": "AT-9085e4bbc3bb",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "releaseDraftLease"
+      ],
+      "reason": "Release current holder token; no policy or draft data is deleted."
     },
     {
       "controlId": "CTL-a5cbae9b8992",
@@ -840,9 +1022,12 @@
       "label": "Add change",
       "requirement": "POL-04",
       "acceptanceId": "AT-f3fb94ad182a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Picker selects supported risk change type; confirmed changes save the draft proposal with stable identities."
     },
     {
       "controlId": "CTL-14cfcc4b503f",
@@ -850,9 +1035,12 @@
       "label": "Add named driver — Rebecca Hall",
       "requirement": "POL-04",
       "acceptanceId": "AT-14cfcc4b503f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Edit/remove this proposed change in the working copy; explicit save persists draft revision, not issued risk."
     },
     {
       "controlId": "CTL-3a07d9af3916",
@@ -860,9 +1048,12 @@
       "label": "Add named driver — Liam Doherty",
       "requirement": "POL-04",
       "acceptanceId": "AT-3a07d9af3916",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Edit/remove this proposed change in the working copy; explicit save persists draft revision, not issued risk."
     },
     {
       "controlId": "CTL-c4a0292cbe34",
@@ -870,9 +1061,12 @@
       "label": "Remove named driver — Kevin Pryce",
       "requirement": "POL-04",
       "acceptanceId": "AT-c4a0292cbe34",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Edit/remove this proposed change in the working copy; explicit save persists draft revision, not issued risk."
     },
     {
       "controlId": "CTL-0bb078b5d224",
@@ -880,9 +1074,12 @@
       "label": "Amend premises address — location 2",
       "requirement": "POL-04",
       "acceptanceId": "AT-0bb078b5d224",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Edit/remove this proposed change in the working copy; explicit save persists draft revision, not issued risk."
     },
     {
       "controlId": "CTL-f53d17d61db1",
@@ -890,9 +1087,12 @@
       "label": "Increase stock & custody limit",
       "requirement": "POL-04",
       "acceptanceId": "AT-f53d17d61db1",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Edit/remove this proposed change in the working copy; explicit save persists draft revision, not issued risk."
     },
     {
       "controlId": "CTL-cc443272c9e7",
@@ -900,9 +1100,12 @@
       "label": "Re-rate combined risk",
       "requirement": "POL-04",
       "acceptanceId": "AT-cc443272c9e7",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "ratePolicyDraft"
+      ],
+      "reason": "Persist current draft first and rate its exact revision; return durable rating job rather than toast success."
     },
     {
       "controlId": "CTL-ee26e427d19a",
@@ -910,9 +1113,12 @@
       "label": "Save draft",
       "requirement": "POL-04",
       "acceptanceId": "AT-ee26e427d19a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Save proposed MTA with lease and ETag, preserving issued cover and invalidating material dependencies."
     },
     {
       "controlId": "CTL-909dc8df1733",
@@ -920,9 +1126,12 @@
       "label": "Submit to underwriting",
       "requirement": "POL-04",
       "acceptanceId": "AT-909dc8df1733",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "submitPolicyDraft"
+      ],
+      "reason": "Submit exact current draft after completeness/rating checks; submission alone does not issue cover."
     },
     {
       "controlId": "CTL-4c6212277cb7",
@@ -930,9 +1139,13 @@
       "label": "Refer to capacity provider",
       "requirement": "POL-04",
       "acceptanceId": "AT-4c6212277cb7",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getReferral",
+        "getEscalation"
+      ],
+      "reason": "Literal navigation to escalation; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-efe1569b8296",
@@ -940,9 +1153,12 @@
       "label": "Abandon draft",
       "requirement": "POL-04",
       "acceptanceId": "AT-efe1569b8296",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "abandonPolicyDraft"
+      ],
+      "reason": "Confirm abandonment with reason and current lease/ETag; existing issued cover remains applicable."
     },
     {
       "controlId": "CTL-17cfb5f13bd1",
@@ -950,9 +1166,12 @@
       "label": "Review & rate now",
       "requirement": "POL-04",
       "acceptanceId": "AT-17cfb5f13bd1",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "ratePolicyDraft"
+      ],
+      "reason": "Persist current draft first and rate its exact revision; return durable rating job rather than toast success."
     },
     {
       "controlId": "CTL-d2bf3015d449",
@@ -980,9 +1199,12 @@
       "label": "Review referrals",
       "requirement": "UWR-03",
       "acceptanceId": "AT-2221ef0bd60e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReferrals"
+      ],
+      "reason": "Literal pQuote tab selection Underwriting; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-0b1d8505538d",
@@ -990,9 +1212,12 @@
       "label": "Re-rate quote",
       "requirement": "UWR-03",
       "acceptanceId": "AT-0b1d8505538d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "rateQuote"
+      ],
+      "reason": "Queue deterministic rating bound to current saved quote revision."
     },
     {
       "controlId": "CTL-df0c0aba7253",
@@ -1000,9 +1225,12 @@
       "label": "Edit risk details",
       "requirement": "UWR-03",
       "acceptanceId": "AT-df0c0aba7253",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getQuote"
+      ],
+      "reason": "Literal pQuote tab selection Risk Details; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-ba63872f752a",
@@ -1010,9 +1238,12 @@
       "label": "Create task",
       "requirement": "UWR-03",
       "acceptanceId": "AT-ba63872f752a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "createTask"
+      ],
+      "reason": "Open a task form linked to the current authorised record; persist only on confirmation."
     },
     {
       "controlId": "CTL-9afeb6d01b4e",
@@ -1030,9 +1261,12 @@
       "label": "Clone to new quote",
       "requirement": "UWR-03",
       "acceptanceId": "AT-47ad572ff959",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "cloneQuote"
+      ],
+      "reason": "Clone selected source revision into a new incomplete quote under the permitted relationship."
     },
     {
       "controlId": "CTL-3d003747c2ad",
@@ -1040,9 +1274,12 @@
       "label": "View version history",
       "requirement": "UWR-03",
       "acceptanceId": "AT-3d003747c2ad",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listQuoteRevisions"
+      ],
+      "reason": "Literal pQuote tab selection History; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-32b4f87c9518",
@@ -1050,9 +1287,12 @@
       "label": "Withdraw quote",
       "requirement": "UWR-03",
       "acceptanceId": "AT-32b4f87c9518",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "withdrawQuote"
+      ],
+      "reason": "Collect withdrawal reason before persisting the quote transition."
     },
     {
       "controlId": "CTL-ef363293a595",
@@ -1060,9 +1300,12 @@
       "label": "Open underwriting",
       "requirement": "UWR-03",
       "acceptanceId": "AT-ef363293a595",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReferrals"
+      ],
+      "reason": "Literal pQuote tab selection Underwriting; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-2b226870f9d7",
@@ -1070,9 +1313,12 @@
       "label": "Review referrals",
       "requirement": "UWR-03",
       "acceptanceId": "AT-2b226870f9d7",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReferrals"
+      ],
+      "reason": "Literal pQuote tab selection Underwriting; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-831d06857ca3",
@@ -1080,9 +1326,12 @@
       "label": "Re-rate quote",
       "requirement": "UWR-03",
       "acceptanceId": "AT-831d06857ca3",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "rateQuote"
+      ],
+      "reason": "Queue deterministic rating bound to current saved quote revision."
     },
     {
       "controlId": "CTL-a550e5d2bb1d",
@@ -1090,9 +1339,12 @@
       "label": "Edit risk details",
       "requirement": "UWR-03",
       "acceptanceId": "AT-a550e5d2bb1d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getQuote"
+      ],
+      "reason": "Literal pQuote tab selection Risk Details; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-7763e7b7f887",
@@ -1100,9 +1352,12 @@
       "label": "Create task",
       "requirement": "UWR-03",
       "acceptanceId": "AT-7763e7b7f887",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "createTask"
+      ],
+      "reason": "Open a task form linked to the current authorised record; persist only on confirmation."
     },
     {
       "controlId": "CTL-f7f1e5a729fd",
@@ -1120,9 +1375,12 @@
       "label": "Clone to new quote",
       "requirement": "UWR-03",
       "acceptanceId": "AT-7f2b0fedb3a8",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "cloneQuote"
+      ],
+      "reason": "Clone selected source revision into a new incomplete quote under the permitted relationship."
     },
     {
       "controlId": "CTL-50c993937b6c",
@@ -1130,9 +1388,12 @@
       "label": "View version history",
       "requirement": "UWR-03",
       "acceptanceId": "AT-50c993937b6c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listQuoteRevisions"
+      ],
+      "reason": "Literal pQuote tab selection History; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-807425c1bbac",
@@ -1140,9 +1401,12 @@
       "label": "Withdraw quote",
       "requirement": "UWR-03",
       "acceptanceId": "AT-807425c1bbac",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "withdrawQuote"
+      ],
+      "reason": "Collect withdrawal reason before persisting the quote transition."
     },
     {
       "controlId": "CTL-950f2a4088a6",
@@ -1150,9 +1414,12 @@
       "label": "Send quote to agency",
       "requirement": "UWR-03",
       "acceptanceId": "AT-950f2a4088a6",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "sendQuoteTerms"
+      ],
+      "reason": "Send current rated terms to authorised agency recipients with pinned documents and terms hash."
     },
     {
       "controlId": "CTL-6bed59ad0e72",
@@ -1160,9 +1427,12 @@
       "label": "Bind / issue policy",
       "requirement": "UWR-03",
       "acceptanceId": "AT-6bed59ad0e72",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "issueQuote"
+      ],
+      "reason": "Issue atomically only with current rating, acceptance, resolved referrals and authority; product derives from quote, not mock PN/CC string."
     },
     {
       "controlId": "CTL-064ae865d1eb",
@@ -1170,9 +1440,12 @@
       "label": "Open underwriting",
       "requirement": "UWR-03",
       "acceptanceId": "AT-064ae865d1eb",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReferrals"
+      ],
+      "reason": "Literal pQuote tab selection Underwriting; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-efcbbfb01992",
@@ -1180,9 +1453,12 @@
       "label": "Send quote to agency",
       "requirement": "UWR-03",
       "acceptanceId": "AT-efcbbfb01992",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "sendQuoteTerms"
+      ],
+      "reason": "Send current rated terms to authorised agency recipients with pinned documents and terms hash."
     },
     {
       "controlId": "CTL-b6b101bf1420",
@@ -1190,9 +1466,12 @@
       "label": "Bind / issue policy",
       "requirement": "UWR-03",
       "acceptanceId": "AT-b6b101bf1420",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "issueQuote"
+      ],
+      "reason": "Issue atomically only with current rating, acceptance, resolved referrals and authority; product derives from quote, not mock PN/CC string."
     },
     {
       "controlId": "CTL-985ab2e4f5a0",
@@ -1200,9 +1479,12 @@
       "label": "Create task",
       "requirement": "UWR-03",
       "acceptanceId": "AT-985ab2e4f5a0",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "createTask"
+      ],
+      "reason": "Open a task form linked to the current authorised record; persist only on confirmation."
     },
     {
       "controlId": "CTL-754f0498bd39",
@@ -1220,9 +1502,13 @@
       "label": "Edit answers",
       "requirement": "UWR-03",
       "acceptanceId": "AT-9571bab22998",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "getQuote",
+        "saveQuoteProposal"
+      ],
+      "reason": "Reopen the appropriate capture step and save a new revision; editing invalidates applicable rating and acceptance."
     },
     {
       "controlId": "CTL-31f5cd3c71f6",
@@ -1230,9 +1516,12 @@
       "label": "Approve both referrals",
       "requirement": "UWR-03",
       "acceptanceId": "AT-31f5cd3c71f6",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "decideQuoteReferrals"
+      ],
+      "reason": "Approve selected referrals atomically, checking each dimension and pinning optional conditions to target hash."
     },
     {
       "controlId": "CTL-9c747f3b26c3",
@@ -1240,9 +1529,12 @@
       "label": "Approve with condition",
       "requirement": "UWR-03",
       "acceptanceId": "AT-9c747f3b26c3",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "decideQuoteReferrals"
+      ],
+      "reason": "Approve selected referrals atomically, checking each dimension and pinning optional conditions to target hash."
     },
     {
       "controlId": "CTL-9febb5f22d93",
@@ -1250,9 +1542,15 @@
       "label": "Request more information",
       "requirement": "UWR-03",
       "acceptanceId": "AT-9febb5f22d93",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "decideQuoteReferrals",
+        "createThread",
+        "createMessageDraft",
+        "sendMessage"
+      ],
+      "reason": "Record query decisions and explicitly send a safe information request; unresolved referrals remain blocking."
     },
     {
       "controlId": "CTL-696c000f3a53",
@@ -1260,9 +1558,13 @@
       "label": "Refer to capacity provider",
       "requirement": "UWR-03",
       "acceptanceId": "AT-696c000f3a53",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "createEscalation",
+        "sendEscalation"
+      ],
+      "reason": "Create provider escalation and explicitly submit safe revision-pinned evidence."
     },
     {
       "controlId": "CTL-4d4d367d4f07",
@@ -1270,9 +1572,12 @@
       "label": "Decline",
       "requirement": "UWR-03",
       "acceptanceId": "AT-4d4d367d4f07",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "decideQuoteReferrals"
+      ],
+      "reason": "Record decline/reopen with reason and target versions; derive quote state from decisions rather than arbitrary status edit."
     },
     {
       "controlId": "CTL-8931890ed3f6",
@@ -1280,9 +1585,12 @@
       "label": "Send quote to agency",
       "requirement": "UWR-03",
       "acceptanceId": "AT-8931890ed3f6",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "sendQuoteTerms"
+      ],
+      "reason": "Send current rated terms to authorised agency recipients with pinned documents and terms hash."
     },
     {
       "controlId": "CTL-4a1e26f9bda1",
@@ -1290,9 +1598,12 @@
       "label": "Reopen referral",
       "requirement": "UWR-03",
       "acceptanceId": "AT-4a1e26f9bda1",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "decideQuoteReferrals"
+      ],
+      "reason": "Record decline/reopen with reason and target versions; derive quote state from decisions rather than arbitrary status edit."
     },
     {
       "controlId": "CTL-67a650111cef",
@@ -1300,9 +1611,12 @@
       "label": ".sections[0].rows[0]",
       "requirement": "UWR-03",
       "acceptanceId": "AT-67a650111cef",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "read",
+      "operationIds": [
+        "compareQuoteRevisions"
+      ],
+      "reason": "Compare authorised immutable quote revisions; no current quote overwrite."
     },
     {
       "controlId": "CTL-2a42044574cd",
@@ -1310,9 +1624,12 @@
       "label": "Advanced Search",
       "requirement": "QUO-02",
       "acceptanceId": "AT-2a42044574cd",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "reason": "Literal navigation to search; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-f219d18ccb4a",
@@ -1420,9 +1737,12 @@
       "label": "Advanced Search",
       "requirement": "QUO-02",
       "acceptanceId": "AT-006066201056",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "reason": "Literal navigation to search; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-7e3297dc0fdf",
@@ -1440,9 +1760,12 @@
       "label": "Advanced Search",
       "requirement": "CLI-02",
       "acceptanceId": "AT-b98928311f91",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "reason": "Literal navigation to search; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-547b106bce55",
@@ -1510,9 +1833,12 @@
       "label": "New quote for this client",
       "requirement": "CLI-02",
       "acceptanceId": "AT-bdcd358d2e9b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "createQuote"
+      ],
+      "reason": "Choose agency relationship/product for this client and create an incomplete quote."
     },
     {
       "controlId": "CTL-0ba9758c138b",
@@ -1580,9 +1906,12 @@
       "label": "New quote",
       "requirement": "CLI-02",
       "acceptanceId": "AT-69e98f1db2a7",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "createQuote"
+      ],
+      "reason": "Choose agency relationship/product for this client and create an incomplete quote."
     },
     {
       "controlId": "CTL-71e959d26c91",
@@ -1590,9 +1919,12 @@
       "label": "Add contact",
       "requirement": "CLI-02",
       "acceptanceId": "AT-71e959d26c91",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "createContact"
+      ],
+      "reason": "Capture a contact in the current client-agency relationship, not shared global contact data."
     },
     {
       "controlId": "CTL-4bfcb9624abd",
@@ -1600,9 +1932,12 @@
       "label": "Remove",
       "requirement": "CLI-02",
       "acceptanceId": "AT-4bfcb9624abd",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "endContact"
+      ],
+      "reason": "End the selected contact with reason, preserve past correspondence and maintain active-primary uniqueness."
     },
     {
       "controlId": "CTL-b309c31c4120",
@@ -1610,9 +1945,12 @@
       "label": "Remove",
       "requirement": "CLI-02",
       "acceptanceId": "AT-b309c31c4120",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "endContact"
+      ],
+      "reason": "End the selected contact with reason, preserve past correspondence and maintain active-primary uniqueness."
     },
     {
       "controlId": "CTL-587d9cdf230e",
@@ -1620,9 +1958,12 @@
       "label": "Remove",
       "requirement": "CLI-02",
       "acceptanceId": "AT-587d9cdf230e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "endContact"
+      ],
+      "reason": "End the selected contact with reason, preserve past correspondence and maintain active-primary uniqueness."
     },
     {
       "controlId": "CTL-d00d05db5c19",
@@ -1630,9 +1971,12 @@
       "label": "Add flag",
       "requirement": "CLI-02",
       "acceptanceId": "AT-d00d05db5c19",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "createSupportFlag"
+      ],
+      "reason": "Capture restricted person support evidence and explicit safe sharing grants."
     },
     {
       "controlId": "CTL-c80b9b3688e8",
@@ -1640,9 +1984,12 @@
       "label": "Remove",
       "requirement": "CLI-02",
       "acceptanceId": "AT-c80b9b3688e8",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "endSupportFlag"
+      ],
+      "reason": "End active flag with reason and restricted audit; never erase historical evidence."
     },
     {
       "controlId": "CTL-96df8ce81889",
@@ -1650,9 +1997,12 @@
       "label": "Remove",
       "requirement": "CLI-02",
       "acceptanceId": "AT-96df8ce81889",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "endSupportFlag"
+      ],
+      "reason": "End active flag with reason and restricted audit; never erase historical evidence."
     },
     {
       "controlId": "CTL-0055900cc624",
@@ -1670,9 +2020,12 @@
       "label": "Cancel",
       "requirement": "AGY-01",
       "acceptanceId": "AT-2f3db8439abc",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listAgencies"
+      ],
+      "reason": "Literal navigation to agents; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-4090c19baded",
@@ -1900,9 +2253,12 @@
       "label": "Open agency record",
       "requirement": "AGY-01",
       "acceptanceId": "AT-34029135fca1",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getAgency"
+      ],
+      "reason": "Literal navigation to agency; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-1fa0848d9221",
@@ -1920,9 +2276,10 @@
       "label": "Create agency",
       "requirement": "AGY-01",
       "acceptanceId": "AT-f46fd9330f9b",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "Literal navigation to newagency; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-6ffa74bf0063",
@@ -2000,9 +2357,12 @@
       "label": "Invite user",
       "requirement": "AGY-01",
       "acceptanceId": "AT-9dde2fa72331",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "inviteAgencyUser"
+      ],
+      "reason": "Agency context chooses agency-scoped invitation, not internal user invitation."
     },
     {
       "controlId": "CTL-246d7ad59eb2",
@@ -2010,9 +2370,10 @@
       "label": "Preview portal",
       "requirement": "AGY-01",
       "acceptanceId": "AT-246d7ad59eb2",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "Navigate to static internal sharing reference; prototype explicitly excludes a separate broker portal. No domain mutation."
     },
     {
       "controlId": "CTL-2aa058086327",
@@ -2020,9 +2381,12 @@
       "label": "Suspend agency",
       "requirement": "AGY-01",
       "acceptanceId": "AT-2aa058086327",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "requestAgencySuspension"
+      ],
+      "reason": "Record manager-approved suspension request before applying agency access change."
     },
     {
       "controlId": "CTL-3e52429e1a71",
@@ -2030,9 +2394,12 @@
       "label": "Invite user",
       "requirement": "AGY-01",
       "acceptanceId": "AT-3e52429e1a71",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "inviteAgencyUser"
+      ],
+      "reason": "Agency context chooses agency-scoped invitation, not internal user invitation."
     },
     {
       "controlId": "CTL-e7a0096dd263",
@@ -2040,9 +2407,12 @@
       "label": "Edit · Deactivate",
       "requirement": "AGY-01",
       "acceptanceId": "AT-e7a0096dd263",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "requestUserAccessChange"
+      ],
+      "reason": "Edit or deactivate agency user through scoped access proposal and confirmation/approval."
     },
     {
       "controlId": "CTL-5337ca2ab8d2",
@@ -2050,9 +2420,12 @@
       "label": "Resend invite",
       "requirement": "AGY-01",
       "acceptanceId": "AT-5337ca2ab8d2",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "resendInvitation"
+      ],
+      "reason": "Replace old token and queue invitation resend under the same agency."
     },
     {
       "controlId": "CTL-2aefbeec3f5b",
@@ -2060,9 +2433,12 @@
       "label": "Approve · Reject",
       "requirement": "AGY-01",
       "acceptanceId": "AT-2aefbeec3f5b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "decideIdentityChange"
+      ],
+      "reason": "Approve/reject the selected identity-change request with audit and independent approver."
     },
     {
       "controlId": "CTL-e834b4734421",
@@ -2070,9 +2446,12 @@
       "label": "Open in Accounting",
       "requirement": "AGY-01",
       "acceptanceId": "AT-e834b4734421",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getAgencyStatement"
+      ],
+      "reason": "Literal navigation to accounting / Broker accounts; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-370e7b1c7480",
@@ -2090,9 +2469,10 @@
       "label": "Select all",
       "requirement": "OPS-01",
       "acceptanceId": "AT-158574620277",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "Select rows in the current scoped result page; selection has no persisted task mutation."
     },
     {
       "controlId": "CTL-36d0d597e5e9",
@@ -2100,9 +2480,12 @@
       "label": "Create task",
       "requirement": "OPS-01",
       "acceptanceId": "AT-36d0d597e5e9",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "createTask"
+      ],
+      "reason": "Open a task form linked to the current authorised record; persist only on confirmation."
     },
     {
       "controlId": "CTL-d6cec7d66670",
@@ -2150,9 +2533,10 @@
       "label": "☐",
       "requirement": "OPS-01",
       "acceptanceId": "AT-1fc029a2f764",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "Select rows in the current scoped result page; selection has no persisted task mutation."
     },
     {
       "controlId": "CTL-5a3269df5606",
@@ -2170,9 +2554,10 @@
       "label": "☐",
       "requirement": "OPS-01",
       "acceptanceId": "AT-99aaeed351bc",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "Select rows in the current scoped result page; selection has no persisted task mutation."
     },
     {
       "controlId": "CTL-a9cbff4ebe72",
@@ -2190,9 +2575,10 @@
       "label": "☐",
       "requirement": "OPS-01",
       "acceptanceId": "AT-18d24939cef0",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "Select rows in the current scoped result page; selection has no persisted task mutation."
     },
     {
       "controlId": "CTL-3c5e95611bdd",
@@ -2210,9 +2596,10 @@
       "label": "☐",
       "requirement": "OPS-01",
       "acceptanceId": "AT-3b63dda255aa",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "Select rows in the current scoped result page; selection has no persisted task mutation."
     },
     {
       "controlId": "CTL-18b64a8de0f9",
@@ -2230,9 +2617,10 @@
       "label": "☐",
       "requirement": "OPS-01",
       "acceptanceId": "AT-8d144a7ab5a8",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "Select rows in the current scoped result page; selection has no persisted task mutation."
     },
     {
       "controlId": "CTL-5779d07ee892",
@@ -2250,9 +2638,10 @@
       "label": "☐",
       "requirement": "OPS-01",
       "acceptanceId": "AT-9b62a0d11fe5",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "Select rows in the current scoped result page; selection has no persisted task mutation."
     },
     {
       "controlId": "CTL-786034b4a40f",
@@ -2260,9 +2649,13 @@
       "label": "Open MTA-007",
       "requirement": "OPS-01",
       "acceptanceId": "AT-786034b4a40f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyDrafts",
+        "getPolicyDraft"
+      ],
+      "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-47453f96b730",
@@ -2270,9 +2663,13 @@
       "label": "Add comment",
       "requirement": "OPS-01",
       "acceptanceId": "AT-47453f96b730",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getTask",
+        "listNotes"
+      ],
+      "reason": "Literal pTask tab selection Task; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-7764c5c29640",
@@ -2280,9 +2677,13 @@
       "label": "Review MTA-007",
       "requirement": "OPS-01",
       "acceptanceId": "AT-7764c5c29640",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyDrafts",
+        "getPolicyDraft"
+      ],
+      "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-abcd385e28c9",
@@ -2310,9 +2711,12 @@
       "label": "Licence number and date of test received",
       "requirement": "OPS-01",
       "acceptanceId": "AT-1757c932af2d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "updateTask"
+      ],
+      "reason": "Toggle the selected checklist item and persist task state; a tick cannot satisfy an independent referral decision."
     },
     {
       "controlId": "CTL-1def7d3809c4",
@@ -2320,9 +2724,12 @@
       "label": "Claims experience verified against declaration",
       "requirement": "OPS-01",
       "acceptanceId": "AT-1def7d3809c4",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "updateTask"
+      ],
+      "reason": "Toggle the selected checklist item and persist task state; a tick cannot satisfy an independent referral decision."
     },
     {
       "controlId": "CTL-0f3e72d17e21",
@@ -2330,9 +2737,12 @@
       "label": "Rating impact of both driver additions reviewed",
       "requirement": "OPS-01",
       "acceptanceId": "AT-0f3e72d17e21",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "updateTask"
+      ],
+      "reason": "Toggle the selected checklist item and persist task state; a tick cannot satisfy an independent referral decision."
     },
     {
       "controlId": "CTL-fae56e7ecb06",
@@ -2340,9 +2750,12 @@
       "label": "Decision and reason recorded",
       "requirement": "OPS-01",
       "acceptanceId": "AT-fae56e7ecb06",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "updateTask"
+      ],
+      "reason": "Toggle the selected checklist item and persist task state; a tick cannot satisfy an independent referral decision."
     },
     {
       "controlId": "CTL-b1917d871627",
@@ -2360,9 +2773,12 @@
       "label": "Mark complete",
       "requirement": "OPS-01",
       "acceptanceId": "AT-083355dcd818",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "transitionTask"
+      ],
+      "reason": "Complete task with reason after checklist checks; MTA still requires referral resolution and separate issue."
     },
     {
       "controlId": "CTL-80b621a2936e",
@@ -2370,9 +2786,12 @@
       "label": "Return to task list",
       "requirement": "OPS-01",
       "acceptanceId": "AT-80b621a2936e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listTasks"
+      ],
+      "reason": "Literal navigation to tasks; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-fa1cb7ce3ecc",
@@ -2380,9 +2799,13 @@
       "label": "Open MTA-007",
       "requirement": "OPS-01",
       "acceptanceId": "AT-fa1cb7ce3ecc",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyDrafts",
+        "getPolicyDraft"
+      ],
+      "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-340623a67370",
@@ -2740,9 +3163,12 @@
       "label": "Export period",
       "requirement": "FIN-01",
       "acceptanceId": "AT-dc74aa65f196",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "exportReport"
+      ],
+      "reason": "Export the finance definition with selected period and processing basis, retaining run/source identities."
     },
     {
       "controlId": "CTL-af1ae0986051",
@@ -2750,9 +3176,12 @@
       "label": "Post journal",
       "requirement": "FIN-01",
       "acceptanceId": "AT-af1ae0986051",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "postJournal"
+      ],
+      "reason": "Collect balanced lines/open period/reason and apply finance posting authority."
     },
     {
       "controlId": "CTL-f5d7587f3dea",
@@ -2890,9 +3319,12 @@
       "label": "Match to invoice",
       "requirement": "FIN-01",
       "acceptanceId": "AT-7c5cc131108a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "allocateReceipt"
+      ],
+      "reason": "Match receipt to invoice under both residual locks and compatible agency scope; no duplicate cash posting."
     },
     {
       "controlId": "CTL-f6945a03e766",
@@ -2900,9 +3332,12 @@
       "label": "Assign payer",
       "requirement": "FIN-01",
       "acceptanceId": "AT-f6945a03e766",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "assignReceiptPayer"
+      ],
+      "reason": "Choose authorised payer and persist with current receipt ETag."
     },
     {
       "controlId": "CTL-afa1f6836cbc",
@@ -2910,9 +3345,12 @@
       "label": "Resolve",
       "requirement": "FIN-01",
       "acceptanceId": "AT-afa1f6836cbc",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "excludeDuplicateBankLine"
+      ],
+      "reason": "Exclude only a proven duplicate linked to original, retaining import/audit and prohibiting matched-line exclusion."
     },
     {
       "controlId": "CTL-5f1aa84bef57",
@@ -2920,9 +3358,13 @@
       "label": "Open batch",
       "requirement": "FIN-01",
       "acceptanceId": "AT-5f1aa84bef57",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getBordereau",
+        "listBordereauRows"
+      ],
+      "reason": "Literal pAccounting tab selection Batch BX-2026-08; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-9722f94fe830",
@@ -2930,9 +3372,12 @@
       "label": "Re-run validation",
       "requirement": "FIN-01",
       "acceptanceId": "AT-9722f94fe830",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "validateBordereau"
+      ],
+      "reason": "Revalidate pinned draft export rows; do not assume failures disappeared."
     },
     {
       "controlId": "CTL-172f7f829df2",
@@ -2940,9 +3385,12 @@
       "label": "Correct",
       "requirement": "FIN-01",
       "acceptanceId": "AT-172f7f829df2",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "correctBordereauRow"
+      ],
+      "reason": "Correct permitted export reference mappings with reason, never issued financial components."
     },
     {
       "controlId": "CTL-704dcdf1dd76",
@@ -2950,9 +3398,12 @@
       "label": "Export batch (CSV)",
       "requirement": "FIN-01",
       "acceptanceId": "AT-704dcdf1dd76",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "exportBordereau"
+      ],
+      "reason": "Generate actual CSV from selected pinned batch and retain document hash."
     },
     {
       "controlId": "CTL-935c7ce672a6",
@@ -2960,9 +3411,12 @@
       "label": "Exclude failing records",
       "requirement": "FIN-01",
       "acceptanceId": "AT-935c7ce672a6",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "excludeFailingBordereauRows"
+      ],
+      "reason": "Exclude explicitly selected failing rows with reason and batch ETag; retain their audit evidence."
     },
     {
       "controlId": "CTL-7bc8cfc00566",
@@ -2970,9 +3424,12 @@
       "label": "Back to bordereaux",
       "requirement": "FIN-01",
       "acceptanceId": "AT-7bc8cfc00566",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listBordereaux"
+      ],
+      "reason": "Literal pAccounting tab selection Bordereaux; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-72186486df6f",
@@ -2995,9 +3452,13 @@
       "label": "Underwriting",
       "requirement": "RPT-03",
       "acceptanceId": "AT-f56bb23ea21a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition"
+      ],
+      "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-cc3769bd3bdf",
@@ -3005,9 +3466,13 @@
       "label": "Policy portfolio",
       "requirement": "RPT-03",
       "acceptanceId": "AT-cc3769bd3bdf",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition"
+      ],
+      "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-ebe3b087664a",
@@ -3015,9 +3480,13 @@
       "label": "Renewals",
       "requirement": "RPT-03",
       "acceptanceId": "AT-ebe3b087664a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition"
+      ],
+      "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-24cf7d55af86",
@@ -3025,9 +3494,13 @@
       "label": "Finance",
       "requirement": "RPT-03",
       "acceptanceId": "AT-24cf7d55af86",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listJournals",
+        "listReceipts"
+      ],
+      "reason": "Literal navigation to accounting; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-50981eb7306e",
@@ -3035,9 +3508,13 @@
       "label": "Agency performance",
       "requirement": "RPT-03",
       "acceptanceId": "AT-50981eb7306e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition"
+      ],
+      "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-b6ddb24f81d1",
@@ -3045,9 +3522,13 @@
       "label": "Compliance & exceptions",
       "requirement": "RPT-03",
       "acceptanceId": "AT-b6ddb24f81d1",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition"
+      ],
+      "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-3b59a2e0681f",
@@ -3055,9 +3536,13 @@
       "label": ".sections[1].rows[0]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-3b59a2e0681f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition"
+      ],
+      "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-aa34e10e0808",
@@ -3065,9 +3550,13 @@
       "label": ".sections[1].rows[1]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-aa34e10e0808",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition"
+      ],
+      "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-f1d572756754",
@@ -3075,9 +3564,13 @@
       "label": ".sections[1].rows[2]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-f1d572756754",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition"
+      ],
+      "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-01f8138dd157",
@@ -3085,9 +3578,13 @@
       "label": ".sections[1].rows[3]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-01f8138dd157",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition"
+      ],
+      "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-ecba4b9c7a13",
@@ -3095,9 +3592,13 @@
       "label": ".sections[1].rows[4]",
       "requirement": "RPT-03",
       "acceptanceId": "AT-ecba4b9c7a13",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition"
+      ],
+      "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-10e7fba9ce9c",
@@ -3105,9 +3606,12 @@
       "label": "Back to reports",
       "requirement": "RPT-03",
       "acceptanceId": "AT-10e7fba9ce9c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReports"
+      ],
+      "reason": "Literal pReporting tab selection Report library; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-26a1d0f6ca7e",
@@ -3215,9 +3719,12 @@
       "label": "Users & roles",
       "requirement": "ADM-03",
       "acceptanceId": "AT-884d9ce1ee34",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listUsers"
+      ],
+      "reason": "Literal pAdmin tab selection Users & roles; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-f43c26ffcd36",
@@ -3225,9 +3732,12 @@
       "label": "Client matching",
       "requirement": "ADM-03",
       "acceptanceId": "AT-f43c26ffcd36",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listMatchingRules"
+      ],
+      "reason": "Literal pAdmin tab selection Client matching; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-c1abeccbe48e",
@@ -3235,9 +3745,12 @@
       "label": "Products & schemes",
       "requirement": "ADM-03",
       "acceptanceId": "AT-c1abeccbe48e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listProducts"
+      ],
+      "reason": "Literal pAdmin tab selection Products & schemes; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-7a70deae880e",
@@ -3245,9 +3758,12 @@
       "label": "Delegated authority",
       "requirement": "ADM-03",
       "acceptanceId": "AT-7a70deae880e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listAuthorityVersions"
+      ],
+      "reason": "Literal pAdmin tab selection Delegated authority; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-5e8758709f33",
@@ -3255,9 +3771,12 @@
       "label": "Workflow & tasks",
       "requirement": "ADM-03",
       "acceptanceId": "AT-5e8758709f33",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listWorkflowRules"
+      ],
+      "reason": "Literal pAdmin tab selection Workflow; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-062173aa3428",
@@ -3265,9 +3784,12 @@
       "label": "Document & message templates",
       "requirement": "ADM-03",
       "acceptanceId": "AT-062173aa3428",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listTemplateVersions"
+      ],
+      "reason": "Literal pAdmin tab selection Templates; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-f83ab9f84cce",
@@ -3275,9 +3797,12 @@
       "label": "Integrations",
       "requirement": "ADM-03",
       "acceptanceId": "AT-f83ab9f84cce",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listIntegrationSettings"
+      ],
+      "reason": "Literal pAdmin tab selection Integrations; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-1f4136b08d57",
@@ -3285,9 +3810,12 @@
       "label": "Audit log",
       "requirement": "ADM-03",
       "acceptanceId": "AT-1f4136b08d57",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listAuditEvents"
+      ],
+      "reason": "Literal pAdmin tab selection Audit log; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-f6daa870681c",
@@ -3295,9 +3823,12 @@
       "label": "General settings",
       "requirement": "ADM-03",
       "acceptanceId": "AT-f6daa870681c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getGeneralSettings"
+      ],
+      "reason": "Literal pAdmin tab selection Settings; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-c1818cc49cbc",
@@ -3482,9 +4013,12 @@
       "label": "Open bordereaux",
       "requirement": "ADM-03",
       "acceptanceId": "AT-f68f49a17b06",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listBordereaux"
+      ],
+      "reason": "Literal navigation to accounting / Bordereaux; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-b05c609fb19a",
@@ -3502,9 +4036,12 @@
       "label": "Cancel",
       "requirement": "CC-04",
       "acceptanceId": "AT-2f8abde47bb7",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getDashboard"
+      ],
+      "reason": "Literal navigation to dashboard; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-7d04a7f95e27",
@@ -3712,9 +4249,13 @@
       "label": "Back to policy",
       "requirement": "POL-07",
       "acceptanceId": "AT-a1d207a609ca",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-40d27394607d",
@@ -3722,9 +4263,12 @@
       "label": "Rate renewal",
       "requirement": "POL-07",
       "acceptanceId": "AT-40d27394607d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "ratePolicyDraft"
+      ],
+      "reason": "Rate renewal draft exact revision; do not advance invitation/acceptance from mock step count alone."
     },
     {
       "controlId": "CTL-76ad64b9c550",
@@ -3742,9 +4286,12 @@
       "label": "Amend renewal terms",
       "requirement": "POL-07",
       "acceptanceId": "AT-6feeac107975",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Edit renewal terms and invalidate prior rating/acceptance while keeping expiring term immutable."
     },
     {
       "controlId": "CTL-35c70199197b",
@@ -3752,9 +4299,12 @@
       "label": "Lapse at expiry",
       "requirement": "POL-07",
       "acceptanceId": "AT-35c70199197b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "lapseRenewal"
+      ],
+      "reason": "Record lapse reason and durable broker notification at term expiry."
     },
     {
       "controlId": "CTL-879db9a21bfd",
@@ -3762,9 +4312,10 @@
       "label": ".rail[1]",
       "requirement": "POL-07",
       "acceptanceId": "AT-879db9a21bfd",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "Progress display/style and step jump only; actual stage commands remain independently gated by persisted state."
     },
     {
       "controlId": "CTL-9914b0bf4f9f",
@@ -3772,9 +4323,10 @@
       "label": "Review risk",
       "requirement": "POL-07",
       "acceptanceId": "AT-9914b0bf4f9f",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "Progress display/style and step jump only; actual stage commands remain independently gated by persisted state."
     },
     {
       "controlId": "CTL-f70a8d0246fc",
@@ -3782,9 +4334,10 @@
       "label": "Rate renewal",
       "requirement": "POL-07",
       "acceptanceId": "AT-f70a8d0246fc",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "Progress display/style and step jump only; actual stage commands remain independently gated by persisted state."
     },
     {
       "controlId": "CTL-07199cfc7aaf",
@@ -3792,9 +4345,10 @@
       "label": "Issue invitation",
       "requirement": "POL-07",
       "acceptanceId": "AT-07199cfc7aaf",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "Progress display/style and step jump only; actual stage commands remain independently gated by persisted state."
     },
     {
       "controlId": "CTL-5ebc3446d851",
@@ -3802,9 +4356,10 @@
       "label": "Await acceptance",
       "requirement": "POL-07",
       "acceptanceId": "AT-5ebc3446d851",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "Progress display/style and step jump only; actual stage commands remain independently gated by persisted state."
     },
     {
       "controlId": "CTL-657eee864831",
@@ -3812,9 +4367,13 @@
       "label": "Back to policy",
       "requirement": "POL-09",
       "acceptanceId": "AT-657eee864831",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-c85ad01a33e0",
@@ -3822,9 +4381,12 @@
       "label": "Issue cancellation",
       "requirement": "POL-09",
       "acceptanceId": "AT-c85ad01a33e0",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "issuePolicyDraft"
+      ],
+      "reason": "Issue cancellation atomically with effective time, financial credit and durable side effects; no payment within business commit."
     },
     {
       "controlId": "CTL-be7dce14a48f",
@@ -3832,9 +4394,12 @@
       "label": "Issue cancellation",
       "requirement": "POL-09",
       "acceptanceId": "AT-be7dce14a48f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "issuePolicyDraft"
+      ],
+      "reason": "Issue cancellation atomically with effective time, financial credit and durable side effects; no payment within business commit."
     },
     {
       "controlId": "CTL-bfe2f6136895",
@@ -3842,9 +4407,12 @@
       "label": "Amend reason or date",
       "requirement": "POL-09",
       "acceptanceId": "AT-bfe2f6136895",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "savePolicyDraft"
+      ],
+      "reason": "Amend cancellation reason/effective time and recompute preview before issue."
     },
     {
       "controlId": "CTL-2e6fe589364b",
@@ -3852,9 +4420,12 @@
       "label": "Abandon cancellation",
       "requirement": "POL-09",
       "acceptanceId": "AT-2e6fe589364b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "abandonPolicyDraft"
+      ],
+      "reason": "Confirm abandonment with reason and current lease/ETag; existing issued cover remains applicable."
     },
     {
       "controlId": "CTL-386b48061d53",
@@ -3862,9 +4433,13 @@
       "label": "Open policy",
       "requirement": "POL-01",
       "acceptanceId": "AT-386b48061d53",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-3e9bec10fb71",
@@ -3872,9 +4447,12 @@
       "label": "View transactions",
       "requirement": "POL-01",
       "acceptanceId": "AT-3e9bec10fb71",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyVersions"
+      ],
+      "reason": "Literal navigation to policy / Transactions; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-902e6ba91260",
@@ -3892,9 +4470,12 @@
       "label": "Open exception task",
       "requirement": "POL-01",
       "acceptanceId": "AT-66cf696c0aa1",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listTasks"
+      ],
+      "reason": "Literal navigation to tasks; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-7d9b07c0fc34",
@@ -3902,9 +4483,12 @@
       "label": "Open referral task",
       "requirement": "POL-01",
       "acceptanceId": "AT-7d9b07c0fc34",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getTask"
+      ],
+      "reason": "Literal navigation to task; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-d5646e53396b",
@@ -3912,9 +4496,12 @@
       "label": "Chase agency",
       "requirement": "POL-01",
       "acceptanceId": "AT-d5646e53396b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listThreads"
+      ],
+      "reason": "Literal navigation to policy / Messages; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-7db7432939a1",
@@ -3922,9 +4509,12 @@
       "label": "Back to agency",
       "requirement": "AGY-01",
       "acceptanceId": "AT-7db7432939a1",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getAgency"
+      ],
+      "reason": "Literal navigation to agency; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-3e110cd282e0",
@@ -3945,9 +4535,12 @@
       "label": "Back to dashboard",
       "requirement": "ADM-05",
       "acceptanceId": "AT-0a807a86f240",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getDashboard"
+      ],
+      "reason": "Literal navigation to dashboard; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-0a0a12156da2",
@@ -4028,9 +4621,12 @@
       "label": "Back to dashboard",
       "requirement": "ADM-05",
       "acceptanceId": "AT-04e58a7717f8",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getDashboard"
+      ],
+      "reason": "Literal navigation to dashboard; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-5c6d766be16f",
@@ -4261,9 +4857,12 @@
       "label": "Other active sessions",
       "requirement": "ADM-05",
       "acceptanceId": "AT-4a16c38ad19e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listSessions"
+      ],
+      "reason": "Literal navigation to account / Sessions & activity; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-74c4fab0dc7a",
@@ -4271,9 +4870,12 @@
       "label": "Cancel",
       "requirement": "OPS-07",
       "acceptanceId": "AT-74c4fab0dc7a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listIncidents"
+      ],
+      "reason": "Literal navigation to policy / Claims; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-45919e221aad",
@@ -4281,9 +4883,13 @@
       "label": "Save without sending",
       "requirement": "OPS-07",
       "acceptanceId": "AT-45919e221aad",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "createIncidentDraft",
+        "updateIncidentDraft"
+      ],
+      "reason": "Save incomplete incident without handoff; existing draft uses its ETag rather than creating a duplicate."
     },
     {
       "controlId": "CTL-ad5d48567dbf",
@@ -4291,9 +4897,13 @@
       "label": "Log and hand off",
       "requirement": "OPS-07",
       "acceptanceId": "AT-ad5d48567dbf",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "logIncident",
+        "handoffIncident"
+      ],
+      "reason": "Disabled sample surfaces required fields; complete valid incident is logged then durably handed off with separate job state."
     },
     {
       "controlId": "CTL-c4ffd43a8598",
@@ -4471,9 +5081,13 @@
       "label": "Save draft",
       "requirement": "OPS-07",
       "acceptanceId": "AT-37f4631d197a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "createIncidentDraft",
+        "updateIncidentDraft"
+      ],
+      "reason": "Save incomplete incident without handoff; existing draft uses its ETag rather than creating a duplicate."
     },
     {
       "controlId": "CTL-39ca0b1a11ee",
@@ -4481,9 +5095,12 @@
       "label": "Back to claims",
       "requirement": "OPS-07",
       "acceptanceId": "AT-39ca0b1a11ee",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listIncidents"
+      ],
+      "reason": "Literal navigation to policy / Claims; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-f66d2004123b",
@@ -4491,9 +5108,14 @@
       "label": "Contact administrator",
       "requirement": "OPS-07",
       "acceptanceId": "AT-f66d2004123b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "createThread",
+        "createMessageDraft",
+        "sendMessage"
+      ],
+      "reason": "Draft contact message to claims administrator; explicit send is a separate persistent demo action."
     },
     {
       "controlId": "CTL-0e965122693a",
@@ -4501,9 +5123,12 @@
       "label": "Back to transactions",
       "requirement": "POL-05",
       "acceptanceId": "AT-0e965122693a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyVersions"
+      ],
+      "reason": "Literal navigation to policy / Transactions; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-c7575e4e2213",
@@ -4511,9 +5136,12 @@
       "label": "Export this view",
       "requirement": "POL-05",
       "acceptanceId": "AT-c7575e4e2213",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "exportPolicyReconstruction"
+      ],
+      "reason": "Export precisely selected effective and knowledge cutoff with immutable source version metadata."
     },
     {
       "controlId": "CTL-6e2b2ebf7bc6",
@@ -4551,9 +5179,13 @@
       "label": "Schedule",
       "requirement": "POL-05",
       "acceptanceId": "AT-f3387357521c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "read",
+      "operationIds": [
+        "listDocumentVersions",
+        "downloadDocumentVersion"
+      ],
+      "reason": "Open schedule bytes for selected historical version, never regenerate using current terms."
     },
     {
       "controlId": "CTL-2ce0c490faab",
@@ -4561,9 +5193,13 @@
       "label": "Back to MTA-007",
       "requirement": "UWR-03",
       "acceptanceId": "AT-2ce0c490faab",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyDrafts",
+        "getPolicyDraft"
+      ],
+      "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-43fe4f266852",
@@ -4571,9 +5207,13 @@
       "label": "This referral has not been sent to Capacity Provider A yet.",
       "requirement": "UWR-03",
       "acceptanceId": "AT-43fe4f266852",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listPolicyDrafts",
+        "getPolicyDraft"
+      ],
+      "reason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-4aa26265290c",
@@ -4591,9 +5231,12 @@
       "label": "Submit to Capacity Provider A",
       "requirement": "UWR-03",
       "acceptanceId": "AT-7aed007d8279",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "sendEscalation"
+      ],
+      "reason": "Submit provider escalation under the exact referral/target scope and durable operation key."
     },
     {
       "controlId": "CTL-6c04b9b858a7",
@@ -4601,9 +5244,13 @@
       "label": "Reduce the request to £125,000",
       "requirement": "UWR-03",
       "acceptanceId": "AT-6c04b9b858a7",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft",
+        "ratePolicyDraft"
+      ],
+      "reason": "Reduce/remove the proposed stock change in draft and rerate; do not automatically clear unrelated referrals."
     },
     {
       "controlId": "CTL-16da8d8485a7",
@@ -4611,9 +5258,13 @@
       "label": "Remove the change",
       "requirement": "UWR-03",
       "acceptanceId": "AT-16da8d8485a7",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "savePolicyDraft",
+        "ratePolicyDraft"
+      ],
+      "reason": "Reduce/remove the proposed stock change in draft and rerate; do not automatically clear unrelated referrals."
     },
     {
       "controlId": "CTL-7c4c701f7185",
@@ -4621,9 +5272,12 @@
       "label": "Make an Adjustment",
       "requirement": "CC-04",
       "acceptanceId": "AT-7c4c701f7185",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "createPolicyDraft"
+      ],
+      "reason": "Create CC adjustment draft from selected term/version; display product-specific location/liability sections."
     },
     {
       "controlId": "CTL-5b3f0138f6c3",
@@ -4631,9 +5285,12 @@
       "label": "See product config",
       "requirement": "CC-04",
       "acceptanceId": "AT-5b3f0138f6c3",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listProducts"
+      ],
+      "reason": "Literal navigation to admin / Products & schemes; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-a1b61a461082",
@@ -4651,9 +5308,12 @@
       "label": "Make an Adjustment",
       "requirement": "CC-04",
       "acceptanceId": "AT-b2e4c6b1cfe9",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "createPolicyDraft"
+      ],
+      "reason": "Create CC adjustment draft from selected term/version; display product-specific location/liability sections."
     },
     {
       "controlId": "CTL-94f70d0cd3fa",
@@ -4661,9 +5321,12 @@
       "label": "Send Documents",
       "requirement": "CC-04",
       "acceptanceId": "AT-94f70d0cd3fa",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "sendDocumentPack"
+      ],
+      "reason": "Send selected authorised existing document versions through one durable delivery; no regeneration of historical files."
     },
     {
       "controlId": "CTL-04e2a11eab51",
@@ -4671,9 +5334,12 @@
       "label": "Log an Incident",
       "requirement": "CC-04",
       "acceptanceId": "AT-04e2a11eab51",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "createIncidentDraft"
+      ],
+      "reason": "Open CC incident capture with property risk links; no Motor Trade-only assumptions."
     },
     {
       "controlId": "CTL-56d3a14f67cc",
@@ -4681,9 +5347,13 @@
       "label": "Back to motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-56d3a14f67cc",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-6dd508169708",
@@ -4691,9 +5361,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-6dd508169708",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-51a57548f0da",
@@ -4701,9 +5375,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-51a57548f0da",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-d0ef58c41321",
@@ -4711,9 +5389,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-d0ef58c41321",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-40e9b30cb9e8",
@@ -4721,9 +5403,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-40e9b30cb9e8",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-972baee4e124",
@@ -4731,9 +5417,12 @@
       "label": "Propose a change",
       "requirement": "CC-04",
       "acceptanceId": "AT-972baee4e124",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "createPolicyDraft"
+      ],
+      "reason": "Create CC adjustment draft from selected term/version; display product-specific location/liability sections."
     },
     {
       "controlId": "CTL-fb66601d6526",
@@ -4741,9 +5430,12 @@
       "label": "Locations",
       "requirement": "CC-04",
       "acceptanceId": "AT-fb66601d6526",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal pCcPolicy tab selection Property schedule; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-2a6401be6234",
@@ -4751,9 +5443,12 @@
       "label": "Employees",
       "requirement": "CC-04",
       "acceptanceId": "AT-2a6401be6234",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal pCcPolicy tab selection Liability & employees; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
     },
     {
       "controlId": "CTL-f1af905620b2",
@@ -4761,9 +5456,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-f1af905620b2",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-e5b1be5b9996",
@@ -4771,9 +5470,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-e5b1be5b9996",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-34224cd40d1e",
@@ -4781,9 +5484,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-34224cd40d1e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-ea8bce06f2ca",
@@ -4791,9 +5498,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-ea8bce06f2ca",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-f483a775b1ff",
@@ -4801,9 +5512,12 @@
       "label": "See the motor trade version",
       "requirement": "CC-04",
       "acceptanceId": "AT-f483a775b1ff",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listIncidents"
+      ],
+      "reason": "Literal navigation to policy / Claims; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-ccf03cbea8ce",
@@ -4811,9 +5525,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-ccf03cbea8ce",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-6582dec68d30",
@@ -4821,9 +5539,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-6582dec68d30",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-33cbb4fde70a",
@@ -4831,9 +5553,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-33cbb4fde70a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-f624f194dc37",
@@ -4841,9 +5567,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-f624f194dc37",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-1ecddbaea446",
@@ -4851,9 +5581,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-1ecddbaea446",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-743a4287e25a",
@@ -4861,9 +5595,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-743a4287e25a",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-cbe49710cfe8",
@@ -4871,9 +5609,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-cbe49710cfe8",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-19725f9cbe05",
@@ -4881,9 +5623,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-19725f9cbe05",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-0b75753873f5",
@@ -4891,9 +5637,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-0b75753873f5",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-7339369f0fea",
@@ -4901,9 +5651,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-7339369f0fea",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-6545b6a077fe",
@@ -4911,9 +5665,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-6545b6a077fe",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-14ccc32045e0",
@@ -4921,9 +5679,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-14ccc32045e0",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-22ba92c7b207",
@@ -4931,9 +5693,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-22ba92c7b207",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-db1741cea8a9",
@@ -4941,9 +5707,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-db1741cea8a9",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-9c62bb998e73",
@@ -4951,9 +5721,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-9c62bb998e73",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-ac3cc5554379",
@@ -4961,9 +5735,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-ac3cc5554379",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-3b06827603c7",
@@ -4971,9 +5749,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-3b06827603c7",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-aeb46a753796",
@@ -4981,9 +5763,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-aeb46a753796",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-3c64b7e2f4b2",
@@ -4991,9 +5777,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-3c64b7e2f4b2",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-6b8b84b168aa",
@@ -5001,9 +5791,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-6b8b84b168aa",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-2419bccb96e3",
@@ -5011,9 +5805,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-2419bccb96e3",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-d1824bc06898",
@@ -5021,9 +5819,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-d1824bc06898",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-fc4c4f117cb8",
@@ -5031,9 +5833,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-fc4c4f117cb8",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-456c5d7d3e24",
@@ -5041,9 +5847,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-456c5d7d3e24",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-3aca421b48c2",
@@ -5051,9 +5861,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-3aca421b48c2",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-3bfd2ff06187",
@@ -5061,9 +5875,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-3bfd2ff06187",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-094aea684a7e",
@@ -5071,9 +5889,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-094aea684a7e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-2fade7608c9f",
@@ -5081,9 +5903,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-2fade7608c9f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-230e5b43b051",
@@ -5091,9 +5917,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-230e5b43b051",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-867eb6cb506f",
@@ -5101,9 +5931,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-867eb6cb506f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-fb0864dfa704",
@@ -5111,9 +5945,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-fb0864dfa704",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-2513acd4a118",
@@ -5121,9 +5959,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-2513acd4a118",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-f7115f67c06e",
@@ -5131,9 +5973,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-f7115f67c06e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-83691d36bdf8",
@@ -5141,9 +5987,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-83691d36bdf8",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-673333da8426",
@@ -5151,9 +6001,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-673333da8426",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-c3988d689323",
@@ -5161,9 +6015,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-c3988d689323",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-365f47865fcb",
@@ -5171,9 +6029,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-365f47865fcb",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-beb074e34531",
@@ -5181,9 +6043,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-beb074e34531",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-53280ea4a21b",
@@ -5191,9 +6057,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-53280ea4a21b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-833069e59afb",
@@ -5201,9 +6071,12 @@
       "label": "Propose a change",
       "requirement": "CC-04",
       "acceptanceId": "AT-833069e59afb",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "createPolicyDraft"
+      ],
+      "reason": "Create CC adjustment draft from selected term/version; display product-specific location/liability sections."
     },
     {
       "controlId": "CTL-8ef56e33e01c",
@@ -5211,9 +6084,13 @@
       "label": "Open motor trade policy",
       "requirement": "CC-04",
       "acceptanceId": "AT-8ef56e33e01c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Literal navigation to policy; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-f027c3ba9873",
@@ -5221,9 +6098,12 @@
       "label": "Open matched account",
       "requirement": "CLI-04",
       "acceptanceId": "AT-f027c3ba9873",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getClient"
+      ],
+      "reason": "Literal navigation to client; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
     },
     {
       "controlId": "CTL-525d2e108127",
@@ -5231,9 +6111,12 @@
       "label": "Link to CN-0002214",
       "requirement": "CLI-04",
       "acceptanceId": "AT-525d2e108127",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "decideMatch"
+      ],
+      "reason": "Link/separate/decline requires recorded reason and permitted thin identity sharing; do not disclose competing agency terms."
     },
     {
       "controlId": "CTL-5b07d3978b49",
@@ -5241,9 +6124,12 @@
       "label": "Not a duplicate",
       "requirement": "CLI-04",
       "acceptanceId": "AT-5b07d3978b49",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "decideMatch"
+      ],
+      "reason": "Link/separate/decline requires recorded reason and permitted thin identity sharing; do not disclose competing agency terms."
     },
     {
       "controlId": "CTL-853ce7f519a4",
@@ -5251,9 +6137,12 @@
       "label": "Decline as duplicate",
       "requirement": "CLI-04",
       "acceptanceId": "AT-853ce7f519a4",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "decideMatch"
+      ],
+      "reason": "Link/separate/decline requires recorded reason and permitted thin identity sharing; do not disclose competing agency terms."
     },
     {
       "controlId": "CTL-e3d448532811",
@@ -5261,9 +6150,15 @@
       "label": "Ask Kingsway for the company number",
       "requirement": "CLI-04",
       "acceptanceId": "AT-e3d448532811",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "decideMatch",
+        "createThread",
+        "createMessageDraft",
+        "sendMessage"
+      ],
+      "reason": "Record queried match state and safe company-number request to the submitting agency."
     },
     {
       "controlId": "CTL-cb7e499f5ef9",
@@ -9411,9 +10306,12 @@
       "label": "Issue invitation",
       "requirement": "POL-07",
       "acceptanceId": "AT-dc77305d175b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "sendRenewalInvitation"
+      ],
+      "reason": "Send current rated renewal terms with pinned invitation evidence."
     },
     {
       "controlId": "CTL-fa18c029e256",
@@ -9421,9 +10319,12 @@
       "label": "Decide referral UW-31",
       "requirement": "POL-07",
       "acceptanceId": "AT-fa18c029e256",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "decideReferral"
+      ],
+      "reason": "Resolve renewal referral within authority with explicit reason; no fake status-only approval."
     },
     {
       "controlId": "CTL-7ef8d04057b2",
@@ -9431,9 +10332,12 @@
       "label": "Record acceptance",
       "requirement": "POL-07",
       "acceptanceId": "AT-7ef8d04057b2",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "recordDraftAcceptance"
+      ],
+      "reason": "Record exact renewal terms/rating acceptance; issuing cover remains a separate command."
     },
     {
       "controlId": "CTL-d320aa79a17e",
@@ -9441,9 +10345,12 @@
       "label": "Issue renewal policy",
       "requirement": "POL-07",
       "acceptanceId": "AT-d320aa79a17e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "issuePolicyDraft"
+      ],
+      "reason": "Issue renewal into new non-overlapping term while preserving previous term/history."
     },
     {
       "controlId": "CTL-a0bc1139dfb9",
