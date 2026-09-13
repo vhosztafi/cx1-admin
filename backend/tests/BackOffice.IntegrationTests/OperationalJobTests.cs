@@ -156,6 +156,43 @@ public sealed class OperationalJobTests
             }
 
             using var production = Factory(connection.ConnectionString, keys, "Production");
+            Guid retryId;
+            string originalKey;
+            await using (var db = new BackOfficeDbContext(options))
+            {
+                var job = await db.Set<OutboxWork>().SingleAsync(x => x.OperationKey == "list-0");
+                retryId = job.Id; originalKey = job.OperationKey;
+                job.State = "failed"; job.Attempts = 6; job.ErrorCode = "provider-timeout"; job.CompletedAt = DateTimeOffset.UtcNow;
+                for (var attempt = 1; attempt <= 6; attempt++) db.Add(new AdapterAttempt {WorkId = job.Id, AttemptNumber = attempt,
+                    StartedAt = DateTimeOffset.UtcNow.AddMinutes(-1), EndedAt = DateTimeOffset.UtcNow, Outcome = "transient-failure", ErrorCode = "provider-timeout"});
+                await db.SaveChangesAsync();
+            }
+            string etag;
+            using (var response = await admin.GetAsync("/api/v1/jobs/" + retryId)) {response.EnsureSuccessStatusCode(); etag = response.Headers.ETag!.ToString();}
+            var retryPath = "/api/v1/jobs/" + retryId + "/retry";
+            var retryKey = Guid.NewGuid().ToString("N");
+            using (var response = await Post(servicing, servicingCsrf, retryKey, new {reason = "Recover demo timeout"}, retryPath, etag)) Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+            using (var response = await Post(admin, adminCsrf, retryKey, new {reason = "Recover demo timeout"}, retryPath)) Assert.Equal((HttpStatusCode)428, response.StatusCode);
+            using (var response = await Post(admin, adminCsrf, retryKey, new {reason = "Recover demo timeout"}, retryPath, "\"AAAAAAAAAAA=\"")) Assert.Equal(HttpStatusCode.PreconditionFailed, response.StatusCode);
+            string accepted;
+            using (var response = await Post(admin, adminCsrf, retryKey, new {reason = "Recover demo timeout"}, retryPath, etag))
+            {Assert.Equal(HttpStatusCode.Accepted, response.StatusCode); accepted = await response.Content.ReadAsStringAsync();}
+            using (var response = await Post(admin, adminCsrf, retryKey, new {reason = "Recover demo timeout"}, retryPath, etag))
+            {Assert.Equal(HttpStatusCode.Accepted, response.StatusCode); Assert.Equal(accepted, await response.Content.ReadAsStringAsync());}
+            using (var response = await Post(admin, adminCsrf, retryKey, new {reason = "Changed intent"}, retryPath, etag)) Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
+            await using (var db = new BackOfficeDbContext(options))
+            {
+                var job = await db.Set<OutboxWork>().SingleAsync(x => x.Id == retryId);
+                Assert.Equal(12, job.AttemptLimit); Assert.Equal(6, job.Attempts); Assert.Equal(originalKey, job.OperationKey); Assert.Equal("pending", job.State);
+                Assert.Null(job.CompletedAt); Assert.Null(job.ErrorCode);
+                Assert.Equal(6, await db.Set<AdapterAttempt>().CountAsync(x => x.WorkId == retryId));
+                var audit = await db.Set<AuditEvent>().SingleAsync(x => x.EventType == "diagnostic.retry-authorized");
+                Assert.Equal("Recover demo timeout", audit.Reason);
+                // A definitive provider rejection never becomes a new effect via recovery.
+                job.State = "failed"; job.Attempts = 12; job.ErrorCode = "provider-rejected"; await db.SaveChangesAsync();
+            }
+            using (var response = await admin.GetAsync("/api/v1/jobs/" + retryId)) {response.EnsureSuccessStatusCode(); etag = response.Headers.ETag!.ToString();}
+            using (var response = await Post(admin, adminCsrf, Guid.NewGuid().ToString("N"), new {reason = "Try rejected work"}, retryPath, etag)) Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
             using var productionAdmin = production.CreateClient(new WebApplicationFactoryClientOptions { BaseAddress = new Uri("https://localhost") });
             var productionCsrf = await Login(productionAdmin, "system-admin", password);
             using (var response = await Post(productionAdmin, productionCsrf, Guid.NewGuid().ToString("N"), new { scenario = "success" })) Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -186,9 +223,10 @@ public sealed class OperationalJobTests
         return await Csrf(client);
     }
 
-    private static async Task<HttpResponseMessage> Post(HttpClient client, string? csrf, string? key, object body)
+    private static async Task<HttpResponseMessage> Post(HttpClient client, string? csrf, string? key, object body, string path = Probe, string? etag = null)
     {
-        using var request = new HttpRequestMessage(HttpMethod.Post, Probe) { Content = JsonContent.Create(body) };
+        using var request = new HttpRequestMessage(HttpMethod.Post, path) { Content = JsonContent.Create(body) };
+        if (etag is not null) request.Headers.Add("If-Match", etag);
         if (csrf is not null) request.Headers.Add("X-CSRF-Token", csrf);
         if (key is not null) request.Headers.Add("Idempotency-Key", key);
         return await client.SendAsync(request);

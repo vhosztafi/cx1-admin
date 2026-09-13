@@ -118,6 +118,7 @@ public sealed class OutboxWork : MutableRecord
     public DateTimeOffset? CompletedAt { get; set; }
     public string? ErrorCode { get; set; }
     public int Attempts { get; set; }
+    public int AttemptLimit { get; set; } = 6;
     public string? Result { get; set; }
 }
 public sealed class DiagnosticReceipt : StoredRecord

@@ -85,6 +85,8 @@ public sealed class BackOfficeDbContext(DbContextOptions<BackOfficeDbContext> op
         work.HasIndex(x => new {x.Kind,x.OperationKey}).IsUnique(); work.HasIndex(x => new {x.State,x.NextAttemptAt});
         Check(work,"State","[State] IN ('pending','leased','succeeded','failed')");
         Check(work,"Attempts","[Attempts] >= 0");
+        work.Property(x => x.AttemptLimit).HasDefaultValue(6);
+        Check(work,"AttemptLimit","[AttemptLimit] IN (6,12,18) AND [Attempts] <= [AttemptLimit]");
         var exceptions = Record<JobException>(model,"JobException");
         Text(exceptions,("Code",100)); exceptions.HasIndex(x => x.WorkId).IsUnique();
         exceptions.HasOne<OutboxWork>().WithMany().HasForeignKey(x => x.WorkId).OnDelete(DeleteBehavior.NoAction);

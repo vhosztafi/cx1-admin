@@ -31,6 +31,7 @@ app.MapHealthChecks("/health/live").AllowAnonymous();
 app.MapIdentity();
 app.MapOperationalJobs();
 app.MapOperationalReads();
+app.MapOperationalRetries();
 // Domain endpoints are added only alongside their authentication and persistence.
 app.Run();
 

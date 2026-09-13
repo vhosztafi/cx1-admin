@@ -28,7 +28,7 @@ public sealed class SqlJobLeases(IDbContextFactory<BackOfficeDbContext> factory,
             var abandoned=await db.Set<AdapterAttempt>().SingleOrDefaultAsync(x => x.WorkId==job.Id && x.AttemptNumber==job.Attempts && x.EndedAt==null,cancellationToken);
             if (abandoned is not null) {abandoned.EndedAt=now;abandoned.Outcome="lease-expired";abandoned.ErrorCode="lease-expired";}
         }
-        if (job.Attempts>=RetrySchedule.MaximumAttempts)
+        if (job.Attempts>=job.AttemptLimit)
         {
             await MarkTerminalAsync(db,job,"attempts-exhausted",now,cancellationToken);
             await db.SaveChangesAsync(cancellationToken); await transaction.CommitAsync(cancellationToken); return null;
@@ -61,10 +61,10 @@ public sealed class SqlJobLeases(IDbContextFactory<BackOfficeDbContext> factory,
         var attempt=await db.Set<AdapterAttempt>().SingleAsync(x => x.WorkId==job.Id && x.AttemptNumber==lease.Attempt,cancellationToken);
         attempt.EndedAt=now; attempt.Outcome=transient ? "transient-failure" : "rejected"; attempt.ErrorCode=code;
         job.ErrorCode=code;
-        if (!transient || job.Attempts>=RetrySchedule.MaximumAttempts) await MarkTerminalAsync(db,job,code,now,cancellationToken);
+        if (!transient || job.Attempts>=job.AttemptLimit) await MarkTerminalAsync(db,job,code,now,cancellationToken);
         else
         {
-            job.State="pending"; job.NextAttemptAt=now+RetrySchedule.AfterFailure(job.Attempts,job.OperationKey);
+            job.State="pending"; job.NextAttemptAt=now+JobRetryBudget.Delay(job.Attempts,job.OperationKey);
             job.LeaseToken=null; job.LeaseExpiresAt=null;
         }
         await db.SaveChangesAsync(cancellationToken); await transaction.CommitAsync(cancellationToken); return true;

@@ -75,6 +75,33 @@ public sealed class JobLeaseTests
             Assert.True(await restarted.FailAsync(rejected,JobFailure.ProviderRejected));
             Assert.False(await restarted.FailAsync(rejected,JobFailure.ProviderRejected));
             await using (var check=new BackOfficeDbContext(options)) Assert.Equal(1,await check.Set<JobException>().CountAsync(x => x.WorkId==rejected.WorkId));
+            await using (var check=new BackOfficeDbContext(options))
+            {
+                var job=await check.Set<OutboxWork>().SingleAsync(x => x.Id==workId);
+                job.AttemptLimit=JobRetryBudget.ExpandedLimit(job.State,job.ErrorCode,job.Attempts,job.AttemptLimit)!.Value;
+                job.State="pending"; job.CompletedAt=null; job.ErrorCode=null; job.NextAttemptAt=time.Now;
+                await check.SaveChangesAsync();
+            }
+            for (var number=7; number<=12; number++)
+            {
+                var recovery=Assert.IsType<JobLease>(await restarted.ClaimAsync());
+                Assert.Equal(number,recovery.Attempt); Assert.Equal("lease-probe",recovery.OperationKey);
+                Assert.True(await restarted.FailAsync(recovery,JobFailure.ProviderUnavailable));
+                await using var check=new BackOfficeDbContext(options);
+                var job=await check.Set<OutboxWork>().SingleAsync(x => x.Id==workId);
+                if (number<12)
+                {
+                    Assert.Equal("pending",job.State);
+                    Assert.Equal(JobRetryBudget.Delay(number,job.OperationKey),job.NextAttemptAt-time.Now);
+                    time.Now=job.NextAttemptAt;
+                }
+                else Assert.Equal("failed",job.State);
+            }
+            await using (var check=new BackOfficeDbContext(options))
+            {
+                Assert.Equal(12,await check.Set<AdapterAttempt>().CountAsync(x => x.WorkId==workId));
+                Assert.Equal(1,await check.Set<JobException>().CountAsync(x => x.WorkId==workId));
+            }
         }
         finally
         {

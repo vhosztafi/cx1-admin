@@ -9,6 +9,7 @@ public sealed record ActorContext(Guid UserId,Guid? TeamId,Guid? AgencyId,IReadO
         "authenticated" => true,
         "platform-admin" => Roles.Contains("system-admin"),
         "integration-admin" => Roles.Contains("system-admin"),
+        "integration-retry" => Roles.Contains("system-admin"),
         "audit-read" => Roles.Contains("system-admin"),
         "client-servicing" => Roles.Overlaps(["servicing","underwriter","senior-underwriter"]),
         "finance" => Roles.Contains("finance"),
