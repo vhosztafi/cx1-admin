@@ -1,5 +1,6 @@
 using System.Net;
 using System.Security.Cryptography;
+using System.Text.Json;
 using BackOffice.Infrastructure.Persistence;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +39,42 @@ public sealed class BatchRetryTests
             using var factory = Factory(connection.ConnectionString, keys);
             using var admin = factory.CreateClient(); using var servicing = factory.CreateClient();
             var csrf = await Login(admin, "system-admin", password); var deniedCsrf = await Login(servicing, "servicing", password);
+            using (var response = await servicing.GetAsync("/api/v1/admin/integrations")) Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+            Guid settingId;
+            using (var response = await admin.GetAsync("/api/v1/admin/integrations"))
+            {
+                response.EnsureSuccessStatusCode(); using var json = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+                Assert.Equal(4, json.RootElement.GetProperty("totalCount").GetInt32());
+                var first = json.RootElement.GetProperty("items")[0]; settingId = first.GetProperty("id").GetGuid();
+                Assert.False(first.GetProperty("enabled").GetBoolean()); // This test host explicitly disables dispatch.
+                Assert.Equal(6, first.GetProperty("maxAttempts").GetInt32());
+                Assert.True(first.EnumerateObject().Select(x => x.Name).ToHashSet().SetEquals(new[] {"id","kind","enabled","mode","scenario","version","maxAttempts","retrySeconds"}));
+            }
+            using (var response = await admin.GetAsync("/api/v1/admin/integrations/" + settingId)) Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Guid latestId;
+            await using (var db = new BackOfficeDbContext(options))
+            {
+                var latest = new SettingVersion {Scope = "diagnostic-probe/success", Version = 2, EffectiveFrom = DateTimeOffset.UtcNow.AddMinutes(-1), Values = "{\"kind\":\"diagnostic-probe\",\"scenario\":\"success\"}"};
+                latestId = latest.Id; db.Add(latest);
+                db.Add(new SettingVersion {Scope = latest.Scope, Version = 3, EffectiveFrom = DateTimeOffset.UtcNow.AddDays(1), Values = latest.Values});
+                await db.SaveChangesAsync();
+                var generic = await db.Set<SettingVersion>().SingleAsync(x => x.Scope == "demo-adapters");
+                using var response = await admin.GetAsync("/api/v1/admin/integrations/" + generic.Id); Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            }
+            using (var response = await admin.GetAsync("/api/v1/admin/integrations"))
+            {
+                response.EnsureSuccessStatusCode(); using var json = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+                Assert.Equal(4, json.RootElement.GetProperty("totalCount").GetInt32());
+                var success = json.RootElement.GetProperty("items").EnumerateArray().Single(x => x.GetProperty("scenario").GetString() == "success");
+                Assert.Equal(latestId, success.GetProperty("id").GetGuid()); Assert.Equal(2, success.GetProperty("version").GetInt32());
+            }
+            await using (var db = new BackOfficeDbContext(options))
+            {
+                var invalid = await db.Set<SettingVersion>().SingleAsync(x => x.Id == latestId);
+                invalid.Values = "{\"secret\":\"never-disclose\"}"; await db.SaveChangesAsync();
+            }
+            using (var response = await admin.GetAsync("/api/v1/admin/integrations/" + latestId))
+            {Assert.Equal(HttpStatusCode.ServiceUnavailable, response.StatusCode); Assert.DoesNotContain("never-disclose", await response.Content.ReadAsStringAsync());}
             var key = Guid.NewGuid().ToString("N");
             var body = new {jobs = selection, reason = "Recover the selected demo jobs"};
             using (var response = await Post(servicing, deniedCsrf, key, body, route)) Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);

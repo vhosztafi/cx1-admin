@@ -18,6 +18,7 @@ public static class OperationalReadEndpoints
         ["diagnostic.callback-quarantined"] = "Changed demo callback quarantined.", ["diagnostic.inspected"] = "Demo job inspected by an administrator.",
         ["diagnostic.retry-authorized"] = "A bounded demo recovery cycle was authorized.", ["diagnostic.retry-requested"] = "Demo recovery queued.",
         ["diagnostic.batch-retry-requested"] = "A batch of demo recovery jobs was queued.",
+        ["operations.integrations-read"] = "Integration settings inspected.",
         ["operations.jobs-read"] = "Operational job list inspected.", ["operations.audit-read"] = "Audit list inspected."
     };
     private static readonly string[] Kinds = ["rating","document","storage","email","lookup","mid","claims","payment","bordereau","export","diagnostic-probe"];
@@ -72,7 +73,7 @@ public static class OperationalReadEndpoints
         return Results.Json(new {items, nextCursor = paging.Next(page, rows.Count > page.Size), totalCount = total}, Json);
     }
 
-    private static async Task Inspect(BackOfficeDbContext db, Guid actor, string eventType, DateTimeOffset now, CancellationToken token)
+    internal static async Task Inspect(BackOfficeDbContext db, Guid actor, string eventType, DateTimeOffset now, CancellationToken token)
     {
         db.Add(new AuditEvent {ActorId = actor, CreatedBy = actor, EventType = eventType, OccurredAt = now, CorrelationId = Guid.NewGuid()});
         await db.SaveChangesAsync(token);
