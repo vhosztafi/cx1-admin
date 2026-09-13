@@ -1,6 +1,6 @@
 # Local setup
 
-Current status: SQL foundation is implemented. The API exposes liveness and the web app displays setup status. Local sign-in, current account and sign-out APIs are implemented. The prototype shell and worker implementation remain pending in Phase 2.
+Current status: SQL foundation is implemented. The API supports local authentication and the web app has a protected prototype-based shell. Business workflows and durable worker implementation remain pending.
 
 Prerequisites: .NET SDK 10.0.401, Node 24 and pnpm 11.19.0. Version pins live in global.json and package manifests; pnpm-lock.yaml covers the workspace. Do not change frontend-code, which is reference material.
 
@@ -46,17 +46,17 @@ Set COVER_DEMO_PASSWORD locally (at least 12 characters with upper/lower case, n
 dotnet run --project backend/src/BackOffice.Api --no-restore -- --initialize-demo
 ```
 
-COVER_SQL_CONNECTION optionally overrides the native Windows connection; its database must be exactly CoverMGA_Demo. The command migrates and seeds transactionally without changing existing passwords or records. Six fictional users have addresses servicing@cover.example, underwriter@cover.example, senior-underwriter@cover.example, agency-admin@cover.example, finance@cover.example and system-admin@cover.example. Sign-in is available through the auth API; its browser UI follows in 02-04. Products are deliberately draft foundation definitions without rating rules. DemoClock starts frozen at 2026-09-13 12:00 UTC.
+COVER_SQL_CONNECTION optionally overrides the native Windows connection; its database must be exactly CoverMGA_Demo. The command migrates and seeds transactionally without changing existing passwords or records. Six fictional users have addresses servicing@cover.example, underwriter@cover.example, senior-underwriter@cover.example, agency-admin@cover.example, finance@cover.example and system-admin@cover.example. Sign-in is available through the auth API and /login browser screen. Products are deliberately draft foundation definitions without rating rules. DemoClock starts frozen at 2026-09-13 12:00 UTC.
 
 For an intentional destructive reset of this demo database only, add --reset-demo after --initialize-demo. The command validates its target and password before deletion. Never use it to reset any other database. Repeated initialization without reset preserves existing data.
 
-For this agent-created local demo, the randomly generated password is retained only in ignored .local/demo-password.txt; it is not printed or committed. Load it into COVER_DEMO_PASSWORD for repeat initialization. Authentication SQL/API tests pass; browser UI follows in 02-04.
+For this agent-created local demo, the randomly generated password is retained only in ignored .local/demo-password.txt; it is not printed or committed. Load it into COVER_DEMO_PASSWORD for repeat initialization. Authentication SQL/API and real-browser checks pass.
 
 ## Optional Docker SQL profile
 
 Set MSSQL_SA_PASSWORD in your local environment and run `docker compose up -d sql`. Data stays in the named sql-data volume, and SQL listens only on 127.0.0.1:14333. Use a SqlConnectionStringBuilder to set Server=127.0.0.1,14333, Database=CoverMGA_Demo, User ID=sa, Password from MSSQL_SA_PASSWORD, Encrypt=true and TrustServerCertificate=true; assign its ConnectionString to COVER_SQL_CONNECTION without printing it. For tests, COVER_SQL_TEST_CONNECTION selects the server/credentials; the suite always substitutes its own generated database name.
 
-The profile follows Microsoft's [SQL Server container guidance](https://learn.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker?view=sql-server-ver17), using SQL Server 2022 Developer and mssql-tools18. The 2022-latest tag tracks development updates; record an image digest before relying on an identical container build. Native SQL is the verified runtime on this host. Docker runtime verification is pending because Docker is stopped; this is not claimed as a tested container deployment.
+The profile follows Microsoft's [SQL Server container guidance](https://learn.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker?view=sql-server-ver17), using SQL Server 2022 Developer and mssql-tools18. The 2022-latest tag tracks development updates; record an image digest before relying on an identical container build. Native SQL is the verified runtime on this host. Docker runtime verification has not been performed; this is not claimed as a tested container deployment.
 
 
 ## Local authentication API
@@ -68,3 +68,12 @@ Development uses cover-dev-session with HttpOnly, Path=/ and SameSite=Lax. Sessi
 Data Protection keys persist under the API content root's .local/data-protection directory by default; Cover__DataProtectionPath can select an explicit persistent directory. Windows keys are protected with the current user's DPAPI. A restart must retain the same key directory and OS identity. Non-development startup requires an explicit key path, enforces HTTPS and uses the Secure __Host-cover-session cookie without a Domain attribute. Non-Windows production hosting is blocked until encrypted key storage is configured; this milestone has not deployed a production environment. No forwarded headers are trusted automatically.
 
 Re-run --initialize-demo after pulling migrations. Test hosts use independent databases and key directories in ignored .local/auth-test-keys; tests restart the ASP.NET host and reuse the original cookie to verify persisted keys/tickets and SQL revocation. API tests do not replace browser or human acceptance checks.
+
+
+## Frontend verification and preview
+
+Run pnpm web:test for validation/error-message unit checks, pnpm web:lint, pnpm web:typecheck and pnpm web:build. The font is extracted from the supplied prototype into public/fonts by scripts/extract-prototype-font.mjs, with no runtime font CDN request. The shell matches the source's 238px sidebar and 62px header. Missing business metrics show an unavailable marker; future-feature pages do not pretend to save data.
+
+For a built preview on a different API port, set BACKOFFICE_API_ORIGIN before both build and start: Next rewrites are compiled at build time, and server-rendered account requests use the runtime value. This host had an unrelated Docker listener on 5080 during browser verification; the test API used 5087 and web used 3100. Run the API with --urls http://127.0.0.1:5087 and Development environment, set BACKOFFICE_API_ORIGIN=http://127.0.0.1:5087, build the frontend, then run pnpm --filter @cover/backoffice start --hostname 127.0.0.1 --port 3100.
+
+With these local processes running, pnpm web:browser executes the Chrome journey using the fictional servicing account and the ignored local password file (or COVER_DEMO_PASSWORD). COVER_WEB_ORIGIN defaults to http://127.0.0.1:3100 and rejects non-local hosts. Chrome must be installed; COVER_BROWSER_CHANNEL can select another installed Playwright browser channel. Screenshots are written to ignored .local/browser-evidence. The test checks login, validation, reload, logout, replay of a revoked session, network errors, admin denial, account-tab availability, keyboard focus, responsive layout and source/app screenshots. Visual inspection is recorded separately from automated assertions and does not claim human UAT.

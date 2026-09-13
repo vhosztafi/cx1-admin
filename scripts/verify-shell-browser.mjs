@@ -1,0 +1,95 @@
+import { chromium } from 'playwright';
+import assert from 'node:assert/strict';
+import { readFile, mkdir } from 'node:fs/promises';
+import { createServer } from 'node:http';
+
+// Run against the local demo API/web processes described in docs/SETUP.md.
+// Credentials and browser cookies are never printed or included in screenshots.
+const origin = process.env.COVER_WEB_ORIGIN ?? 'http://127.0.0.1:3100';
+if (!['127.0.0.1', 'localhost'].includes(new URL(origin).hostname)) throw new Error('Browser verification is restricted to a local demo origin.');
+const password = process.env.COVER_DEMO_PASSWORD ?? (await readFile('.local/demo-password.txt', 'utf8')).trim();
+const output = '.local/browser-evidence';
+await mkdir(output, { recursive: true });
+const browser = await chromium.launch({ channel: process.env.COVER_BROWSER_CHANNEL ?? 'chrome', headless: true });
+const context = await browser.newContext({ viewport: { width: 1560, height: 1000 } });
+const page = await context.newPage();
+page.setDefaultTimeout(15_000);
+let sourceServer;
+const errors = [];
+page.on('pageerror', error => errors.push(error.message));
+try {
+  await page.goto(`${origin}/clients`);
+  await page.waitForURL('**/login');
+  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+  await page.getByText('Enter your email address.', { exact: true }).waitFor();
+  await page.getByLabel('Email address', { exact: true }).fill('servicing@cover.example');
+  await page.getByLabel('Password', { exact: true }).fill('Incorrect!a1234');
+  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+  await page.getByText(/Unable to sign in/).waitFor();
+  assert.equal(await page.getByLabel('Email address', { exact: true }).inputValue(), 'servicing@cover.example');
+  await page.getByLabel('Password', { exact: true }).fill('');
+  await page.screenshot({ path: `${output}/login-desktop.png`, fullPage: true });
+  await page.getByLabel('Password', { exact: true }).fill(password);
+  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+  await page.waitForURL(`${origin}/`);
+  await page.getByRole('heading', { name: 'Welcome, Demo servicing' }).waitFor();
+  await page.reload();
+  await page.getByRole('heading', { name: 'Welcome, Demo servicing' }).waitFor();
+  await page.goto(`${origin}/admin`);
+  await page.getByRole('heading', { name: 'Your account cannot access this area' }).waitFor();
+  await page.goto(`${origin}/account`);
+  await page.getByRole('link', { name: 'Password', exact: true }).click();
+  await page.getByRole('heading', { name: 'This account feature is not available yet' }).waitFor();
+  await page.goto(`${origin}/`);
+  await page.evaluate(() => document.fonts.ready);
+  assert.equal(await page.locator('.desktop-sidebar').evaluate(element => element.getBoundingClientRect().width), 238);
+  assert.equal(await page.locator('.topbar').evaluate(element => element.getBoundingClientRect().height), 62);
+  assert.equal(await page.evaluate(() => document.fonts.check('400 13px "IBM Plex Sans"')), true);
+  await page.screenshot({ path: `${output}/shell-desktop.png`, fullPage: true });
+  await page.keyboard.press('Tab');
+  assert.equal(await page.evaluate(() => document.activeElement?.textContent), 'Skip to content');
+  await page.keyboard.press('Enter');
+  assert.equal(await page.evaluate(() => document.activeElement?.id), 'main-content');
+  assert.equal(await page.locator('.page-heading').evaluate(element => element.getBoundingClientRect().top >= 62), true);
+  await page.setViewportSize({ width: 390, height: 844 });
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  await page.screenshot({ path: `${output}/shell-mobile.png`, fullPage: true });
+  await page.getByRole('button', { name: 'Open navigation' }).click();
+  await page.getByRole('dialog', { name: 'Navigation' }).waitFor();
+  await page.screenshot({ path: `${output}/navigation-mobile.png`, fullPage: true });
+  await page.keyboard.press('Escape');
+  await page.getByRole('dialog', { name: 'Navigation' }).waitFor({ state: 'hidden' });
+  assert.equal(await page.getByRole('button', { name: 'Open navigation' }).evaluate(element => element === document.activeElement), true);
+  await page.locator('.account-menu summary').click();
+  await page.route('**/api/v1/auth/logout', route => route.abort());
+  await page.getByRole('button', { name: 'Log out', exact: true }).click();
+  await page.getByRole('alert').filter({ hasText: 'We could not sign you out' }).waitFor();
+  await page.unroute('**/api/v1/auth/logout');
+  const savedCookies = await context.cookies();
+  await page.getByRole('button', { name: 'Log out', exact: true }).click();
+  await page.waitForURL('**/login');
+  await context.addCookies(savedCookies); // Replay the revoked server session.
+  await page.goto(`${origin}/account`);
+  await page.waitForURL('**/login');
+  await context.clearCookies();
+  await page.getByLabel('Email address', { exact: true }).fill('servicing@cover.example');
+  await page.getByLabel('Password', { exact: true }).fill(password);
+  await page.route('**/api/v1/auth/csrf', route => route.abort());
+  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+  await page.getByText(/Check your connection and try again/).waitFor();
+  await page.getByLabel('Password', { exact: true }).fill('');
+  await page.screenshot({ path: `${output}/login-mobile-error.png`, fullPage: true });
+  assert.deepEqual(errors, []);
+
+  const source = await readFile('docs/prototype/Cover MGA Back Office-4.html');
+  sourceServer = createServer((request, response) => { response.setHeader('Content-Type', 'text/html; charset=utf-8'); response.end(source); });
+  await new Promise(resolve => sourceServer.listen(0, '127.0.0.1', resolve));
+  const sourcePage = await browser.newPage({ viewport: { width: 1560, height: 1000 } });
+  await sourcePage.goto(`http://127.0.0.1:${sourceServer.address().port}`);
+  await sourcePage.waitForTimeout(2500);
+  await sourcePage.screenshot({ path: `${output}/prototype-desktop.png`, fullPage: true });
+  console.log('PASS: login, validation, reload, logout, revoked session, network failures, keyboard navigation, mobile layout and prototype screenshots.');
+} finally {
+  await browser.close();
+  if (sourceServer) await new Promise(resolve => sourceServer.close(resolve));
+}

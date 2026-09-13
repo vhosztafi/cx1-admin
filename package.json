@@ -17,11 +17,14 @@
     "design:extract": "node scripts/extract-prototype.mjs && node scripts/inspect-prototype.mjs && node scripts/build-design-inventory.mjs",
     "contracts:generate": "node scripts/generate-policy-contracts.mjs && node scripts/generate-openapi.mjs && node scripts/generate-adapter-contracts.mjs",
     "contracts:validate": "node scripts/lint-openapi.mjs && node --test tests/policy-contracts.test.mjs tests/api-contracts.test.mjs tests/adapter-contracts.test.mjs",
-    "web:lint": "pnpm --filter @cover/backoffice lint"
+    "web:lint": "pnpm --filter @cover/backoffice lint",
+    "web:test": "pnpm --filter @cover/backoffice test",
+    "web:browser": "node scripts/verify-shell-browser.mjs"
   },
   "devDependencies": {
     "@redocly/cli": "2.52.1",
     "ajv": "8.20.0",
-    "ajv-formats": "3.0.1"
+    "ajv-formats": "3.0.1",
+    "playwright": "1.62.1"
   }
 }
