@@ -189,3 +189,9 @@ Prototype audit retention defaults to seven years after term end; encode as conf
 All FK deletes default NO ACTION; deactivate/supersede financial or contractual records. Mutable aggregate writes require ETags. Transaction-scoped locks/serialisable checks protect non-row invariants such as no overlapping published versions, allocations and term overlap. Rowversion alone on one child row does not protect an aggregate sum.
 
 Migration testing must start from an empty SQL Server and a seeded previous schema, apply forward migrations and verify constraints; rollback strategy uses backups/restores for destructive changes. This document and schema validation are not evidence that SQL constraints have run yet.
+
+## Foundation implementation boundary (Phase 02-02)
+
+The first migration owns User, Team, Role, UserRole, UserCredential, Session, CapacityProvider, Product, ProductVersion, SettingVersion, DemoClock and the six audit/job/idempotency records above. User.AgencyId and platform SubjectRecordId foreign keys are introduced when Agency and WorkRecord exist in their owning phases; foundational subject IDs remain nullable and are not accepted by any public business route yet. MFA/profile/approval tables arrive with their owning account features.
+
+DemoClock is a mutable singleton: Name text20 unique CHECK='demo', FrozenAt instant nullable (null selects wall-clock mode), plus common ID/timestamps/rowversion. Settings and product seeds are explicitly fictional. Product codes follow the canonical policy schema: motor-trade-road-risks, motor-trade-combined, commercial-combined. Seeded versions stay draft until a feature phase supplies validated rating/question definitions. A SQL trigger rejects overlapping published product validity ranges and permits adjacent half-open ranges. Adapter outcome/state vocabulary is completed alongside worker behavior in 02-05; no worker exists in this migration step.
