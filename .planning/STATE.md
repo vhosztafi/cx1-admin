@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-13T17:53:11.3044438Z"
+last_updated: "2026-09-13T18:18:19.4218957Z"
 last_activity: 2026-09-13
 progress:
   total_phases: 13
   completed_phases: 1
   total_plans: 10
-  completed_plans: 5
+  completed_plans: 6
   percent: 8
 ---
 
@@ -25,11 +25,11 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 ## Current Position
 
 Phase: 2 of 13 (Application and persistence foundation)
-Plan: 02-02 of 6 next; 02-01 scaffold verified
+Plan: 02-03 of 6 next; SQL foundation verified
 Status: In progress — autonomous
-Last activity: 2026-09-13 — 02-01 complete: locked restore, 11 unit tests, API host test, web build/typecheck/lint pass
+Last activity: 2026-09-13 — 02-02 complete: real SQL migrations/seeds/constraints and repeat-process persistence verified
 
-Progress: Phase 1 complete; 1/13 phases. Foundation scaffold started; migrations and authentication pending.
+Progress: Phase 1 complete; 1/13 phases. SQL foundation seeded and verified; authentication and shell pending.
 
 ## Accumulated Context
 
@@ -43,18 +43,18 @@ Progress: Phase 1 complete; 1/13 phases. Foundation scaffold started; migrations
 
 ### Pending Todos
 
-- Execute 02-02 SQL mappings, migrations, guarded demo provisioning and repeatable seeds.
-- Establish real-SQL tests on verified native SQL2022 before claiming persistence.
+- Execute 02-03 cookie authentication, SQL sessions/revocation, CSRF and permissions.
+- Extend real-SQL tests with authentication/authorisation cases; keep business endpoints closed until implemented.
 
 ### Blockers/Concerns
 
-- No implementation blocker identified; detailed schemas, dates, financial rules and API contracts are Phase 1 work.
+- No implementation blocker. Optional Docker runtime remains unverified; native SQL2022 is verified.
 - GSD state patch unexpectedly reset milestone metadata during this session. Recovered with state.milestone-switch; verify metadata before future generic state commands.
 
 ## Session Continuity
 
 Last session: 2026-09-13
-Stopped at: 02-01 complete; read 02-01-SUMMARY.md, then execute 02-02-PLAN.md.
+Stopped at: 02-02 complete; read 02-02-SUMMARY.md, then execute 02-03-PLAN.md. Demo credentials are in ignored .local/demo-password.txt.
 Resume file: None
 
 ## Autonomous continuation
@@ -62,4 +62,5 @@ Resume file: None
 User approved requirements/roadmap and autonomous choices/progression on 2026-09-13. Routine confirmation is no longer required. Keep checks enabled; fix gaps instead of silently deferring them. Mode and auto_advance verified through GSD init.
 
 Thread heartbeat: continue-cover-mga-back-office-mvp, active every 10 minutes. Resume unfinished work in this same task; notify meaningful progress/blockers only; pause on actual milestone completion, user stop or persistent external blocker with no remaining useful work.
+
 
