@@ -133,7 +133,7 @@ test('reviewed agency option meanings match prototype choices and actual DTO enu
 });
 test('reviewed detail bindings resolve to policy fields and categorical answers retain source detail',async()=>{
  const reviews=JSON.parse(await readFile(new URL('../docs/design/reviewed-api-controls.json',import.meta.url),'utf8'));
- const catalogs=await Promise.all(['prototype-detail-questions.json','prototype-quote-questions.json'].map(name=>read(`examples/${name}`)));
+ const catalogs=await Promise.all(['prototype-detail-questions.json','prototype-quote-questions.json','prototype-quote-value-questions.json'].map(name=>read(`examples/${name}`)));
  const catalog={questions:catalogs.flatMap(c=>c.questions)};
  const definitions=policy.$defs;
  const dereference=s=>s.$ref?.startsWith('#/$defs/')?definitions[s.$ref.split('/').at(-1)]:s;
@@ -191,4 +191,17 @@ test('Motor Trade Combined step eight is cover rather than previous insurance',a
  assert.ok(cover.length>0);
  assert.ok(cover.every(q=>q.targetContainer==='cover.responses'));
  assert.ok(!catalog.questions.some(q=>q.stages.some(s=>s.startsWith('Motor Trade Combined:'))&&q.targetContainer==='risk.previousInsurance.responses'));
+});
+test('evidence associations retain item scope and withdrawal cannot masquerade as approval',()=>{
+ const schema=document.components.schemas.ProposalEvidence;
+ assert.ok(schema.properties.riskItemId);assert.ok(!schema.required.includes('riskItemId'));
+ assert.ok(schema.properties.state.enum.includes('withdrawn'));
+ const decision=getOperation('decideProposalEvidence').requestBody.content['application/json'].schema;
+ assert.deepEqual(decision.properties.state.enum,['accepted','rejected']);
+ for(const name of ['Quote','Draft']){
+  const attach=getOperation(`attach${name}Evidence`).requestBody.content['application/json'].schema;
+  assert.ok(attach.required.includes('documentVersionId'));assert.ok(attach.properties.riskItemId);
+  const withdraw=getOperation(`withdraw${name}Evidence`).requestBody.content['application/json'].schema;
+  assert.deepEqual(withdraw.required,['reason']);assert.equal(withdraw.additionalProperties,false);
+ }
 });

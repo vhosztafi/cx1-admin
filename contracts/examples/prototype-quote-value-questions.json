@@ -1,0 +1,215 @@
+{
+  "version": "prototype-quote-value-1",
+  "questions": [
+    {
+      "questionId": "prototype.quote-value.3fd9edd7e66e",
+      "label": "Main or normal occupation",
+      "kind": "text",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-3fd9edd7e66e",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.quote-value.3e4fdf2b682e",
+      "label": "Other activity description",
+      "kind": "text",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-3e4fdf2b682e",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.quote-value.909e1c6eff8c",
+      "label": "Details of any Yes answers",
+      "kind": "text",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-909e1c6eff8c",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.quote-value.2d662a3ec81d",
+      "label": "Details of any Yes answers",
+      "kind": "text",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-2d662a3ec81d",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.quote-value.ec9fcabe7952",
+      "label": "Recovery vehicles — single vehicle capacity",
+      "kind": "count",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-ec9fcabe7952",
+      "sourceOptions": [],
+      "unit": "count"
+    },
+    {
+      "questionId": "prototype.quote-value.4500a357b44b",
+      "label": "Recovery vehicles — two vehicle capacity",
+      "kind": "count",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-4500a357b44b",
+      "sourceOptions": [],
+      "unit": "count"
+    },
+    {
+      "questionId": "prototype.quote-value.35a0dd933924",
+      "label": "Passenger carriers over 8 seats",
+      "kind": "count",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-35a0dd933924",
+      "sourceOptions": [],
+      "unit": "count"
+    },
+    {
+      "questionId": "prototype.quote-value.636aa0774e1c",
+      "label": "Motorcycles, scooters, quads or trikes",
+      "kind": "count",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-636aa0774e1c",
+      "sourceOptions": [],
+      "unit": "count"
+    },
+    {
+      "questionId": "prototype.quote-value.315960b57ab1",
+      "label": "Trade plates held",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-315960b57ab1",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.quote-value.0b9bf2ac4b8f",
+      "label": "Percentage of turnover from overseas work, excluding USA and Canada",
+      "kind": "percentage",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-0b9bf2ac4b8f",
+      "sourceOptions": [],
+      "unit": "basis-points"
+    },
+    {
+      "questionId": "prototype.quote-value.c2b0372b4040",
+      "label": "Percentage of turnover from USA or Canada",
+      "kind": "percentage",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-c2b0372b4040",
+      "sourceOptions": [],
+      "unit": "basis-points"
+    },
+    {
+      "questionId": "prototype.quote-value.b99b3a5b3004",
+      "label": "Details of any Yes answers",
+      "kind": "text",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-b99b3a5b3004",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.quote-value.7adfff3ade76",
+      "label": "Previous insurer",
+      "kind": "text",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-7adfff3ade76",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.quote-value.59c91e8db152",
+      "label": "If not the sole occupier, what other tenants do",
+      "kind": "text",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-59c91e8db152",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.quote-value.acace76b1053",
+      "label": "Distance to the nearest building, where detached",
+      "kind": "text",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-acace76b1053",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.quote-value.5fcb5378a1fd",
+      "label": "Interested party and nature of interest",
+      "kind": "text",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-5fcb5378a1fd",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.quote-value.4799b8daa1ca",
+      "label": "Details of any Yes answers",
+      "kind": "text",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-4799b8daa1ca",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.quote-value.5743fa7db272",
+      "label": "Machinery and plant",
+      "kind": "money",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-5743fa7db272",
+      "sourceOptions": [],
+      "unit": "GBP"
+    },
+    {
+      "questionId": "prototype.quote-value.fa63248f9ae1",
+      "label": "Computers and electronic equipment",
+      "kind": "money",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-fa63248f9ae1",
+      "sourceOptions": [],
+      "unit": "GBP"
+    },
+    {
+      "questionId": "prototype.quote-value.92094fbe9a4b",
+      "label": "Total principals and employees",
+      "kind": "count",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-92094fbe9a4b",
+      "sourceOptions": [],
+      "unit": "count"
+    },
+    {
+      "questionId": "prototype.quote-value.433ec08d2c67",
+      "label": "Machinery used",
+      "kind": "text",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-433ec08d2c67",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.quote-value.4479e664ad2f",
+      "label": "Hazardous processes or substances used",
+      "kind": "text",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-4479e664ad2f",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "questionId": "prototype.quote-value.a0e5d1b910f8",
+      "label": "Details of any No or outstanding answers",
+      "kind": "text",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-a0e5d1b910f8",
+      "sourceOptions": [],
+      "unit": "none"
+    }
+  ]
+}

@@ -64,10 +64,11 @@ export function addReviewedApi({schemas:s,ref:r,text:t,enumeration:e,object:o,ar
  op('post','/admin/users/{userId}/password-reset','adminRequestPasswordReset','user-admin',{existing:true,input:reason,output:r('Job'),status:202});
  op('post','/admin/templates/{configurationId}/preview','previewTemplate','template-admin',{existing:true,input:o({sourceVersionId:id,audience:e('internal','agency','insurer')}),output:r('Job'),status:202});
  op('post','/admin/jobs/retry-batch','retryIntegrationBatch','integration-retry',{input:o({jobs:a(o({jobId:id,etag:t(100)})),reason:t(1000)}),output:o({jobIds:a(id)}),summary:'Retry selected failed jobs atomically after checking every scope and version'});
- s.ProposalEvidence=o({id,documentVersionId:id,requirementCode:t(100),state:e('pending','accepted','rejected'),reason:t(1000),targetRevision:integer});
+ s.ProposalEvidence=o({id,documentVersionId:id,requirementCode:t(100),riskItemId:id,state:e('pending','accepted','rejected','withdrawn'),reason:t(1000),targetRevision:integer},['id','documentVersionId','requirementCode','state','reason','targetRevision']);
  for(const [path,name,permission] of [['/quotes/{quoteId}','Quote','quote-write'],['/drafts/{draftId}','Draft','policy-draft-write']]){
   list(`${path}/evidence`,`list${name}Evidence`,permission,r('ProposalEvidence'));
-  op('post',`${path}/evidence`,`attach${name}Evidence`,permission,{existing:true,lease:name==='Draft',input:o({documentVersionId:id,requirementCode:t(100),reason:t(1000)}),output:r('ProposalEvidence'),status:201});
+  op('post',`${path}/evidence`,`attach${name}Evidence`,permission,{existing:true,lease:name==='Draft',input:o({documentVersionId:id,requirementCode:t(100),riskItemId:id,reason:t(1000)},['documentVersionId','requirementCode','reason']),output:r('ProposalEvidence'),status:201});
+  op('post',`${path}/evidence/{evidenceId}/withdraw`,`withdraw${name}Evidence`,permission,{existing:true,lease:name==='Draft',input:o({reason:t(1000)}),output:r('ProposalEvidence'),summary:'Withdraw evidence association, retaining the document and audit history; verify target ownership and invalidate dependent validation'});
  }
  op('post','/proposal-evidence/{evidenceId}/decision','decideProposalEvidence','underwriting-evidence',{existing:true,input:o({state:e('accepted','rejected'),reason:t(1000)}),output:r('ProposalEvidence')});
  op('post','/referrals/{referralId}/conditions/{conditionId}/evidence','recordReferralConditionEvidence','underwriting-evidence',{existing:true,input:o({decisionId:id,targetHash:t(64),evidenceDocumentVersionId:id,satisfied:b,reason:t(1000)}),output:r('Referral')});

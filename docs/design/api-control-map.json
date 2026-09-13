@@ -1,6 +1,6 @@
 {
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
-  "reviewed": 706,
+  "reviewed": 763,
   "total": 949,
   "complete": false,
   "controls": [
@@ -9311,9 +9311,18 @@
       "label": "Main or normal occupation",
       "requirement": "QUO-02",
       "acceptanceId": "AT-3fd9edd7e66e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote-value.3fd9edd7e66e"
+        }
+      ],
+      "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
     },
     {
       "controlId": "CTL-34613c23e95d",
@@ -9377,9 +9386,18 @@
       "label": "Vehicle sales %",
       "requirement": "QUO-02",
       "acceptanceId": "AT-e4214dae194f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.activities[].turnoverBasisPoints"
+        }
+      ],
+      "activityCode": "vehicle-sales",
+      "reason": "Bind to the stable activity code, convert percent to basis points without truncation, and persist proposal. Rating requires total exactly 10000 and other description when other is positive; incomplete totals may save as draft."
     },
     {
       "controlId": "CTL-a6d4124b2312",
@@ -9387,9 +9405,18 @@
       "label": "Vehicle servicing %",
       "requirement": "QUO-02",
       "acceptanceId": "AT-a6d4124b2312",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.activities[].turnoverBasisPoints"
+        }
+      ],
+      "activityCode": "vehicle-servicing",
+      "reason": "Bind to the stable activity code, convert percent to basis points without truncation, and persist proposal. Rating requires total exactly 10000 and other description when other is positive; incomplete totals may save as draft."
     },
     {
       "controlId": "CTL-bfa3798e8803",
@@ -9397,9 +9424,18 @@
       "label": "Mechanical repair %",
       "requirement": "QUO-02",
       "acceptanceId": "AT-bfa3798e8803",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.activities[].turnoverBasisPoints"
+        }
+      ],
+      "activityCode": "mechanical-repair",
+      "reason": "Bind to the stable activity code, convert percent to basis points without truncation, and persist proposal. Rating requires total exactly 10000 and other description when other is positive; incomplete totals may save as draft."
     },
     {
       "controlId": "CTL-1932e55ba1f3",
@@ -9407,9 +9443,18 @@
       "label": "Breakdown recovery %",
       "requirement": "QUO-02",
       "acceptanceId": "AT-1932e55ba1f3",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.activities[].turnoverBasisPoints"
+        }
+      ],
+      "activityCode": "breakdown-recovery",
+      "reason": "Bind to the stable activity code, convert percent to basis points without truncation, and persist proposal. Rating requires total exactly 10000 and other description when other is positive; incomplete totals may save as draft."
     },
     {
       "controlId": "CTL-0e2bd5ea6a0e",
@@ -9417,9 +9462,18 @@
       "label": "Body repairs %",
       "requirement": "QUO-02",
       "acceptanceId": "AT-0e2bd5ea6a0e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.activities[].turnoverBasisPoints"
+        }
+      ],
+      "activityCode": "body-repair",
+      "reason": "Bind to the stable activity code, convert percent to basis points without truncation, and persist proposal. Rating requires total exactly 10000 and other description when other is positive; incomplete totals may save as draft."
     },
     {
       "controlId": "CTL-f7d84fa890d0",
@@ -9427,9 +9481,18 @@
       "label": "Vehicle valeting %",
       "requirement": "QUO-02",
       "acceptanceId": "AT-f7d84fa890d0",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.activities[].turnoverBasisPoints"
+        }
+      ],
+      "activityCode": "vehicle-valeting",
+      "reason": "Bind to the stable activity code, convert percent to basis points without truncation, and persist proposal. Rating requires total exactly 10000 and other description when other is positive; incomplete totals may save as draft."
     },
     {
       "controlId": "CTL-b3c56b8b3eff",
@@ -9437,9 +9500,18 @@
       "label": "Other activity %",
       "requirement": "QUO-02",
       "acceptanceId": "AT-b3c56b8b3eff",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.activities[].turnoverBasisPoints"
+        }
+      ],
+      "activityCode": "other",
+      "reason": "Bind to the stable activity code, convert percent to basis points without truncation, and persist proposal. Rating requires total exactly 10000 and other description when other is positive; incomplete totals may save as draft."
     },
     {
       "controlId": "CTL-3e4fdf2b682e",
@@ -9447,9 +9519,18 @@
       "label": "Other activity description",
       "requirement": "QUO-02",
       "acceptanceId": "AT-3e4fdf2b682e",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote-value.3e4fdf2b682e"
+        }
+      ],
+      "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
     },
     {
       "controlId": "CTL-ba9d4158ae2c",
@@ -9590,9 +9671,18 @@
       "label": "Details of any Yes answers",
       "requirement": "QUO-02",
       "acceptanceId": "AT-909e1c6eff8c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote-value.909e1c6eff8c"
+        }
+      ],
+      "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
     },
     {
       "controlId": "CTL-1eb374a6eccc",
@@ -9611,9 +9701,17 @@
       "label": "Remove",
       "requirement": "QUO-02",
       "acceptanceId": "AT-d3ad8f8ae9bf",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.drivers"
+        }
+      ],
+      "reason": "Remove the selected stable child ID from the enclosing draft collection, then persist with If-Match; never delete issued history. Reject dangling risk/owner/specification references and require explicit reassignment or removal. Driver removal includes its nested convictions/losses only after explicit confirmation; location removal requires loss reassignment. Shared source row is driver conviction for MT and loss for CC, selected by product/stage, not row index. Recompute totals and invalidate rating/acceptance."
     },
     {
       "controlId": "CTL-fd8ac93bd9a3",
@@ -9621,9 +9719,17 @@
       "label": "Remove",
       "requirement": "QUO-02",
       "acceptanceId": "AT-fd8ac93bd9a3",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.drivers"
+        }
+      ],
+      "reason": "Remove the selected stable child ID from the enclosing draft collection, then persist with If-Match; never delete issued history. Reject dangling risk/owner/specification references and require explicit reassignment or removal. Driver removal includes its nested convictions/losses only after explicit confirmation; location removal requires loss reassignment. Shared source row is driver conviction for MT and loss for CC, selected by product/stage, not row index. Recompute totals and invalidate rating/acceptance."
     },
     {
       "controlId": "CTL-05c2fcf290fc",
@@ -9631,9 +9737,17 @@
       "label": "Remove",
       "requirement": "QUO-02",
       "acceptanceId": "AT-05c2fcf290fc",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.drivers"
+        }
+      ],
+      "reason": "Remove the selected stable child ID from the enclosing draft collection, then persist with If-Match; never delete issued history. Reject dangling risk/owner/specification references and require explicit reassignment or removal. Driver removal includes its nested convictions/losses only after explicit confirmation; location removal requires loss reassignment. Shared source row is driver conviction for MT and loss for CC, selected by product/stage, not row index. Recompute totals and invalidate rating/acceptance."
     },
     {
       "controlId": "CTL-46414cc10100",
@@ -9774,9 +9888,14 @@
       "label": "Evidence received",
       "requirement": "QUO-02",
       "acceptanceId": "AT-ede6aab29eed",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "evidence-workflow",
+      "operationIds": [
+        "listQuoteEvidence",
+        "attachQuoteEvidence",
+        "withdrawQuoteEvidence"
+      ],
+      "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
     },
     {
       "controlId": "CTL-0abdcfa335e7",
@@ -9795,9 +9914,20 @@
       "label": "Remove",
       "requirement": "CC-04",
       "acceptanceId": "AT-fcefa12ff7d2",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.drivers[].convictions"
+        },
+        {
+          "targetPath": "risk.losses"
+        }
+      ],
+      "reason": "Remove the selected stable child ID from the enclosing draft collection, then persist with If-Match; never delete issued history. Reject dangling risk/owner/specification references and require explicit reassignment or removal. Driver removal includes its nested convictions/losses only after explicit confirmation; location removal requires loss reassignment. Shared source row is driver conviction for MT and loss for CC, selected by product/stage, not row index. Recompute totals and invalidate rating/acceptance."
     },
     {
       "controlId": "CTL-7319197087e6",
@@ -9827,9 +9957,17 @@
       "label": "Remove",
       "requirement": "QUO-02",
       "acceptanceId": "AT-95722586bd61",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.vehicles"
+        }
+      ],
+      "reason": "Remove the selected stable child ID from the enclosing draft collection, then persist with If-Match; never delete issued history. Reject dangling risk/owner/specification references and require explicit reassignment or removal. Driver removal includes its nested convictions/losses only after explicit confirmation; location removal requires loss reassignment. Shared source row is driver conviction for MT and loss for CC, selected by product/stage, not row index. Recompute totals and invalidate rating/acceptance."
     },
     {
       "controlId": "CTL-8619e0fbace4",
@@ -9837,9 +9975,17 @@
       "label": "Remove",
       "requirement": "QUO-02",
       "acceptanceId": "AT-8619e0fbace4",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.vehicles"
+        }
+      ],
+      "reason": "Remove the selected stable child ID from the enclosing draft collection, then persist with If-Match; never delete issued history. Reject dangling risk/owner/specification references and require explicit reassignment or removal. Driver removal includes its nested convictions/losses only after explicit confirmation; location removal requires loss reassignment. Shared source row is driver conviction for MT and loss for CC, selected by product/stage, not row index. Recompute totals and invalidate rating/acceptance."
     },
     {
       "controlId": "CTL-49edfbf20fae",
@@ -9934,9 +10080,18 @@
       "label": "Details of any Yes answers",
       "requirement": "QUO-02",
       "acceptanceId": "AT-2d662a3ec81d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote-value.2d662a3ec81d"
+        }
+      ],
+      "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
     },
     {
       "controlId": "CTL-af67cb40b4de",
@@ -9963,9 +10118,18 @@
       "label": "Recovery vehicles — single vehicle capacity",
       "requirement": "QUO-02",
       "acceptanceId": "AT-ec9fcabe7952",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote-value.ec9fcabe7952"
+        }
+      ],
+      "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
     },
     {
       "controlId": "CTL-4500a357b44b",
@@ -9973,9 +10137,18 @@
       "label": "Recovery vehicles — two vehicle capacity",
       "requirement": "QUO-02",
       "acceptanceId": "AT-4500a357b44b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote-value.4500a357b44b"
+        }
+      ],
+      "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
     },
     {
       "controlId": "CTL-35a0dd933924",
@@ -9983,9 +10156,18 @@
       "label": "Passenger carriers over 8 seats",
       "requirement": "QUO-02",
       "acceptanceId": "AT-35a0dd933924",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote-value.35a0dd933924"
+        }
+      ],
+      "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
     },
     {
       "controlId": "CTL-636aa0774e1c",
@@ -9993,9 +10175,18 @@
       "label": "Motorcycles, scooters, quads or trikes",
       "requirement": "QUO-02",
       "acceptanceId": "AT-636aa0774e1c",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote-value.636aa0774e1c"
+        }
+      ],
+      "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
     },
     {
       "controlId": "CTL-315960b57ab1",
@@ -10003,9 +10194,18 @@
       "label": "Trade plates held",
       "requirement": "QUO-02",
       "acceptanceId": "AT-315960b57ab1",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote-value.315960b57ab1"
+        }
+      ],
+      "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
     },
     {
       "controlId": "CTL-58b5bc3f356b",
@@ -10013,9 +10213,17 @@
       "label": "Trade plate numbers",
       "requirement": "QUO-02",
       "acceptanceId": "AT-58b5bc3f356b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.tradePlates"
+        }
+      ],
+      "reason": "Parse one plate per entry, normalise case/spacing, reject duplicate or invalid plates, retain stable item IDs and persist the proposal. Held No with nonempty plates is a validation conflict."
     },
     {
       "controlId": "CTL-009dd2bb8754",
@@ -10023,9 +10231,10 @@
       "label": "Vehicles on the register",
       "requirement": "QUO-02",
       "acceptanceId": "AT-009dd2bb8754",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "Read-only derived count of the two vehicle registers; MID count selects reportable vehicle answers. Never persist a separately editable count that can disagree with the register. Actual submissions use the separately reviewed MID workflow."
     },
     {
       "controlId": "CTL-4f3f78fac1b0",
@@ -10033,9 +10242,10 @@
       "label": "Vehicles to report to the motor insurance database",
       "requirement": "QUO-02",
       "acceptanceId": "AT-4f3f78fac1b0",
-      "status": "pending",
+      "status": "reviewed",
+      "disposition": "client-only",
       "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "reason": "Read-only derived count of the two vehicle registers; MID count selects reportable vehicle answers. Never persist a separately editable count that can disagree with the register. Actual submissions use the separately reviewed MID workflow."
     },
     {
       "controlId": "CTL-ac167725da1f",
@@ -10209,9 +10419,14 @@
       "label": "Proof of discount received",
       "requirement": "QUO-02",
       "acceptanceId": "AT-f635873d20cd",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "evidence-workflow",
+      "operationIds": [
+        "listQuoteEvidence",
+        "attachQuoteEvidence",
+        "withdrawQuoteEvidence"
+      ],
+      "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
     },
     {
       "controlId": "CTL-2beaf3b8d546",
@@ -10366,9 +10581,14 @@
       "label": "Copy of both sides of the photocard licence for every driver",
       "requirement": "QUO-02",
       "acceptanceId": "AT-9fff96d5eae7",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "evidence-workflow",
+      "operationIds": [
+        "listQuoteEvidence",
+        "attachQuoteEvidence",
+        "withdrawQuoteEvidence"
+      ],
+      "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
     },
     {
       "controlId": "CTL-9fe3e32b1d3d",
@@ -10376,9 +10596,14 @@
       "label": "DVLA verified motoring conviction record for every driver",
       "requirement": "QUO-02",
       "acceptanceId": "AT-9fe3e32b1d3d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "evidence-workflow",
+      "operationIds": [
+        "listQuoteEvidence",
+        "attachQuoteEvidence",
+        "withdrawQuoteEvidence"
+      ],
+      "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
     },
     {
       "controlId": "CTL-894165a378c1",
@@ -10386,9 +10611,14 @@
       "label": "Proof of no claims discount — latest renewal notice",
       "requirement": "QUO-02",
       "acceptanceId": "AT-894165a378c1",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "evidence-workflow",
+      "operationIds": [
+        "listQuoteEvidence",
+        "attachQuoteEvidence",
+        "withdrawQuoteEvidence"
+      ],
+      "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
     },
     {
       "controlId": "CTL-107ada5f5bfe",
@@ -10396,9 +10626,14 @@
       "label": "Documentary evidence that the proposer is a motor trader",
       "requirement": "QUO-02",
       "acceptanceId": "AT-107ada5f5bfe",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "evidence-workflow",
+      "operationIds": [
+        "listQuoteEvidence",
+        "attachQuoteEvidence",
+        "withdrawQuoteEvidence"
+      ],
+      "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
     },
     {
       "controlId": "CTL-5b72b50e96bc",
@@ -10861,9 +11096,18 @@
       "label": "Percentage of turnover from overseas work, excluding USA and Canada",
       "requirement": "CC-04",
       "acceptanceId": "AT-0b9bf2ac4b8f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote-value.0b9bf2ac4b8f"
+        }
+      ],
+      "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
     },
     {
       "controlId": "CTL-c2b0372b4040",
@@ -10871,9 +11115,18 @@
       "label": "Percentage of turnover from USA or Canada",
       "requirement": "CC-04",
       "acceptanceId": "AT-c2b0372b4040",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote-value.c2b0372b4040"
+        }
+      ],
+      "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
     },
     {
       "controlId": "CTL-cfb8d4a5494b",
@@ -10995,9 +11248,18 @@
       "label": "Details of any Yes answers",
       "requirement": "CC-04",
       "acceptanceId": "AT-b99b3a5b3004",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote-value.b99b3a5b3004"
+        }
+      ],
+      "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
     },
     {
       "controlId": "CTL-7adfff3ade76",
@@ -11005,9 +11267,18 @@
       "label": "Previous insurer",
       "requirement": "CC-04",
       "acceptanceId": "AT-7adfff3ade76",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote-value.7adfff3ade76"
+        }
+      ],
+      "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
     },
     {
       "controlId": "CTL-0b0b63fca324",
@@ -11034,9 +11305,14 @@
       "label": "Claims experience document held",
       "requirement": "CC-04",
       "acceptanceId": "AT-e48b5c40a127",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "evidence-workflow",
+      "operationIds": [
+        "listQuoteEvidence",
+        "attachQuoteEvidence",
+        "withdrawQuoteEvidence"
+      ],
+      "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
     },
     {
       "controlId": "CTL-385743089b72",
@@ -11085,9 +11361,17 @@
       "label": "Remove",
       "requirement": "CC-04",
       "acceptanceId": "AT-f0cca3137127",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.locations"
+        }
+      ],
+      "reason": "Remove the selected stable child ID from the enclosing draft collection, then persist with If-Match; never delete issued history. Reject dangling risk/owner/specification references and require explicit reassignment or removal. Driver removal includes its nested convictions/losses only after explicit confirmation; location removal requires loss reassignment. Shared source row is driver conviction for MT and loss for CC, selected by product/stage, not row index. Recompute totals and invalidate rating/acceptance."
     },
     {
       "controlId": "CTL-d5ab49275b15",
@@ -11095,9 +11379,17 @@
       "label": "Remove",
       "requirement": "CC-04",
       "acceptanceId": "AT-d5ab49275b15",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.locations"
+        }
+      ],
+      "reason": "Remove the selected stable child ID from the enclosing draft collection, then persist with If-Match; never delete issued history. Reject dangling risk/owner/specification references and require explicit reassignment or removal. Driver removal includes its nested convictions/losses only after explicit confirmation; location removal requires loss reassignment. Shared source row is driver conviction for MT and loss for CC, selected by product/stage, not row index. Recompute totals and invalidate rating/acceptance."
     },
     {
       "controlId": "CTL-ec38529cf3bd",
@@ -11124,9 +11416,18 @@
       "label": "If not the sole occupier, what other tenants do",
       "requirement": "CC-04",
       "acceptanceId": "AT-59c91e8db152",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote-value.59c91e8db152"
+        }
+      ],
+      "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
     },
     {
       "controlId": "CTL-acace76b1053",
@@ -11134,9 +11435,18 @@
       "label": "Distance to the nearest building, where detached",
       "requirement": "CC-04",
       "acceptanceId": "AT-acace76b1053",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote-value.acace76b1053"
+        }
+      ],
+      "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
     },
     {
       "controlId": "CTL-b01896689f29",
@@ -11220,9 +11530,18 @@
       "label": "Interested party and nature of interest",
       "requirement": "CC-04",
       "acceptanceId": "AT-5fcb5378a1fd",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote-value.5fcb5378a1fd"
+        }
+      ],
+      "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
     },
     {
       "controlId": "CTL-1eb02b0beba5",
@@ -11591,9 +11910,18 @@
       "label": "Details of any Yes answers",
       "requirement": "CC-04",
       "acceptanceId": "AT-4799b8daa1ca",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote-value.4799b8daa1ca"
+        }
+      ],
+      "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
     },
     {
       "controlId": "CTL-be47c08f530f",
@@ -11810,9 +12138,18 @@
       "label": "Machinery and plant",
       "requirement": "CC-04",
       "acceptanceId": "AT-5743fa7db272",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "cover.responses.answers",
+          "questionId": "prototype.quote-value.5743fa7db272"
+        }
+      ],
+      "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
     },
     {
       "controlId": "CTL-fa63248f9ae1",
@@ -11820,9 +12157,18 @@
       "label": "Computers and electronic equipment",
       "requirement": "CC-04",
       "acceptanceId": "AT-fa63248f9ae1",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "cover.responses.answers",
+          "questionId": "prototype.quote-value.fa63248f9ae1"
+        }
+      ],
+      "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
     },
     {
       "controlId": "CTL-480819d83a08",
@@ -11925,9 +12271,17 @@
       "label": "Basis",
       "requirement": "CC-04",
       "acceptanceId": "AT-7fd9eb9a4c55",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.businessInterruption.basis"
+        }
+      ],
+      "reason": "Map Gross profit/Gross revenue/Increased cost/Estimated gross profit to explicit BI basis enums; do not collapse estimated gross profit into gross profit."
     },
     {
       "controlId": "CTL-a27790bacfc5",
@@ -12077,9 +12431,17 @@
       "label": "Remove",
       "requirement": "CC-04",
       "acceptanceId": "AT-d3599fa8e33d",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.wages"
+        }
+      ],
+      "reason": "Remove the selected stable child ID from the enclosing draft collection, then persist with If-Match; never delete issued history. Reject dangling risk/owner/specification references and require explicit reassignment or removal. Driver removal includes its nested convictions/losses only after explicit confirmation; location removal requires loss reassignment. Shared source row is driver conviction for MT and loss for CC, selected by product/stage, not row index. Recompute totals and invalidate rating/acceptance."
     },
     {
       "controlId": "CTL-a9582c5204a4",
@@ -12087,9 +12449,17 @@
       "label": "Remove",
       "requirement": "CC-04",
       "acceptanceId": "AT-a9582c5204a4",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.wages"
+        }
+      ],
+      "reason": "Remove the selected stable child ID from the enclosing draft collection, then persist with If-Match; never delete issued history. Reject dangling risk/owner/specification references and require explicit reassignment or removal. Driver removal includes its nested convictions/losses only after explicit confirmation; location removal requires loss reassignment. Shared source row is driver conviction for MT and loss for CC, selected by product/stage, not row index. Recompute totals and invalidate rating/acceptance."
     },
     {
       "controlId": "CTL-b616086b2b64",
@@ -12097,9 +12467,17 @@
       "label": "Remove",
       "requirement": "CC-04",
       "acceptanceId": "AT-b616086b2b64",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.wages"
+        }
+      ],
+      "reason": "Remove the selected stable child ID from the enclosing draft collection, then persist with If-Match; never delete issued history. Reject dangling risk/owner/specification references and require explicit reassignment or removal. Driver removal includes its nested convictions/losses only after explicit confirmation; location removal requires loss reassignment. Shared source row is driver conviction for MT and loss for CC, selected by product/stage, not row index. Recompute totals and invalidate rating/acceptance."
     },
     {
       "controlId": "CTL-92094fbe9a4b",
@@ -12107,9 +12485,18 @@
       "label": "Total principals and employees",
       "requirement": "CC-04",
       "acceptanceId": "AT-92094fbe9a4b",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote-value.92094fbe9a4b"
+        }
+      ],
+      "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
     },
     {
       "controlId": "CTL-433ec08d2c67",
@@ -12117,9 +12504,18 @@
       "label": "Machinery used",
       "requirement": "CC-04",
       "acceptanceId": "AT-433ec08d2c67",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote-value.433ec08d2c67"
+        }
+      ],
+      "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
     },
     {
       "controlId": "CTL-4479e664ad2f",
@@ -12127,9 +12523,18 @@
       "label": "Hazardous processes or substances used",
       "requirement": "CC-04",
       "acceptanceId": "AT-4479e664ad2f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.business.responses.answers",
+          "questionId": "prototype.quote-value.4479e664ad2f"
+        }
+      ],
+      "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
     },
     {
       "controlId": "CTL-901a02ca4441",
@@ -12551,9 +12956,18 @@
       "label": "Details of any No or outstanding answers",
       "requirement": "CC-04",
       "acceptanceId": "AT-a0e5d1b910f8",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "saveQuoteProposal"
+      ],
+      "fieldBindings": [
+        {
+          "targetPath": "risk.declarations.answers",
+          "questionId": "prototype.quote-value.a0e5d1b910f8"
+        }
+      ],
+      "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
     },
     {
       "controlId": "CTL-17b8e4af6aef",
@@ -12636,9 +13050,14 @@
       "label": "Five year claims experience from the previous insurer",
       "requirement": "CC-04",
       "acceptanceId": "AT-73b23541e556",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "evidence-workflow",
+      "operationIds": [
+        "listQuoteEvidence",
+        "attachQuoteEvidence",
+        "withdrawQuoteEvidence"
+      ],
+      "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
     },
     {
       "controlId": "CTL-8edb6a187769",
@@ -12646,9 +13065,14 @@
       "label": "Electrical inspection certificate, with C1 and C2 defects rectified",
       "requirement": "CC-04",
       "acceptanceId": "AT-8edb6a187769",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "evidence-workflow",
+      "operationIds": [
+        "listQuoteEvidence",
+        "attachQuoteEvidence",
+        "withdrawQuoteEvidence"
+      ],
+      "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
     },
     {
       "controlId": "CTL-98e734d0c0dc",
@@ -12656,9 +13080,14 @@
       "label": "Intruder alarm specification and maintenance contract",
       "requirement": "CC-04",
       "acceptanceId": "AT-98e734d0c0dc",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "evidence-workflow",
+      "operationIds": [
+        "listQuoteEvidence",
+        "attachQuoteEvidence",
+        "withdrawQuoteEvidence"
+      ],
+      "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
     },
     {
       "controlId": "CTL-de020621bc82",
@@ -12666,9 +13095,14 @@
       "label": "Health and safety policy and risk assessments",
       "requirement": "CC-04",
       "acceptanceId": "AT-de020621bc82",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "evidence-workflow",
+      "operationIds": [
+        "listQuoteEvidence",
+        "attachQuoteEvidence",
+        "withdrawQuoteEvidence"
+      ],
+      "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
     },
     {
       "controlId": "CTL-edc0a8d5978f",
@@ -12676,9 +13110,14 @@
       "label": "Structural survey, where subsidence cover is requested",
       "requirement": "CC-04",
       "acceptanceId": "AT-edc0a8d5978f",
-      "status": "pending",
-      "operationIds": [],
-      "reason": "Semantic review required; not inferred from source method or handler keywords."
+      "status": "reviewed",
+      "disposition": "evidence-workflow",
+      "operationIds": [
+        "listQuoteEvidence",
+        "attachQuoteEvidence",
+        "withdrawQuoteEvidence"
+      ],
+      "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
     },
     {
       "controlId": "CTL-e4c247b163b3",

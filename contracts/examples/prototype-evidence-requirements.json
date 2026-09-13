@@ -1,0 +1,102 @@
+{
+  "version": "prototype-evidence-1",
+  "requirements": [
+    {
+      "controlId": "CTL-ede6aab29eed",
+      "label": "Evidence received",
+      "requirementCodes": [
+        "photocard-both-sides",
+        "driving-record"
+      ],
+      "scope": "driver"
+    },
+    {
+      "controlId": "CTL-f635873d20cd",
+      "label": "Proof of discount received",
+      "requirementCodes": [
+        "no-claims-proof"
+      ],
+      "scope": "proposal"
+    },
+    {
+      "controlId": "CTL-9fff96d5eae7",
+      "label": "Copy of both sides of the photocard licence for every driver",
+      "requirementCodes": [
+        "photocard-both-sides"
+      ],
+      "scope": "driver"
+    },
+    {
+      "controlId": "CTL-9fe3e32b1d3d",
+      "label": "DVLA verified motoring conviction record for every driver",
+      "requirementCodes": [
+        "driving-record"
+      ],
+      "scope": "driver"
+    },
+    {
+      "controlId": "CTL-894165a378c1",
+      "label": "Proof of no claims discount — latest renewal notice",
+      "requirementCodes": [
+        "no-claims-proof"
+      ],
+      "scope": "proposal"
+    },
+    {
+      "controlId": "CTL-107ada5f5bfe",
+      "label": "Documentary evidence that the proposer is a motor trader",
+      "requirementCodes": [
+        "motor-trader-proof"
+      ],
+      "scope": "proposal"
+    },
+    {
+      "controlId": "CTL-e48b5c40a127",
+      "label": "Claims experience document held",
+      "requirementCodes": [
+        "five-year-claims"
+      ],
+      "scope": "proposal"
+    },
+    {
+      "controlId": "CTL-73b23541e556",
+      "label": "Five year claims experience from the previous insurer",
+      "requirementCodes": [
+        "five-year-claims"
+      ],
+      "scope": "proposal"
+    },
+    {
+      "controlId": "CTL-8edb6a187769",
+      "label": "Electrical inspection certificate, with C1 and C2 defects rectified",
+      "requirementCodes": [
+        "electrical-inspection-remediation"
+      ],
+      "scope": "location"
+    },
+    {
+      "controlId": "CTL-98e734d0c0dc",
+      "label": "Intruder alarm specification and maintenance contract",
+      "requirementCodes": [
+        "alarm-maintenance"
+      ],
+      "scope": "location"
+    },
+    {
+      "controlId": "CTL-de020621bc82",
+      "label": "Health and safety policy and risk assessments",
+      "requirementCodes": [
+        "health-safety-assessments"
+      ],
+      "scope": "proposal"
+    },
+    {
+      "controlId": "CTL-edc0a8d5978f",
+      "label": "Structural survey, where subsidence cover is requested",
+      "requirementCodes": [
+        "subsidence-survey"
+      ],
+      "scope": "location"
+    }
+  ]
+}

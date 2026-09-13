@@ -8112,5 +8112,786 @@
       }
     ],
     "reason": "Reviewed capture field writes this typed proposal path. Names stay as entered; monetary strings, structured addresses and ISO dates are normalised explicitly. Multiple proposer controls preserve array order; months/metres are explicit units."
+  },
+  {
+    "controlId": "CTL-ede6aab29eed",
+    "status": "reviewed",
+    "disposition": "evidence-workflow",
+    "operationIds": [
+      "listQuoteEvidence",
+      "attachQuoteEvidence",
+      "withdrawQuoteEvidence"
+    ],
+    "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
+  },
+  {
+    "controlId": "CTL-f635873d20cd",
+    "status": "reviewed",
+    "disposition": "evidence-workflow",
+    "operationIds": [
+      "listQuoteEvidence",
+      "attachQuoteEvidence",
+      "withdrawQuoteEvidence"
+    ],
+    "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
+  },
+  {
+    "controlId": "CTL-9fff96d5eae7",
+    "status": "reviewed",
+    "disposition": "evidence-workflow",
+    "operationIds": [
+      "listQuoteEvidence",
+      "attachQuoteEvidence",
+      "withdrawQuoteEvidence"
+    ],
+    "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
+  },
+  {
+    "controlId": "CTL-9fe3e32b1d3d",
+    "status": "reviewed",
+    "disposition": "evidence-workflow",
+    "operationIds": [
+      "listQuoteEvidence",
+      "attachQuoteEvidence",
+      "withdrawQuoteEvidence"
+    ],
+    "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
+  },
+  {
+    "controlId": "CTL-894165a378c1",
+    "status": "reviewed",
+    "disposition": "evidence-workflow",
+    "operationIds": [
+      "listQuoteEvidence",
+      "attachQuoteEvidence",
+      "withdrawQuoteEvidence"
+    ],
+    "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
+  },
+  {
+    "controlId": "CTL-107ada5f5bfe",
+    "status": "reviewed",
+    "disposition": "evidence-workflow",
+    "operationIds": [
+      "listQuoteEvidence",
+      "attachQuoteEvidence",
+      "withdrawQuoteEvidence"
+    ],
+    "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
+  },
+  {
+    "controlId": "CTL-e48b5c40a127",
+    "status": "reviewed",
+    "disposition": "evidence-workflow",
+    "operationIds": [
+      "listQuoteEvidence",
+      "attachQuoteEvidence",
+      "withdrawQuoteEvidence"
+    ],
+    "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
+  },
+  {
+    "controlId": "CTL-73b23541e556",
+    "status": "reviewed",
+    "disposition": "evidence-workflow",
+    "operationIds": [
+      "listQuoteEvidence",
+      "attachQuoteEvidence",
+      "withdrawQuoteEvidence"
+    ],
+    "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
+  },
+  {
+    "controlId": "CTL-8edb6a187769",
+    "status": "reviewed",
+    "disposition": "evidence-workflow",
+    "operationIds": [
+      "listQuoteEvidence",
+      "attachQuoteEvidence",
+      "withdrawQuoteEvidence"
+    ],
+    "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
+  },
+  {
+    "controlId": "CTL-98e734d0c0dc",
+    "status": "reviewed",
+    "disposition": "evidence-workflow",
+    "operationIds": [
+      "listQuoteEvidence",
+      "attachQuoteEvidence",
+      "withdrawQuoteEvidence"
+    ],
+    "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
+  },
+  {
+    "controlId": "CTL-de020621bc82",
+    "status": "reviewed",
+    "disposition": "evidence-workflow",
+    "operationIds": [
+      "listQuoteEvidence",
+      "attachQuoteEvidence",
+      "withdrawQuoteEvidence"
+    ],
+    "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
+  },
+  {
+    "controlId": "CTL-edc0a8d5978f",
+    "status": "reviewed",
+    "disposition": "evidence-workflow",
+    "operationIds": [
+      "listQuoteEvidence",
+      "attachQuoteEvidence",
+      "withdrawQuoteEvidence"
+    ],
+    "reason": "Received/checked opens a scoped document-version picker and persists evidence association; per-driver/location requirements need stable riskItemId for every applicable item. Uncheck withdraws associations with reason, never deletes document bytes. Received means attached, not underwriting accepted. Satisfaction derives from current applicable evidence and decisions; preserve errors and refresh after success."
+  },
+  {
+    "controlId": "CTL-3fd9edd7e66e",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote-value.3fd9edd7e66e"
+      }
+    ],
+    "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
+  },
+  {
+    "controlId": "CTL-3e4fdf2b682e",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote-value.3e4fdf2b682e"
+      }
+    ],
+    "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
+  },
+  {
+    "controlId": "CTL-909e1c6eff8c",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote-value.909e1c6eff8c"
+      }
+    ],
+    "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
+  },
+  {
+    "controlId": "CTL-2d662a3ec81d",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote-value.2d662a3ec81d"
+      }
+    ],
+    "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
+  },
+  {
+    "controlId": "CTL-ec9fcabe7952",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote-value.ec9fcabe7952"
+      }
+    ],
+    "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
+  },
+  {
+    "controlId": "CTL-4500a357b44b",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote-value.4500a357b44b"
+      }
+    ],
+    "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
+  },
+  {
+    "controlId": "CTL-35a0dd933924",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote-value.35a0dd933924"
+      }
+    ],
+    "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
+  },
+  {
+    "controlId": "CTL-636aa0774e1c",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote-value.636aa0774e1c"
+      }
+    ],
+    "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
+  },
+  {
+    "controlId": "CTL-315960b57ab1",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote-value.315960b57ab1"
+      }
+    ],
+    "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
+  },
+  {
+    "controlId": "CTL-0b9bf2ac4b8f",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote-value.0b9bf2ac4b8f"
+      }
+    ],
+    "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
+  },
+  {
+    "controlId": "CTL-c2b0372b4040",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote-value.c2b0372b4040"
+      }
+    ],
+    "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
+  },
+  {
+    "controlId": "CTL-b99b3a5b3004",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote-value.b99b3a5b3004"
+      }
+    ],
+    "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
+  },
+  {
+    "controlId": "CTL-7adfff3ade76",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote-value.7adfff3ade76"
+      }
+    ],
+    "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
+  },
+  {
+    "controlId": "CTL-59c91e8db152",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote-value.59c91e8db152"
+      }
+    ],
+    "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
+  },
+  {
+    "controlId": "CTL-acace76b1053",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote-value.acace76b1053"
+      }
+    ],
+    "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
+  },
+  {
+    "controlId": "CTL-5fcb5378a1fd",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote-value.5fcb5378a1fd"
+      }
+    ],
+    "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
+  },
+  {
+    "controlId": "CTL-4799b8daa1ca",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote-value.4799b8daa1ca"
+      }
+    ],
+    "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
+  },
+  {
+    "controlId": "CTL-5743fa7db272",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "cover.responses.answers",
+        "questionId": "prototype.quote-value.5743fa7db272"
+      }
+    ],
+    "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
+  },
+  {
+    "controlId": "CTL-fa63248f9ae1",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "cover.responses.answers",
+        "questionId": "prototype.quote-value.fa63248f9ae1"
+      }
+    ],
+    "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
+  },
+  {
+    "controlId": "CTL-92094fbe9a4b",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote-value.92094fbe9a4b"
+      }
+    ],
+    "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
+  },
+  {
+    "controlId": "CTL-433ec08d2c67",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote-value.433ec08d2c67"
+      }
+    ],
+    "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
+  },
+  {
+    "controlId": "CTL-4479e664ad2f",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.responses.answers",
+        "questionId": "prototype.quote-value.4479e664ad2f"
+      }
+    ],
+    "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
+  },
+  {
+    "controlId": "CTL-a0e5d1b910f8",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.declarations.answers",
+        "questionId": "prototype.quote-value.a0e5d1b910f8"
+      }
+    ],
+    "reason": "Explicitly reviewed field uses a pinned typed question. Percentages convert exactly to basis points; money uses two decimal GBP; counts are nonnegative integers. Free-text distance retains supplied units without guessing. Applicability and cross-field totals require product validation."
+  },
+  {
+    "controlId": "CTL-e4214dae194f",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.activities[].turnoverBasisPoints"
+      }
+    ],
+    "activityCode": "vehicle-sales",
+    "reason": "Bind to the stable activity code, convert percent to basis points without truncation, and persist proposal. Rating requires total exactly 10000 and other description when other is positive; incomplete totals may save as draft."
+  },
+  {
+    "controlId": "CTL-a6d4124b2312",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.activities[].turnoverBasisPoints"
+      }
+    ],
+    "activityCode": "vehicle-servicing",
+    "reason": "Bind to the stable activity code, convert percent to basis points without truncation, and persist proposal. Rating requires total exactly 10000 and other description when other is positive; incomplete totals may save as draft."
+  },
+  {
+    "controlId": "CTL-bfa3798e8803",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.activities[].turnoverBasisPoints"
+      }
+    ],
+    "activityCode": "mechanical-repair",
+    "reason": "Bind to the stable activity code, convert percent to basis points without truncation, and persist proposal. Rating requires total exactly 10000 and other description when other is positive; incomplete totals may save as draft."
+  },
+  {
+    "controlId": "CTL-1932e55ba1f3",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.activities[].turnoverBasisPoints"
+      }
+    ],
+    "activityCode": "breakdown-recovery",
+    "reason": "Bind to the stable activity code, convert percent to basis points without truncation, and persist proposal. Rating requires total exactly 10000 and other description when other is positive; incomplete totals may save as draft."
+  },
+  {
+    "controlId": "CTL-0e2bd5ea6a0e",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.activities[].turnoverBasisPoints"
+      }
+    ],
+    "activityCode": "body-repair",
+    "reason": "Bind to the stable activity code, convert percent to basis points without truncation, and persist proposal. Rating requires total exactly 10000 and other description when other is positive; incomplete totals may save as draft."
+  },
+  {
+    "controlId": "CTL-f7d84fa890d0",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.activities[].turnoverBasisPoints"
+      }
+    ],
+    "activityCode": "vehicle-valeting",
+    "reason": "Bind to the stable activity code, convert percent to basis points without truncation, and persist proposal. Rating requires total exactly 10000 and other description when other is positive; incomplete totals may save as draft."
+  },
+  {
+    "controlId": "CTL-b3c56b8b3eff",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.business.activities[].turnoverBasisPoints"
+      }
+    ],
+    "activityCode": "other",
+    "reason": "Bind to the stable activity code, convert percent to basis points without truncation, and persist proposal. Rating requires total exactly 10000 and other description when other is positive; incomplete totals may save as draft."
+  },
+  {
+    "controlId": "CTL-009dd2bb8754",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Read-only derived count of the two vehicle registers; MID count selects reportable vehicle answers. Never persist a separately editable count that can disagree with the register. Actual submissions use the separately reviewed MID workflow."
+  },
+  {
+    "controlId": "CTL-4f3f78fac1b0",
+    "status": "reviewed",
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Read-only derived count of the two vehicle registers; MID count selects reportable vehicle answers. Never persist a separately editable count that can disagree with the register. Actual submissions use the separately reviewed MID workflow."
+  },
+  {
+    "controlId": "CTL-58b5bc3f356b",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.tradePlates"
+      }
+    ],
+    "reason": "Parse one plate per entry, normalise case/spacing, reject duplicate or invalid plates, retain stable item IDs and persist the proposal. Held No with nonempty plates is a validation conflict."
+  },
+  {
+    "controlId": "CTL-7fd9eb9a4c55",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.businessInterruption.basis"
+      }
+    ],
+    "reason": "Map Gross profit/Gross revenue/Increased cost/Estimated gross profit to explicit BI basis enums; do not collapse estimated gross profit into gross profit."
+  },
+  {
+    "controlId": "CTL-d3ad8f8ae9bf",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.drivers"
+      }
+    ],
+    "reason": "Remove the selected stable child ID from the enclosing draft collection, then persist with If-Match; never delete issued history. Reject dangling risk/owner/specification references and require explicit reassignment or removal. Driver removal includes its nested convictions/losses only after explicit confirmation; location removal requires loss reassignment. Shared source row is driver conviction for MT and loss for CC, selected by product/stage, not row index. Recompute totals and invalidate rating/acceptance."
+  },
+  {
+    "controlId": "CTL-fd8ac93bd9a3",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.drivers"
+      }
+    ],
+    "reason": "Remove the selected stable child ID from the enclosing draft collection, then persist with If-Match; never delete issued history. Reject dangling risk/owner/specification references and require explicit reassignment or removal. Driver removal includes its nested convictions/losses only after explicit confirmation; location removal requires loss reassignment. Shared source row is driver conviction for MT and loss for CC, selected by product/stage, not row index. Recompute totals and invalidate rating/acceptance."
+  },
+  {
+    "controlId": "CTL-05c2fcf290fc",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.drivers"
+      }
+    ],
+    "reason": "Remove the selected stable child ID from the enclosing draft collection, then persist with If-Match; never delete issued history. Reject dangling risk/owner/specification references and require explicit reassignment or removal. Driver removal includes its nested convictions/losses only after explicit confirmation; location removal requires loss reassignment. Shared source row is driver conviction for MT and loss for CC, selected by product/stage, not row index. Recompute totals and invalidate rating/acceptance."
+  },
+  {
+    "controlId": "CTL-fcefa12ff7d2",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.drivers[].convictions"
+      },
+      {
+        "targetPath": "risk.losses"
+      }
+    ],
+    "reason": "Remove the selected stable child ID from the enclosing draft collection, then persist with If-Match; never delete issued history. Reject dangling risk/owner/specification references and require explicit reassignment or removal. Driver removal includes its nested convictions/losses only after explicit confirmation; location removal requires loss reassignment. Shared source row is driver conviction for MT and loss for CC, selected by product/stage, not row index. Recompute totals and invalidate rating/acceptance."
+  },
+  {
+    "controlId": "CTL-95722586bd61",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.vehicles"
+      }
+    ],
+    "reason": "Remove the selected stable child ID from the enclosing draft collection, then persist with If-Match; never delete issued history. Reject dangling risk/owner/specification references and require explicit reassignment or removal. Driver removal includes its nested convictions/losses only after explicit confirmation; location removal requires loss reassignment. Shared source row is driver conviction for MT and loss for CC, selected by product/stage, not row index. Recompute totals and invalidate rating/acceptance."
+  },
+  {
+    "controlId": "CTL-8619e0fbace4",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.vehicles"
+      }
+    ],
+    "reason": "Remove the selected stable child ID from the enclosing draft collection, then persist with If-Match; never delete issued history. Reject dangling risk/owner/specification references and require explicit reassignment or removal. Driver removal includes its nested convictions/losses only after explicit confirmation; location removal requires loss reassignment. Shared source row is driver conviction for MT and loss for CC, selected by product/stage, not row index. Recompute totals and invalidate rating/acceptance."
+  },
+  {
+    "controlId": "CTL-f0cca3137127",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.locations"
+      }
+    ],
+    "reason": "Remove the selected stable child ID from the enclosing draft collection, then persist with If-Match; never delete issued history. Reject dangling risk/owner/specification references and require explicit reassignment or removal. Driver removal includes its nested convictions/losses only after explicit confirmation; location removal requires loss reassignment. Shared source row is driver conviction for MT and loss for CC, selected by product/stage, not row index. Recompute totals and invalidate rating/acceptance."
+  },
+  {
+    "controlId": "CTL-d5ab49275b15",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.locations"
+      }
+    ],
+    "reason": "Remove the selected stable child ID from the enclosing draft collection, then persist with If-Match; never delete issued history. Reject dangling risk/owner/specification references and require explicit reassignment or removal. Driver removal includes its nested convictions/losses only after explicit confirmation; location removal requires loss reassignment. Shared source row is driver conviction for MT and loss for CC, selected by product/stage, not row index. Recompute totals and invalidate rating/acceptance."
+  },
+  {
+    "controlId": "CTL-d3599fa8e33d",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.wages"
+      }
+    ],
+    "reason": "Remove the selected stable child ID from the enclosing draft collection, then persist with If-Match; never delete issued history. Reject dangling risk/owner/specification references and require explicit reassignment or removal. Driver removal includes its nested convictions/losses only after explicit confirmation; location removal requires loss reassignment. Shared source row is driver conviction for MT and loss for CC, selected by product/stage, not row index. Recompute totals and invalidate rating/acceptance."
+  },
+  {
+    "controlId": "CTL-a9582c5204a4",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.wages"
+      }
+    ],
+    "reason": "Remove the selected stable child ID from the enclosing draft collection, then persist with If-Match; never delete issued history. Reject dangling risk/owner/specification references and require explicit reassignment or removal. Driver removal includes its nested convictions/losses only after explicit confirmation; location removal requires loss reassignment. Shared source row is driver conviction for MT and loss for CC, selected by product/stage, not row index. Recompute totals and invalidate rating/acceptance."
+  },
+  {
+    "controlId": "CTL-b616086b2b64",
+    "status": "reviewed",
+    "disposition": "edit-then-save",
+    "operationIds": [
+      "saveQuoteProposal"
+    ],
+    "fieldBindings": [
+      {
+        "targetPath": "risk.wages"
+      }
+    ],
+    "reason": "Remove the selected stable child ID from the enclosing draft collection, then persist with If-Match; never delete issued history. Reject dangling risk/owner/specification references and require explicit reassignment or removal. Driver removal includes its nested convictions/losses only after explicit confirmation; location removal requires loss reassignment. Shared source row is driver conviction for MT and loss for CC, selected by product/stage, not row index. Recompute totals and invalidate rating/acceptance."
   }
 ]
