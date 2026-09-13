@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Approved by the user on 2026-09-13. Autonomous research, planning, implementation and transitions authorised. Phase 1 design is complete; Phase 2 shell is verified; durable platform behavior is next.
+**Status:** Approved by the user on 2026-09-13. Autonomous research, planning, implementation and transitions authorised. Phase 1 design is complete; Phase 2 plans 02-01 through 02-05 are complete; foundation-wide verification (02-06) is next.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 

@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-13T22:24:33Z"
+last_updated: "2026-09-13T22:52:13Z"
 last_activity: 2026-09-13
 progress:
   total_phases: 13
   completed_phases: 1
   total_plans: 10
-  completed_plans: 8
+  completed_plans: 9
   percent: 8
 ---
 
@@ -20,16 +20,16 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Phase 2 shell/browser flow verified; durable platform behavior next.
+**Current focus:** Phase 2 durable operations verified; foundation-wide acceptance gate next.
 
 ## Current Position
 
 Phase: 2 of 13 (Application and persistence foundation)
-Plan: 02-05 of 6 in progress; admin UI built and linted; browser/visual verification pending
+Plan: 02-06 of 6 next; 02-01 through 02-05 complete
 Status: In progress — autonomous
-Last activity: 2026-09-13 — 02-05 admin UI implemented; six frontend tests, build/lint/typecheck, 53 design and focused SQL DTO checks pass
+Last activity: 2026-09-13 — 02-05 complete: SQL/process recovery and operational/shell browser checks pass; mobile table and selector fixes verified
 
-Progress: Phase 1 complete; 1/13 phases. SQL, local authentication and shell verified; durable workers and foundation gate pending.
+Progress: Phase 1 complete; 1/13 phases. SQL, local authentication, shell and durable operations verified; foundation gate pending.
 
 ## Accumulated Context
 
@@ -43,8 +43,8 @@ Progress: Phase 1 complete; 1/13 phases. SQL, local authentication and shell ver
 
 ### Pending Todos
 
-- Execute 02-05 durable audit/idempotency/outbox/provider/inbox behavior and operational views.
-- Then execute 02-06 foundation acceptance; keep business endpoints closed until implemented.
+- Execute 02-06 fresh setup/repeat seed, CI, code/security/UI review and foundation verification.
+- Keep future business endpoints closed until their owning phases implement and verify them.
 
 ### Blockers/Concerns
 
@@ -54,7 +54,7 @@ Progress: Phase 1 complete; 1/13 phases. SQL, local authentication and shell ver
 ## Session Continuity
 
 Last session: 2026-09-13
-Stopped at: Read 02-05-PROGRESS.md; resume admin browser/visual checks and demo recovery fixture. UI built in 3b39c3f; APIs and hosted recovery verified. Demo credentials remain in ignored .local/demo-password.txt; test servers stopped.
+Stopped at: Read 02-05-SUMMARY.md, then execute 02-06-PLAN.md. Operational APIs/UI and actual process/browser recovery verified. Native SQL profile only; Docker runtime and human UAT not claimed. Test servers stopped; secret stays in ignored .local/demo-password.txt.
 Resume file: None
 
 ## Autonomous continuation
