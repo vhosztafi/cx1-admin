@@ -1,0 +1,4348 @@
+{
+  "source": "docs/prototype/Cover MGA Back Office-4.html",
+  "sha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
+  "note": "Extracted candidates for manual review, not a complete or verified behavioural inventory. Line numbers refer to prototype-template.txt.",
+  "templateLines": 6379,
+  "evidence": [
+    {
+      "line": 820,
+      "method": "(template)",
+      "text": "{group:'Drivers', title:'Add named driver — Rebecca Hall', before:'4 named drivers', after:'Rebecca Hall · DOB 14/03/1988 · full UK licence 9 yrs · no claims', state:'Valid', tone:'ok', msg:''},"
+    },
+    {
+      "line": 821,
+      "method": "(template)",
+      "text": "{group:'Drivers', title:'Add named driver — Liam Doherty', before:'4 named drivers', after:'Liam Doherty · DOB 02/11/2003 · full UK licence 2 yrs · 1 fault claim (2025)', state:'Needs information', tone:'warn', msg:'Licence number and date of test required before underwriting can assess. Referral UW-14 triggered: driver under 25 with a fault claim in the last three years.'},"
+    },
+    {
+      "line": 822,
+      "method": "(template)",
+      "text": "{group:'Drivers', title:'Remove named driver — Kevin Pryce', before:'Kevin Pryce · named driver since 01/01/2025', after:'Removed with effect from 15/09/2026', state:'Valid', tone:'ok', msg:''},"
+    },
+    {
+      "line": 823,
+      "method": "(template)",
+      "text": "{group:'Premises', title:'Amend premises address — location 2', before:'Unit 4 Brook Road, Doncaster DN4 8HG · alarm: local bell', after:'Unit 11 Foundry Park, Doncaster DN4 5RT · alarm: NACOSS remote signalling, CCTV', state:'Valid', tone:'ok', msg:'Rating factor change: postcode district DN4 8 to DN4 5.'},"
+    },
+    {
+      "line": 824,
+      "method": "(template)",
+      "text": "{group:'Cover', title:'Increase stock & custody limit', before:'£100,000 · any one vehicle £35,000', after:'£150,000 · any one vehicle £35,000', state:'Referral', tone:'warn', msg:'Exceeds delegated authority of £125,000 — requires Capacity Provider A approval before issue.'}"
+    },
+    {
+      "line": 875,
+      "method": "(template)",
+      "text": "{title:'Broker requested MTA', meta:'Amy Jones · 07/09/2026 11:24', body:'Brightside emailed requesting two additional drivers, removal of K Pryce and an increase to stock cover. Draft MTA-007 raised.'},"
+    },
+    {
+      "line": 876,
+      "method": "(template)",
+      "text": "{title:'Licence check outstanding', meta:'Amy Jones · 07/09/2026 14:02', body:'Chased licence details for L Doherty. Referral cannot be assessed until received.'},"
+    },
+    {
+      "line": 877,
+      "method": "(template)",
+      "text": "{title:'Premises inspection', meta:'James Smith · 22/08/2026 09:10', body:'Doncaster premises survey satisfactory. No conditions applied.'}"
+    },
+    {
+      "line": 885,
+      "method": "(template)",
+      "text": "{title:'Task created by workflow rule UW-14', meta:'System · 07/09/2026 11:26', body:'Referral: driver under 25 with fault claim in last 3 years.'},"
+    },
+    {
+      "line": 886,
+      "method": "(template)",
+      "text": "{title:'Awaiting information from agency', meta:'Amy Jones · 07/09/2026 14:03', body:'Licence details requested from Brightside.'}"
+    },
+    {
+      "line": 901,
+      "method": "componentDidMount",
+      "text": "componentDidMount() {"
+    },
+    {
+      "line": 922,
+      "method": "badgeStyle",
+      "text": "badgeStyle(tone) {"
+    },
+    {
+      "line": 926,
+      "method": "btn",
+      "text": "btn(kind) {"
+    },
+    {
+      "line": 934,
+      "method": "railBtn",
+      "text": "railBtn(kind) {"
+    },
+    {
+      "line": 940,
+      "method": "c",
+      "text": "c(text, o) {"
+    },
+    {
+      "line": 957,
+      "method": "c",
+      "text": "onClick: o.go ? (e) => { this.stop(e); this.go(o.go, o.tab); } : (o.onClick || null)"
+    },
+    {
+      "line": 960,
+      "method": "head",
+      "text": "head(cols) {"
+    },
+    {
+      "line": 966,
+      "method": "row",
+      "text": "row(cells, o) {"
+    },
+    {
+      "line": 968,
+      "method": "row",
+      "text": "return {cells: cells, style: o.go || o.onClick ? 'cursor:pointer' : '', onClick: o.go ? () => this.go(o.go, o.tab) : (o.onClick || null)};"
+    },
+    {
+      "line": 970,
+      "method": "sec",
+      "text": "sec(o) {"
+    },
+    {
+      "line": 973,
+      "method": "sec",
+      "text": "hasHead: !!o.title, title: o.title || '', note: o.note || '',"
+    },
+    {
+      "line": 1001,
+      "method": "f",
+      "text": "f(label, value, o) {"
+    },
+    {
+      "line": 1008,
+      "method": "f",
+      "text": "return {label: label, value: value, style: sp, hint: o.hint || '', onClick: o.go ? () => this.go(o.go, o.tab) : (o.onClick || null)};"
+    },
+    {
+      "line": 1010,
+      "method": "act",
+      "text": "act(label, o) {"
+    },
+    {
+      "line": 1013,
+      "method": "act",
+      "text": "label: label, style: this.railBtn(o.kind), title: o.title || '',"
+    },
+    {
+      "line": 1015,
+      "method": "act",
+      "text": "onClick: o.kind === 'off' ? null : (o.go ? () => this.go(o.go, o.tab) : (o.onClick || null))"
+    },
+    {
+      "line": 1018,
+      "method": "tl",
+      "text": "tl(title, meta, body, tone) {"
+    },
+    {
+      "line": 1020,
+      "method": "tl",
+      "text": "return {title: title, meta: meta, body: body || '', dotStyle: 'width:8px;height:8px;border-radius:50%;background:' + t.fg + ';margin-top:6px;flex:0 0 8px'};"
+    },
+    {
+      "line": 1022,
+      "method": "bar",
+      "text": "bar(label, value, pct, tone) {"
+    },
+    {
+      "line": 1026,
+      "method": "input",
+      "text": "input(label, key, value, o) {"
+    },
+    {
+      "line": 1038,
+      "method": "fv",
+      "text": "fv(key, fallback) { const v = this.state.form[key]; return v === undefined ? fallback : v; }"
+    },
+    {
+      "line": 1041,
+      "method": "db",
+      "text": "db() {"
+    },
+    {
+      "line": 1074,
+      "method": "db",
+      "text": "{ref:'TSK-2291', title:'Review additional driver referral', type:'Underwriting referral', pri:'High', tone:'warn', link:'MTA-007 · PN/CC/000622', due:'12/09/2026', status:'Awaiting information', owner:'James Smith', go:'task'},"
+    },
+    {
+      "line": 1075,
+      "method": "db",
+      "text": "{ref:'TSK-2288', title:'Stock limit above binder authority — obtain insurer sign-off', type:'Authority referral', pri:'High', tone:'warn', link:'MTA-007 · PN/CC/000622', due:'12/09/2026', status:'Open', owner:'James Smith'},"
+    },
+    {
+      "line": 1076,
+      "method": "db",
+      "text": "{ref:'TSK-2276', title:'Chase TOBA from Pennine Broking', type:'Agency onboarding', pri:'Medium', tone:'grey', link:'AG-0155', due:'09/09/2026', status:'Due today', owner:'Mark Ellery'},"
+    },
+    {
+      "line": 1077,
+      "method": "db",
+      "text": "{ref:'TSK-2271', title:'MID exception — vehicle YE19 KTX not confirmed', type:'Data exception', pri:'Medium', tone:'grey', link:'PN/CC/000622', due:'08/09/2026', status:'Overdue', owner:'Amy Jones'},"
+    },
+    {
+      "line": 1078,
+      "method": "db",
+      "text": "{ref:'TSK-2265', title:'Issue renewal invitation — Kestrel Recovery', type:'Renewal', pri:'Medium', tone:'grey', link:'PN/CC/000571', due:'15/09/2026', status:'In progress', owner:'Amy Jones'},"
+    },
+    {
+      "line": 1079,
+      "method": "db",
+      "text": "{ref:'TSK-2240', title:'Send quotation to Fenwick Commercials', type:'Servicing', pri:'Low', tone:'grey', link:'QT/MT/004168', due:'05/09/2026', status:'Completed', owner:'Amy Jones'}"
+    },
+    {
+      "line": 1085,
+      "method": "pDashboard",
+      "text": "pDashboard() {"
+    },
+    {
+      "line": 1089,
+      "method": "pDashboard",
+      "text": "title: 'Good morning, James',"
+    },
+    {
+      "line": 1092,
+      "method": "pDashboard",
+      "text": "{label:'New Quote', style: this.btn('primary'), onClick: () => this.setState({modal:{kind:'newquote'}})},"
+    },
+    {
+      "line": 1093,
+      "method": "pDashboard",
+      "text": "{label:'Advanced Search', style: this.btn('ghost'), onClick: () => this.go('search')},"
+    },
+    {
+      "line": 1094,
+      "method": "pDashboard",
+      "text": "{label:'View My Tasks', style: this.btn('ghost'), onClick: () => this.go('tasks')}"
+    },
+    {
+      "line": 1104,
+      "method": "pDashboard",
+      "text": "this.sec({kind:'table', w:'60%', title:'My tasks', note:'Assigned to James Smith', actionLabel:'Open task dashboard', onAction: () => this.go('tasks'),"
+    },
+    {
+      "line": 1114,
+      "method": "pDashboard",
+      "text": "this.sec({kind:'timeline', w:'26%', title:'Recent activity', note:'Records you follow',"
+    },
+    {
+      "line": 1122,
+      "method": "pDashboard",
+      "text": "this.sec({kind:'table', w:'60%', title:'Underwriting & servicing queue', note:'Pending adjustments and referrals across the team',"
+    },
+    {
+      "line": 1131,
+      "method": "pDashboard",
+      "text": "this.sec({kind:'bars', w:'26%', title:'Open workload by type', note:'Team · last 7 days', footer:'Counts are open items at 09/09/2026 08:00.',"
+    },
+    {
+      "line": 1138,
+      "method": "policyMenu",
+      "text": "policyMenu() {"
+    },
+    {
+      "line": 1140,
+      "method": "policyMenu",
+      "text": "{label:'Make an Adjustment', hint:'MTA', onClick: () => this.go('mta')},"
+    },
+    {
+      "line": 1141,
+      "method": "policyMenu",
+      "text": "{label:'Start Renewal', hint:'PN/CC/000571 demo', onClick: () => this.go('renewal')},"
+    },
+    {
+      "line": 1142,
+      "method": "policyMenu",
+      "text": "{label:'Send Documents', onClick: () => this.toast('Document pack queued for brightside@ (mock send).', '', null)},"
+    },
+    {
+      "line": 1143,
+      "method": "policyMenu",
+      "text": "{label:'Create Task', onClick: () => this.setState({modal:{kind:'task'}})},"
+    },
+    {
+      "line": 1144,
+      "method": "policyMenu",
+      "text": "{label:'Add Note', onClick: () => this.setTab('Notes')},"
+    },
+    {
+      "line": 1145,
+      "method": "policyMenu",
+      "text": "{label:'Log an Incident', hint:'Claims handoff', onClick: () => this.go('logclaim')},"
+    },
+    {
+      "line": 1146,
+      "method": "policyMenu",
+      "text": "{label:'Clone to New Quote', onClick: () => this.toast('Cloned to draft quote QT/MT/004190 (mock).', 'Open', () => this.go('quote'))},"
+    },
+    {
+      "line": 1147,
+      "method": "policyMenu",
+      "text": "{label:'View transactions & versions', onClick: () => this.setTab('Transactions')},"
+    },
+    {
+      "line": 1148,
+      "method": "policyMenu",
+      "text": "{label:'Cancel Policy', tone:'danger', onClick: () => this.setState({modal:{kind:'cancel'}})}"
+    },
+    {
+      "line": 1152,
+      "method": "pPolicy",
+      "text": "pPolicy() {"
+    },
+    {
+      "line": 1157,
+      "method": "pPolicy",
+      "text": "type: 'Policy', title: 'Smith Motor Traders Ltd', sub: 'Main contact David Smith · Limited company · Company no. 08812446',"
+    },
+    {
+      "line": 1169,
+      "method": "pPolicy",
+      "text": "tabs: tabs, tab: tab"
+    },
+    {
+      "line": 1176,
+      "method": "pPolicy",
+      "text": "this.sec({kind:'fields', w:'480px', title:'Policy summary', cols:'1fr 1fr',"
+    },
+    {
+      "line": 1189,
+      "method": "pPolicy",
+      "text": "this.sec({kind:'fields', w:'420px', title:'Motor trade risk snapshot', note:'As at in-force version 6', cols:'1fr 1fr',"
+    },
+    {
+      "line": 1198,
+      "method": "pPolicy",
+      "text": "this.sec({kind:'fields', w:'480px', title:'Finance snapshot', note:'Full term to 31/12/2027 · mock figures', cols:'1fr 1fr',"
+    },
+    {
+      "line": 1209,
+      "method": "pPolicy",
+      "text": "this.sec({kind:'timeline', w:'480px', title:'Latest notes', actionLabel:'All notes', onAction: () => this.setTab('Notes'), items: this.state.notes.map((n) => this.tl(n.title, n.meta, n.body))}),"
+    },
+    {
+      "line": 1210,
+      "method": "pPolicy",
+      "text": "this.sec({kind:'table', w:'420px', title:'Current documents', note:'Applicable to version 6', actionLabel:'All documents', onAction: () => this.setTab('Documents'),"
+    },
+    {
+      "line": 1220,
+      "method": "pPolicy",
+      "text": "this.sec({kind:'actions', title:'Actions', note:'Permission: senior underwriter · same list as the header menu',"
+    },
+    {
+      "line": 1221,
+      "method": "pPolicy",
+      "text": "items: this.policyMenu().map((m, i) => this.act(m.label, {"
+    },
+    {
+      "line": 1223,
+      "method": "pPolicy",
+      "text": "hint: m.hint || '', onClick: m.onClick"
+    },
+    {
+      "line": 1225,
+      "method": "pPolicy",
+      "text": "this.sec({kind:'fields', title:'Authority & compliance', cols:'1fr',"
+    },
+    {
+      "line": 1232,
+      "method": "pPolicy",
+      "text": "this.sec({kind:'table', title:'Open tasks', actionLabel:'All', onAction: () => this.setTab('Tasks'),"
+    },
+    {
+      "line": 1245,
+      "method": "policyTab",
+      "text": "policyTab(tab) {"
+    },
+    {
+      "line": 1249,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'fields', w:'100%', title:'Insured business', note:'Business account — not an individual policyholder', cols:'repeat(3,1fr)', actionLabel:'Propose a change', onAction: () => this.go('mta'),"
+    },
+    {
+      "line": 1255,
+      "method": "policyTab",
+      "text": "S.push(this.sec(Object.assign({kind:'table', w:'560px', title:'Trade activities',"
+    },
+    {
+      "line": 1263,
+      "method": "policyTab",
+      "text": "S.push(this.sec(Object.assign({kind:'table', w:'560px', title:'Trading premises',"
+    },
+    {
+      "line": 1269,
+      "method": "policyTab",
+      "text": "S.push(this.sec(Object.assign({kind:'table', w:'100%', title:'Named drivers', note:'Driver basis: named drivers only — no any-driver cover',"
+    },
+    {
+      "line": 1277,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'fields', w:'520px', title:'Stock, custody & road risks basis', cols:'1fr 1fr',"
+    },
+    {
+      "line": 1286,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'fields', w:'480px', title:'Motor trade experience', note:'As declared on the proposal and carried through each renewal', cols:'1fr 1fr',"
+    },
+    {
+      "line": 1295,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Activities affecting appetite', note:'Proposal questions A7 to A9 — answers in force',"
+    },
+    {
+      "line": 1306,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Underwriting declarations', note:'Answered for the insured and every named driver',"
+    },
+    {
+      "line": 1317,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'fields', w:'440px', title:'Previous insurance and no claims discount', cols:'1fr 1fr',"
+    },
+    {
+      "line": 1327,
+      "method": "policyTab",
+      "text": "S.push(this.sec(Object.assign({kind:'table', w:'100%', title:'Cover sections in force', note:'Motor Trade Combined — sections are configured per policy, not fixed by product',"
+    },
+    {
+      "line": 1337,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'table', w:'620px', title:'Endorsements & warranties',"
+    },
+    {
+      "line": 1344,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'fields', w:'380px', title:'Insurer & product', cols:'1fr',"
+    },
+    {
+      "line": 1356,
+      "method": "policyTab",
+      "text": "S.push(this.sec(Object.assign({kind:'table', w:'100%', title:'Vehicle register', note:'18 vehicles · road risks section', footer:'Showing 6 of 18 vehicles', paged:true,"
+    },
+    {
+      "line": 1366,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'fields', w:'480px', title:'Register composition and trade plates', note:'As declared — owned vehicles and stock are declared separately', cols:'1fr 1fr',"
+    },
+    {
+      "line": 1377,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'fields', w:'420px', title:'Motor insurance data reporting', note:'Handled by external data service', cols:'1fr 1fr',"
+    },
+    {
+      "line": 1390,
+      "method": "policyTab",
+      "text": "S.push(this.sec(Object.assign({kind:'table', w:'100%', title:'Named drivers in force', note:'Full proposal detail for each driver',"
+    },
+    {
+      "line": 1398,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Convictions in force',"
+    },
+    {
+      "line": 1403,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'fields', w:'440px', title:'Licence evidence', cols:'1fr',"
+    },
+    {
+      "line": 1411,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Tasks linked to this policy', actionLabel:'Create task', actionKind:'primary', onAction: () => this.setState({modal:{kind:'task'}}),"
+    },
+    {
+      "line": 1420,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Policy documents', note:'Documents marked current apply to in-force version 6', actionLabel:'Upload evidence', actionKind:'ghost', onAction: () => this.toast('File picker would open here (mock).', '', null),"
+    },
+    {
+      "line": 1423,
+      "method": "policyTab",
+      "text": "this.row([this.c('Policy schedule', {link:true, strong:true}), this.c('Generated'), this.c('v6', {mono:true}), this.c('Current', {tone:'ok'}), this.c('01/07/2026 14:02'), this.c('Preview · Download · Send', {link:true, onClick: () => this.toast('Document sent to brightside@ (mock).', '', null)})]),"
+    },
+    {
+      "line": 1424,
+      "method": "policyTab",
+      "text": "this.row([this.c('Certificate of motor insurance', {link:true, strong:true}), this.c('Generated'), this.c('v6', {mono:true}), this.c('Current', {tone:'ok'}), this.c('01/07/2026 14:02'), this.c('Preview · Download · Send', {link:true, onClick: () => this.toast('Document sent to brightside@ (mock).', '', null)})]),"
+    },
+    {
+      "line": 1436,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Transaction ledger', note:'Chronological, newest first · click a row for the before/after comparison',"
+    },
+    {
+      "line": 1441,
+      "method": "policyTab",
+      "text": "], {onClick: () => this.toast('Before/after comparison for ' + t[0] + ' (mock).', '', null)}))}));"
+    },
+    {
+      "line": 1443,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'fields', w:'520px', title:'Premium breakdown — current term', note:'Term 01/01/2027 to 31/12/2027 · mock figures', cols:'1fr 1fr',"
+    },
+    {
+      "line": 1454,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'fields', w:'380px', title:'Payment plan & accounts', cols:'1fr',"
+    },
+    {
+      "line": 1462,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Financial movements', note:'Insurance transactions and their accounting entries are separate records',"
+    },
+    {
+      "line": 1471,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'composer', w:'100%', title:'Add internal note', note:'Internal only — never sent to the agency or insured',"
+    },
+    {
+      "line": 1478,
+      "method": "policyTab",
+      "text": "this.setState((s) => ({notes: [{title:'Note added', meta:'James Smith · 09/09/2026 08:24', body: t}].concat(s.notes), noteDraft: ''}));"
+    },
+    {
+      "line": 1481,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'timeline', w:'100%', title:'Notes & policy activity', note:'Author, timestamp and visibility are recorded for audit',"
+    },
+    {
+      "line": 1487,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'thread', w:'100%', title:'Adjustment request — two drivers, premises and stock', note:'Brightside Insurance Services Ltd · 3 participants',"
+    },
+    {
+      "line": 1494,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'composer', w:'100%', title:'Reply to agency', note:'Recipients: billy.leader@brightside-ins.co.uk · visible to the agency',"
+    },
+    {
+      "line": 1507,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Claims & incidents', note:'Logged by Cover MGA · summary data from Ellis Claims Services',"
+    },
+    {
+      "line": 1513,
+      "method": "policyTab",
+      "text": "], {onClick: () => { this.setState({claimRef: c.ref}); this.go('claim'); }})).concat(["
+    },
+    {
+      "line": 1514,
+      "method": "policyTab",
+      "text": "this.row([this.c('CL-88214', {mono:true, link:true}), this.c('14/03/2024'), this.c('Third party damage — road risks'), this.c('Settled', {tone:'ok'}), this.c('Ellis Claims Services'), this.c('£2,140.00', {num:true}), this.c('£0.00', {num:true})], {onClick: () => { this.setState({claimRef: 'CL-91043'}); this.go('claim'); }}),"
+    },
+    {
+      "line": 1515,
+      "method": "policyTab",
+      "text": "this.row([this.c('CL-91043', {mono:true, link:true}), this.c('02/08/2026'), this.c('Theft from premises — stock'), this.c('Open', {tone:'warn'}), this.c('Ellis Claims Services'), this.c('£0.00', {num:true}), this.c('£6,500.00', {num:true})], {onClick: () => { this.setState({claimRef: 'CL-91043'}); this.go('claim'); }})"
+    },
+    {
+      "line": 1517,
+      "method": "policyTab",
+      "text": "S.push(this.sec({kind:'fields', w:'420px', title:'Handoff', cols:'1fr',"
+    },
+    {
+      "line": 1529,
+      "method": "pMta",
+      "text": "pMta() {"
+    },
+    {
+      "line": 1538,
+      "method": "pMta",
+      "text": "type: 'Policy adjustment — draft', title: 'MTA-007 · Smith Motor Traders Ltd',"
+    },
+    {
+      "line": 1549,
+      "method": "pMta",
+      "text": "actions: (st.lockHeld ? [] : [{label:'Save draft', kind:'onblue2', onClick: () => this.toast('Draft MTA-007 saved. You can resume it from the policy.', '', null)}]).concat(["
+    },
+    {
+      "line": 1551,
+      "method": "pMta",
+      "text": "? {label:'Take over draft', kind:'onblue', onClick: () => { this.setState({lockHeld: false}); this.toast('You now hold the draft. Amy Jones has been notified and put into read-only.', '', null); }}"
+    },
+    {
+      "line": 1552,
+      "method": "pMta",
+      "text": ": {label: rated ? 'Re-rate' : 'Review & rate', kind:'onblue', onClick: () => this.rateMta()}"
+    },
+    {
+      "line": 1555,
+      "method": "pMta",
+      "text": "tabs: ['Changes','Review & rate','Documents'], tab: tab"
+    },
+    {
+      "line": 1557,
+      "method": "pMta",
+      "text": "const summary = this.sec({kind:'fields', title:'Transaction summary', note: rated ? 'Rated 09/09/2026 08:12 — mock rating' : 'Not yet rated', cols:'1fr',"
+    },
+    {
+      "line": 1567,
+      "method": "pMta",
+      "text": "const actions = this.sec({kind:'actions', title:'Transaction actions', note: st.lockHeld ? 'Read-only — draft held by Amy Jones' : '',"
+    },
+    {
+      "line": 1570,
+      "method": "pMta",
+      "text": "? this.act('Take over draft', {kind:'primary', onClick: () => { this.setState({lockHeld: false}); this.toast('You now hold the draft. Amy Jones has been notified and put into read-only.', '', null); }, hint:'To edit'})"
+    },
+    {
+      "line": 1571,
+      "method": "pMta",
+      "text": ": this.act(rated ? 'Re-rate combined risk' : 'Review & rate', {kind:'primary', onClick: () => this.rateMta(), hint: rated ? '' : String(changes.length) + ' changes'}),"
+    },
+    {
+      "line": 1572,
+      "method": "pMta",
+      "text": "this.act('Save draft', st.lockHeld ? {kind:'off', title: LK, hint:'Locked'} : {onClick: () => this.toast('Draft MTA-007 saved. You can resume it from the policy.', '', null)}),"
+    },
+    {
+      "line": 1573,
+      "method": "pMta",
+      "text": "this.act('Submit to underwriting', st.lockHeld ? {kind:'off', title: LK, hint:'Locked'} : {onClick: () => this.submitMta(), hint: issues ? '' : 'Ready'}),"
+    },
+    {
+      "line": 1574,
+      "method": "pMta",
+      "text": "this.act(st.escState === 'Not submitted' ? 'Refer to capacity provider' : 'Open authority referral',"
+    },
+    {
+      "line": 1575,
+      "method": "pMta",
+      "text": "rated ? {onClick: () => this.go('escalation'), hint: st.escState === 'Not submitted' ? 'AU-03' : st.escState}"
+    },
+    {
+      "line": 1576,
+      "method": "pMta",
+      "text": ": {kind:'off', title:'Rate the transaction first so they see the premium effect', hint:'After rating'}),"
+    },
+    {
+      "line": 1578,
+      "method": "pMta",
+      "text": "? this.act('Issue adjustment', {kind:'primary', onClick: () => this.go('issued'), hint:'Ready'})"
+    },
+    {
+      "line": 1579,
+      "method": "pMta",
+      "text": ": this.act('Issue adjustment', {kind:'off', title:'Blocked: rating, referral approval and broker acceptance are required first', hint:'Blocked'}),"
+    },
+    {
+      "line": 1580,
+      "method": "pMta",
+      "text": "this.act('Abandon draft', st.lockHeld ? {kind:'off', title: LK, hint:'Locked'} : {kind:'danger', onClick: () => this.toast('Draft would be abandoned after confirmation (mock).', '', null)}),"
+    },
+    {
+      "line": 1581,
+      "method": "pMta",
+      "text": "this.act('Back to policy', {onClick: () => this.go('policy')})"
+    },
+    {
+      "line": 1591,
+      "method": "pMta",
+      "text": "const dateSec = this.sec({kind:'table', w:'100%', title:'Effective date rules', note:'Checked against the ledger every time the date changes',"
+    },
+    {
+      "line": 1607,
+      "method": "pMta",
+      "text": "? this.sec({kind:'fields', w:'100%', title:'Transaction details', note:'Read-only while Amy Jones holds the draft', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 1613,
+      "method": "pMta",
+      "text": ": this.sec({kind:'form', w:'100%', title:'Transaction details', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 1619,
+      "method": "pMta",
+      "text": "this.sec({kind:'changes', w:'100%', title:'Proposed changes', note: st.lockHeld ? 'Read-only — Amy Jones holds this draft' : 'Grouped by policy section · current vs proposed',"
+    },
+    {
+      "line": 1623,
+      "method": "pMta",
+      "text": "group: c.group, title: c.title, before: c.before, after: c.after, state: c.state,"
+    },
+    {
+      "line": 1643,
+      "method": "pMta",
+      "text": "this.sec({kind:'table', w:'100%', title:'Consolidated changes', note:'Effective ' + st.mtaEffective + ' · grouped by affected section',"
+    },
+    {
+      "line": 1648,
+      "method": "pMta",
+      "text": "this.sec({kind:'fields', w:'520px', title:'Premium adjustment', note: rated ? 'Mock rating for the combined risk, pro-rata to 31/12/2027' : 'Available after rating', cols:'1fr 1fr',"
+    },
+    {
+      "line": 1664,
+      "method": "pMta",
+      "text": "this.sec({kind:'table', w:'100%', title:'Referrals & authority',"
+    },
+    {
+      "line": 1670,
+      "method": "pMta",
+      "text": "this.sec({kind:'table', w:'560px', title:'Outstanding requirements',"
+    },
+    {
+      "line": 1678,
+      "method": "pMta",
+      "text": "this.sec({kind:'table', w:'480px', title:'Documents to be generated on issue',"
+    },
+    {
+      "line": 1691,
+      "method": "pMta",
+      "text": "this.sec({kind:'table', w:'100%', title:'Supporting evidence',"
+    },
+    {
+      "line": 1703,
+      "method": "rateMta",
+      "text": "rateMta() {"
+    },
+    {
+      "line": 1707,
+      "method": "submitMta",
+      "text": "submitMta() {"
+    },
+    {
+      "line": 1714,
+      "method": "quoteMenu",
+      "text": "quoteMenu(status) {"
+    },
+    {
+      "line": 1718,
+      "method": "quoteMenu",
+      "text": "? {label:'Send quote to agency', onClick: () => this.toast('Quotation sent to Brightside (mock).', '', null)}"
+    },
+    {
+      "line": 1719,
+      "method": "quoteMenu",
+      "text": ": {label:'Review referrals', hint:'2 open', onClick: () => this.setTab('Underwriting')},"
+    },
+    {
+      "line": 1720,
+      "method": "quoteMenu",
+      "text": "{label:'Re-rate quote', onClick: () => this.toast('Quote re-rated (mock): no change to premium.', '', null)},"
+    },
+    {
+      "line": 1721,
+      "method": "quoteMenu",
+      "text": "{label:'Edit risk details', onClick: () => this.setTab('Risk Details')},"
+    },
+    {
+      "line": 1723,
+      "method": "quoteMenu",
+      "text": "? {label:'Bind / issue policy', onClick: () => this.toast('Bound (mock): policy PN/CC/000641 created from QT/MT/004175.', 'Open policy', () => this.go('policy'))}"
+    },
+    {
+      "line": 1724,
+      "method": "quoteMenu",
+      "text": ": {label:'Bind / issue policy', disabled:'Blocked: referrals must be decided and the agency must accept the quote', hint:'Blocked'},"
+    },
+    {
+      "line": 1725,
+      "method": "quoteMenu",
+      "text": "{label:'Create task', onClick: () => this.setState({modal:{kind:'task'}})},"
+    },
+    {
+      "line": 1726,
+      "method": "quoteMenu",
+      "text": "{label:'Add note', onClick: () => this.setTab('Notes')},"
+    },
+    {
+      "line": 1727,
+      "method": "quoteMenu",
+      "text": "{label:'Clone to new quote', onClick: () => this.toast('Cloned to draft quote QT/MT/004191 (mock).', '', null)},"
+    },
+    {
+      "line": 1728,
+      "method": "quoteMenu",
+      "text": "{label:'View version history', onClick: () => this.setTab('History')},"
+    },
+    {
+      "line": 1729,
+      "method": "quoteMenu",
+      "text": "{label:'Withdraw quote', tone:'danger', onClick: () => this.toast('Withdrawal requires a reason (mock).', '', null)}"
+    },
+    {
+      "line": 1733,
+      "method": "pQuote",
+      "text": "pQuote() {"
+    },
+    {
+      "line": 1739,
+      "method": "pQuote",
+      "text": "type: 'Quote — new business', title: 'Delta Valeting Services Ltd', sub: 'Main contact Marcus Kelly · Partnership · Trading 3 years',"
+    },
+    {
+      "line": 1751,
+      "method": "pQuote",
+      "text": "tabs: ['Overview','Risk Details','Drivers','Vehicles','Cover','Underwriting','Tasks','Documents','History','Notes','Messages'], tab: tab"
+    },
+    {
+      "line": 1759,
+      "method": "pQuote",
+      "text": "this.sec({kind:'fields', w:'460px', title:'Quote status', cols:'1fr 1fr',"
+    },
+    {
+      "line": 1768,
+      "method": "pQuote",
+      "text": "this.sec({kind:'fields', w:'440px', title:'Business & trade snapshot', cols:'1fr 1fr',"
+    },
+    {
+      "line": 1777,
+      "method": "pQuote",
+      "text": "this.sec({kind:'fields', w:'460px', title:'Premium summary', note:'Mock rating RT-55090 · road risks only', cols:'1fr 1fr',"
+    },
+    {
+      "line": 1786,
+      "method": "pQuote",
+      "text": "this.sec({kind:'table', w:'460px', title:'Outstanding requirements',"
+    },
+    {
+      "line": 1793,
+      "method": "pQuote",
+      "text": "this.sec({kind:'timeline', w:'440px', title:'Recent activity',"
+    },
+    {
+      "line": 1802,
+      "method": "pQuote",
+      "text": "this.sec({kind:'actions', title:'Actions', note:'Availability depends on status and authority · same list as the header menu',"
+    },
+    {
+      "line": 1803,
+      "method": "pQuote",
+      "text": "items: this.quoteMenu(status).map((m, i) => this.act(m.label, m.disabled"
+    },
+    {
+      "line": 1804,
+      "method": "pQuote",
+      "text": "? {kind:'off', title: m.disabled, hint: m.hint || ''}"
+    },
+    {
+      "line": 1805,
+      "method": "pQuote",
+      "text": ": {kind: m.tone === 'danger' ? 'danger' : (i === 0 ? 'primary' : ''), hint: m.hint || '', onClick: m.onClick}))}),"
+    },
+    {
+      "line": 1806,
+      "method": "pQuote",
+      "text": "this.sec({kind:'fields', title:'Authority', cols:'1fr',"
+    },
+    {
+      "line": 1815,
+      "method": "pQuote",
+      "text": "this.sec({kind:'table', w:'100%', title:'Referrals', note:'Decisions are recorded with actor, timestamp and reason',"
+    },
+    {
+      "line": 1821,
+      "method": "pQuote",
+      "text": "this.sec({kind:'timeline', w:'560px', title:'Decision history',"
+    },
+    {
+      "line": 1827,
+      "method": "pQuote",
+      "text": "this.sec({kind:'table', w:'420px', title:'Supporting information',"
+    },
+    {
+      "line": 1835,
+      "method": "pQuote",
+      "text": "this.sec({kind:'actions', title:'Underwriting decision', note:'Your authority: road risks to £5,000 GWP',"
+    },
+    {
+      "line": 1837,
+      "method": "pQuote",
+      "text": "this.act('Decision recorded', {kind:'off', hint:'09/09/2026'}),"
+    },
+    {
+      "line": 1838,
+      "method": "pQuote",
+      "text": "this.act('Send quote to agency', {kind:'primary', onClick: () => this.toast('Quotation sent to Brightside (mock).', '', null)}),"
+    },
+    {
+      "line": 1839,
+      "method": "pQuote",
+      "text": "this.act('Reopen referral', {onClick: () => this.setState({quoteStatus: 'Referral required'})})"
+    },
+    {
+      "line": 1841,
+      "method": "pQuote",
+      "text": "this.act('Approve both referrals', {kind:'primary', onClick: () => { this.setState({quoteStatus: 'Approved'}); this.toast('Referrals approved. Quote status is now Approved.', '', null); }}),"
+    },
+    {
+      "line": 1842,
+      "method": "pQuote",
+      "text": "this.act('Approve with condition', {onClick: () => { this.setState({quoteStatus: 'Approved'}); this.toast('Approved with warranty W-07 applied.', '', null); }}),"
+    },
+    {
+      "line": 1843,
+      "method": "pQuote",
+      "text": "this.act('Request more information', {onClick: () => this.toast('Information request sent to Brightside (mock).', '', null)}),"
+    },
+    {
+      "line": 1844,
+      "method": "pQuote",
+      "text": "this.act('Refer to capacity provider', {onClick: () => this.toast('Referred onward to Capacity Provider A (mock).', '', null)}),"
+    },
+    {
+      "line": 1845,
+      "method": "pQuote",
+      "text": "this.act('Decline', {kind:'danger', onClick: () => { this.setState({quoteStatus: 'Declined'}); this.toast('Quote declined — reason recorded for audit.', '', null); }})"
+    },
+    {
+      "line": 1847,
+      "method": "pQuote",
+      "text": "this.sec({kind:'fields', title:'Rating', cols:'1fr',"
+    },
+    {
+      "line": 1857,
+      "method": "pQuote",
+      "text": "this.sec({kind:'table', w:'100%', title:'Proposed cover',"
+    },
+    {
+      "line": 1865,
+      "method": "pQuote",
+      "text": "this.sec({kind:'table', w:'560px', title:'Rating factors', note:'Mock rating — illustrative only',"
+    },
+    {
+      "line": 1874,
+      "method": "pQuote",
+      "text": "this.sec({kind:'fields', w:'480px', title:'Cover basis requested', note:'Proposal section E', cols:'1fr 1fr',"
+    },
+    {
+      "line": 1885,
+      "method": "pQuote",
+      "text": "this.sec({kind:'fields', w:'440px', title:'Previous insurance and no claims discount', note:'Proposal section D', cols:'1fr 1fr',"
+    },
+    {
+      "line": 1896,
+      "method": "pQuote",
+      "text": "this.sec({kind:'fields', w:'420px', title:'Insurer, validity & terms', cols:'1fr',"
+    },
+    {
+      "line": 1910,
+      "method": "pQuote",
+      "text": "this.sec({kind:'fields', w:'100%', title:'The proposer', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 1916,
+      "method": "pQuote",
+      "text": "this.sec({kind:'fields', w:'520px', title:'Motor trade experience', cols:'1fr 1fr',"
+    },
+    {
+      "line": 1925,
+      "method": "pQuote",
+      "text": "this.sec({kind:'fields', w:'440px', title:'Trade or business description', note:'As given by the proposer', cols:'1fr',"
+    },
+    {
+      "line": 1927,
+      "method": "pQuote",
+      "text": "this.sec({kind:'table', w:'100%', title:'Trade activity split', note:'Percentage of turnover — totals 100%',"
+    },
+    {
+      "line": 1937,
+      "method": "pQuote",
+      "text": "this.sec({kind:'table', w:'100%', title:'Activities affecting appetite', note:'Proposal questions A7 to A9',"
+    },
+    {
+      "line": 1948,
+      "method": "pQuote",
+      "text": "this.sec({kind:'fields', w:'440px', title:'Other material facts disclosed', cols:'1fr',"
+    },
+    {
+      "line": 1955,
+      "method": "pQuote",
+      "text": "this.sec({kind:'table', w:'100%', title:'Drivers declared', note:'Proposal questions A5 and B1',"
+    },
+    {
+      "line": 1962,
+      "method": "pQuote",
+      "text": "this.sec({kind:'table', w:'100%', title:'Declarations', note:'Proposal question B2 — answered for the proposer and every named driver',"
+    },
+    {
+      "line": 1973,
+      "method": "pQuote",
+      "text": "this.sec({kind:'table', w:'100%', title:'Motoring convictions declared',"
+    },
+    {
+      "line": 1978,
+      "method": "pQuote",
+      "text": "this.sec({kind:'table', w:'520px', title:'Accidents, losses and claims', note:'Last 3 years, whether or not a claim was made',"
+    },
+    {
+      "line": 1981,
+      "method": "pQuote",
+      "text": "this.sec({kind:'fields', w:'420px', title:'Evidence held', cols:'1fr',"
+    },
+    {
+      "line": 1990,
+      "method": "pQuote",
+      "text": "this.sec({kind:'table', w:'100%', title:'Vehicles owned but not for sale', note:'Proposal question C1 — private, recovery and service vehicles',"
+    },
+    {
+      "line": 1996,
+      "method": "pQuote",
+      "text": "this.sec({kind:'table', w:'100%', title:'Vehicles held for sale', note:'Proposal question C2',"
+    },
+    {
+      "line": 1999,
+      "method": "pQuote",
+      "text": "this.sec({kind:'table', w:'100%', title:'Vehicle characteristics', note:'Proposal question C3',"
+    },
+    {
+      "line": 2007,
+      "method": "pQuote",
+      "text": "this.sec({kind:'fields', w:'480px', title:'Vehicle types and trade plates', cols:'1fr 1fr',"
+    },
+    {
+      "line": 2016,
+      "method": "pQuote",
+      "text": "this.sec({kind:'fields', w:'420px', title:'Customer vehicles', cols:'1fr',"
+    },
+    {
+      "line": 2027,
+      "method": "pQuote",
+      "text": "this.sec({kind:'table', w:'100%', title:'Version history',"
+    },
+    {
+      "line": 2030,
+      "method": "pQuote",
+      "text": "this.row([this.c('v2', {mono:true}), this.c('06/09/2026 14:58'), this.c('Referral required', {tone:'warn'}), this.c('£1,042.18', {num:true}), this.c('Third driver added; tools section selected', {nowrap:false, muted:true})], {onClick: () => this.toast('Version comparison v1 → v2 (mock).', '', null)}),"
+    },
+    {
+      "line": 2033,
+      "method": "pQuote",
+      "text": "this.sec({kind:'timeline', w:'100%', title:'Activity timeline',"
+    },
+    {
+      "line": 2044,
+      "method": "pQuote",
+      "text": "this.sec({kind:'table', w:'100%', title:'Quote documents',"
+    },
+    {
+      "line": 2054,
+      "method": "pQuote",
+      "text": "this.sec({kind:'table', w:'100%', title:'Tasks linked to this quote', actionLabel:'Create task', actionKind:'primary', onAction: () => this.setState({modal:{kind:'task'}}),"
+    },
+    {
+      "line": 2062,
+      "method": "pQuote",
+      "text": "this.sec({kind:'timeline', w:'100%', title:'Internal notes',"
+    },
+    {
+      "line": 2070,
+      "method": "pQuote",
+      "text": "this.sec({kind:'thread', w:'100%', title:'Correspondence with Brightside',"
+    },
+    {
+      "line": 2080,
+      "method": "filt",
+      "text": "filt(arr) {"
+    },
+    {
+      "line": 2086,
+      "method": "pRisks",
+      "text": "pRisks() {"
+    },
+    {
+      "line": 2092,
+      "method": "pRisks",
+      "text": "pageHeader: true, title: isP ? 'Policies' : 'Quotes',"
+    },
+    {
+      "line": 2094,
+      "method": "pRisks",
+      "text": "pageActions: (isP ? [] : [{label:'New Quote', style: this.btn('primary'), onClick: () => this.setState({modal:{kind:'newquote'}})}])"
+    },
+    {
+      "line": 2095,
+      "method": "pRisks",
+      "text": ".concat([{label:'Advanced Search', style: this.btn('ghost'), onClick: () => this.go('search')}]),"
+    },
+    {
+      "line": 2122,
+      "method": "pClients",
+      "text": "pClients() {"
+    },
+    {
+      "line": 2125,
+      "method": "pClients",
+      "text": "pageHeader: true, title: 'Clients', subtitle: 'Accounts are created by the first quote · the account holds identity and claims history, while declared answers and documents belong to each policy',"
+    },
+    {
+      "line": 2126,
+      "method": "pClients",
+      "text": "pageActions: [{label:'Advanced Search', style: this.btn('ghost'), onClick: () => this.go('search')}],"
+    },
+    {
+      "line": 2139,
+      "method": "pClient",
+      "text": "pClient() {"
+    },
+    {
+      "line": 2143,
+      "method": "pClient",
+      "text": "type: 'Client account', title: 'Smith Motor Traders Ltd', sub: 'Limited company · Company no. 08812446 · Trading 11 years',"
+    },
+    {
+      "line": 2153,
+      "method": "pClient",
+      "text": "actions: [{label:'New quote for this client', kind:'onblue', onClick: () => this.setState({modal:{kind:'newquote', client:'Smith Motor Traders Ltd'}})}]"
+    },
+    {
+      "line": 2155,
+      "method": "pClient",
+      "text": "tabs: ['Overview','Policies','Quotes','Contacts','Activity'], tab: tab"
+    },
+    {
+      "line": 2161,
+      "method": "pClient",
+      "text": "this.sec({kind:'table', w:'100%', title:'Policies and quotes', note:'Records held by each agency for this business',"
+    },
+    {
+      "line": 2168,
+      "method": "pClient",
+      "text": "this.sec({kind:'table', w:'100%', title:'Held on the account', note:'Shared across every agency’s records for this business',"
+    },
+    {
+      "line": 2176,
+      "method": "pClient",
+      "text": "this.sec({kind:'table', w:'520px', title:'Contacts',"
+    },
+    {
+      "line": 2183,
+      "method": "pClient",
+      "text": "this.sec({kind:'timeline', w:'440px', title:'Account activity',"
+    },
+    {
+      "line": 2192,
+      "method": "pClient",
+      "text": "this.sec({kind:'table', w:'100%', title:'Quotes for this client', note:'Including quotes that did not convert',"
+    },
+    {
+      "line": 2203,
+      "method": "pClient",
+      "text": "this.sec({kind:'table', w:'100%', title:'Contacts', note:'The account is the insured — contacts are people we deal with',"
+    },
+    {
+      "line": 2213,
+      "method": "pClient",
+      "text": "this.c('Remove', {link:true, onClick: (e) => { this.stop(e); this.removeFrom('qContacts', x.id, x.name + ' removed from the account.'); }})"
+    },
+    {
+      "line": 2217,
+      "method": "pClient",
+      "text": "this.sec({kind:'table', w:'100%', title:'Flag history', note:'Every change is recorded with actor and reason',"
+    },
+    {
+      "line": 2224,
+      "method": "pClient",
+      "text": "this.sec({kind:'fields', w:'440px', title:'Data protection', cols:'1fr',"
+    },
+    {
+      "line": 2234,
+      "method": "pClient",
+      "text": "this.sec({kind:'table', w:'100%', title:'Account activity', note:'All records associated with this client',"
+    },
+    {
+      "line": 2248,
+      "method": "pNewAgency",
+      "text": "pNewAgency() {"
+    },
+    {
+      "line": 2275,
+      "method": "pNewAgency",
+      "text": "pageHeader: true, title: 'AG-0161 activated', subtitle: (f('agName','') || 'New agency') + ' · activated today by James Smith',"
+    },
+    {
+      "line": 2277,
+      "method": "pNewAgency",
+      "text": "{label:'Open agency record', style: this.btn('primary'), onClick: () => this.go('agency')},"
+    },
+    {
+      "line": 2278,
+      "method": "pNewAgency",
+      "text": "{label:'Create another agency', style: this.btn('ghost'), onClick: () => this.setState({agActivated: false, agStep: 1, agUsers: [], agProducts: ['Motor Trade Road Risks']})}"
+    },
+    {
+      "line": 2283,
+      "method": "pNewAgency",
+      "text": "this.sec({kind:'fields', w:'480px', title:'What was created', cols:'1fr 1fr',"
+    },
+    {
+      "line": 2290,
+      "method": "pNewAgency",
+      "text": "this.sec({kind:'table', w:'100%', title:'Follow-on actions',"
+    },
+    {
+      "line": 2305,
+      "method": "pNewAgency",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Firm identity', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 2314,
+      "method": "pNewAgency",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Regulatory permissions', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 2324,
+      "method": "pNewAgency",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Register check — firm reference ' + fca, note:'Mock lookup',"
+    },
+    {
+      "line": 2335,
+      "method": "pNewAgency",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Agency contacts', note:'Named roles we correspond with', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 2347,
+      "method": "pNewAgency",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Portal users to invite', note:'The broker administrator manages their own users after activation · ' + st.agUsers.length + ' to invite',"
+    },
+    {
+      "line": 2352,
+      "method": "pNewAgency",
+      "text": "this.c('Remove', {link:true, onClick: (e) => { this.stop(e); this.removeFrom('agUsers', u.id, u.name + ' removed.'); }})"
+    },
+    {
+      "line": 2358,
+      "method": "pNewAgency",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Products', note: prods.length + ' of 3 enabled · click a row to enable or disable',"
+    },
+    {
+      "line": 2370,
+      "method": "pNewAgency",
+      "text": "], {onClick: () => toggleProd(x.p)}))}));"
+    },
+    {
+      "line": 2371,
+      "method": "pNewAgency",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Commercial terms', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 2381,
+      "method": "pNewAgency",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Terms of business agreement', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 2387,
+      "method": "pNewAgency",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Compliance checks', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 2396,
+      "method": "pNewAgency",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Documents required',"
+    },
+    {
+      "line": 2405,
+      "method": "pNewAgency",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Account setup', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 2414,
+      "method": "pNewAgency",
+      "text": "S.push(this.sec({kind:'fields', w:'100%', title:'Derived from the checks already made', cols:'repeat(4,1fr)',"
+    },
+    {
+      "line": 2427,
+      "method": "pNewAgency",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Activation checklist', note: (checks.length - missing) + ' of ' + checks.length + ' complete',"
+    },
+    {
+      "line": 2430,
+      "method": "pNewAgency",
+      "text": "S.push(this.sec({kind:'fields', w:'520px', title:'Summary', cols:'1fr 1fr',"
+    },
+    {
+      "line": 2441,
+      "method": "pNewAgency",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Approval',"
+    },
+    {
+      "line": 2455,
+      "method": "pNewAgency",
+      "text": "pageHeader: true, title: 'Create agency', subtitle: 'Draft AG-0161 · ' + stages[step - 1] + ' · started today by James Smith',"
+    },
+    {
+      "line": 2457,
+      "method": "pNewAgency",
+      "text": "{label:'Save and exit', style: this.btn('ghost'), onClick: () => { this.toast('Draft agency AG-0161 saved. It appears on the Agents list as Onboarding.', '', null); this.go('agents'); }},"
+    },
+    {
+      "line": 2458,
+      "method": "pNewAgency",
+      "text": "step > 1 ? {label:'Back', style: this.btn('ghost'), onClick: () => next(step - 1)} : {label:'Cancel', style: this.btn('ghost'), onClick: () => this.go('agents')},"
+    },
+    {
+      "line": 2460,
+      "method": "pNewAgency",
+      "text": "? {label:'Continue', style: this.btn('primary'), onClick: () => next(step + 1)}"
+    },
+    {
+      "line": 2462,
+      "method": "pNewAgency",
+      "text": "? {label:'Activate agency', style: this.btn('primary'), onClick: () => { this.setState({agActivated: true}); this.toast('AG-0161 activated. Broker administrator invitation sent.', '', null); }}"
+    },
+    {
+      "line": 2463,
+      "method": "pNewAgency",
+      "text": ": {label:'Activate agency', style:'padding:8px 14px;border-radius:7px;font-size:12.5px;font-weight:600;background:#f1f2f6;color:#a3a8b6;cursor:not-allowed', onClick: () => this.toast(missing + ' requirement' + (missing === 1 ? '' : 's') + ' outstanding.', 'Show', () => next(stages.length)) })"
+    },
+    {
+      "line": 2467,
+      "method": "pNewAgency",
+      "text": "this.sec({kind:'actions', title:'Draft actions',"
+    },
+    {
+      "line": 2469,
+      "method": "pNewAgency",
+      "text": "this.act('Save draft', {kind:'primary', onClick: () => this.toast('Draft agency AG-0161 saved.', '', null)}),"
+    },
+    {
+      "line": 2470,
+      "method": "pNewAgency",
+      "text": "this.act('Activate agency', missing === 0"
+    },
+    {
+      "line": 2471,
+      "method": "pNewAgency",
+      "text": "? {onClick: () => { this.setState({agActivated: true}); this.toast('AG-0161 activated.', '', null); }}"
+    },
+    {
+      "line": 2472,
+      "method": "pNewAgency",
+      "text": ": {kind:'off', title: missing + ' onboarding requirement(s) outstanding', hint: missing + ' outstanding'}),"
+    },
+    {
+      "line": 2473,
+      "method": "pNewAgency",
+      "text": "this.act('Abandon draft', {kind:'danger', onClick: () => { this.toast('Draft abandoned — no agency created.', '', null); this.go('agents'); }})"
+    },
+    {
+      "line": 2475,
+      "method": "pNewAgency",
+      "text": "this.sec({kind:'fields', title:'Onboarding summary', cols:'1fr',"
+    },
+    {
+      "line": 2487,
+      "method": "pAgents",
+      "text": "pAgents() {"
+    },
+    {
+      "line": 2490,
+      "method": "pAgents",
+      "text": "pageHeader: true, title: 'Agents', subtitle: 'Wholesale broker agencies and their users',"
+    },
+    {
+      "line": 2491,
+      "method": "pAgents",
+      "text": "pageActions: [{label:'Create agency', style: this.btn('primary'), onClick: () => this.go('newagency')}],"
+    },
+    {
+      "line": 2515,
+      "method": "pAgency",
+      "text": "pAgency() {"
+    },
+    {
+      "line": 2519,
+      "method": "pAgency",
+      "text": "type: 'Wholesale agency', title: 'Brightside Insurance Services Ltd', sub: 'FCA reference 305118 · TOBA signed 04/01/2024',"
+    },
+    {
+      "line": 2530,
+      "method": "pAgency",
+      "text": "{label:'Invite user', kind:'onblue', onClick: () => this.setState({modal:{kind:'invite'}})},"
+    },
+    {
+      "line": 2531,
+      "method": "pAgency",
+      "text": "{label:'Preview portal', kind:'onblue2', onClick: () => this.go('portal')},"
+    },
+    {
+      "line": 2532,
+      "method": "pAgency",
+      "text": "{label:'Suspend agency', kind:'onblue2', onClick: () => this.toast('Suspension requires a reason and manager approval (mock).', '', null)}"
+    },
+    {
+      "line": 2535,
+      "method": "pAgency",
+      "text": "tabs: ['Overview','Users','Permissions & access','Products','Accounts','Activity'], tab: tab"
+    },
+    {
+      "line": 2539,
+      "method": "pAgency",
+      "text": "this.sec({kind:'fields', w:'100%', title:'Agency identity', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 2545,
+      "method": "pAgency",
+      "text": "this.sec({kind:'table', w:'520px', title:'Operational summary — last 90 days',"
+    },
+    {
+      "line": 2553,
+      "method": "pAgency",
+      "text": "this.sec({kind:'timeline', w:'440px', title:'Recent agency activity',"
+    },
+    {
+      "line": 2562,
+      "method": "pAgency",
+      "text": "this.sec({kind:'table', w:'100%', title:'Agency users', note:'Agency users only see their own agency\\u2019s clients and policies',"
+    },
+    {
+      "line": 2566,
+      "method": "pAgency",
+      "text": "this.row([this.c('Billy Leader', {strong:true}), this.c('billy.leader@brightside-ins.co.uk'), this.c('Broker administrator'), this.c('Active', {tone:'ok'}), this.c('Today 11:24', {muted:true}), this.c('Edit · Deactivate', {link:true, onClick: () => this.toast('Deactivation requires confirmation (mock).', '', null)})]),"
+    },
+    {
+      "line": 2568,
+      "method": "pAgency",
+      "text": "this.row([this.c('Jon Harris'), this.c('j.harris@brightside-ins.co.uk'), this.c('Broker user'), this.c('Invited', {tone:'info'}), this.c('—', {muted:true}), this.c('Resend invite', {link:true, onClick: () => this.toast('Invitation resent (mock).', '', null)})]),"
+    },
+    {
+      "line": 2576,
+      "method": "pAgency",
+      "text": "this.sec({kind:'table', w:'100%', title:'Permission matrix', note:'Changes marked \"approval\" require an internal administrator to authorise',"
+    },
+    {
+      "line": 2588,
+      "method": "pAgency",
+      "text": "this.sec({kind:'table', w:'100%', title:'Pending permission requests',"
+    },
+    {
+      "line": 2591,
+      "method": "pAgency",
+      "text": "this.row([this.c('08/09/2026 09:41'), this.c('Billy Leader'), this.c('Download bordereaux'), this.c('Approve · Reject', {link:true, onClick: () => this.toast('Approved — recorded in the agency audit trail (mock).', '', null)})])"
+    },
+    {
+      "line": 2596,
+      "method": "pAgency",
+      "text": "this.sec({kind:'table', w:'100%', title:'Products and commission',"
+    },
+    {
+      "line": 2603,
+      "method": "pAgency",
+      "text": "this.sec({kind:'fields', w:'420px', title:'Agreements', cols:'1fr',"
+    },
+    {
+      "line": 2613,
+      "method": "pAgency",
+      "text": "this.sec({kind:'fields', w:'440px', title:'Account position', cols:'1fr 1fr',"
+    },
+    {
+      "line": 2619,
+      "method": "pAgency",
+      "text": "this.sec({kind:'table', w:'100%', title:'Statement items', actionLabel:'Open in Accounting', onAction: () => this.go('accounting', 'Broker accounts'),"
+    },
+    {
+      "line": 2629,
+      "method": "pAgency",
+      "text": "this.sec({kind:'table', w:'100%', title:'Agency audit trail',"
+    },
+    {
+      "line": 2642,
+      "method": "pTasks",
+      "text": "pTasks() {"
+    },
+    {
+      "line": 2654,
+      "method": "pTasks",
+      "text": "pageHeader: true, title: 'My tasks', subtitle: 'James Smith · Senior underwriter · Underwriting team',"
+    },
+    {
+      "line": 2656,
+      "method": "pTasks",
+      "text": "sel.length ? {label:'Complete ' + sel.length + ' selected', style: this.btn('ghost'), onClick: () => { this.toast(sel.length + ' tasks completed.', '', null); this.setState({selTasks: []}); }} : {label: allSel ? 'Clear selection' : 'Select all', style: this.btn('ghost'), onClick: () => this.setState({selTasks: allSel ? [] : rows.map((t) => t.ref)})},"
+    },
+    {
+      "line": 2657,
+      "method": "pTasks",
+      "text": "{label:'Create task', style: this.btn('primary'), onClick: () => this.setState({modal:{kind:'task'}})}"
+    },
+    {
+      "line": 2666,
+      "method": "pTasks",
+      "text": "subnav: ['My open','Team queue','Created by me','Completed'], tab: tab,"
+    },
+    {
+      "line": 2682,
+      "method": "pTasks",
+      "text": "this.c(sel.indexOf(t.ref) > -1 ? '\\u2611' : '\\u2610', {onClick: (e) => { this.stop(e); this.setState((s) => ({selTasks: s.selTasks.indexOf(t.ref) > -1 ? s.selTasks.filter((r) => r !== t.ref) : s.selTasks.concat([t.ref])})); }}),"
+    },
+    {
+      "line": 2691,
+      "method": "pTask",
+      "text": "pTask() {"
+    },
+    {
+      "line": 2697,
+      "method": "pTask",
+      "text": "type: 'Task', title: 'Review additional driver referral', sub: 'Referral UW-14 · driver under 25 with a fault claim in the last three years',"
+    },
+    {
+      "line": 2708,
+      "method": "pTask",
+      "text": "{label:'Open MTA-007', kind:'onblue', onClick: () => this.go('mta')},"
+    },
+    {
+      "line": 2709,
+      "method": "pTask",
+      "text": "{label:'Add comment', kind:'onblue2', onClick: () => this.setTab('Task')}"
+    },
+    {
+      "line": 2712,
+      "method": "pTask",
+      "text": "tabs: ['Task','Linked records'], tab: st.tab || 'Task'"
+    },
+    {
+      "line": 2718,
+      "method": "pTask",
+      "text": "this.sec({kind:'fields', w:'520px', title:'Task detail', cols:'1fr 1fr',"
+    },
+    {
+      "line": 2729,
+      "method": "pTask",
+      "text": "this.sec({kind:'fields', w:'420px', title:'Requested action', cols:'1fr',"
+    },
+    {
+      "line": 2735,
+      "method": "pTask",
+      "text": "this.sec({kind:'checks', w:'520px', title:'Required information', note: done + ' of 4 complete',"
+    },
+    {
+      "line": 2742,
+      "method": "pTask",
+      "text": "this.sec({kind:'table', w:'420px', title:'Attachments',"
+    },
+    {
+      "line": 2748,
+      "method": "pTask",
+      "text": "this.sec({kind:'composer', w:'100%', title:'Add comment', note:'Visible to internal users only',"
+    },
+    {
+      "line": 2754,
+      "method": "pTask",
+      "text": "this.setState((s) => ({comments: s.comments.concat([{title:'Comment added', meta:'James Smith · 09/09/2026 08:36', body: t}]), commentDraft: ''}));"
+    },
+    {
+      "line": 2757,
+      "method": "pTask",
+      "text": "this.sec({kind:'timeline', w:'100%', title:'Comments & activity',"
+    },
+    {
+      "line": 2761,
+      "method": "pTask",
+      "text": "this.sec({kind:'actions', title:'Task actions',"
+    },
+    {
+      "line": 2764,
+      "method": "pTask",
+      "text": "? this.act('Reopen task', {kind:'primary', onClick: () => { this.setState({taskStatus:'Awaiting information'}); this.toast('TSK-2291 reopened.', '', null); }})"
+    },
+    {
+      "line": 2765,
+      "method": "pTask",
+      "text": ": this.act('Mark complete', {kind:'primary', onClick: () => { this.setState({taskStatus:'Completed'}); this.toast('Task completed. MTA-007 still requires a referral decision and issue.', 'Open MTA-007', () => this.go('mta')); }}),"
+    },
+    {
+      "line": 2766,
+      "method": "pTask",
+      "text": "this.act('Return to task list', {onClick: () => this.go('tasks')}),"
+    },
+    {
+      "line": 2767,
+      "method": "pTask",
+      "text": "this.act('Open MTA-007', {onClick: () => this.go('mta')})"
+    },
+    {
+      "line": 2769,
+      "method": "pTask",
+      "text": "this.sec({kind:'form', title:'Assignment', cols:'1fr',"
+    },
+    {
+      "line": 2779,
+      "method": "pSearch",
+      "text": "pSearch() {"
+    },
+    {
+      "line": 2785,
+      "method": "pSearch",
+      "text": "this.sec({kind:'form', w:'100%', title:'Advanced search', note:'Results respect your agency visibility and role', cols:'repeat(4,1fr)',"
+    },
+    {
+      "line": 2798,
+      "method": "pSearch",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Results', rows: [], columns: this.head(['Record','Detail']), emptyHint:'No records match \"' + q + '\". Check the reference format or widen the record type.'}));"
+    },
+    {
+      "line": 2800,
+      "method": "pSearch",
+      "text": "if (cli.length) S.push(this.sec({kind:'table', w:'100%', title:'Clients', note: cli.length + ' matches',"
+    },
+    {
+      "line": 2803,
+      "method": "pSearch",
+      "text": "if (pol.length) S.push(this.sec({kind:'table', w:'100%', title:'Policies', note: pol.length + ' matches',"
+    },
+    {
+      "line": 2806,
+      "method": "pSearch",
+      "text": "if (quo.length) S.push(this.sec({kind:'table', w:'100%', title:'Quotes', note: quo.length + ' matches',"
+    },
+    {
+      "line": 2809,
+      "method": "pSearch",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Vehicles', note:'A registration match shows the motor trade account it relates to — the registration is not the insured risk on its own',"
+    },
+    {
+      "line": 2813,
+      "method": "pSearch",
+      "text": "if (ag.length) S.push(this.sec({kind:'table', w:'100%', title:'Agencies', note: ag.length + ' matches',"
+    },
+    {
+      "line": 2818,
+      "method": "pSearch",
+      "text": "pageHeader: true, title: 'Advanced search', subtitle: 'Grouped results across clients, policies, quotes, vehicles and agencies',"
+    },
+    {
+      "line": 2824,
+      "method": "pAccounting",
+      "text": "pAccounting() {"
+    },
+    {
+      "line": 2827,
+      "method": "pAccounting",
+      "text": "pageHeader: true, title: 'Accounting', subtitle: 'Reporting period August 2026 · closed 05/09/2026 · all figures are mock data',"
+    },
+    {
+      "line": 2829,
+      "method": "pAccounting",
+      "text": "{label:'Export period', style: this.btn('ghost'), onClick: () => this.toast('Export queued — CSV would download (mock).', '', null)},"
+    },
+    {
+      "line": 2830,
+      "method": "pAccounting",
+      "text": "{label:'Post journal', style: this.btn('ghost'), onClick: () => this.toast('Journal posting is restricted to finance users (mock).', '', null)}"
+    },
+    {
+      "line": 2839,
+      "method": "pAccounting",
+      "text": "subnav: ['Overview','Transactions','Broker accounts','Payments','Reconciliation','Bordereaux','Refunds'], tab: tab,"
+    },
+    {
+      "line": 2849,
+      "method": "pAccounting",
+      "text": "this.sec({kind:'fields', w:'520px', title:'Period position — August 2026', note:'Written premium basis unless stated', cols:'1fr 1fr',"
+    },
+    {
+      "line": 2860,
+      "method": "pAccounting",
+      "text": "this.sec({kind:'bars', w:'420px', title:'Broker balances by ageing', footer:'Total £38,412.06 across 18 agencies.',"
+    },
+    {
+      "line": 2862,
+      "method": "pAccounting",
+      "text": "this.sec({kind:'table', w:'100%', title:'Items needing attention',"
+    },
+    {
+      "line": 2873,
+      "method": "pAccounting",
+      "text": "this.sec({kind:'table', w:'100%', title:'Transaction ledger', note:'Insurance transactions and their accounting entries', footer:'Showing 6 of 1,284 entries', paged:true,"
+    },
+    {
+      "line": 2889,
+      "method": "pAccounting",
+      "text": "this.sec({kind:'table', w:'100%', title:'Agency accounts',"
+    },
+    {
+      "line": 2899,
+      "method": "pAccounting",
+      "text": "this.sec({kind:'table', w:'100%', title:'Statement — Brightside Insurance Services Ltd', note:'August 2026 · balance £1,842.66',"
+    },
+    {
+      "line": 2911,
+      "method": "pAccounting",
+      "text": "this.sec({kind:'table', w:'100%', title:'Receipts', note:'Matching is manual for unidentified receipts — no money moves in this prototype',"
+    },
+    {
+      "line": 2915,
+      "method": "pAccounting",
+      "text": "this.row([this.c('PAY-4488', {mono:true}), this.c('02/09/2026'), this.c('Vantage Trade Brokers'), this.c('£1,240.00', {num:true}), this.c('£0.00', {num:true}), this.c('£1,240.00', {num:true}), this.c('Unallocated', {tone:'warn'}), this.c('Match to invoice', {link:true, onClick: () => this.toast('Matched PAY-4488 to INV-20790 (mock) — variance cleared.', '', null)})]),"
+    },
+    {
+      "line": 2916,
+      "method": "pAccounting",
+      "text": "this.row([this.c('PAY-4490', {mono:true}), this.c('03/09/2026'), this.c('Unidentified payer'), this.c('£940.00', {num:true}), this.c('£0.00', {num:true}), this.c('£940.00', {num:true}), this.c('Investigating', {tone:'warn'}), this.c('Assign payer', {link:true, onClick: () => this.toast('Payer assignment drawer (mock).', '', null)})])"
+    },
+    {
+      "line": 2924,
+      "method": "pAccounting",
+      "text": "this.sec({kind:'table', w:'100%', title:'Reconciliation REC-0826 — August 2026',"
+    },
+    {
+      "line": 2935,
+      "method": "pAccounting",
+      "text": "this.sec({kind:'table', w:'100%', title:'Insurer reporting batches',"
+    },
+    {
+      "line": 2938,
+      "method": "pAccounting",
+      "text": "this.row([this.c('BX-2026-08', {mono:true, link:true}), this.c('August 2026'), this.c('Capacity Provider A'), this.c('Combined & road risks'), this.c('412', {num:true}), this.c('£412,180.44', {num:true}), this.c('3 validation failures', {tone:'warn'}), this.c('Open batch', {link:true, onClick: () => this.setTab('Batch BX-2026-08')})]),"
+    },
+    {
+      "line": 2949,
+      "method": "pAccounting",
+      "text": "this.sec({kind:'fields', w:'420px', title:'Batch summary', cols:'1fr 1fr',"
+    },
+    {
+      "line": 2956,
+      "method": "pAccounting",
+      "text": "this.sec({kind:'table', w:'100%', title:'Validation failures',"
+    },
+    {
+      "line": 2959,
+      "method": "pAccounting",
+      "text": "this.row([this.c('412-0089', {mono:true}), this.c('PN/CC/000622', {mono:true, link:true}), this.c('Vehicle registration'), this.c('YE19 KTX not found on vehicle enquiry', {nowrap:false}), this.c('Correct', {link:true, onClick: () => this.toast('Record correction drawer (mock).', '', null)})], {go:'policy', tab:'Vehicles'}),"
+    },
+    {
+      "line": 2964,
+      "method": "pAccounting",
+      "text": "p.rail = [this.sec({kind:'actions', title:'Batch actions',"
+    },
+    {
+      "line": 2966,
+      "method": "pAccounting",
+      "text": "this.act('Submit to insurer', {kind:'off', title:'Blocked while validation failures remain', hint:'Blocked'}),"
+    },
+    {
+      "line": 2967,
+      "method": "pAccounting",
+      "text": "this.act('Export batch (CSV)', {onClick: () => this.toast('Export queued (mock).', '', null)}),"
+    },
+    {
+      "line": 2968,
+      "method": "pAccounting",
+      "text": "this.act('Exclude failing records', {onClick: () => this.toast('3 records excluded — reason required for audit (mock).', '', null)}),"
+    },
+    {
+      "line": 2969,
+      "method": "pAccounting",
+      "text": "this.act('Back to bordereaux', {onClick: () => this.setTab('Bordereaux')})"
+    },
+    {
+      "line": 2973,
+      "method": "pAccounting",
+      "text": "this.sec({kind:'table', w:'100%', title:'Refunds',"
+    },
+    {
+      "line": 2979,
+      "method": "pAccounting",
+      "text": "this.sec({kind:'timeline', w:'100%', title:'Refund audit history — RF-0219',"
+    },
+    {
+      "line": 2990,
+      "method": "pReporting",
+      "text": "pReporting() {"
+    },
+    {
+      "line": 2994,
+      "method": "pReporting",
+      "text": "pageHeader: true, title: 'Underwriting performance', subtitle: 'Period 01/06/2026 – 31/08/2026 · Motor Trade · all agencies · mock data',"
+    },
+    {
+      "line": 2996,
+      "method": "pReporting",
+      "text": "{label:'Export (CSV)', style: this.btn('ghost'), onClick: () => this.toast('Export running… CSV will download when complete (mock).', '', null)},"
+    },
+    {
+      "line": 2997,
+      "method": "pReporting",
+      "text": "{label:'Back to reports', style: this.btn('ghost'), onClick: () => this.setTab('Report library')}"
+    },
+    {
+      "line": 2999,
+      "method": "pReporting",
+      "text": "subnav: ['Report library','Underwriting performance'], tab: tab,"
+    },
+    {
+      "line": 3001,
+      "method": "pReporting",
+      "text": "this.sec({kind:'form', w:'100%', title:'Filters', cols:'repeat(4,1fr)',"
+    },
+    {
+      "line": 3008,
+      "method": "pReporting",
+      "text": "this.sec({kind:'fields', w:'520px', title:'Headline measures', note:'Counts of quotes created in the period', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 3013,
+      "method": "pReporting",
+      "text": "this.sec({kind:'bars', w:'420px', title:'Conversion by agency', footer:'Bound policies as a share of quotes created, last 3 months.',"
+    },
+    {
+      "line": 3015,
+      "method": "pReporting",
+      "text": "this.sec({kind:'table', w:'100%', title:'Underlying records', note:'Click a row to open the quote',"
+    },
+    {
+      "line": 3029,
+      "method": "pReporting",
+      "text": "pageHeader: true, title: 'Reporting', subtitle: 'Reports respect your role and agency visibility · period August 2026',"
+    },
+    {
+      "line": 3030,
+      "method": "pReporting",
+      "text": "pageActions: [{label:'Export (CSV)', style: this.btn('ghost'), onClick: () => this.toast('Export running… CSV will download when complete (mock).', '', null)}],"
+    },
+    {
+      "line": 3031,
+      "method": "pReporting",
+      "text": "subnav: ['Report library','Underwriting performance'], tab: tab,"
+    },
+    {
+      "line": 3034,
+      "method": "pReporting",
+      "text": "this.sec({kind:'cards', w:'100%', title:'Report categories', cardCols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 3036,
+      "method": "pReporting",
+      "text": "{title:'Underwriting', tag:'4 reports', tagStyle: this.badgeStyle('grey'), body:'Quote volume, conversion, referral outcomes and premium by product.', onClick: () => this.setTab('Underwriting performance')},"
+    },
+    {
+      "line": 3037,
+      "method": "pReporting",
+      "text": "{title:'Policy portfolio', tag:'3 reports', tagStyle: this.badgeStyle('grey'), body:'Active policies, new business, cancellations and premium movement.', onClick: () => this.setTab('Underwriting performance')},"
+    },
+    {
+      "line": 3038,
+      "method": "pReporting",
+      "text": "{title:'Renewals', tag:'2 reports', tagStyle: this.badgeStyle('grey'), body:'Invitations due, retention and lapse reasons.', onClick: () => this.setTab('Underwriting performance')},"
+    },
+    {
+      "line": 3039,
+      "method": "pReporting",
+      "text": "{title:'Finance', tag:'5 reports', tagStyle: this.badgeStyle('grey'), body:'Written and earned premium, commission, balances and bordereau status.', onClick: () => this.go('accounting')},"
+    },
+    {
+      "line": 3040,
+      "method": "pReporting",
+      "text": "{title:'Agency performance', tag:'3 reports', tagStyle: this.badgeStyle('grey'), body:'Quotes, bound policies, conversion and service measures by agency.', onClick: () => this.setTab('Underwriting performance')},"
+    },
+    {
+      "line": 3041,
+      "method": "pReporting",
+      "text": "{title:'Compliance & exceptions', tag:'3 reports', tagStyle: this.badgeStyle('warn'), body:'Referral turnaround, data reporting exceptions and complaints.', onClick: () => this.setTab('Underwriting performance')}"
+    },
+    {
+      "line": 3043,
+      "method": "pReporting",
+      "text": "this.sec({kind:'table', w:'100%', title:'Recent and favourite reports',"
+    },
+    {
+      "line": 3051,
+      "method": "pReporting",
+      "text": "]).map((x) => this.row([this.c(x.n, {strong:true, link:true}), this.c(x.c), this.c(x.d, {muted:true}), this.c(x.b), this.c(x.p, {muted:true})], {onClick: () => this.setTab('Underwriting performance')}))})"
+    },
+    {
+      "line": 3056,
+      "method": "AUTHORITY",
+      "text": "AUTHORITY() {"
+    },
+    {
+      "line": 3116,
+      "method": "DIMENSION_INFO",
+      "text": "DIMENSION_INFO() {"
+    },
+    {
+      "line": 3136,
+      "method": "pAdmin",
+      "text": "pAdmin() {"
+    },
+    {
+      "line": 3139,
+      "method": "pAdmin",
+      "text": "pageHeader: true, title: 'Admin', subtitle: 'Internal configuration · your role: system administrator (full access)',"
+    },
+    {
+      "line": 3140,
+      "method": "pAdmin",
+      "text": "subnav: ['Overview','Users & roles','Products & schemes','Delegated authority','Workflow','Client matching','Customer flags','Templates','Integrations','Audit log','Settings'], tab: tab"
+    },
+    {
+      "line": 3144,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'cards', w:'100%', title:'Administration areas', cardCols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 3146,
+      "method": "pAdmin",
+      "text": "{title:'Users & roles', tag:'Restricted', tagStyle: this.badgeStyle('grey'), body:'Internal user directory, role assignment and team membership.', onClick: () => this.setTab('Users & roles')},"
+    },
+    {
+      "line": 3147,
+      "method": "pAdmin",
+      "text": "{title:'Client matching', tag:'1 open review', tagStyle: this.badgeStyle('warn'), body:'Duplicate detection signals, confidence tiers and the commercial rule for handling matches.', onClick: () => this.setTab('Client matching')},"
+    },
+    {
+      "line": 3148,
+      "method": "pAdmin",
+      "text": "{title:'Products & schemes', tag:'Controlled', tagStyle: this.badgeStyle('info'), body:'Products, capacity providers, cover sections and effective dates.', onClick: () => this.setTab('Products & schemes')},"
+    },
+    {
+      "line": 3149,
+      "method": "pAdmin",
+      "text": "{title:'Delegated authority', tag:'Controlled', tagStyle: this.badgeStyle('info'), body:'Authority limits, approval levels and referral routing.', onClick: () => this.setTab('Delegated authority')},"
+    },
+    {
+      "line": 3150,
+      "method": "pAdmin",
+      "text": "{title:'Workflow & tasks', tag:'Configurable', tagStyle: this.badgeStyle('grey'), body:'Task types, queues, assignment rules and priorities.', onClick: () => this.setTab('Workflow')},"
+    },
+    {
+      "line": 3151,
+      "method": "pAdmin",
+      "text": "{title:'Document & message templates', tag:'Versioned', tagStyle: this.badgeStyle('grey'), body:'Schedules, certificates, letters and agency messages.', onClick: () => this.setTab('Templates')},"
+    },
+    {
+      "line": 3152,
+      "method": "pAdmin",
+      "text": "{title:'Integrations', tag:'1 degraded', tagStyle: this.badgeStyle('warn'), body:'Rating, document generation, payments and data reporting.', onClick: () => this.setTab('Integrations')},"
+    },
+    {
+      "line": 3153,
+      "method": "pAdmin",
+      "text": "{title:'Audit log', tag:'Read only', tagStyle: this.badgeStyle('grey'), body:'Significant administrative and operational actions.', onClick: () => this.setTab('Audit log')},"
+    },
+    {
+      "line": 3154,
+      "method": "pAdmin",
+      "text": "{title:'General settings', tag:'Restricted', tagStyle: this.badgeStyle('grey'), body:'Organisation details, reference formats and notifications.', onClick: () => this.setTab('Settings')}"
+    },
+    {
+      "line": 3159,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'table', w:'100%', title:'Internal users', note:'Internal roles are separate from agency roles', actionLabel:'Invite user', actionKind:'primary', onAction: () => this.setState({modal:{kind:'invite'}}),"
+    },
+    {
+      "line": 3168,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'table', w:'100%', title:'Account administration', note:'Actions only administrators can perform — users cannot change these themselves',"
+    },
+    {
+      "line": 3171,
+      "method": "pAdmin",
+      "text": "this.row([this.c('Change email address', {strong:true}), this.c('Any internal user'), this.c('Second administrator approval', {nowrap:false}), this.c('Before and after recorded', {muted:true, nowrap:false})], {onClick: () => this.setState({modal:{kind:'chgemail'}})}),"
+    },
+    {
+      "line": 3174,
+      "method": "pAdmin",
+      "text": "this.row([this.c('Reset two-factor authentication', {strong:true}), this.c('Any internal user'), this.c('Identity check by phone', {nowrap:false}), this.c('Recorded', {muted:true})], {onClick: () => this.toast('Two-factor reset for the selected user — they must set it up again at next sign-in (mock).', '', null)}),"
+    },
+    {
+      "line": 3175,
+      "method": "pAdmin",
+      "text": "this.row([this.c('Force password reset', {strong:true}), this.c('Any internal user'), this.c('None', {nowrap:false}), this.c('Recorded', {muted:true})], {onClick: () => this.toast('Password reset email sent (mock).', '', null)}),"
+    },
+    {
+      "line": 3178,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'table', w:'100%', title:'Internal roles',"
+    },
+    {
+      "line": 3190,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'table', w:'100%', title:'Products',"
+    },
+    {
+      "line": 3198,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'fields', w:'520px', title:'Motor Trade Combined — read only', note:'Published configuration · v4', cols:'1fr 1fr', actionLabel:'Create draft version', actionKind:'ghost', onAction: () => this.toast('Draft v5 created — published configuration unchanged (mock).', '', null),"
+    },
+    {
+      "line": 3217,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'form', w:'100%', title:'Product', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 3228,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'table', w:'100%', title:'Authority matrix — ' + sel, note:'Referral routing applies when any single limit is exceeded',"
+    },
+    {
+      "line": 3236,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'table', w:'100%', title:'Dimensions available by product', note:'Derived from the product configurations, so it cannot drift from the matrices above',"
+    },
+    {
+      "line": 3253,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'table', w:'100%', title:'Change history — ' + sel, note:'Held against this product only',"
+    },
+    {
+      "line": 3259,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'fields', w:'480px', title:'Controls', cols:'1fr',"
+    },
+    {
+      "line": 3270,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'table', w:'100%', title:'Task types and routing',"
+    },
+    {
+      "line": 3284,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'form', w:'100%', title:'Duplicate handling rule', note:'Applies when a probable or definitive match is found', cols:'repeat(2,1fr)',"
+    },
+    {
+      "line": 3289,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'table', w:'100%', title:'Matching signals', note:'Definitive signals link automatically; strong and moderate signals raise a review',"
+    },
+    {
+      "line": 3304,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'table', w:'100%', title:'Confidence tiers',"
+    },
+    {
+      "line": 3311,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'table', w:'100%', title:'Open match reviews',"
+    },
+    {
+      "line": 3316,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'fields', w:'440px', title:'Cautions', cols:'1fr',"
+    },
+    {
+      "line": 3328,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'table', w:'100%', title:'Flag types',"
+    },
+    {
+      "line": 3338,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'fields', w:'480px', title:'Controls', cols:'1fr',"
+    },
+    {
+      "line": 3347,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'table', w:'420px', title:'Current flag population', note:'Across the book',"
+    },
+    {
+      "line": 3358,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'table', w:'100%', title:'Document and message templates',"
+    },
+    {
+      "line": 3361,
+      "method": "pAdmin",
+      "text": "this.row([this.c('Policy schedule — Combined', {strong:true}), this.c('Document'), this.c('v9', {mono:true}), this.c('Published', {tone:'ok'}), this.c('01/06/2026 · Dev Sandhu'), this.c('Preview', {link:true, onClick: () => this.toast('Template preview (mock).', '', null)})]),"
+    },
+    {
+      "line": 3369,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'table', w:'100%', title:'Service health',"
+    },
+    {
+      "line": 3374,
+      "method": "pAdmin",
+      "text": "this.row([this.c('Motor insurance data service', {strong:true}), this.c('Vehicle data reporting'), this.c('Degraded', {tone:'warn'}), this.c('08/09/2026 02:10'), this.c('08/09/2026 02:10 — 1 rejection', {muted:true, nowrap:false}), this.c('Retry batch', {link:true, onClick: () => this.toast('Batch retry queued (mock).', '', null)})]),"
+    },
+    {
+      "line": 3376,
+      "method": "pAdmin",
+      "text": "this.row([this.c('Insurer reporting', {strong:true}), this.c('Bordereaux submission'), this.c('Awaiting input', {tone:'grey'}), this.c('05/08/2026 18:00'), this.c('—', {muted:true}), this.c('Open bordereaux', {link:true, onClick: () => this.go('accounting', 'Bordereaux')})])"
+    },
+    {
+      "line": 3381,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'table', w:'100%', title:'Audit log', note:'Searchable record of significant actions · retained 7 years', footer:'Showing 6 of 41,208 entries', paged:true,"
+    },
+    {
+      "line": 3395,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'fields', w:'520px', title:'Organisation', cols:'1fr 1fr',"
+    },
+    {
+      "line": 3401,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'fields', w:'420px', title:'Reference formats', cols:'1fr',"
+    },
+    {
+      "line": 3408,
+      "method": "pAdmin",
+      "text": "this.sec({kind:'fields', w:'100%', title:'Notifications', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 3419,
+      "method": "progress",
+      "text": "progress(list, cur, onJump, forceStyle) {"
+    },
+    {
+      "line": 3427,
+      "method": "progress",
+      "text": "const base = {label: name, mark: '', title: 'Step ' + n + ' of ' + list.length + ' — ' + name, onClick: jump,"
+    },
+    {
+      "line": 3468,
+      "method": "steps",
+      "text": "steps(list, cur) {"
+    },
+    {
+      "line": 3469,
+      "method": "steps",
+      "text": "return this.sec({kind:'table', w:'100%', title:'Progress', note:'Step ' + cur + ' of ' + list.length,"
+    },
+    {
+      "line": 3477,
+      "method": "pNewQuote",
+      "text": "pNewQuote() {"
+    },
+    {
+      "line": 3587,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Agency and product', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 3599,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'The proposer', note:'Joint proposals may name up to three people', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 3611,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Motor trade experience', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 3620,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'composer', w:'100%', title:'Full trade or business description', note:'In the proposer’s own words — this drives appetite and rating',"
+    },
+    {
+      "line": 3629,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'fields', w:'440px', title:'Evidence of trading', cols:'1fr',"
+    },
+    {
+      "line": 3635,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Trade activity split', note:'Percentage of turnover by activity — must total 100%', cols:'repeat(4,1fr)',"
+    },
+    {
+      "line": 3649,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Activities affecting appetite', note:'Each answer is a material fact', cols:'repeat(2,1fr)',"
+    },
+    {
+      "line": 3660,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Appetite result', note:'Recalculated as answers change',"
+    },
+    {
+      "line": 3665,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'The proposer', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 3677,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'composer', w:'100%', title:'Business or trade description', note:'What the business actually does — drives appetite, liability rating and the trade code',"
+    },
+    {
+      "line": 3682,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Trading history', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 3691,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'About the proposer and its officers', note:'Answered for the proposer and any director, partner, officer or principal', cols:'repeat(2,1fr)',"
+    },
+    {
+      "line": 3703,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Loss history', note:'Any loss or damage in the last 5 years, whether insured or not, at these or any other premises owned or occupied', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 3709,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Losses declared', note: ccls.length + ' recorded',"
+    },
+    {
+      "line": 3716,
+      "method": "pNewQuote",
+      "text": "this.c('Remove', {link:true, onClick: rm('ccLoss', x.id, 'Loss removed from the draft.')})"
+    },
+    {
+      "line": 3721,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Locations', note:'The risk object on this product is a location, not a vehicle · ' + ccl.length + ' declared',"
+    },
+    {
+      "line": 3729,
+      "method": "pNewQuote",
+      "text": "this.c('Remove', {link:true, onClick: rm('ccLoc', x.id, 'Location removed from the draft.')})"
+    },
+    {
+      "line": 3733,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Occupancy', note:'Applies across all locations unless stated otherwise', cols:'repeat(2,1fr)',"
+    },
+    {
+      "line": 3747,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Construction', note:'Proposal question 22',"
+    },
+    {
+      "line": 3757,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Protections', note:'Proposal questions 15 to 21',"
+    },
+    {
+      "line": 3764,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Physical security detail', note:'How each opening is protected — proposal question 16', cols:'repeat(2,1fr)',"
+    },
+    {
+      "line": 3775,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Safety regulations', note:'Proposal questions 14, 23 and 24', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 3785,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Flood exposure', note:'Proposal question 22, parts m to o', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 3794,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Subsidence, ground heave and landslip', note:'Proposal question 26 — only required if the cover is requested', cols:'repeat(2,1fr)',"
+    },
+    {
+      "line": 3810,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Sums insured by location', note:'Reinstatement basis unless stated otherwise',"
+    },
+    {
+      "line": 3820,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Basis of settlement and other property', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 3832,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Business interruption', note:'No motor trade equivalent — this section has its own basis and period', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 3845,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Wage roll', note:'Estimated annual wages, salaries and other earnings for the forthcoming year — proposal question 27b',"
+    },
+    {
+      "line": 3851,
+      "method": "pNewQuote",
+      "text": "this.c('Remove', {link:true, onClick: rm('ccWage', x.id, 'Wage roll category removed.')})"
+    },
+    {
+      "line": 3855,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Employees and activities', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 3867,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Liability limits required', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 3876,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Management of health and safety', note:'Proposal question 28', cols:'repeat(2,1fr)',"
+    },
+    {
+      "line": 3889,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Sub-contractors and enforcement', cols:'repeat(2,1fr)',"
+    },
+    {
+      "line": 3897,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'table', w:'520px', title:'Health and safety position', note: hsNo === 0 ? 'No gaps declared' : hsNo + ' gap(s) declared',"
+    },
+    {
+      "line": 3907,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Sections required', note:'Sections are configured per policy on this product',"
+    },
+    {
+      "line": 3917,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Excesses', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 3923,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'composer', w:'100%', title:'Other material facts', note:'Anything material not covered by a specific question — the proposer must conduct a reasonable search',"
+    },
+    {
+      "line": 3927,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'checks', w:'520px', title:'Enclosures', note:'Required before terms can be issued',"
+    },
+    {
+      "line": 3935,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'table', w:'520px', title:'Outstanding before rating', note: missing === 0 ? 'All required answers captured' : missing + ' outstanding',"
+    },
+    {
+      "line": 3938,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'fields', w:'440px', title:'Indicative premium', note:'Mock rating — the quote must be rated before it can be sent', cols:'1fr 1fr',"
+    },
+    {
+      "line": 3949,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Referrals predicted at rating',"
+    },
+    {
+      "line": 3953,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'fields', w:'480px', title:'Aggregation check', note:'Property exposure by postcode district', cols:'1fr 1fr',"
+    },
+    {
+      "line": 3965,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Trading premises', note:'Required for the premises and stock sections on this product · ' + qpr.length + ' declared',"
+    },
+    {
+      "line": 3971,
+      "method": "pNewQuote",
+      "text": "this.c('Remove', {link:true, onClick: rm('qPrem', x.id, 'Premises removed from the draft.')})"
+    },
+    {
+      "line": 3977,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Drivers to be covered', note:'Proposal questions A5 and B1',"
+    },
+    {
+      "line": 3986,
+      "method": "pNewQuote",
+      "text": "this.c('Remove', {link:true, onClick: rm('qDrivers', x.id, x.name + ' removed from the draft.')})"
+    },
+    {
+      "line": 3990,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'fields', w:'100%', title:'Driver summary', note:'Derived from the drivers declared above', cols:'repeat(4,1fr)',"
+    },
+    {
+      "line": 4002,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Declarations for the proposer and every named driver', note:'Proposal question B2 — a Yes to any requires full details', cols:'repeat(2,1fr)',"
+    },
+    {
+      "line": 4013,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Motoring convictions', note:'One row per conviction, per driver',"
+    },
+    {
+      "line": 4021,
+      "method": "pNewQuote",
+      "text": "this.c('Remove', {link:true, onClick: rm('qConv', x.id, 'Conviction removed from the draft.')})"
+    },
+    {
+      "line": 4025,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Accidents, losses and claims', note:'Last 3 years, whether or not a claim was made',"
+    },
+    {
+      "line": 4033,
+      "method": "pNewQuote",
+      "text": "this.c('Remove', {link:true, onClick: rm('qInc', x.id, 'Incident removed from the draft.')})"
+    },
+    {
+      "line": 4038,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Vehicles owned but not for sale', note:'Proposal question C1 — private, recovery and service vehicles, including a named spouse’s vehicles',"
+    },
+    {
+      "line": 4045,
+      "method": "pNewQuote",
+      "text": "this.c('Remove', {link:true, onClick: rm('qVehOwn', x.id, x.reg + ' removed from the draft.')})"
+    },
+    {
+      "line": 4049,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Vehicles held for sale', note:'Proposal question C2',"
+    },
+    {
+      "line": 4056,
+      "method": "pNewQuote",
+      "text": "this.c('Remove', {link:true, onClick: rm('qVehSale', x.id, x.reg + ' removed from the draft.')})"
+    },
+    {
+      "line": 4060,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Vehicle characteristics', note:'Proposal question C3 — applies to any vehicle listed above', cols:'repeat(2,1fr)',"
+    },
+    {
+      "line": 4069,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Vehicle types and trade plates', cols:'repeat(4,1fr)',"
+    },
+    {
+      "line": 4083,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Previous or current insurance', note:'Complete even if no discount is being claimed', cols:'repeat(2,1fr)',"
+    },
+    {
+      "line": 4090,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'No claims discount', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 4100,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'composer', w:'100%', title:'Reason no discount is being claimed', note:'Required when no discount is claimed',"
+    },
+    {
+      "line": 4105,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'table', w:'440px', title:'Discount eligibility',"
+    },
+    {
+      "line": 4115,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'form', w:'100%', title:'Cover required', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 4130,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Cover validation',"
+    },
+    {
+      "line": 4139,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'composer', w:'100%', title:'Other material facts', note:'Anything that could influence the assessment of this proposal',"
+    },
+    {
+      "line": 4143,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'checks', w:'520px', title:'Enclosures', note:'Required before terms can be issued',"
+    },
+    {
+      "line": 4150,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'table', w:'520px', title:'Outstanding before rating', note: missing === 0 ? 'All required answers captured' : missing + ' outstanding',"
+    },
+    {
+      "line": 4153,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'fields', w:'440px', title:'Indicative premium', note:'Mock rating — the quote must be rated before it can be sent', cols:'1fr 1fr',"
+    },
+    {
+      "line": 4162,
+      "method": "pNewQuote",
+      "text": "S.push(this.sec({kind:'table', w:'100%', title:'Referrals predicted at rating',"
+    },
+    {
+      "line": 4176,
+      "method": "pNewQuote",
+      "text": "pageHeader: true, title: 'New quote — QT/MT/004190',"
+    },
+    {
+      "line": 4179,
+      "method": "pNewQuote",
+      "text": "{label:'Save and exit', style: this.btn('ghost'), onClick: () => { this.toast('Draft QT/MT/004190 saved. Resume it from Quotes.', '', null); this.go('quotes'); }},"
+    },
+    {
+      "line": 4180,
+      "method": "pNewQuote",
+      "text": "step > 1 ? {label:'Back', style: this.btn('ghost'), onClick: () => next(step - 1)} : {label:'Cancel', style: this.btn('ghost'), onClick: () => this.go('dashboard')},"
+    },
+    {
+      "line": 4183,
+      "method": "pNewQuote",
+      "text": "onClick: () => missing === 0"
+    },
+    {
+      "line": 4186,
+      "method": "pNewQuote",
+      "text": ": {label:'Continue', style: this.btn('primary'), onClick: () => next(step + 1)}"
+    },
+    {
+      "line": 4190,
+      "method": "pNewQuote",
+      "text": "this.sec({kind:'actions', title:'Draft actions',"
+    },
+    {
+      "line": 4192,
+      "method": "pNewQuote",
+      "text": "this.act('Save draft', {kind:'primary', onClick: () => this.toast('Draft QT/MT/004190 saved.', '', null)}),"
+    },
+    {
+      "line": 4193,
+      "method": "pNewQuote",
+      "text": "this.act('Clone from existing policy', {onClick: () => this.toast('Pre-filled from PN/CC/000622 (mock).', '', null)}),"
+    },
+    {
+      "line": 4194,
+      "method": "pNewQuote",
+      "text": "this.act('Rate quote', (last && missing === 0)"
+    },
+    {
+      "line": 4195,
+      "method": "pNewQuote",
+      "text": "? {onClick: () => this.toast('Rated (mock): £1,318.40 GWP.', 'Open quote', () => this.go('quote'))}"
+    },
+    {
+      "line": 4196,
+      "method": "pNewQuote",
+      "text": ": {kind:'off', title: last ? missing + ' required answers outstanding' : 'Complete all capture steps first', hint: last ? missing + ' outstanding' : 'Step ' + stages.length}),"
+    },
+    {
+      "line": 4197,
+      "method": "pNewQuote",
+      "text": "this.act('Abandon draft', {kind:'danger', onClick: () => { this.toast('Draft abandoned (mock).', '', null); this.go('quotes'); }})"
+    },
+    {
+      "line": 4200,
+      "method": "pNewQuote",
+      "text": "this.sec({kind:'fields', title:'Capture summary', cols:'1fr',"
+    },
+    {
+      "line": 4214,
+      "method": "pRenewal",
+      "text": "pRenewal() {"
+    },
+    {
+      "line": 4221,
+      "method": "pRenewal",
+      "text": "this.sec({kind:'fields', w:'480px', title:'Renewal summary', cols:'1fr 1fr',"
+    },
+    {
+      "line": 4232,
+      "method": "pRenewal",
+      "text": "this.sec({kind:'table', w:'100%', title:'Changes carried into the renewal', note:'Compared with in-force version 4',"
+    },
+    {
+      "line": 4240,
+      "method": "pRenewal",
+      "text": "this.sec({kind:'table', w:'100%', title:'Renewal checks',"
+    },
+    {
+      "line": 4250,
+      "method": "pRenewal",
+      "text": "S.splice(4, 0, this.sec({kind:'table', w:'100%', title:'Documents issued',"
+    },
+    {
+      "line": 4258,
+      "method": "pRenewal",
+      "text": "pageHeader: true, title: 'Renewal — PN/CC/000571', subtitle: 'Kestrel Recovery (Doncaster) Ltd · Vantage Trade Brokers · renewal due 01/10/2026',"
+    },
+    {
+      "line": 4260,
+      "method": "pRenewal",
+      "text": "{label:'Back to policy', style: this.btn('ghost'), onClick: () => this.go('policy')},"
+    },
+    {
+      "line": 4262,
+      "method": "pRenewal",
+      "text": "? {label: step === 1 ? 'Rate renewal' : (step === 2 ? 'Issue invitation' : 'Record acceptance'), style: this.btn('primary'), onClick: () => {"
+    },
+    {
+      "line": 4266,
+      "method": "pRenewal",
+      "text": ": {label:'Issue renewal policy', style: this.btn('primary'), onClick: () => this.toast('Renewal policy issued (mock): PN/CC/000571 version 5, term 01/10/2026 – 30/09/2027.', 'Open policy', () => this.go('policy'))}"
+    },
+    {
+      "line": 4270,
+      "method": "pRenewal",
+      "text": "this.sec({kind:'actions', title:'Renewal actions',"
+    },
+    {
+      "line": 4272,
+      "method": "pRenewal",
+      "text": "this.act('Decide referral UW-31', {kind: step >= 2 ? 'primary' : 'off', title: step >= 2 ? '' : 'Raised at rating', hint: step >= 2 ? 'Open' : 'After rating', onClick: step >= 2 ? () => this.toast('Referral UW-31 approved — loss ratio accepted with 8% loading.', '', null) : null}),"
+    },
+    {
+      "line": 4273,
+      "method": "pRenewal",
+      "text": "this.act('Amend renewal terms', {onClick: () => this.toast('Renewal terms editor (mock) — would invalidate rating.', '', null)}),"
+    },
+    {
+      "line": 4274,
+      "method": "pRenewal",
+      "text": "this.act('Lapse at expiry', {kind:'danger', onClick: () => this.toast('Lapse requires a reason and broker notification (mock).', '', null)})"
+    },
+    {
+      "line": 4277,
+      "method": "pRenewal",
+      "text": "this.sec({kind:'fields', title:'Timeline', cols:'1fr',"
+    },
+    {
+      "line": 4288,
+      "method": "pCancelReview",
+      "text": "pCancelReview() {"
+    },
+    {
+      "line": 4291,
+      "method": "pCancelReview",
+      "text": "pageHeader: true, title: 'Cancellation review — PN/CC/000622', subtitle: 'Smith Motor Traders Ltd · effective ' + this.fv('cxDate','15/09/2026') + ' · not yet issued',"
+    },
+    {
+      "line": 4293,
+      "method": "pCancelReview",
+      "text": "{label:'Back to policy', style: this.btn('ghost'), onClick: () => this.go('policy')},"
+    },
+    {
+      "line": 4294,
+      "method": "pCancelReview",
+      "text": "{label:'Issue cancellation', style: this.btn('primary'), onClick: () => this.toast('Cancellation issued (mock): policy PN/CC/000622 cancelled, version 7, refund RF-0221 raised.', 'Open policy', () => this.go('policy'))}"
+    },
+    {
+      "line": 4299,
+      "method": "pCancelReview",
+      "text": "this.sec({kind:'fields', w:'480px', title:'Cancellation detail', cols:'1fr 1fr',"
+    },
+    {
+      "line": 4308,
+      "method": "pCancelReview",
+      "text": "this.sec({kind:'fields', w:'440px', title:'Financial effect', note:'Mock calculation', cols:'1fr 1fr',"
+    },
+    {
+      "line": 4317,
+      "method": "pCancelReview",
+      "text": "this.sec({kind:'table', w:'100%', title:'Consequences on issue',"
+    },
+    {
+      "line": 4329,
+      "method": "pCancelReview",
+      "text": "this.sec({kind:'actions', title:'Actions',"
+    },
+    {
+      "line": 4331,
+      "method": "pCancelReview",
+      "text": "this.act('Issue cancellation', {kind:'primary', onClick: () => this.toast('Cancellation issued (mock): version 7, refund RF-0221 raised.', 'Open policy', () => this.go('policy'))}),"
+    },
+    {
+      "line": 4332,
+      "method": "pCancelReview",
+      "text": "this.act('Amend reason or date', {onClick: () => this.setState({modal:{kind:'cancel'}})}),"
+    },
+    {
+      "line": 4333,
+      "method": "pCancelReview",
+      "text": "this.act('Abandon cancellation', {kind:'danger', onClick: () => { this.toast('Cancellation abandoned — policy unchanged.', '', null); this.go('policy'); }})"
+    },
+    {
+      "line": 4339,
+      "method": "pIssued",
+      "text": "pIssued() {"
+    },
+    {
+      "line": 4341,
+      "method": "pIssued",
+      "text": "pageHeader: true, title: 'MTA-007 issued', subtitle: 'Smith Motor Traders Ltd · PN/CC/000622 · version 7 effective ' + this.state.mtaEffective,"
+    },
+    {
+      "line": 4343,
+      "method": "pIssued",
+      "text": "{label:'Open policy', style: this.btn('primary'), onClick: () => this.go('policy')},"
+    },
+    {
+      "line": 4344,
+      "method": "pIssued",
+      "text": "{label:'View transactions', style: this.btn('ghost'), onClick: () => this.go('policy', 'Transactions')}"
+    },
+    {
+      "line": 4349,
+      "method": "pIssued",
+      "text": "this.sec({kind:'fields', w:'480px', title:'Transaction result', cols:'1fr 1fr',"
+    },
+    {
+      "line": 4360,
+      "method": "pIssued",
+      "text": "this.sec({kind:'table', w:'100%', title:'Changes applied',"
+    },
+    {
+      "line": 4363,
+      "method": "pIssued",
+      "text": "this.sec({kind:'table', w:'100%', title:'Documents generated',"
+    },
+    {
+      "line": 4371,
+      "method": "pIssued",
+      "text": "this.sec({kind:'table', w:'100%', title:'Follow-on actions',"
+    },
+    {
+      "line": 4382,
+      "method": "pVehicle",
+      "text": "pVehicle() {"
+    },
+    {
+      "line": 4385,
+      "method": "pVehicle",
+      "text": "type: 'Vehicle', title: 'YE19 KTX', sub: 'Ford Transit Custom 300 Limited · 2.0 EcoBlue · panel van',"
+    },
+    {
+      "line": 4394,
+      "method": "pVehicle",
+      "text": "actions: [{label:'Retry data submission', kind:'onblue', onClick: () => this.toast('Submission retried (mock): awaiting response.', '', null)}]"
+    },
+    {
+      "line": 4396,
+      "method": "pVehicle",
+      "text": "tabs: ['Detail'], tab: 'Detail',"
+    },
+    {
+      "line": 4401,
+      "method": "pVehicle",
+      "text": "this.sec({kind:'fields', w:'480px', title:'Vehicle detail', cols:'1fr 1fr',"
+    },
+    {
+      "line": 4408,
+      "method": "pVehicle",
+      "text": "this.sec({kind:'fields', w:'380px', title:'Cover', cols:'1fr',"
+    },
+    {
+      "line": 4415,
+      "method": "pVehicle",
+      "text": "this.sec({kind:'table', w:'100%', title:'History',"
+    },
+    {
+      "line": 4426,
+      "method": "pDriver",
+      "text": "pDriver() {"
+    },
+    {
+      "line": 4429,
+      "method": "pDriver",
+      "text": "type: 'Driver', title: 'Liam Doherty', sub: 'Proposed named driver on MTA-007 · not yet on cover',"
+    },
+    {
+      "line": 4438,
+      "method": "pDriver",
+      "text": "actions: [{label:'Open referral task', kind:'onblue', onClick: () => this.go('task')}]"
+    },
+    {
+      "line": 4440,
+      "method": "pDriver",
+      "text": "tabs: ['Detail'], tab: 'Detail',"
+    },
+    {
+      "line": 4445,
+      "method": "pDriver",
+      "text": "this.sec({kind:'fields', w:'480px', title:'Driver detail', cols:'1fr 1fr',"
+    },
+    {
+      "line": 4452,
+      "method": "pDriver",
+      "text": "this.sec({kind:'table', w:'100%', title:'Claims and convictions declared',"
+    },
+    {
+      "line": 4457,
+      "method": "pDriver",
+      "text": "this.sec({kind:'fields', w:'380px', title:'Underwriting assessment', cols:'1fr',"
+    },
+    {
+      "line": 4468,
+      "method": "pPortal",
+      "text": "pPortal() {"
+    },
+    {
+      "line": 4470,
+      "method": "pPortal",
+      "text": "pageHeader: true, title: 'Agency portal — data reference', subtitle: 'What Brightside Insurance Services Ltd can see · internal reference only',"
+    },
+    {
+      "line": 4471,
+      "method": "pPortal",
+      "text": "pageActions: [{label:'Back to agency', style: this.btn('ghost'), onClick: () => this.go('agency')}],"
+    },
+    {
+      "line": 4475,
+      "method": "pPortal",
+      "text": "this.sec({kind:'table', w:'100%', title:'Their policies', note:'Brightside records only',"
+    },
+    {
+      "line": 4481,
+      "method": "pPortal",
+      "text": "this.sec({kind:'table', w:'100%', title:'Their open items',"
+    },
+    {
+      "line": 4487,
+      "method": "pPortal",
+      "text": "this.sec({kind:'table', w:'100%', title:'Hidden from agency users', note:'Shown here for internal reference only',"
+    },
+    {
+      "line": 4501,
+      "method": "pAccount",
+      "text": "pAccount() {"
+    },
+    {
+      "line": 4505,
+      "method": "pAccount",
+      "text": "pageHeader: true, title: 'Manage account', subtitle: 'James Smith · j.smith@covermga.example · senior underwriter',"
+    },
+    {
+      "line": 4506,
+      "method": "pAccount",
+      "text": "pageActions: [{label:'Back to dashboard', style: this.btn('ghost'), onClick: () => this.go('dashboard')}],"
+    },
+    {
+      "line": 4507,
+      "method": "pAccount",
+      "text": "subnav: ['Profile','Password','Two-factor authentication','Sessions & activity'], tab: tab"
+    },
+    {
+      "line": 4514,
+      "method": "pAccount",
+      "text": "this.sec({kind:'form', w:'100%', title:'Your details', note:'Editable by you', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 4523,
+      "method": "pAccount",
+      "text": "this.sec({kind:'fields', w:'100%', title:'Managed by an administrator', note:'Read only', cols:'repeat(4,1fr)',"
+    },
+    {
+      "line": 4535,
+      "method": "pAccount",
+      "text": "p.pageActions.unshift({label:'Save changes', style: this.btn('primary'), onClick: () => this.toast('Profile updated.', '', null)});"
+    },
+    {
+      "line": 4548,
+      "method": "pAccount",
+      "text": "this.sec({kind:'form', w:'520px', title:'Change your password', note:'You will stay signed in on this device and be signed out elsewhere', cols:'1fr',"
+    },
+    {
+      "line": 4554,
+      "method": "pAccount",
+      "text": "this.sec({kind:'table', w:'440px', title:'Requirements', note: rules.filter((r) => r.ok).length + ' of 6 met',"
+    },
+    {
+      "line": 4557,
+      "method": "pAccount",
+      "text": "this.sec({kind:'fields', w:'100%', title:'Password history', cols:'repeat(4,1fr)',"
+    },
+    {
+      "line": 4565,
+      "method": "pAccount",
+      "text": "this.sec({kind:'actions', title:'Actions',"
+    },
+    {
+      "line": 4567,
+      "method": "pAccount",
+      "text": "this.act('Update password', allOk"
+    },
+    {
+      "line": 4568,
+      "method": "pAccount",
+      "text": "? {kind:'primary', onClick: () => { this.setState((s) => ({form: Object.assign({}, s.form, {pwCur:'', pwNew:'', pwConf:''})})); this.toast('Password updated. Other sessions have been signed out.', '', null); }}"
+    },
+    {
+      "line": 4569,
+      "method": "pAccount",
+      "text": ": {kind:'off', title:'Complete all requirements first', hint:'Blocked'}),"
+    },
+    {
+      "line": 4570,
+      "method": "pAccount",
+      "text": "this.act('Forgotten your password?', {onClick: () => this.toast('A reset link would be emailed to j.smith@covermga.example (mock).', '', null)}),"
+    },
+    {
+      "line": 4571,
+      "method": "pAccount",
+      "text": "this.act('Sign out everywhere', {kind:'danger', onClick: () => this.toast('All other sessions signed out.', '', null)})"
+    },
+    {
+      "line": 4577,
+      "method": "pAccount",
+      "text": "this.sec({kind:'actions', title:'Actions',"
+    },
+    {
+      "line": 4579,
+      "method": "pAccount",
+      "text": "this.act('View recovery codes', {onClick: () => this.setState({modal:{kind:'codes'}})}),"
+    },
+    {
+      "line": 4580,
+      "method": "pAccount",
+      "text": "this.act('Regenerate recovery codes', {onClick: () => { this.setState({modal:{kind:'codes'}}); this.toast('10 new recovery codes generated — the old codes no longer work.', '', null); }}),"
+    },
+    {
+      "line": 4581,
+      "method": "pAccount",
+      "text": "this.act('Replace authenticator app', {onClick: () => this.setState({faStep: 1})}),"
+    },
+    {
+      "line": 4582,
+      "method": "pAccount",
+      "text": "this.act('Turn off two-factor authentication', {kind:'danger', onClick: () => this.setState({modal:{kind:'fadisable'}})})"
+    },
+    {
+      "line": 4584,
+      "method": "pAccount",
+      "text": "this.act('Set up authenticator app', {kind:'primary', onClick: () => this.setState({faStep: 1})}),"
+    },
+    {
+      "line": 4585,
+      "method": "pAccount",
+      "text": "this.act('Why we ask for this', {onClick: () => this.toast('Two-factor authentication protects policyholder data if a password is compromised.', '', null)})"
+    },
+    {
+      "line": 4587,
+      "method": "pAccount",
+      "text": "this.sec({kind:'fields', title:'Status', cols:'1fr',"
+    },
+    {
+      "line": 4597,
+      "method": "pAccount",
+      "text": "this.sec({kind:'table', w:'100%', title:'Active sessions', note:'Signing out a session ends it immediately',"
+    },
+    {
+      "line": 4601,
+      "method": "pAccount",
+      "text": "this.row([this.c('Safari on iPhone', {strong:true}), this.c('Sheffield, UK'), this.c('08/09/2026 18:22'), this.c('Yesterday 21:04'), this.c('No', {tone:'grey'}), this.c('Sign out', {link:true, onClick: () => this.toast('Session signed out.', '', null)})]),"
+    },
+    {
+      "line": 4602,
+      "method": "pAccount",
+      "text": "this.row([this.c('Edge on Windows', {strong:true}), this.c('Leeds, UK'), this.c('02/09/2026 09:10'), this.c('04/09/2026 16:40'), this.c('No', {tone:'grey'}), this.c('Sign out', {link:true, onClick: () => this.toast('Session signed out.', '', null)})])"
+    },
+    {
+      "line": 4604,
+      "method": "pAccount",
+      "text": "this.sec({kind:'table', w:'100%', title:'Recent account activity', note:'Security events on your account only',"
+    },
+    {
+      "line": 4613,
+      "method": "pAccount",
+      "text": "p.rail = [this.sec({kind:'actions', title:'Actions',"
+    },
+    {
+      "line": 4615,
+      "method": "pAccount",
+      "text": "this.act('Sign out all other sessions', {kind:'primary', onClick: () => this.toast('2 other sessions signed out.', '', null)}),"
+    },
+    {
+      "line": 4616,
+      "method": "pAccount",
+      "text": "this.act('Report unrecognised activity', {kind:'danger', onClick: () => this.toast('Reported to the administrators — they will be notified (mock).', '', null)})"
+    },
+    {
+      "line": 4622,
+      "method": "faOff",
+      "text": "faOff() {"
+    },
+    {
+      "line": 4627,
+      "method": "faOff",
+      "text": "this.sec({kind:'fields', w:'480px', title:'What you will need', cols:'1fr',"
+    },
+    {
+      "line": 4634,
+      "method": "faOff",
+      "text": "this.sec({kind:'table', w:'440px', title:'Policy',"
+    },
+    {
+      "line": 4644,
+      "method": "faOn",
+      "text": "faOn() {"
+    },
+    {
+      "line": 4648,
+      "method": "faOn",
+      "text": "this.sec({kind:'fields', w:'480px', title:'Method', cols:'1fr 1fr',"
+    },
+    {
+      "line": 4652,
+      "method": "faOn",
+      "text": "this.f('Recovery codes', '10 unused of 10', {link:true, onClick: () => this.setState({modal:{kind:'codes'}})}),"
+    },
+    {
+      "line": 4655,
+      "method": "faOn",
+      "text": "this.sec({kind:'table', w:'440px', title:'Recent two-factor events',"
+    },
+    {
+      "line": 4665,
+      "method": "faWizard",
+      "text": "faWizard() {"
+    },
+    {
+      "line": 4675,
+      "method": "faWizard",
+      "text": "S.push(this.sec({kind:'form', w:'520px', title:'Which app will you use?', cols:'1fr',"
+    },
+    {
+      "line": 4683,
+      "method": "faWizard",
+      "text": "S.push(this.sec({kind:'qr', w:'440px', title:'Scan this code', note:'Placeholder — the live system generates a real QR code',"
+    },
+    {
+      "line": 4689,
+      "method": "faWizard",
+      "text": "S.push(this.sec({kind:'fields', w:'400px', title:'Or enter the key by hand', cols:'1fr',"
+    },
+    {
+      "line": 4698,
+      "method": "faWizard",
+      "text": "S.push(this.sec({kind:'form', w:'400px', title:'Verify', cols:'1fr',"
+    },
+    {
+      "line": 4700,
+      "method": "faWizard",
+      "text": "S.push(this.sec({kind:'fields', w:'420px', title:'Having trouble?', cols:'1fr',"
+    },
+    {
+      "line": 4703,
+      "method": "faWizard",
+      "text": "this.f('Cannot scan', 'Go back a step and enter the setup key by hand', {link:true, onClick: () => this.setState({faStep: 2})}),"
+    },
+    {
+      "line": 4709,
+      "method": "faWizard",
+      "text": "S.push(this.sec({kind:'table', w:'440px', title:'Recovery codes', note:'10 single-use codes',"
+    },
+    {
+      "line": 4713,
+      "method": "faWizard",
+      "text": "S.push(this.sec({kind:'checks', w:'420px', title:'Before you finish', note:'Confirm you have saved them',"
+    },
+    {
+      "line": 4733,
+      "method": "faWizard",
+      "text": "this.sec({kind:'actions', w:'100%', title:'Setup', note:'Step ' + step + ' of 4',"
+    },
+    {
+      "line": 4735,
+      "method": "faWizard",
+      "text": "this.act(step === 4 ? 'Finish and turn on' : 'Continue', {kind:'primary', onClick: nextBtn}),"
+    },
+    {
+      "line": 4736,
+      "method": "faWizard",
+      "text": "step > 1 ? this.act('Back', {onClick: () => this.setState({faStep: step - 1})}) : this.act('Cancel setup', {onClick: () => this.setState({faStep: 0})}),"
+    },
+    {
+      "line": 4737,
+      "method": "faWizard",
+      "text": "step > 1 ? this.act('Cancel setup', {kind:'danger', onClick: () => { this.setState({faStep: 0, codesSeen: false}); this.toast('Setup cancelled — two-factor authentication is still off.', '', null); }}) : this.act('Learn more', {onClick: () => this.toast('Two-factor authentication protects policyholder data if a password is compromised.', '', null)})"
+    },
+    {
+      "line": 4742,
+      "method": "pLogout",
+      "text": "pLogout() {"
+    },
+    {
+      "line": 4744,
+      "method": "pLogout",
+      "text": "pageHeader: true, title: 'You have been signed out', subtitle: 'Your session on this device has ended · 10/09/2026 08:58',"
+    },
+    {
+      "line": 4749,
+      "method": "pLogout",
+      "text": "this.sec({kind:'fields', w:'440px', title:'Session summary', cols:'1fr 1fr',"
+    },
+    {
+      "line": 4752,
+      "method": "pLogout",
+      "text": "this.f('Device', 'Chrome on Windows'), this.f('Other active sessions', '2', {link:true, onClick: () => this.go('account', 'Sessions & activity')})"
+    },
+    {
+      "line": 4754,
+      "method": "pLogout",
+      "text": "this.sec({kind:'fields', w:'400px', title:'Before you go', cols:'1fr',"
+    },
+    {
+      "line": 4764,
+      "method": "ageOf",
+      "text": "ageOf(dob) {"
+    },
+    {
+      "line": 4774,
+      "method": "VEHLOOKUP",
+      "text": "VEHLOOKUP() {"
+    },
+    {
+      "line": 4785,
+      "method": "addTo",
+      "text": "addTo(key, rec, msg) {"
+    },
+    {
+      "line": 4790,
+      "method": "removeFrom",
+      "text": "removeFrom(key, id, msg) {"
+    },
+    {
+      "line": 4795,
+      "method": "claimDefaults",
+      "text": "claimDefaults() {"
+    },
+    {
+      "line": 4805,
+      "method": "logClaim",
+      "text": "logClaim() {"
+    },
+    {
+      "line": 4822,
+      "method": "pLogClaim",
+      "text": "pLogClaim() {"
+    },
+    {
+      "line": 4835,
+      "method": "pLogClaim",
+      "text": "pageHeader: true, title: 'Log an incident', subtitle: 'PN/CC/000622 · Smith Motor Traders Ltd · basic details only, then handed to Ellis Claims Services',"
+    },
+    {
+      "line": 4837,
+      "method": "pLogClaim",
+      "text": "{label:'Cancel', style: this.btn('ghost'), onClick: () => this.go('policy', 'Claims')},"
+    },
+    {
+      "line": 4838,
+      "method": "pLogClaim",
+      "text": "{label:'Save without sending', style: this.btn('ghost'), onClick: () => this.toast('Incident saved as a draft on the policy. Not yet sent to the claims administrator.', '', null)},"
+    },
+    {
+      "line": 4840,
+      "method": "pLogClaim",
+      "text": "? {label:'Log and hand off', style: this.btn('primary'), onClick: () => this.logClaim()}"
+    },
+    {
+      "line": 4841,
+      "method": "pLogClaim",
+      "text": ": {label:'Log and hand off', style: 'padding:8px 14px;border-radius:7px;font-size:12.5px;font-weight:600;background:#f1f2f6;color:#a3a8b6;cursor:not-allowed', onClick: () => this.toast(missing + ' required details are still missing.', '', null)}"
+    },
+    {
+      "line": 4846,
+      "method": "pLogClaim",
+      "text": "this.sec({kind:'form', w:'100%', title:'Incident', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 4856,
+      "method": "pLogClaim",
+      "text": "? this.sec({kind:'form', w:'100%', title:'Vehicle and driver', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 4862,
+      "method": "pLogClaim",
+      "text": ": this.sec({kind:'form', w:'100%', title:'Property involved', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 4868,
+      "method": "pLogClaim",
+      "text": "this.sec({kind:'form', w:'100%', title:'Third party', note:'If another party is involved', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 4874,
+      "method": "pLogClaim",
+      "text": "this.sec({kind:'composer', w:'100%', title:'Description', note:'What happened, in the insured\\u2019s words where possible — the administrator will take a full statement',"
+    },
+    {
+      "line": 4879,
+      "method": "pLogClaim",
+      "text": "this.sec({kind:'form', w:'100%', title:'Notification', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 4885,
+      "method": "pLogClaim",
+      "text": "this.sec({kind:'table', w:'520px', title:'Required before handoff', note: missing === 0 ? 'All required details captured' : missing + ' outstanding',"
+    },
+    {
+      "line": 4888,
+      "method": "pLogClaim",
+      "text": "this.sec({kind:'table', w:'480px', title:'What happens on handoff',"
+    },
+    {
+      "line": 4900,
+      "method": "pLogClaim",
+      "text": "this.sec({kind:'fields', title:'Policy context', cols:'1fr',"
+    },
+    {
+      "line": 4910,
+      "method": "pLogClaim",
+      "text": "this.sec({kind:'actions', title:'Actions',"
+    },
+    {
+      "line": 4912,
+      "method": "pLogClaim",
+      "text": "this.act('Save draft', {onClick: () => this.toast('Incident saved as a draft on the policy.', '', null)}),"
+    },
+    {
+      "line": 4913,
+      "method": "pLogClaim",
+      "text": "this.act('Log and hand off', missing === 0"
+    },
+    {
+      "line": 4914,
+      "method": "pLogClaim",
+      "text": "? {kind:'primary', onClick: () => this.logClaim()}"
+    },
+    {
+      "line": 4915,
+      "method": "pLogClaim",
+      "text": ": {kind:'off', title: missing + ' required details are missing', hint: missing + ' missing'}),"
+    },
+    {
+      "line": 4916,
+      "method": "pLogClaim",
+      "text": "this.act('Back to claims', {onClick: () => this.go('policy', 'Claims')})"
+    },
+    {
+      "line": 4922,
+      "method": "pClaim",
+      "text": "pClaim() {"
+    },
+    {
+      "line": 4929,
+      "method": "pClaim",
+      "text": "type: 'Claim — logged and handed off', title: nc.ref + ' · ' + nc.type, sub: 'Date of loss ' + nc.date + ' · Smith Motor Traders Ltd',"
+    },
+    {
+      "line": 4939,
+      "method": "pClaim",
+      "text": "actions: [{label:'Contact administrator', kind:'onblue', onClick: () => this.toast('Email drafted to claims@ellisclaims.example (mock).', '', null)}]"
+    },
+    {
+      "line": 4941,
+      "method": "pClaim",
+      "text": "tabs: ['Logged detail','Summary from administrator'], tab: tab,"
+    },
+    {
+      "line": 4945,
+      "method": "pClaim",
+      "text": "this.sec({kind:'fields', w:'480px', title:'Position', cols:'1fr 1fr',"
+    },
+    {
+      "line": 4957,
+      "method": "pClaim",
+      "text": "this.sec({kind:'fields', w:'520px', title:'Incident as logged', cols:'1fr 1fr',"
+    },
+    {
+      "line": 4965,
+      "method": "pClaim",
+      "text": "? this.sec({kind:'fields', w:'400px', title:'Vehicle and driver', cols:'1fr',"
+    },
+    {
+      "line": 4967,
+      "method": "pClaim",
+      "text": ": this.sec({kind:'fields', w:'400px', title:'Property involved', cols:'1fr',"
+    },
+    {
+      "line": 4969,
+      "method": "pClaim",
+      "text": "this.sec({kind:'fields', w:'420px', title:'Description as logged', cols:'1fr',"
+    },
+    {
+      "line": 4971,
+      "method": "pClaim",
+      "text": "this.sec({kind:'table', w:'100%', title:'Handoff record',"
+    },
+    {
+      "line": 4978,
+      "method": "pClaim",
+      "text": "this.sec({kind:'table', w:'480px', title:'Not held in this system',"
+    },
+    {
+      "line": 4990,
+      "method": "pClaim",
+      "text": "type: 'Claim — logged and handed off', title: 'CL-91043 · Theft from premises', sub: 'Date of loss 02/08/2026 · Smith Motor Traders Ltd',"
+    },
+    {
+      "line": 5000,
+      "method": "pClaim",
+      "text": "actions: [{label:'Contact administrator', kind:'onblue', onClick: () => this.toast('Email drafted to claims@ellisclaims.example (mock).', '', null)}]"
+    },
+    {
+      "line": 5002,
+      "method": "pClaim",
+      "text": "tabs: ['Logged detail','Summary from administrator'], tab: this.state.tab || 'Logged detail',"
+    },
+    {
+      "line": 5006,
+      "method": "pClaim",
+      "text": "this.sec({kind:'fields', w:'480px', title:'Position at 08/09/2026', cols:'1fr 1fr',"
+    },
+    {
+      "line": 5017,
+      "method": "pClaim",
+      "text": "this.sec({kind:'table', w:'100%', title:'Movement history', note:'As reported by the administrator',"
+    },
+    {
+      "line": 5024,
+      "method": "pClaim",
+      "text": "this.sec({kind:'fields', w:'420px', title:'Underwriting view', cols:'1fr',"
+    },
+    {
+      "line": 5033,
+      "method": "pClaim",
+      "text": "this.sec({kind:'fields', w:'520px', title:'Incident as logged', cols:'1fr 1fr',"
+    },
+    {
+      "line": 5044,
+      "method": "pClaim",
+      "text": "this.sec({kind:'fields', w:'420px', title:'Description as logged', cols:'1fr',"
+    },
+    {
+      "line": 5050,
+      "method": "pClaim",
+      "text": "this.sec({kind:'table', w:'100%', title:'Handoff record',"
+    },
+    {
+      "line": 5058,
+      "method": "pClaim",
+      "text": "this.sec({kind:'table', w:'480px', title:'Not held in this system',"
+    },
+    {
+      "line": 5070,
+      "method": "flagSecs",
+      "text": "flagSecs(route) {"
+    },
+    {
+      "line": 5084,
+      "method": "flagTable",
+      "text": "flagTable() {"
+    },
+    {
+      "line": 5085,
+      "method": "flagTable",
+      "text": "return this.sec({kind:'table', w:'100%', title:'Customer flags', note:'Held against the person, not the business · never sent on the insurer bordereau',"
+    },
+    {
+      "line": 5092,
+      "method": "flagTable",
+      "text": "this.c('Remove', {link:true, onClick: (e) => { this.stop(e); this.setState((s) => ({flags: s.flags.filter((y) => y.id !== x.id)})); this.toast('Flag removed — reason recorded in the audit trail.', '', null); }})"
+    },
+    {
+      "line": 5098,
+      "method": "VERSIONS",
+      "text": "VERSIONS() {"
+    },
+    {
+      "line": 5108,
+      "method": "pAsAt",
+      "text": "pAsAt() {"
+    },
+    {
+      "line": 5114,
+      "method": "pAsAt",
+      "text": "pageHeader: true, title: 'Policy as at a date', subtitle: 'PN/CC/000622 · Smith Motor Traders Ltd · reconstructed from the transaction ledger',"
+    },
+    {
+      "line": 5116,
+      "method": "pAsAt",
+      "text": "{label:'Back to transactions', style: this.btn('ghost'), onClick: () => this.go('policy', 'Transactions')},"
+    },
+    {
+      "line": 5117,
+      "method": "pAsAt",
+      "text": "{label:'Export this view', style: this.btn('ghost'), onClick: () => this.toast('Reconstruction exported as a PDF for the claims file (mock).', '', null)}"
+    },
+    {
+      "line": 5122,
+      "method": "pAsAt",
+      "text": "this.sec({kind:'form', w:'100%', title:'Date', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 5128,
+      "method": "pAsAt",
+      "text": "this.sec({kind:'fields', w:'520px', title:'In force on ' + sel, note: v.v + ' · ' + v.label, cols:'1fr 1fr',"
+    },
+    {
+      "line": 5139,
+      "method": "pAsAt",
+      "text": "this.sec({kind:'table', w:'100%', title:'Transactions applied on or before ' + sel,"
+    },
+    {
+      "line": 5147,
+      "method": "pAsAt",
+      "text": "this.sec({kind:'fields', w:'420px', title:'Documents that applied', cols:'1fr',"
+    },
+    {
+      "line": 5149,
+      "method": "pAsAt",
+      "text": "this.f('Schedule', 'Schedule ' + v.v, {link:true, onClick: () => this.toast('Opening the ' + v.v + ' schedule as issued (mock).', '', null)}),"
+    },
+    {
+      "line": 5158,
+      "method": "dateRules",
+      "text": "dateRules() {"
+    },
+    {
+      "line": 5166,
+      "method": "pEscalation",
+      "text": "pEscalation() {"
+    },
+    {
+      "line": 5173,
+      "method": "pEscalation",
+      "text": "type: 'Authority referral', title: 'AU-03 · Stock & custody limit above binder authority',"
+    },
+    {
+      "line": 5184,
+      "method": "pEscalation",
+      "text": "actions: [{label:'Back to MTA-007', kind:'onblue', onClick: () => this.go('mta')}]"
+    },
+    {
+      "line": 5186,
+      "method": "pEscalation",
+      "text": "tabs: ['Escalation','Authority context'], tab: st.tab || 'Escalation',"
+    },
+    {
+      "line": 5188,
+      "method": "pEscalation",
+      "text": "this.sec({kind:'table', w:'100%', title:'Why this referred',"
+    },
+    {
+      "line": 5196,
+      "method": "pEscalation",
+      "text": "this.sec({kind:'fields', w:'440px', title:'Escalation path', cols:'1fr',"
+    },
+    {
+      "line": 5204,
+      "method": "pEscalation",
+      "text": "this.sec({kind:'table', w:'100%', title:'Similar past referrals', note:'For consistency of treatment',"
+    },
+    {
+      "line": 5221,
+      "method": "pEscalation",
+      "text": "this.sec({kind:'fields', w:'480px', title:'Referral', cols:'1fr 1fr',"
+    },
+    {
+      "line": 5233,
+      "method": "pEscalation",
+      "text": ": this.sec({kind:'thread', w:'100%', title:'Correspondence with Capacity Provider A', note:'Everything said about this referral, in one place',"
+    },
+    {
+      "line": 5241,
+      "method": "pEscalation",
+      "text": "? this.sec({kind:'table', w:'100%', title:'Conditions to apply before issue',"
+    },
+    {
+      "line": 5244,
+      "method": "pEscalation",
+      "text": "this.row([this.c('Endorsement E-16 — stock limit £150,000 subject to NACOSS remote signalling at both premises', {nowrap:false}), this.c('Endorsement'), this.c('Apply to MTA-007', {link:true, onClick: () => this.toast('Endorsement E-16 added to MTA-007 (mock).', 'Open MTA-007', () => this.go('mta'))})]),"
+    },
+    {
+      "line": 5248,
+      "method": "pEscalation",
+      "text": ": this.sec({kind:'composer', w:'100%', title: submitted ? 'Reply to Capacity Provider A' : 'Submission',"
+    },
+    {
+      "line": 5256,
+      "method": "pEscalation",
+      "text": "this.sec({kind:'table', w:'100%', title:'Decision history', note:'Actor, timestamp and reason are recorded for the binder audit',"
+    },
+    {
+      "line": 5265,
+      "method": "pEscalation",
+      "text": "this.sec({kind:'actions', title:'Referral actions',"
+    },
+    {
+      "line": 5267,
+      "method": "pEscalation",
+      "text": "this.act('Submit to Capacity Provider A', {kind:'primary', onClick: () => this.escSend(), hint:'Rated'}),"
+    },
+    {
+      "line": 5268,
+      "method": "pEscalation",
+      "text": "this.act('Reduce the request to £125,000', {onClick: () => { this.toast('Change amended to £125,000 — now within authority, referral no longer needed.', 'Open MTA-007', () => this.go('mta')); }}),"
+    },
+    {
+      "line": 5269,
+      "method": "pEscalation",
+      "text": "this.act('Remove the change', {kind:'danger', onClick: () => this.toast('Stock limit change would be removed from MTA-007 (mock).', '', null)})"
+    },
+    {
+      "line": 5271,
+      "method": "pEscalation",
+      "text": "this.act('Answer the query', {kind:'primary', onClick: () => this.setTab('Escalation'), hint:'Reply below'}),"
+    },
+    {
+      "line": 5272,
+      "method": "pEscalation",
+      "text": "this.act('Chase a response', {onClick: () => this.toast('Chase sent to Helen Marks at Capacity Provider A.', '', null)}),"
+    },
+    {
+      "line": 5273,
+      "method": "pEscalation",
+      "text": "this.act('Escalate internally', {onClick: () => this.toast('Escalated to the head of underwriting (mock).', '', null)})"
+    },
+    {
+      "line": 5275,
+      "method": "pEscalation",
+      "text": "this.act('Record their response', {kind:'primary', onClick: () => this.setState({modal:{kind:'escoutcome'}})}),"
+    },
+    {
+      "line": 5276,
+      "method": "pEscalation",
+      "text": "this.act('Chase a response', {onClick: () => this.toast('Chase sent to Helen Marks at Capacity Provider A.', '', null)}),"
+    },
+    {
+      "line": 5277,
+      "method": "pEscalation",
+      "text": "this.act('Withdraw referral', {kind:'danger', onClick: () => this.setState({escState:'Not submitted'})})"
+    },
+    {
+      "line": 5279,
+      "method": "pEscalation",
+      "text": "this.act('Back to MTA-007', {kind:'primary', onClick: () => this.go('mta')}),"
+    },
+    {
+      "line": 5280,
+      "method": "pEscalation",
+      "text": "this.act('Record a further response', {onClick: () => this.setState({modal:{kind:'escoutcome'}})}),"
+    },
+    {
+      "line": 5281,
+      "method": "pEscalation",
+      "text": "this.act('Reopen referral', {onClick: () => this.setState({escState:'Submitted'})})"
+    },
+    {
+      "line": 5283,
+      "method": "pEscalation",
+      "text": "this.sec({kind:'fields', title:'Effect on MTA-007', cols:'1fr',"
+    },
+    {
+      "line": 5296,
+      "method": "escSend",
+      "text": "escSend() {"
+    },
+    {
+      "line": 5310,
+      "method": "PRODUCT_TABS",
+      "text": "PRODUCT_TABS(product) {"
+    },
+    {
+      "line": 5321,
+      "method": "pCcPolicy",
+      "text": "pCcPolicy() {"
+    },
+    {
+      "line": 5326,
+      "method": "pCcPolicy",
+      "text": "type: 'Policy', title: 'Fenwick Engineering Ltd', sub: 'Main contact Alison Fenwick · Limited company · Company no. 06642180',"
+    },
+    {
+      "line": 5336,
+      "method": "pCcPolicy",
+      "text": "actions: [{label:'Make an Adjustment', kind:'onblue', onClick: () => this.toast('Adjustment workspace opens with this product\\u2019s sections (mock).', '', null)}]"
+    },
+    {
+      "line": 5338,
+      "method": "pCcPolicy",
+      "text": "tabs: tabs, tab: tab"
+    },
+    {
+      "line": 5345,
+      "method": "pCcPolicy",
+      "text": "this.sec({kind:'fields', w:'480px', title:'Policy summary', cols:'1fr 1fr',"
+    },
+    {
+      "line": 5356,
+      "method": "pCcPolicy",
+      "text": "this.sec({kind:'fields', w:'440px', title:'Exposure snapshot', note:'Dimensions differ from motor trade', cols:'1fr 1fr',"
+    },
+    {
+      "line": 5365,
+      "method": "pCcPolicy",
+      "text": "this.sec({kind:'fields', w:'440px', title:'Finance snapshot', cols:'1fr 1fr',"
+    },
+    {
+      "line": 5376,
+      "method": "pCcPolicy",
+      "text": "this.sec({kind:'actions', title:'Actions',"
+    },
+    {
+      "line": 5378,
+      "method": "pCcPolicy",
+      "text": "this.act('Make an Adjustment', {kind:'primary', onClick: () => this.toast('Adjustment workspace opens with this product\\u2019s sections (mock).', '', null)}),"
+    },
+    {
+      "line": 5379,
+      "method": "pCcPolicy",
+      "text": "this.act('Start Renewal', {kind:'off', title:'Available from 15/02/2027, 45 days before expiry', hint:'Not yet due'}),"
+    },
+    {
+      "line": 5380,
+      "method": "pCcPolicy",
+      "text": "this.act('Send Documents', {onClick: () => this.toast('Document pack queued for Kingsway Commercial (mock).', '', null)}),"
+    },
+    {
+      "line": 5381,
+      "method": "pCcPolicy",
+      "text": "this.act('Log an Incident', {onClick: () => this.toast('Incident capture would open with property fields for this product (mock).', '', null)}),"
+    },
+    {
+      "line": 5382,
+      "method": "pCcPolicy",
+      "text": "this.act('Back to motor trade policy', {onClick: () => this.go('policy')})"
+    },
+    {
+      "line": 5384,
+      "method": "pCcPolicy",
+      "text": "this.sec({kind:'fields', title:'Authority dimensions', note:'Per product, not fixed columns', cols:'1fr',"
+    },
+    {
+      "line": 5394,
+      "method": "pCcPolicy",
+      "text": "this.sec({kind:'table', w:'100%', title:'Locations and sums insured', note:'The risk object for this product is a location, not a vehicle',"
+    },
+    {
+      "line": 5401,
+      "method": "pCcPolicy",
+      "text": "this.sec({kind:'table', w:'100%', title:'Perils and protections',"
+    },
+    {
+      "line": 5407,
+      "method": "pCcPolicy",
+      "text": "this.sec({kind:'fields', w:'420px', title:'Aggregation', note:'A concept motor trade does not need', cols:'1fr',"
+    },
+    {
+      "line": 5417,
+      "method": "pCcPolicy",
+      "text": "this.sec({kind:'table', w:'100%', title:'Liability sections',"
+    },
+    {
+      "line": 5424,
+      "method": "pCcPolicy",
+      "text": "this.sec({kind:'table', w:'100%', title:'Employees and wage roll', note:'Rating basis for employers\\u2019 liability',"
+    },
+    {
+      "line": 5436,
+      "method": "pCcPolicy",
+      "text": "this.sec({kind:'table', w:'100%', title:'Cover sections in force',"
+    },
+    {
+      "line": 5445,
+      "method": "pCcPolicy",
+      "text": "this.sec({kind:'table', w:'100%', title:'Endorsements & warranties',"
+    },
+    {
+      "line": 5457,
+      "method": "pCcPolicy",
+      "text": "this.sec({kind:'table', w:'100%', title:'What differs by product',"
+    },
+    {
+      "line": 5466,
+      "method": "pCcPolicy",
+      "text": "this.sec({kind:'table', w:'100%', title:'Claims on this policy', note:'Summary data from the claims administrator',"
+    },
+    {
+      "line": 5474,
+      "method": "pCcPolicy",
+      "text": "this.sec({kind:'fields', w:'100%', title:'Insured business', note:'Product-specific — the motor trade equivalent shows drivers, trade plates and stock basis', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 5481,
+      "method": "pCcPolicy",
+      "text": "this.sec({kind:'table', w:'560px', title:'Trade and turnover', note:'Rating basis for liability sections',"
+    },
+    {
+      "line": 5488,
+      "method": "pCcPolicy",
+      "text": "this.sec({kind:'fields', w:'440px', title:'Exposure basis', cols:'1fr 1fr',"
+    },
+    {
+      "line": 5490,
+      "method": "pCcPolicy",
+      "text": "this.f('Locations', '2', {link:true, onClick: () => this.setTab('Property schedule'), hint:'See property schedule'}),"
+    },
+    {
+      "line": 5491,
+      "method": "pCcPolicy",
+      "text": "this.f('Employees', '18', {link:true, onClick: () => this.setTab('Liability & employees')}),"
+    },
+    {
+      "line": 5497,
+      "method": "pCcPolicy",
+      "text": "this.sec({kind:'fields', w:'480px', title:'Underwriting declarations', cols:'1fr',"
+    },
+    {
+      "line": 5508,
+      "method": "pCcPolicy",
+      "text": "this.sec({kind:'fields', w:'480px', title:'Business interruption', cols:'1fr 1fr',"
+    },
+    {
+      "line": 5530,
+      "method": "pMatch",
+      "text": "pMatch() {"
+    },
+    {
+      "line": 5537,
+      "method": "pMatch",
+      "text": "type: 'Match review', title: 'QT/MT/004188 · Smith Motor Trade Ltd', sub: 'Submitted by Kingsway Commercial · probable duplicate of an existing account',"
+    },
+    {
+      "line": 5547,
+      "method": "pMatch",
+      "text": "actions: [{label:'Open matched account', kind:'onblue', onClick: () => this.go('client')}]"
+    },
+    {
+      "line": 5549,
+      "method": "pMatch",
+      "text": "tabs: ['Match evidence','Rule'], tab: st.tab || 'Match evidence',"
+    },
+    {
+      "line": 5551,
+      "method": "pMatch",
+      "text": "this.sec({kind:'fields', w:'100%', title:'Rule in force', note:'Configured in Admin › Client matching', cols:'repeat(3,1fr)',"
+    },
+    {
+      "line": 5557,
+      "method": "pMatch",
+      "text": "this.sec({kind:'table', w:'100%', title:'What each rule would do here',"
+    },
+    {
+      "line": 5576,
+      "method": "pMatch",
+      "text": "this.sec({kind:'table', w:'100%', title:'Signals compared', note:'Definitive signals link automatically; probable signals come here',"
+    },
+    {
+      "line": 5587,
+      "method": "pMatch",
+      "text": "this.sec({kind:'table', w:'100%', title:'What we would be quoting twice',"
+    },
+    {
+      "line": 5597,
+      "method": "pMatch",
+      "text": "this.sec({kind:'timeline', w:'100%', title:'Decision trail',"
+    },
+    {
+      "line": 5603,
+      "method": "pMatch",
+      "text": "this.sec({kind:'actions', title:'Decision', note: decided ? 'Recorded 10/09/2026' : 'Rating is blocked until decided',"
+    },
+    {
+      "line": 5605,
+      "method": "pMatch",
+      "text": "this.act('Decision recorded', {kind:'off', hint: s}),"
+    },
+    {
+      "line": 5606,
+      "method": "pMatch",
+      "text": "this.act('Open matched account', {onClick: () => this.go('client')}),"
+    },
+    {
+      "line": 5607,
+      "method": "pMatch",
+      "text": "this.act('Reopen match review', {onClick: () => this.setState({matchState: 'Open'})})"
+    },
+    {
+      "line": 5609,
+      "method": "pMatch",
+      "text": "this.act('Link to CN-0002214', {kind:'primary', onClick: () => { this.setState({matchState:'Linked'}); this.toast('Linked. The quote now hangs off CN-0002214 and shares its claims history.', '', null); }, hint:'Same business'}),"
+    },
+    {
+      "line": 5610,
+      "method": "pMatch",
+      "text": "this.act('Not a duplicate', {onClick: () => { this.setState({matchState:'Not a duplicate'}); this.toast('Recorded as a separate business — reason held in the audit trail.', '', null); }, hint:'Separate entity'}),"
+    },
+    {
+      "line": 5611,
+      "method": "pMatch",
+      "text": "this.act('Decline as duplicate', {kind:'danger', onClick: () => { this.setState({matchState:'Declined as duplicate'}); this.toast('Declined. Kingsway told we cannot offer terms, with no reference to the other agency.', '', null); }}),"
+    },
+    {
+      "line": 5612,
+      "method": "pMatch",
+      "text": "this.act('Ask Kingsway for the company number', {onClick: () => this.toast('Information request sent — a company number would make this definitive.', '', null)})"
+    },
+    {
+      "line": 5614,
+      "method": "pMatch",
+      "text": "this.sec({kind:'fields', title:'If linked', cols:'1fr',"
+    },
+    {
+      "line": 5625,
+      "method": "render_",
+      "text": "render_() { return null; }"
+    },
+    {
+      "line": 5627,
+      "method": "renderVals",
+      "text": "renderVals() {"
+    },
+    {
+      "line": 5662,
+      "method": "renderVals",
+      "text": "onClick: () => this.go(n.route)"
+    },
+    {
+      "line": 5666,
+      "method": "renderVals",
+      "text": "{kind:'Client', title:'Smith Motor Traders Ltd', meta:'Limited company · Brightside', route:'policy'},"
+    },
+    {
+      "line": 5667,
+      "method": "renderVals",
+      "text": "{kind:'Policy', title:'PN/CC/000622', meta:'Active · Motor Trade Combined', route:'policy'},"
+    },
+    {
+      "line": 5668,
+      "method": "renderVals",
+      "text": "{kind:'Quote', title:'QT/MT/004175', meta:'Referral required · Delta Valeting', route:'quote'},"
+    },
+    {
+      "line": 5669,
+      "method": "renderVals",
+      "text": "{kind:'Vehicle', title:'YE19 KTX', meta:'Vehicle register · PN/CC/000622 · MID exception', route:'policy'},"
+    },
+    {
+      "line": 5670,
+      "method": "renderVals",
+      "text": "{kind:'Agency', title:'Brightside Insurance Services Ltd', meta:'AG-0114 · Active', route:'agency'},"
+    },
+    {
+      "line": 5671,
+      "method": "renderVals",
+      "text": "{kind:'Task', title:'TSK-2291', meta:'Review additional driver referral', route:'task'}"
+    },
+    {
+      "line": 5675,
+      "method": "renderVals",
+      "text": "kind: i.kind, title: i.title, meta: i.meta, onClick: () => this.go(i.route)"
+    },
+    {
+      "line": 5683,
+      "method": "renderVals",
+      "text": "onClick: () => this.setTab(t)"
+    },
+    {
+      "line": 5710,
+      "method": "renderVals",
+      "text": "onClick: () => this.go('account')},"
+    },
+    {
+      "line": 5713,
+      "method": "renderVals",
+      "text": "onClick: () => this.go('logout')}"
+    },
+    {
+      "line": 5716,
+      "method": "renderVals",
+      "text": "{tag:'Referral', tagStyle: this.badgeStyle('warn'), when:'2h ago', text:'MTA-007 driver referral is awaiting licence details from Brightside.', onClick: () => this.go('task')},"
+    },
+    {
+      "line": 5717,
+      "method": "renderVals",
+      "text": "{tag:'Authority', tagStyle: this.badgeStyle('warn'), when:'Yesterday', text:'Stock & custody increase to £150,000 needs Capacity Provider A sign-off.', onClick: () => this.go('mta')},"
+    },
+    {
+      "line": 5718,
+      "method": "renderVals",
+      "text": "{tag:'Exception', tagStyle: this.badgeStyle('crit'), when:'08/09', text:'MID submission for YE19 KTX was rejected by the data service.', onClick: () => this.go('policy', 'Vehicles')}"
+    },
+    {
+      "line": 5726,
+      "method": "renderVals",
+      "text": "type: rh.type, title: rh.title, sub: rh.sub, status: rh.status,"
+    },
+    {
+      "line": 5743,
+      "method": "renderVals",
+      "text": "onClick: i.go ? () => self.go(i.go, i.tab) : null"
+    },
+    {
+      "line": 5745,
+      "method": "renderVals",
+      "text": "actions: (rh.actions || []).map((a) => ({label: a.label, style: self.btn(a.kind || 'onblue2'), onClick: a.onClick || null})),"
+    },
+    {
+      "line": 5754,
+      "method": "renderVals",
+      "text": "label: m.label, hint: m.hint || '', title: m.disabled || '',"
+    },
+    {
+      "line": 5759,
+      "method": "renderVals",
+      "text": "onClick: m.disabled ? null : () => { self.setState({hdrOpen: false}); if (m.onClick) m.onClick(); }"
+    },
+    {
+      "line": 5763,
+      "method": "renderVals",
+      "text": "tabs: tabList,"
+    },
+    {
+      "line": 5764,
+      "method": "renderVals",
+      "text": "hasPageHeader: !!p.pageHeader, title: p.title || '', subtitle: p.subtitle || '', pageActions: p.pageActions || [],"
+    },
+    {
+      "line": 5769,
+      "method": "renderVals",
+      "text": "onClick: () => this.go(k.route, k.tab)"
+    },
+    {
+      "line": 5772,
+      "method": "renderVals",
+      "text": "subnav: (p.subnav || []).map((t) => ({"
+    },
+    {
+      "line": 5773,
+      "method": "renderVals",
+      "text": "label: t, onClick: () => this.setTab(t),"
+    },
+    {
+      "line": 5792,
+      "method": "modalVals",
+      "text": "modalVals() {"
+    },
+    {
+      "line": 5796,
+      "method": "modalVals",
+      "text": "if (m.kind === 'cancel') {"
+    },
+    {
+      "line": 5800,
+      "method": "modalVals",
+      "text": "wrapStyle: wrap, title: 'Cancel policy PN/CC/000622', desc: 'Cancellation ends cover for Smith Motor Traders Ltd. A reason, effective date and financial review are required before confirmation.',"
+    },
+    {
+      "line": 5816,
+      "method": "modalVals",
+      "text": "confirmLabel: 'Review cancellation',"
+    },
+    {
+      "line": 5818,
+      "method": "modalVals",
+      "text": "onConfirm: ok ? () => { this.closeModal(); this.go('cancelreview'); } : null"
+    },
+    {
+      "line": 5821,
+      "method": "modalVals",
+      "text": "if (m.kind === 'task') {"
+    },
+    {
+      "line": 5823,
+      "method": "modalVals",
+      "text": "wrapStyle: wrap, title: 'Create task', desc: 'Linked to policy PN/CC/000622 — Smith Motor Traders Ltd.',"
+    },
+    {
+      "line": 5833,
+      "method": "modalVals",
+      "text": "confirmLabel: 'Create task',"
+    },
+    {
+      "line": 5835,
+      "method": "modalVals",
+      "text": "onConfirm: () => { this.closeModal(); this.toast('Task TSK-2296 created and assigned.', 'View tasks', () => this.go('tasks')); }"
+    },
+    {
+      "line": 5838,
+      "method": "modalVals",
+      "text": "if (m.kind === 'picker') {"
+    },
+    {
+      "line": 5850,
+      "method": "modalVals",
+      "text": "wrapStyle: wrap, title: 'Add a change to MTA-007', desc: 'Several changes of the same type can be added to one transaction. Nothing is applied until the transaction is issued.',"
+    },
+    {
+      "line": 5853,
+      "method": "modalVals",
+      "text": "title: o.t, body: o.b,"
+    },
+    {
+      "line": 5854,
+      "method": "modalVals",
+      "text": "onClick: () => this.setState((s) => ({"
+    },
+    {
+      "line": 5856,
+      "method": "modalVals",
+      "text": "mtaChanges: s.mtaChanges.concat([{group:o.g, title:o.t, before:o.bf, after:o.af, state:'Needs information', tone:'warn', msg:'Complete the section editor to validate this change.'}])"
+    },
+    {
+      "line": 5860,
+      "method": "modalVals",
+      "text": "confirmLabel: 'Done', confirmStyle: this.btn('primary'), onConfirm: this.closeModal"
+    },
+    {
+      "line": 5863,
+      "method": "modalVals",
+      "text": "if (m.kind === 'newquote') {"
+    },
+    {
+      "line": 5873,
+      "method": "modalVals",
+      "text": "wrapStyle: wrap, title: 'Start a new quote',"
+    },
+    {
+      "line": 5878,
+      "method": "modalVals",
+      "text": "{title:'Motor Trade Road Risks', body:'Named driver road risks on a vehicle register basis. Nine capture stages including drivers, convictions and trade plates.', onClick: () => start('Motor Trade Road Risks')},"
+    },
+    {
+      "line": 5879,
+      "method": "modalVals",
+      "text": "{title:'Motor Trade Combined', body:'Road risks plus stock and custody, premises and liability sections. Adds a premises stage to the capture.', onClick: () => start('Motor Trade Combined')},"
+    },
+    {
+      "line": 5880,
+      "method": "modalVals",
+      "text": "{title:'Commercial Combined', body:'Property, business interruption and liability for non-motor trades. Capture uses locations and wage roll rather than vehicles.', onClick: () => start('Commercial Combined')},"
+    },
+    {
+      "line": 5881,
+      "method": "modalVals",
+      "text": "{title:'Motor Trade Fleet', body:'Not yet published — configuration is still in draft, so quotes cannot be started.', onClick: () => this.toast('Motor Trade Fleet is in draft configuration and cannot be quoted yet.', 'Open product', () => this.go('admin', 'Products & schemes'))}"
+    },
+    {
+      "line": 5884,
+      "method": "modalVals",
+      "text": "confirmLabel: 'Cancel', confirmStyle: this.btn('ghost'), onConfirm: this.closeModal"
+    },
+    {
+      "line": 5887,
+      "method": "modalVals",
+      "text": "if (m.kind === 'adddriver') {"
+    },
+    {
+      "line": 5893,
+      "method": "modalVals",
+      "text": "wrapStyle: wrap, title: 'Add a driver',"
+    },
+    {
+      "line": 5909,
+      "method": "modalVals",
+      "text": "confirmLabel: 'Add driver',"
+    },
+    {
+      "line": 5911,
+      "method": "modalVals",
+      "text": "onConfirm: ok ? () => {"
+    },
+    {
+      "line": 5920,
+      "method": "modalVals",
+      "text": "if (m.kind === 'addconv') {"
+    },
+    {
+      "line": 5925,
+      "method": "modalVals",
+      "text": "wrapStyle: wrap, title: 'Add a motoring conviction',"
+    },
+    {
+      "line": 5939,
+      "method": "modalVals",
+      "text": "confirmLabel: 'Add conviction',"
+    },
+    {
+      "line": 5941,
+      "method": "modalVals",
+      "text": "onConfirm: ok ? () => {"
+    },
+    {
+      "line": 5954,
+      "method": "modalVals",
+      "text": "if (m.kind === 'addinc') {"
+    },
+    {
+      "line": 5959,
+      "method": "modalVals",
+      "text": "wrapStyle: wrap, title: 'Add an accident, loss or claim',"
+    },
+    {
+      "line": 5974,
+      "method": "modalVals",
+      "text": "confirmLabel: 'Add incident',"
+    },
+    {
+      "line": 5976,
+      "method": "modalVals",
+      "text": "onConfirm: ok ? () => {"
+    },
+    {
+      "line": 5988,
+      "method": "modalVals",
+      "text": "if (m.kind === 'addveh') {"
+    },
+    {
+      "line": 5996,
+      "method": "modalVals",
+      "text": "title: sale ? 'Add a vehicle held for sale' : 'Add a vehicle owned but not for sale',"
+    },
+    {
+      "line": 6014,
+      "method": "modalVals",
+      "text": "confirmLabel: 'Add vehicle',"
+    },
+    {
+      "line": 6016,
+      "method": "modalVals",
+      "text": "onConfirm: ok ? () => {"
+    },
+    {
+      "line": 6026,
+      "method": "modalVals",
+      "text": "if (m.kind === 'addloc') {"
+    },
+    {
+      "line": 6030,
+      "method": "modalVals",
+      "text": "wrapStyle: wrap, title: 'Add a location',"
+    },
+    {
+      "line": 6057,
+      "method": "modalVals",
+      "text": "confirmLabel: 'Add location',"
+    },
+    {
+      "line": 6059,
+      "method": "modalVals",
+      "text": "onConfirm: ok ? () => {"
+    },
+    {
+      "line": 6072,
+      "method": "modalVals",
+      "text": "if (m.kind === 'addwage') {"
+    },
+    {
+      "line": 6076,
+      "method": "modalVals",
+      "text": "wrapStyle: wrap, title: 'Add a wage roll category',"
+    },
+    {
+      "line": 6088,
+      "method": "modalVals",
+      "text": "confirmLabel: 'Add category',"
+    },
+    {
+      "line": 6090,
+      "method": "modalVals",
+      "text": "onConfirm: ok ? () => {"
+    },
+    {
+      "line": 6098,
+      "method": "modalVals",
+      "text": "if (m.kind === 'addloss') {"
+    },
+    {
+      "line": 6102,
+      "method": "modalVals",
+      "text": "wrapStyle: wrap, title: 'Add a loss or damage',"
+    },
+    {
+      "line": 6116,
+      "method": "modalVals",
+      "text": "confirmLabel: 'Add loss',"
+    },
+    {
+      "line": 6118,
+      "method": "modalVals",
+      "text": "onConfirm: ok ? () => {"
+    },
+    {
+      "line": 6130,
+      "method": "modalVals",
+      "text": "if (m.kind === 'addprem') {"
+    },
+    {
+      "line": 6134,
+      "method": "modalVals",
+      "text": "wrapStyle: wrap, title: 'Add trading premises',"
+    },
+    {
+      "line": 6148,
+      "method": "modalVals",
+      "text": "confirmLabel: 'Add premises',"
+    },
+    {
+      "line": 6150,
+      "method": "modalVals",
+      "text": "onConfirm: ok ? () => {"
+    },
+    {
+      "line": 6157,
+      "method": "modalVals",
+      "text": "if (m.kind === 'addcontact') {"
+    },
+    {
+      "line": 6161,
+      "method": "modalVals",
+      "text": "wrapStyle: wrap, title: 'Add a contact',"
+    },
+    {
+      "line": 6174,
+      "method": "modalVals",
+      "text": "confirmLabel: 'Add contact',"
+    },
+    {
+      "line": 6176,
+      "method": "modalVals",
+      "text": "onConfirm: ok ? () => {"
+    },
+    {
+      "line": 6184,
+      "method": "modalVals",
+      "text": "if (m.kind === 'escoutcome') {"
+    },
+    {
+      "line": 6189,
+      "method": "modalVals",
+      "text": "wrapStyle: wrap, title: 'Record the capacity provider response', desc: 'Their answer, in their words. This is binder evidence, so record it as received rather than summarised.',"
+    },
+    {
+      "line": 6199,
+      "method": "modalVals",
+      "text": "confirmLabel: 'Record response',"
+    },
+    {
+      "line": 6201,
+      "method": "modalVals",
+      "text": "onConfirm: ok ? () => {"
+    },
+    {
+      "line": 6213,
+      "method": "modalVals",
+      "text": "if (m.kind === 'aguser') {"
+    },
+    {
+      "line": 6218,
+      "method": "modalVals",
+      "text": "wrapStyle: wrap, title: 'Invite a portal user',"
+    },
+    {
+      "line": 6228,
+      "method": "modalVals",
+      "text": "confirmLabel: 'Add to invitation list',"
+    },
+    {
+      "line": 6230,
+      "method": "modalVals",
+      "text": "onConfirm: ok ? () => {"
+    },
+    {
+      "line": 6236,
+      "method": "modalVals",
+      "text": "if (m.kind === 'flag') {"
+    },
+    {
+      "line": 6241,
+      "method": "modalVals",
+      "text": "wrapStyle: wrap, title: 'Add a customer flag', desc: 'Flags are held against the person and drive how we deal with them. They must not affect appetite, rating or referral outcome, and are never sent on the insurer bordereau.',"
+    },
+    {
+      "line": 6255,
+      "method": "modalVals",
+      "text": "confirmLabel: 'Add flag',"
+    },
+    {
+      "line": 6257,
+      "method": "modalVals",
+      "text": "onConfirm: ok ? () => {"
+    },
+    {
+      "line": 6268,
+      "method": "modalVals",
+      "text": "if (m.kind === 'chgemail') {"
+    },
+    {
+      "line": 6272,
+      "method": "modalVals",
+      "text": "wrapStyle: wrap, title: 'Change email address', desc: 'Administrator action. The user cannot change their own email — it is their sign-in identity.',"
+    },
+    {
+      "line": 6283,
+      "method": "modalVals",
+      "text": "confirmLabel: 'Request change',"
+    },
+    {
+      "line": 6285,
+      "method": "modalVals",
+      "text": "onConfirm: ok ? () => { this.closeModal(); this.toast('Email change sent to Dev Sandhu for approval and logged in the audit trail.', 'View audit log', () => this.go('admin', 'Audit log')); } : null"
+    },
+    {
+      "line": 6288,
+      "method": "modalVals",
+      "text": "if (m.kind === 'codes') {"
+    },
+    {
+      "line": 6290,
+      "method": "modalVals",
+      "text": "wrapStyle: wrap, title: 'Recovery codes', desc: 'Ten single-use codes for when you cannot reach your authenticator app. Regenerating replaces all of them.',"
+    },
+    {
+      "line": 6297,
+      "method": "modalVals",
+      "text": "confirmLabel: 'Copy all codes',"
+    },
+    {
+      "line": 6299,
+      "method": "modalVals",
+      "text": "onConfirm: () => { this.closeModal(); this.toast('All 10 recovery codes copied to the clipboard (mock).', '', null); }"
+    },
+    {
+      "line": 6302,
+      "method": "modalVals",
+      "text": "if (m.kind === 'fadisable') {"
+    },
+    {
+      "line": 6306,
+      "method": "modalVals",
+      "text": "wrapStyle: wrap, title: 'Turn off two-factor authentication', desc: 'Your account will be protected by your password alone. Two-factor authentication is required for underwriting roles from 30/09/2026.',"
+    },
+    {
+      "line": 6314,
+      "method": "modalVals",
+      "text": "confirmLabel: 'Turn off',"
+    },
+    {
+      "line": 6316,
+      "method": "modalVals",
+      "text": "onConfirm: ok ? () => { this.setState({twoFa: false, modal: null, form: Object.assign({}, this.state.form, {faOffPw:''})}); this.toast('Two-factor authentication turned off. Administrators have been notified.', '', null); } : null"
+    },
+    {
+      "line": 6319,
+      "method": "modalVals",
+      "text": "if (m.kind === 'edit') {"
+    },
+    {
+      "line": 6321,
+      "method": "modalVals",
+      "text": "if (!ch) return {wrapStyle: wrap, title:'', desc:'', foot:'', confirmLabel:'Close', confirmStyle: this.btn('primary'), onConfirm: this.closeModal};"
+    },
+    {
+      "line": 6324,
+      "method": "modalVals",
+      "text": "wrapStyle: wrap, title: ch.title, desc: 'Section editor · ' + ch.group + ' · effective ' + this.state.mtaEffective + '. Saving revalidates this change and invalidates any rating.',"
+    },
+    {
+      "line": 6340,
+      "method": "modalVals",
+      "text": "confirmLabel: 'Save change',"
+    },
+    {
+      "line": 6342,
+      "method": "modalVals",
+      "text": "onConfirm: () => {"
+    },
+    {
+      "line": 6357,
+      "method": "modalVals",
+      "text": "if (m.kind === 'invite') {"
+    },
+    {
+      "line": 6359,
+      "method": "modalVals",
+      "text": "wrapStyle: wrap, title: 'Invite user', desc: 'The user receives an email invitation. Agency roles cannot be combined with internal roles.',"
+    },
+    {
+      "line": 6367,
+      "method": "modalVals",
+      "text": "confirmLabel: 'Send invitation',"
+    },
+    {
+      "line": 6369,
+      "method": "modalVals",
+      "text": "onConfirm: () => { this.closeModal(); this.toast('Invitation sent and recorded in the agency audit trail.', '', null); }"
+    },
+    {
+      "line": 6372,
+      "method": "modalVals",
+      "text": "return {wrapStyle: wrap, title: '', desc: '', foot: '', confirmLabel: 'Confirm', confirmStyle: this.btn('primary'), onConfirm: this.closeModal};"
+    }
+  ]
+}

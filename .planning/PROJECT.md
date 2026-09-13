@@ -72,4 +72,12 @@ None shipped in this repository. The prototype is a behavioural/design reference
 
 At phase transitions, update validated requirements, decisions, new requirements and changed assumptions. At milestone completion, review scope, delivered evidence and remaining limitations before planning module replacements.
 
-Last updated: 2026-09-13 — milestone scope clarified; requirements and roadmap pending review.
+## Autonomous working agreement
+
+On 2026-09-13 the user approved the full requirements and roadmap, and authorised autonomous research, planning, engineering choices and progression to the next step. Choose the best supported option, document assumptions and continue through the approved milestone without routine confirmation. This authorisation supersedes skill prompts for routine scope confirmation, option selection, plan approval and phase transitions within approved scope.
+
+Keep research, plan checks, unit tests, integration checks and verification enabled. Fix failures rather than accepting missing functionality to advance. Do not mark unperformed human UAT as passed; record it separately while completing available automated/browser verification. Ask only when missing information/access or a consequential scope change cannot be resolved within the user's instructions. Keep the sales funnel unchanged and external services simulated.
+
+Commit reviewed local work in manageable units. No production deployment, real payment/delivery or separate customer-facing funnel is authorised. Continue in this task; no additional user-owned tasks are needed.
+
+Last updated: 2026-09-13 — full requirements/roadmap approved; autonomous progression authorised.
