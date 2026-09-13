@@ -231,7 +231,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 
 | Phase | Plans complete | Status | Completed |
 |---|---|---|---|
-| 1. Data and API design | 0/4 | In progress | — |
+| 1. Data and API design | 2/4 | In progress | — |
 | 2. Application and persistence foundation | 0/TBD | Not started | — |
 | 3. Clients and contact servicing | 0/TBD | Not started | — |
 | 4. Agency onboarding and access | 0/TBD | Not started | — |

@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "1.0",
+  "productCode": "motor-trade-road-risks",
+  "productVersionId": "00000000-0000-4000-8000-000000000001",
+  "insured": {
+    "clientId": "00000000-0000-4000-8000-000000000002",
+    "clientAgencyRelationshipId": "00000000-0000-4000-8000-000000000003",
+    "entityType": "limited-company",
+    "legalName": "Example Motor Traders Ltd",
+    "address": {
+      "line1": "1 Example Yard",
+      "town": "Exampleton",
+      "postcode": "S9 2QT",
+      "country": "GB"
+    }
+  },
+  "term": {
+    "startsAt": "2026-01-01T00:00:00Z",
+    "endsAt": "2027-01-01T00:00:00Z",
+    "timeZone": "Europe/London"
+  },
+  "risk": {
+    "business": {
+      "description": "Fictional vehicle repair and sales business",
+      "startedOn": "2020-01-01",
+      "turnover": "500000.00",
+      "wageRoll": "100000.00",
+      "activities": [
+        {
+          "id": "00000000-0000-4000-8000-000000000010",
+          "code": {
+            "collection": "activities",
+            "value": "sales-repair",
+            "label": "Sales and repair",
+            "version": "demo-2026-09"
+          },
+          "turnoverBasisPoints": 10000
+        }
+      ],
+      "responses": {
+        "questionSetVersion": "demo-1",
+        "answers": []
+      }
+    },
+    "driverBasis": {
+      "kind": "named",
+      "responses": {
+        "questionSetVersion": "demo-1",
+        "answers": []
+      }
+    },
+    "drivers": [
+      {
+        "id": "00000000-0000-4000-8000-000000000011",
+        "firstName": "Alex",
+        "surname": "Example",
+        "dateOfBirth": "1985-05-20",
+        "address": {
+          "line1": "1 Example Yard",
+          "town": "Exampleton",
+          "postcode": "S9 2QT",
+          "country": "GB"
+        },
+        "relationship": {
+          "collection": "relationships",
+          "value": "director",
+          "label": "Director",
+          "version": "demo-2026-09"
+        },
+        "usage": {
+          "collection": "usage",
+          "value": "trade",
+          "label": "Trade only",
+          "version": "demo-2026-09"
+        },
+        "licence": {
+          "type": {
+            "collection": "licences",
+            "value": "full-uk",
+            "label": "Full UK",
+            "version": "demo-2026-09"
+          },
+          "number": "DEMO-LICENCE-001",
+          "testDate": "2005-04-01"
+        },
+        "convictions": [],
+        "losses": [],
+        "responses": {
+          "questionSetVersion": "demo-1",
+          "answers": []
+        }
+      }
+    ],
+    "vehicles": [
+      {
+        "id": "00000000-0000-4000-8000-000000000012",
+        "registration": "DEMO 01",
+        "make": "Example",
+        "model": "Demonstrator",
+        "manufactureYear": 2022,
+        "body": {
+          "collection": "body",
+          "value": "van",
+          "label": "Van",
+          "version": "demo-2026-09"
+        },
+        "ownership": "business-owned",
+        "value": "10000.00",
+        "responses": {
+          "questionSetVersion": "demo-1",
+          "answers": []
+        }
+      }
+    ],
+    "specifiedVehicleIds": [],
+    "tradePlates": [],
+    "premises": [],
+    "previousInsurance": {
+      "insurer": "Demo Insurer",
+      "expiresOn": "2025-12-31",
+      "noClaimsYears": 5,
+      "evidenceDocumentIds": [],
+      "responses": {
+        "questionSetVersion": "demo-1",
+        "answers": []
+      }
+    },
+    "declarations": {
+      "questionSetVersion": "demo-1",
+      "answers": []
+    },
+    "materialFacts": "Fictional data only."
+  },
+  "cover": {
+    "sections": [
+      {
+        "id": "00000000-0000-4000-8000-000000000020",
+        "code": "road-risks",
+        "limit": "30000.00",
+        "excess": "500.00"
+      }
+    ],
+    "endorsements": [],
+    "warranties": [],
+    "responses": {
+      "questionSetVersion": "demo-1",
+      "answers": []
+    }
+  },
+  "premium": {
+    "currency": "GBP",
+    "annualPremium": "1200.00",
+    "termPremium": "1200.00",
+    "tax": "144.00",
+    "fee": "35.00",
+    "brokerCommission": "120.00",
+    "grossPayable": "1379.00",
+    "netBrokerDue": "1259.00",
+    "insurerDue": "1224.00",
+    "taxBasisPoints": 1200,
+    "commissionBasisPoints": 1000,
+    "ratingResultId": "00000000-0000-4000-8000-000000000030",
+    "ruleVersion": "demo-rate-1"
+  },
+  "provenance": {
+    "source": "demo-seed",
+    "quoteRevisionId": "00000000-0000-4000-8000-000000000031",
+    "authorityVersionId": "00000000-0000-4000-8000-000000000032"
+  }
+}

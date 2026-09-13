@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "1.0",
+  "productCode": "commercial-combined",
+  "productVersionId": "00000000-0000-4000-8000-000000000001",
+  "insured": {
+    "clientId": "00000000-0000-4000-8000-000000000002",
+    "clientAgencyRelationshipId": "00000000-0000-4000-8000-000000000003",
+    "entityType": "limited-company",
+    "legalName": "Example Engineering Ltd",
+    "address": {
+      "line1": "1 Example Yard",
+      "town": "Exampleton",
+      "postcode": "S9 2QT",
+      "country": "GB"
+    }
+  },
+  "term": {
+    "startsAt": "2026-01-01T00:00:00Z",
+    "endsAt": "2027-01-01T00:00:00Z",
+    "timeZone": "Europe/London"
+  },
+  "risk": {
+    "business": {
+      "description": "Fictional engineering workshop",
+      "startedOn": "2020-01-01",
+      "turnover": "500000.00",
+      "wageRoll": "100000.00",
+      "activities": [
+        {
+          "id": "00000000-0000-4000-8000-000000000010",
+          "code": {
+            "collection": "activities",
+            "value": "sales-repair",
+            "label": "Sales and repair",
+            "version": "demo-2026-09"
+          },
+          "turnoverBasisPoints": 10000
+        }
+      ],
+      "responses": {
+        "questionSetVersion": "demo-1",
+        "answers": []
+      }
+    },
+    "locations": [
+      {
+        "id": "00000000-0000-4000-8000-000000000050",
+        "address": {
+          "line1": "1 Example Yard",
+          "town": "Exampleton",
+          "postcode": "S9 2QT",
+          "country": "GB"
+        },
+        "occupancy": "Fabrication",
+        "construction": "Brick and steel frame",
+        "security": {
+          "collection": "security",
+          "value": "monitored",
+          "label": "Monitored alarm",
+          "version": "demo-2026-09"
+        },
+        "floodZone": "1",
+        "buildings": "1000000.00",
+        "contents": "250000.00",
+        "stock": "100000.00",
+        "maximumEstimatedLoss": "1100000.00",
+        "responses": {
+          "questionSetVersion": "demo-1",
+          "answers": []
+        }
+      }
+    ],
+    "wages": [
+      {
+        "id": "00000000-0000-4000-8000-000000000051",
+        "category": {
+          "collection": "wage",
+          "value": "manual",
+          "label": "Manual on premises",
+          "version": "demo-2026-09"
+        },
+        "employees": "100000.00",
+        "labourOnlySubcontractors": "0.00",
+        "bonaFideSubcontractors": "0.00"
+      }
+    ],
+    "liability": {
+      "employersLimit": "10000000.00",
+      "publicLimit": "5000000.00",
+      "productsLimit": "5000000.00",
+      "maximumHeightMetres": 2,
+      "employersReferenceNumber": "DEMO-ERN"
+    },
+    "businessInterruption": {
+      "basis": "gross-profit",
+      "sumInsured": "500000.00",
+      "indemnityMonths": 12
+    },
+    "losses": [],
+    "declarations": {
+      "questionSetVersion": "demo-1",
+      "answers": []
+    },
+    "materialFacts": "Illustrative CC assumptions."
+  },
+  "cover": {
+    "sections": [
+      {
+        "id": "00000000-0000-4000-8000-000000000022",
+        "code": "property",
+        "limit": "1350000.00",
+        "excess": "1000.00"
+      }
+    ],
+    "endorsements": [],
+    "warranties": [],
+    "responses": {
+      "questionSetVersion": "demo-1",
+      "answers": []
+    }
+  },
+  "premium": {
+    "currency": "GBP",
+    "annualPremium": "1200.00",
+    "termPremium": "1200.00",
+    "tax": "144.00",
+    "fee": "35.00",
+    "brokerCommission": "120.00",
+    "grossPayable": "1379.00",
+    "netBrokerDue": "1259.00",
+    "insurerDue": "1224.00",
+    "taxBasisPoints": 1200,
+    "commissionBasisPoints": 1000,
+    "ratingResultId": "00000000-0000-4000-8000-000000000030",
+    "ruleVersion": "demo-rate-1"
+  },
+  "provenance": {
+    "source": "demo-seed",
+    "quoteRevisionId": "00000000-0000-4000-8000-000000000031",
+    "authorityVersionId": "00000000-0000-4000-8000-000000000032"
+  }
+}
