@@ -7,27 +7,31 @@ import { LoadFeedback, Paging, useClientResource } from './shared';
 import { IdentityForm } from './identity-form';
 import { RecordHeader } from '../record-header';
 import { AddRelationship } from './add-relationship';
+import { Contacts } from './contacts';
 
 const tabs = ['Overview','Policies','Quotes','Contacts','Activity'];
-export function ClientDetail({ clientId, tab: requestedTab, canWrite }: { clientId: string; tab: string; canWrite: boolean }) {
+export function ClientDetail({ clientId, tab: requestedTab, canWrite, canWriteContacts }: { clientId: string; tab: string; canWrite: boolean; canWriteContacts: boolean }) {
   const resource = useClientResource<Client>(`/api/v1/clients/${clientId}`);
   const summary = useClientResource<Page<Relationship>>(`/api/v1/clients/${clientId}/relationships?pageSize=3`);
   const [editing, setEditing] = useState(false); const [notice, setNotice] = useState('');
+  const [contactGeneration,setContactGeneration] = useState(0);
+  const [contactSummary,setContactSummary] = useState('Choose an agency relationship');
   const [linking,setLinking] = useState(false);
   const tab = tabs.includes(requestedTab) ? requestedTab : 'Overview';
   if (!resource.data) return <Panel title="Client account"><LoadFeedback error={resource.error} retry={resource.refresh} /></Panel>;
   const client = resource.data;
   const agencyNames = summary.data ? (summary.data.items.map(x => x.agencyName).join(' · ') || 'None linked') + (summary.data.nextCursor ? ` · ${summary.data.totalCount ?? 'More'} relationships in total` : '') : summary.error ? 'Unavailable — see relationships below' : 'Loading…';
-  function relationshipSaved() {setLinking(false); setNotice('Agency relationship saved.'); resource.refresh(); summary.refresh();}
+  function relationshipSaved() {setContactGeneration(x => x + 1);setLinking(false); setNotice('Agency relationship saved.'); resource.refresh(); summary.refresh();}
   return <><Link className="client-back" href="/clients">← All clients</Link><RecordHeader type="Client account" title={client.legalName}
     subtitle={`${entityTypes[client.entityType]}${client.companyNumber ? ` · Company no. ${client.companyNumber}` : ''}`} status={client.identityState === 'active' ? 'Active client' : 'Inactive client'}
-    facts={[{label:'Client reference',value:client.reference},{label:'Client since',value:clientDate(client.createdAt)},{label:'Address',value:`${client.address.town} ${client.address.postcode}`},{label:'Agency relationships',value:agencyNames},{label:'Records',value:'Not available yet'}]}
+    facts={[{label:'Client reference',value:client.reference},{label:'Client since',value:clientDate(client.createdAt)},{label:'Address',value:`${client.address.town} ${client.address.postcode}`},{label:'Agency relationships',value:agencyNames},{label:'Primary contact',value:contactSummary},{label:'Records',value:'Not available yet'}]}
     tabs={tabs.map(label => ({label,href:`/clients/${clientId}?tab=${label}`}))} active={tab}
     actions={canWrite && <button className="button" disabled={linking} onClick={() => {setEditing(true); setNotice('');}}>Edit identity</button>} />
     {notice && <div className="notice" role="status">{notice}</div>}
     {linking && <Panel title="Add agency relationship"><AddRelationship clientId={clientId} etag={resource.etag} onSaved={relationshipSaved} onClose={() => setLinking(false)} onReload={() => {setLinking(false); resource.refresh(); summary.refresh();}} /></Panel>}
     {editing && <Panel title="Edit client identity"><IdentityForm client={client} etag={resource.etag} onCancel={() => setEditing(false)} onReload={resource.refresh} onSaved={() => {setEditing(false); setNotice('Client identity saved.'); resource.refresh();}} /></Panel>}
-    {tab === 'Overview' ? <><div className="notice"><Status tone="info">Business identity</Status><span>This account holds the business identity. Policy declarations and documents belong to their individual records.</span></div><div className="client-overview-grid"><Panel title="Business details"><dl className="account-facts"><div><dt>Legal business name</dt><dd>{client.legalName}</dd></div><div><dt>Entity type</dt><dd>{entityTypes[client.entityType]}</dd></div><div><dt>Company number</dt><dd>{client.companyNumber ?? 'Not supplied'}</dd></div><div><dt>Correspondence address</dt><dd>{[client.address.line1,client.address.line2,client.address.town,client.address.county,client.address.postcode,'United Kingdom'].filter(Boolean).join(', ')}</dd></div></dl></Panel><Unavailable title="Policies and quotes" description="Policy and quote records are not available yet. No portfolio totals are shown until those records can be retrieved." /></div><Relationships clientId={clientId} onAdd={canWrite && !editing && !linking ? () => setLinking(true) : undefined} /><ClientActivity clientId={clientId} /></> : tab === 'Activity' ? <ClientActivity clientId={clientId} /> : tab === 'Contacts' ? <><Relationships clientId={clientId} onAdd={canWrite && !editing && !linking ? () => setLinking(true) : undefined} /><Unavailable title="Contacts" description="Contact servicing is not available yet. Contacts will be maintained separately for each agency relationship." /></> : <Unavailable title={tab} description={`${tab} are not available yet. New quote capture and policy servicing will be added with those workflows.`} />}
+    {tab === 'Overview' ? <><div className="notice"><Status tone="info">Business identity</Status><span>This account holds the business identity. Policy declarations and documents belong to their individual records.</span></div><div className="client-overview-grid"><Panel title="Business details"><dl className="account-facts"><div><dt>Legal business name</dt><dd>{client.legalName}</dd></div><div><dt>Entity type</dt><dd>{entityTypes[client.entityType]}</dd></div><div><dt>Company number</dt><dd>{client.companyNumber ?? 'Not supplied'}</dd></div><div><dt>Correspondence address</dt><dd>{[client.address.line1,client.address.line2,client.address.town,client.address.county,client.address.postcode,'United Kingdom'].filter(Boolean).join(', ')}</dd></div></dl></Panel><Unavailable title="Policies and quotes" description="Policy and quote records are not available yet. No portfolio totals are shown until those records can be retrieved." /></div><Relationships clientId={clientId} onAdd={canWrite && !editing && !linking ? () => setLinking(true) : undefined} /><ClientActivity clientId={clientId} /></> : tab === 'Activity' ? <ClientActivity clientId={clientId} /> : tab === 'Contacts' ? null : <Unavailable title={tab} description={`${tab} are not available yet. New quote capture and policy servicing will be added with those workflows.`} />}
+    <div hidden={tab !== 'Contacts'}><Contacts clientId={clientId} canWrite={canWriteContacts} onSummary={setContactSummary} generation={contactGeneration} /></div>
   </>;
 }
 function Unavailable({ title, description }: { title: string; description: string }) { return <Panel title={title}><EmptyState title={`${title} are not available yet`}>{description}</EmptyState></Panel>; }

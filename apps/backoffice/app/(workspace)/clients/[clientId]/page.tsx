@@ -7,5 +7,5 @@ export default async function ClientPage({ params, searchParams }: { params: Pro
   const [actor, {clientId}, query] = await Promise.all([requireActor(),params,searchParams]);
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(clientId)) notFound();
   if (!canReadClients(actor.roles)) return <Panel title="Access restricted"><EmptyState title="Client access is restricted">Your current role does not include client servicing access.</EmptyState></Panel>;
-  return <ClientDetail key={clientId} clientId={clientId} tab={query.tab ?? 'Overview'} canWrite={canWriteClients(actor.roles)} />;
+  return <ClientDetail key={clientId} clientId={clientId} tab={query.tab ?? 'Overview'} canWrite={canWriteClients(actor.roles)} canWriteContacts={canReadClients(actor.roles)} />;
 }

@@ -42,7 +42,9 @@ public static partial class ClientEndpoints
         var ids=rows.Select(x => x.Id).ToArray();
         var agencies=await (from r in scope.Relationships(db) join a in scope.Agencies(db) on r.AgencyId equals a.Id
             where ids.Contains(r.ClientId) select new {r.ClientId,a.Id,Name=a.LegalName,a.Reference}).ToListAsync(context.RequestAborted);
+        var primaries=await scope.Contacts(db).Where(x=>ids.Contains(x.ClientId) && x.IsPrimary).Select(x=>new {x.ClientId,x.DeclaredFullName}).ToListAsync(context.RequestAborted);
         return Results.Json(new {items=rows.Select(x => new {x.Id,x.Reference,x.LegalName,x.EntityType,x.CompanyNumber,
+            primaryContactName=agencies.Count(a=>a.ClientId==x.Id)==1 ? primaries.SingleOrDefault(c=>c.ClientId==x.Id)?.DeclaredFullName : null,
             Address=Address(x),x.CreatedAt,x.IdentityState,agencies=agencies.Where(a => a.ClientId==x.Id).OrderBy(a => a.Name).Select(a => new {a.Id,a.Name,a.Reference}),records=new {state="unavailable"}}),
             totalCount=total,nextCursor=paging.Next(page,page.Offset+rows.Count<total)},Json);
     }

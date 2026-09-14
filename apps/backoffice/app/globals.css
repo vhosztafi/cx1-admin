@@ -129,4 +129,15 @@ h1, h2, p { margin: 0; }
 .client-field-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 0 20px; max-width: 880px; }
 .client-form select { width: 100%; height: 40px; border: 1px solid #d9dce4; border-radius: 6px; background: white; padding: 0 10px; font: inherit; }
 .client-help { color: var(--muted); margin: 0 0 18px; font-size: 12.5px; line-height: 1.6; }
+.contact-check { display: flex; align-items: center; gap: 8px; margin: 10px 0; }
+.contact-check input { width: 16px; height: 16px; flex: 0 0 16px; margin: 0; }
+.operations-toolbar label.contact-check { display: flex; flex: 0 1 auto; align-items: center; }
+.operations-toolbar .contact-check input { min-height: 16px; padding: 0; }
+.client-field-grid > label { display: grid; align-content: start; gap: 6px; margin-bottom: 16px; font-size: 12.5px; font-weight: 500; }
+.client-field-grid > label > input { width: 100%; min-width: 0; height: 40px; border: 1px solid #d9dce4; border-radius: 6px; padding: 0 11px; background: white; }
+.contact-reason { display: grid; gap: 8px; max-width: 880px; margin-bottom: 18px; }
+.contact-reason textarea { width: 100%; border: 1px solid #d9dce4; border-radius: 6px; padding: 10px; font: inherit; resize: vertical; }
+.table-scroll[aria-label='Relationship contacts'] table { min-width: 1060px; }
+.table-scroll[aria-label='Relationship contacts'] td { vertical-align: top; }
+.table-scroll[aria-label='Relationship contacts'] td:last-child { min-width: 215px; }
 @media (max-width: 760px) { .client-record-header { padding: 16px 16px 0; }.client-record-facts { flex-basis: 100%; gap: 13px 18px; }.client-overview-grid,.client-field-grid { grid-template-columns: minmax(0,1fr); gap: 0; }.client-record-tabs { margin-top: 18px; }.client-record-tabs a { padding: 10px 12px; }.table-scroll[aria-label='Agency relationships'] table,.table-scroll[aria-label='Client activity'] table { min-width: 520px; } }

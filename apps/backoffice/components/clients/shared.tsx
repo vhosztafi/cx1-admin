@@ -2,8 +2,8 @@
 import { useEffect, useState } from 'react';
 import { clientFetch } from '../../lib/clients';
 
-export function useClientResource<T>(url: string) {
-  const [revision, setRevision] = useState(0); const key = `${url}:${revision}`;
+export function useClientResource<T>(url: string, generation = 0) {
+  const [revision, setRevision] = useState(0); const key = `${url}:${revision}:${generation}`;
   const [result, setResult] = useState<{ key: string; data?: T; etag?: string | null; error?: string }>({ key: '' });
   useEffect(() => {
     const controller = new AbortController();

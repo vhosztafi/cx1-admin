@@ -74,6 +74,7 @@ public static class DemoDatabase
         await db.SaveChangesAsync(cancellationToken);
         await PartyDemoSeed.SeedAsync(db,cancellationToken);
         await db.SaveChangesAsync(cancellationToken);
+        await ContactDemoSeed.SeedAsync(db,cancellationToken);
         await transaction.CommitAsync(cancellationToken);
     }
 

@@ -54,7 +54,9 @@ public sealed class ContactTests
                 Assert.Equal("not-asked",consent.State);Assert.False(consent.Email);Assert.False(consent.Telephone);
                 var firstScope=new PartyScope(new ActorContext(actor,null,PartyDemoSeed.FirstAgencyId,new HashSet<string>{"agency-admin"}));
                 var secondScope=new PartyScope(new ActorContext(actor,null,PartyDemoSeed.SecondAgencyId,new HashSet<string>{"agency-admin"}));
-                Assert.Equal(2,await firstScope.Contacts(read).CountAsync());Assert.Equal(1,await secondScope.Contacts(read).CountAsync());
+                Assert.Equal(2,await firstScope.Contacts(read).CountAsync(x=>x.ClientId==first.ClientId));Assert.Equal(1,await secondScope.Contacts(read).CountAsync(x=>x.ClientId==first.ClientId));
+                Assert.Single(await firstScope.SearchClients(read,"SAM TAYLOR").ToListAsync());
+                Assert.Empty(await secondScope.SearchClients(read,"SAM TAYLOR").ToListAsync());
                 Assert.NotNull(await firstScope.FindReusablePersonAsync(read,first.ClientId,firstPerson.Id));
                 Assert.NotNull(await secondScope.FindReusablePersonAsync(read,first.ClientId,firstPerson.Id));
                 Assert.Null(await secondScope.FindReusablePersonAsync(read,first.ClientId,secondPerson.Id));
@@ -87,14 +89,28 @@ public sealed class ContactTests
             }
             await using(var read=new BackOfficeDbContext(options))
             {
-                Assert.Equal(3,await read.Set<Contact>().CountAsync());
+                Assert.Equal(3,await read.Set<Contact>().CountAsync(x=>x.ClientId==first.ClientId));
                 Assert.Equal(1,await read.Set<Contact>().CountAsync(x=>x.RelationshipId==first.RelationshipId && x.IsPrimary && x.EndedAt==null));
                 Assert.Equal("Fictional retained history",(await read.Set<Contact>().SingleAsync(x=>x.Id==first.Id)).EndReason);
                 var scope=new PartyScope(new ActorContext(actor,null,PartyDemoSeed.FirstAgencyId,new HashSet<string>{"agency-admin"}));
-                Assert.Equal(1,await scope.Contacts(read).CountAsync());Assert.Equal(2,await scope.Contacts(read,includeEnded:true).CountAsync());
+                Assert.Equal(1,await scope.Contacts(read).CountAsync(x=>x.ClientId==first.ClientId));Assert.Equal(2,await scope.Contacts(read,includeEnded:true).CountAsync(x=>x.ClientId==first.ClientId));
                 Assert.NotNull(await scope.FindReusablePersonAsync(read,first.ClientId,firstPerson.Id));
                 var relationship=await read.Set<ClientAgencyRelationship>().SingleAsync(x=>x.Id==first.RelationshipId);relationship.State="inactive";await read.SaveChangesAsync();
                 Assert.Null(await scope.FindReusablePersonAsync(read,first.ClientId,firstPerson.Id));
+            }
+            await using(var editSeed=new BackOfficeDbContext(options))
+            {
+                var demo=await editSeed.Set<Contact>().Where(x=>x.ClientId==PartyDemoSeed.ClientId(3)).OrderBy(x=>x.Id).ToListAsync();
+                Assert.Equal(3,demo.Count);Assert.Equal(demo[0].PersonId,demo[2].PersonId);Assert.NotEqual(demo[0].DeclaredFullName,demo[2].DeclaredFullName);
+                Assert.Equal(3,demo.Select(x=>JsonDocument.Parse(x.MarketingConsent).RootElement.GetProperty("state").GetString()).Distinct().Count());
+                demo[0].Email="retained@fictional.example";demo[1].EndedAt=DateTimeOffset.UtcNow;demo[1].EndedBy=actor;demo[1].EndReason="Fictional retained seed history";
+                await editSeed.SaveChangesAsync();await DemoDatabase.SeedAsync(editSeed,password);
+            }
+            await using(var inspectSeed=new BackOfficeDbContext(options))
+            {
+                Assert.Equal("retained@fictional.example",(await inspectSeed.Set<Contact>().SingleAsync(x=>x.Id==ContactDemoSeed.ContactId(1))).Email);
+                Assert.NotNull((await inspectSeed.Set<Contact>().SingleAsync(x=>x.Id==ContactDemoSeed.ContactId(2))).EndedAt);
+                Assert.Equal(3,await inspectSeed.Set<Contact>().CountAsync(x=>x.ClientId==PartyDemoSeed.ClientId(3)));
             }
             await using var current=new BackOfficeDbContext(options);await using var stale=new BackOfficeDbContext(options);
             var fresh=await current.Set<Contact>().SingleAsync(x=>x.Id==replacement.Id);var oldVersion=await stale.Set<Contact>().SingleAsync(x=>x.Id==replacement.Id);
