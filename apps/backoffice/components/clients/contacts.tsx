@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { DataTable, EmptyState, Panel, Status } from '../primitives';
 import { ClientError, clientFetch, clientDate, uncertainFailure, type Page, type Relationship } from '../../lib/clients';
 import { contactPayload, contactRoles, type Contact } from '../../lib/contacts';
+import { SupportFlags } from './support-flags';
 import { csrfToken } from '../../lib/auth';
 import { LoadFeedback, Paging, useClientResource } from './shared';
 
@@ -12,7 +13,7 @@ function contactError(error: unknown) {
   return error.status === 404 ? 'This contact or agency relationship is unavailable.' : [412,428].includes(error.status) ? 'The contact or relationship has changed. Reload the saved record before continuing.' :
     error.status === 409 ? 'Check the current primary contact. Make another active contact primary before ending or demoting a primary contact. Ended contacts cannot be edited.' : error.message;
 }
-export function Contacts({clientId,canWrite,onSummary,generation}:{clientId:string;canWrite:boolean;onSummary:(value:string)=>void;generation:number}) {
+export function Contacts({clientId,canWrite,canSupport,onSummary,generation}:{clientId:string;canWrite:boolean;canSupport:boolean;onSummary:(value:string)=>void;generation:number}) {
   const [selected,setSelected] = useState<Relationship | null>(null); const [locked,setLocked] = useState(false);
   const [history,setHistory] = useState(['']); const cursor = history.at(-1)!;
   const relationships = useClientResource<Page<Relationship>>(`/api/v1/clients/${clientId}/relationships?pageSize=15${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`,generation);
@@ -20,10 +21,11 @@ export function Contacts({clientId,canWrite,onSummary,generation}:{clientId:stri
   return <><Panel title="Agency relationship" note="Choose the relationship whose contacts you want to service">
     {!relationships.data ? <LoadFeedback error={relationships.error} retry={relationships.refresh} /> : !relationships.data.items.length ? <EmptyState title="No agency relationships">Add an agency relationship on the Overview tab before adding contacts.</EmptyState> : <div className="operations-toolbar"><label>Selected agency relationship<select disabled={locked} value={selected?.id ?? ''} onChange={event => setSelected(relationships.data!.items.find(x => x.id === event.target.value) ?? null)}><option value="">Choose an agency relationship</option>{selected && !relationships.data.items.some(x => x.id === selected.id) && <option value={selected.id}>{selected.agencyName} · {selected.agencyReference}</option>}{relationships.data.items.map(row => <option key={row.id} value={row.id}>{row.agencyName} · {row.agencyReference} · {row.state}</option>)}</select></label></div>}
     <Paging total={relationships.data?.totalCount} previous={!locked && history.length > 1 ? () => setHistory(x => x.slice(0,-1)) : undefined} next={!locked && relationships.data?.nextCursor ? () => setHistory(x => [...x,relationships.data!.nextCursor!]) : undefined} />
-  </Panel>{selected ? <RelationshipContacts key={selected.id} relationship={selected} canWrite={canWrite} onLock={setLocked} onSummary={onSummary} /> : <Panel title="Contacts"><EmptyState title="Choose an agency relationship">Contact details and marketing consent are recorded separately for each relationship.</EmptyState></Panel>}</>;
+  </Panel>{selected ? <RelationshipContacts key={selected.id} relationship={selected} canWrite={canWrite} canSupport={canSupport} onLock={setLocked} onSummary={onSummary} /> : <Panel title="Contacts"><EmptyState title="Choose an agency relationship">Contact details and marketing consent are recorded separately for each relationship.</EmptyState></Panel>}</>;
 }
-function RelationshipContacts({relationship,canWrite,onLock,onSummary}:{relationship:Relationship;canWrite:boolean;onLock:(locked:boolean)=>void;onSummary:(value:string)=>void}) {
+function RelationshipContacts({relationship,canWrite,canSupport,onLock,onSummary}:{relationship:Relationship;canWrite:boolean;canSupport:boolean;onLock:(locked:boolean)=>void;onSummary:(value:string)=>void}) {
   const [history,setHistory] = useState(['']); const [ended,setEnded] = useState(false); const [action,setAction] = useState<Action | null>(null); const [notice,setNotice] = useState('');
+  const [supportBusy,setSupportBusy] = useState(false);const [contactRevision,setContactRevision] = useState(0);
   const cursor = history.at(-1)!; const base = `/api/v1/relationships/${relationship.id}/contacts`;
   const resource = useClientResource<Page<Contact>>(`${base}?pageSize=15&includeEnded=${ended}${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`);
   const primary = resource.data?.items.find(row => row.isPrimary);
@@ -31,18 +33,18 @@ function RelationshipContacts({relationship,canWrite,onLock,onSummary}:{relation
   useEffect(() => onSummary(summary),[summary,onSummary]);
   function open(value:Action) {setNotice('');setAction(value);onLock(true);}
   function close() {setAction(null);onLock(false);}
-  function saved() {close();setNotice('Contact saved.');setHistory(['']);resource.refresh();}
+  function saved() {close();setNotice('Contact saved.');setHistory(['']);resource.refresh();setContactRevision(x => x + 1);}
   return <>{notice && <div className="notice" role="status">{notice}</div>}
     {action && <ContactAction key={`${action.kind}:${action.id ?? ''}`} base={base} action={action} onSaved={saved} onClose={close} />}
     <Panel title="Contacts" note={`${relationship.agencyName} · ${relationship.agencyReference}`}>
-      <div className="operations-toolbar">{canWrite && relationship.state === 'active' && <button className="button button-primary" disabled={!!action} onClick={() => open({kind:'create'})}>Add contact</button>}
-        <label className="contact-check"><input type="checkbox" checked={ended} disabled={!!action} onChange={event => {setEnded(event.target.checked);setHistory(['']);}} />Include ended contacts</label>
+      <div className="operations-toolbar">{canWrite && relationship.state === 'active' && <button className="button button-primary" disabled={!!action || supportBusy} onClick={() => open({kind:'create'})}>Add contact</button>}
+        <label className="contact-check"><input type="checkbox" checked={ended} disabled={!!action || supportBusy} onChange={event => {setEnded(event.target.checked);setHistory(['']);}} />Include ended contacts</label>
       </div>
       {!resource.data ? <LoadFeedback error={resource.error} retry={resource.refresh} /> : !resource.data.items.length ? <EmptyState title="No contacts">Add the first contact for this relationship. The first active contact will be primary.</EmptyState> : <DataTable caption="Relationship contacts" columns={['Name','Role','Email','Telephone','Primary','Marketing consent','Actions']}>
-        {resource.data.items.map(row => <tr key={row.id}><td><strong>{row.fullName}</strong>{row.endedAt && <div><Status>Ended {clientDate(row.endedAt)}</Status></div>}</td><td>{row.role}</td><td>{row.email ?? 'Not supplied'}</td><td>{row.telephone ?? 'Not supplied'}</td><td>{row.isPrimary ? <Status tone="info">Primary</Status> : '—'}</td><td>{row.marketingConsent.state === 'given' ? 'Given' : row.marketingConsent.state === 'withheld' ? 'Withheld' : 'Not asked'}{row.marketingConsent.state === 'given' && <div className="client-help">{[row.marketingConsent.email && 'Email',row.marketingConsent.telephone && 'Telephone'].filter(Boolean).join(' · ')}</div>}</td><td>{canWrite && !row.endedAt && relationship.state === 'active' ? <div className="operations-actions"><button className="button" disabled={!!action} onClick={() => open({kind:'update',id:row.id})}>Edit</button>{!row.isPrimary && <button className="button" disabled={!!action} onClick={() => open({kind:'make-primary',id:row.id})}>Make primary</button>}<button className="button" disabled={!!action} onClick={() => open({kind:'end',id:row.id})}>End</button></div> : row.endedAt ? 'History retained' : 'View only'}</td></tr>)}
+        {resource.data.items.map(row => <tr key={row.id}><td><strong>{row.fullName}</strong>{row.endedAt && <div><Status>Ended {clientDate(row.endedAt)}</Status></div>}</td><td>{row.role}</td><td>{row.email ?? 'Not supplied'}</td><td>{row.telephone ?? 'Not supplied'}</td><td>{row.isPrimary ? <Status tone="info">Primary</Status> : '—'}</td><td>{row.marketingConsent.state === 'given' ? 'Given' : row.marketingConsent.state === 'withheld' ? 'Withheld' : 'Not asked'}{row.marketingConsent.state === 'given' && <div className="client-help">{[row.marketingConsent.email && 'Email',row.marketingConsent.telephone && 'Telephone'].filter(Boolean).join(' · ')}</div>}</td><td>{canWrite && !row.endedAt && relationship.state === 'active' ? <div className="operations-actions"><button className="button" disabled={!!action || supportBusy} onClick={() => open({kind:'update',id:row.id})}>Edit</button>{!row.isPrimary && <button className="button" disabled={!!action || supportBusy} onClick={() => open({kind:'make-primary',id:row.id})}>Make primary</button>}<button className="button" disabled={!!action || supportBusy} onClick={() => open({kind:'end',id:row.id})}>End</button></div> : row.endedAt ? 'History retained' : 'View only'}</td></tr>)}
       </DataTable>}
-      <Paging total={resource.data?.totalCount} previous={!action && history.length > 1 ? () => setHistory(x => x.slice(0,-1)) : undefined} next={!action && resource.data?.nextCursor ? () => setHistory(x => [...x,resource.data!.nextCursor!]) : undefined} />
-    </Panel></>;
+      <Paging total={resource.data?.totalCount} previous={!action && !supportBusy && history.length > 1 ? () => setHistory(x => x.slice(0,-1)) : undefined} next={!action && !supportBusy && resource.data?.nextCursor ? () => setHistory(x => [...x,resource.data!.nextCursor!]) : undefined} />
+    </Panel><SupportFlags key={contactRevision} relationship={relationship} canSupport={canSupport} disabled={!!action} onLock={value => {setSupportBusy(value);onLock(value);}} /></>;
 }
 function ContactAction({base,action,onSaved,onClose}:{base:string;action:Action;onSaved:()=>void;onClose:()=>void}) {
   const url = action.kind === 'create' ? base.replace(/\/contacts$/,'') : `${base}/${action.id}`;

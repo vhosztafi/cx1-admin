@@ -10,7 +10,7 @@ import { AddRelationship } from './add-relationship';
 import { Contacts } from './contacts';
 
 const tabs = ['Overview','Policies','Quotes','Contacts','Activity'];
-export function ClientDetail({ clientId, tab: requestedTab, canWrite, canWriteContacts }: { clientId: string; tab: string; canWrite: boolean; canWriteContacts: boolean }) {
+export function ClientDetail({ clientId, tab: requestedTab, canWrite, canWriteContacts, canSupport }: { clientId: string; tab: string; canWrite: boolean; canWriteContacts: boolean; canSupport: boolean }) {
   const resource = useClientResource<Client>(`/api/v1/clients/${clientId}`);
   const summary = useClientResource<Page<Relationship>>(`/api/v1/clients/${clientId}/relationships?pageSize=3`);
   const [editing, setEditing] = useState(false); const [notice, setNotice] = useState('');
@@ -31,7 +31,7 @@ export function ClientDetail({ clientId, tab: requestedTab, canWrite, canWriteCo
     {linking && <Panel title="Add agency relationship"><AddRelationship clientId={clientId} etag={resource.etag} onSaved={relationshipSaved} onClose={() => setLinking(false)} onReload={() => {setLinking(false); resource.refresh(); summary.refresh();}} /></Panel>}
     {editing && <Panel title="Edit client identity"><IdentityForm client={client} etag={resource.etag} onCancel={() => setEditing(false)} onReload={resource.refresh} onSaved={() => {setEditing(false); setNotice('Client identity saved.'); resource.refresh();}} /></Panel>}
     {tab === 'Overview' ? <><div className="notice"><Status tone="info">Business identity</Status><span>This account holds the business identity. Policy declarations and documents belong to their individual records.</span></div><div className="client-overview-grid"><Panel title="Business details"><dl className="account-facts"><div><dt>Legal business name</dt><dd>{client.legalName}</dd></div><div><dt>Entity type</dt><dd>{entityTypes[client.entityType]}</dd></div><div><dt>Company number</dt><dd>{client.companyNumber ?? 'Not supplied'}</dd></div><div><dt>Correspondence address</dt><dd>{[client.address.line1,client.address.line2,client.address.town,client.address.county,client.address.postcode,'United Kingdom'].filter(Boolean).join(', ')}</dd></div></dl></Panel><Unavailable title="Policies and quotes" description="Policy and quote records are not available yet. No portfolio totals are shown until those records can be retrieved." /></div><Relationships clientId={clientId} onAdd={canWrite && !editing && !linking ? () => setLinking(true) : undefined} /><ClientActivity clientId={clientId} /></> : tab === 'Activity' ? <ClientActivity clientId={clientId} /> : tab === 'Contacts' ? null : <Unavailable title={tab} description={`${tab} are not available yet. New quote capture and policy servicing will be added with those workflows.`} />}
-    <div hidden={tab !== 'Contacts'}><Contacts clientId={clientId} canWrite={canWriteContacts} onSummary={setContactSummary} generation={contactGeneration} /></div>
+    <div hidden={tab !== 'Contacts'}><Contacts clientId={clientId} canWrite={canWriteContacts} canSupport={canSupport} onSummary={setContactSummary} generation={contactGeneration} /></div>
   </>;
 }
 function Unavailable({ title, description }: { title: string; description: string }) { return <Panel title={title}><EmptyState title={`${title} are not available yet`}>{description}</EmptyState></Panel>; }

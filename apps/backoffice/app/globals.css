@@ -137,6 +137,16 @@ h1, h2, p { margin: 0; }
 .client-field-grid > label > input { width: 100%; min-width: 0; height: 40px; border: 1px solid #d9dce4; border-radius: 6px; padding: 0 11px; background: white; }
 .contact-reason { display: grid; gap: 8px; max-width: 880px; margin-bottom: 18px; }
 .contact-reason textarea { width: 100%; border: 1px solid #d9dce4; border-radius: 6px; padding: 10px; font: inherit; resize: vertical; }
+.support-wording { white-space: pre-wrap; min-width: 210px; overflow-wrap: anywhere; }
+.support-consent { display: grid; gap: 6px; max-width: 430px; margin-bottom: 18px; }
+.support-form textarea { width: 100%; border: 1px solid #d9dce4; border-radius: 6px; padding: 10px; font: inherit; resize: vertical; }
+.support-sharing { padding: 16px; margin: 0 0 20px; border: 1px solid var(--border); border-radius: 7px; }
+.support-sharing h3 { font-weight: 600; margin-bottom: 8px; }
+.support-snapshot { min-width: 240px; padding: 12px 0; white-space: pre-wrap; }
+.support-snapshot dt { color: var(--muted); margin-top: 10px; }
+.table-scroll[aria-label='Customer flags'] table { min-width: 1400px; }
+.table-scroll[aria-label='Customer flags'] td { vertical-align: top; }
+.table-scroll[aria-label='Restricted support history'] table { min-width: 880px; }
 .table-scroll[aria-label='Relationship contacts'] table { min-width: 1060px; }
 .table-scroll[aria-label='Relationship contacts'] td { vertical-align: top; }
 .table-scroll[aria-label='Relationship contacts'] td:last-child { min-width: 215px; }

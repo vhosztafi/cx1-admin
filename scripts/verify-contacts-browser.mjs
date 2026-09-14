@@ -27,6 +27,8 @@ try {
   await page.getByRole('button',{name:'Retry same save'}).click();await page.getByText('Contact saved.',{exact:true}).waitFor();assert.equal(keys.length,2);assert.equal(keys[0],keys[1]);await page.unroute('**'+base);
   let rows=await (await page.request.get(origin+base)).json();assert.equal(rows.totalCount,1);assert.equal(rows.items[0].isPrimary,true);
   const alexId=rows.items[0].id;
+  await page.getByLabel('Contact for support flags').selectOption(alexId);
+  assert.equal(await page.getByRole('button',{name:'Add flag',exact:true}).isEnabled(),true);
   await page.getByRole('button',{name:'Add contact',exact:true}).click();await page.getByLabel('Full name *',{exact:true}).fill('Fictional Browser Sam');await page.locator('form.client-form').getByRole('button',{name:'Add contact',exact:true}).click();await page.getByText('Contact saved.',{exact:true}).waitFor();
   let table=page.getByRole('region',{name:'Relationship contacts',exact:true});let alex=table.getByRole('row').filter({hasText:'Fictional Browser Alex'});
   await alex.getByRole('button',{name:'End',exact:true}).click();await page.getByLabel('Reason for ending *').fill('Fictional history');await page.getByRole('button',{name:'Confirm end contact'}).click();await page.getByRole('button',{name:'Reload saved contact'}).waitFor();await page.getByRole('button',{name:'Cancel',exact:true}).click();
@@ -38,6 +40,9 @@ try {
   await page.getByLabel('Full name *',{exact:true}).fill('Fictional Browser Alex edited');await page.getByRole('button',{name:'Save contact',exact:true}).click();await page.getByText('Contact saved.',{exact:true}).waitFor();
   await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:output+'/contacts-desktop.png',fullPage:true});
   alex=table.getByRole('row').filter({hasText:'Fictional Browser Alex edited'});await alex.getByRole('button',{name:'End',exact:true}).click();await page.getByLabel('Reason for ending *').fill('Fictional browser history retained');await page.getByRole('button',{name:'Confirm end contact'}).click();await page.getByText('Contact saved.',{exact:true}).waitFor();
+  await page.getByLabel('Contact for support flags').selectOption(alexId);
+  assert.equal(await page.getByRole('button',{name:'Add flag',exact:true}).isDisabled(),true);
+  assert.match(await page.getByLabel('Contact for support flags').locator('option:checked').textContent(),/Ended contact/);
   await page.getByLabel('Include ended contacts').check();await table.getByText('Fictional Browser Alex edited',{exact:true}).waitFor();await page.reload();await page.getByLabel('Selected agency relationship').selectOption(rel.id);await page.getByLabel('Include ended contacts').check();await table.getByText('Fictional Browser Alex edited',{exact:true}).waitFor();
   rows=await (await page.request.get(origin+base+'?includeEnded=true')).json();assert.equal(rows.totalCount,2);assert.equal(rows.items.filter(x=>x.isPrimary).length,1);assert.ok(rows.items.find(x=>x.id===alexId).endedAt);
   await page.getByRole('link',{name:'Overview',exact:true}).click();await page.getByRole('button',{name:'Add agency relationship',exact:true}).click();await page.getByLabel('Agency *',{exact:true}).selectOption('31000000-0000-4000-8000-000000000002');

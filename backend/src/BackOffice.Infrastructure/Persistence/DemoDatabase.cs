@@ -24,10 +24,10 @@ public static class DemoDatabase
         await using var db = new BackOfficeDbContext(new DbContextOptionsBuilder<BackOfficeDbContext>().UseSqlServer(connectionString, sql => sql.UseCompatibilityLevel(160)).Options);
         if (reset) await db.Database.EnsureDeletedAsync(cancellationToken);
         await db.Database.MigrateAsync(cancellationToken);
-        await SeedAsync(db,password,cancellationToken);
+        await SeedAsync(db,password,cancellationToken,includeSupportFlags:true);
     }
 
-    public static async Task SeedAsync(BackOfficeDbContext db,string password,CancellationToken cancellationToken = default)
+    public static async Task SeedAsync(BackOfficeDbContext db,string password,CancellationToken cancellationToken = default,bool includeSupportFlags=false)
     {
         ValidatePassword(password);
         await using var transaction = await db.Database.BeginTransactionAsync(IsolationLevel.Serializable,cancellationToken);
@@ -75,6 +75,7 @@ public static class DemoDatabase
         await PartyDemoSeed.SeedAsync(db,cancellationToken);
         await db.SaveChangesAsync(cancellationToken);
         await ContactDemoSeed.SeedAsync(db,cancellationToken);
+        if(includeSupportFlags)await SupportFlagDemoSeed.SeedAsync(db,cancellationToken);
         await transaction.CommitAsync(cancellationToken);
     }
 
