@@ -124,6 +124,7 @@ public sealed partial class BackOfficeDbContext(DbContextOptions<BackOfficeDbCon
 
         ConfigureParties(model);
         ConfigureAgencies(model);
+        ConfigureAgencyEvidence(model);
         ConfigureSupportFlags(model);
         ConfigureMatches(model);
         // All instants are UTC; retain London intent separately in domain records.

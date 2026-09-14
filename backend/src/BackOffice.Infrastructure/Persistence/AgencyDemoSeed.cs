@@ -17,6 +17,8 @@ public static class AgencyDemoSeed
             }
         if(!await db.Set<SettingVersion>().AnyAsync(x=>x.Scope=="agency-onboarding"&&x.Version==1,token))
             db.Add(new SettingVersion{Scope="agency-onboarding",Version=1,EffectiveFrom=new(2026,9,1,0,0,0,TimeSpan.Zero),Values="{\"demo\":true,\"evidenceAvailable\":false,\"activationAvailable\":false}"});
+        if(!await db.Set<SettingVersion>().AnyAsync(x=>x.Scope=="agency-compliance"&&x.Version==1,token))
+            db.Add(new SettingVersion{Scope="agency-compliance",Version=1,EffectiveFrom=new(2026,9,1,0,0,0,TimeSpan.Zero),Values="""{"demo":true,"minimumPi":"1300000.00","tobaVersion":"2026.1","checkValidityDays":90,"scenarios":{"fca":"pass","financial-check":"pass","sanctions":"pass","ownership":"pass"}}"""});
         await db.SaveChangesAsync(token);
     }
 }
