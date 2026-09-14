@@ -1,0 +1,47 @@
+import {chromium} from 'playwright';
+import assert from 'node:assert/strict';
+import {readFile,mkdir} from 'node:fs/promises';
+import {createServer} from 'node:http';
+const origin=process.env.COVER_WEB_ORIGIN??'http://127.0.0.1:3100';
+if(!['localhost','127.0.0.1'].includes(new URL(origin).hostname))throw Error('Local demo only.');
+const password=process.env.COVER_DEMO_PASSWORD??(await readFile('.local/demo-password.txt','utf8')).trim();
+const output='.local/browser-evidence';await mkdir(output,{recursive:true});
+const browser=await chromium.launch({channel:process.env.COVER_BROWSER_CHANNEL??'chrome',headless:true});
+const context=await browser.newContext({viewport:{width:1560,height:1000}});const page=await context.newPage();page.setDefaultTimeout(20000);
+const errors=[];page.on('pageerror',e=>errors.push(e.message));let sourceServer;
+try {
+  await page.goto(origin+'/login');await page.getByLabel('Email address',{exact:true}).fill('agency-admin@cover.example');await page.getByLabel('Password',{exact:true}).fill(password);await page.getByRole('button',{name:'Sign in',exact:true}).click();await page.waitForURL(origin+'/');
+  await page.goto(origin+'/agents');await page.getByRole('heading',{name:'Agents',exact:true}).waitFor();await page.getByRole('link',{name:'Create agency',exact:true}).click();
+  const name='Fictional Browser Agency '+Date.now();await page.getByLabel('Legal name',{exact:true}).fill(name);await page.getByLabel('Territory',{exact:true}).selectOption('NI');await page.getByLabel('Permission to arrange general insurance',{exact:true}).selectOption('unchecked');
+  await page.getByRole('button',{name:'Continue',exact:true}).waitFor();
+  const rail=await page.locator('.agency-rail').boundingBox();assert.equal(Math.round(rail.width),314);
+  await page.getByRole('button',{name:'Switch to segmented bar',exact:true}).click();assert.equal(await page.locator('.agency-steps-segmented button').count(),6);
+  await page.getByRole('button',{name:'Switch to step list',exact:true}).click();await page.getByRole('heading',{name:'Onboarding summary',exact:true}).waitFor();
+  await page.screenshot({path:output+'/agency-onboarding-desktop.png',fullPage:true});
+  let lost=false;const keys=[];await page.route('**/api/v1/agencies',async route=>{if(route.request().method()!=='POST')return route.continue();keys.push(route.request().headers()['idempotency-key']);if(!lost){lost=true;const response=await route.fetch();assert.equal(response.status(),201);await route.abort('failed');}else await route.continue();});
+  await page.getByRole('button',{name:'Continue',exact:true}).click();await page.getByRole('button',{name:'Retry same save',exact:true}).waitFor();assert.equal(await page.getByLabel('Legal name',{exact:true}).isDisabled(),true);
+  await page.getByRole('navigation',{name:'Main navigation',exact:true}).getByRole('link',{name:'Agents',exact:true}).click();assert.ok(page.url().endsWith('/agents/new'));
+  await page.getByRole('button',{name:'Retry same save',exact:true}).click();await page.waitForURL(/\/agents\/[0-9a-f-]{36}\/onboarding$/);assert.equal(keys.length,2);assert.equal(keys[0],keys[1]);// Keep the POST-only interceptor installed through navigation; unroute can race unrelated in-flight Chromium requests.
+
+  const id=page.url().split('/').at(-2);await page.getByRole('heading',{name:'Contacts',exact:true}).waitFor();await page.getByLabel('Main contact name',{exact:true}).fill('Fictional Morgan');await page.getByLabel('Main contact email',{exact:true}).fill('fictional.morgan@example.test');await page.getByLabel('Correspondence preference',{exact:true}).selectOption('portal-only');
+  await page.getByRole('button',{name:'Continue',exact:true}).click();await page.getByRole('heading',{name:'Products & commission',exact:true}).waitFor();await page.getByLabel('Effective from',{exact:true}).fill('2026-09-15');await page.getByRole('checkbox',{name:'Motor Trade Road Risks',exact:true}).check();await page.getByLabel('Motor Trade Road Risks commission',{exact:true}).fill('12.75');
+  await page.getByRole('button',{name:'Continue',exact:true}).click();await page.getByRole('heading',{name:'Agreement & compliance',exact:true}).waitFor();await page.getByLabel('PI expiry date',{exact:true}).fill('2027-09-30');await page.getByLabel('Beneficial ownership verified',{exact:true}).selectOption('refer');
+  await page.getByRole('button',{name:'Continue',exact:true}).click();await page.getByRole('heading',{name:'Accounts',exact:true}).waitFor();await page.getByLabel('Credit limit (£)',{exact:true}).fill('25000');await page.getByLabel('Credit terms',{exact:true}).selectOption('45');
+  await page.getByRole('button',{name:'Continue',exact:true}).click();await page.getByRole('heading',{name:'Review & activate',exact:true}).waitFor();await page.reload();await page.getByRole('heading',{name:'Review & activate',exact:true}).waitFor();assert.ok((await page.locator('.agency-review').innerText()).includes('Fictional Morgan'));
+  await page.getByRole('button',{name:'Save and exit',exact:true}).click();await page.waitForURL(origin+'/agents/'+id);await page.getByRole('heading',{name,exact:true}).waitFor();await page.getByRole('link',{name:'Products',exact:true}).click();await page.getByRole('cell',{name:'12.75%',exact:true}).waitFor();
+  await page.getByRole('link',{name:'Accounts',exact:true}).click();await page.getByText('25000.00',{exact:true}).waitFor();await page.getByRole('link',{name:'Activity',exact:true}).click();await page.getByRole('cell',{name:'Demo agency-admin',exact:true}).first().waitFor();
+  await page.getByRole('link',{name:'Resume onboarding',exact:true}).click();await page.getByRole('button',{name:/Agency & regulatory/}).click();await page.getByLabel('Legal name',{exact:true}).waitFor();
+  const response=await context.request.get(origin+'/api/v1/agencies/'+id);const stored=await response.json();const csrf=(await(await context.request.get(origin+'/api/v1/auth/csrf')).json()).requestToken;
+  const concurrent=await context.request.put(origin+'/api/v1/agencies/'+id,{headers:{'X-CSRF-Token':csrf,'Idempotency-Key':crypto.randomUUID(),'If-Match':response.headers().etag},data:{details:{...stored.details,legalName:name+' Concurrent'},onboardingStep:1}});assert.equal(concurrent.status(),200);
+  await page.getByLabel('Legal name',{exact:true}).fill(name+' Local');await page.getByRole('button',{name:'Save draft',exact:true}).click();await page.getByRole('button',{name:'Replace my edits with saved draft',exact:true}).waitFor();assert.equal(await page.getByLabel('Legal name',{exact:true}).inputValue(),name+' Local');
+  await page.getByRole('button',{name:'Replace my edits with saved draft',exact:true}).click();await page.waitForFunction(expected=>document.getElementById('agency-legalName')?.value===expected,name+' Concurrent');
+  await page.setViewportSize({width:390,height:844});await page.screenshot({path:output+'/agency-onboarding-mobile.png',fullPage:true});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth));
+  await page.setViewportSize({width:1560,height:1000});await page.getByRole('button',{name:'Save and exit',exact:true}).click();await page.waitForURL(origin+'/agents/'+id);await page.getByRole('button',{name:'Abandon draft',exact:true}).click();await page.getByRole('dialog').waitFor();await page.getByRole('dialog').getByLabel('Reason',{exact:true}).fill('Fictional browser acceptance complete.');await page.getByRole('dialog').getByRole('button',{name:'Abandon draft',exact:true}).click();await page.getByText('abandoned',{exact:true}).waitFor();
+  await page.goto(origin+'/agents?q='+encodeURIComponent(name));await page.getByRole('link',{name:name+' Concurrent',exact:true}).waitFor();await page.reload();await page.getByRole('link',{name:name+' Concurrent',exact:true}).waitFor();await page.screenshot({path:output+'/agency-directory-desktop.png',fullPage:true});
+  assert.deepEqual(errors,[]);
+  // Source is served locally solely for visual comparison; fixed example data is not copied to runtime.
+  const html=await readFile('docs/prototype/Cover MGA Back Office-4.html');sourceServer=createServer((request,response)=>{response.writeHead(200,{'Content-Type':'text/html'});response.end(html);});await new Promise(resolve=>sourceServer.listen(0,'127.0.0.1',resolve));
+  const source=await browser.newPage({viewport:{width:1560,height:1000}});await source.goto(`http://127.0.0.1:${sourceServer.address().port}`);await source.getByText('Agents',{exact:true}).first().click();await source.getByText('Create agency',{exact:true}).first().click();await source.getByText('Agency & regulatory',{exact:true}).first().waitFor();await source.screenshot({path:output+'/prototype-agency-onboarding.png',fullPage:true});
+  console.log('Agency browser checks passed: atomic six-stage save/reload, response-loss replay, retained stale edits, real product/settlement/activity, abandonment, URL filters, 314px rail and 390px viewport.');
+} catch(error) {if(!page.url().includes('/login'))await page.screenshot({path:output+'/agency-failure.png',fullPage:true});throw error;}
+finally{await context.close();await browser.close();if(sourceServer)await new Promise(resolve=>sourceServer.close(resolve));}
