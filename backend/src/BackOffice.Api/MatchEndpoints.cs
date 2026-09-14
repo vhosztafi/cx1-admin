@@ -43,7 +43,7 @@ public static class MatchEndpoints
         var agencyIds=submissions.Values.Select(x=>x.AgencyId).ToArray();var agencies=await db.Set<Agency>().AsNoTracking().Where(x=>agencyIds.Contains(x.Id)).ToDictionaryAsync(x=>x.Id,token);
         return rows.Select(row=>
         {
-            var s=submissions[row.SubmissionId];return (object)new {row.Id,row.SubmissionId,row.CandidateClientId,row.Confidence,row.State,row.RuleVersionId,
+            var s=submissions[row.SubmissionId];return (object)new {row.Id,row.SubmissionId,row.CandidateClientId,row.CandidateRelationshipId,row.Confidence,row.State,row.RuleVersionId,
                 signals=JsonSerializer.Deserialize<MatchSignal[]>(row.Signals,ClientEndpoints.Json),rule=JsonSerializer.Deserialize<MatchRuleSnapshot>(row.RuleSnapshot,ClientEndpoints.Json),
                 submission=new {s.Id,s.Reference,s.AgencyId,agencyName=agencies[s.AgencyId].LegalName,identity=JsonSerializer.Deserialize<ClientWrite>(s.IdentitySnapshot,ClientEndpoints.Json),s.CreatedAt,s.LinkedClientId,s.LinkedRelationshipId}};
         }).ToArray();

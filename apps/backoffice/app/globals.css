@@ -151,3 +151,28 @@ h1, h2, p { margin: 0; }
 .table-scroll[aria-label='Relationship contacts'] td { vertical-align: top; }
 .table-scroll[aria-label='Relationship contacts'] td:last-child { min-width: 215px; }
 @media (max-width: 760px) { .client-record-header { padding: 16px 16px 0; }.client-record-facts { flex-basis: 100%; gap: 13px 18px; }.client-overview-grid,.client-field-grid { grid-template-columns: minmax(0,1fr); gap: 0; }.client-record-tabs { margin-top: 18px; }.client-record-tabs a { padding: 10px 12px; }.table-scroll[aria-label='Agency relationships'] table,.table-scroll[aria-label='Client activity'] table { min-width: 520px; } }
+
+.match-layout { display:grid; grid-template-columns:minmax(0,1fr) 314px; gap:20px; align-items:start; }
+.match-main,.match-rail { min-width:0; }
+.match-rail { display:flex; flex-direction:column; gap:16px; }
+.match-main > div { display:grid; gap:16px; }
+.match-main > div[hidden] { display:none; }
+.match-main .panel,.match-rail .panel { margin:0; }
+.match-actions { display:flex; flex-direction:column; gap:10px; padding:16px; }
+.match-actions .button { width:100%; text-align:left; justify-content:flex-start; white-space:normal; }
+.match-danger { color:#a82424; border-color:#efcccc; }
+.match-copy { padding:16px; line-height:1.6; }
+.match-copy p { margin-top:6px; color:#677184; }
+.match-capitalize { text-transform:capitalize; }
+.match-main .table-scroll table { min-width:660px; }
+.match-main td { white-space:normal; overflow-wrap:anywhere; }
+.match-decision-form { display:grid; gap:12px; }
+.match-decision-form label { display:grid; gap:6px; font-size:12.5px; font-weight:500; }
+.match-decision-form textarea { width:100%; min-width:0; padding:9px 10px; border:1px solid #dce0e8; border-radius:6px; background:white; font:inherit; resize:vertical; }
+.match-decision-form .button { width:100%; white-space:normal; }
+.match-timeline { list-style:none; margin:0; padding:18px 20px 8px 30px; }
+.match-timeline li { position:relative; border-left:1px solid #e1e5ed; padding:0 0 20px 18px; }
+.match-timeline li::before { content:''; width:8px; height:8px; border-radius:50%; background:#3f5ef5; position:absolute; left:-4.5px; top:5px; }
+.match-timeline p { white-space:pre-wrap; overflow-wrap:anywhere; margin:8px 0; font-size:13px; }
+@media(max-width:1000px) { .match-layout { grid-template-columns:minmax(0,1fr); }.match-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:600px) { .match-actions { grid-template-columns:minmax(0,1fr); } }

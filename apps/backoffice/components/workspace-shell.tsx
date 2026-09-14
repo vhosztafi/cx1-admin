@@ -10,7 +10,7 @@ const navigation = [['Dashboard', '/'], ['Clients', '/clients'], ['Quotes', '/qu
 function Navigation({ close }: { close?: () => void }) {
   const pathname = usePathname();
   return <><div className="sidebar-brand"><Link href="/" onClick={close} className="brand-word">Cover</Link><span className="brand-subtitle">Motor Trade MGA</span></div>
-    <nav className="navigation" aria-label="Main navigation">{navigation.map(([label, href]) => <Link key={href} href={href} prefetch={false} onClick={close} aria-current={pathname === href || (href !== '/' && pathname.startsWith(`${href}/`)) ? 'page' : undefined} className={label === 'Accounting' ? 'nav-divider' : ''}>{label}</Link>)}</nav>
+    <nav className="navigation" aria-label="Main navigation">{navigation.map(([label, href]) => <Link key={href} href={href} prefetch={false} onClick={close} aria-current={pathname === href || (href !== '/' && pathname.startsWith(`${href}/`)) || (href === '/clients' && (pathname === '/matches' || pathname.startsWith('/matches/'))) ? 'page' : undefined} className={label === 'Accounting' ? 'nav-divider' : ''}>{label}</Link>)}</nav>
     <div className="sidebar-footer"><Link href="/quotes" onClick={close} className="button button-primary">New Quote</Link><p className="demo-label">DEMO DATA · v1.0</p></div></>;
 }
 

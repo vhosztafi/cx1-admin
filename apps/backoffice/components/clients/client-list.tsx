@@ -5,12 +5,12 @@ import { DataTable, EmptyState, Panel } from '../primitives';
 import { entityTypes, type ClientSummary, type Page } from '../../lib/clients';
 import { LoadFeedback, Paging, useClientResource } from './shared';
 
-export function ClientList({ canWrite }: { canWrite: boolean }) {
+export function ClientList({ canWrite, canMatch }: { canWrite: boolean; canMatch: boolean }) {
   const [search, setSearch] = useState(''); const [query, setQuery] = useState(''); const [entity, setEntity] = useState(''); const [history, setHistory] = useState<string[]>(['']);
   const cursor = history.at(-1)!;
   const resource = useClientResource<Page<ClientSummary>>(`/api/v1/clients?pageSize=15${query ? `&q=${encodeURIComponent(query)}` : ''}${entity ? `&entityType=${entity}` : ''}${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`);
   function reset() { setHistory(['']); resource.refresh(); }
-  return <><div className="page-heading"><div><h1>Clients</h1><p>Business identities and agency relationships</p></div>{canWrite && <Link className="button button-primary" href="/clients/new">Create client</Link>}</div>
+  return <><div className="page-heading"><div><h1>Clients</h1><p>Business identities and agency relationships</p></div><div className="operations-actions">{canMatch && <Link className="button" href="/matches">Duplicate reviews</Link>}{canWrite && <Link className="button button-primary" href="/clients/new">Create client</Link>}</div></div>
     <Panel title="Client accounts">
       <form className="operations-toolbar" onSubmit={event => { event.preventDefault(); setQuery(search.trim()); reset(); }}>
         <label>Search clients<input type="search" placeholder="Business, contact, agency or reference" value={search} maxLength={200} onChange={event => setSearch(event.target.value)} /></label>

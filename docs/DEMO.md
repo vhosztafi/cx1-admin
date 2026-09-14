@@ -57,3 +57,11 @@ For a manual recovery demonstration, run `sqlcmd -S '.\SQL2022' -E -C -b -d Cove
 `pnpm web:browser` checks the sign-in/shell journey. Both browser scripts require Chrome, use only localhost, and save screenshots under ignored `.local/browser-evidence`. Automated checks and agent visual review do not constitute business-user acceptance.
 
 The diagnostics make no external calls, send no messages and move no money. Products are draft foundation definitions without rating rules. All six seeded role accounts are listed in SETUP.md. Docker and GitHub-hosted CI execution remain unverified; the native SQL profile is the demonstrated runtime.
+
+## Duplicate intake review
+
+Sign in as underwriter@cover.example and open Clients > Duplicate reviews. The six MI-DEMO cases are fictional saved intakes across Brightside and Kingsway. Their current statuses reflect previous demo decisions; reinitialization preserves history. Open a case to inspect the captured comparison and Rule tabs, candidate account, submitting agency and actual decision trail.
+
+For a pending or queried case, choose Link, Not duplicate, Decline or Request information and enter a reason. Link associates only the submitting agency with the candidate account. Not duplicate creates a separate account from the intake identity and reuses it on later decisions. Request information records the request and shows Recorded; it sends no message. A terminal decision offers Reopen, which retains its trail and prior association before another explicit decision. Reload to demonstrate persistence. Candidate contacts and support instructions remain separate.
+
+The review has no quote, policy, rating or claims evidence yet. Those workflows are owned by later phases. Internal servicing and agency-admin accounts cannot see duplicate-review evidence. Automated local verification is available through pnpm web:browser:matches; it retains fictional decisions and screenshots without resetting the demo.

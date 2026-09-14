@@ -51,7 +51,7 @@ function ClientActivity({ clientId }: { clientId: string }) {
   const resource = useClientResource<Page<Activity>>(`/api/v1/clients/${clientId}/activity?pageSize=10${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`);
   return <Panel title="Activity" note="Saved client servicing events">
     {!resource.data ? <LoadFeedback error={resource.error} retry={resource.refresh} /> : !resource.data.items.length ? <EmptyState title="No activity yet">Saved servicing actions will appear here.</EmptyState> : <DataTable caption="Client activity" columns={['When','Activity','By']}>
-      {resource.data.items.map(row => <tr key={row.id}><td>{clientDate(row.occurredAt,true)}</td><td>{row.recordKind === 'client' && row.recordId === clientId ? <Link href={`/clients/${clientId}`}>{row.summary}</Link> : row.summary}</td><td>{row.actorLabel}</td></tr>)}
+      {resource.data.items.map(row => <tr key={row.id}><td>{clientDate(row.occurredAt,true)}</td><td>{row.recordKind === 'client' && row.recordId === clientId ? <Link href={`/clients/${clientId}`}>{row.summary}</Link> : row.recordKind === 'match' && row.recordId ? <Link href={`/matches/${row.recordId}`}>{row.summary}</Link> : row.summary}</td><td>{row.actorLabel}</td></tr>)}
     </DataTable>}
     <Paging total={resource.data?.totalCount} previous={history.length > 1 ? () => setHistory(x => x.slice(0,-1)) : undefined} next={resource.data?.nextCursor ? () => setHistory(x => [...x,resource.data!.nextCursor!]) : undefined} />
   </Panel>;

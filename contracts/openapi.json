@@ -51565,6 +51565,11 @@
           "submission": {
             "$ref": "#/components/schemas/MatchSubmission"
           },
+          "candidateRelationshipId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The captured candidate relationship, for unambiguous internal agency context; never infer it from the first account relationship."
+          },
           "rule": {
             "$ref": "#/components/schemas/MatchRuleSnapshot"
           }

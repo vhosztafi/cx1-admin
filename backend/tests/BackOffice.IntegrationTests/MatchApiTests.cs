@@ -40,6 +40,7 @@ public sealed class MatchApiTests
             Assert.Equal(HttpStatusCode.BadRequest,(await staff.GetAsync("/api/v1/matches?state=unknown")).StatusCode);
             Assert.Equal(HttpStatusCode.NotFound,(await staff.GetAsync("/api/v1/matches/"+Guid.NewGuid())).StatusCode);
             var original=await Read(staff,first);Assert.False(original.TryGetProperty("quoteId",out _));Assert.False(original.GetProperty("submission").TryGetProperty("quoteId",out _));
+            Assert.Equal(PartyDemoSeed.RelationshipId(3,1),original.GetProperty("candidateRelationshipId").GetGuid());
             Assert.Equal(original.GetProperty("submissionId").GetGuid(),original.GetProperty("submission").GetProperty("id").GetGuid());Assert.Equal(original.GetProperty("ruleVersionId").GetGuid(),original.GetProperty("rule").GetProperty("id").GetGuid());
             var tag=await Tag(staff,first);var query=new MatchDecisionWrite("query","FICTIONAL-RESTRICTED-COMPARISON-REASON");
             Assert.Equal(HttpStatusCode.Forbidden,(await Send(staff,null,first,query,etag:tag)).StatusCode);
