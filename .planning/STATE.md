@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T22:19:12Z"
+last_updated: "2026-09-14T22:44:24Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-06 of 8 in progress; 04-01 through 04-05 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — 04-06 public terms APIs and effective approved product reads verified through London midnight. Full289/47SQL and78 contracts pass.
+Last activity: 2026-09-14 — 04-06 state approval UI verified with two internal accounts;24 frontend tests/build/lint and state/users browser checks pass.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: AgencyTermsEndpoints and DI expose proposals (202 ID-only), request list/detail, independent decisions (200 ID-only) and approved version history. Protected request reads include own ETag/actor labels/exact snapshots. Version reads use existing internal agency-read, cursor asOf London date/current-scheduled-historical status and exclusive ends. Active/suspended /products now selects only currently effective approved grants with termsVersionId; draft/abandoned retains selections. Activity summaries accurate. HTTP/SQL tests cover permissions/CSRF/body/ETag/self/race/replay/revoked-role, exact large money, cursor scope and approved1250->1750 at London midnight while stale draft9999 remains untouched. Full289 backend/47SQL and78 contracts,949 controls/327 operations pass; CI289/47 Windows287/45 Linux. Next frontend final-stage approval summary/countersign, Products current/scheduled/history/propose/decide, suspension/reactivation controls; extend types for actual metadata. Then full positive activation/reactivation/terms HTTP/browser and final writer-race/mobile/keyboard/source acceptance before04-06-SUMMARY. No migration/seed/frontend changes or active tests/previews; prior22frontend/build/browser current. Broker login closed until04-07; approval UI and human UAT unclaimed.
+Stopped at: State approval UI committed as a manageable04-06 slice. AgencyStateRequests on Overview and stage6 supports activation/suspension/reactivation proposals, independent decisions, real history, exact uncertain replay and modal/wizard guards. Authenticated actor IDs passed from server pages. Current product labels distinguish approved grants and suspended access; draft-only checklist. New state browser script passes real SQL/API independent rejection/approval, suspension persistence, lost-response replay, incomplete activation/reactivation, focus and390px. Existing users browser regression passes;24 frontend tests/lint/typecheck/build pass. Previous289backend/47SQL and78contracts current; backend unchanged. Next terms UI: Products current/scheduled/history/proposal/decision and Accounts approved terms, then positive activation/reactivation/terms browser lifecycle and final04-06 acceptance. No phase completion or human UAT claimed. Broker login closed until04-07. Owned previews stopped.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-06-PROGRESS.md
 
 ## Autonomous continuation

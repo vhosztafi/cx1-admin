@@ -4,5 +4,5 @@ import { AgencyWizardLoader } from '../../../../components/agencies/agency-wizar
 import { EmptyState, Panel } from '../../../../components/primitives';
 export default async function NewAgencyPage() {
   const actor = await requireActor(); if(!canWriteAgencies(actor.roles)) return <Panel title="Access restricted"><EmptyState title="Agency administration is restricted">Your role cannot create an agency.</EmptyState></Panel>;
-  return <AgencyWizardLoader />;
+  return <AgencyWizardLoader actorId={actor.id} />;
 }
