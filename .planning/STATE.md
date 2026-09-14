@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T05:26:00Z"
+last_updated: "2026-09-14T05:54:00Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
@@ -20,14 +20,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Support servicing complete; implement duplicate-review intake and decisions in 03-05.
+**Current focus:** Matching storage/fixtures verified; implement audited decision service and APIs in 03-05.
 
 ## Current Position
 
 Phase: 3 of 13 (Clients and contact servicing)
-Plan: 03-05 of 6 next; 03-01 through 03-04 complete
+Plan: 03-05 of 6 in progress; Task 1 complete, service/APIs/UI pending; 03-01 through 03-04 complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — support UI, lifecycle, demo seeds and browser verification complete; 91 backend cases/seventeen SQL scenarios and thirteen frontend tests pass
+Last activity: 2026-09-14 — immutable matching storage/fixtures verified and demo migrated; 121 backend cases/eighteen SQL scenarios pass
 
 Progress: Phases 1–2 complete; 2/13 phases. Foundation verified; client servicing next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–2 complete; 2/13 phases. Foundation verified; client servic
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: 03-04 complete; production 5baa12f and summary eaf729f. Read 03-04-SUMMARY.md then execute 03-05-PLAN.md inline. Fresh backend reports .local/support-ui-seed-results pass 91/17 with zero skips. Thirteen frontend tests, typecheck, lint/build, support/contact/client browser checks pass. Native demo includes shared/internal-only support flags and retained fictional browser histories; no reset. No active previews/tests. CLI-03 implementation awaits final Phase 3 gate; CLI-01 stays partial for Phase 5/6 quote/policy links. Match plan/context read; implementation not started. Funnel unchanged; continue automatically.
+Stopped at: Read 03-05-PROGRESS.md then implement Task 2 audited matching service/APIs. Task 1 complete in ce3436a; fresh full .local/match-storage-regression-results passes 121/18 without skips. Migration 20260914054253_MatchIntakeEvidence applied to Demo with six fictional intake cases and retained decision/request history. No matching HTTP routes or UI yet. No active previews/tests. Prior support/contact/client browser evidence remains valid for unchanged UI; thirteen frontend tests last passed in 03-04. CLI-04 incomplete; CLI-01 remains partial for Phase 5/6 real quote/policy links. Funnel unchanged; continue automatically.
 Resume file: None
 
 ## Autonomous continuation
