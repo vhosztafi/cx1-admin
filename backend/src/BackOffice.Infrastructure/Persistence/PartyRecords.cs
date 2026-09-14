@@ -33,3 +33,28 @@ public sealed class ClientActivity : StoredRecord
     public Guid? RecordId {get;set;}
     public string? RecordKind {get;set;}
 }
+
+public sealed class Person : MutableRecord
+{
+    public string FullName {get;set;}="";
+    public string? FirstName {get;set;}
+    public string? Surname {get;set;}
+}
+public sealed class Contact : MutableRecord
+{
+    public Guid ClientId {get;set;}
+    public Guid RelationshipId {get;set;}
+    public Guid PersonId {get;set;}
+    public string DeclaredFullName {get;set;}="";
+    public string NormalizedName {get;set;}="";
+    public string? DeclaredFirstName {get;set;}
+    public string? DeclaredSurname {get;set;}
+    public string Role {get;set;}="";
+    public string? Email {get;set;}
+    public string? Telephone {get;set;}
+    public bool IsPrimary {get;set;}
+    public string MarketingConsent {get;set;}="{}";
+    public DateTimeOffset? EndedAt {get;set;}
+    public Guid? EndedBy {get;set;}
+    public string? EndReason {get;set;}
+}

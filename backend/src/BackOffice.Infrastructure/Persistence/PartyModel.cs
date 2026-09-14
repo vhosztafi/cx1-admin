@@ -37,5 +37,21 @@ public sealed partial class BackOfficeDbContext
         Check(activity,"EventType","LEN(TRIM([EventType])) > 0");
         Check(activity,"RecordKind","[RecordKind] IS NULL OR [RecordKind] IN ('client','contact','match')");
         Check(activity,"RecordLink","([RecordId] IS NULL AND [RecordKind] IS NULL) OR ([RecordId] IS NOT NULL AND [RecordKind] IS NOT NULL)");
+        var person=Record<Person>(model,"Person");
+        Text(person,("FullName",200),("FirstName",100),("Surname",100));
+        Check(person,"Name","LEN(TRIM([FullName])) > 0");
+        var contact=Record<Contact>(model,"Contact");
+        Text(contact,("DeclaredFullName",200),("NormalizedName",200),("DeclaredFirstName",100),("DeclaredSurname",100),("Role",100),("Email",254),("Telephone",50),("EndReason",1000));
+        Json(contact,"MarketingConsent");
+        contact.HasOne<Person>().WithMany().HasForeignKey(x=>x.PersonId).OnDelete(DeleteBehavior.NoAction);
+        contact.HasOne<ClientAgencyRelationship>().WithMany().HasForeignKey(x=>new {x.RelationshipId,x.ClientId})
+            .HasPrincipalKey(x=>new {x.Id,x.ClientId}).OnDelete(DeleteBehavior.NoAction);
+        contact.HasOne<StaffUser>().WithMany().HasForeignKey(x=>x.EndedBy).OnDelete(DeleteBehavior.NoAction);
+        contact.HasIndex(x=>x.RelationshipId).IsUnique().HasFilter("[IsPrimary] = 1 AND [EndedAt] IS NULL");
+        contact.HasIndex(x=>new {x.RelationshipId,x.EndedAt,x.Id});
+        contact.HasIndex(x=>new {x.PersonId,x.ClientId});contact.HasIndex(x=>x.NormalizedName);
+        Check(contact,"Identity","LEN(TRIM([DeclaredFullName])) > 0 AND LEN(TRIM([NormalizedName])) > 0 AND LEN(TRIM([Role])) > 0");
+        Check(contact,"Ending","([EndedAt] IS NULL AND [EndedBy] IS NULL AND [EndReason] IS NULL) OR ([EndedAt] IS NOT NULL AND [EndedAt] >= [CreatedAt] AND [EndedBy] IS NOT NULL AND [EndReason] IS NOT NULL AND LEN(TRIM([EndReason])) > 0 AND [IsPrimary] = 0)");
+        Check(contact,"Consent","COALESCE(JSON_VALUE([MarketingConsent],'$.state'),'') IN ('given','withheld','not-asked') AND COALESCE(JSON_VALUE([MarketingConsent],'$.email'),'') IN ('true','false') AND COALESCE(JSON_VALUE([MarketingConsent],'$.telephone'),'') IN ('true','false') AND COALESCE(LEN(TRIM(JSON_VALUE([MarketingConsent],'$.source'))),0) > 0 AND TRY_CONVERT(datetimeoffset,JSON_VALUE([MarketingConsent],'$.recordedAt'),127) IS NOT NULL AND DATEPART(TZOFFSET,TRY_CONVERT(datetimeoffset,JSON_VALUE([MarketingConsent],'$.recordedAt'),127))=0 AND ((JSON_VALUE([MarketingConsent],'$.state')='given' AND (JSON_VALUE([MarketingConsent],'$.email')='true' OR JSON_VALUE([MarketingConsent],'$.telephone')='true')) OR (JSON_VALUE([MarketingConsent],'$.state') IN ('withheld','not-asked') AND JSON_VALUE([MarketingConsent],'$.email')='false' AND JSON_VALUE([MarketingConsent],'$.telephone')='false'))");
     }
 }

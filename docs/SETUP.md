@@ -103,12 +103,14 @@ To reproduce the native report gate after restore, use a new results directory f
 $foundationResults = Join-Path '.local' ('test-results-' + [Guid]::NewGuid().ToString('N'))
 dotnet test backend/BackOffice.slnx --no-restore --logger trx --results-directory $foundationResults
 if ($LASTEXITCODE -ne 0) { throw 'Backend tests failed.' }
-./scripts/assert-test-results.ps1 -ResultsDirectory $foundationResults -MinimumTests 65 -MinimumSqlTests 11
+./scripts/assert-test-results.ps1 -ResultsDirectory $foundationResults -MinimumTests 79 -MinimumSqlTests 12
 ./scripts/test-result-gate.ps1
 ```
 
-These minima include the Phase 3 client API increment: 48 unit +17 integration cases, including eleven named SQL scenarios, pass locally. They should increase as subsequent phases add coverage. Compose configuration was validated with `docker compose config --quiet` and a disposable environment password; no SQL container was started for that check.
+These minima include the Phase 3 contact-storage increment: 61 unit +18 integration cases, including twelve named SQL scenarios, pass locally. Integration fixtures run serially to avoid SQL model-database CREATE DATABASE lock contention; explicit concurrent writers/leases/API requests inside tests still run concurrently. The native integration run took 3m33s. They should increase as subsequent phases add coverage. Compose configuration was validated with `docker compose config --quiet` and a disposable environment password; no SQL container was started for that check.
 
 The client-persistence migration adds 32 fictional client identities, 35 agency relationships and two draft agencies on repeatable initialization. Stable seed IDs preserve existing edits. Client references use a SQL sequence and may contain gaps after rollback. Agency drafts do not assert completed onboarding. Client HTTP routes now support scoped list/search, create/edit, agency relationships and safe activity. Writes require current permissions, CSRF and a command key; updates and relationship creation also require the client ETag. Quote/policy records return explicit unavailability until implemented.
 
 Client screens now support list/search/filter/page, create and edit identity, agency relationships, reload and safe activity. Sign in as servicing@cover.example and open Clients. Search accepts business, client/company reference and agency name/reference. Open a client and choose Add agency relationship to select an agency through paged discovery; linking a draft agency does not complete its onboarding. Contact servicing remains in progress. Run pnpm web:browser:clients against the same local preview to verify a uniquely labelled fictional client, lost-response create/link replay, validation/stale recovery, real agency paging, read-only access and mobile layouts. This harness retains created demo clients and their audit history; it never resets the database. Prototype and application screenshots are saved under .local/browser-evidence. No real policy/quote/contact functionality is implied by its unavailable tabs.
+
+Migration 20260914023721_RelationshipContacts adds Person and Contact tables, separate declared names, consent JSON and primary/ending/relationship constraints. It is applied to the native demo; contact APIs and demo contact seeds are still being implemented. New tables alone do not enable the Contacts tab.

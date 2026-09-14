@@ -53,4 +53,18 @@ public sealed class PartyScope(ActorContext actor)
         // Relationship-free internal events are not automatically shared externally.
         return InternalRead ? query : query.Where(x => x.RelationshipId!=null && relationships.Any(r => r.Id==x.RelationshipId));
     }
+
+    public IQueryable<Contact> Contacts(BackOfficeDbContext db,bool includeEnded=false)
+    {
+        var relationships=Relationships(db);
+        var query=db.Set<Contact>().AsNoTracking().Where(x=>relationships.Any(r=>r.Id==x.RelationshipId && r.ClientId==x.ClientId));
+        return includeEnded ? query : query.Where(x=>x.EndedAt==null);
+    }
+    public Task<Person?> FindReusablePersonAsync(BackOfficeDbContext db,Guid clientId,Guid personId,CancellationToken token=default)
+    {
+        // An explicitly selected historical contact can identify the same person, but
+        // only while its relationship remains accessible. This is not a global directory.
+        var contacts=Contacts(db,includeEnded:true);
+        return db.Set<Person>().AsNoTracking().SingleOrDefaultAsync(x=>x.Id==personId && contacts.Any(c=>c.PersonId==x.Id && c.ClientId==clientId),token);
+    }
 }

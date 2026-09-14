@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T02:17:08Z"
+last_updated: "2026-09-14T02:49:45Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
@@ -20,14 +20,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Client identity plan complete; implement people and relationship contacts in 03-03.
+**Current focus:** Contact storage/rules/scoped reuse verified; implement atomic lifecycle service and APIs in 03-03.
 
 ## Current Position
 
 Phase: 3 of 13 (Clients and contact servicing)
-Plan: 03-03 of 6 next; 03-01 and 03-02 complete
+Plan: 03-03 of 6 in progress; task 1 storage complete, lifecycle/API/UI pending
 Status: In progress — autonomous
-Last activity: 2026-09-14 — 03-02 client identity/agency UI complete; 65 backend cases, nine web unit cases and Chrome agency paging/replay/stale/mobile checks pass
+Last activity: 2026-09-14 — contact migration applied; 79 backend cases/twelve SQL scenarios pass after serializing fixture setup; lifecycle APIs/UI remain pending
 
 Progress: Phases 1–2 complete; 2/13 phases. Foundation verified; client servicing next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–2 complete; 2/13 phases. Foundation verified; client servic
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: Read 03-02-SUMMARY.md, then execute 03-03-PLAN Task 1 people/contact persistence. Client identity, scoped agency search and relationship controls are complete and verified. Newest backend reports .local/client-agency-results; client browser journey passes. No active previews; secrets/screenshots ignored; funnel unchanged.
+Stopped at: Read 03-03-PROGRESS.md, then execute Task 2 ContactService/ContactEndpoints using parent locks, primary rules and audited replay. Contact storage and scoped reuse are verified; migration applied to Demo with no contact seeds yet. Newest passing reports .local/contact-storage-serial-results (79/12). Integration fixtures now serialize to avoid model CREATE DATABASE contention; explicit concurrent writers remain. No active previews/tests; secrets/screenshots ignored; funnel unchanged.
 Resume file: None
 
 ## Autonomous continuation
