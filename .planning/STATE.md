@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T16:00:58Z"
+last_updated: "2026-09-14T16:16:51Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-05 of 8 in progress; 04-01 through 04-04 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — 04-05 Users tab and lifecycle dialogs implemented;22 frontend tests/typecheck/lint/build and real browser flows pass. Stage2 integration and readiness remain.
+Last activity: 2026-09-14 — 04-05 Users tab and lifecycle dialogs implemented;22 frontend tests/typecheck/lint/build and real browser flows pass. Stage2 user integration and concurrent-draft protection verified; readiness and source details remain.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: 04-05 Users tab verified, including exact uncertain replay, stale edit retention, draft/active invitations, lifecycle history and demo-link opening. Read04-05-PROGRESS.md. Latest22 frontend tests/typecheck/lint/build and real browser flows pass; unchanged backend baseline239/34SQL and77contracts. Continue stage2 wizard integration with dirty/child-operation guards and parent ETag refresh, staged-admin readiness and remaining source Last active/count details. Broker auth stays closed until04-07. No previews remain active. Plan and AGY requirements remain incomplete.
+Stopped at: 04-05 stage2 user integration verified. Read04-05-PROGRESS.md. Latest22 frontend tests/typecheck/lint/build and full user browser flows pass, including dirty guards, refreshed parent version and concurrent draft edits retained without overwrite. Backend baseline239/34SQL and77contracts unchanged. Next implement viable staged-admin readiness in AgencyEvidenceService.Assess (currently new(hasCurrentSelection?null:false,null)), then real session-derived Last active/count details and complete-plan verification. Broker auth closed until04-07. No previews active; plan/AGY requirements incomplete.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-05-PROGRESS.md
 
 ## Autonomous continuation
