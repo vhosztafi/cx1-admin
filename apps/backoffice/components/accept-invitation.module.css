@@ -1,0 +1,5 @@
+.result { margin-top: 24px; padding: 18px; border: 1px solid #dfe4fb; border-radius: 7px; background: #f7f8ff; }
+.result h2 { font-size: 18px; font-weight: 600; letter-spacing: -.02em; margin-bottom: 8px; }
+.result p { font-size: 13px; line-height: 1.65; color: #505870; }
+.result:focus-visible { outline: 2px solid #465cff; outline-offset: 3px; }
+.guidance { margin-top: 7px; font-size: 12px; line-height: 1.5; color: #6d758b; }

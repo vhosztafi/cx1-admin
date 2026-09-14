@@ -20,9 +20,19 @@ builder.Services.AddSingleton<PartyPaging>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyDraftService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyEvidenceService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyNotificationRetry>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.InvitationAcceptance>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.InvitationDemoReveal>();
 DiagnosticDispatcher.Register(builder);
 AgencyNotificationDispatcher.Register(builder);
 var app = builder.Build();
+if(args.Contains("--seed-agency-invitation-demo",StringComparer.Ordinal))
+{
+    if(!app.Environment.IsDevelopment())throw new InvalidOperationException("Invitation fixture requires local Development.");
+    var id=await BackOffice.Infrastructure.Agencies.AgencyInvitationDemo.Create(
+        app.Services.GetRequiredService<Microsoft.EntityFrameworkCore.IDbContextFactory<BackOfficeDbContext>>(),
+        app.Services.GetRequiredService<BackOffice.Infrastructure.Agencies.AgencyNotificationPayload>());
+    Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new{invitationId=id}));return;
+}
 if(args.Contains("--seed-agency-notification-demo",StringComparer.Ordinal))
 {
     if(!app.Environment.IsDevelopment())throw new InvalidOperationException("Notification fixture requires local Development.");
@@ -42,6 +52,7 @@ app.UseStatusCodePages(context => IdentityEndpoints.Problem(context.HttpContext,
 app.UseLocalIdentity();
 app.MapHealthChecks("/health/live").AllowAnonymous();
 app.MapIdentity();
+app.MapInvitations();
 app.MapOperationalJobs();
 app.MapOperationalReads();
 app.MapOperationalRetries();
