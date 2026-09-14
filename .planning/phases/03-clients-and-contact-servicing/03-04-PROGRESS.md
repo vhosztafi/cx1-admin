@@ -1,6 +1,6 @@
 # Support flag implementation checkpoint
 
-03-04 remains IN PROGRESS. Tasks 1–2 storage/validation/scoped projections/service/APIs are complete and verified. Task 3 demo flags/UI/browser remains pending. Do not create a completed plan summary until all three tasks pass.
+03-04 is COMPLETE. All three tasks pass; see 03-04-SUMMARY.md for final evidence and commits. The historical incremental notes below describe intermediate states and are superseded by that summary. Next is 03-05 matching.
 
 Application/Parties/SupportFlagRules.cs defines FlagWrite (strict required request properties), ValidatedFlag and pure validation with a caller-supplied business date. Source type/category/basis choices are fixed. Declined/unknown/missing consent fails first, with no supplied detail in errors. Instructions/reasons are bounded, trimmed multiline text with normalized line endings; hidden control characters fail. ReviewOn must be today/future for writes; overdue existing reads remain possible. Grant IDs are required as an explicit list, distinct/nonempty IDs, max100 and normalized order; an empty list means internal-only, nonempty requires agency wording. Runtime membership is separately validated through SQL.
 

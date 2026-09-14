@@ -1,0 +1,27 @@
+---
+phase: 03-clients-and-contact-servicing
+plan: '04'
+status: complete
+requirements: [CLI-03]
+completed: 2026-09-14
+---
+
+# Person-level support servicing
+
+All three tasks are complete. SupportFlag, explicit FlagVisibility grants and append-only SupportFlagHistory persist in SQL. The source type/category/consent choices are validated before sensitive intent is hashed. Declined consent is rejected without persisted detail or an ordinary receipt. Composite ownership keys, active same-person contact membership, dedicated capabilities and parent/flag locking constrain writes. Migration 20260914041804_SupportFlags is applied to native CoverMGA_Demo without resetting existing data.
+
+The transaction-bound service creates, amends, reviews and ends flags with typed snapshots, actor, reason and date. Existing grant provenance survives unchanged grants. Relative review-date validation happens after receipt replay, so an original successful request can replay even after its review date. End retains history and remains possible after the origin contact or relationship ends. Concurrency checks use the origin ETag for creation and flag ETag for later mutations. Failed work rolls back flags, grants, history, activity, audit and receipt together.
+
+Internal list/detail/history and mutation APIs enforce current support permission and scope before replay. Mutations return only the ID and original version/status; internal detail is reloaded through current authorization. The audited internal agency-safe preview projects only explicitly granted current functional instructions, person ID, flag ID and review date, without internal category, reason, origin or hidden totals. General client activity filters support events before counting/paging and emits fixed labels without sensitive record IDs. External safe-read permission remains closed for current internal logins; no broker session is enabled.
+
+Contacts now includes explicit person selection, the Customer flags table, add/amend/review/end forms and restricted paged history. All source choices are available. Declining consent clears and disables sensitive draft details and does not claim a save. Sharing requires a deliberate relationship selection and separate agency wording. The independently labelled safe preview exposes granted wording only. Internal agency-admin has the preview but no internal flag selector, table or history. The table presents current status; actual recorded actor/time and every saved version are available through History.
+
+Uncertain commands retain the exact body, key and ETag, freeze inputs and relationship switching, and offer same-request retry. Drafts survive client-tab switches. Stale writes require explicit reload. Contact and support actions lock each other; after a contact save, the support selector and preview are remounted to refresh current membership and require explicit person selection. An ended contact cannot add a new flag. Source form styling and responsive table overflow were inspected at 1560px and 390px.
+
+Repeatable demo initialization creates one shared instruction and one internal-only fictional flag against the third client's shared person. Parent locks and the foundation transaction protect seeding; any existing flags, including ended ones, prevent reseeding. A real SQL test verifies the two projections and proves that repeat initialization preserves IDs, resolution and history. Normal integration fixtures retain their minimal baseline; the actual demo initializer explicitly includes support fixtures.
+
+Verification: fresh `.local/support-ui-seed-results` reports pass 68 unit +23 integration =91 cases, including seventeen real-SQL scenarios, zero skips; 91/17 report gate passed. Cases include storage/ownership constraints, explicit grant/revocation, contact/relationship inactivation, wrong-client and wrong-role denial, declined-detail absence, current permission loss before replay, concurrent reviewers, stale versions, full typed history, injected transaction rollback and replay after the review date. Thirteen frontend tests, TypeScript, lint and the production webpack build pass. CI minima are Windows91/17 and Linux89/15; YAML parses. Hosted CI and human UAT remain unperformed.
+
+`pnpm web:browser:support` passes declined draft clearing, ID-only successful response loss and same-key retry, tab retention, explicit sharing and withdrawal, amend/review/history/end/reload, stale recovery, restricted-role UI and mobile overflow. `pnpm web:browser:contacts` passes the existing lifecycle plus new support-selector refresh assertions after contact creation and ending. `pnpm web:browser:clients` passes identity/link/search/paging/error/read-only regressions. Final build and support/contact browser reruns pass. Screenshots inspected include support-history-desktop.png and support-form-mobile.png in `.local/browser-evidence`; safe-preview desktop evidence is also captured. No external messages were sent. Browser-created fictional records and their histories remain in the demo.
+
+Production commits: 2c047af (storage/scopes), 45bde92 (service/APIs), 5baa12f (UI/demo/browser). Preview processes were stopped after command-line identity checks. CLI-03 implementation is complete, pending the Phase 3 final verification gate. CLI-01 remains partial until downstream quote/policy links exist. Next plan is 03-05 duplicate-review intake and audited decisions. Sales funnel unchanged.
