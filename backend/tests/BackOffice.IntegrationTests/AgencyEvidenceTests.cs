@@ -118,6 +118,28 @@ public sealed class AgencyEvidenceTests
         }
         finally{if(connection.InitialCatalog!=owned)throw new InvalidOperationException("Cleanup target changed.");await using var cleanup=new BackOfficeDbContext(options);await cleanup.Database.EnsureDeletedAsync();}
     }
+    [Fact]
+    public async Task RealSqlAgencyEvidenceReadinessRechecksExpiryAndRuleWithStoredProof()
+    {
+        var connection=new SqlConnectionStringBuilder(Environment.GetEnvironmentVariable("COVER_SQL_TEST_CONNECTION")??DemoDatabase.DefaultConnection);var owned="CoverMGA_Test_"+Guid.NewGuid().ToString("N");connection.InitialCatalog=owned;connection.AttachDBFilename="";
+        var options=new DbContextOptionsBuilder<BackOfficeDbContext>().UseSqlServer(connection.ConnectionString,sql=>sql.UseCompatibilityLevel(160)).Options;
+        try
+        {
+            ActorContext actor;await using(var db=new BackOfficeDbContext(options)){await db.Database.MigrateAsync();db.Add(new SettingVersion{Scope="agency-compliance",Version=1,EffectiveFrom=new(2026,9,1,0,0,0,TimeSpan.Zero),Values="""{"demo":true,"minimumPi":"1300000.00","tobaVersion":"2026.1","checkValidityDays":90,"scenarios":{"fca":"pass","financial-check":"pass","sanctions":"pass","ownership":"pass"}}"""});await db.SaveChangesAsync();await DemoDatabase.SeedAsync(db,"Demo!"+Convert.ToHexString(RandomNumberGenerator.GetBytes(24))+"a1");var user=await db.Set<StaffUser>().SingleAsync(x=>x.Email=="agency-admin@cover.example");actor=new(user.Id,user.TeamId,null,new HashSet<string>{"agency-admin"});}
+            var factory=new PooledDbContextFactory<BackOfficeDbContext>(options);var clock=new FrozenClock();var boundary=new SqlCommandBoundary(factory,clock);var drafts=new AgencyDraftService(factory,boundary,clock);var service=new AgencyEvidenceService(boundary,drafts,clock);
+            var today=DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(clock.GetUtcNow(),TimeZoneInfo.FindSystemTimeZoneById("Europe/London")).DateTime);
+            using var details=JsonDocument.Parse(JsonSerializer.Serialize(new{legalName="Fictional Expiring Evidence",clientMoneyBasis="cass5-client-money",compliance=new{professionalIndemnityStatus="meets-minimum",professionalIndemnityLimit="2000000.00",piExpiresOn=today.ToString("yyyy-MM-dd")}}));
+            var created=await drafts.Save(actor,null,Key(),null,AgencyDraftRules.Validate(details.RootElement),4,null,default);var id=created.ResourceId;
+            var file=await service.Upload(actor,id,Key(),Version(created),AgencyEvidenceRules.ValidateFile("pi-proof.txt","text/plain","Fictional expiring insurance evidence"u8.ToArray()),default);
+            await service.Attest(actor,id,Key(),Version(file),"professional-indemnity",file.ResourceId,"Reviewed fictional PI evidence",today,default);
+            async Task<AgencyReadiness> Readiness(){await using var db=new BackOfficeDbContext(options);await using var transaction=await db.Database.BeginTransactionAsync(System.Data.IsolationLevel.RepeatableRead);var agency=await db.Set<Agency>().SingleAsync(x=>x.Id==id);return await service.Validate(db,agency,default);}
+            var current=await Readiness();Assert.False(current.Valid);Assert.Contains(current.Items,x=>x.Code=="evidence-professional-indemnity"&&x.State=="satisfied");Assert.Contains(current.Items,x=>x.Code=="evidence-client-money"&&x.State=="missing");Assert.Contains(current.Items,x=>x.Code=="broker-administrator"&&x.State=="unavailable");
+            clock.Advance(TimeSpan.FromDays(1));Assert.Contains((await Readiness()).Items,x=>x.Code=="evidence-professional-indemnity"&&x.State=="expired");
+            await using(var db=new BackOfficeDbContext(options)){var rule=await db.Set<SettingVersion>().SingleAsync(x=>x.Scope=="agency-compliance"&&x.Version==2);Assert.Contains("1700000.00",rule.Values);Assert.Contains("1300000.00",(await db.Set<SettingVersion>().SingleAsync(x=>x.Scope==rule.Scope&&x.Version==1)).Values);db.Add(new SettingVersion{Scope=rule.Scope,Version=3,EffectiveFrom=rule.EffectiveFrom,Values=rule.Values});await db.SaveChangesAsync();Assert.Equal("verified",(await db.Set<AgencyEvidence>().SingleAsync(x=>x.AgencyId==id)).State);}
+            Assert.Contains((await Readiness()).Items,x=>x.Code=="evidence-professional-indemnity"&&x.State=="stale");
+        }
+        finally{if(connection.InitialCatalog!=owned)throw new InvalidOperationException("Cleanup target changed.");await using var cleanup=new BackOfficeDbContext(options);await cleanup.Database.EnsureDeletedAsync();}
+    }
     private static async Task<JsonElement> Read(HttpClient client,string path){using var response=await client.GetAsync(path);response.EnsureSuccessStatusCode();return await response.Content.ReadFromJsonAsync<JsonElement>();}
     private static async Task<string> SignIn(HttpClient client,string role,string password){var csrf=(await Read(client,"/api/v1/auth/csrf")).GetProperty("requestToken").GetString()!;using var result=await Send(client,csrf,"/api/v1/auth/login",new{email=role+"@cover.example",password});result.EnsureSuccessStatusCode();return(await Read(client,"/api/v1/auth/csrf")).GetProperty("requestToken").GetString()!;}
     private static Task<HttpResponseMessage> Send(HttpClient client,string? csrf,string path,object? body,string? etag=null){var request=new HttpRequestMessage(HttpMethod.Post,path);if(body is not null)request.Content=JsonContent.Create(body);Headers(request,csrf,etag,Key());return client.SendAsync(request);}
@@ -125,5 +147,5 @@ public sealed class AgencyEvidenceTests
     private static Task<HttpResponseMessage> Upload(HttpClient client,string csrf,string path,string etag,string key,string name,string type,byte[] bytes){var content=new MultipartFormDataContent();var file=new ByteArrayContent(bytes);file.Headers.ContentType=new MediaTypeHeaderValue(type);content.Add(file,"file",name);content.Add(new StringContent(name),"fileName");content.Add(new StringContent(type),"contentType");var request=new HttpRequestMessage(HttpMethod.Post,path+"/evidence-files"){Content=content};Headers(request,csrf,etag,key);return client.SendAsync(request);}
     private static string Key()=>Guid.NewGuid().ToString("N");
     private static byte[] Version(CommandOutcome result)=>Convert.FromBase64String(result.Etag!.Trim('"'));
-    private sealed class FrozenClock:TimeProvider{private readonly DateTimeOffset now=DateTimeOffset.UtcNow;public override DateTimeOffset GetUtcNow()=>now;}
+    private sealed class FrozenClock:TimeProvider{private DateTimeOffset now=DateTimeOffset.UtcNow;public override DateTimeOffset GetUtcNow()=>now;public void Advance(TimeSpan elapsed)=>now+=elapsed;}
 }
