@@ -16,6 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddProblemDetails();
 builder.Services.AddHealthChecks();
 builder.AddLocalIdentity();
+builder.Services.AddSingleton<PartyPaging>();
 DiagnosticDispatcher.Register(builder);
 var app = builder.Build();
 app.UseExceptionHandler(handler => handler.Run(context =>
@@ -33,6 +34,7 @@ app.MapOperationalJobs();
 app.MapOperationalReads();
 app.MapOperationalRetries();
 app.MapOperationalSettings();
+app.MapClients();
 // Domain endpoints are added only alongside their authentication and persistence.
 app.Run();
 

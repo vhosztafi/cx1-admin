@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using BackOffice.Application;
 using BackOffice.Infrastructure.Parties;
 using BackOffice.Infrastructure.Persistence;
 using Microsoft.Data.SqlClient;
@@ -39,6 +40,29 @@ public sealed class ClientTests
                 Assert.Equal("Fictional revised declared name",edited.LegalName);
                 Assert.Equal("CN-0000001",edited.Reference);
                 await Assert.ThrowsAsync<InvalidOperationException>(() => ClientReferences.NextAsync(reload));
+                var internalActor=new ActorContext(Guid.NewGuid(),null,null,new HashSet<string>{"servicing"});
+                var firstActor=internalActor with {AgencyId=PartyDemoSeed.FirstAgencyId,Roles=new HashSet<string>{"agency-admin"}};
+                var secondActor=firstActor with {AgencyId=PartyDemoSeed.SecondAgencyId};
+                var firstScope=new PartyScope(firstActor);var secondScope=new PartyScope(secondActor);
+                Assert.Equal(32,await new PartyScope(internalActor).Clients(reload).CountAsync());
+                Assert.Equal(0,await new PartyScope(internalActor with {Roles=new HashSet<string>{"system-admin"}}).Clients(reload).CountAsync());
+                var firstIds=await firstScope.Clients(reload).Select(x=>x.Id).ToArrayAsync();
+                var secondIds=await secondScope.Clients(reload).Select(x=>x.Id).ToArrayAsync();
+                Assert.Equal(3,firstIds.Intersect(secondIds).Count());Assert.Equal(32,firstIds.Union(secondIds).Count());
+                Assert.All(await firstScope.Relationships(reload).ToListAsync(),x=>Assert.Equal(PartyDemoSeed.FirstAgencyId,x.AgencyId));
+                Assert.Equal(1,await firstScope.Agencies(reload).CountAsync());
+                Assert.Equal(0,await firstScope.Activity(reload).CountAsync());
+                var visibleEvent=new ClientActivity {ClientId=PartyDemoSeed.ClientId(1),RelationshipId=PartyDemoSeed.RelationshipId(1,1),EventType="client.updated"};
+                reload.Add(visibleEvent);await reload.SaveChangesAsync();
+                Assert.True(await firstScope.Activity(reload).AnyAsync(x=>x.Id==visibleEvent.Id));
+                Assert.False(await secondScope.Activity(reload).AnyAsync(x=>x.Id==visibleEvent.Id));
+                Assert.Equal(0,await new PartyScope(firstActor with {AgencyId=Guid.NewGuid()}).Clients(reload).CountAsync());
+                // Revocation takes effect in the shared SQL predicates before counts or projection.
+                var revoked=await reload.Set<ClientAgencyRelationship>().SingleAsync(x=>x.Id==PartyDemoSeed.RelationshipId(1,1));
+                revoked.State="inactive";await reload.SaveChangesAsync();
+                Assert.False(await firstScope.Clients(reload).AnyAsync(x=>x.Id==PartyDemoSeed.ClientId(1)));
+                Assert.False(await firstScope.Activity(reload).AnyAsync(x=>x.Id==visibleEvent.Id));
+                Assert.True(await secondScope.Clients(reload).AnyAsync(x=>x.Id==PartyDemoSeed.ClientId(1)));
             }
             var refs=await Task.WhenAll(Enumerable.Range(1,12).Select(async index =>
             {

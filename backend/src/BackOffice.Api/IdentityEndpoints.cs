@@ -43,7 +43,8 @@ public static class IdentityEndpoints
         builder.Services.AddAuthorization(options =>
         {
             options.FallbackPolicy=new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-            foreach (var capability in new[] {"platform-admin","integration-admin","integration-retry","audit-read","client-servicing","finance"})
+            foreach (var capability in new[] {"platform-admin","integration-admin","integration-retry","audit-read","client-servicing","finance",
+                "client-read","client-write","relationship-read","contact-write","support-internal-read","support-write","match-review"})
                 options.AddPolicy(capability,policy => policy.RequireAuthenticatedUser().RequireAssertion(context =>
                     context.User.Identity?.IsAuthenticated == true && Guid.TryParse(context.User.FindFirstValue(ClaimTypes.NameIdentifier),out _) &&
                     LocalIdentityService.Actor(context.User).HasCapability(capability)));
