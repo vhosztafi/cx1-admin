@@ -37,10 +37,10 @@ export function addAgencyContracts({schemas:s,ref:r,text:t,enumeration:e,object:
  s.AgencyChecklistItem=o({code:t(80),path:t(200),stage:step,state:e('missing','pending','satisfied','failed','stale','expired','unavailable'),message:t(1000),evidenceId:id},['code','path','stage','state','message']);
  s.AgencyChecklist=o({valid:b,agencyEtag:etag,ruleVersionId:id,calculatedAt:instant,items:bounded(r('AgencyChecklistItem'),80)});
  s.AgencyUnavailableSection=o({kind:e('quotes','policies','tasks','statements'),state:{const:'unavailable'},owningPhase:{type:'integer',enum:[5,6,9,10]},message:t(300)});
- s.Agency=o({id,reference:t(40),state,onboardingStep:step,details:r('AgencyWrite'),validation:r('AgencyChecklist'),unavailableSections:bounded(r('AgencyUnavailableSection'),4)});
+ s.Agency=o({id,reference:t(40),state,onboardingStep:step,userCount:integer,invitedUserCount:integer,details:r('AgencyWrite'),validation:r('AgencyChecklist'),unavailableSections:bounded(r('AgencyUnavailableSection'),4)});
  s.AgencySummary=o({id,reference:t(40),legalName:t(),state,onboardingStep:step,mainContactName:t(),relationshipManagerId:id,relationshipManagerName:t(),userCount:integer,invitedUserCount:integer,productCodes:bounded(productCode,3),lastActivityAt:instant,openActionCount:integer},['id','reference','state','onboardingStep','productCodes']);
- s.AgencyKpis=o({active:integer,onboarding:integer,suspended:integer,invitedUsers:integer,openActions:integer},['active','onboarding','suspended']);
- s.AgencyKpis.description='Omit users/open-action counts while those record sources are unavailable; never substitute zero for an unavailable capability.';
+ s.AgencyKpis=o({active:integer,onboarding:integer,suspended:integer,brokerUsers:integer,invitedUsers:integer,openActions:integer},['active','onboarding','suspended','brokerUsers','invitedUsers']);
+ s.AgencyKpis.description='brokerUsers counts retained agency-scoped identities, including inactive users; invitedUsers counts the invited subset including staged identities. Open-action counts remain omitted until implemented.';
  s.AgencyProductWrite=o({productVersionId:id,effectiveFrom:date,brokerCommissionBasisPoints:bps});
  s.AgencyProduct=o({id,...structuredClone(s.AgencyProductWrite.properties),productCode,termsVersionId:id,effectiveTo:date},['id','productVersionId','effectiveFrom','brokerCommissionBasisPoints','productCode']);
  s.AgencyProductCatalogItem=o({productVersionId:id,productCode,name:t(),capacityProviderName:t(),distributionEligible:b,eligibilitySettingVersionId:id,ratingReady:b,unavailableReason:t(300)},['productVersionId','productCode','name','capacityProviderName','distributionEligible','ratingReady']);

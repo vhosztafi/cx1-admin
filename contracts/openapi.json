@@ -59314,6 +59314,14 @@
             "minimum": 1,
             "maximum": 6
           },
+          "userCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "invitedUserCount": {
+            "type": "integer",
+            "minimum": 0
+          },
           "details": {
             "$ref": "#/components/schemas/AgencyWrite"
           },
@@ -59333,6 +59341,8 @@
           "reference",
           "state",
           "onboardingStep",
+          "userCount",
+          "invitedUserCount",
           "details",
           "validation",
           "unavailableSections"
@@ -64747,6 +64757,10 @@
             "type": "integer",
             "minimum": 0
           },
+          "brokerUsers": {
+            "type": "integer",
+            "minimum": 0
+          },
           "invitedUsers": {
             "type": "integer",
             "minimum": 0
@@ -64759,9 +64773,11 @@
         "required": [
           "active",
           "onboarding",
-          "suspended"
+          "suspended",
+          "brokerUsers",
+          "invitedUsers"
         ],
-        "description": "Omit users/open-action counts while those record sources are unavailable; never substitute zero for an unavailable capability."
+        "description": "brokerUsers counts retained agency-scoped identities, including inactive users; invitedUsers counts the invited subset including staged identities. Open-action counts remain omitted until implemented."
       },
       "AgencyProductWrite": {
         "type": "object",

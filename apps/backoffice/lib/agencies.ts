@@ -1,8 +1,8 @@
 export type AgencyJson = { [key: string]: string | number | AgencyJson };
 export type AgencyProduct = { id?: string; productVersionId: string; effectiveFrom: string; brokerCommissionBasisPoints: number; productCode?: string };
-export type AgencyDraft = { id: string; reference: string; state: string; onboardingStep: number; details: AgencyJson; validation: { valid: boolean; items: { code: string; path: string; stage: number; state: string; message: string }[] }; unavailableSections: { kind: string; message: string }[] };
+export type AgencyDraft = { id: string; reference: string; state: string; onboardingStep: number; userCount:number; invitedUserCount:number; details: AgencyJson; validation: { valid: boolean; items: { code: string; path: string; stage: number; state: string; message: string }[] }; unavailableSections: { kind: string; message: string }[] };
 export type CatalogProduct = { productVersionId: string; productCode: string; name: string; capacityProviderName: string; ratingReady: boolean; distributionEligible: boolean };
-export type AgencySummary = { id: string; reference: string; legalName?: string; state: string; onboardingStep: number; relationshipManagerName?: string; mainContactName?: string; productCodes: string[]; lastActivityAt?: string };
+export type AgencySummary = { id: string; reference: string; legalName?: string; state: string; onboardingStep: number; relationshipManagerName?: string; mainContactName?: string; userCount:number; invitedUserCount:number; productCodes: string[]; lastActivityAt?: string };
 export type Field = { path: string; label: string; stage: number; type?: 'date' | 'email' | 'money' | 'percent' | 'days'; max?: number; options?: Record<string, string | number> };
 export const stages = ['Agency & regulatory','Contacts','Products & commission','Agreement & compliance','Accounts','Review & activate'];
 export const canReadAgencies = (roles: string[]) => roles.some(x => ['agency-admin','system-admin','underwriter','senior-underwriter'].includes(x));

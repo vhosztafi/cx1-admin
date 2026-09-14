@@ -39,6 +39,12 @@ public sealed class AgencyUserApiTests
             using var draft=await Send(admin,HttpMethod.Post,"/api/v1/agencies",csrf,null,Key(),new{details=new{legalName="Fictional user API draft"},onboardingStep=2});draft.EnsureSuccessStatusCode();
             var draftId=(await draft.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("id").GetGuid();var draftPath=$"/api/v1/agencies/{draftId}";var invitePath=draftPath+"/invitations";var agencyVersion=draft.Headers.ETag!.ToString();
             Assert.Equal(HttpStatusCode.Unauthorized,(await anonymous.GetAsync(draftPath+"/users")).StatusCode);Assert.Equal(HttpStatusCode.Forbidden,(await uw.GetAsync(invitePath)).StatusCode);
+            await Counts(0,0);var baselineKpis=await Read(admin,"/api/v1/agencies/kpis");var baselineTotal=baselineKpis.GetProperty("brokerUsers").GetInt32();var baselineInvited=baselineKpis.GetProperty("invitedUsers").GetInt32();
+            async Task Counts(int total,int invited)
+            {
+                var detail=await Read(admin,draftPath);Assert.Equal(total,detail.GetProperty("userCount").GetInt32());Assert.Equal(invited,detail.GetProperty("invitedUserCount").GetInt32());
+                var row=(await Read(admin,"/api/v1/agencies?q=Fictional%20user%20API%20draft")).GetProperty("items").EnumerateArray().Single(x=>x.GetProperty("id").GetGuid()==draftId);Assert.Equal(total,row.GetProperty("userCount").GetInt32());Assert.Equal(invited,row.GetProperty("invitedUserCount").GetInt32());
+            }
             var input=new{email="first-user-api@cover.example",displayName="Fictional first user",role="broker-user"};var createKey=Key();
             Assert.Equal(HttpStatusCode.Forbidden,(await Send(admin,HttpMethod.Post,invitePath,null,agencyVersion,Key(),input)).StatusCode);
             Assert.Equal(HttpStatusCode.PreconditionRequired,(await Send(admin,HttpMethod.Post,invitePath,csrf,null,Key(),input)).StatusCode);
@@ -46,6 +52,7 @@ public sealed class AgencyUserApiTests
             Assert.Equal(HttpStatusCode.UnprocessableEntity,(await Send(admin,HttpMethod.Post,invitePath,csrf,agencyVersion,Key(),new{input.email,input.displayName,role="system-admin"})).StatusCode);
             Assert.Equal(HttpStatusCode.RequestEntityTooLarge,(await Send(admin,HttpMethod.Post,invitePath,csrf,agencyVersion,Key(),new{input.email,displayName=new string('a',9000),input.role})).StatusCode);
             using var created=await Send(admin,HttpMethod.Post,invitePath,csrf,agencyVersion,createKey,input);Assert.Equal(HttpStatusCode.Created,created.StatusCode);Assert.True(created.Headers.CacheControl!.NoStore);
+            await Counts(1,1);
             var ids=await created.Content.ReadFromJsonAsync<JsonElement>();Assert.Equal(2,ids.EnumerateObject().Count());var userId=ids.GetProperty("id").GetGuid();var invitationId=ids.GetProperty("invitationId").GetGuid();
             using var replay=await Send(admin,HttpMethod.Post,invitePath,csrf,agencyVersion,createKey,input);Assert.Equal(await created.Content.ReadAsStringAsync(),await replay.Content.ReadAsStringAsync());
             var userPath=draftPath+"/users/"+userId;var user=await Read(admin,userPath);Assert.Equal("invited",user.GetProperty("state").GetString());Assert.False(user.TryGetProperty("securityStamp",out _));Assert.False(user.TryGetProperty("passwordHash",out _));
@@ -77,6 +84,7 @@ public sealed class AgencyUserApiTests
             await AdministratorReadiness(admin,draftPath,"missing");
             (await Send(admin,HttpMethod.Put,brokerPath,csrf,demotedAdmin.Headers.ETag!.ToString(),Key(),new{displayName="Fictional second user",role="broker-admin",reason="Fictional readiness role restoration"})).EnsureSuccessStatusCode();
             await AdministratorReadiness(admin,draftPath,"satisfied");
+            await Counts(2,2);var currentKpis=await Read(admin,"/api/v1/agencies/kpis");Assert.Equal(baselineTotal+2,currentKpis.GetProperty("brokerUsers").GetInt32());Assert.Equal(baselineInvited+2,currentKpis.GetProperty("invitedUsers").GetInt32());
             var page=await Read(admin,draftPath+"/users?pageSize=1");Assert.Equal(2,page.GetProperty("totalCount").GetInt32());var cursor=page.GetProperty("nextCursor").GetString()!;
             Assert.Single((await Read(admin,draftPath+"/users?pageSize=1&cursor="+Uri.EscapeDataString(cursor))).GetProperty("items").EnumerateArray());
             Assert.Equal(HttpStatusCode.BadRequest,(await admin.GetAsync($"/api/v1/agencies/{activeId}/users?pageSize=1&cursor="+Uri.EscapeDataString(cursor))).StatusCode);
@@ -90,9 +98,11 @@ public sealed class AgencyUserApiTests
             Assert.Equal(HttpStatusCode.OK,(await Send(admin,HttpMethod.Put,userPath,csrf,userVersion,editKey,edit)).StatusCode);
             Assert.Equal(HttpStatusCode.PreconditionFailed,(await Send(admin,HttpMethod.Put,userPath,csrf,userVersion,Key(),edit)).StatusCode);
             using var deactivated=await Send(admin,HttpMethod.Post,userPath+"/deactivate",csrf,edited.Headers.ETag!.ToString(),Key(),new{reason="Fictional removal"});deactivated.EnsureSuccessStatusCode();Assert.Equal("inactive",(await Read(admin,userPath)).GetProperty("state").GetString());
+            await Counts(2,1);
             Assert.Equal("revoked",(await Read(admin,invitePath+"/"+invitationId)).GetProperty("state").GetString());
             using var restored=await Send(admin,HttpMethod.Post,userPath+"/reactivate",csrf,deactivated.Headers.ETag!.ToString(),Key(),new{reason="Fictional restoration"});restored.EnsureSuccessStatusCode();Assert.Equal("invited",(await Read(admin,userPath)).GetProperty("state").GetString());
             Assert.Equal(lastSeen,(await Read(admin,userPath)).GetProperty("lastSeenAt").GetDateTimeOffset());
+            await Counts(2,2);
             var history=await Read(admin,invitePath+"?userId="+userId);Assert.Equal(2,history.GetProperty("totalCount").GetInt32());
             var activePath=$"/api/v1/agencies/{activeId}";using var activeResponse=await admin.GetAsync(activePath);activeResponse.EnsureSuccessStatusCode();
             using var issued=await Send(admin,HttpMethod.Post,activePath+"/invitations",csrf,activeResponse.Headers.ETag!.ToString(),Key(),new{email="active-user-api@cover.example",displayName="Fictional active user",role="broker-admin"});issued.EnsureSuccessStatusCode();var activeInvitation=(await issued.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("invitationId").GetGuid();
