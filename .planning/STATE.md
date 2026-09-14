@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T10:19:07Z"
+last_updated: "2026-09-14T10:45:47Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-03 of 8 in progress; 04-01 and 04-02 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — 04-02 complete; 04-03 evidence storage/services committed a825a83. Full backend157/22 SQL pass. Evidence APIs, complete checklist and UI remain next.
+Last activity: 2026-09-14 — 04-03 evidence APIs/live readiness committed0c9f605; backend206/23 SQL, frontend18, contracts75 and built agency regression pass. Evidence UI is next.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: 04-03 storage/service foundation committed a825a83; resume from 04-03-PROGRESS.md. Immutable owned files/evidence/attempts, canonical fingerprints, demo scenarios, atomic receipts, SQL ownership and null-safe provenance checks implemented. Full backend157/22 SQL passed; frontend18/contracts74 and browser remain verified from04-02. Evidence endpoints, complete validation and UI are not implemented/registered; 04-02 unavailable states remain truthful. Demo remains at04-02 migration; only owned test DBs ran evidence migration. No active previews/tests. Do not mark04-03 complete until its remaining API/UI/checklist/browser work is verified. No real delivery or funnel changes.
+Stopped at: 04-03 API/readiness slice committed0c9f605 on storagea825a83. Resume04-03-PROGRESS.md: evidence upload/check/attestation UI and live wizard checklist remain. APIs include bounded multipart, safe downloads, scoped lists/readbacks, ID-only receipts and fresh ETag validation. Full backend206/23SQL, frontend18/contracts75/build/browser regression pass; final activity-label targeted SQL/API test also passes. Demo additively migrated/seeded to evidence migration. No active previews/tests. Existing wizard evidence-action unavailable copy must be replaced with actual controls, not just text. No plan/AGY completion until remaining UI/browser acceptance passes; no funnel or real delivery changes.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-03-PROGRESS.md
 
 ## Autonomous continuation
