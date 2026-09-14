@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T12:29:41Z"
+last_updated: "2026-09-14T12:54:42Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-05 of 8 in progress; 04-01 through 04-04 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — 04-05 staged identity/storage committed699fa5f;222 backend/28SQL and final10unit/1SQL ownership rerun pass. Active issuance/acceptance, user APIs and UI remain.
+Last activity: 2026-09-14 — 04-05 issuance/delivery ownership committed6883e81;228 backend/29SQL pass. Active-create/resend/revoke/acceptance and user APIs/UI remain.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: 04-05 storage/staging slice committed699fa5f. Read04-05-PROGRESS.md. Draft stage creates owned invited user + one broker role + staged invitation without token/job; SQL mixed scopes/ownership/terminal history and concurrent email guards verified. Abandon revokes users/invitations/sessions atomically. Broker auth remains closed until04-07. Continue active issuance and actual invitation notification ownership/validity, then scoped lifecycle APIs/UI/acceptance. Demo additively migrated; no active tests/previews. Plan04-05 and AGY requirements remain incomplete.
+Stopped at: 04-05 issue/delivery integration committed6883e81 on staging699fa5f. Read04-05-PROGRESS.md. IssueStaged supports active-agency caller transactions with32-byte canonical tokens/hash/protected notification/14-day expiry; worker/retry check actual invitation validity and suppress stale work. Full228/29SQL pass. Continue active direct creation, server-owned invitation default scenario (do not select latest demo-fixture notification version), resend/revoke/user lifecycle/acceptance, then APIs/UI. Broker auth closed until04-07. Demo migrated; no active tests/previews; plan/AGY incomplete.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-05-PROGRESS.md
 
 ## Autonomous continuation
