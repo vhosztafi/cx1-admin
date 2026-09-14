@@ -20,7 +20,8 @@
     "web:lint": "pnpm --filter @cover/backoffice lint",
     "web:test": "pnpm --filter @cover/backoffice test",
     "web:browser": "node scripts/verify-shell-browser.mjs",
-    "web:browser:operations": "node scripts/verify-operations-browser.mjs"
+    "web:browser:operations": "node scripts/verify-operations-browser.mjs",
+    "web:browser:clients": "node scripts/verify-clients-browser.mjs"
   },
   "devDependencies": {
     "@redocly/cli": "2.52.1",

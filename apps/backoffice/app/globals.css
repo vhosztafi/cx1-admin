@@ -99,3 +99,34 @@ h1, h2, p { margin: 0; }
 .section-tabs { display: flex; gap: 20px; overflow-x: auto; border-bottom: 1px solid var(--border); margin-bottom: 18px; }
 .section-tabs a { white-space: nowrap; padding: 0 2px 12px; color: #6b7184; border-bottom: 2px solid transparent; }
 .section-tabs a[aria-current='page'] { color: #2f49cc; border-color: var(--brand); font-weight: 600; }
+.button-primary { background: var(--brand); border-color: var(--brand); color: white; }
+.button-primary:hover { background: #2f49cc; color: white; }
+.client-back { display: inline-block; margin-bottom: 12px; font-size: 12px; }
+.client-record-header { background: #3f5ef5; border-radius: 10px 10px 0 0; padding: 18px 22px 0; margin-bottom: 18px; color: white; }
+.client-record-top { display: flex; align-items: flex-start; flex-wrap: wrap; gap: 20px; }
+.client-record-title { flex: 1 1 280px; min-width: 0; }
+.client-record-type { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: #c4cffb; }
+.client-record-status { background: #ffffffeb; color: #22252e; border-radius: 99px; padding: 2px 9px; font-size: 11px; font-weight: 600; letter-spacing: normal; text-transform: none; }
+.client-record-title h1 { font-size: 22px; font-weight: 600; letter-spacing: -.015em; margin-top: 6px; overflow-wrap: anywhere; }
+.client-record-title p { font-size: 12.5px; color: #d3dafd; margin-top: 4px; }
+.client-record-facts { display: grid; grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); gap: 13px 34px; flex: 1 1 340px; padding-top: 6px; margin: 0; }
+.client-record-facts dt { font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: #bcc8fa; }
+.client-record-facts dd { margin: 3px 0 0; font-size: 13.5px; font-weight: 500; overflow-wrap: anywhere; }
+.client-record-top > .button { background: white; color: #2f49cc; margin-top: 8px; }
+.client-record-tabs { display: flex; gap: 6px; margin-top: 20px; overflow-x: auto; }
+.client-record-tabs a { padding: 10px 15px; border-radius: 8px 8px 0 0; font-size: 13px; white-space: nowrap; background: #ffffff21; color: #eaeefe; }
+.client-record-tabs a[aria-current='page'] { background: #f6f7f9; color: #22252e; font-weight: 600; }
+.client-record-header :focus-visible { outline-color: white; }
+.client-overview-grid { display: block; }
+.client-reference { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.client-name { font-weight: 600; }
+.table-scroll[aria-label='Client accounts'] table { min-width: 1050px; }
+.table-scroll[aria-label='Client accounts'] td { vertical-align: top; }
+.table-scroll[aria-label='Client accounts'] td:nth-child(2) { min-width: 210px; }
+.table-scroll[aria-label='Client accounts'] td:nth-child(6) { min-width: 200px; }
+.client-form { padding: 18px; }
+.client-form fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.client-field-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 0 20px; max-width: 880px; }
+.client-form select { width: 100%; height: 40px; border: 1px solid #d9dce4; border-radius: 6px; background: white; padding: 0 10px; font: inherit; }
+.client-help { color: var(--muted); margin: 0 0 18px; font-size: 12.5px; line-height: 1.6; }
+@media (max-width: 760px) { .client-record-header { padding: 16px 16px 0; }.client-record-facts { flex-basis: 100%; gap: 13px 18px; }.client-overview-grid,.client-field-grid { grid-template-columns: minmax(0,1fr); gap: 0; }.client-record-tabs { margin-top: 18px; }.client-record-tabs a { padding: 10px 12px; }.table-scroll[aria-label='Agency relationships'] table,.table-scroll[aria-label='Client activity'] table { min-width: 520px; } }

@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T01:24:00Z"
+last_updated: "2026-09-14T01:56:00Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
@@ -20,14 +20,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Client persistence and scoped APIs verified; implement client list/detail UI.
+**Current focus:** Client UI first increment verified; finish agency discovery and relationship controls before closing 03-02.
 
 ## Current Position
 
 Phase: 3 of 13 (Clients and contact servicing)
-Plan: 03-02 of 6 in progress; tasks 1–2 complete, UI task pending
+Plan: 03-02 of 6 in progress; tasks 1–2 complete, task 3 UI implemented with agency closeout pending
 Status: In progress — autonomous
-Last activity: 2026-09-14 — scoped client APIs implemented; 65 backend cases, eleven SQL scenarios and 62 contract checks pass; client UI remains pending
+Last activity: 2026-09-14 — client list/detail/create/edit screens pass nine web unit tests, lint/typecheck/build and Chrome persistence/replay/stale/mobile checks; agency UI closeout remains
 
 Progress: Phases 1–2 complete; 2/13 phases. Foundation verified; client servicing next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–2 complete; 2/13 phases. Foundation verified; client servic
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: Read 03-02-PROGRESS.md, then execute Task 3 client list/detail UI. Persistence and HTTP APIs complete: scoped lists/counts/activity, create/edit/relationships, ETags and replay. 65 backend tests and 62 contract checks pass. No client UI yet; no active processes; secrets ignored.
+Stopped at: Read 03-02-PROGRESS.md, then finish Task 3 agency search, header relationship facts and Add relationship UI with paged agency discovery. Client create/edit/list/detail and error/replay/stale/mobile browser journeys pass. Do not mark plan complete until closeout passes. No active previews; secrets and screenshots ignored; funnel unchanged.
 Resume file: None
 
 ## Autonomous continuation

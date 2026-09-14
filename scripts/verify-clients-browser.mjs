@@ -1,0 +1,91 @@
+import { chromium } from 'playwright';
+import assert from 'node:assert/strict';
+import { readFile, mkdir } from 'node:fs/promises';
+import { createServer } from 'node:http';
+
+const origin=process.env.COVER_WEB_ORIGIN ?? 'http://127.0.0.1:3100';
+if (!['localhost','127.0.0.1'].includes(new URL(origin).hostname)) throw new Error('Client browser checks require a local demo origin.');
+const password=process.env.COVER_DEMO_PASSWORD ?? (await readFile('.local/demo-password.txt','utf8')).trim();
+const output='.local/browser-evidence';await mkdir(output,{recursive:true});
+const browser=await chromium.launch({channel:process.env.COVER_BROWSER_CHANNEL ?? 'chrome',headless:true});
+const context=await browser.newContext({viewport:{width:1560,height:1000}});const page=await context.newPage();page.setDefaultTimeout(15000);
+const errors=[];page.on('pageerror',error=>errors.push(error.message));
+const name=`Fictional Browser Client ${Date.now()}`;
+let sourceServer;
+try {
+  await page.goto(`${origin}/clients`);await page.waitForURL('**/login');
+  await page.getByLabel('Email address',{exact:true}).fill('servicing@cover.example');
+  await page.getByLabel('Password',{exact:true}).fill(password);await page.getByRole('button',{name:'Sign in',exact:true}).click();await page.waitForURL(`${origin}/`);
+  await page.goto(`${origin}/clients`);await page.getByRole('link',{name:'CN-0000001',exact:true}).waitFor();
+  await page.screenshot({path:`${output}/clients-list-desktop.png`,fullPage:true});
+  await page.getByRole('button',{name:'Next page'}).click();await page.getByRole('button',{name:'Previous page'}).waitFor();
+  await page.waitForFunction(()=>!document.querySelector('a[href="/clients/32000000-0000-4000-8000-000000000001"]'));
+  await page.getByRole('button',{name:'Previous page'}).click();await page.getByRole('link',{name:'CN-0000001',exact:true}).waitFor();
+  await page.getByRole('link',{name:'Create client',exact:true}).click();await page.getByLabel('Legal business name *',{exact:true}).fill(name);
+  await page.getByLabel('Address line 1 *',{exact:true}).fill('1 Fictional Browser Road');await page.getByLabel('Town or city *',{exact:true}).fill('Sheffield');await page.getByLabel('Postcode *',{exact:true}).fill('S1 1AA');
+  let lost=false;const keys=[];
+  await page.route('**/api/v1/clients',async route=>{
+    if(route.request().method()!=='POST'){await route.continue();return;}
+    keys.push(route.request().headers()['idempotency-key']);
+    if(!lost){lost=true;const response=await route.fetch();assert.equal(response.status(),201);await route.abort('failed');}else await route.continue();
+  });
+  await page.getByRole('button',{name:'Create client',exact:true}).click();await page.getByRole('button',{name:'Retry same save'}).waitFor();
+  assert.equal(await page.getByLabel('Legal business name *',{exact:true}).inputValue(),name);
+  assert.equal(await page.getByLabel('Legal business name *',{exact:true}).isDisabled(),true);
+  await page.getByRole('button',{name:'Retry same save'}).click();await page.waitForURL(/\/clients\/[0-9a-f-]{36}$/);
+  assert.equal(keys.length,2);assert.equal(keys[0],keys[1]);await page.unroute('**/api/v1/clients');
+  const detailUrl=page.url();const clientId=detailUrl.split('/').at(-1);
+  await page.getByRole('heading',{name,exact:true}).waitFor();await page.reload();await page.getByRole('heading',{name,exact:true}).waitFor();
+  assert.equal(await page.getByRole('navigation',{name:'Main navigation',exact:true}).getByRole('link',{name:'Clients',exact:true}).getAttribute('aria-current'),'page');
+  await page.getByRole('button',{name:'Edit identity',exact:true}).click();await page.getByLabel('Legal business name *',{exact:true}).fill('   ');
+  await page.getByRole('button',{name:'Save identity',exact:true}).click();await page.getByText('Check the required fields and their maximum lengths.',{exact:true}).waitFor();
+  assert.equal(await page.getByLabel('Legal business name *',{exact:true}).inputValue(),'   ');
+  await page.getByLabel('Legal business name *',{exact:true}).fill(name+' amended');
+  await page.getByRole('button',{name:'Save identity',exact:true}).click();await page.getByRole('heading',{name:name+' amended',exact:true}).waitFor();
+  await page.screenshot({path:`${output}/client-detail-desktop.png`,fullPage:true});
+  await page.getByRole('button',{name:'Edit identity',exact:true}).click();await page.getByLabel('Legal business name *',{exact:true}).fill(name+' retained draft');
+  const csrf=(await (await page.request.get(`${origin}/api/v1/auth/csrf`)).json()).requestToken;
+  const saved=await page.request.get(`${origin}/api/v1/clients/${clientId}`);const identity=await saved.json();
+  const concurrent=await page.request.put(`${origin}/api/v1/clients/${clientId}`,{headers:{'X-CSRF-Token':csrf,'Idempotency-Key':crypto.randomUUID(),'If-Match':saved.headers().etag},data:{legalName:name+' concurrent',entityType:identity.entityType,address:identity.address}});
+  assert.equal(concurrent.status(),200);
+  await page.getByRole('button',{name:'Save identity',exact:true}).click();await page.getByText(/This client has changed/).waitFor();
+  assert.equal(await page.getByLabel('Legal business name *',{exact:true}).inputValue(),name+' retained draft');
+  await page.getByRole('button',{name:'Replace my edits with saved identity'}).click();await page.getByRole('heading',{name:name+' concurrent',exact:true}).waitFor();
+  assert.equal(await page.getByLabel('Legal business name *',{exact:true}).inputValue(),name+' concurrent');await page.getByRole('button',{name:'Cancel',exact:true}).click();
+  await page.getByRole('link',{name:'Activity',exact:true}).click();await page.getByRole('region',{name:'Client activity',exact:true}).waitFor();
+  await page.getByRole('link',{name:'Policies',exact:true}).last().click();await page.getByRole('heading',{name:'Policies are not available yet'}).waitFor();
+  await page.goto(`${origin}/clients`);await page.getByLabel('Search clients',{exact:true}).fill(name);await page.getByRole('button',{name:'Search',exact:true}).click();await page.getByText('1 records',{exact:true}).waitFor();
+  await page.getByLabel('Search clients',{exact:true}).fill('No such fictional business 000');await page.getByRole('button',{name:'Search',exact:true}).click();await page.getByRole('heading',{name:'No clients match your search'}).waitFor();
+  await page.getByRole('button',{name:'Clear filters'}).click();await page.getByRole('link',{name:'CN-0000001',exact:true}).waitFor();
+  let failList=true;
+  await page.route('**/api/v1/clients?**',route=>failList ? route.fulfill({status:503,contentType:'application/problem+json',body:'{}'}) : route.continue());
+  await page.getByRole('button',{name:'Search',exact:true}).click();await page.getByRole('button',{name:'Try again',exact:true}).waitFor();
+  await page.screenshot({path:`${output}/clients-list-error.png`,fullPage:true});failList=false;await page.getByRole('button',{name:'Try again',exact:true}).click();await page.getByRole('link',{name:'CN-0000001',exact:true}).waitFor();await page.unroute('**/api/v1/clients?**');
+  await page.setViewportSize({width:390,height:844});await page.screenshot({path:`${output}/clients-list-mobile.png`,fullPage:true});
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),true);
+  await page.goto(detailUrl);await page.getByRole('heading',{name:name+' concurrent',exact:true}).waitFor();await page.getByRole('region',{name:'Client activity',exact:true}).waitFor();await page.getByRole('heading',{name:'No agency relationships'}).waitFor();await page.screenshot({path:`${output}/client-detail-mobile.png`,fullPage:true});
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),true);
+  const readContext=await browser.newContext();const readPage=await readContext.newPage();await readPage.goto(`${origin}/login`);
+  await readPage.getByLabel('Email address',{exact:true}).fill('agency-admin@cover.example');await readPage.getByLabel('Password',{exact:true}).fill(password);await readPage.getByRole('button',{name:'Sign in',exact:true}).click();await readPage.waitForURL(`${origin}/`);
+  await readPage.goto(detailUrl);await readPage.getByRole('heading',{name:name+' concurrent',exact:true}).waitFor();assert.equal(await readPage.getByRole('button',{name:'Edit identity',exact:true}).count(),0);
+  await readPage.goto(`${origin}/clients/new`);await readPage.getByRole('heading',{name:'Client creation is restricted'}).waitFor();await readContext.close();
+  assert.deepEqual(errors,[]);
+  const source=await readFile('docs/prototype/Cover MGA Back Office-4.html');
+  sourceServer=createServer((request,response)=>{response.setHeader('Content-Type','text/html; charset=utf-8');response.end(source);});
+  await new Promise(resolve=>sourceServer.listen(0,'127.0.0.1',resolve));
+  const sourcePage=await browser.newPage({viewport:{width:1560,height:1000}});
+  await sourcePage.goto(`http://127.0.0.1:${sourceServer.address().port}`);
+  await sourcePage.getByText('Clients',{exact:true}).first().click();
+  await sourcePage.getByText('Smith Motor Traders Ltd',{exact:true}).first().waitFor();
+  await sourcePage.screenshot({path:`${output}/prototype-clients-desktop.png`,fullPage:true});
+  await sourcePage.getByText('Smith Motor Traders Ltd',{exact:true}).first().click();
+  await sourcePage.getByText('Client account',{exact:true}).waitFor();
+  await sourcePage.screenshot({path:`${output}/prototype-client-desktop.png`,fullPage:true});
+  console.log('Client browser checks passed: persisted create/replay/edit/reload, stale recovery, paging/search, error recovery, responsive screens, read-only access and prototype captures.');
+} catch (failure) {
+  if(!page.url().includes('/login')) {
+    await page.screenshot({path:`${output}/clients-failure.png`,fullPage:true});
+    console.error('Client page failure:',errors,await page.locator('main').innerText().catch(()=>''));
+  }
+  throw failure;
+} finally {await context.close();await browser.close();if(sourceServer)await new Promise(resolve=>sourceServer.close(resolve));}
