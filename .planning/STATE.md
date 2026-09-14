@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T15:06:40Z"
+last_updated: "2026-09-14T15:33:38Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-05 of 8 in progress; 04-01 through 04-04 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — 04-05 invitation acceptance/API/demo reveal/password setup UI committed09fa7dd;238 backend/33SQL,76contracts,20frontend and browser pass. Internal user APIs/Users tab remain.
+Last activity: 2026-09-14 — 04-05 internal user/invitation APIs committed6cb63d3;239 backend/34SQL and77contracts pass. Stage2/Users-tab UI and readiness remain.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: 04-05 acceptance and local password setup committed09fa7dd. Read04-05-PROGRESS.md. Full238/33SQL,76contracts,20frontend, production build/lint/typecheck and final acceptance browser pass; screenshots reviewed. Continue scoped internal user/invitation APIs/DI and source stage2/Users tab, reconciling planned creation route with existing service receipt identity and updating actual contracts. Acceptance and audited Development demo reveal are already public; no automatic broker session, broker sign-in closed until04-07. Demo contains retained fictional acceptance fixtures. No tests/previews active; plan and AGY requirements remain incomplete.
+Stopped at: 04-05 internal user/invitation APIs committed6cb63d3. Read04-05-PROGRESS.md. Full239/34SQL and77contracts/OpenAPI lint pass; final demo search HTTP test passed. Continue source stage2/Users tab/dialogs and staged-user readiness, using AgencyUserEndpoints. Public create preserves POST agencies/{id}/invitations while service receipt namespace stays users; creation parent ETag, user writes user ETag, invitation writes invitation ETag. Current internal authorization only; broker auth closed until04-07. Acceptance/demo reveal/page already complete. Existing Demo fixtures repaired additively; no tests/previews active. Plan and AGY requirements remain incomplete.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-05-PROGRESS.md
 
 ## Autonomous continuation
