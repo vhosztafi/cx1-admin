@@ -18,13 +18,19 @@ public sealed class SqlJobLeases(IDbContextFactory<BackOfficeDbContext> factory,
         =>await ClaimKindAsync(DiagnosticKind,cancellationToken);
 
     public async Task<JobLease?> ClaimKindAsync(string kind,CancellationToken cancellationToken = default)
+        =>await ClaimCoreAsync(kind,null,cancellationToken);
+
+    public async Task<JobLease?> ClaimWorkAsync(string kind,Guid workId,CancellationToken cancellationToken=default)
+        =>await ClaimCoreAsync(kind,workId,cancellationToken);
+
+    private async Task<JobLease?> ClaimCoreAsync(string kind,Guid? workId,CancellationToken cancellationToken)
     {
         if(kind is not (DiagnosticKind or "agency-notification"))throw new ArgumentException("Unsupported job kind.");
         await using var db=await factory.CreateDbContextAsync(cancellationToken);
         // REPEATABLE READ permits READPAST even when the database uses read-committed snapshots.
         await using var transaction=await db.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead,cancellationToken);
         var now=time.GetUtcNow();
-        var job=await db.Set<OutboxWork>().FromSqlInterpolated($"SELECT TOP (1) * FROM [OutboxWork] WITH (UPDLOCK,READPAST,ROWLOCK) WHERE [Kind]={kind} AND (([State]='pending' AND [NextAttemptAt]<={now}) OR ([State]='leased' AND [LeaseExpiresAt]<={now})) ORDER BY [NextAttemptAt],[CreatedAt],[Id]")
+        var job=await db.Set<OutboxWork>().FromSqlInterpolated($"SELECT TOP (1) * FROM [OutboxWork] WITH (UPDLOCK,READPAST,ROWLOCK) WHERE [Kind]={kind} AND ({workId} IS NULL OR [Id]={workId}) AND (([State]='pending' AND [NextAttemptAt]<={now}) OR ([State]='leased' AND [LeaseExpiresAt]<={now})) ORDER BY [NextAttemptAt],[CreatedAt],[Id]")
             .SingleOrDefaultAsync(cancellationToken);
         if (job is null) return null;
         if (job.State=="leased")

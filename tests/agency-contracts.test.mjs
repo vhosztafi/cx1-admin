@@ -118,6 +118,17 @@ test('evidence writes return ID-only receipts and readiness is a fresh uncached 
  assert.equal(validation.parameters.some(x=>x.name==='If-Match'&&x.required),true);
  assert.equal(doc.components.schemas.AgencyChecklist.properties.items.maxItems,80);
 });
+test('notification reads exclude delivery secrets and retry returns only a stable identity',()=>{
+ const notification=schema('AgencyNotification');
+ const value={id:uuid,agencyId:uuid,kind:'activation',state:'exhausted',attempts:6,createdAt:'2026-09-14T10:00:00Z',retryAllowed:true,etag:'"version"'};
+ assert.equal(notification(value),true);
+ for(const secret of ['token','password','protectedPayload','recipient','contentHash'])assert.equal(notification({...value,[secret]:'secret'}),false);
+ const route='/agencies/{agencyId}/notifications/{notificationId}';
+ assert.equal(op(route,'get')['x-permission'],'agency-admin');
+ assert.deepEqual(Object.keys(op(route+'/retry').responses['202'].content['application/json'].schema.properties),['id']);
+ assert.ok(op(route+'/retry').parameters.some(x=>x.name==='If-Match'&&x.required));
+});
+
 test('reviewed agency actions use agency-specific routes and every inventory control remains mapped',async()=>{
  const inventory=await read('docs/design/control-inventory.json'),reviews=await read('docs/design/reviewed-api-controls.json');
  const operations=new Set(Object.values(doc.paths).flatMap(x=>Object.values(x).map(x=>x.operationId)));

@@ -52,7 +52,7 @@ export function addAgencyContracts({schemas:s,ref:r,text:t,enumeration:e,object:
  s.AgencyUser=o({id,agencyId:id,displayName:t(),email,role,state:e('invited','active','inactive'),lastSeenAt:instant},['id','agencyId','displayName','email','role','state']);
  s.AgencyUserWrite=o({displayName:t(),role,reason:t(1000)});
  s.AgencyInvitationWrite=o({email,displayName:t(),role});
- s.AgencyNotification=o({id,agencyId:id,kind:e('invitation','activation','suspension','reactivation','terms-change'),state:e('queued','processing','demo-delivered','rejected','exhausted','superseded'),attempts:integer,createdAt:instant,completedAt:instant,lastResultCode:t(100),retryAllowed:b},['id','agencyId','kind','state','attempts','createdAt','retryAllowed']);
+ s.AgencyNotification=o({id,agencyId:id,kind:e('invitation','activation','suspension','reactivation','terms-change'),state:e('queued','processing','demo-delivered','rejected','exhausted','superseded'),attempts:integer,createdAt:instant,completedAt:instant,lastResultCode:t(100),retryAllowed:b,etag},['id','agencyId','kind','state','attempts','createdAt','retryAllowed','etag']);
  const invitationCommon={id,userId:id,agencyId:id,email,role,createdAt:instant};
  s.Invitation={oneOf:[o({...invitationCommon,state:{const:'staged'}}),o({...invitationCommon,state:e('pending','accepted','expired','revoked'),issuedAt:instant,expiresAt:instant,notificationId:id,acceptedAt:instant,revokedAt:instant},[...Object.keys(invitationCommon),'state','issuedAt','expiresAt','notificationId']),o({...invitationCommon,state:{const:'revoked'},revokedAt:instant})]};
  s.Invitation.description='Staging has no token, expiry or delivery job. Issuance expires exactly 14 real-time days later. State is acceptance validity, not delivery. Resend revokes the predecessor and creates a fresh invitation.';
@@ -122,7 +122,8 @@ export function addAgencyContracts({schemas:s,ref:r,text:t,enumeration:e,object:
  list('/agencies/{agencyId}/terms','listAgencyTermsVersions','agency-commercial-read',r('AgencyTermsVersion'));
  for(const [suffix,name,schema] of [['activity','Activity','AgencyActivity'],['notifications','Notifications','AgencyNotification'],['permission-requests','PermissionRequests','AgencyPermissionRequest'],['permission-grants','PermissionGrants','AgencyPermissionGrant']])list(`/agencies/{agencyId}/${suffix}`,`listAgency${name}`,suffix === 'activity' ? 'agency-read' : 'agency-admin',r(schema));
  paths['/agencies/{agencyId}/activity'].get['x-permission']='agency-read';
- op('post','/agencies/{agencyId}/notifications/{notificationId}/retry','retryAgencyNotification','agency-admin',{existing:true,input:reason,output:r('AgencyNotification'),status:202});
+ op('get','/agencies/{agencyId}/notifications/{notificationId}','getAgencyNotification','agency-admin',{output:r('AgencyNotification')});
+ op('post','/agencies/{agencyId}/notifications/{notificationId}/retry','retryAgencyNotification','agency-admin',{existing:true,input:reason,output:o({id}),status:202});
  op('post','/agencies/{agencyId}/permission-requests','requestAgencyPermission','agency-user-admin',{existing:true,input:o({permission:{const:'bordereau-download'},reason:t(1000)}),output:r('AgencyPermissionRequest'),status:201});
  op('post','/agencies/{agencyId}/permission-requests/{requestId}/decision','decideAgencyPermission','agency-admin-no-self-approval',{existing:true,input:o({outcome:e('approve','reject'),reason:t(1000)}),output:r('AgencyPermissionRequest')});
  op('post','/agencies/{agencyId}/permission-grants/{grantId}/revoke','revokeAgencyPermission','agency-admin',{existing:true,input:reason,output:r('AgencyPermissionGrant')});

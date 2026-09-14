@@ -19,9 +19,18 @@ builder.AddLocalIdentity();
 builder.Services.AddSingleton<PartyPaging>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyDraftService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyEvidenceService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyNotificationRetry>();
 DiagnosticDispatcher.Register(builder);
 AgencyNotificationDispatcher.Register(builder);
 var app = builder.Build();
+if(args.Contains("--seed-agency-notification-demo",StringComparer.Ordinal))
+{
+    if(!app.Environment.IsDevelopment())throw new InvalidOperationException("Notification fixture requires local Development.");
+    var id=await BackOffice.Infrastructure.Agencies.AgencyNotificationDemo.Create(
+        app.Services.GetRequiredService<Microsoft.EntityFrameworkCore.IDbContextFactory<BackOfficeDbContext>>(),
+        app.Services.GetRequiredService<BackOffice.Infrastructure.Agencies.AgencyNotificationPayload>());
+    Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new{agencyId=id}));return;
+}
 app.UseExceptionHandler(handler => handler.Run(context =>
 {
     var error=context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature>()?.Error;
@@ -40,6 +49,7 @@ app.MapOperationalSettings();
 app.MapClients();
 app.MapAgencies();
 app.MapAgencyEvidence();
+app.MapAgencyNotifications();
 app.MapContacts();
 app.MapSupportFlags();
 app.MapMatches();

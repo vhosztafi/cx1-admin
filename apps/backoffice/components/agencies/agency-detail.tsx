@@ -8,8 +8,10 @@ import { agencyFields } from '../../lib/agency-fields';
 import { clientDate, type Page } from '../../lib/clients';
 import { LoadFeedback, Paging, useAgencyResource } from './shared';
 import { AbandonAgency } from './abandon-agency';
+import { AgencyNotifications } from './agency-notifications';
 const tabs = ['Overview','Users','Permissions & access','Products','Accounts','Activity'];
 export function AgencyDetail({id,canWrite,tab: requested}: {id: string; canWrite: boolean; tab: string}) {
+  const [activityRevision,setActivityRevision]=useState(0);
   const resource = useAgencyResource<AgencyDraft>(`/api/v1/agencies/${id}`); const products = useAgencyResource<Page<AgencyProduct>>(`/api/v1/agencies/${id}/products`); const catalog = useAgencyResource<Page<CatalogProduct>>('/api/v1/agency-product-catalog');
   const managers = useAgencyResource<Page<{id: string; displayName: string}>>('/api/v1/agency-relationship-managers?pageSize=100');
   if(!resource.data) return <Panel title="Agency"><LoadFeedback error={resource.error} retry={resource.refresh} /></Panel>;
@@ -21,7 +23,7 @@ export function AgencyDetail({id,canWrite,tab: requested}: {id: string; canWrite
       {products.data.items.map(x => {const definition = catalog.data?.items.find(p => p.productVersionId === x.productVersionId);return <tr key={x.id}><td>{definition?.name ?? x.productCode?.replaceAll('-',' ')}</td><td>{definition?.capacityProviderName ?? 'Unavailable'}</td><td>{(x.brokerCommissionBasisPoints / 100).toFixed(2)}%</td><td>{x.effectiveFrom}</td><td>Draft selection; access not granted</td></tr>;})}</DataTable>}{products.data?.items.length === 0 && <p className="match-copy">No products selected.</p>}{catalog.error && <LoadFeedback error={catalog.error} retry={catalog.refresh} />}</Panel>}
     {tab === 'Accounts' && <Panel title="Credit and settlement"><dl className="agency-review">{agencyFields.filter(x => x.stage === 5 && values[x.path]).map(field => <div key={field.path}><dt>{field.label}</dt><dd>{field.options ? Object.entries(field.options).find(([,value]) => String(value) === values[field.path])?.[0] ?? values[field.path] : values[field.path]}</dd></div>)}</dl><p className="match-copy">Balances, statements and exports are not available yet.</p></Panel>}
     {['Users','Permissions & access'].includes(tab) && <Panel title={tab}><p className="match-copy">{tab === 'Users' ? 'Agency invitations and user management are not available yet. No invitations have been sent.' : 'Agency permission requests and sharing preview are not available yet. Product selections do not grant access.'}</p></Panel>}
-    {tab === 'Activity' && <AgencyActivity id={id} />}
+    {tab === 'Activity' && <><AgencyActivity key={activityRevision} id={id} />{canWrite && <AgencyNotifications id={id} onSaved={()=>setActivityRevision(x=>x+1)}/>}</>}
   </>;
 }
 function AgencyActivity({id}: {id: string}) {
