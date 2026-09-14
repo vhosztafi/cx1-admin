@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T15:33:38Z"
+last_updated: "2026-09-14T16:00:58Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-05 of 8 in progress; 04-01 through 04-04 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — 04-05 internal user/invitation APIs committed6cb63d3;239 backend/34SQL and77contracts pass. Stage2/Users-tab UI and readiness remain.
+Last activity: 2026-09-14 — 04-05 Users tab and lifecycle dialogs implemented;22 frontend tests/typecheck/lint/build and real browser flows pass. Stage2 integration and readiness remain.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: 04-05 internal user/invitation APIs committed6cb63d3. Read04-05-PROGRESS.md. Full239/34SQL and77contracts/OpenAPI lint pass; final demo search HTTP test passed. Continue source stage2/Users tab/dialogs and staged-user readiness, using AgencyUserEndpoints. Public create preserves POST agencies/{id}/invitations while service receipt namespace stays users; creation parent ETag, user writes user ETag, invitation writes invitation ETag. Current internal authorization only; broker auth closed until04-07. Acceptance/demo reveal/page already complete. Existing Demo fixtures repaired additively; no tests/previews active. Plan and AGY requirements remain incomplete.
+Stopped at: 04-05 Users tab verified, including exact uncertain replay, stale edit retention, draft/active invitations, lifecycle history and demo-link opening. Read04-05-PROGRESS.md. Latest22 frontend tests/typecheck/lint/build and real browser flows pass; unchanged backend baseline239/34SQL and77contracts. Continue stage2 wizard integration with dirty/child-operation guards and parent ETag refresh, staged-admin readiness and remaining source Last active/count details. Broker auth stays closed until04-07. No previews remain active. Plan and AGY requirements remain incomplete.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-05-PROGRESS.md
 
 ## Autonomous continuation
