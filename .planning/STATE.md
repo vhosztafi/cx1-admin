@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T04:25:00Z"
+last_updated: "2026-09-14T04:52:00Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
@@ -20,14 +20,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Support flag storage/validation/scoped projections verified; implement lifecycle service and APIs in 03-04.
+**Current focus:** Support flag lifecycle/API verified; implement support UI and fictional demo flags in 03-04.
 
 ## Current Position
 
 Phase: 3 of 13 (Clients and contact servicing)
-Plan: 03-04 of 6 in progress; task 1 complete, lifecycle/API/UI pending; 03-01 through 03-03 complete
+Plan: 03-04 of 6 in progress; tasks 1–2 complete, UI/demo/browser pending; 03-01 through 03-03 complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — support flag schema and scoped projections verified; 89 backend cases/fifteen SQL scenarios pass; migration applied to Demo without reset
+Last activity: 2026-09-14 — support lifecycle/API/history/safe previews verified; 90 backend cases/sixteen SQL scenarios pass; UI and demo flags pending
 
 Progress: Phases 1–2 complete; 2/13 phases. Foundation verified; client servicing next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–2 complete; 2/13 phases. Foundation verified; client servic
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: Read 03-04-PROGRESS.md then implement Task 2 SupportFlagService/SupportFlagEndpoints with ordered parent locks, current scope before replay, ID-only receipts and restricted typed history. Task 1 is verified; migration 20260914041804_SupportFlags applied to Demo without reset; no demo flag rows yet. Fresh passing backend reports .local/support-storage-regression-results (89/15). No active previews/tests. Contact plan complete, eleven frontend tests and contact/client browser evidence unchanged. CLI-02 implemented pending final Phase 3 verification; CLI-01 partial until real quote/policy links. Funnel unchanged; continue automatically.
+Stopped at: Read 03-04-PROGRESS.md then implement Task 3 support flags UI, explicit sharing/preview, restricted history and fictional seeds. Service/API complete; receipts are ID-only, reviewed history typed/restricted, and relative review-date checks run after replay. Fresh full reports .local/support-api-regression-results (90/16). Migration already on Demo; no support demo flags yet. No active previews/tests. Contact plan complete; eleven frontend tests/contact-client browser evidence unchanged. CLI-03 pending support UI/browser/final gate; CLI-01 remains partial for downstream quote/policy links. Funnel unchanged; continue automatically.
 Resume file: None
 
 ## Autonomous continuation

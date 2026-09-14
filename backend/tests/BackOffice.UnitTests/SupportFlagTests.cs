@@ -42,6 +42,9 @@ public sealed class SupportFlagTests
         Assert.Equal(Today,SupportFlagRules.Validate(Valid(),Today).ReviewOn);
         Assert.Equal(Today.AddDays(30),SupportFlagRules.Validate(Valid() with {ReviewOn=Today.AddDays(30)},Today).ReviewOn);
         foreach(var date in new[] {default(DateOnly),Today.AddDays(-1)})Assert.Throws<PartyValidationException>(()=>SupportFlagRules.Validate(Valid() with {ReviewOn=date},Today));
+        // Replayed intent remains normalizable after its review date; new mutations still check today's date.
+        var prior=SupportFlagRules.Validate(Valid() with {ReviewOn=Today.AddDays(-1)});
+        Assert.Throws<PartyValidationException>(()=>SupportFlagRules.ValidateReviewDate(prior.ReviewOn,Today));
     }
     [Fact]
     public void RejectsUnknownChoicesBlankInstructionsOversizeReasonsAndHiddenControlCharacters()

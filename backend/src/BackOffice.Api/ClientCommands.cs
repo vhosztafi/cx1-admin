@@ -148,7 +148,7 @@ public static partial class ClientEndpoints
         {
             PartyCommandException command=>(command.Status,command.Code),JsonException=>(400,"invalid-request"),
             CommandKeyConflictException=>(409,"idempotency-conflict"),CommandBusyException=>(409,"command-busy"),
-            DbUpdateConcurrencyException=>(412,"stale-"+resource),_=>(409,resource=="contact" ? "contact-conflict" : "relationship-exists")
+            DbUpdateConcurrencyException=>(412,"stale-"+resource),_=>(409,resource=="client" ? "relationship-exists" : resource+"-conflict")
         };
         return IdentityEndpoints.Problem(context,status,code,"Refresh the record and check the request before retrying.");
     }

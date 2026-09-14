@@ -96,10 +96,12 @@ public static partial class ClientEndpoints
         await using var db=await factory.CreateDbContextAsync(context.RequestAborted);
         if(!await scope.Clients(db).AnyAsync(x => x.Id==clientId,context.RequestAborted))return Missing(context);
         var page=paging.Read(context,actor,"occurredAt-desc,id");if(page is null)return BadQuery(context);
+        var support=actor.HasCapability("support-internal-read");
         // Only explicitly supported events are published. Future sensitive activity needs its own safe mapping.
         var query=scope.Activity(db).Where(x => x.ClientId==clientId && x.OccurredAt<=page.AsOf &&
             (x.EventType=="client.demo-created" || x.EventType=="client.created" || x.EventType=="client.updated" || x.EventType=="client.relationship-created" ||
-             x.EventType=="contact.created" || x.EventType=="contact.updated" || x.EventType=="contact.primary-changed" || x.EventType=="contact.ended"));
+             x.EventType=="contact.created" || x.EventType=="contact.updated" || x.EventType=="contact.primary-changed" || x.EventType=="contact.ended" ||
+             (support && (x.EventType=="support-flag.created" || x.EventType=="support-flag.amended" || x.EventType=="support-flag.reviewed" || x.EventType=="support-flag.ended"))));
         var total=await query.CountAsync(context.RequestAborted);
         var rows=await query.OrderByDescending(x => x.OccurredAt).ThenBy(x => x.Id).Skip(page.Offset).Take(page.Size).ToListAsync(context.RequestAborted);
         var contactIds=rows.Where(x=>x.RecordKind=="contact" && x.RecordId!=null).Select(x=>x.RecordId!.Value).ToArray();
@@ -110,7 +112,9 @@ public static partial class ClientEndpoints
         return Results.Json(new {items=rows.Select(x => new {x.Id,x.OccurredAt,actorLabel=x.ActorId is null ? "System" : "Back office staff",x.EventType,
             summary=x.EventType switch {"client.updated"=>"Client identity updated.","client.relationship-created"=>"Agency relationship added.",
                 "contact.created"=>"Relationship contact added.","contact.updated"=>"Relationship contact updated.",
-                "contact.primary-changed"=>"Primary contact changed.","contact.ended"=>"Relationship contact ended.",_=>"Client identity created."},
+                "contact.primary-changed"=>"Primary contact changed.","contact.ended"=>"Relationship contact ended.",
+                "support-flag.created"=>"Support instruction recorded.","support-flag.amended"=>"Support instruction amended.",
+                "support-flag.reviewed"=>"Support instruction reviewed.","support-flag.ended"=>"Support instruction ended.",_=>"Client identity created."},
             x.RelationshipId,recordId=CanLink(x) ? x.RecordId : null,
             recordKind=CanLink(x) ? x.RecordKind : null}),totalCount=total,nextCursor=paging.Next(page,page.Offset+rows.Count<total)},Json);
     }

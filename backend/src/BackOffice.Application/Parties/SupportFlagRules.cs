@@ -12,7 +12,7 @@ public sealed record ValidatedFlag(string TypeCode,string InternalCategory,strin
 
 public static class SupportFlagRules
 {
-    public static ValidatedFlag Validate(FlagWrite input,DateOnly today)
+    public static ValidatedFlag Validate(FlagWrite input,DateOnly? today=null)
     {
         var issues=new List<PartyFieldIssue>();
         // Reject before processing supplied sensitive text. Error details never echo it.
@@ -25,13 +25,17 @@ public static class SupportFlagRules
         var instruction=Text(input.InternalInstruction,2000,"/internalInstruction",true,issues);
         var reason=Text(input.Reason,1000,"/reason",true,issues);
         var agency=Text(input.AgencyInstruction,1000,"/agencyInstruction",false,issues);
-        if(input.ReviewOn==default || input.ReviewOn<today)issues.Add(new("/reviewOn","invalid-date","Choose today or a future review date."));
+        if(input.ReviewOn==default || (today is not null && input.ReviewOn<today.Value))issues.Add(new("/reviewOn","invalid-date","Choose today or a future review date."));
         var grants=input.VisibleRelationshipIds;
         if(grants is null || grants.Length>100 || grants.Any(x=>x==Guid.Empty) || grants.Distinct().Count()!=grants.Length)
             issues.Add(new("/visibleRelationshipIds","invalid-grants","Supply up to 100 distinct relationship identifiers, or an empty list for internal only."));
         if(grants is {Length:>0} && agency is null)issues.Add(new("/agencyInstruction","required","Provide functional wording for every shared flag."));
         if(issues.Count>0)throw new PartyValidationException(issues);
         return new(input.TypeCode!,input.InternalCategory!,instruction!,input.ConsentBasis,input.ReviewOn,reason!,grants!.Order().ToArray(),agency);
+    }
+    public static void ValidateReviewDate(DateOnly reviewOn,DateOnly today)
+    {
+        if(reviewOn==default || reviewOn<today)throw new PartyValidationException([new("/reviewOn","invalid-date","Choose today or a future review date.")]);
     }
     private static string? Text(string? value,int maximum,string path,bool required,List<PartyFieldIssue> issues)
     {

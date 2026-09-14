@@ -4,7 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackOffice.Infrastructure.Parties;
 
-public sealed record SafeSupportInstruction(Guid Id,Guid PersonId,string Instruction,DateOnly ReviewOn);
+public sealed record SafeSupportInstruction
+{
+    public Guid Id {get;init;}
+    public Guid PersonId {get;init;}
+    public required string Instruction {get;init;}
+    public DateOnly ReviewOn {get;init;}
+}
 public sealed class SupportFlagAccessException:Exception
 { public SupportFlagAccessException():base("Support record not found."){} }
 
@@ -23,15 +29,15 @@ public sealed class SupportFlagScope(ActorContext actor)
     }
     // Caller authorizes either explicit agency-safe read or an audited internal preview.
     // Return only the safe DTO; no flag category, origin, reason, history or hidden count.
-    public IQueryable<SafeSupportInstruction> SafeInstructions(BackOfficeDbContext db,Guid relationshipId)
+    public IQueryable<SafeSupportInstruction> SafeInstructions(BackOfficeDbContext db,Guid relationshipId,DateTimeOffset? asOf=null)
     {
         var scope=new PartyScope(actor);var relationships=scope.Relationships(db);var contacts=scope.Contacts(db);
         return from flag in db.Set<SupportFlag>().AsNoTracking()
-            where flag.EndedAt==null && flag.AgencyInstruction!=null &&
+            where flag.EndedAt==null && flag.AgencyInstruction!=null && (asOf==null || flag.CreatedAt<=asOf) &&
                 db.Set<FlagVisibility>().Any(g=>g.FlagId==flag.Id && g.ClientId==flag.ClientId && g.RelationshipId==relationshipId) &&
                 relationships.Any(r=>r.Id==relationshipId && r.ClientId==flag.ClientId && r.State=="active") &&
                 contacts.Any(c=>c.RelationshipId==relationshipId && c.ClientId==flag.ClientId && c.PersonId==flag.PersonId)
-            select new SafeSupportInstruction(flag.Id,flag.PersonId,flag.AgencyInstruction!,flag.ReviewOn);
+            select new SafeSupportInstruction {Id=flag.Id,PersonId=flag.PersonId,Instruction=flag.AgencyInstruction!,ReviewOn=flag.ReviewOn};
     }
     // The lifecycle service must hold all relevant parent locks while validating.
     public async Task<Guid> ValidateMembershipAsync(BackOfficeDbContext db,Guid originRelationshipId,Guid personId,
