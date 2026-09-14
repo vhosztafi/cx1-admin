@@ -84,6 +84,50 @@ public sealed class CommandBoundaryTests
                 var delete=await Assert.ThrowsAsync<SqlException>(() => check.Database.ExecuteSqlRawAsync("DELETE FROM [IdempotencyRecord]"));
                 Assert.Equal(51003,delete.Number);
             }
+
+            var versioned=command with {Key="versioned",CorrelationId=Guid.NewGuid()};
+            var original=await boundary.ExecuteAsync(versioned,new {name="Versioned original"},"foundation.probe",async (db,token) =>
+            {
+                var team=new Team {Name="Versioned original"};db.Add(team);
+                await db.SaveChangesAsync(token); // Generate rowversion without committing the command transaction.
+                return Outcome(team) with {Etag="\""+Convert.ToBase64String(team.RowVersion)+"\""};
+            });
+            Assert.NotNull(original.Etag);
+            await using (var changed=new BackOfficeDbContext(options))
+            {
+                var team=await changed.Set<Team>().SingleAsync(x => x.Id==original.ResourceId);
+                team.Name="Later authorized version";await changed.SaveChangesAsync();
+                Assert.NotEqual(original.Etag,"\""+Convert.ToBase64String(team.RowVersion)+"\"");
+            }
+            var originalReplay=await restarted.ExecuteAsync(versioned,new {name="Versioned original"},"foundation.probe",(_,_) => throw new DbUpdateConcurrencyException());
+            Assert.True(originalReplay.Replayed);Assert.Equal(original.Body,originalReplay.Body);
+            Assert.Equal(original.Etag,originalReplay.Etag);Assert.Equal(original.Status,originalReplay.Status);
+            await Assert.ThrowsAsync<CommandKeyConflictException>(() => restarted.ExecuteAsync(versioned,new {name="Changed intent"},"foundation.probe",(_,_) => throw new InvalidOperationException()));
+
+            foreach (var invalidTag in new[] {"W/\"weak\"","\"bad\r\nheader\"","\"space token\"","\"inner\"quote\"",new string('x',101)})
+            {
+                var invalidCommand=command with {Key="invalid-tag-"+Guid.NewGuid().ToString("N"),CorrelationId=Guid.NewGuid()};
+                await Assert.ThrowsAsync<InvalidOperationException>(() => boundary.ExecuteAsync(invalidCommand,new {name="Rollback invalid ETag"},"foundation.probe",async (db,token) =>
+                {
+                    var team=new Team {Name="Rollback invalid ETag"};db.Add(team);await db.SaveChangesAsync(token);
+                    return Outcome(team) with {Etag=invalidTag};
+                }));
+                await using var inspect=new BackOfficeDbContext(options);
+                Assert.False(await inspect.Set<Team>().AnyAsync(x => x.Name=="Rollback invalid ETag"));
+                Assert.False(await inspect.Set<IdempotencyRecord>().AnyAsync(x => x.Key==invalidCommand.Key));
+                Assert.False(await inspect.Set<AuditEvent>().AnyAsync(x => x.CorrelationId==invalidCommand.CorrelationId));
+            }
+            // Explicit old JSON shape verifies compatibility, rather than serializing the new null field.
+            var legacy=command with {Key="legacy-response"};var legacyBody="{\"legacy\":true}";
+            await using (var insertLegacy=new BackOfficeDbContext(options))
+            {
+                insertLegacy.Add(new IdempotencyRecord {ActorScope=actorId.ToString("N"),Route=legacy.Route,Key=legacy.Key,
+                    RequestHash=SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new {legacy=true})),ResultStatus=200,
+                    ResultBody=JsonSerializer.Serialize(new {ResourceId=original.ResourceId,Body=legacyBody}),ExpiresAt=time.GetUtcNow().AddDays(1)});
+                await insertLegacy.SaveChangesAsync();
+            }
+            var legacyReplay=await restarted.ExecuteAsync(legacy,new {legacy=true},"foundation.probe",(_,_) => throw new InvalidOperationException());
+            Assert.True(legacyReplay.Replayed);Assert.Null(legacyReplay.Etag);Assert.Equal(legacyBody,legacyReplay.Body);
         }
         finally
         {

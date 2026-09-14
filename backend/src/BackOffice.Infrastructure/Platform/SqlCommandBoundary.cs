@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 namespace BackOffice.Infrastructure.Platform;
 
 public sealed record CommandIdentity(Guid ActorId,string Route,string Key,Guid CorrelationId);
-public sealed record CommandOutcome(Guid ResourceId,int Status,string Body,bool Replayed = false);
+public sealed record CommandOutcome(Guid ResourceId,int Status,string Body,bool Replayed = false,string? Etag = null);
 public sealed class CommandKeyConflictException : Exception
 {
     public CommandKeyConflictException() : base("This command key was already used with different input.") { }
@@ -45,12 +45,14 @@ public sealed class SqlCommandBoundary(IDbContextFactory<BackOfficeDbContext> fa
             if (!CryptographicOperations.FixedTimeEquals(existing.RequestHash,requestHash)) throw new CommandKeyConflictException();
             // Receipts remain durable beyond cache expiry; expiry never permits a second effect.
             var replay=JsonSerializer.Deserialize<StoredOutcome>(existing.ResultBody) ?? throw new InvalidOperationException("Stored command result is invalid.");
+            ValidateEtag(replay.Etag);
             await transaction.CommitAsync(cancellationToken);
-            return new CommandOutcome(replay.ResourceId,existing.ResultStatus,replay.Body,true);
+            return new CommandOutcome(replay.ResourceId,existing.ResultStatus,replay.Body,true,replay.Etag);
         }
         var result=await handler(db,cancellationToken);
         if (result.Status is < 200 or > 299 || result.Replayed || result.ResourceId==Guid.Empty)
             throw new InvalidOperationException("Only successful command results may be stored.");
+        ValidateEtag(result.Etag);
         using var document=JsonDocument.Parse(result.Body);
         if (document.RootElement.ValueKind is not (JsonValueKind.Object or JsonValueKind.Array))
             throw new InvalidOperationException("Command result must be a JSON object or array.");
@@ -58,7 +60,7 @@ public sealed class SqlCommandBoundary(IDbContextFactory<BackOfficeDbContext> fa
         db.Add(new AuditEvent {ActorId=identity.ActorId,CreatedBy=identity.ActorId,EventType=eventType,OccurredAt=now,
             CorrelationId=identity.CorrelationId,After=JsonSerializer.Serialize(new {resourceId=result.ResourceId})});
         db.Add(new IdempotencyRecord {ActorScope=actorScope,Route=identity.Route,Key=identity.Key,RequestHash=requestHash,
-            ResultStatus=result.Status,ResultBody=JsonSerializer.Serialize(new StoredOutcome(result.ResourceId,result.Body)),ExpiresAt=now.AddDays(1),CreatedBy=identity.ActorId});
+            ResultStatus=result.Status,ResultBody=JsonSerializer.Serialize(new StoredOutcome(result.ResourceId,result.Body,result.Etag)),ExpiresAt=now.AddDays(1),CreatedBy=identity.ActorId});
         await db.SaveChangesAsync(cancellationToken);
         await transaction.CommitAsync(cancellationToken);
         return result;
@@ -74,5 +76,13 @@ public sealed class SqlCommandBoundary(IDbContextFactory<BackOfficeDbContext> fa
         if (result < 0) throw new CommandBusyException();
     }
 
-    private sealed record StoredOutcome(Guid ResourceId,string Body);
+    private static void ValidateEtag(string? etag)
+    {
+        if (etag is null) return; // Receipts written before response version support remain readable.
+        if (etag.Length is < 3 or > 100 || etag[0]!='"' || etag[^1]!='"' ||
+            etag[1..^1].Any(c => c < 33 || c > 126 || c == '"'))
+            throw new InvalidOperationException("Command ETag must be a bounded strong opaque ASCII token.");
+    }
+
+    private sealed record StoredOutcome(Guid ResourceId,string Body,string? Etag = null);
 }
