@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Approved by the user on 2026-09-13. Autonomous research, planning, implementation and transitions authorised. Phases 1–3 are complete with native SQL/API/browser verification. Phase 4 agency onboarding/access has eight checked plans; 04-01 contracts and data protocols are complete, with 74 contract tests passing. Next is 04-02 persistent drafts and workspace. CLI-01 remains partial until real quote/policy links in Phases 5/6; see ACCEPTANCE-BACKLOG.md.
+**Status:** Approved by the user on 2026-09-13. Autonomous research, planning, implementation and transitions authorised. Phases 1–3 are complete with native SQL/API/browser verification. Phase 4 agency onboarding/access has eight checked plans; 04-01 contracts and 04-02 persistent drafts/workspace are complete. Backend145/21 SQL, frontend18, contracts74 and the built browser journey pass. Next is 04-03 owned evidence and deterministic compliance checks. CLI-01 remains partial until real quote/policy links in Phases 5/6; see ACCEPTANCE-BACKLOG.md.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
