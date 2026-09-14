@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BackOffice.Infrastructure.Persistence;
 
-public sealed class BackOfficeDbContext(DbContextOptions<BackOfficeDbContext> options) : DbContext(options)
+public sealed partial class BackOfficeDbContext(DbContextOptions<BackOfficeDbContext> options) : DbContext(options)
 {
     public override int SaveChanges(bool acceptAllChangesOnSuccess)
     {
@@ -122,6 +122,7 @@ public sealed class BackOfficeDbContext(DbContextOptions<BackOfficeDbContext> op
         idempotency.HasIndex(x => new {x.ActorScope,x.Route,x.Key}).IsUnique();
         Check(idempotency,"Status","[ResultStatus] BETWEEN 100 AND 599");
 
+        ConfigureParties(model);
         // All instants are UTC; retain London intent separately in domain records.
         foreach (var entity in model.Model.GetEntityTypes())
             foreach (var property in entity.GetProperties().Where(p => p.ClrType == typeof(DateTimeOffset) || p.ClrType == typeof(DateTimeOffset?)))

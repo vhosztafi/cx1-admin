@@ -103,8 +103,10 @@ To reproduce the native report gate after restore, use a new results directory f
 $foundationResults = Join-Path '.local' ('test-results-' + [Guid]::NewGuid().ToString('N'))
 dotnet test backend/BackOffice.slnx --no-restore --logger trx --results-directory $foundationResults
 if ($LASTEXITCODE -ne 0) { throw 'Backend tests failed.' }
-./scripts/assert-test-results.ps1 -ResultsDirectory $foundationResults -MinimumTests 46 -MinimumSqlTests 9
+./scripts/assert-test-results.ps1 -ResultsDirectory $foundationResults -MinimumTests 57 -MinimumSqlTests 10
 ./scripts/test-result-gate.ps1
 ```
 
-These minima describe the Phase 2 suite and should increase as subsequent phases add coverage. Compose configuration was validated with `docker compose config --quiet` and a disposable environment password; no SQL container was started for that check.
+These minima include the Phase 3 client-persistence increment: 42 unit +15 integration cases, including ten named SQL scenarios, pass locally. They should increase as subsequent phases add coverage. Compose configuration was validated with `docker compose config --quiet` and a disposable environment password; no SQL container was started for that check.
+
+The client-persistence migration adds 32 fictional client identities, 35 agency relationships and two draft agencies on repeatable initialization. Stable seed IDs preserve existing edits. Client references use a SQL sequence and may contain gaps after rollback. Agency drafts do not assert completed onboarding. Client HTTP routes and screens are still being implemented; seeded storage alone is not a completed client demonstration.
