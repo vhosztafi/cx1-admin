@@ -20,6 +20,7 @@ builder.Services.AddSingleton<PartyPaging>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyDraftService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyEvidenceService>();
 DiagnosticDispatcher.Register(builder);
+AgencyNotificationDispatcher.Register(builder);
 var app = builder.Build();
 app.UseExceptionHandler(handler => handler.Run(context =>
 {
