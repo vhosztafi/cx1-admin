@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T16:39:07Z"
+last_updated: "2026-09-14T16:56:42Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-05 of 8 in progress; 04-01 through 04-04 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — 04-05 Users tab and lifecycle dialogs implemented;22 frontend tests/typecheck/lint/build and real browser flows pass. Stage2 user integration and concurrent-draft protection verified; administrator readiness is now SQL/API-verified; source Last active and final plan review remain.
+Last activity: 2026-09-14 — 04-05 Users tab and lifecycle dialogs implemented;22 frontend tests/typecheck/lint/build and real browser flows pass. Stage2 user integration and concurrent-draft protection verified; administrator readiness and Last active are verified; directory/header user counts and final plan review remain.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: 04-05 persisted administrator readiness verified. Read04-05-PROGRESS.md. Full239 backend/34SQL and77contracts/OpenAPI lint pass; existing22 frontend/typecheck/lint/build and users/wizard browser evidence current. Next implement source Last active using real UserSession.LastSeenAt (AgencyUser contract already has optional lastSeenAt), review applicable counts/source coverage and perform full plan review/verification before04-05-SUMMARY. Source Users table is prototype-template.txt around2564. Activation success Users invited count belongs04-06. Broker auth remains closed until04-07. No tests/previews active. Plan/AGY requirements incomplete.
+Stopped at: 04-05 Last active column and scoped session-history projection verified. Full239/34SQL and77contracts/OpenAPI lint pass;22 frontend tests/lint/build and both users/wizard and acceptance browser regressions pass. Read04-05-PROGRESS.md. Next implement broker user/invited counts: AgencyEndpoints.Kpis currently omits them; List omits per-agency counts; agency-list.tsx shows unavailable Broker users/Users; detail header lacks user counts. Existing AgencySummary contract has userCount/invitedUserCount; AgencyKpis has invitedUsers but needs explicit total semantics. Then final04-05 code/source review and SUMMARY before04-06. Activation-result Users invited count belongs04-06; broker login closed until04-07. No tests/previews active; plan/AGY requirements incomplete.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-05-PROGRESS.md
 
 ## Autonomous continuation

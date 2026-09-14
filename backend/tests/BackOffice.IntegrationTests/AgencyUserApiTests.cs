@@ -49,11 +49,22 @@ public sealed class AgencyUserApiTests
             var ids=await created.Content.ReadFromJsonAsync<JsonElement>();Assert.Equal(2,ids.EnumerateObject().Count());var userId=ids.GetProperty("id").GetGuid();var invitationId=ids.GetProperty("invitationId").GetGuid();
             using var replay=await Send(admin,HttpMethod.Post,invitePath,csrf,agencyVersion,createKey,input);Assert.Equal(await created.Content.ReadAsStringAsync(),await replay.Content.ReadAsStringAsync());
             var userPath=draftPath+"/users/"+userId;var user=await Read(admin,userPath);Assert.Equal("invited",user.GetProperty("state").GetString());Assert.False(user.TryGetProperty("securityStamp",out _));Assert.False(user.TryGetProperty("passwordHash",out _));
+            Assert.False(user.TryGetProperty("lastSeenAt",out _));
+            var lastSeen=DateTimeOffset.UtcNow.AddHours(-1);
+            await using(var db=new BackOfficeDbContext(options))
+            {
+                // Historical revoked sessions are still evidence of past activity, never current access.
+                foreach(var seen in new[]{lastSeen.AddHours(-2),lastSeen})db.Add(new UserSession{UserId=userId,TokenHash=RandomNumberGenerator.GetBytes(32),CreatedAt=lastSeen.AddDays(-1),ExpiresAt=lastSeen.AddDays(1),RevokedAt=lastSeen.AddMinutes(1),LastSeenAt=seen,DeviceLabel="Fictional history",SecurityStamp="fictional-revoked-session",TicketCiphertext=[]});
+                await db.SaveChangesAsync();
+            }
+            Assert.Equal(lastSeen,(await Read(admin,userPath)).GetProperty("lastSeenAt").GetDateTimeOffset());
+            var listedUser=(await Read(admin,draftPath+"/users")).GetProperty("items")[0];Assert.Equal(lastSeen,listedUser.GetProperty("lastSeenAt").GetDateTimeOffset());Assert.False(listedUser.TryGetProperty("tokenHash",out _));Assert.False(listedUser.TryGetProperty("ticketCiphertext",out _));
             var invitation=await Read(admin,invitePath+"/"+invitationId);Assert.Equal("staged",invitation.GetProperty("state").GetString());Assert.False(invitation.TryGetProperty("tokenHash",out _));Assert.False(invitation.TryGetProperty("expiresAt",out _));Assert.False(invitation.TryGetProperty("notificationId",out _));
             await AdministratorReadiness(admin,draftPath,"missing"); // A staged broker-user is not an administrator.
             using var second=await Send(admin,HttpMethod.Post,invitePath,csrf,created.Headers.ETag!.ToString(),Key(),new{email="second-user-api@cover.example",displayName="Fictional second user",role="broker-admin"});second.EnsureSuccessStatusCode();
             await AdministratorReadiness(admin,draftPath,"satisfied");
             var adminIds=await second.Content.ReadFromJsonAsync<JsonElement>();var brokerId=adminIds.GetProperty("id").GetGuid();var brokerInvite=adminIds.GetProperty("invitationId").GetGuid();var brokerPath=draftPath+"/users/"+brokerId;
+            Assert.False((await Read(admin,brokerPath)).TryGetProperty("lastSeenAt",out _));
             var stagedAdmin=await Read(admin,invitePath+"/"+brokerInvite);
             (await Send(admin,HttpMethod.Post,$"/api/v1/invitations/{brokerInvite}/revoke",csrf,stagedAdmin.GetProperty("etag").GetString(),Key(),new{reason="Fictional readiness revocation"})).EnsureSuccessStatusCode();
             await AdministratorReadiness(admin,draftPath,"missing");
@@ -81,6 +92,7 @@ public sealed class AgencyUserApiTests
             using var deactivated=await Send(admin,HttpMethod.Post,userPath+"/deactivate",csrf,edited.Headers.ETag!.ToString(),Key(),new{reason="Fictional removal"});deactivated.EnsureSuccessStatusCode();Assert.Equal("inactive",(await Read(admin,userPath)).GetProperty("state").GetString());
             Assert.Equal("revoked",(await Read(admin,invitePath+"/"+invitationId)).GetProperty("state").GetString());
             using var restored=await Send(admin,HttpMethod.Post,userPath+"/reactivate",csrf,deactivated.Headers.ETag!.ToString(),Key(),new{reason="Fictional restoration"});restored.EnsureSuccessStatusCode();Assert.Equal("invited",(await Read(admin,userPath)).GetProperty("state").GetString());
+            Assert.Equal(lastSeen,(await Read(admin,userPath)).GetProperty("lastSeenAt").GetDateTimeOffset());
             var history=await Read(admin,invitePath+"?userId="+userId);Assert.Equal(2,history.GetProperty("totalCount").GetInt32());
             var activePath=$"/api/v1/agencies/{activeId}";using var activeResponse=await admin.GetAsync(activePath);activeResponse.EnsureSuccessStatusCode();
             using var issued=await Send(admin,HttpMethod.Post,activePath+"/invitations",csrf,activeResponse.Headers.ETag!.ToString(),Key(),new{email="active-user-api@cover.example",displayName="Fictional active user",role="broker-admin"});issued.EnsureSuccessStatusCode();var activeInvitation=(await issued.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("invitationId").GetGuid();

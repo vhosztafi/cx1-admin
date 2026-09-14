@@ -32,9 +32,9 @@ public static class AgencyUserEndpoints
         var page=paging.Read(context,LocalIdentityService.Actor(context.User),"createdAt-desc,id");if(page is null)return InvalidQuery(context);
         var query=from user in db.Set<StaffUser>() join link in db.Set<UserRole>() on user.Id equals link.UserId join role in db.Set<Role>() on link.RoleId equals role.Id
             where user.AgencyId==agencyId&&role.Scope=="agency"&&(userId==null||user.Id==userId)&&user.CreatedAt<=page.AsOf
-            orderby user.CreatedAt descending,user.Id select new{user.Id,user.AgencyId,user.DisplayName,user.Email,role=role.Code,state=user.State=="suspended"?"inactive":user.State,user.CreatedAt,user.RowVersion};
+            orderby user.CreatedAt descending,user.Id select new{user.Id,user.AgencyId,user.DisplayName,user.Email,role=role.Code,state=user.State=="suspended"?"inactive":user.State,user.CreatedAt,user.RowVersion,lastSeenAt=db.Set<UserSession>().Where(session=>session.UserId==user.Id).Max(session=>(DateTimeOffset?)session.LastSeenAt)};
         var total=await query.CountAsync(context.RequestAborted);var rows=await query.Skip(userId is null?page.Offset:0).Take(userId is null?page.Size:1).ToListAsync(context.RequestAborted);
-        var items=rows.Select(x=>new{x.Id,x.AgencyId,x.DisplayName,x.Email,x.role,x.state,x.CreatedAt,etag=AgencyDraftService.Etag(x.RowVersion)}).ToList();
+        var items=rows.Select(x=>new{x.Id,x.AgencyId,x.DisplayName,x.Email,x.role,x.state,x.CreatedAt,x.lastSeenAt,etag=AgencyDraftService.Etag(x.RowVersion)}).ToList();
         if(userId is not null){if(items.Count==0)return Missing(context);context.Response.Headers.ETag=items[0].etag;return Results.Json(items[0],ClientEndpoints.Json);}
         return Results.Json(new{items,totalCount=total,nextCursor=paging.Next(page,page.Offset+items.Count<total)},ClientEndpoints.Json);
     }

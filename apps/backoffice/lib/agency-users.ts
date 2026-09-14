@@ -1,6 +1,6 @@
 export type BrokerRole = 'broker-admin' | 'broker-user' | 'broker-readonly';
 export const brokerRoles: Record<BrokerRole,string> = {'broker-admin':'Broker administrator','broker-user':'Broker user','broker-readonly':'Broker user (read only)'};
-export type AgencyUser = {id:string;agencyId:string;displayName:string;email:string;role:BrokerRole;state:'invited'|'active'|'inactive';createdAt:string;etag:string};
+export type AgencyUser = {id:string;agencyId:string;displayName:string;email:string;role:BrokerRole;state:'invited'|'active'|'inactive';createdAt:string;etag:string;lastSeenAt?:string};
 export type Invitation = {id:string;userId:string;agencyId:string;email:string;role:BrokerRole;state:'staged'|'pending'|'accepted'|'expired'|'revoked';createdAt:string;issuedAt?:string;expiresAt?:string;notificationId?:string;etag:string};
 export function userInput(name:string,email:string,role:string,creating:boolean,reason:string) {
   if (!name.trim() || name.trim().length > 200 || /[\u0000-\u001f\u007f]/.test(name)) throw Error('Enter a name of up to 200 characters.');

@@ -92,11 +92,19 @@ The existing SQL/API lifecycle scenario now checks readiness after staging, revo
 
 Final full regression passed239 backend tests /34 real-SQL scenarios, no skips (198 unit/41 integration), in .local/phase4-admin-readiness-verified; the TRX gate passed. Targeted final API/time-boundary scenario also passed in .local/phase4-admin-readiness-clock-api. OpenAPI lint and77 Node contract tests passed. No schema or frontend changes in this slice; the prior22 frontend tests/build/browser evidence remains current. No preview remains active and no human UAT is inferred.
 
+## Last active source column
+
+The scoped user list/detail API now projects the maximum stored UserSession.LastSeenAt for each owned user, including retained revoked sessions. It returns no session identifiers, tokens or ticket material. Missing session history omits lastSeenAt rather than inventing activity. The Users table restores the source Last active column, formatted through the shared date renderer, with Not recorded when absent. The existing optional OpenAPI property already covers this projection.
+
+The SQL/API scenario verifies absent history, maximum across two historical revoked sessions, list/detail equality, no leakage to another user's row and history retained after deactivation/reactivation. The fixture does not grant broker access. Final full backend suite passed239/34SQL with no skips in .local/phase4-last-active-full; the TRX gate passed. Targeted final scenario passed in .local/phase4-users-last-active-final-api. Frontend22 tests, TypeScript through production build, ESLint, OpenAPI lint and77 contract tests passed. Both real browser scripts (agency users/onboarding and invitation password acceptance) passed again. Users desktop/mobile screenshots were visually inspected, including the new column and contained table scrolling. Owned preview processes39552/51188 were verified and stopped.
+
+Source review confirms the directory still displays unavailable Broker users and per-agency Users counts despite identities now existing. These must be implemented before completing04-05. The activation-result Users invited count remains04-06. No plan/AGY completion or human UAT is claimed.
+
 ## Required next work
 
 1. Onboarding stage2 and Users tab are now wired and browser-verified. Preserve their dirty/uncertain guards and aggregate-version reconciliation when extending them.
 2. Persisted staged/active broker-administrator readiness is implemented and verified. Distribution/approval/terms and trusted broker retrieval remain04-06/07.
-3. Review remaining source details, including Last active (requires real session-derived API data; never invent a timestamp) and applicable user counts. Preserve explicit acceptance obligations rather than silently omitting source controls.
+3. Last active is implemented. Implement actual broker-user/invited counts in AgencyEndpoints.Kpis/List/Detail and agency-list.tsx/header, with scoped API/browser evidence. Preserve explicit acceptance obligations rather than silently omitting source controls.
 4. Run complete plan regressions and code/UI review, then write04-05-SUMMARY only once all plan work is verified. No AGY requirement or human UAT is inferred complete.
 
 Do not reset Demo or edit frontend-code. No real notification, payment, deployment or broker portal is introduced.
