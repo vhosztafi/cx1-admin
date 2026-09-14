@@ -27,3 +27,5 @@ After a contract task: `node scripts/validate-contracts.mjs` and `node --test te
 Browser command to add: `pnpm web:browser:clients`, local API5087/web3100 only, unique fictional data with no reset. Current shell/operations browser tests remain regressions. Capture actual source/app evidence at 1560x1000 and 390px; human judgment/assistive-technology acceptance remains separate.
 
 Sign-off remains pending execution. Set nyquist_compliant true only when all planned boundary cases have passing evidence. Do not inflate CI minimums using old TRX directories, and do not count hosted CI as run merely because its YAML exists.
+
+03-01 evidence (2026-09-14): tasks 1/2 pass all 62 design tests and OpenAPI lint, preserving 949 controls/five conditional rules. Task 3 passes full native 46-case backend suite and a final targeted CommandBoundary SQL regression, including old receipt compatibility, original response ETag and invalid-header rollback. All remaining task rows are pending; party HTTP/UI behavior is not yet implemented.

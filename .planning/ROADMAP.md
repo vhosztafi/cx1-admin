@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Approved by the user on 2026-09-13. Autonomous research, planning, implementation and transitions authorised. Phases 1–2 are complete; native foundation verification passed on 2026-09-14. Phase 3 research and six checked plans are ready for execution.
+**Status:** Approved by the user on 2026-09-13. Autonomous research, planning, implementation and transitions authorised. Phases 1–2 are complete; native foundation verification passed on 2026-09-14. Phase 3 plan 03-01 is complete; client identity implementation is next.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
@@ -233,7 +233,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 |---|---|---|---|
 | 1. Data and API design | 4/4 | Complete | 2026-09-13 |
 | 2. Application and persistence foundation | 6/6 | Complete | 2026-09-14 |
-| 3. Clients and contact servicing | 0/6 | Planned | — |
+| 3. Clients and contact servicing | 1/6 | In progress | — |
 | 4. Agency onboarding and access | 0/TBD | Not started | — |
 | 5. Motor Trade quote capture | 0/TBD | Not started | — |
 | 6. Underwriting and first policy issue | 0/TBD | Not started | — |
@@ -248,4 +248,4 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 
 ### Phase 3 downstream acceptance obligations
 
-CLI-01 client discovery/contacts/activity is delivered in Phase 3, but the requirement remains partial until Phases 5/6 verify navigation to actual linked quotes/policies. Phase 5 connects MatchSubmission to a real quote, implements automatic detection/rating blocks and guards reopening after downstream progression. Phase 9 connects persisted match information requests to the demo communication delivery workflow. Phase 13 checks these obligations before full requirement acceptance; placeholders and Recorded requests do not count as live records or Sent messages.
+CLI-01 client discovery/contacts/activity is owned by Phase 3, but the requirement remains partial until Phases 5/6 verify navigation to actual linked quotes/policies. Phase 5 connects MatchSubmission to a real quote, implements automatic detection/rating blocks and guards reopening after downstream progression. Phase 9 connects persisted match information requests to the demo communication delivery workflow. Phase 13 checks these obligations before full requirement acceptance; placeholders and Recorded requests do not count as live records or Sent messages.
