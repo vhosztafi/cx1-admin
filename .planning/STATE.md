@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T07:57:12Z"
+last_updated: "2026-09-14T08:29:00Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
   completed_phases: 3
   total_plans: 24
-  completed_plans: 16
+  completed_plans: 17
   percent: 23
 ---
 
@@ -20,14 +20,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute Phase 4 checked plans, starting04-01 agency contract/source refinements.
+**Current focus:** Execute Phase 4 plan 04-02: persistent agency drafts and six-stage workspace.
 
 ## Current Position
 
 Phase: 4 of 13 (Agency onboarding and access)
-Plan: 04-01 of8 ready; all six Phase3 plans complete
+Plan: 04-02 of 8 next; 04-01 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — Phase4 research/context/data-API/UI contract and eight plans checked;23tasks, all AGY requirements mapped. No runtime changes this increment.
+Last activity: 2026-09-14 — 04-01 agency contracts/storage protocols committed (b9d1091e); summary f98f119. All 74 contract tests and OpenAPI lint pass. No runtime changes this increment.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -43,7 +43,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
 ### Pending Todos
 
-- Execute04-01 through04-08 sequentially; keep all gates and consume ACCEPTANCE-BACKLOG.md.
+- Execute 04-02 through 04-08 sequentially; keep all gates and consume ACCEPTANCE-BACKLOG.md.
 - Keep future business endpoints closed until their owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,7 +54,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: Phase4 planning complete. Read04-CONTEXT/RESEARCH/DATA-API-DESIGN/UI-SPEC/PLAN-REVIEW and execute04-01. Source gaps: territory/correspondence/compliance modes, staged invites, independent approval, notifications and scoped APIs. Existing Agency IDs preserved; draft distribution eligibility separate from rating readiness. Agency-first lock order integrates Phase3 links. No active previews/tests; production remains d1c8174. Research primary docs cited. No broker portal, real delivery or funnel edits. Runtime tests remain pending new implementation; baseline123/19 SQL,63contracts,15frontend.
+Stopped at: 04-01 complete and summarized. Next execute 04-02 using 04-CONTEXT/RESEARCH/DATA-API-DESIGN/UI-SPEC and updated canonical design/OpenAPI. Agency generator now owns strict partial drafts, source options, staged invites, evidence, independent approval, protected notifications and safe scope. 74 contracts pass, 320 operations, 949 reviewed controls. Existing backend baseline remains 123 tests/19 SQL, frontend 15. No active previews/tests, no runtime changes; no broker portal, real delivery or funnel edits. AGY requirements remain pending. Preserve Agency IDs; distribution eligibility distinct from rating readiness; Agency-first locks integrate Phase 3 links in 04-06.
 Resume file: None
 
 ## Autonomous continuation
