@@ -22,6 +22,10 @@ builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyEvidenceServ
 builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyNotificationRetry>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.InvitationAcceptance>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.InvitationDemoReveal>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.InvitationService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyUserService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyUserLifecycle>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyInvitationCommands>();
 DiagnosticDispatcher.Register(builder);
 AgencyNotificationDispatcher.Register(builder);
 var app = builder.Build();
@@ -53,6 +57,7 @@ app.UseLocalIdentity();
 app.MapHealthChecks("/health/live").AllowAnonymous();
 app.MapIdentity();
 app.MapInvitations();
+app.MapAgencyUsers();
 app.MapOperationalJobs();
 app.MapOperationalReads();
 app.MapOperationalRetries();

@@ -21,7 +21,7 @@ const uuid='11111111-1111-4111-8111-111111111111';
 const time='2026-09-14T09:00:00Z';
 const product={productVersionId:uuid,effectiveFrom:'2026-09-14',brokerCommissionBasisPoints:1250};
 const terms=()=>({effectiveFrom:'2026-09-14',reason:'Fictional renewal of agreed terms',commercialTerms:{effectiveFrom:'2026-09-14',commissionBasis:'per-product',feeSharing:'none',volumeCommitmentMode:'none',minimumPremiumOverrideMode:'none',referralRouting:'standard-internal-underwriting'},settlement:{statementCycle:'monthly',method:'bank-transfer',premiumCollection:'agency',commissionSettlement:'net-remittance'},paymentTermsDays:30,creditLimit:'25000.00',products:[product]});
-const invitation={id:uuid,userId:uuid,agencyId:uuid,email:'fictional@example.test',role:'broker-admin',createdAt:time};
+const invitation={id:uuid,userId:uuid,agencyId:uuid,email:'fictional@example.test',role:'broker-admin',createdAt:time,etag:'"AAAAAAAAAAA="'};
 
 test('all 24 fixed wizard option families exactly preserve source labels and values',async()=>{
  const rendered=await read('docs/design/source/prototype-render-data.json');
@@ -80,6 +80,15 @@ test('agency user writes accept exactly one broker role and never internal acces
  for(const role of ['broker-admin','broker-user','broker-readonly'])assert.ok(schema('AgencyInvitationWrite')({email:invitation.email,displayName:'Fictional User',role}));
  for(const value of [{role:'system-admin'},{role:'broker'},{roles:['broker-admin','underwriter']},{agencyId:uuid},{state:'active'},{approvedBy:uuid}])assert.equal(schema('AgencyInvitationWrite')({email:invitation.email,displayName:'Fictional User',role:'broker-user',...value}),false);
  assert.equal(schema('AgencyUserWrite')({displayName:'Fictional User',role:'broker-user',reason:'Edit',email:'changed@example.test'}),false);
+});
+test('user and invitation commands return identities while reads carry their own versions',()=>{
+ const cases=[['/agencies/{agencyId}/invitations','post',201,['id','invitationId']],['/agencies/{agencyId}/users/{userId}','put',200,['id']],['/agencies/{agencyId}/users/{userId}/deactivate','post',200,['id']],['/agencies/{agencyId}/users/{userId}/reactivate','post',200,['id']],['/invitations/{invitationId}/resend','post',202,['id','userId']],['/invitations/{invitationId}/revoke','post',200,['id','userId']]];
+ for(const [path,method,status,keys] of cases){const operation=op(path,method);assert.equal(operation['x-permission'],'agency-admin');assert.deepEqual(Object.keys(operation.responses[status].content['application/json'].schema.properties),keys);assert.ok(operation.parameters.some(x=>x.name==='If-Match'&&x.required));}
+ assert.ok(doc.components.schemas.AgencyUser.required.includes('etag'));
+ assert.ok(doc.components.schemas.Invitation.oneOf.every(x=>x.required.includes('etag')));
+ assert.equal(op('/agencies/{agencyId}/users/{userId}','get').operationId,'getAgencyUser');
+ assert.equal(op('/agencies/{agencyId}/invitations/{invitationId}','get').operationId,'getAgencyInvitation');
+ for(const name of ['AgencyUser','Invitation'])assert.ok(!JSON.stringify(doc.components.schemas[name]).includes('tokenHash'));
 });
 test('state commands create proposals and decisions reject caller-selected approvers',()=>{
  for(const action of ['activate','suspend','reactivate']){

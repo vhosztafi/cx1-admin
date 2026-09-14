@@ -17,8 +17,8 @@ public static class AgencyInvitationDemo
         await using(var db=await factory.CreateDbContextAsync())
         {
             var staff=await db.Set<StaffUser>().SingleAsync(x=>x.Email=="agency-admin@cover.example");actor=new(staff.Id,staff.TeamId,null,new HashSet<string>{"agency-admin"});
-            var agency=new Agency{Reference="AG-DEMO-I-"+Guid.NewGuid().ToString("N")[..8],LegalName="Fictional invitation demonstration",State="active",CreatedBy=staff.Id};
-            db.Add(agency);await db.SaveChangesAsync();agencyId=agency.Id;version=agency.RowVersion;
+            var agency=new Agency{Reference="AG-DEMO-I-"+Guid.NewGuid().ToString("N")[..8],LegalName="Fictional invitation demonstration",NormalizedName="FICTIONAL INVITATION DEMONSTRATION",State="active",CreatedBy=staff.Id};
+            db.Add(agency);db.Add(new AgencyOnboarding{AgencyId=agency.Id,CreatedBy=staff.Id,Details=JsonSerializer.Serialize(new{legalName=agency.LegalName})});await db.SaveChangesAsync();agencyId=agency.Id;version=agency.RowVersion;
         }
         var issuer=new InvitationService(new AgencyNotificationService(payload,clock),clock);
         var created=await new AgencyUserService(drafts,boundary,clock,issuer).Invite(actor,agencyId,Guid.NewGuid().ToString("N"),version,
