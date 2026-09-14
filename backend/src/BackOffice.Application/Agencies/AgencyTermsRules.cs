@@ -16,6 +16,17 @@ public static class AgencyTermsRules
     public static ValidatedAgencyTerms ValidateProposal(JsonElement input,DateOnly today,DateOnly? latestEffectiveFrom)
         =>Validate(input,today,latestEffectiveFrom,false);
 
+    // Read an immutable version without treating its historical date as a new proposal.
+    // Current/future selection belongs to the caller's explicit business date.
+    public static ValidatedAgencyTerms ReadPublished(JsonElement snapshot)
+    {
+        if(Encoding.UTF8.GetByteCount(snapshot.GetRawText())>65536)throw new AgencyCommandException(413,"agency-terms-too-large");
+        Closed(snapshot,["effectiveFrom","commercialTerms","settlement","paymentTermsDays","creditLimit","products"]);
+        var input=JsonNode.Parse(snapshot.GetRawText())!.AsObject();input["reason"]="Published terms assessment";
+        using var document=JsonDocument.Parse(input.ToJsonString());
+        return Validate(document.RootElement,DateOnly.MinValue,null,false);
+    }
+
     // Activation captures the saved declarations without rewriting their historical
     // effective date. Future changes continue to use ValidateProposal.
     public static ValidatedAgencyTerms ExtractInitial(JsonElement savedDraft,IReadOnlyList<AgencyProductInput> products,DateOnly today,string reason)

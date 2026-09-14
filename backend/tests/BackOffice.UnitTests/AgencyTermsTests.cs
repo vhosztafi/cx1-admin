@@ -11,6 +11,20 @@ public sealed class AgencyTermsTests
     {"effectiveFrom":"2026-09-14","reason":" Fictional terms review ","commercialTerms":{"effectiveFrom":"2026-09-14","commissionBasis":"per-product","feeSharing":"none","volumeCommitmentMode":"none","minimumPremiumOverrideMode":"none","referralRouting":"standard-internal-underwriting"},"settlement":{"statementCycle":"monthly","method":"bank-transfer","premiumCollection":"agency","commissionSettlement":"net-remittance"},"paymentTermsDays":30,"creditLimit":"99999999999999999.99","products":[{"productVersionId":"11111111-1111-4111-8111-111111111111","effectiveFrom":"2026-09-14","brokerCommissionBasisPoints":1250}]}
     """)!.AsObject();
     private static ValidatedAgencyTerms Validate(JsonObject input,DateOnly? latest=null){using var doc=JsonDocument.Parse(input.ToJsonString());return AgencyTermsRules.ValidateProposal(doc.RootElement,Today,latest);}
+    [Theory][InlineData("2020-01-01")][InlineData("2030-01-01")]
+    public void PublishedTermsRetainHistoricalAndScheduledDatesWithoutCreatingAProposal(string date)
+    {
+        var input=Complete();input["effectiveFrom"]=date;input["commercialTerms"]!["effectiveFrom"]=date;input["products"]![0]!["effectiveFrom"]=date;input.Remove("reason");
+        using var document=JsonDocument.Parse(input.ToJsonString());var terms=AgencyTermsRules.ReadPublished(document.RootElement);
+        Assert.Equal(DateOnly.Parse(date),terms.EffectiveFrom);Assert.Contains("99999999999999999.99",terms.SnapshotJson);Assert.DoesNotContain("reason",terms.SnapshotJson);
+    }
+    [Fact]public void PublishedTermsRejectRequestFieldsMissingValuesAndInvalidProductDates()
+    {
+        void Read(JsonObject input){using var document=JsonDocument.Parse(input.ToJsonString());AgencyTermsRules.ReadPublished(document.RootElement);}
+        Assert.Throws<AgencyCommandException>(()=>Read(Complete()));
+        var input=Complete();input.Remove("reason");input.Remove("creditLimit");Assert.Throws<AgencyCommandException>(()=>Read(input));
+        input=Complete();input.Remove("reason");input["products"]![0]!["effectiveFrom"]="2026-09-13";Assert.Throws<AgencyCommandException>(()=>Read(input));
+    }
     [Fact]public void CompleteSnapshotPreservesExactMoneyAndExcludesRequestReason()
     {
         var result=Validate(Complete());Assert.Equal("Fictional terms review",result.Reason);Assert.Contains("99999999999999999.99",result.SnapshotJson);Assert.DoesNotContain("reason",result.SnapshotJson);Assert.Equal(64,result.Fingerprint.Length);Assert.Single(result.Products);

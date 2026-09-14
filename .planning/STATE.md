@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T21:05:15Z"
+last_updated: "2026-09-14T21:30:25Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-06 of 8 in progress; 04-01 through 04-05 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — 04-06 independent suspension approval and atomic stamp/session/invitation revocation verified; activation history preserved. Full284/45SQL pass.
+Last activity: 2026-09-14 — 04-06 independent reactivation with current approved terms/evidence and fresh invitations verified. Full287/45SQL pass.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: AgencySuspensionService now proposes/rejects/applies independently under current authority and agency/request/base locks. Approval rotates every scoped user stamp and revokes sessions/staged/pending invitations in one decision/activity/audit/receipt transaction; individual states/credentials and unrelated agency/history remain intact. Tests verify request-alone/rejection no effects, self/scope/version/duplicate/stale denial, replacement, failure after direct session revocation rolls back all effects, reviewer race, replay and revoked-reviewer denial. Real activation-to-suspension test preserves terms/receipts/follow-ups. Full284 backend/45SQL and77 contracts plus OpenAPI lint pass; CI284/45 Windows282/43 Linux. Initial test fixture role-order error corrected and retained in progress. Next implement reactivation with current effective terms/evidence/administrator prerequisites and independent review; never revive old tokens/sessions or individually inactive users. Then scoped API/DI/read/UI and final lifecycle writer-race acceptance. Phase3 agency-first association fences already verified. No migration/seed/frontend changes or tests/previews active; prior22frontend/build/browser current. Broker login closed until04-07; no public suspension/approval UI or human UAT claimed.
+Stopped at: ReadPublished, AgencyReactivationAssessment and AgencyReactivationService implemented. Assessment selects current approved terms by London date, holds current catalogue/rules/evidence/user/role/credential/manager prerequisites and fingerprints safe IDs/rowversions. Independent approval rotates stamps, revokes sessions and creates fresh invitations for enabled invited users atomically; individual inactive states and old tokens/sessions remain revoked. Tests cover scheduled term rollover, expiry, withdrawn grants, inactive admin, self/scope/ETag/duplicate/stale rejection, replacement, rollback after fresh invitation, reviewer race, replay and revoked authority; actual terms/receipts/follow-ups preserved. Full287 backend/45SQL and77 contracts/OpenAPI lint pass; CI287/45 Windows285/43 Linux. Next scoped public proposal/read/decision APIs and DI, current/scheduled/history terms reads, then final-stage/Products/state UI and writer-race/browser/source acceptance. AgencyEndpoints.ReadBody currently private; extract/reuse bounded parsing. Suspended agency UI must use reactivation assessment rather than draft activation readiness. No migration/seed/frontend changes; no tests/previews active; prior22frontend/build/browser current. Broker login closed until04-07; no public approval UI or human UAT claimed.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-06-PROGRESS.md
 
 ## Autonomous continuation
