@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using BackOffice.Application.Agencies;
 using BackOffice.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,7 @@ internal static class AgencyApprovalLocks
         var eligible=setting is null?null:AgencyDistributionRules.Parse(setting.Values);
         if(eligible is null)throw new AgencyCommandException(503,"agency-distribution-unavailable");
         var families=new HashSet<Guid>();
+        var catalogue=new List<object>();
         foreach(var selected in terms.Products.OrderBy(x=>x.ProductVersionId))
         {
             if(!eligible.Contains(selected.ProductVersionId))throw new AgencyCommandException(422,"agency-product-ineligible");
@@ -40,7 +42,8 @@ internal static class AgencyApprovalLocks
             var effective=new DateTimeOffset(TimeZoneInfo.ConvertTimeToUtc(local,TimeZoneInfo.FindSystemTimeZoneById("Europe/London")));
             if(effective<now)effective=now;
             if(!families.Add(product.Id)||product.Code is not ("motor-trade-road-risks" or "motor-trade-combined" or "commercial-combined")||provider.State!="active"||version.EffectiveFrom>effective||version.EffectiveTo is DateTimeOffset end&&end<=effective)throw new AgencyCommandException(422,"agency-product-ineligible");
+            catalogue.Add(new{version.Id,version.RowVersion,version.ProductId,version.ProviderId,productVersion=product.RowVersion,providerVersion=provider.RowVersion});
         }
-        return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(setting!.Id.ToString("D")+":"+terms.Fingerprint))).ToLowerInvariant();
+        return Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new{ruleId=setting!.Id,terms.Fingerprint,catalogue}))).ToLowerInvariant();
     }
 }

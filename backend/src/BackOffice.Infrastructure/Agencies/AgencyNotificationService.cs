@@ -27,7 +27,7 @@ public sealed class AgencyNotificationService(AgencyNotificationPayload payload,
         if(invitationId is Guid invitation&&!await db.Set<AgencyInvitation>().AnyAsync(x=>x.Id==invitation&&x.AgencyId==agencyId&&x.State=="staged",token))
             throw new InvalidOperationException("Invitation delivery requires an owned staged invitation.");
         var setting=await db.Set<SettingVersion>().SingleOrDefaultAsync(x=>x.Id==scenarioVersionId,token);
-        if(setting is null||(setting.Scope!="agency-notification"&&!(invitationId is not null&&setting.Scope=="agency-invitation-delivery")))throw new ArgumentException("Invalid notification scenario.");
+        if(setting is null||(setting.Scope!="agency-notification"&&!(invitationId is not null&&setting.Scope=="agency-invitation-delivery")&&!(invitationId is null&&setting.Scope=="agency-activation-delivery")))throw new ArgumentException("Invalid notification scenario.");
         AgencyNotificationWorker.Scenario(setting.Values);
         var hash=AgencyNotificationPayload.Fingerprint(envelope);var operationKey=operationId.ToString("N");
         var existing=await db.Set<OutboxWork>().FromSqlInterpolated($"SELECT * FROM [OutboxWork] WITH (UPDLOCK,HOLDLOCK) WHERE [Kind]={Kind} AND [OperationKey]={operationKey}").SingleOrDefaultAsync(token);
