@@ -100,11 +100,10 @@ The SQL/API scenario verifies absent history, maximum across two historical revo
 
 Source review confirms the directory still displays unavailable Broker users and per-agency Users counts despite identities now existing. These must be implemented before completing04-05. The activation-result Users invited count remains04-06. No plan/AGY completion or human UAT is claimed.
 
-## Required next work
+## User counts and plan closure
 
-1. Onboarding stage2 and Users tab are now wired and browser-verified. Preserve their dirty/uncertain guards and aggregate-version reconciliation when extending them.
-2. Persisted staged/active broker-administrator readiness is implemented and verified. Distribution/approval/terms and trusted broker retrieval remain04-06/07.
-3. Last active is implemented. Implement actual broker-user/invited counts in AgencyEndpoints.Kpis/List/Detail and agency-list.tsx/header, with scoped API/browser evidence. Preserve explicit acceptance obligations rather than silently omitting source controls.
-4. Run complete plan regressions and code/UI review, then write04-05-SUMMARY only once all plan work is verified. No AGY requirement or human UAT is inferred complete.
+Commit91bf437 adds agency-scoped retained user counts and invited subsets to directory/detail/KPI reads. Internal identities are excluded. Inactive identities stay in totals; invited includes staged identities awaiting acceptance, and resending does not create another user. The KPI total/subset is aggregated in one SQL statement. Detail counts participate in its existing aggregate transaction. Directory projections are bounded to returned agency IDs. UI header counts refresh after mutations without unmounting user history. Unknown data remains unavailable, while an actual empty agency returns zero.
 
-Do not reset Demo or edit frontend-code. No real notification, payment, deployment or broker portal is introduced.
+Verification: full239 backend/34 real-SQL scenarios passed without skips in .local/phase4-user-counts-full; TRX gate passed. SQL/API checks cover zero, staging, role changes, deactivation/reactivation, directory/detail consistency and KPI deltas. Frontend22 tests, TypeScript/production build, ESLint, OpenAPI lint and77 contract tests passed. The expanded user browser script passed live header refresh, persisted directory totals and numeric KPI plus all earlier lifecycle/wizard scenarios. Desktop/mobile counts screenshots were inspected. Task-owned preview processes51568/44688 were verified and stopped. Current contract327 operations/949 mapped controls.
+
+Plan04-05 is complete; see04-05-SUMMARY.md and04-05-REVIEW.md. Continue04-06 activation/suspension/agreed terms. Broker trust remains04-07; full phase UAT/review remains04-08. No entire AGY requirement or human UAT is inferred complete.
