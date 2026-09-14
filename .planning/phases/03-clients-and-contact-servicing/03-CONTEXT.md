@@ -1,0 +1,22 @@
+# Phase 3 context
+
+Approved autonomous scope: CLI-01..04, Next/TypeScript/Tailwind, modular .NET/SQL Server, prototype fidelity, fictional data and meaningful tests. Phase 2 is verified. Preserve frontend-code unchanged. No additional user decisions are needed for the choices below.
+
+## Decisions
+
+- ClientAccount is shared business identity. Contacts and declared contact names belong to ClientAgencyRelationship; Person is the stable person identity to which support flags attach. Never mutate another relationship's declared contact details through a contact edit. New person records preserve FullName without splitting it; reusing an existing person requires an accessible same-client relationship.
+- Introduce the minimal Agency identity needed for real foreign keys and two fictional relationships now; full onboarding/terms/users remain Phase 4. Internal identity remains the only production sign-in path. Build and test relationship scope evaluators and safe projections now; do not enable broker login prematurely.
+- Existing active contacts require exactly one primary per relationship. First contact becomes primary. Changing primary is atomic. Ending the primary when other contacts remain requires choosing another primary first. Ending a last contact leaves a valid empty set. End records, never delete history.
+- Marketing consent retains Given / Withheld / Not asked explicitly, with channel values, recording time and source. The current two-booleans-only contract is insufficient. Repair the generator, schemas, examples and tests before runtime implementation.
+- Flag types/categories follow the source. Internal category/instruction/consent/reason/history require dedicated capabilities, separate from client read. Agency-safe output contains only explicitly granted functional wording and person ID/review date; no internal category, provenance, count of hidden flags or raw audit. Consent declined means no sensitive detail is persisted; return a validation result instructing the user to remove detail rather than claiming success.
+- Match review must work before quote capture exists. Introduce a durable MatchSubmission identity snapshot (agency, submitted business identity, immutable evidence, optional future quote link). MatchReview references it; quoteId becomes optional in the API until Phase 5 links a real quote. Seed clearly labelled fictional intake examples, never fake policies, premiums or quote implementations.
+- Decisions link/separate/decline/query/reopen are persisted with reason, actor and immutable trail. Link only changes the intake's client/relationship association; it never merges accounts or contacts. Separate creates/reuses exactly one separate client identity for that intake. Query records an information request; delivery remains explicitly pending the communications phase. Reopen preserves prior decisions and does not undo already committed business records. Phase 5 must reject reopening a review whose downstream quote has progressed beyond a permitted draft.
+- Preserve source client list and blue record header, Overview/Policies/Quotes/Contacts/Activity tabs, flag forms/table and match evidence/Rule tabs with decision rail. Add explicit Create client/Edit identity controls for CLI-02. Policies/quotes show truthful empty/not-yet-available states until their owners exist; do not count seeded match intake as a live quote.
+
+## Scope fence
+
+CLI-01 acceptance spans feature dependencies: Phase 3 implements client discovery/contacts/activity; actual quote/policy link navigation remains unverified until Phases 5/6. Keep that requirement partial until its full wording passes. Do not silently claim future-feature placeholders satisfy linked-record acceptance.
+
+No policy/rating fields on ClientAccount, no global person search, no destructive duplicate merge, no new external services, no regulator/consent legal certification, no broker portal. Cross-agency protection is exercised through real SQL scoped projection tests and denied API routes; actual broker session activation is Phase 4. Later claim/exposure/quote activity is unavailable until real owning records exist.
+
+Canonical references: REQUIREMENTS.md CLI-01..04; docs/design/DATA-MODEL.md Parties and distribution; PERMISSIONS.md; API-CONVENTIONS.md; contracts/openapi.json; prototype-template.txt pClients (2122), pClient (2139), flagTable (5084), pMatch (5531), addcontact (6155), flag (6236). Source labels and options are authoritative; exact line positions may change if extraction is regenerated.

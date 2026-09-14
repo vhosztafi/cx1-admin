@@ -18,7 +18,7 @@ Staff can complete a quote-to-policy-to-servicing journey and trust that its pol
 
 ### Validated
 
-None shipped in this repository. The prototype is a behavioural/design reference, not a working backend. The copied funnel's previous milestone is reference history, not this project's delivery history.
+Phase 1 design and Phase 2 native foundation are verified locally. See DES-01..06 and FND-01..06 in REQUIREMENTS.md and their phase verification reports. The prototype and copied sales funnel remain reference material; full business MVP delivery is still in progress.
 
 ### Active
 
