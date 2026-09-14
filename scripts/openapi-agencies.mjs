@@ -68,8 +68,8 @@ export function addAgencyContracts({schemas:s,ref:r,text:t,enumeration:e,object:
   {if:{properties:{minimumPremiumOverrideMode:{const:'capacity-provider-agreed'}},required:['minimumPremiumOverrideMode']},then:{properties:{minimumPremiumOverride:money},required:['minimumPremiumOverride']}}
  ];
  s.AgencyTermsWrite=o({effectiveFrom:date,reason:t(1000),commercialTerms:termsCommercial,settlement:o(structuredClone(settlement)),paymentTermsDays:{type:'integer',enum:[30,45,60]},creditLimit:money,products:{...bounded(r('AgencyProductWrite'),3),minItems:1}});
- s.AgencyTermsRequest=o({...proposal,...structuredClone(s.AgencyTermsWrite.properties)},[...new Set([...proposalRequired,...s.AgencyTermsWrite.required])]);
- s.AgencyTermsVersion=o({id,agencyId:id,version:{type:'integer',minimum:1},approvedRequestId:id,...Object.fromEntries(Object.entries(structuredClone(s.AgencyTermsWrite.properties)).filter(([k])=>k!=='reason')),effectiveTo:date,createdAt:instant},['id','agencyId','version','approvedRequestId','effectiveFrom','commercialTerms','settlement','paymentTermsDays','creditLimit','products','createdAt']);
+ s.AgencyTermsRequest=o({...proposal,...structuredClone(s.AgencyTermsWrite.properties),etag,requestedByLabel:t(200),decisionByLabel:t(200)},[...new Set([...proposalRequired,...s.AgencyTermsWrite.required,'etag','requestedByLabel'])]);
+ s.AgencyTermsVersion=o({id,agencyId:id,version:{type:'integer',minimum:1},approvedRequestId:id,approvedRequestKind:e('activation','terms'),status:e('current','scheduled','historical'),...Object.fromEntries(Object.entries(structuredClone(s.AgencyTermsWrite.properties)).filter(([k])=>k!=='reason')),effectiveTo:date,createdAt:instant},['id','agencyId','version','approvedRequestId','approvedRequestKind','status','effectiveFrom','commercialTerms','settlement','paymentTermsDays','creditLimit','products','createdAt']);
  s.AgencyPermissionRequest=o({id,agencyId:id,permission:{const:'bordereau-download'},requestedBy:id,reason:t(1000),state:e('pending','granted','rejected'),createdAt:instant,decisionBy:id,decidedAt:instant},['id','agencyId','permission','requestedBy','reason','state','createdAt']);
  s.AgencyPermissionGrant=o({id,agencyId:id,permission:{const:'bordereau-download'},requestId:id,grantedBy:id,grantedAt:instant,revokedBy:id,revokedAt:instant},['id','agencyId','permission','requestId','grantedBy','grantedAt']);
  s.AgencyActivity=o({id,occurredAt:instant,actorLabel:t(),action:t(100),summary:t(1000)});
@@ -112,6 +112,7 @@ export function addAgencyContracts({schemas:s,ref:r,text:t,enumeration:e,object:
  for(const action of ['activate','suspend','reactivate'])replace('post',`/agencies/{agencyId}/${action}`,'agency-admin',{existing:true,input:reason,output:o({id}),status:202,summary:`Request ${action}; bind current agency version, require independent countersign and atomic application`});
  replace('get','/agency-state-requests/{requestId}','agency-admin',{output:r('AgencyStateRequest')});
  replace('post','/agency-state-requests/{requestId}/decision','agency-admin',{existing:true,input:o({outcome:e('approve','reject'),reason:t(1000)}),output:o({id}),summary:'Apply an independent current reviewer decision atomically; return only request ID and ETag, then authorized GET'});
+
  s.AgencyUserList=o({items:bounded(r('AgencyUser'),100),totalCount:integer,nextCursor:t(2048)},['items','totalCount']);
  s.AgencyInvitationList=o({items:bounded(r('Invitation'),100),totalCount:integer,nextCursor:t(2048)},['items','totalCount']);
  out('/agencies/{agencyId}/users','get','AgencyUserList');
@@ -127,9 +128,17 @@ export function addAgencyContracts({schemas:s,ref:r,text:t,enumeration:e,object:
  op('post','/invitations/{invitationId}/demo-link','revealDemoInvitationLink','internal-agency-user-admin-development-only',{idempotent:false,output:o({invitationToken:{type:'string',pattern:'^[A-Za-z0-9_-]{43}$'}}),summary:'Development-only audited secret reveal; no-store, no receipt, authenticated internal agency user admin and CSRF required'});
  paths['/invitations/{invitationId}/demo-link'].post.responses[200].headers['Cache-Control']={description:'Never cache an invitation secret.',schema:{const:'no-store'}};
  replace('post','/auth/invitations/accept','invitation-token-owner',{publicAuth:true,input:o({invitationToken:{type:'string',pattern:'^[A-Za-z0-9_-]{43}$'},password:{type:'string',minLength:12,maxLength:128}}),output:o({accepted:{const:true}}),summary:'Consume a current one-time invitation with password setup; trusted stored role only, no automatic login'});
- replace('post','/agencies/{agencyId}/terms-requests','agency-commercial-propose',{existing:true,input:r('AgencyTermsWrite'),output:r('AgencyTermsRequest'),status:201});
- list('/agencies/{agencyId}/terms-requests','listAgencyTermsRequests','agency-commercial-read',r('AgencyTermsRequest'));
- list('/agencies/{agencyId}/terms','listAgencyTermsVersions','agency-commercial-read',r('AgencyTermsVersion'));
+ list('/agencies/{agencyId}/terms-requests','listAgencyTermsRequests','agency-admin',r('AgencyTermsRequest'));
+ list('/agencies/{agencyId}/terms','listAgencyTermsVersions','agency-read',r('AgencyTermsVersion'));
+ replace('post','/agencies/{agencyId}/terms-requests','agency-admin',{existing:true,input:r('AgencyTermsWrite'),output:o({id}),status:202,summary:'Propose complete agreed terms without changing current terms; return request ID and ETag'});
+ replace('get','/agency-terms-requests/{requestId}','agency-admin',{output:r('AgencyTermsRequest')});
+ replace('post','/agency-terms-requests/{requestId}/decision','agency-admin',{existing:true,input:o({outcome:e('approve','reject'),reason:t(1000)}),output:o({id}),summary:'Independently approve or reject an immutable terms proposal; return ID and request ETag'});
+ paths['/agencies/{agencyId}/terms-requests'].get['x-permission']='agency-admin';
+ paths['/agencies/{agencyId}/terms'].get['x-permission']='agency-read';
+ s.AgencyTermsRequestList=o({items:bounded(r('AgencyTermsRequest'),100),totalCount:integer,nextCursor:t(2048)},['items','totalCount']);
+ s.AgencyTermsVersionList=o({items:bounded(r('AgencyTermsVersion'),100),totalCount:integer,asOf:instant,nextCursor:t(2048)},['items','totalCount','asOf']);
+ out('/agencies/{agencyId}/terms-requests','get','AgencyTermsRequestList');out('/agencies/{agencyId}/terms','get','AgencyTermsVersionList');
+ paths['/agencies/{agencyId}/products'].get.description+=' Active/suspended agencies return currently effective approved product grants; future and historical selections are available through terms history. Draft/abandoned records retain draft selection history. Product/terms effectiveTo is exclusive.';
  for(const [suffix,name,schema] of [['activity','Activity','AgencyActivity'],['notifications','Notifications','AgencyNotification'],['permission-requests','PermissionRequests','AgencyPermissionRequest'],['permission-grants','PermissionGrants','AgencyPermissionGrant']])list(`/agencies/{agencyId}/${suffix}`,`listAgency${name}`,suffix === 'activity' ? 'agency-read' : 'agency-admin',r(schema));
  paths['/agencies/{agencyId}/activity'].get['x-permission']='agency-read';
  op('get','/agencies/{agencyId}/notifications/{notificationId}','getAgencyNotification','agency-admin',{output:r('AgencyNotification')});

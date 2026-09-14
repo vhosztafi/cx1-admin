@@ -19326,7 +19326,7 @@
       "get": {
         "operationId": "listAgencyProducts",
         "summary": "list Agency Products",
-        "description": "Requires agency-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
+        "description": "Requires agency-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Active/suspended agencies return currently effective approved product grants; future and historical selections are available through terms history. Draft/abandoned records retain draft selection history. Product/terms effectiveTo is exclusive. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
         "tags": [
           "agencies"
         ],
@@ -48994,14 +48994,143 @@
       }
     },
     "/agencies/{agencyId}/terms-requests": {
-      "post": {
-        "operationId": "requestAgencyTermsChange",
-        "summary": "request Agency Terms Change",
-        "description": "Requires agency-commercial-propose. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
+      "get": {
+        "operationId": "listAgencyTermsRequests",
+        "summary": "list Agency Terms Requests",
+        "description": "Requires agency-admin. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
         "tags": [
           "agencies"
         ],
-        "x-permission": "agency-commercial-propose",
+        "x-permission": "agency-admin",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "agencyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgencyTermsRequestList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "requestAgencyTermsChange",
+        "summary": "Propose complete agreed terms without changing current terms; return request ID and ETag",
+        "description": "Requires agency-admin. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
+        "tags": [
+          "agencies"
+        ],
+        "x-permission": "agency-admin",
         "x-idempotency": "required",
         "security": [
           {
@@ -49041,8 +49170,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Resource created.",
+          "202": {
+            "description": "Durable work accepted; inspect Location for completion.",
             "headers": {
               "ETag": {
                 "description": "Opaque resource version for subsequent conditional writes.",
@@ -49063,7 +49192,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AgencyTermsRequest"
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
                 }
               }
             }
@@ -49179,168 +49318,17 @@
             }
           }
         }
-      },
-      "get": {
-        "operationId": "listAgencyTermsRequests",
-        "summary": "list Agency Terms Requests",
-        "description": "Requires agency-commercial-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
-        "tags": [
-          "agencies"
-        ],
-        "x-permission": "agency-commercial-read",
-        "x-idempotency": "not-cached",
-        "security": [
-          {
-            "Session": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "agencyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "cursor",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 2048
-            }
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "minimum": 1,
-              "maximum": 100,
-              "default": 25
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Operation succeeded.",
-            "headers": {
-              "ETag": {
-                "description": "Opaque resource version for subsequent conditional writes.",
-                "schema": {
-                  "type": "string",
-                  "minLength": 1,
-                  "maxLength": 100
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "properties": {
-                    "items": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/AgencyTermsRequest"
-                      },
-                      "maxItems": 1000
-                    },
-                    "nextCursor": {
-                      "type": "string",
-                      "minLength": 1,
-                      "maxLength": 2048
-                    },
-                    "totalCount": {
-                      "type": "integer",
-                      "minimum": 0
-                    }
-                  },
-                  "required": [
-                    "items"
-                  ]
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          }
-        }
       }
     },
     "/agency-terms-requests/{requestId}": {
       "get": {
         "operationId": "getAgencyTermsRequest",
         "summary": "get Agency Terms Request",
-        "description": "Requires agency-commercial-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
+        "description": "Requires agency-admin. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
         "tags": [
           "agency-terms-requests"
         ],
-        "x-permission": "agency-commercial-read",
+        "x-permission": "agency-admin",
         "x-idempotency": "not-cached",
         "security": [
           {
@@ -49445,12 +49433,12 @@
     "/agency-terms-requests/{requestId}/decision": {
       "post": {
         "operationId": "decideAgencyTermsChange",
-        "summary": "decide Agency Terms Change",
-        "description": "Requires agency-commercial-approve-no-self-approval. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
+        "summary": "Independently approve or reject an immutable terms proposal; return ID and request ETag",
+        "description": "Requires agency-admin. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
         "tags": [
           "agency-terms-requests"
         ],
-        "x-permission": "agency-commercial-approve-no-self-approval",
+        "x-permission": "agency-admin",
         "x-idempotency": "required",
         "security": [
           {
@@ -49505,7 +49493,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AgencyTermsRequest"
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
                 }
               }
             }
@@ -53093,11 +53091,11 @@
       "get": {
         "operationId": "listAgencyTermsVersions",
         "summary": "list Agency Terms Versions",
-        "description": "Requires agency-commercial-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
+        "description": "Requires agency-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
         "tags": [
           "agencies"
         ],
-        "x-permission": "agency-commercial-read",
+        "x-permission": "agency-read",
         "x-idempotency": "not-cached",
         "security": [
           {
@@ -53152,29 +53150,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "properties": {
-                    "items": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/AgencyTermsVersion"
-                      },
-                      "maxItems": 1000
-                    },
-                    "nextCursor": {
-                      "type": "string",
-                      "minLength": 1,
-                      "maxLength": 2048
-                    },
-                    "totalCount": {
-                      "type": "integer",
-                      "minimum": 0
-                    }
-                  },
-                  "required": [
-                    "items"
-                  ]
+                  "$ref": "#/components/schemas/AgencyTermsVersionList"
                 }
               }
             }
@@ -63602,6 +63578,21 @@
             },
             "maxItems": 3,
             "minItems": 1
+          },
+          "etag": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "requestedByLabel": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "decisionByLabel": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
           }
         },
         "required": [
@@ -63618,7 +63609,9 @@
           "settlement",
           "paymentTermsDays",
           "creditLimit",
-          "products"
+          "products",
+          "etag",
+          "requestedByLabel"
         ]
       },
       "IncidentDraftWrite": {
@@ -65523,6 +65516,21 @@
             "type": "string",
             "format": "uuid"
           },
+          "approvedRequestKind": {
+            "type": "string",
+            "enum": [
+              "activation",
+              "terms"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "current",
+              "scheduled",
+              "historical"
+            ]
+          },
           "effectiveFrom": {
             "type": "string",
             "format": "date"
@@ -65771,6 +65779,8 @@
           "agencyId",
           "version",
           "approvedRequestId",
+          "approvedRequestKind",
+          "status",
           "effectiveFrom",
           "commercialTerms",
           "settlement",
@@ -66215,6 +66225,63 @@
         "required": [
           "items",
           "totalCount"
+        ]
+      },
+      "AgencyTermsRequestList": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgencyTermsRequest"
+            },
+            "maxItems": 100
+          },
+          "totalCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "nextCursor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        },
+        "required": [
+          "items",
+          "totalCount"
+        ]
+      },
+      "AgencyTermsVersionList": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgencyTermsVersion"
+            },
+            "maxItems": 100
+          },
+          "totalCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "asOf": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "nextCursor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        },
+        "required": [
+          "items",
+          "totalCount",
+          "asOf"
         ]
       }
     }

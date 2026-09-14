@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T21:54:20Z"
+last_updated: "2026-09-14T22:19:12Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-06 of 8 in progress; 04-01 through 04-05 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — 04-06 public state proposal/read/decision APIs and accurate lifecycle activity summaries verified. Full288/46SQL pass.
+Last activity: 2026-09-14 — 04-06 public terms APIs and effective approved product reads verified through London midnight. Full289/47SQL and78 contracts pass.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: AgencyStateEndpoints and DI expose activate/suspend/reactivate proposals, scoped paginated list/detail and shared independent decisions. Current internal admin guard, CSRF, bounded strict JSON, parent/request ETag, stored scope/kind dispatch and original ID-only receipts verified. Reads include actual requester/reviewer labels and own etag; state activity summaries accurate. OpenAPI/generator/schema fixtures match. HTTP/SQL tests cover suspension happy path, all-kind rejection/prerequisite dispatch, auth/CSRF/body/ETag/self/race/replay/revoked-role and cursor guards. Full288 backend/46SQL and77 contract tests plus source949 controls/327 operations pass; CI288/46 Windows286/44 Linux. Next public terms proposal/read/decision APIs and DI, current/scheduled/history terms, and non-draft /products reads from currently effective approved terms (currently draft-only). Then final-stage/Products/state UI and full positive activation/reactivation HTTP/browser acceptance. AgencyEndpoints.ReadBody internal reusable; AgencyDraftService.Authorize now public read-only guard. No migration/seed/frontend changes or tests/previews active; prior22frontend/build/browser current. Broker login closed until04-07; approval UI and human UAT unclaimed.
+Stopped at: AgencyTermsEndpoints and DI expose proposals (202 ID-only), request list/detail, independent decisions (200 ID-only) and approved version history. Protected request reads include own ETag/actor labels/exact snapshots. Version reads use existing internal agency-read, cursor asOf London date/current-scheduled-historical status and exclusive ends. Active/suspended /products now selects only currently effective approved grants with termsVersionId; draft/abandoned retains selections. Activity summaries accurate. HTTP/SQL tests cover permissions/CSRF/body/ETag/self/race/replay/revoked-role, exact large money, cursor scope and approved1250->1750 at London midnight while stale draft9999 remains untouched. Full289 backend/47SQL and78 contracts,949 controls/327 operations pass; CI289/47 Windows287/45 Linux. Next frontend final-stage approval summary/countersign, Products current/scheduled/history/propose/decide, suspension/reactivation controls; extend types for actual metadata. Then full positive activation/reactivation/terms HTTP/browser and final writer-race/mobile/keyboard/source acceptance before04-06-SUMMARY. No migration/seed/frontend changes or active tests/previews; prior22frontend/build/browser current. Broker login closed until04-07; approval UI and human UAT unclaimed.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-06-PROGRESS.md
 
 ## Autonomous continuation

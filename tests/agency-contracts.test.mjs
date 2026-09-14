@@ -102,6 +102,15 @@ test('state commands create proposals and decisions reject caller-selected appro
  const request={id:uuid,agencyId:uuid,requestedBy:uuid,requestedByLabel:'Fictional requester',etag:'opaque-request',reason:'Fictional request',baseVersion:'opaque',inputFingerprint:'a'.repeat(64),createdAt:time,state:'pending',requestKind:'activation',stateRequested:'active'};
  assert.ok(schema('AgencyStateRequest')(request));delete request.baseVersion;assert.equal(schema('AgencyStateRequest')(request),false);
 });
+test('terms writes return only IDs while version reads distinguish current scheduled and historical terms',()=>{
+ const proposal=op('/agencies/{agencyId}/terms-requests');assert.ok(proposal.responses[202]);assert.equal(proposal.responses[201],undefined);
+ for(const [path,status] of [['/agencies/{agencyId}/terms-requests',202],['/agency-terms-requests/{requestId}/decision',200]]){
+  const validate=ajv.compile(relocate(op(path).responses[status].content['application/json'].schema));assert.ok(validate({id:uuid}));assert.equal(validate({id:uuid,creditLimit:'1.00'}),false);
+ }
+ const version={...terms(),id:uuid,agencyId:uuid,version:1,approvedRequestId:uuid,approvedRequestKind:'activation',status:'current',createdAt:time};delete version.reason;
+ const validate=schema('AgencyTermsVersion');assert.ok(validate(version),JSON.stringify(validate.errors));
+ for(const status of ['scheduled','historical'])assert.ok(validate({...version,status}));assert.equal(validate({...version,status:'approved'}),false);
+});
 test('demo reveal is internal, development-only, CSRF-protected and never cached',()=>{
  const reveal=op('/invitations/{invitationId}/demo-link');assert.equal(reveal['x-permission'],'internal-agency-user-admin-development-only');assert.equal(reveal['x-idempotency'],'not-cached');assert.deepEqual(reveal.security,[{Session:[],Csrf:[]}]);assert.equal(reveal.responses[200].headers['Cache-Control'].schema.const,'no-store');
  assert.ok(body('/auth/invitations/accept')({invitationToken:'A'.repeat(43),password:'FictionalPassword123!'}));
