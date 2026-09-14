@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T02:49:45Z"
+last_updated: "2026-09-14T03:26:00Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
@@ -20,14 +20,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Contact storage/rules/scoped reuse verified; implement atomic lifecycle service and APIs in 03-03.
+**Current focus:** Contact lifecycle service and APIs verified; implement contacts UI and repeatable demo contact seeds in 03-03.
 
 ## Current Position
 
 Phase: 3 of 13 (Clients and contact servicing)
-Plan: 03-03 of 6 in progress; task 1 storage complete, lifecycle/API/UI pending
+Plan: 03-03 of 6 in progress; tasks 1–2 storage/service/API complete, task 3 UI/demo/browser pending
 Status: In progress — autonomous
-Last activity: 2026-09-14 — contact migration applied; 79 backend cases/twelve SQL scenarios pass after serializing fixture setup; lifecycle APIs/UI remain pending
+Last activity: 2026-09-14 — contact lifecycle/API and safe activity implemented; 81 backend cases/fourteen SQL scenarios pass; contacts UI/demo/browser remain pending
 
 Progress: Phases 1–2 complete; 2/13 phases. Foundation verified; client servicing next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–2 complete; 2/13 phases. Foundation verified; client servic
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: Read 03-03-PROGRESS.md, then execute Task 2 ContactService/ContactEndpoints using parent locks, primary rules and audited replay. Contact storage and scoped reuse are verified; migration applied to Demo with no contact seeds yet. Newest passing reports .local/contact-storage-serial-results (79/12). Integration fixtures now serialize to avoid model CREATE DATABASE contention; explicit concurrent writers remain. No active previews/tests; secrets/screenshots ignored; funnel unchanged.
+Stopped at: Read 03-03-PROGRESS.md, then execute Task 3 selected-relationship contacts UI, repeatable fictional contact seeds, scoped search/header summaries and browser lifecycle verification. ContactService/ContactEndpoints and safe activity links are implemented and verified. Newest passing reports .local/contact-api-regression-results (81/14). Migration already applied to Demo; no contact seeds yet. No active previews/tests; secrets/screenshots ignored; funnel unchanged. User reiterated --auto; continue without routine questions.
 Resume file: None
 
 ## Autonomous continuation

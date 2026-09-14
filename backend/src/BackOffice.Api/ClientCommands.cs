@@ -100,7 +100,7 @@ public static partial class ClientEndpoints
         if(result.Status==201)context.Response.Headers.Location=location+result.ResourceId;
         return Results.Content(result.Body,"application/json",statusCode:result.Status);
     }
-    private static T Input<T>(JsonElement input)
+    internal static T Input<T>(JsonElement input)
     {
         // Contracts allow omission of optional fields, but never an explicit null or duplicate key.
         ValidateShape(input);
@@ -120,14 +120,14 @@ public static partial class ClientEndpoints
         }
         if(element.ValueKind==JsonValueKind.Array)foreach(var value in element.EnumerateArray())ValidateShape(value);
     }
-    private static string Key(HttpContext context)
+    internal static string Key(HttpContext context)
     {
         var values=context.Request.Headers["Idempotency-Key"];
         if(values.Count!=1 || values[0] is not {Length:>=16 and <=200} key || key!=key.Trim() || key.Any(char.IsControl))
             throw new PartyCommandException(400,"idempotency-key-required");
         return key;
     }
-    private static byte[] Version(HttpContext context)
+    internal static byte[] Version(HttpContext context)
     {
         var values=context.Request.Headers.IfMatch;
         if(values.Count==0)throw new PartyCommandException(428,"version-required");
@@ -138,17 +138,17 @@ public static partial class ClientEndpoints
         }
         throw new PartyCommandException(400,"invalid-version");
     }
-    private static bool IsCommandError(Exception error)=>error is PartyCommandException or PartyValidationException or JsonException or CommandKeyConflictException or CommandBusyException or DbUpdateConcurrencyException ||
+    internal static bool IsCommandError(Exception error)=>error is PartyCommandException or PartyValidationException or JsonException or CommandKeyConflictException or CommandBusyException or DbUpdateConcurrencyException ||
         error is DbUpdateException {InnerException:SqlException {Number:2601 or 2627}};
-    private static IResult CommandError(HttpContext context,Exception error)
+    internal static IResult CommandError(HttpContext context,Exception error,string resource="client")
     {
-        if(error is PartyValidationException validation)return Results.Problem(statusCode:422,title:"Check the client fields.",extensions:
-            new Dictionary<string,object?> {{"code","invalid-client"},{"traceId",context.TraceIdentifier},{"errors",validation.Issues}});
+        if(error is PartyValidationException validation)return Results.Problem(statusCode:422,title:$"Check the {resource} fields.",extensions:
+            new Dictionary<string,object?> {{"code","invalid-"+resource},{"traceId",context.TraceIdentifier},{"errors",validation.Issues}});
         var (status,code)=error switch
         {
             PartyCommandException command=>(command.Status,command.Code),JsonException=>(400,"invalid-request"),
             CommandKeyConflictException=>(409,"idempotency-conflict"),CommandBusyException=>(409,"command-busy"),
-            DbUpdateConcurrencyException=>(412,"stale-client"),_=>(409,"relationship-exists")
+            DbUpdateConcurrencyException=>(412,"stale-"+resource),_=>(409,resource=="contact" ? "contact-conflict" : "relationship-exists")
         };
         return IdentityEndpoints.Problem(context,status,code,"Refresh the record and check the request before retrying.");
     }

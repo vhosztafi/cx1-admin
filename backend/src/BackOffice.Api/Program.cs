@@ -35,6 +35,7 @@ app.MapOperationalReads();
 app.MapOperationalRetries();
 app.MapOperationalSettings();
 app.MapClients();
+app.MapContacts();
 // Domain endpoints are added only alongside their authentication and persistence.
 app.Run();
 
