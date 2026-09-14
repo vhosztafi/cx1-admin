@@ -1,0 +1,27 @@
+---
+phase: 03-clients-and-contact-servicing
+plan: '03'
+status: complete
+requirements: [CLI-02, CLI-01]
+completed: 2026-09-14
+---
+
+# Relationship contact servicing
+
+All three tasks are complete. Person and Contact persist separately, with relationship-specific declarations, consent evidence and retained ending metadata. The audited service locks the parent relationship, checks strong versions, automatically makes the first contact primary, atomically switches primary with ordered flushes, and prevents ending a primary while others remain. The filtered SQL index and final service invariant enforce one primary in a nonempty active set. Edits cannot change canonical Person identity or another declaration. Scoped reuse requires an accessible contact on the same client; no global person directory is exposed.
+
+Contact list/detail/create/update/make-primary/end APIs enforce current permissions, cookie/CSRF, scope before replay, parent/contact ETags and typed normalized intent. Successful retries return the original body/status/ETag. End reason and actor remain persisted but are omitted from ordinary contact DTOs; activity uses fixed summaries and validates real contact/client/relationship combinations before exposing record references.
+
+The Contacts tab now provides a paged, explicit agency relationship selector; source columns and eight role options; add/edit, primary confirmation, reason-bearing ending, and ended history. Consent preserves Given/Withheld/Not asked, permitted channels, evidence time (explicit UTC input) and source. Declared full names are never split; explicit existing components survive editing. The first-contact rule is explained. Conflict recovery reloads saved data explicitly. Uncertain writes retain key/body/version, freeze inputs/relationship switching, and offer Retry same save. Contact drafts survive client-tab switches; linking an agency refreshes the parent and requires explicit relationship selection again. Client identity and contact write permissions are distinct, including internal agency-admin contact servicing access.
+
+Client search includes scoped active contact names. The list shows a primary name only when a single visible agency relationship makes it unambiguous; otherwise it asks users to choose a relationship. The six-field blue record header shows the chosen relationship's primary with agency reference, or an explicit loading/unavailable/list-selection state. Paged results never invent a missing primary. Contacts remain mounted across tab changes. Relationship data can be invalidated after a saved link without changing other resource consumers.
+
+Repeatable fictional contact seeds use stable IDs on ClientId(3), the third demo client, with two agencies. Alex Morgan / A. Morgan share one Person with different declared names/email/telephone; Sam Taylor is an additional contact. All three consent states are present. Seeding runs under the foundation transaction and parent lock, skips populated or inactive sets, and preserves edits, ended records and primary choices. Native CoverMGA_Demo was initialized without reset. Browser scenarios retain labelled fictional records; no external services were called.
+
+Verification: fresh full backend suite `.local/contact-ui-seed-results` passed 61 unit +20 integration =81 cases, fourteen real SQL scenarios, zero skips; report gate passed 81/14. Contact tests cover constrained storage, actual concurrent promotions/first creates, rollback after demotion, stale/replayed writes, capability revocation before replay, scoped reuse/search, canonical/other-declaration isolation, ending and repeatable seed history. Eleven frontend tests pass; lint, TypeScript and production build pass. A test-runtime import incompatibility was corrected without changing TypeScript compiler settings.
+
+`pnpm web:browser:contacts` passes real Chrome add/edit/primary/end/reload, consent-channel validation, lost-success same-key retry, stale draft reload, primary ending conflict, retained history, new agency visibility, shared-person agency switching and draft retention across tabs. `pnpm web:browser:clients` also passes the existing client identity/link/search/paging/read-only/error/source-capture suite. The first contact browser attempt selected a disabled toolbar button instead of the form submit; the locator was scoped to the form. A later assertion incorrectly expected selection to survive a parent refresh; the verified workflow requires explicit reselection. Neither was reported as a product fix.
+
+Visual review of actual desktop/mobile captures caught and corrected unstyled form inputs and a history-checkbox alignment issue. Final evidence in `.local/browser-evidence` includes contacts-desktop.png, contacts-mobile.png, contact-form-mobile.png and contacts-shared-person-desktop.png; inspected at 1560px and 390px with no document overflow. Table overflow stays in its focusable region. No human UAT, hosted CI or complete phase acceptance is claimed. Broader phase security/UI/requirements verification remains 03-06.
+
+Production commits: 483113b (storage/rules/scope), 23d8bcb (service/APIs), 8f80b32 (UI/demo/search/browser). Next plan: 03-04 consent-sensitive support flags. CLI-02 implementation is complete, pending the final Phase 3 verification gate; CLI-01 remains partial until real quote/policy links in Phases 5/6. Sales funnel unchanged. Preview processes stopped after command-line identity checks.

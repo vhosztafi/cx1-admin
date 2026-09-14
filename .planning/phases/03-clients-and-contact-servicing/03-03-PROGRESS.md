@@ -1,6 +1,6 @@
 # Contact servicing implementation checkpoint
 
-03-03 remains IN PROGRESS. Tasks 1–2 storage, validation, scoped reuse and lifecycle service/API are complete and verified. Task 3 contacts UI, demo contact seeds, scoped contact search/header summaries and browser verification remain pending. Do not write a complete plan summary yet.
+03-03 is COMPLETE. See 03-03-SUMMARY.md for the final implementation and verification evidence. The notes below retain the earlier checkpoints as history; their pending-next instructions are superseded by the completed summary. Resume 03-04 support flags.
 
 Application/Parties/ContactRules.cs defines ContactWrite, MarketingConsentWrite and ValidatedContact. Full names are preserved; explicit first/surname may form a full name only when no fullName is supplied, never split a declared full name. Bounds/control characters, email without a display-name wrapper, telephone, role and optional person ID are checked. Roles remain bounded text per the existing OpenAPI contract; the UI will offer all eight prototype choices. Consent distinguishes given/withheld/not-asked, requires a permitted channel only for given, records source and declared instant, rejects future/default time and normalizes offsets to UTC. Actual mutation audit actor/time remains separate. Pure helpers define first-contact primary, reject demotion without replacement and permit ending the last primary. They do not yet enforce a live API workflow.
 
