@@ -107,6 +107,23 @@ public sealed class AgencyActivationDecisionTests
             var leases=new SqlJobLeases(factory,clock);var worker=new AgencyNotificationWorker(factory,payload,clock);
             foreach(var job in jobs){var lease=await leases.ClaimWorkAsync(AgencyNotificationService.Kind,job);Assert.NotNull(lease);var receipt=await worker.Deliver(lease);Assert.NotNull(receipt);await worker.Apply(lease,receipt.Value);}
             await using(var db=new BackOfficeDbContext(options)){Assert.Equal(3,await db.Set<AgencyNotificationReceipt>().CountAsync());Assert.Equal(2,await db.Set<AgencyFollowUp>().CountAsync(x=>x.AgencyId==id));}
+            // Suspend a genuinely activated agency: published terms and completed delivery remain history.
+            string termsBefore;byte[] activeVersion;
+            await using(var db=new BackOfficeDbContext(options))
+            {
+                activeVersion=await db.Set<Agency>().Where(x=>x.Id==id).Select(x=>x.RowVersion).SingleAsync();
+                termsBefore=JsonSerializer.Serialize(await db.Set<AgencyTermsVersion>().Where(x=>x.AgencyId==id).ToListAsync());
+            }
+            var suspension=new AgencySuspensionService(drafts,commands,clock);
+            var suspensionRequest=await suspension.Propose(actor,id,Key(),activeVersion,"Fictional suspension after activation");
+            await suspension.Decide(reviewer,id,suspensionRequest.ResourceId,Key(),Version(suspensionRequest),true,"Independent suspension after activation");
+            await using(var db=new BackOfficeDbContext(options))
+            {
+                Assert.Equal("suspended",await db.Set<Agency>().Where(x=>x.Id==id).Select(x=>x.State).SingleAsync());
+                Assert.Equal(termsBefore,JsonSerializer.Serialize(await db.Set<AgencyTermsVersion>().Where(x=>x.AgencyId==id).ToListAsync()));
+                Assert.Equal("revoked",await db.Set<AgencyInvitation>().Where(x=>x.AgencyId==id).Select(x=>x.State).SingleAsync());
+                Assert.Equal(3,await db.Set<AgencyNotificationReceipt>().CountAsync());Assert.Equal(2,await db.Set<AgencyFollowUp>().CountAsync(x=>x.AgencyId==id));
+            }
         }
         finally{if(connection.InitialCatalog!=owned)throw new InvalidOperationException("Cleanup target changed.");await using var cleanup=new BackOfficeDbContext(options);await cleanup.Database.EnsureDeletedAsync();}
     }
