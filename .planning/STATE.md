@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T00:33:17Z"
+last_updated: "2026-09-14T00:56:07Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
@@ -20,14 +20,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Phase 3 contracts/replay complete; implement client identity and relationship persistence/APIs/UI.
+**Current focus:** Client persistence and seeds verified; implement scoped client APIs then list/detail UI.
 
 ## Current Position
 
 Phase: 3 of 13 (Clients and contact servicing)
-Plan: 03-02 of 6 ready to execute; 03-01 complete
+Plan: 03-02 of 6 in progress; task 1 complete, API/UI tasks pending
 Status: In progress — autonomous
-Last activity: 2026-09-14 — 03-01 complete: 62 design checks, 292 operations and 46 backend cases pass; safe version replay added
+Last activity: 2026-09-14 — client migration/seed applied; 57 backend cases and ten SQL scenarios pass; client APIs/UI remain pending
 
 Progress: Phases 1–2 complete; 2/13 phases. Foundation verified; client servicing next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–2 complete; 2/13 phases. Foundation verified; client servic
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: Execute 03-02-PLAN.md. Read 03-01-SUMMARY.md; 723d98d replay metadata and 20349cb party contracts committed. No client runtime endpoints/UI yet. Native checks pass; no active test processes; secrets ignored.
+Stopped at: Read 03-02-PROGRESS.md, then execute Task 2 scoped APIs. Task 1 persistence complete: 32 clients, 35 relationships, two draft agencies. No client HTTP/UI yet. Native checks pass; no active processes; secrets ignored.
 Resume file: None
 
 ## Autonomous continuation
