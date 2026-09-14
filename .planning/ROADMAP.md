@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Approved by the user on 2026-09-13. Autonomous research, planning, implementation and transitions authorised. Phases 1–3 are complete with native SQL/API/browser verification. Phase 4 agency onboarding/access research and planning are next. CLI-01 remains partial until real quote/policy links in Phases 5/6; see ACCEPTANCE-BACKLOG.md.
+**Status:** Approved by the user on 2026-09-13. Autonomous research, planning, implementation and transitions authorised. Phases 1–3 are complete with native SQL/API/browser verification. Phase 4 agency onboarding/access has eight checked plans; execution begins with contract refinements in04-01. CLI-01 remains partial until real quote/policy links in Phases 5/6; see ACCEPTANCE-BACKLOG.md.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
@@ -76,7 +76,7 @@
 **Goal:** Onboard agencies and enforce their sharing boundaries.
 **Depends on:** Phase 3
 **Requirements:** AGY-01 through AGY-05
-**Plans:** Not yet planned.
+**Plans:** 8 plans: contracts/data/API; persistent draft wizard; evidence/checks; durable notifications; users/invitations; activation/suspension/terms; trusted scope/sharing; acceptance.
 
 **Success criteria:**
 
@@ -234,7 +234,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 1. Data and API design | 4/4 | Complete | 2026-09-13 |
 | 2. Application and persistence foundation | 6/6 | Complete | 2026-09-14 |
 | 3. Clients and contact servicing | 6/6 | Complete | 2026-09-14 |
-| 4. Agency onboarding and access | 0/TBD | Not started | — |
+| 4. Agency onboarding and access | 0/8 | Planned | — |
 | 5. Motor Trade quote capture | 0/TBD | Not started | — |
 | 6. Underwriting and first policy issue | 0/TBD | Not started | — |
 | 7. Policy lifecycle and history | 0/TBD | Not started | — |

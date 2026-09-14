@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T07:27:00Z"
+last_updated: "2026-09-14T07:57:12Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
   completed_phases: 3
-  total_plans: 16
+  total_plans: 24
   completed_plans: 16
   percent: 23
 ---
@@ -20,14 +20,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Phase 3 verified; research and plan Phase 4 agency onboarding/access.
+**Current focus:** Execute Phase 4 checked plans, starting04-01 agency contract/source refinements.
 
 ## Current Position
 
 Phase: 4 of 13 (Agency onboarding and access)
-Plan: Not yet planned; all six Phase 3 plans complete
+Plan: 04-01 of8 ready; all six Phase3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — Phase 3 acceptance passed; full123/19 SQL gate, actor-fix API regression,63contracts,15frontend tests and browser suites; final production d1c8174.
+Last activity: 2026-09-14 — Phase4 research/context/data-API/UI contract and eight plans checked;23tasks, all AGY requirements mapped. No runtime changes this increment.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -43,7 +43,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
 ### Pending Todos
 
-- Research and plan Phase 4 agency onboarding/access, then execute autonomously. Consume ACCEPTANCE-BACKLOG.md.
+- Execute04-01 through04-08 sequentially; keep all gates and consume ACCEPTANCE-BACKLOG.md.
 - Keep future business endpoints closed until their owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,7 +54,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: Phase 3 complete. Read 03-VERIFICATION.md, 03-06-SUMMARY.md, reviews and ACCEPTANCE-BACKLOG.md. Final production d1c8174; full .local/phase3-final-clean-results123/19 and targeted actor-label API pass. All browser suites pass, final matching announcement rerun passes. No active previews/tests. CLI-02..04 complete; CLI-01 partial for real quote/policy links5/6. Begin Phase 4 research/context/plans automatically, preserve native SQL/stack/source design and read-only funnel.
+Stopped at: Phase4 planning complete. Read04-CONTEXT/RESEARCH/DATA-API-DESIGN/UI-SPEC/PLAN-REVIEW and execute04-01. Source gaps: territory/correspondence/compliance modes, staged invites, independent approval, notifications and scoped APIs. Existing Agency IDs preserved; draft distribution eligibility separate from rating readiness. Agency-first lock order integrates Phase3 links. No active previews/tests; production remains d1c8174. Research primary docs cited. No broker portal, real delivery or funnel edits. Runtime tests remain pending new implementation; baseline123/19 SQL,63contracts,15frontend.
 Resume file: None
 
 ## Autonomous continuation
