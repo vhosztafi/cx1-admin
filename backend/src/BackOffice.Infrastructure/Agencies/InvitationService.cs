@@ -6,6 +6,14 @@ namespace BackOffice.Infrastructure.Agencies;
 
 public sealed class InvitationService(AgencyNotificationService notifications,TimeProvider time)
 {
+    public async Task<Guid> DefaultScenario(BackOfficeDbContext db,CancellationToken token=default)
+    {
+        var now=time.GetUtcNow();
+        var setting=await db.Set<SettingVersion>().Where(x=>x.Scope=="agency-invitation-delivery"&&x.EffectiveFrom<=now).OrderByDescending(x=>x.Version).FirstOrDefaultAsync(token)
+            ??throw new AgencyCommandException(503,"invitation-settings-unavailable");
+        AgencyNotificationWorker.Scenario(setting.Values);return setting.Id;
+    }
+
     // Transaction participant for approved activation or an authorized active-agency
     // invitation command. Returns only the persisted ID; raw tokens never enter receipts.
     public async Task<Guid> IssueStaged(BackOfficeDbContext db,Guid agencyId,Guid invitationId,Guid actorId,Guid scenarioVersionId,CancellationToken token=default)

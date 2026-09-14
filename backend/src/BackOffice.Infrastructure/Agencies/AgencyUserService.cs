@@ -7,18 +7,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackOffice.Infrastructure.Agencies;
 
-public sealed class AgencyUserService(AgencyDraftService agencies,SqlCommandBoundary commands,TimeProvider time)
+public sealed class AgencyUserService(AgencyDraftService agencies,SqlCommandBoundary commands,TimeProvider time,InvitationService? issuer=null)
 {
-    // Staging is independent of issuance. Active invitation commands are added with
-    // their token/notification transaction; staging never invents a delivery result.
     public async Task<CommandOutcome> Stage(ActorContext actor,Guid agencyId,string key,byte[] version,AgencyUserInput input,CancellationToken token=default)
+        =>await Create(actor,agencyId,key,version,input,false,token);
+
+    public async Task<CommandOutcome> Invite(ActorContext actor,Guid agencyId,string key,byte[] version,AgencyUserInput input,CancellationToken token=default)
+        =>await Create(actor,agencyId,key,version,input,true,token);
+
+    private async Task<CommandOutcome> Create(ActorContext actor,Guid agencyId,string key,byte[] version,AgencyUserInput input,bool allowActive,CancellationToken token)
     {
         input=AgencyUserRules.Validate(input.Email,input.DisplayName,input.Role);
         await agencies.Authorize(actor,agencyId,token);
-        return await commands.ExecuteAsync(new(actor.UserId,$"/api/v1/agencies/{agencyId}/users",key,Guid.NewGuid()),input,"agency.user-staged",async(db,ct)=>
+        return await commands.ExecuteAsync(new(actor.UserId,$"/api/v1/agencies/{agencyId}/users",key,Guid.NewGuid()),input,allowActive?"agency.user-created":"agency.user-staged",async(db,ct)=>
         {
             var agency=await AgencyDraftService.Lock(db,agencyId,version,ct);
-            if(agency.State!="draft")throw new AgencyCommandException(409,"agency-not-draft");
+            if(agency.State!="draft"&&(!allowActive||agency.State!="active"))throw new AgencyCommandException(409,"agency-not-invitable");
             if(await db.Set<StaffUser>().FromSqlInterpolated($"SELECT * FROM [User] WITH (UPDLOCK,HOLDLOCK) WHERE [NormalizedEmail]={input.NormalizedEmail}").AnyAsync(ct))
                 throw new AgencyCommandException(409,"agency-user-email-unavailable");
             var role=await db.Set<Role>().SingleAsync(x=>x.Code==input.Role&&x.Scope=="agency",ct);
@@ -27,8 +31,13 @@ public sealed class AgencyUserService(AgencyDraftService agencies,SqlCommandBoun
             db.Add(new UserRole{UserId=user.Id,RoleId=role.Id,CreatedBy=actor.UserId,CreatedAt=time.GetUtcNow()});await db.SaveChangesAsync(ct);
             var invitation=new AgencyInvitation{AgencyId=agencyId,UserId=user.Id,CreatedBy=actor.UserId,CreatedAt=time.GetUtcNow()};db.Add(invitation);
             db.Entry(agency).Property(x=>x.UpdatedAt).IsModified=true;
-            db.Add(new AgencyActivity{AgencyId=agencyId,ActorId=actor.UserId,CreatedBy=actor.UserId,Action="agency.user-staged",OccurredAt=time.GetUtcNow()});
+            db.Add(new AgencyActivity{AgencyId=agencyId,ActorId=actor.UserId,CreatedBy=actor.UserId,Action=agency.State=="draft"?"agency.user-staged":"agency.user-created",OccurredAt=time.GetUtcNow()});
             await db.SaveChangesAsync(ct);
+            if(agency.State=="active")
+            {
+                if(issuer is null)throw new InvalidOperationException("Invitation issuer is required for active agencies.");
+                await issuer.IssueStaged(db,agencyId,invitation.Id,actor.UserId,await issuer.DefaultScenario(db,ct),ct);
+            }
             return new(user.Id,201,JsonSerializer.Serialize(new{id=user.Id,invitationId=invitation.Id}),Etag:AgencyDraftService.Etag(agency.RowVersion));
         },token);
     }

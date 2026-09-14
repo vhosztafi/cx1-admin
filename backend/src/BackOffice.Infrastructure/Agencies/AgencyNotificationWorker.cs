@@ -62,7 +62,7 @@ public sealed class AgencyNotificationWorker(IDbContextFactory<BackOfficeDbConte
                 throw new AgencyNotificationProviderException(JobFailure.ProviderConflict);
         }
         var setting=await db.Set<SettingVersion>().SingleAsync(x=>x.Id==lease.ScenarioVersionId,token);
-        if(setting.Scope!="agency-notification")throw new AgencyNotificationProviderException(JobFailure.InvalidPayload);
+        if(setting.Scope!="agency-notification"&&!(owner.InvitationId is not null&&setting.Scope=="agency-invitation-delivery"))throw new AgencyNotificationProviderException(JobFailure.InvalidPayload);
         var scenario=Scenario(setting.Values);
         if(scenario=="unavailable"||(scenario=="transient"&&lease.Attempt==1))throw new AgencyNotificationProviderException(JobFailure.ProviderUnavailable);
         var receipt=new AgencyNotificationReceipt{NotificationId=owner.Id,AgencyId=owner.AgencyId,Accepted=scenario!="reject",

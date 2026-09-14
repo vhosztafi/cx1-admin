@@ -11,6 +11,8 @@ public static class AgencyDemoSeed
         if(db.Database.CurrentTransaction is null)throw new InvalidOperationException("Agency seed requires transaction.");
         foreach(var code in new[]{"broker-admin","broker-user","broker-readonly"})
             if(!await db.Set<Role>().AnyAsync(x=>x.Code==code,token))db.Add(new Role{Code=code,Scope="agency"});
+        if(!await db.Set<SettingVersion>().AnyAsync(x=>x.Scope=="agency-invitation-delivery",token))
+            db.Add(new SettingVersion{Scope="agency-invitation-delivery",Version=1,EffectiveFrom=new(2026,9,1,0,0,0,TimeSpan.Zero),Values="{\"demo\":true,\"scenario\":\"pass\"}"});
         foreach(var agency in await db.Set<Agency>().ToListAsync(token))
             if(!await db.Set<AgencyOnboarding>().AnyAsync(x=>x.AgencyId==agency.Id,token))
             {
