@@ -25,14 +25,20 @@ public static class MatchService
     {
         if(db.Database.CurrentTransaction is null)throw new InvalidOperationException("Match decisions require the caller's audited transaction.");
         var authorized=await AuthorizeAsync(db,actor,id,input,token);
-        // All decisions use intake -> review -> client -> relationship ordering, including reopen/query.
+        // The unlocked projection plans the parent lock only; revalidate it under the child locks.
+        var agencyId=await db.Set<MatchSubmission>().Where(x=>x.Id==authorized.SubmissionId).Select(x=>x.AgencyId).SingleAsync(token);
+        var agency=await db.Set<Agency>().FromSqlInterpolated($"SELECT * FROM [Agency] WITH (UPDLOCK,ROWLOCK) WHERE [Id]={agencyId}").SingleAsync(token);
+        // All decisions use agency -> intake -> review -> client -> relationship ordering.
         var intake=await db.Set<MatchSubmission>().FromSqlInterpolated($"SELECT * FROM [MatchSubmission] WITH (UPDLOCK,ROWLOCK) WHERE [Id]={authorized.SubmissionId}").SingleAsync(token);
         var review=await db.Set<MatchReview>().FromSqlInterpolated($"SELECT * FROM [MatchReview] WITH (UPDLOCK,ROWLOCK) WHERE [Id]={id}").SingleAsync(token);
+        if(intake.AgencyId!=agencyId || review.SubmissionId!=intake.Id)throw new MatchOperationException(409,"match-source-changed");
+        if(input.CandidateClientId is Guid candidate && candidate!=review.CandidateClientId)throw new MatchOperationException(422,"invalid-candidate");
         if(!CryptographicOperations.FixedTimeEquals(review.RowVersion,expected))throw new MatchOperationException(412,"stale-match");
         var next=MatchRules.NextState(review.State,input.Outcome);
         // Phase 5 must add a real progressed-quote guard here before attaching quotes to intake.
         if(input.Outcome is "link" or "separate")
         {
+            if(agency.State is "suspended" or "abandoned")throw new MatchOperationException(409,"agency-unavailable");
             var clientId=input.Outcome=="link" ? review.CandidateClientId : intake.SeparateClientId;
             ClientAccount client;
             if(clientId is Guid existing)
@@ -48,8 +54,6 @@ public static class MatchService
                 db.Add(client);intake.SeparateClientId=client.Id;
                 Activity(db,actor,client.Id,null,"client.created",client.Id,"client",now);
             }
-            var agency=await db.Set<Agency>().SingleAsync(x=>x.Id==intake.AgencyId,token);
-            if(agency.State is "suspended" or "abandoned")throw new MatchOperationException(409,"agency-unavailable");
             var relationship=await db.Set<ClientAgencyRelationship>().FromSqlInterpolated($"SELECT * FROM [ClientAgencyRelationship] WITH (UPDLOCK,ROWLOCK) WHERE [ClientId]={client.Id} AND [AgencyId]={intake.AgencyId}").SingleOrDefaultAsync(token);
             if(relationship is null)
             {

@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T20:21:57Z"
+last_updated: "2026-09-14T20:44:46Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-06 of 8 in progress; 04-01 through 04-05 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — 04-06 independent activation transaction and all durable demo effects verified, including rollback and reviewer race. Full280/41SQL pass.
+Last activity: 2026-09-14 — 04-06 agency association lock-order fences verified against suspension races through match and public relationship API. Full283/44SQL pass.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: AgencyActivationDecisions now independently applies/rejects activation internally. One transaction covers request, active state, initial terms/products, issued invitations, agency/provider notices, PI/quarter follow-ups, audit/activity/receipt. SQL tests cover stale base/rules/catalogue, inactive manager, rejection, rollback after enqueue, reviewer race, replay and all3 deterministic delivery receipts. Review hardened shared fingerprints with product/provider rowversions. Full280 backend/41SQL and77 contracts pass; activation-delivery seed applied to Demo. Next suspension/reactivation with revocation and Phase3 lock-order fences; then public DI/API/read/UI wiring and writer-race/final acceptance. No human UAT or public activation UI claimed. Prior22frontend/build/browser current; no tests/previews active; broker login closed until04-07.
+Stopped at: Client relationship and match mutations now lock Agency before child records and revalidate the planned source under locks. Real SQL tests hold agency UPDLOCK, probe child locks, commit suspension and verify link/separate/public relationship API reject without associations; historical query remains usable. Full283 backend/44SQL and77 contracts plus OpenAPI lint pass. CI minima283/44 Windows and281/42 Linux. No migration, seed or frontend change. Next implement suspension/reactivation proposals and independent decisions with atomic session/stamp/invitation revocation, then scoped API/DI/read/UI wiring and final lifecycle writer races. Activation and terms services already exist internally; no public approval UI or human UAT claimed. Prior22 frontend/build/browser current; no tests/previews active; broker login closed until04-07.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-06-PROGRESS.md
 
 ## Autonomous continuation

@@ -65,9 +65,10 @@ public static partial class ClientEndpoints
             var result=await commands.ExecuteAsync(new CommandIdentity(actor.UserId,$"/api/v1/clients/{clientId}/relationships",key,Guid.NewGuid()),
                 request,"client.relationship-created",async (db,token) =>
                 {
-                    var client=await LockClient(db,clientId,version,token);
-                    var agency=await db.Set<Agency>().SingleOrDefaultAsync(x => x.Id==request.AgencyId,token) ?? throw new PartyCommandException(404,"client-record-not-found");
+                    // Serialize association changes with agency lifecycle decisions before locking children.
+                    var agency=await db.Set<Agency>().FromSqlInterpolated($"SELECT * FROM [Agency] WITH (UPDLOCK,ROWLOCK) WHERE [Id]={request.AgencyId}").SingleOrDefaultAsync(token) ?? throw new PartyCommandException(404,"client-record-not-found");
                     if(agency.State is "suspended" or "abandoned")throw new PartyCommandException(409,"agency-unavailable");
+                    var client=await LockClient(db,clientId,version,token);
                     if(await db.Set<ClientAgencyRelationship>().AnyAsync(x => x.ClientId==clientId && x.AgencyId==request.AgencyId,token))
                         throw new PartyCommandException(409,"relationship-exists");
                     var now=time.GetUtcNow();
