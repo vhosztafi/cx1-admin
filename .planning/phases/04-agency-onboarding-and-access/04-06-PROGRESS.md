@@ -10,9 +10,19 @@ The result contains a canonical snapshot, ordered read-only product inputs, sepa
 
 Verification:21 new meaningful terms tests, all219 unit tests passed. Full260 backend cases including34 real-SQL scenarios passed without skips in .local/phase4-terms-rules-full (219 unit/41 integration); TRX gate passed. All77 Node contract tests and OpenAPI lint passed. No UI changed; previous22 frontend/build/browser evidence remains current. CI minimum totals updated to260/34 Windows and258/32 Linux; hosted CI not run. No tests or previews remain active.
 
+## State proposal storage
+
+Added AgencyStateRequest, its EF mapping and migration20260914173625_AgencyStateProposals. The record owns its decision ETag while retaining the unchanged agency base version, fingerprint, requested kind/state, actor and reason. SQL allows one pending agency/kind request, requires independent current internal administration for applied/rejected decisions, requires complete decision provenance, and retains stale history without inventing a human reviewer. Triggers reject direct terminal insertion, immutable proposal changes including case-only reason edits, terminal rewrites/reopening and deletion. CreatedBy must match RequestedBy.
+
+The real-SQL storage test passes independent rereads, unchanged parent rowversion, duplicate pending denial, fingerprint/reason/state tampering, self-decision and wrong-role denial, valid independent rejection, terminal immutability, release of the pending slot, stale closure, direct terminal insertion denial and unauthorized requester denial. These are storage invariants, not a claim that approving applies business effects; no approval API is enabled yet.
+
+Full261 backend tests /35 real-SQL scenarios passed without skips in .local/phase4-state-proposals-full (219 unit/42 integration), verified by the TRX gate. Targeted storage test passed in .local/phase4-approval-storage. The new additive migration was applied to CoverMGA_Demo through --initialize-demo, preserving existing fictional data. No frontend or public contract changed; previous22 frontend/build/browser and77 contract evidence remains current. CI minima261/35 Windows and259/33 Linux; hosted CI unperformed. No test/preview remains active.
+
+Migration tooling note: use the Infrastructure project as both project/startup with its design-time factory. Build --no-restore first, then ef migrations add --no-build. No new packages were installed.
+
 ## Next implementation
 
-1. Persist state/terms proposal records and immutable terms/product versions with SQL one-time decision/independent-reviewer constraints, base rowversion, fingerprint, reason and actor provenance. Follow04-DATA-API-DESIGN state rules: proposal creation does not advance the agency base, live duplicates conflict unless the old base is stale, approving applies atomically.
+1. State proposal records are persisted and verified. Next persist terms proposals and immutable terms/product versions with SQL one-time decision/independent-reviewer constraints, base rowversion, fingerprint, reason and actor provenance. Follow04-DATA-API-DESIGN state rules: proposal creation does not advance the agency base, live duplicates conflict unless the old base is stale, approving applies atomically.
 2. Implement current-role-authorized services under agency-first lock order. Activation rechecks complete evidence/readiness/eligible effective products and publishes initial terms, issues staged invitations and enqueues protected demo notices/follow-up obligations in one transaction. Use a separate initial-draft extraction path; do not force a historical initial declaration through the future-proposal schedule rule.
 3. Implement suspend/reactivate with separate reviewers, session/stamp/invitation revocation and the Phase3 relationship/matching lock-order fences. Add additive second-reviewer demo seed.
 4. Wire scoped proposal/read/decision APIs and final-stage/Products UI only after storage/services are tested. Preserve strict JSON, CSRF, request ETag, exact replay and current authorization. Broker login stays closed until04-07.

@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1–3 complete. Phase4 plans04-01 through04-05 complete; 04-06 activation, suspension and agreed terms in progress, with complete-terms validation verified; proposal persistence/services next. User/invitation lifecycle, wizard, readiness, Last active and source counts verified. Latest260 backend/34SQL,22 frontend,77 contracts; lint/build and real browser flows pass. Full AGY requirements remain partial until remaining owning plans and04-08; see ACCEPTANCE-BACKLOG.md.
+**Status:** Autonomous progression authorised. Phases1–3 complete. Phase4 plans04-01 through04-05 complete; 04-06 activation, suspension and agreed terms in progress, with complete-terms validation and state-proposal SQL storage verified; terms persistence and approval services next. User/invitation lifecycle, wizard, readiness, Last active and source counts verified. Latest261 backend/35SQL,22 frontend,77 contracts; lint/build and real browser flows pass. Full AGY requirements remain partial until remaining owning plans and04-08; see ACCEPTANCE-BACKLOG.md.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
