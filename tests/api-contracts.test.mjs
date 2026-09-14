@@ -124,7 +124,8 @@ test('reviewed agency option meanings match prototype choices and actual DTO enu
  const mappings=await read('examples/agency-option-mapping.json');
  const rendered=JSON.parse(await readFile(new URL('../docs/design/source/prototype-render-data.json',import.meta.url),'utf8'));
  const p=document.components.schemas.AgencyWrite.properties;
- const targets={'Entity type':p.entityType,'Regulatory status':p.regulatoryStatus,'Client money basis':p.clientMoneyBasis,'Commission basis':p.commercialTerms.properties.commissionBasis,'Statement cycle':p.settlement.properties.statementCycle,'Premium collection':p.settlement.properties.premiumCollection,'Commission settlement':p.settlement.properties.commissionSettlement};
+ const targetPaths=await read('examples/agency-option-targets.json');
+ const targets=Object.fromEntries(Object.entries(targetPaths).map(([label,path])=>[label,path.split('.').reduce((s,key)=>s.properties[key],document.components.schemas.AgencyWrite)]));
  for(const [label,mapping] of Object.entries(mappings)){
   const source=rendered.items.find(item=>item.method==='pNewAgency'&&item.label===label&&item.options?.length);
   assert.ok(source,label);assert.deepEqual(Object.keys(mapping),source.options,label);

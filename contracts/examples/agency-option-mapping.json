@@ -1,9 +1,113 @@
 {
- "Entity type":{"Limited company":"limited-company","LLP":"llp","Partnership":"partnership","Sole trader":"sole-trader"},
- "Regulatory status":{"Directly authorised":"directly-authorised","Appointed representative":"appointed-representative","Introducer appointed representative":"introducer-appointed-representative"},
- "Client money basis":{"Risk transfer only":"risk-transfer","Client money with CASS 5 trust account":"cass5-client-money","No client money held":"no-client-money"},
- "Commission basis":{"Per product, as above":"per-product","Flat rate across all products":"flat-rate"},
- "Statement cycle":{"Monthly":"monthly","Fortnightly":"fortnightly"},
- "Premium collection":{"Agency collects from the insured":"agency","Cover MGA collects direct":"mga"},
- "Commission settlement":{"Net of commission on statement":"net-remittance","Paid separately":"separate-payment"}
+  "Entity type": {
+    "Limited company": "limited-company",
+    "LLP": "llp",
+    "Partnership": "partnership",
+    "Sole trader": "sole-trader"
+  },
+  "Trading address": {
+    "Same as registered": "same-as-registered",
+    "Different — capture separately": "different"
+  },
+  "Regulatory status": {
+    "Directly authorised": "directly-authorised",
+    "Appointed representative": "appointed-representative",
+    "Introducer appointed representative": "introducer-appointed-representative"
+  },
+  "Client money basis": {
+    "Risk transfer only": "risk-transfer",
+    "Client money with CASS 5 trust account": "cass5-client-money",
+    "No client money held": "no-client-money"
+  },
+  "Permission to arrange general insurance": {
+    "Not yet checked": "unchecked",
+    "Confirmed on the register": "confirmed",
+    "Restricted — review required": "restricted"
+  },
+  "Territory": {
+    "United Kingdom": "UK",
+    "Great Britain only": "GB",
+    "Northern Ireland only": "NI"
+  },
+  "Correspondence preference": {
+    "Email": "email",
+    "Email and post": "email-and-post",
+    "Portal only": "portal-only"
+  },
+  "Commission basis": {
+    "Per product, as above": "per-product",
+    "Flat rate across all products": "flat-rate"
+  },
+  "Fee sharing": {
+    "No — MGA retains all fees": "none",
+    "Yes — agreed split": "agreed-split"
+  },
+  "Volume commitment": {
+    "None": "none",
+    "Agreed target — no penalty": "target-no-penalty",
+    "Agreed target — commission tiered": "target-tiered"
+  },
+  "Minimum premium override": {
+    "No": "none",
+    "Yes — agreed with the capacity provider": "capacity-provider-agreed"
+  },
+  "Referral routing": {
+    "Standard — internal underwriting": "standard-internal-underwriting"
+  },
+  "TOBA status": {
+    "Not issued": "not-sent",
+    "Issued — awaiting signature": "sent",
+    "Signed": "signed"
+  },
+  "TOBA version": {
+    "2026.1": "2026.1",
+    "2025.2": "2025.2"
+  },
+  "Professional indemnity cover": {
+    "Not supplied": "not-supplied",
+    "Evidenced — meets minimum": "meets-minimum",
+    "Evidenced — below minimum": "below-minimum"
+  },
+  "Financial standing check": {
+    "Not started": "not-started",
+    "In progress": "pending",
+    "Complete": "passed",
+    "Adverse — refer": "refer"
+  },
+  "Sanctions and adverse media": {
+    "Not started": "not-started",
+    "Clear": "clear",
+    "Possible match — refer": "refer"
+  },
+  "Beneficial ownership verified": {
+    "Not started": "not-started",
+    "Verified": "verified",
+    "Unable to verify — refer": "refer"
+  },
+  "Data processing agreement": {
+    "Not issued": "not-sent",
+    "Issued": "sent",
+    "Signed": "signed"
+  },
+  "Credit terms": {
+    "30 days": 30,
+    "45 days": 45,
+    "60 days": 60
+  },
+  "Statement cycle": {
+    "Monthly": "monthly",
+    "Fortnightly": "fortnightly"
+  },
+  "Settlement method": {
+    "Bank transfer": "bank-transfer",
+    "Direct debit": "direct-debit"
+  },
+  "Premium collection": {
+    "Agency collects from the insured": "agency",
+    "Cover MGA collects direct": "mga"
+  },
+  "Commission settlement": {
+    "Net of commission on statement": "net-remittance",
+    "Paid separately": "separate-payment"
+  }
 }

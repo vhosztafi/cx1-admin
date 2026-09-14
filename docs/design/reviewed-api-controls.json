@@ -890,9 +890,11 @@
     "status": "reviewed",
     "disposition": "opens-command-form",
     "operationIds": [
-      "requestUserAccessChange"
+      "updateAgencyUser",
+      "deactivateAgencyUser",
+      "reactivateAgencyUser"
     ],
-    "reason": "Edit or deactivate agency user through scoped access proposal and confirmation/approval."
+    "reason": "Edit own-scoped agency display name/role or deactivate/reactivate with reason; stamp and sessions updated; no internal identity route."
   },
   {
     "controlId": "CTL-5337ca2ab8d2",
@@ -908,9 +910,9 @@
     "status": "reviewed",
     "disposition": "command",
     "operationIds": [
-      "decideIdentityChange"
+      "decideAgencyPermission"
     ],
-    "reason": "Approve/reject the selected identity-change request with audit and independent approver."
+    "reason": "Decide allowlisted agency permission request under independent approval; no internal permission grant."
   },
   {
     "controlId": "CTL-158574620277",
@@ -1817,8 +1819,13 @@
     "controlId": "CTL-246d7ad59eb2",
     "status": "reviewed",
     "disposition": "client-only",
-    "operationIds": [],
-    "reason": "Navigate to static internal sharing reference; prototype explicitly excludes a separate broker portal. No domain mutation."
+    "operationIds": [
+      "getAgencySharingPreview",
+      "listPreviewAgencyClients",
+      "listPreviewAgencyContacts",
+      "listPreviewAgencyInstructions"
+    ],
+    "reason": "Internal audited preview of the same safe projection used by trusted agency identity; future insurance/finance sections explicitly unavailable."
   },
   {
     "controlId": "CTL-e834b4734421",
@@ -2830,7 +2837,7 @@
       "validateAgency"
     ],
     "requestField": "details.entityType",
-    "reason": "Reviewed onboarding field maps to typed details.entityType. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "reason": "Preserve every source option as a typed declaration at details.entityType. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-1c01127f3db0",
@@ -2862,8 +2869,8 @@
       "saveAgencyDraft",
       "validateAgency"
     ],
-    "requestField": "details.tradingAddress",
-    "reason": "Reviewed onboarding field maps to typed details.tradingAddress. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "requestField": "details.tradingAddressMode",
+    "reason": "Preserve every source option as a typed declaration at details.tradingAddressMode. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-4a061249b739",
@@ -2885,7 +2892,7 @@
       "validateAgency"
     ],
     "requestField": "details.regulatoryStatus",
-    "reason": "Reviewed onboarding field maps to typed details.regulatoryStatus. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "reason": "Preserve every source option as a typed declaration at details.regulatoryStatus. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-36ca4642579f",
@@ -2907,7 +2914,7 @@
       "validateAgency"
     ],
     "requestField": "details.clientMoneyBasis",
-    "reason": "Reviewed onboarding field maps to typed details.clientMoneyBasis. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "reason": "Preserve every source option as a typed declaration at details.clientMoneyBasis. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-b3c29a849ac6",
@@ -2918,7 +2925,7 @@
       "validateAgency"
     ],
     "requestField": "details.arrangesGeneralInsurance",
-    "reason": "Reviewed onboarding field maps to typed details.arrangesGeneralInsurance. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "reason": "Preserve every source option as a typed declaration at details.arrangesGeneralInsurance. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-c91f280de789",
@@ -2929,7 +2936,7 @@
       "validateAgency"
     ],
     "requestField": "details.territory",
-    "reason": "Reviewed onboarding field maps to typed details.territory. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "reason": "Preserve every source option as a typed declaration at details.territory. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-9ba165615ca8",
@@ -3017,7 +3024,7 @@
       "validateAgency"
     ],
     "requestField": "details.correspondencePreference",
-    "reason": "Reviewed onboarding field maps to typed details.correspondencePreference. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "reason": "Preserve every source option as a typed declaration at details.correspondencePreference. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-72834edc3eea",
@@ -3050,7 +3057,7 @@
       "validateAgency"
     ],
     "requestField": "details.commercialTerms.commissionBasis",
-    "reason": "Reviewed onboarding field maps to typed details.commercialTerms.commissionBasis. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "reason": "Preserve every source option as a typed declaration at details.commercialTerms.commissionBasis. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-c92492b714ab",
@@ -3060,8 +3067,8 @@
       "saveAgencyDraft",
       "validateAgency"
     ],
-    "requestField": "details.commercialTerms.feeShareBasisPoints",
-    "reason": "Reviewed onboarding field maps to typed details.commercialTerms.feeShareBasisPoints. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "requestField": "details.commercialTerms.feeSharing",
+    "reason": "Preserve every source option as a typed declaration at details.commercialTerms.feeSharing. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-32e867330c06",
@@ -3071,8 +3078,8 @@
       "saveAgencyDraft",
       "validateAgency"
     ],
-    "requestField": "details.commercialTerms.volumeCommitment",
-    "reason": "Reviewed onboarding field maps to typed details.commercialTerms.volumeCommitment. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "requestField": "details.commercialTerms.volumeCommitmentMode",
+    "reason": "Preserve every source option as a typed declaration at details.commercialTerms.volumeCommitmentMode. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-88d345cd8a7c",
@@ -3082,8 +3089,8 @@
       "saveAgencyDraft",
       "validateAgency"
     ],
-    "requestField": "details.commercialTerms.minimumPremiumOverride",
-    "reason": "Reviewed onboarding field maps to typed details.commercialTerms.minimumPremiumOverride. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "requestField": "details.commercialTerms.minimumPremiumOverrideMode",
+    "reason": "Preserve every source option as a typed declaration at details.commercialTerms.minimumPremiumOverrideMode. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-922d25c88d32",
@@ -3094,7 +3101,7 @@
       "validateAgency"
     ],
     "requestField": "details.commercialTerms.referralRouting",
-    "reason": "Reviewed onboarding field maps to typed details.commercialTerms.referralRouting. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "reason": "Preserve every source option as a typed declaration at details.commercialTerms.referralRouting. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-4adad545ddb8",
@@ -3105,7 +3112,7 @@
       "validateAgency"
     ],
     "requestField": "details.compliance.tobaStatus",
-    "reason": "Reviewed onboarding field maps to typed details.compliance.tobaStatus. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "reason": "Preserve every source option as a typed declaration at details.compliance.tobaStatus. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-7db28158a9c9",
@@ -3116,7 +3123,7 @@
       "validateAgency"
     ],
     "requestField": "details.compliance.tobaVersion",
-    "reason": "Reviewed onboarding field maps to typed details.compliance.tobaVersion. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "reason": "Preserve every source option as a typed declaration at details.compliance.tobaVersion. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-20213a260167",
@@ -3137,8 +3144,8 @@
       "saveAgencyDraft",
       "validateAgency"
     ],
-    "requestField": "details.compliance.professionalIndemnityLimit",
-    "reason": "Reviewed onboarding field maps to typed details.compliance.professionalIndemnityLimit. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "requestField": "details.compliance.professionalIndemnityStatus",
+    "reason": "Preserve every source option as a typed declaration at details.compliance.professionalIndemnityStatus. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-92d211344ad0",
@@ -3160,7 +3167,7 @@
       "validateAgency"
     ],
     "requestField": "details.compliance.financialStanding",
-    "reason": "Reviewed onboarding field maps to typed details.compliance.financialStanding. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "reason": "Preserve every source option as a typed declaration at details.compliance.financialStanding. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-64e550b1e7a0",
@@ -3171,7 +3178,7 @@
       "validateAgency"
     ],
     "requestField": "details.compliance.sanctionsCheck",
-    "reason": "Reviewed onboarding field maps to typed details.compliance.sanctionsCheck. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "reason": "Preserve every source option as a typed declaration at details.compliance.sanctionsCheck. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-6ffe23124c1e",
@@ -3182,7 +3189,7 @@
       "validateAgency"
     ],
     "requestField": "details.compliance.beneficialOwnershipVerified",
-    "reason": "Reviewed onboarding field maps to typed details.compliance.beneficialOwnershipVerified. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "reason": "Preserve every source option as a typed declaration at details.compliance.beneficialOwnershipVerified. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-2bc0225cde9d",
@@ -3193,7 +3200,7 @@
       "validateAgency"
     ],
     "requestField": "details.compliance.dataProcessingAgreement",
-    "reason": "Reviewed onboarding field maps to typed details.compliance.dataProcessingAgreement. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "reason": "Preserve every source option as a typed declaration at details.compliance.dataProcessingAgreement. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-cf080648263b",
@@ -3204,7 +3211,7 @@
       "validateAgency"
     ],
     "requestField": "details.paymentTermsDays",
-    "reason": "Reviewed onboarding field maps to typed details.paymentTermsDays. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "reason": "Preserve every source option as a typed declaration at details.paymentTermsDays. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-ded2edfcba39",
@@ -3215,7 +3222,7 @@
       "validateAgency"
     ],
     "requestField": "details.settlement.statementCycle",
-    "reason": "Reviewed onboarding field maps to typed details.settlement.statementCycle. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "reason": "Preserve every source option as a typed declaration at details.settlement.statementCycle. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-5f0a27e96ab6",
@@ -3237,7 +3244,7 @@
       "validateAgency"
     ],
     "requestField": "details.settlement.method",
-    "reason": "Reviewed onboarding field maps to typed details.settlement.method. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "reason": "Preserve every source option as a typed declaration at details.settlement.method. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-522293d94276",
@@ -3248,7 +3255,7 @@
       "validateAgency"
     ],
     "requestField": "details.settlement.premiumCollection",
-    "reason": "Reviewed onboarding field maps to typed details.settlement.premiumCollection. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "reason": "Preserve every source option as a typed declaration at details.settlement.premiumCollection. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-4f360e7439d1",
@@ -3259,7 +3266,7 @@
       "validateAgency"
     ],
     "requestField": "details.settlement.commissionSettlement",
-    "reason": "Reviewed onboarding field maps to typed details.settlement.commissionSettlement. Save may be incomplete; activation checks evidence, authority and conditional requirements. Percentages become integer basis points and displayed addresses become structured values."
+    "reason": "Preserve every source option as a typed declaration at details.settlement.commissionSettlement. Missing draft answers remain incomplete. Verified evidence and activation are server-owned."
   },
   {
     "controlId": "CTL-cb7e499f5ef9",
