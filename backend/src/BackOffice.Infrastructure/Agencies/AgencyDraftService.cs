@@ -57,7 +57,7 @@ public sealed class AgencyDraftService(IDbContextFactory<BackOfficeDbContext> fa
             await db.SaveChangesAsync(ct);return Outcome(row,200);
         },token);
     }
-    internal async Task Authorize(ActorContext actor,Guid? agencyId,CancellationToken token)
+    public async Task Authorize(ActorContext actor,Guid? agencyId,CancellationToken token)
     {
         if(!actor.HasCapability("agency-admin"))throw new AgencyCommandException(403,"agency-access-denied");
         await using var db=await factory.CreateDbContextAsync(token);

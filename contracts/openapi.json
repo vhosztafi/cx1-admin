@@ -42261,11 +42261,11 @@
       "get": {
         "operationId": "getAgencyStateRequest",
         "summary": "get Agency State Request",
-        "description": "Requires agency-manager-approve. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
+        "description": "Requires agency-admin. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
         "tags": [
           "agency-state-requests"
         ],
-        "x-permission": "agency-manager-approve",
+        "x-permission": "agency-admin",
         "x-idempotency": "not-cached",
         "security": [
           {
@@ -42370,12 +42370,12 @@
     "/agency-state-requests/{requestId}/decision": {
       "post": {
         "operationId": "decideAgencyStateRequest",
-        "summary": "decide Agency State Request",
-        "description": "Requires agency-manager-approve-no-self-approval. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
+        "summary": "Apply an independent current reviewer decision atomically; return only request ID and ETag, then authorized GET",
+        "description": "Requires agency-admin. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
         "tags": [
           "agency-state-requests"
         ],
-        "x-permission": "agency-manager-approve-no-self-approval",
+        "x-permission": "agency-admin",
         "x-idempotency": "required",
         "security": [
           {
@@ -42430,7 +42430,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AgencyStateRequest"
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
                 }
               }
             }
@@ -62223,6 +62233,21 @@
               "active",
               "suspended"
             ]
+          },
+          "etag": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "requestedByLabel": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "decisionByLabel": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
           }
         },
         "required": [
@@ -62235,7 +62260,9 @@
           "createdAt",
           "state",
           "requestKind",
-          "stateRequested"
+          "stateRequested",
+          "etag",
+          "requestedByLabel"
         ]
       },
       "ProfileWrite": {

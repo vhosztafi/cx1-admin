@@ -98,7 +98,8 @@ test('state commands create proposals and decisions reject caller-selected appro
  }
  const path='/agency-state-requests/{requestId}/decision';assert.ok(body(path)({outcome:'approve',reason:'Independent review'}));
  for(const patch of [{requestedBy:uuid},{approvedBy:uuid},{baseVersion:'forged'},{state:'applied'}])assert.equal(body(path)({outcome:'approve',reason:'Review',...patch}),false);
- const request={id:uuid,agencyId:uuid,requestedBy:uuid,reason:'Fictional request',baseVersion:'opaque',inputFingerprint:'a'.repeat(64),createdAt:time,state:'pending',requestKind:'activation',stateRequested:'active'};
+ const response=ajv.compile(relocate(op(path).responses[200].content['application/json'].schema));assert.ok(response({id:uuid}));assert.equal(response({id:uuid,state:'applied'}),false);
+ const request={id:uuid,agencyId:uuid,requestedBy:uuid,requestedByLabel:'Fictional requester',etag:'opaque-request',reason:'Fictional request',baseVersion:'opaque',inputFingerprint:'a'.repeat(64),createdAt:time,state:'pending',requestKind:'activation',stateRequested:'active'};
  assert.ok(schema('AgencyStateRequest')(request));delete request.baseVersion;assert.equal(schema('AgencyStateRequest')(request),false);
 });
 test('demo reveal is internal, development-only, CSRF-protected and never cached',()=>{

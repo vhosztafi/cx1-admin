@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T21:30:25Z"
+last_updated: "2026-09-14T21:54:20Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-06 of 8 in progress; 04-01 through 04-05 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — 04-06 independent reactivation with current approved terms/evidence and fresh invitations verified. Full287/45SQL pass.
+Last activity: 2026-09-14 — 04-06 public state proposal/read/decision APIs and accurate lifecycle activity summaries verified. Full288/46SQL pass.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: ReadPublished, AgencyReactivationAssessment and AgencyReactivationService implemented. Assessment selects current approved terms by London date, holds current catalogue/rules/evidence/user/role/credential/manager prerequisites and fingerprints safe IDs/rowversions. Independent approval rotates stamps, revokes sessions and creates fresh invitations for enabled invited users atomically; individual inactive states and old tokens/sessions remain revoked. Tests cover scheduled term rollover, expiry, withdrawn grants, inactive admin, self/scope/ETag/duplicate/stale rejection, replacement, rollback after fresh invitation, reviewer race, replay and revoked authority; actual terms/receipts/follow-ups preserved. Full287 backend/45SQL and77 contracts/OpenAPI lint pass; CI287/45 Windows285/43 Linux. Next scoped public proposal/read/decision APIs and DI, current/scheduled/history terms reads, then final-stage/Products/state UI and writer-race/browser/source acceptance. AgencyEndpoints.ReadBody currently private; extract/reuse bounded parsing. Suspended agency UI must use reactivation assessment rather than draft activation readiness. No migration/seed/frontend changes; no tests/previews active; prior22frontend/build/browser current. Broker login closed until04-07; no public approval UI or human UAT claimed.
+Stopped at: AgencyStateEndpoints and DI expose activate/suspend/reactivate proposals, scoped paginated list/detail and shared independent decisions. Current internal admin guard, CSRF, bounded strict JSON, parent/request ETag, stored scope/kind dispatch and original ID-only receipts verified. Reads include actual requester/reviewer labels and own etag; state activity summaries accurate. OpenAPI/generator/schema fixtures match. HTTP/SQL tests cover suspension happy path, all-kind rejection/prerequisite dispatch, auth/CSRF/body/ETag/self/race/replay/revoked-role and cursor guards. Full288 backend/46SQL and77 contract tests plus source949 controls/327 operations pass; CI288/46 Windows286/44 Linux. Next public terms proposal/read/decision APIs and DI, current/scheduled/history terms, and non-draft /products reads from currently effective approved terms (currently draft-only). Then final-stage/Products/state UI and full positive activation/reactivation HTTP/browser acceptance. AgencyEndpoints.ReadBody internal reusable; AgencyDraftService.Authorize now public read-only guard. No migration/seed/frontend changes or tests/previews active; prior22frontend/build/browser current. Broker login closed until04-07; approval UI and human UAT unclaimed.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-06-PROGRESS.md
 
 ## Autonomous continuation

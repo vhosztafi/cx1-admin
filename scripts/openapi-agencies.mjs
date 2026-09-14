@@ -58,7 +58,7 @@ export function addAgencyContracts({schemas:s,ref:r,text:t,enumeration:e,object:
  s.Invitation.description='Staging has no token, expiry or delivery job. Issuance expires exactly 14 real-time days later. State is acceptance validity, not delivery. Resend revokes the predecessor and creates a fresh invitation.';
  const proposal={id,agencyId:id,requestedBy:id,reason:t(1000),baseVersion:etag,inputFingerprint:hash,createdAt:instant,state:e('pending','applied','rejected','stale'),decisionBy:id,decisionReason:t(1000),decidedAt:instant};
  const proposalRequired=['id','agencyId','requestedBy','reason','baseVersion','inputFingerprint','createdAt','state'];
- s.AgencyStateRequest=o({...proposal,requestKind:e('activation','suspension','reactivation'),stateRequested:e('active','suspended')},[...proposalRequired,'requestKind','stateRequested']);
+ s.AgencyStateRequest=o({...proposal,requestKind:e('activation','suspension','reactivation'),stateRequested:e('active','suspended'),etag,requestedByLabel:t(200),decisionByLabel:t(200)},[...proposalRequired,'requestKind','stateRequested','etag','requestedByLabel']);
  const termsCommercial=o(structuredClone(commercial),['effectiveFrom','commissionBasis','feeSharing','volumeCommitmentMode','minimumPremiumOverrideMode','referralRouting']);
  // Drafts may be incomplete. A proposal must provide every value selected by a mode.
  termsCommercial.allOf=[
@@ -110,6 +110,8 @@ export function addAgencyContracts({schemas:s,ref:r,text:t,enumeration:e,object:
  download.responses[200].content={'application/octet-stream':{schema:{type:'string',format:'binary'}}};
  Object.assign(download.responses[200].headers,{'Content-Disposition':{description:'Attachment with sanitized filename.',schema:t(300)},'X-Content-Type-Options':{description:'Block MIME sniffing.',schema:{const:'nosniff'}}});
  for(const action of ['activate','suspend','reactivate'])replace('post',`/agencies/{agencyId}/${action}`,'agency-admin',{existing:true,input:reason,output:o({id}),status:202,summary:`Request ${action}; bind current agency version, require independent countersign and atomic application`});
+ replace('get','/agency-state-requests/{requestId}','agency-admin',{output:r('AgencyStateRequest')});
+ replace('post','/agency-state-requests/{requestId}/decision','agency-admin',{existing:true,input:o({outcome:e('approve','reject'),reason:t(1000)}),output:o({id}),summary:'Apply an independent current reviewer decision atomically; return only request ID and ETag, then authorized GET'});
  s.AgencyUserList=o({items:bounded(r('AgencyUser'),100),totalCount:integer,nextCursor:t(2048)},['items','totalCount']);
  s.AgencyInvitationList=o({items:bounded(r('Invitation'),100),totalCount:integer,nextCursor:t(2048)},['items','totalCount']);
  out('/agencies/{agencyId}/users','get','AgencyUserList');
