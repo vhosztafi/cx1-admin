@@ -15,6 +15,8 @@ public sealed record ActorContext(Guid UserId,Guid? TeamId,Guid? AgencyId,IReadO
         "client-read" or "relationship-read" or "contact-write" => Roles.Overlaps(["servicing","underwriter","senior-underwriter","agency-admin"]),
         "client-write" or "support-internal-read" or "support-write" => Roles.Overlaps(["servicing","underwriter","senior-underwriter"]),
         "match-read" or "match-review" => Roles.Overlaps(["underwriter","senior-underwriter"]),
+        "agency-read" => Roles.Overlaps(["agency-admin","system-admin","underwriter","senior-underwriter"]),
+        "agency-admin" => Roles.Overlaps(["agency-admin","system-admin"]),
         "finance" => Roles.Contains("finance"),
         _ => false
     };

@@ -1,11 +1,15 @@
 namespace BackOffice.Infrastructure.Persistence;
 
-// Minimal agency identity; onboarding extends this same record in Phase 4.
+// Shared agency identity: onboarding and client relationships retain this ID.
 public sealed class Agency : MutableRecord
 {
     public string Reference {get;set;}="";
     public string LegalName {get;set;}="";
     public string State {get;set;}="draft";
+    public string NormalizedName {get;set;}="";
+    public int OnboardingStep {get;set;}=1;
+    public string? RegulatoryReference {get;set;}
+    public Guid? RelationshipManagerId {get;set;}
 }
 public sealed class ClientAccount : MutableRecord
 {

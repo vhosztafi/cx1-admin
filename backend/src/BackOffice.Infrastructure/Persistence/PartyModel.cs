@@ -11,7 +11,7 @@ public sealed partial class BackOfficeDbContext
         Text(agency,("Reference",40),("LegalName",200),("State",20));
         agency.HasIndex(x => x.Reference).IsUnique();
         Check(agency,"State","[State] IN ('draft','active','suspended','abandoned')");
-        Check(agency,"Identity","LEN(TRIM([Reference])) > 0 AND LEN(TRIM([LegalName])) > 0");
+        Check(agency,"Identity","LEN(TRIM([Reference])) > 0 AND ([State] IN ('draft','abandoned') OR LEN(TRIM([LegalName])) > 0)");
         var client=Record<ClientAccount>(model,"ClientAccount");
         Text(client,("Reference",40),("LegalName",200),("NormalizedName",200),("EntityType",30),("CompanyNumber",30),("IdentityState",30));
         Json(client,"Address");client.HasIndex(x => x.Reference).IsUnique();

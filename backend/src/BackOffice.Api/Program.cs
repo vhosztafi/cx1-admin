@@ -17,6 +17,7 @@ builder.Services.AddProblemDetails();
 builder.Services.AddHealthChecks();
 builder.AddLocalIdentity();
 builder.Services.AddSingleton<PartyPaging>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyDraftService>();
 DiagnosticDispatcher.Register(builder);
 var app = builder.Build();
 app.UseExceptionHandler(handler => handler.Run(context =>
@@ -35,6 +36,7 @@ app.MapOperationalReads();
 app.MapOperationalRetries();
 app.MapOperationalSettings();
 app.MapClients();
+app.MapAgencies();
 app.MapContacts();
 app.MapSupportFlags();
 app.MapMatches();

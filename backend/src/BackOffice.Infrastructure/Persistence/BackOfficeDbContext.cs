@@ -123,6 +123,7 @@ public sealed partial class BackOfficeDbContext(DbContextOptions<BackOfficeDbCon
         Check(idempotency,"Status","[ResultStatus] BETWEEN 100 AND 599");
 
         ConfigureParties(model);
+        ConfigureAgencies(model);
         ConfigureSupportFlags(model);
         ConfigureMatches(model);
         // All instants are UTC; retain London intent separately in domain records.
