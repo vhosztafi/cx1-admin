@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T19:33:13Z"
+last_updated: "2026-09-14T19:52:59Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-06 of 8 in progress; 04-01 through 04-05 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — 04-06 validated activation proposal creation verified without premature state/delivery effects. Full278/39SQL retry pass after one database-creation timeout.
+Last activity: 2026-09-14 — 04-06 follow-up obligation persistence verified and migrated additively to Demo. Full279/40SQL pass. Independent activation application next.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: AgencyActivationService.Propose now validates complete saved draft/evidence/admin/products under held prerequisites and captures a bound pending state request without activating, changing parent ETag, issuing tokens or publishing terms. Shared AgencyApprovalLocks extracted from verified terms service. Targeted activation/terms tests pass; full278 backend/39SQL retry and77 contracts pass (initial full run had one SQL database creation timeout; report retained). Next persist the planned AgencyFollowUp record, then independent activation application with terms/issuance/notices/follow-ups atomically; suspension and Phase3 fences; public DI/API/UI wiring and writer-race acceptance remain. Prior22frontend/build/browser current; no tests/previews active. Broker login closed until04-07.
+Stopped at: AgencyFollowUp immutable provenance now mapped/migrated, with explicit evidence or activation composite FKs, source/status/date/reviewer guards and duplicate protection. No task identity until Phase9. Full279 backend/40SQL and77 contracts pass; EF model matches migration; Demo updated without reset. Next independent activation application: recheck fingerprint/current readiness, publish initial terms, issue staged invitations, queue notices and create PI-expiry/quarter-review obligations atomically. AgencyActivationService currently proposes only; terms decisions work internally. Suspension/Phase3 fences and public DI/API/UI wiring remain. Read04-06-PROGRESS.md. Prior22frontend/build/browser current; no tests/previews active; broker login closed until04-07.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-06-PROGRESS.md
 
 ## Autonomous continuation
