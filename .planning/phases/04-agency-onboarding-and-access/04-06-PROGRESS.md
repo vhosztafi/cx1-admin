@@ -1,6 +1,6 @@
 # 04-06 — Activation, suspension and agreed terms
 
-Status: in progress. No approval endpoint or completed activation workflow is claimed.
+Status: complete. Final289/47SQL regression gate passed; see04-06-SUMMARY. Earlier sections are chronological slice records; latest evidence below supersedes their historical pending notes.
 
 ## Complete terms validation foundation
 
@@ -122,8 +122,14 @@ Added AgencyTermsRequests with paginated actual proposal history, fresh request 
 
 Verification:29 frontend tests, TypeScript, lint and production build pass. New verify-agency-terms-review-browser.mjs uses two real internal identities with explicitly intercepted proposal/decision fixtures: requester cannot decide, full precise snapshot/product display, reason requirement, reject/approve history refresh, request-owned ETag, immutable uncertain retry (cannot change outcome), retained stale inputs and390px modal containment. Existing terms display and proposal browser scripts pass after shared-renderer and refresh wiring changes. Screenshots inspected. These scripts do not publish SQL terms; prior realSQL/API publication/race/replay/midnight evidence remains current. No backend/contract changes or human UAT claims. Owned preview processes stopped after checks.
 
+## Positive real SQL/API/browser lifecycle acceptance
+
+Added a complete fictional input fixture and verify-agency-lifecycle-browser.mjs. Setup uses real public draft/user/upload/attestation/check APIs with current CSRF and agency ETags, never direct seed shortcuts to approved state. Two real internal sessions use the UI to request/countersign activation, submit/approve changed terms, suspend and reactivate. All read/command results are real. One committed activation decision response is deliberately lost and the UI retries the identical body/key/ETag; no synthetic successful response is supplied.
+
+The browser verifies complete readiness, request-only draft state/no terms, initial1250bps approved grant, actual pending invitation and three durable notices, second1725bps current version and123456.78 credit, retained historical initial terms and exclusive end, old invitation revocation, a different fresh pending invitation on reactivation, no extra terms and persisted state after reload. Screenshots inspected at desktop/390px. A separate reusable read-only SQL script checks exactly3 applied state requests,1 applied terms request,2 terms versions,1 revoked+1 fresh pending invitation,2 follow-ups and4 notices. All passed for the retained demo agency identified in .local/browser-evidence/agency-lifecycle-result.json.
+
+Full contract validation passes78 cases and949 controls/327 operations. First backend gate attempt hit owned preview DLL locks; owned processes were stopped and a fresh full run started in .local/phase4-lifecycle-full-final. The incomplete earlier directory is not passing evidence. Existing29 frontend tests/typecheck/lint/build and targeted browser recovery suites remain current; no frontend source changed in this acceptance slice. Final backend result is recorded in04-06-SUMMARY after completion. Source KPI reconciliation is explicitly carried into04-08 in ACCEPTANCE-BACKLOG; no entire AGY requirement or human UAT is inferred.
+
 ## Next implementation
 
-1. Internal state/terms services and public state/terms proposals, reads and independent decisions are implemented. Preserve current authority, immutable approval/base fingerprints, exact money, effective terms and atomic effects. State approval UI is implemented and verified as described above; terms UI and full browser lifecycle acceptance remain.
-2. State and terms UI wiring is complete. Execute full positive real API/SQL/browser activation, terms publication and suspension/reactivation with two internal accounts; preserve existing frontend fixture tests as targeted recovery/presentation coverage rather than claiming they prove persistence.
-3. Complete positive activation/reactivation/terms HTTP/browser flows with two distinct real internal logins, final writer races and SQL/source/mobile/keyboard verification before04-06-SUMMARY. Agency-first relationship/matching fences already pass; retain them in full lifecycle acceptance. No entire AGY requirement or human UAT is inferred complete. Broker login stays closed until04-07.
+04-06 complete. Execute04-07 trusted broker identity/scope, permissions and internal sharing. Preserve explicit04-08 source KPI review and all cross-phase obligations.

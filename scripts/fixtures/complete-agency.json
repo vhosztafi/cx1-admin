@@ -1,0 +1,65 @@
+{
+  "legalName": "Fictional Complete Agency",
+  "entityType": "limited-company",
+  "companyNumber": "12345678",
+  "address": {
+    "line1": "1 Fictional Road",
+    "town": "Leeds",
+    "postcode": "LS1 1AA",
+    "country": "GB"
+  },
+  "tradingAddressMode": "different",
+  "tradingAddress": {
+    "line1": "2 Fictional Road",
+    "town": "Leeds",
+    "postcode": "LS1 1AB",
+    "country": "GB"
+  },
+  "regulatoryReference": "123456",
+  "regulatoryStatus": "appointed-representative",
+  "principalFirm": "Fictional Principal",
+  "clientMoneyBasis": "cass5-client-money",
+  "arrangesGeneralInsurance": "confirmed",
+  "territory": "UK",
+  "mainContact": {
+    "name": "Fictional Main",
+    "email": "main@example.test",
+    "telephone": "01130000001"
+  },
+  "complianceContact": {
+    "name": "Fictional Compliance",
+    "email": "compliance@example.test",
+    "telephone": "01130000002"
+  },
+  "relationshipManagerId": "cc1f5e5b-d08b-4a9c-bab4-d40310e491b8",
+  "correspondencePreference": "portal-only",
+  "commercialTerms": {
+    "effectiveFrom": "2026-09-14",
+    "commissionBasis": "flat-rate",
+    "flatCommissionBasisPoints": 1250,
+    "feeSharing": "agreed-split",
+    "feeShareBasisPoints": 1000,
+    "volumeCommitmentMode": "target-tiered",
+    "volumeCommitment": "100000.00",
+    "minimumPremiumOverrideMode": "capacity-provider-agreed",
+    "minimumPremiumOverride": "150.00",
+    "referralRouting": "standard-internal-underwriting"
+  },
+  "compliance": {
+    "tobaStatus": "signed",
+    "tobaVersion": "2026.1",
+    "tobaSignedOn": "2026-09-01",
+    "professionalIndemnityStatus": "meets-minimum",
+    "professionalIndemnityLimit": "2000000.00",
+    "piExpiresOn": "2027-09-14",
+    "dataProcessingAgreement": "signed"
+  },
+  "paymentTermsDays": 30,
+  "creditLimit": "0.00",
+  "settlement": {
+    "statementCycle": "monthly",
+    "method": "bank-transfer",
+    "premiumCollection": "agency",
+    "commissionSettlement": "net-remittance"
+  }
+}

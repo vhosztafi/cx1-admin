@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1–3 complete. Phase4 plans04-01 through04-05 complete; 04-06 activation, suspension and agreed terms in progress, with complete-terms validation, state/terms/product storage, current distribution readiness, independent reviewer seed and initial terms extraction and subsequent terms approval transactions and validated activation proposals and follow-up obligation storage verified; independent activation with durable demo effects also verified; agency-first association race fences and independent suspension with atomic revocation now verified; reactivation with current approved terms and fresh invitations now verified; public state API now verified; public commercial terms API and effective approved product reads now verified; state approval UI and approved Products/Accounts version history now implemented; terms proposal editor now implemented; terms history and independent decision UI now implemented; full real positive lifecycle browser acceptance next. User/invitation lifecycle, wizard, readiness, Last active and source counts verified. Latest289 backend/47SQL,29 frontend,78 contracts; lint/build and real browser flows pass. Full AGY requirements remain partial until remaining owning plans and04-08; see ACCEPTANCE-BACKLOG.md.
+**Status:** Autonomous progression authorised. Phases1–3 complete. Phase4 plans04-01 through04-06 complete, including independent activation/terms/suspension/reactivation, actual SQL-backed browser lifecycle, immutable versions and durable demo effects.04-07 trusted identity/scope/permissions/sharing next; broker login remains closed until its implementation. Final289 backend/47SQL,29 frontend,78contracts pass, with lint/build/browser evidence. Full AGY requirements remain partial until remaining owning plans and04-08; source KPI reconciliation is explicit in ACCEPTANCE-BACKLOG.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
@@ -234,7 +234,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 1. Data and API design | 4/4 | Complete | 2026-09-13 |
 | 2. Application and persistence foundation | 6/6 | Complete | 2026-09-14 |
 | 3. Clients and contact servicing | 6/6 | Complete | 2026-09-14 |
-| 4. Agency onboarding and access | 1/8 | In progress | — |
+| 4. Agency onboarding and access | 6/8 | In progress | — |
 | 5. Motor Trade quote capture | 0/TBD | Not started | — |
 | 6. Underwriting and first policy issue | 0/TBD | Not started | — |
 | 7. Policy lifecycle and history | 0/TBD | Not started | — |

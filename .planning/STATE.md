@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T23:36:25Z"
+last_updated: "2026-09-14T23:57:25Z"
 last_activity: 2026-09-15
 progress:
   total_phases: 13
   completed_phases: 3
   total_plans: 24
-  completed_plans: 21
+  completed_plans: 22
   percent: 23
 ---
 
@@ -20,14 +20,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute Phase 4 plan 04-06: activation, suspension and agreed terms.
+**Current focus:** Execute Phase 4 plan 04-07: trusted agency scope, permissions and sharing.
 
 ## Current Position
 
 Phase: 4 of 13 (Agency onboarding and access)
-Plan: 04-06 of 8 in progress; 04-01 through 04-05 complete, all six Phase 3 plans complete
+Plan: 04-07 of 8 next; 04-01 through 04-06 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-15 — Terms request history/full review/independent decisions wired;29frontend checks/build and three terms browser suites pass.
+Last activity: 2026-09-15 —04-06 complete: real SQL-backed activation/terms/suspension/reactivation browser passes; full289/47SQL gate and78 contracts pass.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -43,7 +43,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
 ### Pending Todos
 
-- Execute 04-06 through 04-08 sequentially; keep all gates and consume ACCEPTANCE-BACKLOG.md.
+- Execute 04-07 through 04-08 sequentially; keep all gates and consume ACCEPTANCE-BACKLOG.md.
 - Keep future business endpoints closed until their owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,8 +54,8 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-15
-Stopped at: Terms proposal history and independent decision UI implemented. AgencyTermsRequests fresh-reads own request ETag, renders full shared exact snapshot, enforces independent actor UI, reason, immutable uncertain outcome/body/key/ETag retry, stale retention and refreshes after decisions. Proposal success refreshes pending list; approved decision refreshes parent/products/history.29 frontend tests/typecheck/lint/build pass; new review browser test uses two real identities and explicit proposal/decision fixtures; existing terms proposal/display browser regressions pass. No SQL publication claimed by frontend fixtures. Prior289backend/47SQL/78contracts current. NEXT: full real positive activation/terms/suspension/reactivation browser lifecycle against SQL, then remaining races/source/keyboard/mobile acceptance and04-06 summary. UI wiring now complete; do not repeat frontend fixture-only slices. Broker login closed until04-07, no human UAT/phase completion claimed. Owned previews stopped.
-Resume file: .planning/phases/04-agency-onboarding-and-access/04-06-PROGRESS.md
+Stopped at:04-06 complete with SUMMARY/REVIEW. Full real lifecycle browser uses actual public draft/evidence/check/user preparation and two internal sessions for activation, terms publication, suspension/reactivation; committed response-loss replay and directSQL effect counts pass. Full289backend/47SQL (235unit/54integration) gate passed .local/phase4-lifecycle-full-final after stopping owned DLL-locking previews; earlier incomplete run is not evidence.29frontend/lint/typecheck/build and78contracts current. NEXT execute04-07 plan (trusted agency identities, permissions, safe common sharing projection); broker login currently remains closed.04-08 source KPI reconciliation explicitly in ACCEPTANCE-BACKLOG. No whole phase/AGY/human UAT/hostedCI completion claimed. No active tests/previews; demo lifecycle result retained .local/browser-evidence/agency-lifecycle-result.json.
+Resume file: .planning/phases/04-agency-onboarding-and-access/04-07-PLAN.md
 
 ## Autonomous continuation
 
