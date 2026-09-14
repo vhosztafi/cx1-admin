@@ -58,3 +58,34 @@ public sealed class Contact : MutableRecord
     public Guid? EndedBy {get;set;}
     public string? EndReason {get;set;}
 }
+
+public sealed class SupportFlag : MutableRecord
+{
+    public Guid ClientId {get;set;}
+    public Guid PersonId {get;set;}
+    public Guid OriginRelationshipId {get;set;}
+    public string TypeCode {get;set;}="";
+    public string InternalCategory {get;set;}="";
+    public string InternalInstruction {get;set;}="";
+    public string? AgencyInstruction {get;set;}
+    public string ConsentBasis {get;set;}="";
+    public DateOnly ReviewOn {get;set;}
+    public string Reason {get;set;}="";
+    public DateTimeOffset? EndedAt {get;set;}
+    public Guid? EndedBy {get;set;}
+}
+public sealed class FlagVisibility : StoredRecord
+{
+    public Guid FlagId {get;set;}
+    public Guid ClientId {get;set;}
+    public Guid RelationshipId {get;set;}
+}
+public sealed class SupportFlagHistory : StoredRecord
+{
+    public Guid FlagId {get;set;}
+    public Guid ActorId {get;set;}
+    public DateTimeOffset OccurredAt {get;set;}=DateTimeOffset.UtcNow;
+    public string Action {get;set;}="";
+    public string Reason {get;set;}="";
+    public string Snapshot {get;set;}="{}";
+}

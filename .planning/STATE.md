@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T04:00:01Z"
+last_updated: "2026-09-14T04:25:00Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
@@ -20,14 +20,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Contact servicing plan complete; implement consent-sensitive support flags in 03-04.
+**Current focus:** Support flag storage/validation/scoped projections verified; implement lifecycle service and APIs in 03-04.
 
 ## Current Position
 
 Phase: 3 of 13 (Clients and contact servicing)
-Plan: 03-04 of 6 next; 03-01 through 03-03 complete
+Plan: 03-04 of 6 in progress; task 1 complete, lifecycle/API/UI pending; 03-01 through 03-03 complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — contact UI/demo/search/header plan complete; 81 backend cases/fourteen SQL scenarios, eleven frontend cases and contact/client browser journeys pass
+Last activity: 2026-09-14 — support flag schema and scoped projections verified; 89 backend cases/fifteen SQL scenarios pass; migration applied to Demo without reset
 
 Progress: Phases 1–2 complete; 2/13 phases. Foundation verified; client servicing next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–2 complete; 2/13 phases. Foundation verified; client servic
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: 03-03-SUMMARY.md committed after production commit 8f80b32; resume 03-04-PLAN.md Task 1 SupportFlag/FlagVisibility/append-only history. Read current context/research/UI/data/API/permission contracts before implementing sensitive boundaries. Fresh passing backend reports .local/contact-ui-seed-results (81/14); eleven frontend tests, lint/typecheck/build and contact/client browser checks pass. Demo contacts seeded on third client with shared Person across two relationships; no reset. Preview PIDs stopped after identity checks. No active previews/tests; funnel unchanged. CLI-02 implemented pending Phase 3 final verification; CLI-01 remains partial until real quote/policy links. Continue automatically.
+Stopped at: Read 03-04-PROGRESS.md then implement Task 2 SupportFlagService/SupportFlagEndpoints with ordered parent locks, current scope before replay, ID-only receipts and restricted typed history. Task 1 is verified; migration 20260914041804_SupportFlags applied to Demo without reset; no demo flag rows yet. Fresh passing backend reports .local/support-storage-regression-results (89/15). No active previews/tests. Contact plan complete, eleven frontend tests and contact/client browser evidence unchanged. CLI-02 implemented pending final Phase 3 verification; CLI-01 partial until real quote/policy links. Funnel unchanged; continue automatically.
 Resume file: None
 
 ## Autonomous continuation
