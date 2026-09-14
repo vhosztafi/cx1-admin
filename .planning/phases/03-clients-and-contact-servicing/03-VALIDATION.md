@@ -9,7 +9,7 @@ created: 2026-09-14
 
 # Phase 3 validation strategy
 
-Existing infrastructure: xUnit with real SQL Server, Node test runner, TypeScript/ESLint/Next build and local Playwright Chrome. No new framework or mock database is needed. Planned tests do not exist yet and are written with each owning implementation task; nothing below is marked passed.
+Existing infrastructure: xUnit with real SQL Server, Node test runner, TypeScript/ESLint/Next build and local Playwright Chrome. No new framework or mock database is needed. The table below is the phase coverage plan; completed 03-01 through 03-03 evidence is recorded in their summaries. Support flags, matching and final cross-feature verification remain pending.
 
 After a contract task: `node scripts/validate-contracts.mjs` and `node --test tests/party-contracts.test.mjs`. After backend tasks: relevant xUnit filter plus the full suite after each plan (`dotnet test backend/BackOffice.slnx --no-restore`). After frontend tasks: `pnpm web:test`, `pnpm web:lint`, `pnpm web:typecheck` and browser smoke; build before full preview acceptance. SQL checks are generally seconds to minutes and must fail if SQL is unavailable. Fix a failed boundary before advancing its dependent work.
 

@@ -233,7 +233,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 |---|---|---|---|
 | 1. Data and API design | 4/4 | Complete | 2026-09-13 |
 | 2. Application and persistence foundation | 6/6 | Complete | 2026-09-14 |
-| 3. Clients and contact servicing | 1/6 | In progress | — |
+| 3. Clients and contact servicing | 3/6 | In progress | — |
 | 4. Agency onboarding and access | 0/TBD | Not started | — |
 | 5. Motor Trade quote capture | 0/TBD | Not started | — |
 | 6. Underwriting and first policy issue | 0/TBD | Not started | — |
