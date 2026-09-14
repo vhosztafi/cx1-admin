@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T17:13:19Z"
+last_updated: "2026-09-14T17:23:27Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
@@ -25,9 +25,9 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 ## Current Position
 
 Phase: 4 of 13 (Agency onboarding and access)
-Plan: 04-06 of 8 ready; 04-01 through 04-05 complete, all six Phase 3 plans complete
+Plan: 04-06 of 8 in progress; 04-01 through 04-05 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — 04-05 complete: scoped users/invitations, wizard, readiness and source counts verified; continue04-06.
+Last activity: 2026-09-14 — 04-06 complete-terms validator and21 new unit cases implemented; full260/34SQL and77contracts pass. Proposal storage/services next.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,8 +54,8 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: 04-05 complete; read04-05-SUMMARY/REVIEW and04-06-PLAN. Full239/34SQL,22 frontend,77contracts, lint/build and browser flows pass. User-count commit91bf437. Next implement independent activation/terms proposals, second-user decisions, atomic issuance/notifications and suspension. Keep broker auth closed until04-07, sales funnel unchanged, and preserve ACCEPTANCE-BACKLOG. No tests/previews active; full AGY/Phase4 incomplete.
-Resume file: .planning/phases/04-agency-onboarding-and-access/04-06-PLAN.md
+Stopped at: 04-06 terms validation foundation verified. Read04-06-PROGRESS.md and04-06-PLAN. AgencyTermsRules.ValidateProposal returns canonical complete snapshot/fingerprint/ordered products and checks future scheduling; public approval APIs remain unimplemented. Next persist proposal/decision and immutable terms/product records with SQL constraints, then approval services and activation/suspension integration. Full260 backend/34SQL and77contracts pass; prior22 frontend/build/browser current. No tests/previews active. Sales funnel unchanged; broker login closed until04-07.
+Resume file: .planning/phases/04-agency-onboarding-and-access/04-06-PROGRESS.md
 
 ## Autonomous continuation
 
