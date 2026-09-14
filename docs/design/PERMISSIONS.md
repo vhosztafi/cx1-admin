@@ -36,6 +36,14 @@ System administrators are not automatically underwriters or finance approvers. R
 - Global search, counts, reports, drill-down, exports and notifications share the same scope evaluator. Unauthorised IDs return non-disclosing 404; missing sign-in returns 401; visible-resource forbidden command returns 403.
 - Audit data uses event-specific redaction and read permissions. Password hashes, MFA seeds, recovery codes, raw session/invitation tokens and adapter secrets never appear in business audit or reports.
 
+## Phase 3 party capability mapping
+
+The initial internal mapping grants client-read/client-write and contact-write to servicing, underwriter and senior-underwriter. Internal agency-admin can read identity/relationships and maintain contacts, but does not edit shared business identity or read internal flags. support-internal-read/support-write are separate explicit capabilities granted to servicing/UW/senior in the demo. match-review remains UW/senior only for the existing list/detail/decision contracts. System-admin has no implicit party mutation or sensitive support grant; combine an appropriate internal role explicitly. Finance has no broad party access until its scoped financial projections are implemented.
+
+SupportFlag and its history are internal-only. SafeSupportInstruction has only id/personId/instruction/reviewOn and is selected by explicit FlagVisibility plus active relationship/person membership. The relationship-read internal preview records an inspection audit and returns that same safe projection; it neither changes the actor nor enables broker login. Actual broker sessions remain Phase 4. Tests must verify trusted agency-context SQL projections both with and without explicit grants, not infer isolation from a denied login alone.
+
+Party cursors bind current role/agency scope as well as user, route, filters and page size. Current authorization and object scope precede replay. Contact person reuse is limited to an authorized same-client relationship; editing a contact changes its declaration only. General client activity uses fixed safe summaries; sensitive flag history, reason and snapshots are separately permissioned. Match decline viewed from the submission side is generic and contains no candidate reference, agency identity or evidence.
+
 ## Identity actions
 
 Local sign-in uses framework password hashing, secure HttpOnly cookie sessions and CSRF protection for cookie-authenticated mutations. Password reset/invitation tokens are random, hashed, time-limited and single-use; delivery is via demo outbox. Self profile fields exclude email/role/authority. Email change needs a second administrator, recorded old/new identity, safe notifications and session revocation on application. Role/authority changes revoke or revalidate sessions immediately.

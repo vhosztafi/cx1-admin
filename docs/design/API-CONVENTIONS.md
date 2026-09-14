@@ -30,6 +30,18 @@ Concurrent same-key commands serialize on the database uniqueness/transaction bo
 
 202 means durable work has been accepted, not completed. It returns a job ID and Location to the scoped job status endpoint; polling is read-only. Issue can return 201 with the created policy transaction while its documents/emails are pending. Job failure does not reverse an issued contract. The client retains its command key on network timeout and queries/retries that same operation.
 
+## Party command refinements
+
+Client updates and relationship creation require the client ETag. Contact creation requires the relationship ETag; contact update/end/make-primary require the contact ETag while locking the parent relationship. Flag creation requires the origin relationship ETag; flag amend/end require the flag ETag. Match decisions require the review ETag. The operation's x-etag-resource extension names this precondition resource. Creation of a child returns the new child's response ETag, not its parent's token.
+
+SqlCommandBoundary stores an optional original strong response ETag alongside the status/body; older receipts without this metadata replay with no ETag. Handlers save within the open transaction to generate rowversion before returning it. Only a bounded strong opaque ASCII ETag is allowed; weak tags, control characters, embedded quotes and arbitrary response headers are rejected. Failure after a handler flush still rolls back the whole command. A later resource edit does not change the original replay response.
+
+Support-flag mutation responses use PartyMutationReceipt containing only id, with the version in the ETag header. The client separately fetches current details under support read permission. Sensitive flag snapshots/reasons never enter ordinary activity or generic command response storage. Flag detail/history has dedicated capability checks; safe instruction lists count only explicitly granted active records and expose no hidden totals. Declined consent is not an accepted FlagWrite basis and causes validation failure without persistence.
+
+ClientSummary explicitly distinguishes unavailable policy/quote data from an available empty portfolio. /clients/{id}/records must not claim an empty live portfolio when its modules are unavailable. MatchReview uses an immutable MatchSubmission with an optional real quote link, plus pinned rule and typed comparison evidence; embedded IDs must match their top-level identities at runtime. Link associates only the submitting relationship. Query records an information request; it does not imply delivery. Reopen retains all trail entries and cannot undo progressed quote/policy effects. CLI-01 linked business-record acceptance remains pending Phases 5/6.
+
+These are implementation contracts; Phase 3 endpoint behavior remains unverified until its owning plan is executed.
+
 ## Errors
 
 Use `application/problem+json` with `type`, `title`, `status`, stable `code`, `traceId`, optional safe `detail` and `errors` entries `{path,code,message}`. Validation paths are JSON Pointers. Do not include stack traces, database names, credentials, raw provider payloads or another agency's identifiers. UI error decisions use code, not translated message text.

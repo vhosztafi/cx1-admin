@@ -149,6 +149,10 @@
       "description": "Scoped referrals operations."
     },
     {
+      "name": "relationship-agencies",
+      "description": "Scoped relationship-agencies operations."
+    },
+    {
       "name": "relationships",
       "description": "Scoped relationships operations."
     },
@@ -3300,7 +3304,7 @@
                     "items": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/Client"
+                        "$ref": "#/components/schemas/ClientSummary"
                       },
                       "maxItems": 1000
                     },
@@ -3703,7 +3707,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 100
-            }
+            },
+            "description": "Strong ETag of client; current scope is checked before replay, and concurrency after replay."
           }
         ],
         "responses": {
@@ -3837,7 +3842,8 @@
               }
             }
           }
-        }
+        },
+        "x-etag-resource": "client"
       }
     },
     "/clients/{clientId}/relationships": {
@@ -4035,7 +4041,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 100
-            }
+            },
+            "description": "Strong ETag of client; current scope is checked before replay, and concurrency after replay."
           }
         ],
         "responses": {
@@ -4186,7 +4193,8 @@
               }
             }
           }
-        }
+        },
+        "x-etag-resource": "client"
       }
     },
     "/relationships/{relationshipId}/contacts": {
@@ -4233,6 +4241,14 @@
               "minimum": 1,
               "maximum": 100,
               "default": 25
+            }
+          },
+          {
+            "in": "query",
+            "name": "includeEnded",
+            "required": false,
+            "schema": {
+              "type": "boolean"
             }
           }
         ],
@@ -4384,7 +4400,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 100
-            }
+            },
+            "description": "Strong ETag of relationship; current scope is checked before replay, and concurrency after replay."
           }
         ],
         "responses": {
@@ -4525,7 +4542,8 @@
               }
             }
           }
-        }
+        },
+        "x-etag-resource": "relationship"
       }
     },
     "/relationships/{relationshipId}/contacts/{contactId}": {
@@ -4581,7 +4599,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 100
-            }
+            },
+            "description": "Strong ETag of contact; current scope is checked before replay, and concurrency after replay."
           }
         ],
         "responses": {
@@ -4715,7 +4734,8 @@
               }
             }
           }
-        }
+        },
+        "x-etag-resource": "contact"
       },
       "get": {
         "operationId": "getContact",
@@ -4888,7 +4908,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 100
-            }
+            },
+            "description": "Strong ETag of contact; current scope is checked before replay, and concurrency after replay."
           }
         ],
         "responses": {
@@ -4907,7 +4928,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CommandResult"
+                  "$ref": "#/components/schemas/Contact"
                 }
               }
             }
@@ -5012,7 +5033,8 @@
               }
             }
           }
-        }
+        },
+        "x-etag-resource": "contact"
       }
     },
     "/relationships/{relationshipId}/people/{personId}/flags": {
@@ -5228,7 +5250,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 100
-            }
+            },
+            "description": "Strong ETag of origin relationship; current scope is checked before replay, and concurrency after replay."
           }
         ],
         "responses": {
@@ -5254,7 +5277,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SupportFlag"
+                  "$ref": "#/components/schemas/PartyMutationReceipt"
                 }
               }
             }
@@ -5369,7 +5392,8 @@
               }
             }
           }
-        }
+        },
+        "x-etag-resource": "origin relationship"
       }
     },
     "/flags/{flagId}": {
@@ -5416,7 +5440,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 100
-            }
+            },
+            "description": "Strong ETag of flag; current scope is checked before replay, and concurrency after replay."
           }
         ],
         "responses": {
@@ -5435,7 +5460,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SupportFlag"
+                  "$ref": "#/components/schemas/PartyMutationReceipt"
                 }
               }
             }
@@ -5550,7 +5575,8 @@
               }
             }
           }
-        }
+        },
+        "x-etag-resource": "flag"
       },
       "get": {
         "operationId": "getSupportFlag",
@@ -5705,7 +5731,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 100
-            }
+            },
+            "description": "Strong ETag of flag; current scope is checked before replay, and concurrency after replay."
           }
         ],
         "responses": {
@@ -5724,7 +5751,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CommandResult"
+                  "$ref": "#/components/schemas/PartyMutationReceipt"
                 }
               }
             }
@@ -5850,7 +5877,8 @@
               }
             }
           }
-        }
+        },
+        "x-etag-resource": "flag"
       }
     },
     "/matches": {
@@ -5903,6 +5931,15 @@
                 "declined",
                 "queried"
               ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "candidateClientId",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
@@ -6126,7 +6163,7 @@
       "post": {
         "operationId": "decideMatch",
         "summary": "decide Match",
-        "description": "Requires match-review. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "description": "Requires match-review. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Link only associates the submission agency; no destructive merge or new access to candidate contacts. Separate reuses this intake's created client on replay/reopen. Query records a request; delivery is a separate workflow. Reopen retains the trail and cannot undo progressed quote/policy effects.",
         "tags": [
           "matches"
         ],
@@ -6166,7 +6203,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 100
-            }
+            },
+            "description": "Strong ETag of match review; current scope is checked before replay, and concurrency after replay."
           }
         ],
         "responses": {
@@ -6316,13 +6354,166 @@
                   },
                   "candidateClientId": {
                     "type": "string",
-                    "format": "uuid"
+                    "format": "uuid",
+                    "description": "If supplied, must equal the review's immutable candidate; arbitrary reassignment is rejected."
                   }
                 },
                 "required": [
                   "outcome",
                   "reason"
                 ]
+              }
+            }
+          }
+        },
+        "x-etag-resource": "match review"
+      },
+      "get": {
+        "operationId": "listMatchDecisions",
+        "summary": "list Match Decisions",
+        "description": "Requires match-review. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "tags": [
+          "matches"
+        ],
+        "x-permission": "match-review",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "matchId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MatchDecision"
+                      },
+                      "maxItems": 1000
+                    },
+                    "nextCursor": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2048
+                    },
+                    "totalCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
               }
             }
           }
@@ -40922,7 +41113,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 100
-            }
+            },
+            "description": "Strong ETag of contact; current scope is checked before replay, and concurrency after replay."
           }
         ],
         "responses": {
@@ -41067,7 +41259,8 @@
               }
             }
           }
-        }
+        },
+        "x-etag-resource": "contact"
       }
     },
     "/quotes/{quoteId}/referral-decisions": {
@@ -49359,6 +49552,1037 @@
           }
         }
       }
+    },
+    "/relationship-agencies": {
+      "get": {
+        "operationId": "listRelationshipAgencies",
+        "summary": "list Relationship Agencies",
+        "description": "Requires relationship-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "tags": [
+          "relationship-agencies"
+        ],
+        "x-permission": "relationship-read",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RelationshipAgency"
+                      },
+                      "maxItems": 1000
+                    },
+                    "nextCursor": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2048
+                    },
+                    "totalCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/relationships/{relationshipId}": {
+      "get": {
+        "operationId": "getClientRelationship",
+        "summary": "get Client Relationship",
+        "description": "Requires relationship-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "tags": [
+          "relationships"
+        ],
+        "x-permission": "relationship-read",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "relationshipId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Relationship"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clients/{clientId}/activity": {
+      "get": {
+        "operationId": "listClientActivity",
+        "summary": "list Client Activity",
+        "description": "Requires client-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "tags": [
+          "clients"
+        ],
+        "x-permission": "client-read",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ClientActivity"
+                      },
+                      "maxItems": 1000
+                    },
+                    "nextCursor": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2048
+                    },
+                    "totalCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clients/{clientId}/records": {
+      "get": {
+        "operationId": "listClientRecords",
+        "summary": "list Client Records",
+        "description": "Requires client-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Only actual implemented quote/policy records are returned. Module unavailability is 503, not an invented empty live portfolio.",
+        "tags": [
+          "clients"
+        ],
+        "x-permission": "client-read",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          },
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "quote",
+                "policy"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ClientRecordLink"
+                      },
+                      "maxItems": 1000
+                    },
+                    "nextCursor": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2048
+                    },
+                    "totalCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/flags/{flagId}/history": {
+      "get": {
+        "operationId": "listSupportFlagHistory",
+        "summary": "list Support Flag History",
+        "description": "Requires support-internal-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "tags": [
+          "flags"
+        ],
+        "x-permission": "support-internal-read",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "flagId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/FlagHistoryEntry"
+                      },
+                      "maxItems": 1000
+                    },
+                    "nextCursor": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2048
+                    },
+                    "totalCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/relationships/{relationshipId}/support-instructions/preview": {
+      "get": {
+        "operationId": "previewSafeSupportInstructions",
+        "summary": "preview Safe Support Instructions",
+        "description": "Audited internal preview of the exact explicitly granted relationship-safe projection. Does not impersonate an agency session or reveal hidden flag totals.",
+        "tags": [
+          "relationships"
+        ],
+        "x-permission": "relationship-read",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "relationshipId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/SafeSupportInstruction"
+                      },
+                      "maxItems": 1000
+                    },
+                    "nextCursor": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2048
+                    },
+                    "totalCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/matches/{matchId}/information-requests": {
+      "get": {
+        "operationId": "listMatchInformationRequests",
+        "summary": "list Match Information Requests",
+        "description": "Requires match-review. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "tags": [
+          "matches"
+        ],
+        "x-permission": "match-review",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "matchId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MatchInformationRequest"
+                      },
+                      "maxItems": 1000
+                    },
+                    "nextCursor": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2048
+                    },
+                    "totalCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -49825,6 +51049,17 @@
           },
           "address": {
             "$ref": "#/components/schemas/Address"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "identityState": {
+            "type": "string",
+            "enum": [
+              "active",
+              "inactive"
+            ]
           }
         },
         "required": [
@@ -49857,13 +51092,25 @@
               "active",
               "inactive"
             ]
+          },
+          "agencyName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "agencyReference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
           }
         },
         "required": [
           "id",
           "clientId",
           "agencyId",
-          "state"
+          "state",
+          "agencyName",
+          "agencyReference"
         ]
       },
       "ContactWrite": {
@@ -49872,7 +51119,8 @@
         "properties": {
           "personId": {
             "type": "string",
-            "format": "uuid"
+            "format": "uuid",
+            "description": "Optional existing person from an authorized same-client relationship; never a global person search. Names update this contact declaration, not the canonical person or another contact."
           },
           "firstName": {
             "type": "string",
@@ -49903,31 +51151,7 @@
             "type": "boolean"
           },
           "marketingConsent": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "email": {
-                "type": "boolean"
-              },
-              "telephone": {
-                "type": "boolean"
-              },
-              "recordedAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "source": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 200
-              }
-            },
-            "required": [
-              "email",
-              "telephone",
-              "recordedAt",
-              "source"
-            ]
+            "$ref": "#/components/schemas/MarketingConsent"
           },
           "fullName": {
             "type": "string",
@@ -50014,31 +51238,7 @@
             "type": "boolean"
           },
           "marketingConsent": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "email": {
-                "type": "boolean"
-              },
-              "telephone": {
-                "type": "boolean"
-              },
-              "recordedAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "source": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 200
-              }
-            },
-            "required": [
-              "email",
-              "telephone",
-              "recordedAt",
-              "source"
-            ]
+            "$ref": "#/components/schemas/MarketingConsent"
           },
           "endedAt": {
             "type": "string",
@@ -50048,13 +51248,19 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 200
+          },
+          "relationshipId": {
+            "type": "string",
+            "format": "uuid"
           }
         },
         "required": [
           "id",
           "role",
           "isPrimary",
-          "marketingConsent"
+          "marketingConsent",
+          "personId",
+          "relationshipId"
         ],
         "anyOf": [
           {
@@ -50095,13 +51301,24 @@
         "properties": {
           "typeCode": {
             "type": "string",
-            "minLength": 1,
-            "maxLength": 60
+            "enum": [
+              "vulnerability",
+              "third-party-authority",
+              "financial-difficulty",
+              "accessible-format",
+              "interpreter-required",
+              "deceased-or-business-ceased"
+            ]
           },
           "internalCategory": {
             "type": "string",
-            "minLength": 1,
-            "maxLength": 100
+            "enum": [
+              "health",
+              "life-event",
+              "resilience",
+              "capability",
+              "authority"
+            ]
           },
           "internalInstruction": {
             "type": "string",
@@ -50115,8 +51332,11 @@
           },
           "consentBasis": {
             "type": "string",
-            "minLength": 1,
-            "maxLength": 200
+            "enum": [
+              "verbal-consent",
+              "written-consent",
+              "third-party-authority"
+            ]
           },
           "reviewOn": {
             "type": "string",
@@ -50133,7 +51353,8 @@
               "type": "string",
               "format": "uuid"
             },
-            "maxItems": 1000
+            "maxItems": 100,
+            "uniqueItems": true
           }
         },
         "required": [
@@ -50144,7 +51365,35 @@
           "reviewOn",
           "reason",
           "visibleRelationshipIds"
-        ]
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "visibleRelationshipIds": {
+                  "type": "array",
+                  "minItems": 1
+                }
+              },
+              "required": [
+                "visibleRelationshipIds"
+              ]
+            },
+            "then": {
+              "properties": {
+                "agencyInstruction": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1000
+                }
+              },
+              "required": [
+                "agencyInstruction"
+              ]
+            }
+          }
+        ],
+        "description": "Declined consent cannot create or update sensitive detail. Each explicit visibility grant requires an active same-client relationship containing this person and functional agency wording. API validates membership and dates."
       },
       "SupportFlag": {
         "type": "object",
@@ -50164,13 +51413,24 @@
           },
           "typeCode": {
             "type": "string",
-            "minLength": 1,
-            "maxLength": 60
+            "enum": [
+              "vulnerability",
+              "third-party-authority",
+              "financial-difficulty",
+              "accessible-format",
+              "interpreter-required",
+              "deceased-or-business-ceased"
+            ]
           },
           "internalCategory": {
             "type": "string",
-            "minLength": 1,
-            "maxLength": 100
+            "enum": [
+              "health",
+              "life-event",
+              "resilience",
+              "capability",
+              "authority"
+            ]
           },
           "internalInstruction": {
             "type": "string",
@@ -50184,8 +51444,11 @@
           },
           "consentBasis": {
             "type": "string",
-            "minLength": 1,
-            "maxLength": 200
+            "enum": [
+              "verbal-consent",
+              "written-consent",
+              "third-party-authority"
+            ]
           },
           "reviewOn": {
             "type": "string",
@@ -50202,7 +51465,8 @@
               "type": "string",
               "format": "uuid"
             },
-            "maxItems": 1000
+            "maxItems": 100,
+            "uniqueItems": true
           },
           "endedAt": {
             "type": "string",
@@ -50220,6 +51484,33 @@
           "reviewOn",
           "reason",
           "visibleRelationshipIds"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "visibleRelationshipIds": {
+                  "type": "array",
+                  "minItems": 1
+                }
+              },
+              "required": [
+                "visibleRelationshipIds"
+              ]
+            },
+            "then": {
+              "properties": {
+                "agencyInstruction": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1000
+                }
+              },
+              "required": [
+                "agencyInstruction"
+              ]
+            }
+          }
         ]
       },
       "MatchReview": {
@@ -50259,41 +51550,37 @@
           "signals": {
             "type": "array",
             "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "code": {
-                  "type": "string",
-                  "minLength": 1,
-                  "maxLength": 100
-                },
-                "summary": {
-                  "type": "string",
-                  "minLength": 1,
-                  "maxLength": 500
-                }
-              },
-              "required": [
-                "code",
-                "summary"
-              ]
+              "$ref": "#/components/schemas/MatchSignal"
             },
-            "maxItems": 1000
+            "maxItems": 100
           },
           "ruleVersionId": {
             "type": "string",
             "format": "uuid"
+          },
+          "submissionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "submission": {
+            "$ref": "#/components/schemas/MatchSubmission"
+          },
+          "rule": {
+            "$ref": "#/components/schemas/MatchRuleSnapshot"
           }
         },
         "required": [
           "id",
-          "quoteId",
           "candidateClientId",
           "confidence",
           "state",
           "signals",
-          "ruleVersionId"
-        ]
+          "ruleVersionId",
+          "submissionId",
+          "submission",
+          "rule"
+        ],
+        "description": "Internal comparison evidence pinned at capture. submissionId and embedded submission.id agree; ruleVersionId and rule.id agree. quoteId is absent until linked to an actual quote. No candidate data belongs in a submission-side decline."
       },
       "Quote": {
         "type": "object",
@@ -56626,6 +57913,707 @@
         "required": [
           "policyId",
           "versionId"
+        ]
+      },
+      "MarketingConsent": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "state": {
+                "const": "given"
+              },
+              "email": {
+                "type": "boolean"
+              },
+              "telephone": {
+                "type": "boolean"
+              },
+              "recordedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "source": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            },
+            "required": [
+              "state",
+              "email",
+              "telephone",
+              "recordedAt",
+              "source"
+            ],
+            "anyOf": [
+              {
+                "properties": {
+                  "email": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "email"
+                ]
+              },
+              {
+                "properties": {
+                  "telephone": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "telephone"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "state": {
+                "const": "withheld"
+              },
+              "email": {
+                "const": false
+              },
+              "telephone": {
+                "const": false
+              },
+              "recordedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "source": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            },
+            "required": [
+              "state",
+              "email",
+              "telephone",
+              "recordedAt",
+              "source"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "state": {
+                "const": "not-asked"
+              },
+              "email": {
+                "const": false
+              },
+              "telephone": {
+                "const": false
+              },
+              "recordedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "source": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            },
+            "required": [
+              "state",
+              "email",
+              "telephone",
+              "recordedAt",
+              "source"
+            ]
+          }
+        ],
+        "description": "Declared channel consent; not-asked is distinct from withheld. Recording audit actor/time are server-owned."
+      },
+      "RelationshipAgency": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "legalName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "active",
+              "suspended",
+              "abandoned"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "reference",
+          "legalName",
+          "state"
+        ]
+      },
+      "ClientRecordAvailability": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "state": {
+                "const": "unavailable"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "state": {
+                "const": "available"
+              },
+              "policyCount": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "quoteCount": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "state",
+              "policyCount",
+              "quoteCount"
+            ]
+          }
+        ]
+      },
+      "ClientSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "legalName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "entityType": {
+            "type": "string",
+            "enum": [
+              "sole-trader",
+              "partnership",
+              "limited-company",
+              "llp"
+            ]
+          },
+          "companyNumber": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 30
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "identityState": {
+            "type": "string",
+            "enum": [
+              "active",
+              "inactive"
+            ]
+          },
+          "primaryContactName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "agencies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "reference": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 40
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "reference"
+              ]
+            },
+            "maxItems": 1000
+          },
+          "records": {
+            "$ref": "#/components/schemas/ClientRecordAvailability"
+          },
+          "tradeActivities": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "maxItems": 1000
+          }
+        },
+        "required": [
+          "id",
+          "reference",
+          "legalName",
+          "entityType",
+          "address",
+          "agencies",
+          "records"
+        ]
+      },
+      "ClientActivity": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "actorLabel": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "eventType": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "relationshipId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "recordId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "recordKind": {
+            "type": "string",
+            "enum": [
+              "client",
+              "contact",
+              "match"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "occurredAt",
+          "actorLabel",
+          "eventType",
+          "summary"
+        ]
+      },
+      "ClientRecordLink": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "quote",
+              "policy"
+            ]
+          },
+          "reference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "relationshipId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "agencyName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "productCode": {
+            "type": "string",
+            "enum": [
+              "motor-trade-road-risks",
+              "motor-trade-combined",
+              "commercial-combined"
+            ]
+          },
+          "state": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 30
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "reference",
+          "relationshipId",
+          "agencyName",
+          "productCode",
+          "state"
+        ]
+      },
+      "PartyMutationReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "description": "Safe identity-only command receipt. The original strong ETag is returned in the header; fetch current details through an authorized GET."
+      },
+      "FlagHistoryEntry": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "flagId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "actorLabel": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "created",
+              "amended",
+              "reviewed",
+              "ended"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "snapshot": {
+            "$ref": "#/components/schemas/SupportFlag"
+          }
+        },
+        "required": [
+          "id",
+          "flagId",
+          "actorLabel",
+          "occurredAt",
+          "action",
+          "reason",
+          "snapshot"
+        ]
+      },
+      "MatchSignal": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "submittedValue": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "candidateValue": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "weight": {
+            "type": "string",
+            "enum": [
+              "definitive",
+              "strong",
+              "moderate",
+              "weak"
+            ]
+          },
+          "result": {
+            "type": "string",
+            "enum": [
+              "match",
+              "near-match",
+              "different",
+              "cannot-compare"
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "summary",
+          "submittedValue",
+          "candidateValue",
+          "weight",
+          "result"
+        ]
+      },
+      "MatchRuleSnapshot": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "duplicateQuotePolicy": {
+            "type": "string",
+            "enum": [
+              "allow-competing",
+              "broker-of-record",
+              "refer"
+            ]
+          },
+          "requireReview": {
+            "type": "boolean"
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "duplicateQuotePolicy",
+          "requireReview",
+          "summary"
+        ]
+      },
+      "MatchSubmission": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "agencyId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "agencyName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "identity": {
+            "$ref": "#/components/schemas/ClientWrite"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "quoteId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "linkedClientId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "linkedRelationshipId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "id",
+          "reference",
+          "agencyId",
+          "agencyName",
+          "identity",
+          "createdAt"
+        ]
+      },
+      "MatchDecision": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "matchId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "link",
+              "separate",
+              "decline",
+              "query",
+              "reopen"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "actorLabel": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "clientId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "relationshipId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "informationRequestId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "id",
+          "matchId",
+          "outcome",
+          "reason",
+          "actorLabel",
+          "occurredAt"
+        ]
+      },
+      "MatchInformationRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "matchId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deliveryState": {
+            "type": "string",
+            "enum": [
+              "recorded",
+              "queued",
+              "delivered",
+              "failed"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "matchId",
+          "description",
+          "recordedAt",
+          "deliveryState"
         ]
       }
     }
