@@ -106,6 +106,8 @@ public static partial class ClientEndpoints
              (matchRead && (x.EventType=="match.link" || x.EventType=="match.separate" || x.EventType=="match.decline" || x.EventType=="match.query" || x.EventType=="match.reopen"))));
         var total=await query.CountAsync(context.RequestAborted);
         var rows=await query.OrderByDescending(x => x.OccurredAt).ThenBy(x => x.Id).Skip(page.Offset).Take(page.Size).ToListAsync(context.RequestAborted);
+        var actorIds=rows.Where(x=>x.ActorId!=null).Select(x=>x.ActorId!.Value).Distinct().ToArray();
+        var actors=await db.Set<StaffUser>().AsNoTracking().Where(x=>actorIds.Contains(x.Id)).ToDictionaryAsync(x=>x.Id,x=>x.DisplayName,context.RequestAborted);
         var contactIds=rows.Where(x=>x.RecordKind=="contact" && x.RecordId!=null).Select(x=>x.RecordId!.Value).ToArray();
         var contacts=await scope.Contacts(db,includeEnded:true).Where(x=>x.ClientId==clientId && contactIds.Contains(x.Id))
             .Select(x=>new {x.Id,x.RelationshipId}).ToListAsync(context.RequestAborted);
@@ -116,7 +118,7 @@ public static partial class ClientEndpoints
         bool CanLink(ClientActivity x)=>x.RecordKind=="client" && x.RecordId==clientId ||
             x.RecordKind=="contact" && contacts.Any(c=>c.Id==x.RecordId && c.RelationshipId==x.RelationshipId) ||
             x.RecordKind=="match" && matches.Any(m=>m.Id==x.RecordId && (m.CandidateClientId==clientId && m.CandidateRelationshipId==x.RelationshipId || decisions.Any(d=>d.MatchId==m.Id && d.RelationshipId==x.RelationshipId)));
-        return Results.Json(new {items=rows.Select(x => new {x.Id,x.OccurredAt,actorLabel=x.ActorId is null ? "System" : "Back office staff",x.EventType,
+        return Results.Json(new {items=rows.Select(x => new {x.Id,x.OccurredAt,actorLabel=x.ActorId is Guid actorId ? actors.GetValueOrDefault(actorId,"Unavailable staff identity") : "System",x.EventType,
             summary=x.EventType switch {"client.updated"=>"Client identity updated.","client.relationship-created"=>"Agency relationship added.",
                 "contact.created"=>"Relationship contact added.","contact.updated"=>"Relationship contact updated.",
                 "contact.primary-changed"=>"Primary contact changed.","contact.ended"=>"Relationship contact ended.",

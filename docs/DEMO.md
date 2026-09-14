@@ -1,6 +1,6 @@
-# Foundation demonstration
+# Back office demonstration
 
-This is the Phase 2 foundation, not the complete insurance MVP. Sign-in, account identity, navigation, diagnostic jobs, recovery and audit use persistent SQL data. Client servicing, quotes, policies, finance and configuration editing arrive in later phases. The supplied sales funnel remains unchanged.
+The current demo covers the foundation and client servicing slices. Sign-in, account identity, client/contact/support servicing, duplicate intake review, diagnostic jobs, recovery and audit use persistent SQL data. Quotes, policies, finance and configuration editing arrive in later phases. The complete insurance MVP remains in progress. The supplied sales funnel remains unchanged.
 
 ## Start the native Windows preview
 
@@ -57,6 +57,16 @@ For a manual recovery demonstration, run `sqlcmd -S '.\SQL2022' -E -C -b -d Cove
 `pnpm web:browser` checks the sign-in/shell journey. Both browser scripts require Chrome, use only localhost, and save screenshots under ignored `.local/browser-evidence`. Automated checks and agent visual review do not constitute business-user acceptance.
 
 The diagnostics make no external calls, send no messages and move no money. Products are draft foundation definitions without rating rules. All six seeded role accounts are listed in SETUP.md. Docker and GitHub-hosted CI execution remain unverified; the native SQL profile is the demonstrated runtime.
+
+## Clients, contacts and support
+
+Sign in as servicing@cover.example. Open Clients, search by business, contact or agency and filter by entity type. Create a fictional client with a legal name and address, edit its identity and reload. The CN reference is assigned by SQL-backed application logic. On Overview, add a Brightside or Kingsway agency relationship. Activity shows the recorded time and staff identity. Policies and Quotes explicitly remain unavailable until their owning phases.
+
+Open Contacts and choose an agency relationship. Add a contact with its declared full name, role and marketing consent (Given, Withheld or Not asked). The first active contact is primary. Add another contact and use Make primary to switch atomically. To end the current primary while others remain, first choose a replacement. Include ended contacts to inspect retained records. Details and consent belong to the selected relationship.
+
+For the seeded client CN-0000003, select Brightside and a contact in Customer flags. Add a flag with functional internal wording, recording basis, review date and reason. Explicitly select sharing relationships and supply separate agency wording when needed. Consent declined clears the sensitive draft and does not save it. Amend, Review, History and End flag preserve an audit trail. The agency-safe preview shows only current explicitly granted instructions for that relationship. Internal agency-admin can inspect this safe preview but cannot inspect internal flag details/history. Browser-created historical flags remain visible, so the exact count may grow.
+
+Run pnpm web:browser:clients, pnpm web:browser:contacts and pnpm web:browser:support for persistent lifecycle, uncertain-response retry, stale-edit recovery, access and mobile checks. These checks create or amend clearly fictional demo records without a reset. Desktop and mobile evidence is under .local/browser-evidence. Business-user UAT remains separate.
 
 ## Duplicate intake review
 

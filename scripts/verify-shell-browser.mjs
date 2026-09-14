@@ -41,6 +41,8 @@ try {
   await page.getByRole('link', { name: 'Password', exact: true }).click();
   await page.getByRole('heading', { name: 'This account feature is not available yet' }).waitFor();
   await page.goto(`${origin}/`);
+  await page.getByRole('heading', { name: 'Welcome, Demo servicing' }).waitFor();
+  await page.locator('.desktop-sidebar').waitFor({ state: 'visible' });
   await page.evaluate(() => document.fonts.ready);
   assert.equal(await page.locator('.desktop-sidebar').evaluate(element => element.getBoundingClientRect().width), 238);
   assert.equal(await page.locator('.topbar').evaluate(element => element.getBoundingClientRect().height), 62);

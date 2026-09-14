@@ -15,8 +15,8 @@ export function useClientResource<T>(url: string, generation = 0) {
   return { data: result.key === key ? result.data : undefined, etag: result.key === key ? result.etag : undefined, error: result.key === key ? result.error : undefined, refresh: () => setRevision(x => x + 1) };
 }
 export function LoadFeedback({ error, retry }: { error?: string; retry: () => void }) {
-  return <div className="operations-feedback" role={error ? 'alert' : 'status'}>{error ?? 'Loading client records…'}{error && <button className="button" type="button" onClick={retry}>Try again</button>}</div>;
+  return <div className="operations-feedback" role={error ? 'alert' : 'status'}>{error ?? 'Loading records…'}{error && <button className="button" type="button" onClick={retry}>Try again</button>}</div>;
 }
 export function Paging({ total, previous, next }: { total?: number; previous?: () => void; next?: () => void }) {
-  return <div className="panel-footer operations-actions"><span>{total === undefined ? 'Client records' : `${total} records`}</span><button className="button" type="button" disabled={!previous} onClick={previous}>Previous page</button><button className="button" type="button" disabled={!next} onClick={next}>Next page</button></div>;
+  return <div className="panel-footer operations-actions"><span>{total === undefined ? 'Records' : `${total} records`}</span><button className="button" type="button" disabled={!previous} onClick={previous}>Previous page</button><button className="button" type="button" disabled={!next} onClick={next}>Next page</button></div>;
 }

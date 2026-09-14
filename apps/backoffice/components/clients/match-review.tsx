@@ -10,8 +10,7 @@ import {LoadFeedback,Paging,useClientResource} from './shared';
 
 export function MatchWorkspace({matchId,tab,canDecide}:{matchId:string;tab:string;canDecide:boolean}){
   const resource=useClientResource<MatchReview>(`/api/v1/matches/${matchId}`);
-  if(!resource.data)return <Panel title="Match review"><LoadFeedback error={resource.error} retry={resource.refresh}/></Panel>;
-  return <Review key={resource.etag} review={resource.data} etag={resource.etag!} tab={tab} canDecide={canDecide} reload={resource.refresh}/>;
+  return <><div className="sr-only" role="status" aria-atomic="true">{resource.data?`Review status: ${matchStates[resource.data.state]}`:'Loading review status…'}</div>{!resource.data?<Panel title="Match review"><LoadFeedback error={resource.error} retry={resource.refresh}/></Panel>:<Review key={resource.etag} review={resource.data} etag={resource.etag!} tab={tab} canDecide={canDecide} reload={resource.refresh}/>}</>;
 }
 function Review({review,etag,tab,canDecide,reload}:{review:MatchReview;etag:string;tab:string;canDecide:boolean;reload:()=>void}){
   const [action,setAction]=useState<MatchOutcome|null>(null);const candidate=useClientResource<Client>(`/api/v1/clients/${review.candidateClientId}`);

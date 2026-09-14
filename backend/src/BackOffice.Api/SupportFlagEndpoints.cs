@@ -50,7 +50,9 @@ public static class SupportFlagEndpoints
         var page=paging.Read(context,actor,"occurredAt-desc,id");if(page is null)return BadQuery(context);
         var query=scope.InternalHistory(db).Where(x=>x.FlagId==flagId && x.OccurredAt<=page.AsOf);var total=await query.CountAsync(token);
         var rows=await query.OrderByDescending(x=>x.OccurredAt).ThenBy(x=>x.Id).Skip(page.Offset).Take(page.Size).ToListAsync(token);
-        return Results.Json(new {items=rows.Select(x=>new {x.Id,x.FlagId,actorLabel="Back office staff",x.OccurredAt,x.Action,x.Reason,
+        var actorIds=rows.Select(x=>x.ActorId).Distinct().ToArray();
+        var actors=await db.Set<StaffUser>().AsNoTracking().Where(x=>actorIds.Contains(x.Id)).ToDictionaryAsync(x=>x.Id,x=>x.DisplayName,token);
+        return Results.Json(new {items=rows.Select(x=>new {x.Id,x.FlagId,actorLabel=actors.GetValueOrDefault(x.ActorId,"Unavailable staff identity"),x.OccurredAt,x.Action,x.Reason,
             snapshot=JsonSerializer.Deserialize<SupportFlagView>(x.Snapshot,ClientEndpoints.Json)}),totalCount=total,nextCursor=paging.Next(page,page.Offset+rows.Count<total)},ClientEndpoints.Json);
     }
     private static async Task<IResult> Safe(Guid relationshipId,HttpContext context,IDbContextFactory<BackOfficeDbContext> factory,PartyPaging paging,TimeProvider time)

@@ -56,6 +56,8 @@ public sealed class SupportFlagApiTests
             var safe=await Read(limited,preview);Assert.Single(safe.GetProperty("items").EnumerateArray());Assert.False(safe.TryGetProperty("totalCount",out _));Assert.DoesNotContain("FICTIONAL-INTERNAL",safe.ToString());
             Assert.Empty((await Read(staff,$"/api/v1/relationships/{origin}/support-instructions/preview")).GetProperty("items").EnumerateArray());
             Assert.DoesNotContain("support-flag",(await Read(limited,activity)).ToString());Assert.Contains("support-flag.created",(await Read(staff,activity)).ToString());Assert.DoesNotContain("FICTIONAL-INTERNAL",(await Read(staff,activity)).ToString());
+            var createdActivity=(await Read(staff,activity)).GetProperty("items").EnumerateArray().Single(x=>x.GetProperty("eventType").GetString()=="support-flag.created");
+            Assert.Equal("Demo servicing",createdActivity.GetProperty("actorLabel").GetString());
 
             // The same parent and flag version serialize concurrent reviewers into one winner.
             var amended=request with {InternalInstruction="FICTIONAL-INTERNAL-AMENDED",AgencyInstruction="Provide written follow-up.",Reason="Fictional amendment"};
@@ -63,6 +65,7 @@ public sealed class SupportFlagApiTests
             Assert.Single(race,x=>x.StatusCode==HttpStatusCode.OK);Assert.Single(race,x=>x.StatusCode==HttpStatusCode.PreconditionFailed);foreach(var response in race)response.Dispose();
             using var replay=await Send(staff,csrf,HttpMethod.Post,list,request,key,originalTag);Assert.Equal(HttpStatusCode.Created,replay.StatusCode);Assert.Equal(flagTag,replay.Headers.ETag!.ToString());Assert.Equal(receipt.ToString(),await replay.Content.ReadAsStringAsync());
             var history=await Read(staff,path+"/history");Assert.Equal(2,history.GetProperty("totalCount").GetInt32());Assert.Contains("amended",history.ToString());
+            Assert.All(history.GetProperty("items").EnumerateArray(),row=>Assert.Equal("Demo servicing",row.GetProperty("actorLabel").GetString()));
             using var review=await Send(staff,csrf,HttpMethod.Put,path,amended with {Reason="Fictional review",ReviewOn=amended.ReviewOn.AddDays(1)},etag:await Tag(staff,path));Assert.Equal(HttpStatusCode.OK,review.StatusCode);
             Assert.Contains("reviewed",(await Read(staff,path+"/history")).ToString());
 
