@@ -30,7 +30,7 @@ public sealed class LocalIdentityService(IDbContextFactory<BackOfficeDbContext> 
         var now = time.GetUtcNow();
         var verification = Hasher.VerifyHashedPassword(user ?? new StaffUser(),credential?.PasswordHash ?? DummyHash,password);
         if (credential is null || user is null) return null;
-        if (credential.LockedUntil > now || user.State != "active" || credential.MustReset || credential.MfaSecretCiphertext is not null)
+        if (credential.LockedUntil > now || user.State != "active" || user.AgencyId is not null || credential.MustReset || credential.MfaSecretCiphertext is not null)
             return null; // MFA accounts cannot bypass their second factor while its flow is unimplemented.
         if (verification == PasswordVerificationResult.Failed)
         {
@@ -56,7 +56,7 @@ public sealed class LocalIdentityService(IDbContextFactory<BackOfficeDbContext> 
     public async Task<ActorView?> GetActorAsync(Guid userId,CancellationToken cancellationToken)
     {
         await using var db = await factory.CreateDbContextAsync(cancellationToken);
-        var user = await db.Set<StaffUser>().AsNoTracking().SingleOrDefaultAsync(x => x.Id == userId && x.State == "active",cancellationToken);
+        var user = await db.Set<StaffUser>().AsNoTracking().SingleOrDefaultAsync(x => x.Id == userId && x.State == "active" && x.AgencyId==null,cancellationToken);
         return user is null ? null : View(user,await RolesAsync(db,userId,cancellationToken));
     }
 

@@ -9,6 +9,8 @@ public static class AgencyDemoSeed
     public static async Task SeedAsync(BackOfficeDbContext db,CancellationToken token=default)
     {
         if(db.Database.CurrentTransaction is null)throw new InvalidOperationException("Agency seed requires transaction.");
+        foreach(var code in new[]{"broker-admin","broker-user","broker-readonly"})
+            if(!await db.Set<Role>().AnyAsync(x=>x.Code==code,token))db.Add(new Role{Code=code,Scope="agency"});
         foreach(var agency in await db.Set<Agency>().ToListAsync(token))
             if(!await db.Set<AgencyOnboarding>().AnyAsync(x=>x.AgencyId==agency.Id,token))
             {

@@ -51,8 +51,7 @@ public sealed class AgencyDraftService(IDbContextFactory<BackOfficeDbContext> fa
         return await commands.ExecuteAsync(new(actor.UserId,$"/api/v1/agencies/{agencyId}/abandon",key,Guid.NewGuid()),new{reason},"agency.abandoned",async(db,ct)=>
         {
             var row=await Lock(db,agencyId,version,ct);if(row.State!="draft")throw new AgencyCommandException(409,"agency-not-draft");
-            // No invitation tables/routes exist in 04-02. Their owning plan must
-            // add staged/pending revocation to this same transaction before use.
+            await AgencyUserService.RevokeDraftUsers(db,agencyId,time.GetUtcNow(),ct);
             row.State="abandoned";AddActivity(db,agencyId,actor.UserId,"agency.abandoned");
             db.Add(new AuditEvent{ActorId=actor.UserId,CreatedBy=actor.UserId,EventType="agency.abandon-reason",OccurredAt=time.GetUtcNow(),CorrelationId=Guid.NewGuid(),After=JsonSerializer.Serialize(new{agencyId,reason})});
             await db.SaveChangesAsync(ct);return Outcome(row,200);

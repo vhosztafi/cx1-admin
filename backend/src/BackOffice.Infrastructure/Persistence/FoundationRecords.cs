@@ -21,6 +21,7 @@ public sealed class StaffUser : MutableRecord
     public string DisplayName { get; set; } = "";
     public string State { get; set; } = "active";
     public Guid? TeamId { get; set; }
+    public Guid? AgencyId { get; set; }
     public string SecurityStamp { get; set; } = Guid.NewGuid().ToString("N");
 }
 

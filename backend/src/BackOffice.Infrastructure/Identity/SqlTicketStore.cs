@@ -19,7 +19,7 @@ public sealed class SqlTicketStore(IDbContextFactory<BackOfficeDbContext> factor
         var userId = Guid.Parse(ticket.Principal.FindFirstValue(ClaimTypes.NameIdentifier)!);
         await using var db = await factory.CreateDbContextAsync();
         var user = await db.Set<StaffUser>().AsNoTracking().SingleAsync(x => x.Id == userId);
-        if (user.State != "active" || user.SecurityStamp != ticket.Principal.FindFirstValue(LocalIdentityService.StampClaim))
+        if (user.State != "active" || user.AgencyId is not null || user.SecurityStamp != ticket.Principal.FindFirstValue(LocalIdentityService.StampClaim))
             throw new InvalidOperationException("Account changed during authentication.");
         var key = WebEncoders.Base64UrlEncode(RandomNumberGenerator.GetBytes(32));
         var now = time.GetUtcNow();
@@ -40,7 +40,7 @@ public sealed class SqlTicketStore(IDbContextFactory<BackOfficeDbContext> factor
         var session = await db.Set<UserSession>().AsNoTracking().SingleOrDefaultAsync(x => x.TokenHash == hash);
         if (session is null || session.RevokedAt is not null || session.ExpiresAt <= now) return null;
         var user = await db.Set<StaffUser>().AsNoTracking().SingleOrDefaultAsync(x => x.Id == session.UserId);
-        if (user is null || user.State != "active" || user.SecurityStamp != session.SecurityStamp) return null;
+        if (user is null || user.State != "active" || user.AgencyId is not null || user.SecurityStamp != session.SecurityStamp) return null;
         var roles = await LocalIdentityService.RolesAsync(db,user.Id,CancellationToken.None);
         if (roles.Any(x => x.Scope != "internal")) return null;
         AuthenticationTicket? ticket;
