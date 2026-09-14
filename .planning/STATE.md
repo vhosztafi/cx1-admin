@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T04:52:00Z"
+last_updated: "2026-09-14T05:26:00Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
   completed_phases: 2
   total_plans: 16
-  completed_plans: 13
+  completed_plans: 14
   percent: 15
 ---
 
@@ -20,14 +20,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Support flag lifecycle/API verified; implement support UI and fictional demo flags in 03-04.
+**Current focus:** Support servicing complete; implement duplicate-review intake and decisions in 03-05.
 
 ## Current Position
 
 Phase: 3 of 13 (Clients and contact servicing)
-Plan: 03-04 of 6 in progress; tasks 1–2 complete, UI/demo/browser pending; 03-01 through 03-03 complete
+Plan: 03-05 of 6 next; 03-01 through 03-04 complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — support lifecycle/API/history/safe previews verified; 90 backend cases/sixteen SQL scenarios pass; UI and demo flags pending
+Last activity: 2026-09-14 — support UI, lifecycle, demo seeds and browser verification complete; 91 backend cases/seventeen SQL scenarios and thirteen frontend tests pass
 
 Progress: Phases 1–2 complete; 2/13 phases. Foundation verified; client servicing next.
 
@@ -43,7 +43,7 @@ Progress: Phases 1–2 complete; 2/13 phases. Foundation verified; client servic
 
 ### Pending Todos
 
-- Execute Phase 3 plans 03-04 through 03-06; start with support flags and explicit visibility grants.
+- Execute Phase 3 plans 03-05 through 03-06; start with immutable match intake/evidence and audited decision transitions.
 - Keep future business endpoints closed until their owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,7 +54,7 @@ Progress: Phases 1–2 complete; 2/13 phases. Foundation verified; client servic
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: Read 03-04-PROGRESS.md then implement Task 3 support flags UI, explicit sharing/preview, restricted history and fictional seeds. Service/API complete; receipts are ID-only, reviewed history typed/restricted, and relative review-date checks run after replay. Fresh full reports .local/support-api-regression-results (90/16). Migration already on Demo; no support demo flags yet. No active previews/tests. Contact plan complete; eleven frontend tests/contact-client browser evidence unchanged. CLI-03 pending support UI/browser/final gate; CLI-01 remains partial for downstream quote/policy links. Funnel unchanged; continue automatically.
+Stopped at: 03-04 complete; production 5baa12f and summary eaf729f. Read 03-04-SUMMARY.md then execute 03-05-PLAN.md inline. Fresh backend reports .local/support-ui-seed-results pass 91/17 with zero skips. Thirteen frontend tests, typecheck, lint/build, support/contact/client browser checks pass. Native demo includes shared/internal-only support flags and retained fictional browser histories; no reset. No active previews/tests. CLI-03 implementation awaits final Phase 3 gate; CLI-01 stays partial for Phase 5/6 quote/policy links. Match plan/context read; implementation not started. Funnel unchanged; continue automatically.
 Resume file: None
 
 ## Autonomous continuation
