@@ -5,6 +5,18 @@ namespace BackOffice.UnitTests;
 
 public sealed class MatchRulesTests
 {
+    [Fact]
+    public void MatchReadAndDecisionAreExplicitInternalUnderwritingCapabilities()
+    {
+        foreach(var role in new[] {"underwriter","senior-underwriter","servicing","agency-admin","finance","system-admin"})
+        {
+            var actor=new BackOffice.Application.ActorContext(Guid.NewGuid(),null,null,new HashSet<string>{role});
+            var permitted=role is "underwriter" or "senior-underwriter";
+            Assert.Equal(permitted,actor.HasCapability("match-read"));Assert.Equal(permitted,actor.HasCapability("match-review"));
+            Assert.False((actor with {AgencyId=Guid.NewGuid()}).HasCapability("match-read"));
+            Assert.False((actor with {AgencyId=Guid.NewGuid()}).HasCapability("match-review"));
+        }
+    }
     public static IEnumerable<object[]> Transitions()
     {
         foreach(var state in new[] {"pending","queried","linked","separate","declined"})

@@ -5885,11 +5885,11 @@
       "get": {
         "operationId": "listMatchReviews",
         "summary": "list Match Reviews",
-        "description": "Requires match-review. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "description": "Requires match-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
         "tags": [
           "matches"
         ],
-        "x-permission": "match-review",
+        "x-permission": "match-read",
         "x-idempotency": "not-cached",
         "security": [
           {
@@ -6053,11 +6053,11 @@
       "get": {
         "operationId": "getMatchReview",
         "summary": "get Match Review",
-        "description": "Requires match-review. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "description": "Requires match-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
         "tags": [
           "matches"
         ],
-        "x-permission": "match-review",
+        "x-permission": "match-read",
         "x-idempotency": "not-cached",
         "security": [
           {
@@ -6163,7 +6163,7 @@
       "post": {
         "operationId": "decideMatch",
         "summary": "decide Match",
-        "description": "Requires match-review. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Link only associates the submission agency; no destructive merge or new access to candidate contacts. Separate reuses this intake's created client on replay/reopen. Query records a request; delivery is a separate workflow. Reopen retains the trail and cannot undo progressed quote/policy effects.",
+        "description": "Requires match-review. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Successful mutation receipts contain only the review ID and original ETag. Reload evidence using GET under current match-read permission. Link only associates the submission agency; no destructive merge or new access to candidate contacts. Separate reuses this intake's created client on replay/reopen. Query records a request; delivery is a separate workflow. Reopen retains the trail and cannot undo progressed quote/policy effects.",
         "tags": [
           "matches"
         ],
@@ -6223,7 +6223,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MatchReview"
+                  "$ref": "#/components/schemas/MatchMutationResult"
                 }
               }
             }
@@ -6371,11 +6371,11 @@
       "get": {
         "operationId": "listMatchDecisions",
         "summary": "list Match Decisions",
-        "description": "Requires match-review. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "description": "Requires match-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
         "tags": [
           "matches"
         ],
-        "x-permission": "match-review",
+        "x-permission": "match-read",
         "x-idempotency": "not-cached",
         "security": [
           {
@@ -50435,11 +50435,11 @@
       "get": {
         "operationId": "listMatchInformationRequests",
         "summary": "list Match Information Requests",
-        "description": "Requires match-review. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "description": "Requires match-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
         "tags": [
           "matches"
         ],
-        "x-permission": "match-review",
+        "x-permission": "match-read",
         "x-idempotency": "not-cached",
         "security": [
           {
@@ -58614,6 +58614,19 @@
           "description",
           "recordedAt",
           "deliveryState"
+        ]
+      },
+      "MatchMutationResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "id"
         ]
       }
     }

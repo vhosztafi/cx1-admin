@@ -75,6 +75,12 @@ test('match review uses a real intake identity and bounded evidence before quote
  assert.equal(validate({...value,signals:[{...value.signals[0],candidateValue:'x'.repeat(501)}]}),false);
  assert.equal(validate({...value,signals:[{...value.signals[0],internalSupportNeed:'hidden'}]}),false);
 });
+test('matching separates read/decision permissions and receipts exclude comparison evidence',()=>{
+ for(const path of ['/matches','/matches/{matchId}','/matches/{matchId}/decisions','/matches/{matchId}/information-requests'])assert.equal(doc.paths[path].get['x-permission'],'match-read');
+ const command=doc.paths['/matches/{matchId}/decisions'].post;assert.equal(command['x-permission'],'match-review');
+ const validate=ajv.compile(relocate(command.responses['200'].content['application/json'].schema));
+ assert.ok(validate({id:uuid}));assert.equal(validate({id:uuid,candidateClientId:uuid}),false);assert.equal(validate({id:uuid,reason:'Private comparison'}),false);
+});
 test('client summary distinguishes unavailable business records from verified empty records',()=>{
  const validate=schema('ClientSummary');const value={...identity,id:uuid,reference:'CN-DEMO-01',agencies:[],records:{state:'unavailable'}};
  assert.ok(validate(value));assert.ok(validate({...value,records:{state:'available',quoteCount:0,policyCount:0}}));

@@ -63,6 +63,11 @@ export function addPartyContracts({schemas:s,ref:r,text:t,enumeration:e,object:o
  list('/matches/{matchId}/decisions','listMatchDecisions','match-review',r('MatchDecision'));
  list('/matches/{matchId}/information-requests','listMatchInformationRequests','match-review',r('MatchInformationRequest'));
  const decision=paths['/matches/{matchId}/decisions'].post;
+ s.MatchMutationResult=o({id});output('/matches/{matchId}/decisions','post','MatchMutationResult');
+ for(const path of ['/matches','/matches/{matchId}','/matches/{matchId}/decisions','/matches/{matchId}/information-requests']){
+  paths[path].get['x-permission']='match-read';paths[path].get.description=paths[path].get.description.replace('Requires match-review.','Requires match-read.');
+ }
+ decision.description+=' Successful mutation receipts contain only the review ID and original ETag. Reload evidence using GET under current match-read permission.';
  decision.description+=' Link only associates the submission agency; no destructive merge or new access to candidate contacts. Separate reuses this intake\'s created client on replay/reopen. Query records a request; delivery is a separate workflow. Reopen retains the trail and cannot undo progressed quote/policy effects.';
  decision.requestBody.content['application/json'].schema.properties.candidateClientId={...id,description:'If supplied, must equal the review\'s immutable candidate; arbitrary reassignment is rejected.'};
  query('/matches','candidateClientId',id);

@@ -37,6 +37,7 @@ app.MapOperationalSettings();
 app.MapClients();
 app.MapContacts();
 app.MapSupportFlags();
+app.MapMatches();
 // Domain endpoints are added only alongside their authentication and persistence.
 app.Run();
 

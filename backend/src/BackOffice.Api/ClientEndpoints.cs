@@ -97,24 +97,33 @@ public static partial class ClientEndpoints
         if(!await scope.Clients(db).AnyAsync(x => x.Id==clientId,context.RequestAborted))return Missing(context);
         var page=paging.Read(context,actor,"occurredAt-desc,id");if(page is null)return BadQuery(context);
         var support=actor.HasCapability("support-internal-read");
+        var matchRead=actor.HasCapability("match-read");
         // Only explicitly supported events are published. Future sensitive activity needs its own safe mapping.
         var query=scope.Activity(db).Where(x => x.ClientId==clientId && x.OccurredAt<=page.AsOf &&
             (x.EventType=="client.demo-created" || x.EventType=="client.created" || x.EventType=="client.updated" || x.EventType=="client.relationship-created" ||
              x.EventType=="contact.created" || x.EventType=="contact.updated" || x.EventType=="contact.primary-changed" || x.EventType=="contact.ended" ||
-             (support && (x.EventType=="support-flag.created" || x.EventType=="support-flag.amended" || x.EventType=="support-flag.reviewed" || x.EventType=="support-flag.ended"))));
+             (support && (x.EventType=="support-flag.created" || x.EventType=="support-flag.amended" || x.EventType=="support-flag.reviewed" || x.EventType=="support-flag.ended")) ||
+             (matchRead && (x.EventType=="match.link" || x.EventType=="match.separate" || x.EventType=="match.decline" || x.EventType=="match.query" || x.EventType=="match.reopen"))));
         var total=await query.CountAsync(context.RequestAborted);
         var rows=await query.OrderByDescending(x => x.OccurredAt).ThenBy(x => x.Id).Skip(page.Offset).Take(page.Size).ToListAsync(context.RequestAborted);
         var contactIds=rows.Where(x=>x.RecordKind=="contact" && x.RecordId!=null).Select(x=>x.RecordId!.Value).ToArray();
         var contacts=await scope.Contacts(db,includeEnded:true).Where(x=>x.ClientId==clientId && contactIds.Contains(x.Id))
             .Select(x=>new {x.Id,x.RelationshipId}).ToListAsync(context.RequestAborted);
+        var matchIds=rows.Where(x=>x.RecordKind=="match" && x.RecordId!=null).Select(x=>x.RecordId!.Value).ToArray();
+        var matchScope=new MatchScope(actor);
+        var matches=await matchScope.Reviews(db).Where(x=>matchIds.Contains(x.Id)).Select(x=>new {x.Id,x.CandidateClientId,x.CandidateRelationshipId}).ToListAsync(context.RequestAborted);
+        var decisions=await matchScope.Decisions(db).Where(x=>matchIds.Contains(x.MatchId) && x.ClientId==clientId).Select(x=>new {x.MatchId,x.RelationshipId}).ToListAsync(context.RequestAborted);
         bool CanLink(ClientActivity x)=>x.RecordKind=="client" && x.RecordId==clientId ||
-            x.RecordKind=="contact" && contacts.Any(c=>c.Id==x.RecordId && c.RelationshipId==x.RelationshipId);
+            x.RecordKind=="contact" && contacts.Any(c=>c.Id==x.RecordId && c.RelationshipId==x.RelationshipId) ||
+            x.RecordKind=="match" && matches.Any(m=>m.Id==x.RecordId && (m.CandidateClientId==clientId && m.CandidateRelationshipId==x.RelationshipId || decisions.Any(d=>d.MatchId==m.Id && d.RelationshipId==x.RelationshipId)));
         return Results.Json(new {items=rows.Select(x => new {x.Id,x.OccurredAt,actorLabel=x.ActorId is null ? "System" : "Back office staff",x.EventType,
             summary=x.EventType switch {"client.updated"=>"Client identity updated.","client.relationship-created"=>"Agency relationship added.",
                 "contact.created"=>"Relationship contact added.","contact.updated"=>"Relationship contact updated.",
                 "contact.primary-changed"=>"Primary contact changed.","contact.ended"=>"Relationship contact ended.",
                 "support-flag.created"=>"Support instruction recorded.","support-flag.amended"=>"Support instruction amended.",
-                "support-flag.reviewed"=>"Support instruction reviewed.","support-flag.ended"=>"Support instruction ended.",_=>"Client identity created."},
+                "support-flag.reviewed"=>"Support instruction reviewed.","support-flag.ended"=>"Support instruction ended.",
+                "match.link"=>"Intake linked to this client.","match.separate"=>"Intake recorded as a separate client.","match.decline"=>"Intake declined.",
+                "match.query"=>"Match information request recorded.","match.reopen"=>"Match review reopened.",_=>"Client identity created."},
             x.RelationshipId,recordId=CanLink(x) ? x.RecordId : null,
             recordKind=CanLink(x) ? x.RecordKind : null}),totalCount=total,nextCursor=paging.Next(page,page.Offset+rows.Count<total)},Json);
     }
