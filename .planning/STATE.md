@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T19:02:50Z"
+last_updated: "2026-09-14T19:33:13Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-06 of 8 in progress; 04-01 through 04-05 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — 04-06 subsequent terms proposal/decision transactions verified with independent-review race, rollback and replay. Full277/38SQL pass. State activation and public wiring next.
+Last activity: 2026-09-14 — 04-06 validated activation proposal creation verified without premature state/delivery effects. Full278/39SQL retry pass after one database-creation timeout.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: AgencyTermsService now proposes and independently applies/rejects subsequent terms atomically with immutable products, audit, receipt and agency ETag. Locks current identity/roles, distribution range and product/provider prerequisites. Real SQL verifies reviewer race, injected rollback, stale base/rule, rejection and authorized replay after date passage. Full277 backend/38SQL and77 contracts pass; prior22frontend/build/browser current. Read04-06-PROGRESS.md. Next activation/state service with current evidence + initial extraction, issuance/notifications/follow-ups; suspension and Phase3 lock fences; then register/wire scoped APIs/UI and configuration/role writer race acceptance. TermsService is not publicly exposed yet. Broker login closed until04-07. No tests/previews active.
+Stopped at: AgencyActivationService.Propose now validates complete saved draft/evidence/admin/products under held prerequisites and captures a bound pending state request without activating, changing parent ETag, issuing tokens or publishing terms. Shared AgencyApprovalLocks extracted from verified terms service. Targeted activation/terms tests pass; full278 backend/39SQL retry and77 contracts pass (initial full run had one SQL database creation timeout; report retained). Next persist the planned AgencyFollowUp record, then independent activation application with terms/issuance/notices/follow-ups atomically; suspension and Phase3 fences; public DI/API/UI wiring and writer-race acceptance remain. Prior22frontend/build/browser current; no tests/previews active. Broker login closed until04-07.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-06-PROGRESS.md
 
 ## Autonomous continuation

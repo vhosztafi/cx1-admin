@@ -21,9 +21,9 @@ public sealed class AgencyTermsService(AgencyDraftService agencies,SqlCommandBou
         await agencies.Authorize(actor,agencyId,token);
         return await commands.ExecuteAsync(new(actor.UserId,$"/api/v1/agencies/{agencyId}/terms-requests",key,Guid.NewGuid()),new{terms.SnapshotJson,terms.Reason},"agency.terms-requested",async(db,ct)=>
         {
-            var agency=await AgencyDraftService.Lock(db,agencyId,expected,ct);await Authority(db,actor.UserId,ct);State(agency);
+            var agency=await AgencyDraftService.Lock(db,agencyId,expected,ct);await AgencyApprovalLocks.Authority(db,actor.UserId,ct);State(agency);
             var latest=await Latest(db,agencyId,ct);var now=time.GetUtcNow();AgencyTermsRules.ValidateSchedule(terms.EffectiveFrom,Today(now),latest.EffectiveFrom);
-            var fingerprint=await Eligibility(db,terms,now,ct);
+            var fingerprint=await AgencyApprovalLocks.Eligibility(db,terms,now,ct);
             var pending=await db.Set<AgencyTermsRequest>().SingleOrDefaultAsync(x=>x.AgencyId==agencyId&&x.State=="pending",ct);
             if(pending is not null)
             {
@@ -42,7 +42,7 @@ public sealed class AgencyTermsService(AgencyDraftService agencies,SqlCommandBou
         return await commands.ExecuteAsync(new(actor.UserId,$"/api/v1/agency-terms-requests/{requestId}/decision",key,Guid.NewGuid()),new{agencyId,approve,reason},"agency.terms-decided",async(db,ct)=>
         {
             var agency=await db.Set<Agency>().FromSqlInterpolated($"SELECT * FROM Agency WITH(UPDLOCK,ROWLOCK) WHERE Id={agencyId}").SingleAsync(ct);
-            await Authority(db,actor.UserId,ct);
+            await AgencyApprovalLocks.Authority(db,actor.UserId,ct);
             var request=await db.Set<AgencyTermsRequest>().SingleOrDefaultAsync(x=>x.Id==requestId&&x.AgencyId==agencyId,ct)??throw new AgencyCommandException(404,"agency-terms-request-not-found");
             if(request.RequestedBy==actor.UserId)throw new AgencyCommandException(403,"independent-reviewer-required");
             if(!Equal(request.RowVersion,expected))throw new AgencyCommandException(412,"stale-agency-terms-request");
@@ -54,7 +54,7 @@ public sealed class AgencyTermsService(AgencyDraftService agencies,SqlCommandBou
                 latest=await Latest(db,agencyId,ct);
                 var input=JsonNode.Parse(request.ProposedSnapshot)!.AsObject();input["reason"]=request.RequestReason;
                 using var document=JsonDocument.Parse(input.ToJsonString());var terms=AgencyTermsRules.ValidateProposal(document.RootElement,Today(now),latest.EffectiveFrom);
-                if(await Eligibility(db,terms,now,ct)!=request.ProposedInputFingerprint)throw new AgencyCommandException(409,"agency-terms-stale-rule");
+                if(await AgencyApprovalLocks.Eligibility(db,terms,now,ct)!=request.ProposedInputFingerprint)throw new AgencyCommandException(409,"agency-terms-stale-rule");
             }
             request.State=approve?"applied":"rejected";request.DecisionBy=actor.UserId;request.DecisionReason=reason;request.DecidedAt=now;
             await db.SaveChangesAsync(ct);
@@ -67,41 +67,6 @@ public sealed class AgencyTermsService(AgencyDraftService agencies,SqlCommandBou
             db.Add(new AgencyActivity{AgencyId=agencyId,ActorId=actor.UserId,Action=approve?"agency.terms-applied":"agency.terms-rejected",OccurredAt=now,CreatedBy=actor.UserId,CreatedAt=now});
             await db.SaveChangesAsync(ct);return Receipt(request,200);
         },token);
-    }
-    private static async Task Authority(BackOfficeDbContext db,Guid actor,CancellationToken token)
-    {
-        // Hold current identity and role membership until commit, including revocation races.
-        var user=await db.Set<StaffUser>().FromSqlInterpolated($"SELECT * FROM [User] WITH(HOLDLOCK) WHERE Id={actor}").SingleOrDefaultAsync(token);
-        var links=await db.Set<UserRole>().FromSqlInterpolated($"SELECT * FROM UserRole WITH(HOLDLOCK) WHERE UserId={actor}").ToListAsync(token);
-        var allowed=false;
-        foreach(var link in links.OrderBy(x=>x.RoleId))
-        {
-            var role=await db.Set<Role>().FromSqlInterpolated($"SELECT * FROM Role WITH(HOLDLOCK) WHERE Id={link.RoleId}").SingleAsync(token);
-            allowed|=role.Scope=="internal"&&role.Code is "agency-admin" or "system-admin";
-        }
-        if(user is null||user.State!="active"||user.AgencyId is not null||!allowed)throw new AgencyCommandException(403,"agency-access-denied");
-    }
-    private static async Task<string> Eligibility(BackOfficeDbContext db,ValidatedAgencyTerms terms,DateTimeOffset now,CancellationToken token)
-    {
-        // Range lock includes future and newly inserted rule versions. Publication
-        // must not race configuration withdrawal after the final eligibility check.
-        var settings=await db.Set<SettingVersion>().FromSqlRaw("SELECT * FROM SettingVersion WITH(HOLDLOCK) WHERE Scope=N'agency-distribution'").AsNoTracking().ToListAsync(token);
-        var setting=settings.Where(x=>x.EffectiveFrom<=now).OrderByDescending(x=>x.Version).FirstOrDefault();
-        var eligible=setting is null?null:AgencyDistributionRules.Parse(setting.Values);
-        if(eligible is null)throw new AgencyCommandException(503,"agency-distribution-unavailable");
-        var families=new HashSet<Guid>();
-        foreach(var selected in terms.Products.OrderBy(x=>x.ProductVersionId))
-        {
-            if(!eligible.Contains(selected.ProductVersionId))throw new AgencyCommandException(422,"agency-product-ineligible");
-            var version=await db.Set<ProductVersion>().FromSqlInterpolated($"SELECT * FROM ProductVersion WITH(HOLDLOCK) WHERE Id={selected.ProductVersionId}").AsNoTracking().SingleOrDefaultAsync(token)??throw new AgencyCommandException(422,"agency-product-ineligible");
-            var product=await db.Set<Product>().FromSqlInterpolated($"SELECT * FROM Product WITH(HOLDLOCK) WHERE Id={version.ProductId}").AsNoTracking().SingleAsync(token);
-            var provider=await db.Set<CapacityProvider>().FromSqlInterpolated($"SELECT * FROM CapacityProvider WITH(HOLDLOCK) WHERE Id={version.ProviderId}").AsNoTracking().SingleAsync(token);
-            var local=selected.EffectiveFrom.ToDateTime(TimeOnly.MinValue,DateTimeKind.Unspecified);
-            var effective=new DateTimeOffset(TimeZoneInfo.ConvertTimeToUtc(local,TimeZoneInfo.FindSystemTimeZoneById("Europe/London")));
-            if(effective<now)effective=now;
-            if(!families.Add(product.Id)||product.Code is not ("motor-trade-road-risks" or "motor-trade-combined" or "commercial-combined")||provider.State!="active"||version.EffectiveFrom>effective||version.EffectiveTo is DateTimeOffset end&&end<=effective)throw new AgencyCommandException(422,"agency-product-ineligible");
-        }
-        return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(setting!.Id.ToString("D")+":"+terms.Fingerprint))).ToLowerInvariant();
     }
     private static async Task<AgencyTermsVersion> Latest(BackOfficeDbContext db,Guid agency,CancellationToken token)=>await db.Set<AgencyTermsVersion>().AsNoTracking().Where(x=>x.AgencyId==agency).OrderByDescending(x=>x.Version).FirstOrDefaultAsync(token)??throw new AgencyCommandException(409,"agency-initial-terms-required");
     private static void State(Agency agency){if(agency.State is not ("active" or "suspended"))throw new AgencyCommandException(409,"agency-terms-state");}
