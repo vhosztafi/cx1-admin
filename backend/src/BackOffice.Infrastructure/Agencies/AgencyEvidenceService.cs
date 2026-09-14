@@ -69,9 +69,20 @@ public sealed class AgencyEvidenceService(SqlCommandBoundary commands,AgencyDraf
         var latest=await db.Set<AgencyEvidence>().AsNoTracking().Where(x=>x.AgencyId==agency.Id&&!db.Set<AgencyEvidence>().Any(newer=>newer.AgencyId==x.AgencyId&&newer.Kind==x.Kind&&newer.Ordinal>x.Ordinal)).ToListAsync(token);
         var facts=latest.ToDictionary(x=>x.Kind,x=>new AgencyEvidenceFact(x.Id,x.Kind,x.State,x.InputFingerprint,x.RuleVersionId,x.ExpiresOn));
         var hasCurrentSelection=await db.Set<AgencyDraftProduct>().AnyAsync(x=>x.AgencyId==agency.Id&&x.EffectiveFrom<=today,token);
-        // 04-05/06 must replace unavailable with actual scoped identity and
-        // effective distribution-setting checks. A draft catalog is not a grant.
-        var items=AgencyActivationRules.Evaluate(input.RootElement,facts,rule.Id,today,rule.MinimumPi,rule.TobaVersion,new(hasCurrentSelection?null:false,null)).ToList();
+        // Only a currently scoped administrator with usable credentials or an
+        // applicable invitation is viable. User/invitation writes share the parent lock.
+        var viableAdministrator=await (from user in db.Set<StaffUser>()
+            join link in db.Set<UserRole>() on user.Id equals link.UserId
+            join role in db.Set<Role>() on link.RoleId equals role.Id
+            where user.AgencyId==agency.Id&&role.Scope=="agency"&&role.Code=="broker-admin"
+                &&(agency.State=="draft"||agency.State=="active")
+                &&((user.State=="active"&&db.Set<UserCredential>().Any(c=>c.UserId==user.Id&&c.Provider=="local"&&c.PasswordHash!=null&&c.PasswordHash!=""))
+                    ||(user.State=="invited"&&db.Set<AgencyInvitation>().Any(i=>i.UserId==user.Id&&i.AgencyId==agency.Id
+                        &&((agency.State=="draft"&&i.State=="staged")
+                            ||(agency.State=="active"&&i.State=="pending"&&i.IssuedAt<=now&&i.ExpiresAt>now)))))
+            select user.Id).AnyAsync(token);
+        // Effective distribution-setting checks belong to04-06; a draft catalog is not a grant.
+        var items=AgencyActivationRules.Evaluate(input.RootElement,facts,rule.Id,today,rule.MinimumPi,rule.TobaVersion,new(hasCurrentSelection?null:false,viableAdministrator)).ToList();
         if(agency.RelationshipManagerId is Guid manager&&!await AgencyDraftService.Managers(db).AnyAsync(x=>x.Id==manager,token))
         {
             var index=items.FindIndex(x=>x.Code=="field-relationshipManagerId");items[index]=items[index] with{State="failed",Message="Choose a currently active internal relationship manager."};

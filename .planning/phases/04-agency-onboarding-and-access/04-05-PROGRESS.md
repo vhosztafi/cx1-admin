@@ -84,10 +84,18 @@ AgencyUsers now also renders below the Contacts stage, outside the wizard form. 
 
 Verification: frontend22 tests, TypeScript, ESLint and production build passed. The expanded real browser scenario passed dirty-contact protection, modal navigation protection, staged administrator creation, Continue/Back with a refreshed parent ETag and retained contact values. A concurrent API contact edit while a user-edit modal was open proved the successful user update does not overwrite the other draft edit: the old local answer is retained, Continue is disabled and explicit reload loads the concurrent saved answer and saved user change. Existing lifecycle and active resend/revoke checks also pass. Desktop/mobile onboarding screenshots were inspected from the page top; no page overflow. Evidence: .local/browser-evidence/agency-users-wizard-{desktop,mobile}.png. Owned preview processes21512/32048 were verified and stopped.
 
+## Persisted administrator readiness slice
+
+AgencyEvidenceService.Validate now evaluates the actual scoped broker-admin prerequisite inside the existing agency transaction. Draft staging qualifies only an invited user with a current owned staged invitation. Active agencies allow an invited administrator with a currently usable pending invitation or an active administrator with a nonempty local credential. Revoked, expired, future-issued, inactive, wrong-role and other-agency identities do not qualify. This replaces the unavailable prerequisite; distribution approval remains unavailable until04-06 and broker login remains closed until04-07.
+
+The existing SQL/API lifecycle scenario now checks readiness after staging, revocation, deactivation, fresh reactivation, role demotion/restoration, active issuance/resend/revoke and actual invitation acceptance/credential creation. Before-issue and exact-expiry checks use the service's injected clock under a SQL transaction, preserving immutable invitation history. Initial test-fixture attempts to edit issued dates were correctly rejected by SQL constraints/triggers; those fixtures were replaced with clock-based assessments. The old evidence regression now expects missing rather than unavailable when no administrator exists.
+
+Final full regression passed239 backend tests /34 real-SQL scenarios, no skips (198 unit/41 integration), in .local/phase4-admin-readiness-verified; the TRX gate passed. Targeted final API/time-boundary scenario also passed in .local/phase4-admin-readiness-clock-api. OpenAPI lint and77 Node contract tests passed. No schema or frontend changes in this slice; the prior22 frontend tests/build/browser evidence remains current. No preview remains active and no human UAT is inferred.
+
 ## Required next work
 
 1. Onboarding stage2 and Users tab are now wired and browser-verified. Preserve their dirty/uncertain guards and aggregate-version reconciliation when extending them.
-2. Add staged broker-administrator readiness using actual persisted identity/invitation state. Distribution/approval/terms and trusted broker retrieval remain04-06/07.
+2. Persisted staged/active broker-administrator readiness is implemented and verified. Distribution/approval/terms and trusted broker retrieval remain04-06/07.
 3. Review remaining source details, including Last active (requires real session-derived API data; never invent a timestamp) and applicable user counts. Preserve explicit acceptance obligations rather than silently omitting source controls.
 4. Run complete plan regressions and code/UI review, then write04-05-SUMMARY only once all plan work is verified. No AGY requirement or human UAT is inferred complete.
 
