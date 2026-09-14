@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T01:56:00Z"
+last_updated: "2026-09-14T02:17:08Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
   completed_phases: 2
   total_plans: 16
-  completed_plans: 11
+  completed_plans: 12
   percent: 15
 ---
 
@@ -20,14 +20,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Client UI first increment verified; finish agency discovery and relationship controls before closing 03-02.
+**Current focus:** Client identity plan complete; implement people and relationship contacts in 03-03.
 
 ## Current Position
 
 Phase: 3 of 13 (Clients and contact servicing)
-Plan: 03-02 of 6 in progress; tasks 1–2 complete, task 3 UI implemented with agency closeout pending
+Plan: 03-03 of 6 next; 03-01 and 03-02 complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — client list/detail/create/edit screens pass nine web unit tests, lint/typecheck/build and Chrome persistence/replay/stale/mobile checks; agency UI closeout remains
+Last activity: 2026-09-14 — 03-02 client identity/agency UI complete; 65 backend cases, nine web unit cases and Chrome agency paging/replay/stale/mobile checks pass
 
 Progress: Phases 1–2 complete; 2/13 phases. Foundation verified; client servicing next.
 
@@ -43,7 +43,7 @@ Progress: Phases 1–2 complete; 2/13 phases. Foundation verified; client servic
 
 ### Pending Todos
 
-- Execute Phase 3 plans 03-02 through 03-06; start with real client identity and relationships.
+- Execute Phase 3 plans 03-03 through 03-06; start with people and relationship contacts.
 - Keep future business endpoints closed until their owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,7 +54,7 @@ Progress: Phases 1–2 complete; 2/13 phases. Foundation verified; client servic
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: Read 03-02-PROGRESS.md, then finish Task 3 agency search, header relationship facts and Add relationship UI with paged agency discovery. Client create/edit/list/detail and error/replay/stale/mobile browser journeys pass. Do not mark plan complete until closeout passes. No active previews; secrets and screenshots ignored; funnel unchanged.
+Stopped at: Read 03-02-SUMMARY.md, then execute 03-03-PLAN Task 1 people/contact persistence. Client identity, scoped agency search and relationship controls are complete and verified. Newest backend reports .local/client-agency-results; client browser journey passes. No active previews; secrets/screenshots ignored; funnel unchanged.
 Resume file: None
 
 ## Autonomous continuation

@@ -13,7 +13,7 @@ export function ClientList({ canWrite }: { canWrite: boolean }) {
   return <><div className="page-heading"><div><h1>Clients</h1><p>Business identities and agency relationships</p></div>{canWrite && <Link className="button button-primary" href="/clients/new">Create client</Link>}</div>
     <Panel title="Client accounts">
       <form className="operations-toolbar" onSubmit={event => { event.preventDefault(); setQuery(search.trim()); reset(); }}>
-        <label>Search clients<input type="search" placeholder="Business, reference or company number" value={search} maxLength={200} onChange={event => setSearch(event.target.value)} /></label>
+        <label>Search clients<input type="search" placeholder="Business, agency, reference or company number" value={search} maxLength={200} onChange={event => setSearch(event.target.value)} /></label>
         <label>Entity type<select value={entity} onChange={event => {setEntity(event.target.value); reset();}}><option value="">All entity types</option>{Object.entries(entityTypes).map(([key,label]) => <option key={key} value={key}>{label}</option>)}</select></label>
         <button className="button" type="submit">Search</button><button className="button" type="button" onClick={() => {setSearch(''); setQuery(''); setEntity(''); reset();}}>Clear filters</button>
       </form>

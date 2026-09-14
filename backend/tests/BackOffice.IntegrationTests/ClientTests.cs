@@ -49,6 +49,11 @@ public sealed class ClientTests
                 var firstIds=await firstScope.Clients(reload).Select(x=>x.Id).ToArrayAsync();
                 var secondIds=await secondScope.Clients(reload).Select(x=>x.Id).ToArrayAsync();
                 Assert.Equal(3,firstIds.Intersect(secondIds).Count());Assert.Equal(32,firstIds.Union(secondIds).Count());
+                Assert.Equal(firstIds.Length,await firstScope.SearchClients(reload,"AG-DEMO-01").CountAsync());
+                Assert.Equal(firstIds.Length,await new PartyScope(internalActor).SearchClients(reload,"BRIGHTSIDE").CountAsync());
+                Assert.Equal(0,await secondScope.SearchClients(reload,"AG-DEMO-01").CountAsync());
+                Assert.Equal(0,await secondScope.SearchClients(reload,"BRIGHTSIDE").CountAsync());
+                Assert.Equal(0,await firstScope.SearchClients(reload,"%").CountAsync());
                 Assert.All(await firstScope.Relationships(reload).ToListAsync(),x=>Assert.Equal(PartyDemoSeed.FirstAgencyId,x.AgencyId));
                 Assert.Equal(1,await firstScope.Agencies(reload).CountAsync());
                 Assert.Equal(0,await firstScope.Activity(reload).CountAsync());

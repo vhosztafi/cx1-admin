@@ -73,6 +73,11 @@ public sealed class ClientApiTests
             Assert.Equal(HttpStatusCode.OK,(await staff.GetAsync(relationship.Headers.Location)).StatusCode);
             Assert.Equal(1,(await Read(staff,route+"/relationships")).GetProperty("totalCount").GetInt32());
             Assert.Equal(2,(await Read(staff,"/api/v1/relationship-agencies")).GetProperty("totalCount").GetInt32());
+            var agencyPage=await Read(staff,"/api/v1/relationship-agencies?pageSize=1");
+            Assert.Single(agencyPage.GetProperty("items").EnumerateArray());
+            var nextAgency=await Read(staff,"/api/v1/relationship-agencies?pageSize=1&cursor="+Uri.EscapeDataString(agencyPage.GetProperty("nextCursor").GetString()!));
+            Assert.NotEqual(agencyPage.GetProperty("items")[0].GetProperty("id").GetGuid(),nextAgency.GetProperty("items")[0].GetProperty("id").GetGuid());
+            Assert.False(nextAgency.TryGetProperty("nextCursor",out _));
             Assert.Equal(HttpStatusCode.ServiceUnavailable,(await staff.GetAsync(route+"/records")).StatusCode);
             Assert.Equal(HttpStatusCode.NotFound,(await staff.GetAsync("/api/v1/clients/"+Guid.NewGuid()+"/records")).StatusCode);
             var activity=await Read(staff,route+"/activity");Assert.Equal(4,activity.GetProperty("totalCount").GetInt32());
@@ -92,6 +97,9 @@ public sealed class ClientApiTests
             Assert.All(entityPage.GetProperty("items").EnumerateArray(),x=>Assert.Equal("llp",x.GetProperty("entityType").GetString()));
             Assert.Equal(0,(await Read(staff,"/api/v1/clients?q=%25")).GetProperty("totalCount").GetInt32());
             Assert.Equal(1,(await Read(staff,"/api/v1/clients?q=concurrent")).GetProperty("totalCount").GetInt32());
+            var agencySearch=await Read(staff,"/api/v1/clients?q=AG-DEMO-01&pageSize=100");
+            Assert.Contains(agencySearch.GetProperty("items").EnumerateArray(),x=>x.GetProperty("id").GetGuid()==id);
+            Assert.Equal(agencySearch.GetProperty("totalCount").GetInt32(),(await Read(staff,"/api/v1/clients?q=brightside&pageSize=100")).GetProperty("totalCount").GetInt32());
             await using(var db=new BackOfficeDbContext(options))
             {
                 Assert.Equal(4,await db.Set<IdempotencyRecord>().CountAsync());

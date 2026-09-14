@@ -33,6 +33,19 @@ public sealed class PartyScope(ActorContext actor)
         return AgencyRead ? query.Where(x => x.Id==actor.AgencyId) : query.Where(x => false);
     }
 
+    public IQueryable<ClientAccount> SearchClients(BackOfficeDbContext db,string term)
+    {
+        var clients=Clients(db);
+        if(term.Length==0)return clients;
+        var relationships=Relationships(db);var agencies=Agencies(db);
+        // Every predicate, including agency discovery, uses the same trusted scope.
+        // EF translates Contains with literal LIKE escaping; user wildcards are not patterns.
+        return clients.Where(x => x.NormalizedName.Contains(term) || x.Reference.Contains(term) ||
+            (x.CompanyNumber!=null && x.CompanyNumber.Contains(term)) ||
+            relationships.Any(r => r.ClientId==x.Id && agencies.Any(a => a.Id==r.AgencyId &&
+                (a.LegalName.ToUpper().Contains(term) || a.Reference.Contains(term)))));
+    }
+
     public IQueryable<ClientActivity> Activity(BackOfficeDbContext db)
     {
         var clients=Clients(db);var relationships=Relationships(db);

@@ -35,13 +35,7 @@ public static partial class ClientEndpoints
         if(page is null || search.Length>200 || search.Any(char.IsControl) || (search.Length>0 && string.IsNullOrWhiteSpace(search)) ||
             (entity.Length>0 && entity is not ("sole-trader" or "partnership" or "limited-company" or "llp"))) return BadQuery(context);
         await using var db=await factory.CreateDbContextAsync(context.RequestAborted);
-        var query=scope.Clients(db).Where(x => x.CreatedAt<=page.AsOf);
-        if(search.Length>0)
-        {
-            var term=ClientIdentity.NormalizeName(search);
-            // Contains is translated with literal wildcard escaping by the SQL provider.
-            query=query.Where(x => x.NormalizedName.Contains(term) || x.Reference.Contains(term) || (x.CompanyNumber!=null && x.CompanyNumber.Contains(term)));
-        }
+        var query=scope.SearchClients(db,search.Length>0 ? ClientIdentity.NormalizeName(search) : "").Where(x => x.CreatedAt<=page.AsOf);
         if(entity.Length>0) query=query.Where(x => x.EntityType==entity);
         var total=await query.CountAsync(context.RequestAborted);
         var rows=await query.OrderBy(x => x.Reference).ThenBy(x => x.Id).Skip(page.Offset).Take(page.Size).ToListAsync(context.RequestAborted);

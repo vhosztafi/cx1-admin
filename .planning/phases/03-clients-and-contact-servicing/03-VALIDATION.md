@@ -1,7 +1,7 @@
 ---
 phase: 03
 slug: clients-and-contact-servicing
-status: planned
+status: in_progress
 nyquist_compliant: false
 wave_0_complete: true
 created: 2026-09-14
@@ -30,4 +30,4 @@ Sign-off remains pending execution. Set nyquist_compliant true only when all pla
 
 03-01 evidence (2026-09-14): tasks 1/2 pass all 62 design tests and OpenAPI lint, preserving 949 controls/five conditional rules. Task 3 passes full native 46-case backend suite and a final targeted CommandBoundary SQL regression, including old receipt compatibility, original response ETag and invalid-header rollback.
 
-03-02 evidence (2026-09-14): persistence/scoped APIs pass 65 backend cases including eleven real SQL scenarios, zero skips (.local/client-api-results). First UI increment passes nine web unit cases, lint/typecheck/build and real Chrome create/edit/reload/search/page, uncertain response replay, 422/stale recovery, denied writes and mobile checks. Foundation browser regression passes. Source/client desktop and mobile captures inspected; native UI plan remains open for agency search/header/add-relationship controls. See 03-02-PROGRESS.md for the single transient post-rebuild detail timeout and subsequent passing runs. Rows 03-03 onward and phase sign-off remain pending.
+03-02 evidence (2026-09-14): all tasks complete. Final full backend passes 65 cases including eleven real SQL scenarios, zero skips (.local/client-agency-results). Nine web unit cases, lint/typecheck/build and real Chrome create/edit/reload/search/page, uncertain response replay, 422/stale recovery, denied writes and mobile checks pass. Final agency closeout adds scoped name/reference discovery, real cursor paging, header names, lost-response link replay and stale parent link recovery. Foundation browser regression passes. Source/client desktop and mobile captures inspected. See 03-02-SUMMARY.md and retained progress history for the single earlier post-rebuild detail timeout and subsequent passing runs. Rows 03-03 onward and phase sign-off remain pending.
