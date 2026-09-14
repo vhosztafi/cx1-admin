@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T06:21:00Z"
+last_updated: "2026-09-14T07:08:00Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
   completed_phases: 2
   total_plans: 16
-  completed_plans: 14
+  completed_plans: 15
   percent: 15
 ---
 
@@ -20,12 +20,12 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Matching service/APIs verified; implement review UI and browser checks in 03-05.
+**Current focus:** Client/contact/support/matching slices implemented; execute 03-06 final acceptance and reviews.
 
 ## Current Position
 
 Phase: 3 of 13 (Clients and contact servicing)
-Plan: 03-05 of 6 in progress; Tasks 1–2 complete, UI/browser pending; 03-01 through 03-04 complete
+Plan: 03-06 of 6 next; 03-01 through 03-05 complete
 Status: In progress — autonomous
 Last activity: 2026-09-14 — matching decision service/APIs and contracts verified; 123 backend cases/nineteen SQL scenarios and 63 contract tests pass
 
@@ -43,7 +43,7 @@ Progress: Phases 1–2 complete; 2/13 phases. Foundation verified; client servic
 
 ### Pending Todos
 
-- Execute Phase 3 plans 03-05 through 03-06; start with immutable match intake/evidence and audited decision transitions.
+- Execute Phase 3 plan 03-06: full acceptance, code/security/UI review and truthful phase sign-off.
 - Keep future business endpoints closed until their owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,7 +54,7 @@ Progress: Phases 1–2 complete; 2/13 phases. Foundation verified; client servic
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: Read 03-05-PROGRESS.md Task 2 completion then implement Task 3 Match UI/browser. Production 2fcee7d; full .local/match-api-regression-results passes 123/19, no skips. 63 root tests/OpenAPI lint pass. Match-read and decision capabilities remain UW/senior only; mutations return ID/ETag and require GET for current evidence. All transitions, replay/concurrency/rollback and unchanged competing data verified. No schema change/demo reset this increment; six prior fictional cases remain. No active previews/tests. UI unchanged; CLI-04 incomplete until browser/final checks, CLI-01 partial for Phase 5/6 quote/policy links. Funnel unchanged; continue automatically.
+Stopped at: 03-05 complete in 32fab3c with SUMMARY. Matching Chrome passes all five decisions/replay/stale/role/mobile checks. Final client/contact regressions pass after a transient client detail timeout. Fifteen frontend tests/typecheck/lint/build pass; prior full backend 123/19 and final targeted MatchApi DTO case pass. Continue 03-06 final acceptance/reviews. Preview API57448/web28088 remain active on5087/3100, tracked in .local/client-preview-pids.json; stop only after identity checks. Sales funnel unchanged.
 Resume file: None
 
 ## Autonomous continuation

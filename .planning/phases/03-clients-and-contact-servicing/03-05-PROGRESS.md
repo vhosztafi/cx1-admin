@@ -1,5 +1,7 @@
 # Duplicate-review implementation checkpoint
 
+Superseded by 03-05-SUMMARY.md: all three tasks complete as of 2026-09-14, production UI commit 32fab3c. Matching browser and final client/contact regressions pass. Notes below retain implementation history and are not the current task status. Continue with 03-06 final acceptance/reviews.
+
 03-05 remains IN PROGRESS. Task 1 storage/evidence/fictional fixtures is complete in ce3436a. Task 2 service/APIs is complete in 2fcee7d. Task 3 UI/browser remains unimplemented. Do not create a completed plan summary or mark CLI-04 complete yet. Earlier storage notes below are historical; see the Task 2 completion section for current API and permission behavior.
 
 MatchRecords.cs separates immutable submitted identity and captured comparison evidence from the mutable current association/state. MatchSubmission has Reference, AgencyId, IdentitySnapshot, LinkedClientId/LinkedRelationshipId and a retained SeparateClientId. The composite relationship/client/agency FK prevents using another agency's relationship. SeparateClientId can be assigned once and cannot then be replaced/cleared. MatchReview pins SubmissionId, CandidateClientId, CandidateRelationshipId, RuleVersionId, RuleSnapshot, Signals and Confidence. There is one review per intake for the current single-candidate contract. No fake quote column/ID exists; Phase 5 adds the real reference and downstream guards.
