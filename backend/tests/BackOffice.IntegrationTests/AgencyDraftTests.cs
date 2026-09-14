@@ -64,6 +64,7 @@ public sealed class AgencyDraftTests
             Assert.Equal(HttpStatusCode.Forbidden,(await Send(uw,uwToken,HttpMethod.Post,"/api/v1/agencies",Body())).StatusCode);
             Assert.Equal(HttpStatusCode.Forbidden,(await Send(admin,null,HttpMethod.Post,"/api/v1/agencies",Body())).StatusCode);
             var catalog=await Read(admin,"/api/v1/agency-product-catalog");Assert.Equal(3,catalog.GetProperty("items").GetArrayLength());
+            foreach(var item in catalog.GetProperty("items").EnumerateArray()){Assert.True(item.GetProperty("distributionEligible").GetBoolean());Assert.False(item.GetProperty("ratingReady").GetBoolean());}
             var productId=catalog.GetProperty("items")[0].GetProperty("productVersionId").GetGuid();var product=new{productVersionId=productId,effectiveFrom="2026-09-14",brokerCommissionBasisPoints=1250};
             var details=new{legalName="Fictional Agency Draft",territory="NI",arrangesGeneralInsurance="unchecked",correspondencePreference="portal-only",mainContact=new{name="Fictional Sam"},commercialTerms=new{commissionBasis="flat-rate",volumeCommitmentMode="target-tiered"},compliance=new{beneficialOwnershipVerified="refer"}};
             var body=new{details,onboardingStep=3,products=new[]{product}};var key=Guid.NewGuid().ToString("N");

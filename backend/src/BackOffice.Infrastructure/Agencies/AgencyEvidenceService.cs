@@ -68,7 +68,7 @@ public sealed class AgencyEvidenceService(SqlCommandBoundary commands,AgencyDraf
         var rule=await Configuration(db,token);using var input=await Draft(db,agency.Id,token);var now=time.GetUtcNow();var today=BusinessDate(now);
         var latest=await db.Set<AgencyEvidence>().AsNoTracking().Where(x=>x.AgencyId==agency.Id&&!db.Set<AgencyEvidence>().Any(newer=>newer.AgencyId==x.AgencyId&&newer.Kind==x.Kind&&newer.Ordinal>x.Ordinal)).ToListAsync(token);
         var facts=latest.ToDictionary(x=>x.Kind,x=>new AgencyEvidenceFact(x.Id,x.Kind,x.State,x.InputFingerprint,x.RuleVersionId,x.ExpiresOn));
-        var hasCurrentSelection=await db.Set<AgencyDraftProduct>().AnyAsync(x=>x.AgencyId==agency.Id&&x.EffectiveFrom<=today,token);
+        var eligibleProducts=await AgencyDistributionService.DraftEligible(db,agency.Id,now,token);
         // Only a currently scoped administrator with usable credentials or an
         // applicable invitation is viable. User/invitation writes share the parent lock.
         var viableAdministrator=await (from user in db.Set<StaffUser>()
@@ -81,8 +81,8 @@ public sealed class AgencyEvidenceService(SqlCommandBoundary commands,AgencyDraf
                         &&((agency.State=="draft"&&i.State=="staged")
                             ||(agency.State=="active"&&i.State=="pending"&&i.IssuedAt<=now&&i.ExpiresAt>now)))))
             select user.Id).AnyAsync(token);
-        // Effective distribution-setting checks belong to04-06; a draft catalog is not a grant.
-        var items=AgencyActivationRules.Evaluate(input.RootElement,facts,rule.Id,today,rule.MinimumPi,rule.TobaVersion,new(hasCurrentSelection?null:false,viableAdministrator)).ToList();
+        // Distribution is explicitly granted by a versioned demo rule, never by draft catalog presence.
+        var items=AgencyActivationRules.Evaluate(input.RootElement,facts,rule.Id,today,rule.MinimumPi,rule.TobaVersion,new(eligibleProducts,viableAdministrator)).ToList();
         if(agency.RelationshipManagerId is Guid manager&&!await AgencyDraftService.Managers(db).AnyAsync(x=>x.Id==manager,token))
         {
             var index=items.FindIndex(x=>x.Code=="field-relationshipManagerId");items[index]=items[index] with{State="failed",Message="Choose a currently active internal relationship manager."};

@@ -21,6 +21,13 @@ public static class AgencyDemoSeed
             }
         if(!await db.Set<SettingVersion>().AnyAsync(x=>x.Scope=="agency-onboarding"&&x.Version==1,token))
             db.Add(new SettingVersion{Scope="agency-onboarding",Version=1,EffectiveFrom=new(2026,9,1,0,0,0,TimeSpan.Zero),Values="{\"demo\":true,\"evidenceAvailable\":false,\"activationAvailable\":false}"});
+        if(!await db.Set<SettingVersion>().AnyAsync(x=>x.Scope=="agency-distribution",token))
+        {
+            var products=await (from version in db.Set<ProductVersion>() join product in db.Set<Product>() on version.ProductId equals product.Id
+                where version.Version==1&&(product.Code=="motor-trade-road-risks"||product.Code=="motor-trade-combined"||product.Code=="commercial-combined")
+                orderby product.Code select version.Id).ToArrayAsync(token);
+            db.Add(new SettingVersion{Scope="agency-distribution",Version=1,EffectiveFrom=new(2026,9,1,0,0,0,TimeSpan.Zero),Values=JsonSerializer.Serialize(new{demo=true,kind="agency-distribution",productVersionIds=products})});
+        }
         const string complianceRules="""{"demo":true,"minimumPi":"1700000.00","tobaVersion":"2026.1","checkValidityDays":90,"scenarios":{"fca":"pass","financial-check":"pass","sanctions":"pass","ownership":"pass"}}""";
         var initialCompliance=await db.Set<SettingVersion>().SingleOrDefaultAsync(x=>x.Scope=="agency-compliance"&&x.Version==1,token);
         if(initialCompliance is null)

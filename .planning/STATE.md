@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T18:10:19Z"
+last_updated: "2026-09-14T18:20:54Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-06 of 8 in progress; 04-01 through 04-05 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — 04-06 terms/request/product SQL persistence verified and migrated. Full262/36SQL pass; approval services next.
+Last activity: 2026-09-14 — 04-06 current distribution readiness/catalogue and independent reviewer seed verified. Full273/37SQL pass; approval transactions next.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: 04-06 state/terms requests and immutable terms/product storage verified and migrated additively to Demo. Read04-06-PROGRESS.md. Full262 backend/36SQL and77 contracts pass; prior22frontend/build/browser current. Next current-role-authorized approval services under agency-first locking, current distribution eligibility and initial-draft extraction; atomic activation/issuance/notifications and suspension fences. SQL creates AgencyProduct rows from parent snapshot: services insert only AgencyTermsVersion. No tests/previews active; broker login closed until04-07.
+Stopped at: 04-06 distribution readiness/catalogue now resolves explicit current demo grants with provider/product validity. Added agency-reviewer@cover.example without overwriting credentials; seed applied to Demo. Full273 backend/37SQL and77 contracts pass; prior22frontend/build/browser current. Read04-06-PROGRESS.md. Next initial-draft terms extraction and approval service transactions, binding rule/input/evidence fingerprints and retaining prerequisite locks through commit; then activation/issuance/notifications, suspension and Phase3 lock fences. SQL creates AgencyProduct from the terms parent. Broker login closed until04-07. No tests/previews active.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-06-PROGRESS.md
 
 ## Autonomous continuation

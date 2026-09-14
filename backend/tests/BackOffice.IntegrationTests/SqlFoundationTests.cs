@@ -40,8 +40,8 @@ public sealed class SqlFoundationTests
             // Independent context reload, with no tracked seed entities.
             await using (var reloaded = new BackOfficeDbContext(options))
             {
-                Assert.Equal(6,await reloaded.Set<StaffUser>().CountAsync());
-                Assert.Equal(6,await reloaded.Set<UserRole>().CountAsync());
+                Assert.Equal(7,await reloaded.Set<StaffUser>().CountAsync());
+                Assert.Equal(7,await reloaded.Set<UserRole>().CountAsync());
                 Assert.Equal(3,await reloaded.Set<ProductVersion>().CountAsync());
                 Assert.Equal(4,await reloaded.Set<SettingVersion>().CountAsync(x => x.Scope.StartsWith("diagnostic-probe/")));
                 Assert.Single(await reloaded.Set<DemoClock>().ToListAsync());

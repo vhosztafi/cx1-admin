@@ -50,6 +50,16 @@ public static class DemoDatabase
                 db.Add(new UserCredential {UserId=user.Id,ProviderSubject=normalized,PasswordHash=new PasswordHasher<StaffUser>().HashPassword(user,password)});
             }
         }
+        // Add a distinct countersigner without changing any existing identity or password.
+        const string reviewerEmail="agency-reviewer@cover.example";
+        var reviewerNormalized=reviewerEmail.ToUpperInvariant();
+        if(!await db.Set<StaffUser>().AnyAsync(x=>x.NormalizedEmail==reviewerNormalized,cancellationToken))
+        {
+            var role=db.Set<Role>().Local.SingleOrDefault(x=>x.Code=="agency-admin")??await db.Set<Role>().SingleAsync(x=>x.Code=="agency-admin",cancellationToken);
+            var reviewer=new StaffUser{Email=reviewerEmail,NormalizedEmail=reviewerNormalized,DisplayName="Demo agency reviewer",TeamId=team.Id};
+            db.Add(reviewer);db.Add(new UserRole{UserId=reviewer.Id,RoleId=role.Id});
+            db.Add(new UserCredential{UserId=reviewer.Id,ProviderSubject=reviewer.NormalizedEmail,PasswordHash=new PasswordHasher<StaffUser>().HashPassword(reviewer,password)});
+        }
         var provider = await db.Set<CapacityProvider>().SingleOrDefaultAsync(x => x.Code == "demo-capacity",cancellationToken);
         if (provider is null) { provider = new CapacityProvider {Code="demo-capacity",Name="Fictional Demo Capacity"}; db.Add(provider); }
         var effective = new DateTimeOffset(2026,9,1,0,0,0,TimeSpan.Zero);
