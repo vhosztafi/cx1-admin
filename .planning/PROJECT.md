@@ -18,7 +18,7 @@ Staff can complete a quote-to-policy-to-servicing journey and trust that its pol
 
 ### Validated
 
-Phase 1 design and Phase 2 native foundation are verified locally. See DES-01..06 and FND-01..06 in REQUIREMENTS.md and their phase verification reports. The prototype and copied sales funnel remain reference material; full business MVP delivery is still in progress.
+Phase 1 design, Phase 2 native foundation and Phase 3 client servicing are verified locally. See DES-01..06, FND-01..06 and CLI-02..04 in REQUIREMENTS.md and their phase verification reports. CLI-01 remains partial until real quote/policy links in Phases 5/6. The prototype and copied sales funnel remain reference material; full business MVP delivery is still in progress.
 
 ### Active
 

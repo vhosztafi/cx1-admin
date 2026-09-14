@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Approved by the user on 2026-09-13. Autonomous research, planning, implementation and transitions authorised. Phases 1–2 are complete; native foundation verification passed on 2026-09-14. Phase 3 plans 03-01 through 03-05 are complete; final acceptance and reviews in 03-06 are next.
+**Status:** Approved by the user on 2026-09-13. Autonomous research, planning, implementation and transitions authorised. Phases 1–3 are complete with native SQL/API/browser verification. Phase 4 agency onboarding/access research and planning are next. CLI-01 remains partial until real quote/policy links in Phases 5/6; see ACCEPTANCE-BACKLOG.md.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
@@ -12,7 +12,7 @@
 
 - [x] **Phase 1: Data and API design** — Translate both references into implementable contracts.
 - [x] **Phase 2: Application and persistence foundation** — Run a persistent authenticated system with the prototype shell.
-- [ ] **Phase 3: Clients and contact servicing** — Maintain insured businesses and person-level servicing information.
+- [x] **Phase 3: Clients and contact servicing** — Maintain insured businesses and person-level servicing information.
 - [ ] **Phase 4: Agency onboarding and access** — Onboard agencies and enforce their sharing boundaries.
 - [ ] **Phase 5: Motor Trade quote capture** — Capture complete persistent Motor Trade risks in the back office.
 - [ ] **Phase 6: Underwriting and first policy issue** — Complete the first quote-to-issued-policy journey.
@@ -99,7 +99,7 @@
 2. Validation and lookup failure/manual-entry paths work after reload; list/search filters use real records.
 3. Risk revisions, clones and withdrawal have stable identities/history and invalidate stale downstream results.
 
-**Deliverables and boundaries:** Product seed definitions; draft schemas; back-office capture; lookup adapters; risk validators. No funnel edits.
+**Deliverables and boundaries:** Product seed definitions; draft schemas; back-office capture; lookup adapters; risk validators. No funnel edits. Consume ACCEPTANCE-BACKLOG.md: actual client-to-quote navigation and progressed-quote matching guard are required.
 
 ### Phase 6: Underwriting and first policy issue
 
@@ -233,7 +233,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 |---|---|---|---|
 | 1. Data and API design | 4/4 | Complete | 2026-09-13 |
 | 2. Application and persistence foundation | 6/6 | Complete | 2026-09-14 |
-| 3. Clients and contact servicing | 5/6 | In progress | — |
+| 3. Clients and contact servicing | 6/6 | Complete | 2026-09-14 |
 | 4. Agency onboarding and access | 0/TBD | Not started | — |
 | 5. Motor Trade quote capture | 0/TBD | Not started | — |
 | 6. Underwriting and first policy issue | 0/TBD | Not started | — |

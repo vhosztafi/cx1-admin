@@ -29,9 +29,9 @@ Core value: complete persistent insurance and servicing journeys with consistent
 ### Clients and contacts
 
 - [ ] **CLI-01**: Staff can search, filter and page clients and open linked policies, quotes, contacts and activity.
-- [ ] **CLI-02**: Staff can create and update business accounts and contacts, recording legal identity, addresses, consent and a single primary contact.
-- [ ] **CLI-03**: Authorised staff can add, review, amend and resolve person-level support flags, with audit and separate internal versus agency wording.
-- [ ] **CLI-04**: Staff can review duplicate-match evidence and record link, new-client or reject decisions without exposing another agency's restricted records.
+- [x] **CLI-02**: Staff can create and update business accounts and contacts, recording legal identity, addresses, consent and a single primary contact.
+- [x] **CLI-03**: Authorised staff can add, review, amend and resolve person-level support flags, with audit and separate internal versus agency wording.
+- [x] **CLI-04**: Staff can review duplicate-match evidence and record link, new-client or reject decisions without exposing another agency's restricted records.
 
 ### Agencies
 
@@ -164,10 +164,10 @@ Every v1 requirement has one owning delivery phase; later phases may consume its
 | FND-04 | 2 | Complete |
 | FND-05 | 2 | Complete |
 | FND-06 | 2 | Complete |
-| CLI-01 | 3 | Pending |
-| CLI-02 | 3 | Pending |
-| CLI-03 | 3 | Pending |
-| CLI-04 | 3 | Pending |
+| CLI-01 | 3 | Partial: client discovery/contacts/activity verified; real quote/policy links due5/6 |
+| CLI-02 | 3 | Complete: native SQL/API/browser verified2026-09-14 |
+| CLI-03 | 3 | Complete: native SQL/API/browser verified2026-09-14 |
+| CLI-04 | 3 | Complete: saved intake review verified2026-09-14; quote integration due5 |
 | AGY-01 | 4 | Pending |
 | AGY-02 | 4 | Pending |
 | AGY-03 | 4 | Pending |

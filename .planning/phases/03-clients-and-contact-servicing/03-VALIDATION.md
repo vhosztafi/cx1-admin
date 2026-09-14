@@ -1,15 +1,15 @@
 ---
 phase: 03
 slug: clients-and-contact-servicing
-status: in_progress
-nyquist_compliant: false
+status: complete
+nyquist_compliant: true
 wave_0_complete: true
 created: 2026-09-14
 ---
 
 # Phase 3 validation strategy
 
-Existing infrastructure: xUnit with real SQL Server, Node test runner, TypeScript/ESLint/Next build and local Playwright Chrome. No new framework or mock database is needed. The table below is the phase coverage plan; completed 03-01 through 03-03 evidence is recorded in their summaries. Support flags, matching and final cross-feature verification remain pending.
+Existing infrastructure: xUnit with real SQL Server, Node test runner, TypeScript/ESLint/Next build and local Playwright Chrome. All six plans are complete; 03-VERIFICATION.md is the current sign-off. Earlier dated checkpoints below remain historical. No mock database or skipped SQL acceptance is used.
 
 After a contract task: `node scripts/validate-contracts.mjs` and `node --test tests/party-contracts.test.mjs`. After backend tasks: relevant xUnit filter plus the full suite after each plan (`dotnet test backend/BackOffice.slnx --no-restore`). After frontend tasks: `pnpm web:test`, `pnpm web:lint`, `pnpm web:typecheck` and browser smoke; build before full preview acceptance. SQL checks are generally seconds to minutes and must fail if SQL is unavailable. Fix a failed boundary before advancing its dependent work.
 
@@ -24,9 +24,22 @@ After a contract task: `node scripts/validate-contracts.mjs` and `node --test te
 | 03-05-1/2/3 | CLI-04 | T-07 | MatchRulesTests and MatchTests decision matrix/concurrency/replay/reopen/candidate isolation; browser all outcomes |
 | 03-06-1/2/3 | All CLI | T-08 | verify-clients-browser, full design/frontend/backend suites, CI count gate updates, inline security/UI review and truthful evidence docs |
 
-Browser command to add: `pnpm web:browser:clients`, local API5087/web3100 only, unique fictional data with no reset. Current shell/operations browser tests remain regressions. Capture actual source/app evidence at 1560x1000 and 390px; human judgment/assistive-technology acceptance remains separate.
+Implemented browser commands: `pnpm web:browser:clients`, `web:browser:contacts`, `web:browser:support`, `web:browser:matches`, plus shell/operations regressions. Local API5087/web3100 only, fictional data with no reset. Actual source/app evidence captured at1560x1000 and390px; human judgment/assistive-technology acceptance remains separate.
 
-Sign-off remains pending execution. Set nyquist_compliant true only when all planned boundary cases have passing evidence. Do not inflate CI minimums using old TRX directories, and do not count hosted CI as run merely because its YAML exists.
+Sign-off: all planned Phase 3 boundary cases have passing evidence. Fresh full backend123/19 (98unit+25integration) has zero skips, plus targeted actor-label API regression; 63contracts,15frontend tests, lint/typecheck/build and browser journeys pass. Result-gate rejection tests and CI YAML parsing pass; hosted execution unperformed. CLI-01 remains partial for real quote/policy links; this is a planned cross-phase obligation, not an untested client-foundation boundary.
+
+## Final evidence mapping (2026-09-14)
+
+| Plan/threat | Final evidence |
+|---|---|
+| 03-01 / T-01,T-02 | tests/party-contracts.test.mjs and full contract validation; CommandBoundaryTests replay/original ETag/rollback |
+| 03-02 / T-03,T-04 | PartyValidationTests, ClientTests, ClientApiTests; client browser create/edit/filter/page/scope/retry/stale |
+| 03-03 / T-05 | ContactRulesTests, ContactTests, ContactServiceTests, ContactApiTests; contact browser all consent/primary/end/shared-person flows |
+| 03-04 / T-06 | SupportFlagRulesTests and support storage/service/API/demo tests; support browser declined draft, sharing/revocation/review/history/end/replay/role denial |
+| 03-05 / T-07 | MatchRulesTests, MatchStorageTests, MatchApiTests; match browser all outcomes, retained separate identity, stale/replay/role denial and accessible status |
+| 03-06 / T-08 | .local/phase3-final-clean-results full123/19; .local/phase3-actor-fix-results targeted API pass; final build/lint and six browser suites; code/UI reviews and truthful requirements/backlog |
+
+The initial full-suite attempt was rejected because the active preview locked API DLLs. The clean run after stopping that process passed. A shell test raced streamed content; visible heading/sidebar waits repaired the harness while preserving exact dimensions. Human UAT is not included in this automated sign-off.
 
 03-01 evidence (2026-09-14): tasks 1/2 pass all 62 design tests and OpenAPI lint, preserving 949 controls/five conditional rules. Task 3 passes full native 46-case backend suite and a final targeted CommandBoundary SQL regression, including old receipt compatibility, original response ETag and invalid-header rollback.
 
