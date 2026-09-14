@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T22:44:24Z"
-last_activity: 2026-09-14
+last_updated: "2026-09-14T23:01:03Z"
+last_activity: 2026-09-15
 progress:
   total_phases: 13
   completed_phases: 3
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-06 of 8 in progress; 04-01 through 04-05 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — 04-06 state approval UI verified with two internal accounts;24 frontend tests/build/lint and state/users browser checks pass.
+Last activity: 2026-09-15 — Approved terms Products/Accounts history implemented;26 frontend tests/build/lint and terms presentation browser checks pass.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: State approval UI committed as a manageable04-06 slice. AgencyStateRequests on Overview and stage6 supports activation/suspension/reactivation proposals, independent decisions, real history, exact uncertain replay and modal/wizard guards. Authenticated actor IDs passed from server pages. Current product labels distinguish approved grants and suspended access; draft-only checklist. New state browser script passes real SQL/API independent rejection/approval, suspension persistence, lost-response replay, incomplete activation/reactivation, focus and390px. Existing users browser regression passes;24 frontend tests/lint/typecheck/build pass. Previous289backend/47SQL and78contracts current; backend unchanged. Next terms UI: Products current/scheduled/history/proposal/decision and Accounts approved terms, then positive activation/reactivation/terms browser lifecycle and final04-06 acceptance. No phase completion or human UAT claimed. Broker login closed until04-07. Owned previews stopped.
+Stopped at: Approved terms display slice committed. AgencyTermsHistory reads published snapshots on active/suspended Products and Accounts, avoiding stale draft finance; shows server statuses/asOf/exclusive ends, exact amounts, source labels, version provenance, product/provider/date/rates, paging/retry.26 frontend tests/typecheck/lint/build pass. New terms display browser test uses real underwriter auth/empty SQL history plus explicit intercepted status/precision/pagination/error/mobile fixtures; it does not claim actual publication. Prior state/users browser evidence and289backend/47SQL/78contracts current. Next terms proposal editor and independent decision controls, then full real positive activation/reactivation/terms browser flows and remaining04-06 acceptance. No phase completion/human UAT; broker login closed until04-07. Owned previews stopped.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-06-PROGRESS.md
 
 ## Autonomous continuation
