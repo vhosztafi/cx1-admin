@@ -19874,7 +19874,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AgencyEvidence"
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
                 }
               }
             }
@@ -20062,7 +20072,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AgencyCheckAttempt"
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
                 }
               }
             }
@@ -48767,13 +48787,13 @@
     "/agencies/{agencyId}/validate": {
       "post": {
         "operationId": "validateAgency",
-        "summary": "validate Agency",
+        "summary": "Evaluate current readiness without changing state or caching a receipt; current agency ETag and CSRF required",
         "description": "Requires agency-admin. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
         "tags": [
           "agencies"
         ],
         "x-permission": "agency-admin",
-        "x-idempotency": "required",
+        "x-idempotency": "not-cached",
         "security": [
           {
             "Session": [],
@@ -48788,16 +48808,6 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
-          },
-          {
-            "name": "Idempotency-Key",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "minLength": 16,
-              "maxLength": 200
             }
           },
           {
@@ -51209,7 +51219,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AgencyEvidenceFile"
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
                 }
               }
             }
@@ -51348,6 +51368,514 @@
                   "fileName",
                   "contentType"
                 ]
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "listAgencyEvidenceFiles",
+        "summary": "list Agency Evidence Files",
+        "description": "Requires agency-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
+        "tags": [
+          "agencies"
+        ],
+        "x-permission": "agency-read",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "agencyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AgencyEvidenceFile"
+                      },
+                      "maxItems": 1000
+                    },
+                    "nextCursor": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2048
+                    },
+                    "totalCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agencies/{agencyId}/evidence-files/{recordId}": {
+      "get": {
+        "operationId": "getAgencyEvidenceFile",
+        "summary": "get Agency Evidence File",
+        "description": "Requires agency-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
+        "tags": [
+          "agencies"
+        ],
+        "x-permission": "agency-read",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "agencyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "recordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgencyEvidenceFile"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agencies/{agencyId}/evidence/{recordId}": {
+      "get": {
+        "operationId": "getAgencyEvidence",
+        "summary": "get Agency Evidence",
+        "description": "Requires agency-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
+        "tags": [
+          "agencies"
+        ],
+        "x-permission": "agency-read",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "agencyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "recordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgencyEvidence"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agencies/{agencyId}/checks/{recordId}": {
+      "get": {
+        "operationId": "getAgencyCheckAttempt",
+        "summary": "get Agency Check Attempt",
+        "description": "Requires agency-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
+        "tags": [
+          "agencies"
+        ],
+        "x-permission": "agency-read",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "agencyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "recordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgencyCheckAttempt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
               }
             }
           }
@@ -63620,7 +64148,7 @@
             "items": {
               "$ref": "#/components/schemas/AgencyChecklistItem"
             },
-            "maxItems": 40
+            "maxItems": 80
           }
         },
         "required": [

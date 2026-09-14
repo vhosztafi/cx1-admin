@@ -52,6 +52,9 @@ public static class IdentityEndpoints
         builder.Services.AddAntiforgery(options =>
         {
             options.HeaderName="X-CSRF-Token";
+            // API clients use the header. Do not parse an untrusted multipart
+            // body before the endpoint's explicit upload limits run.
+            options.SuppressReadingTokenFromFormBody=true;
             options.Cookie.Name=development ? "cover-dev-csrf" : "__Host-cover-csrf";
             options.Cookie.Path="/"; options.Cookie.HttpOnly=true; options.Cookie.SameSite=SameSiteMode.Strict;
             options.Cookie.SecurePolicy=development ? CookieSecurePolicy.SameAsRequest : CookieSecurePolicy.Always;

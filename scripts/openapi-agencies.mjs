@@ -35,7 +35,7 @@ export function addAgencyContracts({schemas:s,ref:r,text:t,enumeration:e,object:
  s.AgencyWrite.description='Incomplete typed draft, maximum UTF-8 JSON body 65536 bytes. Omit missing fields; reject null/unknown keys. Declarations never set verification or activation status.';
  s.AgencyDraftSave=o({details:r('AgencyWrite'),onboardingStep:step,products:bounded(r('AgencyProductWrite'),3)},['details','onboardingStep']);
  s.AgencyChecklistItem=o({code:t(80),path:t(200),stage:step,state:e('missing','pending','satisfied','failed','stale','expired','unavailable'),message:t(1000),evidenceId:id},['code','path','stage','state','message']);
- s.AgencyChecklist=o({valid:b,agencyEtag:etag,ruleVersionId:id,calculatedAt:instant,items:bounded(r('AgencyChecklistItem'),40)});
+ s.AgencyChecklist=o({valid:b,agencyEtag:etag,ruleVersionId:id,calculatedAt:instant,items:bounded(r('AgencyChecklistItem'),80)});
  s.AgencyUnavailableSection=o({kind:e('quotes','policies','tasks','statements'),state:{const:'unavailable'},owningPhase:{type:'integer',enum:[5,6,9,10]},message:t(300)});
  s.Agency=o({id,reference:t(40),state,onboardingStep:step,details:r('AgencyWrite'),validation:r('AgencyChecklist'),unavailableSections:bounded(r('AgencyUnavailableSection'),4)});
  s.AgencySummary=o({id,reference:t(40),legalName:t(),state,onboardingStep:step,mainContactName:t(),relationshipManagerId:id,relationshipManagerName:t(),userCount:integer,invitedUserCount:integer,productCodes:bounded(productCode,3),lastActivityAt:instant,openActionCount:integer},['id','reference','state','onboardingStep','productCodes']);
@@ -97,12 +97,14 @@ export function addAgencyContracts({schemas:s,ref:r,text:t,enumeration:e,object:
  replace('get','/agencies/{agencyId}/products','agency-read',{output:o({items:bounded(r('AgencyProduct'),3)})});
  replace('put','/agencies/{agencyId}/products','agency-admin',{existing:true,input:o({products:bounded(r('AgencyProductWrite'),3),reason:t(1000)}),output:o({id}),summary:'Replace draft product selections only; server owns row IDs and rejects duplicate or unknown products; selection grants no access'});
  replace('post','/agencies/{agencyId}/abandon','agency-admin',{existing:true,input:reason,output:o({id}),summary:'Abandon draft only; retain history and revoke staged or pending invitations when implemented'});
- replace('post','/agencies/{agencyId}/evidence','agency-admin',{existing:true,input:r('AgencyEvidenceWrite'),output:r('AgencyEvidence'),status:201});
- replace('post','/agencies/{agencyId}/checks','agency-admin',{existing:true,input:r('AgencyCheckWrite'),output:r('AgencyCheckAttempt'),status:202});
+ replace('post','/agencies/{agencyId}/evidence','agency-admin',{existing:true,input:r('AgencyEvidenceWrite'),output:o({id}),status:201});
+ replace('post','/agencies/{agencyId}/checks','agency-admin',{existing:true,input:r('AgencyCheckWrite'),output:o({id}),status:202});
  list('/agencies/{agencyId}/checks','listAgencyChecks','agency-read',r('AgencyCheckAttempt'));
- replace('post','/agencies/{agencyId}/validate','agency-admin',{existing:true,output:r('AgencyChecklist')});
- op('post','/agencies/{agencyId}/evidence-files','uploadAgencyEvidenceFile','agency-admin',{existing:true,output:r('AgencyEvidenceFile'),status:201});
+ replace('post','/agencies/{agencyId}/validate','agency-admin',{existing:true,idempotent:false,output:r('AgencyChecklist'),summary:'Evaluate current readiness without changing state or caching a receipt; current agency ETag and CSRF required'});
+ op('post','/agencies/{agencyId}/evidence-files','uploadAgencyEvidenceFile','agency-admin',{existing:true,output:o({id}),status:201});
  paths['/agencies/{agencyId}/evidence-files'].post.requestBody={required:true,content:{'multipart/form-data':{schema:o({file:{type:'string',format:'binary',maxLength:10485760},fileName:t(150),contentType:s.AgencyEvidenceFile.properties.contentType})}}};
+ list('/agencies/{agencyId}/evidence-files','listAgencyEvidenceFiles','agency-read',r('AgencyEvidenceFile'));
+ for(const [suffix,name,schema] of [['evidence-files','EvidenceFile','AgencyEvidenceFile'],['evidence','Evidence','AgencyEvidence'],['checks','CheckAttempt','AgencyCheckAttempt']])op('get',`/agencies/{agencyId}/${suffix}/{recordId}`,`getAgency${name}`,'agency-read',{output:r(schema)});
  op('get','/agencies/{agencyId}/evidence-files/{fileId}/content','downloadAgencyEvidenceFile','agency-read',{output:r('AgencyEvidenceFile')});
  const download=paths['/agencies/{agencyId}/evidence-files/{fileId}/content'].get;
  download.responses[200].content={'application/octet-stream':{schema:{type:'string',format:'binary'}}};

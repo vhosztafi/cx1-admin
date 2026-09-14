@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BackOffice.Infrastructure.Agencies;
 
 public sealed record AgencyEvidenceConfiguration(Guid Id,decimal MinimumPi,string TobaVersion,int CheckValidityDays,IReadOnlyDictionary<string,string> Scenarios);
+public sealed record AgencyReadiness(bool Valid,string AgencyEtag,Guid RuleVersionId,DateTimeOffset CalculatedAt,IReadOnlyList<AgencyChecklistItem> Items);
 public sealed class AgencyEvidenceService(SqlCommandBoundary commands,AgencyDraftService drafts,TimeProvider time)
 {
     public async Task<CommandOutcome> Upload(ActorContext actor,Guid agencyId,string key,byte[] version,AgencyFileInput file,CancellationToken token)
@@ -58,6 +59,25 @@ public sealed class AgencyEvidenceService(SqlCommandBoundary commands,AgencyDraf
         if(!values.TryGetProperty("demo",out var demo)||demo.ValueKind!=JsonValueKind.True||!values.TryGetProperty("minimumPi",out var minimum)||!decimal.TryParse(minimum.GetString(),NumberStyles.AllowDecimalPoint,CultureInfo.InvariantCulture,out var limit)||limit<=0||!values.TryGetProperty("checkValidityDays",out var days)||!days.TryGetInt32(out var validity)||validity is <1 or >365||!values.TryGetProperty("tobaVersion",out var toba)||string.IsNullOrWhiteSpace(toba.GetString())||!values.TryGetProperty("scenarios",out var scenarios)||scenarios.ValueKind!=JsonValueKind.Object)throw new AgencyCommandException(503,"evidence-demo-configuration");
         var parsed=new Dictionary<string,string>();foreach(var kind in AgencyEvidenceRules.CheckKinds){var value=scenarios.TryGetProperty(kind,out var scenario)&&scenario.ValueKind==JsonValueKind.String?scenario.GetString():null;if(value is not ("pass" or "refer" or "unavailable"))throw new AgencyCommandException(503,"evidence-demo-configuration");parsed[kind]=value;}
         return new(row.Id,limit,toba.GetString()!,validity,parsed);
+    }
+    // Caller holds the agency read/write transaction; every evidence write takes
+    // the same parent lock so details, evidence and returned ETag stay coherent.
+    public async Task<AgencyReadiness> Validate(BackOfficeDbContext db,Agency agency,CancellationToken token)
+    {
+        if(db.Database.CurrentTransaction is null)throw new InvalidOperationException("Agency validation requires an aggregate transaction.");
+        var rule=await Configuration(db,token);using var input=await Draft(db,agency.Id,token);var now=time.GetUtcNow();var today=BusinessDate(now);
+        var latest=await db.Set<AgencyEvidence>().AsNoTracking().Where(x=>x.AgencyId==agency.Id&&!db.Set<AgencyEvidence>().Any(newer=>newer.AgencyId==x.AgencyId&&newer.Kind==x.Kind&&newer.Ordinal>x.Ordinal)).ToListAsync(token);
+        var facts=latest.ToDictionary(x=>x.Kind,x=>new AgencyEvidenceFact(x.Id,x.Kind,x.State,x.InputFingerprint,x.RuleVersionId,x.ExpiresOn));
+        var hasCurrentSelection=await db.Set<AgencyDraftProduct>().AnyAsync(x=>x.AgencyId==agency.Id&&x.EffectiveFrom<=today,token);
+        // 04-05/06 must replace unavailable with actual scoped identity and
+        // effective distribution-setting checks. A draft catalog is not a grant.
+        var items=AgencyActivationRules.Evaluate(input.RootElement,facts,rule.Id,today,rule.MinimumPi,rule.TobaVersion,new(hasCurrentSelection?null:false,null)).ToList();
+        if(agency.RelationshipManagerId is Guid manager&&!await AgencyDraftService.Managers(db).AnyAsync(x=>x.Id==manager,token))
+        {
+            var index=items.FindIndex(x=>x.Code=="field-relationshipManagerId");items[index]=items[index] with{State="failed",Message="Choose a currently active internal relationship manager."};
+        }
+        if(agency.State=="abandoned")items.Add(new("agency-abandoned","/state",6,"failed","This abandoned draft is retained for history and cannot be activated."));
+        return new(items.All(x=>x.State=="satisfied"),AgencyDraftService.Etag(agency.RowVersion),rule.Id,now,items);
     }
     private AgencyEvidence Evidence(Guid agencyId,string kind,JsonElement input,Guid rule,string state,string result,Guid actor,DateOnly? expiresOn)=>new(){AgencyId=agencyId,Kind=kind,State=state,InputSnapshot=AgencyEvidenceRules.Snapshot(input,kind),InputFingerprint=AgencyEvidenceRules.Fingerprint(input,kind),RuleVersionId=rule,VerifiedAt=state=="verified"?time.GetUtcNow():null,ExpiresOn=expiresOn,ResultCode=result,CreatedBy=actor,CreatedAt=time.GetUtcNow()};
     private static async Task<Agency> WritableAgency(BackOfficeDbContext db,Guid id,byte[] version,CancellationToken token){var agency=await AgencyDraftService.Lock(db,id,version,token);if(agency.State=="abandoned")throw new AgencyCommandException(409,"agency-abandoned");return agency;}

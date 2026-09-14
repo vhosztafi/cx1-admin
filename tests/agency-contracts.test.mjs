@@ -107,6 +107,17 @@ test('shared projections exclude internal evidence, arbitrary permissions, hidde
  assert.equal(body('/agencies/{agencyId}/permission-requests')({permission:'underwriting-admin',reason:'Forged'}),false);
  for(const [path,methods] of Object.entries(doc.paths).filter(([path])=>path.startsWith('/agency-context')))for(const operation of Object.values(methods)){assert.equal(operation['x-permission'],'active-own-agency');assert.equal(operation.parameters.some(p=>p.name==='agencyId'),false);}
 });
+test('evidence writes return ID-only receipts and readiness is a fresh uncached read',()=>{
+ for(const [suffix,status] of [['evidence-files','201'],['evidence','201'],['checks','202']]) {
+  const operation=doc.paths[`/agencies/{agencyId}/${suffix}`].post;
+  assert.deepEqual(Object.keys(operation.responses[status].content['application/json'].schema.properties),['id']);
+  assert.equal(doc.paths[`/agencies/{agencyId}/${suffix}/{recordId}`].get['x-permission'],'agency-read');
+ }
+ const validation=doc.paths['/agencies/{agencyId}/validate'].post;
+ assert.equal(validation['x-idempotency'],'not-cached');assert.equal(validation.parameters.some(x=>x.name==='Idempotency-Key'),false);
+ assert.equal(validation.parameters.some(x=>x.name==='If-Match'&&x.required),true);
+ assert.equal(doc.components.schemas.AgencyChecklist.properties.items.maxItems,80);
+});
 test('reviewed agency actions use agency-specific routes and every inventory control remains mapped',async()=>{
  const inventory=await read('docs/design/control-inventory.json'),reviews=await read('docs/design/reviewed-api-controls.json');
  const operations=new Set(Object.values(doc.paths).flatMap(x=>Object.values(x).map(x=>x.operationId)));

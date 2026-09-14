@@ -55,24 +55,17 @@ public static class AgencyEndpoints
         while((count=await context.Request.Body.ReadAsync(buffer,context.RequestAborted))>0){if(stream.Length+count>65536)throw new AgencyCommandException(413,"agency-draft-too-large");stream.Write(buffer,0,count);}
         using var parsed=JsonDocument.Parse(stream.ToArray(),new JsonDocumentOptions{MaxDepth=16});return parsed.RootElement.Clone();
     }
-    private static async Task<IResult> Get(Guid agencyId,HttpContext context,IDbContextFactory<BackOfficeDbContext> factory,TimeProvider time)
+    private static async Task<IResult> Get(Guid agencyId,HttpContext context,IDbContextFactory<BackOfficeDbContext> factory,AgencyEvidenceService evidence)
     {
         await using var db=await factory.CreateDbContextAsync(context.RequestAborted);
+        await using var transaction=await db.Database.BeginTransactionAsync(System.Data.IsolationLevel.RepeatableRead,context.RequestAborted);
         var agency=await db.Set<Agency>().AsNoTracking().SingleOrDefaultAsync(x=>x.Id==agencyId,context.RequestAborted);if(agency is null)return Missing(context);
         var draft=await db.Set<AgencyOnboarding>().AsNoTracking().SingleOrDefaultAsync(x=>x.AgencyId==agencyId,context.RequestAborted);
         using var doc=JsonDocument.Parse(draft?.Details??JsonSerializer.Serialize(new{legalName=agency.LegalName}));
-        var rule=await db.Set<SettingVersion>().Where(x=>x.Scope=="agency-onboarding"&&x.EffectiveFrom<=time.GetUtcNow()).OrderByDescending(x=>x.Version).FirstOrDefaultAsync(context.RequestAborted);
-        if(rule is null)return IdentityEndpoints.Problem(context,503,"agency-rules-unavailable","Initialize the demo agency configuration.");
-        var checklist=new List<object>();
-        foreach(var (path,stage,label) in new[]{("legalName",1,"Legal name"),("entityType",1,"Entity type"),("address.line1",1,"Registered address"),("address.town",1,"Town"),("address.postcode",1,"Postcode"),("regulatoryReference",1,"FCA reference"),("mainContact.name",2,"Main contact"),("mainContact.email",2,"Main contact email"),("complianceContact.name",2,"Compliance contact")})
-        {
-            var value=doc.RootElement;var present=true;foreach(var part in path.Split('.')){if(value.ValueKind!=JsonValueKind.Object||!value.TryGetProperty(part,out var next)){present=false;break;}value=next;}
-            checklist.Add(new{code=path,path="/details/"+path.Replace('.','/'),stage,state=present?"satisfied":"missing",message=present?label+" saved.":"Enter "+label.ToLowerInvariant()+"."});
-        }
-        checklist.Add(new{code="evidence",path="/evidence",stage=4,state="unavailable",message="Verified compliance evidence is not available yet. Saved declarations do not satisfy activation."});
-        checklist.Add(new{code="activation",path="/activation",stage=6,state="unavailable",message="User invitations and independent activation approval are not available yet."});
+        var validation=await evidence.Validate(db,agency,context.RequestAborted);
+        await transaction.CommitAsync(context.RequestAborted);
         context.Response.Headers.ETag=AgencyDraftService.Etag(agency.RowVersion);
-        return Results.Json(new{agency.Id,agency.Reference,agency.State,agency.OnboardingStep,details=doc.RootElement.Clone(),validation=new{valid=false,agencyEtag=AgencyDraftService.Etag(agency.RowVersion),ruleVersionId=rule.Id,calculatedAt=time.GetUtcNow(),items=checklist},unavailableSections=new[]{new{kind="quotes",state="unavailable",owningPhase=5,message="Quote capture is not available yet."},new{kind="policies",state="unavailable",owningPhase=6,message="Policy records are not available yet."},new{kind="tasks",state="unavailable",owningPhase=9,message="Agency tasks are not available yet."},new{kind="statements",state="unavailable",owningPhase=10,message="Statements are not available yet."}}},Json);
+        return Results.Json(new{agency.Id,agency.Reference,agency.State,agency.OnboardingStep,details=doc.RootElement.Clone(),validation,unavailableSections=new[]{new{kind="quotes",state="unavailable",owningPhase=5,message="Quote capture is not available yet."},new{kind="policies",state="unavailable",owningPhase=6,message="Policy records are not available yet."},new{kind="tasks",state="unavailable",owningPhase=9,message="Agency tasks are not available yet."},new{kind="statements",state="unavailable",owningPhase=10,message="Statements are not available yet."}}},Json);
     }
     private static async Task<IResult> List(HttpContext context,IDbContextFactory<BackOfficeDbContext> factory,PartyPaging paging)
     {
@@ -125,7 +118,7 @@ public static class AgencyEndpoints
         await using var db=await factory.CreateDbContextAsync(context.RequestAborted);if(!await db.Set<Agency>().AnyAsync(x=>x.Id==agencyId,context.RequestAborted))return Missing(context);
         var page=paging.Read(context,LocalIdentityService.Actor(context.User),"occurredAt-desc,id");if(page is null)return BadQuery(context);
         var query=db.Set<AgencyActivity>().Where(x=>x.AgencyId==agencyId&&x.OccurredAt<=page.AsOf);var total=await query.CountAsync(context.RequestAborted);
-        var items=await(from item in query join actor in db.Set<StaffUser>() on item.ActorId equals actor.Id into actors from actor in actors.DefaultIfEmpty() orderby item.OccurredAt descending,item.Id select new{item.Id,item.OccurredAt,actorLabel=actor==null?"System":actor.DisplayName,item.Action,summary=item.Action=="agency.created"?"Agency draft created.":item.Action=="agency.abandoned"?"Agency draft abandoned.":item.Action=="agency.products-saved"?"Draft products saved.":"Onboarding draft saved."}).Skip(page.Offset).Take(page.Size).ToListAsync(context.RequestAborted);
+        var items=await(from item in query join actor in db.Set<StaffUser>() on item.ActorId equals actor.Id into actors from actor in actors.DefaultIfEmpty() orderby item.OccurredAt descending,item.Id select new{item.Id,item.OccurredAt,actorLabel=actor==null?"System":actor.DisplayName,item.Action,summary=item.Action=="agency.created"?"Agency draft created.":item.Action=="agency.abandoned"?"Agency draft abandoned.":item.Action=="agency.products-saved"?"Draft products saved.":item.Action=="agency.evidence-file-uploaded"?"Evidence file uploaded (demo screening).":item.Action=="agency.evidence-recorded"?"Evidence attestation recorded.":item.Action=="agency.check-completed"?"Demo compliance check completed.":"Onboarding draft saved."}).Skip(page.Offset).Take(page.Size).ToListAsync(context.RequestAborted);
         return Results.Json(new{items,totalCount=total,nextCursor=paging.Next(page,page.Offset+items.Count<total)},Json);
     }
     private static bool IsError(Exception ex)=>ex is AgencyCommandException||ClientEndpoints.IsCommandError(ex);
