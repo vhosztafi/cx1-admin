@@ -15,6 +15,7 @@ public sealed partial class BackOfficeDbContext
         model.Entity<UserRole>().ToTable(t=>t.UseSqlOutputClause(false));
         model.Entity<Role>().ToTable(t=>t.UseSqlOutputClause(false));
         var invitation=Record<AgencyInvitation>(model,"AgencyInvitation");invitation.ToTable(t=>t.UseSqlOutputClause(false));
+        invitation.HasAlternateKey(x=>new{x.Id,x.AgencyId});
         Text(invitation,("State",20));Hash(invitation,"TokenHash");
         invitation.HasOne<Agency>().WithMany().HasForeignKey(x=>x.AgencyId).OnDelete(DeleteBehavior.NoAction);
         invitation.HasOne<StaffUser>().WithMany().HasForeignKey(x=>x.UserId).OnDelete(DeleteBehavior.NoAction);

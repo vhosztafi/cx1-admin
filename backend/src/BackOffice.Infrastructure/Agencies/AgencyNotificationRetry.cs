@@ -22,7 +22,8 @@ public sealed class AgencyNotificationRetry(AgencyDraftService agencies,SqlComma
             var job=await db.Set<OutboxWork>().FromSqlInterpolated($"SELECT * FROM [OutboxWork] WITH (UPDLOCK,ROWLOCK) WHERE [Id]={notification.WorkId}").SingleAsync(ct);
             if(!CryptographicOperations.FixedTimeEquals(job.RowVersion,version))throw new AgencyCommandException(412,"stale-notification");
             var limit=JobRetryBudget.ExpandedLimit(job.State,job.ErrorCode,job.Attempts,job.AttemptLimit);
-            if(agency.State!="active"||notification.Purpose!="agency-activated"||job.Kind!=AgencyNotificationService.Kind||job.SubjectRecordId!=agencyId||limit is null)
+            var validPurpose=notification.Purpose=="agency-activated"||notification.Purpose=="agency-invitation"&&await InvitationService.CurrentForDelivery(db,notification,time.GetUtcNow(),ct);
+            if(agency.State!="active"||!validPurpose||job.Kind!=AgencyNotificationService.Kind||job.SubjectRecordId!=agencyId||limit is null)
                 throw new AgencyCommandException(409,"notification-not-retryable");
             job.AttemptLimit=limit.Value;job.State="pending";job.NextAttemptAt=time.GetUtcNow();job.CompletedAt=null;job.ErrorCode=null;job.LeaseToken=null;job.LeaseExpiresAt=null;
             db.Add(new AuditEvent{ActorId=actor.UserId,CreatedBy=actor.UserId,SubjectRecordId=notificationId,EventType="agency.notification-retry-reason",Reason=reason,OccurredAt=time.GetUtcNow(),After=JsonSerializer.Serialize(new{notificationId,attemptLimit=limit.Value})});

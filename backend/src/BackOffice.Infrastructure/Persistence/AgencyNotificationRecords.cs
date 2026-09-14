@@ -5,6 +5,7 @@ public sealed class AgencyNotification:StoredRecord
 {
     public Guid AgencyId {get;set;}
     public Guid WorkId {get;set;}
+    public Guid? InvitationId {get;set;}
     public string Purpose {get;set;}="agency-activated";
     public string ProtectedPayload {get;set;}="";
     public byte[] ContentHash {get;set;}=[];

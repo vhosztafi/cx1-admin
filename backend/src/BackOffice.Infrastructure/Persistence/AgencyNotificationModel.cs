@@ -13,6 +13,8 @@ public sealed partial class BackOfficeDbContext
         notification.HasIndex(x=>x.WorkId).IsUnique();notification.HasIndex(x=>new{x.AgencyId,x.CreatedAt,x.Id});
         notification.HasOne<Agency>().WithMany().HasForeignKey(x=>x.AgencyId).OnDelete(DeleteBehavior.NoAction);
         notification.HasOne<OutboxWork>().WithMany().HasForeignKey(x=>x.WorkId).OnDelete(DeleteBehavior.NoAction);
+        notification.HasOne<AgencyInvitation>().WithMany().HasForeignKey(x=>new{x.InvitationId,x.AgencyId}).HasPrincipalKey(x=>new{x.Id,x.AgencyId}).OnDelete(DeleteBehavior.NoAction);
+        Check(notification,"Invitation","([Purpose]='agency-invitation' AND [InvitationId] IS NOT NULL) OR ([Purpose]='agency-activated' AND [InvitationId] IS NULL)");
         Check(notification,"Purpose","[Purpose] IN ('agency-activated','agency-invitation')");
         Check(notification,"Payload","LEN([ProtectedPayload]) > 0");
         var receipt=Record<AgencyNotificationReceipt>(model,"AgencyNotificationReceipt");

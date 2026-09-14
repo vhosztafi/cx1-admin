@@ -23,15 +23,16 @@ public static class AgencyNotificationEndpoints
         var state=await db.Set<Agency>().Where(x=>x.Id==agencyId).Select(x=>x.State).SingleOrDefaultAsync(context.RequestAborted);
         if(state is null)return Missing(context);
         var page=paging.Read(context,LocalIdentityService.Actor(context.User),"createdAt-desc,id");if(page is null)return IdentityEndpoints.Problem(context,400,"invalid-query","Refresh the notification list.");
+        var now=DateTimeOffset.UtcNow;
         var query=from message in db.Set<AgencyNotification>() join work in db.Set<OutboxWork>() on message.WorkId equals work.Id
             where message.AgencyId==agencyId&&message.CreatedAt<=page.AsOf&&(notificationId==null||message.Id==notificationId)
             orderby message.CreatedAt descending,message.Id
-            select new{message.Id,message.AgencyId,message.Purpose,message.CreatedAt,work.State,work.Attempts,work.AttemptLimit,work.CompletedAt,work.ErrorCode,work.RowVersion};
+            select new{message.Id,message.AgencyId,message.Purpose,message.CreatedAt,work.State,work.Attempts,work.AttemptLimit,work.CompletedAt,work.ErrorCode,work.RowVersion,invitationValid=db.Set<AgencyInvitation>().Any(i=>i.Id==message.InvitationId&&i.AgencyId==agencyId&&i.NotificationId==message.Id&&i.State=="pending"&&i.IssuedAt<=now&&i.ExpiresAt>now&&db.Set<StaffUser>().Any(u=>u.Id==i.UserId&&u.AgencyId==agencyId&&u.State=="invited"))};
         var total=await query.CountAsync(context.RequestAborted);var rows=await query.Skip(notificationId is null?page.Offset:0).Take(notificationId is null?page.Size:1).ToListAsync(context.RequestAborted);
         var items=rows.Select(x=>new{x.Id,x.AgencyId,kind=x.Purpose=="agency-activated"?"activation":"invitation",
-            state=x.State=="succeeded"?"demo-delivered":x.State=="leased"?"processing":x.State=="pending"?"queued":x.ErrorCode is "provider-unavailable" or "provider-timeout" or "attempts-exhausted"?"exhausted":"rejected",
+            state=x.State=="succeeded"?"demo-delivered":x.State=="leased"?"processing":x.State=="pending"?"queued":x.ErrorCode=="invitation-superseded"?"superseded":x.ErrorCode is "provider-unavailable" or "provider-timeout" or "attempts-exhausted"?"exhausted":"rejected",
             x.Attempts,x.CreatedAt,x.CompletedAt,lastResultCode=x.ErrorCode,etag=AgencyDraftService.Etag(x.RowVersion),
-            retryAllowed=state=="active"&&x.Purpose=="agency-activated"&&JobRetryBudget.ExpandedLimit(x.State,x.ErrorCode,x.Attempts,x.AttemptLimit) is not null}).ToList();
+            retryAllowed=state=="active"&&(x.Purpose=="agency-activated"||x.invitationValid)&&JobRetryBudget.ExpandedLimit(x.State,x.ErrorCode,x.Attempts,x.AttemptLimit) is not null}).ToList();
         context.Response.Headers.CacheControl="no-store";
         if(notificationId is not null){if(items.Count==0)return Missing(context);context.Response.Headers.ETag=items[0].etag;return Results.Json(items[0],ClientEndpoints.Json);}
         return Results.Json(new{items,totalCount=total,nextCursor=paging.Next(page,page.Offset+items.Count<total)},ClientEndpoints.Json);

@@ -2,6 +2,7 @@ using System.Data;
 using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using BackOffice.Application.Agencies;
 using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Platform;
 using Microsoft.EntityFrameworkCore;
@@ -43,13 +44,23 @@ public sealed class AgencyNotificationWorker(IDbContextFactory<BackOfficeDbConte
             throw new AgencyNotificationProviderException(JobFailure.ProviderConflict);
         var prior=await db.Set<AgencyNotificationReceipt>().SingleOrDefaultAsync(x=>x.NotificationId==owner.Id,token);
         if(prior is not null){await tx.CommitAsync(token);return prior.Id;}
-        // Invitations are deliberately fail-closed until their owning plan adds current-token checks.
-        if(agency.State!="active"||owner.Purpose!="agency-activated")throw new AgencyNotificationProviderException(JobFailure.ProviderRejected);
+        if(owner.Purpose=="agency-invitation")
+        {
+            if(agency.State!="active"||!await InvitationService.CurrentForDelivery(db,owner,time.GetUtcNow(),token))
+                throw new AgencyNotificationProviderException(JobFailure.Superseded);
+        }
+        else if(agency.State!="active"||owner.Purpose!="agency-activated")throw new AgencyNotificationProviderException(JobFailure.ProviderRejected);
         AgencyDeliveryEnvelope envelope;
         try{envelope=payload.Unprotect(owner.AgencyId,owner.Id,owner.ProtectedPayload);}
         catch(CryptographicException){throw new AgencyNotificationProviderException(JobFailure.InvalidPayload);}
         if(envelope.Template!=owner.Purpose||!CryptographicOperations.FixedTimeEquals(AgencyNotificationPayload.Fingerprint(envelope),owner.ContentHash))
             throw new AgencyNotificationProviderException(JobFailure.ProviderConflict);
+        if(owner.InvitationId is Guid invitationId)
+        {
+            var hash=await db.Set<AgencyInvitation>().Where(x=>x.Id==invitationId).Select(x=>x.TokenHash).SingleAsync(token);
+            if(hash is null||!InvitationToken.TryHash(envelope.Content,out var observed)||!CryptographicOperations.FixedTimeEquals(hash,observed))
+                throw new AgencyNotificationProviderException(JobFailure.ProviderConflict);
+        }
         var setting=await db.Set<SettingVersion>().SingleAsync(x=>x.Id==lease.ScenarioVersionId,token);
         if(setting.Scope!="agency-notification")throw new AgencyNotificationProviderException(JobFailure.InvalidPayload);
         var scenario=Scenario(setting.Values);

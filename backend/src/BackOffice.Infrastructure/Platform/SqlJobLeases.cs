@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BackOffice.Infrastructure.Platform;
 
 public sealed record JobLease(Guid WorkId,Guid Token,int Attempt,string Kind,string OperationKey,Guid ScenarioVersionId,string Payload);
-public enum JobFailure { ProviderUnavailable, ProviderTimeout, ProviderRejected, InvalidPayload, ProviderConflict }
+public enum JobFailure { ProviderUnavailable, ProviderTimeout, ProviderRejected, InvalidPayload, ProviderConflict, Superseded }
 
 public sealed class SqlJobLeases(IDbContextFactory<BackOfficeDbContext> factory,TimeProvider time)
 {
@@ -60,6 +60,7 @@ public sealed class SqlJobLeases(IDbContextFactory<BackOfficeDbContext> factory,
             JobFailure.ProviderRejected => "provider-rejected",
             JobFailure.InvalidPayload => "invalid-payload",
             JobFailure.ProviderConflict => "provider-conflict",
+            JobFailure.Superseded => "invitation-superseded",
             _ => throw new ArgumentOutOfRangeException(nameof(failure))
         };
         var transient=failure is JobFailure.ProviderUnavailable or JobFailure.ProviderTimeout;
