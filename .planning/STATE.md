@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T23:19:20Z"
+last_updated: "2026-09-14T23:36:25Z"
 last_activity: 2026-09-15
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-06 of 8 in progress; 04-01 through 04-05 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-15 — Complete terms proposal editor implemented;29frontend tests/typecheck/lint/build and explicit frontend fixture browser checks pass.
+Last activity: 2026-09-15 — Terms request history/full review/independent decisions wired;29frontend checks/build and three terms browser suites pass.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-15
-Stopped at: Complete terms proposal editor slice. AgencyTermsProposal on Products loads latest approved terms/catalogue and coherent agency ETag; source options/conditional fields, exact amounts/rates, later terms/product dates, reason, immutable uncertain retry and stale retention.29 frontend tests/typecheck/lint/build pass; new proposal browser checks use real auth/agency/catalogue with explicitly intercepted version/command fixtures, not SQL publication. Fixed accessible select labels and checkbox layout. Existing289backend/47SQL and78contracts current; backend unchanged. NEXT: terms request history and full snapshot review with independent approve/reject; connect proposal success to pending-list refresh. Then full real positive activation/reactivation/terms browser flows and remaining04-06 acceptance. No phase/human UAT completion claimed; broker login closed until04-07. Owned previews stopped.
+Stopped at: Terms proposal history and independent decision UI implemented. AgencyTermsRequests fresh-reads own request ETag, renders full shared exact snapshot, enforces independent actor UI, reason, immutable uncertain outcome/body/key/ETag retry, stale retention and refreshes after decisions. Proposal success refreshes pending list; approved decision refreshes parent/products/history.29 frontend tests/typecheck/lint/build pass; new review browser test uses two real identities and explicit proposal/decision fixtures; existing terms proposal/display browser regressions pass. No SQL publication claimed by frontend fixtures. Prior289backend/47SQL/78contracts current. NEXT: full real positive activation/terms/suspension/reactivation browser lifecycle against SQL, then remaining races/source/keyboard/mobile acceptance and04-06 summary. UI wiring now complete; do not repeat frontend fixture-only slices. Broker login closed until04-07, no human UAT/phase completion claimed. Owned previews stopped.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-06-PROGRESS.md
 
 ## Autonomous continuation

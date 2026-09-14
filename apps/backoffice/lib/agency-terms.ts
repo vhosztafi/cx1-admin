@@ -8,3 +8,5 @@ export function termsFieldValue(field:Field,value:string) {
   if(field.type==='percent')return `${value}%`;
   return value;
 }
+
+export type AgencyTermsRequest=AgencyTermsSnapshot & {id:string;agencyId:string;requestedBy:string;requestedByLabel:string;reason:string;createdAt:string;state:"pending"|"applied"|"rejected"|"stale";etag:string;decisionByLabel?:string;decisionReason?:string;decidedAt?:string};
