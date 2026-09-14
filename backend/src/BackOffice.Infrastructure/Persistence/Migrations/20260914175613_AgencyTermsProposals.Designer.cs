@@ -4,6 +4,7 @@ using BackOffice.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackOffice.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(BackOfficeDbContext))]
-    partial class BackOfficeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260914175613_AgencyTermsProposals")]
+    partial class AgencyTermsProposals
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -869,48 +872,6 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
 
                             t.HasCheckConstraint("CK_AgencyOnboarding_UpdatedAt_Utc", "DATEPART(TZOFFSET,[UpdatedAt]) = 0");
                         });
-                });
-
-            modelBuilder.Entity("BackOffice.Infrastructure.Persistence.AgencyProduct", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AgencyTermsVersionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("BrokerCommissionBasisPoints")
-                        .HasColumnType("int");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateOnly>("EffectiveFrom")
-                        .HasColumnType("date");
-
-                    b.Property<Guid>("ProductVersionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedBy");
-
-                    b.HasIndex("ProductVersionId");
-
-                    b.HasIndex("AgencyTermsVersionId", "ProductVersionId")
-                        .IsUnique();
-
-                    b.ToTable("AgencyProduct", null, t =>
-                        {
-                            t.HasCheckConstraint("CK_AgencyProduct_Commission", "[BrokerCommissionBasisPoints] BETWEEN 0 AND 10000");
-
-                            t.HasCheckConstraint("CK_AgencyProduct_CreatedAt_Utc", "DATEPART(TZOFFSET,[CreatedAt]) = 0");
-                        });
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("BackOffice.Infrastructure.Persistence.AgencyStateRequest", b =>
@@ -3275,26 +3236,6 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.NoAction);
-                });
-
-            modelBuilder.Entity("BackOffice.Infrastructure.Persistence.AgencyProduct", b =>
-                {
-                    b.HasOne("BackOffice.Infrastructure.Persistence.AgencyTermsVersion", null)
-                        .WithMany()
-                        .HasForeignKey("AgencyTermsVersionId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("BackOffice.Infrastructure.Persistence.StaffUser", null)
-                        .WithMany()
-                        .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("BackOffice.Infrastructure.Persistence.ProductVersion", null)
-                        .WithMany()
-                        .HasForeignKey("ProductVersionId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("BackOffice.Infrastructure.Persistence.AgencyStateRequest", b =>
