@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Text.Json;
 using BackOffice.Application;
 using BackOffice.Application.Agencies;
+using BackOffice.Application.Parties;
 using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Platform;
 using Microsoft.EntityFrameworkCore;
@@ -83,6 +84,15 @@ public sealed class AgencyEvidenceService(SqlCommandBoundary commands,AgencyDraf
             select user.Id).AnyAsync(token);
         // Distribution is explicitly granted by a versioned demo rule, never by draft catalog presence.
         var items=AgencyActivationRules.Evaluate(input.RootElement,facts,rule.Id,today,rule.MinimumPi,rule.TobaVersion,new(eligibleProducts,viableAdministrator)).ToList();
+        if(agency.State=="draft")
+        {
+            var products=await db.Set<AgencyDraftProduct>().Where(x=>x.AgencyId==agency.Id).Select(x=>new AgencyProductInput(x.ProductVersionId,x.EffectiveFrom,x.BrokerCommissionBasisPoints)).ToListAsync(token);
+            var complete=true;
+            try{AgencyTermsRules.ExtractInitial(input.RootElement,products,today,"Readiness assessment");}
+            catch(AgencyCommandException){complete=false;}
+            catch(PartyValidationException){complete=false;}
+            items.Add(new("initial-terms","/details/commercialTerms",3,complete?"satisfied":"failed",complete?"Complete initial terms saved.":"Complete the commercial and settlement values. Product dates must not precede the terms date, and at least one product must start on that date. Initial terms cannot start after today."));
+        }
         if(agency.RelationshipManagerId is Guid manager&&!await AgencyDraftService.Managers(db).AnyAsync(x=>x.Id==manager,token))
         {
             var index=items.FindIndex(x=>x.Code=="field-relationshipManagerId");items[index]=items[index] with{State="failed",Message="Choose a currently active internal relationship manager."};

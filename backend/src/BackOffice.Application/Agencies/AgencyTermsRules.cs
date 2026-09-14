@@ -14,11 +14,36 @@ public sealed record ValidatedAgencyTerms(DateOnly EffectiveFrom,string Reason,s
 public static class AgencyTermsRules
 {
     public static ValidatedAgencyTerms ValidateProposal(JsonElement input,DateOnly today,DateOnly? latestEffectiveFrom)
+        =>Validate(input,today,latestEffectiveFrom,false);
+
+    // Activation captures the saved declarations without rewriting their historical
+    // effective date. Future changes continue to use ValidateProposal.
+    public static ValidatedAgencyTerms ExtractInitial(JsonElement savedDraft,IReadOnlyList<AgencyProductInput> products,DateOnly today,string reason)
+    {
+        var normalized=AgencyDraftRules.Validate(savedDraft);
+        using var draft=JsonDocument.Parse(normalized.Json);
+        var input=new JsonObject();
+        foreach(var key in new[]{"commercialTerms","settlement","paymentTermsDays","creditLimit"})
+        {
+            if(!draft.RootElement.TryGetProperty(key,out var value))throw new AgencyCommandException(422,"agency-terms-incomplete");
+            input[key]=JsonNode.Parse(value.GetRawText());
+        }
+        if(!draft.RootElement.GetProperty("commercialTerms").TryGetProperty("effectiveFrom",out var effective))throw new AgencyCommandException(422,"agency-terms-incomplete");
+        input["effectiveFrom"]=JsonNode.Parse(effective.GetRawText());input["reason"]=reason;
+        input["products"]=new JsonArray(products.Select(x=>(JsonNode)new JsonObject{{"productVersionId",x.ProductVersionId.ToString("D")},{"effectiveFrom",x.EffectiveFrom.ToString("yyyy-MM-dd",CultureInfo.InvariantCulture)},{"brokerCommissionBasisPoints",x.BrokerCommissionBasisPoints}}).ToArray());
+        using var complete=JsonDocument.Parse(input.ToJsonString());
+        return Validate(complete.RootElement,today,null,true);
+    }
+    private static ValidatedAgencyTerms Validate(JsonElement input,DateOnly today,DateOnly? latestEffectiveFrom,bool initial)
     {
         if(Encoding.UTF8.GetByteCount(input.GetRawText())>65536)throw new AgencyCommandException(413,"agency-terms-too-large");
         Closed(input,["effectiveFrom","reason","commercialTerms","settlement","paymentTermsDays","creditLimit","products"]);
         var effective=Date(input.GetProperty("effectiveFrom"));
-        ValidateSchedule(effective,today,latestEffectiveFrom);
+        if(initial)
+        {
+            if(effective==default||effective>today)throw new AgencyCommandException(422,"agency-initial-terms-date");
+        }
+        else ValidateSchedule(effective,today,latestEffectiveFrom);
         var reason=Reason(input.GetProperty("reason"));
         var details=new JsonObject();
         foreach(var key in new[]{"commercialTerms","settlement","paymentTermsDays","creditLimit"})details[key]=JsonNode.Parse(input.GetProperty(key).GetRawText());

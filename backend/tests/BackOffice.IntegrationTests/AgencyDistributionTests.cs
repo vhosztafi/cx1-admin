@@ -32,6 +32,18 @@ public sealed class AgencyDistributionTests
             async Task<bool?> Eligible()=>await AgencyDistributionService.DraftEligible(db,agency.Id,now,default);
             Assert.False(await Eligible());
             var grant=new AgencyDraftProduct{AgencyId=agency.Id,ProductVersionId=version.Id,EffectiveFrom=new(2026,9,14),BrokerCommissionBasisPoints=1250};db.Add(grant);await db.SaveChangesAsync();Assert.True(await Eligible());
+            var onboarding=new AgencyOnboarding{AgencyId=agency.Id,Details="""
+                {"legalName":"Fictional eligibility","commercialTerms":{"effectiveFrom":"2026-09-14","commissionBasis":"per-product","feeSharing":"none","volumeCommitmentMode":"none","minimumPremiumOverrideMode":"none","referralRouting":"standard-internal-underwriting"},"settlement":{"statementCycle":"monthly","method":"bank-transfer","premiumCollection":"agency","commissionSettlement":"net-remittance"},"paymentTermsDays":30,"creditLimit":"1000.00"}
+                """};db.Add(onboarding);await db.SaveChangesAsync();
+            async Task<string> InitialReadiness()
+            {
+                await using var tx=await db.Database.BeginTransactionAsync(System.Data.IsolationLevel.RepeatableRead);
+                var assessment=await new AgencyEvidenceService(null!,null!,new FixedClock(now)).Validate(db,agency,default);
+                Assert.False(assessment.Valid);return assessment.Items.Single(x=>x.Code=="initial-terms").State;
+            }
+            Assert.Equal("satisfied",await InitialReadiness());
+            onboarding.Details=onboarding.Details.Replace("2026-09-14","2026-09-13");await db.SaveChangesAsync();
+            Assert.Equal("failed",await InitialReadiness());Assert.Equal(new DateOnly(2026,9,14),grant.EffectiveFrom);
             provider.State="inactive";await db.SaveChangesAsync();Assert.False(await Eligible());provider.State="active";
             version.EffectiveTo=now;await db.SaveChangesAsync();Assert.False(await Eligible());version.EffectiveTo=null;
             grant.EffectiveFrom=new(2026,9,15);await db.SaveChangesAsync();Assert.False(await Eligible());grant.EffectiveFrom=new(2026,9,14);await db.SaveChangesAsync();
@@ -44,4 +56,6 @@ public sealed class AgencyDistributionTests
         }
         finally{if(connection.InitialCatalog!=owned)throw new InvalidOperationException("Cleanup target changed.");await using var cleanup=new BackOfficeDbContext(options);await cleanup.Database.EnsureDeletedAsync();}
     }
+    private sealed class FixedClock(DateTimeOffset now):TimeProvider{public override DateTimeOffset GetUtcNow()=>now;}
+
 }

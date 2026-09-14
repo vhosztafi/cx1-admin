@@ -57,4 +57,31 @@ public sealed class AgencyTermsTests
         using var doc=JsonDocument.Parse(Complete().ToJsonString().Replace("\"feeSharing\":", "\"feeSharing\":\"none\",\"feeSharing\":"));Assert.Throws<PartyValidationException>(()=>AgencyTermsRules.ValidateProposal(doc.RootElement,Today,null));
     }
 
+    private static ValidatedAgencyTerms Initial(JsonObject input,DateOnly? productDate=null)
+    {
+        var details=new JsonObject();foreach(var key in new[]{"commercialTerms","settlement","paymentTermsDays","creditLimit"})details[key]=input[key]?.DeepClone();
+        details["legalName"]="Fictional initial agency";
+        using var doc=JsonDocument.Parse(details.ToJsonString());
+        return AgencyTermsRules.ExtractInitial(doc.RootElement,[new(Guid.Parse("11111111-1111-4111-8111-111111111111"),productDate??DateOnly.Parse(input["effectiveFrom"]!.GetValue<string>()),1250)],Today,"Initial review");
+    }
+    [Fact]public void InitialTermsPreserveHistoricalDeclarationsWithoutPermittingBackdatedChanges()
+    {
+        var input=Complete();input["effectiveFrom"]="2026-09-01";input["commercialTerms"]!["effectiveFrom"]="2026-09-01";
+        var result=Initial(input);Assert.Equal(new DateOnly(2026,9,1),result.EffectiveFrom);Assert.Contains("2026-09-01",result.SnapshotJson);Assert.DoesNotContain("legalName",result.SnapshotJson);
+        Assert.Throws<AgencyCommandException>(()=>Validate(input));
+    }
+    [Fact]public void InitialTermsRejectFutureDatesAndDoNotSilentlyShiftProductDates()
+    {
+        var input=Complete();input["effectiveFrom"]="2026-09-15";input["commercialTerms"]!["effectiveFrom"]="2026-09-15";
+        Assert.Throws<AgencyCommandException>(()=>Initial(input));
+        Assert.Throws<AgencyCommandException>(()=>Initial(Complete(),Today.AddDays(-1)));
+        Assert.Throws<AgencyCommandException>(()=>Initial(Complete(),Today.AddDays(1)));
+    }
+    [Fact]public void InitialTermsRequireCompleteConditionalMoneyAndSettlement()
+    {
+        var input=Complete();input["settlement"]!.AsObject().Remove("method");Assert.Throws<PartyValidationException>(()=>Initial(input));
+        input=Complete();input["commercialTerms"]!["commissionBasis"]="flat-rate";Assert.Throws<PartyValidationException>(()=>Initial(input));
+        input=Complete();input.Remove("creditLimit");Assert.Throws<PartyValidationException>(()=>Initial(input));
+    }
+
 }
