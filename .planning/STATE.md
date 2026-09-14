@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T11:34:03Z"
+last_updated: "2026-09-14T12:03:54Z"
 last_activity: 2026-09-14
 progress:
   total_phases: 13
   completed_phases: 3
   total_plans: 24
-  completed_plans: 19
+  completed_plans: 20
   percent: 23
 ---
 
@@ -20,14 +20,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute Phase 4 plan 04-04: durable protected demo notifications.
+**Current focus:** Execute Phase 4 plan 04-05: agency users and secure invitation lifecycle.
 
 ## Current Position
 
 Phase: 4 of 13 (Agency onboarding and access)
-Plan: 04-04 of 8 in progress; 04-01 through 04-03 complete, all six Phase 3 plans complete
+Plan: 04-05 of 8 next; 04-01 through 04-04 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-14 — 04-04 protected notification storage/provider/worker implemented;210 backend tests including26 real-SQL pass. Scoped APIs/retry UI remain.
+Last activity: 2026-09-14 — 04-04 completed in06774f7;211 backend/27SQL,76 contracts,20 frontend, build and notification/agency browser acceptance pass. Next04-05 users/invitations.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -43,7 +43,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
 ### Pending Todos
 
-- Execute 04-04 through 04-08 sequentially; keep all gates and consume ACCEPTANCE-BACKLOG.md.
+- Execute 04-05 through 04-08 sequentially; keep all gates and consume ACCEPTANCE-BACKLOG.md.
 - Keep future business endpoints closed until their owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,8 +54,8 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-14
-Stopped at: 04-04 delivery foundation verified. Read04-04-PROGRESS.md for implementation and pending scoped status/retry API/UI/browser work. Actual API process restart preserves one provider receipt; automatic retries and stale leases verified. Full210/26SQL pass; final build passes. Demo additively migrated, no reset. No active previews/tests. No plan04-04 or AGY-05 completion yet.
-Resume file: .planning/phases/04-agency-onboarding-and-access/04-04-PROGRESS.md
+Stopped at: 04-04 complete and verified; read04-04-SUMMARY.md and04-05-PLAN.md. Implement staged users, protected invitation issuance/acceptance and current trusted agency identity. Extend existing notification worker/retry with real invitation ownership and superseded behavior; no draft token issuance. All task previews/tests stopped, fictional notification fixtures retained. No funnel or real delivery changes.
+Resume file: .planning/phases/04-agency-onboarding-and-access/04-05-PLAN.md
 
 ## Autonomous continuation
 

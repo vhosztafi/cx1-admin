@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Approved by the user on 2026-09-13. Autonomous research, planning, implementation and transitions authorised. Phases 1–3 complete. Phase4 has eight checked plans; 04-01 through04-03 are complete, including persistent drafts, evidence and live readiness. Full backend207/24SQL, final source-rule11unit/3SQL, frontend20, contracts75, production build and both built agency browser journeys pass. 04-04 durable notification storage/provider/worker is implemented and verified with210 backend/26SQL cases, including actual process restart; scoped status/retry API/UI acceptance remains. CLI-01 remains partial until real quote/policy links in Phases5/6; see ACCEPTANCE-BACKLOG.md.
+**Status:** Approved by the user on 2026-09-13. Autonomous research, planning, implementation and transitions authorised. Phases1–3 complete. Phase4 has eight checked plans;04-01 through04-04 are complete, including persistent drafts, evidence/live readiness and durable demo notifications with recovery APIs/workspace. Backend211/27SQL, contracts76, frontend20, production build and agency/notification browser journeys pass. Next04-05 users and secure invitations. CLI-01 and full AGY-05 remain partial until their owning downstream work; see ACCEPTANCE-BACKLOG.md.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
