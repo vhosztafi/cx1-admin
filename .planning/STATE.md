@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T23:01:03Z"
+last_updated: "2026-09-14T23:19:20Z"
 last_activity: 2026-09-15
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-06 of 8 in progress; 04-01 through 04-05 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-15 — Approved terms Products/Accounts history implemented;26 frontend tests/build/lint and terms presentation browser checks pass.
+Last activity: 2026-09-15 — Complete terms proposal editor implemented;29frontend tests/typecheck/lint/build and explicit frontend fixture browser checks pass.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -53,8 +53,8 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
 ## Session Continuity
 
-Last session: 2026-09-14
-Stopped at: Approved terms display slice committed. AgencyTermsHistory reads published snapshots on active/suspended Products and Accounts, avoiding stale draft finance; shows server statuses/asOf/exclusive ends, exact amounts, source labels, version provenance, product/provider/date/rates, paging/retry.26 frontend tests/typecheck/lint/build pass. New terms display browser test uses real underwriter auth/empty SQL history plus explicit intercepted status/precision/pagination/error/mobile fixtures; it does not claim actual publication. Prior state/users browser evidence and289backend/47SQL/78contracts current. Next terms proposal editor and independent decision controls, then full real positive activation/reactivation/terms browser flows and remaining04-06 acceptance. No phase completion/human UAT; broker login closed until04-07. Owned previews stopped.
+Last session: 2026-09-15
+Stopped at: Complete terms proposal editor slice. AgencyTermsProposal on Products loads latest approved terms/catalogue and coherent agency ETag; source options/conditional fields, exact amounts/rates, later terms/product dates, reason, immutable uncertain retry and stale retention.29 frontend tests/typecheck/lint/build pass; new proposal browser checks use real auth/agency/catalogue with explicitly intercepted version/command fixtures, not SQL publication. Fixed accessible select labels and checkbox layout. Existing289backend/47SQL and78contracts current; backend unchanged. NEXT: terms request history and full snapshot review with independent approve/reject; connect proposal success to pending-list refresh. Then full real positive activation/reactivation/terms browser flows and remaining04-06 acceptance. No phase/human UAT completion claimed; broker login closed until04-07. Owned previews stopped.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-06-PROGRESS.md
 
 ## Autonomous continuation

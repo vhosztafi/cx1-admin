@@ -29,6 +29,30 @@ export function basisPoints(value: string): number {
   if(whole.length > 3) throw new Error('Commission must be between 0 and 100%.');
   const bps = Number(whole) * 100 + Number(fraction); if(bps > 10000) throw new Error('Commission must be between 0 and 100%.'); return bps;
 }
+export type TermsProductInput={productVersionId:string;effectiveFrom:string;commission:string};
+export function visibleTermsFields(values:Record<string,string>,fields:Field[]) {
+  return fields.filter(field=>{
+    if(field.stage!==3&&field.stage!==5)return false;
+    const modes:Record<string,boolean>={
+      'commercialTerms.flatCommissionBasisPoints':values['commercialTerms.commissionBasis']==='flat-rate',
+      'commercialTerms.feeShareBasisPoints':values['commercialTerms.feeSharing']==='agreed-split',
+      'commercialTerms.volumeCommitment':['target-no-penalty','target-tiered'].includes(values['commercialTerms.volumeCommitmentMode']),
+      'commercialTerms.minimumPremiumOverride':values['commercialTerms.minimumPremiumOverrideMode']==='capacity-provider-agreed'
+    };
+    return !Object.hasOwn(modes,field.path)||modes[field.path];
+  });
+}
+export function agreedTermsPayload(values:Record<string,string>,fields:Field[],products:TermsProductInput[],reason:string,latestEffectiveFrom:string) {
+  const selected=visibleTermsFields(values,fields);
+  for(const field of selected){const value=values[field.path]?.trim();if(!value)throw Error(`Enter ${field.label.toLowerCase()}.`);if(field.options&&!Object.values(field.options).some(x=>String(x)===value))throw Error(`Select ${field.label.toLowerCase()}.`);}
+  const effectiveFrom=values['commercialTerms.effectiveFrom'];
+  const validDate=(value:string)=>/^\d{4}-\d{2}-\d{2}$/.test(value)&&!Number.isNaN(Date.parse(value))&&new Date(value).toISOString().slice(0,10)===value;
+  if(!validDate(effectiveFrom)||effectiveFrom<=latestEffectiveFrom)throw Error('Enter an effective date after the latest approved version.');
+  if(!reason.trim()||reason.length>1000||/[\u0000-\u001f\u007f]/.test(reason))throw Error('Enter a reason of up to 1,000 characters on one line.');
+  if(products.length<1||products.length>3||new Set(products.map(x=>x.productVersionId)).size!==products.length)throw Error('Select between one and three distinct products.');
+  if(products.some(x=>!validDate(x.effectiveFrom)||x.effectiveFrom<effectiveFrom)||!products.some(x=>x.effectiveFrom===effectiveFrom))throw Error('Product dates must be on or after the terms date, with at least one starting on that date.');
+  return {effectiveFrom,reason:reason.trim(),...draftPayload(values,selected),products:products.map(x=>({productVersionId:x.productVersionId,effectiveFrom:x.effectiveFrom,brokerCommissionBasisPoints:basisPoints(x.commission)}))};
+}
 export function draftPayload(values: Record<string,string>, fields: Field[]): AgencyJson {
   const result: AgencyJson = {};
   for(const field of fields) {

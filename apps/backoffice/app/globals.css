@@ -234,3 +234,8 @@ h1, h2, p { margin: 0; }
 @media(max-width:600px) { .agency-review { grid-template-columns:minmax(0,1fr); }.agency-kpis { grid-template-columns:minmax(0,1fr) minmax(0,1fr); }.agency-kpis strong { font-size:18px; } }
 
 .notification-controls { padding: 0 16px 12px; }
+
+.agency-terms-dialog { width:min(850px,calc(100vw - 32px)); max-height:calc(100dvh - 32px); overflow-y:auto; }
+.agency-terms-dialog fieldset { min-width:0; border:0; padding:0; margin:0; }
+.agency-terms-dialog .contact-check { display:flex; align-items:center; gap:10px; }
+.agency-terms-dialog input[type=checkbox] { width:18px; height:18px; min-height:18px; padding:0; flex-shrink:0; }
