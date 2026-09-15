@@ -50,6 +50,7 @@ export function parseQuoteJson(text) {
 }
 
 const normalizedId=id=>id.toLowerCase();
+const emptyId='00000000-0000-0000-0000-000000000000';
 const pointerPart=key=>key.replaceAll('~','~0').replaceAll('/','~1');
 function visit(value,action,path='',canonical='') {
   if(Array.isArray(value))value.forEach((item,index)=>visit(item,action,`${path}/${index}`,`${canonical}[]`));
@@ -65,14 +66,15 @@ export function validateQuoteIdentity(proposal) {
   visit(proposal,(item,path)=>{
     if(typeof item.id!=='string')return;
     const id=normalizedId(item.id);
+    if(id===emptyId){issue('invalid-item-id',`${path}/id`);return;}
     if(ids.has(id))issue('duplicate-item-id',`${path}/id`);
     ids.add(id);
   });
   const risk=proposal.risk??{};
-  const idSet=items=>new Set((items??[]).map(item=>normalizedId(item.id)));
+  const idSet=items=>new Set((items??[]).map(item=>normalizedId(item.id)).filter(id=>id!==emptyId));
   const drivers=idSet(risk.drivers),vehicles=idSet(risk.vehicles);
   const riskItems=new Set([...drivers,...vehicles,...idSet(risk.premises)]);
-  const link=(id,allowed,path)=>{if(!allowed.has(normalizedId(id)))issue('unknown-item-reference',path);};
+  const link=(id,allowed,path)=>{if(normalizedId(id)===emptyId)issue('invalid-item-id',path);else if(!allowed.has(normalizedId(id)))issue('unknown-item-reference',path);};
   const links=(items,allowed,path)=>{
     const seen=new Set();
     (items??[]).forEach((id,index)=>{

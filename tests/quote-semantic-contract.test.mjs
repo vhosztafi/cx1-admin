@@ -9,6 +9,16 @@ const base=()=>({schemaVersion:'1.0',productCode:'motor-trade-road-risks'});
 const responses=(...answers)=>({questionSetVersion:'test-pinned-1',answers});
 const questionCheck=proposal=>validateQuoteQuestions(proposal,mappings,'test-pinned-1');
 
+test('empty UUIDs never become persisted item identities or valid links',()=>{
+  const empty='00000000-0000-0000-0000-000000000000';
+  const proposal={...base(),risk:{drivers:[{id:empty}],vehicles:[{id:id(2),ownerDriverId:empty}],specifiedVehicleIds:[empty]}};
+  assert.deepEqual(validateQuoteIdentity(proposal),[
+    {code:'invalid-item-id',path:'/risk/drivers/0/id'},
+    {code:'invalid-item-id',path:'/risk/specifiedVehicleIds/0'},
+    {code:'invalid-item-id',path:'/risk/vehicles/0/ownerDriverId'},
+  ]);
+});
+
 test('quote JSON rejects duplicate keys including escaped equivalents and nested keys',()=>{
   for(const text of [
     '{"risk":{},"risk":{"drivers":[]}}',

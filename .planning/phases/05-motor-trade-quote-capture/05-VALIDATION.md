@@ -39,3 +39,7 @@ Source/schema/API gate complete; see05-01-REVIEW.md and05-01-SUMMARY.md. Full no
 ## 05-02 canonicalization slice — 2026-09-15
 
 Fresh .local/phase5-quote-canonical-verified contains297unit and64integration passes (361total,57realSQL,0skips); assert-test-results.ps1 passed.32new tests cover bounded exact canonicalization/version-pinned hashes. Initial .local/phase5-quote-canonical-full SQL encryption failures are not passing evidence; required local-access rerun succeeded. Contracts287 and frontend30 also pass. No actual quote persistence/endpoints yet;05-02 and phase compliance remain incomplete. See05-02-PROGRESS.
+
+## 05-02 item identity slice — 2026-09-15
+
+Fresh .local/phase5-quote-identity-verified:307unit +64integration =371passing cases,57realSQL,0skips; assert-test-results.ps1 passed.10new .NET identity/link cases and1Node nil-ID case; contracts288/frontend30pass. .NET item identity is an internal prerequisite, not a completed capture boundary or quote endpoint. No migration/UI/funnel changes. See05-02-PROGRESS and05-DOTNET-SCHEMA-DECISION for next work.

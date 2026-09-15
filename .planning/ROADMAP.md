@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1–4 and05-01 complete;25plans complete overall.05-02 in progress: .NET canonical quote representation and version-pinned hashing implemented. Fresh361backend tests including57realSQL,287contract tests and30frontend tests pass. Next: closed .NET capture validation and SQL quote persistence/API. No quote endpoint is exposed yet.
+**Status:** Autonomous progression authorised. Phases1–4 and05-01 complete;25plans complete overall.05-02 in progress: .NET canonical quote hashing and typed item-identity/link validation implemented. Fresh371backend tests including57realSQL,288contract tests and30frontend tests pass. Next: closed .NET capture schema/catalogue validation and SQL quote persistence/API. No quote endpoint is exposed yet.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 

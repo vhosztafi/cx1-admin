@@ -20,3 +20,12 @@ Contract/design suite287passes/0skips,949controls/336operations (.local/phase5-c
 4. No-op/replay/stale/race/rollback real SQL/API coverage and supported no-reset demo seeding; only then complete05-02.
 
 No QUO requirement is accepted and05-02 remains incomplete.
+
+
+## .NET item identity and typed links — 2026-09-15
+
+Added QuoteItemIdentity and safe QuoteFieldIssue(code,path). Global case-insensitive UUID uniqueness includes every nested child, including histories and European-cover rows. Specified IDs resolve only to current vehicles, owner/trip IDs only to current drivers, and incident risk links only to current drivers/vehicles/premises. Removing referenced rows produces explicit correction issues; neither old revisions nor nested loss/occupation IDs can satisfy a current risk link. Standard dashed nonempty UUIDs are required; the Node design identity validator now also rejects nil UUIDs, preserving parity. Missing item collections add no invented draft requirements; this helper deliberately relies on the preceding closed-shape gate and is not exposed as an endpoint.
+
+10new .NET cases cover global/nested identities, typed link isolation, removal/correction, UUID casing, invalid/nil/nonstandard IDs, bounded safe field paths and partial drafts. One new Node nil-identity test. Full verified backend suite371=307unit+64integration,57realSQL,0skips; assert-test-results.ps1 passed for .local/phase5-quote-identity-verified. Contracts288/949controls/336operations and frontend30also pass. Logs: .local/phase5-quote-identity-verified.log, .local/phase5-contract-validation.log, .local/phase5-quote-identity-web.log. No migrations, endpoints, UI, dependency installation, funnel edits or demo reset.
+
+Researched the next .NET schema adapter against official maintainer/NuGet docs: choose pinned JsonSchema.Net9.4.0 rather than a second handwritten schema interpreter. See05-DOTNET-SCHEMA-DECISION.md; dependency not installed. Next implement that closed draft-shape gate and scoped question/reference validation, then storage/services/API and real quote persistence tests.05-02 remains incomplete.
