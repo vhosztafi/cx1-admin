@@ -1856,7 +1856,6 @@
         "startsOn",
         "endsOn",
         "area",
-        "driverIds",
         "cover",
         "usage"
       ]

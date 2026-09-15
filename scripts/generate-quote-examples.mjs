@@ -51,3 +51,4 @@ for(const productCode of questions.products) {
  if(result.status!=='section-checks-pass')throw new Error(JSON.stringify({productCode,...result}));
  await writeFile(new URL(`../contracts/examples/quote-capture-${productCode}.json`,import.meta.url),JSON.stringify({description:'Fictional composed section-validation example; not full prototype/readiness acceptance.',context,proposal},null,2)+'\n');
 }
+await import('./generate-quote-positive-examples.mjs');

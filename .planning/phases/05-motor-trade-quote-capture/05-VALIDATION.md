@@ -1,7 +1,7 @@
 ---
 phase: 05
 slug: motor-trade-quote-capture
-status: planned
+status: in_progress
 nyquist_compliant: false
 wave_0_complete: true
 created: 2026-09-15
@@ -30,3 +30,8 @@ For each implemented backend slice use a fresh `.local/phase5-<slice>-full` dire
 UI slices use built API5087/Next3100, BACKOFFICE_API_ORIGIN set at build and start, real fictional SQL records, exact lost-response retry assertions, labelled intercepted recovery where used, keyboard/native dialog focus/Escape,314px desktop rail and390px containment. Capture source/application screenshots and inspect them. Final restart tests compare actual quote revisions, current pointers, evidence bytes and lookup state plus fresh authenticated application reads. Human/assistive-technology UAT, hostedCI and Docker runtime remain separate.
 
 QUO-01 remains partial for policies untilPhase6. QUO02–06 can be accepted only after05-11 verifies whole-phase behavior. No source-mapping enumeration or plan review is implementation acceptance.
+
+
+## 05-01 actual design evidence — 2026-09-15
+
+Source/schema/API gate complete; see05-01-REVIEW.md and05-01-SUMMARY.md. Full node scripts/validate-contracts.mjs passes287tests with0failures/skips, OpenAPI lint and949controls/336operations. All six generated capture examples pass the composed section validators and capture-ready shape. Log: .local/phase5-contract-validation.log. No backend/UI/migration changes in this plan; runtime counts above remain prior accepted evidence. Nyquist/phase compliance remains false until actual runtime implementation and05-11 acceptance.

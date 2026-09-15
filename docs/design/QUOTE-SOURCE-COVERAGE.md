@@ -1,6 +1,6 @@
 # Quote capture source coverage
 
-Phase 05-01 remains in progress. This is design traceability, not runtime acceptance.
+Phase 05-01 design gate is complete. This is design traceability, not runtime acceptance.
 
 ## Control ownership
 
@@ -20,7 +20,7 @@ Ownership is separate from operation dependencies. A shared risks-list control m
 - All 255 funnel source occurrences have exact typed canonical paths in `contracts/quote-field-mapping.json`.
 - The combined question catalogue includes those mappings and 56 Motor Trade prototype supplemental questions (including the separately audited conditional no-discount composer). Another 109 prototype definitions have explicit Commercial Combined ownership.
 - Reference identity catalogues preserve all 51 direct source option families, 25 nested source families and 12 active prototype question reference families plus 4 direct-control families. Dynamic family membership still requires trusted, instance-specific selection and eligibility checks.
-- Contract examples test duplicate JSON keys, typed identities, child links, scoped question IDs, reference identity, term/DST handling and a subset of conditional readiness rules.
+- Contract examples test duplicate JSON keys, typed identities, child links, scoped question IDs, reference identity, term/DST handling and composed conditional section rules across six fictional capture examples.
 
 ## Prototype business conditions
 
@@ -98,8 +98,10 @@ Both actual Motor Trade captures satisfy the structural ready schema and compose
 
 Question and reference configuration have strict published schemas in contracts/schemas. The quote validation pipeline checks configuration integrity before processing a proposal: versions, answer kinds, typed option identities, question dependencies, reference bindings, dynamic age bands and direct prototype options must agree. Repeated source occurrences can share a canonical definition; conflicting definitions fail. Invalid configuration is a startup/design failure, not a business-user validation issue.
 
-## Remaining contract gate
+## Final design verification and runtime handoff
 
-Resolve overlapping prototype/funnel answers and all product-specific requiredness, dynamic option selection, source limits and conditional rules. Reconcile historical prototype field bindings with the capture-write envelope: for example `term.startsAt` is supplied as local `termIntent`, not a caller-chosen policy timestamp. Finish quote API request/response contracts and operation integration. Verify complete fictional proposals against the composed validators. Then implement and test the same rules in the actual .NET request boundary and persistent services.
+All287contract/design tests pass, including six generated captures across both Motor Trade products. Positive scenarios exercise declared claims/convictions, trade associations, held/covered plates, optional covers and annual/temporary European trips. Temporary trips allow driverIds omission for Any Driver; named/mixed plans still require same-proposal IDs. See05-01-REVIEW.md for the final gate evidence.
 
-No quote endpoint, database migration, UI journey or phase acceptance is established by these design tests alone. The funnel remains unchanged.
+The69Phase5 controls without capture-field bindings are navigation/selectors, add/lifecycle commands, scoped evidence actions or derived counts. Vehicle total/MID controls derive from the stable register rows and do not accept writable totals. Evidence requires actual persisted attachments in05-08. Rating remainsPhase6.
+
+The next implementation plan is05-02: strict .NET capture boundaries, scoped quote persistence, immutable revisions and API commands. No quote endpoint, database migration, UI journey or phase acceptance is established by these design tests alone. The funnel remains unchanged.

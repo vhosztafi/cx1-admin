@@ -86,10 +86,11 @@ test('complete European cover row shapes require their source fields',async()=>{
   const validate=ajv.compile({$schema:schema.$schema,$defs:schema.$defs,$ref:'#/$defs/TemporaryEuropeanCover'});
   const row={id,registration:'DEMO 02',startsOn:'2026-10-01',endsOn:'2026-10-14',area:selection,driverIds:[],cover:selection,usage:selection};
   assert.equal(validate(row),true,JSON.stringify(validate.errors));
-  for(const key of ['id','registration','startsOn','endsOn','area','driverIds','cover','usage']) {
+  for(const key of ['id','registration','startsOn','endsOn','area','cover','usage']) {
     const missing=structuredClone(row);delete missing[key];assert.equal(validate(missing),false,key);
   }
-  // Empty selection is structurally valid; named/any-driver applicability and
+  delete row.driverIds;assert.equal(validate(row),true,JSON.stringify(validate.errors));
+  // Omitted or empty selection is structurally valid; named/any-driver applicability and
   // same-proposal membership are mandatory runtime checks, not schema claims.
 });
 

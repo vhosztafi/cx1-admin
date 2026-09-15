@@ -30,6 +30,9 @@ export async function writeQuoteSchemas(policy) {
   defs.PreviousInsurance.required=['responses'];
   defs.Loss.required=['id','occurredOn','type','declaredType','description','amount','declaredStatus','fault','responses'];
   defs.Conviction.required=['id','occurredOn','code','fine','points','disqualified','declaredBanPeriod','responses'];
+  // Source extras.ts only requires named selections for named/mixed plans.
+  // Any-driver trips may omit this field; semantic validation owns that branch.
+  defs.TemporaryEuropeanCover.required=defs.TemporaryEuropeanCover.required.filter(key=>key!=='driverIds');
   delete defs.RoadRisk.properties.driverBasis;
   defs.RoadRisk.required=['business','responses','previousInsurance','declarations','specifiedVehiclesRequested'];
   for(const key of ['sections','endorsements','warranties'])delete defs.Cover.properties[key];

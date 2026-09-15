@@ -1,0 +1,855 @@
+{
+  "description": "Fictional history-and-extras composed capture; section validation only, not evidence/authority or runtime acceptance.",
+  "context": {
+    "asOfDate": "2026-09-15",
+    "vehicleModes": {
+      "aaaaaaaa-0000-4000-8000-000000000003": "manual"
+    }
+  },
+  "proposal": {
+    "schemaVersion": "1.0",
+    "productCode": "motor-trade-road-risks",
+    "insured": {
+      "proposerNames": [
+        "Alex Example"
+      ],
+      "entityType": "sole-trader",
+      "declaredCompanyType": {
+        "collection": "companyTypes",
+        "value": 1,
+        "label": "Sole Trader",
+        "version": "mt-capture-57b711ca02317ca0"
+      },
+      "title": {
+        "collection": "proposerTitles",
+        "value": 1,
+        "label": "Mr",
+        "version": "mt-capture-57b711ca02317ca0"
+      },
+      "firstName": "Alex",
+      "surname": "Example",
+      "contact": {
+        "email": "alex@example.test",
+        "mobile": "07123456789"
+      },
+      "address": {
+        "postcode": "AB1 2CD",
+        "houseNumber": "1",
+        "street": "Example Street",
+        "county": "Example County"
+      }
+    },
+    "termIntent": {
+      "kind": "annual",
+      "localStartDate": "2026-09-15",
+      "localStartTime": "09:00",
+      "timeZone": "Europe/London"
+    },
+    "risk": {
+      "business": {
+        "declaredActivitySplit": {
+          "sales": 10000,
+          "servicing": 0,
+          "mechanicalRepair": 0,
+          "breakdownRecovery": 0,
+          "bodyRepairs": 0,
+          "valeting": 0,
+          "other": 0
+        },
+        "description": "Fictional business selling standard used cars to private customers.",
+        "startedOn": "2020-01-01",
+        "turnover": "100000.00",
+        "wageRoll": "25000.00",
+        "activities": [
+          {
+            "id": "aaaaaaaa-0000-4000-8000-000000000001",
+            "code": {
+              "collection": "mtOccupations",
+              "value": 8,
+              "label": "Buying & Selling of Standard Cars & Vans",
+              "version": "mt-capture-57b711ca02317ca0"
+            },
+            "turnoverBasisPoints": 10000
+          }
+        ],
+        "responses": {
+          "questionSetVersion": "mt-capture-57b711ca02317ca0",
+          "answers": [
+            {
+              "questionId": "MTS-02-Q01",
+              "kind": "reference",
+              "value": {
+                "collection": "tradingFroms",
+                "value": 1,
+                "label": "Home",
+                "version": "mt-capture-57b711ca02317ca0"
+              }
+            },
+            {
+              "questionId": "MTS-03-Q04",
+              "kind": "boolean",
+              "value": true
+            },
+            {
+              "questionId": "MTS-03-Q06",
+              "kind": "boolean",
+              "value": true
+            },
+            {
+              "questionId": "MTS-03-Q08",
+              "kind": "count",
+              "value": 25
+            },
+            {
+              "questionId": "MTS-03-Q09",
+              "kind": "count",
+              "value": 5
+            },
+            {
+              "questionId": "prototype.quote.c6181a11c34c",
+              "kind": "reference",
+              "value": {
+                "collection": "prototype.quote.c6181a11c34c",
+                "value": 1,
+                "label": "Full time",
+                "version": "mt-capture-57b711ca02317ca0"
+              }
+            },
+            {
+              "questionId": "prototype.quote.0552d5a68ba2",
+              "kind": "reference",
+              "value": {
+                "collection": "prototype.quote.0552d5a68ba2",
+                "value": 6,
+                "label": "5",
+                "version": "mt-capture-57b711ca02317ca0"
+              }
+            },
+            {
+              "questionId": "prototype.quote.34613c23e95d",
+              "kind": "reference",
+              "value": {
+                "collection": "prototype.quote.34613c23e95d",
+                "value": 1,
+                "label": "Not applicable",
+                "version": "mt-capture-57b711ca02317ca0"
+              }
+            },
+            {
+              "questionId": "prototype.quote.ba9d4158ae2c",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.35350a32e79e",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.2ad460339240",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.f5e77ab8ec93",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.7fe8e3151553",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.27322dcfabf5",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.f856f5891026",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.d7a75768e505",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.5f9e8331ac6f",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.488ecf4bdc09",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.87fad6b4a9fe",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.ea4580cbac7a",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.46414cc10100",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.ef70e80708bb",
+              "kind": "boolean",
+              "value": true
+            },
+            {
+              "questionId": "prototype.quote.36da21d3c935",
+              "kind": "boolean",
+              "value": true
+            },
+            {
+              "questionId": "prototype.quote.6c1927f561b8",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.f7972c55f517",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.382ce4de8253",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.922ca15dc9ed",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.af67cb40b4de",
+              "kind": "reference",
+              "value": {
+                "collection": "prototype.quote.af67cb40b4de",
+                "value": 1,
+                "label": "None",
+                "version": "mt-capture-57b711ca02317ca0"
+              }
+            },
+            {
+              "questionId": "prototype.quote-value.315960b57ab1",
+              "kind": "boolean",
+              "value": true
+            },
+            {
+              "questionId": "MTS-03-Q05",
+              "kind": "text",
+              "value": "Fictional Motor Traders Association"
+            }
+          ]
+        }
+      },
+      "responses": {
+        "questionSetVersion": "mt-capture-57b711ca02317ca0",
+        "answers": [
+          {
+            "questionId": "MTS-06-Q01",
+            "kind": "reference",
+            "value": {
+              "collection": "driverPlans",
+              "value": 1,
+              "label": "Named Driver",
+              "version": "mt-capture-57b711ca02317ca0"
+            }
+          },
+          {
+            "questionId": "MTS-07-Q01",
+            "kind": "boolean",
+            "value": true
+          },
+          {
+            "questionId": "MTS-10-Q01",
+            "kind": "boolean",
+            "value": true
+          },
+          {
+            "questionId": "MTS-10-Q02",
+            "kind": "percentage",
+            "value": 10000,
+            "unit": "basis-points"
+          },
+          {
+            "questionId": "MTS-07-Q02",
+            "kind": "count",
+            "value": 1
+          }
+        ]
+      },
+      "declarations": {
+        "questionSetVersion": "mt-capture-57b711ca02317ca0",
+        "answers": [
+          {
+            "questionId": "MTS-12-Q01",
+            "kind": "boolean",
+            "value": false
+          },
+          {
+            "questionId": "MTS-12-Q03",
+            "kind": "boolean",
+            "value": false
+          },
+          {
+            "questionId": "MTS-12-Q05",
+            "kind": "boolean",
+            "value": false
+          },
+          {
+            "questionId": "MTS-12-Q07",
+            "kind": "boolean",
+            "value": false
+          },
+          {
+            "questionId": "MTS-12-Q09",
+            "kind": "boolean",
+            "value": false
+          },
+          {
+            "questionId": "MTS-12-Q11",
+            "kind": "boolean",
+            "value": false
+          },
+          {
+            "questionId": "MTS-12-Q13",
+            "kind": "boolean",
+            "value": false
+          },
+          {
+            "questionId": "MTS-12-Q15",
+            "kind": "boolean",
+            "value": false
+          },
+          {
+            "questionId": "MTS-12-Q17",
+            "kind": "boolean",
+            "value": false
+          },
+          {
+            "questionId": "MTS-12-Q19",
+            "kind": "boolean",
+            "value": false
+          }
+        ]
+      },
+      "drivers": [
+        {
+          "id": "aaaaaaaa-0000-4000-8000-000000000002",
+          "firstName": "Jamie",
+          "surname": "Example",
+          "fullName": "Jamie Example",
+          "dateOfBirth": "1980-01-01",
+          "relationship": {
+            "collection": "driverRelationshipsPolicyHolder",
+            "value": 2,
+            "label": "Employee",
+            "version": "mt-capture-57b711ca02317ca0"
+          },
+          "usage": {
+            "collection": "driverUsages",
+            "value": 1,
+            "label": "Motor Trade Only",
+            "version": "mt-capture-57b711ca02317ca0"
+          },
+          "licence": {
+            "type": {
+              "collection": "driverLicenceTypes",
+              "value": 2,
+              "label": "Full UK - Manual",
+              "version": "mt-capture-57b711ca02317ca0"
+            },
+            "issuedOn": "2000-01-01"
+          },
+          "address": {
+            "postcode": "AB1 2CD",
+            "houseNumber": "1",
+            "street": "Example Street",
+            "county": "Example County"
+          },
+          "responses": {
+            "questionSetVersion": "mt-capture-57b711ca02317ca0",
+            "answers": [
+              {
+                "questionId": "MTS-06-Q08",
+                "kind": "reference",
+                "value": {
+                  "collection": "driverTitles",
+                  "value": 1,
+                  "label": "Dr",
+                  "version": "mt-capture-57b711ca02317ca0"
+                }
+              },
+              {
+                "questionId": "MTS-06-Q20",
+                "kind": "reference",
+                "value": {
+                  "collection": "driverGVWLimits",
+                  "value": 1,
+                  "label": "3.5T",
+                  "version": "mt-capture-57b711ca02317ca0"
+                }
+              },
+              {
+                "questionId": "MTS-06-Q21",
+                "kind": "boolean",
+                "value": true
+              },
+              {
+                "questionId": "MTS-06-Q25",
+                "kind": "reference",
+                "value": {
+                  "collection": "driverMotorcycleCovers",
+                  "value": 1,
+                  "label": "None",
+                  "version": "mt-capture-57b711ca02317ca0"
+                }
+              },
+              {
+                "questionId": "MTS-06-Q27",
+                "kind": "reference",
+                "value": {
+                  "collection": "driverMaxABIGroups",
+                  "value": 1,
+                  "label": "Group 28",
+                  "version": "mt-capture-57b711ca02317ca0"
+                }
+              },
+              {
+                "questionId": "MTS-06-Q28",
+                "kind": "reference",
+                "value": {
+                  "collection": "driverTradeEmploymentBasises",
+                  "value": 1,
+                  "label": "Full Time",
+                  "version": "mt-capture-57b711ca02317ca0"
+                }
+              },
+              {
+                "questionId": "MTS-06-Q31",
+                "kind": "boolean",
+                "value": false
+              },
+              {
+                "questionId": "MTS-06-Q32",
+                "kind": "boolean",
+                "value": false
+              },
+              {
+                "questionId": "MTS-06-Q33",
+                "kind": "boolean",
+                "value": true
+              },
+              {
+                "questionId": "MTS-06-Q40",
+                "kind": "boolean",
+                "value": true
+              },
+              {
+                "questionId": "MTS-06-Q46",
+                "kind": "boolean",
+                "value": false
+              },
+              {
+                "questionId": "MTS-06-Q48",
+                "kind": "boolean",
+                "value": false
+              },
+              {
+                "questionId": "MTS-06-Q53",
+                "kind": "boolean",
+                "value": false
+              },
+              {
+                "questionId": "prototype.adddriver.trade-employment",
+                "kind": "reference",
+                "value": {
+                  "collection": "prototype.adddriver.trade-employment",
+                  "value": 1,
+                  "label": "Full time",
+                  "version": "mt-capture-57b711ca02317ca0"
+                }
+              }
+            ]
+          },
+          "convictions": [
+            {
+              "id": "bbbbbbbb-0000-4000-8000-000000000005",
+              "occurredOn": "2024-01-01",
+              "code": {
+                "collection": "driverMTConvictionCodes",
+                "value": 67,
+                "label": "SP30 - Exceeding Statutory Speed Limit On a Public Road",
+                "version": "mt-capture-57b711ca02317ca0"
+              },
+              "fine": "100.00",
+              "points": 3,
+              "disqualified": false,
+              "declaredBanPeriod": "none",
+              "responses": {
+                "questionSetVersion": "mt-capture-57b711ca02317ca0",
+                "answers": [
+                  {
+                    "questionId": "prototype.addconv.prosecution-status",
+                    "kind": "reference",
+                    "value": {
+                      "collection": "prototype.addconv.prosecution-status",
+                      "value": 1,
+                      "label": "Convicted",
+                      "version": "mt-capture-57b711ca02317ca0"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "losses": [
+            {
+              "id": "bbbbbbbb-0000-4000-8000-000000000006",
+              "occurredOn": "2025-01-01",
+              "type": {
+                "collection": "driverClaimTypes",
+                "value": 1,
+                "label": "Accident Claim",
+                "version": "mt-capture-57b711ca02317ca0"
+              },
+              "declaredType": {
+                "collection": "prototype.incident-type",
+                "value": 1,
+                "label": "Accident",
+                "version": "mt-capture-57b711ca02317ca0"
+              },
+              "description": "Fictional parking collision; vehicle repaired and claim closed.",
+              "amount": "1500.00",
+              "declaredStatus": {
+                "collection": "driverClaimStatuses",
+                "value": 3,
+                "label": "Closed - Fault",
+                "version": "mt-capture-57b711ca02317ca0"
+              },
+              "fault": "fault",
+              "riskItemId": "aaaaaaaa-0000-4000-8000-000000000003",
+              "responses": {
+                "questionSetVersion": "mt-capture-57b711ca02317ca0",
+                "answers": [
+                  {
+                    "questionId": "prototype.addinc.claim-made",
+                    "kind": "boolean",
+                    "value": true
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "vehicles": [
+        {
+          "id": "aaaaaaaa-0000-4000-8000-000000000003",
+          "register": "held-for-sale",
+          "registration": "DEMO 01",
+          "make": "Example",
+          "model": "Demonstrator",
+          "abiCode": "DEMO",
+          "abiGroup": 28,
+          "vehicleType": {
+            "collection": "vehicleType",
+            "value": 5,
+            "label": "Cars (exc. Off-Road)",
+            "version": "mt-capture-57b711ca02317ca0"
+          },
+          "bodyDescription": "Saloon",
+          "body": {
+            "collection": "prototype.vehicle-body",
+            "value": 1,
+            "label": "Saloon",
+            "version": "mt-capture-57b711ca02317ca0"
+          },
+          "registrationYear": 2020,
+          "registeredOn": "2020-01-01",
+          "imported": false,
+          "value": "10000.00",
+          "purchasedOn": "2020-01-01",
+          "declaredOwnerType": {
+            "collection": "vehicleOwnerTypes",
+            "value": 1,
+            "label": "Proposer",
+            "version": "mt-capture-57b711ca02317ca0"
+          },
+          "keptOvernightType": {
+            "collection": "vehicleKeptOvernightType",
+            "value": 1,
+            "label": "Communal Car Park",
+            "version": "mt-capture-57b711ca02317ca0"
+          },
+          "keptOvernightAddress": "AB1 2CD",
+          "partOfLeaseAgreement": false,
+          "customerLoan": false,
+          "modified": false,
+          "responses": {
+            "questionSetVersion": "mt-capture-57b711ca02317ca0",
+            "answers": [
+              {
+                "questionId": "prototype.addveh.special-characteristics",
+                "kind": "reference",
+                "value": {
+                  "collection": "prototype.addveh.special-characteristics",
+                  "value": 1,
+                  "label": "None",
+                  "version": "mt-capture-57b711ca02317ca0"
+                }
+              },
+              {
+                "questionId": "prototype.addveh.report-mid",
+                "kind": "boolean",
+                "value": true
+              }
+            ]
+          }
+        }
+      ],
+      "specifiedVehiclesRequested": false,
+      "previousInsurance": {
+        "insurer": "Example Mutual (fictional)",
+        "expiresOn": "2026-09-15",
+        "responses": {
+          "questionSetVersion": "mt-capture-57b711ca02317ca0",
+          "answers": [
+            {
+              "questionId": "MTS-05-Q10",
+              "kind": "reference",
+              "value": {
+                "collection": "noClaimBonuses",
+                "value": 1,
+                "label": "No NCB",
+                "version": "mt-capture-57b711ca02317ca0"
+              }
+            },
+            {
+              "questionId": "prototype.quote.1bdc05ff8b3d",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.61a13bb828b2",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.3fad63dd9abf",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.no-claims.reason",
+              "kind": "text",
+              "value": "No transferable discount is available from the previous fictional policy."
+            }
+          ]
+        }
+      },
+      "heldTradePlates": [
+        {
+          "id": "bbbbbbbb-0000-4000-8000-000000000003",
+          "number": "123 AB"
+        }
+      ],
+      "tradePlates": [
+        {
+          "id": "bbbbbbbb-0000-4000-8000-000000000004",
+          "number": "123 AB"
+        }
+      ],
+      "materialFacts": "Fictional demonstration only. Jamie Example: SP30 speeding conviction in January 2024, three points and a £100 fine, no ban. January 2025 parking collision: £1,500 claim, closed and at fault."
+    },
+    "cover": {
+      "responses": {
+        "questionSetVersion": "mt-capture-57b711ca02317ca0",
+        "answers": [
+          {
+            "questionId": "MTS-05-Q01",
+            "kind": "reference",
+            "value": {
+              "collection": "coverLevels",
+              "value": 1,
+              "label": "Comprehensive",
+              "version": "mt-capture-57b711ca02317ca0"
+            }
+          },
+          {
+            "questionId": "MTS-05-Q02",
+            "kind": "reference",
+            "value": {
+              "collection": "indemnityOwnVehicles",
+              "value": 5,
+              "label": "£10,000",
+              "version": "mt-capture-57b711ca02317ca0"
+            }
+          },
+          {
+            "questionId": "MTS-05-Q04",
+            "kind": "reference",
+            "value": {
+              "collection": "indemnityOwnVehicles/number:5/excesses",
+              "value": 4,
+              "label": "£500 (Default)",
+              "version": "mt-capture-57b711ca02317ca0"
+            }
+          },
+          {
+            "questionId": "MTS-05-Q05",
+            "kind": "boolean",
+            "value": false
+          },
+          {
+            "questionId": "MTS-05-Q06",
+            "kind": "reference",
+            "value": {
+              "collection": "excessLates",
+              "value": 1,
+              "label": "None",
+              "version": "mt-capture-57b711ca02317ca0"
+            }
+          },
+          {
+            "questionId": "MTS-05-Q07",
+            "kind": "boolean",
+            "value": false
+          },
+          {
+            "questionId": "MTS-05-Q08",
+            "kind": "boolean",
+            "value": false
+          },
+          {
+            "questionId": "MTS-11-Q07",
+            "kind": "boolean",
+            "value": false
+          },
+          {
+            "questionId": "MTS-11-Q08",
+            "kind": "boolean",
+            "value": false
+          },
+          {
+            "questionId": "MTS-11-Q09",
+            "kind": "reference",
+            "value": {
+              "collection": "thirdPartyDamageLimits",
+              "value": 1,
+              "label": "£2 Million",
+              "version": "mt-capture-57b711ca02317ca0"
+            }
+          },
+          {
+            "questionId": "prototype.quote.becc2653d0de",
+            "kind": "boolean",
+            "value": true
+          },
+          {
+            "questionId": "prototype.quote.4c5df77ffba1",
+            "kind": "boolean",
+            "value": false
+          },
+          {
+            "questionId": "MTS-11-Q13",
+            "kind": "boolean",
+            "value": true
+          },
+          {
+            "questionId": "MTS-11-Q10",
+            "kind": "boolean",
+            "value": true
+          },
+          {
+            "questionId": "MTS-11-Q01",
+            "kind": "boolean",
+            "value": true
+          },
+          {
+            "questionId": "MTS-11-Q02",
+            "kind": "reference",
+            "value": {
+              "collection": "demonstrationCovers",
+              "value": 2,
+              "label": "Accompanied - Comprehensive",
+              "version": "mt-capture-57b711ca02317ca0"
+            }
+          },
+          {
+            "questionId": "MTS-11-Q04",
+            "kind": "boolean",
+            "value": true
+          },
+          {
+            "questionId": "MTS-11-Q05",
+            "kind": "reference",
+            "value": {
+              "collection": "windScreenCovers",
+              "value": 1,
+              "label": "£500 limit £115 excess",
+              "version": "mt-capture-57b711ca02317ca0"
+            }
+          },
+          {
+            "questionId": "MTS-11-Q06",
+            "kind": "boolean",
+            "value": false
+          }
+        ]
+      },
+      "temporaryEuropeanCover": [
+        {
+          "id": "bbbbbbbb-0000-4000-8000-000000000001",
+          "registration": "DEMO 01",
+          "startsOn": "2026-10-01",
+          "endsOn": "2026-10-10",
+          "area": {
+            "collection": "europeanArea",
+            "value": 1,
+            "label": "Green Card Free Circulation Area Only",
+            "version": "mt-capture-57b711ca02317ca0"
+          },
+          "cover": {
+            "collection": "europeanTripCover",
+            "value": 1,
+            "label": "Minimum RTA",
+            "version": "mt-capture-57b711ca02317ca0"
+          },
+          "usage": {
+            "collection": "europeanTripUsage",
+            "value": 1,
+            "label": "Motortrade",
+            "version": "mt-capture-57b711ca02317ca0"
+          },
+          "driverIds": [
+            "aaaaaaaa-0000-4000-8000-000000000002"
+          ]
+        }
+      ],
+      "annualEuropeanCover": [
+        {
+          "id": "bbbbbbbb-0000-4000-8000-000000000002",
+          "registration": "DEMO 01",
+          "usage": {
+            "collection": "europeanTripUsage",
+            "value": 1,
+            "label": "Motortrade",
+            "version": "mt-capture-57b711ca02317ca0"
+          }
+        }
+      ]
+    }
+  }
+}
