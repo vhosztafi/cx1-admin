@@ -1,6 +1,21 @@
 import {quoteMappingsForProduct} from './quote-semantic-contract.mjs';
 import {reconcileQuoteCover} from './quote-cover-reconciliation.mjs';
 
+export function validateQuoteActivityReadiness(proposal,questions,references) {
+ quoteMappingsForProduct(questions,proposal.productCode);
+ const rows=proposal.risk?.business?.activities??[],issues=[];
+ if(!rows.length)issues.push({code:'business-activity-required',path:'/risk/business/activities'});
+ rows.forEach((activity,index)=>{
+  const path=`/risk/business/activities/${index}`;
+  if(!activity.code)issues.push({code:'business-activity-code-required',path:`${path}/code`});
+  if(!Number.isInteger(activity.turnoverBasisPoints)||activity.turnoverBasisPoints<100)issues.push({code:'business-activity-minimum-one-percent',path:`${path}/turnoverBasisPoints`});
+  const reference=activity.code;
+  const row=reference?.collection==='mtOccupations'&&reference.version===references.version?references.collections.mtOccupations.find(row=>row.value===reference.value&&row.text===reference.label):undefined;
+  if(rows.length>1&&row?.requireCarJockeyRadius)issues.push({code:'car-jockey-must-be-only-activity',path:`${path}/code`});
+ });
+ return issues;
+}
+
 // Source additional-information.ts. Applicability is derived from pinned
 // activity/driver/cover metadata; retained inactive answers are never deleted.
 export function validateQuoteAdditionalReadiness(proposal,questions,references) {

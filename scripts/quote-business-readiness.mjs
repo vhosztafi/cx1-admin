@@ -40,7 +40,11 @@ export function validateQuoteBusinessReadiness(proposal,questions,references) {
     return references.collections[collection]?.find(row=>row.value===reference.value&&row.text===reference.label)?.value;
   };
   const company=trusted(read('MTS-01-Q06').value,'companyTypes');
-  if([2,3,4].includes(company))requireOwner('MTS-01-Q11');
+  if([2,3,4].includes(company)) {
+    requireOwner('MTS-01-Q11');
+    const name=read('MTS-01-Q11');
+    if(typeof name.value==='string'&&name.value.length>50)add('company-name-too-long',name.path,'MTS-01-Q11');
+  }
   const telephone=read('MTS-01-Q13'),mobile=read('MTS-01-Q14');
   if(!present(telephone.value)&&!present(mobile.value))add('contact-number-required','/insured/contact');
   for(const field of [telephone,mobile])if(present(field.value)&&field.value.length>11)add('contact-number-too-long',field.path);

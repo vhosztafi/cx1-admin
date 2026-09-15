@@ -1,4 +1,22 @@
 import {ageOn} from './quote-dynamic-options.mjs';
+
+// Source text-control bounds supplement the broader reusable policy shapes.
+export function validateQuoteTextBounds(proposal) {
+ const issues=[];
+ const limit=(value,max,path)=>{if(typeof value==='string'&&value.length>max)issues.push({code:'source-text-too-long',path,maxLength:max});};
+ const address=(value,path)=>{
+  limit(value?.postcode,10,`${path}/postcode`);
+  for(const field of ['houseNumber','street','town','city','county'])limit(value?.[field],50,`${path}/${field}`);
+ };
+ address(proposal.insured?.address,'/insured/address');
+ (proposal.risk?.premises??[]).forEach((p,i)=>address(p.address,`/risk/premises/${i}/address`));
+ (proposal.risk?.drivers??[]).forEach((driver,index)=>{
+  address(driver.address,`/risk/drivers/${index}/address`);
+  (driver.responses?.answers??[]).forEach((answer,i)=>{if(answer.questionId==='MTS-06-Q47')limit(answer.value,50,`/risk/drivers/${index}/responses/answers/${i}/value`);});
+ });
+ (proposal.risk?.business?.responses?.answers??[]).forEach((answer,i)=>{if(answer.questionId==='MTS-03-Q07')limit(answer.value,20,`/risk/business/responses/answers/${i}/value`);});
+ return issues;
+}
 // Cross-field design checks after schema/identity/question validation. The
 // caller supplies the trusted London as-of date; never use a browser clock.
 export function validateQuoteSourceRules(proposal,asOfDate) {
