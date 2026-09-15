@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {parseQuoteJson,maxQuoteBytes,maxQuoteDepth,validateQuoteIdentity,validateQuoteQuestions} from '../scripts/quote-semantic-contract.mjs';
+import {parseQuoteJson,maxQuoteBytes,maxQuoteDepth,validateQuoteIdentity,validateQuoteQuestions,validateQuoteAnswerConditions,validateQuotePortfolio} from '../scripts/quote-semantic-contract.mjs';
 
 const mappings=JSON.parse(await readFile(new URL('../contracts/quote-field-mapping.json',import.meta.url),'utf8')).mappings;
 const id=n=>`aaaaaaaa-0000-4000-8000-${String(n).padStart(12,'0')}`;
@@ -89,4 +89,47 @@ test('question identity is local to each repeatable item while every response us
   delete proposal.risk.drivers[1].responses.questionSetVersion;
   assert.equal(questionCheck(proposal)[0].code,'question-version-mismatch');
   assert.throws(()=>validateQuoteQuestions(proposal,mappings,''),/Pinned question version required/);
+});
+
+test('all ten declaration pairs require details only when selected and retain contradictory data as issues',()=>{
+  for(let number=1;number<=19;number+=2) {
+    const parentId=`MTS-12-Q${String(number).padStart(2,'0')}`;
+    const childId=`MTS-12-Q${String(number+1).padStart(2,'0')}`;
+    const parent={questionId:parentId,kind:'boolean',value:true};
+    const child={questionId:childId,kind:'text',value:'Fictional declaration'};
+    const proposal={...base(),risk:{declarations:responses(parent)}};
+    assert.equal(validateQuoteAnswerConditions(proposal,mappings)[0].code,'conditional-answer-required',parentId);
+    proposal.risk.declarations.answers.push(child);
+    assert.deepEqual(validateQuoteAnswerConditions(proposal,mappings),[]);
+    child.value='   ';assert.equal(validateQuoteAnswerConditions(proposal,mappings)[0].code,'conditional-answer-required');
+    child.value='Fictional declaration';parent.value=false;
+    const before=structuredClone(proposal);
+    assert.equal(validateQuoteAnswerConditions(proposal,mappings)[0].code,'inactive-answer-retained');
+    assert.deepEqual(proposal,before);
+    proposal.risk.declarations.answers.shift();
+    assert.equal(validateQuoteAnswerConditions(proposal,mappings)[0].code,'controlling-answer-required');
+    proposal.risk.declarations.answers=[];assert.deepEqual(validateQuoteAnswerConditions(proposal,mappings),[]);
+  }
+});
+
+test('business association conditions stay in business scope',()=>{
+  const parent={questionId:'MTS-03-Q04',kind:'boolean',value:true};
+  const proposal={...base(),risk:{business:{responses:responses(parent)}}};
+  assert.deepEqual(validateQuoteAnswerConditions(proposal,mappings),[{code:'conditional-answer-required',path:'/risk/business/responses/answers',questionId:'MTS-03-Q05'}]);
+  proposal.risk.business.responses.answers.push({questionId:'MTS-03-Q05',kind:'text',value:'Fictional association'});
+  assert.deepEqual(validateQuoteAnswerConditions(proposal,mappings),[]);
+});
+
+test('vehicle portfolio needs selected categories and positive shares totaling exactly 100 percent',()=>{
+  const proposal={...base(),risk:{responses:responses()}};
+  assert.equal(validateQuotePortfolio(proposal,mappings)[0].code,'vehicle-category-required');
+  const selected={questionId:'MTS-10-Q01',kind:'boolean',value:true};
+  const proportion={questionId:'MTS-10-Q02',kind:'percentage',value:10000,unit:'basis-points'};
+  proposal.risk.responses.answers.push(selected,proportion);
+  assert.deepEqual(validateQuotePortfolio(proposal,mappings),[]);
+  for(const value of [0,-1,10001,0.5]){proportion.value=value;assert.equal(validateQuotePortfolio(proposal,mappings)[0].code,'positive-portfolio-percentage-required');}
+  proportion.value=6000;assert.equal(validateQuotePortfolio(proposal,mappings)[0].code,'portfolio-total-must-equal-100-percent');
+  proposal.risk.responses.answers.push({questionId:'MTS-10-Q03',kind:'boolean',value:true},{questionId:'MTS-10-Q04',kind:'percentage',value:4000,unit:'basis-points'});
+  assert.deepEqual(validateQuotePortfolio(proposal,mappings),[]);
+  selected.value=false;assert.equal(validateQuoteAnswerConditions(proposal,mappings)[0].code,'inactive-answer-retained');
 });

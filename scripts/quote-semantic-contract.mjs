@@ -150,3 +150,45 @@ export function validateQuoteReferences(proposal,catalogue,selectedCollections={
   });
   return issues;
 }
+
+// Readiness checks for mapped conditional scalar answers. These do not require
+// unanswered independent questions: the complete product question catalogue
+// owns that later check. Retained inactive child answers are never auto-cleared.
+export function validateQuoteAnswerConditions(proposal,mappings) {
+  const rules=mappings.filter(row=>row.requiredWhen);
+  const issues=[];
+  visit(proposal,(item,path,canonical)=>{
+    if(!Array.isArray(item.answers))return;
+    const answers=new Map(item.answers.map((answer,index)=>[answer.questionId,{answer,index}]));
+    for(const rule of rules.filter(row=>row.canonicalPath===`${canonical}.answers[]`)) {
+      const parent=answers.get(rule.requiredWhen.questionId);
+      const child=answers.get(rule.questionId);
+      const childPath=child?`${path}/answers/${child.index}/value`:`${path}/answers`;
+      if(parent?.answer.value===rule.requiredWhen.equals) {
+        if(!child||child.answer.kind==='text'&&!child.answer.value.trim())
+          issues.push({code:'conditional-answer-required',path:childPath,questionId:rule.questionId});
+      } else if(child) {
+        issues.push({code:parent?'inactive-answer-retained':'controlling-answer-required',path:childPath,questionId:rule.questionId});
+      }
+    }
+  });
+  return issues;
+}
+
+export function validateQuotePortfolio(proposal,mappings) {
+  const rules=mappings.filter(row=>row.owner.startsWith('MTS-10-')&&row.answerKind==='percentage');
+  const answers=proposal.risk?.responses?.answers??[];
+  const byId=new Map(answers.map((answer,index)=>[answer.questionId,{answer,index}]));
+  const selected=rules.filter(rule=>byId.get(rule.requiredWhen.questionId)?.answer.value===true);
+  if(!selected.length)return [{code:'vehicle-category-required',path:'/risk/responses/answers'}];
+  const issues=[];let total=0;
+  for(const rule of selected) {
+    const entry=byId.get(rule.questionId);
+    const value=entry?.answer.value;
+    if(!Number.isInteger(value)||value<=0||value>10000)
+      issues.push({code:'positive-portfolio-percentage-required',path:entry?`/risk/responses/answers/${entry.index}/value`:'/risk/responses/answers',questionId:rule.questionId});
+    else total+=value;
+  }
+  if(!issues.length&&total!==10000)issues.push({code:'portfolio-total-must-equal-100-percent',path:'/risk/responses/answers'});
+  return issues;
+}
