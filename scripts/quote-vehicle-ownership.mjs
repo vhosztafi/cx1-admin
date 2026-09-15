@@ -1,5 +1,25 @@
 import {quoteMappingsForProduct} from './quote-semantic-contract.mjs';
 
+// Despite the historical "address" name this source control selects a postcode
+// from the current proposer, premises or a driver with personal vehicle cover.
+export function validateQuoteVehicleOvernight(proposal,questions) {
+ quoteMappingsForProduct(questions,proposal.productCode);
+ const risk=proposal.risk??{};
+ const values=[proposal.insured?.address?.postcode,
+  ...(risk.premises??[]).map(premise=>premise.address?.postcode),
+  ...(risk.drivers??[]).filter(driver=>driver.responses?.answers?.some(a=>a.questionId==='MTS-06-Q31'&&a.value===true)).map(driver=>driver.address?.postcode)];
+ const normalize=value=>value.replaceAll(' ','').toUpperCase();
+ const allowed=new Set(values.filter(value=>typeof value==='string'&&value.trim()).map(normalize));
+ const issues=[];
+ (risk.vehicles??[]).forEach((vehicle,index)=>{
+  const path=`/risk/vehicles/${index}/keptOvernightAddress`;
+  if(typeof vehicle.keptOvernightAddress!=='string'||!vehicle.keptOvernightAddress.trim())issues.push({code:'overnight-postcode-required',path});
+  else if(!allowed.size)issues.push({code:'overnight-postcode-context-required',path});
+  else if(!allowed.has(normalize(vehicle.keptOvernightAddress)))issues.push({code:'overnight-postcode-not-in-proposal',path});
+ });
+ return issues;
+}
+
 // Source vehicleOwnerOptions/vehicleOwnerSelection and vehicle-schema.ts.
 // All owner choices come from the current proposal and pinned reference data.
 export function validateQuoteVehicleOwnership(proposal,questions,references) {
