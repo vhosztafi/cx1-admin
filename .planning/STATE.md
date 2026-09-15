@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-14T23:57:25Z"
+last_updated: "2026-09-15T00:18:40Z"
 last_activity: 2026-09-15
 progress:
   total_phases: 13
@@ -25,9 +25,9 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 ## Current Position
 
 Phase: 4 of 13 (Agency onboarding and access)
-Plan: 04-07 of 8 next; 04-01 through 04-06 complete, all six Phase 3 plans complete
+Plan: 04-07 of 8 in progress; 04-01 through 04-06 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-15 —04-06 complete: real SQL-backed activation/terms/suspension/reactivation browser passes; full289/47SQL gate and78 contracts pass.
+Last activity: 2026-09-15 —04-07 trusted scope resolution foundation verified; full299backend/48SQL and78contracts pass. Broker login still closed.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,8 +54,8 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-15
-Stopped at:04-06 complete with SUMMARY/REVIEW. Full real lifecycle browser uses actual public draft/evidence/check/user preparation and two internal sessions for activation, terms publication, suspension/reactivation; committed response-loss replay and directSQL effect counts pass. Full289backend/47SQL (235unit/54integration) gate passed .local/phase4-lifecycle-full-final after stopping owned DLL-locking previews; earlier incomplete run is not evidence.29frontend/lint/typecheck/build and78contracts current. NEXT execute04-07 plan (trusted agency identities, permissions, safe common sharing projection); broker login currently remains closed.04-08 source KPI reconciliation explicitly in ACCEPTANCE-BACKLOG. No whole phase/AGY/human UAT/hostedCI completion claimed. No active tests/previews; demo lifecycle result retained .local/browser-evidence/agency-lifecycle-result.json.
-Resume file: .planning/phases/04-agency-onboarding-and-access/04-07-PLAN.md
+Stopped at:04-07 foundation committed. AgencyAccessRules validates active exclusive recognized broker roles and dedicated read/manage/request capabilities, never internal/bordereau authority. AgencyScope.Resolve requires caller transaction, matches trusted/requested/stored agency and fresh exact roles, holds agency/user/membership/role locks; mutation capabilities use agency UPDLOCK, reads HOLDLOCK.9unit+1SQL targeted pass, full299/48SQL (244unit/55integration) gate .local/phase4-scope-full,78contracts/949controls/327operations pass. CI299/48Windows297/46Linux; hostedCI unperformed. No schema/seed/API/frontend/identity wiring changed; broker login remains denied. NEXT safe shared projection service (own relationships/clients/contacts/safe instructions, filters before counts/cursors), audited internal preview, permission storage/decisions, then broker login/session/UIguard integration. Existing PartyScope legacy agency-admin branch is not a broker shortcut; SupportFlagScope.SafeInstructions is the analog. Read04-07-PROGRESS and04-DATA-API-DESIGN. No active tests/previews. Existing29frontend/build/browser evidence current.
+Resume file: .planning/phases/04-agency-onboarding-and-access/04-07-PROGRESS.md
 
 ## Autonomous continuation
 

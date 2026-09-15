@@ -1,0 +1,20 @@
+# 04-07 — Trusted scope, permissions and sharing
+
+Status: in progress. Broker login and public agency projections remain closed.
+
+## Scope resolution foundation
+
+Added AgencyAccessRules for active, exclusive recognized broker identity roles and a small dedicated capability matrix. Broker-admin can read its context/sharing and request own user/permission operations; broker-user and broker-readonly can read context/sharing. No internal authority or bordereau-download permission is implied. Persisted grants remain a separate subsequent responsibility.
+
+AgencyScope.Resolve requires a caller-held transaction, trusted actor agency matching the requested agency and current StaffUser.AgencyId, active stored agency/user, exactly one recognized agency role and exact current principal role membership. It uses fresh untracked database reads and holds agency/user/membership/role locks through the operation. Read capabilities hold shared locks; mutation capabilities acquire an agency update lock to serialize writers without lock-upgrade deadlocks. The resolver itself neither enables an endpoint nor changes existing internal PartyScope.
+
+Nine pure policy tests pass all broker roles, missing/mixed/forged scope, invited/suspended/inactive agency states and forbidden internal/unknown capabilities. The real SQL test passes own-scope resolution, wrong agency/user/claims, missing transaction, role loss, suspended agency/user, current readonly versus management authority, and a concurrent suspension lock timeout followed by success after scope transaction release. The existing SQL invariant rejecting removal of an active broker's only role is also verified. Initial fixture attempts were corrected to stage the user before assigning its role/activating and to use persisted suspended state (the UI calls it inactive); no database safeguard was relaxed. Targeted final evidence: .local/phase4-scope-resolution-verified,9 unit plus1 SQL test. Full regression gate passed299 cases including48 real-SQL scenarios (244 unit/55 integration), no skips, in .local/phase4-scope-full. CI minima now299/48 Windows and297/46 Linux; hosted CI unperformed. Inline review checked fresh database role equality, agency-first read/mutation locks, uniform403 scope denial, caller transaction requirement and no external authentication wiring. No active test/preview process remains.
+
+No migration, seed, API contract or frontend change. Authentication/session code and ActorContext remain unchanged; external login is still refused. Existing29 frontend/build/browser and78 contract evidence remains current.78 contracts and949 controls/327 operations were rerun successfully.
+
+## Next implementation
+
+1. Build the dedicated safe projection service with scope applied before search/count/paging, and an explicitly authorized audited internal preview using that same projection. Preserve the existing internal PartyScope boundary; its legacy agency-admin projection branch must not be used as a broker shortcut. SupportFlagScope.SafeInstructions is the existing safe DTO/predicate analog; it currently relies on PartyScope.
+2. Implement stored allowlisted permission requests/grants and independent approve/reject/revoke, current grant resolution and own broker-admin user operations. Scope tokens/cursors must account for current authority/grants rather than only stale cookie roles.
+3. Enable broker local sign-in/ticket retrieval only after the dedicated projections and internal route guards are ready. Coordinate lock order: agency then user/roles/credentials/sessions, without retaining the current credential-first authentication transaction for agency actors. Derive principal/ActorView agency from storage; no supplied header can set scope. Add minimal external access result page only.
+4. Real accepted-account cookies, two-agency disclosure/cursor tests, current suspension/user/permission loss and post-revocation replay must pass before04-07 summary. Implement internal sharing/permissions UI and source matrix, then04-08 acceptance/KPI reconciliation. No whole AGY requirement or human UAT is claimed here.
