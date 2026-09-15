@@ -46,6 +46,10 @@ The seven proposer/driver history declarations and other-business/directorship a
 
 The Road Risks no-discount reason is an explicit versioned text answer from COND-NCD-REASON, required when discount is not claimed and inactive otherwise. Insurer and discount/protection/intro declarations are required; claimed discount needs positive years, basis, origin and expiry. Evidence and eligibility remain separate. The question/reference catalogue version is mt-capture-31012e9672ca88bf; stale versions are rejected. Combined retains its separate source NCB capture.
 
+## History declaration windows
+
+Named-driver incidents within three calendar years and motoring convictions/CCJs within five require affirmative matching global declarations. The trusted assessment date anchors inclusive windows; future events are rejected and pending prosecutions remain disclosable. Criminal conviction disclosure has no prototype time limit. Global positive declarations may relate to the proposer, so they do not imply a fabricated named-driver row. Disability and DVLA-notifiable conditions are kept distinct.
+
 ## Remaining contract gate
 
 Resolve overlapping prototype/funnel answers and all product-specific requiredness, dynamic option selection, source limits and conditional rules. Reconcile historical prototype field bindings with the capture-write envelope: for example `term.startsAt` is supplied as local `termIntent`, not a caller-chosen policy timestamp. Finish quote API request/response contracts and operation integration. Verify complete fictional proposals against the composed validators. Then implement and test the same rules in the actual .NET request boundary and persistent services.
