@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-15T06:04:33.956922Z"
+last_updated: "2026-09-15T06:31:20.208431Z"
 last_activity: 2026-09-15
 progress:
   total_phases: 13
@@ -20,14 +20,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute Phase 4 plan 04-08: source KPI reconciliation and agency acceptance.
+**Current focus:** Execute Phase 4 plan 04-08: consolidated agency acceptance and source/security/UI review.
 
 ## Current Position
 
 Phase: 4 of 13 (Agency onboarding and access)
-Plan: 04-08 of 8 prepared; 04-01 through 04-07 complete, all six Phase 3 plans complete
+Plan: 04-08 of 8 in progress; 04-01 through 04-07 complete, all six Phase 3 plans complete
 Status: In progress â€” autonomous
-Last activity: 2026-09-15 -04-07 complete: accepted agency accounts, scoped APIs, own-user/permission authority and workspace guards;323backend/56SQL,80contracts,30frontend/build and browser pass.
+Last activity: 2026-09-15 -04-08 source KPI/row action counts implemented and verified;329backend/57SQL,81contracts,30frontend/build and real KPI browser pass.
 
 Progress: Phases 1â€“3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1â€“3 complete; 3/13 phases. Agency onboarding/access next
 ## Session Continuity
 
 Last session: 2026-09-15
-Stopped at:04-07 complete and reviewed. Actual accepted agency cookies now support own-agency context/sharing and broker-admin user/invitation/permission requests. Internal UI/API guards, scope-bound sessions, last-admin and revoked-role/session replay tests pass. Full .local/phase4-external-full-final323/56SQL (260unit/63integration),80contracts/949controls/328operations,30frontend/lint/typecheck/build, real agency-access and shell browsers pass. CI minima323/56Windows321/54Linux; YAML/rejected-result checks pass. No active tests/previews. NEXT04-08 source Open actions KPI reconciliation (currently undefined) and whole-phase acceptance. Read04-08-PROGRESS,04-07-SUMMARY/REVIEW,ACCEPTANCE-BACKLOG. AgencyFollowUp has DueOn/provenance but no task/completion state; keep labels honest. WholeAGY/humanUAT acceptance remains pending.
+Stopped at:04-08 action-indicator slice complete. Global/per-agency pending state/terms/permission counts replace placeholders; due obligation provenance is separately labelled with London date and no fabricated task/completion state. Shared serializable projection and exact API contracts verified. Full .local/phase4-action-kpis-full329/57SQL (265unit/64integration),81contracts/949controls/328operations,30frontend/lint/typecheck/build, real request/rejection KPI browser and final screenshots pass. CI329/57Windows327/55Linux; YAML parses. No active tests/previews. NEXT consolidate/run agency and foundation/client/contact/support/match browser suite, restart persistence, final source/security/UI/validation reports and demo acceptance mapping. Do not repeat KPI implementation. Read04-08-PROGRESS and ACCEPTANCE-BACKLOG. WholeAGY/humanUAT/hosted CI/Docker acceptance remains pending.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-08-PROGRESS.md
 
 ## Autonomous continuation

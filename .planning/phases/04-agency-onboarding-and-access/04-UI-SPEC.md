@@ -28,3 +28,8 @@ Use shared accessible native dialogs, semantic headings, table captions/focusabl
 ## Preimplementation UI check
 
 PASS: approved source fidelity, known component reuse, complete states and bounded route ownership. Content for future phases is clearly separated from current persistence; no invented financial/insurance rows. Every new action has a planned API and verification owner. Runtime visual review remains04-08.
+
+
+## Implemented action-count semantics
+
+The four directory KPI cards retain the approved positions. Open actions counts pending state/terms/access decisions and shows that breakdown; directory rows show their own pending count. A separate dated line and per-row sublabel show recorded follow-up obligations due, with honest notice that completion tracking is not available. Due obligations are not mixed into open workflow actions. All-agency totals remain visibly independent of directory filters; loading uses an ellipsis and failures offer retry.

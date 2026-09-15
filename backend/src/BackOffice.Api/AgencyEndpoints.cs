@@ -1,3 +1,4 @@
+using System.Data;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using BackOffice.Application.Agencies;
@@ -69,12 +70,14 @@ public static class AgencyEndpoints
         context.Response.Headers.ETag=AgencyDraftService.Etag(agency.RowVersion);
         return Results.Json(new{agency.Id,agency.Reference,agency.State,agency.OnboardingStep,userCount,invitedUserCount,details=doc.RootElement.Clone(),validation,unavailableSections=new[]{new{kind="quotes",state="unavailable",owningPhase=5,message="Quote capture is not available yet."},new{kind="policies",state="unavailable",owningPhase=6,message="Policy records are not available yet."},new{kind="tasks",state="unavailable",owningPhase=9,message="Agency tasks are not available yet."},new{kind="statements",state="unavailable",owningPhase=10,message="Statements are not available yet."}}},Json);
     }
-    private static async Task<IResult> List(HttpContext context,IDbContextFactory<BackOfficeDbContext> factory,PartyPaging paging)
+    private static async Task<IResult> List(HttpContext context,IDbContextFactory<BackOfficeDbContext> factory,PartyPaging paging,TimeProvider time)
     {
         var page=paging.Read(context,LocalIdentityService.Actor(context.User),"reference,id","q","state","relationshipManagerId");
         var search=context.Request.Query["q"].ToString();var state=context.Request.Query["state"].ToString();var manager=context.Request.Query["relationshipManagerId"].ToString();
         if(page is null||search.Length>200||search.Any(char.IsControl)||(search.Length>0&&string.IsNullOrWhiteSpace(search))||(state.Length>0&&state is not("draft" or "active" or "suspended" or "abandoned"))||(manager.Length>0&&!Guid.TryParseExact(manager,"D",out _)))return BadQuery(context);
-        await using var db=await factory.CreateDbContextAsync(context.RequestAborted);var query=db.Set<Agency>().AsNoTracking().Where(x=>x.CreatedAt<=page.AsOf);
+        await using var db=await factory.CreateDbContextAsync(context.RequestAborted);
+        await using var transaction=await db.Database.BeginTransactionAsync(IsolationLevel.Serializable,context.RequestAborted);
+        var query=db.Set<Agency>().AsNoTracking().Where(x=>x.CreatedAt<=page.AsOf);
         if(search.Length>0){var normalized=ClientIdentity.NormalizeName(search);query=query.Where(x=>x.NormalizedName.Contains(normalized)||x.Reference.Contains(normalized));}
         if(state.Length>0)query=query.Where(x=>x.State==state);if(manager.Length>0){var id=Guid.Parse(manager);query=query.Where(x=>x.RelationshipManagerId==id);}
         var total=await query.CountAsync(context.RequestAborted);var rows=await query.OrderBy(x=>x.Reference).ThenBy(x=>x.Id).Skip(page.Offset).Take(page.Size).ToListAsync(context.RequestAborted);
@@ -84,7 +87,10 @@ public static class AgencyEndpoints
         var drafts=await db.Set<AgencyOnboarding>().AsNoTracking().Where(x=>ids.Contains(x.AgencyId)).Select(x=>new{x.AgencyId,x.Details}).ToListAsync(context.RequestAborted);
         var userCounts=await BrokerUsers(db).Where(x=>ids.Contains(x.AgencyId!.Value)).GroupBy(x=>x.AgencyId!.Value).Select(g=>new{Id=g.Key,Total=g.Count(),Invited=g.Count(x=>x.State=="invited")}).ToDictionaryAsync(x=>x.Id,context.RequestAborted);
         var contacts=drafts.ToDictionary(x=>x.AgencyId,x=>MainContactName(x.Details));
-        return Results.Json(new{items=rows.Select(x=>new{x.Id,x.Reference,legalName=x.LegalName.Length>0?x.LegalName:null,x.State,x.OnboardingStep,userCount=userCounts.GetValueOrDefault(x.Id)?.Total??0,invitedUserCount=userCounts.GetValueOrDefault(x.Id)?.Invited??0,x.RelationshipManagerId,mainContactName=contacts.GetValueOrDefault(x.Id),relationshipManagerName=x.RelationshipManagerId is Guid m?managers.GetValueOrDefault(m):null,productCodes=products.Where(p=>p.AgencyId==x.Id).Select(p=>p.Code),lastActivityAt=activity.TryGetValue(x.Id,out var at)?(DateTimeOffset?)at:null}),totalCount=total,nextCursor=paging.Next(page,page.Offset+rows.Count<total)},Json);
+        var today=AgencyActionCounts.LondonDate(time.GetUtcNow());
+        var actions=await AgencyActionProjection.Read(db,ids,today,context.RequestAborted);
+        await transaction.CommitAsync(context.RequestAborted);
+        return Results.Json(new{items=rows.Select(x=>new{x.Id,x.Reference,legalName=x.LegalName.Length>0?x.LegalName:null,x.State,x.OnboardingStep,openActionCount=actions.GetValueOrDefault(x.Id,AgencyActionCounts.Empty).OpenActions,dueFollowUpCount=actions.GetValueOrDefault(x.Id,AgencyActionCounts.Empty).DueFollowUps,asOfDate=today,userCount=userCounts.GetValueOrDefault(x.Id)?.Total??0,invitedUserCount=userCounts.GetValueOrDefault(x.Id)?.Invited??0,x.RelationshipManagerId,mainContactName=contacts.GetValueOrDefault(x.Id),relationshipManagerName=x.RelationshipManagerId is Guid m?managers.GetValueOrDefault(m):null,productCodes=products.Where(p=>p.AgencyId==x.Id).Select(p=>p.Code),lastActivityAt=activity.TryGetValue(x.Id,out var at)?(DateTimeOffset?)at:null}),totalCount=total,nextCursor=paging.Next(page,page.Offset+rows.Count<total)},Json);
     }
     private static string? MainContactName(string details)
     {
@@ -94,11 +100,17 @@ public static class AgencyEndpoints
     // Retained agency identities, including inactive users; invited is a subset,
     // counting staged/pending acceptance identities rather than delivery attempts.
     private static IQueryable<StaffUser> BrokerUsers(BackOfficeDbContext db)=>db.Set<StaffUser>().Where(user=>user.AgencyId!=null&&db.Set<UserRole>().Any(link=>link.UserId==user.Id&&db.Set<Role>().Any(role=>role.Id==link.RoleId&&role.Scope=="agency"&&(role.Code=="broker-admin"||role.Code=="broker-user"||role.Code=="broker-readonly"))));
-    private static async Task<IResult> Kpis(IDbContextFactory<BackOfficeDbContext> factory,CancellationToken token)
+    private static async Task<IResult> Kpis(HttpContext context,IDbContextFactory<BackOfficeDbContext> factory,TimeProvider time,CancellationToken token)
     {
-        await using var db=await factory.CreateDbContextAsync(token);var counts=await db.Set<Agency>().GroupBy(x=>x.State).Select(x=>new{State=x.Key,Count=x.Count()}).ToDictionaryAsync(x=>x.State,x=>x.Count,token);
+        if(context.Request.Query.Count>0)return BadQuery(context);
+        await using var db=await factory.CreateDbContextAsync(token);
+        await using var transaction=await db.Database.BeginTransactionAsync(IsolationLevel.Serializable,token);
+        var counts=await db.Set<Agency>().GroupBy(x=>x.State).Select(x=>new{State=x.Key,Count=x.Count()}).ToDictionaryAsync(x=>x.State,x=>x.Count,token);
         var users=await BrokerUsers(db).GroupBy(x=>1).Select(g=>new{Total=g.Count(),Invited=g.Count(x=>x.State=="invited")}).SingleOrDefaultAsync(token);
-        return Results.Json(new{brokerUsers=users?.Total??0,invitedUsers=users?.Invited??0,active=counts.GetValueOrDefault("active"),onboarding=counts.GetValueOrDefault("draft"),suspended=counts.GetValueOrDefault("suspended")});
+        var today=AgencyActionCounts.LondonDate(time.GetUtcNow());
+        var actions=AgencyActionCounts.Total((await AgencyActionProjection.Read(db,null,today,token)).Values);
+        await transaction.CommitAsync(token);
+        return Results.Json(new{brokerUsers=users?.Total??0,invitedUsers=users?.Invited??0,active=counts.GetValueOrDefault("active"),onboarding=counts.GetValueOrDefault("draft"),suspended=counts.GetValueOrDefault("suspended"),openActions=actions.OpenActions,pendingStateRequests=actions.StateRequests,pendingTermsRequests=actions.TermsRequests,pendingPermissionRequests=actions.PermissionRequests,dueFollowUps=actions.DueFollowUps,asOfDate=today});
     }
     private static async Task<IResult> Products(Guid agencyId,HttpContext context,IDbContextFactory<BackOfficeDbContext> factory,TimeProvider time)
     {

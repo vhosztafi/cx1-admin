@@ -61,7 +61,7 @@ public sealed class AgencyExternalApiTests
             foreach (var client in new[] { broker, member, foreign })
             {
                 var account = await Read(client, "/api/v1/account"); Assert.Equal("agency", account.GetProperty("scope").GetString());
-                foreach (var path in new[] { "/api/v1/clients", "/api/v1/agencies", $"/api/v1/jobs/{Guid.NewGuid()}", $"/api/v1/agencies/{first}/sharing", $"/api/v1/agencies/{first}/permission-matrix" })
+                foreach (var path in new[] { "/api/v1/clients", "/api/v1/agencies", "/api/v1/agencies/kpis", $"/api/v1/jobs/{Guid.NewGuid()}", $"/api/v1/agencies/{first}/sharing", $"/api/v1/agencies/{first}/permission-matrix" })
                     Assert.Equal(HttpStatusCode.Forbidden, (await client.GetAsync(path)).StatusCode);
             }
             Assert.Equal(HttpStatusCode.Forbidden, (await staff.GetAsync("/api/v1/agency-context")).StatusCode);

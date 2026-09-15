@@ -186,3 +186,11 @@ test('actor identity scope is explicit and consistent with the stored agency',()
  assert.ok(validate({...actor,roles:['broker-admin'],scope:'agency',agencyId:uuid}));
  for(const patch of [{scope:'agency'},{agencyId:uuid},{scope:'unknown'},{scope:undefined},{agencyId:undefined}])assert.equal(validate({...actor,...patch}),false);
 });
+
+test('agency action indicators require counts and distinguish pending decisions from due obligations',()=>{
+ const validate=schema('AgencyKpis');const value={active:2,onboarding:1,suspended:0,brokerUsers:4,invitedUsers:1,openActions:3,pendingStateRequests:1,pendingTermsRequests:1,pendingPermissionRequests:1,dueFollowUps:5,asOfDate:'2026-09-15'};
+ assert.ok(validate(value));
+ for(const patch of [{dueFollowUps:-1},{openActions:undefined},{pendingTermsRequests:undefined},{asOfDate:'not-a-date'},{openTasks:8}])assert.equal(validate({...value,...patch}),false);
+ const row=schema('AgencySummary');const agency={id:uuid,reference:'AG-DEMO',state:'active',onboardingStep:6,productCodes:[],openActionCount:0,dueFollowUpCount:2,asOfDate:'2026-09-15'};
+ assert.ok(row(agency));assert.equal(row({...agency,openActionCount:undefined}),false);
+});

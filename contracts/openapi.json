@@ -64992,6 +64992,14 @@
           "openActionCount": {
             "type": "integer",
             "minimum": 0
+          },
+          "dueFollowUpCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "asOfDate": {
+            "type": "string",
+            "format": "date"
           }
         },
         "required": [
@@ -64999,7 +65007,10 @@
           "reference",
           "state",
           "onboardingStep",
-          "productCodes"
+          "productCodes",
+          "openActionCount",
+          "dueFollowUpCount",
+          "asOfDate"
         ]
       },
       "AgencyKpis": {
@@ -65029,6 +65040,26 @@
           "openActions": {
             "type": "integer",
             "minimum": 0
+          },
+          "pendingStateRequests": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "pendingTermsRequests": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "pendingPermissionRequests": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "dueFollowUps": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "asOfDate": {
+            "type": "string",
+            "format": "date"
           }
         },
         "required": [
@@ -65036,9 +65067,15 @@
           "onboarding",
           "suspended",
           "brokerUsers",
-          "invitedUsers"
+          "invitedUsers",
+          "openActions",
+          "pendingStateRequests",
+          "pendingTermsRequests",
+          "pendingPermissionRequests",
+          "dueFollowUps",
+          "asOfDate"
         ],
-        "description": "brokerUsers counts retained agency-scoped identities, including inactive users; invitedUsers counts the invited subset including staged identities. Open-action counts remain omitted until implemented."
+        "description": "brokerUsers counts retained agency-scoped identities, including inactive users; invitedUsers counts the invited subset including staged identities. openActions sums pending state, terms and permission requests; dueFollowUps separately counts immutable recorded obligations with DueOn on or before asOfDate in London, not open or completed workflow tasks. KPI totals cover all agencies independently of directory filters."
       },
       "AgencyProductWrite": {
         "type": "object",

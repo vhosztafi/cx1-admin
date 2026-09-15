@@ -77,3 +77,10 @@ For a pending or queried case, choose Link, Not duplicate, Decline or Request in
 The review has no quote, policy, rating or claims evidence yet. Those workflows are owned by later phases. Internal servicing and agency-admin accounts cannot see duplicate-review evidence. Automated local verification is available through pnpm web:browser:matches; it retains fictional decisions and screenshots without resetting the demo.
 
 Agency distribution readiness now uses the current fictional agency-distribution SettingVersion, pinned to the three exact seeded product versions. Removing a product from a later rule closes its eligibility; future rules wait until their effective instant. Provider inactivity or expired product validity also blocks readiness. Products stay draft and unavailable for rating or issue. The additive agency-reviewer@cover.example account provides the independent agency-admin identity for the upcoming approval commands; activation approval itself is not enabled yet.
+
+
+### Agency action indicators
+
+The Agents directory now displays actual pending state, terms and access-request counts both globally and per agency. Directory filters affect rows; the four KPI cards remain labelled all-agency totals. Recorded follow-up obligations due by the displayed London date are shown separately. These are immutable reminder records, not open/completed tasks; completion tracking will be supplied with the task workflows.
+
+`node scripts/verify-agency-kpis-browser.mjs` uses the previously verified lifecycle agency, creates a fictional permission request and has the independent reviewer reject it. It checks the corresponding increase/decrease in global and filtered-row counts, persistence after reload, request failure/retry and mobile containment. Existing demo records and decision history are preserved.
