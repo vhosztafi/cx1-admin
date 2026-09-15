@@ -25,6 +25,7 @@ for(const productCode of questions.products) {
     ...prototypeBusinessGroups.flatMap(group=>group.parents.map(id=>[`prototype.quote.${id}`,false])),
     ...['ea4580cbac7a',...prototypeHistoryDeclarations].map(id=>[`prototype.quote.${id}`,false]),
     ['prototype.quote.af67cb40b4de',ref('prototype.quote.af67cb40b4de',1)],
+    ['prototype.quote-value.315960b57ab1',false],
    ])},
    responses:response([['MTS-06-Q01',ref('driverPlans',1)],['MTS-07-Q01',false],['MTS-10-Q01',true],['MTS-10-Q02',10000]]),
    declarations:response([1,3,5,7,9,11,13,15,17,19].map(n=>[`MTS-12-Q${String(n).padStart(2,'0')}`,false])),

@@ -227,6 +227,11 @@
                 "label": "None",
                 "version": "mt-capture-57b711ca02317ca0"
               }
+            },
+            {
+              "questionId": "prototype.quote-value.315960b57ab1",
+              "kind": "boolean",
+              "value": false
             }
           ]
         }

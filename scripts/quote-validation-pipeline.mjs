@@ -7,6 +7,7 @@ import {validateQuoteTerm} from './quote-term-contract.mjs';
 import {validateQuoteSourceRules,validateQuoteTextBounds} from './quote-source-rules.mjs';
 import {validateQuoteBusinessReadiness} from './quote-business-readiness.mjs';
 import {reconcileQuoteEntity} from './quote-entity-reconciliation.mjs';
+import {validateQuoteTradePlateInventory} from './quote-trade-plate-inventory.mjs';
 import {validateQuotePrototypeBusiness} from './quote-prototype-business.mjs';
 import {validateQuotePrototypeVehicles} from './quote-prototype-vehicles.mjs';
 import {validateQuotePrototypeDetails} from './quote-prototype-details.mjs';
@@ -53,6 +54,7 @@ export async function createQuoteValidationPipeline() {
   collect('source',validateQuoteSourceRules(proposal,asOfDate));
   collect('history-reconciliation',reconcileQuoteHistory(proposal,questions,references,asOfDate));
   collect('conviction-period',validateQuoteConvictionPeriods(proposal));
+  collect('trade-plate-inventory',validateQuoteTradePlateInventory(proposal,questions));
   collect('text',validateQuoteTextBounds(proposal));
   for(const [stage,validate] of [
    ['business',validateQuoteBusinessReadiness],['entity-reconciliation',reconcileQuoteEntity],['prototype-business',validateQuotePrototypeBusiness],['prototype-details',validateQuotePrototypeDetails],['driver',validateQuoteDriverReadiness],

@@ -2219,8 +2219,9 @@
         {
           "kind": "field-or-collection",
           "paths": [
-            "risk.tradePlates"
-          ]
+            "risk.heldTradePlates"
+          ],
+          "captureRule": "Capture plates held as inventory with stable row IDs. Source risk.tradePlates remains the separately selected covered list; ownership does not imply cover."
         }
       ]
     },

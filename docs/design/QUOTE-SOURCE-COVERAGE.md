@@ -74,6 +74,10 @@ Legal entity is captured separately from the source company category. Limited co
 
 The seven prototype incident types are captured in Loss.declaredType independently of the source Loss.type classification. Third-party injury is retained, and theft of a vehicle is not automatically converted to total loss. Each nested loss requires its own pinned prototype selection; wrong-family references are rejected.
 
+## Held trade-plate inventory
+
+Prototype held plates are stored in risk.heldTradePlates, independently of requested covered plates in risk.tradePlates. Plates may be held without cover. A covered number must belong to held inventory; rows have independent stable IDs. Inventory completeness and uniqueness are validated without equating a coverage maximum to the held count or silently granting cover.
+
 ## Remaining contract gate
 
 Resolve overlapping prototype/funnel answers and all product-specific requiredness, dynamic option selection, source limits and conditional rules. Reconcile historical prototype field bindings with the capture-write envelope: for example `term.startsAt` is supplied as local `termIntent`, not a caller-chosen policy timestamp. Finish quote API request/response contracts and operation integration. Verify complete fictional proposals against the composed validators. Then implement and test the same rules in the actual .NET request boundary and persistent services.
