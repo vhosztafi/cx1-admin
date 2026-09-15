@@ -98,8 +98,12 @@
       },
       "required": [
         "entityType",
-        "legalName",
-        "address"
+        "proposerNames",
+        "declaredCompanyType",
+        "firstName",
+        "surname",
+        "address",
+        "contact"
       ]
     },
     "termIntent": {
@@ -298,10 +302,7 @@
         }
       },
       "required": [
-        "line1",
-        "town",
-        "postcode",
-        "country"
+        "postcode"
       ]
     },
     "Answer": {
@@ -602,10 +603,12 @@
         "id",
         "occurredOn",
         "type",
+        "declaredType",
         "description",
         "amount",
-        "status",
-        "fault"
+        "declaredStatus",
+        "fault",
+        "responses"
       ]
     },
     "Conviction": {
@@ -657,7 +660,9 @@
         "code",
         "fine",
         "points",
-        "banMonths"
+        "disqualified",
+        "declaredBanPeriod",
+        "responses"
       ]
     },
     "Driver": {
@@ -710,8 +715,7 @@
           },
           "required": [
             "type",
-            "number",
-            "testDate"
+            "issuedOn"
           ]
         },
         "convictions": {
@@ -765,13 +769,13 @@
       },
       "required": [
         "id",
+        "firstName",
+        "surname",
         "dateOfBirth",
         "address",
         "relationship",
         "usage",
         "licence",
-        "convictions",
-        "losses",
         "responses"
       ],
       "anyOf": [
@@ -968,12 +972,15 @@
       "required": [
         "id",
         "registration",
-        "make",
-        "model",
-        "manufactureYear",
+        "register",
         "body",
-        "ownership",
         "value",
+        "purchasedOn",
+        "declaredOwnerType",
+        "keptOvernightType",
+        "keptOvernightAddress",
+        "partOfLeaseAgreement",
+        "modified",
         "responses"
       ]
     },
@@ -1018,10 +1025,8 @@
         "id",
         "address",
         "use",
-        "security",
-        "buildings",
-        "contents",
-        "responses"
+        "yearsTrading",
+        "sharedWorksite"
       ]
     },
     "Business": {
@@ -1110,7 +1115,8 @@
         "turnover",
         "wageRoll",
         "activities",
-        "responses"
+        "responses",
+        "declaredActivitySplit"
       ]
     },
     "PreviousInsurance": {
@@ -1155,11 +1161,7 @@
         }
       },
       "required": [
-        "insurer",
-        "expiresOn",
-        "noClaimsYears",
-        "responses",
-        "noClaimsYearsBasis"
+        "responses"
       ]
     },
     "DriverBasis": {
@@ -1234,9 +1236,6 @@
       "properties": {
         "business": {
           "$ref": "#/$defs/Business"
-        },
-        "driverBasis": {
-          "$ref": "#/$defs/DriverBasis"
         },
         "drivers": {
           "type": "array",
@@ -1333,15 +1332,10 @@
       },
       "required": [
         "business",
-        "driverBasis",
-        "drivers",
-        "vehicles",
-        "specifiedVehicleIds",
-        "tradePlates",
-        "premises",
+        "responses",
         "previousInsurance",
         "declarations",
-        "materialFacts"
+        "specifiedVehiclesRequested"
       ]
     },
     "Location": {
@@ -1549,99 +1543,6 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "sections": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "id": {
-                "$ref": "#/$defs/Id"
-              },
-              "code": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 100
-              },
-              "limit": {
-                "$ref": "#/$defs/Amount"
-              },
-              "excess": {
-                "$ref": "#/$defs/Amount"
-              }
-            },
-            "required": [
-              "id",
-              "code",
-              "limit",
-              "excess"
-            ]
-          },
-          "minItems": 1,
-          "maxItems": 1000
-        },
-        "endorsements": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "code": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 100
-              },
-              "version": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 50
-              },
-              "text": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 8000
-              }
-            },
-            "required": [
-              "code",
-              "version",
-              "text"
-            ]
-          },
-          "minItems": 0,
-          "maxItems": 1000
-        },
-        "warranties": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "code": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 100
-              },
-              "version": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 50
-              },
-              "text": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 8000
-              }
-            },
-            "required": [
-              "code",
-              "version",
-              "text"
-            ]
-          },
-          "minItems": 0,
-          "maxItems": 1000
-        },
         "responses": {
           "$ref": "#/$defs/Responses"
         },
@@ -1663,9 +1564,6 @@
         }
       },
       "required": [
-        "sections",
-        "endorsements",
-        "warranties",
         "responses"
       ]
     },

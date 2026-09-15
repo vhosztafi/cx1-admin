@@ -17,6 +17,23 @@ export async function writeQuoteSchemas(policy) {
   // identifiers in proposal JSON.
   delete defs.PreviousInsurance.properties.evidenceDocumentIds;
   defs.PreviousInsurance.required=defs.PreviousInsurance.required.filter(key=>key!=='evidenceDocumentIds');
+  // Structural completeness for capture, not issued-policy completeness.
+  // Conditional answers/manual lookup fields still belong to the composed
+  // validators. Never require invented normalized fields or policy outcomes.
+  insured.required=['entityType','proposerNames','declaredCompanyType','firstName','surname','address','contact'];
+  defs.Address.required=['postcode'];
+  defs.Business.required=['description','startedOn','turnover','wageRoll','activities','responses','declaredActivitySplit'];
+  defs.Driver.required=['id','firstName','surname','dateOfBirth','address','relationship','usage','licence','responses'];
+  defs.Driver.properties.licence.required=['type','issuedOn'];
+  defs.Vehicle.required=['id','registration','register','body','value','purchasedOn','declaredOwnerType','keptOvernightType','keptOvernightAddress','partOfLeaseAgreement','modified','responses'];
+  defs.Premises.required=['id','address','use','yearsTrading','sharedWorksite'];
+  defs.PreviousInsurance.required=['responses'];
+  defs.Loss.required=['id','occurredOn','type','declaredType','description','amount','declaredStatus','fault','responses'];
+  defs.Conviction.required=['id','occurredOn','code','fine','points','disqualified','declaredBanPeriod','responses'];
+  delete defs.RoadRisk.properties.driverBasis;
+  defs.RoadRisk.required=['business','responses','previousInsurance','declarations','specifiedVehiclesRequested'];
+  for(const key of ['sections','endorsements','warranties'])delete defs.Cover.properties[key];
+  defs.Cover.required=['responses'];
   const termIntent=object({
     kind:{type:'string',enum:['annual','short-period']},
     localStartDate:ref('Date'),localStartTime:{type:'string',pattern:'^(?:[01][0-9]|2[0-3]):[0-5][0-9]$'},

@@ -21,6 +21,19 @@ test('quote capture rejects policy authority, ownership and unsupported products
   assert.equal(draft({...base(),productCode:'commercial-combined'}),false);
   assert.equal(draft({...base(),risk:{supportFlags:[]}}),false);
   assert.equal(draft({...base(),risk:{previousInsurance:{evidenceDocumentIds:[id]}}}),false);
+  for(const key of ['sections','endorsements','warranties'])assert.equal(draft({...base(),cover:{[key]:[]}}),false,key);
+  assert.equal(draft({...base(),risk:{driverBasis:{kind:'named'}}}),false);
+});
+
+test('capture-ready requirements use source dates and conditional capture rather than fabricated policy fields',async()=>{
+ const schema=await read('schemas/quote-ready.schema.json'),policy=await read('schemas/policy.schema.json');
+ assert.deepEqual(schema.$defs.Driver.properties.licence.required,['type','issuedOn']);
+ assert.ok(policy.$defs.Driver.properties.licence.required.includes('testDate'));
+ for(const key of ['ownership','manufactureYear'])assert.ok(!schema.$defs.Vehicle.required.includes(key));
+ assert.ok(!schema.$defs.PreviousInsurance.required.includes('noClaimsYears'));
+ assert.ok(!schema.properties.insured.required.includes('legalName')); // Conditional company name remains enforced in the business validator.
+ const {proposal:p}=await read('examples/quote-capture-motor-trade-combined.json');
+ assert.equal(ready(p),true);delete p.risk.drivers[0].licence.issuedOn;p.risk.drivers[0].licence.testDate='2000-01-01';assert.equal(ready(p),false);
 });
 
 test('partial quote children require stable IDs and typed answer/reference selections',()=>{
@@ -44,12 +57,9 @@ test('driver repeated histories preserve typed dates, money and distinct sentenc
   driver.countyCourtJudgments[0].occurredOn='2021-02-01';driver.countyCourtJudgments[0].approved=true;assert.equal(draft(proposal),false);
 });
 
-test('both Motor Trade fixture shapes convert without copying policy evidence or authority',async()=>{
+test('both actual Motor Trade capture fixtures satisfy capture-ready shape without issued-policy normalization',async()=>{
   for(const product of ['motor-trade-road-risks','motor-trade-combined']) {
-    const policy=await read(`examples/${product}.json`);
-    const {clientId,clientAgencyRelationshipId,...insured}=policy.insured;
-    const risk=structuredClone(policy.risk);delete risk.previousInsurance.evidenceDocumentIds;
-    const proposal={schemaVersion:'1.0',productCode:product,insured,risk,cover:policy.cover,termIntent:{kind:'annual',localStartDate:'2026-01-01',localStartTime:'00:00',timeZone:'Europe/London'}};
+    const {proposal}=await read(`examples/quote-capture-${product}.json`);
     assert.equal(ready(proposal),true,JSON.stringify(ready.errors));
     assert.equal(draft(proposal),true,JSON.stringify(draft.errors));
     proposal.termIntent.kind='short-period';assert.equal(ready(proposal),false);

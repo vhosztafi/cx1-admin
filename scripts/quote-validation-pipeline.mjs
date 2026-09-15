@@ -37,8 +37,8 @@ import {validateQuoteActivitySplit} from './quote-activity-split.mjs';
 // separate gates. Caller supplies trusted as-of and persisted vehicle modes.
 export async function createQuoteValidationPipeline() {
  const read=async path=>JSON.parse(await readFile(new URL(`../contracts/${path}`,import.meta.url),'utf8'));
- const [schema,questions,references]=await Promise.all([read('schemas/quote-draft.schema.json'),read('quote-question-catalogue.json'),read('reference-data/motor-trade-capture.json')]);
- const ajv=new Ajv2020({strict:true,allErrors:true});addFormats(ajv);const shape=ajv.compile(schema);
+ const [schema,readySchema,questions,references]=await Promise.all([read('schemas/quote-draft.schema.json'),read('schemas/quote-ready.schema.json'),read('quote-question-catalogue.json'),read('reference-data/motor-trade-capture.json')]);
+ const ajv=new Ajv2020({strict:true,allErrors:true});addFormats(ajv);const shape=ajv.compile(schema),readyShape=ajv.compile(readySchema);
  return (text,{asOfDate,vehicleModes={}}={})=>{
   let proposal;
   try{proposal=parseQuoteJson(text);}catch(error){return {status:'invalid-draft',issues:[{stage:'json',code:error instanceof SyntaxError?'invalid-json':error.message,path:''}]};}
@@ -70,6 +70,7 @@ export async function createQuoteValidationPipeline() {
   collect('vehicle-registers',validateQuoteVehicleRegisters(proposal));
   collect('overnight',validateQuoteVehicleOvernight(proposal,questions));
   collect('cover',validateQuoteCoverReadiness(proposal,questions,references).issues);
+  if(!issues.length&&!readyShape(proposal))collect('capture-shape',readyShape.errors.map(error=>({code:error.keyword,path:error.instancePath})));
   return {status:issues.length?'incomplete':'section-checks-pass',issues};
  };
 }

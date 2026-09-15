@@ -90,6 +90,10 @@ The three proposer controls target explicit array slots0–2. Quote capture requ
 
 Each vehicle preserves owned-not-for-sale or held-for-sale register membership independently of its legal owner and specified status. Add-action metadata selects the register. Register lists and total/MID counts are derived from stable rows; incomplete rows remain unassigned and missing MID declarations give an unknown count. Caller-supplied totals are not capture fields.
 
+## Capture-ready shape
+
+Both actual Motor Trade captures satisfy the structural ready schema and composed section validators. Ready requirements use entered licence dates, declared fields and applicable section data; conditional fields are checked semantically. Quote writes reject policy sections, endorsements, warranties and the normalized policy driverBasis. They do not require invented issued-policy normalization. Section-checks-pass still does not establish evidence, authority, runtime persistence or phase acceptance.
+
 ## Remaining contract gate
 
 Resolve overlapping prototype/funnel answers and all product-specific requiredness, dynamic option selection, source limits and conditional rules. Reconcile historical prototype field bindings with the capture-write envelope: for example `term.startsAt` is supplied as local `termIntent`, not a caller-chosen policy timestamp. Finish quote API request/response contracts and operation integration. Verify complete fictional proposals against the composed validators. Then implement and test the same rules in the actual .NET request boundary and persistent services.
