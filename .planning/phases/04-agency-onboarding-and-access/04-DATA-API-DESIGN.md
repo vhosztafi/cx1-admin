@@ -1,5 +1,13 @@
 # Phase 4 data and API decisions
 
+### Implemented paged internal sharing reads (04-07)
+
+GET `/agencies/{agencyId}/sharing/clients` and `/sharing/relationships/{relationshipId}/contacts|instructions` now expose only their approved public DTO fields. Client search accepts q up to200 characters; contacts/instructions use the relationship path, without an arbitrary agency override. Counts and rows are filtered to the selected active agency's current relationships before pagination. Every successful internal page records preview audit under the unchanged staff actor.
+
+Sharing projection methods can join a caller-held serializable transaction; weaker isolation is rejected. If no transaction exists they retain their prior owned-transaction behavior. PreviewPageScope requires the caller's serializable transaction and computes a cursor fingerprint from actor stamp, agency version, permission grant versions and the selected visible projection values. The endpoint validates PartyPaging.ReadBound, materializes the page and commits audit within that same transaction. Hidden flag instructions/reasons, master person names and marketing consent are not fingerprint inputs. Visible membership/value changes require a fresh first page; hidden-only edits do not invalidate the cursor. Cursor AsOf is issuance metadata here, not a historical data query: a changed visible projection invalidates the cursor instead of pretending to serve an old snapshot.
+
+MVP performance tradeoff: fingerprinting materializes the filtered visible set before paging, in addition to SQL count/page queries. This favors explicit correctness for the small demo dataset. Replace it with a maintained visible-scope revision before large agency datasets; do not use raw entity rowversions that would expose hidden-only changes or split fingerprinting/materialization into separate transactions. External sharing HTTP routes remain closed until broker identity integration.
+
 ### Implemented current sharing context (04-07)
 
 AgencySharingService.Context and PreviewContext use the same projection under serializable current agency/identity authorization. They expose only agency identity, products from the latest published agency terms effective on today's Europe/London business date, and the explicit bordereau grant state. The next terms version supplies the exclusive product effective end; at the next local midnight the later terms selection replaces the prior products. Only product code/name/effective dates leave the terms storage boundary: commissions, settlement, credit and raw snapshots remain hidden. Agencies without published terms return an empty product list.

@@ -4,6 +4,7 @@ using BackOffice.Application;
 using BackOffice.Application.Agencies;
 using BackOffice.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace BackOffice.Infrastructure.Agencies;
 
@@ -38,7 +39,8 @@ public static partial class AgencySharingService
         query = query with { Search = query.Search?.Trim() };
         // Repeatable authorization, membership and grant predicates through count,
         // materialization and audit. Every page resolves current scope afresh.
-        await using var transaction = await db.Database.BeginTransactionAsync(IsolationLevel.Serializable, token);
+        RequireSerializableIfPresent(db);
+        await using var transaction = db.Database.CurrentTransaction == null ? await db.Database.BeginTransactionAsync(IsolationLevel.Serializable, token) : null;
         if (preview) await AuthorizePreview(db, actor, agencyId, token);
         else await AgencyScope.Resolve(db, actor, agencyId, "agency-sharing-read", token);
         var rows = project(db, agencyId, query);
@@ -50,8 +52,14 @@ public static partial class AgencySharingService
                 After = JsonSerializer.Serialize(new { agencyId, section }) });
             await db.SaveChangesAsync(token);
         }
-        await transaction.CommitAsync(token);
+        if (transaction != null) await transaction.CommitAsync(token);
         return new(items, total, query.Offset, query.Size);
+    }
+
+    private static void RequireSerializableIfPresent(BackOfficeDbContext db)
+    {
+        if (db.Database.CurrentTransaction is { } current && current.GetDbTransaction().IsolationLevel != IsolationLevel.Serializable)
+            throw new InvalidOperationException("Sharing reads require serializable transaction isolation.");
     }
 
     private static async Task AuthorizePreview(BackOfficeDbContext db, ActorContext actor, Guid agencyId, CancellationToken token)
