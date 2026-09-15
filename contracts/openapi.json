@@ -41456,7 +41456,7 @@
       "get": {
         "operationId": "compareQuoteRevisions",
         "summary": "compare Quote Revisions",
-        "description": "Requires quote-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "description": "Requires quote-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Compare revisions belonging to this quote under current authorization. Child UUIDs determine identity; before/after paths are JSON pointers into their respective snapshots. JSON strings retain exact typed values. Paginate complete changes with a protected cursor bound to both revision IDs and current scope; never truncate a value. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
         "tags": [
           "quotes"
         ],
@@ -41494,6 +41494,27 @@
               "type": "string",
               "format": "uuid"
             }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
           }
         ],
         "responses": {
@@ -41507,12 +41528,19 @@
                   "minLength": 1,
                   "maxLength": 100
                 }
+              },
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
               }
             },
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/VersionComparison"
+                  "$ref": "#/components/schemas/QuoteRevisionComparison"
                 }
               }
             }
@@ -41525,6 +41553,15 @@
                   "$ref": "#/components/schemas/Problem"
                 }
               }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
             }
           },
           "401": {
@@ -41533,6 +41570,15 @@
               "application/problem+json": {
                 "schema": {
                   "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
                 }
               }
             }
@@ -41545,6 +41591,15 @@
                   "$ref": "#/components/schemas/Problem"
                 }
               }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
             }
           },
           "404": {
@@ -41553,6 +41608,15 @@
               "application/problem+json": {
                 "schema": {
                   "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
                 }
               }
             }
@@ -41565,6 +41629,15 @@
                   "$ref": "#/components/schemas/Problem"
                 }
               }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
             }
           },
           "503": {
@@ -41575,9 +41648,19 @@
                   "$ref": "#/components/schemas/Problem"
                 }
               }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
             }
           }
-        }
+        },
+        "x-runtime-status": "planned-phase-05"
       }
     },
     "/relationships/{relationshipId}/contacts/{contactId}/end": {
@@ -69796,6 +69879,205 @@
           "questionSetVersion",
           "referenceDataVersion",
           "captureEligible"
+        ]
+      },
+      "QuoteRevisionChange": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "const": "added"
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              },
+              "itemId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "after": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  },
+                  "json": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1048576
+                  }
+                },
+                "required": [
+                  "path",
+                  "json"
+                ]
+              }
+            },
+            "required": [
+              "kind",
+              "path",
+              "after"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "const": "removed"
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              },
+              "itemId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "before": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  },
+                  "json": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1048576
+                  }
+                },
+                "required": [
+                  "path",
+                  "json"
+                ]
+              }
+            },
+            "required": [
+              "kind",
+              "path",
+              "before"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "changed",
+                  "reordered"
+                ]
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              },
+              "itemId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "before": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  },
+                  "json": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1048576
+                  }
+                },
+                "required": [
+                  "path",
+                  "json"
+                ]
+              },
+              "after": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  },
+                  "json": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1048576
+                  }
+                },
+                "required": [
+                  "path",
+                  "json"
+                ]
+              }
+            },
+            "required": [
+              "kind",
+              "path",
+              "before",
+              "after"
+            ]
+          }
+        ]
+      },
+      "QuoteRevisionComparison": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "quoteId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "leftRevisionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "rightRevisionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuoteRevisionChange"
+            },
+            "maxItems": 100
+          },
+          "totalChanges": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "nextCursor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        },
+        "required": [
+          "quoteId",
+          "leftRevisionId",
+          "rightRevisionId",
+          "changes",
+          "totalChanges"
         ]
       },
       "QuoteLookupReference": {

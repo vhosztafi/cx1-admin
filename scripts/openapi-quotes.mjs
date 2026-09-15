@@ -32,8 +32,20 @@ export function addQuoteContracts({schemas:s,ref:r,text:t,enumeration:e,object:o
   // Retain the already reviewed compare route and operation identity.
   const comparison=paths['/quotes/{quoteId}/compare'].get;
   for(const parameter of comparison.parameters.filter(parameter=>parameter.in==='query'))parameter.required=true;
+  // Serialized JSON preserves scalar type and complete prior values. A missing
+  // side differs from a present side containing the JSON literal null.
+  const side=o({path:t(2000),json:{type:'string',minLength:1,maxLength:1048576}});
+  s.QuoteRevisionChange={oneOf:[
+    o({kind:{const:'added'},path:t(2000),itemId:id,after:side},['kind','path','after']),
+    o({kind:{const:'removed'},path:t(2000),itemId:id,before:side},['kind','path','before']),
+    o({kind:e('changed','reordered'),path:t(2000),itemId:id,before:side,after:side},['kind','path','before','after']),
+  ]};
+  s.QuoteRevisionComparison=o({quoteId:id,leftRevisionId:id,rightRevisionId:id,changes:{...a(r('QuoteRevisionChange')),maxItems:100},totalChanges:integer,nextCursor:t(2048)},['quoteId','leftRevisionId','rightRevisionId','changes','totalChanges']);
+  comparison.responses[200].content={'application/json':{schema:r('QuoteRevisionComparison')}};
+  comparison.parameters.push({name:'cursor',in:'query',required:false,schema:t(2048)},{name:'pageSize',in:'query',required:false,schema:{type:'integer',minimum:1,maximum:100,default:25}});
+  comparison.description+=' Compare revisions belonging to this quote under current authorization. Child UUIDs determine identity; before/after paths are JSON pointers into their respective snapshots. JSON strings retain exact typed values. Paginate complete changes with a protected cursor bound to both revision IDs and current scope; never truncate a value.';
   const supportPaths=addQuoteSupportContracts({schemas:s,ref:r,text:t,enumeration:e,object:o,array:a,id,instant,operation:op,list,paths});
-  for(const path of [...supportPaths,'/quotes','/quotes/{quoteId}','/quotes/{quoteId}/proposal','/quotes/{quoteId}/withdraw','/quotes/{quoteId}/clone','/quotes/{quoteId}/readiness','/quotes/{quoteId}/revisions','/quotes/{quoteId}/revisions/{revisionId}','/quote-products'])
+  for(const path of [...supportPaths,'/quotes','/quotes/{quoteId}','/quotes/{quoteId}/proposal','/quotes/{quoteId}/withdraw','/quotes/{quoteId}/clone','/quotes/{quoteId}/readiness','/quotes/{quoteId}/revisions','/quotes/{quoteId}/revisions/{revisionId}','/quotes/{quoteId}/compare','/quote-products'])
     for(const operation of Object.values(paths[path])) {
       operation['x-runtime-status']='planned-phase-05';
       operation.description+=' Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.';

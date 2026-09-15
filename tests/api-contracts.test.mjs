@@ -55,7 +55,7 @@ test('quote readiness and revision discovery are scoped reads with required cont
  assert.equal(readiness['x-idempotency'],'not-cached');assert.ok(!document.paths['/quotes/{quoteId}/validate']);
  const product=getOperation('listQuoteProducts');assert.ok(product.parameters.some(parameter=>parameter.name==='relationshipId'&&parameter.required));
  const revision=getOperation('getQuoteRevision');assert.deepEqual(revision.parameters.filter(parameter=>parameter.in==='path').map(parameter=>parameter.name),['quoteId','revisionId']);
- const comparison=getOperation('compareQuoteRevisions');assert.ok(comparison.parameters.filter(parameter=>parameter.in==='query').every(parameter=>parameter.required));
+ const comparison=getOperation('compareQuoteRevisions');assert.ok(comparison.parameters.filter(parameter=>['leftRevisionId','rightRevisionId'].includes(parameter.name)).every(parameter=>parameter.required));
  for(const name of ['getQuote','validateQuote','getQuoteRevision','listQuoteProducts']) {
   const operation=getOperation(name);assert.equal(operation['x-runtime-status'],'planned-phase-05');
   assert.equal(operation.responses[200].headers['Cache-Control'].schema.const,'no-store');
@@ -118,6 +118,20 @@ test('quote evidence requires revision/file identity and cannot forge verificati
  }
  assert.match(getOperation('withdrawQuoteEvidence').parameters.find(parameter=>parameter.name==='If-Match').description,/evidence ETag/);
  const download=getOperation('downloadQuoteEvidenceFile').responses[200];assert.ok(download.content['application/octet-stream']);assert.equal(download.headers['X-Content-Type-Options'].schema.const,'nosniff');
+});
+
+test('quote comparison preserves typed before/after values and paginates complete changes',()=>{
+ const check=ajv.getSchema(`${rootId}#/$defs/QuoteRevisionChange`);
+ const added={kind:'added',path:'/risk/field',after:{path:'/risk/field',json:'null'}};
+ assert.equal(check(added),true);assert.equal(check({...added,before:{path:'/risk/field',json:'null'}}),false);
+ assert.equal(check({kind:'changed',path:'/risk/field',before:{path:'/risk/field',json:'1'},after:{path:'/risk/field',json:'"1"'}}),true);
+ assert.equal(check({kind:'changed',path:'/risk/field',after:{path:'/risk/field',json:'1'}}),false);
+ const operation=getOperation('compareQuoteRevisions');
+ assert.equal(operation.responses[200].content['application/json'].schema.$ref,'#/components/schemas/QuoteRevisionComparison');
+ assert.equal(operation.parameters.find(parameter=>parameter.name==='pageSize').schema.maximum,100);
+ assert.equal(operation.parameters.find(parameter=>parameter.name==='cursor').required,false);
+ assert.equal(document.components.schemas.QuoteRevisionComparison.properties.changes.maxItems,100);
+ assert.equal(operation.responses[200].headers['Cache-Control'].schema.const,'no-store');
 });
 test('every inline request, response and parameter schema compiles strictly',()=>{
  for(const op of operations){
