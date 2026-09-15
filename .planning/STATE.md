@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-15T09:55:55.668674+00:00"
+last_updated: "2026-09-15T10:01:28.293018+00:00"
 last_activity: 2026-09-15
 progress:
   total_phases: 13
@@ -25,7 +25,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 ## Current Position
 
 Phase: 5 of 13 (Motor Trade quote capture)
-Plan: 05-01 of11 in progress; all255source field shapes mapped; core quote API contracts;139tests
+Plan: 05-01 of11 in progress; all255source field shapes mapped; lookup/evidence API contracts;143tests
 Status: In progress — autonomous
 Last activity: 2026-09-15 — Phase4 accepted:329backend/57SQL,81contracts,30frontend,20browser journeys and restart persistence.
 
@@ -54,7 +54,7 @@ Progress: Phases1–4 complete;4/13phases,24completed plans.
 ## Session Continuity
 
 Last session: 2026-09-15
-Stopped at:05-01 core quote OpenAPI revised;139contracts and330operations pass. Strict capture writes/ID receipts, GETreadiness, product/revision reads and status-filter traceability reconciled. NEXT lookup/evidence/comparison API details and full readiness/overlap/source-limit contracts/composed fixtures. No actual quote runtime endpoints or backend/UI changes.
+Stopped at:05-01 lookup/evidence API contracts added;143contracts/336operations pass. Typed targets, revision fingerprints, manual/candidate provenance, quote-owned file attestations and ID receipts. NEXT comparison API and full readiness/overlap/source-limit/prototype-binding composition. No actual quote endpoints/uploads/backend/UI changes.
 Resume file: .planning/phases/05-motor-trade-quote-capture/05-01-PROGRESS.md
 
 ## Autonomous continuation
@@ -63,4 +63,4 @@ User approved requirements/roadmap and autonomous choices/progression on 2026-09
 
 Thread heartbeat: continue-cover-mga-back-office-mvp, active every 10 minutes. Resume unfinished work in this same task; notify meaningful progress/blockers only; pause on actual milestone completion, user stop or persistent external blocker with no remaining useful work.
 
-Latest05-01 checkpoint:139contract tests pass; core quote API contracts added. Read05-01-PROGRESS; no plan/phase completion.
+Latest05-01 checkpoint:143contract tests pass; lookup/evidence API definitions added. Read05-01-PROGRESS; no plan/phase completion.

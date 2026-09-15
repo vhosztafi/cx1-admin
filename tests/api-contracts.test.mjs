@@ -61,6 +61,64 @@ test('quote readiness and revision discovery are scoped reads with required cont
   assert.equal(operation.responses[200].headers['Cache-Control'].schema.const,'no-store');
  }
 });
+
+test('quote lookup requests restrict target kinds and never accept arbitrary provider URLs',()=>{
+ const check=ajv.getSchema(`${rootId}#/$defs/QuoteLookupRequest`);
+ const id='00000000-0000-4000-8000-000000000001';
+ const request={kind:'vehicle',revisionId:id,inputFingerprint:'a'.repeat(64),target:{kind:'vehicle',riskItemId:id},query:{registration:'DEMO 01'}};
+ assert.equal(check(request),true);
+ assert.equal(check({...request,url:'https://example.com'}),false);
+ assert.equal(check({...request,target:{kind:'insured'}}),false);
+ assert.equal(check({...request,query:{registration:'DEMO 01',providerResult:{}}}),false);
+ assert.equal(check({...request,scenario:'live-provider'}),false);
+ assert.equal(check({...request,inputFingerprint:'invalid'}),false);
+});
+
+test('candidate and manual lookup selection have distinct provenance and bounded typed values',()=>{
+ const check=ajv.getSchema(`${rootId}#/$defs/QuoteLookupSelectionRequest`);
+ const id='00000000-0000-4000-8000-000000000001';
+ const base={revisionId:id,inputFingerprint:'a'.repeat(64)};
+ assert.equal(check({...base,mode:'candidate',lookupId:id,candidateId:id}),true);
+ assert.equal(check({...base,mode:'candidate',lookupId:id,candidateId:id,values:{}}),false);
+ const manual={...base,mode:'manual',kind:'address',target:{kind:'insured'},values:{line1:'1 Example Street',town:'Example',postcode:'S9 2QT',country:'GB'},reason:'No lookup match'};
+ assert.equal(check(manual),true);
+ const missing=structuredClone(manual);delete missing.reason;assert.equal(check(missing),false);
+ assert.equal(check({...manual,candidateId:id}),false);
+ assert.equal(check({...manual,values:{...manual.values,premium:'100.00'}}),false);
+});
+
+test('pending and failed quote lookups cannot expose successful candidates',()=>{
+ const check=ajv.getSchema(`${rootId}#/$defs/QuoteLookupView`);
+ const id='00000000-0000-4000-8000-000000000001';
+ const view={id,quoteId:id,revisionId:id,inputFingerprint:'a'.repeat(64),kind:'vehicle',state:'pending',candidates:[],attempts:0,source:'deterministic-demo'};
+ assert.equal(check(view),true);
+ const candidate={id,kind:'vehicle',values:{registration:'DEMO 01',make:'Example',model:'Demo',manufactureYear:2020}};
+ for(const state of ['pending','no-match','failed'])assert.equal(check({...view,state,candidates:[candidate]}),false);
+ assert.equal(check({...view,state:'succeeded'}),false);
+ assert.equal(check({...view,state:'succeeded',candidates:[candidate]}),true);
+ assert.equal(check({...view,kind:'address',state:'succeeded',candidates:[candidate]}),false);
+ assert.equal(check({...view,rawProviderResponse:'private'}),false);
+});
+
+test('quote evidence requires revision/file identity and cannot forge verification or a storage locator',()=>{
+ const check=ajv.getSchema(`${rootId}#/$defs/QuoteEvidenceAttachRequest`);
+ const id='00000000-0000-4000-8000-000000000001';
+ const request={revisionId:id,inputFingerprint:'a'.repeat(64),requirementCode:'previous-insurance',fileId:id,reason:'Fictional evidence'};
+ assert.equal(check(request),true);
+ for(const field of ['verified','state','storagePath','externalUrl','documentVersionId'])assert.equal(check({...request,[field]:'forged'}),false);
+ const upload=getOperation('uploadQuoteEvidenceFile');
+ const fileSchema=upload.requestBody.content['multipart/form-data'].schema;
+ assert.equal(fileSchema.properties.file.maxLength,10485760);
+ assert.deepEqual(fileSchema.properties.contentType.enum,['application/pdf','image/png','image/jpeg','text/plain']);
+ for(const name of ['startQuoteLookup','selectQuoteLookup','uploadQuoteEvidenceFile','attachQuoteEvidence','withdrawQuoteEvidence']) {
+  const operation=getOperation(name);assert.ok(operation.parameters.some(parameter=>parameter.name==='If-Match'&&parameter.required));
+  assert.ok(operation.parameters.some(parameter=>parameter.name==='Idempotency-Key'&&parameter.required));
+  const response=operation.responses[name==='startQuoteLookup'?202:['uploadQuoteEvidenceFile','attachQuoteEvidence'].includes(name)?201:200];
+  assert.equal(response.content['application/json'].schema.$ref,'#/components/schemas/QuoteIdentityResult');
+ }
+ assert.match(getOperation('withdrawQuoteEvidence').parameters.find(parameter=>parameter.name==='If-Match').description,/evidence ETag/);
+ const download=getOperation('downloadQuoteEvidenceFile').responses[200];assert.ok(download.content['application/octet-stream']);assert.equal(download.headers['X-Content-Type-Options'].schema.const,'nosniff');
+});
 test('every inline request, response and parameter schema compiles strictly',()=>{
  for(const op of operations){
   const schemas=[...op.parameters.map(p=>p.schema),...Object.values(op.requestBody?.content??{}).map(c=>c.schema),...Object.values(op.responses).flatMap(response=>Object.values(response.content??{}).map(c=>c.schema))];
@@ -241,8 +299,10 @@ test('evidence associations retain item scope and withdrawal cannot masquerade a
  const decision=getOperation('decideProposalEvidence').requestBody.content['application/json'].schema;
  assert.deepEqual(decision.properties.state.enum,['accepted','rejected']);
  for(const name of ['Quote','Draft']){
-  const attach=getOperation(`attach${name}Evidence`).requestBody.content['application/json'].schema;
-  assert.ok(attach.required.includes('documentVersionId'));assert.ok(attach.properties.riskItemId);
+  const body=getOperation(`attach${name}Evidence`).requestBody.content['application/json'].schema;
+  const attach=body.$ref?document.components.schemas[body.$ref.split('/').at(-1)]:body;
+  assert.ok(attach.required.includes(name==='Quote'?'fileId':'documentVersionId'));assert.ok(attach.properties.riskItemId);
+  if(name==='Quote')for(const field of ['revisionId','inputFingerprint'])assert.ok(attach.required.includes(field));
   const withdraw=getOperation(`withdraw${name}Evidence`).requestBody.content['application/json'].schema;
   assert.deepEqual(withdraw.required,['reason']);assert.equal(withdraw.additionalProperties,false);
  }

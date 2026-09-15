@@ -1,3 +1,4 @@
+import {addQuoteSupportContracts} from './openapi-quote-support.mjs';
 // Phase 5 capture contracts. Future workflow operations remain separate; this
 // document is not evidence that the runtime quote routes have been implemented.
 export function addQuoteContracts({schemas:s,ref:r,text:t,enumeration:e,object:o,array:a,id,instant,boolean:b,integer,operation:op,list,paths}) {
@@ -31,7 +32,8 @@ export function addQuoteContracts({schemas:s,ref:r,text:t,enumeration:e,object:o
   // Retain the already reviewed compare route and operation identity.
   const comparison=paths['/quotes/{quoteId}/compare'].get;
   for(const parameter of comparison.parameters.filter(parameter=>parameter.in==='query'))parameter.required=true;
-  for(const path of ['/quotes','/quotes/{quoteId}','/quotes/{quoteId}/proposal','/quotes/{quoteId}/withdraw','/quotes/{quoteId}/clone','/quotes/{quoteId}/readiness','/quotes/{quoteId}/revisions','/quotes/{quoteId}/revisions/{revisionId}','/quote-products'])
+  const supportPaths=addQuoteSupportContracts({schemas:s,ref:r,text:t,enumeration:e,object:o,array:a,id,instant,operation:op,list,paths});
+  for(const path of [...supportPaths,'/quotes','/quotes/{quoteId}','/quotes/{quoteId}/proposal','/quotes/{quoteId}/withdraw','/quotes/{quoteId}/clone','/quotes/{quoteId}/readiness','/quotes/{quoteId}/revisions','/quotes/{quoteId}/revisions/{revisionId}','/quote-products'])
     for(const operation of Object.values(paths[path])) {
       operation['x-runtime-status']='planned-phase-05';
       operation.description+=' Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.';
