@@ -67088,7 +67088,8 @@
             "enum": [
               "client",
               "contact",
-              "match"
+              "match",
+              "quote"
             ]
           }
         },

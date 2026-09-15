@@ -1,0 +1,116 @@
+using System.Security.Cryptography;
+using System.Text.Json;
+using BackOffice.Application;
+using BackOffice.Application.Quotes;
+using BackOffice.Infrastructure.Persistence;
+using BackOffice.Infrastructure.Platform;
+using Microsoft.EntityFrameworkCore;
+
+namespace BackOffice.Infrastructure.Quotes;
+
+public sealed record StoredQuote(Quote Quote, QuoteRevision Revision);
+
+// Internal command service. HTTP DTO/CSRF/size handling and match attachment are
+// separate integration work; these methods do not expose an endpoint.
+public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory, TimeProvider time)
+{
+    private readonly SqlCommandBoundary commands = new(factory, time);
+
+    public Task<CommandOutcome> CreateAsync(ActorContext actor, Guid relationshipId, Guid productVersionId,
+        string? proposal, string key, Guid correlationId, CancellationToken token = default)
+    {
+        QuoteRelationshipScope? scope = null; EligibleQuoteCapture? selection = null;
+        return commands.ExecuteAuthorizedAsync(new(actor.UserId, "/api/v1/quotes", key, correlationId),
+            new { relationshipId, productVersionId, proposal }, "quote.create-command",
+            async (db, ct) =>
+            {
+                scope = await QuoteScope.ForRelationshipAsync(db, actor, relationshipId, QuoteAccess.Capture, ct);
+                selection = await QuoteCaptureEligibility.ResolveAsync(db, scope, productVersionId, time.GetUtcNow(), token: ct);
+            },
+            async (db, ct) =>
+            {
+                var prepared = QuoteRules.Prepare(proposal, selection!.Product.Code, selection.Pins);
+                var now = time.GetUtcNow();
+                var quote = new Quote { AgencyId = scope!.Agency.Id, ClientId = scope.Client.Id, RelationshipId = scope.Relationship.Id,
+                    ProductId = selection.Product.Id, CreatedBy = actor.UserId, CreatedAt = now, UpdatedAt = now };
+                db.Add(quote); await db.SaveChangesAsync(ct);
+                await Append(db, quote, selection, prepared, 1, null, actor.UserId, now, ct);
+                return Outcome(quote, 201);
+            }, token);
+    }
+
+    public Task<CommandOutcome> SaveAsync(ActorContext actor, Guid quoteId, byte[] expectedVersion, string proposal,
+        string? reason, string key, Guid correlationId, CancellationToken token = default)
+    {
+        ArgumentNullException.ThrowIfNull(proposal); // Omission initializes creates only; a save must never clear a draft implicitly.
+        if (expectedVersion.Length != 8) throw new QuoteOperationException(400, "invalid-quote-version");
+        if (reason is not null && (string.IsNullOrWhiteSpace(reason) || reason.Length > 1000))
+            throw new QuoteValidationException([new("invalid-reason", "/reason")]);
+        OwnedQuoteScope? owned = null; QuoteRevision? current = null; EligibleQuoteCapture? selection = null;
+        return commands.ExecuteAuthorizedAsync(new(actor.UserId, $"/api/v1/quotes/{quoteId:D}/proposal", key, correlationId),
+            new { quoteId, expectedVersion = Convert.ToBase64String(expectedVersion), proposal, reason }, "quote.save-command",
+            async (db, ct) =>
+            {
+                owned = await QuoteScope.ForQuoteAsync(db, actor, quoteId, QuoteAccess.Capture, ct);
+                current = await CurrentRevision(db, owned.Quote, ct);
+                selection = await QuoteCaptureEligibility.ResolveAsync(db, owned.Scope, current.ProductVersionId, time.GetUtcNow(), current.AgencyTermsVersionId, ct);
+                QuoteRules.EnsureRetainedPins(Pins(current), selection.Pins);
+            },
+            async (db, ct) =>
+            {
+                var quote = owned!.Quote;
+                QuoteRules.EnsureEditable(quote.State, quote.CaptureClosedAt);
+                if (!CryptographicOperations.FixedTimeEquals(quote.RowVersion, expectedVersion)) throw new QuoteOperationException(412, "stale-quote");
+                var prepared = QuoteRules.Prepare(proposal, selection!.Product.Code, selection.Pins);
+                if (QuoteRules.IsUnchanged(current!.ContentHash, prepared)) return Outcome(quote, 200);
+                db.Attach(quote);
+                await Append(db, quote, selection, prepared, checked(current.Number + 1), reason, actor.UserId, time.GetUtcNow(), ct);
+                return Outcome(quote, 200);
+            }, token);
+    }
+
+    public async Task<StoredQuote> GetAsync(ActorContext actor, Guid quoteId, CancellationToken token = default)
+    {
+        await using var db = await factory.CreateDbContextAsync(token);
+        await using var transaction = await db.Database.BeginTransactionAsync(token);
+        var owned = await QuoteScope.ForQuoteAsync(db, actor, quoteId, QuoteAccess.Read, token);
+        var revision = await CurrentRevision(db, owned.Quote, token);
+        await transaction.CommitAsync(token);
+        return new(owned.Quote, revision);
+    }
+
+    private static Task<QuoteRevision> CurrentRevision(BackOfficeDbContext db, Quote quote, CancellationToken token) =>
+        db.Set<QuoteRevision>().AsNoTracking().SingleAsync(x => x.Id == quote.CurrentRevisionId && x.QuoteId == quote.Id, token);
+
+    private static QuoteVersionPins Pins(QuoteRevision revision)
+    {
+        using var references = JsonDocument.Parse(revision.ReferenceVersionsJson);
+        if (!references.RootElement.TryGetProperty("referenceVersion", out var version) || version.ValueKind != JsonValueKind.String)
+            throw new QuoteOperationException(409, "quote-pinned-configuration-unavailable");
+        return new(revision.ProductVersionId, revision.AgencyTermsVersionId, revision.SchemaVersion, revision.QuestionSetVersion, version.GetString()!);
+    }
+
+    private static async Task Append(BackOfficeDbContext db, Quote quote, EligibleQuoteCapture selection, PreparedQuoteCapture prepared,
+        int number, string? reason, Guid actor, DateTimeOffset now, CancellationToken token)
+    {
+        var revision = new QuoteRevision { QuoteId = quote.Id, AgencyId = quote.AgencyId, ProductId = quote.ProductId, Number = number,
+            ProductVersionId = selection.Pins.ProductVersionId, AgencyTermsVersionId = selection.Pins.AgencyTermsVersionId,
+            SchemaVersion = selection.Pins.SchemaVersion, QuestionSetVersion = selection.Pins.QuestionSetVersion,
+            ReferenceVersionsJson = JsonSerializer.Serialize(new { referenceVersion = selection.Pins.ReferenceVersion,
+                captureSettingId = selection.CaptureSettingId, distributionSettingId = selection.DistributionSettingId }),
+            ProposalJson = prepared.Input.Json, TermIntentJson = prepared.TermIntentJson, ContentHash = Convert.FromHexString(prepared.Input.ContentHash),
+            Reason = reason, CreatedBy = actor, SavedBy = actor, CreatedAt = now, SavedAt = now };
+        db.Add(revision); await db.SaveChangesAsync(token);
+        await db.Set<QuoteRegistration>().Where(x => x.QuoteId == quote.Id).ExecuteDeleteAsync(token);
+        db.AddRange(prepared.Registrations.Select(x => new QuoteRegistration { QuoteId = quote.Id, VehicleId = x.VehicleId, NormalizedRegistration = x.NormalizedRegistration }));
+        quote.CurrentRevisionId = revision.Id;
+        var eventType = number == 1 ? "quote.created" : "quote.saved";
+        db.Add(new QuoteActivity { QuoteId = quote.Id, RevisionId = revision.Id, ActorId = actor, CreatedBy = actor, CreatedAt = now, OccurredAt = now, EventType = eventType });
+        db.Add(new ClientActivity { ClientId = quote.ClientId, RelationshipId = quote.RelationshipId, ActorId = actor, CreatedBy = actor,
+            CreatedAt = now, OccurredAt = now, EventType = eventType, RecordId = quote.Id, RecordKind = "quote" });
+        await db.SaveChangesAsync(token);
+    }
+
+    private static CommandOutcome Outcome(Quote quote, int status) => new(quote.Id, status, JsonSerializer.Serialize(new { id = quote.Id }),
+        Etag: "\"" + Convert.ToBase64String(quote.RowVersion) + "\"");
+}

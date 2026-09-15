@@ -35,7 +35,7 @@ public sealed partial class BackOfficeDbContext
         activity.HasOne<StaffUser>().WithMany().HasForeignKey(x => x.ActorId).OnDelete(DeleteBehavior.NoAction);
         activity.HasIndex(x => new {x.ClientId,x.OccurredAt,x.Id});
         Check(activity,"EventType","LEN(TRIM([EventType])) > 0");
-        Check(activity,"RecordKind","[RecordKind] IS NULL OR [RecordKind] IN ('client','contact','match')");
+        Check(activity,"RecordKind","[RecordKind] IS NULL OR [RecordKind] IN ('client','contact','match','quote')");
         Check(activity,"RecordLink","([RecordId] IS NULL AND [RecordKind] IS NULL) OR ([RecordId] IS NOT NULL AND [RecordKind] IS NOT NULL)");
         var person=Record<Person>(model,"Person");
         Text(person,("FullName",200),("FirstName",100),("Surname",100));

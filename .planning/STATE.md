@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-15T22:32:53.552877+00:00"
-last_activity: 2026-09-15
+last_updated: "2026-09-15T23:05:11.848779+00:00"
+last_activity: 2026-09-16
 progress:
   total_phases: 13
   completed_phases: 4
@@ -25,9 +25,9 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 ## Current Position
 
 Phase: 5 of 13 (Motor Trade quote capture)
-Plan: 05-02 of11 in progress; capture initialization and write preparation verified
+Plan: 05-02 of11 in progress; transactional quote service verified
 Status: In progress — autonomous
-Last activity: 2026-09-15 — Capture initialization/QuoteRules verified;428backend/61SQL,289contracts,30frontend.
+Last activity: 2026-09-16 — Transactional quote create/save/read verified;430backend/63SQL,290contracts,30frontend.
 
 Progress: Phases1–4 complete;4/13phases,25completed plans.
 
@@ -53,8 +53,8 @@ Progress: Phases1–4 complete;4/13phases,25completed plans.
 
 ## Session Continuity
 
-Last session: 2026-09-15
-Stopped at:05-02 capture initialization/QuoteRules verified;428backend/61SQL,289contracts,30frontend. NEXT transactional QuoteService create/save/get and strict API, then term/readiness and supported quote examples. Read05-02-PROGRESS.
+Last session: 2026-09-16
+Stopped at:05-02 internal QuoteService verified;430backend/63SQL,290contracts,30frontend. NEXT strict HTTP create/get/save integration, quote auth policies/error mapping and client activity labels, then term/readiness and supported quote examples. Read05-02-PROGRESS.
 Resume file: .planning/phases/05-motor-trade-quote-capture/05-02-PROGRESS.md
 
 ## Autonomous continuation
@@ -63,4 +63,4 @@ User approved requirements/roadmap and autonomous choices/progression on 2026-09
 
 Thread heartbeat: continue-cover-mga-back-office-mvp, active every 10 minutes. Resume unfinished work in this same task; notify meaningful progress/blockers only; pause on actual milestone completion, user stop or persistent external blocker with no remaining useful work.
 
-Latest checkpoint:05-02-PROGRESS records non-destructive capture configuration seed and quote write preparation.05-02 incomplete; actual service/API transactions remain next.
+Latest checkpoint:05-02-PROGRESS records transactional quote commands, late rollback and concurrency tests.05-02 incomplete; HTTP integration remains next.

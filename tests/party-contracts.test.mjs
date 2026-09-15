@@ -89,6 +89,12 @@ test('client summary distinguishes unavailable business records from verified em
  const activity={id:uuid,occurredAt:'2026-09-14T00:00:00Z',actorLabel:'Demo servicing',eventType:'contact.updated',summary:'Contact updated.'};
  assert.ok(schema('ClientActivity')(activity));assert.equal(schema('ClientActivity')({...activity,reason:'Restricted flag reason.'}),false);
 });
+test('client activity supports safe quote references without proposal details',()=>{
+ const activity={id:uuid,occurredAt:'2026-09-15T00:00:00Z',actorLabel:'Demo underwriter',eventType:'quote.created',summary:'Quote created.',recordId:uuid,recordKind:'quote'};
+ const validate=schema('ClientActivity');assert.ok(validate(activity));
+ assert.equal(validate({...activity,proposal:{schemaVersion:'1.0'}}),false);
+ assert.equal(validate({...activity,recordKind:'unknown'}),false);
+});
 test('party command concurrency names the actual parent or child resource',()=>{
  for(const [path,method,target] of [
   ['/clients/{clientId}','put','client'],['/clients/{clientId}/relationships','post','client'],

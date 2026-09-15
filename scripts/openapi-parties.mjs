@@ -28,7 +28,7 @@ export function addPartyContracts({schemas:s,ref:r,text:t,enumeration:e,object:o
  s.ClientRecordAvailability={oneOf:[o({state:{const:'unavailable'}}),o({state:{const:'available'},policyCount:integer,quoteCount:integer})]};
  s.ClientSummary=o({...s.Client.properties,primaryContactName:t(),agencies:a(o({id,name:t(),reference:t(40)})),records:r('ClientRecordAvailability'),tradeActivities:a(t(100))},[...s.Client.required,'agencies','records']);
  paths['/clients'].get.responses[200].content['application/json'].schema.properties.items.items=r('ClientSummary');
- s.ClientActivity=o({id,occurredAt:instant,actorLabel:t(),eventType:t(100),summary:t(500),relationshipId:id,recordId:id,recordKind:e('client','contact','match')},['id','occurredAt','actorLabel','eventType','summary']);
+ s.ClientActivity=o({id,occurredAt:instant,actorLabel:t(),eventType:t(100),summary:t(500),relationshipId:id,recordId:id,recordKind:e('client','contact','match','quote')},['id','occurredAt','actorLabel','eventType','summary']);
  list('/clients/{clientId}/activity','listClientActivity','client-read',r('ClientActivity'));
  s.ClientRecordLink=o({id,kind:e('quote','policy'),reference:t(40),relationshipId:id,agencyName:t(),productCode:e('motor-trade-road-risks','motor-trade-combined','commercial-combined'),state:t(30)});
  list('/clients/{clientId}/records','listClientRecords','client-read',r('ClientRecordLink'),[['kind',e('quote','policy')]]);

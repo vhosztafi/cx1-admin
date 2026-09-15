@@ -5,6 +5,7 @@ using BackOffice.Application;
 using BackOffice.Application.Quotes;
 using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Quotes;
+using BackOffice.Infrastructure.Platform;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -15,6 +16,122 @@ namespace BackOffice.IntegrationTests;
 
 public sealed class QuoteStorageTests
 {
+    [Fact]
+    public async Task RealSqlQuoteServiceRollsBackLateFailuresAndSerializesCompetingCommands()
+    {
+        await WithDatabase(async (db, _) =>
+        {
+            var fixture = await CreateFixture(db);
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Agency SET State=N'active' WHERE Id={fixture.Agency}");
+            await using (var transaction = await db.Database.BeginTransactionAsync())
+            {
+                await QuoteCaptureDemoSeed.SeedAsync(db); await transaction.CommitAsync();
+            }
+            var userId = await db.Set<StaffUser>().Where(x => x.Email == "underwriter@cover.example").Select(x => x.Id).SingleAsync();
+            var actor = new ActorContext(userId, null, null, new HashSet<string> { "underwriter" });
+            var options = new DbContextOptionsBuilder<BackOfficeDbContext>().UseSqlServer(db.Database.GetConnectionString(), sql => sql.UseCompatibilityLevel(160)).Options;
+            var service = new QuoteService(new QuoteFactory(options), new QuoteTime());
+            const string proposal = "{\"schemaVersion\":\"1.0\",\"productCode\":\"motor-trade-road-risks\",\"risk\":{\"vehicles\":[{\"id\":\"bbbbbbbb-0000-4000-8000-000000000001\",\"registration\":\"DEMO03\"}]}}";
+            // Fixed test-owned table names. Fail after business writes and again at
+            // receipt insertion to verify the actual command transaction rolls back.
+            foreach (var table in new[] { "QuoteActivity", "IdempotencyRecord" })
+            {
+                await db.Database.ExecuteSqlRawAsync(table == "QuoteActivity"
+                    ? "CREATE TRIGGER TR_QuoteServiceTestFail ON QuoteActivity AFTER INSERT AS BEGIN SET NOCOUNT ON; THROW 51077, 'Injected quote test failure.', 1; END;"
+                    : "CREATE TRIGGER TR_QuoteServiceTestFail ON IdempotencyRecord AFTER INSERT AS BEGIN SET NOCOUNT ON; THROW 51077, 'Injected quote test failure.', 1; END;");
+                try
+                {
+                    var error = await Assert.ThrowsAsync<DbUpdateException>(() => service.CreateAsync(actor, fixture.Relationship, fixture.ProductVersion, proposal, "fail-" + table, Guid.NewGuid()));
+                    Assert.Contains(Assert.IsType<SqlException>(error.InnerException).Errors.Cast<SqlError>(), x => x.Number == 51077);
+                    Assert.Equal(0, await db.Set<Quote>().CountAsync()); Assert.Equal(0, await db.Set<QuoteRevision>().CountAsync());
+                    Assert.Equal(0, await db.Set<QuoteRegistration>().CountAsync()); Assert.Equal(0, await db.Set<QuoteActivity>().CountAsync());
+                    Assert.Equal(0, await db.Set<ClientActivity>().CountAsync(x => x.RecordKind == "quote"));
+                    Assert.Equal(0, await db.Set<IdempotencyRecord>().CountAsync());
+                    Assert.Equal(0, await db.Set<AuditEvent>().CountAsync(x => x.EventType.StartsWith("quote.")));
+                }
+                finally { await db.Database.ExecuteSqlRawAsync("DROP TRIGGER TR_QuoteServiceTestFail"); }
+            }
+            var creates = await Task.WhenAll(Enumerable.Range(0, 2).Select(_ => service.CreateAsync(actor, fixture.Relationship, fixture.ProductVersion, proposal, "concurrent-create", Guid.NewGuid())));
+            Assert.Single(creates, x => x.Replayed); Assert.Single(creates.Select(x => x.ResourceId).Distinct());
+            var initial = await service.GetAsync(actor, creates[0].ResourceId);
+            var revised = proposal.Replace("DEMO03", "DEMO04");
+            var saves = await Task.WhenAll(Enumerable.Range(0, 2).Select(_ => service.SaveAsync(actor, initial.Quote.Id, initial.Quote.RowVersion, revised, null, "concurrent-save", Guid.NewGuid())));
+            Assert.Single(saves, x => x.Replayed); Assert.Equal(2, await db.Set<QuoteRevision>().CountAsync());
+            var current = await service.GetAsync(actor, initial.Quote.Id);
+            async Task<int> Compete(string registration)
+            {
+                try { return (await service.SaveAsync(actor, current.Quote.Id, current.Quote.RowVersion, proposal.Replace("DEMO03", registration), null, registration, Guid.NewGuid())).Status; }
+                catch (QuoteOperationException error) { return error.Status; }
+            }
+            Assert.Equal(new[] { 200, 412 }, (await Task.WhenAll(Compete("DEMO05"), Compete("DEMO06"))).Order().ToArray());
+            Assert.Equal(1, await db.Set<Quote>().CountAsync()); Assert.Equal(3, await db.Set<QuoteRevision>().CountAsync());
+            Assert.Equal(3, await db.Set<QuoteActivity>().CountAsync()); Assert.Equal(3, await db.Set<IdempotencyRecord>().CountAsync());
+            Assert.Single(await db.Set<QuoteRegistration>().ToListAsync());
+        });
+    }
+
+    [Fact]
+    public async Task RealSqlQuoteServiceCreatesSavesReplaysAndRetainsHistory()
+    {
+        await WithDatabase(async (db, _) =>
+        {
+            var fixture = await CreateFixture(db);
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Agency SET State=N'active' WHERE Id={fixture.Agency}");
+            await using (var transaction = await db.Database.BeginTransactionAsync())
+            {
+                await QuoteCaptureDemoSeed.SeedAsync(db); await transaction.CommitAsync();
+            }
+            var userId = await db.Set<StaffUser>().Where(x => x.Email == "underwriter@cover.example").Select(x => x.Id).SingleAsync();
+            var actor = new ActorContext(userId, null, null, new HashSet<string> { "underwriter" });
+            var options = new DbContextOptionsBuilder<BackOfficeDbContext>().UseSqlServer(db.Database.GetConnectionString(), sql => sql.UseCompatibilityLevel(160)).Options;
+            var service = new QuoteService(new QuoteFactory(options), new QuoteTime());
+            var correlation = Guid.NewGuid();
+            var create = await service.CreateAsync(actor, fixture.Relationship, fixture.ProductVersion, null, "create-one", correlation);
+            Assert.Equal(201, create.Status); Assert.False(create.Replayed);
+            Assert.Equal(create.ResourceId, JsonDocument.Parse(create.Body).RootElement.GetProperty("id").GetGuid());
+            var replay = await service.CreateAsync(actor, fixture.Relationship, fixture.ProductVersion, null, "create-one", Guid.NewGuid());
+            Assert.True(replay.Replayed); Assert.Equal(create.ResourceId, replay.ResourceId); Assert.Equal(create.Etag, replay.Etag);
+            await Assert.ThrowsAsync<CommandKeyConflictException>(() => service.CreateAsync(actor, fixture.Relationship, fixture.ProductVersion, "{}", "create-one", correlation));
+            var first = await service.GetAsync(actor, create.ResourceId);
+            Assert.Equal(1, first.Revision.Number); Assert.Equal(fixture.Terms, first.Revision.AgencyTermsVersionId);
+            await Assert.ThrowsAsync<ArgumentNullException>(() => service.SaveAsync(actor, create.ResourceId, first.Quote.RowVersion, null!, null, "null-save", correlation));
+            var unchanged = await service.SaveAsync(actor, create.ResourceId, first.Quote.RowVersion, first.Revision.ProposalJson, null, "unchanged", correlation);
+            Assert.Equal(create.Etag, unchanged.Etag); Assert.Equal(1, await db.Set<QuoteRevision>().CountAsync());
+            Assert.Equal(1, await db.Set<QuoteActivity>().CountAsync());
+            const string proposal = "{\"schemaVersion\":\"1.0\",\"productCode\":\"motor-trade-road-risks\",\"termIntent\":{\"localStartDate\":\"2026-10-01\"},\"risk\":{\"vehicles\":[{\"id\":\"bbbbbbbb-0000-4000-8000-000000000001\",\"registration\":\"DEMO 02\"}]}}";
+            var save = await service.SaveAsync(actor, create.ResourceId, first.Quote.RowVersion, proposal, "Fictional revision", "save-one", correlation);
+            Assert.NotEqual(create.Etag, save.Etag);
+            Assert.True((await service.SaveAsync(actor, create.ResourceId, first.Quote.RowVersion, proposal, "Fictional revision", "save-one", correlation)).Replayed);
+            Assert.Equal(412, (await Assert.ThrowsAsync<QuoteOperationException>(() => service.SaveAsync(actor, create.ResourceId, first.Quote.RowVersion, proposal, null, "stale", correlation))).Status);
+            var second = await service.GetAsync(actor, create.ResourceId);
+            Assert.Equal(2, second.Revision.Number); Assert.Equal("DEMO02", (await db.Set<QuoteRegistration>().SingleAsync()).NormalizedRegistration);
+            Assert.Equal(first.Revision.ProposalJson, (await db.Set<QuoteRevision>().SingleAsync(x => x.Id == first.Revision.Id)).ProposalJson);
+            Assert.Equal(2, await db.Set<ClientActivity>().CountAsync(x => x.RecordKind == "quote" && x.RecordId == create.ResourceId));
+            Assert.Equal(3, await db.Set<IdempotencyRecord>().CountAsync(x => x.ActorScope == userId.ToString("N") && x.Route.StartsWith("/api/v1/quotes")));
+            // Removing a current vehicle removes its projection but preserves history.
+            await service.SaveAsync(actor, create.ResourceId, second.Quote.RowVersion, first.Revision.ProposalJson, "Remove fictional vehicle", "remove", correlation);
+            Assert.Empty(await db.Set<QuoteRegistration>().ToListAsync()); Assert.Equal(3, await db.Set<QuoteRevision>().CountAsync());
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Agency SET State=N'suspended' WHERE Id={fixture.Agency}");
+            Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => service.CreateAsync(actor, fixture.Relationship, fixture.ProductVersion, null, "create-one", correlation))).Status);
+            Assert.Equal(3, (await service.GetAsync(actor, create.ResourceId)).Revision.Number);
+            await Assert.ThrowsAsync<QuoteOperationException>(() => service.GetAsync(actor with { Roles = new HashSet<string> { "system-admin" } }, create.ResourceId));
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Agency SET State=N'active' WHERE Id={fixture.Agency}");
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Quote SET CaptureClosedAt={DateTimeOffset.UtcNow},CaptureClosedReason=N'Progressed fixture' WHERE Id={create.ResourceId}");
+            var closed = await service.GetAsync(actor, create.ResourceId);
+            Assert.Equal("quote-capture-closed", (await Assert.ThrowsAsync<QuoteInputException>(() => service.SaveAsync(actor, create.ResourceId, closed.Quote.RowVersion, proposal, null, "closed", correlation))).Code);
+            Assert.Equal(3, await db.Set<QuoteRevision>().CountAsync());
+        });
+    }
+
+    private sealed class QuoteFactory(DbContextOptions<BackOfficeDbContext> options) : IDbContextFactory<BackOfficeDbContext>
+    {
+        public BackOfficeDbContext CreateDbContext() => new(options);
+    }
+    private sealed class QuoteTime : TimeProvider
+    {
+        public override DateTimeOffset GetUtcNow() => new(2026, 9, 15, 12, 0, 0, TimeSpan.Zero);
+    }
+
     [Fact]
     public async Task RealSqlQuoteStorageEnforcesOwnershipImmutableHistoryAndCaptureBounds()
     {

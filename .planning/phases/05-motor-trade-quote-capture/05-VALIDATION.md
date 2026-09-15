@@ -71,3 +71,8 @@ Full .local/phase5-quote-eligibility-verified:354unit+67integration=421passing c
 ## 05-02 capture seed/write preparation — 2026-09-15
 
 Fresh .local/phase5-quote-preparation-verified:360unit+68integration=428passing cases,61realSQL,0skips; assert-test-results.ps1 passed. Six preparation tests cover both default envelopes, six actual capture fixtures, product identity, registration projection, term-sensitive hash, closure and exact pin retention. New real-SQL opt-in seed test verifies revoked/malformed operator setting preservation, repeat IDs/product rowversions, unchanged distribution and absence of fabricated quote data. Contracts289/949controls/336operations and frontend30pass. The normal initializer is wired to seed capture configuration; no native demo initialization/reset was performed. Service/API, derived term/readiness and persistent quote examples remain incomplete.
+
+
+## 05-02 transactional quote service — 2026-09-16
+
+Fresh final .local/phase5-quote-service-final:360unit+70integration=430passing cases,63realSQL,0skips; assert-test-results.ps1 passed. Two SQL service scenarios verify persisted create/save/read, no-op/replay/ETag/history/projection behavior, suspension/read restrictions/closure, same-key races, competing-key stale writes and complete rollback at business-activity and receipt failures. Null saves are explicitly rejected and tested. Initial full run is superseded by the final run after that review fix. Contracts290/949controls/336operations and frontend30pass. ClientActivity migration and generated schema now allow quote record kind; HTTP labels/scoped links are still part of upcoming integration. No quote HTTP route or demo quote data is exposed;05-02 remains incomplete.
