@@ -148,6 +148,17 @@ test('notification reads exclude delivery secrets and retry returns only a stabl
  assert.ok(op(route+'/retry').parameters.some(x=>x.name==='If-Match'&&x.required));
 });
 
+test('permission commands use ID receipts and reviewed records expose conditional-write versions',()=>{
+ for(const [suffix,status] of [['permission-requests','202'],['permission-requests/{requestId}/decision','200'],['permission-grants/{grantId}/revoke','200']]) {
+  const operation=doc.paths[`/agencies/{agencyId}/${suffix}`].post;
+  assert.deepEqual(Object.keys(operation.responses[status].content['application/json'].schema.properties),['id']);
+  assert.ok(operation.parameters.some(x=>x.name==='If-Match'&&x.required));
+ }
+ for(const name of ['AgencyPermissionRequest','AgencyPermissionGrant'])assert.ok(doc.components.schemas[name].required.includes('etag'));
+ assert.ok(doc.components.schemas.AgencyPermissionRequest.properties.decisionReason);
+ assert.ok(doc.components.schemas.AgencyPermissionGrant.properties.revocationReason);
+});
+
 test('reviewed agency actions use agency-specific routes and every inventory control remains mapped',async()=>{
  const inventory=await read('docs/design/control-inventory.json'),reviews=await read('docs/design/reviewed-api-controls.json');
  const operations=new Set(Object.values(doc.paths).flatMap(x=>Object.values(x).map(x=>x.operationId)));

@@ -77,16 +77,29 @@ public sealed class AgencyPermissionService(SqlCommandBoundary commands, TimePro
             }, token);
     }
 
-    private static async Task Authorize(BackOfficeDbContext db, ActorContext actor, Guid agencyId, bool activeRequired, bool brokerRequest, CancellationToken token)
+    public static async Task<string> ReadScope(BackOfficeDbContext db, ActorContext actor, Guid agencyId, CancellationToken token = default)
+    {
+        if (db.Database.CurrentTransaction == null) throw new InvalidOperationException("Permission reads require a transaction through materialization.");
+        await Authorize(db, actor, agencyId, false, false, token, read: true);
+        var agencyVersion = await db.Set<Agency>().AsNoTracking().Where(x => x.Id == agencyId).Select(x => x.RowVersion).SingleAsync(token);
+        var stamp = await db.Set<StaffUser>().AsNoTracking().Where(x => x.Id == actor.UserId).Select(x => x.SecurityStamp).SingleAsync(token);
+        var grants = await db.Set<AgencyPermissionGrant>().AsNoTracking().Where(x => x.AgencyId == agencyId).OrderBy(x => x.Id).Select(x => new { x.Id, x.RowVersion }).ToListAsync(token);
+        return Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new { agencyVersion, stamp, grants })));
+    }
+
+    private static async Task Authorize(BackOfficeDbContext db, ActorContext actor, Guid agencyId, bool activeRequired, bool brokerRequest, CancellationToken token, bool read = false)
     {
         if (actor.AgencyId != null)
         {
-            if (!brokerRequest) throw Denied();
-            await AgencyScope.Resolve(db, actor, agencyId, "agency-permission-request", token); return;
+            if (!brokerRequest && !read) throw Denied();
+            await AgencyScope.Resolve(db, actor, agencyId, read ? "agency-context-read" : "agency-permission-request", token); return;
         }
         if (!actor.HasCapability("agency-admin")) throw Denied();
-        var agency = await db.Set<Agency>().FromSqlInterpolated($"SELECT * FROM Agency WITH(UPDLOCK,HOLDLOCK,ROWLOCK) WHERE Id={agencyId}").SingleOrDefaultAsync(token);
-        if (agency == null || (activeRequired ? agency.State != "active" : agency.State is not ("active" or "suspended"))) throw Denied();
+        var agencyQuery = read
+            ? db.Set<Agency>().FromSqlInterpolated($"SELECT * FROM Agency WITH(HOLDLOCK,ROWLOCK) WHERE Id={agencyId}")
+            : db.Set<Agency>().FromSqlInterpolated($"SELECT * FROM Agency WITH(UPDLOCK,HOLDLOCK,ROWLOCK) WHERE Id={agencyId}");
+        var agency = await agencyQuery.SingleOrDefaultAsync(token);
+        if (agency == null || (!read && (activeRequired ? agency.State != "active" : agency.State is not ("active" or "suspended")))) throw Denied();
         var user = await db.Set<StaffUser>().FromSqlInterpolated($"SELECT * FROM [User] WITH(HOLDLOCK,ROWLOCK) WHERE Id={actor.UserId}").AsNoTracking().SingleOrDefaultAsync(token);
         if (user == null || user.AgencyId != null || user.State != "active") throw Denied();
         var links = await db.Set<UserRole>().FromSqlInterpolated($"SELECT * FROM UserRole WITH(HOLDLOCK) WHERE UserId={actor.UserId}").AsNoTracking().ToListAsync(token);

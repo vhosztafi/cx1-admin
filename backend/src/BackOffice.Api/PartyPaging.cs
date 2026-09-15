@@ -10,12 +10,17 @@ public sealed class PartyPaging(IDataProtectionProvider protection, TimeProvider
 {
     private readonly IDataProtector protector=protection.CreateProtector("CoverMGA.PartyCursor.v1");
     public Page? Read(HttpContext context,ActorContext actor,string ordering,params string[] filters)
+        => ReadCore(context,actor,ordering,null,filters);
+    public Page? ReadBound(HttpContext context,ActorContext actor,string ordering,string authorityVersion,params string[] filters)
+        => ReadCore(context,actor,ordering,authorityVersion,filters);
+    private Page? ReadCore(HttpContext context,ActorContext actor,string ordering,string? authorityVersion,string[] filters)
     {
         var query=context.Request.Query;
         if (query.Any(x => x.Value.Count!=1 || string.IsNullOrEmpty(x.Value[0]) || !(filters.Contains(x.Key) || x.Key is "cursor" or "pageSize"))) return null;
         var size=25;
         if (query.TryGetValue("pageSize",out var value) && (!int.TryParse(value.ToString(),NumberStyles.None,CultureInfo.InvariantCulture,out size) || size is <1 or >100)) return null;
         var scope=Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new {actor.UserId,actor.TeamId,actor.AgencyId,Roles=actor.Roles.Order(StringComparer.Ordinal).ToArray()})));
+        if (authorityVersion is not null) scope=Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new {scope,authorityVersion})));
         var route=context.Request.Path.ToString();
         var filter=JsonSerializer.Serialize(filters.Order(StringComparer.Ordinal).Select(x => new[] {x,query[x].ToString()}));
         var now=time.GetUtcNow();

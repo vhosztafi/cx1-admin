@@ -53723,29 +53723,32 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Resource created.",
+          "202": {
+            "description": "ID-only committed receipt; read the current permission list for current state and resource ETag.",
             "headers": {
               "ETag": {
-                "description": "Opaque resource version for subsequent conditional writes.",
+                "description": "Agency version after the request. Decision writes use the request etag from the permission list.",
                 "schema": {
                   "type": "string",
                   "minLength": 1,
                   "maxLength": 100
-                }
-              },
-              "Location": {
-                "description": "Created resource or durable job URI.",
-                "schema": {
-                  "type": "string",
-                  "format": "uri-reference"
                 }
               }
             },
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AgencyPermissionRequest"
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
                 }
               }
             }
@@ -53802,6 +53805,26 @@
           },
           "412": {
             "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Invalid body size or content type.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Invalid body size or content type.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -54426,7 +54449,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Operation succeeded.",
+            "description": "ID-only committed receipt; read the current permission list for current state and resource ETag.",
             "headers": {
               "ETag": {
                 "description": "Opaque resource version for subsequent conditional writes.",
@@ -54440,7 +54463,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AgencyPermissionRequest"
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
                 }
               }
             }
@@ -54497,6 +54530,26 @@
           },
           "412": {
             "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Invalid body size or content type.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Invalid body size or content type.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -54635,7 +54688,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Operation succeeded.",
+            "description": "ID-only committed receipt; read the current permission list for current state and resource ETag.",
             "headers": {
               "ETag": {
                 "description": "Opaque resource version for subsequent conditional writes.",
@@ -54649,7 +54702,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AgencyPermissionGrant"
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
                 }
               }
             }
@@ -54706,6 +54769,26 @@
           },
           "412": {
             "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Invalid body size or content type.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Invalid body size or content type.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -65833,6 +65916,16 @@
           "decidedAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "decisionReason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "etag": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
           }
         },
         "required": [
@@ -65842,7 +65935,8 @@
           "requestedBy",
           "reason",
           "state",
-          "createdAt"
+          "createdAt",
+          "etag"
         ]
       },
       "AgencyPermissionGrant": {
@@ -65879,6 +65973,16 @@
           "revokedAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "revocationReason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "etag": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
           }
         },
         "required": [
@@ -65887,7 +65991,8 @@
           "permission",
           "requestId",
           "grantedBy",
-          "grantedAt"
+          "grantedAt",
+          "etag"
         ]
       },
       "AgencyActivity": {

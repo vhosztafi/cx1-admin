@@ -32,6 +32,7 @@ builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencySuspensionSe
 builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyReactivationAssessment>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyReactivationService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyTermsService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyPermissionService>();
 DiagnosticDispatcher.Register(builder);
 AgencyNotificationDispatcher.Register(builder);
 var app = builder.Build();
@@ -72,6 +73,7 @@ app.MapClients();
 app.MapAgencies();
 app.MapAgencyStateRequests();
 app.MapAgencyTerms();
+app.MapAgencyPermissions();
 app.MapAgencyEvidence();
 app.MapAgencyNotifications();
 app.MapContacts();
