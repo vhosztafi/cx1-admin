@@ -1,5 +1,5 @@
 {
-  "version": "mt-capture-704ac195bb6c6275",
+  "version": "mt-capture-57b711ca02317ca0",
   "status": "Question identity and product ownership catalogue; conditional readiness, overlapping source answers and control audit remain pending.",
   "products": [
     "motor-trade-road-risks",
@@ -8273,6 +8273,24 @@
         "NACOSS remote signalling",
         "NACOSS remote signalling and CCTV",
         "Manned guarding"
+      ]
+    },
+    {
+      "controlId": "CTL-83d6fe0f983f",
+      "collection": "prototype.incident-type",
+      "canonicalPath": "risk.drivers[].losses[].declaredType",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "sourceOptions": [
+        "Accident",
+        "Theft of vehicle",
+        "Theft from vehicle",
+        "Fire",
+        "Malicious damage",
+        "Windscreen",
+        "Third party injury"
       ]
     }
   ]

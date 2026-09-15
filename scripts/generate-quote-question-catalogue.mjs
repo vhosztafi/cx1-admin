@@ -55,6 +55,7 @@ for(const [controlId,modal,collection,canonicalPath,applicable] of [
  ['CTL-6c4f6c3ca8c9','addveh','prototype.vehicle-body','risk.vehicles[].body',products],
  ['CTL-196064c77a8f','addprem','prototype.premises-use','risk.premises[].declaredUse',['motor-trade-combined']],
  ['CTL-7390fe5a19a7','addprem','prototype.premises-security','risk.premises[].security',['motor-trade-combined']],
+ ['CTL-83d6fe0f983f','addinc','prototype.incident-type','risk.drivers[].losses[].declaredType',products],
 ]) {
  const control=controls.find(row=>row.id===controlId);
  const renderedControl=rendered.find(row=>row.method===control?.method&&row.path===control.path&&row.label===control.label&&row.tabs?.includes(modal));

@@ -1,5 +1,5 @@
 {
-  "version": "mt-capture-704ac195bb6c6275",
+  "version": "mt-capture-57b711ca02317ca0",
   "sourcePath": "frontend-code/public/api/options.json",
   "sourceSha256": "b79d995c5a10ddd73ab80e2221db8ced573715e3fb166f04057ea694d557ed12",
   "status": "Combined identity catalogue; prototype and funnel eligibility/conflict reconciliation still requires product validation.",
@@ -14749,6 +14749,36 @@
         "value": 5,
         "text": "Manned guarding"
       }
+    ],
+    "prototype.incident-type": [
+      {
+        "value": 1,
+        "text": "Accident"
+      },
+      {
+        "value": 2,
+        "text": "Theft of vehicle"
+      },
+      {
+        "value": 3,
+        "text": "Theft from vehicle"
+      },
+      {
+        "value": 4,
+        "text": "Fire"
+      },
+      {
+        "value": 5,
+        "text": "Malicious damage"
+      },
+      {
+        "value": 6,
+        "text": "Windscreen"
+      },
+      {
+        "value": 7,
+        "text": "Third party injury"
+      }
     ]
   },
   "youngDriverConfiguration": [
@@ -15544,6 +15574,14 @@
       "selectionRule": "fixed",
       "collections": [
         "prototype.premises-security"
+      ]
+    },
+    {
+      "owner": "CTL-83d6fe0f983f",
+      "canonicalPath": "risk.drivers[].losses[].declaredType",
+      "selectionRule": "fixed",
+      "collections": [
+        "prototype.incident-type"
       ]
     }
   ],

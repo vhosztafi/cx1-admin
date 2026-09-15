@@ -21,8 +21,10 @@ test('modal capture preserves optional answers and explicit defaults for both Mo
  }
 });
 
-test('each conviction and incident owns its declaration and incident descriptions meet the prototype minimum',()=>{
+test('each conviction and incident owns its declaration and incident descriptions meet the prototype minimum',async()=>{
  const p={productCode:'motor-trade-road-risks',risk:{drivers:[{fullName:'Example Driver',responses:responses([['prototype.adddriver.trade-employment',{}]]),convictions:[{},{}],losses:[{description:'123456789'},{description:' 1234567890 '}]}]}};
+ const references=await read('reference-data/motor-trade-capture.json');
+ p.risk.drivers[0].losses.forEach(row=>row.declaredType={collection:'prototype.incident-type',value:1,label:'Accident',version:references.version});
  let issues=check(p);assert.equal(issues.filter(i=>i.questionId==='prototype.addconv.prosecution-status').length,2);assert.equal(issues.filter(i=>i.questionId==='prototype.addinc.claim-made').length,2);assert.equal(issues.filter(i=>i.code==='incident-description-too-short').length,1);
  p.risk.drivers[0].convictions.forEach(row=>row.responses=responses([['prototype.addconv.prosecution-status',{}]]));
  p.risk.drivers[0].losses.forEach(row=>{row.responses=responses([['prototype.addinc.claim-made',false]]);row.description='Fictional incident.';});

@@ -19,7 +19,7 @@ Ownership is separate from operation dependencies. A shared risks-list control m
 
 - All 255 funnel source occurrences have exact typed canonical paths in `contracts/quote-field-mapping.json`.
 - The combined question catalogue includes those mappings and 56 Motor Trade prototype supplemental questions (including the separately audited conditional no-discount composer). Another 109 prototype definitions have explicit Commercial Combined ownership.
-- Reference identity catalogues preserve all 51 direct source option families, 25 nested source families and 12 active prototype question reference families plus 3 direct-control families. Dynamic family membership still requires trusted, instance-specific selection and eligibility checks.
+- Reference identity catalogues preserve all 51 direct source option families, 25 nested source families and 12 active prototype question reference families plus 4 direct-control families. Dynamic family membership still requires trusted, instance-specific selection and eligibility checks.
 - Contract examples test duplicate JSON keys, typed identities, child links, scoped question IDs, reference identity, term/DST handling and a subset of conditional readiness rules.
 
 ## Prototype business conditions
@@ -44,7 +44,7 @@ The seven proposer/driver history declarations and other-business/directorship a
 
 ## Conditional prototype insurance stage
 
-The Road Risks no-discount reason is an explicit versioned text answer from COND-NCD-REASON, required when discount is not claimed and inactive otherwise. Insurer and discount/protection/intro declarations are required; claimed discount needs positive years, basis, origin and expiry. Evidence and eligibility remain separate. The question/reference catalogue version is mt-capture-704ac195bb6c6275; stale versions are rejected. Combined retains its separate source NCB capture.
+The Road Risks no-discount reason is an explicit versioned text answer from COND-NCD-REASON, required when discount is not claimed and inactive otherwise. Insurer and discount/protection/intro declarations are required; claimed discount needs positive years, basis, origin and expiry. Evidence and eligibility remain separate. The question/reference catalogue version is mt-capture-57b711ca02317ca0; stale versions are rejected. Combined retains its separate source NCB capture.
 
 ## History declaration windows
 
@@ -60,7 +60,7 @@ Pinned motorcycle/quad sales and repair occupations require the motorcycle activ
 
 ## Direct vehicle and premises references
 
-Body, premises activity/use and security preserve all21rendered source options in pinned families. Premises declaredUse holds the prototype business activity independently of use, the source physical premise type. Combined premises require both declarations and security; direct-control product applicability is enforced separately from question allowlists. The current combined catalogue has91collections and72reference bindings.
+Body, premises activity/use and security preserve all21rendered source options in pinned families. Premises declaredUse holds the prototype business activity independently of use, the source physical premise type. Combined premises require both declarations and security; direct-control product applicability is enforced separately from question allowlists. The current combined catalogue has92collections and73reference bindings.
 
 ## Direct driver and offence selections
 
@@ -69,6 +69,10 @@ Driver status, usage and all nine prototype offence choices have explicit pinned
 ## Legal entity reconciliation
 
 Legal entity is captured separately from the source company category. Limited company retains an explicit public/private source subtype. The source lacks LLP; the MVP uses partnership relationship rules while retaining LLP legal identity. Limited company and LLP require a company number. All four prototype entity labels map explicitly, and conflicting captured categories are reported together.
+
+## Distinct incident types
+
+The seven prototype incident types are captured in Loss.declaredType independently of the source Loss.type classification. Third-party injury is retained, and theft of a vehicle is not automatically converted to total loss. Each nested loss requires its own pinned prototype selection; wrong-family references are rejected.
 
 ## Remaining contract gate
 

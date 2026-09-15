@@ -499,6 +499,9 @@
         },
         "declaredStatus": {
           "$ref": "#/$defs/Reference"
+        },
+        "declaredType": {
+          "$ref": "#/$defs/Reference"
         }
       }
     },

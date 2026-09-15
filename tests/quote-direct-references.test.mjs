@@ -9,14 +9,15 @@ const ref=(collection,row)=>({collection,value:row.value,label:row.text,version:
 
 test('all direct vehicle/premises options match actual rendered source choices and have bound typed identities',async()=>{
  const controls=(await read('docs/design/control-inventory.json')).controls,rendered=(await read('docs/design/source/prototype-render-data.json')).items;
- assert.equal(questions.directReferenceFields.length,3);
+ assert.equal(questions.directReferenceFields.length,4);
  for(const field of questions.directReferenceFields) {
   const control=controls.find(c=>c.id===field.controlId),source=rendered.find(r=>r.method===control.method&&r.path===control.path&&r.label===control.label&&r.tabs.some(tab=>control.tabs.includes(tab)));
   assert.deepEqual(field.sourceOptions,source.options);assert.deepEqual(references.collections[field.collection].map(row=>row.text),source.options);
-  const [collection,property]=field.canonicalPath.replace('risk.','').split('[].');
   for(const row of references.collections[field.collection]) {
-   const p={risk:{[collection]:[{[property]:ref(field.collection,row)}]}};assert.deepEqual(validateQuoteReferences(p,references),[]);
-   p.risk[collection][0][property].value=String(row.value);assert.ok(validateQuoteReferences(p,references).length);
+   const p={};let cursor=p;const parts=field.canonicalPath.split('.'),selection=ref(field.collection,row);
+   parts.forEach((part,index)=>{const key=part.replace(/\[\]$/,'');if(index===parts.length-1)cursor[key]=selection;else if(part.endsWith('[]')){cursor[key]=[{}];cursor=cursor[key][0];}else {cursor[key]={};cursor=cursor[key];}});
+   assert.deepEqual(validateQuoteReferences(p,references),[]);
+   selection.value=String(row.value);assert.ok(validateQuoteReferences(p,references).length);
   }
  }
 });
@@ -34,4 +35,19 @@ test('composed checks require direct prototype choices and reject stale identiti
  p.risk.vehicles[0].body.version='old';assert.ok(validate(JSON.stringify(p),context).issues.some(i=>i.stage==='references'));
  delete p.risk.vehicles[0].body;delete p.risk.premises[0].declaredUse;delete p.risk.premises[0].security;
  assert.equal(validate(JSON.stringify(p),context).issues.filter(i=>i.code==='required-prototype-reference').length,3);
+});
+
+test('incident type preserves third-party injury independently of source claim classification and scopes missing choices per loss',async()=>{
+ const {proposal:p,context}=await read('contracts/examples/quote-capture-motor-trade-combined.json');
+ const specific=references.collections['prototype.incident-type'].find(row=>row.text==='Third party injury');assert.ok(specific);
+ const generic=references.collections.driverClaimTypes.find(row=>row.text==='Accident Claim');
+ p.risk.drivers[0].losses=[
+  {id:'aaaaaaaa-0000-4000-8000-000000000098',declaredType:ref('prototype.incident-type',specific),type:ref('driverClaimTypes',generic)},
+  {id:'aaaaaaaa-0000-4000-8000-000000000099'},
+ ];
+ const validate=await createQuoteValidationPipeline(),before=structuredClone(p),result=validate(JSON.stringify(p),context);
+ assert.ok(result.issues.some(i=>i.code==='required-prototype-reference'&&i.path==='/risk/drivers/0/losses/1/declaredType'));
+ assert.ok(!result.issues.some(i=>i.stage==='references'));assert.deepEqual(p,before);
+ p.risk.drivers[0].losses[0].declaredType=p.risk.drivers[0].losses[0].type;
+ assert.ok(validate(JSON.stringify(p),context).issues.some(i=>i.stage==='references'&&i.path.includes('/losses/0/declaredType')));
 });

@@ -91,6 +91,7 @@ defs.Conviction.properties.disqualified=bool;
 defs.Conviction.properties.declaredBanPeriod=enumeration('none','under-3-months','3-to-6-months','6-to-12-months','over-12-months');
 defs.Loss.properties.fault.enum.push('split');
 defs.Loss.properties.declaredStatus=ref('Reference');
+defs.Loss.properties.declaredType=ref('Reference');
 defs.AnnualEuropeanCover=object({id:ref('Id'),registration:{type:'string',pattern:'^[A-Z0-9 ]{2,12}$'},usage:ref('Reference')});
 defs.TemporaryEuropeanCover=object({id:ref('Id'),registration:{type:'string',pattern:'^[A-Z0-9 ]{2,12}$'},startsOn:ref('Date'),endsOn:ref('Date'),area:ref('Reference'),driverIds:{...array(ref('Id')),uniqueItems:true},cover:ref('Reference'),usage:ref('Reference')});
 defs.Cover.properties.annualEuropeanCover=array(ref('AnnualEuropeanCover'));

@@ -7,11 +7,16 @@ export function validateQuotePrototypeDetails(proposal,questions) {
  const mappings=quoteMappingsForProduct(questions,proposal.productCode),issues=[];
  for(const field of questions.directReferenceFields??[]) {
   const applicable=field.products.includes(proposal.productCode);
-  const [collection,property]=field.canonicalPath.replace('risk.','').split('[].');
-  (proposal.risk?.[collection]??[]).forEach((row,index)=>{
-   if(applicable&&row[property]===undefined)issues.push({code:'required-prototype-reference',path:`/risk/${collection}/${index}/${property}`});
-   if(!applicable&&row[property]!==undefined)issues.push({code:'inapplicable-prototype-reference',path:`/risk/${collection}/${index}/${property}`});
-  });
+  const visit=(row,parts,path)=>{
+   if(!row)return;
+   const [part,...rest]=parts,key=part.replace(/\[\]$/,'');
+   if(!rest.length) {
+    if(applicable&&row[key]===undefined)issues.push({code:'required-prototype-reference',path:`${path}/${key}`});
+    if(!applicable&&row[key]!==undefined)issues.push({code:'inapplicable-prototype-reference',path:`${path}/${key}`});
+   } else if(part.endsWith('[]'))(row[key]??[]).forEach((child,index)=>visit(child,rest,`${path}/${key}/${index}`));
+   else visit(row[key],rest,`${path}/${key}`);
+  };
+  visit(proposal,field.canonicalPath.split('.'),'');
  }
  const require=(row,path,id)=>{
   if(!mappings.some(mapping=>mapping.questionId===id))return;
