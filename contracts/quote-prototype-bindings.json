@@ -1,0 +1,2419 @@
+{
+  "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
+  "questionVersion": "mt-capture-e410d61471e481ed",
+  "status": "capture path contract; control value semantics and runtime remain separate gates",
+  "controls": [
+    {
+      "controlId": "CTL-de4a2a5bf892",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[3]",
+      "label": "Date insurance to start",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined",
+        "commercial-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "compound",
+          "paths": [
+            "termIntent.localStartDate",
+            "termIntent.localStartTime",
+            "termIntent.timeZone",
+            "termIntent.utcOffsetMinutes"
+          ],
+          "captureRule": "Capture local date/time with London zone and explicit offset only when needed; UTC is server-derived."
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-de0dd91689d6",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[4]",
+      "label": "Term",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined",
+        "commercial-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "compound",
+          "paths": [
+            "termIntent.kind",
+            "termIntent.localEndDate",
+            "termIntent.localEndTime",
+            "termIntent.endUtcOffsetMinutes"
+          ],
+          "captureRule": "Annual end is derived; short-period end has explicit local date/time and disambiguation."
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-36653774e70a",
+      "method": "modalVals",
+      "sourcePath": ".inputs[0]",
+      "label": "Full name",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.drivers[].fullName"
+          ],
+          "modal": "adddriver"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-909dc95a6d87",
+      "method": "modalVals",
+      "sourcePath": ".inputs[1]",
+      "label": "Date of birth",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.drivers[].dateOfBirth"
+          ],
+          "modal": "adddriver"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-4574923e7c59",
+      "method": "modalVals",
+      "sourcePath": ".inputs[2]",
+      "label": "Years living in the UK",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.drivers[].responses.answers[]"
+          ],
+          "questionId": "prototype.adddriver.residency-years",
+          "answerKind": "count",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-4460295e4600",
+      "method": "modalVals",
+      "sourcePath": ".inputs[3]",
+      "label": "Years full UK licence held",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.drivers[].responses.answers[]"
+          ],
+          "questionId": "prototype.adddriver.licence-years",
+          "answerKind": "count",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-95e2521d72f3",
+      "method": "modalVals",
+      "sourcePath": ".inputs[4]",
+      "label": "Occupation",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.drivers[].responses.answers[]"
+          ],
+          "questionId": "prototype.adddriver.occupation",
+          "answerKind": "text",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-e7838b90abda",
+      "method": "modalVals",
+      "sourcePath": ".inputs[5]",
+      "label": "Status",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.drivers[].relationship"
+          ],
+          "modal": "adddriver"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-af53c0345061",
+      "method": "modalVals",
+      "sourcePath": ".inputs[6]",
+      "label": "Full or part time in the motor trade",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.drivers[].responses.answers[]"
+          ],
+          "questionId": "prototype.adddriver.trade-employment",
+          "answerKind": "reference",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-5d9076259527",
+      "method": "modalVals",
+      "sourcePath": ".inputs[7]",
+      "label": "Other occupation if part time",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.drivers[].responses.answers[]"
+          ],
+          "questionId": "prototype.adddriver.other-occupation",
+          "answerKind": "text",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-1624517d8aa7",
+      "method": "modalVals",
+      "sourcePath": ".inputs[8]",
+      "label": "Use required",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.drivers[].usage"
+          ],
+          "modal": "adddriver"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-38011c457907",
+      "method": "modalVals",
+      "sourcePath": ".inputs[1]",
+      "label": "Date of conviction",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.drivers[].convictions[].occurredOn"
+          ],
+          "modal": "addconv"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-7b5a86aac53f",
+      "method": "modalVals",
+      "sourcePath": ".inputs[2]",
+      "label": "Offence code",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.drivers[].convictions[].code"
+          ],
+          "modal": "addconv"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-ec5e5b0b71ad",
+      "method": "modalVals",
+      "sourcePath": ".inputs[3]",
+      "label": "Fine",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.drivers[].convictions[].fine"
+          ],
+          "modal": "addconv"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-4cd88f5ef3d5",
+      "method": "modalVals",
+      "sourcePath": ".inputs[4]",
+      "label": "Penalty points",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.drivers[].convictions[].points"
+          ],
+          "modal": "addconv"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-f40626183cda",
+      "method": "modalVals",
+      "sourcePath": ".inputs[5]",
+      "label": "Disqualification period",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.drivers[].convictions[].banMonths"
+          ],
+          "modal": "addconv"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-022959719b23",
+      "method": "modalVals",
+      "sourcePath": ".inputs[6]",
+      "label": "Pending or convicted",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.drivers[].convictions[].responses.answers[]"
+          ],
+          "questionId": "prototype.addconv.prosecution-status",
+          "answerKind": "reference",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-5d63ed17e63d",
+      "method": "modalVals",
+      "sourcePath": ".inputs[1]",
+      "label": "Date of incident",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.drivers[].losses[].occurredOn"
+          ],
+          "modal": "addinc"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-83d6fe0f983f",
+      "method": "modalVals",
+      "sourcePath": ".inputs[2]",
+      "label": "Type",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.drivers[].losses[].type"
+          ],
+          "modal": "addinc"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-b5ec82596c2e",
+      "method": "modalVals",
+      "sourcePath": ".inputs[3]",
+      "label": "Cost of damage to own vehicle",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.drivers[].losses[].responses.answers[]"
+          ],
+          "questionId": "prototype.addinc.own-damage",
+          "answerKind": "money",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-b4085cf94a2b",
+      "method": "modalVals",
+      "sourcePath": ".inputs[4]",
+      "label": "Cost to third party",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.drivers[].losses[].responses.answers[]"
+          ],
+          "questionId": "prototype.addinc.third-party-damage",
+          "answerKind": "money",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-d032c5f5ac0f",
+      "method": "modalVals",
+      "sourcePath": ".inputs[5]",
+      "label": "At fault",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.drivers[].losses[].fault"
+          ],
+          "modal": "addinc"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-ff933bc8115b",
+      "method": "modalVals",
+      "sourcePath": ".inputs[6]",
+      "label": "Was a claim made",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.drivers[].losses[].responses.answers[]"
+          ],
+          "questionId": "prototype.addinc.claim-made",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-ea1e4d50e4b0",
+      "method": "modalVals",
+      "sourcePath": ".inputs[7]",
+      "label": "Description",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.drivers[].losses[].description"
+          ],
+          "modal": "addinc"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-1595a2ef4a0a",
+      "method": "modalVals",
+      "sourcePath": ".inputs[0]",
+      "label": "Registration",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.vehicles[].registration"
+          ],
+          "modal": "addveh"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-f20ddc71047e",
+      "method": "modalVals",
+      "sourcePath": ".inputs[1]",
+      "label": "Make and model",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "compound",
+          "paths": [
+            "risk.vehicles[].make",
+            "risk.vehicles[].model"
+          ],
+          "captureRule": "Use separately labelled make and model fields in the compound control; never split free text heuristically.",
+          "modal": "addveh"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-6c4f6c3ca8c9",
+      "method": "modalVals",
+      "sourcePath": ".inputs[2]",
+      "label": "Body type",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.vehicles[].body"
+          ],
+          "modal": "addveh"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-467f6581eab8",
+      "method": "modalVals",
+      "sourcePath": ".inputs[3]",
+      "label": "Year of make",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.vehicles[].manufactureYear"
+          ],
+          "modal": "addveh"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-f1de7df1850d",
+      "method": "modalVals",
+      "sourcePath": ".inputs[4]",
+      "label": "CC or gross vehicle weight",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "compound",
+          "paths": [
+            "risk.vehicles[].declaredEngineSize",
+            "risk.vehicles[].grossWeightKg"
+          ],
+          "captureRule": "Use explicit engine-size and gross-weight fields by trusted vehicle category, never infer units from free text.",
+          "modal": "addveh"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-be98e76cf1c5",
+      "method": "modalVals",
+      "sourcePath": ".inputs[5]",
+      "label": "Date of purchase",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.vehicles[].purchasedOn"
+          ],
+          "modal": "addveh"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-e27492b66aeb",
+      "method": "modalVals",
+      "sourcePath": ".inputs[6]",
+      "label": "Price paid",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.vehicles[].purchasePrice"
+          ],
+          "modal": "addveh"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-1236872e21bd",
+      "method": "modalVals",
+      "sourcePath": ".inputs[7]",
+      "label": "Estimated present trade value",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.vehicles[].value"
+          ],
+          "modal": "addveh"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-b9bd8f87ee50",
+      "method": "modalVals",
+      "sourcePath": ".inputs[8]",
+      "label": "Modified, left-hand drive, imported or adapted",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.vehicles[].responses.answers[]"
+          ],
+          "questionId": "prototype.addveh.special-characteristics",
+          "answerKind": "reference",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-f97ee713214d",
+      "method": "modalVals",
+      "sourcePath": ".inputs[9]",
+      "label": "Report to the motor insurance database",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.vehicles[].responses.answers[]"
+          ],
+          "questionId": "prototype.addveh.report-mid",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-fc598bfe9e9b",
+      "method": "modalVals",
+      "sourcePath": ".inputs[0]",
+      "label": "Address",
+      "products": [
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.premises[].address"
+          ],
+          "modal": "addprem"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-196064c77a8f",
+      "method": "modalVals",
+      "sourcePath": ".inputs[1]",
+      "label": "Use",
+      "products": [
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.premises[].use"
+          ],
+          "modal": "addprem"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-7390fe5a19a7",
+      "method": "modalVals",
+      "sourcePath": ".inputs[2]",
+      "label": "Security",
+      "products": [
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.premises[].security"
+          ],
+          "modal": "addprem"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-9845906aba63",
+      "method": "modalVals",
+      "sourcePath": ".inputs[3]",
+      "label": "Buildings sum insured",
+      "products": [
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.premises[].buildings"
+          ],
+          "modal": "addprem"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-a077968127d4",
+      "method": "modalVals",
+      "sourcePath": ".inputs[4]",
+      "label": "Contents sum insured",
+      "products": [
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.premises[].contents"
+          ],
+          "modal": "addprem"
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-2cefab50c985",
+      "method": "modalVals",
+      "sourcePath": ".inputs[5]",
+      "label": "Vehicles kept overnight",
+      "products": [
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.premises[].responses.answers[]"
+          ],
+          "questionId": "prototype.addprem.overnight-vehicles",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-c375f28658c4",
+      "method": "modalVals",
+      "sourcePath": ".inputs[6]",
+      "label": "Open to the public",
+      "products": [
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.premises[].responses.answers[]"
+          ],
+          "questionId": "prototype.addprem.public-access",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-fb92851f2483",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[0]",
+      "label": "Proposer 1 full name",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "insured.proposerNames"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-54cd86bd3577",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[1]",
+      "label": "Proposer 2 full name",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "insured.proposerNames"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-ad6422c180bc",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[2]",
+      "label": "Proposer 3 full name",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "insured.proposerNames"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-ceac3f42ee3f",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[3]",
+      "label": "Trading name",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "insured.tradingName"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-212ce9265e52",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[4]",
+      "label": "Entity type",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "insured.entityType"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-f6a27f05ee04",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[5]",
+      "label": "Company number",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "insured.companyNumber"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-21ebcb37d76a",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[6]",
+      "label": "Business address",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "insured.address"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-d29cf683b746",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[7]",
+      "label": "Telephone",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined",
+        "commercial-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "insured.contact.telephone"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-07d3f2a4c5de",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[8]",
+      "label": "Email",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined",
+        "commercial-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "insured.contact.email"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-c6181a11c34c",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[2].inputs[0]",
+      "label": "Full time or part time motor trader",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.c6181a11c34c",
+          "answerKind": "reference",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-b68cb9b7bb57",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[2].inputs[1]",
+      "label": "Date business established",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.business.startedOn"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-0552d5a68ba2",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[2].inputs[2]",
+      "label": "Years experience in the motor trade",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.0552d5a68ba2",
+          "answerKind": "reference",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-3fd9edd7e66e",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[2].inputs[3]",
+      "label": "Main or normal occupation",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote-value.3fd9edd7e66e",
+          "answerKind": "text",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-34613c23e95d",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[2].inputs[4]",
+      "label": "Employment status in that occupation",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.34613c23e95d",
+          "answerKind": "reference",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-ea4580cbac7a",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[2].inputs[5]",
+      "label": "Any other business or directorship",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.ea4580cbac7a",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-e29a40c53e65",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[3]",
+      "label": "Save description",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.business.description"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-e4214dae194f",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[0]",
+      "label": "Vehicle sales %",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.business.activities[].turnoverBasisPoints"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-a6d4124b2312",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[1]",
+      "label": "Vehicle servicing %",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.business.activities[].turnoverBasisPoints"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-bfa3798e8803",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[2]",
+      "label": "Mechanical repair %",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.business.activities[].turnoverBasisPoints"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-1932e55ba1f3",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[3]",
+      "label": "Breakdown recovery %",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.business.activities[].turnoverBasisPoints"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-0e2bd5ea6a0e",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[4]",
+      "label": "Body repairs %",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.business.activities[].turnoverBasisPoints"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-f7d84fa890d0",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[5]",
+      "label": "Vehicle valeting %",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.business.activities[].turnoverBasisPoints"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-b3c56b8b3eff",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[6]",
+      "label": "Other activity %",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.business.activities[].turnoverBasisPoints"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-3e4fdf2b682e",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[7]",
+      "label": "Other activity description",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote-value.3e4fdf2b682e",
+          "answerKind": "text",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-ba9d4158ae2c",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[3].inputs[0]",
+      "label": "Vehicle salvage, dismantling, breaking, scrap, sale of parts, or recovery for such purpose",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.ba9d4158ae2c",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-35350a32e79e",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[3].inputs[1]",
+      "label": "Selling, repairing, servicing or restoring motorcycles, scooters, quad bikes or trikes",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.35350a32e79e",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-2ad460339240",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[3].inputs[2]",
+      "label": "Import or export of vehicles",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.2ad460339240",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-f5e77ab8ec93",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[3].inputs[3]",
+      "label": "Specialise in sports, high performance or prestige cars",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.f5e77ab8ec93",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-7fe8e3151553",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[3].inputs[4]",
+      "label": "Specialise in veteran, vintage or classic cars",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.7fe8e3151553",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-27322dcfabf5",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[3].inputs[5]",
+      "label": "Specialise in vehicles other than cars or light commercials",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.27322dcfabf5",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-f856f5891026",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[3].inputs[6]",
+      "label": "Specialise in grey imports",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.f856f5891026",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-909e1c6eff8c",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[3].inputs[7]",
+      "label": "Details of any Yes answers",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote-value.909e1c6eff8c",
+          "answerKind": "text",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-d3ad8f8ae9bf",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[2].rows[0].cells[9]",
+      "label": "Remove",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.drivers"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-fd8ac93bd9a3",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[2].rows[1].cells[9]",
+      "label": "Remove",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.drivers"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-05c2fcf290fc",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[2].rows[2].cells[9]",
+      "label": "Remove",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.drivers"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-46414cc10100",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[0]",
+      "label": "Convicted of, or charged but not tried with, a criminal offence",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.46414cc10100",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-ef70e80708bb",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[1]",
+      "label": "Motoring conviction or pending prosecution in the last 5 years, including fixed penalties",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.ef70e80708bb",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-36da21d3c935",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[2]",
+      "label": "Any accident, loss or claim in the last 3 years, whether or not a claim was made",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.36da21d3c935",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-6c1927f561b8",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[3]",
+      "label": "Any condition notifiable to the DVLA — vision, hearing, heart, epilepsy, diabetes, blackouts or fits",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.6c1927f561b8",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-f7972c55f517",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[4]",
+      "label": "Motor insurance cancelled, refused, or special terms applied in the last 5 years",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.f7972c55f517",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-382ce4de8253",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[5]",
+      "label": "Any claim repudiated or refused",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.382ce4de8253",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-922ca15dc9ed",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[6]",
+      "label": "County court judgment served, or declared bankrupt, in the last 5 years",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.922ca15dc9ed",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-fcefa12ff7d2",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[2].rows[0].cells[7]",
+      "label": "Remove",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined",
+        "commercial-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.drivers[].convictions"
+          ]
+        },
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.drivers[].losses"
+          ],
+          "captureRule": "Driver incident removal targets the selected driver and stable loss ID; no root RoadRisk.losses collection exists."
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-95722586bd61",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].rows[0].cells[9]",
+      "label": "Remove",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.vehicles"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-8619e0fbace4",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].rows[1].cells[9]",
+      "label": "Remove",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.vehicles"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-d7a75768e505",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[3].inputs[0]",
+      "label": "Any vehicle adapted for disability",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.d7a75768e505",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-5f9e8331ac6f",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[3].inputs[1]",
+      "label": "Any vehicle modified or altered in any way",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.5f9e8331ac6f",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-488ecf4bdc09",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[3].inputs[2]",
+      "label": "Any left-hand drive vehicle",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.488ecf4bdc09",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-87fad6b4a9fe",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[3].inputs[3]",
+      "label": "Any vehicle imported other than by the manufacturer",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.87fad6b4a9fe",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-2d662a3ec81d",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[3].inputs[4]",
+      "label": "Details of any Yes answers",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote-value.2d662a3ec81d",
+          "answerKind": "text",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-af67cb40b4de",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[3].inputs[5]",
+      "label": "Courtesy vehicles",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.af67cb40b4de",
+          "answerKind": "reference",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-ec9fcabe7952",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[4].inputs[0]",
+      "label": "Recovery vehicles — single vehicle capacity",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote-value.ec9fcabe7952",
+          "answerKind": "count",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-4500a357b44b",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[4].inputs[1]",
+      "label": "Recovery vehicles — two vehicle capacity",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote-value.4500a357b44b",
+          "answerKind": "count",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-35a0dd933924",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[4].inputs[2]",
+      "label": "Passenger carriers over 8 seats",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote-value.35a0dd933924",
+          "answerKind": "count",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-636aa0774e1c",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[4].inputs[3]",
+      "label": "Motorcycles, scooters, quads or trikes",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote-value.636aa0774e1c",
+          "answerKind": "count",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-315960b57ab1",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[4].inputs[4]",
+      "label": "Trade plates held",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.business.responses.answers[]"
+          ],
+          "questionId": "prototype.quote-value.315960b57ab1",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-58b5bc3f356b",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[4].inputs[5]",
+      "label": "Trade plate numbers",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.tradePlates"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-ac167725da1f",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[0]",
+      "label": "Name of insurer",
+      "products": [
+        "motor-trade-road-risks"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.previousInsurance.insurer"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-d31dfbce85a7",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[1]",
+      "label": "Policy number",
+      "products": [
+        "motor-trade-road-risks"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.previousInsurance.policyNumber"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-fcea75d9c500",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[2]",
+      "label": "Policyholder name",
+      "products": [
+        "motor-trade-road-risks"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.previousInsurance.policyholderName"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-6ca7d23ce712",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[3]",
+      "label": "Expiry date",
+      "products": [
+        "motor-trade-road-risks"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.previousInsurance.expiresOn"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-1bdc05ff8b3d",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[2].inputs[0]",
+      "label": "Discount being claimed",
+      "products": [
+        "motor-trade-road-risks"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.previousInsurance.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.1bdc05ff8b3d",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-ba4a89b86e80",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[2].inputs[1]",
+      "label": "Years claimed",
+      "products": [
+        "motor-trade-road-risks"
+      ],
+      "bindings": [
+        {
+          "kind": "compound",
+          "paths": [
+            "risk.previousInsurance.noClaimsYears",
+            "risk.previousInsurance.noClaimsYearsBasis"
+          ],
+          "captureRule": "Capture years and the declared basis separately; reconcile with NCB source answers before readiness."
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-c0650c760167",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[2].inputs[2]",
+      "label": "Discount earned on",
+      "products": [
+        "motor-trade-road-risks"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.previousInsurance.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.c0650c760167",
+          "answerKind": "reference",
+          "products": [
+            "motor-trade-road-risks"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-61a13bb828b2",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[2].inputs[3]",
+      "label": "Protect the discount",
+      "products": [
+        "motor-trade-road-risks"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.previousInsurance.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.61a13bb828b2",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-3fad63dd9abf",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[2].inputs[4]",
+      "label": "Introductory discount claimed",
+      "products": [
+        "motor-trade-road-risks"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "risk.previousInsurance.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.3fad63dd9abf",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-2beaf3b8d546",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[0]",
+      "label": "Cover basis",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "cover.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.2beaf3b8d546",
+          "answerKind": "reference",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-d9dd069a314c",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[1]",
+      "label": "Indemnity limit — own vehicles, any one vehicle",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "cover.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.d9dd069a314c",
+          "answerKind": "reference",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-b4c7e25f7781",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[2]",
+      "label": "Indemnity limit — customer vehicles, any one vehicle",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "cover.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.b4c7e25f7781",
+          "answerKind": "reference",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-00216de47ab5",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[3]",
+      "label": "Accidental damage, fire and theft excess",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "cover.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.00216de47ab5",
+          "answerKind": "reference",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-becc2653d0de",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[4]",
+      "label": "Demonstration cover",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "cover.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.becc2653d0de",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-4c5df77ffba1",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1].inputs[5]",
+      "label": "Private use in addition to motor trade use",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "answer",
+          "paths": [
+            "cover.responses.answers[]"
+          ],
+          "questionId": "prototype.quote.4c5df77ffba1",
+          "answerKind": "boolean",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ]
+    },
+    {
+      "controlId": "CTL-fbcf28cc54fc",
+      "method": "pNewQuote",
+      "sourcePath": ".sections[1]",
+      "label": "Save",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "bindings": [
+        {
+          "kind": "field-or-collection",
+          "paths": [
+            "risk.materialFacts"
+          ]
+        }
+      ]
+    }
+  ]
+}
