@@ -61,7 +61,7 @@ All paths under `/api/v1`; authenticate and current-scope filter before counts/s
 | PUT /quotes/{id}/proposal | Full normalized capture proposal + term intent + optional reason; CSRF/key/quote If-Match;200 ID+new ETag; append immutable revision and rebuild search in one transaction. |
 | GET /quotes/{id}/readiness | Revision-bound current issue list; incomplete shapes, evidence and eligibility have distinct codes; no state mutation. |
 | GET /quotes/{id}/revisions and /revisions/{revisionId} | Scoped historical snapshots; verify revision belongs to quote before read. |
-| GET /quotes/{id}/comparison?from=...&to=... | Both revisions belong to quote; keyed child diff includes adds/removals/value changes and exact prior values. |
+| GET /quotes/{id}/compare?leftRevisionId=...&rightRevisionId=... | Both revisions belong to quote; keyed child diff includes adds/removals/value changes and exact prior values. |
 | POST /quotes/{id}/clone | Source quote ETag, source revisionId, destination relationshipId, reason;201 new quote ID. Current source/destination authority; clear evidence/process state, remap child IDs. Policy clone unavailable until Phase6/7. |
 | POST /quotes/{id}/withdraw | Reason, CSRF/key/quote ETag; terminal withdrawn; retain all snapshots and no destructive delete. |
 | POST /quotes/{id}/lookups | Allowlisted kind address/vehicle/licence; revisionId/itemId/query/scenario; CSRF/key/quote ETag;202 lookup ID and scoped status Location. No arbitrary external URL. |
@@ -79,3 +79,5 @@ Mutations return identities/version headers, not copied confidential proposal bo
 Replace client quote unavailable state only when actual quote queries ship; keep policy state unavailable. Shared agency quote projection is allowlisted reference/product/status/term/client declaration and permitted summary, never full driver declarations, evidence, internal notes or another agency ID. Use the same projection for internal sharing reference and authenticated agency-context routes. Counts/cursors must reflect this subset.
 
 Add frontend Quotes navigation and source New Quote modal for two enabled Motor Trade products; preserve disabled/unavailable Commercial Combined/Fleet choices with phase ownership. Global dashboard/report/search integration belongs Phase12 except quote-owned discovery and existing client/agency links. No unimplemented bind/rate/send button reports success.
+
+Core contract reconciliation: validateQuote now identifies GET /quotes/{quoteId}/readiness; the former POST /validate contract is removed before runtime implementation. Compare retains the existing /compare route and requires both revision query IDs. Quote list uses the reviewed status filter name. Create may omit initial proposal while the server initializes the selected product envelope; save requires the proposal wrapper.

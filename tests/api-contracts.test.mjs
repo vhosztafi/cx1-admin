@@ -8,17 +8,58 @@ const document=await read('openapi.json');
 const operations=Object.entries(document.paths).flatMap(([path,methods])=>Object.entries(methods).map(([method,op])=>({path,method,...op})));
 const ajv=new Ajv2020({strict:true,allErrors:true});addFormats(ajv);ajv.addFormat('binary',true);
 const policy=await read('schemas/policy.schema.json'),draft=await read('schemas/policy-draft.schema.json');
-ajv.addSchema(policy);ajv.addSchema(draft);
+const quoteDraft=await read('schemas/quote-draft.schema.json');
+ajv.addSchema(policy);ajv.addSchema(draft);ajv.addSchema(quoteDraft);
 const rootId='https://contracts.cover-mga.example/api-schemas';
 function relocate(value){
  if(Array.isArray(value))return value.map(relocate);
- if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).map(([key,v])=>[key,key==='$ref'?v.replace('#/components/schemas/',`${rootId}#/$defs/`).replace('./schemas/policy.schema.json',policy.$id).replace('./schemas/policy-draft.schema.json',draft.$id):relocate(v)]));
+ if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).map(([key,v])=>[key,key==='$ref'?v.replace('#/components/schemas/',`${rootId}#/$defs/`).replace('./schemas/policy.schema.json',policy.$id).replace('./schemas/policy-draft.schema.json',draft.$id).replace('./schemas/quote-draft.schema.json',quoteDraft.$id):relocate(v)]));
  return value;
 }
 ajv.addSchema({$id:rootId,$defs:relocate(document.components.schemas)});
 const getOperation=id=>{const result=operations.find(op=>op.operationId===id);assert.ok(result,`Unknown operation ${id}`);return result;};
 test('API component schemas all compile strictly, including both external policy schemas',()=>{
  for(const name of Object.keys(document.components.schemas))assert.equal(typeof ajv.getSchema(`${rootId}#/$defs/${name}`),'function',name);
+});
+
+test('quote create and save DTOs reject policy authority while accepting incomplete capture proposals',()=>{
+ const create=ajv.getSchema(`${rootId}#/$defs/QuoteCreateRequest`),save=ajv.getSchema(`${rootId}#/$defs/QuoteSaveRequest`);
+ const id='00000000-0000-4000-8000-000000000001';
+ const proposal={schemaVersion:'1.0',productCode:'motor-trade-road-risks'};
+ assert.equal(create({relationshipId:id,productVersionId:id}),true);
+ assert.equal(create({relationshipId:id,productVersionId:id,matchSubmissionId:id,proposal}),true);
+ assert.equal(save({proposal}),true);
+ for(const field of ['agencyId','clientId','actorId','state','premium'])assert.equal(create({relationshipId:id,productVersionId:id,[field]:id}),false,field);
+ for(const field of ['productVersionId','premium','provenance','term'])assert.equal(save({proposal:{...proposal,[field]:{}}}),false,field);
+ assert.equal(save({proposal:{...proposal,insured:{clientId:id}}}),false);
+ assert.equal(save({proposal:{...proposal,productCode:'commercial-combined'}}),false);
+});
+
+test('quote command receipts expose only identities and retain concurrency, CSRF and replay requirements',()=>{
+ for(const name of ['createQuote','saveQuoteProposal','withdrawQuote','cloneQuote']) {
+  const operation=getOperation(name);const success=operation.responses[name==='createQuote'||name==='cloneQuote'?201:200];
+  assert.equal(success.content['application/json'].schema.$ref,'#/components/schemas/QuoteIdentityResult');
+  assert.ok(success.headers.ETag);
+  if(name==='createQuote'||name==='cloneQuote')assert.ok(success.headers.Location);
+  assert.ok(operation.parameters.some(parameter=>parameter.name==='Idempotency-Key'&&parameter.required));
+  if(name!=='createQuote')assert.ok(operation.parameters.some(parameter=>parameter.name==='If-Match'&&parameter.required));
+  assert.ok(operation.security.every(security=>'Csrf' in security));
+ }
+ const receipt=ajv.getSchema(`${rootId}#/$defs/QuoteIdentityResult`);
+ const id='00000000-0000-4000-8000-000000000001';
+ assert.equal(receipt({id}),true);assert.equal(receipt({id,proposal:{}}),false);
+});
+
+test('quote readiness and revision discovery are scoped reads with required context',()=>{
+ const readiness=getOperation('validateQuote');assert.equal(readiness.method,'get');assert.equal(readiness.path,'/quotes/{quoteId}/readiness');
+ assert.equal(readiness['x-idempotency'],'not-cached');assert.ok(!document.paths['/quotes/{quoteId}/validate']);
+ const product=getOperation('listQuoteProducts');assert.ok(product.parameters.some(parameter=>parameter.name==='relationshipId'&&parameter.required));
+ const revision=getOperation('getQuoteRevision');assert.deepEqual(revision.parameters.filter(parameter=>parameter.in==='path').map(parameter=>parameter.name),['quoteId','revisionId']);
+ const comparison=getOperation('compareQuoteRevisions');assert.ok(comparison.parameters.filter(parameter=>parameter.in==='query').every(parameter=>parameter.required));
+ for(const name of ['getQuote','validateQuote','getQuoteRevision','listQuoteProducts']) {
+  const operation=getOperation(name);assert.equal(operation['x-runtime-status'],'planned-phase-05');
+  assert.equal(operation.responses[200].headers['Cache-Control'].schema.const,'no-store');
+ }
 });
 test('every inline request, response and parameter schema compiles strictly',()=>{
  for(const op of operations){

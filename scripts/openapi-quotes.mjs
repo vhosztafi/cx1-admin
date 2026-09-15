@@ -1,0 +1,40 @@
+// Phase 5 capture contracts. Future workflow operations remain separate; this
+// document is not evidence that the runtime quote routes have been implemented.
+export function addQuoteContracts({schemas:s,ref:r,text:t,enumeration:e,object:o,array:a,id,instant,boolean:b,integer,operation:op,list,paths}) {
+  const product=e('motor-trade-road-risks','motor-trade-combined');
+  const state=e('draft','withdrawn');
+  const hash={type:'string',pattern:'^[a-f0-9]{64}$'};
+  s.QuoteCaptureProposal={$ref:'./schemas/quote-draft.schema.json'};
+  s.QuoteIdentityResult=o({id});
+  s.QuoteCreateRequest=o({relationshipId:id,productVersionId:id,matchSubmissionId:id,proposal:r('QuoteCaptureProposal')},['relationshipId','productVersionId']);
+  s.QuoteSaveRequest=o({proposal:r('QuoteCaptureProposal'),reason:t(1000)},['proposal']);
+  s.QuoteCloneRequest=o({sourceRevisionId:id,relationshipId:id,reason:t(1000)});
+  s.QuoteCaptureSummary=o({id,reference:t(40),relationshipId:id,clientId:id,agencyId:id,clientName:t(),agencyName:t(),productCode:product,state,revisionId:id,revisionNumber:{type:'integer',minimum:1},updatedAt:instant});
+  s.QuoteReadiness=o({quoteId:id,revisionId:id,ready:b,issues:a(o({path:t(500),code:t(100),message:t(1000),category:e('capture','evidence','eligibility','matching','configuration'),severity:e('error','warning')}))});
+  s.QuoteCaptureRevision=o({id,quoteId:id,number:{type:'integer',minimum:1},productVersionId:id,agencyTermsVersionId:id,questionSetVersion:t(100),referenceDataVersion:t(100),proposal:r('QuoteCaptureProposal'),proposalHash:hash,savedAt:instant,savedByLabel:t(),reason:t(1000)},['id','quoteId','number','productVersionId','agencyTermsVersionId','questionSetVersion','referenceDataVersion','proposal','proposalHash','savedAt','savedByLabel']);
+  s.QuoteCaptureView=o({...s.QuoteCaptureSummary.properties,productVersionId:id,proposal:r('QuoteCaptureProposal'),captureClosed:b,capabilities:o({canSave:b,canClone:b,canWithdraw:b,canAttachEvidence:b}),readiness:r('QuoteReadiness')});
+  s.QuoteCaptureProduct=o({productVersionId:id,productCode:product,displayName:t(),versionLabel:t(100),questionSetVersion:t(100),referenceDataVersion:t(100),captureEligible:b,unavailableReason:t(1000)},['productVersionId','productCode','displayName','versionLabel','questionSetVersion','referenceDataVersion','captureEligible']);
+  const replace=(method,path,...args)=>{delete paths[path]?.[method];op(method,path,...args);};
+  const replaceList=(path,...args)=>{delete paths[path]?.get;list(path,...args);};
+  replace('post','/quotes','createQuote','quote-write',{input:r('QuoteCreateRequest'),output:r('QuoteIdentityResult'),status:201});
+  replaceList('/quotes','listQuotes','quote-read',r('QuoteCaptureSummary'),[['q',t(200)],['productCode',product],['agencyId',id],['clientId',id],['status',state],['sort',e('reference','updated','start')],['direction',e('asc','desc')]]);
+  replace('get','/quotes/{quoteId}','getQuote','quote-read',{output:r('QuoteCaptureView')});
+  replace('put','/quotes/{quoteId}/proposal','saveQuoteProposal','quote-write',{existing:true,input:r('QuoteSaveRequest'),output:r('QuoteIdentityResult')});
+  replace('post','/quotes/{quoteId}/withdraw','withdrawQuote','quote-write',{existing:true,input:o({reason:t(1000)}),output:r('QuoteIdentityResult')});
+  replace('post','/quotes/{quoteId}/clone','cloneQuote','quote-write',{existing:true,input:r('QuoteCloneRequest'),output:r('QuoteIdentityResult'),status:201});
+  delete paths['/quotes/{quoteId}/validate'];
+  op('get','/quotes/{quoteId}/readiness','validateQuote','quote-read',{output:r('QuoteReadiness'),summary:'Assess current revision readiness without changing quote state'});
+  replaceList('/quotes/{quoteId}/revisions','listQuoteRevisions','quote-read',r('QuoteCaptureRevision'));
+  op('get','/quotes/{quoteId}/revisions/{revisionId}','getQuoteRevision','quote-read',{output:r('QuoteCaptureRevision')});
+  op('get','/quote-products','listQuoteProducts','quote-read',{query:[['relationshipId',id]],output:o({items:a(r('QuoteCaptureProduct'))})});
+  paths['/quote-products'].get.parameters.find(parameter=>parameter.name==='relationshipId').required=true;
+  // Retain the already reviewed compare route and operation identity.
+  const comparison=paths['/quotes/{quoteId}/compare'].get;
+  for(const parameter of comparison.parameters.filter(parameter=>parameter.in==='query'))parameter.required=true;
+  for(const path of ['/quotes','/quotes/{quoteId}','/quotes/{quoteId}/proposal','/quotes/{quoteId}/withdraw','/quotes/{quoteId}/clone','/quotes/{quoteId}/readiness','/quotes/{quoteId}/revisions','/quotes/{quoteId}/revisions/{revisionId}','/quote-products'])
+    for(const operation of Object.values(paths[path])) {
+      operation['x-runtime-status']='planned-phase-05';
+      operation.description+=' Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.';
+      for(const [status,response] of Object.entries(operation.responses))operation.responses[status]={...response,headers:{...response.headers,'Cache-Control':{description:'Confidential quote response; never cache.',schema:{type:'string',const:'no-store'}}}};
+    }
+}
