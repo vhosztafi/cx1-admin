@@ -332,10 +332,19 @@
       ],
       "bindings": [
         {
-          "kind": "field-or-collection",
+          "kind": "compound",
           "paths": [
+            "risk.drivers[].convictions[].declaredBanPeriod",
             "risk.drivers[].convictions[].banMonths"
           ],
+          "captureRule": "Preserve the selected band separately; collect exact months for a disqualification before readiness, never invent a band midpoint.",
+          "valueMapping": {
+            "None": "none",
+            "Under 3 months": "under-3-months",
+            "3 to 6 months": "3-to-6-months",
+            "6 to 12 months": "6-to-12-months",
+            "Over 12 months": "over-12-months"
+          },
           "modal": "addconv"
         }
       ]
@@ -465,6 +474,13 @@
           "paths": [
             "risk.drivers[].losses[].fault"
           ],
+          "captureRule": "Preserve split liability as distinct from fault, non-fault and not yet determined.",
+          "valueMapping": {
+            "Yes": "fault",
+            "No": "non-fault",
+            "Split liability": "split",
+            "Not yet determined": "unknown"
+          },
           "modal": "addinc"
         }
       ]

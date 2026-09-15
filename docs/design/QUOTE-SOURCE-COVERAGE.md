@@ -50,6 +50,10 @@ The Road Risks no-discount reason is an explicit versioned text answer from COND
 
 Named-driver incidents within three calendar years and motoring convictions/CCJs within five require affirmative matching global declarations. The trusted assessment date anchors inclusive windows; future events are rejected and pending prosecutions remain disclosable. Criminal conviction disclosure has no prototype time limit. Global positive declarations may relate to the proposer, so they do not imply a fabricated named-driver row. Disability and DVLA-notifiable conditions are kept distinct.
 
+## Direct conviction and incident options
+
+The prototype disqualification band is stored separately from exact ban months. Readiness requires a matching disqualified declaration and a positive whole-month duration within a selected ban band; no midpoint is inferred. Split liability is a distinct canonical fault value, alongside fault, non-fault and unknown. The binding manifest records the exact source-label mappings. Existing issued policy fixtures remain compatible.
+
 ## Remaining contract gate
 
 Resolve overlapping prototype/funnel answers and all product-specific requiredness, dynamic option selection, source limits and conditional rules. Reconcile historical prototype field bindings with the capture-write envelope: for example `term.startsAt` is supplied as local `termIntent`, not a caller-chosen policy timestamp. Finish quote API request/response contracts and operation integration. Verify complete fictional proposals against the composed validators. Then implement and test the same rules in the actual .NET request boundary and persistent services.
