@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-15T11:11:10.625565+00:00"
+last_updated: "2026-09-15T11:24:15.167550+00:00"
 last_activity: 2026-09-15
 progress:
   total_phases: 13
@@ -25,7 +25,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 ## Current Position
 
 Phase: 5 of 13 (Motor Trade quote capture)
-Plan: 05-01 of11 in progress; all255source field shapes mapped; vehicle section requiredness contracts;173tests
+Plan: 05-01 of11 in progress; all255source field shapes mapped; NCB insurance requiredness contracts;177tests
 Status: In progress — autonomous
 Last activity: 2026-09-15 — Phase4 accepted:329backend/57SQL,81contracts,30frontend,20browser journeys and restart persistence.
 
@@ -54,7 +54,7 @@ Progress: Phases1–4 complete;4/13phases,24completed plans.
 ## Session Continuity
 
 Last session: 2026-09-15
-Stopped at:05-01 ordinary/specified vehicle section readiness added;173contracts/336operations pass. NEXT driver/vehicle eligibility and capture-context integration, cover/insurance requiredness, remaining limits/overlap, prototype bindings and composed full fixtures. No actual quote/backend/UI/DB changes.
+Stopped at:05-01 NCB/previous-insurance section readiness added;177contracts/336operations pass. NEXT core cover requiredness, driver/vehicle eligibility and context integration, remaining limits/overlap, prototype bindings and composed full fixtures. No actual quote/backend/UI/DB changes.
 Resume file: .planning/phases/05-motor-trade-quote-capture/05-01-PROGRESS.md
 
 ## Autonomous continuation
@@ -63,4 +63,4 @@ User approved requirements/roadmap and autonomous choices/progression on 2026-09
 
 Thread heartbeat: continue-cover-mga-back-office-mvp, active every 10 minutes. Resume unfinished work in this same task; notify meaningful progress/blockers only; pause on actual milestone completion, user stop or persistent external blocker with no remaining useful work.
 
-Latest05-01 checkpoint:173contract tests pass; vehicle section checks added. Read05-01-PROGRESS; no plan/phase completion.
+Latest05-01 checkpoint:177contract tests pass; NCB and insurer conditional checks added. Read05-01-PROGRESS; no plan/phase completion.
