@@ -68,7 +68,7 @@ public sealed class OperationalJobTests
                 await db.SaveChangesAsync();
             }
             // Live role revalidation must also protect already-recorded command responses.
-            using (var response = await Post(admin, adminCsrf, key, new { scenario = "success" })) Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+            using (var response = await Post(admin, adminCsrf, key, new { scenario = "success" })) Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
             await using (var db = new BackOfficeDbContext(options))
             {
                 db.Add(new UserRole { UserId = adminId, RoleId = roleId });

@@ -23,7 +23,10 @@ public static class AgencyUserAuthority
         if (!actor.HasCapability("agency-admin")) throw Denied();
         var agency = await db.Set<Agency>().FromSqlInterpolated($"SELECT * FROM Agency WITH(UPDLOCK,HOLDLOCK,ROWLOCK) WHERE Id={agencyId}").AsNoTracking().SingleOrDefaultAsync(token);
         if (agency is null) throw new AgencyCommandException(404, "agency-not-found");
-        var user = await db.Set<StaffUser>().FromSqlInterpolated($"SELECT * FROM [User] WITH(HOLDLOCK,ROWLOCK) WHERE Id={actor.UserId}").AsNoTracking().SingleOrDefaultAsync(token);
+        // Serialize user-management commands by actor before taking role-range locks.
+        // Otherwise same-actor invitations can hold a role scan while waiting on
+        // an email range owned by the command trying to insert the new role.
+        var user = await db.Set<StaffUser>().FromSqlInterpolated($"SELECT * FROM [User] WITH(UPDLOCK,HOLDLOCK,ROWLOCK) WHERE Id={actor.UserId}").AsNoTracking().SingleOrDefaultAsync(token);
         if (user is null || user.AgencyId != null || user.State != "active") throw Denied();
         var links = await db.Set<UserRole>().FromSqlInterpolated($"SELECT * FROM UserRole WITH(HOLDLOCK) WHERE UserId={actor.UserId}").AsNoTracking().ToListAsync(token);
         var roles = new List<Role>();

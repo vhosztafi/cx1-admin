@@ -1,3 +1,4 @@
+using BackOffice.Infrastructure.Identity;
 using System.Data;
 using System.Security.Cryptography;
 using BackOffice.Application;
@@ -69,6 +70,15 @@ public sealed class AgencyOwnUserAuthorityTests
             }
             Assert.Equal(64, (await ReadAuthority(broker, agencyId)).Length);
             Assert.Equal(403, (await Assert.ThrowsAsync<AgencyCommandException>(() => ReadAuthority(broker, foreignId))).Status);
+            async Task<LockedIdentity?> Identity()
+            {
+                await using var db = new BackOfficeDbContext(options);
+                var hint = await IdentitySnapshot.Reference(db, first); Assert.NotNull(hint);
+                await Assert.ThrowsAsync<InvalidOperationException>(() => IdentitySnapshot.Lock(db,hint!));
+                await using var tx = await db.Database.BeginTransactionAsync();
+                return await IdentitySnapshot.Lock(db,hint!);
+            }
+            Assert.Equal(agencyId,(await Identity())!.User.AgencyId);
             var input = AgencyUserRules.Validate("own-invited@example.test", "Fictional own invite", "broker-user");
             var version = await AgencyVersion(); var key = Guid.NewGuid().ToString("N");
             var result = await users.Invite(broker, agencyId, key, version, input);
@@ -110,6 +120,7 @@ public sealed class AgencyOwnUserAuthorityTests
             await lifecycle.Edit(staff, agencyId, first, Guid.NewGuid().ToString(), await UserVersion(first), "Fictional restored admin", "broker-admin", "Internal restoration");
             Assert.True((await users.Invite(broker, agencyId, key, version, input)).Replayed);
             await using (var db = new BackOfficeDbContext(options)) await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Agency SET State=N'suspended' WHERE Id={agencyId}");
+            Assert.Null(await Identity());
             Assert.Equal(403, (await Assert.ThrowsAsync<AgencyCommandException>(() => users.Invite(broker, agencyId, key, version, input))).Status);
             await using (var db = new BackOfficeDbContext(options))
             {

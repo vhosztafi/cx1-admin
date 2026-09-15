@@ -80,7 +80,7 @@ public sealed class AgencyNotificationApiTests
                 Assert.Single(await db.Set<IdempotencyRecord>().Where(x=>x.Route==retry).ToListAsync());
                 var role=await db.Set<Role>().SingleAsync(x=>x.Code=="agency-admin");db.Remove(await db.Set<UserRole>().SingleAsync(x=>x.UserId==actorId&&x.RoleId==role.Id));await db.SaveChangesAsync();
             }
-            Assert.Equal(HttpStatusCode.Forbidden,(await Send(admin,retry,csrf,etag,key,new{reason="Fictional recovery"})).StatusCode);
+            Assert.Equal(HttpStatusCode.Unauthorized,(await Send(admin,retry,csrf,etag,key,new{reason="Fictional recovery"})).StatusCode);
         }
         finally{if(connection.InitialCatalog!=owned)throw new InvalidOperationException("Cleanup target changed.");await using var db=new BackOfficeDbContext(options);await db.Database.EnsureDeletedAsync();}
     }

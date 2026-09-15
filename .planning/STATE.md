@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-15T04:54:24.686444Z"
+last_updated: "2026-09-15T05:28:27.101777Z"
 last_activity: 2026-09-15
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-07 of 8 in progress; 04-01 through 04-06 complete, all six Phase 3 plans complete
 Status: In progress â€” autonomous
-Last activity: 2026-09-15 -04-07 server-owned permission matrix verified with actual grants;322backend/55SQL,79contracts,30frontend/build and browser pass.
+Last activity: 2026-09-15 -04-07 identity/session lock ordering and ticket binding verified; concurrent invitation deadlock fixed;322backend/55SQL and79contracts pass.
 
 Progress: Phases 1â€“3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1â€“3 complete; 3/13 phases. Agency onboarding/access next
 ## Session Continuity
 
 Last session: 2026-09-15
-Stopped at:04-07 server-owned permission matrix with source Separation banner implemented and verified. Current-role permissions and actual bordereau grant kept separate from feature availability. Full .local/phase4-permission-matrix-full322/55SQL passes (260unit/62integration),79contracts/328operations,30frontend/lint/typecheck/build and real permission browser pass. No active tests/previews. NEXT coordinated external authentication/session/actor-scope/workspace guards and accepted-account two-agency API tests. Broker login still closed; update matrix own-user sign-in availability only with verified runtime. Read04-07-PROGRESS/04-DATA-API-DESIGN. No wholeAGY/humanUAT acceptance.
+Stopped at:04-07 identity/session lock preparation verified. IdentitySnapshot rechecks agency/user/roles before credentials and sessions; encrypted tickets bind to their stored account. Parallel session reads and copied-ticket rejection pass. SQL deadlock graph identified same-actor invitation email/role-range cycle; actor update lock fixes it. Empty roles now invalidate authentication (401). Full .local/phase4-identity-locks-full-retry322/55SQL passes (260unit/62integration),79contracts, existing real shell browser passes. No active tests/previews. NEXT coordinated external authentication/session/actor-scope/workspace guards and accepted-account two-agency API tests. Broker login still closed; update matrix availability only with verified runtime. Read04-07-PROGRESS/04-DATA-API-DESIGN. No wholeAGY/humanUAT acceptance.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-07-PROGRESS.md
 
 ## Autonomous continuation

@@ -56,6 +56,11 @@ public sealed class AuthenticationTests
                 using var actor=await client.GetAsync("/api/v1/account");
                 Assert.Equal(HttpStatusCode.OK,actor.StatusCode);
                 Assert.True(actor.Headers.CacheControl?.NoStore);
+                await using (var db=new BackOfficeDbContext(options))
+                    await db.Set<UserSession>().ExecuteUpdateAsync(x=>x.SetProperty(session=>session.LastSeenAt,DateTimeOffset.UtcNow.AddMinutes(-2)));
+                var parallel=await Task.WhenAll(Enumerable.Range(0,4).Select(_=>client.GetAsync("/api/v1/account")));
+                foreach(var response in parallel){Assert.Equal(HttpStatusCode.OK,response.StatusCode);response.Dispose();}
+
                 using var forbidden=await client.GetAsync("/test/admin");
                 Assert.Equal(HttpStatusCode.Forbidden,forbidden.StatusCode);
                 using var staleCsrf=await Post(client,csrf,null,"/api/v1/auth/logout");
@@ -89,7 +94,7 @@ public sealed class AuthenticationTests
                     var credential=await db.Set<UserCredential>().SingleAsync(x => x.ProviderSubject=="FINANCE@COVER.EXAMPLE");
                     Assert.Equal(5,credential.FailedAttempts); Assert.True(credential.LockedUntil>DateTimeOffset.UtcNow);
                 }
-                foreach (var rejection in new[] {"expired","stamp","suspended"})
+                foreach (var rejection in new[] {"ticket-subject","expired","stamp","suspended"})
                 {
                     using var client=Client(factory);
                     using var login=await Post(client,await Csrf(client),new {email="underwriter@cover.example",password});
@@ -97,7 +102,14 @@ public sealed class AuthenticationTests
                     await using (var db=new BackOfficeDbContext(options))
                     {
                         var user=await db.Set<StaffUser>().SingleAsync(x => x.Email=="underwriter@cover.example");
-                        if (rejection=="expired")
+                        if (rejection=="ticket-subject")
+                        {
+                            var source=await db.Set<StaffUser>().Where(x=>x.Email=="servicing@cover.example").Select(x=>x.Id).SingleAsync();
+                            var copied=await db.Set<UserSession>().Where(x=>x.UserId==source).OrderByDescending(x=>x.CreatedAt).Select(x=>x.TicketCiphertext).FirstAsync();
+                            var session=await db.Set<UserSession>().Where(x=>x.UserId==user.Id).OrderByDescending(x=>x.CreatedAt).FirstAsync();
+                            session.TicketCiphertext=copied;
+                        }
+                        else if (rejection=="expired")
                         {
                             var session=await db.Set<UserSession>().Where(x => x.UserId==user.Id).OrderByDescending(x => x.CreatedAt).FirstAsync();
                             session.CreatedAt=DateTimeOffset.UtcNow.AddHours(-10); session.ExpiresAt=DateTimeOffset.UtcNow.AddHours(-1);

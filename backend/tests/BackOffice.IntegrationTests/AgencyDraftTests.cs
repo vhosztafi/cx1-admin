@@ -104,7 +104,7 @@ public sealed class AgencyDraftTests
                 await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM [AgencyActivity] WHERE [AgencyId]={id}"));
                 var user=await db.Set<StaffUser>().SingleAsync(x=>x.Email=="agency-admin@cover.example");var role=await db.Set<Role>().SingleAsync(x=>x.Code=="agency-admin");db.Remove(await db.Set<UserRole>().SingleAsync(x=>x.UserId==user.Id&&x.RoleId==role.Id));await db.SaveChangesAsync();
             }
-            Assert.Equal(HttpStatusCode.Forbidden,(await Send(admin,csrf,HttpMethod.Put,path,changed,updateKey,initial)).StatusCode);
+            Assert.Equal(HttpStatusCode.Unauthorized,(await Send(admin,csrf,HttpMethod.Put,path,changed,updateKey,initial)).StatusCode);
         }
         finally{if(connection.InitialCatalog!=owned)throw new InvalidOperationException("Cleanup target changed.");await using var cleanup=new BackOfficeDbContext(options);await cleanup.Database.EnsureDeletedAsync();}
     }

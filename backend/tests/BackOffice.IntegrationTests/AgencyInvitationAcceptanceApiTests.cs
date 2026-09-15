@@ -75,7 +75,7 @@ public sealed class AgencyInvitationAcceptanceApiTests
                 Assert.False(await db.Set<IdempotencyRecord>().AnyAsync(x=>x.Route==acceptPath||x.Route==path));Assert.Single(await db.Set<UserCredential>().Where(x=>x.UserId==created.ResourceId).ToListAsync());
                 var role=await db.Set<Role>().SingleAsync(x=>x.Code=="agency-admin");db.Remove(await db.Set<UserRole>().SingleAsync(x=>x.UserId==actor.UserId&&x.RoleId==role.Id));await db.SaveChangesAsync();
             }
-            Assert.Equal(HttpStatusCode.Forbidden,(await Send(admin,path,adminCsrf,new{})).StatusCode);
+            Assert.Equal(HttpStatusCode.Unauthorized,(await Send(admin,path,adminCsrf,new{})).StatusCode);
             HttpStatusCode final=HttpStatusCode.OK;
             for(var i=0;i<25&&final!=HttpStatusCode.TooManyRequests;i++){using var limited=await Send(anonymous,acceptPath,anonCsrf,new{invitationToken="malformed",password=newPassword});final=limited.StatusCode;if(final==HttpStatusCode.TooManyRequests)Assert.NotNull(limited.Headers.RetryAfter);}
             Assert.Equal(HttpStatusCode.TooManyRequests,final);

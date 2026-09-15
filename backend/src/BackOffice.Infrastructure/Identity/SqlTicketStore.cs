@@ -18,7 +18,12 @@ public sealed class SqlTicketStore(IDbContextFactory<BackOfficeDbContext> factor
     {
         var userId = Guid.Parse(ticket.Principal.FindFirstValue(ClaimTypes.NameIdentifier)!);
         await using var db = await factory.CreateDbContextAsync();
-        var user = await db.Set<StaffUser>().AsNoTracking().SingleAsync(x => x.Id == userId);
+        var reference = await IdentitySnapshot.Reference(db,userId) ?? throw new InvalidOperationException("Account changed during authentication.");
+        await using var transaction = await db.Database.BeginTransactionAsync();
+        var snapshot = await IdentitySnapshot.Lock(db,reference);
+        var user = snapshot?.User ?? throw new InvalidOperationException("Account changed during authentication.");
+        if (!snapshot.Roles.Select(x => x.Code).ToHashSet(StringComparer.Ordinal).SetEquals(ticket.Principal.FindAll(ClaimTypes.Role).Select(x => x.Value)))
+            throw new InvalidOperationException("Account roles changed during authentication.");
         if (user.State != "active" || user.AgencyId is not null || user.SecurityStamp != ticket.Principal.FindFirstValue(LocalIdentityService.StampClaim))
             throw new InvalidOperationException("Account changed during authentication.");
         var key = WebEncoders.Base64UrlEncode(RandomNumberGenerator.GetBytes(32));
@@ -28,7 +33,7 @@ public sealed class SqlTicketStore(IDbContextFactory<BackOfficeDbContext> factor
             TicketCiphertext=protector.Protect(TicketSerializer.Default.Serialize(ticket))});
         db.Add(LocalIdentityService.AuthenticationAudit(userId,"authentication.succeeded",now));
         await db.SaveChangesAsync();
-        return key;
+        await transaction.CommitAsync(); return key;
     }
 
     public async Task<AuthenticationTicket?> RetrieveAsync(string key)
@@ -37,42 +42,62 @@ public sealed class SqlTicketStore(IDbContextFactory<BackOfficeDbContext> factor
         await using var db = await factory.CreateDbContextAsync();
         var hash = Hash(key);
         var now = time.GetUtcNow();
-        var session = await db.Set<UserSession>().AsNoTracking().SingleOrDefaultAsync(x => x.TokenHash == hash);
-        if (session is null || session.RevokedAt is not null || session.ExpiresAt <= now) return null;
-        var user = await db.Set<StaffUser>().AsNoTracking().SingleOrDefaultAsync(x => x.Id == session.UserId);
-        if (user is null || user.State != "active" || user.AgencyId is not null || user.SecurityStamp != session.SecurityStamp) return null;
-        var roles = await LocalIdentityService.RolesAsync(db,user.Id,CancellationToken.None);
-        if (roles.Any(x => x.Scope != "internal")) return null;
+        var sessionReference = await db.Set<UserSession>().AsNoTracking().Where(x => x.TokenHash == hash).Select(x => new { x.Id, x.UserId }).SingleOrDefaultAsync();
+        if (sessionReference == null) return null;
+        var reference = await IdentitySnapshot.Reference(db,sessionReference.UserId);
+        if (reference == null) return null;
+        await using var transaction = await db.Database.BeginTransactionAsync();
+        var snapshot = await IdentitySnapshot.Lock(db,reference);
+        if (snapshot == null || snapshot.User.AgencyId != null) return null;
+        var user = snapshot.User; var roles = snapshot.Roles;
+        var session = await db.Set<UserSession>().FromSqlInterpolated($"SELECT * FROM [Session] WITH(UPDLOCK,HOLDLOCK,ROWLOCK) WHERE Id={sessionReference.Id} AND UserId={user.Id} AND TokenHash={hash}").AsNoTracking().SingleOrDefaultAsync();
+        if (session == null || session.RevokedAt != null || session.ExpiresAt <= now || user.SecurityStamp != session.SecurityStamp) return null;
         AuthenticationTicket? ticket;
         try { ticket = TicketSerializer.Default.Deserialize(protector.Unprotect(session.TicketCiphertext)); }
         catch (CryptographicException) { return null; }
-        if (ticket is null || ticket.Properties.ExpiresUtc <= now) return null;
+        if (ticket is null || ticket.Properties.ExpiresUtc <= now ||
+            ticket.Principal.FindFirstValue(ClaimTypes.NameIdentifier) != user.Id.ToString() ||
+            ticket.Principal.FindFirstValue(LocalIdentityService.StampClaim) != session.SecurityStamp) return null;
         ticket = new AuthenticationTicket(LocalIdentityService.Principal(user,roles),ticket.Properties,ticket.AuthenticationScheme);
         // Avoid rewriting encrypted tickets/rowversions on every asset/API fetch.
         if (session.LastSeenAt < now.AddMinutes(-1))
             await db.Set<UserSession>().Where(x => x.Id == session.Id && x.RevokedAt == null)
                 .ExecuteUpdateAsync(s => s.SetProperty(x => x.LastSeenAt,now).SetProperty(x => x.UpdatedAt,now));
-        return ticket;
+        await transaction.CommitAsync(); return ticket;
     }
 
     public async Task RenewAsync(string key,AuthenticationTicket ticket)
     {
-        // Fixed maximum lifetime; middleware is configured without sliding expiry.
+        // Renewal never extends the persisted maximum lifetime.
+        if (key.Length != 43) return;
         await using var db = await factory.CreateDbContextAsync();
         var hash = Hash(key);
-        var encrypted = protector.Protect(TicketSerializer.Default.Serialize(ticket));
-        var now = time.GetUtcNow();
-        await db.Set<UserSession>().Where(x => x.TokenHash == hash && x.RevokedAt == null && x.ExpiresAt > now)
+        var userId = await db.Set<UserSession>().AsNoTracking().Where(x => x.TokenHash == hash).Select(x => (Guid?)x.UserId).SingleOrDefaultAsync();
+        var reference = userId is Guid id ? await IdentitySnapshot.Reference(db,id) : null;
+        if (reference == null) return;
+        await using var transaction = await db.Database.BeginTransactionAsync();
+        var snapshot = await IdentitySnapshot.Lock(db,reference);
+        if (snapshot == null || snapshot.User.AgencyId != null || ticket.Principal.FindFirstValue(ClaimTypes.NameIdentifier) != snapshot.User.Id.ToString() ||
+            ticket.Principal.FindFirstValue(LocalIdentityService.StampClaim) != snapshot.User.SecurityStamp ||
+            !snapshot.Roles.Select(x => x.Code).ToHashSet(StringComparer.Ordinal).SetEquals(ticket.Principal.FindAll(ClaimTypes.Role).Select(x => x.Value))) return;
+        var encrypted = protector.Protect(TicketSerializer.Default.Serialize(ticket)); var now = time.GetUtcNow();
+        await db.Set<UserSession>().Where(x => x.TokenHash == hash && x.UserId == snapshot.User.Id && x.SecurityStamp == snapshot.User.SecurityStamp && x.RevokedAt == null && x.ExpiresAt > now)
             .ExecuteUpdateAsync(s => s.SetProperty(x => x.TicketCiphertext,encrypted).SetProperty(x => x.UpdatedAt,now));
+        await transaction.CommitAsync();
     }
 
     public async Task RemoveAsync(string key)
     {
         await using var db = await factory.CreateDbContextAsync();
-        await using var transaction = await db.Database.BeginTransactionAsync();
         var hash = Hash(key);
         var session = await db.Set<UserSession>().AsNoTracking().SingleOrDefaultAsync(x => x.TokenHash == hash);
         if (session is null) return;
+        var reference = await IdentitySnapshot.Reference(db,session.UserId);
+        if (reference == null) return;
+        await using var transaction = await db.Database.BeginTransactionAsync();
+        // Removal remains allowed for a now-disabled identity, but follows the
+        // same lock order before revoking its session and appending the audit.
+        await IdentitySnapshot.Lock(db,reference);
         var now = time.GetUtcNow();
         var changed = await db.Set<UserSession>().Where(x => x.Id == session.Id && x.RevokedAt == null)
             .ExecuteUpdateAsync(s => s.SetProperty(x => x.RevokedAt,now).SetProperty(x => x.UpdatedAt,now));

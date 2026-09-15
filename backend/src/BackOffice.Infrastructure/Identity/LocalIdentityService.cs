@@ -1,4 +1,3 @@
-using System.Data;
 using System.Security.Claims;
 using System.Text.Json;
 using BackOffice.Application;
@@ -23,10 +22,13 @@ public sealed class LocalIdentityService(IDbContextFactory<BackOfficeDbContext> 
     {
         var normalized = email.Trim().ToUpperInvariant();
         await using var db = await factory.CreateDbContextAsync(cancellationToken);
-        await using var transaction = await db.Database.BeginTransactionAsync(IsolationLevel.Serializable,cancellationToken);
-        var credential = await db.Set<UserCredential>().FromSqlInterpolated($"SELECT * FROM [UserCredential] WITH (UPDLOCK,HOLDLOCK) WHERE [Provider] = 'local' AND [ProviderSubject] = {normalized}")
-            .SingleOrDefaultAsync(cancellationToken);
-        var user = credential is null ? null : await db.Set<StaffUser>().SingleOrDefaultAsync(x => x.Id == credential.UserId,cancellationToken);
+        var userId = await db.Set<UserCredential>().AsNoTracking().Where(x => x.Provider == "local" && x.ProviderSubject == normalized).Select(x => (Guid?)x.UserId).SingleOrDefaultAsync(cancellationToken);
+        var reference = userId is Guid id ? await IdentitySnapshot.Reference(db,id,cancellationToken) : null;
+        if (reference == null) { Hasher.VerifyHashedPassword(new StaffUser(),DummyHash,password); return null; }
+        await using var transaction = await db.Database.BeginTransactionAsync(cancellationToken);
+        var snapshot = await IdentitySnapshot.Lock(db,reference,cancellationToken);
+        var user = snapshot?.User;
+        var credential = await db.Set<UserCredential>().FromSqlInterpolated($"SELECT * FROM [UserCredential] WITH (UPDLOCK,HOLDLOCK) WHERE [Provider] = 'local' AND [ProviderSubject] = {normalized} AND [UserId] = {reference.UserId}").SingleOrDefaultAsync(cancellationToken);
         var now = time.GetUtcNow();
         var verification = Hasher.VerifyHashedPassword(user ?? new StaffUser(),credential?.PasswordHash ?? DummyHash,password);
         if (credential is null || user is null) return null;
@@ -45,7 +47,7 @@ public sealed class LocalIdentityService(IDbContextFactory<BackOfficeDbContext> 
         }
         credential.FailedAttempts=0; credential.LockedUntil=null;
         if (verification == PasswordVerificationResult.SuccessRehashNeeded) credential.PasswordHash=Hasher.HashPassword(user,password);
-        var roles = await RolesAsync(db,user.Id,cancellationToken);
+        var roles = snapshot!.Roles;
         // Foundation has internal identities only; mixed/external role sets fail closed.
         if (roles.Any(x => x.Scope != "internal")) return null;
         await db.SaveChangesAsync(cancellationToken);
@@ -56,8 +58,13 @@ public sealed class LocalIdentityService(IDbContextFactory<BackOfficeDbContext> 
     public async Task<ActorView?> GetActorAsync(Guid userId,CancellationToken cancellationToken)
     {
         await using var db = await factory.CreateDbContextAsync(cancellationToken);
-        var user = await db.Set<StaffUser>().AsNoTracking().SingleOrDefaultAsync(x => x.Id == userId && x.State == "active" && x.AgencyId==null,cancellationToken);
-        return user is null ? null : View(user,await RolesAsync(db,userId,cancellationToken));
+        var reference = await IdentitySnapshot.Reference(db,userId,cancellationToken);
+        if (reference == null) return null;
+        await using var transaction = await db.Database.BeginTransactionAsync(cancellationToken);
+        var snapshot = await IdentitySnapshot.Lock(db,reference,cancellationToken);
+        if (snapshot == null || snapshot.User.AgencyId != null) return null;
+        var result = View(snapshot.User,snapshot.Roles);
+        await transaction.CommitAsync(cancellationToken); return result;
     }
 
     public static ActorContext Actor(ClaimsPrincipal principal) => new(Guid.Parse(principal.FindFirstValue(ClaimTypes.NameIdentifier)!),

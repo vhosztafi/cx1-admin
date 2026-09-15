@@ -143,9 +143,9 @@ public sealed class AgencyUserApiTests
             await AdministratorReadiness(admin,demoPath,"satisfied"); // Accepted invitation plus active local credential.
 
             await using(var db=new BackOfficeDbContext(options)){var role=await db.Set<Role>().SingleAsync(x=>x.Code=="agency-admin");db.Remove(await db.Set<UserRole>().SingleAsync(x=>x.UserId==actorId&&x.RoleId==role.Id));await db.SaveChangesAsync();}
-            Assert.Equal(HttpStatusCode.Forbidden,(await admin.GetAsync(userPath)).StatusCode);
-            Assert.Equal(HttpStatusCode.Forbidden,(await Send(admin,HttpMethod.Post,invitePath,csrf,agencyVersion,createKey,input)).StatusCode);
-            Assert.Equal(HttpStatusCode.Forbidden,(await Send(admin,HttpMethod.Post,resendPath,csrf,pendingVersion,resendKey,new{reason="Fictional resend"})).StatusCode);
+            Assert.Equal(HttpStatusCode.Unauthorized,(await admin.GetAsync(userPath)).StatusCode);
+            Assert.Equal(HttpStatusCode.Unauthorized,(await Send(admin,HttpMethod.Post,invitePath,csrf,agencyVersion,createKey,input)).StatusCode);
+            Assert.Equal(HttpStatusCode.Unauthorized,(await Send(admin,HttpMethod.Post,resendPath,csrf,pendingVersion,resendKey,new{reason="Fictional resend"})).StatusCode);
         }
         finally{if(connection.InitialCatalog!=owned)throw new InvalidOperationException("Cleanup target changed.");await using var db=new BackOfficeDbContext(options);await db.Database.EnsureDeletedAsync();}
     }
