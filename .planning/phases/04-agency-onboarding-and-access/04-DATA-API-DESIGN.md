@@ -1,5 +1,11 @@
 # Phase 4 data and API decisions
 
+### Implemented sharing projection boundary (04-07)
+
+AgencySharingService now materializes three bounded projections: clients through active owned relationships; current relationship contacts using declared identity rather than Person master values; and safe instructions with an explicit matching FlagVisibility grant, active relationship and current matching contact. Internal categories, reasons, histories, marketing consent and unreviewed JSON are omitted. An active relationship permits the retained client identity regardless of ClientAccount.IdentityState, consistent with the existing party relationship boundary; only relationship state ends that association's visibility.
+
+Separate PreviewClients/PreviewContacts/PreviewInstructions methods recheck the stored active internal identity and exact internal roles, require agency-read and an active selected agency, use identical query functions and commit a minimal actor/agency/section audit. They do not create an agency principal or change a cookie. Draft/suspended agencies cannot be previewed as externally accessible. Each call owns a serializable transaction through current authorization, scope predicates, count, materialization and audit. Search is limited to the selected safe projection; paging is ordered before DTO construction and performed in SQL after scope filters. Each subsequent page re-resolves current access. The internal service accepts bounded offsets; authenticated, scope/filter/grant-bound HTTP cursors remain an endpoint integration responsibility before broker login opens. No public endpoint, authentication, schema or frontend change is included in this slice.
+
 This is the implementation contract supplement for04-01, not an implemented schema. Refine the generated OpenAPI/data dictionary from these decisions before migrations. The existing API prefix is /api/v1; paths below omit it.
 
 ## Aggregate and identity
