@@ -33,12 +33,12 @@ for(const productCode of questions.products) {
     ...[31,32,33,40,46,48,53].map(n=>[`MTS-06-Q${n}`,false]),
     ['prototype.adddriver.trade-employment',ref('prototype.adddriver.trade-employment',1)],
    ])}],
-   vehicles:[{id:id(3),registration:'DEMO 01',make:'Example',model:'Demonstrator',abiCode:'DEMO',abiGroup:28,vehicleType:ref('vehicleType',references.collections.vehicleType.find(row=>row.category==='Car').value),bodyDescription:'Saloon',registrationYear:2020,registeredOn:'2020-01-01',imported:false,value:'10000.00',purchasedOn:'2020-01-01',declaredOwnerType:ref('vehicleOwnerTypes',1),keptOvernightType:ref('vehicleKeptOvernightType'),keptOvernightAddress:'AB1 2CD',partOfLeaseAgreement:false,customerLoan:false,modified:false,responses:response([['prototype.addveh.special-characteristics',ref('prototype.addveh.special-characteristics',1)],['prototype.addveh.report-mid',true]])}],
+   vehicles:[{id:id(3),registration:'DEMO 01',make:'Example',model:'Demonstrator',abiCode:'DEMO',abiGroup:28,vehicleType:ref('vehicleType',references.collections.vehicleType.find(row=>row.category==='Car').value),bodyDescription:'Saloon',body:ref('prototype.vehicle-body',1),registrationYear:2020,registeredOn:'2020-01-01',imported:false,value:'10000.00',purchasedOn:'2020-01-01',declaredOwnerType:ref('vehicleOwnerTypes',1),keptOvernightType:ref('vehicleKeptOvernightType'),keptOvernightAddress:'AB1 2CD',partOfLeaseAgreement:false,customerLoan:false,modified:false,responses:response([['prototype.addveh.special-characteristics',ref('prototype.addveh.special-characteristics',1)],['prototype.addveh.report-mid',true]])}],
    specifiedVehiclesRequested:false,
    previousInsurance:{...(!combined?{insurer:'Example Mutual (fictional)',expiresOn:'2026-09-15'}:{}),responses:response([['MTS-05-Q10',ref('noClaimBonuses',1)],...(!combined?[
     ['prototype.quote.1bdc05ff8b3d',false],['prototype.quote.61a13bb828b2',false],['prototype.quote.3fad63dd9abf',false],['prototype.no-claims.reason','No transferable discount is available from the previous fictional policy.'],
    ]:[])])},
-   ...(combined?{premises:[{id:id(4),address:structuredClone(address),use:ref('tradingPremiseTypes'),yearsTrading:6,sharedWorksite:false,responses:response([['prototype.addprem.overnight-vehicles',true],['prototype.addprem.public-access',true]])}]}:{}),
+   ...(combined?{premises:[{id:id(4),address:structuredClone(address),use:ref('tradingPremiseTypes',3),declaredUse:ref('prototype.premises-use',2),security:ref('prototype.premises-security',2),yearsTrading:6,sharedWorksite:false,responses:response([['prototype.addprem.overnight-vehicles',true],['prototype.addprem.public-access',true]])}]}:{}),
   },
   cover:{responses:response([
    ['MTS-05-Q01',ref('coverLevels',1)],['MTS-05-Q02',ref('indemnityOwnVehicles',5)],['MTS-05-Q04',ref('indemnityOwnVehicles/number:5/excesses',4)],['MTS-05-Q05',false],['MTS-05-Q06',ref('excessLates',1)],['MTS-05-Q07',false],['MTS-05-Q08',false],

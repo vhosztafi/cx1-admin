@@ -19,7 +19,7 @@ Ownership is separate from operation dependencies. A shared risks-list control m
 
 - All 255 funnel source occurrences have exact typed canonical paths in `contracts/quote-field-mapping.json`.
 - The combined question catalogue includes those mappings and 56 Motor Trade prototype supplemental questions (including the separately audited conditional no-discount composer). Another 109 prototype definitions have explicit Commercial Combined ownership.
-- Reference identity catalogues preserve all 51 direct source option families, 25 nested source families and 12 active prototype reference families. Dynamic family membership still requires trusted, instance-specific selection and eligibility checks.
+- Reference identity catalogues preserve all 51 direct source option families, 25 nested source families and 12 active prototype question reference families plus 3 direct-control families. Dynamic family membership still requires trusted, instance-specific selection and eligibility checks.
 - Contract examples test duplicate JSON keys, typed identities, child links, scoped question IDs, reference identity, term/DST handling and a subset of conditional readiness rules.
 
 ## Prototype business conditions
@@ -44,7 +44,7 @@ The seven proposer/driver history declarations and other-business/directorship a
 
 ## Conditional prototype insurance stage
 
-The Road Risks no-discount reason is an explicit versioned text answer from COND-NCD-REASON, required when discount is not claimed and inactive otherwise. Insurer and discount/protection/intro declarations are required; claimed discount needs positive years, basis, origin and expiry. Evidence and eligibility remain separate. The question/reference catalogue version is mt-capture-31012e9672ca88bf; stale versions are rejected. Combined retains its separate source NCB capture.
+The Road Risks no-discount reason is an explicit versioned text answer from COND-NCD-REASON, required when discount is not claimed and inactive otherwise. Insurer and discount/protection/intro declarations are required; claimed discount needs positive years, basis, origin and expiry. Evidence and eligibility remain separate. The question/reference catalogue version is mt-capture-704ac195bb6c6275; stale versions are rejected. Combined retains its separate source NCB capture.
 
 ## History declaration windows
 
@@ -57,6 +57,10 @@ The prototype disqualification band is stored separately from exact ban months. 
 ## Activity declarations
 
 Pinned motorcycle/quad sales and repair occupations require the motorcycle activity declaration; import/export and salvage/breaker occupations require their matching declarations. Ordinary repairs and small prestige turnover shares do not create unsupported specialty assumptions. Fictional standard-car captures use the correct source occupation ID8 rather than motorcycle ID5.
+
+## Direct vehicle and premises references
+
+Body, premises activity/use and security preserve all21rendered source options in pinned families. Premises declaredUse holds the prototype business activity independently of use, the source physical premise type. Combined premises require both declarations and security; direct-control product applicability is enforced separately from question allowlists. The current combined catalogue has91collections and72reference bindings.
 
 ## Remaining contract gate
 

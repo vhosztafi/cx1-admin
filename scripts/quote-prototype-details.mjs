@@ -5,6 +5,14 @@ import {quoteMappingsForProduct} from './quote-semantic-contract.mjs';
 // names and mandatory fields are also checked by their section validators.
 export function validateQuotePrototypeDetails(proposal,questions) {
  const mappings=quoteMappingsForProduct(questions,proposal.productCode),issues=[];
+ for(const field of questions.directReferenceFields??[]) {
+  const applicable=field.products.includes(proposal.productCode);
+  const [collection,property]=field.canonicalPath.replace('risk.','').split('[].');
+  (proposal.risk?.[collection]??[]).forEach((row,index)=>{
+   if(applicable&&row[property]===undefined)issues.push({code:'required-prototype-reference',path:`/risk/${collection}/${index}/${property}`});
+   if(!applicable&&row[property]!==undefined)issues.push({code:'inapplicable-prototype-reference',path:`/risk/${collection}/${index}/${property}`});
+  });
+ }
  const require=(row,path,id)=>{
   if(!mappings.some(mapping=>mapping.questionId===id))return;
   const answers=row.responses?.answers??[],index=answers.findIndex(answer=>answer.questionId===id);

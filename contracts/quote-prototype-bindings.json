@@ -1,6 +1,6 @@
 {
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
-  "questionVersion": "mt-capture-31012e9672ca88bf",
+  "questionVersion": "mt-capture-704ac195bb6c6275",
   "status": "capture path contract; control value semantics and runtime remain separate gates",
   "controls": [
     {
@@ -583,7 +583,12 @@
           "paths": [
             "risk.vehicles[].body"
           ],
-          "modal": "addveh"
+          "optionCollection": "prototype.vehicle-body",
+          "products": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ],
+          "captureRule": "Preserve the pinned prototype selection; premises activity/use is separate from source physical premise type."
         }
       ]
     },
@@ -762,9 +767,13 @@
         {
           "kind": "field-or-collection",
           "paths": [
-            "risk.premises[].use"
+            "risk.premises[].declaredUse"
           ],
-          "modal": "addprem"
+          "optionCollection": "prototype.premises-use",
+          "products": [
+            "motor-trade-combined"
+          ],
+          "captureRule": "Preserve the pinned prototype selection; premises activity/use is separate from source physical premise type."
         }
       ]
     },
@@ -782,7 +791,11 @@
           "paths": [
             "risk.premises[].security"
           ],
-          "modal": "addprem"
+          "optionCollection": "prototype.premises-security",
+          "products": [
+            "motor-trade-combined"
+          ],
+          "captureRule": "Preserve the pinned prototype selection; premises activity/use is separate from source physical premise type."
         }
       ]
     },

@@ -14,6 +14,8 @@ const replacements={
 const bindings=ownership.controls.filter(control=>control.featurePhase===5&&control.sourceFieldBindings.length).map(control=>({
  controlId:control.controlId,method:control.method,sourcePath:control.path,label:control.label,products:control.products,
  bindings:control.sourceFieldBindings.map(binding=>{
+  const direct=questions.directReferenceFields?.find(field=>field.controlId===control.controlId);
+  if(direct)return {kind:'field-or-collection',paths:[direct.canonicalPath],optionCollection:direct.collection,products:direct.products,captureRule:'Preserve the pinned prototype selection; premises activity/use is separate from source physical premise type.'};
   if(binding.questionId) {
    const question=questions.mappings.find(row=>row.questionId===binding.questionId);
    if(!question)throw new Error(`unmapped-prototype-question:${binding.questionId}`);

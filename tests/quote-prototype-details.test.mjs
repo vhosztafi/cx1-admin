@@ -36,5 +36,6 @@ test('premises defaults are required only for the applicable product and compose
  delete p.risk.premises[0].responses;
  assert.equal(check(p).length,2);const validate=await createQuoteValidationPipeline();
  assert.equal(validate(JSON.stringify(p),context).issues.filter(i=>i.stage==='prototype-details').length,2);
- p.productCode='motor-trade-road-risks';assert.deepEqual(check(p),[]); // Source premises rules still govern RR premises, but this modal's questions are Combined-only.
+ p.productCode='motor-trade-road-risks';assert.equal(check(p).filter(i=>i.code==='inapplicable-prototype-reference').length,2);
+ delete p.risk.premises[0].declaredUse;delete p.risk.premises[0].security;assert.deepEqual(check(p),[]); // Source physical-premise type remains separate.
 });

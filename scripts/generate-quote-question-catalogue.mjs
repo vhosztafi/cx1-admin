@@ -50,11 +50,25 @@ for(const question of active.filter(row=>row.kind==='reference')) {
   references.collections[name]=options.map(row=>({value:row.value,text:row.label}));
   references.bindings.push({owner:name,questionId:name,canonicalPath:question.canonicalPath,selectionRule:'fixed',collections:[name]});
 }
-const digest=createHash('sha256').update(JSON.stringify({mappings,deferred,sourceReferenceVersion:sourceReference.version})).digest('hex');
+const directReferenceFields=[];
+for(const [controlId,modal,collection,canonicalPath,applicable] of [
+ ['CTL-6c4f6c3ca8c9','addveh','prototype.vehicle-body','risk.vehicles[].body',products],
+ ['CTL-196064c77a8f','addprem','prototype.premises-use','risk.premises[].declaredUse',['motor-trade-combined']],
+ ['CTL-7390fe5a19a7','addprem','prototype.premises-security','risk.premises[].security',['motor-trade-combined']],
+]) {
+ const control=controls.find(row=>row.id===controlId);
+ const renderedControl=rendered.find(row=>row.method===control?.method&&row.path===control.path&&row.label===control.label&&row.tabs?.includes(modal));
+ if(!renderedControl?.options?.length)throw new Error(`missing-direct-options:${controlId}`);
+ const field={controlId,collection,canonicalPath,products:applicable,sourceOptions:renderedControl.options};
+ directReferenceFields.push(field);
+ references.collections[collection]=field.sourceOptions.map((text,index)=>({value:index+1,text}));
+ references.bindings.push({owner:controlId,canonicalPath,selectionRule:'fixed',collections:[collection]});
+}
+const digest=createHash('sha256').update(JSON.stringify({mappings,deferred,directReferenceFields,sourceReferenceVersion:sourceReference.version})).digest('hex');
 const version=`mt-capture-${digest.slice(0,16)}`;
 references.sourceReferenceVersion=sourceReference.version;references.version=version;
 references.status='Combined identity catalogue; prototype and funnel eligibility/conflict reconciliation still requires product validation.';
-const catalogue={version,status:'Question identity and product ownership catalogue; conditional readiness, overlapping source answers and control audit remain pending.',products,mappings,deferredQuestions:deferred};
+const catalogue={version,status:'Question identity and product ownership catalogue; conditional readiness, overlapping source answers and control audit remain pending.',products,mappings,deferredQuestions:deferred,directReferenceFields};
 await writeFile(new URL('../contracts/quote-question-catalogue.json',import.meta.url),JSON.stringify(catalogue,null,2)+'\n');
 await writeFile(new URL('../contracts/reference-data/motor-trade-capture.json',import.meta.url),JSON.stringify(references,null,2)+'\n');
 console.log(JSON.stringify({version,sourceFields:sourceMappings.length,prototypeQuestions:active.length,deferredQuestions:deferred.length,referenceBindings:references.bindings.length}));

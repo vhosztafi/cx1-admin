@@ -874,6 +874,9 @@
         },
         "sharedWorksite": {
           "type": "boolean"
+        },
+        "declaredUse": {
+          "$ref": "#/$defs/Reference"
         }
       },
       "required": [

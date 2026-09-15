@@ -76,6 +76,8 @@ defs.RoadRisk.properties.specifiedVehiclesRequested=bool;
 defs.RoadRisk.properties.responses=ref('Responses');
 defs.Premises.properties.yearsTrading={type:'number',minimum:0,maximum:1000};
 defs.Premises.properties.sharedWorksite=bool;
+// Trading activity at the premises is not the source physical premise type.
+defs.Premises.properties.declaredUse=ref('Reference');
 defs.PreviousInsurance.properties.noClaimsBonusExpiresOn=ref('Date');
 // Preserve original declarations rather than conflating issue/test dates or
 // losing address components when a formatted address is assembled.

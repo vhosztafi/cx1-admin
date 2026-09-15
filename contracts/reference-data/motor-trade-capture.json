@@ -1,5 +1,5 @@
 {
-  "version": "mt-capture-31012e9672ca88bf",
+  "version": "mt-capture-704ac195bb6c6275",
   "sourcePath": "frontend-code/public/api/options.json",
   "sourceSha256": "b79d995c5a10ddd73ab80e2221db8ced573715e3fb166f04057ea694d557ed12",
   "status": "Combined identity catalogue; prototype and funnel eligibility/conflict reconciliation still requires product validation.",
@@ -14659,6 +14659,96 @@
         "value": 6,
         "text": "More than one of these"
       }
+    ],
+    "prototype.vehicle-body": [
+      {
+        "value": 1,
+        "text": "Saloon"
+      },
+      {
+        "value": 2,
+        "text": "Hatchback"
+      },
+      {
+        "value": 3,
+        "text": "Estate"
+      },
+      {
+        "value": 4,
+        "text": "Coupe"
+      },
+      {
+        "value": 5,
+        "text": "Convertible"
+      },
+      {
+        "value": 6,
+        "text": "Panel van"
+      },
+      {
+        "value": 7,
+        "text": "Pick-up"
+      },
+      {
+        "value": 8,
+        "text": "Recovery vehicle"
+      },
+      {
+        "value": 9,
+        "text": "Motorcycle"
+      },
+      {
+        "value": 10,
+        "text": "Other"
+      }
+    ],
+    "prototype.premises-use": [
+      {
+        "value": 1,
+        "text": "Sales and repairs"
+      },
+      {
+        "value": 2,
+        "text": "Sales only"
+      },
+      {
+        "value": 3,
+        "text": "Repairs and servicing"
+      },
+      {
+        "value": 4,
+        "text": "Storage only"
+      },
+      {
+        "value": 5,
+        "text": "Valeting"
+      },
+      {
+        "value": 6,
+        "text": "Office only"
+      }
+    ],
+    "prototype.premises-security": [
+      {
+        "value": 1,
+        "text": "No alarm"
+      },
+      {
+        "value": 2,
+        "text": "Local bell alarm"
+      },
+      {
+        "value": 3,
+        "text": "NACOSS remote signalling"
+      },
+      {
+        "value": 4,
+        "text": "NACOSS remote signalling and CCTV"
+      },
+      {
+        "value": 5,
+        "text": "Manned guarding"
+      }
     ]
   },
   "youngDriverConfiguration": [
@@ -15430,6 +15520,30 @@
       "selectionRule": "fixed",
       "collections": [
         "prototype.addveh.special-characteristics"
+      ]
+    },
+    {
+      "owner": "CTL-6c4f6c3ca8c9",
+      "canonicalPath": "risk.vehicles[].body",
+      "selectionRule": "fixed",
+      "collections": [
+        "prototype.vehicle-body"
+      ]
+    },
+    {
+      "owner": "CTL-196064c77a8f",
+      "canonicalPath": "risk.premises[].declaredUse",
+      "selectionRule": "fixed",
+      "collections": [
+        "prototype.premises-use"
+      ]
+    },
+    {
+      "owner": "CTL-7390fe5a19a7",
+      "canonicalPath": "risk.premises[].security",
+      "selectionRule": "fixed",
+      "collections": [
+        "prototype.premises-security"
       ]
     }
   ],

@@ -1,5 +1,5 @@
 {
-  "version": "mt-capture-31012e9672ca88bf",
+  "version": "mt-capture-704ac195bb6c6275",
   "status": "Question identity and product ownership catalogue; conditional readiness, overlapping source answers and control audit remain pending.",
   "products": [
     "motor-trade-road-risks",
@@ -8220,6 +8220,60 @@
       ],
       "sourceCatalogue": "prototype-quote-value-1",
       "disposition": "phase-08-commercial-combined"
+    }
+  ],
+  "directReferenceFields": [
+    {
+      "controlId": "CTL-6c4f6c3ca8c9",
+      "collection": "prototype.vehicle-body",
+      "canonicalPath": "risk.vehicles[].body",
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "sourceOptions": [
+        "Saloon",
+        "Hatchback",
+        "Estate",
+        "Coupe",
+        "Convertible",
+        "Panel van",
+        "Pick-up",
+        "Recovery vehicle",
+        "Motorcycle",
+        "Other"
+      ]
+    },
+    {
+      "controlId": "CTL-196064c77a8f",
+      "collection": "prototype.premises-use",
+      "canonicalPath": "risk.premises[].declaredUse",
+      "products": [
+        "motor-trade-combined"
+      ],
+      "sourceOptions": [
+        "Sales and repairs",
+        "Sales only",
+        "Repairs and servicing",
+        "Storage only",
+        "Valeting",
+        "Office only"
+      ]
+    },
+    {
+      "controlId": "CTL-7390fe5a19a7",
+      "collection": "prototype.premises-security",
+      "canonicalPath": "risk.premises[].security",
+      "products": [
+        "motor-trade-combined"
+      ],
+      "sourceOptions": [
+        "No alarm",
+        "Local bell alarm",
+        "NACOSS remote signalling",
+        "NACOSS remote signalling and CCTV",
+        "Manned guarding"
+      ]
     }
   ]
 }
