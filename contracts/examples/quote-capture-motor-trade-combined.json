@@ -44,6 +44,15 @@
     },
     "risk": {
       "business": {
+        "declaredActivitySplit": {
+          "sales": 10000,
+          "servicing": 0,
+          "mechanicalRepair": 0,
+          "breakdownRecovery": 0,
+          "bodyRepairs": 0,
+          "valeting": 0,
+          "other": 0
+        },
         "description": "Fictional business selling standard used cars to private customers.",
         "startedOn": "2020-01-01",
         "turnover": "100000.00",

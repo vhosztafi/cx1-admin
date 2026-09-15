@@ -2,6 +2,7 @@ import {readFile,writeFile} from 'node:fs/promises';
 const read=async path=>JSON.parse(await readFile(new URL(`../contracts/${path}`,import.meta.url),'utf8'));
 const ownership=await read('quote-control-ownership.json'),questions=await read('quote-question-catalogue.json');
 const references=await read('reference-data/motor-trade-capture.json');
+const activitySplitControls={'CTL-e4214dae194f':'sales','CTL-a6d4124b2312':'servicing','CTL-bfa3798e8803':'mechanicalRepair','CTL-1932e55ba1f3':'breakdownRecovery','CTL-0e2bd5ea6a0e':'bodyRepairs','CTL-f7d84fa890d0':'valeting','CTL-b3c56b8b3eff':'other'};
 const referenceSelections={
  'CTL-e7838b90abda':{collection:'driverRelationshipsPolicyHolder',values:{Proprietor:3,'Business partner':4,Director:1,Spouse:5,Employee:2}},
  'CTL-1624517d8aa7':{collection:'driverUsages',values:{'Motor trade only':1,'Motor trade + SD&P':2}},
@@ -27,6 +28,7 @@ const replacements={
 const bindings=ownership.controls.filter(control=>control.featurePhase===5&&control.sourceFieldBindings.length).map(control=>({
  controlId:control.controlId,method:control.method,sourcePath:control.path,label:control.label,products:control.products,
  bindings:control.sourceFieldBindings.map(binding=>{
+  if(activitySplitControls[control.controlId])return {kind:'field-or-collection',paths:[`risk.business.declaredActivitySplit.${activitySplitControls[control.controlId]}`],unit:'basis-points',captureRule:'Preserve this prototype percentage independently of source occupation rows. Seven declared shares must total 10000 basis points; do not invent servicing/repair allocations from a combined source occupation.'};
   const selection=referenceSelections[control.controlId];
   if(selection) {
    const referenceMapping=Object.fromEntries(Object.entries(selection.values).map(([label,value])=>{

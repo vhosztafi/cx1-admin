@@ -1044,6 +1044,56 @@
         },
         "responses": {
           "$ref": "#/$defs/Responses"
+        },
+        "declaredActivitySplit": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sales": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "servicing": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "mechanicalRepair": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "breakdownRecovery": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "bodyRepairs": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "valeting": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "other": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            }
+          },
+          "required": [
+            "sales",
+            "servicing",
+            "mechanicalRepair",
+            "breakdownRecovery",
+            "bodyRepairs",
+            "valeting",
+            "other"
+          ]
         }
       },
       "required": [

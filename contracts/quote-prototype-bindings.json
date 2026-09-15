@@ -1329,8 +1329,10 @@
         {
           "kind": "field-or-collection",
           "paths": [
-            "risk.business.activities[].turnoverBasisPoints"
-          ]
+            "risk.business.declaredActivitySplit.sales"
+          ],
+          "unit": "basis-points",
+          "captureRule": "Preserve this prototype percentage independently of source occupation rows. Seven declared shares must total 10000 basis points; do not invent servicing/repair allocations from a combined source occupation."
         }
       ]
     },
@@ -1347,8 +1349,10 @@
         {
           "kind": "field-or-collection",
           "paths": [
-            "risk.business.activities[].turnoverBasisPoints"
-          ]
+            "risk.business.declaredActivitySplit.servicing"
+          ],
+          "unit": "basis-points",
+          "captureRule": "Preserve this prototype percentage independently of source occupation rows. Seven declared shares must total 10000 basis points; do not invent servicing/repair allocations from a combined source occupation."
         }
       ]
     },
@@ -1365,8 +1369,10 @@
         {
           "kind": "field-or-collection",
           "paths": [
-            "risk.business.activities[].turnoverBasisPoints"
-          ]
+            "risk.business.declaredActivitySplit.mechanicalRepair"
+          ],
+          "unit": "basis-points",
+          "captureRule": "Preserve this prototype percentage independently of source occupation rows. Seven declared shares must total 10000 basis points; do not invent servicing/repair allocations from a combined source occupation."
         }
       ]
     },
@@ -1383,8 +1389,10 @@
         {
           "kind": "field-or-collection",
           "paths": [
-            "risk.business.activities[].turnoverBasisPoints"
-          ]
+            "risk.business.declaredActivitySplit.breakdownRecovery"
+          ],
+          "unit": "basis-points",
+          "captureRule": "Preserve this prototype percentage independently of source occupation rows. Seven declared shares must total 10000 basis points; do not invent servicing/repair allocations from a combined source occupation."
         }
       ]
     },
@@ -1401,8 +1409,10 @@
         {
           "kind": "field-or-collection",
           "paths": [
-            "risk.business.activities[].turnoverBasisPoints"
-          ]
+            "risk.business.declaredActivitySplit.bodyRepairs"
+          ],
+          "unit": "basis-points",
+          "captureRule": "Preserve this prototype percentage independently of source occupation rows. Seven declared shares must total 10000 basis points; do not invent servicing/repair allocations from a combined source occupation."
         }
       ]
     },
@@ -1419,8 +1429,10 @@
         {
           "kind": "field-or-collection",
           "paths": [
-            "risk.business.activities[].turnoverBasisPoints"
-          ]
+            "risk.business.declaredActivitySplit.valeting"
+          ],
+          "unit": "basis-points",
+          "captureRule": "Preserve this prototype percentage independently of source occupation rows. Seven declared shares must total 10000 basis points; do not invent servicing/repair allocations from a combined source occupation."
         }
       ]
     },
@@ -1437,8 +1449,10 @@
         {
           "kind": "field-or-collection",
           "paths": [
-            "risk.business.activities[].turnoverBasisPoints"
-          ]
+            "risk.business.declaredActivitySplit.other"
+          ],
+          "unit": "basis-points",
+          "captureRule": "Preserve this prototype percentage independently of source occupation rows. Seven declared shares must total 10000 basis points; do not invent servicing/repair allocations from a combined source occupation."
         }
       ]
     },

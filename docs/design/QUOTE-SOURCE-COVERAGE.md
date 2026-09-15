@@ -78,6 +78,10 @@ The seven prototype incident types are captured in Loss.declaredType independent
 
 Prototype held plates are stored in risk.heldTradePlates, independently of requested covered plates in risk.tradePlates. Plates may be held without cover. A covered number must belong to held inventory; rows have independent stable IDs. Inventory completeness and uniqueness are validated without equating a coverage maximum to the held count or silently granting cover.
 
+## Explicit activity split
+
+The seven prototype percentages have distinct declaredActivitySplit fields in integer basis points, totaling10000. Source occupation rows remain independently captured. Unambiguous occupation groups constrain matching totals; combined servicing/mechanical occupation shares do not invent an individual allocation. A positive Other share requires its explanation; inactive retained text is flagged.
+
 ## Remaining contract gate
 
 Resolve overlapping prototype/funnel answers and all product-specific requiredness, dynamic option selection, source limits and conditional rules. Reconcile historical prototype field bindings with the capture-write envelope: for example `term.startsAt` is supplied as local `termIntent`, not a caller-chosen policy timestamp. Finish quote API request/response contracts and operation integration. Verify complete fictional proposals against the composed validators. Then implement and test the same rules in the actual .NET request boundary and persistent services.

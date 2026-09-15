@@ -76,6 +76,7 @@ defs.RoadRisk.properties.specifiedVehiclesRequested=bool;
 defs.RoadRisk.properties.responses=ref('Responses');
 // Held inventory is distinct from the source's requested covered plate list.
 defs.RoadRisk.properties.heldTradePlates=structuredClone(defs.RoadRisk.properties.tradePlates);
+defs.Business.properties.declaredActivitySplit=object(Object.fromEntries(['sales','servicing','mechanicalRepair','breakdownRecovery','bodyRepairs','valeting','other'].map(key=>[key,{type:'integer',minimum:0,maximum:10000}])));
 defs.Premises.properties.yearsTrading={type:'number',minimum:0,maximum:1000};
 defs.Premises.properties.sharedWorksite=bool;
 // Trading activity at the premises is not the source physical premise type.
