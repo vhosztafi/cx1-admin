@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-15T08:19:33.390500+00:00"
+last_updated: "2026-09-15T08:35:01.692227+00:00"
 last_activity: 2026-09-15
 progress:
   total_phases: 13
@@ -25,7 +25,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 ## Current Position
 
 Phase: 5 of 13 (Motor Trade quote capture)
-Plan: 05-01 of11 in progress; all255source field shapes mapped; identity/question contract checks;103tests
+Plan: 05-01 of11 in progress; all255source field shapes mapped; identity/question/reference contracts;109tests
 Status: In progress — autonomous
 Last activity: 2026-09-15 — Phase4 accepted:329backend/57SQL,81contracts,30frontend,20browser journeys and restart persistence.
 
@@ -54,7 +54,7 @@ Progress: Phases1–4 complete;4/13phases,24completed plans.
 ## Session Continuity
 
 Last session: 2026-09-15
-Stopped at:05-01 all255field shapes mapped plus strict JSON, global identity, cross-reference and scoped question design checks. Full103contract tests/OpenAPI/source949/328 pass. Remaining364control dispositions, pinned catalogues, conditional readiness/chronology/DST and quote OpenAPI. Helpers are design contracts, not runtime API enforcement. No backend/UI changes, active previews/tests or database reset.
+Stopped at:05-01 all255field shapes, JSON/identity/question checks and pinned76family/57binding reference identity catalogue.109contract tests/OpenAPI949controls328operations pass. Dynamic context is per reference instance and fails closed until trusted selectors run. Remaining364control dispositions, product/question configuration, eligibility/conditional readiness/DST and quote OpenAPI. No actual quote endpoints or backend/UI edits.
 Resume file: .planning/phases/05-motor-trade-quote-capture/05-01-PROGRESS.md
 
 ## Autonomous continuation
@@ -63,4 +63,4 @@ User approved requirements/roadmap and autonomous choices/progression on 2026-09
 
 Thread heartbeat: continue-cover-mga-back-office-mvp, active every 10 minutes. Resume unfinished work in this same task; notify meaningful progress/blockers only; pause on actual milestone completion, user stop or persistent external blocker with no remaining useful work.
 
-Latest05-01 checkpoint: all255field shapes and JSON/identity/question design checks pass103tests. Remaining control dispositions, catalogues, domain readiness and quote OpenAPI. No live endpoints or plan completion.
+Latest05-01 checkpoint:109contract tests pass, source references pinned. Read05-01-PROGRESS; no plan or phase completion.

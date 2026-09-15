@@ -111,3 +111,42 @@ export function validateQuoteQuestions(proposal,mappings,questionSetVersion) {
   });
   return issues;
 }
+
+// selectedCollections is keyed by the exact reference JSON pointer, so two
+// drivers may have different age bands. It is trusted context from the proposal
+// and pinned product metadata, never a request field. Dynamic options fail
+// closed until that selector has run. Numeric limits/eligibility still require
+// their own domain checks; catalogue membership alone is insufficient.
+export function validateQuoteReferences(proposal,catalogue,selectedCollections={}) {
+  const issues=[];
+  const validate=(reference,binding,path)=>{
+    if(!binding){issues.push({code:'unbound-reference',path});return;}
+    const selected=binding.selectionRule==='fixed'?binding.collections:selectedCollections[path];
+    if(!Array.isArray(selected)||!selected.length||selected.some(name=>!binding.collections.includes(name))) {
+      issues.push({code:'reference-context-required',path});return;
+    }
+    if(reference.version!==catalogue.version){issues.push({code:'reference-version-mismatch',path:`${path}/version`});return;}
+    if(!selected.includes(reference.collection)){issues.push({code:'reference-collection-mismatch',path:`${path}/collection`});return;}
+    const row=catalogue.collections[reference.collection]?.find(row=>row.value===reference.value);
+    if(!row){issues.push({code:'unknown-reference-value',path:`${path}/value`});return;}
+    if(row.text!==reference.label)issues.push({code:'reference-label-mismatch',path:`${path}/label`});
+  };
+  visit(proposal,(item,path,canonical)=>{
+    if(['reference','references'].includes(item.kind)&&typeof item.questionId==='string') {
+      const binding=catalogue.bindings.find(row=>row.questionId===item.questionId&&row.canonicalPath===canonical);
+      if(item.kind==='reference')validate(item.value,binding,`${path}/value`);
+      else {
+        const seen=new Set();
+        item.value.forEach((reference,index)=>{
+          const identity=JSON.stringify([reference.collection,reference.value]);
+          if(seen.has(identity))issues.push({code:'duplicate-reference-selection',path:`${path}/value/${index}`});
+          seen.add(identity);validate(reference,binding,`${path}/value/${index}`);
+        });
+      }
+    } else if(typeof item.collection==='string'&&!canonical.includes('.answers[].value')) {
+      const binding=catalogue.bindings.find(row=>!row.questionId&&row.canonicalPath===canonical);
+      validate(item,binding,path);
+    }
+  });
+  return issues;
+}
