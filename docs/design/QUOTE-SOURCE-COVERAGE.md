@@ -1,0 +1,29 @@
+# Quote capture source coverage
+
+Phase 05-01 remains in progress. This is design traceability, not runtime acceptance.
+
+## Control ownership
+
+The complete 364-control candidate inventory is recorded in `contracts/quote-control-ownership.json`. Each entry retains its source control ID, method, path, label, product stages/modal context, operation dependencies and implementation ownership.
+
+| Feature owner | Controls | Scope |
+|---|---:|---|
+| Phase 5 | 183 | Motor Trade capture, quote discovery, client shortcuts and supporting selectors |
+| Phase 8 | 166 | Commercial Combined wizard controls and location/wage/loss modals |
+| Phase 12 | 14 | Global dashboard, search, reporting and advanced-search entry points |
+| Outside approved products | 1 | Motor Trade Fleet remains unavailable |
+
+Ownership is separate from operation dependencies. A shared risks-list control may read quotes in Phase 5 while its policy and policy-history branches belong to Phases 6 and 7. A save/validate/rate control must not claim rating is implemented before Phase 6. Product-version reads needed for capture belong to Phase 5; broader product administration remains Phase 11. General client and agency lookups depend on the preceding phases. Commercial Combined product selection does not open an unsupported Motor Trade write schema.
+
+## Field and question coverage
+
+- All 255 funnel source occurrences have exact typed canonical paths in `contracts/quote-field-mapping.json`.
+- The combined question catalogue includes those mappings and 55 Motor Trade prototype supplemental questions. Another 109 prototype definitions have explicit Commercial Combined ownership.
+- Reference identity catalogues preserve all 51 direct source option families, 25 nested source families and 12 active prototype reference families. Dynamic family membership still requires trusted, instance-specific selection and eligibility checks.
+- Contract examples test duplicate JSON keys, typed identities, child links, scoped question IDs, reference identity, term/DST handling and a subset of conditional readiness rules.
+
+## Remaining contract gate
+
+Resolve overlapping prototype/funnel answers and all product-specific requiredness, dynamic option selection, source limits and conditional rules. Reconcile historical prototype field bindings with the capture-write envelope: for example `term.startsAt` is supplied as local `termIntent`, not a caller-chosen policy timestamp. Finish quote API request/response contracts and operation integration. Verify complete fictional proposals against the composed validators. Then implement and test the same rules in the actual .NET request boundary and persistent services.
+
+No quote endpoint, database migration, UI journey or phase acceptance is established by these design tests alone. The funnel remains unchanged.
