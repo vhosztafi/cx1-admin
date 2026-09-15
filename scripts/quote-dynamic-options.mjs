@@ -10,7 +10,7 @@ export function ageOn(dateOfBirth,onDate) {
   return years-(onDate<birthday?1:0);
 }
 
-export function selectQuoteDynamicOptions(proposal,catalogue) {
+export function selectQuoteDynamicOptions(proposal,catalogue,{requireDriverAnswers=false}={}) {
   const selectedCollections={};const issues=[];
   const add=(code,path)=>issues.push({code,path});
   const trusted=(reference,collection)=>{
@@ -66,6 +66,36 @@ export function selectQuoteDynamicOptions(proposal,catalogue) {
   (proposal.risk?.drivers??[]).forEach((driver,index)=>{
     const age=ageOn(driver.dateOfBirth,proposal.termIntent?.localStartDate);
     const band=age===undefined?-1:catalogue.youngDriverConfiguration.findIndex(row=>(row.ageFrom??0)<=age&&age<=(row.ageTo??1000));
+    if(requireDriverAnswers) {
+      const root=`/risk/drivers/${index}/responses/answers`;
+      const experience=ageOn(driver.licence?.issuedOn,proposal.termIntent?.localStartDate);
+      const young=age===undefined?undefined:age<25;
+      const inexperienced=age===undefined||experience===undefined?undefined:age>=25&&experience<1;
+      const limited=level===undefined?undefined:level.value!==3;
+      const eligible=rows=>limit===undefined?undefined:rows.filter(row=>row.numericValue>0&&row.numericValue<=limit);
+      const indemnities=band<0?undefined:eligible(catalogue.youngDriverConfiguration[band].indemnities);
+      const excesses=eligible(catalogue.collections.driverExperienceBasedExcesses);
+      const both=(a,b)=>a===false||b===false?false:a===undefined||b===undefined?undefined:true;
+      const conditions=[
+        ['MTS-06-Q58',both(young,limited)],
+        ['MTS-06-Q59',both(both(young,limited),indemnities===undefined?undefined:indemnities.length>0)],
+        ['MTS-06-Q60',young],
+        ['MTS-06-Q61',both(both(inexperienced,limited),excesses===undefined?undefined:excesses.length>0)],
+        ['MTS-06-Q62',inexperienced],
+      ];
+      for(const [id,active] of conditions) {
+        const entry=find(driver.responses?.answers,id);
+        const path=entry?`${root}/${entry.index}/value`:root;
+        if(active===undefined)add('driver-option-context-required',path);
+        else if(active&&!entry)issues.push({code:'driver-option-answer-required',path,questionId:id});
+        else if(!active&&entry)add('inactive-driver-option-retained',path);
+      }
+      const excess=find(driver.responses?.answers,'MTS-06-Q61');
+      if(excess&&inexperienced&&limited&&excesses) {
+        const row=trusted(excess.answer.value,'driverExperienceBasedExcesses');
+        if(row&&!excesses.some(item=>item.value===row.value))add('experience-excess-exceeds-policy-limit',`${root}/${excess.index}/value`);
+      }
+    }
     for(const [questionId,child] of [['MTS-06-Q59','indemnities'],['MTS-06-Q60','cCs']]) {
       const entry=find(driver.responses?.answers,questionId);
       if(!entry)continue;

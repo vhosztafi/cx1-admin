@@ -8,6 +8,36 @@ const ref=(collection,value)=>{const row=catalogue.collections[collection].find(
 const answer=(questionId,value)=>({questionId,kind:'reference',value});
 const base=()=>({termIntent:{localStartDate:'2026-01-01'},cover:{responses:{answers:[answer('MTS-05-Q01',ref('coverLevels',1)),answer('MTS-05-Q02',ref('indemnityOwnVehicles',2))]}},risk:{business:{activities:[{code:ref('mtOccupations',5)}]},drivers:[]}});
 
+test('readiness mode requires young-driver declarations without changing partial selection validation',()=>{
+  const p=base();p.cover.responses.answers[1].value=ref('indemnityOwnVehicles',5);
+  const driver={dateOfBirth:'2008-01-01',licence:{issuedOn:'2025-01-01'},responses:{answers:[]}};p.risk.drivers=[driver];
+  assert.deepEqual(selectQuoteDynamicOptions(p,catalogue).issues,[]);
+  const ready=()=>selectQuoteDynamicOptions(p,catalogue,{requireDriverAnswers:true});
+  assert.deepEqual(ready().issues.map(i=>i.questionId),['MTS-06-Q58','MTS-06-Q59','MTS-06-Q60']);
+  driver.responses.answers=[{questionId:'MTS-06-Q58',kind:'boolean',value:false},answer('MTS-06-Q59',ref('youngDriverConfiguration/0/indemnities',1)),answer('MTS-06-Q60',ref('youngDriverConfiguration/0/cCs',1))];
+  assert.deepEqual(ready().issues,[]);const before=structuredClone(p);
+  p.cover.responses.answers[0].value=ref('coverLevels',3);
+  assert.ok(ready().issues.some(i=>i.code==='inactive-driver-option-retained'));assert.deepEqual(driver,before.risk.drivers[0]);
+});
+
+test('inexperienced-driver choices use exact licence anniversary and bounded excess families',()=>{
+  const p=base();p.cover.responses.answers[1].value=ref('indemnityOwnVehicles',5);
+  const driver={dateOfBirth:'1990-01-01',licence:{issuedOn:'2025-01-02'},responses:{answers:[]}};p.risk.drivers=[driver];
+  const ready=()=>selectQuoteDynamicOptions(p,catalogue,{requireDriverAnswers:true});
+  assert.deepEqual(ready().issues.map(i=>i.questionId),['MTS-06-Q61','MTS-06-Q62']);
+  driver.responses.answers=[answer('MTS-06-Q61',ref('driverExperienceBasedExcesses',1)),answer('MTS-06-Q62',ref('driverExperienceBasedVehicleCCLimits',1))];assert.deepEqual(ready().issues,[]);
+  driver.responses.answers[0].value=ref('driverExperienceBasedExcesses',2);assert.equal(ready().issues[0].code,'experience-excess-exceeds-policy-limit');
+  driver.licence.issuedOn='2025-01-01';assert.equal(ready().issues.filter(i=>i.code==='inactive-driver-option-retained').length,2);
+});
+
+test('readiness mode distinguishes unavailable dependency context from an empty eligible option family',()=>{
+  const p=base();p.risk.drivers=[{dateOfBirth:'2008-01-01',licence:{issuedOn:'2025-01-01'}}];
+  const ready=()=>selectQuoteDynamicOptions(p,catalogue,{requireDriverAnswers:true});
+  assert.deepEqual(ready().issues.map(i=>i.questionId),['MTS-06-Q58','MTS-06-Q60']);
+  p.risk.business.activities=[];assert.ok(ready().issues.some(i=>i.code==='driver-option-context-required'));
+  delete p.risk.drivers[0].dateOfBirth;assert.ok(ready().issues.some(i=>i.code==='driver-option-context-required'));
+});
+
 test('prototype cover facts resolve existing source dynamic families without rewriting declarations',()=>{
   const proposal=base();
   proposal.cover.responses.answers=[
