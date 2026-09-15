@@ -18,8 +18,8 @@ public sealed class AgencyUserService(AgencyDraftService agencies,SqlCommandBoun
     private async Task<CommandOutcome> Create(ActorContext actor,Guid agencyId,string key,byte[] version,AgencyUserInput input,bool allowActive,CancellationToken token)
     {
         input=AgencyUserRules.Validate(input.Email,input.DisplayName,input.Role);
-        await agencies.Authorize(actor,agencyId,token);
-        return await commands.ExecuteAsync(new(actor.UserId,$"/api/v1/agencies/{agencyId}/users",key,Guid.NewGuid()),input,allowActive?"agency.user-created":"agency.user-staged",async(db,ct)=>
+        if(actor.AgencyId is null)await agencies.Authorize(actor,agencyId,token);
+        return await commands.ExecuteAuthorizedAsync(new(actor.UserId,$"/api/v1/agencies/{agencyId}/users",key,Guid.NewGuid()),input,allowActive?"agency.user-created":"agency.user-staged",(db,ct)=>AgencyUserAuthority.Authorize(db,actor,agencyId,allowActive,ct),async(db,ct)=>
         {
             var agency=await AgencyDraftService.Lock(db,agencyId,version,ct);
             if(agency.State!="draft"&&(!allowActive||agency.State!="active"))throw new AgencyCommandException(409,"agency-not-invitable");

@@ -22,9 +22,9 @@ public sealed class AgencyUserLifecycle(AgencyDraftService agencies,SqlCommandBo
 
     private async Task<CommandOutcome> Execute(ActorContext actor,Guid agencyId,Guid userId,string key,byte[] version,string action,string? name,string? role,string reason,CancellationToken token)
     {
-        await agencies.Authorize(actor,agencyId,token);
+        if(actor.AgencyId is null)await agencies.Authorize(actor,agencyId,token);
         if(string.IsNullOrWhiteSpace(reason)||reason.Length>1000||reason.Any(char.IsControl))throw new AgencyCommandException(422,"reason-required");
-        return await commands.ExecuteAsync(new(actor.UserId,$"/api/v1/agencies/{agencyId}/users/{userId}"+(action=="edit"?"":"/"+action),key,Guid.NewGuid()),new{name,role,reason},"agency.user-"+action,async(db,ct)=>
+        return await commands.ExecuteAuthorizedAsync(new(actor.UserId,$"/api/v1/agencies/{agencyId}/users/{userId}"+(action=="edit"?"":"/"+action),key,Guid.NewGuid()),new{name,role,reason},"agency.user-"+action,(db,ct)=>AgencyUserAuthority.Authorize(db,actor,agencyId,true,ct),async(db,ct)=>
         {
             // All user/invitation mutations serialize on the agency before the user.
             var agency=await db.Set<Agency>().FromSqlInterpolated($"SELECT * FROM [Agency] WITH (UPDLOCK,ROWLOCK) WHERE [Id]={agencyId}").SingleAsync(ct);

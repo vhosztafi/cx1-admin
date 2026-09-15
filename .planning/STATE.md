@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-15T03:52:16.085521Z"
+last_updated: "2026-09-15T04:13:15.486483Z"
 last_activity: 2026-09-15
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-07 of 8 in progress; 04-01 through 04-06 complete, all six Phase 3 plans complete
 Status: In progress â€” autonomous
-Last activity: 2026-09-15 -04-07 permission request/decision/revoke UI and actual actor labels verified;317backend/54SQL,79contracts,30frontend/build and real browser pass.
+Last activity: 2026-09-15 -04-07 own-user service authority now checked before receipt replay;318backend/55SQL and79contracts pass. External login remains closed.
 
 Progress: Phases 1â€“3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1â€“3 complete; 3/13 phases. Agency onboarding/access next
 ## Session Continuity
 
 Last session: 2026-09-15
-Stopped at:04-07 permission administration UI and actor labels verified. Full .local/phase4-permission-labels-full317/54SQL passes;79contracts,30frontend/lint/typecheck/build, actual admin/reviewer request-reject-approve-revoke browser checks pass including lost-response recovery and390px. No active previews/tests. NEXT effective server role/capability matrix, broker own-user authority, external sign-in/session/UIguards and complete04-07 accepted-account tests. Broker login remains closed. No wholeAGY/humanUAT acceptance. Read04-07-PROGRESS and preserve04-08/backlog.
+Stopped at:04-07 own-user service command authority verified. Invite/Edit/Deactivate/Reactivate use mandatory current authority callback before receipts; broker Stage denied; last-admin/session invariants preserved. Full .local/phase4-own-user-full318/55SQL passes (256unit/62integration),79contracts pass. No frontend/schema/identity changes; prior30frontend/build/browser evidence remains. No active tests/previews. NEXT invitation resend/revoke pre-replay authority and scoped own-user/invitation reads, effective server matrix, then external authentication/session/workspace guards and actual accepted-account tests. Read04-07-PROGRESS/04-DATA-API-DESIGN. No wholeAGY/humanUAT acceptance.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-07-PROGRESS.md
 
 ## Autonomous continuation
