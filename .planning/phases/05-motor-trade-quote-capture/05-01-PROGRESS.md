@@ -15,3 +15,12 @@ In progress; no quote endpoints enabled and no plan/requirement completion claim
 2. Complete repeated annual-European cover/other missing paths and conditional semantics; add duplicate JSON key/question/item IDs, reference whitelist and cross-item validation. JSON Schema shape checks do not enforce those by themselves.
 3. Specify canonical/runtime request DTOs, complete product/question/reference configuration, quote-ready semantic checks and all new OpenAPI operations. Match existing source operation IDs. Do not expose unfinished APIs.
 4. Run exhaustive source drift/option/conditional tests and full contract validation; only then summarize05-01 and proceed05-02 persistence. No reset/funnel changes or new approvals.
+
+
+## European cover structure slice —2026-09-15
+
+Read the actual extras domain/interfaces/schema and mapped source MTS-11-Q11/12/14–20. Added separate stable-ID annual and temporary European-cover records to canonical and quote schemas. Temporary trips retain registration, local dates, versioned area/cover/usage selections and unique driver-ID selections; UI isDraft and derived driver-name arrays are forbidden. Nine exact child-field paths are recorded in contracts/quote-field-mapping.json and mirrored in the audit. The mapping is explicitly partial; remaining source fields/catalogues/domain constraints are not certified.
+
+Three added tests cover malformed dates/duplicate selections/UI-state injection/missing IDs, complete trip shape requiredness and exhaustive comparison of these nine source occurrences against resolvable schema paths. Contract tests use committed contracts/design evidence rather than depending on .planning artifacts. Full validation passes88cases/OpenAPI/949controls/328operations. Existing policy examples stay valid. Domain trip chronology/term bounds, current same-proposal driver membership and named/any-driver applicability still require semantic validation; structural schema success is not readiness. No backend/UI code, endpoints, seed resets or funnel changes; baseline backend/frontend evidence is unchanged.
+
+NEXT finish remaining246field occurrence mappings plus364control ownership, versioned catalogues and semantic rules, then full quote OpenAPI.05-01 remains in progress; no plan/phase acceptance inferred.

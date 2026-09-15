@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "status": "partial; European trip child shapes only; remaining fields and semantic rules pending",
+  "mappings": [
+    {
+      "owner": "MTS-11-Q11",
+      "rawPath": "europeanCoverAnnualExtras[].regNumber",
+      "canonicalPath": "cover.annualEuropeanCover[].registration",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
+    },
+    {
+      "owner": "MTS-11-Q12",
+      "rawPath": "europeanCoverAnnualExtras[].europeanCoverUsageTypeID",
+      "canonicalPath": "cover.annualEuropeanCover[].usage",
+      "contractKind": "Reference",
+      "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
+    },
+    {
+      "owner": "MTS-11-Q14",
+      "rawPath": "europeanCoverTemporaryExtras[].regNumber",
+      "canonicalPath": "cover.temporaryEuropeanCover[].registration",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
+    },
+    {
+      "owner": "MTS-11-Q15",
+      "rawPath": "europeanCoverTemporaryExtras[].startDateEuropeanTrip",
+      "canonicalPath": "cover.temporaryEuropeanCover[].startsOn",
+      "contractKind": "Date",
+      "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
+    },
+    {
+      "owner": "MTS-11-Q16",
+      "rawPath": "europeanCoverTemporaryExtras[].endDateEuropeanTrip",
+      "canonicalPath": "cover.temporaryEuropeanCover[].endsOn",
+      "contractKind": "Date",
+      "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
+    },
+    {
+      "owner": "MTS-11-Q17",
+      "rawPath": "europeanCoverTemporaryExtras[].europeanAreaID",
+      "canonicalPath": "cover.temporaryEuropeanCover[].area",
+      "contractKind": "Reference",
+      "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
+    },
+    {
+      "owner": "MTS-11-Q18",
+      "rawPath": "europeanCoverTemporaryExtras[].europeanCoverDriverGuids",
+      "canonicalPath": "cover.temporaryEuropeanCover[].driverIds[]",
+      "contractKind": "Id",
+      "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
+    },
+    {
+      "owner": "MTS-11-Q19",
+      "rawPath": "europeanCoverTemporaryExtras[].europeanCoverTypeID",
+      "canonicalPath": "cover.temporaryEuropeanCover[].cover",
+      "contractKind": "Reference",
+      "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
+    },
+    {
+      "owner": "MTS-11-Q20",
+      "rawPath": "europeanCoverTemporaryExtras[].europeanCoverUsageTypeID",
+      "canonicalPath": "cover.temporaryEuropeanCover[].usage",
+      "contractKind": "Reference",
+      "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
+    }
+  ]
+}

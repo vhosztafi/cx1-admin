@@ -21976,7 +21976,10 @@
       "occurrenceId": "QF-189",
       "planOwner": "05-01",
       "implementationOwner": "05-06",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
+      "canonicalPath": "cover.annualEuropeanCover[].registration",
+      "contractKind": "string",
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
     },
     {
       "owner": "MTS-11-Q12",
@@ -21990,7 +21993,10 @@
       "occurrenceId": "QF-190",
       "planOwner": "05-01",
       "implementationOwner": "05-06",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
+      "canonicalPath": "cover.annualEuropeanCover[].usage",
+      "contractKind": "Reference",
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
     },
     {
       "owner": "MTS-11-Q13",
@@ -22018,7 +22024,10 @@
       "occurrenceId": "QF-192",
       "planOwner": "05-01",
       "implementationOwner": "05-06",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
+      "canonicalPath": "cover.temporaryEuropeanCover[].registration",
+      "contractKind": "string",
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
     },
     {
       "owner": "MTS-11-Q15",
@@ -22032,7 +22041,10 @@
       "occurrenceId": "QF-193",
       "planOwner": "05-01",
       "implementationOwner": "05-06",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
+      "canonicalPath": "cover.temporaryEuropeanCover[].startsOn",
+      "contractKind": "Date",
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
     },
     {
       "owner": "MTS-11-Q16",
@@ -22046,7 +22058,10 @@
       "occurrenceId": "QF-194",
       "planOwner": "05-01",
       "implementationOwner": "05-06",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
+      "canonicalPath": "cover.temporaryEuropeanCover[].endsOn",
+      "contractKind": "Date",
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
     },
     {
       "owner": "MTS-11-Q17",
@@ -22060,7 +22075,10 @@
       "occurrenceId": "QF-195",
       "planOwner": "05-01",
       "implementationOwner": "05-06",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
+      "canonicalPath": "cover.temporaryEuropeanCover[].area",
+      "contractKind": "Reference",
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
     },
     {
       "owner": "MTS-11-Q18",
@@ -22074,7 +22092,10 @@
       "occurrenceId": "QF-196",
       "planOwner": "05-01",
       "implementationOwner": "05-06",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
+      "canonicalPath": "cover.temporaryEuropeanCover[].driverIds[]",
+      "contractKind": "Id",
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
     },
     {
       "owner": "MTS-11-Q19",
@@ -22088,7 +22109,10 @@
       "occurrenceId": "QF-197",
       "planOwner": "05-01",
       "implementationOwner": "05-06",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
+      "canonicalPath": "cover.temporaryEuropeanCover[].cover",
+      "contractKind": "Reference",
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
     },
     {
       "owner": "MTS-11-Q20",
@@ -22102,7 +22126,10 @@
       "occurrenceId": "QF-198",
       "planOwner": "05-01",
       "implementationOwner": "05-06",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
+      "canonicalPath": "cover.temporaryEuropeanCover[].usage",
+      "contractKind": "Reference",
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
     },
     {
       "owner": "MTS-12-Q01",

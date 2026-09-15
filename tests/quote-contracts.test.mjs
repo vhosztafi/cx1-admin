@@ -58,3 +58,50 @@ test('both Motor Trade fixture shapes convert without copying policy evidence or
     proposal.termIntent.localStartTime='00:00';proposal.termIntent.utcOffsetMinutes=120;assert.equal(draft(proposal),false);
   }
 });
+
+test('European cover retains separate stable annual and temporary rows without UI-only flags',()=>{
+  const annual={id,registration:'DEMO 01',usage:selection};
+  const temporary={id,registration:'DEMO 02',startsOn:'2026-10-01',endsOn:'2026-10-14',area:selection,driverIds:[id],cover:selection,usage:selection};
+  const proposal={...base(),cover:{annualEuropeanCover:[annual],temporaryEuropeanCover:[temporary]}};
+  assert.equal(draft(proposal),true,JSON.stringify(draft.errors));
+  temporary.driverIds.push(id);assert.equal(draft(proposal),false);
+  temporary.driverIds.pop();temporary.startsOn='2026-02-30';assert.equal(draft(proposal),false);
+  temporary.startsOn='2026-10-01';temporary.isDraft=false;assert.equal(draft(proposal),false);
+  delete temporary.isDraft;temporary.europeanCoverDriverNames=['Caller supplied name'];assert.equal(draft(proposal),false);
+  delete temporary.europeanCoverDriverNames;delete annual.id;assert.equal(draft(proposal),false);
+});
+
+test('complete European cover row shapes require their source fields',async()=>{
+  const schema=await read('schemas/quote-ready.schema.json');
+  const validate=ajv.compile({$schema:schema.$schema,$defs:schema.$defs,$ref:'#/$defs/TemporaryEuropeanCover'});
+  const row={id,registration:'DEMO 02',startsOn:'2026-10-01',endsOn:'2026-10-14',area:selection,driverIds:[],cover:selection,usage:selection};
+  assert.equal(validate(row),true,JSON.stringify(validate.errors));
+  for(const key of ['id','registration','startsOn','endsOn','area','driverIds','cover','usage']) {
+    const missing=structuredClone(row);delete missing[key];assert.equal(validate(missing),false,key);
+  }
+  // Empty selection is structurally valid; named/any-driver applicability and
+  // same-proposal membership are mandatory runtime checks, not schema claims.
+});
+
+test('every source European trip child field maps to a concrete quote contract path',async()=>{
+  const source=JSON.parse(await readFile(new URL('../docs/design/funnel-field-mapping.json',import.meta.url),'utf8'));
+  const mapping=await read('quote-field-mapping.json');
+  const schema=await read('schemas/quote-ready.schema.json');
+  const sourceRows=source.mappings.filter(row=>row.rawPath.startsWith('europeanCoverAnnualExtras[]')||row.rawPath.startsWith('europeanCoverTemporaryExtras[]'));
+  const rows=mapping.mappings;
+  assert.equal(sourceRows.length,9);assert.equal(rows.length,sourceRows.length);
+  assert.equal(new Set(rows.map(row=>row.owner)).size,rows.length);
+  for(const original of sourceRows)assert.equal(rows.find(row=>row.owner===original.owner)?.rawPath,original.rawPath);
+  for(const row of rows) {
+    assert.ok(row.canonicalPath,row.owner);
+    let node=schema;
+    for(const part of row.canonicalPath.split('.')) {
+      while(node.$ref)node=schema.$defs[node.$ref.split('/').at(-1)];
+      const list=part.endsWith('[]');node=node.properties?.[part.replace(/\[\]$/,'')];
+      assert.ok(node,`${row.owner}: ${row.canonicalPath}`);
+      if(list){assert.equal(node.type,'array');node=node.items;}
+    }
+    if(row.contractKind==='string')assert.equal(node.type,'string');
+    else assert.equal(node.$ref,`#/$defs/${row.contractKind}`);
+  }
+});

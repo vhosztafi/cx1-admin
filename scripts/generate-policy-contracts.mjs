@@ -61,6 +61,10 @@ defs.Driver.properties.occupations={...array(ref('DriverOccupation')),maxItems:5
 defs.Driver.properties.criminalConvictions={...array(ref('CriminalConviction')),maxItems:100};
 defs.Driver.properties.countyCourtJudgments={...array(ref('CountyCourtJudgment')),maxItems:100};
 defs.Vehicle.properties.modifications=array(ref('VehicleModification'));
+defs.AnnualEuropeanCover=object({id:ref('Id'),registration:{type:'string',pattern:'^[A-Z0-9 ]{2,12}$'},usage:ref('Reference')});
+defs.TemporaryEuropeanCover=object({id:ref('Id'),registration:{type:'string',pattern:'^[A-Z0-9 ]{2,12}$'},startsOn:ref('Date'),endsOn:ref('Date'),area:ref('Reference'),driverIds:{...array(ref('Id')),uniqueItems:true},cover:ref('Reference'),usage:ref('Reference')});
+defs.Cover.properties.annualEuropeanCover=array(ref('AnnualEuropeanCover'));
+defs.Cover.properties.temporaryEuropeanCover=array(ref('TemporaryEuropeanCover'));
 const properties={
  schemaVersion:{const:'1.0'},productCode:enumeration('motor-trade-road-risks','motor-trade-combined','commercial-combined'),productVersionId:ref('Id'),
  insured:object({clientId:ref('Id'),clientAgencyRelationshipId:ref('Id'),entityType:enumeration('sole-trader','partnership','limited-company','llp'),legalName:str(200),tradingName:str(200),companyNumber:str(30),address:ref('Address')},['clientId','clientAgencyRelationshipId','entityType','legalName','address']),

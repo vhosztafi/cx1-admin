@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-15T07:25:44.901452+00:00"
+last_updated: "2026-09-15T07:40:12.669740+00:00"
 last_activity: 2026-09-15
 progress:
   total_phases: 13
@@ -54,7 +54,7 @@ Progress: Phases1–4 complete;4/13phases,24completed plans.
 ## Session Continuity
 
 Last session: 2026-09-15
-Stopped at: Phase5 planning committed e5ded64;05-01 first schema slice implemented. Typed repeated driver histories/modifications and strict MotorTrade quote draft/ready write contracts reject policy/ownership/evidence authority; stable partial child IDs and typed references/answers.85contracts/OpenAPI/source949/328pass; no backend/UI change. NEXT finish exact255field/364control canonical mapping, remaining repeated structures/option catalogs/semantic constraints and full quote OpenAPI before05-01complete. Read05-01-PROGRESS. Backend329/57SQL and30frontend remain previous baseline, not rerun. No live quote APIs, previews or tests running; no funnel edits or approvals needed.
+Stopped at:05-01 European-cover schema slice complete: annual/temporary rows with stable IDs, explicit dated trips/reference selections/unique driver IDs; nine source child paths mapped/tested in contracts/quote-field-mapping.json, remaining246fields and364control audit pending. Full88contracts/OpenAPI/949controls/328ops pass. No quote APIs or backend/UI changes. NEXT remaining exact mappings/catalogues, semantic chronology/term/driver/reference/duplicate validation and quote OpenAPI before05-01complete. Read05-01-PROGRESS. Previous backend329/57SQL and30frontend baseline unchanged; no active previews/tests, no funnel edits, no approvals needed.
 Resume file: .planning/phases/05-motor-trade-quote-capture/05-01-PROGRESS.md
 
 ## Autonomous continuation
