@@ -7,4 +7,7 @@
     <ProjectReference Include="../../src/BackOffice.Domain/BackOffice.Domain.csproj" />
     <ProjectReference Include="../../src/BackOffice.Application/BackOffice.Application.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="../../../contracts/examples/quote-capture-*.json" LogicalName="QuoteExamples.%(Filename)%(Extension)" />
+  </ItemGroup>
 </Project>

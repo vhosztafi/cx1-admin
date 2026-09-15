@@ -43,3 +43,7 @@ Fresh .local/phase5-quote-canonical-verified contains297unit and64integration pa
 ## 05-02 item identity slice — 2026-09-15
 
 Fresh .local/phase5-quote-identity-verified:307unit +64integration =371passing cases,57realSQL,0skips; assert-test-results.ps1 passed.10new .NET identity/link cases and1Node nil-ID case; contracts288/frontend30pass. .NET item identity is an internal prerequisite, not a completed capture boundary or quote endpoint. No migration/UI/funnel changes. See05-02-PROGRESS and05-DOTNET-SCHEMA-DECISION for next work.
+
+## 05-02 closed shape slice — 2026-09-15
+
+Locked dependency restore and fresh .local/phase5-quote-shape-verified pass:323unit +64integration =387cases,57realSQL,0skips; assert-test-results.ps1 passed.16new cases cover bundled draft shape/all answer types/formats/authority/concurrency/error bounds. Contracts288 and frontend30pass. No quote SQL migration/endpoints yet; catalogue identity/composition remains next. See05-02-PROGRESS for dependency changes and exact logs.

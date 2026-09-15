@@ -1,6 +1,6 @@
 # .NET capture schema validation decision
 
-Researched 2026-09-15 during05-02 identity implementation. Dependency not installed yet.
+Researched 2026-09-15 during05-02 identity implementation. Implemented and verified in05-02's closed draft schema slice.
 
 The existing AgencyDraftRules uses a manually maintained small field tree. Quote capture has nested shared definitions, oneOf/anyOf typed answers, numeric/string/array bounds and formats across255source occurrences. Duplicating that vocabulary in a new homemade validator would create a second schema source and unnecessary correctness risk.
 
@@ -12,4 +12,4 @@ The current API provides JsonSchema.Build(JsonElement, BuildOptions, Uri) and Ev
 
 Convert failures to bounded stable keyword/path issues; do not return library error strings containing caller values. EvaluationResults exposes IsValid, Details, Errors and InstanceLocation for this adapter. Tests must compare .NET outcomes with existing Node fixtures and mutations including invalid formats, unknown nested authority fields and all answer variants. [Results API](https://docs.json-everything.net/api/JsonSchema.Net/EvaluationResults/).
 
-No dependency is needed for the current QuoteItemIdentity slice. Shape validation, catalogue validation, SQL storage and endpoints remain unfinished.
+QuoteItemIdentity remains dependency-free; QuoteCaptureShape now uses this pinned package. The actual restored fetch callback takes (Uri, SchemaRegistry). All six fixtures and16new .NET cases pass, with387backend/57SQL regression results. The dependency graph includes JsonPointer.Net7.0.2, Json.More.Net3.0.1 and Humanizer.Core3.0.10; locked restore passes. Catalogue validation, SQL storage and endpoints remain unfinished.

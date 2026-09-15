@@ -1,3 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup><ProjectReference Include="../BackOffice.Domain/BackOffice.Domain.csproj" /></ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="JsonSchema.Net" />
+    <EmbeddedResource Include="../../../contracts/schemas/quote-draft.schema.json" LogicalName="QuoteCapture.DraftSchema" />
+  </ItemGroup>
 </Project>

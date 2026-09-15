@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-15T20:07:03.954579+00:00"
+last_updated: "2026-09-15T20:30:34.127098+00:00"
 last_activity: 2026-09-15
 progress:
   total_phases: 13
@@ -25,7 +25,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 ## Current Position
 
 Phase: 5 of 13 (Motor Trade quote capture)
-Plan: 05-02 of11 in progress; .NET canonical hashing and item identity implemented
+Plan: 05-02 of11 in progress; .NET canonical/shape/item-identity gates implemented
 Status: In progress — autonomous
 Last activity: 2026-09-15 — Phase4 accepted:329backend/57SQL,81contracts,30frontend,20browser journeys and restart persistence.
 
@@ -54,7 +54,7 @@ Progress: Phases1–4 complete;4/13phases,25completed plans.
 ## Session Continuity
 
 Last session: 2026-09-15
-Stopped at:05-02 .NET item identity/typed links verified;371backend/57SQL,288contracts,30frontend pass. NEXT closed .NET shape validation (05-DOTNET-SCHEMA-DECISION), question/reference gate, then persistence/API.
+Stopped at:05-02 embedded strict draft schema adapter verified;387backend/57SQL,288contracts,30frontend pass. NEXT pinned .NET question/reference validation and composed boundary, then quote persistence/API.
 Resume file: .planning/phases/05-motor-trade-quote-capture/05-02-PROGRESS.md
 
 ## Autonomous continuation
@@ -63,4 +63,4 @@ User approved requirements/roadmap and autonomous choices/progression on 2026-09
 
 Thread heartbeat: continue-cover-mga-back-office-mvp, active every 10 minutes. Resume unfinished work in this same task; notify meaningful progress/blockers only; pause on actual milestone completion, user stop or persistent external blocker with no remaining useful work.
 
-Latest checkpoint:05-02-PROGRESS records item identity and full371backend/57SQL evidence.05-02 incomplete; no quote persistence/API yet.
+Latest checkpoint:05-02-PROGRESS records closed schema validation and full387backend/57SQL evidence.05-02 incomplete; no quote persistence/API yet.
