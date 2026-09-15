@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-15T03:11:34.585744Z"
+last_updated: "2026-09-15T03:31:34.526985Z"
 last_activity: 2026-09-15
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-07 of 8 in progress; 04-01 through 04-06 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-15 —04-07 internal sharing UI verified with real SQL-backed browser fixtures;29 frontend tests/lint/typecheck/build pass. Permissions and broker identity remain.
+Last activity: 2026-09-15 �04-07 shared instructions now identify current relationship contacts across pages;317backend/54SQL,79contracts,29frontend and browser checks pass.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-15
-Stopped at:04-07 internal sharing UI slice verified. Read04-07-PROGRESS for evidence and remaining person attribution across contact pages. Next permissions UI then broker own-user authority and external sign-in/session/UIguards.317backend/54SQL gate remains unchanged;29frontend tests/lint/typecheck/build plus actual two-agency browser sharing checks pass. Broker login closed; no wholeAGY/humanUAT completion. Preview processes stopped after checks.
+Stopped at:04-07 safe instruction contact attribution resolved through scoped Contact declaration, updated API contract/cursor fingerprint and UI Contact column. Full .local/phase4-sharing-attribution-full317/54SQL passes;79contracts,29frontend/lint/typecheck/build, real11-contact/two-agency browser pass. No active previews/tests. NEXT permissions UI with actual actor labels (see04-07-PROGRESS pattern notes), broker own-user authority and external sign-in/session/UIguards. Broker login remains closed; no wholeAGY or humanUAT completion.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-07-PROGRESS.md
 
 ## Autonomous continuation

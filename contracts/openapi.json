@@ -66238,6 +66238,11 @@
             "type": "string",
             "format": "uuid"
           },
+          "contactName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
           "instruction": {
             "type": "string",
             "minLength": 1,
@@ -66251,6 +66256,7 @@
         "required": [
           "id",
           "personId",
+          "contactName",
           "instruction"
         ]
       },

@@ -10,7 +10,7 @@ namespace BackOffice.Infrastructure.Agencies;
 
 public sealed record AgencySharedClient(Guid Id, Guid RelationshipId, string Reference, string LegalName, string EntityType, string? CompanyNumber);
 public sealed record AgencySharedContact(Guid Id, Guid ClientId, Guid RelationshipId, Guid PersonId, string FullName, string? FirstName, string? Surname, string Role, string? Email, string? Telephone, bool IsPrimary);
-public sealed record AgencySharedInstruction(Guid Id, Guid ClientId, Guid RelationshipId, Guid PersonId, string Instruction, DateOnly ReviewOn);
+public sealed record AgencySharedInstruction(Guid Id, Guid ClientId, Guid RelationshipId, Guid PersonId, string ContactName, string Instruction, DateOnly ReviewOn);
 public sealed record AgencySharingQuery(string? Search = null, int Offset = 0, int Size = 25, Guid? RelationshipId = null);
 public sealed record AgencySharingPage<T>(IReadOnlyList<T> Items, int Total, int Offset, int Size);
 
@@ -106,7 +106,7 @@ public static partial class AgencySharingService
                 contacts.Any(c => c.RelationshipId == grant.RelationshipId && c.ClientId == grant.ClientId && c.PersonId == flag.PersonId) &&
                 (string.IsNullOrEmpty(query.Search) || flag.AgencyInstruction.Contains(query.Search))
             orderby flag.Id, grant.RelationshipId
-            select new AgencySharedInstruction(flag.Id, flag.ClientId, grant.RelationshipId, flag.PersonId, flag.AgencyInstruction!, flag.ReviewOn));
+            select new AgencySharedInstruction(flag.Id, flag.ClientId, grant.RelationshipId, flag.PersonId, contacts.Where(c => c.RelationshipId == grant.RelationshipId && c.ClientId == grant.ClientId && c.PersonId == flag.PersonId).OrderBy(c => c.Id).Select(c => c.DeclaredFullName).First(), flag.AgencyInstruction!, flag.ReviewOn));
     }
 
     private static AgencyCommandException Denied() => new(403, "agency-scope-denied");

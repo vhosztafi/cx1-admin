@@ -86,6 +86,12 @@ public sealed class AgencySharingPagingTests
             Assert.Equal(0, (await Read(client, secondPath + $"/relationships/{firstRelationship}/contacts")).GetProperty("totalCount").GetInt32());
             var instructions = secondPath + $"/relationships/{secondRelationship}/instructions";
             var safe = await Read(client, instructions); Assert.Equal("Changed public instruction", safe.GetProperty("items")[0].GetProperty("instruction").GetString());
+            var beforeNameChange = await Fingerprint();
+            await using (var db = new BackOfficeDbContext(options))
+                await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Contact SET DeclaredFullName=N'Current relationship contact name' WHERE Id={ContactDemoSeed.ContactId(3)}");
+            Assert.NotEqual(beforeNameChange, await Fingerprint());
+            safe = await Read(client, instructions);
+            Assert.Equal("Current relationship contact name", safe.GetProperty("items")[0].GetProperty("contactName").GetString());
             Assert.DoesNotContain("Private", safe.GetRawText()); Assert.DoesNotContain("reason", safe.GetRawText());
             await using (var db = new BackOfficeDbContext(options))
             {

@@ -43,7 +43,7 @@ public static class AgencySharingEndpoints
             else
             {
                 var rows = await AgencySharingService.PreviewInstructions(db, actor, agencyId, query, token);
-                response = new { items = rows.Items.Select(x => new { x.Id, x.PersonId, x.Instruction, x.ReviewOn }).ToArray(), totalCount = rows.Total, nextCursor = paging.Next(page, page.Offset + rows.Items.Count < rows.Total) };
+                response = new { items = rows.Items.Select(x => new { x.Id, x.PersonId, x.ContactName, x.Instruction, x.ReviewOn }).ToArray(), totalCount = rows.Total, nextCursor = paging.Next(page, page.Offset + rows.Items.Count < rows.Total) };
             }
             await transaction.CommitAsync(token); return Results.Json(response, ClientEndpoints.Json);
         }

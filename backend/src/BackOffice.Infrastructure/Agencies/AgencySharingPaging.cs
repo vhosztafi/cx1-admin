@@ -29,7 +29,7 @@ public static partial class AgencySharingService
                 visible = (await ContactRows(db, agencyId, query).ToListAsync(token)).Select(x => new { x.Id, x.PersonId, x.FullName, x.Role, x.Email, x.Telephone, x.IsPrimary }).ToArray();
                 break;
             case "instructions":
-                visible = (await InstructionRows(db, agencyId, query).ToListAsync(token)).Select(x => new { x.Id, x.PersonId, x.Instruction, x.ReviewOn }).ToArray();
+                visible = (await InstructionRows(db, agencyId, query).ToListAsync(token)).Select(x => new { x.Id, x.PersonId, x.ContactName, x.Instruction, x.ReviewOn }).ToArray();
                 break;
             default: throw new AgencyCommandException(400, "invalid-sharing-section");
         }

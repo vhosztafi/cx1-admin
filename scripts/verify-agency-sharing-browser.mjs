@@ -27,6 +27,12 @@ try {
   const fresh=await get(parentPath);
   const privateText='PRIVATE sharing browser evidence '+Date.now();
   await post(`${parentPath}/people/${contact.personId}/flags`,{typeCode:'accessible-format',internalCategory:'capability',internalInstruction:privateText,consentBasis:'verbal-consent',reviewOn:'2027-12-31',reason:privateText,visibleRelationshipIds:[rel.id],agencyInstruction:'Please provide large print correspondence.'},fresh.headers().etag);
+  // Put the supported person beyond the first contact page; instruction attribution
+  // must come from its own safe projection, not the currently rendered contacts.
+  for(let index=0;index<10;index++) {
+    const current=await get(parentPath);
+    await post(parentPath+'/contacts',{fullName:`Fictional Before ${String(index).padStart(2,'0')}`,role:'Contact',isPrimary:false,marketingConsent:{state:'not-asked',email:false,telephone:false,recordedAt:new Date().toISOString(),source:'Fictional browser demo'}},current.headers().etag);
+  }
   const foreignName='Fictional Other Agency '+Date.now();
   const foreignCreated=await post('/api/v1/clients',{legalName:foreignName,entityType:'sole-trader',address:{line1:'2 Fictional Road',town:'Sheffield',postcode:'S1 1AA',country:'GB'}});
   const foreign=await foreignCreated.json();
@@ -38,13 +44,19 @@ try {
   await page.getByRole('heading',{name:'Hidden from agency users',exact:true}).waitFor();
   await page.getByLabel('Search shared clients').fill(name);await page.getByLabel('Search shared clients').press('Enter');
   await page.getByRole('button',{name:`View contacts for ${name}`,exact:true}).click();
-  await page.getByRole('region',{name:'Shared contacts',exact:true}).getByText('Fictional Shared Alex',{exact:true}).waitFor();
+  const contactRegion=page.getByRole('region',{name:'Shared contacts',exact:true});
+  await contactRegion.getByText('Fictional Before 00',{exact:true}).waitFor();
+  assert.equal(await contactRegion.getByText('Fictional Shared Alex',{exact:true}).count(),0);
+  await page.getByRole('region',{name:'Shared support instructions',exact:true}).getByText('Fictional Shared Alex',{exact:true}).waitFor();
+  await contactRegion.locator('..').getByRole('button',{name:'Next page',exact:true}).click();
+  await contactRegion.getByText('Fictional Shared Alex',{exact:true}).waitFor();
   await page.getByRole('region',{name:'Shared support instructions',exact:true}).getByText('Please provide large print correspondence.',{exact:true}).waitFor();
   const instructions=await (await get(`/api/v1/agencies/${agencyId}/sharing/relationships/${rel.id}/instructions`)).json();
-  assert.equal(instructions.items.length,1);assert.deepEqual(Object.keys(instructions.items[0]).sort(),['id','instruction','personId','reviewOn']);
+  assert.equal(instructions.items.length,1);assert.equal(instructions.items[0].contactName,'Fictional Shared Alex');assert.deepEqual(Object.keys(instructions.items[0]).sort(),['contactName','id','instruction','personId','reviewOn']);
   assert.ok(!(await page.locator('main').innerText()).includes(privateText));assert.ok(!JSON.stringify(instructions).includes(privateText));
   assert.ok(!(await page.locator('main').innerText()).includes(foreignName));
   assert.deepEqual(await (await get('/api/v1/account')).json(),actor);
+  await page.evaluate(()=>{document.activeElement?.blur();window.scrollTo(0,0);});
   await page.screenshot({path:output+'/agency-sharing-desktop.png',fullPage:true});
   await page.getByLabel('Search shared clients').fill('no-match-'+crypto.randomUUID());await page.getByLabel('Search shared clients').press('Enter');await page.getByText('No shared clients match this search.',{exact:true}).waitFor();assert.equal(await page.getByRole('region',{name:'Shared contacts',exact:true}).count(),0);
   await page.getByRole('button',{name:'Clear search',exact:true}).click();await page.getByRole('button',{name:`View contacts for ${name}`,exact:true}).waitFor();
@@ -56,6 +68,6 @@ try {
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Mobile page must contain table overflow');
   await page.screenshot({path:output+'/agency-sharing-mobile.png',fullPage:true});
   await page.getByRole('link',{name:'Back to agency',exact:true}).click();await page.waitForURL(origin+`/agents/${agencyId}`);
-  assert.deepEqual(errors,[]);await writeFile(output+'/agency-sharing-result.json',JSON.stringify({agencyId,clientId:client.id,relationshipId:rel.id,passed:true,checks:['real internal session and persisted fixtures','safe contact and instruction projection','two-agency search and relationship isolation','search and empty selection reset','safe failure and retry','unchanged staff identity','390px overflow','back navigation']},null,2));
+  assert.deepEqual(errors,[]);await writeFile(output+'/agency-sharing-result.json',JSON.stringify({agencyId,clientId:client.id,relationshipId:rel.id,passed:true,checks:['real internal session and persisted fixtures','contact attribution independent of contact page','safe contact and instruction projection','two-agency search and relationship isolation','search and empty selection reset','safe failure and retry','unchanged staff identity','390px overflow','back navigation']},null,2));
   console.log('Agency sharing browser checks passed.');
 } finally {await browser.close();}

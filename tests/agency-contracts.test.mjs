@@ -119,7 +119,10 @@ test('demo reveal is internal, development-only, CSRF-protected and never cached
 test('shared projections exclude internal evidence, arbitrary permissions, hidden counts and fabricated balances',()=>{
  const client={id:uuid,relationshipId:uuid,reference:'CL-DEMO',legalName:'Fictional Traders'};assert.ok(schema('AgencySharedClient')(client));
  for(const patch of [{internalNotes:'secret'},{otherAgencyId:uuid},{hiddenCount:3},{matchScore:100}])assert.equal(schema('AgencySharedClient')({...client,...patch}),false);
- assert.equal(schema('AgencySharedInstruction')({id:uuid,personId:uuid,instruction:'Allow more time',internalCategory:'health'}),false);
+ const instruction={id:uuid,personId:uuid,contactName:'Fictional relationship contact',instruction:'Allow more time'};
+ assert.ok(schema('AgencySharedInstruction')(instruction));
+ assert.equal(schema('AgencySharedInstruction')({...instruction,contactName:undefined}),false);
+ assert.equal(schema('AgencySharedInstruction')({...instruction,internalCategory:'health'}),false);
  assert.equal(schema('AgencySharedProduct')({productCode:'motor-trade-road-risks',name:'Road Risks',effectiveFrom:'2026-09-14',available:false,eligibilitySettingVersionId:uuid}),false);
  assert.ok(schema('AgencyUnavailableSection')({kind:'statements',state:'unavailable',owningPhase:10,message:'Available in finance phase'}));
  assert.equal(schema('AgencyUnavailableSection')({kind:'statements',state:'unavailable',owningPhase:10,message:'Pending',balance:'0.00'}),false);

@@ -77,7 +77,7 @@ export function addAgencyContracts({schemas:s,ref:r,text:t,enumeration:e,object:
  s.AgencySharing=o({agency:o({id,reference:t(40),legalName:t(),state}),products:bounded(r('AgencySharedProduct'),3),permissions:bounded(o({permission:{const:'bordereau-download'},granted:b,available:b}),1),unavailableSections:bounded(r('AgencyUnavailableSection'),4)});
  s.AgencySharedClient=o({id,relationshipId:id,reference:t(40),legalName:t()});
  s.AgencySharedContact=o({id,personId:id,fullName:t(),role:t(100),email,telephone:t(50),isPrimary:b},['id','personId','fullName','role','isPrimary']);
- s.AgencySharedInstruction=o({id,personId:id,instruction:t(1000),reviewOn:date},['id','personId','instruction']);
+ s.AgencySharedInstruction=o({id,personId:id,contactName:t(200),instruction:t(1000),reviewOn:date},['id','personId','contactName','instruction']);
 
  // Rebuild existing operations using the shared security/concurrency conventions,
  // retaining the exact IDs used by the reviewed prototype inventory.
