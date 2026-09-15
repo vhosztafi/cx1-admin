@@ -1003,7 +1003,9 @@
           "kind": "field-or-collection",
           "paths": [
             "insured.proposerNames"
-          ]
+          ],
+          "arrayIndex": 0,
+          "captureRule": "Preserve the ordered full name in this proposer slot; omit unused trailing slots, not empty names. Do not split names or conflate co-proposers with the source contact person."
         }
       ]
     },
@@ -1021,7 +1023,9 @@
           "kind": "field-or-collection",
           "paths": [
             "insured.proposerNames"
-          ]
+          ],
+          "arrayIndex": 1,
+          "captureRule": "Preserve the ordered full name in this proposer slot; omit unused trailing slots, not empty names. Do not split names or conflate co-proposers with the source contact person."
         }
       ]
     },
@@ -1039,7 +1043,9 @@
           "kind": "field-or-collection",
           "paths": [
             "insured.proposerNames"
-          ]
+          ],
+          "arrayIndex": 2,
+          "captureRule": "Preserve the ordered full name in this proposer slot; omit unused trailing slots, not empty names. Do not split names or conflate co-proposers with the source contact person."
         }
       ]
     },

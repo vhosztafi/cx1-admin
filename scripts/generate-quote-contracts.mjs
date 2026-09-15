@@ -8,6 +8,9 @@ const ref=name=>({$ref:`#/$defs/${name}`});
 export async function writeQuoteSchemas(policy) {
   const defs=structuredClone(policy.$defs);
   const insured=structuredClone(policy.properties.insured);
+  // The prototype has three ordered proposer slots. Do not force its capacity
+  // onto historical issued-policy schemas or infer name components from text.
+  insured.properties.proposerNames.maxItems=3;
   for(const key of ['clientId','clientAgencyRelationshipId']) delete insured.properties[key];
   insured.required=insured.required.filter(key=>!['clientId','clientAgencyRelationshipId'].includes(key));
   // Evidence is attached via a scoped command, never by placing arbitrary file

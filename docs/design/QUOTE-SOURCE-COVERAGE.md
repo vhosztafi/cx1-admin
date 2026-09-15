@@ -82,6 +82,10 @@ Prototype held plates are stored in risk.heldTradePlates, independently of reque
 
 The seven prototype percentages have distinct declaredActivitySplit fields in integer basis points, totaling10000. Source occupation rows remain independently captured. Unambiguous occupation groups constrain matching totals; combined servicing/mechanical occupation shares do not invent an individual allocation. A positive Other share requires its explanation; inactive retained text is flagged.
 
+## Ordered proposer names
+
+The three proposer controls target explicit array slots0–2. Quote capture requires1–3nonblank ordered full names; unused trailing slots are omitted. Names are not split or deduplicated, and source contact components remain separately captured. Issued-policy capacity is unchanged.
+
 ## Remaining contract gate
 
 Resolve overlapping prototype/funnel answers and all product-specific requiredness, dynamic option selection, source limits and conditional rules. Reconcile historical prototype field bindings with the capture-write envelope: for example `term.startsAt` is supplied as local `termIntent`, not a caller-chosen policy timestamp. Finish quote API request/response contracts and operation integration. Verify complete fictional proposals against the composed validators. Then implement and test the same rules in the actual .NET request boundary and persistent services.

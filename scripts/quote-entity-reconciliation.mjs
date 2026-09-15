@@ -6,7 +6,9 @@ import {quoteMappingsForProduct} from './quote-semantic-contract.mjs';
 export function reconcileQuoteEntity(proposal,questions,references) {
  quoteMappingsForProduct(questions,proposal.productCode);
  const insured=proposal.insured??{},issues=[];
- if(!insured.entityType)return [{code:'legal-entity-required',path:'/insured/entityType'}];
+ if(!insured.proposerNames?.length)issues.push({code:'proposer-name-required',path:'/insured/proposerNames'});
+ (insured.proposerNames??[]).forEach((name,index)=>{if(!name.trim())issues.push({code:'proposer-name-required',path:`/insured/proposerNames/${index}`});});
+ if(!insured.entityType)return [...issues,{code:'legal-entity-required',path:'/insured/entityType'}];
  const ref=insured.declaredCompanyType;
  const company=ref?.collection==='companyTypes'&&ref.version===references.version?references.collections.companyTypes.find(row=>row.value===ref.value&&row.text===ref.label):undefined;
  const allowed={'sole-trader':[1],partnership:[4],'limited-company':[2,3],llp:[4]};
