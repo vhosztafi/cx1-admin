@@ -175,6 +175,16 @@
               "questionId": "prototype.quote.87fad6b4a9fe",
               "kind": "boolean",
               "value": false
+            },
+            {
+              "questionId": "prototype.quote.af67cb40b4de",
+              "kind": "reference",
+              "value": {
+                "collection": "prototype.quote.af67cb40b4de",
+                "value": 1,
+                "label": "None",
+                "version": "mt-capture-e410d61471e481ed"
+              }
             }
           ]
         }
@@ -561,6 +571,16 @@
               "label": "£2 Million",
               "version": "mt-capture-e410d61471e481ed"
             }
+          },
+          {
+            "questionId": "prototype.quote.becc2653d0de",
+            "kind": "boolean",
+            "value": false
+          },
+          {
+            "questionId": "prototype.quote.4c5df77ffba1",
+            "kind": "boolean",
+            "value": false
           }
         ]
       }

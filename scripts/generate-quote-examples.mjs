@@ -23,6 +23,7 @@ for(const productCode of questions.products) {
     ['MTS-02-Q01',ref('tradingFroms',combined?3:1)],['MTS-03-Q04',false],['MTS-03-Q06',true],['MTS-03-Q08',25],['MTS-03-Q09',5],
     ['prototype.quote.c6181a11c34c',ref('prototype.quote.c6181a11c34c',1)],['prototype.quote.0552d5a68ba2',ref('prototype.quote.0552d5a68ba2',6)],['prototype.quote.34613c23e95d',ref('prototype.quote.34613c23e95d',1)],
     ...prototypeBusinessGroups.flatMap(group=>group.parents.map(id=>[`prototype.quote.${id}`,false])),
+    ['prototype.quote.af67cb40b4de',ref('prototype.quote.af67cb40b4de',1)],
    ])},
    responses:response([['MTS-06-Q01',ref('driverPlans',1)],['MTS-07-Q01',false],['MTS-10-Q01',true],['MTS-10-Q02',10000]]),
    declarations:response([1,3,5,7,9,11,13,15,17,19].map(n=>[`MTS-12-Q${String(n).padStart(2,'0')}`,false])),
@@ -39,6 +40,7 @@ for(const productCode of questions.products) {
   cover:{responses:response([
    ['MTS-05-Q01',ref('coverLevels',1)],['MTS-05-Q02',ref('indemnityOwnVehicles',5)],['MTS-05-Q04',ref('indemnityOwnVehicles/number:5/excesses',4)],['MTS-05-Q05',false],['MTS-05-Q06',ref('excessLates',1)],['MTS-05-Q07',false],['MTS-05-Q08',false],
    ['MTS-11-Q07',false],['MTS-11-Q08',false],['MTS-11-Q09',ref('thirdPartyDamageLimits')],
+   ['prototype.quote.becc2653d0de',false],['prototype.quote.4c5df77ffba1',false],
   ])},
  };
  const result=validate(JSON.stringify(proposal),context);
