@@ -26,6 +26,10 @@ Ownership is separate from operation dependencies. A shared risks-list control m
 
 The composed validator requires pinned trader type, experience and employment selections. Part-time traders need a nonblank main occupation and employed/self-employed status. Full-time traders use not-applicable employment; retained occupation details require correction. Every appetite and vehicle-characteristic declaration must be answered; any affirmative answer requires its corresponding group explanation. Negative declarations remain valid answers. Tests cover both products and every declaration in each group. These capture rules do not implement experience or driver-population rating referrals.
 
+## Prototype vehicle declarations
+
+Every vehicle captures a pinned characteristic and an explicit MID reporting answer. Single characteristic selections reconcile with the corresponding global declarations and source modification/import flags; generic manufacturer imports are distinct from grey imports. Multiple characteristics require at least two positive global declarations without inventing an individual breakdown. The existing group-detail rule supplies the required explanation. These rules include specified vehicles and do not perform MID submissions.
+
 ## Remaining contract gate
 
 Resolve overlapping prototype/funnel answers and all product-specific requiredness, dynamic option selection, source limits and conditional rules. Reconcile historical prototype field bindings with the capture-write envelope: for example `term.startsAt` is supplied as local `termIntent`, not a caller-chosen policy timestamp. Finish quote API request/response contracts and operation integration. Verify complete fictional proposals against the composed validators. Then implement and test the same rules in the actual .NET request boundary and persistent services.

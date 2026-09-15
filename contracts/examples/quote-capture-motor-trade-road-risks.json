@@ -431,7 +431,27 @@
           "keptOvernightAddress": "AB1 2CD",
           "partOfLeaseAgreement": false,
           "customerLoan": false,
-          "modified": false
+          "modified": false,
+          "responses": {
+            "questionSetVersion": "mt-capture-e410d61471e481ed",
+            "answers": [
+              {
+                "questionId": "prototype.addveh.special-characteristics",
+                "kind": "reference",
+                "value": {
+                  "collection": "prototype.addveh.special-characteristics",
+                  "value": 1,
+                  "label": "None",
+                  "version": "mt-capture-e410d61471e481ed"
+                }
+              },
+              {
+                "questionId": "prototype.addveh.report-mid",
+                "kind": "boolean",
+                "value": true
+              }
+            ]
+          }
         }
       ],
       "specifiedVehiclesRequested": false,
