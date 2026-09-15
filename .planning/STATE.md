@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-15T04:33:36.342134Z"
+last_updated: "2026-09-15T04:54:24.686444Z"
 last_activity: 2026-09-15
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-07 of 8 in progress; 04-01 through 04-06 complete, all six Phase 3 plans complete
 Status: In progress â€” autonomous
-Last activity: 2026-09-15 -04-07 invitation replay authority and scoped user/invitation reads verified;318backend/55SQL,79contracts and existing user browser pass.
+Last activity: 2026-09-15 -04-07 server-owned permission matrix verified with actual grants;322backend/55SQL,79contracts,30frontend/build and browser pass.
 
 Progress: Phases 1â€“3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1â€“3 complete; 3/13 phases. Agency onboarding/access next
 ## Session Continuity
 
 Last session: 2026-09-15
-Stopped at:04-07 own invitation resend/revoke pre-replay authority and serializable scoped user/invitation reads verified. Broker lookup never unscoped; locks agency->user->invitation; ReadScope binds cursors to agency version/stamp. Full .local/phase4-own-invitation-reads-full318/55SQL and79contracts pass; existing agency-users browser regression passes real staging/lifecycle/active issuance/resend/revoke. No frontend/schema/identity changes. No active tests/previews. NEXT effective server capability matrix and coordinated external sign-in/session/workspace guards plus actual accepted-account two-agency HTTP tests. Broker public policies/login remain closed. Read04-07-PROGRESS/04-DATA-API-DESIGN. No wholeAGY/humanUAT acceptance.
+Stopped at:04-07 server-owned permission matrix with source Separation banner implemented and verified. Current-role permissions and actual bordereau grant kept separate from feature availability. Full .local/phase4-permission-matrix-full322/55SQL passes (260unit/62integration),79contracts/328operations,30frontend/lint/typecheck/build and real permission browser pass. No active tests/previews. NEXT coordinated external authentication/session/actor-scope/workspace guards and accepted-account two-agency API tests. Broker login still closed; update matrix own-user sign-in availability only with verified runtime. Read04-07-PROGRESS/04-DATA-API-DESIGN. No wholeAGY/humanUAT acceptance.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-07-PROGRESS.md
 
 ## Autonomous continuation

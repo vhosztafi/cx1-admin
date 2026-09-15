@@ -37,6 +37,17 @@ public sealed class AgencyPermissionApiTests
             using var reviewer = host.CreateClient(); var reviewerCsrf = await Login(reviewer, "agency-reviewer", password);
             using var limited = host.CreateClient(); await Login(limited, "underwriter", password);
             Assert.Equal(HttpStatusCode.Forbidden, (await limited.GetAsync(path + "/permission-grants")).StatusCode);
+            Assert.Equal(HttpStatusCode.Unauthorized, (await anonymous.GetAsync(path + "/permission-matrix")).StatusCode);
+            Assert.Equal(HttpStatusCode.Forbidden, (await limited.GetAsync(path + "/permission-matrix")).StatusCode);
+            async Task<bool> BordereauAllowed(string selected)
+            {
+                var matrix = await Read(admin, selected + "/permission-matrix");
+                Assert.Equal(8, matrix.GetProperty("rows").GetArrayLength());
+                var cell = matrix.GetProperty("rows").EnumerateArray().Single(x => x.GetProperty("capability").GetString() == "bordereau-download").GetProperty("cells").EnumerateArray().Single(x => x.GetProperty("role").GetString() == "broker-admin");
+                Assert.False(cell.GetProperty("available").GetBoolean());
+                return cell.GetProperty("allowed").GetBoolean();
+            }
+            Assert.False(await BordereauAllowed(path));
             Assert.Equal(0, (await Read(admin, path + "/permission-requests")).GetProperty("totalCount").GetInt32());
             var requestBody = new { permission = "bordereau-download", reason = "Fictional reporting requirement" };
             var basis = await Tag(admin, path); var requests = path + "/permission-requests";
@@ -69,12 +80,15 @@ public sealed class AgencyPermissionApiTests
             Assert.Equal(HttpStatusCode.BadRequest, (await admin.GetAsync(other + "/permission-requests?pageSize=1&cursor=" + cursor)).StatusCode);
             Assert.Equal(HttpStatusCode.BadRequest, (await admin.GetAsync(requests + "?pageSize=2&cursor=" + cursor)).StatusCode);
             Assert.Equal(HttpStatusCode.BadRequest, (await admin.GetAsync(requests + "?agencyId=" + Guid.NewGuid())).StatusCode);
+            Assert.True(await BordereauAllowed(path));
+            Assert.False(await BordereauAllowed(other));
             var grant = (await Read(admin, path + "/permission-grants")).GetProperty("items")[0]; Assert.False(grant.TryGetProperty("revokedAt", out _));
             Assert.Equal(reviewerLabel, grant.GetProperty("grantedByLabel").GetString());
             Assert.False(grant.TryGetProperty("revokedByLabel", out _));
             Assert.False(grant.TryGetProperty("email", out _));
             var revokePath = path + "/permission-grants/" + grant.GetProperty("id").GetGuid() + "/revoke";
             Assert.Equal(HttpStatusCode.OK, (await Send(admin, csrf, revokePath, new { reason = "Access withdrawn" }, grant.GetProperty("etag").GetString())).StatusCode);
+            Assert.False(await BordereauAllowed(path));
             var revoked = (await Read(admin, path + "/permission-grants")).GetProperty("items")[0];
             Assert.Equal(adminLabel, revoked.GetProperty("revokedByLabel").GetString());
             Assert.Equal(reviewerLabel, revoked.GetProperty("grantedByLabel").GetString());

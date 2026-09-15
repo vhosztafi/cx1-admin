@@ -70,6 +70,10 @@ export function addAgencyContracts({schemas:s,ref:r,text:t,enumeration:e,object:
  s.AgencyTermsWrite=o({effectiveFrom:date,reason:t(1000),commercialTerms:termsCommercial,settlement:o(structuredClone(settlement)),paymentTermsDays:{type:'integer',enum:[30,45,60]},creditLimit:money,products:{...bounded(r('AgencyProductWrite'),3),minItems:1}});
  s.AgencyTermsRequest=o({...proposal,...structuredClone(s.AgencyTermsWrite.properties),etag,requestedByLabel:t(200),decisionByLabel:t(200)},[...new Set([...proposalRequired,...s.AgencyTermsWrite.required,'etag','requestedByLabel'])]);
  s.AgencyTermsVersion=o({id,agencyId:id,version:{type:'integer',minimum:1},approvedRequestId:id,approvedRequestKind:e('activation','terms'),status:e('current','scheduled','historical'),...Object.fromEntries(Object.entries(structuredClone(s.AgencyTermsWrite.properties)).filter(([k])=>k!=='reason')),effectiveTo:date,createdAt:instant},['id','agencyId','version','approvedRequestId','approvedRequestKind','status','effectiveFrom','commercialTerms','settlement','paymentTermsDays','creditLimit','products','createdAt']);
+ s.AgencyMatrixColumn=o({role:t(50),label:t(100)});
+ s.AgencyMatrixCell=o({role:t(50),allowed:b,available:b,label:t(200)});
+ s.AgencyMatrixRow=o({capability:t(100),label:t(100),cells:bounded(r('AgencyMatrixCell'),4)});
+ s.AgencyPermissionMatrix=o({columns:bounded(r('AgencyMatrixColumn'),4),rows:bounded(r('AgencyMatrixRow'),8)});
  s.AgencyPermissionRequest=o({id,agencyId:id,permission:{const:'bordereau-download'},requestedBy:id,requestedByLabel:t(200),reason:t(1000),state:e('pending','granted','rejected'),createdAt:instant,decisionBy:id,decisionByLabel:t(200),decidedAt:instant,decisionReason:t(1000),etag},['id','agencyId','permission','requestedBy','requestedByLabel','reason','state','createdAt','etag']);
  s.AgencyPermissionGrant=o({id,agencyId:id,permission:{const:'bordereau-download'},requestId:id,grantedBy:id,grantedByLabel:t(200),grantedAt:instant,revokedBy:id,revokedByLabel:t(200),revokedAt:instant,revocationReason:t(1000),etag},['id','agencyId','permission','requestId','grantedBy','grantedByLabel','grantedAt','etag']);
  s.AgencyActivity=o({id,occurredAt:instant,actorLabel:t(),action:t(100),summary:t(1000)});
@@ -140,6 +144,7 @@ export function addAgencyContracts({schemas:s,ref:r,text:t,enumeration:e,object:
  out('/agencies/{agencyId}/terms-requests','get','AgencyTermsRequestList');out('/agencies/{agencyId}/terms','get','AgencyTermsVersionList');
  paths['/agencies/{agencyId}/products'].get.description+=' Active/suspended agencies return currently effective approved product grants; future and historical selections are available through terms history. Draft/abandoned records retain draft selection history. Product/terms effectiveTo is exclusive.';
  for(const [suffix,name,schema] of [['activity','Activity','AgencyActivity'],['notifications','Notifications','AgencyNotification'],['permission-requests','PermissionRequests','AgencyPermissionRequest'],['permission-grants','PermissionGrants','AgencyPermissionGrant']])list(`/agencies/{agencyId}/${suffix}`,`listAgency${name}`,suffix === 'activity' ? 'agency-read' : 'agency-admin',r(schema));
+ op('get','/agencies/{agencyId}/permission-matrix','getAgencyPermissionMatrix','agency-admin',{output:r('AgencyPermissionMatrix')});
  paths['/agencies/{agencyId}/activity'].get['x-permission']='agency-read';
  op('get','/agencies/{agencyId}/notifications/{notificationId}','getAgencyNotification','agency-admin',{output:r('AgencyNotification')});
  op('post','/agencies/{agencyId}/notifications/{notificationId}/retry','retryAgencyNotification','agency-admin',{existing:true,input:reason,output:o({id}),status:202});

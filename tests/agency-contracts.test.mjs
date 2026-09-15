@@ -152,6 +152,8 @@ test('notification reads exclude delivery secrets and retry returns only a stabl
 });
 
 test('permission commands use ID receipts and reviewed records expose conditional-write versions',()=>{
+ assert.equal(op('/agencies/{agencyId}/permission-matrix','get')['x-permission'],'agency-admin');
+ assert.ok(schema('AgencyPermissionMatrix')({columns:[{role:'broker-admin',label:'Broker administrator'}],rows:[{capability:'bordereau-download',label:'Download bordereaux',cells:[{role:'broker-admin',allowed:true,available:false,label:'Granted; downloads unavailable'}]}]}));
  for(const [suffix,status] of [['permission-requests','202'],['permission-requests/{requestId}/decision','200'],['permission-grants/{grantId}/revoke','200']]) {
   const operation=doc.paths[`/agencies/{agencyId}/${suffix}`].post;
   assert.deepEqual(Object.keys(operation.responses[status].content['application/json'].schema.properties),['id']);

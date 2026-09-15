@@ -13,12 +13,30 @@ public static class AgencyPermissionEndpoints
 {
     public static void MapAgencyPermissions(this WebApplication app)
     {
+        app.MapGet("/api/v1/agencies/{agencyId:guid}/permission-matrix", Matrix).RequireAuthorization("agency-admin");
         // Internal entry points only until the complete external identity gates are verified.
         app.MapGet("/api/v1/agencies/{agencyId:guid}/permission-requests", (Guid agencyId, HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, PartyPaging paging) => List(agencyId, false, context, factory, paging)).RequireAuthorization("agency-admin");
         app.MapGet("/api/v1/agencies/{agencyId:guid}/permission-grants", (Guid agencyId, HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, PartyPaging paging) => List(agencyId, true, context, factory, paging)).RequireAuthorization("agency-admin");
         app.MapPost("/api/v1/agencies/{agencyId:guid}/permission-requests", Request).RequireAuthorization("agency-admin");
         app.MapPost("/api/v1/agencies/{agencyId:guid}/permission-requests/{requestId:guid}/decision", Decide).RequireAuthorization("agency-admin");
         app.MapPost("/api/v1/agencies/{agencyId:guid}/permission-grants/{grantId:guid}/revoke", Revoke).RequireAuthorization("agency-admin");
+    }
+
+    private static async Task<IResult> Matrix(Guid agencyId, HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, TimeProvider time)
+    {
+        try
+        {
+            var token = context.RequestAborted;
+            await using var db = await factory.CreateDbContextAsync(token);
+            await using var tx = await db.Database.BeginTransactionAsync(IsolationLevel.Serializable, token);
+            await AgencyPermissionService.ReadScope(db, LocalIdentityService.Actor(context.User), agencyId, token);
+            var state = await db.Set<Agency>().Where(x => x.Id == agencyId).Select(x => x.State).SingleAsync(token);
+            var now = time.GetUtcNow();
+            var granted = await db.Set<AgencyPermissionGrant>().AnyAsync(x => x.AgencyId == agencyId && x.Permission == AgencyPermissionRules.BordereauDownload && x.GrantedAt <= now && x.RevokedAt == null, token);
+            var result = AgencyPermissionMatrixRules.Build(state, granted);
+            await tx.CommitAsync(token); return Results.Json(result, ClientEndpoints.Json);
+        }
+        catch (Exception ex) when (IsError(ex)) { return Error(context, ex); }
     }
 
     private static async Task<IResult> List(Guid agencyId, bool grants, HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, PartyPaging paging)

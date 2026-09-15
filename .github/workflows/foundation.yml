@@ -61,7 +61,7 @@ jobs:
       - run: dotnet test backend/BackOffice.slnx --no-restore --logger trx --results-directory .local/test-results --filter 'FullyQualifiedName!~AuthenticationTests&FullyQualifiedName!~OperationalJobTests'
       - name: Reject missing, skipped or failed tests
         shell: pwsh
-        run: ./scripts/assert-test-results.ps1 -ResultsDirectory .local/test-results -MinimumTests 316 -MinimumSqlTests 53
+        run: ./scripts/assert-test-results.ps1 -ResultsDirectory .local/test-results -MinimumTests 320 -MinimumSqlTests 53
 
   windows-sql-and-identity:
     runs-on: windows-2025
@@ -93,7 +93,7 @@ jobs:
         run: ./scripts/test-result-gate.ps1
       - name: Reject missing, skipped or failed tests
         shell: pwsh
-        run: ./scripts/assert-test-results.ps1 -ResultsDirectory .local/test-results -MinimumTests 318 -MinimumSqlTests 55
+        run: ./scripts/assert-test-results.ps1 -ResultsDirectory .local/test-results -MinimumTests 322 -MinimumSqlTests 55
       - name: Stop owned CI instance
         if: always()
         shell: pwsh
