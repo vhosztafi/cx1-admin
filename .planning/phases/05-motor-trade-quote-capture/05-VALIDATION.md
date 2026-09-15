@@ -66,3 +66,8 @@ Fresh .local/phase5-quote-scope-verified:344unit+67integration=411passing cases,
 ## 05-02 capture configuration/eligibility — 2026-09-15
 
 Full .local/phase5-quote-eligibility-verified:354unit+67integration=421passing cases,60realSQL,0skips; assert-test-results.ps1 passed. Ten configuration cases and expanded SQL eligibility assertions cover explicit version pins without changed product metadata, malformed/future/current settings, revocation, provider status, retained-term ownership and held provider/configuration-publication fences. A final test-only size-boundary refinement passed all354unit cases again in .local/phase5-quote-eligibility-final-unit; unchanged production/integration code retains the full-run evidence. Contracts289/949controls/336operations and frontend30pass. No live quote API, capture setting seed or demo reset. See05-02-PROGRESS and05-DATA-API-DESIGN for exact logs, explicit setting decision and remaining service obligations.
+
+
+## 05-02 capture seed/write preparation — 2026-09-15
+
+Fresh .local/phase5-quote-preparation-verified:360unit+68integration=428passing cases,61realSQL,0skips; assert-test-results.ps1 passed. Six preparation tests cover both default envelopes, six actual capture fixtures, product identity, registration projection, term-sensitive hash, closure and exact pin retention. New real-SQL opt-in seed test verifies revoked/malformed operator setting preservation, repeat IDs/product rowversions, unchanged distribution and absence of fabricated quote data. Contracts289/949controls/336operations and frontend30pass. The normal initializer is wired to seed capture configuration; no native demo initialization/reset was performed. Service/API, derived term/readiness and persistent quote examples remain incomplete.
