@@ -1,5 +1,6 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import {writeQuoteSchemas} from './generate-quote-contracts.mjs';
+import {writeQuoteConfigurationSchemas} from './quote-configuration-contracts.mjs';
 
 const object=(properties,required=Object.keys(properties))=>({type:'object',additionalProperties:false,properties,required});
 const array=(items,minItems=0)=>({type:'array',items,minItems,maxItems:1000});
@@ -121,6 +122,7 @@ const schema={
 const out=new URL('../contracts/schemas/',import.meta.url);await mkdir(out,{recursive:true});
 await writeFile(new URL('policy.schema.json',out),JSON.stringify(schema,null,2)+'\n');
 await writeQuoteSchemas(schema);
+await writeQuoteConfigurationSchemas();
 function partial(value){
  if(Array.isArray(value))return value.map(partial);
  if(!value||typeof value!=='object')return value;

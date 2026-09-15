@@ -1,0 +1,267 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.cover-mga.example/quote-reference-configuration/1.0",
+  "title": "Versioned Motor Trade reference configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^mt-capture-[a-f0-9]{16}$"
+    },
+    "sourcePath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sourceSha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "status": {
+      "type": "string",
+      "minLength": 1
+    },
+    "collections": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/Option"
+        },
+        "minItems": 1
+      }
+    },
+    "youngDriverConfiguration": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "ageFrom": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ageTo": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "defaultCc": {
+            "type": "string",
+            "minLength": 1
+          },
+          "cCs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Option"
+            },
+            "minItems": 1
+          },
+          "defaultAdditionalIndemnity": {
+            "type": "string",
+            "minLength": 1
+          },
+          "indemnities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Option"
+            },
+            "minItems": 1
+          },
+          "additionalExcess": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "ageFrom",
+          "ageTo",
+          "defaultCc",
+          "cCs",
+          "defaultAdditionalIndemnity",
+          "indemnities",
+          "additionalExcess"
+        ]
+      },
+      "minItems": 1
+    },
+    "bindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "owner": {
+            "type": "string",
+            "minLength": 1
+          },
+          "canonicalPath": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9]*(?:\\[\\])?(?:\\.[A-Za-z][A-Za-z0-9]*(?:\\[\\])?)*$"
+          },
+          "questionId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "selectionRule": {
+            "enum": [
+              "fixed",
+              "driver-age-indemnity",
+              "driver-age-cc",
+              "own-indemnity-excess"
+            ]
+          },
+          "collections": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "owner",
+          "canonicalPath",
+          "selectionRule",
+          "collections"
+        ]
+      },
+      "minItems": 1
+    },
+    "sourceReferenceVersion": {
+      "type": "string",
+      "pattern": "^mt-source-[a-f0-9]{16}$"
+    }
+  },
+  "required": [
+    "version",
+    "sourcePath",
+    "sourceSha256",
+    "status",
+    "collections",
+    "youngDriverConfiguration",
+    "bindings",
+    "sourceReferenceVersion"
+  ],
+  "$defs": {
+    "Option": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "isComprehensive": {
+          "type": "boolean"
+        },
+        "abiGroup": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "maxGVW": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "maxCC": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "relationshipOptions": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "numericValue": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "gvwLimitDecimal": {
+          "type": "number",
+          "minimum": 0
+        },
+        "isSocialDomesticPleasure": {
+          "type": "boolean"
+        },
+        "excesses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Option"
+          },
+          "minItems": 0
+        },
+        "customerLOI": {
+          "type": "boolean"
+        },
+        "requireShunterRadius": {
+          "type": "boolean"
+        },
+        "requireCarJockeyRadius": {
+          "type": "boolean"
+        },
+        "requireNCBIntroRenewal": {
+          "type": "boolean"
+        },
+        "category": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requiresQuadBikes": {
+          "type": "boolean"
+        },
+        "requiresRallyTrackKitCarsTrikes": {
+          "type": "boolean"
+        },
+        "requiresABICheckForCommercialVehicle": {
+          "type": "boolean"
+        },
+        "countries": {
+          "type": "string",
+          "minLength": 1
+        },
+        "isDefault": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "value",
+        "text"
+      ]
+    }
+  }
+}

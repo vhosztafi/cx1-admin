@@ -1,6 +1,7 @@
 import {readFile} from 'node:fs/promises';
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
+import {validateQuoteConfiguration} from './quote-configuration-contracts.mjs';
 import {parseQuoteJson,quoteMappingsForProduct,validateQuoteIdentity,validateQuoteQuestions,validateQuoteReferences} from './quote-semantic-contract.mjs';
 import {selectQuoteDynamicOptions} from './quote-dynamic-options.mjs';
 import {validateQuoteTerm} from './quote-term-contract.mjs';
@@ -38,6 +39,8 @@ import {validateQuoteActivitySplit} from './quote-activity-split.mjs';
 export async function createQuoteValidationPipeline() {
  const read=async path=>JSON.parse(await readFile(new URL(`../contracts/${path}`,import.meta.url),'utf8'));
  const [schema,readySchema,questions,references]=await Promise.all([read('schemas/quote-draft.schema.json'),read('schemas/quote-ready.schema.json'),read('quote-question-catalogue.json'),read('reference-data/motor-trade-capture.json')]);
+ const configurationIssues=validateQuoteConfiguration(questions,references);
+ if(configurationIssues.length)throw new Error(`Invalid quote configuration: ${configurationIssues.join('; ')}`);
  const ajv=new Ajv2020({strict:true,allErrors:true});addFormats(ajv);const shape=ajv.compile(schema),readyShape=ajv.compile(readySchema);
  return (text,{asOfDate,vehicleModes={}}={})=>{
   let proposal;

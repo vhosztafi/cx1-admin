@@ -94,6 +94,10 @@ Each vehicle preserves owned-not-for-sale or held-for-sale register membership i
 
 Both actual Motor Trade captures satisfy the structural ready schema and composed section validators. Ready requirements use entered licence dates, declared fields and applicable section data; conditional fields are checked semantically. Quote writes reject policy sections, endorsements, warranties and the normalized policy driverBasis. They do not require invented issued-policy normalization. Section-checks-pass still does not establish evidence, authority, runtime persistence or phase acceptance.
 
+## Typed configuration contracts
+
+Question and reference configuration have strict published schemas in contracts/schemas. The quote validation pipeline checks configuration integrity before processing a proposal: versions, answer kinds, typed option identities, question dependencies, reference bindings, dynamic age bands and direct prototype options must agree. Repeated source occurrences can share a canonical definition; conflicting definitions fail. Invalid configuration is a startup/design failure, not a business-user validation issue.
+
 ## Remaining contract gate
 
 Resolve overlapping prototype/funnel answers and all product-specific requiredness, dynamic option selection, source limits and conditional rules. Reconcile historical prototype field bindings with the capture-write envelope: for example `term.startsAt` is supplied as local `termIntent`, not a caller-chosen policy timestamp. Finish quote API request/response contracts and operation integration. Verify complete fictional proposals against the composed validators. Then implement and test the same rules in the actual .NET request boundary and persistent services.

@@ -1,0 +1,449 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.cover-mga.example/quote-question-configuration/1.0",
+  "title": "Versioned Motor Trade question configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^mt-capture-[a-f0-9]{16}$"
+    },
+    "status": {
+      "type": "string",
+      "minLength": 1
+    },
+    "products": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "motor-trade-road-risks",
+          "motor-trade-combined"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "mappings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "questionId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "reference",
+              "references",
+              "boolean",
+              "date",
+              "text",
+              "count",
+              "percentage",
+              "money"
+            ]
+          },
+          "targetContainer": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9]*(?:\\[\\])?(?:\\.[A-Za-z][A-Za-z0-9]*(?:\\[\\])?)*$"
+          },
+          "sourceControlId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sourceOptions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 0
+          },
+          "stages": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 0,
+            "uniqueItems": true
+          },
+          "referenceValues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "value": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "value",
+                "label"
+              ]
+            },
+            "minItems": 0
+          },
+          "requiredWhenApplicable": {
+            "type": "boolean"
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "motor-trade-road-risks",
+                "motor-trade-combined"
+              ]
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "sourceCatalogue": {
+            "enum": [
+              "prototype-quote-1",
+              "prototype-detail-1",
+              "prototype-quote-value-1",
+              "prototype-conditional-1"
+            ]
+          },
+          "disposition": {
+            "enum": [
+              "phase-05-capture",
+              "phase-08-commercial-combined"
+            ]
+          },
+          "unit": {
+            "enum": [
+              "years",
+              "none",
+              "GBP",
+              "count",
+              "calendar-year",
+              "basis-points"
+            ]
+          },
+          "owner": {
+            "type": "string",
+            "minLength": 1
+          },
+          "rawPath": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9]*(?:\\[\\])?(?:\\.[A-Za-z][A-Za-z0-9]*(?:\\[\\])?)*$"
+          },
+          "canonicalPath": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9]*(?:\\[\\])?(?:\\.[A-Za-z][A-Za-z0-9]*(?:\\[\\])?)*$"
+          },
+          "contractKind": {
+            "enum": [
+              "string",
+              "Reference",
+              "Date",
+              "Id",
+              "Answer",
+              "boolean",
+              "Amount",
+              "integer",
+              "number"
+            ]
+          },
+          "mappingStatus": {
+            "type": "string",
+            "minLength": 1
+          },
+          "runtimeValidation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "optionCollection": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "answerKind": {
+            "enum": [
+              "reference",
+              "references",
+              "boolean",
+              "date",
+              "text",
+              "count",
+              "percentage",
+              "money"
+            ]
+          },
+          "sourceVehicleSet": {
+            "type": "string",
+            "minLength": 1
+          },
+          "requiredWhen": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "questionId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "equals": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "questionId",
+              "equals"
+            ]
+          },
+          "conversion": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sourceKey": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "owner",
+          "canonicalPath",
+          "contractKind",
+          "products"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "contractKind": {
+                  "const": "Answer"
+                }
+              },
+              "required": [
+                "contractKind"
+              ]
+            },
+            "then": {
+              "properties": {
+                "questionId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "answerKind": {
+                  "enum": [
+                    "reference",
+                    "references",
+                    "boolean",
+                    "date",
+                    "text",
+                    "count",
+                    "percentage",
+                    "money"
+                  ]
+                }
+              },
+              "required": [
+                "questionId",
+                "answerKind"
+              ]
+            }
+          }
+        ]
+      },
+      "minItems": 1
+    },
+    "deferredQuestions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "questionId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "reference",
+              "references",
+              "boolean",
+              "date",
+              "text",
+              "count",
+              "percentage",
+              "money"
+            ]
+          },
+          "targetContainer": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9]*(?:\\[\\])?(?:\\.[A-Za-z][A-Za-z0-9]*(?:\\[\\])?)*$"
+          },
+          "sourceControlId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sourceOptions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 0
+          },
+          "stages": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 0,
+            "uniqueItems": true
+          },
+          "referenceValues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "value": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "value",
+                "label"
+              ]
+            },
+            "minItems": 0
+          },
+          "requiredWhenApplicable": {
+            "type": "boolean"
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "const": "commercial-combined"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "sourceCatalogue": {
+            "enum": [
+              "prototype-quote-1",
+              "prototype-detail-1",
+              "prototype-quote-value-1",
+              "prototype-conditional-1"
+            ]
+          },
+          "disposition": {
+            "const": "phase-08-commercial-combined"
+          },
+          "unit": {
+            "enum": [
+              "years",
+              "none",
+              "GBP",
+              "count",
+              "calendar-year",
+              "basis-points"
+            ]
+          }
+        },
+        "required": [
+          "questionId",
+          "label",
+          "kind",
+          "targetContainer",
+          "sourceControlId",
+          "sourceOptions",
+          "stages",
+          "products",
+          "sourceCatalogue",
+          "disposition"
+        ]
+      },
+      "minItems": 0
+    },
+    "directReferenceFields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "controlId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "collection": {
+            "type": "string",
+            "minLength": 1
+          },
+          "canonicalPath": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9]*(?:\\[\\])?(?:\\.[A-Za-z][A-Za-z0-9]*(?:\\[\\])?)*$"
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "motor-trade-road-risks",
+                "motor-trade-combined"
+              ]
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "sourceOptions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "controlId",
+          "collection",
+          "canonicalPath",
+          "products",
+          "sourceOptions"
+        ]
+      },
+      "minItems": 0
+    }
+  },
+  "required": [
+    "version",
+    "status",
+    "products",
+    "mappings",
+    "deferredQuestions",
+    "directReferenceFields"
+  ]
+}

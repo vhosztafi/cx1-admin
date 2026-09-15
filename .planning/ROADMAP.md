@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases 1–4 complete (24 plans); Phase 4 acceptance: 329 backend tests including 57 real SQL, 30 frontend tests, 20 browser journeys and restart persistence. Phase 5 has 11 sequential plans; 05-01 source/schema/API gate remains in progress. Both actual Motor Trade captures now pass the capture-ready schema and composed section checks without fabricated policy fields. All 279 contract tests and 336 OpenAPI operations pass. Final contract completeness/configuration audit and broader conditional fixtures remain before live quote implementation.
+**Status:** Autonomous progression authorised. Phases 1–4 complete (24 plans); Phase 4 acceptance: 329 backend tests including 57 real SQL, 30 frontend tests, 20 browser journeys and restart persistence. Phase 5 has 11 sequential plans; 05-01 source/schema/API gate remains in progress. Both actual Motor Trade captures now pass the capture-ready schema and composed section checks without fabricated policy fields. All 284 contract tests and 336 OpenAPI operations pass. Typed configuration schemas and integrity checks now pass. Final contract completeness audit and broader conditional fixtures remain before live quote implementation.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
