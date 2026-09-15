@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-15T03:31:34.526985Z"
+last_updated: "2026-09-15T03:52:16.085521Z"
 last_activity: 2026-09-15
 progress:
   total_phases: 13
@@ -26,10 +26,10 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-07 of 8 in progress; 04-01 through 04-06 complete, all six Phase 3 plans complete
-Status: In progress — autonomous
-Last activity: 2026-09-15 �04-07 shared instructions now identify current relationship contacts across pages;317backend/54SQL,79contracts,29frontend and browser checks pass.
+Status: In progress â€” autonomous
+Last activity: 2026-09-15 -04-07 permission request/decision/revoke UI and actual actor labels verified;317backend/54SQL,79contracts,30frontend/build and real browser pass.
 
-Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
+Progress: Phases 1â€“3 complete; 3/13 phases. Agency onboarding/access next.
 
 ## Accumulated Context
 
@@ -54,7 +54,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-15
-Stopped at:04-07 safe instruction contact attribution resolved through scoped Contact declaration, updated API contract/cursor fingerprint and UI Contact column. Full .local/phase4-sharing-attribution-full317/54SQL passes;79contracts,29frontend/lint/typecheck/build, real11-contact/two-agency browser pass. No active previews/tests. NEXT permissions UI with actual actor labels (see04-07-PROGRESS pattern notes), broker own-user authority and external sign-in/session/UIguards. Broker login remains closed; no wholeAGY or humanUAT completion.
+Stopped at:04-07 permission administration UI and actor labels verified. Full .local/phase4-permission-labels-full317/54SQL passes;79contracts,30frontend/lint/typecheck/build, actual admin/reviewer request-reject-approve-revoke browser checks pass including lost-response recovery and390px. No active previews/tests. NEXT effective server role/capability matrix, broker own-user authority, external sign-in/session/UIguards and complete04-07 accepted-account tests. Broker login remains closed. No wholeAGY/humanUAT acceptance. Read04-07-PROGRESS and preserve04-08/backlog.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-07-PROGRESS.md
 
 ## Autonomous continuation

@@ -1,0 +1,3 @@
+export type PermissionRequest={id:string;permission:'bordereau-download';requestedBy:string;requestedByLabel:string;reason:string;state:'pending'|'granted'|'rejected';createdAt:string;decisionByLabel?:string;decisionReason?:string;decidedAt?:string;etag:string};
+export type PermissionGrant={id:string;permission:'bordereau-download';grantedByLabel:string;grantedAt:string;revokedByLabel?:string;revokedAt?:string;revocationReason?:string;etag:string};
+export function canDecidePermission(request:Pick<PermissionRequest,'state'|'requestedBy'>,actorId:string,agencyState:string){return !!actorId&&!!request.requestedBy&&agencyState==='active'&&request.state==='pending'&&request.requestedBy!==actorId;}

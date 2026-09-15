@@ -37,7 +37,8 @@ public static class AgencyPermissionEndpoints
                 var query = db.Set<AgencyPermissionGrant>().AsNoTracking().Where(x => x.AgencyId == agencyId && x.CreatedAt <= page.AsOf);
                 var total = await query.CountAsync(token);
                 var rows = await query.OrderByDescending(x => x.CreatedAt).ThenBy(x => x.Id).Skip(page.Offset).Take(page.Size).ToListAsync(token);
-                var items = rows.Select(x => new { x.Id, x.AgencyId, x.Permission, x.RequestId, x.GrantedBy, x.GrantedAt, x.RevokedBy, x.RevokedAt, x.RevocationReason, etag = AgencyDraftService.Etag(x.RowVersion) });
+                var labels = await Labels(db, rows.Select(x => x.GrantedBy).Concat(rows.Where(x => x.RevokedBy != null).Select(x => x.RevokedBy!.Value)), token);
+                var items = rows.Select(x => new { x.Id, x.AgencyId, x.Permission, x.RequestId, x.GrantedBy, grantedByLabel = labels[x.GrantedBy], x.GrantedAt, x.RevokedBy, revokedByLabel = x.RevokedBy is Guid actorId ? labels[actorId] : null, x.RevokedAt, x.RevocationReason, etag = AgencyDraftService.Etag(x.RowVersion) });
                 result = new { items = items.ToArray(), totalCount = total, nextCursor = paging.Next(page, page.Offset + rows.Count < total) };
             }
             else
@@ -45,12 +46,20 @@ public static class AgencyPermissionEndpoints
                 var query = db.Set<AgencyPermissionRequest>().AsNoTracking().Where(x => x.AgencyId == agencyId && x.CreatedAt <= page.AsOf);
                 var total = await query.CountAsync(token);
                 var rows = await query.OrderByDescending(x => x.CreatedAt).ThenBy(x => x.Id).Skip(page.Offset).Take(page.Size).ToListAsync(token);
-                var items = rows.Select(x => new { x.Id, x.AgencyId, x.Permission, x.RequestedBy, x.Reason, x.State, x.CreatedAt, x.DecisionBy, x.DecidedAt, x.DecisionReason, etag = AgencyDraftService.Etag(x.RowVersion) });
+                var labels = await Labels(db, rows.Select(x => x.RequestedBy).Concat(rows.Where(x => x.DecisionBy != null).Select(x => x.DecisionBy!.Value)), token);
+                var items = rows.Select(x => new { x.Id, x.AgencyId, x.Permission, x.RequestedBy, requestedByLabel = labels[x.RequestedBy], x.Reason, x.State, x.CreatedAt, x.DecisionBy, decisionByLabel = x.DecisionBy is Guid actorId ? labels[actorId] : null, x.DecidedAt, x.DecisionReason, etag = AgencyDraftService.Etag(x.RowVersion) });
                 result = new { items = items.ToArray(), totalCount = total, nextCursor = paging.Next(page, page.Offset + rows.Count < total) };
             }
             await transaction.CommitAsync(token); return Results.Json(result, ClientEndpoints.Json);
         }
         catch (Exception ex) when (IsError(ex)) { return Error(context, ex); }
+    }
+
+    private static Task<Dictionary<Guid, string>> Labels(BackOfficeDbContext db, IEnumerable<Guid> actorIds, CancellationToken token)
+    {
+        // Resolve only actors in the already scoped page, while its transaction is held.
+        var ids = actorIds.Distinct().ToArray();
+        return db.Set<StaffUser>().AsNoTracking().Where(x => ids.Contains(x.Id)).ToDictionaryAsync(x => x.Id, x => x.DisplayName, token);
     }
 
     private static async Task<IResult> Request(Guid agencyId, HttpContext context, AgencyPermissionService service)

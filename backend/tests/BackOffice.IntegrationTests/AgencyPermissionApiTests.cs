@@ -20,11 +20,14 @@ public sealed class AgencyPermissionApiTests
         var options = new DbContextOptionsBuilder<BackOfficeDbContext>().UseSqlServer(connection.ConnectionString, sql => sql.UseCompatibilityLevel(160)).Options;
         var password = "Demo!" + Guid.NewGuid().ToString("N") + "a1";
         var path = "/api/v1/agencies/" + PartyDemoSeed.FirstAgencyId; var other = "/api/v1/agencies/" + PartyDemoSeed.SecondAgencyId;
+        string adminLabel, reviewerLabel;
         try
         {
             await using (var db = new BackOfficeDbContext(options))
             {
                 await db.Database.MigrateAsync(); await DemoDatabase.SeedAsync(db, password);
+                adminLabel = await db.Set<StaffUser>().Where(x => x.Email == "agency-admin@cover.example").Select(x => x.DisplayName).SingleAsync();
+                reviewerLabel = await db.Set<StaffUser>().Where(x => x.Email == "agency-reviewer@cover.example").Select(x => x.DisplayName).SingleAsync();
                 foreach (var agency in await db.Set<Agency>().Where(x => x.Id == PartyDemoSeed.FirstAgencyId || x.Id == PartyDemoSeed.SecondAgencyId).ToListAsync()) agency.State = "active";
                 await db.SaveChangesAsync();
             }
@@ -46,6 +49,8 @@ public sealed class AgencyPermissionApiTests
             Assert.NotEqual(basis, created.Headers.ETag!.ToString());
             using var replay = await Send(admin, csrf, requests, requestBody, basis, key); Assert.Equal(await created.Content.ReadAsStringAsync(), await replay.Content.ReadAsStringAsync());
             var first = (await Read(admin, requests)).GetProperty("items")[0]; var firstDecision = requests + "/" + first.GetProperty("id").GetGuid() + "/decision";
+            Assert.Equal(adminLabel, first.GetProperty("requestedByLabel").GetString());
+            Assert.False(first.TryGetProperty("decisionByLabel", out _));
             Assert.Equal(HttpStatusCode.Forbidden, (await Send(admin, csrf, firstDecision, new { outcome = "approve", reason = "Self" }, first.GetProperty("etag").GetString())).StatusCode);
             Assert.Equal(HttpStatusCode.OK, (await Send(reviewer, reviewerCsrf, firstDecision, new { outcome = "reject", reason = "Not needed yet" }, first.GetProperty("etag").GetString())).StatusCode);
             using var secondCreated = await Send(admin, csrf, requests, requestBody, await Tag(admin, path)); Assert.Equal(HttpStatusCode.Accepted, secondCreated.StatusCode);
@@ -55,6 +60,9 @@ public sealed class AgencyPermissionApiTests
             Assert.Equal(HttpStatusCode.NotFound, (await Send(reviewer, reviewerCsrf, other + "/permission-requests/" + second.GetProperty("id").GetGuid() + "/decision", approve, second.GetProperty("etag").GetString())).StatusCode);
             Assert.Equal(HttpStatusCode.OK, (await Send(reviewer, reviewerCsrf, secondDecision, approve, second.GetProperty("etag").GetString(), approvalKey)).StatusCode);
             var list = await Read(admin, requests + "?pageSize=1"); Assert.Equal(2, list.GetProperty("totalCount").GetInt32());
+            Assert.Equal(reviewerLabel, list.GetProperty("items")[0].GetProperty("decisionByLabel").GetString());
+            var rejected = (await Read(admin, requests)).GetProperty("items").EnumerateArray().Single(x => x.GetProperty("state").GetString() == "rejected");
+            Assert.Equal(reviewerLabel, rejected.GetProperty("decisionByLabel").GetString());
             var cursor = Uri.EscapeDataString(list.GetProperty("nextCursor").GetString()!); var next = requests + "?pageSize=1&cursor=" + cursor;
             Assert.Equal(first.GetProperty("id").GetGuid(), (await Read(admin, next)).GetProperty("items")[0].GetProperty("id").GetGuid());
             Assert.Equal(HttpStatusCode.BadRequest, (await reviewer.GetAsync(next)).StatusCode);
@@ -62,8 +70,14 @@ public sealed class AgencyPermissionApiTests
             Assert.Equal(HttpStatusCode.BadRequest, (await admin.GetAsync(requests + "?pageSize=2&cursor=" + cursor)).StatusCode);
             Assert.Equal(HttpStatusCode.BadRequest, (await admin.GetAsync(requests + "?agencyId=" + Guid.NewGuid())).StatusCode);
             var grant = (await Read(admin, path + "/permission-grants")).GetProperty("items")[0]; Assert.False(grant.TryGetProperty("revokedAt", out _));
+            Assert.Equal(reviewerLabel, grant.GetProperty("grantedByLabel").GetString());
+            Assert.False(grant.TryGetProperty("revokedByLabel", out _));
+            Assert.False(grant.TryGetProperty("email", out _));
             var revokePath = path + "/permission-grants/" + grant.GetProperty("id").GetGuid() + "/revoke";
             Assert.Equal(HttpStatusCode.OK, (await Send(admin, csrf, revokePath, new { reason = "Access withdrawn" }, grant.GetProperty("etag").GetString())).StatusCode);
+            var revoked = (await Read(admin, path + "/permission-grants")).GetProperty("items")[0];
+            Assert.Equal(adminLabel, revoked.GetProperty("revokedByLabel").GetString());
+            Assert.Equal(reviewerLabel, revoked.GetProperty("grantedByLabel").GetString());
             Assert.Equal(HttpStatusCode.BadRequest, (await admin.GetAsync(next)).StatusCode); // Authority changed after cursor creation.
             Assert.Equal("Access withdrawn", (await Read(admin, path + "/permission-grants")).GetProperty("items")[0].GetProperty("revocationReason").GetString());
             Assert.Equal(0, (await Read(admin, other + "/permission-grants")).GetProperty("totalCount").GetInt32());

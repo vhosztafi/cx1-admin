@@ -158,6 +158,10 @@ test('permission commands use ID receipts and reviewed records expose conditiona
   assert.ok(operation.parameters.some(x=>x.name==='If-Match'&&x.required));
  }
  for(const name of ['AgencyPermissionRequest','AgencyPermissionGrant'])assert.ok(doc.components.schemas[name].required.includes('etag'));
+ assert.ok(doc.components.schemas.AgencyPermissionRequest.required.includes('requestedByLabel'));
+ assert.ok(doc.components.schemas.AgencyPermissionGrant.required.includes('grantedByLabel'));
+ assert.ok(doc.components.schemas.AgencyPermissionRequest.properties.decisionByLabel);
+ assert.ok(doc.components.schemas.AgencyPermissionGrant.properties.revokedByLabel);
  assert.ok(doc.components.schemas.AgencyPermissionRequest.properties.decisionReason);
  assert.ok(doc.components.schemas.AgencyPermissionGrant.properties.revocationReason);
 });

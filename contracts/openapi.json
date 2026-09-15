@@ -65892,6 +65892,11 @@
             "type": "string",
             "format": "uuid"
           },
+          "requestedByLabel": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
           "reason": {
             "type": "string",
             "minLength": 1,
@@ -65913,6 +65918,11 @@
             "type": "string",
             "format": "uuid"
           },
+          "decisionByLabel": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
           "decidedAt": {
             "type": "string",
             "format": "date-time"
@@ -65933,6 +65943,7 @@
           "agencyId",
           "permission",
           "requestedBy",
+          "requestedByLabel",
           "reason",
           "state",
           "createdAt",
@@ -65962,6 +65973,11 @@
             "type": "string",
             "format": "uuid"
           },
+          "grantedByLabel": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
           "grantedAt": {
             "type": "string",
             "format": "date-time"
@@ -65969,6 +65985,11 @@
           "revokedBy": {
             "type": "string",
             "format": "uuid"
+          },
+          "revokedByLabel": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
           },
           "revokedAt": {
             "type": "string",
@@ -65991,6 +66012,7 @@
           "permission",
           "requestId",
           "grantedBy",
+          "grantedByLabel",
           "grantedAt",
           "etag"
         ]
