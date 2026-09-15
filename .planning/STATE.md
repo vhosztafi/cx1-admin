@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-15T00:46:13Z"
+last_updated: "2026-09-15T01:08:52Z"
 last_activity: 2026-09-15
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-07 of 8 in progress; 04-01 through 04-06 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-15 —04-07 safe shared projections and audited preview verified; full300backend/49SQL and78contracts pass. Broker login still closed.
+Last activity: 2026-09-15 —04-07 permission provenance storage and rules verified; full313backend/50SQL and78contracts pass. Broker login still closed.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-15
-Stopped at:04-07 sharing projection slice verified. AgencySharingService provides current owned relationship clients, declared contacts and explicitly granted safe instructions; scope/search/count/paging stay inside a serializable transaction. Explicit internal preview rechecks stored active internal identity/exact roles and audits actor/agency/section without session impersonation. Target .local/phase4-sharing-verified passes; full .local/phase4-sharing-full passes300/49SQL (244unit/56integration),78contracts/949controls/327operations pass. CI300/49Windows298/47Linux; hostedCI unperformed. No schema/seed/API/frontend/identity wiring changed; broker login remains denied. NEXT permission request/grant storage with independent decisions/revocation and own-user authority, dedicated cursor/endpoints/capability summaries, then broker login/session/UIguard integration. Read04-07-PROGRESS and04-DATA-API-DESIGN. No active tests/previews. Existing29frontend/build/browser evidence current.
+Stopped at:04-07 permission provenance storage slice verified. AgencyPermissionRules adds12 passing unit cases. Migration20260915005955_AgencyPermissionProvenance adds immutable request/grant provenance, one pending/live permission, independent current internal approval, atomic SQL grant creation and one-time revocation; grant cannot be fabricated/restored. Target .local/phase4-permission-storage-targeted12unit+1SQL passes; full .local/phase4-permission-storage-full313/50SQL (256unit/57integration),78contracts/949controls/327operations pass. CI313/50Windows311/48Linux; hostedCI unperformed. EF no pending model changes; demo migrated/idempotently initialized successfully. NEXT transactional audited permission commands (add a before-replay authorization callback to SqlCommandBoundary; handler-only authorization misses receipt replay), effective grant resolution and own-user authority, dedicated cursor/endpoints, then broker login/session/UIguard integration. SQL creates grant on request approval; service reads by RequestId and must not insert duplicate. Read04-07-PROGRESS and04-DATA-API-DESIGN. Broker login remains closed. No active tests/previews; existing29frontend/build/browser evidence current.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-07-PROGRESS.md
 
 ## Autonomous continuation

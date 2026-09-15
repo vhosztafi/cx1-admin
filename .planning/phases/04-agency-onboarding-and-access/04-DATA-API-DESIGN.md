@@ -1,5 +1,13 @@
 # Phase 4 data and API decisions
 
+### Implemented permission provenance storage (04-07)
+
+Migration20260915005955_AgencyPermissionProvenance adds AgencyPermissionRequest and AgencyPermissionGrant. Requests contain agency, exact allowlisted permission (`bordereau-download`), requester/reason, pending/granted/rejected state and complete independent decision identity/reason/time. There is one pending request per agency/permission. Request provenance cannot be edited or deleted, inserts must be pending, and terminal decisions cannot be rewritten. SQL requires an active agency and current internal agency administrator or own broker-admin for creation; decisions require a different current internal administrator.
+
+The request transition to granted creates its grant in the same SQL statement/transaction, so no granted request can commit without its corresponding grant. Grant provenance binds the exact request/agency/permission/decision actor/time, with a unique request and one unrevoked grant per agency/permission. Grants cannot be deleted or rewritten. Revocation records current internal actor/reason/time once, including when the agency is suspended; a revoked grant cannot be restored. A new independently approved request is required to regrant. An already granted permission cannot gain a second pending request. AgencyPermissionRules validates exact permission, bounded nonempty reason and independent pending decisions; it is not authorization by itself.
+
+Command services, audit receipts, effective grant resolution, external session invalidation and API/UI remain to be implemented. Services must lock agency first and resolve current identity before receipt replay. Effective access must require active agency/user/current role as well as the grant; a stored grant alone never activates the unavailable future bordereau download feature. Decision/revocation reasons exist in storage but are not yet newly exposed in the public read schemas. This migration does not seed a fabricated permission grant or open broker login.
+
 ### Implemented sharing projection boundary (04-07)
 
 AgencySharingService now materializes three bounded projections: clients through active owned relationships; current relationship contacts using declared identity rather than Person master values; and safe instructions with an explicit matching FlagVisibility grant, active relationship and current matching contact. Internal categories, reasons, histories, marketing consent and unreviewed JSON are omitted. An active relationship permits the retained client identity regardless of ClientAccount.IdentityState, consistent with the existing party relationship boundary; only relationship state ends that association's visibility.
