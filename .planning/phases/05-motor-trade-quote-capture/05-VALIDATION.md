@@ -61,3 +61,8 @@ Fresh .local/phase5-quote-storage-verified:337unit +66integration =403passing ca
 ## 05-02 stored quote authority/scope — 2026-09-15
 
 Fresh .local/phase5-quote-scope-verified:344unit+67integration=411passing cases,60realSQL,0skips; assert-test-results.ps1 passed. Seven quote role-matrix cases and one SQL authorization/replay scenario, plus extended quote storage scope assertions. Verified held agency/user/role/relationship fences, current authority before receipt replay, inactive-context historical reads, unfinished quote exclusion and capture scope. Contracts289/frontend30 pass. Quote service, product/capture eligibility and endpoints remain next; see05-02-PROGRESS.
+
+
+## 05-02 capture configuration/eligibility — 2026-09-15
+
+Full .local/phase5-quote-eligibility-verified:354unit+67integration=421passing cases,60realSQL,0skips; assert-test-results.ps1 passed. Ten configuration cases and expanded SQL eligibility assertions cover explicit version pins without changed product metadata, malformed/future/current settings, revocation, provider status, retained-term ownership and held provider/configuration-publication fences. A final test-only size-boundary refinement passed all354unit cases again in .local/phase5-quote-eligibility-final-unit; unchanged production/integration code retains the full-run evidence. Contracts289/949controls/336operations and frontend30pass. No live quote API, capture setting seed or demo reset. See05-02-PROGRESS and05-DATA-API-DESIGN for exact logs, explicit setting decision and remaining service obligations.

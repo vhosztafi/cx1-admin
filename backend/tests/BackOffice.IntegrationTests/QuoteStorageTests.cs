@@ -58,6 +58,50 @@ public sealed class QuoteStorageTests
                 Assert.Equal(quote.Id, (await QuoteScope.ForQuoteAsync(db, reader, quote.Id, QuoteAccess.Capture)).Quote.Id);
             }
 
+            var asOf = new DateTimeOffset(2026, 9, 15, 12, 0, 0, TimeSpan.Zero);
+            async Task<EligibleQuoteCapture> Eligible(Guid? retainedTerms = null)
+            {
+                await using var transaction = await db.Database.BeginTransactionAsync();
+                var scope = await QuoteScope.ForQuoteAsync(db, reader, quote.Id, QuoteAccess.Capture);
+                return await QuoteCaptureEligibility.ResolveAsync(db, scope.Scope, fixture.ProductVersion, asOf, retainedTerms);
+            }
+            Assert.Equal(503, (await Assert.ThrowsAsync<QuoteOperationException>(() => Eligible())).Status);
+            var captureJson = JsonSerializer.Serialize(new { demo = true, kind = "quote-capture", products = new[] {
+                new { productVersionId = fixture.ProductVersion, schemaVersion = "1.0", questionSetVersion = QuoteCatalogueIdentity.Version, referenceVersion = QuoteCatalogueIdentity.Version } } });
+            async Task Configure(int number, string json, DateTimeOffset? effective = null)
+            {
+                db.Add(new SettingVersion { Scope = "quote-capture", Version = number, EffectiveFrom = effective ?? asOf.AddDays(-1), Values = json });
+                await db.SaveChangesAsync();
+            }
+            await Configure(1, captureJson);
+            var selection = await Eligible();
+            Assert.Equal(fixture.Terms, selection.Pins.AgencyTermsVersionId);
+            Assert.Equal(QuoteCatalogueIdentity.Version, selection.Pins.QuestionSetVersion);
+            Assert.Equal("demo-1", selection.ProductVersion.QuestionSetVersion); // Capture pins do not relabel rating metadata.
+            Assert.Contains("\"ratingAvailable\":false", selection.ProductVersion.Definition);
+            Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => Eligible(otherAgency.Terms))).Status);
+            await Configure(2, "{}", asOf.AddDays(1)); Assert.Equal(fixture.Terms, (await Eligible()).Terms.Id);
+            await Configure(3, "{}"); Assert.Equal(503, (await Assert.ThrowsAsync<QuoteOperationException>(() => Eligible())).Status);
+            await Configure(4, "{\"demo\":true,\"kind\":\"quote-capture\",\"products\":[]}");
+            Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => Eligible())).Status);
+            await Configure(5, captureJson);
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE CapacityProvider SET State=N'inactive' WHERE Id={selection.ProductVersion.ProviderId}");
+            Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => Eligible())).Status);
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE CapacityProvider SET State=N'active' WHERE Id={selection.ProductVersion.ProviderId}");
+            Assert.Equal(selection.Pins, (await Eligible(fixture.Terms)).Pins);
+            await using (var eligibilityTransaction = await db.Database.BeginTransactionAsync())
+            {
+                var scope = await QuoteScope.ForQuoteAsync(db, reader, quote.Id, QuoteAccess.Capture);
+                await QuoteCaptureEligibility.ResolveAsync(db, scope.Scope, fixture.ProductVersion, asOf);
+                var options = new DbContextOptionsBuilder<BackOfficeDbContext>().UseSqlServer(db.Database.GetConnectionString(), sql => sql.UseCompatibilityLevel(160)).Options;
+                await using var writer = new BackOfficeDbContext(options);
+                Assert.Equal(1222, (await Assert.ThrowsAsync<SqlException>(() => writer.Database.ExecuteSqlInterpolatedAsync(
+                    $"SET LOCK_TIMEOUT 150; UPDATE CapacityProvider SET State=N'inactive' WHERE Id={selection.ProductVersion.ProviderId}"))).Number);
+                var insertedId = Guid.NewGuid();
+                Assert.Equal(1222, (await Assert.ThrowsAsync<SqlException>(() => writer.Database.ExecuteSqlInterpolatedAsync(
+                    $"SET LOCK_TIMEOUT 150; INSERT INTO SettingVersion (Id,Scope,Version,EffectiveFrom,[Values],CreatedAt) VALUES ({insertedId},N'quote-capture',6,{asOf},N'{{}}',{DateTimeOffset.UtcNow})"))).Number);
+            }
+
             async Task Denied(FormattableString sql) => await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync(sql));
             await Denied($"UPDATE QuoteRevision SET Reason=N'Changed history' WHERE Id={first.Id}");
             await Denied($"DELETE FROM QuoteRevision WHERE Id={first.Id}");
