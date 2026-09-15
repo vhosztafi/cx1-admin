@@ -62,6 +62,10 @@ Pinned motorcycle/quad sales and repair occupations require the motorcycle activ
 
 Body, premises activity/use and security preserve all21rendered source options in pinned families. Premises declaredUse holds the prototype business activity independently of use, the source physical premise type. Combined premises require both declarations and security; direct-control product applicability is enforced separately from question allowlists. The current combined catalogue has91collections and72reference bindings.
 
+## Direct driver and offence selections
+
+Driver status, usage and all nine prototype offence choices have explicit pinned reference mappings in the binding manifest. Prototype ordinals are not copied into source IDs. The offence placeholder cannot be saved, and every mapping is checked against the rendered source options. Company and driver eligibility remain separate from reference identity.
+
 ## Remaining contract gate
 
 Resolve overlapping prototype/funnel answers and all product-specific requiredness, dynamic option selection, source limits and conditional rules. Reconcile historical prototype field bindings with the capture-write envelope: for example `term.startsAt` is supplied as local `termIntent`, not a caller-chosen policy timestamp. Finish quote API request/response contracts and operation integration. Verify complete fictional proposals against the composed validators. Then implement and test the same rules in the actual .NET request boundary and persistent services.

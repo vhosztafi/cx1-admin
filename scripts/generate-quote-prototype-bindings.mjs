@@ -1,6 +1,17 @@
 import {readFile,writeFile} from 'node:fs/promises';
 const read=async path=>JSON.parse(await readFile(new URL(`../contracts/${path}`,import.meta.url),'utf8'));
 const ownership=await read('quote-control-ownership.json'),questions=await read('quote-question-catalogue.json');
+const references=await read('reference-data/motor-trade-capture.json');
+const referenceSelections={
+ 'CTL-e7838b90abda':{collection:'driverRelationshipsPolicyHolder',values:{Proprietor:3,'Business partner':4,Director:1,Spouse:5,Employee:2}},
+ 'CTL-1624517d8aa7':{collection:'driverUsages',values:{'Motor trade only':1,'Motor trade + SD&P':2}},
+};
+const offenceLabels=['SP30 — exceeding statutory speed limit','SP50 — exceeding speed limit on a motorway','CU80 — using a mobile telephone','IN10 — using a vehicle uninsured','TS10 — failing to comply with traffic light signals','MS90 — failure to give driver information','DR10 — driving with excess alcohol','AC10 — failing to stop after an accident','CD10 — driving without due care and attention'];
+referenceSelections['CTL-7b5a86aac53f']={collection:'driverMTConvictionCodes',placeholderOptions:['Select a code'],values:Object.fromEntries(offenceLabels.map(label=>{
+ const code=label.split(' — ')[0],matches=references.collections.driverMTConvictionCodes.filter(row=>row.text.startsWith(`${code} - `));
+ if(matches.length!==1)throw new Error(`unresolved-prototype-offence:${code}`);
+ return [label,matches[0].value];
+}))};
 const replacements={
  'risk.drivers[].convictions[].banMonths':{paths:['risk.drivers[].convictions[].declaredBanPeriod','risk.drivers[].convictions[].banMonths'],rule:'Preserve the selected band separately; collect exact months for a disqualification before readiness, never invent a band midpoint.',values:{None:'none','Under 3 months':'under-3-months','3 to 6 months':'3-to-6-months','6 to 12 months':'6-to-12-months','Over 12 months':'over-12-months'}},
  'risk.drivers[].losses[].fault':{paths:['risk.drivers[].losses[].fault'],rule:'Preserve split liability as distinct from fault, non-fault and not yet determined.',values:{Yes:'fault',No:'non-fault','Split liability':'split','Not yet determined':'unknown'}},
@@ -14,6 +25,15 @@ const replacements={
 const bindings=ownership.controls.filter(control=>control.featurePhase===5&&control.sourceFieldBindings.length).map(control=>({
  controlId:control.controlId,method:control.method,sourcePath:control.path,label:control.label,products:control.products,
  bindings:control.sourceFieldBindings.map(binding=>{
+  const selection=referenceSelections[control.controlId];
+  if(selection) {
+   const referenceMapping=Object.fromEntries(Object.entries(selection.values).map(([label,value])=>{
+    const row=references.collections[selection.collection].find(row=>row.value===value);
+    if(!row)throw new Error(`unresolved-prototype-reference:${control.controlId}:${label}`);
+    return [label,{collection:selection.collection,value:row.value,label:row.text,version:references.version}];
+   }));
+   return {kind:'field-or-collection',paths:[binding.targetPath],referenceMapping,...(selection.placeholderOptions?{placeholderOptions:selection.placeholderOptions}:{}),captureRule:'Translate the explicit source label to this pinned reference; validate current company/driver eligibility separately. Placeholder options never become saved references.'};
+  }
   const direct=questions.directReferenceFields?.find(field=>field.controlId===control.controlId);
   if(direct)return {kind:'field-or-collection',paths:[direct.canonicalPath],optionCollection:direct.collection,products:direct.products,captureRule:'Preserve the pinned prototype selection; premises activity/use is separate from source physical premise type.'};
   if(binding.questionId) {

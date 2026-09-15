@@ -174,7 +174,39 @@
           "paths": [
             "risk.drivers[].relationship"
           ],
-          "modal": "adddriver"
+          "referenceMapping": {
+            "Proprietor": {
+              "collection": "driverRelationshipsPolicyHolder",
+              "value": 3,
+              "label": "Policyholder",
+              "version": "mt-capture-704ac195bb6c6275"
+            },
+            "Business partner": {
+              "collection": "driverRelationshipsPolicyHolder",
+              "value": 4,
+              "label": "Business Partner",
+              "version": "mt-capture-704ac195bb6c6275"
+            },
+            "Director": {
+              "collection": "driverRelationshipsPolicyHolder",
+              "value": 1,
+              "label": "Director",
+              "version": "mt-capture-704ac195bb6c6275"
+            },
+            "Spouse": {
+              "collection": "driverRelationshipsPolicyHolder",
+              "value": 5,
+              "label": "Spouse/Common Law Partner",
+              "version": "mt-capture-704ac195bb6c6275"
+            },
+            "Employee": {
+              "collection": "driverRelationshipsPolicyHolder",
+              "value": 2,
+              "label": "Employee",
+              "version": "mt-capture-704ac195bb6c6275"
+            }
+          },
+          "captureRule": "Translate the explicit source label to this pinned reference; validate current company/driver eligibility separately. Placeholder options never become saved references."
         }
       ]
     },
@@ -241,7 +273,21 @@
           "paths": [
             "risk.drivers[].usage"
           ],
-          "modal": "adddriver"
+          "referenceMapping": {
+            "Motor trade only": {
+              "collection": "driverUsages",
+              "value": 1,
+              "label": "Motor Trade Only",
+              "version": "mt-capture-704ac195bb6c6275"
+            },
+            "Motor trade + SD&P": {
+              "collection": "driverUsages",
+              "value": 2,
+              "label": "Motor Trade with Social, Domestic and Pleasure",
+              "version": "mt-capture-704ac195bb6c6275"
+            }
+          },
+          "captureRule": "Translate the explicit source label to this pinned reference; validate current company/driver eligibility separately. Placeholder options never become saved references."
         }
       ]
     },
@@ -279,7 +325,66 @@
           "paths": [
             "risk.drivers[].convictions[].code"
           ],
-          "modal": "addconv"
+          "referenceMapping": {
+            "SP30 — exceeding statutory speed limit": {
+              "collection": "driverMTConvictionCodes",
+              "value": 67,
+              "label": "SP30 - Exceeding Statutory Speed Limit On a Public Road",
+              "version": "mt-capture-704ac195bb6c6275"
+            },
+            "SP50 — exceeding speed limit on a motorway": {
+              "collection": "driverMTConvictionCodes",
+              "value": 69,
+              "label": "SP50 - Exceeding Speed Limit On a Motorway",
+              "version": "mt-capture-704ac195bb6c6275"
+            },
+            "CU80 — using a mobile telephone": {
+              "collection": "driverMTConvictionCodes",
+              "value": 22,
+              "label": "CU80 - Breach of vehicle control eg Mobile Phone",
+              "version": "mt-capture-704ac195bb6c6275"
+            },
+            "IN10 — using a vehicle uninsured": {
+              "collection": "driverMTConvictionCodes",
+              "value": 42,
+              "label": "IN10 - Using a Vehicle Uninsured Against Third Party Risks",
+              "version": "mt-capture-704ac195bb6c6275"
+            },
+            "TS10 — failing to comply with traffic light signals": {
+              "collection": "driverMTConvictionCodes",
+              "value": 70,
+              "label": "TS10 - Failing To Comply With Traffic Light Signals",
+              "version": "mt-capture-704ac195bb6c6275"
+            },
+            "MS90 — failure to give driver information": {
+              "collection": "driverMTConvictionCodes",
+              "value": 60,
+              "label": "MS90 - Failure To Give Information As To Identity Of Driver Etc",
+              "version": "mt-capture-704ac195bb6c6275"
+            },
+            "DR10 — driving with excess alcohol": {
+              "collection": "driverMTConvictionCodes",
+              "value": 31,
+              "label": "DR10 - Driving Or Attempting to Drive With Alcohol Level Above Limit",
+              "version": "mt-capture-704ac195bb6c6275"
+            },
+            "AC10 — failing to stop after an accident": {
+              "collection": "driverMTConvictionCodes",
+              "value": 1,
+              "label": "AC10 - Failing To Stop After an Accident",
+              "version": "mt-capture-704ac195bb6c6275"
+            },
+            "CD10 — driving without due care and attention": {
+              "collection": "driverMTConvictionCodes",
+              "value": 8,
+              "label": "CD10 - Driving Without Due Care And Attention",
+              "version": "mt-capture-704ac195bb6c6275"
+            }
+          },
+          "placeholderOptions": [
+            "Select a code"
+          ],
+          "captureRule": "Translate the explicit source label to this pinned reference; validate current company/driver eligibility separately. Placeholder options never become saved references."
         }
       ]
     },
