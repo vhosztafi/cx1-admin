@@ -18,3 +18,5 @@ These are approved milestone dependencies, not waived functionality. Owning phas
 | Bordereau permission enforcement | Phase10 | Enforce Phase4 agency-scoped grant and current agency/user state on actual allowed downloads; a saved permission does not justify exposing other agencies' rows. |
 
 Phase 3 minor refinement observations: record-specific read-error wording and dense mobile support history; see 03-UI-REVIEW.md. They are separate from the mandatory functional dependencies above.
+
+| QUO-01 policy discovery | Phase6, checked again13 | Phase5 supplies actual quote discovery; policy list/search/sort/filter/page and linked client/agency policy projections require real issued policy IDs. Keep QUO-01 partial until this evidence passes. |

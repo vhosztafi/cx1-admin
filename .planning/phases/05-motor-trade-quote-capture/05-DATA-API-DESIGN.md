@@ -1,0 +1,81 @@
+# Phase 5 data and API design
+
+Status: implementation design for plan review. Exact field/option schema reconciliation is the blocking deliverable of05-01, before quote endpoints are exposed. SQL Server2022 remains authoritative; no sales-funnel changes.
+
+## Aggregate and storage
+
+| Record | Columns and constraints |
+|---|---|
+| Quote | Id UUID; unique sequence-generated Reference (QT-MT- plus padded number); AgencyId, ClientId, RelationshipId composite ownership FK; ProductId; State draft/withdrawn; CurrentRevisionId nullable only during creation transaction; CaptureClosedAt UTC nullable; CaptureClosedReason nullable; AssignedUserId nullable; ClonedFromQuoteRevisionId nullable; CreatedAt/By, UpdatedAt, RowVersion. No client-supplied reference, current pointer, state, approval or actor. |
+| QuoteRevision | Id UUID; QuoteId; Number int; ProductVersionId; AgencyTermsVersionId; SchemaVersion; QuestionSetVersion; ReferenceVersionsJson; ProposalJson; TermIntentJson; ContentHash SHA256; Reason; SavedAt UTC; actor. Unique(QuoteId,Number), alternate key(Id,QuoteId), current pointer composite FK(CurrentRevisionId,Id) to revision(Id,QuoteId). Append-only trigger rejects UPDATE/DELETE. Canonical JSON bounded to1MiB UTF8 at request validation and equivalent database character/storage bound; ISJSON and root-object checks. |
+| QuoteRegistration | QuoteId, VehicleId, NormalizedRegistration; composite PK(QuoteId,VehicleId); index(NormalizedRegistration,QuoteId). Current-revision search projection rebuilt atomically. Membership validated against current vehicles; no duplicate quote rows from joins. Historical registrations remain in immutable revisions, not current search. |
+| QuoteActivity | Id, QuoteId, actor, UTC instant, fixed event code, relatedRevisionId. Safe summaries on read; do not copy sensitive driver narratives into general client activity. Reason lives in appropriately authorized revision/action history. |
+| QuoteEvidenceFile | Id, QuoteId, agency ownership, uploader, filename/media type/length/hash, protected bounded bytes, demo screening result. Initial allowlist PDF/PNG/JPEG/text and10MiB follows existing agency evidence pattern; no external URL/filename as storage locator. File receipt contains ID only. |
+| QuoteEvidence | Id, QuoteId, QuoteRevisionId, requirementCode, RiskItemId nullable, FileId, input fingerprint, created actor/time. Append-only attestation plus append-only withdrawal event; no boolean supplied flag substitutes for a file. Reads derive current/stale/withdrawn/missing. |
+| QuoteLookup | Id, QuoteId, RevisionId, optional RiskItemId, kind, normalized request hash, reference/scenario version, state, result/source/asOf metadata and WorkId. Lookup attempts/leases use existing platform tables. Private result cannot be read through generic diagnostic-job routes. |
+| QuoteLookupSelection | Id, lookupId, source revision/item/fingerprint, selected candidate ID OR manual reason, new revisionId, actor/time. Results never silently overwrite newer inputs. Selection is a revision command; manual entry creates explicit provenance even after no-match/failure. |
+| MatchSubmission extension | Nullable QuoteId FK, unique where not null; no invented quote IDs. Quote's relationship/client/agency must match the current intake association at attachment. Backfill is optional only for explicitly chosen fictional test fixtures. |
+
+Foreign-key/cycle creation: insert Quote with null current pointer, insert revision1 and projections, then set current pointer before the transaction can commit. SQL Server has no deferred foreign-key checks, so the pointer is nullable during insertion; do not invent a commit-time trigger. The application command must finish the pointer update before commit, and read queries exclude null-pointer rows. Test direct SQL wrong-quote pointer rejection and injected rollback at each insert/update. A privileged direct SQL writer can still create an unfinished null-pointer row; detect it in integrity checks rather than falsely claiming the database prevents it. No API can read an intermediate uncommitted quote. All business effects, audit, client activity and receipt commit together.
+
+## JSON and reference contract
+
+A quote proposal is the allowed capture subset of the canonical policy schema: schemaVersion, productCode, pinned productVersionId, insured, term, risk and cover. Premium, settlement, rating, authority, acceptance, issued IDs, internal support flags and arbitrary extension keys are forbidden on writes. Envelope identities are assembled from the trusted aggregate, not client-owned nested IDs. A quote-specific draft schema must preserve strict unknown-key rejection while allowing missing answers; do not merely accept any JSON because ISJSON succeeds.
+
+Use canonical structural paths (`risk.drivers`, `risk.vehicles`, `risk.premises`, etc.), not the historical mapping's `risk.motorTrade` placeholder. Scalar supplemental questions use allowlisted versioned `responses.answers` with questionId/kind/value; reject unknown or duplicate IDs, wrong value kinds, duplicate JSON object keys, spoofed labels/versions and values not in the pinned catalogue. Reference value integer1 differs from string"1". Input catalogues resolve trusted display labels and units.
+
+Add explicit stable-ID collections for driver occupations, criminal convictions and county court judgments, plus existing motoring convictions/losses. Preserve relevant dates, typed status/code, fine/cost amounts, points/disqualification and circumstance details; never flatten repeated children into scalar answers. Vehicle modifications and annual European-cover rows likewise need typed repeated items.05-01 must enumerate every existing and missing path from all255 occurrences before generating schemas and server DTOs. Existing examples keep backward-compatible shape where possible; version changed contracts explicitly.
+
+Risk UUIDs are generated by the caller for new unsaved items, validated unique within the proposal and preserved on revisions/reordering. Server validates all ownerDriverId, specifiedVehicleIds and evidence-item references belong to the same document. Removing a driver referenced by a vehicle fails422 with a field path until the relationship is cleared or vehicle removed. Removed items remain in old revisions. Clone generates a new ID map for every item and remaps nested links; file/lookup IDs and external process state are not transferable. Two occurrences of the same registration may be rejected by normalized-registration validation, but do not merge owned and specified vehicle roles by accident.
+
+Absent, explicit false, zero and empty lists are distinct. Changing a controlling answer never silently marks retained contradictory child data as applicable: return a specific readiness issue and require explicit clearance or restoration. General support/contact consent stays outside risk/rating. Where a question requires sensitive declared driving facts, it remains an explicitly authorized proposal declaration, not imported servicing evidence.
+
+## Dates, hashes and revision semantics
+
+Capture term intent separately as localStartDate, localStartTime, Europe/London zone, annual/short-period kind, optional short-period end and explicit offset when a local time is ambiguous. Reject nonexistent DST times; require a choice for repeated times. Convert complete intent to canonical UTC term instants on the server while retaining original input. Incomplete intent can save but readiness fails. Annual end follows existing calendar-anniversary policy rules, not365days. Money stays fixed two-decimal strings; percentages become integer basis points; weight/engine units are explicit.
+
+Hash a deterministic canonical representation of contractual proposal, complete/incomplete term intent and pinned product/question/reference/agency-terms IDs. Sort JSON property names; preserve array order where it conveys declared order; normalize input formats before hashing without changing typed references. Include risk-item IDs and all material conditional answers. Exclude UI step and transient display labels outside the canonical trusted reference representation. Save deduplication is via command receipt, not content hash alone. An equal-content new command may be a documented no-op and must not pretend a new risk was accepted; choose/test this in05-02.
+
+Readiness is calculated for a specific persisted revision plus current eligibility/evidence and returns issue codes/paths/section/item IDs. It is neither rating nor approval. Phase6 must pin the revision/hash and reject every stale rating/acceptance after risk, terms or applicable configuration changes. No fake RatingResult/Acceptance rows are created in Phase5.
+
+## Authority and lock order
+
+Internal quote-read/capture: servicing, underwriter, senior-underwriter. Internal agency-admin has safe own-agency preview access, not full quote risk by implication. System-admin/finance get no new blanket capture rights. Agency accounts remain read-only safe-context consumers in this phase; future broker writes need an explicit owned capability and tests, not product membership alone.
+
+New writes require active agency, active relationship, current eligible distributed product and active provider. Capture may use an explicitly capture-enabled demo product version while rating stays unavailable. Current effective agency terms and product selection are pinned on initial save; revalidate current eligibility each command. A historical draft remains readable to authorized staff if its product becomes unavailable, with editing/lookup/clone/validation actions appropriately blocked; no silent product-version replacement.
+
+Use command application lock, then agency, current actor/roles, optional intake/review, quote, client/relationship and ordered children. Agency lock serializes with existing match/association/suspension commands; align the MatchService extension to agency→intake→review→quote→client→relationship and do not acquire agency after quote. Recheck unlocked identity hints under held locks. Current authority and target membership run before receipt lookup. Compare quote ETag only after valid same-key replay resolution. Race tests must demonstrate revoked role/agency, duplicate create, save/withdraw, lookup selection/save and match progression behavior.
+
+When a quote is linked to a match, reopening/reassociation requires the quote still draft, CaptureClosedAt null and an explicit expected quote ETag. Reassociation appends a revision with changed trusted insured ownership and updates quote/client projections atomically; it cannot silently move a progressed quote. Phase6 must set CaptureClosedAt under the same lock before rating/submission progression; Phase5 tests the fence directly without claiming a rating implementation.
+
+## HTTP contract
+
+All paths under `/api/v1`; authenticate and current-scope filter before counts/search/materialization. Inputs reject unknown query/body keys. Page sizes1..100 and protected cursors retain actor/scope/filter/order plus snapshot/version fingerprint. Return safe ProblemDetails with correlation ID and field issues, never SQL or raw provider messages.
+
+| Route | Semantics |
+|---|---|
+| GET /quote-products | Current capture-eligible Motor Trade definitions for an authorized selected relationship; exact question/reference versions; other products unavailable with reason. |
+| POST /quotes | Body relationshipId, productVersionId, optional matchSubmissionId, initial proposal/term intent. CSRF/key;201 ID+Location+quote ETag. Trust aggregate identities, not body agency/client/actor. |
+| GET /quotes | Scoped q/product/agency/client/status/sort/cursor/pageSize; deterministic sorting reference/updated/start with ID tie-breaker; no fake policy rows. |
+| GET /quotes/{id} | Current quote and permitted proposal, ETag; capabilities and actual readiness links; no fabricated premium. |
+| PUT /quotes/{id}/proposal | Full normalized capture proposal + term intent + optional reason; CSRF/key/quote If-Match;200 ID+new ETag; append immutable revision and rebuild search in one transaction. |
+| GET /quotes/{id}/readiness | Revision-bound current issue list; incomplete shapes, evidence and eligibility have distinct codes; no state mutation. |
+| GET /quotes/{id}/revisions and /revisions/{revisionId} | Scoped historical snapshots; verify revision belongs to quote before read. |
+| GET /quotes/{id}/comparison?from=...&to=... | Both revisions belong to quote; keyed child diff includes adds/removals/value changes and exact prior values. |
+| POST /quotes/{id}/clone | Source quote ETag, source revisionId, destination relationshipId, reason;201 new quote ID. Current source/destination authority; clear evidence/process state, remap child IDs. Policy clone unavailable until Phase6/7. |
+| POST /quotes/{id}/withdraw | Reason, CSRF/key/quote ETag; terminal withdrawn; retain all snapshots and no destructive delete. |
+| POST /quotes/{id}/lookups | Allowlisted kind address/vehicle/licence; revisionId/itemId/query/scenario; CSRF/key/quote ETag;202 lookup ID and scoped status Location. No arbitrary external URL. |
+| GET /quotes/{id}/lookups/{lookupId} | Safe owned outcome/candidates/attempt states; pending is not success. |
+| POST /quotes/{id}/lookup-selections | Persisted lookup/candidate or manual entry reason, expected revision/item fingerprint; CSRF/key/quote ETag;200 ID+new ETag. |
+| POST /quotes/{id}/evidence-files | Multipart bounded bytes and filename/type; CSRF/key/quote ETag;201 file ID. Retry exact file identity without duplicate business evidence. |
+| GET /quotes/{id}/evidence-files/{fileId}/content | Current scoped download, safe filename, no-cache; no cross-quote retrieval. |
+| GET/POST /quotes/{id}/evidence | Read owned evidence; create revision/item/requirement/file-bound attestation with CSRF/key/quote ETag. No user-supplied verified status. |
+| POST /quotes/{id}/evidence/{evidenceId}/withdraw | Reason and evidence ETag, held quote authority; ID-only receipt and append withdrawal event. |
+
+Mutations return identities/version headers, not copied confidential proposal bodies in generic receipts. History endpoints have their own current authorization. Exact OpenAPI operation IDs reconcile with the existing Phase1 map in05-01; route aliases are not added merely to mask drift.
+
+## Discovery and future integration
+
+Replace client quote unavailable state only when actual quote queries ship; keep policy state unavailable. Shared agency quote projection is allowlisted reference/product/status/term/client declaration and permitted summary, never full driver declarations, evidence, internal notes or another agency ID. Use the same projection for internal sharing reference and authenticated agency-context routes. Counts/cursors must reflect this subset.
+
+Add frontend Quotes navigation and source New Quote modal for two enabled Motor Trade products; preserve disabled/unavailable Commercial Combined/Fleet choices with phase ownership. Global dashboard/report/search integration belongs Phase12 except quote-owned discovery and existing client/agency links. No unimplemented bind/rate/send button reports success.

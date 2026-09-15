@@ -8,7 +8,7 @@ last_activity: 2026-09-15
 progress:
   total_phases: 13
   completed_phases: 4
-  total_plans: 24
+  total_plans: 35
   completed_plans: 24
   percent: 31
 ---
@@ -20,13 +20,13 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Plan Phase5 Motor Trade quote capture; Phase4 acceptance complete.
+**Current focus:** Execute05-01 source/strict contract gate;Phase5 has11reviewed plans.
 
 ## Current Position
 
 Phase: 5 of 13 (Motor Trade quote capture)
-Plan: Research/context recorded; executable Phase5 plans not yet written; Phase4 all8plans complete
-Status: Research/planning — autonomous
+Plan: 05-01 of11 ready to execute; Phase5 planning complete
+Status: Execution ready — autonomous
 Last activity: 2026-09-15 — Phase4 accepted:329backend/57SQL,81contracts,30frontend,20browser journeys and restart persistence.
 
 Progress: Phases1–4 complete;4/13phases,24completed plans.
@@ -43,7 +43,7 @@ Progress: Phases1–4 complete;4/13phases,24completed plans.
 
 ### Pending Todos
 
-- Research and plan Phase5; consume ACCEPTANCE-BACKLOG.md and retain all gates.
+- Execute05-01 before any live quote endpoint; consume ACCEPTANCE-BACKLOG.md and retain all gates.
 - Keep future business endpoints closed until their owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,8 +54,8 @@ Progress: Phases1–4 complete;4/13phases,24completed plans.
 ## Session Continuity
 
 Last session: 2026-09-15
-Stopped at: Phase4 final acceptance complete. See04-VERIFICATION/REVIEW/UI-REVIEW and04-08-SUMMARY. Full suite.local/phase4-acceptance-final329/57SQL; browser.local/agency-suite/2026-09-15T06-53-51-892Z all20pass;15SQLdata-set hashes unchanged across ownedAPI/Next restart plus fresh authenticated terms/Accounts reads. Ownedpreviews/tests stopped. AGY01/02/05complete;03/04partialfutureowners. Phase5 context and initial architecture research recorded. NEXT exact prototype/funnel source audit, data/API design, UI contract, patterns, validation, executable plans and checker inline; no funnel edits, no new approvals needed.
-Resume file: .planning/phases/05-motor-trade-quote-capture/05-RESEARCH.md
+Stopped at: Phase5 planning complete:11sequential plans, source candidate audit364controls/255occurrences, detailed data/API design, UI contract, patterns, validation and inline plan review. NEXT execute05-01 to resolve exact paths/types/options/applicability and strict schemas/OpenAPI; enumeration alone is not contract approval. Known gaps: repeated driver histories, Combined previous-insurance reachability, SQL nullable creation pointer, match progression seam. Do not expose quote APIs before05-01 passes. Phase4 final329backend/57SQL,81contracts,30frontend,20browsers/restart remain baseline; ownedpreviews/tests stopped. No funnel edits, no new approvals.
+Resume file: .planning/phases/05-motor-trade-quote-capture/05-01-PLAN.md
 
 ## Autonomous continuation
 
