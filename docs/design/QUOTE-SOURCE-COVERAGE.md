@@ -22,6 +22,10 @@ Ownership is separate from operation dependencies. A shared risks-list control m
 - Reference identity catalogues preserve all 51 direct source option families, 25 nested source families and 12 active prototype reference families. Dynamic family membership still requires trusted, instance-specific selection and eligibility checks.
 - Contract examples test duplicate JSON keys, typed identities, child links, scoped question IDs, reference identity, term/DST handling and a subset of conditional readiness rules.
 
+## Prototype business conditions
+
+The composed validator requires pinned trader type, experience and employment selections. Part-time traders need a nonblank main occupation and employed/self-employed status. Full-time traders use not-applicable employment; retained occupation details require correction. Every appetite and vehicle-characteristic declaration must be answered; any affirmative answer requires its corresponding group explanation. Negative declarations remain valid answers. Tests cover both products and every declaration in each group. These capture rules do not implement experience or driver-population rating referrals.
+
 ## Remaining contract gate
 
 Resolve overlapping prototype/funnel answers and all product-specific requiredness, dynamic option selection, source limits and conditional rules. Reconcile historical prototype field bindings with the capture-write envelope: for example `term.startsAt` is supplied as local `termIntent`, not a caller-chosen policy timestamp. Finish quote API request/response contracts and operation integration. Verify complete fictional proposals against the composed validators. Then implement and test the same rules in the actual .NET request boundary and persistent services.

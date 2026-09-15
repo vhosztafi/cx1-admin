@@ -90,6 +90,91 @@
               "questionId": "MTS-03-Q09",
               "kind": "count",
               "value": 5
+            },
+            {
+              "questionId": "prototype.quote.c6181a11c34c",
+              "kind": "reference",
+              "value": {
+                "collection": "prototype.quote.c6181a11c34c",
+                "value": 1,
+                "label": "Full time",
+                "version": "mt-capture-e410d61471e481ed"
+              }
+            },
+            {
+              "questionId": "prototype.quote.0552d5a68ba2",
+              "kind": "reference",
+              "value": {
+                "collection": "prototype.quote.0552d5a68ba2",
+                "value": 6,
+                "label": "5",
+                "version": "mt-capture-e410d61471e481ed"
+              }
+            },
+            {
+              "questionId": "prototype.quote.34613c23e95d",
+              "kind": "reference",
+              "value": {
+                "collection": "prototype.quote.34613c23e95d",
+                "value": 1,
+                "label": "Not applicable",
+                "version": "mt-capture-e410d61471e481ed"
+              }
+            },
+            {
+              "questionId": "prototype.quote.ba9d4158ae2c",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.35350a32e79e",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.2ad460339240",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.f5e77ab8ec93",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.7fe8e3151553",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.27322dcfabf5",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.f856f5891026",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.d7a75768e505",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.5f9e8331ac6f",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.488ecf4bdc09",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.87fad6b4a9fe",
+              "kind": "boolean",
+              "value": false
             }
           ]
         }
