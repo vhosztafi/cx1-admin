@@ -8,6 +8,40 @@ const ref=(collection,value)=>{const row=catalogue.collections[collection].find(
 const answer=(questionId,value)=>({questionId,kind:'reference',value});
 const base=()=>({termIntent:{localStartDate:'2026-01-01'},cover:{responses:{answers:[answer('MTS-05-Q01',ref('coverLevels',1)),answer('MTS-05-Q02',ref('indemnityOwnVehicles',2))]}},risk:{business:{activities:[{code:ref('mtOccupations',5)}]},drivers:[]}});
 
+test('prototype cover facts resolve existing source dynamic families without rewriting declarations',()=>{
+  const proposal=base();
+  proposal.cover.responses.answers=[
+    answer('prototype.quote.2beaf3b8d546',ref('prototype.quote.2beaf3b8d546',1)),
+    answer('prototype.quote.d9dd069a314c',ref('prototype.quote.d9dd069a314c',2)),
+    answer('prototype.quote.00216de47ab5',ref('prototype.quote.00216de47ab5',2)),
+    answer('MTS-05-Q04',ref('indemnityOwnVehicles/number:5/excesses',4)),
+  ];
+  proposal.risk.drivers=[{dateOfBirth:'2008-01-01',responses:{answers:[answer('MTS-06-Q59',ref('youngDriverConfiguration/0/indemnities',1))]}}];
+  const before=structuredClone(proposal);const result=selectQuoteDynamicOptions(proposal,catalogue);
+  assert.deepEqual(result.issues,[]);
+  assert.deepEqual(result.selectedCollections['/cover/responses/answers/3/value'],['indemnityOwnVehicles/number:5/excesses']);
+  assert.deepEqual(validateQuoteReferences(proposal,catalogue,result.selectedCollections),[]);
+  assert.deepEqual(proposal,before);
+});
+
+test('conflicting cover declarations cannot supply dynamic dependency context',()=>{
+  const proposal=base();
+  proposal.cover.responses.answers.push(answer('prototype.quote.d9dd069a314c',ref('prototype.quote.d9dd069a314c',2)),answer('MTS-05-Q04',ref('indemnityOwnVehicles/number:2/excesses',4)));
+  const result=selectQuoteDynamicOptions(proposal,catalogue);
+  assert.deepEqual(result.selectedCollections,{});
+  assert.ok(result.issues.some(issue=>issue.code==='missing-dynamic-dependency'));
+  assert.equal(result.issues.filter(issue=>issue.code==='conflicting-cover-declarations').length,2);
+});
+
+test('prototype-only unsupported limits and excesses fail explicitly against pinned configuration',()=>{
+  const proposal=base();
+  proposal.cover.responses.answers.push(answer('prototype.quote.b4c7e25f7781',ref('prototype.quote.b4c7e25f7781',1)),answer('prototype.quote.00216de47ab5',ref('prototype.quote.00216de47ab5',4)));
+  const result=selectQuoteDynamicOptions(proposal,catalogue);
+  assert.deepEqual(result.issues.map(issue=>issue.code),['unsupported-cover-configuration','unsupported-cover-configuration']);
+  proposal.cover.responses.answers[0].value=ref('coverLevels',3);
+  assert.ok(selectQuoteDynamicOptions(proposal,catalogue).issues.some(issue=>issue.code==='inactive-dynamic-answer'));
+});
+
 test('driver age uses complete calendar anniversaries including leap-day clamping',()=>{
   assert.equal(ageOn('2008-01-02','2026-01-01'),17);
   assert.equal(ageOn('2008-01-01','2026-01-01'),18);

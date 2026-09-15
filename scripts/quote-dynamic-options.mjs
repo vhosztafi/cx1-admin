@@ -1,5 +1,6 @@
 // Design contract for trusted, per-instance option selection. Run strict schema,
 // question and identity checks first; do not accept this context from a caller.
+import {reconcileQuoteCover} from './quote-cover-reconciliation.mjs';
 const validDate=value=>typeof value==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(value)&&Number.isFinite(Date.parse(`${value}T00:00:00Z`))&&new Date(`${value}T00:00:00Z`).toISOString().slice(0,10)===value;
 export function ageOn(dateOfBirth,onDate) {
   if(!validDate(dateOfBirth)||!validDate(onDate)||dateOfBirth>onDate)return undefined;
@@ -21,9 +22,15 @@ export function selectQuoteDynamicOptions(proposal,catalogue) {
     return entries.length===1?entries[0]:undefined;
   };
   const answers=proposal.cover?.responses?.answers;
-  const level=trusted(find(answers,'MTS-05-Q01')?.answer.value,'coverLevels');
-  const own=trusted(find(answers,'MTS-05-Q02')?.answer.value,'indemnityOwnVehicles');
-  const customer=trusted(find(answers,'MTS-05-Q03')?.answer.value,'indemnityCustomerVehicles');
+  const reconciled=reconcileQuoteCover(proposal,catalogue);
+  const levelValue=['comprehensive','third-party-fire-theft','third-party-only'].indexOf(reconciled.facts.coverLevel)+1;
+  const level=catalogue.collections.coverLevels.find(row=>row.value===levelValue);
+  // Resolve an existing pinned source option by its business meaning. Never
+  // manufacture an ID for a prototype option absent from this product version.
+  const equivalent=(fact,collection)=>reconciled.facts[fact]===undefined?undefined:
+    catalogue.collections[collection].find(row=>Number.isFinite(row.numericValue)&&row.numericValue.toFixed(2)===reconciled.facts[fact]);
+  const own=equivalent('ownVehicleLimit','indemnityOwnVehicles');
+  const customer=equivalent('customerVehicleLimit','indemnityCustomerVehicles');
   const validOwn=own&&level&&(level.value!==2||own.numericValue<=15000);
   const excess=find(answers,'MTS-05-Q04');
   if(excess) {
@@ -31,6 +38,23 @@ export function selectQuoteDynamicOptions(proposal,catalogue) {
     if(level?.value===3)add('inactive-dynamic-answer',path);
     else if(!validOwn)add('missing-dynamic-dependency',path);
     else selectedCollections[path]=[`indemnityOwnVehicles/${typeof own.value==='number'?'number':'string'}:${own.value}/excesses`];
+  }
+  const prototypeExcess=find(answers,'prototype.quote.00216de47ab5');
+  if(prototypeExcess) {
+    const path=`/cover/responses/answers/${prototypeExcess.index}/value`;
+    if(level?.value===3)add('inactive-dynamic-answer',path);
+    else if(!validOwn)add('missing-dynamic-dependency',path);
+    else {
+      const collection=`indemnityOwnVehicles/${typeof own.value==='number'?'number':'string'}:${own.value}/excesses`;
+      if(!equivalent('excess',collection))add('unsupported-cover-configuration',path);
+    }
+  }
+  for(const [fact,questionId,row] of [
+    ['ownVehicleLimit','prototype.quote.d9dd069a314c',own],
+    ['customerVehicleLimit','prototype.quote.b4c7e25f7781',customer],
+  ]) {
+    const entry=find(answers,questionId);
+    if(entry&&reconciled.facts[fact]!==undefined&&!row)add('unsupported-cover-configuration',`/cover/responses/answers/${entry.index}/value`);
   }
   const activities=proposal.risk?.business?.activities;
   const activityRows=activities?.map(activity=>trusted(activity.code,'mtOccupations'));
@@ -56,5 +80,5 @@ export function selectQuoteDynamicOptions(proposal,catalogue) {
       }
     }
   });
-  return {selectedCollections,issues};
+  return {selectedCollections,issues:[...issues,...reconciled.issues]};
 }
