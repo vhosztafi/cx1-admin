@@ -1,4 +1,5 @@
 import { mkdir, writeFile } from 'node:fs/promises';
+import {writeQuoteSchemas} from './generate-quote-contracts.mjs';
 
 const object=(properties,required=Object.keys(properties))=>({type:'object',additionalProperties:false,properties,required});
 const array=(items,minItems=0)=>({type:'array',items,minItems,maxItems:1000});
@@ -50,6 +51,16 @@ defs.PreviousInsurance.properties.noClaimsYearsBasis=enumeration('exact','at-lea
 defs.PreviousInsurance.required.push('noClaimsYearsBasis');
 defs.PreviousInsurance.properties.policyNumber=str(100);
 defs.PreviousInsurance.properties.policyholderName=str(200);
+// Repeated source histories retain their own identity; optional additions keep
+// existing policy snapshots valid. Quote readiness adds applicability rules.
+defs.DriverOccupation=object({id:ref('Id'),occupation:ref('Reference'),businessUseRequired:bool});
+defs.CriminalConviction=object({id:ref('Id'),occurredOn:ref('Date'),code:ref('Reference'),sentenceYears:{type:'integer',minimum:0,maximum:100},sentenceMonths:{type:'integer',minimum:0,maximum:11}});
+defs.CountyCourtJudgment=object({id:ref('Id'),occurredOn:ref('Date'),status:ref('Reference'),amount:ref('Amount'),circumstances:str(4000)});
+defs.VehicleModification=object({id:ref('Id'),code:ref('Reference')});
+defs.Driver.properties.occupations={...array(ref('DriverOccupation')),maxItems:5};
+defs.Driver.properties.criminalConvictions={...array(ref('CriminalConviction')),maxItems:100};
+defs.Driver.properties.countyCourtJudgments={...array(ref('CountyCourtJudgment')),maxItems:100};
+defs.Vehicle.properties.modifications=array(ref('VehicleModification'));
 const properties={
  schemaVersion:{const:'1.0'},productCode:enumeration('motor-trade-road-risks','motor-trade-combined','commercial-combined'),productVersionId:ref('Id'),
  insured:object({clientId:ref('Id'),clientAgencyRelationshipId:ref('Id'),entityType:enumeration('sole-trader','partnership','limited-company','llp'),legalName:str(200),tradingName:str(200),companyNumber:str(30),address:ref('Address')},['clientId','clientAgencyRelationshipId','entityType','legalName','address']),
@@ -66,6 +77,7 @@ const schema={
 };
 const out=new URL('../contracts/schemas/',import.meta.url);await mkdir(out,{recursive:true});
 await writeFile(new URL('policy.schema.json',out),JSON.stringify(schema,null,2)+'\n');
+await writeQuoteSchemas(schema);
 function partial(value){
  if(Array.isArray(value))return value.map(partial);
  if(!value||typeof value!=='object')return value;

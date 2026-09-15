@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-15T07:03:51.200195+00:00"
+last_updated: "2026-09-15T07:25:44.901452+00:00"
 last_activity: 2026-09-15
 progress:
   total_phases: 13
@@ -25,8 +25,8 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 ## Current Position
 
 Phase: 5 of 13 (Motor Trade quote capture)
-Plan: 05-01 of11 ready to execute; Phase5 planning complete
-Status: Execution ready — autonomous
+Plan: 05-01 of11 in progress; first strict schema slice verified
+Status: In progress — autonomous
 Last activity: 2026-09-15 — Phase4 accepted:329backend/57SQL,81contracts,30frontend,20browser journeys and restart persistence.
 
 Progress: Phases1–4 complete;4/13phases,24completed plans.
@@ -54,8 +54,8 @@ Progress: Phases1–4 complete;4/13phases,24completed plans.
 ## Session Continuity
 
 Last session: 2026-09-15
-Stopped at: Phase5 planning complete:11sequential plans, source candidate audit364controls/255occurrences, detailed data/API design, UI contract, patterns, validation and inline plan review. NEXT execute05-01 to resolve exact paths/types/options/applicability and strict schemas/OpenAPI; enumeration alone is not contract approval. Known gaps: repeated driver histories, Combined previous-insurance reachability, SQL nullable creation pointer, match progression seam. Do not expose quote APIs before05-01 passes. Phase4 final329backend/57SQL,81contracts,30frontend,20browsers/restart remain baseline; ownedpreviews/tests stopped. No funnel edits, no new approvals.
-Resume file: .planning/phases/05-motor-trade-quote-capture/05-01-PLAN.md
+Stopped at: Phase5 planning committed e5ded64;05-01 first schema slice implemented. Typed repeated driver histories/modifications and strict MotorTrade quote draft/ready write contracts reject policy/ownership/evidence authority; stable partial child IDs and typed references/answers.85contracts/OpenAPI/source949/328pass; no backend/UI change. NEXT finish exact255field/364control canonical mapping, remaining repeated structures/option catalogs/semantic constraints and full quote OpenAPI before05-01complete. Read05-01-PROGRESS. Backend329/57SQL and30frontend remain previous baseline, not rerun. No live quote APIs, previews or tests running; no funnel edits or approvals needed.
+Resume file: .planning/phases/05-motor-trade-quote-capture/05-01-PROGRESS.md
 
 ## Autonomous continuation
 

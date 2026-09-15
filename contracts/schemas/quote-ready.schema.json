@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.cover-mga.example/policy/1.0",
-  "title": "Issued policy risk snapshot v1.0",
+  "$id": "https://schemas.cover-mga.example/quote-ready/1.0",
+  "title": "Motor Trade capture write shape; semantic readiness is assessed separately",
   "type": "object",
   "additionalProperties": false,
   "properties": {
@@ -9,26 +9,15 @@
       "const": "1.0"
     },
     "productCode": {
-      "type": "string",
       "enum": [
         "motor-trade-road-risks",
-        "motor-trade-combined",
-        "commercial-combined"
+        "motor-trade-combined"
       ]
-    },
-    "productVersionId": {
-      "$ref": "#/$defs/Id"
     },
     "insured": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "clientId": {
-          "$ref": "#/$defs/Id"
-        },
-        "clientAgencyRelationshipId": {
-          "$ref": "#/$defs/Id"
-        },
         "entityType": {
           "type": "string",
           "enum": [
@@ -84,92 +73,103 @@
         }
       },
       "required": [
-        "clientId",
-        "clientAgencyRelationshipId",
         "entityType",
         "legalName",
         "address"
       ]
     },
-    "term": {
+    "termIntent": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
         "kind": {
-          "type": "string",
           "enum": [
             "annual",
             "short-period"
           ]
         },
-        "startsAt": {
-          "$ref": "#/$defs/Instant"
+        "localStartDate": {
+          "$ref": "#/$defs/Date"
         },
-        "endsAt": {
-          "$ref": "#/$defs/Instant"
+        "localStartTime": {
+          "type": "string",
+          "pattern": "^(?:[01][0-9]|2[0-3]):[0-5][0-9]$"
         },
         "timeZone": {
           "const": "Europe/London"
+        },
+        "utcOffsetMinutes": {
+          "type": "integer",
+          "enum": [
+            0,
+            60
+          ]
+        },
+        "localEndDate": {
+          "$ref": "#/$defs/Date"
+        },
+        "localEndTime": {
+          "type": "string",
+          "pattern": "^(?:[01][0-9]|2[0-3]):[0-5][0-9]$"
+        },
+        "endUtcOffsetMinutes": {
+          "type": "integer",
+          "enum": [
+            0,
+            60
+          ]
         }
       },
       "required": [
         "kind",
-        "startsAt",
-        "endsAt",
+        "localStartDate",
+        "localStartTime",
         "timeZone"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "short-period"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "localEndDate": {
+                "$ref": "#/$defs/Date"
+              },
+              "localEndTime": {
+                "type": "string",
+                "pattern": "^(?:[01][0-9]|2[0-3]):[0-5][0-9]$"
+              }
+            },
+            "required": [
+              "localEndDate",
+              "localEndTime"
+            ]
+          }
+        }
       ]
     },
     "risk": {
-      "oneOf": [
-        {
-          "$ref": "#/$defs/RoadRisk"
-        },
-        {
-          "$ref": "#/$defs/CommercialRisk"
-        }
-      ]
+      "$ref": "#/$defs/RoadRisk"
     },
     "cover": {
       "$ref": "#/$defs/Cover"
-    },
-    "premium": {
-      "$ref": "#/$defs/Premium"
-    },
-    "provenance": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "source": {
-          "type": "string",
-          "enum": [
-            "backoffice",
-            "demo-seed"
-          ]
-        },
-        "quoteRevisionId": {
-          "$ref": "#/$defs/Id"
-        },
-        "authorityVersionId": {
-          "$ref": "#/$defs/Id"
-        }
-      },
-      "required": [
-        "source",
-        "quoteRevisionId",
-        "authorityVersionId"
-      ]
     }
   },
   "required": [
     "schemaVersion",
     "productCode",
-    "productVersionId",
     "insured",
-    "term",
+    "termIntent",
     "risk",
-    "cover",
-    "premium",
-    "provenance"
+    "cover"
   ],
   "$defs": {
     "Id": {
@@ -920,14 +920,6 @@
           "minimum": 0,
           "maximum": 100
         },
-        "evidenceDocumentIds": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/Id"
-          },
-          "minItems": 0,
-          "maxItems": 1000
-        },
         "responses": {
           "$ref": "#/$defs/Responses"
         },
@@ -953,7 +945,6 @@
         "insurer",
         "expiresOn",
         "noClaimsYears",
-        "evidenceDocumentIds",
         "responses",
         "noClaimsYearsBasis"
       ]
@@ -1647,33 +1638,5 @@
         "code"
       ]
     }
-  },
-  "allOf": [
-    {
-      "if": {
-        "properties": {
-          "productCode": {
-            "const": "commercial-combined"
-          }
-        },
-        "required": [
-          "productCode"
-        ]
-      },
-      "then": {
-        "properties": {
-          "risk": {
-            "$ref": "#/$defs/CommercialRisk"
-          }
-        }
-      },
-      "else": {
-        "properties": {
-          "risk": {
-            "$ref": "#/$defs/RoadRisk"
-          }
-        }
-      }
-    }
-  ]
+  }
 }
