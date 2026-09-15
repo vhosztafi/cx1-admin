@@ -391,6 +391,16 @@
                 "questionId": "MTS-06-Q53",
                 "kind": "boolean",
                 "value": false
+              },
+              {
+                "questionId": "prototype.adddriver.trade-employment",
+                "kind": "reference",
+                "value": {
+                  "collection": "prototype.adddriver.trade-employment",
+                  "value": 1,
+                  "label": "Full time",
+                  "version": "mt-capture-e410d61471e481ed"
+                }
               }
             ]
           }

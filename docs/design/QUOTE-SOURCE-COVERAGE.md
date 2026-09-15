@@ -30,6 +30,10 @@ The composed validator requires pinned trader type, experience and employment se
 
 Every vehicle captures a pinned characteristic and an explicit MID reporting answer. Single characteristic selections reconcile with the corresponding global declarations and source modification/import flags; generic manufacturer imports are distinct from grey imports. Multiple characteristics require at least two positive global declarations without inventing an individual breakdown. The existing group-detail rule supplies the required explanation. These rules include specified vehicles and do not perform MID submissions.
 
+## Prototype detail modal conditions
+
+Driver names and incident descriptions retain the prototype minimum lengths. Employment, prosecution status, claim-made and applicable Combined premises defaults are explicit captured answers on the owning child. Optional driver years/occupation and incident damage components are not made mandatory and are not populated with fabricated zeroes. Existing validators check supplied rounded-year declarations and conditional part-time occupations.
+
 ## Remaining contract gate
 
 Resolve overlapping prototype/funnel answers and all product-specific requiredness, dynamic option selection, source limits and conditional rules. Reconcile historical prototype field bindings with the capture-write envelope: for example `term.startsAt` is supplied as local `termIntent`, not a caller-chosen policy timestamp. Finish quote API request/response contracts and operation integration. Verify complete fictional proposals against the composed validators. Then implement and test the same rules in the actual .NET request boundary and persistent services.

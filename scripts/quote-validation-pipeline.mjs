@@ -8,6 +8,7 @@ import {validateQuoteSourceRules,validateQuoteTextBounds} from './quote-source-r
 import {validateQuoteBusinessReadiness} from './quote-business-readiness.mjs';
 import {validateQuotePrototypeBusiness} from './quote-prototype-business.mjs';
 import {validateQuotePrototypeVehicles} from './quote-prototype-vehicles.mjs';
+import {validateQuotePrototypeDetails} from './quote-prototype-details.mjs';
 import {validateQuoteDriverReadiness} from './quote-driver-readiness.mjs';
 import {validateQuoteDriverEligibility} from './quote-driver-eligibility.mjs';
 import {validateQuoteDriverPlan} from './quote-driver-plan.mjs';
@@ -46,7 +47,7 @@ export async function createQuoteValidationPipeline() {
   collect('source',validateQuoteSourceRules(proposal,asOfDate));
   collect('text',validateQuoteTextBounds(proposal));
   for(const [stage,validate] of [
-   ['business',validateQuoteBusinessReadiness],['prototype-business',validateQuotePrototypeBusiness],['driver',validateQuoteDriverReadiness],
+   ['business',validateQuoteBusinessReadiness],['prototype-business',validateQuotePrototypeBusiness],['prototype-details',validateQuotePrototypeDetails],['driver',validateQuoteDriverReadiness],
    ['driver-eligibility',validateQuoteDriverEligibility],['driver-plan',validateQuoteDriverPlan],
    ['driver-reconciliation',reconcileQuoteDriverDeclarations],['vehicle-owner',validateQuoteVehicleOwnership],
    ['vehicle-limits',validateQuoteVehicleLimits],['prototype-vehicles',validateQuotePrototypeVehicles],['insurance',validateQuoteInsuranceReadiness],

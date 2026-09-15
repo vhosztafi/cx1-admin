@@ -391,6 +391,16 @@
                 "questionId": "MTS-06-Q53",
                 "kind": "boolean",
                 "value": false
+              },
+              {
+                "questionId": "prototype.adddriver.trade-employment",
+                "kind": "reference",
+                "value": {
+                  "collection": "prototype.adddriver.trade-employment",
+                  "value": 1,
+                  "label": "Full time",
+                  "version": "mt-capture-e410d61471e481ed"
+                }
               }
             ]
           }
@@ -488,7 +498,22 @@
             "version": "mt-capture-e410d61471e481ed"
           },
           "yearsTrading": 6,
-          "sharedWorksite": false
+          "sharedWorksite": false,
+          "responses": {
+            "questionSetVersion": "mt-capture-e410d61471e481ed",
+            "answers": [
+              {
+                "questionId": "prototype.addprem.overnight-vehicles",
+                "kind": "boolean",
+                "value": true
+              },
+              {
+                "questionId": "prototype.addprem.public-access",
+                "kind": "boolean",
+                "value": true
+              }
+            ]
+          }
         }
       ]
     },
