@@ -1,5 +1,11 @@
 # Phase 4 data and API decisions
 
+### Implemented transactional permission commands (04-07)
+
+AgencyPermissionService provides request, independent approve/reject and revoke commands. It uses the new SqlCommandBoundary.ExecuteAuthorizedAsync path, whose mandatory authorization callback executes within the command transaction before receipt lookup, hash comparison or replay. Existing ExecuteAsync callers retain their prior behavior. Permission callbacks lock agency first and recheck active stored actor, exact roles and own-agency broker-admin request capability; decisions/revocations require current internal agency administration. Request/decision requires active agency; revocation also permits suspended agency. Target request/grant membership is checked before replay. The request's agency ETag and decision/revocation resource ETags protect new effects; exact replay retains the original result after current authorization passes.
+
+Each new effect advances agency RowVersion and commits its agency activity, minimal audit and durable receipt together. Approval relies on SQL's automatic grant creation; no duplicate grant insert is issued. Revocation rotates all agency user security stamps and revokes their existing sessions in the same transaction as the grant. Request and decision reasons are normalized before hashing. Service receipt routes match the existing agency-scoped OpenAPI paths. HTTP registration/endpoints, permission read projections/current capability summaries, cursors and external authentication remain separate unfinished integration work. Service-level SQL tests do not claim real-cookie/API/browser acceptance.
+
 ### Implemented permission provenance storage (04-07)
 
 Migration20260915005955_AgencyPermissionProvenance adds AgencyPermissionRequest and AgencyPermissionGrant. Requests contain agency, exact allowlisted permission (`bordereau-download`), requester/reason, pending/granted/rejected state and complete independent decision identity/reason/time. There is one pending request per agency/permission. Request provenance cannot be edited or deleted, inserts must be pending, and terminal decisions cannot be rewritten. SQL requires an active agency and current internal agency administrator or own broker-admin for creation; decisions require a different current internal administrator.
