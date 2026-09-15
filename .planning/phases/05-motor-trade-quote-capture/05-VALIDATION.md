@@ -13,7 +13,7 @@ Existing xUnit unit/real SQL/API, Node contract/frontend, ESLint/TypeScript, pro
 
 | Plan / threat | Requirements | Required semantic evidence |
 |---|---|---|
-|05-01 / T-05-01|QUO01â€“06|All364candidate controls and255occurrences have explicit path/type/options/applicability/owner; strict draft/ready schema rejects unknown sensitive fields, duplicate IDs/keys and invalid typed references. Canonical nested-history gaps closed before endpoints.|
+|05-01 / T-05-01|QUO01–06|All364candidate controls and255occurrences have explicit path/type/options/applicability/owner; strict draft/ready schema rejects unknown sensitive fields, duplicate IDs/keys and invalid typed references. Canonical nested-history gaps closed before endpoints.|
 |05-02 / T-05-02|QUO02/06|QuotePersistence: same-key/changed-body/stale/rollback/current-pointer ownership, immutable history, no-op saves, normalized hash, suspended/revoked authority and capture closure.|
 |05-03 / T-05-03|QUO02/03|Business/term unit tests: DST gap/repetition, leap anniversary, percentage totals and incomplete/complete shape. Real two-product create/resume and dirty/stale/uncertain browser.|
 |05-04 / T-05-04|QUO04|DriverRules: age-at-term, licence/residency, every nested history and conditional contradiction. Browser stable identity/reorder/edit/remove; forbidden orphan owner references.|
@@ -29,26 +29,26 @@ For each implemented backend slice use a fresh `.local/phase5-<slice>-full` dire
 
 UI slices use built API5087/Next3100, BACKOFFICE_API_ORIGIN set at build and start, real fictional SQL records, exact lost-response retry assertions, labelled intercepted recovery where used, keyboard/native dialog focus/Escape,314px desktop rail and390px containment. Capture source/application screenshots and inspect them. Final restart tests compare actual quote revisions, current pointers, evidence bytes and lookup state plus fresh authenticated application reads. Human/assistive-technology UAT, hostedCI and Docker runtime remain separate.
 
-QUO-01 remains partial for policies untilPhase6. QUO02â€“06 can be accepted only after05-11 verifies whole-phase behavior. No source-mapping enumeration or plan review is implementation acceptance.
+QUO-01 remains partial for policies untilPhase6. QUO02–06 can be accepted only after05-11 verifies whole-phase behavior. No source-mapping enumeration or plan review is implementation acceptance.
 
 
-## 05-01 actual design evidence â€” 2026-09-15
+## 05-01 actual design evidence — 2026-09-15
 
 Source/schema/API gate complete; see05-01-REVIEW.md and05-01-SUMMARY.md. Full node scripts/validate-contracts.mjs passes287tests with0failures/skips, OpenAPI lint and949controls/336operations. All six generated capture examples pass the composed section validators and capture-ready shape. Log: .local/phase5-contract-validation.log. No backend/UI/migration changes in this plan; runtime counts above remain prior accepted evidence. Nyquist/phase compliance remains false until actual runtime implementation and05-11 acceptance.
 
-## 05-02 canonicalization slice â€” 2026-09-15
+## 05-02 canonicalization slice — 2026-09-15
 
 Fresh .local/phase5-quote-canonical-verified contains297unit and64integration passes (361total,57realSQL,0skips); assert-test-results.ps1 passed.32new tests cover bounded exact canonicalization/version-pinned hashes. Initial .local/phase5-quote-canonical-full SQL encryption failures are not passing evidence; required local-access rerun succeeded. Contracts287 and frontend30 also pass. No actual quote persistence/endpoints yet;05-02 and phase compliance remain incomplete. See05-02-PROGRESS.
 
-## 05-02 item identity slice â€” 2026-09-15
+## 05-02 item identity slice — 2026-09-15
 
 Fresh .local/phase5-quote-identity-verified:307unit +64integration =371passing cases,57realSQL,0skips; assert-test-results.ps1 passed.10new .NET identity/link cases and1Node nil-ID case; contracts288/frontend30pass. .NET item identity is an internal prerequisite, not a completed capture boundary or quote endpoint. No migration/UI/funnel changes. See05-02-PROGRESS and05-DOTNET-SCHEMA-DECISION for next work.
 
-## 05-02 closed shape slice â€” 2026-09-15
+## 05-02 closed shape slice — 2026-09-15
 
 Locked dependency restore and fresh .local/phase5-quote-shape-verified pass:323unit +64integration =387cases,57realSQL,0skips; assert-test-results.ps1 passed.16new cases cover bundled draft shape/all answer types/formats/authority/concurrency/error bounds. Contracts288 and frontend30pass. No quote SQL migration/endpoints yet; catalogue identity/composition remains next. See05-02-PROGRESS for dependency changes and exact logs.
 
-## 05-02 composed capture boundary â€” 2026-09-15
+## 05-02 composed capture boundary — 2026-09-15
 
 Fresh final .local/phase5-quote-boundary-final:337unit +64integration =401passing cases,57realSQL,0skips; assert-test-results.ps1 passed.14new .NET cases cover all six capture fixtures, every reference binding's edge options, scoped questions and all parser/shape/catalogue/item gates. A review correction for missing/present-stale question versions is covered in .NET and Node; contracts289/frontend30pass. Earlier400-case run is superseded. SQL quote storage/endpoints remain next; see05-02-PROGRESS.
 
@@ -56,3 +56,8 @@ Fresh final .local/phase5-quote-boundary-final:337unit +64integration =401passin
 ## 05-02 quote SQL storage — 2026-09-15
 
 Fresh .local/phase5-quote-storage-verified:337unit +66integration =403passing cases,59realSQL,0skips; assert-test-results.ps1 passed. Two new real-SQL scenarios verify migration/model parity, additive upgrade and seed preservation, composite ownership/current pointer, append-only history/activity, immutable references, UTF8 JSON bounds, closed capture and rollback after revision/projection/pointer writes. Contracts289/frontend30 pass. Native demonstration database and funnel unchanged. Scope/service/API commands remain unimplemented; this is an internal storage prerequisite, not completion of05-02. See05-02-PROGRESS for logs and remaining runtime obligations.
+
+
+## 05-02 stored quote authority/scope — 2026-09-15
+
+Fresh .local/phase5-quote-scope-verified:344unit+67integration=411passing cases,60realSQL,0skips; assert-test-results.ps1 passed. Seven quote role-matrix cases and one SQL authorization/replay scenario, plus extended quote storage scope assertions. Verified held agency/user/role/relationship fences, current authority before receipt replay, inactive-context historical reads, unfinished quote exclusion and capture scope. Contracts289/frontend30 pass. Quote service, product/capture eligibility and endpoints remain next; see05-02-PROGRESS.

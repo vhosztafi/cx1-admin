@@ -1,8 +1,8 @@
-# 05-02 progress â€” persistent quote aggregate and authority
+# 05-02 progress — persistent quote aggregate and authority
 
 Status: in progress. No live quote endpoint or quote database migration yet.
 
-## .NET canonical proposal representation â€” 2026-09-15
+## .NET canonical proposal representation — 2026-09-15
 
 Added Application/Quotes/QuoteCanonicalJson.cs with trusted QuoteVersionPins and CanonicalQuoteInput. Strict UTF8 decoding,1MiB input/output bounds,64-level JSON parsing, decoded duplicate-property rejection and deterministic ordinal object-key ordering precede hashing. Array order and all string content are retained. Omission, false, zero, null and empty arrays remain distinct; this utility is not a schema validator, so the closed capture validator must separately reject disallowed values.
 
@@ -22,7 +22,7 @@ Contract/design suite287passes/0skips,949controls/336operations (.local/phase5-c
 No QUO requirement is accepted and05-02 remains incomplete.
 
 
-## .NET item identity and typed links â€” 2026-09-15
+## .NET item identity and typed links — 2026-09-15
 
 Added QuoteItemIdentity and safe QuoteFieldIssue(code,path). Global case-insensitive UUID uniqueness includes every nested child, including histories and European-cover rows. Specified IDs resolve only to current vehicles, owner/trip IDs only to current drivers, and incident risk links only to current drivers/vehicles/premises. Removing referenced rows produces explicit correction issues; neither old revisions nor nested loss/occupation IDs can satisfy a current risk link. Standard dashed nonempty UUIDs are required; the Node design identity validator now also rejects nil UUIDs, preserving parity. Missing item collections add no invented draft requirements; this helper deliberately relies on the preceding closed-shape gate and is not exposed as an endpoint.
 
@@ -30,7 +30,7 @@ Added QuoteItemIdentity and safe QuoteFieldIssue(code,path). Global case-insensi
 
 Researched the next .NET schema adapter against official maintainer/NuGet docs: choose pinned JsonSchema.Net9.4.0 rather than a second handwritten schema interpreter. See05-DOTNET-SCHEMA-DECISION.md; dependency not installed. Next implement that closed draft-shape gate and scoped question/reference validation, then storage/services/API and real quote persistence tests.05-02 remains incomplete.
 
-## .NET closed draft schema adapter â€” 2026-09-15
+## .NET closed draft schema adapter — 2026-09-15
 
 Implemented QuoteCaptureShape using the actual checked-in quote-draft JSON schema embedded in the Application assembly. JsonSchema.Net9.4.0 is pinned centrally and all five affected lock files are reviewed. New dependencies: JsonPointer.Net7.0.2, Json.More.Net3.0.1 and Humanizer.Core3.0.10 (the latter upgrades the Infrastructure design-tool transitive from2.14.1). Locked restore succeeds; full SQL/API regression verifies the resolved graph.
 
@@ -43,7 +43,7 @@ Fresh full backend387=323unit+64integration,57realSQL,0skips; scripts/assert-tes
 Next: pinned .NET question/reference catalogue validation and composition with canonical parsing/shape/item identity; then Quote records/model/migration, authority/service/API and actual persistence tests.05-02 remains incomplete.
 
 
-## .NET pinned catalogue and composed capture boundary â€” 2026-09-15
+## .NET pinned catalogue and composed capture boundary — 2026-09-15
 
 Implemented QuoteCatalogueIdentity with embedded question/reference catalogues and their strict configuration schemas. Startup validates shapes, matching versions, scoped question-kind consistency, unique numeric option identities and reference-binding consistency. Immutable dictionaries retain product/container/question scope and exact typed collection/value/label/version membership. Repeated source bindings with identical definitions are retained as one canonical binding; wrong kind, duplicate question, wrong product/container, stale version, mistyped numeric ID, unknown option, forged label/family and duplicate multi-selection fail with bounded safe code/path issues.
 
@@ -56,7 +56,7 @@ Final verified backend401=337unit+64integration,57realSQL,0skips; assert-test-re
 Next concrete work: Quote/QuoteRevision/QuoteRegistration/QuoteActivity records and migration with composite ownership/current-pointer/append-only constraints; then agency-first scope, service/endpoint commands, pinned capture settings, idempotent no-op/race/rollback tests and supported demo seeding.05-02 remains incomplete; no QUO requirement is signed off.
 
 
-## Quote SQL storage â€” 2026-09-15
+## Quote SQL storage — 2026-09-15
 
 Implemented Quote, QuoteRevision, QuoteRegistration and QuoteActivity with additive QuoteCaptureStorage migration. Quote references derive from a bounded SQL sequence and cannot change after creation. Composite foreign keys bind the client/agency relationship, revision/quote ownership, product-version family and approved agency/product grant. CurrentRevisionId can only point to a revision of the same quote. Revision and activity UPDATE/DELETE are rejected by append-only triggers; revision INSERT rejects withdrawn/closed capture and mismatched product identity. SQL checks require object JSON, matching schema version, nonzero SHA256 storage, actors/UTC values and a 1MiB UTF-8 byte limit independently on each JSON document.
 
@@ -67,3 +67,18 @@ Two real-SQL scenarios cover fresh migration/model parity, upgrading the precedi
 Validation: fresh full backend403 =337unit +66integration, including59realSQL, no skips. scripts/assert-test-results.ps1 passed for .local/phase5-quote-storage-verified; log .local/phase5-quote-storage-verified.log. Contracts289 and frontend30 pass in .local/phase5-quote-storage-contracts.log and .local/phase5-quote-storage-web.log. The final full run includes the added real cross-agency/client/product negative cases and supersedes the earlier focused two-test run.
 
 Next: current stored quote-read/capture authority and agency-first scope, pinned capture/product/terms eligibility, transactional service/API commands, ID-only receipts and ETags, no-op/race/rollback coverage and supported demo seeding. SqlCommandBoundary.ExecuteAuthorizedAsync already supports held authorization before replay; use it rather than checking only caller claims. Internal servicing/underwriter/senior-underwriter rights must be explicit; agency-admin/system-admin/finance do not inherit full quote capture rights. ClientActivity's record-kind check and match linkage require their own coordinated additions before quote integration.05-02 remains incomplete and no QUO requirement is signed off.
+
+
+## Quote stored authority and scope — 2026-09-15
+
+Added explicit internal quote-read/quote-capture capabilities for servicing, underwriter and senior-underwriter roles. Agency-admin, system-admin, finance, broker roles and all agency-scoped identities do not inherit full quote access. QuoteScope requires the caller's held transaction, acquires agency before current stored identity/role membership, and rebuilds the resolved actor from stored identity. It rejects stale or forged role sets and inactive/moved identities. Capture requires active agency/client/relationship; authorized historical reads remain available when these records become inactive.
+
+Relationship/quote lookup hints are rechecked under agency -> identity -> quote (when present) -> client -> relationship locks. Capture uses update locks on the agency and quote; shared held client/relationship locks fence state changes. Quote reads omit privileged unfinished null-pointer records. Quote state transitions, ETag checks and pinned product/distribution eligibility still belong to the upcoming service, after the appropriate pre-receipt current-authority/eligibility gate. Scope methods do not attach match records; linked-intake ordering must be integrated before match attachment is enabled.
+
+Seven role-matrix unit cases and one real-SQL authority scenario exercise claim rejection, inactive users/relationships, role revocation, historical read access, suspension/user/role/relationship lock fences and SqlCommandBoundary authorization before receipt replay. Existing quote storage tests now exercise owned quote resolution, unfinished-row exclusion and active/inactive agency capture access. No live quote endpoint or frontend capability has been exposed.
+
+Validation: fresh full backend411=344unit+67integration,60realSQL,0skips; assert-test-results.ps1 passed for .local/phase5-quote-scope-verified. Logs: .local/phase5-quote-scope-verified.log, .local/phase5-quote-scope-contracts.log (289pass), .local/phase5-quote-scope-web.log (30pass). Also repaired punctuation encoding in the previously edited planning checkpoint files.
+
+Next: trusted capture configuration/product/agency-term eligibility, QuoteRules and transactional create/save/read endpoints; canonical no-op, ETag/replay/race tests and authorized demo seeding.05-02 remains incomplete.
+
+Concrete configuration prerequisite: DemoDatabase currently seeds ProductVersion1 with QuestionSetVersion=demo-1 and Definition.status=foundation-only/ratingAvailable=false; AgencyDemoSeed distributes those version1 IDs. QuoteCatalogueIdentity instead bundles mt-capture-57b711ca02317ca0. Do not silently relabel an already referenced version or treat distribution alone as capture eligibility. Add reviewed, explicit capture configuration/version pins and preserve existing agency terms/history; tests must cover unavailable configuration and no implicit version upgrades.

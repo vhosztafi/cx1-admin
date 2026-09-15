@@ -5,6 +5,23 @@ namespace BackOffice.UnitTests;
 
 public sealed class ActorContextTests
 {
+    [Theory]
+    [InlineData("servicing", true)]
+    [InlineData("underwriter", true)]
+    [InlineData("senior-underwriter", true)]
+    [InlineData("agency-admin", false)]
+    [InlineData("system-admin", false)]
+    [InlineData("finance", false)]
+    [InlineData("broker-admin", false)]
+    public void QuoteCapabilitiesAreExplicitAndInternal(string role, bool allowed)
+    {
+        var actor = new ActorContext(Guid.NewGuid(), null, null, new HashSet<string> { role });
+        Assert.Equal(allowed, actor.HasCapability("quote-read"));
+        Assert.Equal(allowed, actor.HasCapability("quote-capture"));
+        Assert.False((actor with { AgencyId = Guid.NewGuid() }).HasCapability("quote-read"));
+        Assert.False((actor with { AgencyId = Guid.NewGuid() }).HasCapability("quote-capture"));
+    }
+
     [Fact]
     public void AdministrationDoesNotGrantBusinessAuthority()
     {

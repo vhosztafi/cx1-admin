@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using BackOffice.Application;
 using BackOffice.Application.Quotes;
 using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Quotes;
@@ -39,6 +40,23 @@ public sealed class QuoteStorageTests
             db.Add(new QuoteRegistration { QuoteId = quote.Id, VehicleId = Guid.NewGuid(), NormalizedRegistration = "DEMO01" });
             await db.SaveChangesAsync();
             db.ChangeTracker.Clear();
+
+            var readerId = await db.Set<StaffUser>().Where(x => x.Email == "underwriter@cover.example").Select(x => x.Id).SingleAsync();
+            var reader = new ActorContext(readerId, null, null, new HashSet<string> { "underwriter" });
+            await using (var readTransaction = await db.Database.BeginTransactionAsync())
+            {
+                var owned = await QuoteScope.ForQuoteAsync(db, reader, quote.Id, QuoteAccess.Read);
+                Assert.Equal(second.Id, owned.Quote.CurrentRevisionId);
+                Assert.Equal(fixture.Client, owned.Scope.Client.Id);
+                Assert.Equal(404, (await Assert.ThrowsAsync<QuoteOperationException>(() => QuoteScope.ForQuoteAsync(db, reader, other.Id, QuoteAccess.Read))).Status);
+                Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => QuoteScope.ForQuoteAsync(db, reader, quote.Id, QuoteAccess.Capture))).Status);
+            }
+
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Agency SET State=N'active' WHERE Id={fixture.Agency}");
+            await using (var captureTransaction = await db.Database.BeginTransactionAsync())
+            {
+                Assert.Equal(quote.Id, (await QuoteScope.ForQuoteAsync(db, reader, quote.Id, QuoteAccess.Capture)).Quote.Id);
+            }
 
             async Task Denied(FormattableString sql) => await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync(sql));
             await Denied($"UPDATE QuoteRevision SET Reason=N'Changed history' WHERE Id={first.Id}");
