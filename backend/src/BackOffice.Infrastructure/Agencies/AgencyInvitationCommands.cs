@@ -17,12 +17,26 @@ public sealed class AgencyInvitationCommands(IDbContextFactory<BackOfficeDbConte
 
     private async Task<CommandOutcome> Execute(ActorContext actor,Guid invitationId,string key,byte[] version,string reason,bool resend,CancellationToken token)
     {
-        await agencies.Authorize(actor,null,token);
+        if(actor.AgencyId is null)await agencies.Authorize(actor,null,token);
         if(string.IsNullOrWhiteSpace(reason)||reason.Length>1000||reason.Any(char.IsControl))throw new AgencyCommandException(422,"reason-required");
-        Guid agencyId;
-        await using(var db=await factory.CreateDbContextAsync(token))
-        {agencyId=await db.Set<AgencyInvitation>().Where(x=>x.Id==invitationId).Select(x=>x.AgencyId).SingleOrDefaultAsync(token);if(agencyId==Guid.Empty)throw new AgencyCommandException(404,"invitation-not-found");}
-        return await commands.ExecuteAsync(new(actor.UserId,$"/api/v1/invitations/{invitationId}/"+(resend?"resend":"revoke"),key,Guid.NewGuid()),new{reason},resend?"agency.invitation-resent":"agency.invitation-revoked",async(db,ct)=>
+        // Agency callers never perform an unscoped invitation-ID lookup.
+        var agencyId=actor.AgencyId??Guid.Empty;
+        if(actor.AgencyId is null)
+        {
+            await using var db=await factory.CreateDbContextAsync(token);
+            agencyId=await db.Set<AgencyInvitation>().Where(x=>x.Id==invitationId).Select(x=>x.AgencyId).SingleOrDefaultAsync(token);
+            if(agencyId==Guid.Empty)throw new AgencyCommandException(404,"invitation-not-found");
+        }
+        return await commands.ExecuteAuthorizedAsync(new(actor.UserId,$"/api/v1/invitations/{invitationId}/"+(resend?"resend":"revoke"),key,Guid.NewGuid()),new{reason},resend?"agency.invitation-resent":"agency.invitation-revoked",async(db,ct)=>
+        {
+            await AgencyUserAuthority.Authorize(db,actor,agencyId,true,ct);
+            var target=await db.Set<AgencyInvitation>().AsNoTracking().Where(x=>x.Id==invitationId&&x.AgencyId==agencyId).Select(x=>(Guid?)x.UserId).SingleOrDefaultAsync(ct);
+            if(target is not Guid targetUser)throw new AgencyCommandException(404,"invitation-not-found");
+            // Preserve agency -> target user -> invitation lock order on new calls and replay.
+            if(!await db.Set<StaffUser>().FromSqlInterpolated($"SELECT * FROM [User] WITH(HOLDLOCK,ROWLOCK) WHERE Id={targetUser} AND AgencyId={agencyId}").AsNoTracking().AnyAsync(ct)||
+               !await db.Set<AgencyInvitation>().FromSqlInterpolated($"SELECT * FROM AgencyInvitation WITH(HOLDLOCK,ROWLOCK) WHERE Id={invitationId} AND AgencyId={agencyId} AND UserId={targetUser}").AsNoTracking().AnyAsync(ct))
+                throw new AgencyCommandException(404,"invitation-not-found");
+        },async(db,ct)=>
         {
             var agency=await db.Set<Agency>().FromSqlInterpolated($"SELECT * FROM [Agency] WITH (UPDLOCK,ROWLOCK) WHERE [Id]={agencyId}").SingleAsync(ct);
             var reference=await db.Set<AgencyInvitation>().AsNoTracking().SingleAsync(x=>x.Id==invitationId,ct);

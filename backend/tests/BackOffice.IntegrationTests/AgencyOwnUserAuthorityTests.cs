@@ -1,3 +1,4 @@
+using System.Data;
 using System.Security.Cryptography;
 using BackOffice.Application;
 using BackOffice.Application.Agencies;
@@ -35,6 +36,7 @@ public sealed class AgencyOwnUserAuthorityTests
             var boundary = new SqlCommandBoundary(factory, clock); var drafts = new AgencyDraftService(factory, boundary, clock);
             var issuer = new InvitationService(new AgencyNotificationService(new AgencyNotificationPayload(new EphemeralDataProtectionProvider()), clock), clock);
             var users = new AgencyUserService(drafts, boundary, clock, issuer); var lifecycle = new AgencyUserLifecycle(drafts, boundary, issuer, clock);
+            var invitations = new AgencyInvitationCommands(factory, drafts, boundary, issuer, clock);
             async Task<Guid> Fixture(string name, Guid agency)
             {
                 // Stored service identity fixture only: this does not verify external login/acceptance.
@@ -53,10 +55,40 @@ public sealed class AgencyOwnUserAuthorityTests
             var broker = new ActorContext(first, null, agencyId, new HashSet<string> { "broker-admin" });
             await using (var db = new BackOfficeDbContext(options))
                 await Assert.ThrowsAsync<InvalidOperationException>(() => AgencyUserAuthority.Authorize(db, broker, agencyId, true, default));
+            async Task<string> ReadAuthority(ActorContext who, Guid selected)
+            {
+                await using var db = new BackOfficeDbContext(options);
+                await using var tx = await db.Database.BeginTransactionAsync(IsolationLevel.Serializable);
+                return await AgencyUserAuthority.ReadScope(db, who, selected, default);
+            }
+            await using (var db = new BackOfficeDbContext(options))
+            {
+                await Assert.ThrowsAsync<InvalidOperationException>(() => AgencyUserAuthority.ReadScope(db, broker, agencyId, default));
+                await using var tx = await db.Database.BeginTransactionAsync();
+                await Assert.ThrowsAsync<InvalidOperationException>(() => AgencyUserAuthority.ReadScope(db, broker, agencyId, default));
+            }
+            Assert.Equal(64, (await ReadAuthority(broker, agencyId)).Length);
+            Assert.Equal(403, (await Assert.ThrowsAsync<AgencyCommandException>(() => ReadAuthority(broker, foreignId))).Status);
             var input = AgencyUserRules.Validate("own-invited@example.test", "Fictional own invite", "broker-user");
             var version = await AgencyVersion(); var key = Guid.NewGuid().ToString("N");
             var result = await users.Invite(broker, agencyId, key, version, input);
             Assert.True((await users.Invite(broker, agencyId, key, version, input)).Replayed);
+            AgencyInvitation initial;
+            await using (var db = new BackOfficeDbContext(options)) initial = await db.Set<AgencyInvitation>().AsNoTracking().SingleAsync(x => x.UserId == result.ResourceId);
+            var resendKey = Guid.NewGuid().ToString("N");
+            var resent = await invitations.Resend(broker, initial.Id, resendKey, initial.RowVersion, "Own invitation resend");
+            Assert.True((await invitations.Resend(broker, initial.Id, resendKey, initial.RowVersion, "Own invitation resend")).Replayed);
+            AgencyInvitation replacement;
+            await using (var db = new BackOfficeDbContext(options)) replacement = await db.Set<AgencyInvitation>().AsNoTracking().SingleAsync(x => x.Id == resent.ResourceId);
+            var revokeKey = Guid.NewGuid().ToString("N");
+            await invitations.Revoke(broker, replacement.Id, revokeKey, replacement.RowVersion, "Own invitation revoke");
+            Assert.True((await invitations.Revoke(broker, replacement.Id, revokeKey, replacement.RowVersion, "Own invitation revoke")).Replayed);
+            byte[] foreignVersion;
+            await using (var db = new BackOfficeDbContext(options)) foreignVersion = (await db.Set<Agency>().SingleAsync(x => x.Id == foreignId)).RowVersion;
+            var foreignInvite = await users.Invite(staff, foreignId, Guid.NewGuid().ToString(), foreignVersion, AgencyUserRules.Validate("foreign-invite@example.test", "Fictional foreign invite", "broker-user"));
+            Guid foreignInvitation;
+            await using (var db = new BackOfficeDbContext(options)) foreignInvitation = await db.Set<AgencyInvitation>().Where(x => x.UserId == foreignInvite.ResourceId).Select(x => x.Id).SingleAsync();
+            Assert.Equal(404, (await Assert.ThrowsAsync<AgencyCommandException>(() => invitations.Revoke(broker, foreignInvitation, Guid.NewGuid().ToString(), Array.Empty<byte>(), "Foreign invitation denial"))).Status);
             Assert.Equal(403, (await Assert.ThrowsAsync<AgencyCommandException>(() => users.Stage(broker, agencyId, Guid.NewGuid().ToString(), version, input))).Status);
             Assert.Equal(403, (await Assert.ThrowsAsync<AgencyCommandException>(() => users.Invite(broker, foreignId, key, version, input))).Status);
             Assert.Equal(404, (await Assert.ThrowsAsync<AgencyCommandException>(() => lifecycle.Deactivate(broker, agencyId, foreign, Guid.NewGuid().ToString(), Array.Empty<byte>(), "Foreign target"))).Status);
@@ -69,8 +101,11 @@ public sealed class AgencyOwnUserAuthorityTests
             await lifecycle.Reactivate(broker, agencyId, second, Guid.NewGuid().ToString(), await UserVersion(second), "Second admin restored");
             await lifecycle.Edit(broker, agencyId, first, Guid.NewGuid().ToString(), await UserVersion(first), "Fictional demoted admin", "broker-user", "Self demotion with another admin");
             Assert.Equal(403, (await Assert.ThrowsAsync<AgencyCommandException>(() => users.Invite(broker, agencyId, key, version, input))).Status);
+            Assert.Equal(403, (await Assert.ThrowsAsync<AgencyCommandException>(() => invitations.Resend(broker, initial.Id, resendKey, initial.RowVersion, "Own invitation resend"))).Status);
+            Assert.Equal(403, (await Assert.ThrowsAsync<AgencyCommandException>(() => invitations.Revoke(broker, replacement.Id, revokeKey, replacement.RowVersion, "Own invitation revoke"))).Status);
             var demoted = new ActorContext(first, null, agencyId, new HashSet<string> { "broker-user" });
             Assert.Equal(403, (await Assert.ThrowsAsync<AgencyCommandException>(() => users.Invite(demoted, agencyId, key, version, input))).Status);
+            Assert.Equal(403, (await Assert.ThrowsAsync<AgencyCommandException>(() => ReadAuthority(demoted, agencyId))).Status);
             await using (var db = new BackOfficeDbContext(options)) Assert.All(await db.Set<UserSession>().Where(x => x.UserId == first || x.UserId == second).ToListAsync(), session => Assert.NotNull(session.RevokedAt));
             await lifecycle.Edit(staff, agencyId, first, Guid.NewGuid().ToString(), await UserVersion(first), "Fictional restored admin", "broker-admin", "Internal restoration");
             Assert.True((await users.Invite(broker, agencyId, key, version, input)).Replayed);
@@ -80,7 +115,9 @@ public sealed class AgencyOwnUserAuthorityTests
             {
                 Assert.Equal(1, await db.Set<StaffUser>().CountAsync(x => x.Email == input.Email));
                 Assert.Equal(1, await db.Set<IdempotencyRecord>().CountAsync(x => x.Key == key));
-                Assert.Equal(2, await db.Set<AgencyInvitation>().CountAsync(x => x.UserId == result.ResourceId));
+                Assert.Equal(3, await db.Set<AgencyInvitation>().CountAsync(x => x.UserId == result.ResourceId));
+                Assert.Equal(1, await db.Set<IdempotencyRecord>().CountAsync(x => x.Key == resendKey));
+                Assert.Equal(1, await db.Set<IdempotencyRecord>().CountAsync(x => x.Key == revokeKey));
             }
         }
         finally { if (connection.InitialCatalog != owned) throw new InvalidOperationException("Cleanup target changed."); await using var db = new BackOfficeDbContext(options); await db.Database.EnsureDeletedAsync(); }

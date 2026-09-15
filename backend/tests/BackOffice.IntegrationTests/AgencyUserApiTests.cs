@@ -88,6 +88,9 @@ public sealed class AgencyUserApiTests
             var page=await Read(admin,draftPath+"/users?pageSize=1");Assert.Equal(2,page.GetProperty("totalCount").GetInt32());var cursor=page.GetProperty("nextCursor").GetString()!;
             Assert.Single((await Read(admin,draftPath+"/users?pageSize=1&cursor="+Uri.EscapeDataString(cursor))).GetProperty("items").EnumerateArray());
             Assert.Equal(HttpStatusCode.BadRequest,(await admin.GetAsync($"/api/v1/agencies/{activeId}/users?pageSize=1&cursor="+Uri.EscapeDataString(cursor))).StatusCode);
+            await using(var changed=new BackOfficeDbContext(options))await changed.Database.ExecuteSqlInterpolatedAsync($"UPDATE Agency SET UpdatedAt=SYSUTCDATETIME() WHERE Id={draftId}");
+            Assert.Equal(HttpStatusCode.BadRequest,(await admin.GetAsync(draftPath+"/users?pageSize=1&cursor="+Uri.EscapeDataString(cursor))).StatusCode);
+
             Assert.Equal(HttpStatusCode.BadRequest,(await admin.GetAsync(invitePath+"?userId=not-a-guid")).StatusCode);
             Assert.Single((await Read(admin,invitePath+"?userId="+userId)).GetProperty("items").EnumerateArray());
             Assert.Equal(HttpStatusCode.NotFound,(await admin.GetAsync($"/api/v1/agencies/{activeId}/users/{userId}")).StatusCode);

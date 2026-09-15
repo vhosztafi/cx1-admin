@@ -1,3 +1,4 @@
+using System.Data;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using BackOffice.Application.Agencies;
@@ -27,33 +28,47 @@ public static class AgencyUserEndpoints
 
     private static async Task<IResult> Users(Guid agencyId,Guid? userId,HttpContext context,IDbContextFactory<BackOfficeDbContext> factory,PartyPaging paging)
     {
-        await using var db=await factory.CreateDbContextAsync(context.RequestAborted);
-        if(!await db.Set<Agency>().AnyAsync(x=>x.Id==agencyId,context.RequestAborted))return Missing(context);
-        var page=paging.Read(context,LocalIdentityService.Actor(context.User),"createdAt-desc,id");if(page is null)return InvalidQuery(context);
-        var query=from user in db.Set<StaffUser>() join link in db.Set<UserRole>() on user.Id equals link.UserId join role in db.Set<Role>() on link.RoleId equals role.Id
-            where user.AgencyId==agencyId&&role.Scope=="agency"&&(userId==null||user.Id==userId)&&user.CreatedAt<=page.AsOf
-            orderby user.CreatedAt descending,user.Id select new{user.Id,user.AgencyId,user.DisplayName,user.Email,role=role.Code,state=user.State=="suspended"?"inactive":user.State,user.CreatedAt,user.RowVersion,lastSeenAt=db.Set<UserSession>().Where(session=>session.UserId==user.Id).Max(session=>(DateTimeOffset?)session.LastSeenAt)};
-        var total=await query.CountAsync(context.RequestAborted);var rows=await query.Skip(userId is null?page.Offset:0).Take(userId is null?page.Size:1).ToListAsync(context.RequestAborted);
-        var items=rows.Select(x=>new{x.Id,x.AgencyId,x.DisplayName,x.Email,x.role,x.state,x.CreatedAt,x.lastSeenAt,etag=AgencyDraftService.Etag(x.RowVersion)}).ToList();
-        if(userId is not null){if(items.Count==0)return Missing(context);context.Response.Headers.ETag=items[0].etag;return Results.Json(items[0],ClientEndpoints.Json);}
-        return Results.Json(new{items,totalCount=total,nextCursor=paging.Next(page,page.Offset+items.Count<total)},ClientEndpoints.Json);
+        try
+        {
+            await using var db=await factory.CreateDbContextAsync(context.RequestAborted);
+            await using var transaction=await db.Database.BeginTransactionAsync(IsolationLevel.Serializable,context.RequestAborted);
+            var actor=LocalIdentityService.Actor(context.User);
+            var scope=await AgencyUserAuthority.ReadScope(db,actor,agencyId,context.RequestAborted);
+            var page=paging.ReadBound(context,actor,"createdAt-desc,id",scope);if(page is null)return InvalidQuery(context);
+            var query=from user in db.Set<StaffUser>() join link in db.Set<UserRole>() on user.Id equals link.UserId join role in db.Set<Role>() on link.RoleId equals role.Id
+                where user.AgencyId==agencyId&&role.Scope=="agency"&&(userId==null||user.Id==userId)&&user.CreatedAt<=page.AsOf
+                orderby user.CreatedAt descending,user.Id select new{user.Id,user.AgencyId,user.DisplayName,user.Email,role=role.Code,state=user.State=="suspended"?"inactive":user.State,user.CreatedAt,user.RowVersion,lastSeenAt=db.Set<UserSession>().Where(session=>session.UserId==user.Id).Max(session=>(DateTimeOffset?)session.LastSeenAt)};
+            var total=await query.CountAsync(context.RequestAborted);var rows=await query.Skip(userId is null?page.Offset:0).Take(userId is null?page.Size:1).ToListAsync(context.RequestAborted);
+            var items=rows.Select(x=>new{x.Id,x.AgencyId,x.DisplayName,x.Email,x.role,x.state,x.CreatedAt,x.lastSeenAt,etag=AgencyDraftService.Etag(x.RowVersion)}).ToList();
+            if(userId is not null){if(items.Count==0)return Missing(context);context.Response.Headers.ETag=items[0].etag;await transaction.CommitAsync(context.RequestAborted);return Results.Json(items[0],ClientEndpoints.Json);}
+            await transaction.CommitAsync(context.RequestAborted);
+            return Results.Json(new{items,totalCount=total,nextCursor=paging.Next(page,page.Offset+items.Count<total)},ClientEndpoints.Json);
+        }
+        catch(Exception ex)when(IsError(ex)){return Error(context,ex);}
     }
 
     private static async Task<IResult> Invitations(Guid agencyId,Guid? invitationId,HttpContext context,IDbContextFactory<BackOfficeDbContext> factory,PartyPaging paging)
     {
-        await using var db=await factory.CreateDbContextAsync(context.RequestAborted);
-        if(!await db.Set<Agency>().AnyAsync(x=>x.Id==agencyId,context.RequestAborted))return Missing(context);
-        var page=paging.Read(context,LocalIdentityService.Actor(context.User),"createdAt-desc,id","userId");if(page is null)return InvalidQuery(context);
-        Guid? userId=null;if(context.Request.Query.TryGetValue("userId",out var value)){if(!Guid.TryParse(value,out var parsed)||parsed==Guid.Empty)return InvalidQuery(context);userId=parsed;}
-        var now=DateTimeOffset.UtcNow;
-        var query=from invitation in db.Set<AgencyInvitation>() join user in db.Set<StaffUser>() on invitation.UserId equals user.Id join link in db.Set<UserRole>() on user.Id equals link.UserId join role in db.Set<Role>() on link.RoleId equals role.Id
-            where invitation.AgencyId==agencyId&&user.AgencyId==agencyId&&role.Scope=="agency"&&(invitationId==null||invitation.Id==invitationId)&&(userId==null||user.Id==userId)&&invitation.CreatedAt<=page.AsOf
-            orderby invitation.CreatedAt descending,invitation.Id
-            select new{invitation.Id,invitation.UserId,invitation.AgencyId,user.Email,role=role.Code,invitation.CreatedAt,state=invitation.State=="pending"&&invitation.ExpiresAt<=now?"expired":invitation.State,invitation.IssuedAt,invitation.ExpiresAt,invitation.NotificationId,invitation.AcceptedAt,invitation.RevokedAt,invitation.RowVersion};
-        var total=await query.CountAsync(context.RequestAborted);var rows=await query.Skip(invitationId is null?page.Offset:0).Take(invitationId is null?page.Size:1).ToListAsync(context.RequestAborted);
-        var items=rows.Select(x=>new{x.Id,x.UserId,x.AgencyId,x.Email,x.role,x.CreatedAt,x.state,x.IssuedAt,x.ExpiresAt,x.NotificationId,x.AcceptedAt,x.RevokedAt,etag=AgencyDraftService.Etag(x.RowVersion)}).ToList();
-        if(invitationId is not null){if(items.Count==0)return Missing(context);context.Response.Headers.ETag=items[0].etag;return Results.Json(items[0],ClientEndpoints.Json);}
-        return Results.Json(new{items,totalCount=total,nextCursor=paging.Next(page,page.Offset+items.Count<total)},ClientEndpoints.Json);
+        try
+        {
+            await using var db=await factory.CreateDbContextAsync(context.RequestAborted);
+            await using var transaction=await db.Database.BeginTransactionAsync(IsolationLevel.Serializable,context.RequestAborted);
+            var actor=LocalIdentityService.Actor(context.User);
+            var scope=await AgencyUserAuthority.ReadScope(db,actor,agencyId,context.RequestAborted);
+            var page=paging.ReadBound(context,actor,"createdAt-desc,id",scope,"userId");if(page is null)return InvalidQuery(context);
+            Guid? userId=null;if(context.Request.Query.TryGetValue("userId",out var value)){if(!Guid.TryParse(value,out var parsed)||parsed==Guid.Empty)return InvalidQuery(context);userId=parsed;}
+            var now=DateTimeOffset.UtcNow;
+            var query=from invitation in db.Set<AgencyInvitation>() join user in db.Set<StaffUser>() on invitation.UserId equals user.Id join link in db.Set<UserRole>() on user.Id equals link.UserId join role in db.Set<Role>() on link.RoleId equals role.Id
+                where invitation.AgencyId==agencyId&&user.AgencyId==agencyId&&role.Scope=="agency"&&(invitationId==null||invitation.Id==invitationId)&&(userId==null||user.Id==userId)&&invitation.CreatedAt<=page.AsOf
+                orderby invitation.CreatedAt descending,invitation.Id
+                select new{invitation.Id,invitation.UserId,invitation.AgencyId,user.Email,role=role.Code,invitation.CreatedAt,state=invitation.State=="pending"&&invitation.ExpiresAt<=now?"expired":invitation.State,invitation.IssuedAt,invitation.ExpiresAt,invitation.NotificationId,invitation.AcceptedAt,invitation.RevokedAt,invitation.RowVersion};
+            var total=await query.CountAsync(context.RequestAborted);var rows=await query.Skip(invitationId is null?page.Offset:0).Take(invitationId is null?page.Size:1).ToListAsync(context.RequestAborted);
+            var items=rows.Select(x=>new{x.Id,x.UserId,x.AgencyId,x.Email,x.role,x.CreatedAt,x.state,x.IssuedAt,x.ExpiresAt,x.NotificationId,x.AcceptedAt,x.RevokedAt,etag=AgencyDraftService.Etag(x.RowVersion)}).ToList();
+            if(invitationId is not null){if(items.Count==0)return Missing(context);context.Response.Headers.ETag=items[0].etag;await transaction.CommitAsync(context.RequestAborted);return Results.Json(items[0],ClientEndpoints.Json);}
+            await transaction.CommitAsync(context.RequestAborted);
+            return Results.Json(new{items,totalCount=total,nextCursor=paging.Next(page,page.Offset+items.Count<total)},ClientEndpoints.Json);
+        }
+        catch(Exception ex)when(IsError(ex)){return Error(context,ex);}
     }
 
     private static async Task<IResult> Create(Guid agencyId,HttpContext context,AgencyUserService service)

@@ -1,3 +1,7 @@
+using System.Data;
+using System.Security.Cryptography;
+using System.Text.Json;
+using Microsoft.EntityFrameworkCore.Storage;
 using BackOffice.Application;
 using BackOffice.Application.Agencies;
 using BackOffice.Infrastructure.Persistence;
@@ -25,6 +29,15 @@ public static class AgencyUserAuthority
         var roles = new List<Role>();
         foreach (var link in links.OrderBy(x => x.RoleId)) roles.Add(await db.Set<Role>().FromSqlInterpolated($"SELECT * FROM Role WITH(HOLDLOCK) WHERE Id={link.RoleId}").AsNoTracking().SingleAsync(token));
         if (roles.Count == 0 || roles.Any(x => x.Scope != "internal") || !actor.Roles.SetEquals(roles.Select(x => x.Code))) throw Denied();
+    }
+    public static async Task<string> ReadScope(BackOfficeDbContext db, ActorContext actor, Guid agencyId, CancellationToken token)
+    {
+        if (db.Database.CurrentTransaction is null || db.Database.CurrentTransaction.GetDbTransaction().IsolationLevel != IsolationLevel.Serializable)
+            throw new InvalidOperationException("User reads require a serializable transaction through materialization.");
+        await Authorize(db, actor, agencyId, true, token);
+        var version = await db.Set<Agency>().AsNoTracking().Where(x => x.Id == agencyId).Select(x => x.RowVersion).SingleAsync(token);
+        var stamp = await db.Set<StaffUser>().AsNoTracking().Where(x => x.Id == actor.UserId).Select(x => x.SecurityStamp).SingleAsync(token);
+        return Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new { version, stamp })));
     }
     private static AgencyCommandException Denied() => new(403, "agency-scope-denied");
 }
