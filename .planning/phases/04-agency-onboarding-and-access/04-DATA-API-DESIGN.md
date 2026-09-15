@@ -1,5 +1,13 @@
 # Phase 4 data and API decisions
 
+### Implemented current sharing context (04-07)
+
+AgencySharingService.Context and PreviewContext use the same projection under serializable current agency/identity authorization. They expose only agency identity, products from the latest published agency terms effective on today's Europe/London business date, and the explicit bordereau grant state. The next terms version supplies the exclusive product effective end; at the next local midnight the later terms selection replaces the prior products. Only product code/name/effective dates leave the terms storage boundary: commissions, settlement, credit and raw snapshots remain hidden. Agencies without published terms return an empty product list.
+
+Permission granted is derived from an owned unrevoked grant whose grant time has arrived. Product and permission available remain false while their actual quote/policy/export workflows are unfinished. Explicit unavailable sections name quotes phase5, policies phase6, tasks phase9 and statements/bordereaux phase10; no policy IDs, task IDs or fabricated balances are produced. This separates stored approval provenance from feature availability. Suspension denies context access; it does not make retained internal history externally visible.
+
+GET `/agencies/{agencyId}/sharing` now returns the audited internal context using the existing agency-read policy, including underwriter and agency administrator roles. It accepts no scope/as-of query override and never changes the staff principal. Broker Context is service-tested but no broker HTTP identity route is opened. Paged client/contact/instruction endpoints and their current authority-bound cursors remain to be wired before the full sharing reference UI and external access acceptance.
+
 ### Implemented internal permission HTTP surface (04-07)
 
 Five actual routes are registered: GET/POST `/agencies/{agencyId}/permission-requests`, GET `/agencies/{agencyId}/permission-grants`, POST `/agencies/{agencyId}/permission-requests/{requestId}/decision`, and POST `/agencies/{agencyId}/permission-grants/{grantId}/revoke`. They currently require internal agency-admin/system-admin through the existing identity policy. Broker HTTP access remains closed until the external identity integration is verified; the underlying command service already enforces own broker-admin scope.

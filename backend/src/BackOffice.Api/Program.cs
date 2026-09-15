@@ -74,6 +74,7 @@ app.MapAgencies();
 app.MapAgencyStateRequests();
 app.MapAgencyTerms();
 app.MapAgencyPermissions();
+app.MapAgencySharing();
 app.MapAgencyEvidence();
 app.MapAgencyNotifications();
 app.MapContacts();

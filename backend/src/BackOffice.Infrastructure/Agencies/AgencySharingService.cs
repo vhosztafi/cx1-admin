@@ -15,7 +15,7 @@ public sealed record AgencySharingPage<T>(IReadOnlyList<T> Items, int Total, int
 
 // These materialized reads are the common boundary for future external endpoints
 // and staff preview. No IQueryable or caller-created scope token escapes it.
-public static class AgencySharingService
+public static partial class AgencySharingService
 {
     public static Task<AgencySharingPage<AgencySharedClient>> Clients(BackOfficeDbContext db, ActorContext actor, Guid agencyId, AgencySharingQuery query, CancellationToken token = default)
         => Read(db, actor, agencyId, query, false, "clients", ClientRows, token);

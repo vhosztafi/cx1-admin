@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-15T01:54:49Z"
+last_updated: "2026-09-15T02:18:54Z"
 last_activity: 2026-09-15
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 4 of 13 (Agency onboarding and access)
 Plan: 04-07 of 8 in progress; 04-01 through 04-06 complete, all six Phase 3 plans complete
 Status: In progress — autonomous
-Last activity: 2026-09-15 —04-07 internal permission APIs and authority-bound cursors verified; full315backend/52SQL and79contracts pass. Broker login still closed.
+Last activity: 2026-09-15 —04-07 current sharing summaries and audited HTTP preview verified; full316backend/53SQL and79contracts pass. Broker login still closed.
 
 Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -54,7 +54,7 @@ Progress: Phases 1–3 complete; 3/13 phases. Agency onboarding/access next.
 ## Session Continuity
 
 Last session: 2026-09-15
-Stopped at:04-07 internal permission API slice verified. Registered5 permission list/request/decision/revoke routes with internal agency-admin policy, CSRF/ETags/idempotency, ID-only receipts and explicit list DTOs. ReadScope+PartyPaging.ReadBound bind actor/routes/page size/current agency version/stored security stamp/grant rowversions; serializable scope through count/materialization. Real-cookie internal API target .local/phase4-permission-api-targeted passes; full .local/phase4-permission-api-full315/52SQL (256unit/59integration),79contracts/949controls/327operations pass. OpenAPI generator and generated contract semantically match. CI315/52Windows313/50Linux; hostedCI unperformed. No schema/seed/identity/frontend change. NEXT effective sharing/capability/product summaries and sharing endpoints/cursors; permission/sharing UI; own broker-admin user authority; external sign-in/session/UIguards and real broker-cookie acceptance. Broker HTTP remains closed; read scopes alone are not granted capability or future download availability. Permission POST202 ETag is parent agency version; decide/revoke200 ETag resource; current resource versions/reasons in lists, no detail Location. Read04-07-PROGRESS and04-DATA-API-DESIGN. No active tests/previews; existing29frontend/build/browser evidence current.
+Stopped at:04-07 current sharing context slice verified. AgencySharingService partial Context/PreviewContext projects safe agency identity, current agreed product labels/dates selected by London business date, current owned unrevoked permission grants, and explicit unavailable future sections. Product/download available remains false. GET /agencies/{agencyId}/sharing registered with agency-read policy and preview audit. Target .local/phase4-sharing-context-targeted service+real internal-cookie HTTP passes; full .local/phase4-sharing-context-full316/53SQL (256unit/60integration),79contracts/949controls/327operations pass. CI316/53Windows314/51Linux; hostedCI unperformed. No schema/seed/frontend/identity change. NEXT paged shared client/contact/instruction endpoints with authority fingerprints and materialization in ONE serializable transaction; existing Read owns its transaction so adapt caller transaction/callback safely. Include visible relationship/contact/instruction membership in cursor scope, not hidden reason/marketing fields. Then source sharing/permissions UI, broker own-user authority, external sign-in/session/UIguards and real broker-cookie acceptance. Read04-07-PROGRESS and04-DATA-API-DESIGN. Broker login closed; no active tests/previews; existing29frontend/build/browser evidence current.
 Resume file: .planning/phases/04-agency-onboarding-and-access/04-07-PROGRESS.md
 
 ## Autonomous continuation
