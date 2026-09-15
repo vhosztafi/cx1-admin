@@ -12,11 +12,18 @@ public static partial class AgencySharingService
     // Callers retain the same serializable transaction through cursor validation,
     // projection materialization and audit. Fingerprints contain public projection
     // values, not hidden flag reasons, person master data or marketing consent.
-    public static async Task<string> PreviewPageScope(BackOfficeDbContext db, ActorContext actor, Guid agencyId, string section, AgencySharingQuery query, CancellationToken token = default)
+    public static Task<string> PreviewPageScope(BackOfficeDbContext db, ActorContext actor, Guid agencyId, string section, AgencySharingQuery query, CancellationToken token = default)
+        => PageScope(db,actor,agencyId,section,query,true,token);
+
+    public static Task<string> PageScope(BackOfficeDbContext db, ActorContext actor, Guid agencyId, string section, AgencySharingQuery query, CancellationToken token = default)
+        => PageScope(db,actor,agencyId,section,query,false,token);
+
+    private static async Task<string> PageScope(BackOfficeDbContext db, ActorContext actor, Guid agencyId, string section, AgencySharingQuery query, bool preview, CancellationToken token)
     {
         if (db.Database.CurrentTransaction == null) throw new InvalidOperationException("Sharing cursor scope requires a transaction.");
         RequireSerializableIfPresent(db);
-        await AuthorizePreview(db, actor, agencyId, token);
+        if (preview) await AuthorizePreview(db, actor, agencyId, token);
+        else await AgencyScope.Resolve(db, actor, agencyId, "agency-sharing-read", token);
         if (query.Search?.Length > 200 || query.RelationshipId == Guid.Empty) throw new AgencyCommandException(400, "invalid-sharing-query");
         query = query with { Search = query.Search?.Trim() };
         object visible;

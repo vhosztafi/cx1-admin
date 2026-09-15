@@ -14,10 +14,10 @@ public static class AgencyPermissionEndpoints
     public static void MapAgencyPermissions(this WebApplication app)
     {
         app.MapGet("/api/v1/agencies/{agencyId:guid}/permission-matrix", Matrix).RequireAuthorization("agency-admin");
-        // Internal entry points only until the complete external identity gates are verified.
+        // Decisions, revocations and staff projections retain internal policies.
         app.MapGet("/api/v1/agencies/{agencyId:guid}/permission-requests", (Guid agencyId, HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, PartyPaging paging) => List(agencyId, false, context, factory, paging)).RequireAuthorization("agency-admin");
         app.MapGet("/api/v1/agencies/{agencyId:guid}/permission-grants", (Guid agencyId, HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, PartyPaging paging) => List(agencyId, true, context, factory, paging)).RequireAuthorization("agency-admin");
-        app.MapPost("/api/v1/agencies/{agencyId:guid}/permission-requests", Request).RequireAuthorization("agency-admin");
+        app.MapPost("/api/v1/agencies/{agencyId:guid}/permission-requests", Request).RequireAuthorization("agency-own-users");
         app.MapPost("/api/v1/agencies/{agencyId:guid}/permission-requests/{requestId:guid}/decision", Decide).RequireAuthorization("agency-admin");
         app.MapPost("/api/v1/agencies/{agencyId:guid}/permission-grants/{grantId:guid}/revoke", Revoke).RequireAuthorization("agency-admin");
     }

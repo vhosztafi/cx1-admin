@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1–3 and Phase4 plans04-01 through04-06 complete.04-07 in progress: current agency scope, safe shared projections, permission storage/commands/internal APIs, authority-bound permission cursors and audited current sharing context verified. Paged sharing endpoints with transaction-held scope/audit are verified; sharing/permissions UI and broker identity/own-user integration remain; broker login stays closed. Latest317 backend/54SQL,29 frontend,79contracts pass, with existing lint/build/browser evidence. Full AGY requirements remain partial until remaining owning plans and04-08; source KPI reconciliation is explicit in ACCEPTANCE-BACKLOG.
+**Status:** Autonomous progression authorised. Phases1-3 and Phase4 plans04-01 through04-07 complete.04-08 prepared: source Open actions KPI reconciliation and whole-phase acceptance remain. Accepted agency identity, own-agency APIs/user authority, permissions, internal sharing and workspace guards are verified. Latest323 backend/56SQL,30 frontend,80contracts plus lint/build/actual browser pass. Whole AGY requirements remain partial until04-08 and downstream insurance/task/finance owners.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 

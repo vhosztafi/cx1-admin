@@ -1,4 +1,4 @@
-export type Actor = { id: string; displayName: string; email: string; roles: string[]; mfaEnabled: boolean };
+export type Actor = { id: string; displayName: string; email: string; roles: string[]; mfaEnabled: boolean; scope: 'internal' | 'agency'; agencyId: string | null };
 
 export function authError(status: number): string {
   if (status === 401) return 'Unable to sign in. Check your details or try again later if your account is locked.';

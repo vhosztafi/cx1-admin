@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import type { Actor } from './auth';
 
-export const requireActor = cache(async (): Promise<Actor> => {
+export const requireSessionActor = cache(async (): Promise<Actor> => {
   const jar = await cookies();
   const session = jar.get('__Host-cover-session') ?? jar.get('cover-dev-session');
   if (!session) redirect('/login');
@@ -14,4 +14,12 @@ export const requireActor = cache(async (): Promise<Actor> => {
   if (response.status === 401) redirect('/login');
   if (!response.ok) throw new Error('The back office is temporarily unavailable.');
   return response.json();
+});
+
+// Every internal page uses this guard as well as the workspace layout, because
+// Next.js can evaluate page and layout data concurrently.
+export const requireActor = cache(async (): Promise<Actor> => {
+  const actor = await requireSessionActor();
+  if (actor.scope !== 'internal' || actor.agencyId !== null) redirect('/agency-access');
+  return actor;
 });

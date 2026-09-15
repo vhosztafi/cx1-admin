@@ -83,7 +83,7 @@ test('agency user writes accept exactly one broker role and never internal acces
 });
 test('user and invitation commands return identities while reads carry their own versions',()=>{
  const cases=[['/agencies/{agencyId}/invitations','post',201,['id','invitationId']],['/agencies/{agencyId}/users/{userId}','put',200,['id']],['/agencies/{agencyId}/users/{userId}/deactivate','post',200,['id']],['/agencies/{agencyId}/users/{userId}/reactivate','post',200,['id']],['/invitations/{invitationId}/resend','post',202,['id','userId']],['/invitations/{invitationId}/revoke','post',200,['id','userId']]];
- for(const [path,method,status,keys] of cases){const operation=op(path,method);assert.equal(operation['x-permission'],'agency-admin');assert.deepEqual(Object.keys(operation.responses[status].content['application/json'].schema.properties),keys);assert.ok(operation.parameters.some(x=>x.name==='If-Match'&&x.required));}
+ for(const [path,method,status,keys] of cases){const operation=op(path,method);assert.equal(operation['x-permission'],'internal-agency-admin-or-own-broker-admin');assert.deepEqual(Object.keys(operation.responses[status].content['application/json'].schema.properties),keys);assert.ok(operation.parameters.some(x=>x.name==='If-Match'&&x.required));}
  assert.ok(doc.components.schemas.AgencyUser.required.includes('etag'));
  assert.ok(doc.components.schemas.Invitation.oneOf.every(x=>x.required.includes('etag')));
  assert.equal(op('/agencies/{agencyId}/users/{userId}','get').operationId,'getAgencyUser');
@@ -177,4 +177,12 @@ test('reviewed agency actions use agency-specific routes and every inventory con
  assert.deepEqual(reviews.find(x=>x.controlId==='CTL-e7a0096dd263').operationIds,['updateAgencyUser','deactivateAgencyUser','reactivateAgencyUser']);
  assert.deepEqual(reviews.find(x=>x.controlId==='CTL-2aefbeec3f5b').operationIds,['decideAgencyPermission']);
  for(const action of ['getAgencySharingPreview','uploadAgencyEvidenceFile','downloadAgencyEvidenceFile','listAgencyActivity','listAgencyNotifications','listAgencyTermsVersions','requestAgencyTermsChange'])assert.ok(operations.has(action),action);
+});
+
+test('actor identity scope is explicit and consistent with the stored agency',()=>{
+ const validate=schema('Actor');
+ const actor={id:uuid,displayName:'Fictional actor',email:'actor@example.test',roles:['agency-admin'],mfaEnabled:false,scope:'internal',agencyId:null};
+ assert.ok(validate(actor));
+ assert.ok(validate({...actor,roles:['broker-admin'],scope:'agency',agencyId:uuid}));
+ for(const patch of [{scope:'agency'},{agencyId:uuid},{scope:'unknown'},{scope:undefined},{agencyId:undefined}])assert.equal(validate({...actor,...patch}),false);
 });

@@ -55,6 +55,7 @@ public static class OperationalJobEndpoints
     private static async Task<IResult> GetJob(Guid jobId, HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, TimeProvider time)
     {
         var actor = LocalIdentityService.Actor(context.User);
+        if (actor.AgencyId != null) return IdentityEndpoints.Problem(context, 403, "forbidden", "Access denied.");
         var administrator = actor.HasCapability("integration-admin");
         await using var db = await factory.CreateDbContextAsync(context.RequestAborted);
         // Business-job subject scope is supplied by its owning phase. It cannot inherit

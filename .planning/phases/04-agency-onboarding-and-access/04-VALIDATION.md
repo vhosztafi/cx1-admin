@@ -27,3 +27,8 @@ After contract edits run node scripts/validate-contracts.mjs and agency-contract
 Browser harness must preserve fictional history and use unique identities. Tokens/passwords stay out of screenshots/output. Use actual two-user approval sessions, not role headers; count forbidden responses and unchanged SQL records directly. All existing shell/operations/client/contact/support/match scripts remain relevant regressions. Compare source/app at1560x1000 and390px, verify314px rail, table containment, dialog focus and live status.
 
 Nyquist compliance and phase sign-off remain pending implementation. Human UAT, hosted CI and optional Docker runtime cannot be inferred from these plans. AGY-03/04 retain downstream acceptance for real financial/insurance/task records.
+
+
+## 04-07 completed evidence
+
+AgencyExternalApiTests validates actual accepted-cookie isolation for three broker roles/two agencies, own user/invitation lifecycle and current permission/session/replay authority. AgencyScopeResolution/SharingProjection/SharingContext/SharingPaging/OwnUserAuthority/OwnInvitationAuthority and permission API/storage tests cover held reads, safe DTOs, scope fingerprints, immutable grants and service races. Final report gate `.local/phase4-external-full-final`:323/56SQL, no skips.80contracts,30frontend/lint/typecheck/build pass. Actual `verify-agency-access-browser.mjs` and shell browser pass with reviewed desktop/mobile screenshots; prior sharing/permissions/users browser evidence is in04-07-PROGRESS. Phase-level Nyquist and AGY acceptance remain04-08.

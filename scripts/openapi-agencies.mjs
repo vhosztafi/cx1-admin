@@ -121,14 +121,14 @@ export function addAgencyContracts({schemas:s,ref:r,text:t,enumeration:e,object:
  s.AgencyInvitationList=o({items:bounded(r('Invitation'),100),totalCount:integer,nextCursor:t(2048)},['items','totalCount']);
  out('/agencies/{agencyId}/users','get','AgencyUserList');
  out('/agencies/{agencyId}/invitations','get','AgencyInvitationList');
- for(const suffix of ['users','invitations'])paths[`/agencies/{agencyId}/${suffix}`].get['x-permission']='agency-admin';
+ for(const suffix of ['users','invitations'])paths[`/agencies/{agencyId}/${suffix}`].get['x-permission']='internal-agency-admin-or-own-broker-admin';
  paths['/agencies/{agencyId}/invitations'].get.parameters.push({name:'userId',in:'query',schema:id});
- op('get','/agencies/{agencyId}/users/{userId}','getAgencyUser','agency-admin',{output:r('AgencyUser')});
- op('get','/agencies/{agencyId}/invitations/{invitationId}','getAgencyInvitation','agency-admin',{output:r('Invitation')});
- op('put','/agencies/{agencyId}/users/{userId}','updateAgencyUser','agency-admin',{existing:true,input:r('AgencyUserWrite'),output:o({id}),summary:'Edit display name/broker role with user ETag; identity-only receipt, immutable email/agency, role changes revoke sessions'});
- for(const action of ['deactivate','reactivate'])op('post',`/agencies/{agencyId}/users/{userId}/${action}`,`${action}AgencyUser`,'agency-admin',{existing:true,input:reason,output:o({id}),summary:`${action} agency user with user ETag; return identity only then refresh; never restore old sessions or invitations`});
- replace('post','/agencies/{agencyId}/invitations','agency-admin',{existing:true,input:r('AgencyInvitationWrite'),output:o({id,invitationId:id}),status:201,summary:'Create user/invitation using agency ETag; return user ID and invitation ID; draft staging has no token or delivery'});
- for(const action of ['resend','revoke'])replace('post',`/invitations/{invitationId}/${action}`,'agency-admin',{existing:true,input:reason,output:o({id,userId:id}),status:action==='resend'?202:200,summary:`${action} with invitation ETag; identity-only receipt, history retained and current authority before replay`});
+ op('get','/agencies/{agencyId}/users/{userId}','getAgencyUser','internal-agency-admin-or-own-broker-admin',{output:r('AgencyUser')});
+ op('get','/agencies/{agencyId}/invitations/{invitationId}','getAgencyInvitation','internal-agency-admin-or-own-broker-admin',{output:r('Invitation')});
+ op('put','/agencies/{agencyId}/users/{userId}','updateAgencyUser','internal-agency-admin-or-own-broker-admin',{existing:true,input:r('AgencyUserWrite'),output:o({id}),summary:'Edit display name/broker role with user ETag; identity-only receipt, immutable email/agency, role changes revoke sessions'});
+ for(const action of ['deactivate','reactivate'])op('post',`/agencies/{agencyId}/users/{userId}/${action}`,`${action}AgencyUser`,'internal-agency-admin-or-own-broker-admin',{existing:true,input:reason,output:o({id}),summary:`${action} agency user with user ETag; return identity only then refresh; never restore old sessions or invitations`});
+ replace('post','/agencies/{agencyId}/invitations','internal-agency-admin-or-own-broker-admin',{existing:true,input:r('AgencyInvitationWrite'),output:o({id,invitationId:id}),status:201,summary:'Create user/invitation using agency ETag; return user ID and invitation ID; draft staging has no token or delivery'});
+ for(const action of ['resend','revoke'])replace('post',`/invitations/{invitationId}/${action}`,'internal-agency-admin-or-own-broker-admin',{existing:true,input:reason,output:o({id,userId:id}),status:action==='resend'?202:200,summary:`${action} with invitation ETag; identity-only receipt, history retained and current authority before replay`});
  op('post','/invitations/{invitationId}/demo-link','revealDemoInvitationLink','internal-agency-user-admin-development-only',{idempotent:false,output:o({invitationToken:{type:'string',pattern:'^[A-Za-z0-9_-]{43}$'}}),summary:'Development-only audited secret reveal; no-store, no receipt, authenticated internal agency user admin and CSRF required'});
  paths['/invitations/{invitationId}/demo-link'].post.responses[200].headers['Cache-Control']={description:'Never cache an invitation secret.',schema:{const:'no-store'}};
  replace('post','/auth/invitations/accept','invitation-token-owner',{publicAuth:true,input:o({invitationToken:{type:'string',pattern:'^[A-Za-z0-9_-]{43}$'},password:{type:'string',minLength:12,maxLength:128}}),output:o({accepted:{const:true}}),summary:'Consume a current one-time invitation with password setup; trusted stored role only, no automatic login'});
@@ -160,6 +160,7 @@ export function addAgencyContracts({schemas:s,ref:r,text:t,enumeration:e,object:
  }
  op('get','/agencies/{agencyId}/sharing','getAgencySharingPreview','agency-read-audited',{output:r('AgencySharing')});
  op('get','/agency-context','getCurrentAgencyContext','active-own-agency',{output:r('AgencySharing')});
+ paths['/agency-context'].get.responses['200'].headers.ETag={description:'Current agency version for own-agency commands.',schema:{type:'string'}};
  for(const [prefix,suffix] of [['/agencies/{agencyId}/sharing','Preview'],['/agency-context','Current']]){
   const permission=suffix==='Preview'?'agency-read-audited':'active-own-agency';
   list(`${prefix}/clients`,`list${suffix}AgencyClients`,permission,r('AgencySharedClient'),[['q',t()]]);

@@ -49,6 +49,16 @@ public static class IdentityEndpoints
                     context.User.Identity?.IsAuthenticated == true && Guid.TryParse(context.User.FindFirstValue(ClaimTypes.NameIdentifier),out _) &&
                     LocalIdentityService.Actor(context.User).HasCapability(capability)));
         });
+        builder.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy("agency-context", policy => policy.RequireAuthenticatedUser().RequireAssertion(context => context.User.Identity?.IsAuthenticated == true && Guid.TryParse(context.User.FindFirstValue(ClaimTypes.NameIdentifier),out _) && LocalIdentityService.Actor(context.User).AgencyId != null));
+            options.AddPolicy("agency-own-users", policy => policy.RequireAuthenticatedUser().RequireAssertion(context =>
+            {
+                if (context.User.Identity?.IsAuthenticated != true || !Guid.TryParse(context.User.FindFirstValue(ClaimTypes.NameIdentifier),out _)) return false;
+                var actor = LocalIdentityService.Actor(context.User);
+                return actor.HasCapability("agency-admin") || (actor.AgencyId != null && actor.Roles.SetEquals(new[] { "broker-admin" }));
+            }));
+        });
         builder.Services.AddAntiforgery(options =>
         {
             options.HeaderName="X-CSRF-Token";

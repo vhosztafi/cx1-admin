@@ -24,7 +24,7 @@ public sealed class SqlTicketStore(IDbContextFactory<BackOfficeDbContext> factor
         var user = snapshot?.User ?? throw new InvalidOperationException("Account changed during authentication.");
         if (!snapshot.Roles.Select(x => x.Code).ToHashSet(StringComparer.Ordinal).SetEquals(ticket.Principal.FindAll(ClaimTypes.Role).Select(x => x.Value)))
             throw new InvalidOperationException("Account roles changed during authentication.");
-        if (user.State != "active" || user.AgencyId is not null || user.SecurityStamp != ticket.Principal.FindFirstValue(LocalIdentityService.StampClaim))
+        if (!LocalIdentityService.ScopeMatches(ticket.Principal,user) || user.State != "active" || user.SecurityStamp != ticket.Principal.FindFirstValue(LocalIdentityService.StampClaim))
             throw new InvalidOperationException("Account changed during authentication.");
         var key = WebEncoders.Base64UrlEncode(RandomNumberGenerator.GetBytes(32));
         var now = time.GetUtcNow();
@@ -48,14 +48,14 @@ public sealed class SqlTicketStore(IDbContextFactory<BackOfficeDbContext> factor
         if (reference == null) return null;
         await using var transaction = await db.Database.BeginTransactionAsync();
         var snapshot = await IdentitySnapshot.Lock(db,reference);
-        if (snapshot == null || snapshot.User.AgencyId != null) return null;
+        if (snapshot == null) return null;
         var user = snapshot.User; var roles = snapshot.Roles;
         var session = await db.Set<UserSession>().FromSqlInterpolated($"SELECT * FROM [Session] WITH(UPDLOCK,HOLDLOCK,ROWLOCK) WHERE Id={sessionReference.Id} AND UserId={user.Id} AND TokenHash={hash}").AsNoTracking().SingleOrDefaultAsync();
         if (session == null || session.RevokedAt != null || session.ExpiresAt <= now || user.SecurityStamp != session.SecurityStamp) return null;
         AuthenticationTicket? ticket;
         try { ticket = TicketSerializer.Default.Deserialize(protector.Unprotect(session.TicketCiphertext)); }
         catch (CryptographicException) { return null; }
-        if (ticket is null || ticket.Properties.ExpiresUtc <= now ||
+        if (ticket is null || !LocalIdentityService.ScopeMatches(ticket.Principal,user) || ticket.Properties.ExpiresUtc <= now ||
             ticket.Principal.FindFirstValue(ClaimTypes.NameIdentifier) != user.Id.ToString() ||
             ticket.Principal.FindFirstValue(LocalIdentityService.StampClaim) != session.SecurityStamp) return null;
         ticket = new AuthenticationTicket(LocalIdentityService.Principal(user,roles),ticket.Properties,ticket.AuthenticationScheme);
@@ -77,7 +77,7 @@ public sealed class SqlTicketStore(IDbContextFactory<BackOfficeDbContext> factor
         if (reference == null) return;
         await using var transaction = await db.Database.BeginTransactionAsync();
         var snapshot = await IdentitySnapshot.Lock(db,reference);
-        if (snapshot == null || snapshot.User.AgencyId != null || ticket.Principal.FindFirstValue(ClaimTypes.NameIdentifier) != snapshot.User.Id.ToString() ||
+        if (snapshot == null || !LocalIdentityService.ScopeMatches(ticket.Principal,snapshot.User) || ticket.Principal.FindFirstValue(ClaimTypes.NameIdentifier) != snapshot.User.Id.ToString() ||
             ticket.Principal.FindFirstValue(LocalIdentityService.StampClaim) != snapshot.User.SecurityStamp ||
             !snapshot.Roles.Select(x => x.Code).ToHashSet(StringComparer.Ordinal).SetEquals(ticket.Principal.FindAll(ClaimTypes.Role).Select(x => x.Value))) return;
         var encrypted = protector.Protect(TicketSerializer.Default.Serialize(ticket)); var now = time.GetUtcNow();

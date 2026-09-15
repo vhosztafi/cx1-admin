@@ -14,16 +14,16 @@ public static class AgencyUserEndpoints
 {
     public static void MapAgencyUsers(this WebApplication app)
     {
-        app.MapGet("/api/v1/agencies/{agencyId:guid}/users",(Guid agencyId,HttpContext context,IDbContextFactory<BackOfficeDbContext> db,PartyPaging paging)=>Users(agencyId,null,context,db,paging)).RequireAuthorization("agency-admin");
-        app.MapGet("/api/v1/agencies/{agencyId:guid}/users/{userId:guid}",(Guid agencyId,Guid userId,HttpContext context,IDbContextFactory<BackOfficeDbContext> db,PartyPaging paging)=>Users(agencyId,userId,context,db,paging)).RequireAuthorization("agency-admin");
-        app.MapGet("/api/v1/agencies/{agencyId:guid}/invitations",(Guid agencyId,HttpContext context,IDbContextFactory<BackOfficeDbContext> db,PartyPaging paging)=>Invitations(agencyId,null,context,db,paging)).RequireAuthorization("agency-admin");
-        app.MapGet("/api/v1/agencies/{agencyId:guid}/invitations/{invitationId:guid}",(Guid agencyId,Guid invitationId,HttpContext context,IDbContextFactory<BackOfficeDbContext> db,PartyPaging paging)=>Invitations(agencyId,invitationId,context,db,paging)).RequireAuthorization("agency-admin");
-        app.MapPost("/api/v1/agencies/{agencyId:guid}/invitations",Create).RequireAuthorization("agency-admin");
-        app.MapPut("/api/v1/agencies/{agencyId:guid}/users/{userId:guid}",Edit).RequireAuthorization("agency-admin");
+        app.MapGet("/api/v1/agencies/{agencyId:guid}/users",(Guid agencyId,HttpContext context,IDbContextFactory<BackOfficeDbContext> db,PartyPaging paging)=>Users(agencyId,null,context,db,paging)).RequireAuthorization("agency-own-users");
+        app.MapGet("/api/v1/agencies/{agencyId:guid}/users/{userId:guid}",(Guid agencyId,Guid userId,HttpContext context,IDbContextFactory<BackOfficeDbContext> db,PartyPaging paging)=>Users(agencyId,userId,context,db,paging)).RequireAuthorization("agency-own-users");
+        app.MapGet("/api/v1/agencies/{agencyId:guid}/invitations",(Guid agencyId,HttpContext context,IDbContextFactory<BackOfficeDbContext> db,PartyPaging paging)=>Invitations(agencyId,null,context,db,paging)).RequireAuthorization("agency-own-users");
+        app.MapGet("/api/v1/agencies/{agencyId:guid}/invitations/{invitationId:guid}",(Guid agencyId,Guid invitationId,HttpContext context,IDbContextFactory<BackOfficeDbContext> db,PartyPaging paging)=>Invitations(agencyId,invitationId,context,db,paging)).RequireAuthorization("agency-own-users");
+        app.MapPost("/api/v1/agencies/{agencyId:guid}/invitations",Create).RequireAuthorization("agency-own-users");
+        app.MapPut("/api/v1/agencies/{agencyId:guid}/users/{userId:guid}",Edit).RequireAuthorization("agency-own-users");
         foreach(var action in new[]{"deactivate","reactivate"})
-            app.MapPost($"/api/v1/agencies/{{agencyId:guid}}/users/{{userId:guid}}/{action}",(Guid agencyId,Guid userId,HttpContext context,AgencyUserLifecycle service)=>ChangeUser(agencyId,userId,action,context,service)).RequireAuthorization("agency-admin");
+            app.MapPost($"/api/v1/agencies/{{agencyId:guid}}/users/{{userId:guid}}/{action}",(Guid agencyId,Guid userId,HttpContext context,AgencyUserLifecycle service)=>ChangeUser(agencyId,userId,action,context,service)).RequireAuthorization("agency-own-users");
         foreach(var action in new[]{"resend","revoke"})
-            app.MapPost($"/api/v1/invitations/{{invitationId:guid}}/{action}",(Guid invitationId,HttpContext context,AgencyInvitationCommands service)=>ChangeInvitation(invitationId,action,context,service)).RequireAuthorization("agency-admin");
+            app.MapPost($"/api/v1/invitations/{{invitationId:guid}}/{action}",(Guid invitationId,HttpContext context,AgencyInvitationCommands service)=>ChangeInvitation(invitationId,action,context,service)).RequireAuthorization("agency-own-users");
     }
 
     private static async Task<IResult> Users(Guid agencyId,Guid? userId,HttpContext context,IDbContextFactory<BackOfficeDbContext> factory,PartyPaging paging)

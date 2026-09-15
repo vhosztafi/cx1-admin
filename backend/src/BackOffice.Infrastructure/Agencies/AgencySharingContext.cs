@@ -11,7 +11,11 @@ public sealed record AgencySharedIdentity(Guid Id, string Reference, string Lega
 public sealed record AgencySharedProduct(string ProductCode, string Name, DateOnly EffectiveFrom, DateOnly? EffectiveTo, bool Available);
 public sealed record AgencySharedPermission(string Permission, bool Granted, bool Available);
 public sealed record AgencyUnavailableSection(string Kind, string State, int OwningPhase, string Message);
-public sealed record AgencySharingContext(AgencySharedIdentity Agency, IReadOnlyList<AgencySharedProduct> Products, IReadOnlyList<AgencySharedPermission> Permissions, IReadOnlyList<AgencyUnavailableSection> UnavailableSections);
+public sealed record AgencySharingContext(AgencySharedIdentity Agency, IReadOnlyList<AgencySharedProduct> Products, IReadOnlyList<AgencySharedPermission> Permissions, IReadOnlyList<AgencyUnavailableSection> UnavailableSections)
+{
+    [System.Text.Json.Serialization.JsonIgnore]
+    public byte[] AgencyVersion { get; init; } = [];
+}
 
 public static partial class AgencySharingService
 {
@@ -55,6 +59,6 @@ public static partial class AgencySharingService
             db.Add(new AuditEvent { ActorId = actor.UserId, CreatedBy = actor.UserId, OccurredAt = now, EventType = "agency.sharing-preview", CorrelationId = Guid.NewGuid(), After = JsonSerializer.Serialize(new { agencyId, section = "context" }) });
             await db.SaveChangesAsync(token);
         }
-        await transaction.CommitAsync(token); return result;
+        await transaction.CommitAsync(token); return result with { AgencyVersion = agency.RowVersion };
     }
 }

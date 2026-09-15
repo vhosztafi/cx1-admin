@@ -67,7 +67,7 @@ public sealed class AgencyInvitationAcceptanceApiTests
             Assert.Equal(HttpStatusCode.Unauthorized,(await anonymous.GetAsync("/api/v1/account")).StatusCode);
             Assert.Equal(HttpStatusCode.BadRequest,(await Send(anonymous,acceptPath,anonCsrf,new{invitationToken=raw,password="Different replacement password!"})).StatusCode);
             Assert.Equal(HttpStatusCode.Conflict,(await Send(admin,path,adminCsrf,new{})).StatusCode);
-            Assert.Equal(HttpStatusCode.Unauthorized,(await Send(anonymous,"/api/v1/auth/login",anonCsrf,new{email="api-accepted@cover.example",password=newPassword})).StatusCode);
+            Assert.Equal(HttpStatusCode.OK,(await Send(anonymous,"/api/v1/auth/login",anonCsrf,new{email="api-accepted@cover.example",password=newPassword})).StatusCode);
             await using(var db=new BackOfficeDbContext(options))
             {
                 var audits=await db.Set<AuditEvent>().Where(x=>x.SubjectRecordId==invitationId).ToListAsync();Assert.Single(audits,x=>x.EventType=="agency.invitation-demo-revealed");Assert.Single(audits,x=>x.EventType=="agency.invitation-accepted");

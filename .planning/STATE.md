@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-15T05:28:27.101777Z"
+last_updated: "2026-09-15T06:04:33.956922Z"
 last_activity: 2026-09-15
 progress:
   total_phases: 13
   completed_phases: 3
   total_plans: 24
-  completed_plans: 22
+  completed_plans: 23
   percent: 23
 ---
 
@@ -20,14 +20,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute Phase 4 plan 04-07: trusted agency scope, permissions and sharing.
+**Current focus:** Execute Phase 4 plan 04-08: source KPI reconciliation and agency acceptance.
 
 ## Current Position
 
 Phase: 4 of 13 (Agency onboarding and access)
-Plan: 04-07 of 8 in progress; 04-01 through 04-06 complete, all six Phase 3 plans complete
+Plan: 04-08 of 8 prepared; 04-01 through 04-07 complete, all six Phase 3 plans complete
 Status: In progress â€” autonomous
-Last activity: 2026-09-15 -04-07 identity/session lock ordering and ticket binding verified; concurrent invitation deadlock fixed;322backend/55SQL and79contracts pass.
+Last activity: 2026-09-15 -04-07 complete: accepted agency accounts, scoped APIs, own-user/permission authority and workspace guards;323backend/56SQL,80contracts,30frontend/build and browser pass.
 
 Progress: Phases 1â€“3 complete; 3/13 phases. Agency onboarding/access next.
 
@@ -43,7 +43,7 @@ Progress: Phases 1â€“3 complete; 3/13 phases. Agency onboarding/access next
 
 ### Pending Todos
 
-- Execute 04-07 through 04-08 sequentially; keep all gates and consume ACCEPTANCE-BACKLOG.md.
+- Execute 04-08; keep all gates and consume ACCEPTANCE-BACKLOG.md.
 - Keep future business endpoints closed until their owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,8 +54,8 @@ Progress: Phases 1â€“3 complete; 3/13 phases. Agency onboarding/access next
 ## Session Continuity
 
 Last session: 2026-09-15
-Stopped at:04-07 identity/session lock preparation verified. IdentitySnapshot rechecks agency/user/roles before credentials and sessions; encrypted tickets bind to their stored account. Parallel session reads and copied-ticket rejection pass. SQL deadlock graph identified same-actor invitation email/role-range cycle; actor update lock fixes it. Empty roles now invalidate authentication (401). Full .local/phase4-identity-locks-full-retry322/55SQL passes (260unit/62integration),79contracts, existing real shell browser passes. No active tests/previews. NEXT coordinated external authentication/session/actor-scope/workspace guards and accepted-account two-agency API tests. Broker login still closed; update matrix availability only with verified runtime. Read04-07-PROGRESS/04-DATA-API-DESIGN. No wholeAGY/humanUAT acceptance.
-Resume file: .planning/phases/04-agency-onboarding-and-access/04-07-PROGRESS.md
+Stopped at:04-07 complete and reviewed. Actual accepted agency cookies now support own-agency context/sharing and broker-admin user/invitation/permission requests. Internal UI/API guards, scope-bound sessions, last-admin and revoked-role/session replay tests pass. Full .local/phase4-external-full-final323/56SQL (260unit/63integration),80contracts/949controls/328operations,30frontend/lint/typecheck/build, real agency-access and shell browsers pass. CI minima323/56Windows321/54Linux; YAML/rejected-result checks pass. No active tests/previews. NEXT04-08 source Open actions KPI reconciliation (currently undefined) and whole-phase acceptance. Read04-08-PROGRESS,04-07-SUMMARY/REVIEW,ACCEPTANCE-BACKLOG. AgencyFollowUp has DueOn/provenance but no task/completion state; keep labels honest. WholeAGY/humanUAT acceptance remains pending.
+Resume file: .planning/phases/04-agency-onboarding-and-access/04-08-PROGRESS.md
 
 ## Autonomous continuation
 

@@ -21188,7 +21188,7 @@
         "tags": [
           "agencies"
         ],
-        "x-permission": "agency-admin",
+        "x-permission": "internal-agency-admin-or-own-broker-admin",
         "x-idempotency": "not-cached",
         "security": [
           {
@@ -21319,7 +21319,7 @@
         "tags": [
           "agencies"
         ],
-        "x-permission": "agency-admin",
+        "x-permission": "internal-agency-admin-or-own-broker-admin",
         "x-idempotency": "not-cached",
         "security": [
           {
@@ -21452,11 +21452,11 @@
       "post": {
         "operationId": "inviteAgencyUser",
         "summary": "Create user/invitation using agency ETag; return user ID and invitation ID; draft staging has no token or delivery",
-        "description": "Requires agency-admin. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
+        "description": "Requires internal-agency-admin-or-own-broker-admin. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
         "tags": [
           "agencies"
         ],
-        "x-permission": "agency-admin",
+        "x-permission": "internal-agency-admin-or-own-broker-admin",
         "x-idempotency": "required",
         "security": [
           {
@@ -21655,11 +21655,11 @@
       "post": {
         "operationId": "resendInvitation",
         "summary": "resend with invitation ETag; identity-only receipt, history retained and current authority before replay",
-        "description": "Requires agency-admin. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
+        "description": "Requires internal-agency-admin-or-own-broker-admin. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
         "tags": [
           "invitations"
         ],
-        "x-permission": "agency-admin",
+        "x-permission": "internal-agency-admin-or-own-broker-admin",
         "x-idempotency": "required",
         "security": [
           {
@@ -21869,11 +21869,11 @@
       "post": {
         "operationId": "revokeInvitation",
         "summary": "revoke with invitation ETag; identity-only receipt, history retained and current authority before replay",
-        "description": "Requires agency-admin. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
+        "description": "Requires internal-agency-admin-or-own-broker-admin. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
         "tags": [
           "invitations"
         ],
-        "x-permission": "agency-admin",
+        "x-permission": "internal-agency-admin-or-own-broker-admin",
         "x-idempotency": "required",
         "security": [
           {
@@ -52066,11 +52066,11 @@
       "get": {
         "operationId": "getAgencyUser",
         "summary": "get Agency User",
-        "description": "Requires agency-admin. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
+        "description": "Requires internal-agency-admin-or-own-broker-admin. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
         "tags": [
           "agencies"
         ],
-        "x-permission": "agency-admin",
+        "x-permission": "internal-agency-admin-or-own-broker-admin",
         "x-idempotency": "not-cached",
         "security": [
           {
@@ -52183,11 +52183,11 @@
       "put": {
         "operationId": "updateAgencyUser",
         "summary": "Edit display name/broker role with user ETag; identity-only receipt, immutable email/agency, role changes revoke sessions",
-        "description": "Requires agency-admin. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
+        "description": "Requires internal-agency-admin-or-own-broker-admin. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
         "tags": [
           "agencies"
         ],
-        "x-permission": "agency-admin",
+        "x-permission": "internal-agency-admin-or-own-broker-admin",
         "x-idempotency": "required",
         "security": [
           {
@@ -52383,11 +52383,11 @@
       "get": {
         "operationId": "getAgencyInvitation",
         "summary": "get Agency Invitation",
-        "description": "Requires agency-admin. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
+        "description": "Requires internal-agency-admin-or-own-broker-admin. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
         "tags": [
           "agencies"
         ],
-        "x-permission": "agency-admin",
+        "x-permission": "internal-agency-admin-or-own-broker-admin",
         "x-idempotency": "not-cached",
         "security": [
           {
@@ -52502,11 +52502,11 @@
       "post": {
         "operationId": "deactivateAgencyUser",
         "summary": "deactivate agency user with user ETag; return identity only then refresh; never restore old sessions or invitations",
-        "description": "Requires agency-admin. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
+        "description": "Requires internal-agency-admin-or-own-broker-admin. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
         "tags": [
           "agencies"
         ],
-        "x-permission": "agency-admin",
+        "x-permission": "internal-agency-admin-or-own-broker-admin",
         "x-idempotency": "required",
         "security": [
           {
@@ -52713,11 +52713,11 @@
       "post": {
         "operationId": "reactivateAgencyUser",
         "summary": "reactivate agency user with user ETag; return identity only then refresh; never restore old sessions or invitations",
-        "description": "Requires agency-admin. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
+        "description": "Requires internal-agency-admin-or-own-broker-admin. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
         "tags": [
           "agencies"
         ],
-        "x-permission": "agency-admin",
+        "x-permission": "internal-agency-admin-or-own-broker-admin",
         "x-idempotency": "required",
         "security": [
           {
@@ -55102,11 +55102,9 @@
             "description": "Operation succeeded.",
             "headers": {
               "ETag": {
-                "description": "Opaque resource version for subsequent conditional writes.",
+                "description": "Current agency version for own-agency commands.",
                 "schema": {
-                  "type": "string",
-                  "minLength": 1,
-                  "maxLength": 100
+                  "type": "string"
                 }
               }
             },
@@ -56396,8 +56394,18 @@
             "maxItems": 1000
           },
           "agencyId": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uuid"
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "internal",
+              "agency"
+            ]
           },
           "mfaEnabled": {
             "type": "boolean"
@@ -56408,7 +56416,35 @@
           "displayName",
           "email",
           "roles",
+          "agencyId",
+          "scope",
           "mfaEnabled"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "scope": {
+                  "const": "internal"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "agencyId": {
+                  "type": "null"
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "agencyId": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          }
         ]
       },
       "AuthResult": {
@@ -62507,8 +62543,18 @@
             "maxItems": 1000
           },
           "agencyId": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uuid"
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "internal",
+              "agency"
+            ]
           },
           "mfaEnabled": {
             "type": "boolean"
@@ -62554,6 +62600,8 @@
           "displayName",
           "email",
           "roles",
+          "agencyId",
+          "scope",
           "mfaEnabled",
           "fullName",
           "telephone",

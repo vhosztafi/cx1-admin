@@ -3,7 +3,7 @@ namespace BackOffice.Application;
 public sealed record ActorContext(Guid UserId,Guid? TeamId,Guid? AgencyId,IReadOnlySet<string> Roles)
 {
     // A role grants a capability, never arbitrary access to a business record.
-    // Agency identities remain denied until agency scoping is implemented.
+    // Internal capabilities never apply to an agency-scoped identity.
     public bool HasCapability(string capability) => AgencyId is null && capability switch
     {
         "authenticated" => true,

@@ -26,7 +26,7 @@ export function SignIn() {
       const result = await response.json();
       if (result.state !== 'authenticated') { setError('Additional verification is required. Please contact your administrator.'); return; }
       // A full navigation clears any previously cached authenticated router payload.
-      window.location.replace('/');
+      window.location.replace(result.user.scope === 'agency' ? '/agency-access' : '/');
     } catch { setError('We could not reach the back office. Check your connection and try again.'); }
     finally { submitting.current = false; setBusy(false); }
   }

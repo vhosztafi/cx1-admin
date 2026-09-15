@@ -29,7 +29,7 @@ public static class AgencyPermissionMatrixRules
             }),
             Row("agency-user-manage", "Manage agency users", role => role.StartsWith("broker-", StringComparison.Ordinal)
                 ? AgencyAccessRules.Allows(role, "agency-user-manage")
-                    ? new(role, agencyState == "active", false, agencyState == "active" ? "Own agency; sign-in unavailable" : "Agency access inactive") : No(role)
+                    ? new(role, agencyState == "active", agencyState == "active", agencyState == "active" ? "Own agency API" : "Agency access inactive") : No(role)
                 : Internal(role, "agency-admin") ? new(role, true, true, "Yes") : No(role)),
             Row("other-agency-read", "View other agencies’ data", role => Internal(role, "client-read") ? new(role, true, true, "Client records") : No(role)),
             Row("commission-amend", "Amend commission terms", role => Internal(role, "agency-admin") ? new(role, true, true, "Independent approval required") : No(role))
