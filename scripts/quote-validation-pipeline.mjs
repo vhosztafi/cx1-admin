@@ -18,6 +18,7 @@ import {reconcileQuoteDriverDeclarations} from './quote-driver-reconciliation.mj
 import {reconcileQuoteHistory} from './quote-history-reconciliation.mjs';
 import {validateQuoteConvictionPeriods} from './quote-conviction-period.mjs';
 import {validateQuoteVehicleReadiness} from './quote-vehicle-readiness.mjs';
+import {validateQuoteVehicleRegisters} from './quote-vehicle-registers.mjs';
 import {validateQuoteVehicleOwnership,validateQuoteVehicleOvernight} from './quote-vehicle-ownership.mjs';
 import {validateQuoteVehicleLimits} from './quote-vehicle-limits.mjs';
 import {validateQuoteInsuranceReadiness} from './quote-insurance-readiness.mjs';
@@ -66,6 +67,7 @@ export async function createQuoteValidationPipeline() {
    ['additional',validateQuoteAdditionalReadiness],['activity',validateQuoteActivityReadiness],['activity-declarations',reconcileQuoteActivityDeclarations],['activity-split',validateQuoteActivitySplit],['portfolio',validateQuotePortfolioReadiness],
   ])collect(stage,validate(proposal,questions,references));
   collect('vehicle',validateQuoteVehicleReadiness(proposal,questions,references,vehicleModes));
+  collect('vehicle-registers',validateQuoteVehicleRegisters(proposal));
   collect('overnight',validateQuoteVehicleOvernight(proposal,questions));
   collect('cover',validateQuoteCoverReadiness(proposal,questions,references).issues);
   return {status:issues.length?'incomplete':'section-checks-pass',issues};

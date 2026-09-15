@@ -478,6 +478,7 @@
       "vehicles": [
         {
           "id": "aaaaaaaa-0000-4000-8000-000000000003",
+          "register": "held-for-sale",
           "registration": "DEMO 01",
           "make": "Example",
           "model": "Demonstrator",

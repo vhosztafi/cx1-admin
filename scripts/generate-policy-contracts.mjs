@@ -61,6 +61,7 @@ defs.Driver.properties.occupations={...array(ref('DriverOccupation')),maxItems:5
 defs.Driver.properties.criminalConvictions={...array(ref('CriminalConviction')),maxItems:100};
 defs.Driver.properties.countyCourtJudgments={...array(ref('CountyCourtJudgment')),maxItems:100};
 defs.Vehicle.properties.modifications=array(ref('VehicleModification'));
+defs.Vehicle.properties.register=enumeration('owned-not-for-sale','held-for-sale');
 // Vehicle lookup/manual declarations are distinct from normalized policy fields.
 // In particular registration year is not manufacture year, and a declared owner
 // reference cannot be converted into an ownership enum without pinned metadata.

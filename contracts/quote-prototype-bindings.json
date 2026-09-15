@@ -2582,5 +2582,23 @@
         }
       ]
     }
+  ],
+  "collectionViews": [
+    {
+      "sourceCollection": "qVehOwn",
+      "addControlId": "CTL-9387056d9fac",
+      "modalMode": "own",
+      "collectionPath": "risk.vehicles",
+      "discriminatorPath": "register",
+      "discriminatorValue": "owned-not-for-sale"
+    },
+    {
+      "sourceCollection": "qVehSale",
+      "addControlId": "CTL-49edfbf20fae",
+      "modalMode": "sale",
+      "collectionPath": "risk.vehicles",
+      "discriminatorPath": "register",
+      "discriminatorValue": "held-for-sale"
+    }
   ]
 }

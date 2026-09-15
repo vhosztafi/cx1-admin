@@ -878,6 +878,13 @@
           "minItems": 0,
           "maxItems": 1000
         },
+        "register": {
+          "type": "string",
+          "enum": [
+            "owned-not-for-sale",
+            "held-for-sale"
+          ]
+        },
         "abiCode": {
           "type": "string",
           "minLength": 1,

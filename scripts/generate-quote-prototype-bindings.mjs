@@ -51,4 +51,8 @@ const bindings=ownership.controls.filter(control=>control.featurePhase===5&&cont
   return {kind:replacement?.paths.length>1?'compound':'field-or-collection',paths:replacement?.paths??[binding.targetPath],...(replacement?{captureRule:replacement.rule,...(replacement.values?{valueMapping:replacement.values}:{})}:{}),...(binding.modal?{modal:binding.modal}:{})};
  }),
 }));
-await writeFile(new URL('../contracts/quote-prototype-bindings.json',import.meta.url),JSON.stringify({sourceSha256:ownership.sourceSha256,questionVersion:questions.version,status:'capture path contract; control value semantics and runtime remain separate gates',controls:bindings},null,2)+'\n');
+const collectionViews=[
+ {sourceCollection:'qVehOwn',addControlId:'CTL-9387056d9fac',modalMode:'own',collectionPath:'risk.vehicles',discriminatorPath:'register',discriminatorValue:'owned-not-for-sale'},
+ {sourceCollection:'qVehSale',addControlId:'CTL-49edfbf20fae',modalMode:'sale',collectionPath:'risk.vehicles',discriminatorPath:'register',discriminatorValue:'held-for-sale'},
+];
+await writeFile(new URL('../contracts/quote-prototype-bindings.json',import.meta.url),JSON.stringify({sourceSha256:ownership.sourceSha256,questionVersion:questions.version,status:'capture path contract; control value semantics and runtime remain separate gates',controls:bindings,collectionViews},null,2)+'\n');

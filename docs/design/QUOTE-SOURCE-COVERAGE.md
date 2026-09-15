@@ -86,6 +86,10 @@ The seven prototype percentages have distinct declaredActivitySplit fields in in
 
 The three proposer controls target explicit array slots0–2. Quote capture requires1–3nonblank ordered full names; unused trailing slots are omitted. Names are not split or deduplicated, and source contact components remain separately captured. Issued-policy capacity is unchanged.
 
+## Vehicle registers and counts
+
+Each vehicle preserves owned-not-for-sale or held-for-sale register membership independently of its legal owner and specified status. Add-action metadata selects the register. Register lists and total/MID counts are derived from stable rows; incomplete rows remain unassigned and missing MID declarations give an unknown count. Caller-supplied totals are not capture fields.
+
 ## Remaining contract gate
 
 Resolve overlapping prototype/funnel answers and all product-specific requiredness, dynamic option selection, source limits and conditional rules. Reconcile historical prototype field bindings with the capture-write envelope: for example `term.startsAt` is supplied as local `termIntent`, not a caller-chosen policy timestamp. Finish quote API request/response contracts and operation integration. Verify complete fictional proposals against the composed validators. Then implement and test the same rules in the actual .NET request boundary and persistent services.
