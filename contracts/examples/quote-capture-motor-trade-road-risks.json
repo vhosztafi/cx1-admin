@@ -52,8 +52,8 @@
             "id": "aaaaaaaa-0000-4000-8000-000000000001",
             "code": {
               "collection": "mtOccupations",
-              "value": 5,
-              "label": "Buying & Selling of Motorcycles",
+              "value": 8,
+              "label": "Buying & Selling of Standard Cars & Vans",
               "version": "mt-capture-31012e9672ca88bf"
             },
             "turnoverBasisPoints": 10000

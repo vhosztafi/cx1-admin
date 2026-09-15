@@ -54,6 +54,10 @@ Named-driver incidents within three calendar years and motoring convictions/CCJs
 
 The prototype disqualification band is stored separately from exact ban months. Readiness requires a matching disqualified declaration and a positive whole-month duration within a selected ban band; no midpoint is inferred. Split liability is a distinct canonical fault value, alongside fault, non-fault and unknown. The binding manifest records the exact source-label mappings. Existing issued policy fixtures remain compatible.
 
+## Activity declarations
+
+Pinned motorcycle/quad sales and repair occupations require the motorcycle activity declaration; import/export and salvage/breaker occupations require their matching declarations. Ordinary repairs and small prestige turnover shares do not create unsupported specialty assumptions. Fictional standard-car captures use the correct source occupation ID8 rather than motorcycle ID5.
+
 ## Remaining contract gate
 
 Resolve overlapping prototype/funnel answers and all product-specific requiredness, dynamic option selection, source limits and conditional rules. Reconcile historical prototype field bindings with the capture-write envelope: for example `term.startsAt` is supplied as local `termIntent`, not a caller-chosen policy timestamp. Finish quote API request/response contracts and operation integration. Verify complete fictional proposals against the composed validators. Then implement and test the same rules in the actual .NET request boundary and persistent services.

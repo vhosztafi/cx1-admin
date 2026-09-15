@@ -26,6 +26,7 @@ import {reconcileQuoteCoverDeclarations} from './quote-cover-declarations.mjs';
 import {validateQuoteExtrasReadiness} from './quote-extras-readiness.mjs';
 import {validateQuoteAdditionalReadiness,validateQuoteActivityReadiness} from './quote-additional-readiness.mjs';
 import {validateQuotePortfolioReadiness} from './quote-portfolio-readiness.mjs';
+import {reconcileQuoteActivityDeclarations} from './quote-activity-declarations.mjs';
 
 // Executable integration design, not a live API. "section-checks-pass" is not
 // full readiness: prototype completeness, evidence and current authority remain
@@ -58,7 +59,7 @@ export async function createQuoteValidationPipeline() {
    ['driver-reconciliation',reconcileQuoteDriverDeclarations],['vehicle-owner',validateQuoteVehicleOwnership],
    ['vehicle-limits',validateQuoteVehicleLimits],['prototype-vehicles',validateQuotePrototypeVehicles],['insurance',validateQuoteInsuranceReadiness],['prototype-insurance',validateQuotePrototypeInsurance],
    ['insurance-reconciliation',reconcileQuoteInsuranceDeclarations],['cover-declarations',reconcileQuoteCoverDeclarations],['extras',validateQuoteExtrasReadiness],
-   ['additional',validateQuoteAdditionalReadiness],['activity',validateQuoteActivityReadiness],['portfolio',validateQuotePortfolioReadiness],
+   ['additional',validateQuoteAdditionalReadiness],['activity',validateQuoteActivityReadiness],['activity-declarations',reconcileQuoteActivityDeclarations],['portfolio',validateQuotePortfolioReadiness],
   ])collect(stage,validate(proposal,questions,references));
   collect('vehicle',validateQuoteVehicleReadiness(proposal,questions,references,vehicleModes));
   collect('overnight',validateQuoteVehicleOvernight(proposal,questions));
