@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-15T08:43:36.357130+00:00"
+last_updated: "2026-09-15T08:58:20.793411+00:00"
 last_activity: 2026-09-15
 progress:
   total_phases: 13
@@ -25,7 +25,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 ## Current Position
 
 Phase: 5 of 13 (Motor Trade quote capture)
-Plan: 05-01 of11 in progress; all255source field shapes mapped; reference, term and conditional contracts;118tests
+Plan: 05-01 of11 in progress; all255source field shapes mapped; prototype/funnel question contracts;122tests
 Status: In progress — autonomous
 Last activity: 2026-09-15 — Phase4 accepted:329backend/57SQL,81contracts,30frontend,20browser journeys and restart persistence.
 
@@ -54,7 +54,7 @@ Progress: Phases1–4 complete;4/13phases,24completed plans.
 ## Session Continuity
 
 Last session: 2026-09-15
-Stopped at:05-01 term/DST and conditional answer design checks added;118contracts pass. All255funnel fields and76reference families remain mapped. NEXT reconcile prototype-only questions (existing prototype-quote/detail/value-questions fixtures) and364control dispositions, then dynamic selectors/product bounds and quote OpenAPI. No backend/UI/DB changes or phase acceptance.
+Stopped at:05-01 combined product question catalogue generated:255funnel mappings+55MTprototype questions;109CCdefinitions explicitly Phase8.12prototype reference families added.122contract tests pass. NEXT finish364control dispositions, overlapping-answer reconciliation, product requiredness/dynamic selectors/source bounds and quote OpenAPI. No runtime quote endpoints or backend/UI edits.
 Resume file: .planning/phases/05-motor-trade-quote-capture/05-01-PROGRESS.md
 
 ## Autonomous continuation
@@ -63,4 +63,4 @@ User approved requirements/roadmap and autonomous choices/progression on 2026-09
 
 Thread heartbeat: continue-cover-mga-back-office-mvp, active every 10 minutes. Resume unfinished work in this same task; notify meaningful progress/blockers only; pause on actual milestone completion, user stop or persistent external blocker with no remaining useful work.
 
-Latest05-01 checkpoint:118contract tests pass; term/DST and mapped conditional checks added. Read05-01-PROGRESS; no plan or phase completion.
+Latest05-01 checkpoint:122contract tests pass; prototype supplemental questions integrated with explicit product ownership. Read05-01-PROGRESS; no plan/phase completion.

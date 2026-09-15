@@ -4,6 +4,11 @@
 export const maxQuoteBytes=1024*1024;
 export const maxQuoteDepth=64;
 
+export function quoteMappingsForProduct(catalogue,productCode) {
+  if(!catalogue.products.includes(productCode))throw new Error('unsupported-capture-product');
+  return catalogue.mappings.filter(row=>row.products.includes(productCode));
+}
+
 export function parseQuoteJson(text) {
   if(typeof text!=='string')throw new TypeError('Expected JSON text');
   if(Buffer.byteLength(text,'utf8')>maxQuoteBytes)throw new Error('quote-json-too-large');

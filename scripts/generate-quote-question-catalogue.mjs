@@ -1,0 +1,49 @@
+import {readFile,writeFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+const read=async path=>JSON.parse(await readFile(new URL(`../${path}`,import.meta.url),'utf8'));
+const names={'Motor Trade Road Risks':'motor-trade-road-risks','Motor Trade Combined':'motor-trade-combined','Commercial Combined':'commercial-combined'};
+const products=['motor-trade-road-risks','motor-trade-combined'];
+const sourceMappings=(await read('contracts/quote-field-mapping.json')).mappings;
+const controls=(await read('docs/design/control-inventory.json')).controls;
+const rendered=(await read('docs/design/source/prototype-render-data.json')).items;
+const sources=['prototype-quote-questions','prototype-detail-questions','prototype-quote-value-questions'];
+const active=[],deferred=[];
+for(const name of sources) {
+  const source=await read(`contracts/examples/${name}.json`);
+  for(const question of source.questions) {
+    const control=controls.find(row=>row.id===question.sourceControlId);
+    if(!control)throw new Error(`Missing source control ${question.sourceControlId}`);
+    let stages=question.stages??[];
+    let applicable;
+    if(name==='prototype-detail-questions') {
+      applicable=/^risk\.(locations|wages|losses)\[\]/.test(question.targetContainer)?['commercial-combined']:
+        question.targetContainer==='risk.premises[].responses'?['motor-trade-combined']:products;
+    } else {
+      if(!stages.length)stages=rendered.filter(row=>row.method===control.method&&row.path===control.path&&row.label===control.label).flatMap(row=>row.tabs??[]).filter(tab=>tab.includes(':step-'));
+      applicable=[...new Set(stages.map(stage=>names[stage.split(':step-')[0]]))];
+      if(!applicable.length||applicable.some(product=>!product))throw new Error(`Unknown source stages ${question.questionId}`);
+    }
+    const entry={...question,stages:[...new Set(stages)],products:applicable,sourceCatalogue:source.version,
+      disposition:applicable.some(product=>products.includes(product))?'phase-05-capture':'phase-08-commercial-combined'};
+    if(entry.disposition==='phase-08-commercial-combined'){deferred.push(entry);continue;}
+    active.push({...entry,owner:question.questionId,canonicalPath:`${question.targetContainer}.answers[]`,contractKind:'Answer',answerKind:question.kind});
+  }
+}
+const mappings=[...sourceMappings.map(row=>({...row,products})),...active];
+const sourceReference=await read('contracts/reference-data/motor-trade-source.json');
+const references=structuredClone(sourceReference);
+for(const question of active.filter(row=>row.kind==='reference')) {
+  const name=question.questionId;
+  const options=question.referenceValues??question.sourceOptions.map((label,index)=>({value:index+1,label}));
+  if(!options.length)throw new Error(`Missing prototype options ${name}`);
+  references.collections[name]=options.map(row=>({value:row.value,text:row.label}));
+  references.bindings.push({owner:name,questionId:name,canonicalPath:question.canonicalPath,selectionRule:'fixed',collections:[name]});
+}
+const digest=createHash('sha256').update(JSON.stringify({mappings,deferred,sourceReferenceVersion:sourceReference.version})).digest('hex');
+const version=`mt-capture-${digest.slice(0,16)}`;
+references.sourceReferenceVersion=sourceReference.version;references.version=version;
+references.status='Combined identity catalogue; prototype and funnel eligibility/conflict reconciliation still requires product validation.';
+const catalogue={version,status:'Question identity and product ownership catalogue; conditional readiness, overlapping source answers and control audit remain pending.',products,mappings,deferredQuestions:deferred};
+await writeFile(new URL('../contracts/quote-question-catalogue.json',import.meta.url),JSON.stringify(catalogue,null,2)+'\n');
+await writeFile(new URL('../contracts/reference-data/motor-trade-capture.json',import.meta.url),JSON.stringify(references,null,2)+'\n');
+console.log(JSON.stringify({version,sourceFields:sourceMappings.length,prototypeQuestions:active.length,deferredQuestions:deferred.length,referenceBindings:references.bindings.length}));
