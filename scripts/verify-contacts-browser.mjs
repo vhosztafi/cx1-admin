@@ -1,3 +1,4 @@
+import {selectAgency} from './browser-agency-selection.mjs';
 import {chromium} from 'playwright';
 import assert from 'node:assert/strict';
 import {readFile,mkdir} from 'node:fs/promises';
@@ -45,7 +46,7 @@ try {
   assert.match(await page.getByLabel('Contact for support flags').locator('option:checked').textContent(),/Ended contact/);
   await page.getByLabel('Include ended contacts').check();await table.getByText('Fictional Browser Alex edited',{exact:true}).waitFor();await page.reload();await page.getByLabel('Selected agency relationship').selectOption(rel.id);await page.getByLabel('Include ended contacts').check();await table.getByText('Fictional Browser Alex edited',{exact:true}).waitFor();
   rows=await (await page.request.get(origin+base+'?includeEnded=true')).json();assert.equal(rows.totalCount,2);assert.equal(rows.items.filter(x=>x.isPrimary).length,1);assert.ok(rows.items.find(x=>x.id===alexId).endedAt);
-  await page.getByRole('link',{name:'Overview',exact:true}).click();await page.getByRole('button',{name:'Add agency relationship',exact:true}).click();await page.getByLabel('Agency *',{exact:true}).selectOption('31000000-0000-4000-8000-000000000002');
+  await page.getByRole('link',{name:'Overview',exact:true}).click();await page.getByRole('button',{name:'Add agency relationship',exact:true}).click();await selectAgency(page, '31000000-0000-4000-8000-000000000002');
   await page.getByRole('button',{name:'Link agency',exact:true}).click();await page.getByText('Agency relationship saved.',{exact:true}).waitFor();await page.getByRole('link',{name:'Contacts',exact:true}).click();
   await page.waitForFunction(()=>document.querySelector('select[disabled]')===null && [...document.querySelectorAll('select option')].some(x=>x.textContent.includes('Kingsway')));
   // Linking refreshes the client record; choose the relationship again explicitly.

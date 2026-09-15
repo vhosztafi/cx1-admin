@@ -1,6 +1,6 @@
 # 04-08 progress — agency acceptance and integration
 
-04-08 is in progress. Source action indicators are implemented and verified; consolidated phase acceptance remains. No whole-phase acceptance or human UAT claimed.
+04-08 is complete. Consolidated phase acceptance passed; see04-08-SUMMARY and04-VERIFICATION. Human UAT remains unperformed.
 
 ## Initial concrete gap — resolved
 
@@ -11,9 +11,9 @@ Persisted inputs exist: AgencyStateRequest.State, AgencyTermsRequest.State and A
 ## Remaining acceptance work
 
 - [x] Complete source KPI API/contract/UI and meaningful SQL/browser checks.
-- [ ] Assemble a no-reset full agency browser run from the existing tested lifecycle/users/evidence/notification/terms/permissions/sharing/access scripts; retain explicit actual versus intercepted recovery evidence. Include restart persistence and existing foundation/client/contact/support/match regressions as required by the plan.
-- [ ] Consolidate the final source/security/six-pillar UI reviews, validation mapping, demo walkthrough and requirement ownership. AGY-03/04 still depend on real insurance/task/finance records in later phases.
-- [ ] Run final full gates and keep hosted CI, Docker and human UAT status accurate. Only then complete Phase4 and advance to Phase5.
+- [x] Assemble a no-reset full agency browser run from the existing tested lifecycle/users/evidence/notification/terms/permissions/sharing/access scripts; retain explicit actual versus intercepted recovery evidence. Include restart persistence and existing foundation/client/contact/support/match regressions as required by the plan.
+- [x] Consolidate the final source/security/six-pillar UI reviews, validation mapping, demo walkthrough and requirement ownership. AGY-03/04 still depend on real insurance/task/finance records in later phases.
+- [x] Run final full gates and keep hosted CI, Docker and human UAT status accurate. Only then complete Phase4 and advance to Phase5.
 
 Current accepted agency API/browser evidence is in04-07-PROGRESS/REVIEW/SUMMARY. Its CI gate update retains the two Windows-only scenario difference. Only the action-indicator slice is complete; remaining04-08 tasks are listed above.
 
@@ -26,3 +26,6 @@ Targeted5 unit and1 real SQL/API case pass after correcting a missing System.Dat
 
 
 NEXT assemble/run consolidated agency and existing foundation/client/contact/support/match browser regressions, verify restart persistence, source control completeness, final security/UI/validation reports and demo acceptance mapping. Do not repeat completed KPI implementation. No wholeAGY/humanUAT/hosted CI or Docker acceptance is inferred.
+
+
+Final2026-09-15: all20browser journeys,15data-set restart verification and fresh login/API/Accounts reload passed;329backend/57SQL,81contracts,30frontend/lint/typecheck and CI gate/YAML passed. Reviews/demo/setup complete. Owned previews stopped. ContinuePhase5 planning.

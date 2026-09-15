@@ -35,11 +35,11 @@ Core value: complete persistent insurance and servicing journeys with consistent
 
 ### Agencies
 
-- [ ] **AGY-01**: Staff can create and resume agency onboarding with contacts, products, commission terms, required evidence and activation checks.
-- [ ] **AGY-02**: Authorised staff can maintain agency users and invitations, expire/resend/revoke invitations, suspend access and enforce internal/agency role separation.
+- [x] **AGY-01**: Staff can create and resume agency onboarding with contacts, products, commission terms, required evidence and activation checks.
+- [x] **AGY-02**: Authorised staff can maintain agency users and invitations, expire/resend/revoke invitations, suspend access and enforce internal/agency role separation.
 - [ ] **AGY-03**: Staff can view agency products, access settings, accounts and activity from persisted records.
 - [ ] **AGY-04**: Staff can inspect an internal agency-sharing view with field-level restrictions; an agency-scoped API identity cannot access another agency's records.
-- [ ] **AGY-05**: Agency activation and user invitation create persistent demo notifications with visible delivery outcomes.
+- [x] **AGY-05**: Agency activation and user invitation create persistent demo notifications with visible delivery outcomes.
 
 ### Product and quote capture
 
@@ -168,11 +168,11 @@ Every v1 requirement has one owning delivery phase; later phases may consume its
 | CLI-02 | 3 | Complete: native SQL/API/browser verified2026-09-14 |
 | CLI-03 | 3 | Complete: native SQL/API/browser verified2026-09-14 |
 | CLI-04 | 3 | Complete: saved intake review verified2026-09-14; quote integration due5 |
-| AGY-01 | 4 | Pending |
-| AGY-02 | 4 | Pending |
-| AGY-03 | 4 | Pending |
-| AGY-04 | 4 | Pending |
-| AGY-05 | 4 | Pending |
+| AGY-01 | 4 | Complete |
+| AGY-02 | 4 | Complete |
+| AGY-03 | 4 / 10 | Partial — Phase4 terms/access/activity complete; ledger/statements Phase10 |
+| AGY-04 | 4 / 5 / 6 / 9 | Partial — Phase4 restricted sharing complete; quote/policy/task records later |
+| AGY-05 | 4 | Complete |
 | QUO-01 | 5 | Pending |
 | QUO-02 | 5 | Pending |
 | QUO-03 | 5 | Pending |

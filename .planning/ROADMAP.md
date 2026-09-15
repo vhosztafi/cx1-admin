@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1-3 and Phase4 plans04-01 through04-07 complete.04-08 in progress: source KPI and directory action indicators are verified; consolidated agency/source/security/UI acceptance remains. Latest329backend/57SQL,30frontend,81contracts plus lint/build/actual KPI browser pass. Whole AGY requirements remain partial until final04-08 acceptance and downstream insurance/task/finance owners.
+**Status:** Autonomous progression authorised. Phases1–4 complete (24 plans). Phase4 final329backend/57SQL,81contracts,30frontend and all20browser journeys pass, including restart persistence. AGY-01/02/05 accepted; AGY-03/04 retain later insurance/task/finance owners. Phase5 Motor Trade quote capture research/planning is next.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
@@ -13,7 +13,7 @@
 - [x] **Phase 1: Data and API design** — Translate both references into implementable contracts.
 - [x] **Phase 2: Application and persistence foundation** — Run a persistent authenticated system with the prototype shell.
 - [x] **Phase 3: Clients and contact servicing** — Maintain insured businesses and person-level servicing information.
-- [ ] **Phase 4: Agency onboarding and access** — Onboard agencies and enforce their sharing boundaries.
+- [x] **Phase 4: Agency onboarding and access** — Onboard agencies and enforce their sharing boundaries.
 - [ ] **Phase 5: Motor Trade quote capture** — Capture complete persistent Motor Trade risks in the back office.
 - [ ] **Phase 6: Underwriting and first policy issue** — Complete the first quote-to-issued-policy journey.
 - [ ] **Phase 7: Policy lifecycle and history** — Service issued policies without corrupting history.
@@ -234,7 +234,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 1. Data and API design | 4/4 | Complete | 2026-09-13 |
 | 2. Application and persistence foundation | 6/6 | Complete | 2026-09-14 |
 | 3. Clients and contact servicing | 6/6 | Complete | 2026-09-14 |
-| 4. Agency onboarding and access | 6/8 | In progress | — |
+| 4. Agency onboarding and access | 8/8 | Complete | 2026-09-15 |
 | 5. Motor Trade quote capture | 0/TBD | Not started | — |
 | 6. Underwriting and first policy issue | 0/TBD | Not started | — |
 | 7. Policy lifecycle and history | 0/TBD | Not started | — |

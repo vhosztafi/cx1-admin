@@ -1,8 +1,8 @@
 ---
 phase: 04
 slug: agency-onboarding-and-access
-status: planned
-nyquist_compliant: false
+status: complete
+nyquist_compliant: true
 wave_0_complete: true
 created: 2026-09-14
 ---
@@ -26,9 +26,25 @@ After contract edits run node scripts/validate-contracts.mjs and agency-contract
 
 Browser harness must preserve fictional history and use unique identities. Tokens/passwords stay out of screenshots/output. Use actual two-user approval sessions, not role headers; count forbidden responses and unchanged SQL records directly. All existing shell/operations/client/contact/support/match scripts remain relevant regressions. Compare source/app at1560x1000 and390px, verify314px rail, table containment, dialog focus and live status.
 
-Nyquist compliance and phase sign-off remain pending implementation. Human UAT, hosted CI and optional Docker runtime cannot be inferred from these plans. AGY-03/04 retain downstream acceptance for real financial/insurance/task records.
+Phase4 automated validation and phase sign-off are complete; see04-VERIFICATION.md. Human UAT, hosted CI and optional Docker runtime cannot be inferred from these plans. AGY-03/04 retain downstream acceptance for real financial/insurance/task records.
 
 
 ## 04-07 completed evidence
 
 AgencyExternalApiTests validates actual accepted-cookie isolation for three broker roles/two agencies, own user/invitation lifecycle and current permission/session/replay authority. AgencyScopeResolution/SharingProjection/SharingContext/SharingPaging/OwnUserAuthority/OwnInvitationAuthority and permission API/storage tests cover held reads, safe DTOs, scope fingerprints, immutable grants and service races. Final report gate `.local/phase4-external-full-final`:323/56SQL, no skips.80contracts,30frontend/lint/typecheck/build pass. Actual `verify-agency-access-browser.mjs` and shell browser pass with reviewed desktop/mobile screenshots; prior sharing/permissions/users browser evidence is in04-07-PROGRESS. Phase-level Nyquist and AGY acceptance remain04-08.
+
+
+## Final requirement evidence map
+
+| Boundary | Passing evidence |
+|---|---|
+| Draft/source fields and commands | AgencyDraftRules/AgencyDraft tests, agency-contracts and agency-input frontend tests; agencies browser six stages, source options and stale/replay recovery |
+| Evidence and eligibility | AgencyEvidence/AgencyDistribution tests; actual protected upload, invalidated checks and incomplete readiness browser |
+| Notification durability | AgencyNotification/AgencyNotificationApi tests and persisted-outcome browser; SQL worker recovery/receipt fencing cases |
+| Identity/invitations | AgencyInvitation acceptance/issue/command/lifecycle API and SQL cases; users and invitation-acceptance browsers |
+| Independent lifecycle/terms | AgencyActivationDecision/Service, AgencyApprovalStorage, terms/state/follow-up tests; real lifecycle browser and exact SQL invariants |
+| Current access/sharing | AgencyExternalApi, own-user/invitation authority, scope/sharing/permission tests; actual sharing, permissions and accepted-account browsers |
+| Source KPI semantics | AgencyActionCounts/AgencyActionProjection tests plus actual request/rejection KPI browser |
+| Whole-phase regression | Fresh329/57SQL,81contracts,30frontend; all20browser stages together,15data-set restart hashes and fresh authenticated reads; see04-VERIFICATION |
+
+All plan/threat boundaries have implementation tests and direct acceptance evidence. Source option-family coverage is exhaustive in contract/frontend tests; browser journeys demonstrate the operational paths rather than claiming every possible Cartesian combination. AGY-03/04 later-record acceptance, human UAT and hosted-runtime limits remain explicit.

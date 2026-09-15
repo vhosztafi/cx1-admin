@@ -1,3 +1,4 @@
+import {agencyPage, selectAgency} from './browser-agency-selection.mjs';
 import { chromium } from 'playwright';
 import assert from 'node:assert/strict';
 import { readFile, mkdir } from 'node:fs/promises';
@@ -52,14 +53,16 @@ try {
   assert.equal(await page.getByLabel('Legal business name *',{exact:true}).inputValue(),name+' retained draft');
   await page.getByRole('button',{name:'Replace my edits with saved identity'}).click();await page.getByRole('heading',{name:name+' concurrent',exact:true}).waitFor();
   assert.equal(await page.getByLabel('Legal business name *',{exact:true}).inputValue(),name+' concurrent');await page.getByRole('button',{name:'Cancel',exact:true}).click();
-  // Force one-item transport pages to exercise actual SQL agency cursors with two demo agencies.
+  // Exercise actual SQL cursors without assuming seeded agencies sort first.
   await page.route('**/api/v1/relationship-agencies?**',route=>route.continue({url:route.request().url().replace('pageSize=15','pageSize=1')}));
   await page.getByRole('button',{name:'Add agency relationship',exact:true}).click();
-  await page.getByLabel('Agency *',{exact:true}).selectOption('31000000-0000-4000-8000-000000000001');
-  await page.getByRole('button',{name:'Next agencies',exact:true}).click();
-  await page.getByLabel('Agency *',{exact:true}).selectOption('31000000-0000-4000-8000-000000000002');
-  await page.getByRole('button',{name:'Previous agencies',exact:true}).click();
-  await page.getByLabel('Agency *',{exact:true}).selectOption('31000000-0000-4000-8000-000000000001');
+  await page.getByLabel('Agency *',{exact:true}).locator('option').nth(1).waitFor({state:'attached'});
+  const firstAgency=await page.getByLabel('Agency *',{exact:true}).locator('option').nth(1).getAttribute('value');
+  await agencyPage(page, 'Next');
+  assert.notEqual(await page.getByLabel('Agency *',{exact:true}).locator('option').nth(1).getAttribute('value'),firstAgency);
+  await agencyPage(page, 'Previous');
+  assert.equal(await page.getByLabel('Agency *',{exact:true}).locator('option').nth(1).getAttribute('value'),firstAgency);
+  await selectAgency(page, '31000000-0000-4000-8000-000000000001');
   let lostLink=false;const linkKeys=[];
   await page.route(`**/api/v1/clients/${clientId}/relationships`,async route=>{
     if(route.request().method()!=='POST'){await route.continue();return;}
@@ -75,7 +78,7 @@ try {
   const linked=await (await page.request.get(`${origin}/api/v1/clients/${clientId}/relationships`)).json();assert.equal(linked.totalCount,1);
   await page.reload();await page.locator('.client-record-facts').getByText('Fictional Brightside Agency',{exact:true}).waitFor();
   await page.getByRole('button',{name:'Add agency relationship',exact:true}).click();
-  await page.getByLabel('Agency *',{exact:true}).selectOption('31000000-0000-4000-8000-000000000002');
+  await selectAgency(page, '31000000-0000-4000-8000-000000000002');
   const beforeLink=await page.request.get(`${origin}/api/v1/clients/${clientId}`);const beforeLinkBody=await beforeLink.json();
   const advanceVersion=await page.request.put(`${origin}/api/v1/clients/${clientId}`,{headers:{'X-CSRF-Token':csrf,'Idempotency-Key':crypto.randomUUID(),'If-Match':beforeLink.headers().etag},data:{legalName:beforeLinkBody.legalName,entityType:beforeLinkBody.entityType,address:beforeLinkBody.address}});
   assert.equal(advanceVersion.status(),200);
@@ -83,7 +86,7 @@ try {
   assert.equal(await page.getByLabel('Agency *',{exact:true}).inputValue(),'31000000-0000-4000-8000-000000000002');
   await page.getByRole('button',{name:'Reload client before linking',exact:true}).click();
   await page.getByRole('button',{name:'Add agency relationship',exact:true}).click();
-  await page.getByLabel('Agency *',{exact:true}).selectOption('31000000-0000-4000-8000-000000000002');
+  await selectAgency(page, '31000000-0000-4000-8000-000000000002');
   await page.getByRole('button',{name:'Link agency',exact:true}).click();await page.getByText('Agency relationship saved.',{exact:true}).waitFor();
   await page.locator('.client-record-facts').getByText(/Fictional Kingsway Agency/).waitFor();
   assert.equal((await (await page.request.get(`${origin}/api/v1/clients/${clientId}/relationships`)).json()).totalCount,2);
