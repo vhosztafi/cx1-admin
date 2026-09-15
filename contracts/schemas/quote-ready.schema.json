@@ -67,9 +67,33 @@
             "email": {
               "type": "string",
               "format": "email"
+            },
+            "mobile": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 50
             }
           },
           "required": []
+        },
+        "firstName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "surname": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "title": {
+          "$ref": "#/$defs/Reference"
+        },
+        "declaredCompanyType": {
+          "$ref": "#/$defs/Reference"
+        },
+        "responses": {
+          "$ref": "#/$defs/Responses"
         }
       },
       "required": [
@@ -83,6 +107,7 @@
       "additionalProperties": false,
       "properties": {
         "kind": {
+          "type": "string",
           "enum": [
             "annual",
             "short-period"
@@ -838,6 +863,85 @@
           },
           "minItems": 0,
           "maxItems": 1000
+        },
+        "abiCode": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "abiGroup": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "vehicleType": {
+          "$ref": "#/$defs/Reference"
+        },
+        "bodyDescription": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "seats": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "doors": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "fuelType": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "transmission": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "declaredEngineSize": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "registrationYear": {
+          "type": "integer",
+          "minimum": 1900,
+          "maximum": 2200
+        },
+        "registeredOn": {
+          "$ref": "#/$defs/Date"
+        },
+        "imported": {
+          "type": "boolean"
+        },
+        "declaredOwnerType": {
+          "$ref": "#/$defs/Reference"
+        },
+        "keptOvernightType": {
+          "$ref": "#/$defs/Reference"
+        },
+        "keptOvernightAddress": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "partOfLeaseAgreement": {
+          "type": "boolean"
+        },
+        "leaseLengthYears": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "customerLoan": {
+          "type": "boolean"
+        },
+        "modified": {
+          "type": "boolean"
         }
       },
       "required": [
@@ -876,6 +980,14 @@
         },
         "responses": {
           "$ref": "#/$defs/Responses"
+        },
+        "yearsTrading": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "sharedWorksite": {
+          "type": "boolean"
         }
       },
       "required": [
@@ -963,6 +1075,9 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 200
+        },
+        "noClaimsBonusExpiresOn": {
+          "$ref": "#/$defs/Date"
         }
       },
       "required": [
@@ -1112,6 +1227,12 @@
         "materialFacts": {
           "type": "string",
           "maxLength": 8000
+        },
+        "specifiedVehiclesRequested": {
+          "type": "boolean"
+        },
+        "responses": {
+          "$ref": "#/$defs/Responses"
         }
       },
       "required": [

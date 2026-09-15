@@ -140,3 +140,116 @@ test('licence issue date, declared claim status and address components are retai
   proposal.risk.drivers[0].losses[0].declaredStatus=selection;
   proposal.risk.drivers[0].convictions[0].disqualified='No';assert.equal(draft(proposal),false);
 });
+
+test('all 52 ordinary and specified vehicle source fields resolve without losing their source set',async()=>{
+  const source=JSON.parse(await readFile(new URL('../docs/design/funnel-field-mapping.json',import.meta.url),'utf8'));
+  const mapping=await read('quote-field-mapping.json');
+  const schema=await read('schemas/quote-ready.schema.json');
+  const originals=source.mappings.filter(row=>/^MTS-0[89]-Q/.test(row.owner));
+  const rows=mapping.mappings.filter(row=>/^MTS-0[89]-Q/.test(row.owner));
+  assert.equal(originals.length,52);assert.equal(rows.length,52);
+  assert.equal(new Set(rows.map(row=>row.owner)).size,52);
+  for(const original of originals) {
+    const row=rows.find(candidate=>candidate.owner===original.owner);
+    assert.equal(row.rawPath,original.rawPath);assert.equal(row.optionCollection,original.optionCollection);
+    assert.equal(row.sourceVehicleSet,original.owner.startsWith('MTS-09')?'specifiedVehicles':'vehicles');
+    let node=schema;
+    for(const part of row.canonicalPath.split('.')) {
+      while(node.$ref)node=schema.$defs[node.$ref.split('/').at(-1)];
+      node=node.properties?.[part.replace(/\[\]$/,'')];assert.ok(node,`${row.owner}: ${row.canonicalPath}`);
+      if(part.endsWith('[]')){assert.equal(node.type,'array');node=node.items;}
+    }
+    if(['string','boolean','integer','number'].includes(row.contractKind))assert.equal(node.type,row.contractKind);
+    else assert.equal(node.$ref,`#/$defs/${row.contractKind}`);
+  }
+  for(const [rawPath,canonicalPath] of Object.entries({registrationYear:'risk.vehicles[].registrationYear',bodyType:'risk.vehicles[].bodyDescription',engineSize:'risk.vehicles[].declaredEngineSize',ownerTypeID:'risk.vehicles[].declaredOwnerType'}))
+    for(const row of rows.filter(row=>row.rawPath===rawPath))assert.equal(row.canonicalPath,canonicalPath);
+});
+
+test('vehicle declarations preserve registration, manual text, false answers and typed ownership independently',()=>{
+  const vehicle={id,manufactureYear:2020,registrationYear:2021,registeredOn:'2021-02-03',bodyDescription:'Panel van',declaredEngineSize:'1998',ownership:'business-owned',declaredOwnerType:selection,imported:false,modified:false,partOfLeaseAgreement:true,leaseLengthYears:2.5,keptOvernightAddress:'Fictional secure yard',modifications:[{id,code:selection}]};
+  const proposal={...base(),risk:{specifiedVehiclesRequested:false,vehicles:[vehicle]}};
+  assert.equal(draft(proposal),true,JSON.stringify(draft.errors));
+  assert.notEqual(vehicle.manufactureYear,vehicle.registrationYear);
+  for(const [field,bad] of Object.entries({registrationYear:1899,registeredOn:'2021-02-30',declaredOwnerType:{value:1},imported:'false',leaseLengthYears:-1,seats:2.5,grossWeightKg:-1,declaredEngineSize:1998})) {
+    const invalid=structuredClone(proposal);invalid.risk.vehicles[0][field]=bad;assert.equal(draft(invalid),false,field);
+  }
+  vehicle.modifications[0].isDraft=true;assert.equal(draft(proposal),false);
+  // Same-proposal IDs, vehicle option eligibility and conditional requiredness
+  // remain semantic checks; a valid incomplete shape is not a ready quote.
+});
+
+test('business, activity, declaration and portfolio mappings retain all 68 source questions and their conditions',async()=>{
+  const source=JSON.parse(await readFile(new URL('../docs/design/funnel-field-mapping.json',import.meta.url),'utf8'));
+  const categories=JSON.parse(await readFile(new URL('../frontend-code/src/contracts/vehicle-types/categories.json',import.meta.url),'utf8')).categories;
+  const pairs=JSON.parse(await readFile(new URL('../frontend-code/src/contracts/declaration/pairs.json',import.meta.url),'utf8')).pairs;
+  const mapping=await read('quote-field-mapping.json');
+  const schema=await read('schemas/quote-ready.schema.json');
+  const originals=source.mappings.filter(row=>/^MTS-(03|04|10|12)-Q/.test(row.owner));
+  const rows=mapping.mappings.filter(row=>originals.some(input=>input.owner===row.owner));
+  assert.equal(originals.length,68);assert.equal(rows.length,68);assert.equal(new Set(rows.map(row=>row.owner)).size,68);
+  for(const original of originals) {
+    const row=rows.find(candidate=>candidate.owner===original.owner);
+    assert.equal(row.rawPath,original.rawPath);assert.equal(row.optionCollection,original.optionCollection);
+    let node=schema;
+    for(const part of row.canonicalPath.split('.')) {
+      while(node.$ref)node=schema.$defs[node.$ref.split('/').at(-1)];
+      node=node.properties?.[part.replace(/\[\]$/,'')];assert.ok(node,`${row.owner}: ${row.canonicalPath}`);
+      if(part.endsWith('[]'))node=node.items;
+    }
+    if(row.contractKind==='integer')assert.equal(node.type,'integer');
+    else assert.equal(node.$ref,`#/$defs/${row.contractKind}`);
+    if(row.contractKind==='Answer')assert.equal(row.questionId,row.owner);
+  }
+  const byId=Object.fromEntries(rows.map(row=>[row.owner,row]));
+  for(const parent of [...pairs,...categories]) {
+    assert.equal(byId[parent.owner].answerKind,'boolean');
+    for(const child of [parent.detail,parent.percentage].filter(Boolean)) {
+      assert.deepEqual(byId[child.owner].requiredWhen,{questionId:parent.owner,equals:true});
+      assert.equal(byId[child.owner].answerKind,child===parent.percentage?'percentage':child.type==='number'?'count':'text');
+    }
+  }
+});
+
+test('portfolio proportions and declaration answers preserve exact units and false without accepting untyped values',()=>{
+  const answer={questionId:'MTS-10-Q02',kind:'percentage',value:1250,unit:'basis-points'};
+  const declaration={questionId:'MTS-12-Q01',kind:'boolean',value:false};
+  const proposal={...base(),risk:{responses:{questionSetVersion:'demo-1',answers:[answer]},declarations:{questionSetVersion:'demo-1',answers:[declaration]}}};
+  assert.equal(draft(proposal),true,JSON.stringify(draft.errors));
+  for(const value of [12.5,10001,-1,'1250']){answer.value=value;assert.equal(draft(proposal),false);}
+  answer.value=1250;answer.unit='percent';assert.equal(draft(proposal),false);
+  answer.unit='basis-points';declaration.value='No';assert.equal(draft(proposal),false);
+  declaration.value=false;delete declaration.value;assert.equal(draft(proposal),false);
+});
+
+test('every one of the 255 source occurrences has an exact typed canonical path',async()=>{
+  const source=JSON.parse(await readFile(new URL('../docs/design/funnel-field-mapping.json',import.meta.url),'utf8'));
+  const mapping=await read('quote-field-mapping.json');
+  const schema=await read('schemas/quote-ready.schema.json');
+  assert.equal(source.mappings.length,255);assert.equal(mapping.mappings.length,255);
+  assert.equal(new Set(mapping.mappings.map(row=>row.owner)).size,255);
+  for(const original of source.mappings) {
+    const row=mapping.mappings.find(candidate=>candidate.owner===original.owner);
+    assert.ok(row,original.owner);assert.equal(row.rawPath,original.rawPath);assert.equal(row.optionCollection,original.optionCollection);
+    let node=schema;
+    for(const part of row.canonicalPath.split('.')) {
+      while(node.$ref)node=schema.$defs[node.$ref.split('/').at(-1)];
+      node=node.properties?.[part.replace(/\[\]$/,'')];assert.ok(node,`${row.owner}: ${row.canonicalPath}`);
+      if(part.endsWith('[]')){assert.equal(node.type,'array');node=node.items;}
+    }
+    if(['string','boolean','integer','number'].includes(row.contractKind))assert.equal(node.type,row.contractKind,row.owner);
+    else assert.equal(node.$ref,`#/$defs/${row.contractKind}`,row.owner);
+    if(row.contractKind==='Answer') {
+      assert.equal(row.questionId,row.owner);
+      assert.ok(schema.$defs.Answer.oneOf.some(branch=>branch.properties.kind.const===row.answerKind),row.owner);
+    }
+  }
+});
+
+test('proposer consents remain multi-selections and NCB expiry is separate from prior insurance expiry',()=>{
+  const proposal={...base(),insured:{firstName:'Alex',surname:'Example',title:selection,declaredCompanyType:selection,contact:{mobile:'07700900000'},responses:{questionSetVersion:'demo-1',answers:[{questionId:'MTS-01-Q02',kind:'references',value:[selection]}]}},risk:{premises:[{id,yearsTrading:2.5,sharedWorksite:false}],previousInsurance:{expiresOn:'2026-01-01',noClaimsBonusExpiresOn:'2025-12-01'}}};
+  assert.equal(draft(proposal),true,JSON.stringify(draft.errors));
+  proposal.insured.responses.answers[0].value=true;assert.equal(draft(proposal),false);
+  proposal.insured.responses.answers[0].value=[selection];proposal.risk.previousInsurance.noClaimsBonusExpiresOn='2025-02-30';assert.equal(draft(proposal),false);
+  proposal.risk.previousInsurance.noClaimsBonusExpiresOn='2025-12-01';proposal.risk.premises[0].sharedWorksite='No';assert.equal(draft(proposal),false);
+});

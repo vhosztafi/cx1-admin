@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "partial;55driver and9European trip child shapes mapped; remaining fields/catalogues/domain semantics pending",
+  "status": "255 source occurrences shape mapped; control dispositions, catalogues, conditional/domain validation and API contracts remain pending",
   "mappings": [
     {
       "owner": "MTS-11-Q11",
@@ -8,7 +8,8 @@
       "canonicalPath": "cover.annualEuropeanCover[].registration",
       "contractKind": "string",
       "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
-      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names.",
+      "optionCollection": null
     },
     {
       "owner": "MTS-11-Q12",
@@ -16,7 +17,8 @@
       "canonicalPath": "cover.annualEuropeanCover[].usage",
       "contractKind": "Reference",
       "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
-      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names.",
+      "optionCollection": null
     },
     {
       "owner": "MTS-11-Q14",
@@ -24,7 +26,8 @@
       "canonicalPath": "cover.temporaryEuropeanCover[].registration",
       "contractKind": "string",
       "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
-      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names.",
+      "optionCollection": null
     },
     {
       "owner": "MTS-11-Q15",
@@ -32,7 +35,8 @@
       "canonicalPath": "cover.temporaryEuropeanCover[].startsOn",
       "contractKind": "Date",
       "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
-      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names.",
+      "optionCollection": null
     },
     {
       "owner": "MTS-11-Q16",
@@ -40,7 +44,8 @@
       "canonicalPath": "cover.temporaryEuropeanCover[].endsOn",
       "contractKind": "Date",
       "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
-      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names.",
+      "optionCollection": null
     },
     {
       "owner": "MTS-11-Q17",
@@ -48,7 +53,8 @@
       "canonicalPath": "cover.temporaryEuropeanCover[].area",
       "contractKind": "Reference",
       "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
-      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names.",
+      "optionCollection": null
     },
     {
       "owner": "MTS-11-Q18",
@@ -56,7 +62,8 @@
       "canonicalPath": "cover.temporaryEuropeanCover[].driverIds[]",
       "contractKind": "Id",
       "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
-      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names.",
+      "optionCollection": null
     },
     {
       "owner": "MTS-11-Q19",
@@ -64,7 +71,8 @@
       "canonicalPath": "cover.temporaryEuropeanCover[].cover",
       "contractKind": "Reference",
       "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
-      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names.",
+      "optionCollection": null
     },
     {
       "owner": "MTS-11-Q20",
@@ -72,7 +80,8 @@
       "canonicalPath": "cover.temporaryEuropeanCover[].usage",
       "contractKind": "Reference",
       "mappingStatus": "shape mapped and tested; versioned reference catalogue and domain applicability remain05-01",
-      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names."
+      "runtimeValidation": "Same-proposal driver membership, trip chronology/term bounds and named/any-driver requirements; do not copy legacy isDraft or display driver names.",
+      "optionCollection": null
     },
     {
       "owner": "MTS-06-Q08",
@@ -610,6 +619,2131 @@
       "answerKind": "reference",
       "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
       "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
+    },
+    {
+      "owner": "MTS-08-Q01",
+      "rawPath": "regNumber",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].registration",
+      "contractKind": "string",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q02",
+      "rawPath": "make",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].make",
+      "contractKind": "string",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q03",
+      "rawPath": "model",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].model",
+      "contractKind": "string",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q04",
+      "rawPath": "abiCode",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].abiCode",
+      "contractKind": "string",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q05",
+      "rawPath": "abiGroup",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].abiGroup",
+      "contractKind": "integer",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q06",
+      "rawPath": "vehicleTypeID",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].vehicleType",
+      "contractKind": "Reference",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q07",
+      "rawPath": "bodyType",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].bodyDescription",
+      "contractKind": "string",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q08",
+      "rawPath": "gvw",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].grossWeightKg",
+      "contractKind": "integer",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q09",
+      "rawPath": "seats",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].seats",
+      "contractKind": "integer",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q10",
+      "rawPath": "doors",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].doors",
+      "contractKind": "integer",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q11",
+      "rawPath": "fuelType",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].fuelType",
+      "contractKind": "string",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q12",
+      "rawPath": "transmission",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].transmission",
+      "contractKind": "string",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q13",
+      "rawPath": "engineSize",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].declaredEngineSize",
+      "contractKind": "string",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q14",
+      "rawPath": "registrationYear",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].registrationYear",
+      "contractKind": "integer",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q15",
+      "rawPath": "registrationDate",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].registeredOn",
+      "contractKind": "Date",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q16",
+      "rawPath": "isImported",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].imported",
+      "contractKind": "boolean",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q17",
+      "rawPath": "vehicleValue",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].value",
+      "contractKind": "Amount",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q18",
+      "rawPath": "purchaseDate",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].purchasedOn",
+      "contractKind": "Date",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q19",
+      "rawPath": "ownerTypeID",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].declaredOwnerType",
+      "contractKind": "Reference",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q20",
+      "rawPath": "keptOvernightTypeID",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].keptOvernightType",
+      "contractKind": "Reference",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q21",
+      "rawPath": "vehicleKeptAddress",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].keptOvernightAddress",
+      "contractKind": "string",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q22",
+      "rawPath": "isPartLeaseAgreement",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].partOfLeaseAgreement",
+      "contractKind": "boolean",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q23",
+      "rawPath": "leaseLengthYears",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].leaseLengthYears",
+      "contractKind": "number",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q24",
+      "rawPath": "isCustomerLoan",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].customerLoan",
+      "contractKind": "boolean",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q25",
+      "rawPath": "hasModification",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].modified",
+      "contractKind": "boolean",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-08-Q26",
+      "rawPath": "vehicleModifications[].modificationId",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].modifications[].code",
+      "contractKind": "Reference",
+      "sourceVehicleSet": "vehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q01",
+      "rawPath": "addSpecifiedVehicle",
+      "optionCollection": null,
+      "canonicalPath": "risk.specifiedVehiclesRequested",
+      "contractKind": "boolean",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q02",
+      "rawPath": "regNumber",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].registration",
+      "contractKind": "string",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q03",
+      "rawPath": "make",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].make",
+      "contractKind": "string",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q04",
+      "rawPath": "model",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].model",
+      "contractKind": "string",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q05",
+      "rawPath": "abiCode",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].abiCode",
+      "contractKind": "string",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q06",
+      "rawPath": "abiGroup",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].abiGroup",
+      "contractKind": "integer",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q07",
+      "rawPath": "vehicleTypeID",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].vehicleType",
+      "contractKind": "Reference",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q08",
+      "rawPath": "bodyType",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].bodyDescription",
+      "contractKind": "string",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q09",
+      "rawPath": "gvw",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].grossWeightKg",
+      "contractKind": "integer",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q10",
+      "rawPath": "seats",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].seats",
+      "contractKind": "integer",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q11",
+      "rawPath": "doors",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].doors",
+      "contractKind": "integer",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q12",
+      "rawPath": "fuelType",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].fuelType",
+      "contractKind": "string",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q13",
+      "rawPath": "transmission",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].transmission",
+      "contractKind": "string",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q14",
+      "rawPath": "engineSize",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].declaredEngineSize",
+      "contractKind": "string",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q15",
+      "rawPath": "registrationYear",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].registrationYear",
+      "contractKind": "integer",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q16",
+      "rawPath": "registrationDate",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].registeredOn",
+      "contractKind": "Date",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q17",
+      "rawPath": "isImported",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].imported",
+      "contractKind": "boolean",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q18",
+      "rawPath": "vehicleValue",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].value",
+      "contractKind": "Amount",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q19",
+      "rawPath": "purchaseDate",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].purchasedOn",
+      "contractKind": "Date",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q20",
+      "rawPath": "ownerTypeID",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].declaredOwnerType",
+      "contractKind": "Reference",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q21",
+      "rawPath": "keptOvernightTypeID",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].keptOvernightType",
+      "contractKind": "Reference",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q22",
+      "rawPath": "vehicleKeptAddress",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].keptOvernightAddress",
+      "contractKind": "string",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q23",
+      "rawPath": "isPartLeaseAgreement",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].partOfLeaseAgreement",
+      "contractKind": "boolean",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q24",
+      "rawPath": "leaseLengthYears",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].leaseLengthYears",
+      "contractKind": "number",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q25",
+      "rawPath": "hasModification",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].modified",
+      "contractKind": "boolean",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-09-Q26",
+      "rawPath": "modifications[].modificationID",
+      "optionCollection": null,
+      "canonicalPath": "risk.vehicles[].modifications[].code",
+      "contractKind": "Reference",
+      "sourceVehicleSet": "specifiedVehicles",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Both source vehicle lists become stable-ID risk.vehicles rows; specifiedVehicleIds identifies the specified subset. Preserve declared text and reference identity; ownerGuid resolves to ownerDriverId within this proposal. Validate pinned vehicle options, modification uniqueness, limits, lease and owner/driver applicability before readiness; never infer manufacture year from registration year."
+    },
+    {
+      "owner": "MTS-03-Q01",
+      "rawPath": "businessStartedDate",
+      "optionCollection": null,
+      "canonicalPath": "risk.business.startedOn",
+      "contractKind": "Date",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-03-Q02",
+      "rawPath": "businessAnnualTurnover",
+      "optionCollection": null,
+      "canonicalPath": "risk.business.turnover",
+      "contractKind": "Amount",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-03-Q03",
+      "rawPath": "businessAnnualWageRoll",
+      "optionCollection": null,
+      "canonicalPath": "risk.business.wageRoll",
+      "contractKind": "Amount",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-03-Q04",
+      "rawPath": "businessIsTradeAssociationMember",
+      "optionCollection": null,
+      "canonicalPath": "risk.business.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-03-Q04",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-03-Q05",
+      "rawPath": "businessTradeAssociationName",
+      "optionCollection": null,
+      "canonicalPath": "risk.business.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-03-Q05",
+      "answerKind": "text",
+      "requiredWhen": {
+        "questionId": "MTS-03-Q04",
+        "equals": true
+      },
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-03-Q06",
+      "rawPath": "businessIsVATRegistered",
+      "optionCollection": null,
+      "canonicalPath": "risk.business.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-03-Q06",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-03-Q07",
+      "rawPath": "businessVATNumber",
+      "optionCollection": null,
+      "canonicalPath": "risk.business.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-03-Q07",
+      "answerKind": "text",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-03-Q08",
+      "rawPath": "businessNumberOfVehiclesHandlePerYear",
+      "optionCollection": null,
+      "canonicalPath": "risk.business.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-03-Q08",
+      "answerKind": "count",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-03-Q09",
+      "rawPath": "businessNumberOfVehicleCapacity",
+      "optionCollection": null,
+      "canonicalPath": "risk.business.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-03-Q09",
+      "answerKind": "count",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-04-Q01",
+      "rawPath": "occupationId",
+      "optionCollection": "mtOccupations",
+      "canonicalPath": "risk.business.activities[].code",
+      "contractKind": "Reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-04-Q02",
+      "rawPath": "percentage",
+      "optionCollection": null,
+      "canonicalPath": "risk.business.activities[].turnoverBasisPoints",
+      "contractKind": "integer",
+      "conversion": "Exact percentage to integer basis points (100 percent =10000); reject excess precision, never round silently.",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-12-Q01",
+      "rawPath": "haveAnyOfDriversHadSpecialTermsApplied",
+      "optionCollection": null,
+      "canonicalPath": "risk.declarations.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-12-Q01",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-12-Q02",
+      "rawPath": "anyOfDriversHadSpecialTermsAppliedDetails",
+      "optionCollection": null,
+      "canonicalPath": "risk.declarations.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-12-Q02",
+      "answerKind": "text",
+      "requiredWhen": {
+        "questionId": "MTS-12-Q01",
+        "equals": true
+      },
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-12-Q03",
+      "rawPath": "haveAnyOfDriversHadClaimRefused",
+      "optionCollection": null,
+      "canonicalPath": "risk.declarations.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-12-Q03",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-12-Q04",
+      "rawPath": "anyOfDriversHadClaimRefusedDetails",
+      "optionCollection": null,
+      "canonicalPath": "risk.declarations.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-12-Q04",
+      "answerKind": "text",
+      "requiredWhen": {
+        "questionId": "MTS-12-Q03",
+        "equals": true
+      },
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-12-Q05",
+      "rawPath": "haveAnyOfNotListedDriversHaveCCJS",
+      "optionCollection": null,
+      "canonicalPath": "risk.declarations.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-12-Q05",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-12-Q06",
+      "rawPath": "anyOfNotListedDriversHaveCCJSDetails",
+      "optionCollection": null,
+      "canonicalPath": "risk.declarations.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-12-Q06",
+      "answerKind": "text",
+      "requiredWhen": {
+        "questionId": "MTS-12-Q05",
+        "equals": true
+      },
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-12-Q07",
+      "rawPath": "haveAnyOfDriversOrPartnerDirectorBankrupted",
+      "optionCollection": null,
+      "canonicalPath": "risk.declarations.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-12-Q07",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-12-Q08",
+      "rawPath": "anyOfDriversOrPartnerDirectorBankruptedDetails",
+      "optionCollection": null,
+      "canonicalPath": "risk.declarations.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-12-Q08",
+      "answerKind": "text",
+      "requiredWhen": {
+        "questionId": "MTS-12-Q07",
+        "equals": true
+      },
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-12-Q09",
+      "rawPath": "haveAnyOfDriversHadDisabilitiesNotReported",
+      "optionCollection": null,
+      "canonicalPath": "risk.declarations.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-12-Q09",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-12-Q10",
+      "rawPath": "anyOfDriversHadDisabilitiesNotReportedDetails",
+      "optionCollection": null,
+      "canonicalPath": "risk.declarations.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-12-Q10",
+      "answerKind": "text",
+      "requiredWhen": {
+        "questionId": "MTS-12-Q09",
+        "equals": true
+      },
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-12-Q11",
+      "rawPath": "haveAnyOfPartnerDirectorHadCriminalConviction",
+      "optionCollection": null,
+      "canonicalPath": "risk.declarations.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-12-Q11",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-12-Q12",
+      "rawPath": "anyOfPartnerDirectorHadCriminalConvictionDetails",
+      "optionCollection": null,
+      "canonicalPath": "risk.declarations.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-12-Q12",
+      "answerKind": "text",
+      "requiredWhen": {
+        "questionId": "MTS-12-Q11",
+        "equals": true
+      },
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-12-Q13",
+      "rawPath": "hasAnyoneBeenDirectorOrPartnerOtherThanMotortrade",
+      "optionCollection": null,
+      "canonicalPath": "risk.declarations.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-12-Q13",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-12-Q14",
+      "rawPath": "anyoneBeenDirectorOrPartnerOtherThanMotortradeDetails",
+      "optionCollection": null,
+      "canonicalPath": "risk.declarations.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-12-Q14",
+      "answerKind": "text",
+      "requiredWhen": {
+        "questionId": "MTS-12-Q13",
+        "equals": true
+      },
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-12-Q15",
+      "rawPath": "hasAnyoneBeenVehicleRentalHireLeasingCompany",
+      "optionCollection": null,
+      "canonicalPath": "risk.declarations.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-12-Q15",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-12-Q16",
+      "rawPath": "anyoneBeenVehicleRentalHireLeasingCompanyDetails",
+      "optionCollection": null,
+      "canonicalPath": "risk.declarations.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-12-Q16",
+      "answerKind": "text",
+      "requiredWhen": {
+        "questionId": "MTS-12-Q15",
+        "equals": true
+      },
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-12-Q17",
+      "rawPath": "haveAnyoneBeenDisqualifiedForActingAsDirector",
+      "optionCollection": null,
+      "canonicalPath": "risk.declarations.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-12-Q17",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-12-Q18",
+      "rawPath": "anyoneBeenDisqualifiedForActingAsDirectorDetails",
+      "optionCollection": null,
+      "canonicalPath": "risk.declarations.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-12-Q18",
+      "answerKind": "text",
+      "requiredWhen": {
+        "questionId": "MTS-12-Q17",
+        "equals": true
+      },
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-12-Q19",
+      "rawPath": "haveAnyOfDirectorGoneIntoLiquidation",
+      "optionCollection": null,
+      "canonicalPath": "risk.declarations.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-12-Q19",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-12-Q20",
+      "rawPath": "anyOfDirectorGoneIntoLiquidationDetails",
+      "optionCollection": null,
+      "canonicalPath": "risk.declarations.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-12-Q20",
+      "answerKind": "text",
+      "requiredWhen": {
+        "questionId": "MTS-12-Q19",
+        "equals": true
+      },
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q01",
+      "rawPath": "standardCars",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q01",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q02",
+      "rawPath": "percentageOfStandardCars",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q02",
+      "answerKind": "percentage",
+      "requiredWhen": {
+        "questionId": "MTS-10-Q01",
+        "equals": true
+      },
+      "conversion": "Exact percentage to integer basis points (100 percent =10000); reject excess precision, never round silently.",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q03",
+      "rawPath": "sportsPerformanceVehicles",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q03",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q04",
+      "rawPath": "percentageOfSportsPerformanceVehicles",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q04",
+      "answerKind": "percentage",
+      "requiredWhen": {
+        "questionId": "MTS-10-Q03",
+        "equals": true
+      },
+      "conversion": "Exact percentage to integer basis points (100 percent =10000); reject excess precision, never round silently.",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q05",
+      "rawPath": "commercialVehicles",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q05",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q06",
+      "rawPath": "percentageOfCommercialVehicles",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q06",
+      "answerKind": "percentage",
+      "requiredWhen": {
+        "questionId": "MTS-10-Q05",
+        "equals": true
+      },
+      "conversion": "Exact percentage to integer basis points (100 percent =10000); reject excess precision, never round silently.",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q07",
+      "rawPath": "motorcycles",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q07",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q08",
+      "rawPath": "percentageOfMotorcycles",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q08",
+      "answerKind": "percentage",
+      "requiredWhen": {
+        "questionId": "MTS-10-Q07",
+        "equals": true
+      },
+      "conversion": "Exact percentage to integer basis points (100 percent =10000); reject excess precision, never round silently.",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q09",
+      "rawPath": "classicsOver25Years",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q09",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q10",
+      "rawPath": "percentageOfClassicsOver25Years",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q10",
+      "answerKind": "percentage",
+      "requiredWhen": {
+        "questionId": "MTS-10-Q09",
+        "equals": true
+      },
+      "conversion": "Exact percentage to integer basis points (100 percent =10000); reject excess precision, never round silently.",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q11",
+      "rawPath": "importedVehicles",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q11",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q12",
+      "rawPath": "percentageOfImportedVehicles",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q12",
+      "answerKind": "percentage",
+      "requiredWhen": {
+        "questionId": "MTS-10-Q11",
+        "equals": true
+      },
+      "conversion": "Exact percentage to integer basis points (100 percent =10000); reject excess precision, never round silently.",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q13",
+      "rawPath": "modifiedVehicles",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q13",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q14",
+      "rawPath": "percentageOfModifiedVehicles",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q14",
+      "answerKind": "percentage",
+      "requiredWhen": {
+        "questionId": "MTS-10-Q13",
+        "equals": true
+      },
+      "conversion": "Exact percentage to integer basis points (100 percent =10000); reject excess precision, never round silently.",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q15",
+      "rawPath": "horseboxesAgriculturalPlantMachinery",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q15",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q16",
+      "rawPath": "percentageOfHorseboxesAgriculturalPlantMachinery",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q16",
+      "answerKind": "percentage",
+      "requiredWhen": {
+        "questionId": "MTS-10-Q15",
+        "equals": true
+      },
+      "conversion": "Exact percentage to integer basis points (100 percent =10000); reject excess precision, never round silently.",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q17",
+      "rawPath": "rallyTrackKitCarsTrikes",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q17",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q18",
+      "rawPath": "percentageOfRallyTrackKitCarsTrikes",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q18",
+      "answerKind": "percentage",
+      "requiredWhen": {
+        "questionId": "MTS-10-Q17",
+        "equals": true
+      },
+      "conversion": "Exact percentage to integer basis points (100 percent =10000); reject excess precision, never round silently.",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q19",
+      "rawPath": "transportersCarryingMoreThan2Vehicles",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q19",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q20",
+      "rawPath": "percentageOfTransportersCarryingMoreThan2Vehicles",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q20",
+      "answerKind": "percentage",
+      "requiredWhen": {
+        "questionId": "MTS-10-Q19",
+        "equals": true
+      },
+      "conversion": "Exact percentage to integer basis points (100 percent =10000); reject excess precision, never round silently.",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q21",
+      "rawPath": "maxVehiclesCarriedByTransporter",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q21",
+      "answerKind": "count",
+      "requiredWhen": {
+        "questionId": "MTS-10-Q19",
+        "equals": true
+      },
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q22",
+      "rawPath": "quadBikes",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q22",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q23",
+      "rawPath": "percentageOfQuadBikes",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q23",
+      "answerKind": "percentage",
+      "requiredWhen": {
+        "questionId": "MTS-10-Q22",
+        "equals": true
+      },
+      "conversion": "Exact percentage to integer basis points (100 percent =10000); reject excess precision, never round silently.",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q24",
+      "rawPath": "motorhomes",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q24",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q25",
+      "rawPath": "percentageOfMotorhomes",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q25",
+      "answerKind": "percentage",
+      "requiredWhen": {
+        "questionId": "MTS-10-Q24",
+        "equals": true
+      },
+      "conversion": "Exact percentage to integer basis points (100 percent =10000); reject excess precision, never round silently.",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q26",
+      "rawPath": "vehiclesWithMoreThan7Seats",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q26",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q27",
+      "rawPath": "percentageOfVehiclesWithMoreThan7Seats",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q27",
+      "answerKind": "percentage",
+      "requiredWhen": {
+        "questionId": "MTS-10-Q26",
+        "equals": true
+      },
+      "conversion": "Exact percentage to integer basis points (100 percent =10000); reject excess precision, never round silently.",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q28",
+      "rawPath": "taxis",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q28",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q29",
+      "rawPath": "percentageOfTaxis",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q29",
+      "answerKind": "percentage",
+      "requiredWhen": {
+        "questionId": "MTS-10-Q28",
+        "equals": true
+      },
+      "conversion": "Exact percentage to integer basis points (100 percent =10000); reject excess precision, never round silently.",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q30",
+      "rawPath": "vehiclesCarryingCorrosiveToxicExplosiveFlammableGoods",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q30",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q31",
+      "rawPath": "percentageOfVehiclesCarryingCorrosiveToxicExplosiveFlammableGoods",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q31",
+      "answerKind": "percentage",
+      "requiredWhen": {
+        "questionId": "MTS-10-Q30",
+        "equals": true
+      },
+      "conversion": "Exact percentage to integer basis points (100 percent =10000); reject excess precision, never round silently.",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q32",
+      "rawPath": "corrosiveToxicExplosiveFlammableGoodsDetails",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q32",
+      "answerKind": "text",
+      "requiredWhen": {
+        "questionId": "MTS-10-Q30",
+        "equals": true
+      },
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q33",
+      "rawPath": "airsideOrHazardousLocations",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q33",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q34",
+      "rawPath": "percentageOfAirsideOrHazardousLocations",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q34",
+      "answerKind": "percentage",
+      "requiredWhen": {
+        "questionId": "MTS-10-Q33",
+        "equals": true
+      },
+      "conversion": "Exact percentage to integer basis points (100 percent =10000); reject excess precision, never round silently.",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q35",
+      "rawPath": "airsideOrHazardousLocationsDetails",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q35",
+      "answerKind": "text",
+      "requiredWhen": {
+        "questionId": "MTS-10-Q33",
+        "equals": true
+      },
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q36",
+      "rawPath": "tankers",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q36",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-10-Q37",
+      "rawPath": "percentageOfTankers",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-10-Q37",
+      "answerKind": "percentage",
+      "requiredWhen": {
+        "questionId": "MTS-10-Q36",
+        "equals": true
+      },
+      "conversion": "Exact percentage to integer basis points (100 percent =10000); reject excess precision, never round silently.",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Enforce pinned question definitions and conditional rules before readiness. Preserve omitted versus false; validate business chronology, source bounds and portfolio/activity totals with product-specific eligibility. Shape mapping alone does not certify readiness."
+    },
+    {
+      "owner": "MTS-01-Q01",
+      "rawPath": "consentTo",
+      "optionCollection": null,
+      "canonicalPath": "insured.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-01-Q01",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-01-Q02",
+      "rawPath": "marketingConsent",
+      "optionCollection": null,
+      "canonicalPath": "insured.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-01-Q02",
+      "answerKind": "references",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-01-Q03",
+      "rawPath": "marketingMethod",
+      "optionCollection": "marketingMethods",
+      "canonicalPath": "insured.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-01-Q03",
+      "answerKind": "references",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-01-Q04",
+      "rawPath": "proposerPolicyStartDate",
+      "optionCollection": null,
+      "conversion": "Preserve entered local calendar date as YYYY-MM-DD; never use a UTC conversion. Capture local time separately.",
+      "canonicalPath": "termIntent.localStartDate",
+      "contractKind": "Date",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-01-Q05",
+      "rawPath": "isShortTerm",
+      "optionCollection": null,
+      "conversion": "false maps to annual; true maps to short-period with a six-calendar-month local end derived from the entered start. Missing stays omitted. Explicit time and DST offset are captured separately; do not parse a date as UTC.",
+      "canonicalPath": "termIntent.kind",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-01-Q06",
+      "rawPath": "proposerCompanyTypeId",
+      "optionCollection": "companyTypes",
+      "canonicalPath": "insured.declaredCompanyType",
+      "contractKind": "Reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-01-Q07",
+      "rawPath": "proposerTitleId",
+      "optionCollection": "proposerTitles",
+      "canonicalPath": "insured.title",
+      "contractKind": "Reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-01-Q08",
+      "rawPath": "proposerName",
+      "optionCollection": null,
+      "canonicalPath": "insured.firstName",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-01-Q09",
+      "rawPath": "proposerSurname",
+      "optionCollection": null,
+      "canonicalPath": "insured.surname",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-01-Q10",
+      "rawPath": "proposerTradingName",
+      "optionCollection": null,
+      "canonicalPath": "insured.tradingName",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-01-Q11",
+      "rawPath": "proposerCompanyPartnershipName",
+      "optionCollection": null,
+      "canonicalPath": "insured.legalName",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-01-Q12",
+      "rawPath": "proposerEmail",
+      "optionCollection": null,
+      "canonicalPath": "insured.contact.email",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-01-Q13",
+      "rawPath": "proposerTelephoneNumber",
+      "optionCollection": null,
+      "canonicalPath": "insured.contact.telephone",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-01-Q14",
+      "rawPath": "proposerMobileNumber",
+      "optionCollection": null,
+      "canonicalPath": "insured.contact.mobile",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-01-Q15",
+      "rawPath": "proposerPostcode",
+      "optionCollection": null,
+      "canonicalPath": "insured.address.postcode",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-01-Q16",
+      "rawPath": "proposerHouseNumber",
+      "optionCollection": null,
+      "canonicalPath": "insured.address.houseNumber",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-01-Q17",
+      "rawPath": "proposerStreet",
+      "optionCollection": null,
+      "canonicalPath": "insured.address.street",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-01-Q18",
+      "rawPath": "proposerTown",
+      "optionCollection": null,
+      "canonicalPath": "insured.address.town",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-01-Q19",
+      "rawPath": "proposerCity",
+      "optionCollection": null,
+      "canonicalPath": "insured.address.city",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-01-Q20",
+      "rawPath": "proposerCounty",
+      "optionCollection": null,
+      "canonicalPath": "insured.address.county",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-05-Q01",
+      "rawPath": "coverLevelID",
+      "optionCollection": "coverLevels",
+      "canonicalPath": "cover.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-05-Q01",
+      "answerKind": "reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-05-Q02",
+      "rawPath": "coverIndemnityLimitOwnVehiclesID",
+      "optionCollection": "indemnityOwnVehicles",
+      "canonicalPath": "cover.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-05-Q02",
+      "answerKind": "reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-05-Q03",
+      "rawPath": "coverIndemnityLimitCustomerVehiclesID",
+      "optionCollection": "indemnityCustomerVehicles",
+      "canonicalPath": "cover.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-05-Q03",
+      "answerKind": "reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-05-Q04",
+      "rawPath": "coverExcessID",
+      "optionCollection": null,
+      "canonicalPath": "cover.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-05-Q04",
+      "answerKind": "reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-05-Q05",
+      "rawPath": "coverAddAllSectionsExcess",
+      "optionCollection": null,
+      "canonicalPath": "cover.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-05-Q05",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-05-Q06",
+      "rawPath": "coverExcessLateID",
+      "optionCollection": "excessLates",
+      "canonicalPath": "cover.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-05-Q06",
+      "answerKind": "reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-05-Q07",
+      "rawPath": "coverRemoveCoInsuraneExcess",
+      "optionCollection": null,
+      "canonicalPath": "cover.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-05-Q07",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-05-Q08",
+      "rawPath": "requireCustomerLoanCover",
+      "optionCollection": null,
+      "canonicalPath": "cover.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-05-Q08",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-05-Q09",
+      "rawPath": "customerLoanCoverLevelID",
+      "optionCollection": "customerLoanCoverLevels",
+      "canonicalPath": "cover.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-05-Q09",
+      "answerKind": "reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-05-Q10",
+      "rawPath": "coverNCBID",
+      "optionCollection": "noClaimBonuses",
+      "canonicalPath": "risk.previousInsurance.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-05-Q10",
+      "answerKind": "reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-05-Q11",
+      "rawPath": "coverNCBEarnedID",
+      "optionCollection": "noClaimBonusesEarned",
+      "canonicalPath": "risk.previousInsurance.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-05-Q11",
+      "answerKind": "reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-05-Q12",
+      "rawPath": "coverNCBExpiryDate",
+      "optionCollection": null,
+      "canonicalPath": "risk.previousInsurance.noClaimsBonusExpiresOn",
+      "contractKind": "Date",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-05-Q13",
+      "rawPath": "coverNCBPreviousInsurerId",
+      "optionCollection": "noClaimBonusPreviousInsurers",
+      "canonicalPath": "risk.previousInsurance.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-05-Q13",
+      "answerKind": "reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-05-Q14",
+      "rawPath": "hasCoverNCBIntroRenewal",
+      "optionCollection": null,
+      "canonicalPath": "risk.previousInsurance.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-05-Q14",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-05-Q15",
+      "rawPath": "coverNCBIntroRenewalYearID",
+      "optionCollection": "noClaimBonusIntroRenewalYears",
+      "canonicalPath": "risk.previousInsurance.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-05-Q15",
+      "answerKind": "reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-05-Q16",
+      "rawPath": "coverNCBPreviousInsurerOther",
+      "optionCollection": null,
+      "canonicalPath": "risk.previousInsurance.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-05-Q16",
+      "answerKind": "text",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-05-Q17",
+      "rawPath": "coverIsNCBProtected",
+      "optionCollection": null,
+      "canonicalPath": "risk.previousInsurance.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-05-Q17",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-06-Q01",
+      "rawPath": "driverPlanId",
+      "optionCollection": "driverPlans",
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q01",
+      "answerKind": "reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-06-Q02",
+      "rawPath": "aadDriverNumber",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q02",
+      "answerKind": "count",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-06-Q03",
+      "rawPath": "aadDriverMinAgeId",
+      "optionCollection": "aadDriverMinAge",
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q03",
+      "answerKind": "reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-06-Q04",
+      "rawPath": "aadDriverMaxAgeId",
+      "optionCollection": "aadDriverMaxAge",
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q04",
+      "answerKind": "reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-06-Q05",
+      "rawPath": "aadMaxVehicleGroupingID",
+      "optionCollection": "aadMaxVehicleGrouping",
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q05",
+      "answerKind": "reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-06-Q06",
+      "rawPath": "aadMaxVehicleGvwID",
+      "optionCollection": "aadMaxVehicleGvw",
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q06",
+      "answerKind": "reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-06-Q07",
+      "rawPath": "aadMaxMotorcycleCcID",
+      "optionCollection": "aadMaxMotorcycleCc",
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q07",
+      "answerKind": "reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-02-Q01",
+      "rawPath": "tradingFromId",
+      "optionCollection": "tradingFroms",
+      "canonicalPath": "risk.business.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-02-Q01",
+      "answerKind": "reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-02-Q02",
+      "rawPath": "tradingPremisePostcode",
+      "optionCollection": null,
+      "canonicalPath": "risk.premises[].address.postcode",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-02-Q03",
+      "rawPath": "tradingPremiseTypeId",
+      "optionCollection": "tradingPremiseTypes",
+      "canonicalPath": "risk.premises[].use",
+      "contractKind": "Reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-02-Q04",
+      "rawPath": "tradingPremiseYearsTrading",
+      "optionCollection": null,
+      "canonicalPath": "risk.premises[].yearsTrading",
+      "contractKind": "number",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-02-Q05",
+      "rawPath": "tradingPremiseIsSharedWorksite",
+      "optionCollection": null,
+      "canonicalPath": "risk.premises[].sharedWorksite",
+      "contractKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-02-Q06",
+      "rawPath": "tradingPremiseHouseNo",
+      "optionCollection": null,
+      "canonicalPath": "risk.premises[].address.houseNumber",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-02-Q07",
+      "rawPath": "tradingPremiseStreet",
+      "optionCollection": null,
+      "canonicalPath": "risk.premises[].address.street",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-02-Q08",
+      "rawPath": "tradingPremiseTown",
+      "optionCollection": null,
+      "canonicalPath": "risk.premises[].address.town",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-02-Q09",
+      "rawPath": "tradingPremiseCity",
+      "optionCollection": null,
+      "canonicalPath": "risk.premises[].address.city",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-02-Q10",
+      "rawPath": "tradingPremiseCounty",
+      "optionCollection": null,
+      "canonicalPath": "risk.premises[].address.county",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-07-Q01",
+      "rawPath": "tradePlateCovered",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-07-Q01",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-07-Q02",
+      "rawPath": "tradePlateMaxNumber",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-07-Q02",
+      "answerKind": "count",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-07-Q03",
+      "rawPath": "tradePlateNumbers",
+      "optionCollection": null,
+      "canonicalPath": "risk.tradePlates[].number",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-13-Q01",
+      "rawPath": "essentialRiskInformation",
+      "optionCollection": null,
+      "canonicalPath": "risk.materialFacts",
+      "contractKind": "string",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-13-Q02",
+      "rawPath": "carJockeyRadiusID",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-13-Q02",
+      "answerKind": "reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-13-Q03",
+      "rawPath": "restrictShuntersPolicyRadius",
+      "optionCollection": null,
+      "canonicalPath": "risk.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-13-Q03",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-11-Q01",
+      "rawPath": "demonstrationCover",
+      "optionCollection": null,
+      "canonicalPath": "cover.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-11-Q01",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-11-Q02",
+      "rawPath": "demonstrationCoverTypeID",
+      "optionCollection": null,
+      "canonicalPath": "cover.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-11-Q02",
+      "answerKind": "reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-11-Q03",
+      "rawPath": "demonstrationCoverForMotorcycles",
+      "optionCollection": null,
+      "canonicalPath": "cover.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-11-Q03",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-11-Q04",
+      "rawPath": "windscreenCover",
+      "optionCollection": null,
+      "canonicalPath": "cover.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-11-Q04",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-11-Q05",
+      "rawPath": "windscreenCoverTypeID",
+      "optionCollection": null,
+      "canonicalPath": "cover.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-11-Q05",
+      "answerKind": "reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-11-Q06",
+      "rawPath": "isAdditionalWindscreenCoverRequired",
+      "optionCollection": null,
+      "canonicalPath": "cover.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-11-Q06",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-11-Q07",
+      "rawPath": "lossOfUseCover",
+      "optionCollection": null,
+      "canonicalPath": "cover.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-11-Q07",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-11-Q08",
+      "rawPath": "vehiclesAtSubcontractorsCover",
+      "optionCollection": null,
+      "canonicalPath": "cover.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-11-Q08",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-11-Q09",
+      "rawPath": "thirdPartyPropertyDamageCoverTypeID",
+      "optionCollection": null,
+      "canonicalPath": "cover.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-11-Q09",
+      "answerKind": "reference",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-11-Q10",
+      "rawPath": "annualEuropeanCover",
+      "optionCollection": null,
+      "canonicalPath": "cover.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-11-Q10",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
+    },
+    {
+      "owner": "MTS-11-Q13",
+      "rawPath": "temporaryEuropeanCover",
+      "optionCollection": null,
+      "canonicalPath": "cover.responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-11-Q13",
+      "answerKind": "boolean",
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "runtimeValidation": "Validate pinned question/reference configuration and source conditional rules before readiness. Consent scopes and methods are distinct multi-selections. Resolve driver-plan numeric limits only using pinned metadata. NCB expiry is distinct from prior policy expiry. Validate trade-plate count, normalized uniqueness and source row limit150. Missing values never imply consent or acceptance."
     }
   ]
 }

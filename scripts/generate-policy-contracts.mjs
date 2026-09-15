@@ -61,6 +61,22 @@ defs.Driver.properties.occupations={...array(ref('DriverOccupation')),maxItems:5
 defs.Driver.properties.criminalConvictions={...array(ref('CriminalConviction')),maxItems:100};
 defs.Driver.properties.countyCourtJudgments={...array(ref('CountyCourtJudgment')),maxItems:100};
 defs.Vehicle.properties.modifications=array(ref('VehicleModification'));
+// Vehicle lookup/manual declarations are distinct from normalized policy fields.
+// In particular registration year is not manufacture year, and a declared owner
+// reference cannot be converted into an ownership enum without pinned metadata.
+Object.assign(defs.Vehicle.properties,{
+  abiCode:str(100),abiGroup:count,vehicleType:ref('Reference'),bodyDescription:str(200),
+  seats:count,doors:count,fuelType:str(100),transmission:str(100),declaredEngineSize:str(100),
+  registrationYear:{type:'integer',minimum:1900,maximum:2200},registeredOn:ref('Date'),
+  imported:bool,declaredOwnerType:ref('Reference'),keptOvernightType:ref('Reference'),
+  keptOvernightAddress:str(1000),partOfLeaseAgreement:bool,
+  leaseLengthYears:{type:'number',minimum:0,maximum:100},customerLoan:bool,modified:bool
+});
+defs.RoadRisk.properties.specifiedVehiclesRequested=bool;
+defs.RoadRisk.properties.responses=ref('Responses');
+defs.Premises.properties.yearsTrading={type:'number',minimum:0,maximum:1000};
+defs.Premises.properties.sharedWorksite=bool;
+defs.PreviousInsurance.properties.noClaimsBonusExpiresOn=ref('Date');
 // Preserve original declarations rather than conflating issue/test dates or
 // losing address components when a formatted address is assembled.
 defs.Address.properties.houseNumber=str(50);
@@ -82,6 +98,10 @@ const properties={
 };
 properties.insured.properties.proposerNames=array(str(200),1);
 properties.insured.properties.contact=object({telephone:str(50),email:{type:'string',format:'email'}},[]);
+properties.insured.properties.contact.properties.mobile=str(50);
+Object.assign(properties.insured.properties,{
+  firstName:str(100),surname:str(100),title:ref('Reference'),declaredCompanyType:ref('Reference'),responses:ref('Responses')
+});
 const schema={
  $schema:'https://json-schema.org/draft/2020-12/schema',$id:'https://schemas.cover-mga.example/policy/1.0',title:'Issued policy risk snapshot v1.0',
  ...object(properties),$defs:defs,

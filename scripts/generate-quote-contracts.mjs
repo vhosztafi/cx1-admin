@@ -15,7 +15,7 @@ export async function writeQuoteSchemas(policy) {
   delete defs.PreviousInsurance.properties.evidenceDocumentIds;
   defs.PreviousInsurance.required=defs.PreviousInsurance.required.filter(key=>key!=='evidenceDocumentIds');
   const termIntent=object({
-    kind:{enum:['annual','short-period']},
+    kind:{type:'string',enum:['annual','short-period']},
     localStartDate:ref('Date'),localStartTime:{type:'string',pattern:'^(?:[01][0-9]|2[0-3]):[0-5][0-9]$'},
     timeZone:{const:'Europe/London'},
     utcOffsetMinutes:{type:'integer',enum:[0,60]},
