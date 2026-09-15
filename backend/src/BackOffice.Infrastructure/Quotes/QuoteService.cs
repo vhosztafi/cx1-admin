@@ -8,7 +8,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackOffice.Infrastructure.Quotes;
 
-public sealed record StoredQuote(Quote Quote, QuoteRevision Revision);
+// Internal snapshot, materialized while quote authority is held. Capture
+// availability is independent of proposal readiness and does not authorize a write.
+public sealed record StoredQuote(Quote Quote, QuoteRevision Revision, string ClientName, string AgencyName,
+    string ProductCode, bool CanSave, string? CaptureUnavailableCode);
 
 // Internal command service. HTTP DTO/CSRF/size handling and match attachment are
 // separate integration work; these methods do not expose an endpoint.
@@ -75,8 +78,37 @@ public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory,
         await using var transaction = await db.Database.BeginTransactionAsync(token);
         var owned = await QuoteScope.ForQuoteAsync(db, actor, quoteId, QuoteAccess.Read, token);
         var revision = await CurrentRevision(db, owned.Quote, token);
+        var availability = await CaptureAvailability(db, owned, revision, time.GetUtcNow(), token);
+        // Eligibility already holds the product when available. Historical reads
+        // still resolve its name/code when current capture configuration is revoked.
+        var product = availability.Product ?? await db.Set<Product>()
+            .FromSqlInterpolated($"SELECT * FROM Product WITH(HOLDLOCK) WHERE Id={owned.Quote.ProductId}")
+            .AsNoTracking().SingleAsync(token);
+        var result = new StoredQuote(owned.Quote, revision, owned.Scope.Client.LegalName, owned.Scope.Agency.LegalName,
+            product.Code, availability.Code is null, availability.Code);
         await transaction.CommitAsync(token);
-        return new(owned.Quote, revision);
+        return result;
+    }
+
+    private static async Task<(Product? Product, string? Code)> CaptureAvailability(BackOfficeDbContext db,
+        OwnedQuoteScope owned, QuoteRevision revision, DateTimeOffset now, CancellationToken token)
+    {
+        var scope = owned.Scope;
+        if (!scope.Actor.HasCapability("quote-capture")) return (null, "quote-access-denied");
+        if (scope.Agency.State != "active") return (null, "agency-unavailable");
+        if (scope.Client.IdentityState != "active" || scope.Relationship.State != "active") return (null, "quote-relationship-unavailable");
+        if (owned.Quote.State != "draft" || owned.Quote.CaptureClosedAt is not null) return (null, "quote-capture-closed");
+        try
+        {
+            var selection = await QuoteCaptureEligibility.ResolveAsync(db, scope, revision.ProductVersionId, now, revision.AgencyTermsVersionId, token);
+            return (selection.Product, Pins(revision) == selection.Pins ? null : "quote-pinned-configuration-unavailable");
+        }
+        catch (QuoteOperationException error) when (error.Code is "quote-product-unavailable" or "quote-capture-configuration-unavailable" or "quote-pinned-configuration-unavailable")
+        {
+            // Expected capture denials must not hide already saved history.
+            // Authorization, cancellation and database failures still propagate.
+            return (null, error.Code);
+        }
     }
 
     private static Task<QuoteRevision> CurrentRevision(BackOfficeDbContext db, Quote quote, CancellationToken token) =>

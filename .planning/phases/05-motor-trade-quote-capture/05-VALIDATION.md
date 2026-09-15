@@ -81,3 +81,10 @@ Fresh final .local/phase5-quote-service-final:360unit+70integration=430passing c
 ## 05-02 strict HTTP input/activity projection — 2026-09-16
 
 Fresh final .local/phase5-quote-http-input-final:360unit+88integration=448passing cases,63realSQL,0skips; assert-test-results.ps1 passed. Eighteen HTTP-helper tests in the API-referencing integration assembly cover streaming size/Unicode/depth/shape/ID/header guards. Existing real-SQL service test now uses authenticated HTTP reads to prove accurate quote activity labels, denied agency-admin counts and suppressed risk/links. Initial run superseded after padded-UUID review fix. Contracts290/949controls/336operations and frontend30pass. The new request helper is not routed; capture response/readiness/capabilities, permission metadata and actual quote endpoints remain next.
+
+
+## 05-02 held quote read projection — 2026-09-16
+
+Verified current save availability and client/agency/product labels materialize under held quote read authority. Real SQL regression covers active incomplete capture, suspended agency, inactive client/relationship, withdrawn/closed quote, malformed/revoked/restored capture settings, renamed identities, unchanged immutable history/no read side effects and denial after stored-user suspension. Capture capability is advisory and separate from readiness; expected configuration failures do not hide historical reads.
+
+Fresh full suite:449passing=360unit+89integration, including64realSQL,0skips. Evidence:.local/phase5-quote-read-final (TRX); .local/phase5-quote-read-final.log. assert-test-results.ps1 -ResultsDirectory .local/phase5-quote-read-final -MinimumTests 449 -MinimumSqlTests 64 passed. Targeted regression passed in .local/phase5-quote-read-targeted-verified; earlier test fixture/assertion attempts are superseded. Contracts290pass/949controls/336operations (.local/phase5-quote-read-contracts.log), frontend30pass (.local/phase5-quote-read-web.log). No new migration, endpoint, frontend/funnel edit or native demo reset.05-02 and QUO acceptance remain incomplete; next are term/readiness projection and authenticated HTTP route integration.

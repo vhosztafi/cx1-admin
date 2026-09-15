@@ -20,6 +20,78 @@ namespace BackOffice.IntegrationTests;
 public sealed class QuoteStorageTests
 {
     [Fact]
+    public async Task RealSqlQuoteReadProjectsCurrentCaptureAvailabilityWithoutLosingHistory()
+    {
+        await WithDatabase(async (db, _) =>
+        {
+            var fixture = await CreateFixture(db);
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Agency SET State=N'active' WHERE Id={fixture.Agency}");
+            await using (var transaction = await db.Database.BeginTransactionAsync())
+            {
+                await QuoteCaptureDemoSeed.SeedAsync(db); await transaction.CommitAsync();
+            }
+            var userId = await db.Set<StaffUser>().Where(x => x.Email == "underwriter@cover.example").Select(x => x.Id).SingleAsync();
+            var actor = new ActorContext(userId, null, null, new HashSet<string> { "underwriter" });
+            var options = new DbContextOptionsBuilder<BackOfficeDbContext>().UseSqlServer(db.Database.GetConnectionString(), sql => sql.UseCompatibilityLevel(160)).Options;
+            var service = new QuoteService(new QuoteFactory(options), new QuoteTime());
+            var created = await service.CreateAsync(actor, fixture.Relationship, fixture.ProductVersion, null, "read-projection-create", Guid.NewGuid());
+            var initial = await service.GetAsync(actor, created.ResourceId);
+            Assert.True(initial.CanSave); Assert.Null(initial.CaptureUnavailableCode);
+            Assert.Equal("Fictional quote client", initial.ClientName);
+            Assert.Equal("Fictional quote storage", initial.AgencyName);
+            Assert.Equal("motor-trade-road-risks", initial.ProductCode);
+            // An incomplete draft can be saved; this flag does not claim readiness.
+            using var initialProposal = JsonDocument.Parse(initial.Revision.ProposalJson);
+            Assert.False(initialProposal.RootElement.TryGetProperty("risk", out var initialRisk));
+            async Task CheckUnavailable(string code)
+            {
+                var result = await service.GetAsync(actor, created.ResourceId);
+                Assert.False(result.CanSave); Assert.Equal(code, result.CaptureUnavailableCode);
+                Assert.Equal(initial.Revision.Id, result.Revision.Id);
+                Assert.Equal(initial.Revision.ProposalJson, result.Revision.ProposalJson);
+                Assert.Equal(initial.ProductCode, result.ProductCode);
+            }
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Agency SET State=N'suspended' WHERE Id={fixture.Agency}");
+            await CheckUnavailable("agency-unavailable");
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Agency SET State=N'active',LegalName=N'Renamed fictional agency' WHERE Id={fixture.Agency}");
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ClientAccount SET IdentityState=N'inactive' WHERE Id={fixture.Client}");
+            await CheckUnavailable("quote-relationship-unavailable");
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ClientAccount SET IdentityState=N'active',LegalName=N'Renamed fictional client' WHERE Id={fixture.Client}");
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ClientAgencyRelationship SET State=N'inactive' WHERE Id={fixture.Relationship}");
+            await CheckUnavailable("quote-relationship-unavailable");
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ClientAgencyRelationship SET State=N'active' WHERE Id={fixture.Relationship}");
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Quote SET State=N'withdrawn' WHERE Id={created.ResourceId}");
+            await CheckUnavailable("quote-capture-closed");
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Quote SET State=N'draft',CaptureClosedAt={DateTimeOffset.UtcNow},CaptureClosedReason=N'Fictional progression' WHERE Id={created.ResourceId}");
+            await CheckUnavailable("quote-capture-closed");
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Quote SET CaptureClosedAt=NULL,CaptureClosedReason=NULL WHERE Id={created.ResourceId}");
+            var configuration = await db.Set<SettingVersion>().Where(x => x.Scope == "quote-capture").Select(x => x.Values).SingleAsync();
+            async Task Publish(string values)
+            {
+                var number = await db.Set<SettingVersion>().Where(x => x.Scope == "quote-capture").MaxAsync(x => x.Version) + 1;
+                db.Add(new SettingVersion { Scope = "quote-capture", Version = number, EffectiveFrom = new QuoteTime().GetUtcNow(), Values = values });
+                await db.SaveChangesAsync();
+            }
+            await Publish("{}");
+            await CheckUnavailable("quote-capture-configuration-unavailable");
+            await Publish("{\"demo\":true,\"kind\":\"quote-capture\",\"products\":[]}");
+            await CheckUnavailable("quote-product-unavailable");
+            await Publish(configuration);
+            var restored = await service.GetAsync(actor, created.ResourceId);
+            Assert.True(restored.CanSave); Assert.Null(restored.CaptureUnavailableCode);
+            Assert.Equal("Renamed fictional agency", restored.AgencyName);
+            Assert.Equal("Renamed fictional client", restored.ClientName);
+            Assert.Equal(initial.Revision.Id, restored.Revision.Id);
+            Assert.Equal(1, await db.Set<QuoteRevision>().CountAsync());
+            Assert.Equal(1, await db.Set<QuoteActivity>().CountAsync());
+            Assert.Equal(1, await db.Set<IdempotencyRecord>().CountAsync());
+            // Availability fallback must never swallow current identity denial.
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE [User] SET State=N'suspended' WHERE Id={userId}");
+            Assert.Equal(403, (await Assert.ThrowsAsync<QuoteOperationException>(() => service.GetAsync(actor, created.ResourceId))).Status);
+        });
+    }
+
+    [Fact]
     public async Task RealSqlQuoteServiceRollsBackLateFailuresAndSerializesCompetingCommands()
     {
         await WithDatabase(async (db, _) =>
