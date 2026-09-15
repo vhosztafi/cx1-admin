@@ -3,5 +3,9 @@
   <ItemGroup>
     <PackageReference Include="JsonSchema.Net" />
     <EmbeddedResource Include="../../../contracts/schemas/quote-draft.schema.json" LogicalName="QuoteCapture.DraftSchema" />
+    <EmbeddedResource Include="../../../contracts/quote-question-catalogue.json" LogicalName="QuoteCapture.Questions" />
+    <EmbeddedResource Include="../../../contracts/reference-data/motor-trade-capture.json" LogicalName="QuoteCapture.References" />
+    <EmbeddedResource Include="../../../contracts/schemas/quote-question-configuration.schema.json" LogicalName="QuoteCapture.QuestionSchema" />
+    <EmbeddedResource Include="../../../contracts/schemas/quote-reference-configuration.schema.json" LogicalName="QuoteCapture.ReferenceSchema" />
   </ItemGroup>
 </Project>

@@ -9,6 +9,14 @@ const base=()=>({schemaVersion:'1.0',productCode:'motor-trade-road-risks'});
 const responses=(...answers)=>({questionSetVersion:'test-pinned-1',answers});
 const questionCheck=proposal=>validateQuoteQuestions(proposal,mappings,'test-pinned-1');
 
+test('an explicitly supplied question version is checked before any answers are added',()=>{
+  const p={...base(),risk:{responses:{questionSetVersion:'old'}}};
+  assert.deepEqual(questionCheck(p),[{code:'question-version-mismatch',path:'/risk/responses/questionSetVersion'}]);
+  p.risk.responses.questionSetVersion='test-pinned-1';assert.deepEqual(questionCheck(p),[]);
+  delete p.risk.responses.questionSetVersion;assert.deepEqual(questionCheck(p),[]);
+  p.risk.responses.answers=[];assert.equal(questionCheck(p)[0].code,'question-version-mismatch');
+});
+
 test('empty UUIDs never become persisted item identities or valid links',()=>{
   const empty='00000000-0000-0000-0000-000000000000';
   const proposal={...base(),risk:{drivers:[{id:empty}],vehicles:[{id:id(2),ownerDriverId:empty}],specifiedVehicleIds:[empty]}};

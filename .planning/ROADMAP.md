@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1–4 and05-01 complete;25plans complete overall.05-02 in progress: .NET canonical hashing, closed draft schema and typed item-identity gates implemented. Fresh387backend tests including57realSQL,288contract tests and30frontend tests pass. Next: pinned .NET question/reference validation and SQL quote persistence/API. No quote endpoint is exposed yet.
+**Status:** Autonomous progression authorised. Phases1–4 and05-01 complete;25plans complete overall.05-02 in progress: .NET canonical parsing, closed shape, pinned question/reference identity and item links compose into the draft validation boundary. Fresh401backend tests including57realSQL,289contract tests and30frontend tests pass. Next: SQL quote records/migration and scoped service/API commands. No quote endpoint is exposed yet.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 

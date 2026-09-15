@@ -9,7 +9,7 @@ namespace BackOffice.Application.Quotes;
 public static class QuoteCaptureShape
 {
     public const int MaximumIssues = 100;
-    private static readonly Lazy<JsonSchema> Draft = new(BuildDraft);
+    private static readonly Lazy<JsonSchema> Draft = new(() => BuildBundled("QuoteCapture.DraftSchema"));
 
     public static IReadOnlyList<QuoteFieldIssue> Validate(JsonElement proposal)
     {
@@ -44,9 +44,9 @@ public static class QuoteCaptureShape
         return issues;
     }
 
-    private static JsonSchema BuildDraft()
+    internal static JsonSchema BuildBundled(string resourceName)
     {
-        using var stream = typeof(QuoteCaptureShape).Assembly.GetManifestResourceStream("QuoteCapture.DraftSchema")
+        using var stream = typeof(QuoteCaptureShape).Assembly.GetManifestResourceStream(resourceName)
             ?? throw new InvalidOperationException("Bundled quote schema is missing.");
         using var reader = new StreamReader(stream);
         var text = reader.ReadToEnd();

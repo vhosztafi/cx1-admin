@@ -47,3 +47,7 @@ Fresh .local/phase5-quote-identity-verified:307unit +64integration =371passing c
 ## 05-02 closed shape slice — 2026-09-15
 
 Locked dependency restore and fresh .local/phase5-quote-shape-verified pass:323unit +64integration =387cases,57realSQL,0skips; assert-test-results.ps1 passed.16new cases cover bundled draft shape/all answer types/formats/authority/concurrency/error bounds. Contracts288 and frontend30pass. No quote SQL migration/endpoints yet; catalogue identity/composition remains next. See05-02-PROGRESS for dependency changes and exact logs.
+
+## 05-02 composed capture boundary — 2026-09-15
+
+Fresh final .local/phase5-quote-boundary-final:337unit +64integration =401passing cases,57realSQL,0skips; assert-test-results.ps1 passed.14new .NET cases cover all six capture fixtures, every reference binding's edge options, scoped questions and all parser/shape/catalogue/item gates. A review correction for missing/present-stale question versions is covered in .NET and Node; contracts289/frontend30pass. Earlier400-case run is superseded. SQL quote storage/endpoints remain next; see05-02-PROGRESS.

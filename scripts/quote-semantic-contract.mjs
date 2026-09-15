@@ -104,8 +104,9 @@ export function validateQuoteQuestions(proposal,mappings,questionSetVersion) {
   }
   const issues=[];
   visit(proposal,(item,path,canonical)=>{
-    if(!Array.isArray(item.answers))return;
+    if(!Array.isArray(item.answers)&&item.questionSetVersion===undefined)return;
     if(item.questionSetVersion!==questionSetVersion)issues.push({code:'question-version-mismatch',path:`${path}/questionSetVersion`});
+    if(!Array.isArray(item.answers))return;
     const seen=new Set();
     item.answers.forEach((answer,index)=>{
       const answerPath=`${path}/answers/${index}`;
