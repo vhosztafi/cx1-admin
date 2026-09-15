@@ -1,6 +1,9 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using System.Net.Http.Json;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
 using BackOffice.Application;
 using BackOffice.Application.Quotes;
 using BackOffice.Infrastructure.Persistence;
@@ -73,7 +76,7 @@ public sealed class QuoteStorageTests
     [Fact]
     public async Task RealSqlQuoteServiceCreatesSavesReplaysAndRetainsHistory()
     {
-        await WithDatabase(async (db, _) =>
+        await WithDatabase(async (db, password) =>
         {
             var fixture = await CreateFixture(db);
             await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Agency SET State=N'active' WHERE Id={fixture.Agency}");
@@ -120,6 +123,32 @@ public sealed class QuoteStorageTests
             var closed = await service.GetAsync(actor, create.ResourceId);
             Assert.Equal("quote-capture-closed", (await Assert.ThrowsAsync<QuoteInputException>(() => service.SaveAsync(actor, create.ResourceId, closed.Quote.RowVersion, proposal, null, "closed", correlation))).Code);
             Assert.Equal(3, await db.Set<QuoteRevision>().CountAsync());
+            var keyPath = Path.GetFullPath(Path.Combine(".local", "quote-activity-test-keys", db.Database.GetDbConnection().Database));
+            using var host = new WebApplicationFactory<Program>().WithWebHostBuilder(builder => builder.UseEnvironment("Development")
+                .UseSetting("Cover:SqlConnection", db.Database.GetConnectionString()).UseSetting("Cover:DataProtectionPath", keyPath));
+            using var browser = host.CreateClient();
+            var csrf = (await browser.GetFromJsonAsync<JsonElement>("/api/v1/auth/csrf")).GetProperty("requestToken").GetString()!;
+            using var login = new HttpRequestMessage(HttpMethod.Post, "/api/v1/auth/login") { Content = JsonContent.Create(new { email = "underwriter@cover.example", password }) };
+            login.Headers.Add("X-CSRF-Token", csrf);
+            using var loggedIn = await browser.SendAsync(login); loggedIn.EnsureSuccessStatusCode();
+            var activity = await browser.GetFromJsonAsync<JsonElement>($"/api/v1/clients/{fixture.Client}/activity");
+            var quoteEvents = activity.GetProperty("items").EnumerateArray().Where(x => x.GetProperty("eventType").GetString()!.StartsWith("quote.", StringComparison.Ordinal)).ToArray();
+            Assert.Equal(3, quoteEvents.Length);
+            Assert.Contains(quoteEvents, x => x.GetProperty("summary").GetString() == "Quote created.");
+            Assert.Contains(quoteEvents, x => x.GetProperty("summary").GetString() == "Quote saved.");
+            Assert.All(quoteEvents, x =>
+            {
+                Assert.False(x.TryGetProperty("proposal", out _));
+                Assert.False(x.TryGetProperty("recordId", out var id) && id.ValueKind != JsonValueKind.Null); // Quote linking is still unavailable.
+            });
+            using var agencyReader = host.CreateClient();
+            var agencyCsrf = (await agencyReader.GetFromJsonAsync<JsonElement>("/api/v1/auth/csrf")).GetProperty("requestToken").GetString()!;
+            using var agencyLogin = new HttpRequestMessage(HttpMethod.Post, "/api/v1/auth/login") { Content = JsonContent.Create(new { email = "agency-admin@cover.example", password }) };
+            agencyLogin.Headers.Add("X-CSRF-Token", agencyCsrf);
+            using var agencyLoggedIn = await agencyReader.SendAsync(agencyLogin); agencyLoggedIn.EnsureSuccessStatusCode();
+            var restrictedActivity = await agencyReader.GetFromJsonAsync<JsonElement>($"/api/v1/clients/{fixture.Client}/activity");
+            Assert.DoesNotContain(restrictedActivity.GetProperty("items").EnumerateArray(), x => x.GetProperty("eventType").GetString()!.StartsWith("quote.", StringComparison.Ordinal));
+            Assert.Equal(0, restrictedActivity.GetProperty("totalCount").GetInt32());
         });
     }
 

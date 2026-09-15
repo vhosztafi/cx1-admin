@@ -76,3 +76,8 @@ Fresh .local/phase5-quote-preparation-verified:360unit+68integration=428passing 
 ## 05-02 transactional quote service — 2026-09-16
 
 Fresh final .local/phase5-quote-service-final:360unit+70integration=430passing cases,63realSQL,0skips; assert-test-results.ps1 passed. Two SQL service scenarios verify persisted create/save/read, no-op/replay/ETag/history/projection behavior, suspension/read restrictions/closure, same-key races, competing-key stale writes and complete rollback at business-activity and receipt failures. Null saves are explicitly rejected and tested. Initial full run is superseded by the final run after that review fix. Contracts290/949controls/336operations and frontend30pass. ClientActivity migration and generated schema now allow quote record kind; HTTP labels/scoped links are still part of upcoming integration. No quote HTTP route or demo quote data is exposed;05-02 remains incomplete.
+
+
+## 05-02 strict HTTP input/activity projection — 2026-09-16
+
+Fresh final .local/phase5-quote-http-input-final:360unit+88integration=448passing cases,63realSQL,0skips; assert-test-results.ps1 passed. Eighteen HTTP-helper tests in the API-referencing integration assembly cover streaming size/Unicode/depth/shape/ID/header guards. Existing real-SQL service test now uses authenticated HTTP reads to prove accurate quote activity labels, denied agency-admin counts and suppressed risk/links. Initial run superseded after padded-UUID review fix. Contracts290/949controls/336operations and frontend30pass. The new request helper is not routed; capture response/readiness/capabilities, permission metadata and actual quote endpoints remain next.

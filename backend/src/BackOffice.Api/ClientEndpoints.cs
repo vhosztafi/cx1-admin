@@ -98,12 +98,14 @@ public static partial class ClientEndpoints
         var page=paging.Read(context,actor,"occurredAt-desc,id");if(page is null)return BadQuery(context);
         var support=actor.HasCapability("support-internal-read");
         var matchRead=actor.HasCapability("match-read");
+        var quoteRead=actor.HasCapability("quote-read");
         // Only explicitly supported events are published. Future sensitive activity needs its own safe mapping.
         var query=scope.Activity(db).Where(x => x.ClientId==clientId && x.OccurredAt<=page.AsOf &&
             (x.EventType=="client.demo-created" || x.EventType=="client.created" || x.EventType=="client.updated" || x.EventType=="client.relationship-created" ||
              x.EventType=="contact.created" || x.EventType=="contact.updated" || x.EventType=="contact.primary-changed" || x.EventType=="contact.ended" ||
              (support && (x.EventType=="support-flag.created" || x.EventType=="support-flag.amended" || x.EventType=="support-flag.reviewed" || x.EventType=="support-flag.ended")) ||
-             (matchRead && (x.EventType=="match.link" || x.EventType=="match.separate" || x.EventType=="match.decline" || x.EventType=="match.query" || x.EventType=="match.reopen"))));
+             (matchRead && (x.EventType=="match.link" || x.EventType=="match.separate" || x.EventType=="match.decline" || x.EventType=="match.query" || x.EventType=="match.reopen")) ||
+             (quoteRead && (x.EventType=="quote.created" || x.EventType=="quote.saved"))));
         var total=await query.CountAsync(context.RequestAborted);
         var rows=await query.OrderByDescending(x => x.OccurredAt).ThenBy(x => x.Id).Skip(page.Offset).Take(page.Size).ToListAsync(context.RequestAborted);
         var actorIds=rows.Where(x=>x.ActorId!=null).Select(x=>x.ActorId!.Value).Distinct().ToArray();
@@ -125,7 +127,8 @@ public static partial class ClientEndpoints
                 "support-flag.created"=>"Support instruction recorded.","support-flag.amended"=>"Support instruction amended.",
                 "support-flag.reviewed"=>"Support instruction reviewed.","support-flag.ended"=>"Support instruction ended.",
                 "match.link"=>"Intake linked to this client.","match.separate"=>"Intake recorded as a separate client.","match.decline"=>"Intake declined.",
-                "match.query"=>"Match information request recorded.","match.reopen"=>"Match review reopened.",_=>"Client identity created."},
+                "match.query"=>"Match information request recorded.","match.reopen"=>"Match review reopened.",
+                "quote.created"=>"Quote created.","quote.saved"=>"Quote saved.",_=>"Client identity created."},
             x.RelationshipId,recordId=CanLink(x) ? x.RecordId : null,
             recordKind=CanLink(x) ? x.RecordKind : null}),totalCount=total,nextCursor=paging.Next(page,page.Offset+rows.Count<total)},Json);
     }

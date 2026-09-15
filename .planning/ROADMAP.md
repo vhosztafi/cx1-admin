@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1–4 and05-01 complete;25plans complete overall.05-02 in progress: internal quote create/save/read transactions, scope, eligibility, retained pins, no-op/replay/ETags, history and rollback verified. Final backend430including63realSQL,contracts290and frontend30pass. Next: strict HTTP integration, then term/readiness and supported quote examples. No quote endpoint is exposed yet.
+**Status:** Autonomous progression authorised. Phases1–4 and05-01 complete;25plans complete overall.05-02 in progress: internal quote transactions, strict HTTP input guards and role-filtered client activity verified. Final backend448including63realSQL,contracts290and frontend30pass. Next: held capture response/readiness projection, authorization metadata and actual quote HTTP routes. No quote endpoint is exposed yet.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
