@@ -6,6 +6,7 @@ export const prototypeBusinessGroups=[
  {parents:['ba9d4158ae2c','35350a32e79e','2ad460339240','f5e77ab8ec93','7fe8e3151553','27322dcfabf5','f856f5891026'],details:'909e1c6eff8c'},
  {parents:['d7a75768e505','5f9e8331ac6f','488ecf4bdc09','87fad6b4a9fe'],details:'2d662a3ec81d'},
 ];
+export const prototypeHistoryDeclarations=['46414cc10100','ef70e80708bb','36da21d3c935','6c1927f561b8','f7972c55f517','382ce4de8253','922ca15dc9ed'];
 export function validateQuotePrototypeBusiness(proposal,questions,references) {
  quoteMappingsForProduct(questions,proposal.productCode);
  const answers=proposal.risk?.business?.responses?.answers??[],issues=[];
@@ -13,6 +14,16 @@ export function validateQuotePrototypeBusiness(proposal,questions,references) {
  const present=value=>value!==undefined&&value!==null&&(typeof value!=='string'||value.trim().length>0);
  const add=(code,id)=>issues.push({code,path:entry(id).path,questionId:id});
  const require=id=>{if(!present(entry(id).value))add('required-prototype-business-answer',id);};
+ if(!present(proposal.risk?.business?.description))issues.push({code:'business-description-required',path:'/risk/business/description'});
+ // B2 and the other-business hint require full details, but the prototype has
+ // no general detail editor for these answers. MVP uses the existing material
+ // facts field with an explicit UI prompt to identify each affirmative answer.
+ // Do not fabricate narrative from checkboxes or unrelated driver histories.
+ const explained=['ea4580cbac7a',...prototypeHistoryDeclarations].map(id=>`prototype.quote.${id}`);
+ for(const id of explained) {
+  require(id);
+  if(entry(id).value===true&&!present(proposal.risk?.materialFacts))issues.push({code:'declaration-material-facts-required',path:'/risk/materialFacts',questionId:id});
+ }
  const pinned=id=>{const value=entry(id).value;return value?.collection===id&&value.version===references.version?references.collections[id]?.find(row=>row.value===value.value&&row.text===value.label)?.value:undefined;};
  const trader='prototype.quote.c6181a11c34c',experience='prototype.quote.0552d5a68ba2',employment='prototype.quote.34613c23e95d',occupation='prototype.quote-value.3fd9edd7e66e';
  for(const id of [trader,experience,employment])require(id);

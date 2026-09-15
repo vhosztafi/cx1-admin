@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {validateQuotePrototypeBusiness,prototypeBusinessGroups} from '../scripts/quote-prototype-business.mjs';
+import {validateQuotePrototypeBusiness,prototypeBusinessGroups,prototypeHistoryDeclarations} from '../scripts/quote-prototype-business.mjs';
 import {createQuoteValidationPipeline} from '../scripts/quote-validation-pipeline.mjs';
 const read=async path=>JSON.parse(await readFile(new URL(`../contracts/${path}`,import.meta.url),'utf8'));
 const questions=await read('quote-question-catalogue.json'),references=await read('reference-data/motor-trade-capture.json');
@@ -9,6 +9,27 @@ const ref=(id,value)=>({collection:id,value,label:references.collections[id].fin
 const set=(p,id,value)=>{const answers=p.risk.business.responses.answers,index=answers.findIndex(a=>a.questionId===id);const answer={questionId:id,kind:questions.mappings.find(m=>m.questionId===id).answerKind,value};if(index<0)answers.push(answer);else answers[index]=answer;};
 const check=p=>validateQuotePrototypeBusiness(p,questions,references);
 const trader='prototype.quote.c6181a11c34c',employment='prototype.quote.34613c23e95d',occupation='prototype.quote-value.3fd9edd7e66e';
+
+test('each affirmative history or other-business declaration requires explicit material facts',async()=>{
+ for(const product of questions.products) {
+  const {proposal}=await read(`examples/quote-capture-${product}.json`);
+  for(const suffix of ['ea4580cbac7a',...prototypeHistoryDeclarations]) {
+   const p=structuredClone(proposal),id=`prototype.quote.${suffix}`;set(p,id,true);
+   assert.ok(check(p).some(i=>i.code==='declaration-material-facts-required'&&i.questionId===id));
+   p.risk.materialFacts='   ';assert.ok(check(p).some(i=>i.code==='declaration-material-facts-required'));
+   p.risk.materialFacts='Fictional details of the affirmative declaration, supplied by the proposer.';
+   const before=structuredClone(p);assert.deepEqual(check(p),[]);assert.deepEqual(p,before);
+   set(p,id,false);assert.deepEqual(check(p),[]); // Other material facts remain legitimate even with all negative declarations.
+  }
+ }
+});
+
+test('business description cannot be omitted or replaced with blank text',async()=>{
+ const {proposal:p,context}=await read('examples/quote-capture-motor-trade-combined.json');
+ delete p.risk.business.description;assert.ok(check(p).some(i=>i.code==='business-description-required'));
+ p.risk.business.description='   ';const validate=await createQuoteValidationPipeline();assert.ok(validate(JSON.stringify(p),context).issues.some(i=>i.code==='business-description-required'));
+ p.risk.business.description='Fictional vehicle repair business.';assert.deepEqual(check(p),[]);
+});
 
 test('part-time traders need occupation and applicable employment for both Motor Trade products',async()=>{
  for(const product of questions.products) {
@@ -41,5 +62,5 @@ test('composed validation detects absent prototype answers and conditional detai
  set(p,'prototype.quote.5f9e8331ac6f',true);
  assert.ok(validate(JSON.stringify(p),context).issues.some(i=>i.stage==='prototype-business'&&i.questionId==='prototype.quote-value.2d662a3ec81d'));
  p.risk.business.responses.answers=p.risk.business.responses.answers.filter(a=>!a.questionId.startsWith('prototype.'));
- const result=validate(JSON.stringify(p),context);assert.equal(result.status,'incomplete');assert.equal(result.issues.filter(i=>i.stage==='prototype-business').length,14);
+ const result=validate(JSON.stringify(p),context);assert.equal(result.status,'incomplete');assert.equal(result.issues.filter(i=>i.stage==='prototype-business').length,22);
 });

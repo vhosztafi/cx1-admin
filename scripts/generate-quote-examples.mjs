@@ -1,6 +1,6 @@
 import {readFile,writeFile} from 'node:fs/promises';
 import {createQuoteValidationPipeline} from './quote-validation-pipeline.mjs';
-import {prototypeBusinessGroups} from './quote-prototype-business.mjs';
+import {prototypeBusinessGroups,prototypeHistoryDeclarations} from './quote-prototype-business.mjs';
 const read=async path=>JSON.parse(await readFile(new URL(`../contracts/${path}`,import.meta.url),'utf8'));
 const questions=await read('quote-question-catalogue.json'),references=await read('reference-data/motor-trade-capture.json');
 const ref=(collection,value=references.collections[collection][0].value)=>{
@@ -19,10 +19,11 @@ for(const productCode of questions.products) {
   insured:{declaredCompanyType:ref('companyTypes',1),title:ref(questions.mappings.find(row=>row.owner==='MTS-01-Q07').optionCollection),firstName:'Alex',surname:'Example',contact:{email:'alex@example.test',mobile:'07123456789'},address:structuredClone(address)},
   termIntent:{kind:'annual',localStartDate:'2026-09-15',localStartTime:'09:00',timeZone:'Europe/London'},
   risk:{
-   business:{startedOn:'2020-01-01',turnover:'100000.00',wageRoll:'25000.00',activities:[{id:id(1),code:ref('mtOccupations',5),turnoverBasisPoints:10000}],responses:response([
+   business:{description:'Fictional business selling standard used cars to private customers.',startedOn:'2020-01-01',turnover:'100000.00',wageRoll:'25000.00',activities:[{id:id(1),code:ref('mtOccupations',5),turnoverBasisPoints:10000}],responses:response([
     ['MTS-02-Q01',ref('tradingFroms',combined?3:1)],['MTS-03-Q04',false],['MTS-03-Q06',true],['MTS-03-Q08',25],['MTS-03-Q09',5],
     ['prototype.quote.c6181a11c34c',ref('prototype.quote.c6181a11c34c',1)],['prototype.quote.0552d5a68ba2',ref('prototype.quote.0552d5a68ba2',6)],['prototype.quote.34613c23e95d',ref('prototype.quote.34613c23e95d',1)],
     ...prototypeBusinessGroups.flatMap(group=>group.parents.map(id=>[`prototype.quote.${id}`,false])),
+    ...['ea4580cbac7a',...prototypeHistoryDeclarations].map(id=>[`prototype.quote.${id}`,false]),
     ['prototype.quote.af67cb40b4de',ref('prototype.quote.af67cb40b4de',1)],
    ])},
    responses:response([['MTS-06-Q01',ref('driverPlans',1)],['MTS-07-Q01',false],['MTS-10-Q01',true],['MTS-10-Q02',10000]]),

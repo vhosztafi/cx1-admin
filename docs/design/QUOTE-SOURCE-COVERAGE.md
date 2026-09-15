@@ -38,6 +38,10 @@ Driver names and incident descriptions retain the prototype minimum lengths. Emp
 
 Demonstration cover reconciles with the source declaration; a positive selection requires the source detail context. Courtesy under this policy reconciles with customer-loan cover, retaining the distinction between no courtesy vehicles and insurance supplied by the customer. Private use is compared with captured named-driver usage; unnamed driver rights are not inferred. These checks require explicit prototype choices and preserve contradictory paths for correction.
 
+## Prototype history and material facts
+
+The seven proposer/driver history declarations and other-business/directorship answer are explicit. Positive answers require nonblank material facts. Because the prototype omits a general detail editor for several of these questions, the MVP will use the existing material-facts field and prompt for an explanation of every affirmative declaration. Validation checks presence; underwriting assesses adequacy. Business description is also required. General material facts remain valid when every declaration is negative.
+
 ## Remaining contract gate
 
 Resolve overlapping prototype/funnel answers and all product-specific requiredness, dynamic option selection, source limits and conditional rules. Reconcile historical prototype field bindings with the capture-write envelope: for example `term.startsAt` is supplied as local `termIntent`, not a caller-chosen policy timestamp. Finish quote API request/response contracts and operation integration. Verify complete fictional proposals against the composed validators. Then implement and test the same rules in the actual .NET request boundary and persistent services.

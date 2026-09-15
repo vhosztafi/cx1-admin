@@ -43,6 +43,7 @@
     },
     "risk": {
       "business": {
+        "description": "Fictional business selling standard used cars to private customers.",
         "startedOn": "2020-01-01",
         "turnover": "100000.00",
         "wageRoll": "25000.00",
@@ -173,6 +174,46 @@
             },
             {
               "questionId": "prototype.quote.87fad6b4a9fe",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.ea4580cbac7a",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.46414cc10100",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.ef70e80708bb",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.36da21d3c935",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.6c1927f561b8",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.f7972c55f517",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.382ce4de8253",
+              "kind": "boolean",
+              "value": false
+            },
+            {
+              "questionId": "prototype.quote.922ca15dc9ed",
               "kind": "boolean",
               "value": false
             },
