@@ -206,6 +206,21 @@
         },
         "country": {
           "const": "GB"
+        },
+        "houseNumber": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50
+        },
+        "street": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "city": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
         }
       }
     },
@@ -488,6 +503,9 @@
         },
         "responses": {
           "$ref": "#/$defs/Responses"
+        },
+        "declaredStatus": {
+          "$ref": "#/$defs/Reference"
         }
       },
       "required": [
@@ -522,6 +540,9 @@
         },
         "responses": {
           "$ref": "#/$defs/Responses"
+        },
+        "disqualified": {
+          "type": "boolean"
         }
       },
       "required": [
@@ -570,6 +591,9 @@
               "maxLength": 40
             },
             "testDate": {
+              "$ref": "#/$defs/Date"
+            },
+            "issuedOn": {
               "$ref": "#/$defs/Date"
             }
           }

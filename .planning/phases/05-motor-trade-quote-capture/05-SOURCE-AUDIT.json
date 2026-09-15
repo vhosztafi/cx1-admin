@@ -20338,7 +20338,12 @@
       "occurrenceId": "QF-072",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q08",
+      "answerKind": "reference",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q09",
@@ -20352,7 +20357,10 @@
       "occurrenceId": "QF-073",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].firstName",
+      "contractKind": "string",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q10",
@@ -20366,7 +20374,10 @@
       "occurrenceId": "QF-074",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].surname",
+      "contractKind": "string",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q11",
@@ -20380,7 +20391,10 @@
       "occurrenceId": "QF-075",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].dateOfBirth",
+      "contractKind": "Date",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q12",
@@ -20394,7 +20408,10 @@
       "occurrenceId": "QF-076",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].relationship",
+      "contractKind": "Reference",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q13",
@@ -20408,7 +20425,10 @@
       "occurrenceId": "QF-077",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].address.postcode",
+      "contractKind": "string",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q14",
@@ -20422,7 +20442,10 @@
       "occurrenceId": "QF-078",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].address.houseNumber",
+      "contractKind": "string",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q15",
@@ -20436,7 +20459,10 @@
       "occurrenceId": "QF-079",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].address.street",
+      "contractKind": "string",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q16",
@@ -20450,7 +20476,10 @@
       "occurrenceId": "QF-080",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].address.town",
+      "contractKind": "string",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q17",
@@ -20464,7 +20493,10 @@
       "occurrenceId": "QF-081",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].address.city",
+      "contractKind": "string",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q18",
@@ -20478,7 +20510,10 @@
       "occurrenceId": "QF-082",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].address.county",
+      "contractKind": "string",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q19",
@@ -20492,7 +20527,10 @@
       "occurrenceId": "QF-083",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].usage",
+      "contractKind": "Reference",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q20",
@@ -20506,7 +20544,12 @@
       "occurrenceId": "QF-084",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q20",
+      "answerKind": "reference",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q21",
@@ -20520,7 +20563,12 @@
       "occurrenceId": "QF-085",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q21",
+      "answerKind": "boolean",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q22",
@@ -20534,7 +20582,12 @@
       "occurrenceId": "QF-086",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q22",
+      "answerKind": "date",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q23",
@@ -20548,7 +20601,10 @@
       "occurrenceId": "QF-087",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].licence.type",
+      "contractKind": "Reference",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q24",
@@ -20562,7 +20618,10 @@
       "occurrenceId": "QF-088",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].licence.issuedOn",
+      "contractKind": "Date",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q25",
@@ -20576,7 +20635,12 @@
       "occurrenceId": "QF-089",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q25",
+      "answerKind": "reference",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q26",
@@ -20590,7 +20654,12 @@
       "occurrenceId": "QF-090",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q26",
+      "answerKind": "date",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q27",
@@ -20604,7 +20673,12 @@
       "occurrenceId": "QF-091",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q27",
+      "answerKind": "reference",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q28",
@@ -20618,7 +20692,12 @@
       "occurrenceId": "QF-092",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q28",
+      "answerKind": "reference",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q29",
@@ -20632,7 +20711,10 @@
       "occurrenceId": "QF-093",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].occupations[].occupation",
+      "contractKind": "Reference",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q30",
@@ -20646,7 +20728,10 @@
       "occurrenceId": "QF-094",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].occupations[].businessUseRequired",
+      "contractKind": "boolean",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q31",
@@ -20660,7 +20745,12 @@
       "occurrenceId": "QF-095",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q31",
+      "answerKind": "boolean",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q32",
@@ -20674,7 +20764,12 @@
       "occurrenceId": "QF-096",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q32",
+      "answerKind": "boolean",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q33",
@@ -20688,7 +20783,12 @@
       "occurrenceId": "QF-097",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q33",
+      "answerKind": "boolean",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q34",
@@ -20702,7 +20802,10 @@
       "occurrenceId": "QF-098",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].convictions[].occurredOn",
+      "contractKind": "Date",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q35",
@@ -20716,7 +20819,10 @@
       "occurrenceId": "QF-099",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].convictions[].code",
+      "contractKind": "Reference",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q36",
@@ -20730,7 +20836,10 @@
       "occurrenceId": "QF-100",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].convictions[].fine",
+      "contractKind": "Amount",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q37",
@@ -20744,7 +20853,10 @@
       "occurrenceId": "QF-101",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].convictions[].points",
+      "contractKind": "integer",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q38",
@@ -20758,7 +20870,10 @@
       "occurrenceId": "QF-102",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].convictions[].disqualified",
+      "contractKind": "boolean",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q39",
@@ -20772,7 +20887,10 @@
       "occurrenceId": "QF-103",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].convictions[].banMonths",
+      "contractKind": "integer",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q40",
@@ -20786,7 +20904,12 @@
       "occurrenceId": "QF-104",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q40",
+      "answerKind": "boolean",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q41",
@@ -20800,7 +20923,10 @@
       "occurrenceId": "QF-105",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].losses[].occurredOn",
+      "contractKind": "Date",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q42",
@@ -20814,7 +20940,10 @@
       "occurrenceId": "QF-106",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].losses[].type",
+      "contractKind": "Reference",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q43",
@@ -20828,7 +20957,10 @@
       "occurrenceId": "QF-107",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].losses[].description",
+      "contractKind": "string",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q44",
@@ -20842,7 +20974,10 @@
       "occurrenceId": "QF-108",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].losses[].amount",
+      "contractKind": "Amount",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q45",
@@ -20856,7 +20991,10 @@
       "occurrenceId": "QF-109",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].losses[].declaredStatus",
+      "contractKind": "Reference",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q46",
@@ -20870,7 +21008,12 @@
       "occurrenceId": "QF-110",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q46",
+      "answerKind": "boolean",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q47",
@@ -20884,7 +21027,12 @@
       "occurrenceId": "QF-111",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q47",
+      "answerKind": "text",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q48",
@@ -20898,7 +21046,12 @@
       "occurrenceId": "QF-112",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q48",
+      "answerKind": "boolean",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q49",
@@ -20912,7 +21065,10 @@
       "occurrenceId": "QF-113",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].criminalConvictions[].occurredOn",
+      "contractKind": "Date",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q50",
@@ -20926,7 +21082,10 @@
       "occurrenceId": "QF-114",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].criminalConvictions[].code",
+      "contractKind": "Reference",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q51",
@@ -20940,7 +21099,10 @@
       "occurrenceId": "QF-115",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].criminalConvictions[].sentenceYears",
+      "contractKind": "integer",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q52",
@@ -20954,7 +21116,10 @@
       "occurrenceId": "QF-116",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].criminalConvictions[].sentenceMonths",
+      "contractKind": "integer",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q53",
@@ -20968,7 +21133,12 @@
       "occurrenceId": "QF-117",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q53",
+      "answerKind": "boolean",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q54",
@@ -20982,7 +21152,10 @@
       "occurrenceId": "QF-118",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].countyCourtJudgments[].occurredOn",
+      "contractKind": "Date",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q55",
@@ -20996,7 +21169,10 @@
       "occurrenceId": "QF-119",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].countyCourtJudgments[].status",
+      "contractKind": "Reference",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q56",
@@ -21010,7 +21186,10 @@
       "occurrenceId": "QF-120",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].countyCourtJudgments[].amount",
+      "contractKind": "Amount",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q57",
@@ -21024,7 +21203,10 @@
       "occurrenceId": "QF-121",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].countyCourtJudgments[].circumstances",
+      "contractKind": "string",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q58",
@@ -21038,7 +21220,12 @@
       "occurrenceId": "QF-122",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q58",
+      "answerKind": "boolean",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q59",
@@ -21052,7 +21239,12 @@
       "occurrenceId": "QF-123",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q59",
+      "answerKind": "reference",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q60",
@@ -21066,7 +21258,12 @@
       "occurrenceId": "QF-124",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q60",
+      "answerKind": "reference",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q61",
@@ -21080,7 +21277,12 @@
       "occurrenceId": "QF-125",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q61",
+      "answerKind": "reference",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-06-Q62",
@@ -21094,7 +21296,12 @@
       "occurrenceId": "QF-126",
       "planOwner": "05-01",
       "implementationOwner": "05-04",
-      "mappingStatus": "source occurrence retained; canonical path and kind must be resolved in05-01; proposedSection is historical and not an API path"
+      "mappingStatus": "shape mapped and tested; catalogue/applicability semantics pending",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "contractKind": "Answer",
+      "questionId": "MTS-06-Q62",
+      "answerKind": "reference",
+      "runtimeValidation": "Validate the pinned source/reference/question definitions and parent-child applicability. Preserve missing versus false and original component data; never infer licence testDate from issuedOn or normalized claim status from an unrecognized declaredStatus."
     },
     {
       "owner": "MTS-08-Q01",

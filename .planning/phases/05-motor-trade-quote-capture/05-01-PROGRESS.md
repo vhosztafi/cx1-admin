@@ -24,3 +24,12 @@ Read the actual extras domain/interfaces/schema and mapped source MTS-11-Q11/12/
 Three added tests cover malformed dates/duplicate selections/UI-state injection/missing IDs, complete trip shape requiredness and exhaustive comparison of these nine source occurrences against resolvable schema paths. Contract tests use committed contracts/design evidence rather than depending on .planning artifacts. Full validation passes88cases/OpenAPI/949controls/328operations. Existing policy examples stay valid. Domain trip chronology/term bounds, current same-proposal driver membership and named/any-driver applicability still require semantic validation; structural schema success is not readiness. No backend/UI code, endpoints, seed resets or funnel changes; baseline backend/frontend evidence is unchanged.
 
 NEXT finish remaining246field occurrence mappings plus364control ownership, versioned catalogues and semantic rules, then full quote OpenAPI.05-01 remains in progress; no plan/phase acceptance inferred.
+
+
+## Driver field mapping slice —2026-09-15
+
+Mapped all55individual-driver source occurrences MTS-06-Q08–62 to concrete structural paths or explicit typed answer IDs; retained original option-collection provenance. Mapping now covers64of255occurrences (driver basis Q01–07 is still pending). Tests resolve every mapped path in the generated schema and verify source ownership/path/type without importing planning files. Reference catalogue membership, applicability and complete readiness remain pending, so this is shape coverage only.
+
+Source inspection caught three potential lossy conversions: Driving Licence Issue is not date of test; claimStatusID is a versioned declared reference, not automatically the normalized loss state; house/street/city are separate captured address components. Added issuedOn, declaredStatus, explicit address components and conviction disqualified boolean to retain them independently. Existing canonical fields remain intact and existing policy snapshots validate. Source driver residency and age restriction questions use identified date/boolean/reference answers, not label-based coercion.
+
+Full90contract/design tests/OpenAPI/949controls/328operations pass after regeneration. No backend/UI edits, migrations, seeds or active previews/tests. NEXT remaining191field mappings and364control dispositions, complete catalogues/semantic validation/quote OpenAPI. No05-01completion or runtime readiness claim.

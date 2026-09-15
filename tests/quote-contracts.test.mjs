@@ -88,7 +88,7 @@ test('every source European trip child field maps to a concrete quote contract p
   const mapping=await read('quote-field-mapping.json');
   const schema=await read('schemas/quote-ready.schema.json');
   const sourceRows=source.mappings.filter(row=>row.rawPath.startsWith('europeanCoverAnnualExtras[]')||row.rawPath.startsWith('europeanCoverTemporaryExtras[]'));
-  const rows=mapping.mappings;
+  const rows=mapping.mappings.filter(row=>sourceRows.some(original=>original.owner===row.owner));
   assert.equal(sourceRows.length,9);assert.equal(rows.length,sourceRows.length);
   assert.equal(new Set(rows.map(row=>row.owner)).size,rows.length);
   for(const original of sourceRows)assert.equal(rows.find(row=>row.owner===original.owner)?.rawPath,original.rawPath);
@@ -104,4 +104,39 @@ test('every source European trip child field maps to a concrete quote contract p
     if(row.contractKind==='string')assert.equal(node.type,'string');
     else assert.equal(node.$ref,`#/$defs/${row.contractKind}`);
   }
+});
+
+test('all55driver source fields map to structural fields or identified typed answers',async()=>{
+  const source=JSON.parse(await readFile(new URL('../docs/design/funnel-field-mapping.json',import.meta.url),'utf8'));
+  const mapping=await read('quote-field-mapping.json');
+  const schema=await read('schemas/quote-ready.schema.json');
+  const original=source.mappings.filter(row=>row.owner.startsWith('MTS-06-Q')&&Number(row.owner.split('Q')[1])>=8);
+  assert.equal(original.length,55);
+  const rows=mapping.mappings.filter(row=>original.some(x=>x.owner===row.owner));
+  assert.equal(rows.length,55);assert.equal(new Set(rows.map(row=>row.owner)).size,55);
+  for(const input of original) {
+    const row=rows.find(x=>x.owner===input.owner);assert.equal(row.rawPath,input.rawPath);
+    assert.equal(row.optionCollection,input.optionCollection);
+    let node=schema;
+    for(const part of row.canonicalPath.split('.')) {
+      while(node.$ref)node=schema.$defs[node.$ref.split('/').at(-1)];
+      node=node.properties?.[part.replace(/\[\]$/,'')];assert.ok(node,`${row.owner}: ${row.canonicalPath}`);
+      if(part.endsWith('[]')){assert.equal(node.type,'array');node=node.items;}
+    }
+    if(['string','boolean','integer'].includes(row.contractKind))assert.equal(node.type,row.contractKind);
+    else assert.equal(node.$ref,`#/$defs/${row.contractKind}`);
+    if(row.contractKind==='Answer') {
+      assert.equal(row.questionId,row.owner);
+      assert.equal(schema.$defs.Answer.oneOf.some(branch=>branch.properties.kind.const===row.answerKind),true,row.owner);
+    }
+  }
+});
+
+test('licence issue date, declared claim status and address components are retained independently',()=>{
+  const proposal={...base(),risk:{drivers:[{id,licence:{issuedOn:'2004-01-01',testDate:'2003-12-01'},address:{houseNumber:'12B',street:'Example Road',city:'Example City',town:'Example Town',line1:'12B Example Road'},convictions:[{id,disqualified:false,banMonths:0}],losses:[{id,status:'open',declaredStatus:selection}]}]}};
+  assert.equal(draft(proposal),true,JSON.stringify(draft.errors));
+  assert.notEqual(proposal.risk.drivers[0].licence.issuedOn,proposal.risk.drivers[0].licence.testDate);
+  proposal.risk.drivers[0].losses[0].declaredStatus={value:1};assert.equal(draft(proposal),false);
+  proposal.risk.drivers[0].losses[0].declaredStatus=selection;
+  proposal.risk.drivers[0].convictions[0].disqualified='No';assert.equal(draft(proposal),false);
 });

@@ -61,6 +61,14 @@ defs.Driver.properties.occupations={...array(ref('DriverOccupation')),maxItems:5
 defs.Driver.properties.criminalConvictions={...array(ref('CriminalConviction')),maxItems:100};
 defs.Driver.properties.countyCourtJudgments={...array(ref('CountyCourtJudgment')),maxItems:100};
 defs.Vehicle.properties.modifications=array(ref('VehicleModification'));
+// Preserve original declarations rather than conflating issue/test dates or
+// losing address components when a formatted address is assembled.
+defs.Address.properties.houseNumber=str(50);
+defs.Address.properties.street=str(100);
+defs.Address.properties.city=str(100);
+defs.Driver.properties.licence.properties.issuedOn=ref('Date');
+defs.Conviction.properties.disqualified=bool;
+defs.Loss.properties.declaredStatus=ref('Reference');
 defs.AnnualEuropeanCover=object({id:ref('Id'),registration:{type:'string',pattern:'^[A-Z0-9 ]{2,12}$'},usage:ref('Reference')});
 defs.TemporaryEuropeanCover=object({id:ref('Id'),registration:{type:'string',pattern:'^[A-Z0-9 ]{2,12}$'},startsOn:ref('Date'),endsOn:ref('Date'),area:ref('Reference'),driverIds:{...array(ref('Id')),uniqueItems:true},cover:ref('Reference'),usage:ref('Reference')});
 defs.Cover.properties.annualEuropeanCover=array(ref('AnnualEuropeanCover'));

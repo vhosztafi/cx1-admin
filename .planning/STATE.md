@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-15T07:40:12.669740+00:00"
+last_updated: "2026-09-15T07:53:53.253405+00:00"
 last_activity: 2026-09-15
 progress:
   total_phases: 13
@@ -54,7 +54,7 @@ Progress: Phases1–4 complete;4/13phases,24completed plans.
 ## Session Continuity
 
 Last session: 2026-09-15
-Stopped at:05-01 European-cover schema slice complete: annual/temporary rows with stable IDs, explicit dated trips/reference selections/unique driver IDs; nine source child paths mapped/tested in contracts/quote-field-mapping.json, remaining246fields and364control audit pending. Full88contracts/OpenAPI/949controls/328ops pass. No quote APIs or backend/UI changes. NEXT remaining exact mappings/catalogues, semantic chronology/term/driver/reference/duplicate validation and quote OpenAPI before05-01complete. Read05-01-PROGRESS. Previous backend329/57SQL and30frontend baseline unchanged; no active previews/tests, no funnel edits, no approvals needed.
+Stopped at:05-01 driver mapping slice complete.64/255source occurrences mapped/tested (55driver+9European trip);191remaining plus364control ownership, catalogues and semantic/runtime/OpenAPI gate pending. Added independent licence issuedOn, declared claim status, address components and disqualified boolean to avoid lossy conversion. Full90contract tests/OpenAPI/source949/328pass. No backend/UI changes, quote endpoints or active previews/tests; previous329backend/57SQL and30frontend remain baseline. NEXT finish source mappings/catalogues/semantic constraints and quote OpenAPI; read05-01-PROGRESS. No funnel edits or new approvals.
 Resume file: .planning/phases/05-motor-trade-quote-capture/05-01-PROGRESS.md
 
 ## Autonomous continuation
