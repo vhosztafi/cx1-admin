@@ -66,6 +66,10 @@ Body, premises activity/use and security preserve all21rendered source options i
 
 Driver status, usage and all nine prototype offence choices have explicit pinned reference mappings in the binding manifest. Prototype ordinals are not copied into source IDs. The offence placeholder cannot be saved, and every mapping is checked against the rendered source options. Company and driver eligibility remain separate from reference identity.
 
+## Legal entity reconciliation
+
+Legal entity is captured separately from the source company category. Limited company retains an explicit public/private source subtype. The source lacks LLP; the MVP uses partnership relationship rules while retaining LLP legal identity. Limited company and LLP require a company number. All four prototype entity labels map explicitly, and conflicting captured categories are reported together.
+
 ## Remaining contract gate
 
 Resolve overlapping prototype/funnel answers and all product-specific requiredness, dynamic option selection, source limits and conditional rules. Reconcile historical prototype field bindings with the capture-write envelope: for example `term.startsAt` is supplied as local `termIntent`, not a caller-chosen policy timestamp. Finish quote API request/response contracts and operation integration. Verify complete fictional proposals against the composed validators. Then implement and test the same rules in the actual .NET request boundary and persistent services.

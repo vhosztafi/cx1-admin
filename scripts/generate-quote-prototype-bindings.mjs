@@ -13,6 +13,7 @@ referenceSelections['CTL-7b5a86aac53f']={collection:'driverMTConvictionCodes',pl
  return [label,matches[0].value];
 }))};
 const replacements={
+ 'insured.entityType':{paths:['insured.entityType'],rule:'Preserve the legal entity choice. Capture public/private company subtype separately; LLP uses the source partnership relationship rules without changing its legal entity.',values:{'Sole trader':'sole-trader',Partnership:'partnership','Limited company':'limited-company',LLP:'llp'}},
  'risk.drivers[].convictions[].banMonths':{paths:['risk.drivers[].convictions[].declaredBanPeriod','risk.drivers[].convictions[].banMonths'],rule:'Preserve the selected band separately; collect exact months for a disqualification before readiness, never invent a band midpoint.',values:{None:'none','Under 3 months':'under-3-months','3 to 6 months':'3-to-6-months','6 to 12 months':'6-to-12-months','Over 12 months':'over-12-months'}},
  'risk.drivers[].losses[].fault':{paths:['risk.drivers[].losses[].fault'],rule:'Preserve split liability as distinct from fault, non-fault and not yet determined.',values:{Yes:'fault',No:'non-fault','Split liability':'split','Not yet determined':'unknown'}},
  'term.startsAt':{paths:['termIntent.localStartDate','termIntent.localStartTime','termIntent.timeZone','termIntent.utcOffsetMinutes'],rule:'Capture local date/time with London zone and explicit offset only when needed; UTC is server-derived.'},

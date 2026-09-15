@@ -6,6 +6,7 @@ import {selectQuoteDynamicOptions} from './quote-dynamic-options.mjs';
 import {validateQuoteTerm} from './quote-term-contract.mjs';
 import {validateQuoteSourceRules,validateQuoteTextBounds} from './quote-source-rules.mjs';
 import {validateQuoteBusinessReadiness} from './quote-business-readiness.mjs';
+import {reconcileQuoteEntity} from './quote-entity-reconciliation.mjs';
 import {validateQuotePrototypeBusiness} from './quote-prototype-business.mjs';
 import {validateQuotePrototypeVehicles} from './quote-prototype-vehicles.mjs';
 import {validateQuotePrototypeDetails} from './quote-prototype-details.mjs';
@@ -54,7 +55,7 @@ export async function createQuoteValidationPipeline() {
   collect('conviction-period',validateQuoteConvictionPeriods(proposal));
   collect('text',validateQuoteTextBounds(proposal));
   for(const [stage,validate] of [
-   ['business',validateQuoteBusinessReadiness],['prototype-business',validateQuotePrototypeBusiness],['prototype-details',validateQuotePrototypeDetails],['driver',validateQuoteDriverReadiness],
+   ['business',validateQuoteBusinessReadiness],['entity-reconciliation',reconcileQuoteEntity],['prototype-business',validateQuotePrototypeBusiness],['prototype-details',validateQuotePrototypeDetails],['driver',validateQuoteDriverReadiness],
    ['driver-eligibility',validateQuoteDriverEligibility],['driver-plan',validateQuoteDriverPlan],
    ['driver-reconciliation',reconcileQuoteDriverDeclarations],['vehicle-owner',validateQuoteVehicleOwnership],
    ['vehicle-limits',validateQuoteVehicleLimits],['prototype-vehicles',validateQuotePrototypeVehicles],['insurance',validateQuoteInsuranceReadiness],['prototype-insurance',validateQuotePrototypeInsurance],

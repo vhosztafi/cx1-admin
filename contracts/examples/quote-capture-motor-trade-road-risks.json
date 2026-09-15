@@ -10,6 +10,7 @@
     "schemaVersion": "1.0",
     "productCode": "motor-trade-road-risks",
     "insured": {
+      "entityType": "sole-trader",
       "declaredCompanyType": {
         "collection": "companyTypes",
         "value": 1,

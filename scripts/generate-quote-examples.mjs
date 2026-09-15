@@ -16,7 +16,7 @@ for(const productCode of questions.products) {
  const combined=productCode==='motor-trade-combined';
  const proposal={
   schemaVersion:'1.0',productCode,
-  insured:{declaredCompanyType:ref('companyTypes',1),title:ref(questions.mappings.find(row=>row.owner==='MTS-01-Q07').optionCollection),firstName:'Alex',surname:'Example',contact:{email:'alex@example.test',mobile:'07123456789'},address:structuredClone(address)},
+  insured:{entityType:'sole-trader',declaredCompanyType:ref('companyTypes',1),title:ref(questions.mappings.find(row=>row.owner==='MTS-01-Q07').optionCollection),firstName:'Alex',surname:'Example',contact:{email:'alex@example.test',mobile:'07123456789'},address:structuredClone(address)},
   termIntent:{kind:'annual',localStartDate:'2026-09-15',localStartTime:'09:00',timeZone:'Europe/London'},
   risk:{
    business:{description:'Fictional business selling standard used cars to private customers.',startedOn:'2020-01-01',turnover:'100000.00',wageRoll:'25000.00',activities:[{id:id(1),code:ref('mtOccupations',8),turnoverBasisPoints:10000}],responses:response([

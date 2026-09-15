@@ -1070,7 +1070,14 @@
           "kind": "field-or-collection",
           "paths": [
             "insured.entityType"
-          ]
+          ],
+          "captureRule": "Preserve the legal entity choice. Capture public/private company subtype separately; LLP uses the source partnership relationship rules without changing its legal entity.",
+          "valueMapping": {
+            "Sole trader": "sole-trader",
+            "Partnership": "partnership",
+            "Limited company": "limited-company",
+            "LLP": "llp"
+          }
         }
       ]
     },
