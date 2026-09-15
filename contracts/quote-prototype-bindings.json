@@ -1,6 +1,6 @@
 {
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
-  "questionVersion": "mt-capture-e410d61471e481ed",
+  "questionVersion": "mt-capture-31012e9672ca88bf",
   "status": "capture path contract; control value semantics and runtime remain separate gates",
   "controls": [
     {

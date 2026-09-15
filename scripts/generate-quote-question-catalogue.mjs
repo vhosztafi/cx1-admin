@@ -29,6 +29,17 @@ for(const name of sources) {
     active.push({...entry,owner:question.questionId,canonicalPath:`${question.targetContainer}.answers[]`,contractKind:'Answer',answerKind:question.kind});
   }
 }
+// Conditional composers are not present in the default render inventory.
+// Preserve the separately audited source control instead of losing its answer.
+const conditional=await read('contracts/examples/conditional-capture.json');
+const reason=conditional.controls.find(row=>row.id==='COND-NCD-REASON');
+if(!reason?.question)throw new Error('missing-ncd-reason-contract');
+active.push({...reason.question,label:'Reason no discount is being claimed',owner:reason.question.questionId,
+ sourceControlId:reason.id,sourceKey:reason.sourceKey,sourceCatalogue:conditional.version,
+ targetContainer:'risk.previousInsurance.responses',canonicalPath:'risk.previousInsurance.responses.answers[]',
+ contractKind:'Answer',answerKind:'text',products:['motor-trade-road-risks'],disposition:'phase-05-capture',
+ requiredWhen:{questionId:'prototype.quote.1bdc05ff8b3d',equals:false},
+ stages:['Motor Trade Road Risks:step-7']});
 const mappings=[...sourceMappings.map(row=>({...row,products})),...active];
 const sourceReference=await read('contracts/reference-data/motor-trade-source.json');
 const references=structuredClone(sourceReference);

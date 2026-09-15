@@ -18,7 +18,7 @@ Ownership is separate from operation dependencies. A shared risks-list control m
 ## Field and question coverage
 
 - All 255 funnel source occurrences have exact typed canonical paths in `contracts/quote-field-mapping.json`.
-- The combined question catalogue includes those mappings and 55 Motor Trade prototype supplemental questions. Another 109 prototype definitions have explicit Commercial Combined ownership.
+- The combined question catalogue includes those mappings and 56 Motor Trade prototype supplemental questions (including the separately audited conditional no-discount composer). Another 109 prototype definitions have explicit Commercial Combined ownership.
 - Reference identity catalogues preserve all 51 direct source option families, 25 nested source families and 12 active prototype reference families. Dynamic family membership still requires trusted, instance-specific selection and eligibility checks.
 - Contract examples test duplicate JSON keys, typed identities, child links, scoped question IDs, reference identity, term/DST handling and a subset of conditional readiness rules.
 
@@ -41,6 +41,10 @@ Demonstration cover reconciles with the source declaration; a positive selection
 ## Prototype history and material facts
 
 The seven proposer/driver history declarations and other-business/directorship answer are explicit. Positive answers require nonblank material facts. Because the prototype omits a general detail editor for several of these questions, the MVP will use the existing material-facts field and prompt for an explanation of every affirmative declaration. Validation checks presence; underwriting assesses adequacy. Business description is also required. General material facts remain valid when every declaration is negative.
+
+## Conditional prototype insurance stage
+
+The Road Risks no-discount reason is an explicit versioned text answer from COND-NCD-REASON, required when discount is not claimed and inactive otherwise. Insurer and discount/protection/intro declarations are required; claimed discount needs positive years, basis, origin and expiry. Evidence and eligibility remain separate. The question/reference catalogue version is mt-capture-31012e9672ca88bf; stale versions are rejected. Combined retains its separate source NCB capture.
 
 ## Remaining contract gate
 

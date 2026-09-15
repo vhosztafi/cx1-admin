@@ -9,7 +9,7 @@ const references=await read('contracts/reference-data/motor-trade-capture.json')
 test('all 164 prototype question definitions have capture or explicit Commercial Combined ownership',async()=>{
   const sources=await Promise.all(['prototype-quote-questions','prototype-detail-questions','prototype-quote-value-questions'].map(name=>read(`contracts/examples/${name}.json`)));
   const original=sources.flatMap(source=>source.questions);
-  const active=catalogue.mappings.filter(row=>row.owner.startsWith('prototype.'));
+  const active=catalogue.mappings.filter(row=>row.owner.startsWith('prototype.')&&row.sourceCatalogue!=='prototype-conditional-1');
   const all=[...active,...catalogue.deferredQuestions];
   assert.equal(original.length,164);assert.equal(active.length,55);assert.equal(catalogue.deferredQuestions.length,109);
   assert.equal(new Set(all.map(row=>row.questionId)).size,164);
@@ -21,9 +21,9 @@ test('all 164 prototype question definitions have capture or explicit Commercial
   for(const row of catalogue.deferredQuestions)assert.deepEqual(row.products,['commercial-combined']);
 });
 
-test('all 310 source mappings resolve to actual capture schema paths',async()=>{
+test('all 311 source mappings resolve to actual capture schema paths',async()=>{
   const schema=await read('contracts/schemas/quote-ready.schema.json');
-  assert.equal(catalogue.mappings.length,310);
+  assert.equal(catalogue.mappings.length,311);
   for(const row of catalogue.mappings) {
     let node=schema;
     for(const part of row.canonicalPath.split('.')) {

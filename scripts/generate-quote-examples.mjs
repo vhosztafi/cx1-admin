@@ -35,7 +35,9 @@ for(const productCode of questions.products) {
    ])}],
    vehicles:[{id:id(3),registration:'DEMO 01',make:'Example',model:'Demonstrator',abiCode:'DEMO',abiGroup:28,vehicleType:ref('vehicleType',references.collections.vehicleType.find(row=>row.category==='Car').value),bodyDescription:'Saloon',registrationYear:2020,registeredOn:'2020-01-01',imported:false,value:'10000.00',purchasedOn:'2020-01-01',declaredOwnerType:ref('vehicleOwnerTypes',1),keptOvernightType:ref('vehicleKeptOvernightType'),keptOvernightAddress:'AB1 2CD',partOfLeaseAgreement:false,customerLoan:false,modified:false,responses:response([['prototype.addveh.special-characteristics',ref('prototype.addveh.special-characteristics',1)],['prototype.addveh.report-mid',true]])}],
    specifiedVehiclesRequested:false,
-   previousInsurance:{responses:response([['MTS-05-Q10',ref('noClaimBonuses',1)]])},
+   previousInsurance:{...(!combined?{insurer:'Example Mutual (fictional)',expiresOn:'2026-09-15'}:{}),responses:response([['MTS-05-Q10',ref('noClaimBonuses',1)],...(!combined?[
+    ['prototype.quote.1bdc05ff8b3d',false],['prototype.quote.61a13bb828b2',false],['prototype.quote.3fad63dd9abf',false],['prototype.no-claims.reason','No transferable discount is available from the previous fictional policy.'],
+   ]:[])])},
    ...(combined?{premises:[{id:id(4),address:structuredClone(address),use:ref('tradingPremiseTypes'),yearsTrading:6,sharedWorksite:false,responses:response([['prototype.addprem.overnight-vehicles',true],['prototype.addprem.public-access',true]])}]}:{}),
   },
   cover:{responses:response([

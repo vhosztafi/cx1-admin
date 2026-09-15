@@ -1,5 +1,5 @@
 {
-  "version": "mt-capture-e410d61471e481ed",
+  "version": "mt-capture-31012e9672ca88bf",
   "status": "Question identity and product ownership catalogue; conditional readiness, overlapping source answers and control audit remain pending.",
   "products": [
     "motor-trade-road-risks",
@@ -5335,6 +5335,30 @@
       "canonicalPath": "risk.business.responses.answers[]",
       "contractKind": "Answer",
       "answerKind": "boolean"
+    },
+    {
+      "questionId": "prototype.no-claims.reason",
+      "kind": "text",
+      "label": "Reason no discount is being claimed",
+      "owner": "prototype.no-claims.reason",
+      "sourceControlId": "COND-NCD-REASON",
+      "sourceKey": "nqNcdReason",
+      "sourceCatalogue": "prototype-conditional-1",
+      "targetContainer": "risk.previousInsurance.responses",
+      "canonicalPath": "risk.previousInsurance.responses.answers[]",
+      "contractKind": "Answer",
+      "answerKind": "text",
+      "products": [
+        "motor-trade-road-risks"
+      ],
+      "disposition": "phase-05-capture",
+      "requiredWhen": {
+        "questionId": "prototype.quote.1bdc05ff8b3d",
+        "equals": false
+      },
+      "stages": [
+        "Motor Trade Road Risks:step-7"
+      ]
     }
   ],
   "deferredQuestions": [
