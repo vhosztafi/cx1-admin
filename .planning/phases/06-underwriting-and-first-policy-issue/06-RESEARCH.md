@@ -60,3 +60,8 @@ Keep the existing xUnit unit/realSQL/API, Node contract/frontend, ESLint/TypeScr
 ## Limits and next gate
 
 Research did not change runtime or claim underwriting is implemented. Phase6 requires a complete source ownership audit, detailed data/API design, UI-SPEC, PATTERNS, VALIDATION and reviewed bounded PLAN files before execution. Human UAT, hostedCI and Docker remain separate. Context's default validity is resolved to14days from source; all other decisions remain within the approved scope.
+
+
+## Additional implementation gates from the pattern scout
+
+QuoteModel currently constrains State to draft/withdrawn, so proposed underwriting states require an explicit migration and audit of every state-based reader/command. SqlJobLeases rejects all kinds except diagnostic-probe, agency-notification and quote-lookup; adding a worker class alone will not make rating/capacity/delivery work claimable. Plan all dispatcher/allowlist/retry changes with denied-kind tests.06-PATTERNS records exact existing analogs;06-VALIDATION specifies pending semantic tests and must gain actual task IDs after plans exist.
