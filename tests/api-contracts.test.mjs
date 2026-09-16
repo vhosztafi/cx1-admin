@@ -359,3 +359,13 @@ test('implemented quote capture routes use the stored quote capability and retai
  assert.equal(getOperation('listQuoteProducts')['x-runtime-status'],'implemented-capture-selection');
  for(const name of ['cloneQuote','withdrawQuote'])assert.equal(getOperation(name)['x-runtime-status'],'planned-phase-05');
 });
+
+test('readiness can identify distinct missing questions without inventing array positions',()=>{
+ const check=ajv.getSchema(`${rootId}#/$defs/QuoteReadiness`);
+ const base={path:'/risk/business/responses/answers',code:'required-capture-field',message:'Complete the answer.',category:'capture',severity:'error'};
+ const result={quoteId:'11111111-1111-4111-8111-111111111111',revisionId:'22222222-2222-4222-8222-222222222222',ready:false,
+  issues:[{...base,questionId:'MTS-03-Q04'},{...base,questionId:'MTS-03-Q06'},base]};
+ assert.equal(check(result),true,JSON.stringify(check.errors));
+ for(const questionId of [null,'','x'.repeat(201),123])assert.equal(check({...result,issues:[{...base,questionId}]}),false);
+ assert.equal(check({...result,issues:[{...base,callerOwnedQuestion:'forged'}]}),false);
+});

@@ -69699,6 +69699,11 @@
                     "error",
                     "warning"
                   ]
+                },
+                "questionId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
                 }
               },
               "required": [

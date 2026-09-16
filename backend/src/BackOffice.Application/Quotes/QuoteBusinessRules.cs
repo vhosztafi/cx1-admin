@@ -6,6 +6,7 @@ namespace BackOffice.Application.Quotes;
 // contradictory answers never prevent saving a valid-shaped partial draft.
 public static class QuoteBusinessRules
 {
+    private delegate void AddIssue(string code, string path, string? questionId = null);
     private static readonly Lazy<JsonElement[]> Mappings = new(() =>
     {
         _ = QuoteCatalogueIdentity.Version; // Validate the bundled catalogues first.
@@ -25,7 +26,7 @@ public static class QuoteBusinessRules
             return [new("unsupported-capture-product", "/productCode")];
         var rows = Mappings.Value.Where(row => row.GetProperty("products").EnumerateArray().Any(x => x.GetString() == product.GetString())).ToArray();
         var issues = new List<QuoteFieldIssue>();
-        void Add(string code, string path) { if (issues.Count < QuoteCaptureShape.MaximumIssues) issues.Add(new(code, path)); }
+        void Add(string code, string path, string? questionId = null) { if (issues.Count < QuoteCaptureShape.MaximumIssues) issues.Add(new(code, path, questionId)); }
         JsonElement Row(string owner) => rows.First(x => At(x, "owner").GetString() == owner);
         (JsonElement Value, string Path) Read(string owner)
         {
@@ -34,7 +35,12 @@ public static class QuoteBusinessRules
                 ? Answer(proposal, path[..^10], row.GetProperty("questionId").GetString()!)
                 : (At(proposal, path), "/" + path.Replace('.', '/'));
         }
-        void Require(string owner) { var field = Read(owner); if (!Present(field.Value)) Add("required-capture-field", field.Path); }
+        void Require(string owner)
+        {
+            var field = Read(owner); var row = Row(owner);
+            if (!Present(field.Value)) Add("required-capture-field", field.Path,
+                row.GetProperty("contractKind").GetString() == "Answer" ? row.GetProperty("questionId").GetString() : null);
+        }
         foreach (var owner in Required) Require(owner);
         if (QuoteCatalogueIdentity.TrustedValue(Read("MTS-01-Q06").Value, "companyTypes") is 2 or 3 or 4)
         {
@@ -60,7 +66,7 @@ public static class QuoteBusinessRules
         }
         else if (premises.Length > 0) Add(tradingFrom is null ? "premises-context-required" : "inactive-premises-retained", "/risk/premises");
         var handled = Read("MTS-03-Q08");
-        if (Number(handled.Value) is < 1) Add("vehicles-handled-minimum", handled.Path);
+        if (Number(handled.Value) is < 1) Add("vehicles-handled-minimum", handled.Path, "MTS-03-Q08");
         var started = Read("MTS-03-Q01");
         if (Present(started.Value) && string.CompareOrdinal(started.Value.GetString(), "1900-01-01") < 0) Add("business-start-too-early", started.Path);
         foreach (var row in rows.Where(x => At(x, "requiredWhen").ValueKind == JsonValueKind.Object &&
@@ -71,9 +77,9 @@ public static class QuoteBusinessRules
             var parent = Answer(proposal, scope, condition.GetProperty("questionId").GetString()!);
             var child = Answer(proposal, scope, row.GetProperty("questionId").GetString()!);
             if (parent.Value.ValueKind != JsonValueKind.Undefined && JsonElement.DeepEquals(parent.Value, condition.GetProperty("equals")))
-            { if (!Present(child.Value)) Add("conditional-answer-required", child.Path); }
+            { if (!Present(child.Value)) Add("conditional-answer-required", child.Path, row.GetProperty("questionId").GetString()); }
             else if (child.Value.ValueKind != JsonValueKind.Undefined)
-                Add(parent.Value.ValueKind == JsonValueKind.Undefined ? "controlling-answer-required" : "inactive-answer-retained", child.Path);
+                Add(parent.Value.ValueKind == JsonValueKind.Undefined ? "controlling-answer-required" : "inactive-answer-retained", child.Path, row.GetProperty("questionId").GetString());
         }
         AssessSplit(proposal, Add);
         AssessPrototype(proposal, Add);
@@ -83,7 +89,7 @@ public static class QuoteBusinessRules
         return issues;
     }
 
-    private static void AssessEntity(JsonElement proposal, Action<string, string> add)
+    private static void AssessEntity(JsonElement proposal, AddIssue add)
     {
         var insured = At(proposal, "insured"); var names = Items(At(insured, "proposerNames")).ToArray();
         if (names.Length == 0) add("proposer-name-required", "/insured/proposerNames");
@@ -106,7 +112,7 @@ public static class QuoteBusinessRules
             add("incorporated-company-number-required", "/insured/companyNumber");
     }
 
-    private static void AssessActivities(JsonElement proposal, Action<string, string> add)
+    private static void AssessActivities(JsonElement proposal, AddIssue add)
     {
         const string path = "/risk/business/activities";
         var value = At(proposal, "risk.business.activities"); var activities = Items(value).ToArray();
@@ -132,14 +138,14 @@ public static class QuoteBusinessRules
         }
     }
 
-    private static void AssessBusinessBounds(JsonElement proposal, Action<string, string> add)
+    private static void AssessBusinessBounds(JsonElement proposal, AddIssue add)
     {
         var started = At(proposal, "risk.business.startedOn"); var policyStart = At(proposal, "termIntent.localStartDate");
         if (Present(started) && Present(policyStart) && string.CompareOrdinal(started.GetString(), policyStart.GetString()) > 0)
             add("business-start-after-policy", "/risk/business/startedOn");
-        void Limit(JsonElement value, int maximum, string path)
+        void Limit(JsonElement value, int maximum, string path, string? questionId = null)
         {
-            if (value.ValueKind == JsonValueKind.String && value.GetString()!.Length > maximum) add("source-text-too-long", path);
+            if (value.ValueKind == JsonValueKind.String && value.GetString()!.Length > maximum) add("source-text-too-long", path, questionId);
         }
         void Address(JsonElement address, string path)
         {
@@ -148,22 +154,22 @@ public static class QuoteBusinessRules
         }
         Address(At(proposal, "insured.address"), "/insured/address"); var index = 0;
         foreach (var premise in Items(At(proposal, "risk.premises"))) Address(At(premise, "address"), $"/risk/premises/{index++}/address");
-        var association = Answer(proposal, "risk.business.responses", "MTS-03-Q07"); Limit(association.Value, 20, association.Path);
+        var association = Answer(proposal, "risk.business.responses", "MTS-03-Q07"); Limit(association.Value, 20, association.Path, "MTS-03-Q07");
         var facts = At(proposal, "risk.materialFacts");
         if (facts.ValueKind == JsonValueKind.String && facts.GetString()!.Length > 1000) add("material-facts-too-long", "/risk/materialFacts");
     }
 
-    private static void AssessPrototype(JsonElement proposal, Action<string, string> add)
+    private static void AssessPrototype(JsonElement proposal, AddIssue add)
     {
         (JsonElement Value, string Path) Read(string id) => Answer(proposal, "risk.business.responses", id);
-        void Require(string id) { var answer = Read(id); if (!Present(answer.Value)) add("required-prototype-business-answer", answer.Path); }
+        void Require(string id) { var answer = Read(id); if (!Present(answer.Value)) add("required-prototype-business-answer", answer.Path, id); }
         long? Pinned(string id) => QuoteCatalogueIdentity.TrustedValue(Read(id).Value, id);
         if (!Present(At(proposal, "risk.business.description"))) add("business-description-required", "/risk/business/description");
         foreach (var suffix in new[] { "ea4580cbac7a", "46414cc10100", "ef70e80708bb", "36da21d3c935", "6c1927f561b8", "f7972c55f517", "382ce4de8253", "922ca15dc9ed" })
         {
             var id = "prototype.quote." + suffix; Require(id);
             if (Read(id).Value.ValueKind == JsonValueKind.True && !Present(At(proposal, "risk.materialFacts")))
-                add("declaration-material-facts-required", "/risk/materialFacts");
+                add("declaration-material-facts-required", "/risk/materialFacts", id);
         }
         const string trader = "prototype.quote.c6181a11c34c", experience = "prototype.quote.0552d5a68ba2",
             employment = "prototype.quote.34613c23e95d", occupation = "prototype.quote-value.3fd9edd7e66e";
@@ -171,14 +177,14 @@ public static class QuoteBusinessRules
         if (Pinned(trader) == 2)
         {
             Require(occupation);
-            if (Pinned(employment) == 1) add("part-time-employment-required", Read(employment).Path);
+            if (Pinned(employment) == 1) add("part-time-employment-required", Read(employment).Path, employment);
         }
         else if (Pinned(trader) == 1)
         {
-            if (Present(Read(occupation).Value)) add("inactive-main-occupation-retained", Read(occupation).Path);
-            if (Pinned(employment) is 2 or 3) add("inactive-main-employment-retained", Read(employment).Path);
+            if (Present(Read(occupation).Value)) add("inactive-main-occupation-retained", Read(occupation).Path, occupation);
+            if (Pinned(employment) is 2 or 3) add("inactive-main-employment-retained", Read(employment).Path, employment);
         }
-        else if (Present(Read(occupation).Value)) add("main-occupation-context-required", Read(occupation).Path);
+        else if (Present(Read(occupation).Value)) add("main-occupation-context-required", Read(occupation).Path, occupation);
         foreach (var (parents, details) in new (string[], string)[] {
             (["ba9d4158ae2c", "35350a32e79e", "2ad460339240", "f5e77ab8ec93", "7fe8e3151553", "27322dcfabf5", "f856f5891026"], "909e1c6eff8c"),
             (["d7a75768e505", "5f9e8331ac6f", "488ecf4bdc09", "87fad6b4a9fe"], "2d662a3ec81d") })
@@ -187,7 +193,7 @@ public static class QuoteBusinessRules
             foreach (var id in ids) Require(id);
             if (ids.Any(id => Read(id).Value.ValueKind == JsonValueKind.True)) Require(detail);
             else if (Present(Read(detail).Value)) add(ids.All(id => Read(id).Value.ValueKind == JsonValueKind.False)
-                ? "inactive-prototype-details-retained" : "prototype-details-context-required", Read(detail).Path);
+                ? "inactive-prototype-details-retained" : "prototype-details-context-required", Read(detail).Path, detail);
         }
         var emitted = new HashSet<string>(StringComparer.Ordinal);
         foreach (var activity in Items(At(proposal, "risk.business.activities")))
@@ -199,22 +205,23 @@ public static class QuoteBusinessRules
             {
                 var id = "prototype.quote." + suffix;
                 if (values.Contains(value.Value) && Read(id).Value.ValueKind != JsonValueKind.True && emitted.Add(id))
-                    add("activity-declaration-required", Read(id).Path);
+                    add("activity-declaration-required", Read(id).Path, id);
             }
         }
     }
 
-    private static void AssessSplit(JsonElement proposal, Action<string, string> add)
+    private static void AssessSplit(JsonElement proposal, AddIssue add)
     {
         const string path = "/risk/business/declaredActivitySplit";
         var business = At(proposal, "risk.business"); var split = At(business, "declaredActivitySplit");
         var shares = SplitKeys.ToDictionary(key => key, key => Number(At(split, key)), StringComparer.Ordinal);
         foreach (var key in SplitKeys) if (shares[key] is null) add("activity-split-share-required", path + "/" + key);
         if (shares.Values.All(x => x is not null) && shares.Values.Sum(x => x!.Value) != 10000) add("activity-split-total-invalid", path);
-        var detail = Answer(proposal, "risk.business.responses", "prototype.quote-value.3e4fdf2b682e");
-        if (shares["other"] is > 0 && !Present(detail.Value)) add("other-activity-description-required", detail.Path);
+        const string otherQuestion = "prototype.quote-value.3e4fdf2b682e";
+        var detail = Answer(proposal, "risk.business.responses", otherQuestion);
+        if (shares["other"] is > 0 && !Present(detail.Value)) add("other-activity-description-required", detail.Path, otherQuestion);
         if (detail.Value.ValueKind != JsonValueKind.Undefined && !(shares["other"] is > 0))
-            add(shares["other"] is null ? "other-activity-share-context-required" : "inactive-other-activity-description", detail.Path);
+            add(shares["other"] is null ? "other-activity-share-context-required" : "inactive-other-activity-description", detail.Path, otherQuestion);
         foreach (var (keys, occupations) in new (string[], long[])[] {
             (["sales"], [5, 6, 7, 8, 23]), (["servicing", "mechanicalRepair"], [16, 17, 18]),
             (["breakdownRecovery"], [2, 3]), (["bodyRepairs"], [10]), (["valeting"], [26, 27]) })

@@ -119,6 +119,10 @@ public sealed partial class QuoteStorageTests
             Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("code").GetString() == "business-description-required");
             Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("code").GetString() == "proposer-name-required" && x.GetProperty("path").GetString() == "/insured/proposerNames");
             Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("code").GetString() == "business-activity-required" && x.GetProperty("path").GetString() == "/risk/business/activities");
+            foreach (var question in new[] { "MTS-03-Q04", "MTS-03-Q06" })
+                Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("path").GetString() == "/risk/business/responses/answers" &&
+                    x.TryGetProperty("questionId", out var identity) && identity.GetString() == question);
+            Assert.False(assessment.GetProperty("issues").EnumerateArray().Single(x => x.GetProperty("code").GetString() == "quote-assessment-unavailable").TryGetProperty("questionId", out _));
             Assert.Equal(2, await db.Set<QuoteRevision>().CountAsync()); Assert.Equal(3, await db.Set<IdempotencyRecord>().CountAsync());
             foreach (var email in new[] { "agency-admin@cover.example", "system-admin@cover.example" })
             {

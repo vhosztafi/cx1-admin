@@ -97,3 +97,8 @@ QuoteCaptureEligibility is called under held QuoteScope authority before receipt
 
 
 Product selection runtime clarification (2026-09-16): /quote-products offers the current explicit capture catalogue (at most two versions) under held relationship read scope. Configured but currently ineligible versions retain exact configured pins and display a safe unavailable reason. Eligible versions omit unavailableReason. A valid empty capture setting intentionally returns no offers; missing/malformed/dangling/unsupported configuration fails503. It does not enumerate arbitrary historical rating versions or invent capture pins for Commercial Combined. Create/save independently recheck current eligibility after selection.
+
+
+### Readiness question identity (05-03)
+
+The optional questionId on a readiness issue is a trusted catalogue identifier, not caller-owned error text. Preserve it through rule calculation, de-duplication and API serialization. Missing answer-array entries share a real container path; their different question IDs keep their issues distinct. Existing answers retain the actual indexed value path plus stable question identity. Ordinary scalar/term/configuration issues omit the property rather than emitting null. Clients must resolve path plus questionId against actual rendered controls and the saved revision; this metadata does not itself prove a field link exists or that a quote is ready. The global partial-assessment blocker remains until all dependent assessments are composed.

@@ -1,8 +1,10 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace BackOffice.Application.Quotes;
 
-public sealed record QuoteFieldIssue(string Code, string Path);
+public sealed record QuoteFieldIssue(string Code, string Path,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? QuestionId = null);
 
 // Runs after bounded JSON parsing and the closed capture shape validator.
 // Item identities are global; links resolve against typed current-document sets,
