@@ -20,14 +20,18 @@ public static class QuoteCaptureShape
         var result = schema.Evaluate(proposal, new EvaluationOptions
         {
             RequireFormatValidation = true,
-            OutputFormat = OutputFormat.List
+            OutputFormat = OutputFormat.Hierarchical
         });
         if (result.IsValid) return [];
         var issues = new List<QuoteFieldIssue>();
         var seen = new HashSet<QuoteFieldIssue>();
         void Collect(EvaluationResults node)
         {
-            if (issues.Count >= MaximumIssues) return;
+            // A failed conditional probe or unused oneOf branch is not an
+            // input error when its enclosing schema succeeded. Flattening the
+            // result loses that distinction and falsely flags valid sections
+            // whenever another part of an incomplete draft is missing.
+            if (node.IsValid || issues.Count >= MaximumIssues) return;
             if (!node.IsValid && node.Errors is not null)
             {
                 var path = node.InstanceLocation.ToString();

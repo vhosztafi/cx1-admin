@@ -7,6 +7,36 @@ namespace BackOffice.UnitTests;
 
 public sealed class QuoteReadinessTests
 {
+    [Theory]
+    [InlineData("motor-trade-road-risks")]
+    [InlineData("motor-trade-combined")]
+    public void ValidAnnualTermAndTypedAnswerAreNotFlaggedByUnselectedSchemaBranches(string product)
+    {
+        var proposal = new JsonObject {
+            ["schemaVersion"] = "1.0", ["productCode"] = product,
+            ["termIntent"] = new JsonObject { ["kind"] = "annual", ["localStartDate"] = "2024-02-29", ["localStartTime"] = "12:00", ["timeZone"] = "Europe/London" },
+            ["insured"] = new JsonObject { ["responses"] = new JsonObject { ["questionSetVersion"] = QuoteCatalogueIdentity.Version,
+                ["answers"] = new JsonArray(new JsonObject { ["questionId"] = "MTS-01-Q01", ["kind"] = "boolean", ["value"] = false }) } }
+        };
+        using var document = JsonDocument.Parse(proposal.ToJsonString());
+        var issues = QuoteCaptureShape.ValidateCompleteness(document.RootElement);
+        Assert.NotEmpty(issues); // Other source sections are intentionally missing.
+        Assert.DoesNotContain(issues, issue => issue.Path.StartsWith("/termIntent", StringComparison.Ordinal));
+        Assert.DoesNotContain(issues, issue => issue.Path.StartsWith("/insured/responses", StringComparison.Ordinal));
+        Assert.Contains(issues, issue => issue.Code == "schema-required");
+    }
+
+    [Fact]
+    public void SelectedShortPeriodBranchStillRequiresEndFields()
+    {
+        using var proposal = JsonDocument.Parse("""
+            {"schemaVersion":"1.0","productCode":"motor-trade-road-risks",
+             "termIntent":{"kind":"short-period","localStartDate":"2026-01-01","localStartTime":"12:00","timeZone":"Europe/London"}}
+            """);
+        var issues = QuoteCaptureShape.ValidateCompleteness(proposal.RootElement);
+        Assert.Contains(issues, issue => issue.Path == "/termIntent" && issue.Code == "schema-required");
+    }
+
     [Fact]
     public void MissingAnswersKeepDistinctQuestionIdentitiesAtTheSameContainerPath()
     {

@@ -292,3 +292,4 @@ h1, h2, p { margin: 0; }
 .quote-save-actions .button { white-space:normal; }
 .quote-create-rail .agency-steps { margin-bottom:18px; }
 @media(max-width:600px) { .quote-form-grid { grid-template-columns:minmax(0,1fr); } }
+.quote-form-grid .quote-term-help { color:var(--muted); }

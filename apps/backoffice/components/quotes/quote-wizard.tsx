@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from 'react';
 import { csrfToken, type Actor } from '../../lib/auth';
 import { amountInput, changeField, fieldValue, percentageInput } from '../../lib/quote-form';
 import { QuoteError, quoteFetch, saveQuoteCommand, sendQuoteCommand, staleQuoteFailure, uncertainQuoteFailure, validQuoteEtag, type PendingQuoteCommand, type QuoteValue, type QuoteView } from '../../lib/quotes';
+import { termFeedback } from '../../lib/quote-term';
+import { QuoteTermFields } from './quote-term-fields';
 import { Panel } from '../primitives';
 import { LoadFeedback, useQuoteResource } from './shared';
 
@@ -26,6 +28,7 @@ const comparisonFields = [...identityFields.map(([path, label]) => ({ path, labe
   { path: 'insured.entityType', label: 'Legal entity' }, { path: 'insured.proposerNames', label: 'Full proposer names' },
   { path: 'risk.business.description', label: 'Business description' }, { path: 'risk.business.startedOn', label: 'Business start date' },
   { path: 'risk.business.turnover', label: 'Annual turnover' }, { path: 'risk.business.wageRoll', label: 'Annual wage roll' },
+  ...['kind', 'localStartDate', 'localStartTime', 'utcOffsetMinutes', 'localEndDate', 'localEndTime', 'endUtcOffsetMinutes'].map(name => ({ path: `termIntent.${name}`, label: `Requested term: ${name}` })),
   ...splitFields.map(([name, label]) => ({ path: `risk.business.declaredActivitySplit.${name}`, label: `${label} (basis points)` }))];
 const display = (value: QuoteValue | undefined): string => value === undefined ? 'Not recorded' : Array.isArray(value) ? value.map(display).join('; ') : typeof value === 'object' ? 'Structured saved value' : String(value);
 
@@ -39,7 +42,8 @@ function Editor({ actorId, initial, initialEtag }: { actorId: string; initial: Q
   const [buffers, setBuffers] = useState<Record<string, string>>({});
   const command = useRef<PendingQuoteCommand | null>(null); const action = useRef<'stay' | 'continue' | 'exit'>('stay');
   const navigationState = useRef({ busy: false, uncertain: false, dirty: false });
-  const dirty = JSON.stringify(proposal) !== JSON.stringify(saved.proposal) || Object.keys(invalid).length > 0;
+  const term = termFeedback(proposal.termIntent); const inputErrors = Object.keys(invalid).length + term.errors.length;
+  const dirty = JSON.stringify(proposal) !== JSON.stringify(saved.proposal) || inputErrors > 0;
   useEffect(() => { navigationState.current.dirty = dirty; }, [dirty]);
   const frozen = busy || uncertain || conflict || !saved.capabilities.canSave;
   const stages = saved.productCode === 'motor-trade-combined'
@@ -85,7 +89,7 @@ function Editor({ actorId, initial, initialEtag }: { actorId: string; initial: Q
     setComparison(undefined); setConflict(false); setError(''); setStatus('Loaded the saved revision.'); navigationState.current.dirty = false;
   }
   async function save(nextAction: 'stay' | 'continue' | 'exit') {
-    if (navigationState.current.busy || conflict || !saved.capabilities.canSave || Object.keys(invalid).length) return;
+    if (navigationState.current.busy || conflict || !saved.capabilities.canSave || inputErrors) return;
     const recovering = navigationState.current.uncertain;
     if (!recovering) { command.current = saveQuoteCommand(saved.id, etag, proposal); action.current = nextAction; }
     if (!command.current) return;
@@ -116,7 +120,7 @@ function Editor({ actorId, initial, initialEtag }: { actorId: string; initial: Q
     <div className="agency-layout"><div>
       <Panel title={stages[stage]} note="Incomplete answers can be saved. Saving does not confirm readiness.">
         <fieldset disabled={frozen} className="quote-selection" key={formRevision}><legend className="sr-only">{stages[stage]} details</legend>
-          {stage === 0 ? <><p>{saved.clientName} · {saved.agencyName}</p><p>{saved.productCode === 'motor-trade-road-risks' ? 'Motor Trade Road Risks' : 'Motor Trade Combined'}</p><p className="client-help">The saved relationship and product cannot be changed. Policy term controls are not available yet.</p></> : stage === 1 ? <>
+          {stage === 0 ? <><p>{saved.clientName} · {saved.agencyName}</p><p>{saved.productCode === 'motor-trade-road-risks' ? 'Motor Trade Road Risks' : 'Motor Trade Combined'}</p><p className="client-help">The saved relationship and product cannot be changed.</p><QuoteTermFields intent={proposal.termIntent} change={change} /></> : stage === 1 ? <>
             <div className="quote-form-grid"><label>Legal entity<select value={String(fieldValue(proposal, 'insured.entityType') ?? '')} onChange={event => change('insured.entityType', event.target.value || undefined)}><option value="">Not answered</option><option value="sole-trader">Sole trader</option><option value="partnership">Partnership</option><option value="limited-company">Limited company</option><option value="llp">Limited liability partnership</option></select></label>
               {identityFields.map(([path, label, max]) => <label key={path}>{label}<input maxLength={max} value={String(fieldValue(proposal, path) ?? '')} onChange={event => change(path, event.target.value || undefined)} /></label>)}
             </div><h3>Full proposer names</h3><p className="client-help">Record complete names in order. Separate first name and surname fields above remain independent.</p>
@@ -136,12 +140,12 @@ function Editor({ actorId, initial, initialEtag }: { actorId: string; initial: Q
       </div></Panel>}
     </div><aside className="quote-create-rail"><Panel title="Quote progress"><div className="quote-rail-body"><nav className="agency-steps" aria-label="Quote stages">{stages.map((name, index) => <button className="button" key={name} type="button" disabled={index > 2 || busy || uncertain} aria-current={index === stage ? 'step' : undefined} onClick={() => setStage(index)}><span>{index + 1}</span>{name}{index > 2 ? ' · unavailable' : ''}</button>)}</nav>
       <p className="client-help">This capture form is being completed. Missing sections remain incomplete; the quote cannot progress to rating or issue.</p>
-      {error && <p className="error-message" role="alert">{error}</p>}{Object.entries(invalid).map(([path, message]) => <p key={path} role="alert">{message}</p>)}
+      {error && <p className="error-message" role="alert">{error}</p>}{term.errors.map(message => <p key={message} role="alert">{message}</p>)}{Object.entries(invalid).map(([path, message]) => <p key={path} role="alert">{message}</p>)}
       {status && <p role="status">{status}</p>}{uncertain && <p className="quote-pending" role="status">Save result unconfirmed. Your draft is locked until the original save is confirmed.</p>}
       {!saved.capabilities.canSave && <p role="alert">This quote is currently closed to editing.</p>}
-      <div className="quote-save-actions"><button className="button button-primary" disabled={busy || conflict || !saved.capabilities.canSave || Object.keys(invalid).length > 0} onClick={() => void save('stay')}>{busy ? 'Saving…' : uncertain ? 'Retry same save' : 'Save draft'}</button>
-        <button className="button" disabled={frozen || stage >= 2 || Object.keys(invalid).length > 0} onClick={() => void save('continue')}>Save and continue</button>
-        <button className="button" disabled={frozen || Object.keys(invalid).length > 0} onClick={() => void save('exit')}>Save and exit</button></div>
+      <div className="quote-save-actions"><button className="button button-primary" disabled={busy || conflict || !saved.capabilities.canSave || inputErrors > 0} onClick={() => void save('stay')}>{busy ? 'Saving…' : uncertain ? 'Retry same save' : 'Save draft'}</button>
+        <button className="button" disabled={frozen || stage >= 2 || inputErrors > 0} onClick={() => void save('continue')}>Save and continue</button>
+        <button className="button" disabled={frozen || inputErrors > 0} onClick={() => void save('exit')}>Save and exit</button></div>
     </div></Panel></aside></div></>;
 }
 
