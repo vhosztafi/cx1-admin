@@ -60423,6 +60423,159 @@
         "x-runtime-status": "phase-6-03-implemented"
       }
     },
+    "/quotes/{quoteId}/ratings": {
+      "get": {
+        "operationId": "listQuoteRatings",
+        "summary": "list Quote Ratings",
+        "description": "Requires underwriting-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Phase 6 contract; runtime availability requires owning-plan verification. Current identity, agency and subject scope apply before receipt replay. Responses are no-store.",
+        "tags": [
+          "quotes"
+        ],
+        "x-permission": "underwriting-read",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "quoteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "pattern": "\\S"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/UnderwritingRatingHistoryItem"
+                      },
+                      "minItems": 0,
+                      "maxItems": 100,
+                      "uniqueItems": true
+                    },
+                    "nextCursor": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2048,
+                      "pattern": "\\S"
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-6-04-implemented"
+      }
+    },
     "/quotes/{quoteId}/underwriting/evidence": {
       "post": {
         "operationId": "attachUnderwritingEvidence",
@@ -74850,6 +75003,48 @@
           "message"
         ]
       },
+      "UnderwritingRefreshOption": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "productVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "displayName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "\\S"
+          },
+          "versionLabel": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 60,
+            "pattern": "\\S"
+          },
+          "agencyTermsVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "termsVersion": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "effectiveFrom": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "required": [
+          "productVersionId",
+          "displayName",
+          "versionLabel",
+          "agencyTermsVersionId",
+          "termsVersion",
+          "effectiveFrom"
+        ]
+      },
       "UnderwritingAssessment": {
         "type": "object",
         "additionalProperties": false,
@@ -74878,10 +75073,36 @@
               "withdrawn"
             ]
           },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "productLabel": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "\\S"
+          },
+          "productVersionLabel": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 60,
+            "pattern": "\\S"
+          },
+          "providerLabel": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "\\S"
+          },
           "context": {
             "$ref": "#/components/schemas/UnderwritingContext"
           },
           "ratingId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "jobId": {
             "type": "string",
             "format": "uuid"
           },
@@ -74914,6 +75135,25 @@
           "submissionId": {
             "type": "string",
             "format": "uuid"
+          },
+          "assignedTeamId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "assignedTeamLabel": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "\\S"
+          },
+          "refreshOptions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnderwritingRefreshOption"
+            },
+            "minItems": 0,
+            "maxItems": 32,
+            "uniqueItems": true
           },
           "blockers": {
             "type": "array",
@@ -74977,8 +75217,13 @@
           "quoteId",
           "quoteEtag",
           "state",
+          "createdAt",
+          "productLabel",
+          "productVersionLabel",
+          "providerLabel",
           "blockers",
-          "capabilities"
+          "capabilities",
+          "refreshOptions"
         ]
       },
       "UnderwritingRateRequest": {
@@ -75211,6 +75456,57 @@
           "factors",
           "input",
           "blockers"
+        ]
+      },
+      "UnderwritingRatingHistoryItem": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "cycleId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revisionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revisionNumber": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "rated",
+              "rejected"
+            ]
+          },
+          "grossPayable": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          }
+        },
+        "required": [
+          "id",
+          "cycleId",
+          "revisionId",
+          "revisionNumber",
+          "completedAt",
+          "expiresAt",
+          "outcome",
+          "grossPayable"
         ]
       },
       "UnderwritingDecisionItem": {

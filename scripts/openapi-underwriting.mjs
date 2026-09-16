@@ -15,8 +15,9 @@ export function addUnderwritingContracts({schemas:s,ref:r,operation:op,paths}){
   s.UnderwritingCommandResult=o({id,quoteId:id,quoteEtag:etag});
   s.UnderwritingWorkResult=o({id,quoteId:id,quoteEtag:etag,jobId:id,state:{const:'queued'}});
   s.UnderwritingBlocker=o({code:t(100),message:t(1000),path:t(500),targetId:id,dimension:t(60)},['code','message']);
-  s.UnderwritingAssessment=o({quoteId:id,quoteEtag:etag,state:enumeration,context:r('UnderwritingContext'),ratingId:id,termsVersionId:id,termsHash:hash,assuranceHash:hash,acceptanceId:id,assignedUserId:id,assignedUserLabel:t(),submissionId:id,
-    blockers:many(r('UnderwritingBlocker'),200),capabilities:o(Object.fromEntries(['canRate','canSubmit','canRevise','canReviewEvidence','canDecide','canEscalate','canPrepareTerms','canSend','canAccept','canIssue'].map(k=>[k,bool])))},['quoteId','quoteEtag','state','blockers','capabilities']);
+  s.UnderwritingRefreshOption=o({productVersionId:id,displayName:t(),versionLabel:t(60),agencyTermsVersionId:id,termsVersion:{type:'integer',minimum:1},effectiveFrom:{type:'string',format:'date'}});
+  s.UnderwritingAssessment=o({quoteId:id,quoteEtag:etag,state:enumeration,createdAt:instant,productLabel:t(),productVersionLabel:t(60),providerLabel:t(),context:r('UnderwritingContext'),ratingId:id,jobId:id,termsVersionId:id,termsHash:hash,assuranceHash:hash,acceptanceId:id,assignedUserId:id,assignedUserLabel:t(),submissionId:id,assignedTeamId:id,assignedTeamLabel:t(),refreshOptions:many(r('UnderwritingRefreshOption'),32),
+    blockers:many(r('UnderwritingBlocker'),200),capabilities:o(Object.fromEntries(['canRate','canSubmit','canRevise','canReviewEvidence','canDecide','canEscalate','canPrepareTerms','canSend','canAccept','canIssue'].map(k=>[k,bool])))},['quoteId','quoteEtag','state','createdAt','productLabel','productVersionLabel','providerLabel','blockers','capabilities','refreshOptions']);
   s.UnderwritingRateRequest=o({revisionId:id,reason:t(1000)});
   s.UnderwritingCycleRequest=o({...commandContext,reason});
   s.UnderwritingRefreshRequest=o({revisionId:id,productVersionId:id,confirmedTermsVersionId:id,reason:t(1000)});
@@ -24,6 +25,7 @@ export function addUnderwritingContracts({schemas:s,ref:r,operation:op,paths}){
   s.UnderwritingRatingView=o({id,...context,ruleVersionId:id,completedAt:instant,expiresAt:instant,applicable:bool,
     currency:{const:'GBP'},annualPremium:money,termPremium:money,tax:money,fee:money,grossPayable:money,brokerCommission:money,
     agencyTermsVersionId:id,factors:many(r('UnderwritingRatingFactor'),200),input:r('QuoteCaptureProposal'),blockers:many(r('UnderwritingBlocker'),200)});
+  s.UnderwritingRatingHistoryItem=o({id,cycleId:id,revisionId:id,revisionNumber:{type:'integer',minimum:1},completedAt:instant,expiresAt:instant,outcome:e('rated','rejected'),grossPayable:money});
   s.UnderwritingDecisionItem={oneOf:['approve','approve-with-conditions','query','decline','reopen'].map(outcome=>o({
     referralId:id,etag,outcome:{const:outcome},reason,
     ...(outcome==='approve-with-conditions'?{conditions:many(r('UnderwritingConditionWrite'),20,1)}:{}),
@@ -80,7 +82,7 @@ export function addUnderwritingContracts({schemas:s,ref:r,operation:op,paths}){
     delete paths[path]?.[method];op(method,path,name,permission,{...options,existing:method!=='get'});
     const operation=paths[path][method];
     operation['x-runtime-status']=['rateQuote','submitQuote','returnQuoteToDraft','refreshQuoteUnderwritingVersion','getQuoteUnderwriting','getRating'].includes(name)
-      ? 'phase-6-03-implemented' : 'phase-6-pending';
+      ? 'phase-6-03-implemented' : name === 'listQuoteRatings' ? 'phase-6-04-implemented' : 'phase-6-pending';
     operation.description+=' Phase 6 contract; runtime availability requires owning-plan verification. Current identity, agency and subject scope apply before receipt replay. Responses are no-store.';
     if(method!=='get'){
       operation['x-etag-resource']='quote';
@@ -95,6 +97,7 @@ export function addUnderwritingContracts({schemas:s,ref:r,operation:op,paths}){
   write('/quotes/{quoteId}/underwriting/refresh','refreshQuoteUnderwritingVersion','quote-revise','UnderwritingRefreshRequest');
   read('/quotes/{quoteId}/underwriting','getQuoteUnderwriting','underwriting-read','UnderwritingAssessment');
   read('/ratings/{ratingId}','getRating','target-read','UnderwritingRatingView');
+  replace('get','/quotes/{quoteId}/ratings','listQuoteRatings','underwriting-read',{output:page(r('UnderwritingRatingHistoryItem')),query:paging});
   write('/quotes/{quoteId}/referral-decisions','decideQuoteReferrals','underwriting-decide-within-authority','UnderwritingDecisionRequest');
   write('/referrals/{referralId}/decisions','decideReferral','underwriting-decide-within-authority','UnderwritingSingleDecisionRequest');
   read('/referrals/{referralId}','getReferral','underwriting-read','UnderwritingReferralView');

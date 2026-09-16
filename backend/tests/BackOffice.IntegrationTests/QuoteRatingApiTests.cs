@@ -40,11 +40,21 @@ public sealed partial class UnderwritingRuntimeTests
         var assessment = await read.Content.ReadFromJsonAsync<JsonElement>();
         Assert.Equal("rated", assessment.GetProperty("state").GetString()); Assert.True(assessment.GetProperty("capabilities").GetProperty("canSubmit").GetBoolean());
         Assert.False(assessment.GetProperty("capabilities").GetProperty("canIssue").GetBoolean());
+        Assert.Equal("v2", assessment.GetProperty("productVersionLabel").GetString());
+        Assert.False(string.IsNullOrWhiteSpace(assessment.GetProperty("providerLabel").GetString()));
+        Assert.True(assessment.GetProperty("createdAt").GetDateTimeOffset() > DateTimeOffset.MinValue);
         Assert.Contains(assessment.GetProperty("blockers").EnumerateArray(), x => x.GetProperty("code").GetString()!.StartsWith("evidence-missing-", StringComparison.Ordinal));
         using var price = await client.GetAsync($"/api/v1/ratings/{ratingId:D}"); price.EnsureSuccessStatusCode(); Assert.True(price.Headers.CacheControl!.NoStore);
         var result = await price.Content.ReadFromJsonAsync<JsonElement>(); Assert.Equal("600.00", result.GetProperty("annualPremium").GetString()); Assert.True(result.GetProperty("applicable").GetBoolean());
         Assert.Equal(revisionId, result.GetProperty("revisionId").GetGuid()); Assert.Equal(quoteId, result.GetProperty("quoteId").GetGuid());
         var workId = await db.Set<UnderwritingCycle>().Where(x => x.QuoteId == quoteId).Select(x => x.WorkId).SingleAsync();
+        Assert.Equal(workId, assessment.GetProperty("jobId").GetGuid());
+        using var historyRead = await client.GetAsync(route + "/ratings?pageSize=1"); historyRead.EnsureSuccessStatusCode();
+        Assert.True(historyRead.Headers.CacheControl!.NoStore);
+        var history = await historyRead.Content.ReadFromJsonAsync<JsonElement>();
+        Assert.Equal(ratingId, Assert.Single(history.GetProperty("items").EnumerateArray()).GetProperty("id").GetGuid());
+        Assert.False(history.TryGetProperty("nextCursor", out _));
+        using var badHistory = await client.GetAsync(route + "/ratings?pageSize=101"); Assert.Equal(HttpStatusCode.BadRequest, badHistory.StatusCode);
         using var jobRead = await client.GetAsync($"/api/v1/jobs/{workId:D}"); jobRead.EnsureSuccessStatusCode();
         Assert.Equal("quote-rating", (await jobRead.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("kind").GetString());
         var etag = "\"" + Convert.ToBase64String(version) + "\"";
@@ -69,6 +79,7 @@ public sealed partial class UnderwritingRuntimeTests
         {
             var denied = await SignIn(email); using var deniedClient = denied.Client; using var response = await deniedClient.GetAsync(route + "/underwriting"); Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
             using var deniedJob = await deniedClient.GetAsync($"/api/v1/jobs/{workId:D}"); Assert.Equal(HttpStatusCode.Forbidden, deniedJob.StatusCode);
+            using var deniedHistory = await deniedClient.GetAsync(route + "/ratings"); Assert.Equal(HttpStatusCode.Forbidden, deniedHistory.StatusCode);
         }
     }
 }

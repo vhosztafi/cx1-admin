@@ -16,6 +16,7 @@ public static class QuoteUnderwritingEndpoints
         app.MapPost("/api/v1/quotes/{quoteId:guid}/underwriting/refresh", Refresh).RequireAuthorization("quote-revise");
         app.MapGet("/api/v1/quotes/{quoteId:guid}/underwriting", Assessment).RequireAuthorization("underwriting-read");
         app.MapGet("/api/v1/ratings/{ratingId:guid}", Rating).RequireAuthorization("underwriting-read");
+        app.MapGet("/api/v1/quotes/{quoteId:guid}/ratings", History).RequireAuthorization("underwriting-read");
     }
     private static async Task<IResult> Rate(Guid quoteId, HttpContext context, QuoteRatingService service)
     {
@@ -72,6 +73,20 @@ public static class QuoteUnderwritingEndpoints
         {
             QuoteEndpoints.Id(ratingId); QuoteHttpInput.NoQuery(context.Request);
             return Results.Json(await service.RatingAsync(LocalIdentityService.Actor(context.User), ratingId, context.RequestAborted), Json);
+        }
+        catch (Exception error) when (QuoteEndpoints.Known(error)) { return QuoteEndpoints.Failure(context, error); }
+    }
+    private static async Task<IResult> History(Guid quoteId, HttpContext context, QuoteUnderwritingReadModel service, PartyPaging paging)
+    {
+        try
+        {
+            QuoteEndpoints.Id(quoteId); var actor = LocalIdentityService.Actor(context.User);
+            var version = await service.HistoryVersionAsync(actor, quoteId, context.RequestAborted);
+            var page = paging.ReadBound(context, actor, "quote-rating-desc", version) ?? throw new QuoteHttpException(400, "invalid-query");
+            var rows = await service.HistoryAsync(actor, quoteId, version, page.Offset, page.Size, context.RequestAborted);
+            var result = new Dictionary<string, object> { ["items"] = rows.Items };
+            if (paging.Next(page, rows.More) is { } next) result["nextCursor"] = next;
+            return Results.Json(result, Json);
         }
         catch (Exception error) when (QuoteEndpoints.Known(error)) { return QuoteEndpoints.Failure(context, error); }
     }

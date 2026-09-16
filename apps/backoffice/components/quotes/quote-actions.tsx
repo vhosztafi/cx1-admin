@@ -67,7 +67,7 @@ function ActionDialog({ actorId, quote, etag, sourceRevisionId, action, close, r
   }
   return <dialog className="agency-dialog agency-terms-dialog" ref={dialog} aria-labelledby="quote-action-title">
     <h2 id="quote-action-title">{action === 'clone' ? 'Clone quote revision' : 'Withdraw this quote'}</h2>
-    <p>{action === 'clone' ? 'Create a separate draft from the selected saved revision. Supporting documents, lookup decisions and progression do not transfer.' : 'Withdrawal closes this draft permanently. Saved revisions and evidence remain available in its history.'}</p>
+    <p>{action === 'clone' ? 'Create a separate draft from the selected saved revision. Supporting documents, lookup decisions and progression do not transfer.' : 'Withdrawal closes this quote permanently. Its current rating no longer applies. Saved revisions and evidence remain available in its history.'}</p>
     <fieldset disabled={frozen}>
       {action === 'clone' && <><p>Destination: <strong>{client.name} · {relationship.name || 'Choose an agency'}</strong></p>
         <div className="quote-row-actions"><button type="button" className="button" onClick={() => setChooseClient(value => !value)}>Choose another client</button><button type="button" className="button" onClick={() => setChooseAgency(value => !value)}>Choose agency relationship</button></div>

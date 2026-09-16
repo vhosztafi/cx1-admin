@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackOffice.Infrastructure.Underwriting;
 
-public sealed class QuoteUnderwritingReadModel(IDbContextFactory<BackOfficeDbContext> factory, TimeProvider time)
+public sealed partial class QuoteUnderwritingReadModel(IDbContextFactory<BackOfficeDbContext> factory, TimeProvider time)
 {
     public async Task<Dictionary<string, object>> AssessmentAsync(ActorContext actor, Guid quoteId, CancellationToken token = default)
     {
@@ -83,17 +83,61 @@ public sealed class QuoteUnderwritingReadModel(IDbContextFactory<BackOfficeDbCon
         foreach (var proof in (await QuoteEvidenceReadModel.AssessAsync(db, revision, token)).Requirements.Where(x => x.State != "current"))
             blockers.Add(new UnderwritingReadBlocker("evidence-missing-" + proof.Code, proof.Label + " is required before later progression.", proof.Path, proof.RiskItemId));
         var writable = owned.Scope.Agency.State == "active" && owned.Scope.Client.IdentityState == "active" && owned.Scope.Relationship.State == "active";
+        var productDetails = await (from version in db.Set<ProductVersion>().AsNoTracking()
+                                    join product in db.Set<Product>().AsNoTracking() on version.ProductId equals product.Id
+                                    join provider in db.Set<CapacityProvider>().AsNoTracking() on version.ProviderId equals provider.Id
+                                    where version.Id == revision.ProductVersionId && product.Id == quote.ProductId
+                                    select new { productLabel = product.Name, version.Version, providerLabel = provider.Name }).SingleAsync(token);
         var result = new Dictionary<string, object> {
             ["quoteId"] = quoteId, ["quoteEtag"] = "\"" + Convert.ToBase64String(quote.RowVersion) + "\"", ["state"] = quote.State, ["blockers"] = blockers.Take(200).ToList(),
+            ["createdAt"] = quote.CreatedAt, ["productLabel"] = productDetails.productLabel,
+            ["productVersionLabel"] = "v" + productDetails.Version.ToString(CultureInfo.InvariantCulture), ["providerLabel"] = productDetails.providerLabel,
             ["capabilities"] = new { canRate = writable && readyToRate && quote.State is "draft" or "rated" or "referred",
                 canSubmit = writable && current && matching.Code is null && cycle?.State == "rated" && rating is { Outcome: "rated" } && rating.ExpiresAt > now && quote.State is "rated" or "referred",
                 canRevise = writable && cycle is not null && UnderwritingLifecycleRules.CanReturnToDraft(quote.State),
                 canReviewEvidence = false, canDecide = false, canEscalate = false, canPrepareTerms = false, canSend = false, canAccept = false, canIssue = false } };
         if (cycle is not null) result["context"] = new { quoteId, cycleId = cycle.Id, revisionId = cycle.QuoteRevisionId, pricingInputHash = Convert.ToHexStringLower(cycle.PricingInputHash),
             cycle.ClientId, cycle.RelationshipId, cycle.ProductVersionId, cycle.AgencyTermsVersionId, cycle.RatingRuleVersionId, cycle.BinderVersionId, cycle.AuthorityVersionId };
+        if (cycle is not null) result["jobId"] = cycle.WorkId;
         if (rating is not null) result["ratingId"] = rating.Id;
         var submission = cycle is null ? null : await db.Set<QuoteSubmission>().AsNoTracking().Where(x => x.CycleId == cycle.Id).OrderByDescending(x => x.Sequence).FirstOrDefaultAsync(token);
-        if (submission is not null) result["submissionId"] = submission.Id;
+        if (submission is not null)
+        {
+            result["submissionId"] = submission.Id;
+            if (submission.AssignedUserId is Guid assignedUserId)
+            {
+                result["assignedUserId"] = assignedUserId;
+                result["assignedUserLabel"] = await db.Set<StaffUser>().Where(x => x.Id == assignedUserId).Select(x => x.DisplayName).SingleAsync(token);
+            }
+            if (submission.AssignedTeamId is Guid teamId)
+            {
+                result["assignedTeamId"] = teamId;
+                result["assignedTeamLabel"] = await db.Set<Team>().Where(x => x.Id == teamId).Select(x => x.Name).SingleAsync(token);
+            }
+        }
+        var refreshOptions = new List<object>();
+        if (writable && quote.State == "draft" && quote.CaptureClosedAt is null && term.Term is not null && owned.Scope.Actor.HasCapability("quote-revise"))
+        {
+            try
+            {
+                var settings = await QuoteCaptureEligibility.LoadSettingsAsync(db, now, token);
+                foreach (var pin in settings.Products.Values.OrderBy(x => x.ProductVersionId))
+                {
+                    try
+                    {
+                        var candidate = await QuoteCaptureEligibility.ResolveAsync(db, owned.Scope, pin.ProductVersionId, now, token: token);
+                        if (candidate.Product.Id != quote.ProductId || candidate.ProductVersion.Id == revision.ProductVersionId && candidate.Terms.Id == revision.AgencyTermsVersionId) continue;
+                        _ = await QuoteRatingEligibility.ResolveAsync(db, owned, candidate.ProductVersion.Id, candidate.Terms.Id, term.Term, now, token);
+                        refreshOptions.Add(new { productVersionId = candidate.ProductVersion.Id, displayName = candidate.Product.Name,
+                            versionLabel = "v" + candidate.ProductVersion.Version.ToString(CultureInfo.InvariantCulture), agencyTermsVersionId = candidate.Terms.Id,
+                            termsVersion = candidate.Terms.Version, effectiveFrom = candidate.Terms.EffectiveFrom });
+                    }
+                    catch (QuoteOperationException) { /* Unavailable versions are not refresh offers. */ }
+                }
+            }
+            catch (QuoteOperationException) { /* Assessment blockers already explain unavailable configuration. */ }
+        }
+        result["refreshOptions"] = refreshOptions;
         return result;
     }
     private static string Money(decimal amount) => amount.ToString("0.00", CultureInfo.InvariantCulture);

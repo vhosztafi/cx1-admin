@@ -45,6 +45,11 @@ public sealed partial class UnderwritingRuntimeTests
             await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE AgencyTermsRequest SET State=N'applied',DecisionBy={admin.Id},DecisionReason=N'Independent fictional approval',DecidedAt={Now} WHERE Id={request.Id}");
             var terms = new AgencyTermsVersion { AgencyId = agency.Id, Version = 2, EffectiveFrom = request.EffectiveFrom, ApprovedTermsRequestId = request.Id, Snapshot = request.ProposedSnapshot, CreatedBy = admin.Id };
             db.Add(terms); await db.SaveChangesAsync(); db.ChangeTracker.Clear();
+            var refreshAssessment = await new QuoteUnderwritingReadModel(factory, new RatingClock()).AssessmentAsync(f.Actor, created.ResourceId);
+            var options = JsonSerializer.SerializeToElement(refreshAssessment["refreshOptions"]);
+            var option = Assert.Single(options.EnumerateArray());
+            Assert.Equal(target.Id, option.GetProperty("productVersionId").GetGuid());
+            Assert.Equal(terms.Id, option.GetProperty("agencyTermsVersionId").GetGuid());
             var key = Guid.NewGuid().ToString();
             await lifecycle.RefreshAsync(f.Actor, created.ResourceId, before.Revision.Id, target.Id, terms.Id, before.Quote.RowVersion,
                 "Adopt the independently approved underwriting version", key, Guid.NewGuid());

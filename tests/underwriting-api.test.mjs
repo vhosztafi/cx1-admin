@@ -22,6 +22,16 @@ ajv.addSchema({$id:root,$defs:relocate(spec.components.schemas)});
 const operation=name=>{const op=operations.find(x=>x.operationId===name);assert.ok(op,name);return op;};
 const request=name=>ajv.compile(relocate(operation(name).requestBody.content['application/json'].schema));
 
+test('rating UI projections require explicit refresh offers and bounded scoped history',()=>{
+  const assessment=spec.components.schemas.UnderwritingAssessment;
+  assert.ok(assessment.required.includes('refreshOptions'));
+  assert.equal(assessment.properties.refreshOptions.maxItems,32);
+  assert.ok(assessment.properties.jobId);
+  const history=operation('listQuoteRatings');
+  for(const key of ['cursor','pageSize'])assert.ok(history.parameters.some(parameter=>parameter.name===key));
+  assert.equal(spec.components.schemas.UnderwritingRatingHistoryItem.additionalProperties,false);
+});
+
 test('every Phase6 JSON command has an actual positive fixture and rejects client authority overrides',()=>{
   const writes=operations.filter(op=>op['x-runtime-status']?.startsWith('phase-6-')&&op.requestBody?.content?.['application/json']);
   assert.equal(writes.length,Object.keys(examples).length);

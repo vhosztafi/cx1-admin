@@ -52,7 +52,9 @@ All paths below have `/api/v1` prefix. Generated schemas list exact property bou
 | getPolicy GET policies/{policyId} | None | FirstPolicyView: exact snapshot/term/transaction, financial component/journal summary and document requests;06-11 |
 | listPolicies / listPolicyTerms / listPolicyVersions / getPolicyVersion | Existing scoped routes; expanded discovery query | Actual policy identities, immutable versions;06-11/13 |
 
-Quote capture summary/view and status-filter contracts enumerate progressed states, supported by the06-02 additive migration and06-03 rating/lifecycle commands. Operation-level `x-runtime-status` distinguishes verified06-03 routes from `phase-6-pending` contracts. Later states in an enumeration do not imply that issue or acceptance is implemented. Existing design-only operations elsewhere retain their own phase ownership.
+Quote capture summary/view and status-filter contracts enumerate progressed states, supported by the06-02 additive migration and06-03 rating/lifecycle commands. Operation-level `x-runtime-status` distinguishes verified routes from `phase-6-pending` contracts. Later states in an enumeration do not imply that issue or acceptance is implemented. Existing design-only operations elsewhere retain their own phase ownership.
+
+The06-04 assessment projection includes actual created time, retained product/version/provider labels, persisted job and submission/team identities, and at most32 currently approved whole-term refresh offers. Empty offers never manufacture an agency agreement. GET `quotes/{quoteId}/ratings` returns bounded immutable result summaries with protected user/quote/version cursors; SQL version changes conservatively invalidate a cursor. Each selected result is read through the existing scoped exact-rating endpoint. Rejected results are not offered zero premiums. The overview separates current eligibility, retained price history and documentary blockers; source endorsement and licence-review values remain explicitly unavailable until their decision owners implement them.
 
 ## Source input map and requested cover
 

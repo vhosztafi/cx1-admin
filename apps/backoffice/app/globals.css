@@ -340,3 +340,24 @@ h1, h2, p { margin: 0; }
 .quote-proposal-details ol > li { min-width:0; padding:16px; border:1px solid #e4e6ec; border-radius:8px; }
 .quote-proposal-details .quote-saved-details dd { min-width:0; }
 .quote-proposal-details .quote-saved-details dt { margin-bottom:6px; }
+.underwriting-layout { display:grid; grid-template-columns:minmax(0,1fr) 314px; gap:20px; align-items:start; }
+.underwriting-main,.underwriting-rail { display:grid; gap:16px; min-width:0; }
+.underwriting-action-list { display:flex; flex-direction:column; gap:10px; }
+.underwriting-action-list .button { width:100%; white-space:normal; text-align:center; }
+.underwriting-premium { margin:16px 0 24px; font-variant-numeric:tabular-nums; }
+.underwriting-premium > div { display:flex; justify-content:space-between; gap:16px; padding:8px 0; border-bottom:1px solid var(--border,#e4e6ec); }
+.underwriting-premium dd { margin:0; text-align:right; white-space:nowrap; }
+.underwriting-premium .underwriting-total { padding:16px 0; font-size:18px; font-weight:600; }
+.underwriting-requirements { list-style:none; padding:0; margin:0; display:grid; gap:12px; }
+.underwriting-requirements li { display:grid; gap:4px; padding:12px; border-left:3px solid #b77c17; background:#fffaf0; overflow-wrap:anywhere; }
+.underwriting-provenance { display:grid; gap:12px; overflow-wrap:anywhere; font-size:12px; }
+.underwriting-provenance dd { margin:4px 0 0; }
+.underwriting-main details > summary { cursor:pointer; padding:8px 0; font-weight:600; }
+.underwriting-main .quote-saved-details { padding:16px 0; }
+.underwriting-main .table-scroll { max-width:100%; }
+.requested-cover-card { display:grid; gap:12px; padding:16px; border:1px solid #e4e6ec; border-radius:10px; margin-bottom:16px; }
+.requested-cover-card legend { padding:0 4px; font-weight:600; }
+.requested-cover-card > label { display:grid; gap:6px; font-size:12px; font-weight:600; }
+.requested-cover-card > label > select { width:100%; min-width:0; min-height:36px; padding:7px 10px; border:1px solid #d9dce4; border-radius:7px; background:white; font:inherit; font-weight:400; }
+@media(max-width:1100px) { .underwriting-layout { grid-template-columns:minmax(0,1fr); }.underwriting-rail { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:600px) { .underwriting-rail { grid-template-columns:minmax(0,1fr); }.underwriting-premium .underwriting-total { font-size:16px; } }
