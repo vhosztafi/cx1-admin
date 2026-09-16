@@ -233,3 +233,8 @@ bdd8205 implements vehicles, specified/ordinary roles, modifications, portfolio 
 ## Final05-06 acceptance — 2026-09-16
 
 94f2b52 completes premises, insurance, cover/extras, European trips, declarations and actual missing evidence requirements. Fresh .local/phase5-sections-verified-20260916 passed633=539unit+94integration,68realSQL,0skips;633/68assertion passed, integration10.4116minutes. Earlier compilation/fixture/readiness-ordering failures are documented in05-06-SUMMARY and are not accepted evidence.78frontend, final lint/typecheck/build and294contracts pass. Final Chrome114/115revision12/11 passes persistence, preserved original premises, actual trip drivers, linked trip errors, explicit proof requirements, exact retry and stale comparison/discard;314pxrail/390pxcontainment and screenshots inspected. Vehicle regression109/110and readiness105/106pass. Final API50232/web55440stopped. No funnel change or final QUO signoff. Next05-07durable lookups.
+
+
+## 05-07 storage prerequisite — 2026-09-16
+
+035be54 input rules and f480e6e lookup storage: fresh .local/phase5-lookup-storage-final-20260916 passed644=549unit+95integration,69realSQL,0skips;644/69assertion passed, integration6.6742minutes. New real-SQL test covers lookup/selection ownership, source fingerprint, target membership, immutable input/outcome/decisions, candidate prerequisites and duplicate selection. EF migration/model synchronization passed. No runtime routes/workers/UI enabled, no demo DB migration, no05-07completion or QUO signoff. Details and next integration work are in05-07-PROGRESS.md.
