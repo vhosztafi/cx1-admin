@@ -223,3 +223,8 @@ ff5db28:560backend=467unit+93integration,67realSQL,0skips in fresh .local/phase5
 ## Final05-04 acceptance — 2026-09-16
 
 573a9eb completes chronology/text limits, ban bands, reconciled cover-dependent options and personal vehicle owner prerequisites. Driver option choices are per-instance, exact and pinned; stale values are retained for explicit clearing with precise saved-readiness focus. Final fresh587backend=494unit+93integration,67realSQL,0skips passed in .local/phase5-driver-options-20260916;587/67result assertion passed, integration9.9447minutes.70frontend, lint/typecheck/build and294contracts pass. Both-product Chrome dynamic options86/87revision14, full driver/history88/89revision23 and readiness90/91(43targets each) pass. Exact logs, screenshots and scope are in05-04-SUMMARY.md. Owned previews32848/33900verified and stopped. Plan05-04complete; next05-05vehicles. Full readiness and QUO signoff remain gated.
+
+
+## Final05-05 acceptance — 2026-09-16
+
+bdd8205 implements vehicles, specified/ordinary roles, modifications, portfolio and separate held/covered plates with source rules and exact readiness links. Fresh .local/phase5-vehicle-final-20260916 passed602=508unit+94integration,68realSQL,0skips;602/68assertion passed, integration9.1906minutes. Initial core run exposed bounded-readiness ordering regression; corrected and focused API then fresh full run passed.74frontend, lint/typecheck/build and294contracts pass. Final Chrome vehicles100/101revision17, drivers97/99revision23 and readiness96/98(43targets each) pass. Exact logs, failed attempts, SQL projection/history evidence, dependency boundaries and cleanup are in05-05-SUMMARY.md. API56412/web2944stopped; source snapshot unchanged. Next05-06. No full-readiness or QUO signoff.

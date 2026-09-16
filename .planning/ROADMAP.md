@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1–4 and05-01/02/03/04complete;28plans complete overall. Next05-05vehicles. Latest587backendincluding67realSQL,294contracts,70frontendplus lint/typecheck/build and both-product driver/history/dynamic/readiness journeys pass. Remaining quote sections and final readiness stay gated.
+**Status:** Autonomous progression authorised. Phases1–4 and05-01/02/03/04/05complete;29plans complete overall. Next05-06remaining capture sections. Latest602backendincluding68realSQL,294contracts,74frontendplus lint/typecheck/build and both-product vehicle/driver/readiness journeys pass. Remaining quote sections and final readiness stay gated.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
