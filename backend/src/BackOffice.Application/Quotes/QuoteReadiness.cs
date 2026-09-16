@@ -24,6 +24,8 @@ public static class QuoteReadiness
         issues.AddRange(term.Issues.Select(x => new QuoteReadinessIssue(x.Path, x.Code, "Complete or correct the policy term.", "capture", "error")));
         issues.AddRange(QuoteBusinessRules.Assess(proposal).Select(x => new QuoteReadinessIssue(
             x.Path, x.Code, "Complete or correct the business details.", "capture", "error", x.QuestionId)));
+        issues.AddRange(QuoteDriverRules.Assess(proposal).Select(x => new QuoteReadinessIssue(
+            x.Path, x.Code, "Complete or correct the driver details.", "capture", "error", x.QuestionId)));
         issues.AddRange(QuoteCaptureShape.ValidateCompleteness(proposal).Select(x => new QuoteReadinessIssue(
             x.Path.Length is > 0 and <= 500 ? x.Path : "/", x.Code, "Complete or correct the captured details.", "capture", "error")));
         return new(quoteId, revisionId, false, issues.Distinct().Take(100).ToArray());
