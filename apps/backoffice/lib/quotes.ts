@@ -21,6 +21,7 @@ export type QuoteView = {
   clientName: string; agencyName: string; productCode: QuoteProductCode; state: string;
   revisionId: string; revisionNumber: number; updatedAt: string; productVersionId: string;
   proposal: QuoteProposal; captureClosed: boolean;
+  captureVersions: { schemaVersion: string; questionSetVersion: string; referenceDataVersion: string };
   capabilities: { canSave: boolean; canClone: boolean; canWithdraw: boolean; canAttachEvidence: boolean };
   readiness: QuoteReadiness;
 };

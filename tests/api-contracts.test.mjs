@@ -369,3 +369,15 @@ test('readiness can identify distinct missing questions without inventing array 
  for(const questionId of [null,'','x'.repeat(201),123])assert.equal(check({...result,issues:[{...base,questionId}]}),false);
  assert.equal(check({...result,issues:[{...base,callerOwnedQuestion:'forged'}]}),false);
 });
+
+test('capture views carry explicit immutable form catalogue versions',()=>{
+ const check=ajv.getSchema(`${rootId}#/$defs/QuoteCaptureVersions`);
+ const value={schemaVersion:'1.0',questionSetVersion:'retained-questions',referenceDataVersion:'retained-references'};
+ assert.equal(check(value),true,JSON.stringify(check.errors));
+ for(const field of Object.keys(value)) {
+  const absent={...value};delete absent[field];assert.equal(check(absent),false);
+  for(const invalid of ['',null,1,'x'.repeat(101)])assert.equal(check({...value,[field]:invalid}),false);
+ }
+ assert.equal(check({...value,currentProductVersion:'invented'}),false);
+ assert.ok(document.components.schemas.QuoteCaptureView.required.includes('captureVersions'));
+});

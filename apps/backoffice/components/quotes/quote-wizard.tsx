@@ -7,13 +7,15 @@ import { amountInput, changeField, fieldValue, percentageInput } from '../../lib
 import { QuoteError, quoteFetch, saveQuoteCommand, sendQuoteCommand, staleQuoteFailure, uncertainQuoteFailure, validQuoteEtag, type PendingQuoteCommand, type QuoteValue, type QuoteView } from '../../lib/quotes';
 import { termFeedback } from '../../lib/quote-term';
 import { QuoteTermFields } from './quote-term-fields';
+import { QuoteProposerReferences } from './quote-proposer-references';
+import type { ProposerCatalogue } from '../../lib/quote-catalogue';
 import { Panel } from '../primitives';
 import { LoadFeedback, useQuoteResource } from './shared';
 
-export function QuoteWizard({ actorId, quoteId }: { actorId: string; quoteId: string }) {
+export function QuoteWizard({ actorId, quoteId, catalogue }: { actorId: string; quoteId: string; catalogue: ProposerCatalogue }) {
   const record = useQuoteResource<QuoteView>(`/api/v1/quotes/${quoteId}`);
   if (!record.data || !validQuoteEtag(record.etag)) return <Panel title="Edit quote"><LoadFeedback error={record.error ?? (record.data ? 'The saved version could not be confirmed.' : undefined)} retry={record.refresh} /></Panel>;
-  return <Editor actorId={actorId} initial={record.data} initialEtag={record.etag} />;
+  return <Editor actorId={actorId} initial={record.data} initialEtag={record.etag} catalogue={catalogue} />;
 }
 
 const identityFields = [
@@ -25,14 +27,14 @@ const identityFields = [
 ] as const;
 const splitFields = [['sales', 'Vehicle sales'], ['servicing', 'Servicing'], ['mechanicalRepair', 'Mechanical repair'], ['breakdownRecovery', 'Breakdown and recovery'], ['bodyRepairs', 'Body repairs'], ['valeting', 'Valeting'], ['other', 'Other activities']] as const;
 const comparisonFields = [...identityFields.map(([path, label]) => ({ path, label })),
-  { path: 'insured.entityType', label: 'Legal entity' }, { path: 'insured.proposerNames', label: 'Full proposer names' },
+  { path: 'insured.title', label: 'Proposer title' }, { path: 'insured.declaredCompanyType', label: 'Company category' }, { path: 'insured.responses', label: 'Quotation and marketing answers' }, { path: 'insured.entityType', label: 'Legal entity' }, { path: 'insured.proposerNames', label: 'Full proposer names' },
   { path: 'risk.business.description', label: 'Business description' }, { path: 'risk.business.startedOn', label: 'Business start date' },
   { path: 'risk.business.turnover', label: 'Annual turnover' }, { path: 'risk.business.wageRoll', label: 'Annual wage roll' },
   ...['kind', 'localStartDate', 'localStartTime', 'utcOffsetMinutes', 'localEndDate', 'localEndTime', 'endUtcOffsetMinutes'].map(name => ({ path: `termIntent.${name}`, label: `Requested term: ${name}` })),
   ...splitFields.map(([name, label]) => ({ path: `risk.business.declaredActivitySplit.${name}`, label: `${label} (basis points)` }))];
-const display = (value: QuoteValue | undefined): string => value === undefined ? 'Not recorded' : Array.isArray(value) ? value.map(display).join('; ') : typeof value === 'object' ? 'Structured saved value' : String(value);
+const display = (value: QuoteValue | undefined): string => value === undefined ? 'Not recorded' : Array.isArray(value) ? value.map(display).join('; ') : typeof value === 'object' ? typeof value.label === 'string' ? value.label : Array.isArray(value.answers) ? value.answers.map(answer => { const item = answer as Record<string, QuoteValue>; const labels: Record<string, string> = { 'MTS-01-Q01': 'Quotation data consent', 'MTS-01-Q02': 'Marketing consent', 'MTS-01-Q03': 'Contact methods' }; return `${labels[String(item.questionId)] ?? 'Other saved answer'}: ${display(item.value)}`; }).join('; ') : 'Structured saved value' : String(value);
 
-function Editor({ actorId, initial, initialEtag }: { actorId: string; initial: QuoteView; initialEtag: string }) {
+function Editor({ actorId, initial, initialEtag, catalogue }: { actorId: string; initial: QuoteView; initialEtag: string; catalogue: ProposerCatalogue }) {
   const router = useRouter();
   const [saved, setSaved] = useState(initial); const [etag, setEtag] = useState(initialEtag); const [proposal, setProposal] = useState(initial.proposal);
   const [stage, setStage] = useState(1); const [busy, setBusy] = useState(false); const [uncertain, setUncertain] = useState(false);
@@ -126,7 +128,7 @@ function Editor({ actorId, initial, initialEtag }: { actorId: string; initial: Q
             </div><h3>Full proposer names</h3><p className="client-help">Record complete names in order. Separate first name and surname fields above remain independent.</p>
             <div className="quote-form-grid">{[0, 1, 2].map(index => { const names = (fieldValue(proposal, 'insured.proposerNames') ?? []) as string[]; return <label key={index}>Proposer {index + 1} full name<input maxLength={200} value={names[index] ?? ''} onChange={event => { const next = Array.from({ length: 3 }, (_, position) => names[position] ?? ''); next[index] = event.target.value; while (next.length && next.at(-1) === '') next.pop(); change('insured.proposerNames', next); validity('insured.proposerNames', next.some(name => !name) ? 'Remove empty proposer slots or enter each full name.' : undefined); }} /></label>; })}</div>
             <button className="button" type="button" onClick={() => { change('insured.proposerNames', ((fieldValue(proposal, 'insured.proposerNames') ?? []) as string[]).filter(Boolean)); validity('insured.proposerNames'); }}>Remove empty proposer slots</button>
-            <p className="client-help">Title, source company category and contact declarations will be added next. Existing saved answers are preserved.</p>
+            <QuoteProposerReferences proposal={proposal} versions={saved.captureVersions} catalogue={catalogue} change={change} replace={next => { navigationState.current.dirty = true; setProposal(next); setStatus(''); }} />
           </> : <><label className="quote-form-label">Business description<textarea aria-label="Business description" maxLength={4000} value={String(fieldValue(proposal, 'risk.business.description') ?? '')} onChange={event => change('risk.business.description', event.target.value || undefined)} /></label>
             <div className="quote-form-grid"><label>Business start date<input type="date" value={String(fieldValue(proposal, 'risk.business.startedOn') ?? '')} onChange={event => change('risk.business.startedOn', event.target.value || undefined)} /></label>
               {(['turnover', 'wageRoll'] as const).map(name => <DecimalField key={name} label={name === 'turnover' ? 'Annual turnover (GBP)' : 'Annual wage roll (GBP)'} path={`risk.business.${name}`} initial={fieldValue(proposal, `risk.business.${name}`)} kind="amount" buffers={buffers} setBuffer={(path, value) => setBuffers(current => ({ ...current, [path]: value }))} change={change} validity={validity} />)}</div>

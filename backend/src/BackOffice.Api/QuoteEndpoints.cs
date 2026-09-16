@@ -85,6 +85,7 @@ public static class QuoteEndpoints
                 stored.ClientName, stored.AgencyName, stored.ProductCode, stored.Quote.State,
                 revisionId = stored.Revision.Id, revisionNumber = stored.Revision.Number, stored.Quote.UpdatedAt,
                 stored.Revision.ProductVersionId, proposal = proposal.RootElement.Clone(),
+                captureVersions = new { stored.VersionPins.SchemaVersion, stored.VersionPins.QuestionSetVersion, referenceDataVersion = stored.VersionPins.ReferenceVersion },
                 captureClosed = stored.Quote.CaptureClosedAt is not null,
                 capabilities = new { stored.CanSave, canClone = false, canWithdraw = false, canAttachEvidence = false }, readiness
             });

@@ -69794,6 +69794,32 @@
           "savedByLabel"
         ]
       },
+      "QuoteCaptureVersions": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "schemaVersion": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "questionSetVersion": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "referenceDataVersion": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "questionSetVersion",
+          "referenceDataVersion"
+        ]
+      },
       "QuoteCaptureView": {
         "type": "object",
         "additionalProperties": false,
@@ -69859,6 +69885,9 @@
             "type": "string",
             "format": "uuid"
           },
+          "captureVersions": {
+            "$ref": "#/components/schemas/QuoteCaptureVersions"
+          },
           "proposal": {
             "$ref": "#/components/schemas/QuoteCaptureProposal"
           },
@@ -69907,6 +69936,7 @@
           "revisionNumber",
           "updatedAt",
           "productVersionId",
+          "captureVersions",
           "proposal",
           "captureClosed",
           "capabilities",

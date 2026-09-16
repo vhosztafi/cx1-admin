@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using BackOffice.Application.Quotes;
 using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Quotes;
 using Microsoft.AspNetCore.Hosting;
@@ -83,6 +84,10 @@ public sealed partial class QuoteStorageTests
             Assert.True(view.GetProperty("capabilities").GetProperty("canSave").GetBoolean());
             foreach (var name in new[] { "canClone", "canWithdraw", "canAttachEvidence" }) Assert.False(view.GetProperty("capabilities").GetProperty(name).GetBoolean());
             Assert.False(view.GetProperty("readiness").GetProperty("ready").GetBoolean());
+            var captureVersions = view.GetProperty("captureVersions");
+            Assert.Equal("1.0", captureVersions.GetProperty("schemaVersion").GetString());
+            Assert.Equal(QuoteCatalogueIdentity.Version, captureVersions.GetProperty("questionSetVersion").GetString());
+            Assert.Equal(QuoteCatalogueIdentity.Version, captureVersions.GetProperty("referenceDataVersion").GetString());
             Assert.False(view.TryGetProperty("rowVersion", out _)); Assert.False(view.TryGetProperty("revision", out _));
             var proposal = view.GetProperty("proposal").Clone();
             using var noOp = await Write(HttpMethod.Put, route + "/proposal", new { proposal }, "api-no-op-0000001", firstTag);
@@ -136,6 +141,7 @@ public sealed partial class QuoteStorageTests
             await Problem(await Write(HttpMethod.Post, "/api/v1/quotes", createInput, "api-create-000001"), 409, "agency-unavailable");
             var historical = await client.GetFromJsonAsync<JsonElement>(route);
             Assert.Equal(2, historical.GetProperty("revisionNumber").GetInt32()); Assert.False(historical.GetProperty("capabilities").GetProperty("canSave").GetBoolean());
+            Assert.Equal(captureVersions.GetRawText(), historical.GetProperty("captureVersions").GetRawText());
             await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Agency SET State=N'active' WHERE Id={fixture.Agency}");
             await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Quote SET CaptureClosedAt={DateTimeOffset.UtcNow},CaptureClosedReason=N'Fictional progression' WHERE Id={quoteId}");
             var closed = await client.GetAsync(route); var closedTag = closed.Headers.ETag!.ToString(); closed.Dispose();
