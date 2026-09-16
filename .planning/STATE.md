@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-16T05:41:29.9902464+00:00"
+last_updated: "2026-09-16T06:18:11.237168+00:00"
 last_activity: 2026-09-16
 progress:
   total_phases: 13
@@ -20,14 +20,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute05-03; owned catalogue metadata and proposer reference/consent capture verified. Complete conditional source answers, occupations and readiness links.
+**Current focus:** Execute05-03; versioned occupation rows verified. Complete conditional source answers and readiness links.
 
 ## Current Position
 
 Phase: 5 of 13 (Motor Trade quote capture)
 Plan: 05-03 of11 in progress; creation/receipt and partial business editor verified; source-complete wizard pending
 Status: In progress — autonomous
-Last activity: 2026-09-16 — Pinned proposer selections verified:523backend/67SQL,293contracts,51frontend plus lint/typecheck/build and real Chrome persistence/mismatch/recovery checks.05-03 incomplete.
+Last activity: 2026-09-16 — Occupation rows verified:54frontend tests plus lint/typecheck/build and real Chrome persistence/reorder/readiness/mismatch checks. Business and proposer regressions passed. Latest backend523/67SQL and293contracts unchanged.05-03 incomplete.
 
 Progress: Phases1–4 complete;4/13phases,26completed plans.
 
@@ -54,7 +54,7 @@ Progress: Phases1–4 complete;4/13phases,26completed plans.
 ## Session Continuity
 
 Last session: 2026-09-16
-Stopped at:Pinned proposer title/company/consent/marketing capture verified. GET quote exposes owned captureVersions; server passes only needed collections and UI refuses mismatched pins. NEXT conditional/prototype business/proposer answers, versioned occupations, readiness links and complete source reconciliation. Read05-03-PROGRESS. All tests complete; ownedpreviews31484/39420 stopped.
+Stopped at:Versioned occupation rows committed5deb125 and verified for both products. NEXT conditional/prototype proposer/business answers, readiness links and full source reconciliation. Read05-03-PROGRESS. Owned previews31428/20528 stopped; all checks complete.
 Resume file: .planning/phases/05-motor-trade-quote-capture/05-03-PLAN.md
 
 ## Autonomous continuation
@@ -63,4 +63,4 @@ User approved requirements/roadmap and autonomous choices/progression on 2026-09
 
 Thread heartbeat: continue-cover-mga-back-office-mvp, active every 10 minutes. Resume unfinished work in this same task; notify meaningful progress/blockers only; pause on actual milestone completion, user stop or persistent external blocker with no remaining useful work.
 
-Latest checkpoint:05-03-PROGRESS records pinned proposer fixturesQT-MT-0000000030/31, explicit-empty/omitted preservation, mismatch denial and business recovery regression. Source reconciliation remains incomplete; full readiness stays blocked. No QUO signoff before05-11.
+Latest checkpoint:05-03-PROGRESS records occupation fixturesQT-MT-0000000034/35, stable reorder/edit identities, incomplete persistence, duplicate/exclusive readiness and mismatch denial. Business36/37 and proposer38/39 regressions pass. Full readiness remains blocked; no QUO signoff before05-11.
