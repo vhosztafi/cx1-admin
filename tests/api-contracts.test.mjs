@@ -290,10 +290,17 @@ test('quote question choices preserve the source options and stable categorical 
 });
 test('servicing input bindings resolve to their actual command payload fields',async()=>{
  const rows=JSON.parse(await readFile(new URL('../docs/design/reviewed-api-controls.json',import.meta.url),'utf8'));
+ function hasField(schema,field){
+  if(schema.$ref)return hasField(document.components.schemas[schema.$ref.split('/').at(-1)],field);
+  if(schema.properties?.[field])return true;
+  // Every alternative must expose a common source form field; one permissive
+  // branch must not disguise a missing field on another outcome.
+  const branches=schema.oneOf??schema.anyOf;
+  return Boolean(branches?.length)&&branches.every(branch=>hasField(branch,field));
+ }
  for(const row of rows)for(const binding of row.apiFields??[]){
   let schema=getOperation(binding.operationId).requestBody.content['application/json'].schema;
-  if(schema.$ref)schema=document.components.schemas[schema.$ref.split('/').at(-1)];
-  assert.ok(schema.properties[binding.field],`${row.controlId}: ${binding.operationId}.${binding.field}`);
+  assert.ok(hasField(schema,binding.field),`${row.controlId}: ${binding.operationId}.${binding.field}`);
  }
  const contact=ajv.getSchema(`${rootId}#/$defs/ContactWrite`);
  const details={fullName:'Alex Morgan Example',role:'Director',isPrimary:true,marketingConsent:{state:'not-asked',email:false,telephone:false,recordedAt:'2026-09-13T12:00:00Z',source:'demo-contact-form'}};

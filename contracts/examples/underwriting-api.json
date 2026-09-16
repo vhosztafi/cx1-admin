@@ -1,0 +1,139 @@
+{
+  "purpose": "Positive request syntax fixtures; current authority, ownership, chronology and workflow validation still required at runtime.",
+  "requests": {
+    "rateQuote": {
+      "revisionId": "00000002-0000-4000-8000-000000000001",
+      "reason": "Fictional demonstration review"
+    },
+    "submitQuote": {
+      "cycleId": "00000001-0000-4000-8000-000000000001",
+      "reason": "Fictional demonstration review"
+    },
+    "returnQuoteToDraft": {
+      "cycleId": "00000001-0000-4000-8000-000000000001",
+      "reason": "Fictional demonstration review"
+    },
+    "refreshQuoteUnderwritingVersion": {
+      "revisionId": "00000002-0000-4000-8000-000000000001",
+      "productVersionId": "00000003-0000-4000-8000-000000000001",
+      "confirmedTermsVersionId": "00000004-0000-4000-8000-000000000001",
+      "reason": "Fictional demonstration review"
+    },
+    "decideQuoteReferrals": {
+      "cycleId": "00000001-0000-4000-8000-000000000001",
+      "decisions": [
+        {
+          "referralId": "00000005-0000-4000-8000-000000000001",
+          "etag": "\"v1\"",
+          "outcome": "approve",
+          "reason": "Fictional demonstration review"
+        }
+      ]
+    },
+    "decideReferral": {
+      "cycleId": "00000001-0000-4000-8000-000000000001",
+      "decision": {
+        "referralId": "00000005-0000-4000-8000-000000000001",
+        "etag": "\"v1\"",
+        "outcome": "query",
+        "reason": "Fictional demonstration review",
+        "question": "Please supply the trading history",
+        "conditions": [
+          {
+            "code": "provide-trading-history"
+          }
+        ]
+      }
+    },
+    "attachUnderwritingEvidence": {
+      "cycleId": "00000001-0000-4000-8000-000000000001",
+      "fileId": "00000006-0000-4000-8000-000000000001",
+      "requirementCode": "premises-security",
+      "inputFingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "reason": "Fictional demonstration review"
+    },
+    "reviewUnderwritingEvidence": {
+      "cycleId": "00000001-0000-4000-8000-000000000001",
+      "associationEtag": "\"v1\"",
+      "outcome": "accepted",
+      "expectedFingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "reason": "Fictional demonstration review"
+    },
+    "withdrawUnderwritingEvidence": {
+      "cycleId": "00000001-0000-4000-8000-000000000001",
+      "associationEtag": "\"v1\"",
+      "reason": "Fictional demonstration review"
+    },
+    "resolveReferralCondition": {
+      "cycleId": "00000001-0000-4000-8000-000000000001",
+      "conditionEtag": "\"v1\"",
+      "evidenceAssociationId": "00000007-0000-4000-8000-000000000001",
+      "outcome": "satisfied",
+      "reason": "Fictional demonstration review"
+    },
+    "createEscalation": {
+      "cycleId": "00000001-0000-4000-8000-000000000001",
+      "referralEtag": "\"v1\"",
+      "providerId": "00000008-0000-4000-8000-000000000001",
+      "reason": "Fictional demonstration review"
+    },
+    "sendEscalation": {
+      "cycleId": "00000001-0000-4000-8000-000000000001",
+      "escalationEtag": "\"v1\"",
+      "body": "Request stock cover of150000.00 under the attached exact proposal.",
+      "evidenceAssociationIds": [
+        "00000007-0000-4000-8000-000000000001"
+      ]
+    },
+    "recordCapacityResponse": {
+      "cycleId": "00000001-0000-4000-8000-000000000001",
+      "escalationEtag": "\"v1\"",
+      "submissionId": "00000009-0000-4000-8000-000000000001",
+      "submissionHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "providerUnderwriter": "Fictional supplied underwriter",
+      "providerReference": "DEMO-CAP-001",
+      "body": "Stock limit approved for this submission only.",
+      "receivedAt": "2026-09-13T11:00:00Z",
+      "evidenceAssociationId": "00000007-0000-4000-8000-000000000001",
+      "outcome": "approve",
+      "validFrom": "2026-09-13T00:00:00Z",
+      "validTo": "2028-01-01T00:00:00Z",
+      "authorisedLimits": [
+        {
+          "dimension": "stock-limit",
+          "maximumAmount": "150000.00"
+        }
+      ]
+    },
+    "prepareQuoteTerms": {
+      "cycleId": "00000001-0000-4000-8000-000000000001",
+      "ratingId": "00000010-0000-4000-8000-000000000001",
+      "templateVersionId": "00000011-0000-4000-8000-000000000001"
+    },
+    "sendQuoteTerms": {
+      "termsVersionId": "00000012-0000-4000-8000-000000000001",
+      "recipientContactIds": [
+        "00000013-0000-4000-8000-000000000001"
+      ]
+    },
+    "recordQuoteAcceptance": {
+      "cycleId": "00000001-0000-4000-8000-000000000001",
+      "ratingId": "00000010-0000-4000-8000-000000000001",
+      "termsVersionId": "00000012-0000-4000-8000-000000000001",
+      "termsHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "assuranceHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "accepterLabel": "Fictional Demo Broker",
+      "acceptedAt": "2026-09-13T12:00:00Z",
+      "channel": "written",
+      "evidenceAssociationId": "00000007-0000-4000-8000-000000000001"
+    },
+    "issueQuote": {
+      "cycleId": "00000001-0000-4000-8000-000000000001",
+      "ratingId": "00000010-0000-4000-8000-000000000001",
+      "acceptanceId": "00000014-0000-4000-8000-000000000001",
+      "termsHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "assuranceHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "reason": "Fictional demonstration review"
+    }
+  }
+}

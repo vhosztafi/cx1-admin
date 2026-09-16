@@ -5,12 +5,15 @@
     "direction": "request",
     "valid": true,
     "body": {
-      "ratingResultId": "11111111-1111-4111-8111-111111111111",
-      "targetRevision": 3,
-      "termsHash": "a6d541ff25938155a8af5e02f8a32f85c1ab263edddf3204194a366633235f38",
-      "acceptedByLabel": "Fictional Demo Broker",
+      "cycleId": "00000001-0000-4000-8000-000000000001",
+      "ratingId": "00000002-0000-4000-8000-000000000001",
+      "termsVersionId": "00000003-0000-4000-8000-000000000001",
+      "termsHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "assuranceHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "accepterLabel": "Fictional Demo Broker",
       "acceptedAt": "2026-09-13T11:00:00Z",
-      "channel": "telephone"
+      "channel": "telephone",
+      "evidenceAssociationId": "00000004-0000-4000-8000-000000000001"
     }
   },
   {
@@ -19,9 +22,11 @@
     "direction": "request",
     "valid": false,
     "body": {
-      "ratingResultId": "11111111-1111-4111-8111-111111111111",
-      "acceptanceId": "22222222-2222-4222-8222-222222222222",
-      "targetRevision": 3,
+      "cycleId": "00000001-0000-4000-8000-000000000001",
+      "ratingId": "00000002-0000-4000-8000-000000000001",
+      "acceptanceId": "00000005-0000-4000-8000-000000000001",
+      "termsHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "assuranceHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
       "reason": "Accepted terms",
       "ignoreAuthority": true
     }
@@ -33,16 +38,16 @@
     "status": 201,
     "valid": true,
     "body": {
-      "policyId": "11111111-1111-4111-8111-111111111111",
-      "termId": "22222222-2222-4222-8222-222222222222",
-      "transactionId": "33333333-3333-4333-8333-333333333333",
-      "versionId": "44444444-4444-4444-8444-444444444444",
-      "invoiceId": "55555555-5555-4555-8555-555555555555",
-      "jobIds": [
-        "66666666-6666-4666-8666-666666666666"
-      ],
-      "versionIds": [
-        "44444444-4444-4444-8444-444444444444"
+      "policyId": "00000006-0000-4000-8000-000000000001",
+      "policyReference": "PN-MT-DEMO-0001",
+      "quoteId": "00000007-0000-4000-8000-000000000001",
+      "quoteEtag": "\"v1\"",
+      "termId": "00000008-0000-4000-8000-000000000001",
+      "versionId": "00000009-0000-4000-8000-000000000001",
+      "transactionId": "00000010-0000-4000-8000-000000000001",
+      "obligationId": "00000011-0000-4000-8000-000000000001",
+      "documentRequestIds": [
+        "00000012-0000-4000-8000-000000000001"
       ]
     }
   },

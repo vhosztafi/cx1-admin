@@ -1,4 +1,5 @@
 import {writeFile} from 'node:fs/promises';
+import {addRequestedSections} from './underwriting-contract-model.mjs';
 
 const object=(properties,required=Object.keys(properties))=>({type:'object',additionalProperties:false,properties,required});
 const ref=name=>({$ref:`#/$defs/${name}`});
@@ -76,6 +77,10 @@ export async function writeQuoteSchemas(policy) {
   // selections remain complete and versioned even in otherwise partial drafts.
   draft.$defs.Answer=structuredClone(defs.Answer);
   draft.$defs.Reference=structuredClone(defs.Reference);
+  // Add after draft softening: selected sections remain discriminated and
+  // complete, while omission keeps historical partial captures readable.
+  addRequestedSections(ready);
+  addRequestedSections(draft);
   const output=new URL('../contracts/schemas/',import.meta.url);
   await writeFile(new URL('quote-draft.schema.json',output),JSON.stringify(draft,null,2)+'\n');
   await writeFile(new URL('quote-ready.schema.json',output),JSON.stringify(ready,null,2)+'\n');

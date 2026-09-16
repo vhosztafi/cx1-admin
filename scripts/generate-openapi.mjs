@@ -1,4 +1,5 @@
 import {addQuoteContracts} from './openapi-quotes.mjs';
+import {addUnderwritingContracts} from './openapi-underwriting.mjs';
 import {mkdir,writeFile} from 'node:fs/promises';
 import {addOperationsApi} from './openapi-operations.mjs';
 import {addAgencyFinanceApi} from './openapi-agency-finance.mjs';
@@ -162,6 +163,7 @@ addFormContracts({schemas,ref,text,enumeration,object,array,id,instant,date,bool
 addPartyContracts({schemas,ref,text,enumeration,object,array,id,instant,date,boolean,integer,decimal,operation,list,paths});
 addAgencyContracts({schemas,ref,text,enumeration,object,array,id,instant,date,boolean,integer,decimal,operation,list,paths});
 addQuoteContracts({schemas,ref,text,enumeration,object,array,id,instant,date,boolean,integer,decimal,operation,list,paths});
+addUnderwritingContracts({schemas,ref,operation,paths});
 const tags=[...new Set(Object.keys(paths).map(p=>p.split('/')[1]))].sort().map(name=>({name,description:`Scoped ${name} operations.`}));
 const document={openapi:'3.1.1',info:{title:'Cover MGA Back Office API',version:'1.0.0',description:'Version 1 implementation contract. Reviewed prototype-control mappings, conditional capture rules and internal adapter schemas accompany this API. Runtime authorization, persistence and product validation are verified during implementation phases.'},servers:[{url:'/api/v1',description:'Same-origin application API'}],tags,security:[{Session:[]}],paths,components:{securitySchemes:{Session:{type:'apiKey',in:'cookie',name:'__Host-cover-session',description:'Opaque server-side session; development cookie has a separate name.'},Csrf:{type:'apiKey',in:'header',name:'X-CSRF-Token',description:'ASP.NET antiforgery request token paired with the antiforgery cookie.'}},schemas}};
 await mkdir('contracts',{recursive:true});
