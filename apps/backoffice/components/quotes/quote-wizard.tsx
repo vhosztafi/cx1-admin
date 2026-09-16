@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { csrfToken, type Actor } from '../../lib/auth';
 import { amountInput, changeField, fieldValue, percentageInput } from '../../lib/quote-form';
 import { QuoteError, quoteFetch, saveQuoteCommand, sendQuoteCommand, staleQuoteFailure, uncertainQuoteFailure, validQuoteEtag, type PendingQuoteCommand, type QuoteValue, type QuoteView } from '../../lib/quotes';
+import { readinessTarget, type ReadinessTarget } from '../../lib/quote-readiness';
 import { termFeedback } from '../../lib/quote-term';
 import { QuoteTermFields } from './quote-term-fields';
 import { QuoteSourceBusiness } from './quote-source-business';
@@ -44,6 +45,17 @@ function Editor({ actorId, initial, initialEtag, catalogue }: { actorId: string;
   const [error, setError] = useState(''); const [status, setStatus] = useState(''); const [invalid, setInvalid] = useState<Record<string, string>>({});
   const [conflict, setConflict] = useState(false); const [comparison, setComparison] = useState<{ data: QuoteView; etag: string }>();
   const [formRevision, setFormRevision] = useState(0);
+  const [focusTarget, setFocusTarget] = useState<ReadinessTarget>();
+  useEffect(() => {
+    if (!focusTarget) return;
+    const frame = requestAnimationFrame(() => {
+    const controls = Array.from(document.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | HTMLButtonElement>('input,select,textarea,button'));
+    const control = controls.find(item => (item.getAttribute('aria-label') ?? (item instanceof HTMLButtonElement ? item.textContent?.trim() : Array.from(item.labels?.[0]?.childNodes ?? []).filter(node => node.nodeType === Node.TEXT_NODE).map(node => node.textContent).join('').trim())) === focusTarget.label);
+    if (control && !control.disabled) { control.focus(); control.scrollIntoView({ block: 'center', behavior: 'instant' }); }
+    else setError('This field is not currently available. Review the section and its controlling answers.');
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [focusTarget]);
   const [buffers, setBuffers] = useState<Record<string, string>>({});
   const command = useRef<PendingQuoteCommand | null>(null); const action = useRef<'stay' | 'continue' | 'exit'>('stay');
   const navigationState = useRef({ busy: false, uncertain: false, dirty: false });
@@ -126,15 +138,16 @@ function Editor({ actorId, initial, initialEtag, catalogue }: { actorId: string;
       <Panel title={stages[stage]} note="Incomplete answers can be saved. Saving does not confirm readiness.">
         <fieldset disabled={frozen} className="quote-selection" key={formRevision}><legend className="sr-only">{stages[stage]} details</legend>
           {stage === 0 ? <><p>{saved.clientName} · {saved.agencyName}</p><p>{saved.productCode === 'motor-trade-road-risks' ? 'Motor Trade Road Risks' : 'Motor Trade Combined'}</p><p className="client-help">The saved relationship and product cannot be changed.</p><QuoteTermFields intent={proposal.termIntent} change={change} /></> : stage === 1 ? <>
-            <div className="quote-form-grid"><label>Legal entity<select value={String(fieldValue(proposal, 'insured.entityType') ?? '')} onChange={event => change('insured.entityType', event.target.value || undefined)}><option value="">Not answered</option><option value="sole-trader">Sole trader</option><option value="partnership">Partnership</option><option value="limited-company">Limited company</option><option value="llp">Limited liability partnership</option></select></label>
+            <div className="quote-form-grid"><label>Legal entity<select aria-label="Legal entity" value={String(fieldValue(proposal, 'insured.entityType') ?? '')} onChange={event => change('insured.entityType', event.target.value || undefined)}><option value="">Not answered</option><option value="sole-trader">Sole trader</option><option value="partnership">Partnership</option><option value="limited-company">Limited company</option><option value="llp">Limited liability partnership</option></select></label>
               {identityFields.map(([path, label, max]) => <label key={path}>{label}<input maxLength={max} value={String(fieldValue(proposal, path) ?? '')} onChange={event => change(path, event.target.value || undefined)} /></label>)}
             </div><h3>Full proposer names</h3><p className="client-help">Record complete names in order. Separate first name and surname fields above remain independent.</p>
             <div className="quote-form-grid">{[0, 1, 2].map(index => { const names = (fieldValue(proposal, 'insured.proposerNames') ?? []) as string[]; return <label key={index}>Proposer {index + 1} full name<input maxLength={200} value={names[index] ?? ''} onChange={event => { const next = Array.from({ length: 3 }, (_, position) => names[position] ?? ''); next[index] = event.target.value; while (next.length && next.at(-1) === '') next.pop(); change('insured.proposerNames', next); validity('insured.proposerNames', next.some(name => !name) ? 'Remove empty proposer slots or enter each full name.' : undefined); }} /></label>; })}</div>
             <button className="button" type="button" onClick={() => { change('insured.proposerNames', ((fieldValue(proposal, 'insured.proposerNames') ?? []) as string[]).filter(Boolean)); validity('insured.proposerNames'); }}>Remove empty proposer slots</button>
+            <label className="quote-form-label">Business description<textarea aria-label="Business description" maxLength={4000} value={String(fieldValue(proposal, 'risk.business.description') ?? '')} onChange={event => change('risk.business.description', event.target.value || undefined)} /></label>
+<div className="quote-form-grid"><label>Business start date<input type="date" value={String(fieldValue(proposal, 'risk.business.startedOn') ?? '')} onChange={event => change('risk.business.startedOn', event.target.value || undefined)} /></label></div>
             <QuoteSourceBusiness proposal={proposal} versions={saved.captureVersions} catalogue={catalogue} stage={1} replace={next => { navigationState.current.dirty = true; setProposal(next); setStatus(''); }} />
             <QuoteProposerReferences proposal={proposal} versions={saved.captureVersions} catalogue={catalogue} change={change} replace={next => { navigationState.current.dirty = true; setProposal(next); setStatus(''); }} />
-          </> : <><label className="quote-form-label">Business description<textarea aria-label="Business description" maxLength={4000} value={String(fieldValue(proposal, 'risk.business.description') ?? '')} onChange={event => change('risk.business.description', event.target.value || undefined)} /></label>
-            <div className="quote-form-grid"><label>Business start date<input type="date" value={String(fieldValue(proposal, 'risk.business.startedOn') ?? '')} onChange={event => change('risk.business.startedOn', event.target.value || undefined)} /></label>
+          </> : <><div className="quote-form-grid">
               {(['turnover', 'wageRoll'] as const).map(name => <DecimalField key={name} label={name === 'turnover' ? 'Annual turnover (GBP)' : 'Annual wage roll (GBP)'} path={`risk.business.${name}`} initial={fieldValue(proposal, `risk.business.${name}`)} kind="amount" buffers={buffers} setBuffer={(path, value) => setBuffers(current => ({ ...current, [path]: value }))} change={change} validity={validity} />)}</div>
             <QuoteBusinessAnswers proposal={proposal} versions={saved.captureVersions} catalogue={catalogue} buffers={buffers} setBuffer={(path, value) => setBuffers(current => ({ ...current, [path]: value }))} validity={validity} replace={next => { navigationState.current.dirty = true; setProposal(next); setStatus(''); }} />
             <h3>Activity split</h3><p className="client-help">Enter percentages adding to 100%. Occupation selections below are a separate declaration.</p><div className="quote-form-grid">{splitFields.map(([name, label]) => <DecimalField key={name} label={`${label} (%)`} path={`risk.business.declaredActivitySplit.${name}`} initial={fieldValue(proposal, `risk.business.declaredActivitySplit.${name}`)} kind="percentage" buffers={buffers} setBuffer={(path, value) => setBuffers(current => ({ ...current, [path]: value }))} change={change} validity={validity} />)}</div>
@@ -144,6 +157,15 @@ function Editor({ actorId, initial, initialEtag, catalogue }: { actorId: string;
           </>}
         </fieldset>
       </Panel>
+      <Panel title="Saved draft readiness"><div className="quote-rail-body">
+        <p>Checks apply to saved revision {saved.revisionNumber}. {dirty ? 'Save your changes to refresh this guidance.' : 'Review the fields below; incomplete drafts can still be saved.'}</p>
+        <p className="client-help">Later sections and complete quote assessment remain unavailable. This list does not confirm readiness to rate or issue.</p>
+        <ul className="quote-readiness-list">{saved.readiness.issues.map((issue, index) => {
+          const target = readinessTarget(issue, saved.proposal, catalogue.businessQuestions);
+          return target ? <li key={`${issue.code}-${issue.path}-${index}`}><button type="button" className="button" disabled={dirty || frozen} onClick={() => { setStage(target.stage); setFocusTarget({ ...target }); }}>Review {target.label}</button><span>{issue.message}</span></li> : null;
+        })}</ul>
+        <p className="client-help">{saved.readiness.issues.filter(issue => !readinessTarget(issue, saved.proposal, catalogue.businessQuestions)).length} other checks concern later sections or quote-level requirements.</p>
+      </div></Panel>
       {conflict && <Panel title="Saved version changed"><div className="quote-rail-body"><p>Your draft is retained. Load the saved revision to compare before deciding to replace your edits.</p><button className="button" disabled={busy} onClick={() => void compare()}>Load saved comparison</button>
         {comparison && <><p>Current saved revision: {comparison.data.revisionNumber}. Other sections also remain as recorded in that revision.</p><div className="table-scroll" role="region" aria-label="Quote changes" tabIndex={0}><table><thead><tr><th>Field</th><th>Your draft</th><th>Saved revision</th></tr></thead><tbody>{comparisonFields.filter(field => JSON.stringify(fieldValue(proposal, field.path)) !== JSON.stringify(fieldValue(comparison.data.proposal, field.path))).map(field => <tr key={field.path}><th>{field.label}</th><td>{display(fieldValue(proposal, field.path), Object.fromEntries(catalogue.businessQuestions.map(question => [question.id, question.label])))}</td><td>{display(fieldValue(comparison.data.proposal, field.path), Object.fromEntries(catalogue.businessQuestions.map(question => [question.id, question.label])))}</td></tr>)}</tbody></table></div><button className="button" disabled={busy || uncertain} onClick={replaceWithSaved}>Discard my edits and load saved revision</button></>}
       </div></Panel>}

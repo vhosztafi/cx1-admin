@@ -54,7 +54,7 @@ try {
       const response = await intercepted.fetch(); const body = await response.json();
       body.captureVersions.referenceDataVersion = 'future-version'; await intercepted.fulfill({ response, json: body });
     });
-    await page.reload(); await page.getByRole('alert').filter({ hasText: 'catalogue matching this saved quote' }).waitFor();
+    await page.reload(); await page.getByRole('alert').filter({ hasText: 'These selections need the catalogue matching this saved quote' }).waitFor();
     assert.equal(await field('Proposer title').count(), 0); assert.equal(await page.getByRole('checkbox', { name: 'Email', exact: true }).count(), 0);
     assert.deepEqual((await read(id)).proposal, beforeMismatch);
     await page.unroute(route); await page.reload(); await field('Proposer title').waitFor();

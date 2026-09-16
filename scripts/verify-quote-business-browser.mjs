@@ -28,8 +28,8 @@ try {
     await page.getByLabel('Proposer 3 full name', { exact: true }).fill('Sam Example');
     assert.equal(await page.getByRole('button', { name: 'Save draft', exact: true }).isDisabled(), true);
     await page.getByRole('button', { name: 'Remove empty proposer slots', exact: true }).click();
-    await page.getByRole('button', { name: 'Save and continue', exact: true }).click();
     await page.getByLabel('Business description', { exact: true }).fill('Fictional repairs and servicing');
+    await page.getByRole('button', { name: 'Save and continue', exact: true }).click();
     await page.getByLabel('Annual turnover (GBP)', { exact: true }).fill('100.005');
     assert.equal(await page.getByRole('button', { name: 'Save draft', exact: true }).isDisabled(), true);
     await page.getByRole('button', { name: '2 Proposer', exact: true }).click();
@@ -51,7 +51,7 @@ try {
     });
     await page.getByRole('button', { name: 'Save draft', exact: true }).click();
     await page.getByRole('button', { name: 'Retry same save', exact: true }).waitFor();
-    assert.equal(await page.getByLabel('Business description', { exact: true }).isDisabled(), true);
+    assert.equal(await page.getByLabel('Annual turnover (GBP)', { exact: true }).isDisabled(), true);
     await page.getByRole('link', { name: 'View saved quote', exact: true }).click(); assert.ok(page.url().endsWith('/edit'));
     const leaving = page.waitForEvent('dialog'); await page.evaluate(() => history.back());
     const leavePrompt = await leaving; assert.equal(leavePrompt.type(), 'beforeunload'); await leavePrompt.dismiss();
@@ -64,6 +64,7 @@ try {
     assert.equal(quote.proposal.insured.responses.answers[0].value, false);
     assert.equal(quote.proposal.risk.business.turnover, '123456.78'); assert.equal(quote.proposal.risk.business.wageRoll, '0.00');
     assert.equal(quote.proposal.risk.business.declaredActivitySplit.servicing, 3333); assert.equal(quote.readiness.ready, false);
+    await page.getByRole('button', { name: '2 Proposer', exact: true }).click();
     await page.getByLabel('Business description', { exact: true }).fill('My retained local draft');
     quote.proposal.risk.business.description = 'Fictional concurrent update';
     const concurrent = await page.request.put(`${origin}/api/v1/quotes/${id}/proposal`, { headers: { 'X-CSRF-Token': await csrf(), 'Idempotency-Key': crypto.randomUUID(), 'If-Match': stored.headers().etag }, data: { proposal: quote.proposal } }); assert.equal(concurrent.status(), 200);

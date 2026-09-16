@@ -307,3 +307,8 @@ h1, h2, p { margin: 0; }
 .quote-occupation legend { font-weight:600; padding:0 5px; }
 .quote-occupation .operations-actions { flex-wrap:wrap; gap:8px; }
 .quote-occupation .button { white-space:normal; }
+
+.quote-readiness-list { display:grid; gap:12px; padding:0; list-style:none; }
+.quote-readiness-list li { display:grid; gap:5px; min-width:0; }
+.quote-readiness-list .button { justify-self:start; white-space:normal; text-align:left; max-width:100%; }
+.quote-readiness-list span { font-size:12.5px; color:var(--muted); overflow-wrap:anywhere; }
