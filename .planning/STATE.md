@@ -9,8 +9,8 @@ progress:
   total_phases: 13
   completed_phases: 4
   total_plans: 35
-  completed_plans: 31
-  percent: 31
+  completed_plans: 32
+  percent: 32
 ---
 
 # Project State
@@ -20,16 +20,16 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute05-08 revision-bound proposal evidence;05-07complete and verified.
+**Current focus:** Execute05-09 revision history, cloning and withdrawal;05-08complete and verified.
 
 ## Current Position
 
 Phase: 5 of 13 (Motor Trade quote capture)
-Plan: 05-08 of11 in progress;05-01/02/03/04/05/06/07complete
-Status: In progress — autonomous
-Last activity: 2026-09-16 — 05-08storage660/74passed. Scoped services/read model committed (b632dc7), focusedSQLpassed; full661/75running(session94761). HTTP/API/UI next.
+Plan: 05-09 of11 next;05-01/02/03/04/05/06/07/08complete
+Status: In progress â€” autonomous
+Last activity: 2026-09-16 â€” 05-08complete (be78212):662backend/76SQL,79frontend,294contracts, both-product Chrome evidence journeys and final build pass. Next05-09.
 
-Progress: Phases1–4 complete;4/13phases,31completed plans.
+Progress: Phases1â€“4 complete;4/13phases,32completed plans.
 
 ## Accumulated Context
 
@@ -43,7 +43,7 @@ Progress: Phases1–4 complete;4/13phases,31completed plans.
 
 ### Pending Todos
 
-- Execute05-08 revision-bound evidence; consume05-07-SUMMARY,05-08-PLAN,UI-SPEC,source mappings and ACCEPTANCE-BACKLOG. Retain all runtime gates.
+- Execute05-09 lifecycle; consume05-08-SUMMARY,05-09-PLAN,UI-SPEC,source mappings and ACCEPTANCE-BACKLOG. Retain all runtime gates.
 - Keep future business endpoints closed until their owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,8 +54,8 @@ Progress: Phases1–4 complete;4/13phases,31completed plans.
 ## Session Continuity
 
 Last session: 2026-09-16
-Stopped at:05-08services/read model focusedSQLpassed; read05-08-PROGRESS. FIRSTcheck active full regression session94761/log phase5-evidence-services-final-20260916; no duplicate run. Thenclosed HTTP/API tests and UI. No previews.
-Resume file: .planning/phases/05-motor-trade-quote-capture/05-08-PLAN.md
+Stopped at:05-08complete; next05-09. No running tests or previews. Read05-08-SUMMARY and05-09-PLAN.
+Resume file: .planning/phases/05-motor-trade-quote-capture/05-09-PLAN.md
 
 ## Autonomous continuation
 
@@ -63,4 +63,4 @@ User approved requirements/roadmap and autonomous choices/progression on 2026-09
 
 Thread heartbeat: continue-cover-mga-back-office-mvp, active every 10 minutes. Resume unfinished work in this same task; notify meaningful progress/blockers only; pause on actual milestone completion, user stop or persistent external blocker with no remaining useful work.
 
-Latest backend checkpoint:644backend/69SQL for05-07storage. Last UI/contract acceptance remains05-06:78frontend,294contracts. Browser sections114/115, vehicles109/110, readiness105/106. Full readiness stays blocked; no QUO signoff before05-11.
+Latest backend checkpoint:662backend/76SQL,0skips for05-08.79frontend,294contracts/338operations, lint/types/build and Chrome125/126revision2pass. Full readiness stays blocked; no QUO signoff before05-11.

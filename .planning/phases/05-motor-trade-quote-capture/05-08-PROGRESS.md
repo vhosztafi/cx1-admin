@@ -41,3 +41,8 @@ Read model returns current requirement fingerprints and derives current/stale/wi
 The expanded real-SQL command/read test passed in `.local/phase5-evidence-reads-focused-20260916` (1case,11seconds,0skips); initial command-only run also passed. Covers uploaded byte/hash preservation after new service instance, metadata redaction, exact replay, foreign file/revision denial, source/fingerprint staleness, current/carry-forward/history/withdrawal projections, upload/attach/withdrawal transaction rollback, evidence ETag, duplicate withdrawal and suspension-before-replay denial for all writes.
 
 FULL SERVICE REGRESSION IS ACTIVE: exec session94761 writes `.local/phase5-evidence-services-final-20260916` and matching.log. Expected661=559unit+102integration/75realSQL. First check the existing session/log, then assert actual661/75 with no skips; do not start a duplicate test or claim this result before completion. No owned previews. Next implement closed HTTP routes and real-cookie API tests using the existing QuoteHttpInput parser, bounded multipart handling, scoped attachment downloads and safe error mapping (evidence-file-size→413). Keep full readiness blocked until actual evidence projection is connected and later assessment gates are available.
+
+
+## Final05-08 acceptance — 2026-09-16
+
+be78212 completes scoped HTTP evidence, persisted readiness and actual upload/attach/download/withdrawal controls. Full service661/75 and final HTTP662/76 regressions completed successfully with0skips.79frontend,294contracts/338operations, lint/types/final build and Chrome125/126revision2 passed. Demo migration preserves history; no running tests/previews remain. See05-08-SUMMARY for exact artifacts and corrections. Next05-09; no final QUO signoff.

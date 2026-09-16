@@ -248,3 +248,8 @@ bdd8205 implements vehicles, specified/ordinary roles, modifications, portfolio 
 ## 05-08 evidence storage prerequisite — 2026-09-16
 
 `b543b81` rules and `ecab402` storage verified: fresh .local/phase5-evidence-storage-final-20260916 passed660=559unit+101integration,74realSQL,0skips;660/74assertion passed,7.5947minutes. New SQL storage coverage binds hashes/lengths, actual drivers, same-quote files/revisions and immutable withdrawal history; model snapshot check passed. Subsequent b632dc7scoped services/read model passed focused SQL but its full regression is still running; see05-08-PROGRESS. No runtime endpoints/UI/readiness acceptance or05-08completion claimed.
+
+
+## Final05-08 acceptance — 2026-09-16
+
+be78212 completes scoped HTTP evidence, persisted readiness and actual upload/attach/download/withdrawal controls. Full service661/75 and final HTTP662/76 regressions completed successfully with0skips.79frontend,294contracts/338operations, lint/types/final build and Chrome125/126revision2 passed. Demo migration preserves history; no running tests/previews remain. See05-08-SUMMARY for exact artifacts and corrections. Next05-09; no final QUO signoff.
