@@ -14,3 +14,10 @@ Read workflow C:/Users/vilmo/.codex/gsd-core/workflows/plan-phase.md; relevant r
 ## Heartbeat continuation2026-09-16T16:27Z
 
 Created06-VALIDATION.md (draft, no Phase6 pass claim) and06-PATTERNS.md from existing command/scope/model/worker/UI code. Added explicit state-constraint and worker-kind allowlist gates to research. Source candidate inventory44controls reviewed: generic tasks/notesPhase9 and MTA-specific navigation/change actionsPhase7 require explicit splits; complete audit still pending. Next source/data/API design and UI-SPEC, then detailed plans/review. No runtime edits or tests needed for these planning-only artifacts.
+
+
+## Heartbeat continuation2026-09-16T16:40Z
+
+Created06-SOURCE-AUDIT.json:211candidate controls (all44originalPhase6 plus relevant shared/navigation surfaces),51placements assignedPhase6 and named retained/later owners for the rest.98read-only display occurrences extracted from pQuote/pEscalation/pIssued, with explicit MTA/collected-money boundaries and separate underwriting evidence decisions. Validated unique IDs, source paths, complete originalPhase6 inclusion and lossless operation mappings. This is reviewed candidate ownership, not final typed API/UI/task coverage or runtime acceptance.
+
+New source requirements to carry into detailed design:14-day expiry; premises-security proof and signed statement of fact; dynamic assigned underwriter/authority; premium/factors and offered endorsements; capacity response underwriter/reference/body. First-issue receipt shows actual amount due, never prototype total-collected text. Next: finish06-DATA-API-DESIGN and UI-SPEC, then complete audit task/option ownership and bounded plans/review. No active processes/runtime edits.
