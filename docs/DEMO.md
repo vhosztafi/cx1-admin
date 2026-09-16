@@ -1,6 +1,6 @@
 # Back office demonstration
 
-The current demo covers the foundation and client servicing slices. Sign-in, account identity, client/contact/support servicing, duplicate intake review, diagnostic jobs, recovery and audit use persistent SQL data. Quotes, policies, finance and configuration editing arrive in later phases. The complete insurance MVP remains in progress. The supplied sales funnel remains unchanged.
+The current demo covers the foundation and client servicing slices. Sign-in, account identity, client/contact/support servicing, duplicate intake review, diagnostic jobs, recovery and audit use persistent SQL data. Quote capture APIs are available with partial readiness; their business UI, policies, finance and configuration editing remain in progress. The complete insurance MVP remains in progress. The supplied sales funnel remains unchanged.
 
 ## Start the native Windows preview
 
@@ -97,3 +97,19 @@ On Products/Accounts, inspect agreed versions and propose changed terms with exp
 Permissions records independent decisions and revocation. The internal sharing reference shows only the selected agency's clients, declared contacts and explicitly shared servicing instructions. Real policy, quote, task, statement and bordereau workflows remain with their later phases; a product or permission grant does not manufacture those records.
 
 Run `pnpm web:browser:agencies` for the sequential, fail-fast foundation and agency suite. Each run creates a fresh report under `.local/agency-suite/`; failed and unrun stages cannot count as passed. Terms display/proposal/review scripts use explicit intercepted UI fixtures for recovery and presentation; the separate lifecycle journey proves actual SQL activation and terms publication. All scripts retain fictional records and histories. Browser checks do not constitute human UAT.
+
+
+## Fictional quote capture data
+
+After the normal no-reset initialization above, seed the dedicated quote demonstration in Development:
+
+```powershell
+$env:ASPNETCORE_ENVIRONMENT = 'Development'
+dotnet backend/src/BackOffice.Api/bin/Debug/net10.0/BackOffice.Api.dll --seed-quote-demo
+```
+
+The command is restricted to CoverMGA_Demo. It imports a clearly labelled fictional pre-approved agency/client/relationship/terms context (`AG-DEMO-QUOTES`, `CL-DEMO-QUOTES`), then creates eight quotes through the normal QuoteService: one incomplete and three captured examples for each Motor Trade product. It does not execute or certify the agency approval workflow; its request/decision/audit explicitly identify an imported fictional fixture. Existing draft agencies, permissions and business records are not activated or overwritten.
+
+Repeated execution returns the same quote IDs with Created=0 and preserves later quote revisions. Suspended context, revoked access, changed configuration or missing context are not silently repaired. Each quote creation has its own durable command receipt, so an interrupted batch can resume. Complete captured examples still report a progression blocker until the remaining semantic, evidence and matching assessments are implemented.
+
+The command prints the agency/client/relationship and quote IDs. After starting the updated API and signing in as the demo underwriter, use GET /api/v1/quote-products?relationshipId=<printed relationship ID> and GET /api/v1/quotes/<printed quote ID> to inspect persisted capture. The quote editor UI is built in the next plan; no completed browser journey is implied by these seed/API checks.

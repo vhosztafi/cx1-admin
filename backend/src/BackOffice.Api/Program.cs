@@ -38,6 +38,14 @@ builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyPermissionSe
 DiagnosticDispatcher.Register(builder);
 AgencyNotificationDispatcher.Register(builder);
 var app = builder.Build();
+if(args.Contains("--seed-quote-demo",StringComparer.Ordinal))
+{
+    if(!app.Environment.IsDevelopment())throw new InvalidOperationException("Quote fixture requires local Development.");
+    var factory=app.Services.GetRequiredService<Microsoft.EntityFrameworkCore.IDbContextFactory<BackOfficeDbContext>>();
+    await using(var db=await factory.CreateDbContextAsync()) DemoDatabase.ValidateDemoTarget(Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.GetConnectionString(db.Database)!);
+    var result=await new BackOffice.Infrastructure.Quotes.QuoteDemo(factory,TimeProvider.System).SeedAsync();
+    Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result));return;
+}
 if(args.Contains("--seed-agency-invitation-demo",StringComparer.Ordinal))
 {
     if(!app.Environment.IsDevelopment())throw new InvalidOperationException("Invitation fixture requires local Development.");
