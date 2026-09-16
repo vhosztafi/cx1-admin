@@ -10,6 +10,9 @@ public sealed partial class BackOfficeDbContext
         var intake=Record<MatchSubmission>(model,"MatchSubmission");intake.ToTable(t=>t.UseSqlOutputClause(false));
         Text(intake,("Reference",40));Json(intake,"IdentitySnapshot");intake.Property(x=>x.IdentitySnapshot).HasMaxLength(16000);
         intake.HasIndex(x=>x.Reference).IsUnique();intake.HasIndex(x=>new {x.AgencyId,x.CreatedAt,x.Id});
+        intake.HasIndex(x=>x.QuoteId).IsUnique().HasFilter("[QuoteId] IS NOT NULL");
+        intake.HasOne<Quote>().WithMany().HasForeignKey(x=>new {x.QuoteId,x.AgencyId})
+            .HasPrincipalKey(x=>new {x.Id,x.AgencyId}).OnDelete(DeleteBehavior.NoAction);
         intake.HasOne<Agency>().WithMany().HasForeignKey(x=>x.AgencyId).OnDelete(DeleteBehavior.NoAction);
         intake.HasOne<ClientAccount>().WithMany().HasForeignKey(x=>x.SeparateClientId).OnDelete(DeleteBehavior.NoAction);
         intake.HasOne<ClientAgencyRelationship>().WithMany().HasForeignKey(x=>new {x.LinkedRelationshipId,x.LinkedClientId,x.AgencyId})

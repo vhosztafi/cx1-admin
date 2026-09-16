@@ -12,7 +12,7 @@ namespace BackOffice.Infrastructure.Quotes;
 // availability is independent of proposal readiness and does not authorize a write.
 public sealed record StoredQuote(Quote Quote, QuoteRevision Revision, string ClientName, string AgencyName,
     string ProductCode, bool CanSave, string? CaptureUnavailableCode, QuoteTermAssessment TermAssessment, QuoteVersionPins VersionPins,
-    IReadOnlyDictionary<Guid, string> VehicleCaptureModes, IReadOnlySet<(string Code, Guid? RiskItemId)> CurrentEvidence);
+    IReadOnlyDictionary<Guid, string> VehicleCaptureModes, IReadOnlySet<(string Code, Guid? RiskItemId)> CurrentEvidence, string? MatchingCode, Guid? MatchReviewId);
 
 // Internal command service. HTTP DTO/CSRF/size handling and match attachment are
 // separate integration work; these methods do not expose an endpoint.
@@ -21,13 +21,15 @@ public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory,
     private readonly SqlCommandBoundary commands = new(factory, time);
 
     public Task<CommandOutcome> CreateAsync(ActorContext actor, Guid relationshipId, Guid productVersionId,
-        string? proposal, string key, Guid correlationId, CancellationToken token = default)
+        string? proposal, string key, Guid correlationId, CancellationToken token = default, Guid? matchSubmissionId = null)
     {
-        QuoteRelationshipScope? scope = null; EligibleQuoteCapture? selection = null;
+        QuoteRelationshipScope? scope = null; EligibleQuoteCapture? selection = null; MatchSubmission? intake = null;
+        object request = matchSubmissionId is null ? new { relationshipId, productVersionId, proposal } : new { relationshipId, productVersionId, proposal, matchSubmissionId };
         return commands.ExecuteAuthorizedAsync(new(actor.UserId, "/api/v1/quotes", key, correlationId),
-            new { relationshipId, productVersionId, proposal }, "quote.create-command",
+            request, "quote.create-command",
             async (db, ct) =>
             {
+                intake = await QuoteMatching.HoldIntakeAsync(db, actor, relationshipId, matchSubmissionId, ct);
                 scope = await QuoteScope.ForRelationshipAsync(db, actor, relationshipId, QuoteAccess.Capture, ct);
                 selection = await QuoteCaptureEligibility.ResolveAsync(db, scope, productVersionId, time.GetUtcNow(), token: ct);
             },
@@ -39,6 +41,7 @@ public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory,
                     ProductId = selection.Product.Id, CreatedBy = actor.UserId, CreatedAt = now, UpdatedAt = now };
                 db.Add(quote); await db.SaveChangesAsync(ct);
                 await Append(db, quote, selection, prepared, 1, null, actor.UserId, now, ct);
+                await QuoteMatching.AttachOrReviewAsync(db, quote, scope, intake, actor.UserId, now, ct);
                 return Outcome(quote, 201);
             }, token);
     }
@@ -87,10 +90,12 @@ public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory,
             .AsNoTracking().SingleAsync(token);
         using var intent = JsonDocument.Parse(revision.TermIntentJson);
         var evidence = await QuoteEvidenceReadModel.AssessAsync(db, revision, token);
+        var matching = await QuoteMatching.AssessAsync(db, owned.Quote, token);
         var result = new StoredQuote(owned.Quote, revision, owned.Scope.Client.LegalName, owned.Scope.Agency.LegalName,
             product.Code, availability.Code is null, availability.Code, QuoteTerm.Assess(intent.RootElement), Pins(revision),
             await QuoteLookupProvenance.VehicleModesAsync(db, revision, token),
-            evidence.Requirements.Where(x => x.State == "current").Select(x => (x.Code, x.RiskItemId)).ToHashSet());
+            evidence.Requirements.Where(x => x.State == "current").Select(x => (x.Code, x.RiskItemId)).ToHashSet(), matching.Code,
+            actor.HasCapability("match-read") ? matching.ReviewId : null);
         await transaction.CommitAsync(token);
         return result;
     }
@@ -130,7 +135,7 @@ public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory,
     internal static async Task Append(BackOfficeDbContext db, Quote quote, EligibleQuoteCapture selection, PreparedQuoteCapture prepared,
         int number, string? reason, Guid actor, DateTimeOffset now, CancellationToken token)
     {
-        var revision = new QuoteRevision { QuoteId = quote.Id, AgencyId = quote.AgencyId, ProductId = quote.ProductId, Number = number,
+        var revision = new QuoteRevision { ClientId = quote.ClientId, RelationshipId = quote.RelationshipId, QuoteId = quote.Id, AgencyId = quote.AgencyId, ProductId = quote.ProductId, Number = number,
             ProductVersionId = selection.Pins.ProductVersionId, AgencyTermsVersionId = selection.Pins.AgencyTermsVersionId,
             SchemaVersion = selection.Pins.SchemaVersion, QuestionSetVersion = selection.Pins.QuestionSetVersion,
             ReferenceVersionsJson = JsonSerializer.Serialize(new { referenceVersion = selection.Pins.ReferenceVersion,

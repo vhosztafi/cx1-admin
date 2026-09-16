@@ -111,3 +111,14 @@ test('multipart evidence retries preserve immutable file bytes metadata key and 
     assert.deepEqual(seen[0], seen[1]); assert.equal(seen[1].bytes, 'Fictional proof\r\n');
   } finally { globalThis.fetch = previous; }
 });
+
+test('creation retains an optional matching intake in the exact retry body', () => {
+  const draft = proposal();
+  const command = createQuoteCommand(id, product, draft, 'quote-match-create-001', id);
+  draft.insured.proposerNames[0] = 'Unsaved change';
+  assert.equal(JSON.parse(command.body).matchSubmissionId, id);
+  assert.equal(JSON.parse(command.body).proposal.insured.proposerNames[0], 'Alex Example');
+  assert.equal(JSON.parse(createQuoteCommand(id, product, proposal()).body).matchSubmissionId, undefined);
+  for (const invalid of ['', 'invalid', '00000000-0000-0000-0000-000000000000'])
+    assert.throws(() => createQuoteCommand(id, product, proposal(), 'quote-match-create-002', invalid));
+});

@@ -13,6 +13,7 @@ public static class AgencyContextEndpoints
     {
         app.MapGet("/api/v1/agency-context", (HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, TimeProvider time) => Context(LocalIdentityService.Actor(context.User).AgencyId!.Value, context, factory, time)).RequireAuthorization("agency-context");
         app.MapGet("/api/v1/agency-context/clients", (HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, PartyPaging paging) => Page(LocalIdentityService.Actor(context.User).AgencyId!.Value, null, "clients", context, factory, paging)).RequireAuthorization("agency-context");
+        app.MapGet("/api/v1/agency-context/quotes", (HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, PartyPaging paging) => Page(LocalIdentityService.Actor(context.User).AgencyId!.Value, null, "quotes", context, factory, paging)).RequireAuthorization("agency-context");
         foreach (var section in new[] { "contacts", "instructions" })
             app.MapGet($"/api/v1/agency-context/relationships/{{relationshipId:guid}}/{section}", (Guid relationshipId, HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, PartyPaging paging) => Page(LocalIdentityService.Actor(context.User).AgencyId!.Value, relationshipId, section, context, factory, paging)).RequireAuthorization("agency-context");
     }
@@ -22,15 +23,20 @@ public static class AgencyContextEndpoints
         try
         {
             var token = context.RequestAborted; var actor = LocalIdentityService.Actor(context.User);
-            var query = new AgencySharingQuery(Search: section == "clients" ? context.Request.Query["q"].ToString() : null, RelationshipId: relationshipId);
+            var query = new AgencySharingQuery(Search: section is "clients" or "quotes" ? context.Request.Query["q"].ToString() : null, RelationshipId: relationshipId);
             await using var db = await factory.CreateDbContextAsync(token);
             await using var transaction = await db.Database.BeginTransactionAsync(IsolationLevel.Serializable, token);
             var scope = await AgencySharingService.PageScope(db, actor, agencyId, section, query, token);
-            var page = paging.ReadBound(context, actor, section, scope, section == "clients" ? ["q"] : []);
+            var page = paging.ReadBound(context, actor, section, scope, section is "clients" or "quotes" ? ["q"] : []);
             if (page == null) return IdentityEndpoints.Problem(context, 400, "invalid-query", "Refresh the sharing list and use its current cursor.");
             query = query with { Offset = page.Offset, Size = page.Size };
             object response;
-            if (section == "clients")
+            if (section == "quotes")
+            {
+                var rows = await AgencySharingService.Quotes(db, actor, agencyId, query, token);
+                response = new { items = rows.Items, totalCount = rows.Total, nextCursor = paging.Next(page, page.Offset + rows.Items.Count < rows.Total) };
+            }
+            else if (section == "clients")
             {
                 var rows = await AgencySharingService.Clients(db, actor, agencyId, query, token);
                 response = new { items = rows.Items.Select(x => new { x.Id, x.RelationshipId, x.Reference, x.LegalName }).ToArray(), totalCount = rows.Total, nextCursor = paging.Next(page, page.Offset + rows.Items.Count < rows.Total) };

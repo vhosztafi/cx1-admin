@@ -95,6 +95,7 @@ app.MapContacts();
 app.MapSupportFlags();
 app.MapMatches();
 app.MapQuotes();
+app.MapQuoteDiscovery();
 app.MapQuoteLookups();
 app.MapQuoteEvidence();
 app.MapQuoteLifecycle();

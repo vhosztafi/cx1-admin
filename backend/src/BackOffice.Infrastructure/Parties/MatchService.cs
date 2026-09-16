@@ -3,6 +3,9 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using BackOffice.Application;
 using BackOffice.Application.Parties;
+using BackOffice.Application.Quotes;
+using BackOffice.Infrastructure.Identity;
+using BackOffice.Infrastructure.Quotes;
 using BackOffice.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,7 +14,7 @@ namespace BackOffice.Infrastructure.Parties;
 public sealed class MatchOperationException(int status,string code):Exception("The match decision cannot be applied.")
 {public int Status{get;}=status;public string Code{get;}=code;}
 
-public static class MatchService
+public static partial class MatchService
 {
     private static readonly JsonSerializerOptions Json=new(JsonSerializerDefaults.Web){DefaultIgnoreCondition=JsonIgnoreCondition.WhenWritingNull};
     public static async Task<MatchReview> AuthorizeAsync(BackOfficeDbContext db,ActorContext actor,Guid id,ValidatedMatchDecision input,CancellationToken token=default)
@@ -21,21 +24,22 @@ public static class MatchService
         if(input.CandidateClientId is Guid candidate && candidate!=review.CandidateClientId)throw new MatchOperationException(422,"invalid-candidate");
         return review;
     }
-    public static async Task<MatchReview> DecideAsync(BackOfficeDbContext db,ActorContext actor,Guid id,byte[] expected,ValidatedMatchDecision input,DateTimeOffset now,CancellationToken token=default)
+    public static async Task<MatchReview> DecideAsync(BackOfficeDbContext db,ActorContext actor,Guid id,byte[] expected,ValidatedMatchDecision input,DateTimeOffset now,CancellationToken token=default,byte[]? expectedQuoteVersion=null)
     {
         if(db.Database.CurrentTransaction is null)throw new InvalidOperationException("Match decisions require the caller's audited transaction.");
-        var authorized=await AuthorizeAsync(db,actor,id,input,token);
-        // The unlocked projection plans the parent lock only; revalidate it under the child locks.
-        var agencyId=await db.Set<MatchSubmission>().Where(x=>x.Id==authorized.SubmissionId).Select(x=>x.AgencyId).SingleAsync(token);
-        var agency=await db.Set<Agency>().FromSqlInterpolated($"SELECT * FROM [Agency] WITH (UPDLOCK,ROWLOCK) WHERE [Id]={agencyId}").SingleAsync(token);
-        // All decisions use agency -> intake -> review -> client -> relationship ordering.
-        var intake=await db.Set<MatchSubmission>().FromSqlInterpolated($"SELECT * FROM [MatchSubmission] WITH (UPDLOCK,ROWLOCK) WHERE [Id]={authorized.SubmissionId}").SingleAsync(token);
-        var review=await db.Set<MatchReview>().FromSqlInterpolated($"SELECT * FROM [MatchReview] WITH (UPDLOCK,ROWLOCK) WHERE [Id]={id}").SingleAsync(token);
-        if(intake.AgencyId!=agencyId || review.SubmissionId!=intake.Id)throw new MatchOperationException(409,"match-source-changed");
+        var held=await HoldAuthorityAsync(db,actor,id,input,token);
+        var agency=held.Agency; var intake=held.Intake; var review=held.Review; var quote=held.Quote;
         if(input.CandidateClientId is Guid candidate && candidate!=review.CandidateClientId)throw new MatchOperationException(422,"invalid-candidate");
         if(!CryptographicOperations.FixedTimeEquals(review.RowVersion,expected))throw new MatchOperationException(412,"stale-match");
+        if(quote is not null)
+        {
+            // Guard every fresh review mutation. A successful receipt may be replayed
+            // after closure, but only after current agency/identity authority is held.
+            if(quote.State!="draft" || quote.CaptureClosedAt is not null)throw new MatchOperationException(409,"quote-capture-closed");
+            if(expectedQuoteVersion is not {Length:8})throw new MatchOperationException(428,"quote-version-required");
+            if(!CryptographicOperations.FixedTimeEquals(quote.RowVersion,expectedQuoteVersion))throw new MatchOperationException(412,"stale-quote");
+        }
         var next=MatchRules.NextState(review.State,input.Outcome);
-        // Phase 5 must add a real progressed-quote guard here before attaching quotes to intake.
         if(input.Outcome is "link" or "separate")
         {
             if(agency.State is "suspended" or "abandoned")throw new MatchOperationException(409,"agency-unavailable");
@@ -62,6 +66,20 @@ public static class MatchService
                 Activity(db,actor,client.Id,relationship.Id,"client.relationship-created",client.Id,"client",now);
             }
             else if(relationship.State!="active")throw new MatchOperationException(409,"relationship-unavailable");
+            if(quote is not null && (quote.ClientId!=client.Id || quote.RelationshipId!=relationship.Id))
+            {
+                // Persist a new relationship before the quote FK can refer to it.
+                await db.SaveChangesAsync(token);
+                var current=await QuoteService.CurrentRevision(db,quote,token);
+                var scope=new QuoteRelationshipScope(actor,agency,client,relationship);
+                var eligible=await QuoteCaptureEligibility.ResolveAsync(db,scope,current.ProductVersionId,now,current.AgencyTermsVersionId,token);
+                QuoteRules.EnsureRetainedPins(QuoteService.Pins(current),eligible.Pins);
+                var prepared=QuoteRules.Prepare(current.ProposalJson,eligible.Product.Code,eligible.Pins);
+                quote.ClientId=client.Id;quote.RelationshipId=relationship.Id;
+                await db.SaveChangesAsync(token);
+                await QuoteService.Append(db,quote,eligible,prepared,checked(current.Number+1),input.Reason,actor.UserId,now,token);
+                db.Add(new QuoteActivity {QuoteId=quote.Id,RevisionId=quote.CurrentRevisionId!.Value,ActorId=actor.UserId,CreatedBy=actor.UserId,CreatedAt=now,OccurredAt=now,EventType="quote.reassociated"});
+            }
             intake.LinkedClientId=client.Id;intake.LinkedRelationshipId=relationship.Id;
         }
         MatchInformationRequest? request=null;
@@ -69,6 +87,9 @@ public static class MatchService
         {
             request=new MatchInformationRequest {MatchId=id,ActorId=actor.UserId,Description=input.Reason,CreatedBy=actor.UserId,CreatedAt=now,RecordedAt=now};db.Add(request);
         }
+        // Any review change invalidates an already-read quote ETag, including reopen.
+        // Future progression must hold this same agency/quote order and read review state.
+        if(quote is not null){quote.UpdatedAt=now;db.Entry(quote).Property(x=>x.UpdatedAt).IsModified=true;}
         // Reopen, Query and Decline preserve the prior association as history; state governs progression.
         review.State=next;review.UpdatedAt=now;intake.UpdatedAt=now;
         db.Entry(review).Property(x=>x.UpdatedAt).IsModified=true;db.Entry(intake).Property(x=>x.UpdatedAt).IsModified=true;

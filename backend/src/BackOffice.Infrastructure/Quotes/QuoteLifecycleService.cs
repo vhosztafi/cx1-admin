@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackOffice.Infrastructure.Quotes;
 
-public sealed record QuoteRevisionView(Guid Id, Guid QuoteId, int Number, Guid ProductVersionId, Guid AgencyTermsVersionId,
+public sealed record QuoteRevisionView(Guid Id, Guid QuoteId, Guid ClientId, Guid RelationshipId, int Number, Guid ProductVersionId, Guid AgencyTermsVersionId,
     string QuestionSetVersion, string ReferenceDataVersion, JsonElement Proposal, string ProposalHash, DateTimeOffset SavedAt,
     string SavedByLabel, [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? Reason);
 public sealed record QuoteRevisionPage(QuoteRevisionView[] Items, int TotalCount, Guid CurrentRevisionId);
@@ -47,7 +47,9 @@ public sealed class QuoteLifecycleService(IDbContextFactory<BackOfficeDbContext>
         await QuoteScope.ForQuoteAsync(db, actor, quoteId, QuoteAccess.Read, token);
         var left = await Revision(db, quoteId, leftId, token); var right = await Revision(db, quoteId, rightId, token);
         using var l = JsonDocument.Parse(left.ProposalJson); using var r = JsonDocument.Parse(right.ProposalJson);
-        var changes = QuoteRevisionDiff.Compare(l.RootElement, r.RootElement);
+        var changes = QuoteRevisionDiff.Compare(l.RootElement, r.RootElement).ToList();
+        foreach (var (path, before, after) in new[] { ("/clientId", left.ClientId, right.ClientId), ("/relationshipId", left.RelationshipId, right.RelationshipId) })
+            if (before != after) changes.Add(new("changed", path, null, new(path, JsonSerializer.Serialize(before)), new(path, JsonSerializer.Serialize(after))));
         await transaction.CommitAsync(token); return changes;
     }
 
@@ -83,6 +85,7 @@ public sealed class QuoteLifecycleService(IDbContextFactory<BackOfficeDbContext>
                     CreatedBy = actor.UserId, CreatedAt = now, UpdatedAt = now };
                 db.Add(clone); await db.SaveChangesAsync(ct);
                 await QuoteService.Append(db, clone, context.Destination, prepared.Capture, 1, reason, actor.UserId, now, ct);
+                await QuoteMatching.AttachOrReviewAsync(db, clone, context.Target, null, actor.UserId, now, ct);
                 db.Add(new QuoteActivity { QuoteId = clone.Id, RevisionId = clone.CurrentRevisionId!.Value, ActorId = actor.UserId, CreatedBy = actor.UserId,
                     CreatedAt = now, OccurredAt = now, EventType = "quote.cloned" });
                 await db.SaveChangesAsync(ct); return Receipt(clone, 201);
@@ -143,7 +146,7 @@ public sealed class QuoteLifecycleService(IDbContextFactory<BackOfficeDbContext>
         return rows.Select(x =>
         {
             using var proposal = JsonDocument.Parse(x.ProposalJson);
-            return new QuoteRevisionView(x.Id, x.QuoteId, x.Number, x.ProductVersionId, x.AgencyTermsVersionId, x.QuestionSetVersion,
+            return new QuoteRevisionView(x.Id, x.QuoteId, x.ClientId, x.RelationshipId, x.Number, x.ProductVersionId, x.AgencyTermsVersionId, x.QuestionSetVersion,
                 QuoteService.Pins(x).ReferenceVersion, proposal.RootElement.Clone(), Convert.ToHexStringLower(x.ContentHash), x.SavedAt, labels[x.SavedBy], x.Reason);
         }).ToArray();
     }

@@ -325,3 +325,9 @@ h1, h2, p { margin: 0; }
 .table-scroll[aria-label="Saved quote revisions"] td { vertical-align:top; }
 .table-scroll[aria-label="Saved quote revisions"] td:last-child { min-width:380px; }
 .quote-record-tabs [aria-selected="true"] { color:var(--accent,#405cf5); border-color:var(--accent,#405cf5); background:#f0f3ff; }
+
+.quote-list-filters { flex-wrap: wrap; }
+.quote-list-filters label { min-width: 150px; }
+.quote-agency-filter { padding: 0 20px 18px; max-width: 560px; }
+.quote-agency-filter label { display: grid; gap: 6px; font-weight: 500; }
+.quote-agency-filter select { width: 100%; min-width: 0; }

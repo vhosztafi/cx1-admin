@@ -1,7 +1,7 @@
 export type Address = { line1: string; line2?: string; town: string; county?: string; postcode: string; country: 'GB' };
 export type ClientWrite = { legalName: string; entityType: string; companyNumber?: string; address: Address };
 export type Client = ClientWrite & { id: string; reference: string; createdAt: string; identityState: string };
-export type ClientSummary = Client & { agencies: { id: string; name: string; reference: string }[]; records: { state: 'unavailable' } | { state: 'available'; policyCount: number; quoteCount: number }; primaryContactName?: string; tradeActivities?: string[] };
+export type ClientSummary = Client & { agencies: { id: string; name: string; reference: string }[]; records: { state: 'unavailable' } | { state: 'partial'; quoteCount: number; policyState: 'unavailable' } | { state: 'available'; policyCount: number; quoteCount: number }; primaryContactName?: string; tradeActivities?: string[] };
 export type Relationship = { id: string; clientId: string; agencyId: string; state: string; agencyName: string; agencyReference: string };
 export type Agency = { id: string; reference: string; legalName: string; state: string };
 export type Activity = { id: string; occurredAt: string; actorLabel: string; summary: string; recordId?: string; recordKind?: string };

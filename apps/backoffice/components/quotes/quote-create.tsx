@@ -3,14 +3,14 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { csrfToken, type Actor } from '../../lib/auth';
-import type { ClientSummary, Page, Relationship } from '../../lib/clients';
+import type { Client, ClientSummary, Page, Relationship } from '../../lib/clients';
 import { createQuoteCommand, quoteFetch, QuoteError, sendQuoteCommand, uncertainQuoteFailure, type PendingQuoteCommand, type QuoteProduct } from '../../lib/quotes';
 import { EmptyState, Panel } from '../primitives';
 import { LoadFeedback, Paging, useQuoteResource } from './shared';
 
-export function QuoteCreate({ actorId }: { actorId: string }) {
+export function QuoteCreate({ actorId, initialClient, initialRelationship, matchSubmissionId }: { actorId: string; initialClient?: Client; initialRelationship?: Relationship; matchSubmissionId?: string }) {
   const router = useRouter();
-  const [client, setClient] = useState<ClientSummary>(); const [relationship, setRelationship] = useState<Relationship>();
+  const [client, setClient] = useState<Client | ClientSummary | undefined>(initialClient); const [relationship, setRelationship] = useState<Relationship | undefined>(initialRelationship);
   const [productId, setProductId] = useState(''); const [busy, setBusy] = useState(false); const [uncertain, setUncertain] = useState(false);
   const [error, setError] = useState(''); const [savedId, setSavedId] = useState('');
   const lock = useRef(false); const recovery = useRef(false); const receipt = useRef<PendingQuoteCommand | null>(null);
@@ -44,7 +44,7 @@ export function QuoteCreate({ actorId }: { actorId: string }) {
     const recovering = recovery.current;
     if (!recovering) {
       if (!client || !relationship || relationship.state !== 'active' || !product?.captureEligible) return;
-      receipt.current = createQuoteCommand(relationship.id, product.productVersionId, { schemaVersion: '1.0', productCode: product.productCode });
+      receipt.current = createQuoteCommand(relationship.id, product.productVersionId, { schemaVersion: '1.0', productCode: product.productCode }, undefined, matchSubmissionId);
     }
     if (!receipt.current) return;
     lock.current = true; setBusy(true); setError(''); let attempted = false;
@@ -70,13 +70,13 @@ export function QuoteCreate({ actorId }: { actorId: string }) {
     <div className="agency-layout quote-create-layout"><div className="quote-create-panels">
       <Panel title="Client" note="Select an existing business identity">
         <fieldset disabled={frozen} className="quote-selection"><legend className="sr-only">Client selection</legend>
-          {client ? <div className="quote-selected"><div><strong>{client.legalName}</strong><p>{client.reference}</p></div><button className="button" type="button" onClick={() => { setClient(undefined); setRelationship(undefined); setProductId(''); }}>Change client</button></div>
+          {client ? <div className="quote-selected"><div><strong>{client.legalName}</strong><p>{client.reference}</p></div><button className="button" type="button" disabled={Boolean(matchSubmissionId)} onClick={() => { setClient(undefined); setRelationship(undefined); setProductId(''); }}>Change client</button></div>
             : <ClientChoice onSelect={value => { setClient(value); setRelationship(undefined); setProductId(''); }} />}
         </fieldset>
       </Panel>
       {client && <Panel title="Agency relationship" note="The quote stays with this client and agency">
         <fieldset disabled={frozen} className="quote-selection"><legend className="sr-only">Agency relationship selection</legend>
-          <RelationshipChoice key={client.id} clientId={client.id} selected={relationship?.id} onSelect={value => { setRelationship(value); setProductId(''); }} />
+          <RelationshipChoice key={client.id} locked={Boolean(matchSubmissionId)} clientId={client.id} selected={relationship?.id} onSelect={value => { setRelationship(value); setProductId(''); }} />
         </fieldset>
       </Panel>}
       {relationship && <Panel title="Product" note="Availability is checked for the selected relationship">
@@ -92,7 +92,7 @@ export function QuoteCreate({ actorId }: { actorId: string }) {
       <div className="quote-rail-body"><span className="quote-step-label">1 · Agency &amp; product</span><h2>Ready to get started?</h2>
         <p>Select the relationship and an available product. Creating a draft reserves its quote reference and saves your selection.</p>
         <dl><div><dt>Client</dt><dd>{client?.legalName ?? 'Choose a client'}</dd></div><div><dt>Agency</dt><dd>{relationship?.agencyName ?? 'Choose a relationship'}</dd></div><div><dt>Product</dt><dd>{product?.displayName ?? 'Choose a product'}</dd></div></dl>
-        <p className="client-help">After creating the draft, capture proposer details and initial business information. Other risk sections remain unavailable.</p>
+        <p className="client-help">After creating the draft, capture proposer details and initial business information. Continue through the risk sections, evidence and readiness checks.</p>
         {error && <div className="error-message" role="alert">{error}</div>}
         {uncertain && <p className="quote-pending" role="status">The result is unconfirmed. Your original selection is locked; retry the same creation to confirm it.</p>}
         {savedId ? <p role="status">Draft saved. <Link href={`/quotes/${savedId}`}>Open saved quote</Link></p> : <button className="button button-primary" type="button" disabled={busy || (!uncertain && (!client || !relationship || !product?.captureEligible))} onClick={() => void create()}>{busy ? 'Creating draft…' : uncertain ? 'Retry same creation' : 'Create quote draft'}</button>}
@@ -110,9 +110,9 @@ export function ClientChoice({ onSelect }: { onSelect: (client: ClientSummary) =
     <Paging total={clients.data?.totalCount} previous={history.length > 1 ? () => setHistory(value => value.slice(0, -1)) : undefined} next={clients.data?.nextCursor ? () => setHistory(value => [...value, clients.data!.nextCursor!]) : undefined} /></>;
 }
 
-export function RelationshipChoice({ clientId, selected, onSelect }: { clientId: string; selected?: string; onSelect: (relationship: Relationship) => void }) {
+export function RelationshipChoice({ clientId, selected, onSelect, locked = false }: { clientId: string; selected?: string; locked?: boolean; onSelect: (relationship: Relationship) => void }) {
   const [history, setHistory] = useState<string[]>(['']); const cursor = history.at(-1)!;
   const relationships = useQuoteResource<Page<Relationship>>(`/api/v1/clients/${clientId}/relationships?pageSize=10${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`);
-  return <>{!relationships.data ? <LoadFeedback error={relationships.error} retry={relationships.refresh} /> : relationships.data.items.length === 0 ? <EmptyState title="No agency relationships">Add a relationship from the client account before creating a quote.</EmptyState> : <div className="quote-relationships">{relationships.data.items.map(item => <label className="quote-product" key={item.id}><input type="radio" name="relationship" checked={selected === item.id} disabled={item.state !== 'active'} onChange={() => onSelect(item)} /><span><strong>{item.agencyName}</strong><small>{item.agencyReference} · {item.state}</small></span></label>)}</div>}
+  return <>{!relationships.data ? <LoadFeedback error={relationships.error} retry={relationships.refresh} /> : relationships.data.items.length === 0 ? <EmptyState title="No agency relationships">Add a relationship from the client account before creating a quote.</EmptyState> : <div className="quote-relationships">{relationships.data.items.map(item => <label className="quote-product" key={item.id}><input type="radio" name="relationship" checked={selected === item.id} disabled={locked || item.state !== 'active'} onChange={() => onSelect(item)} /><span><strong>{item.agencyName}</strong><small>{item.agencyReference} · {item.state}</small></span></label>)}</div>}
     <Paging total={relationships.data?.totalCount} previous={history.length > 1 ? () => setHistory(value => value.slice(0, -1)) : undefined} next={relationships.data?.nextCursor ? () => setHistory(value => [...value, relationships.data!.nextCursor!]) : undefined} /></>;
 }

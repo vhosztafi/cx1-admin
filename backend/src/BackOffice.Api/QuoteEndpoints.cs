@@ -46,9 +46,8 @@ public static class QuoteEndpoints
         {
             var key = QuoteHttpInput.Key(context.Request);
             var input = await QuoteHttpInput.CreateAsync(context.Request, context.RequestAborted);
-            if (input.MatchSubmissionId is not null) throw new QuoteHttpException(409, "quote-match-association-unavailable");
             var outcome = await service.CreateAsync(LocalIdentityService.Actor(context.User), input.RelationshipId,
-                input.ProductVersionId, input.Proposal, key, Guid.NewGuid(), context.RequestAborted);
+                input.ProductVersionId, input.Proposal, key, Guid.NewGuid(), context.RequestAborted, input.MatchSubmissionId);
             return Outcome(context, outcome);
         }
         catch (Exception error) when (Known(error)) { return Failure(context, error); }
@@ -77,7 +76,7 @@ public static class QuoteEndpoints
             var stored = await service.GetAsync(LocalIdentityService.Actor(context.User), quoteId, context.RequestAborted);
             using var proposal = JsonDocument.Parse(stored.Revision.ProposalJson);
             var readiness = QuoteReadiness.Assess(quoteId, stored.Revision.Id, proposal.RootElement, stored.TermAssessment, stored.CaptureUnavailableCode,
-                DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(time.GetUtcNow(), TimeZoneInfo.FindSystemTimeZoneById("Europe/London")).DateTime), stored.VehicleCaptureModes, stored.CurrentEvidence);
+                DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(time.GetUtcNow(), TimeZoneInfo.FindSystemTimeZoneById("Europe/London")).DateTime), stored.VehicleCaptureModes, stored.CurrentEvidence, stored.MatchingCode);
             context.Response.Headers.ETag = "\"" + Convert.ToBase64String(stored.Quote.RowVersion) + "\"";
             if (assessmentOnly) return Results.Ok(readiness);
             return Results.Ok(new
@@ -88,7 +87,7 @@ public static class QuoteEndpoints
                 stored.Revision.ProductVersionId, proposal = proposal.RootElement.Clone(),
                 captureVersions = new { stored.VersionPins.SchemaVersion, stored.VersionPins.QuestionSetVersion, referenceDataVersion = stored.VersionPins.ReferenceVersion },
                 captureClosed = stored.Quote.CaptureClosedAt is not null,
-                stored.Quote.CaptureClosedAt, stored.Quote.CaptureClosedReason,
+                stored.Quote.CaptureClosedAt, stored.Quote.CaptureClosedReason, stored.MatchReviewId,
                 capabilities = new { stored.CanSave, canClone = stored.CanSave, canWithdraw = stored.CanSave, canAttachEvidence = stored.CanSave }, readiness
             });
         }

@@ -3,6 +3,7 @@ namespace BackOffice.Infrastructure.Persistence;
 public sealed class MatchSubmission : MutableRecord
 {
     public string Reference {get;set;}="";
+    public Guid? QuoteId {get;set;}
     public Guid AgencyId {get;set;}
     public string IdentitySnapshot {get;set;}="{}";
     public Guid? LinkedClientId {get;set;}

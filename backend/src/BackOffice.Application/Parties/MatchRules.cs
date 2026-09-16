@@ -2,8 +2,9 @@ using System.Text.Json.Serialization;
 
 namespace BackOffice.Application.Parties;
 
-public sealed record MatchDecisionWrite([property:JsonRequired]string? Outcome,[property:JsonRequired]string? Reason,Guid? CandidateClientId=null);
-public sealed record ValidatedMatchDecision(string Outcome,string Reason,Guid? CandidateClientId);
+public sealed record MatchDecisionWrite([property:JsonRequired]string? Outcome,[property:JsonRequired]string? Reason,Guid? CandidateClientId=null,string? ExpectedQuoteEtag=null);
+public sealed record ValidatedMatchDecision(string Outcome,string Reason,Guid? CandidateClientId,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? ExpectedQuoteEtag=null);
 public sealed record MatchSignal(string Code,string Summary,string SubmittedValue,string CandidateValue,string Weight,string Result);
 public sealed record MatchRuleSnapshot(Guid Id,int Version,string DuplicateQuotePolicy,bool RequireReview,string Summary);
 public sealed record ValidatedMatchEvidence(ClientWrite Identity,MatchSignal[] Signals,MatchRuleSnapshot Rule,string Confidence);
@@ -19,8 +20,15 @@ public static class MatchRules
         var reason=Text(input.Reason,1000,"/reason",issues);
         if(input.CandidateClientId==Guid.Empty || (input.CandidateClientId is not null && input.Outcome!="link"))
             issues.Add(new("/candidateClientId","invalid-candidate","Only Link may identify the saved candidate."));
+        if(input.ExpectedQuoteEtag is not null)
+        {
+            Span<byte> bytes=stackalloc byte[8];
+            var etag=input.ExpectedQuoteEtag;
+            if(etag.Length!=14 || etag[0]!='"' || etag[^1]!='"' || !Convert.TryFromBase64String(etag[1..^1],bytes,out var count) || count!=8 || Convert.ToBase64String(bytes)!=etag[1..^1])
+                issues.Add(new("/expectedQuoteEtag","invalid-version","Reload the attached quote version."));
+        }
         if(issues.Count>0)throw new PartyValidationException(issues);
-        return new(input.Outcome!,reason,input.CandidateClientId);
+        return new(input.Outcome!,reason,input.CandidateClientId,input.ExpectedQuoteEtag);
     }
 
     public static string NextState(string state,string outcome) => (state,outcome) switch

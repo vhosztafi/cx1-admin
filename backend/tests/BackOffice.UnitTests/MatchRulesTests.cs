@@ -6,6 +6,14 @@ namespace BackOffice.UnitTests;
 public sealed class MatchRulesTests
 {
     [Fact]
+    public void AttachedQuoteVersionMustBeACanonicalStrongEightByteEtag()
+    {
+        const string etag = "\"AQIDBAUGBwg=\"";
+        Assert.Equal(etag, MatchRules.Validate(new("reopen", "Recheck identity", ExpectedQuoteEtag: etag)).ExpectedQuoteEtag);
+        foreach (var invalid in new[] { "", "AQIDBAUGBwg=", "W/" + etag, "\"AQID\"", "\"AQIDBAUGBwh=\"", "\"AAAAAAAAAAAA\"" })
+            Assert.Throws<PartyValidationException>(() => MatchRules.Validate(new("reopen", "Reason", ExpectedQuoteEtag: invalid)));
+    }
+    [Fact]
     public void MatchReadAndDecisionAreExplicitInternalUnderwritingCapabilities()
     {
         foreach(var role in new[] {"underwriter","senior-underwriter","servicing","agency-admin","finance","system-admin"})

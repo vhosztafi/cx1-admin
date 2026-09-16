@@ -120,7 +120,8 @@ public sealed class AgencyAssociationFenceTests
         public TaskCompletionSource Reached {get;}=new(TaskCreationOptions.RunContinuationsAsynchronously);
         public override ValueTask<InterceptionResult<DbDataReader>> ReaderExecutingAsync(DbCommand command,CommandEventData eventData,InterceptionResult<DbDataReader> result,CancellationToken cancellationToken=default)
         {
-            if(command.CommandText.Contains("[Agency] WITH (UPDLOCK,ROWLOCK)",StringComparison.Ordinal))Reached.TrySetResult();
+            if(command.CommandText.Contains("[Agency] WITH (UPDLOCK,ROWLOCK)",StringComparison.Ordinal) ||
+                command.CommandText.Contains("Agency WITH(UPDLOCK,HOLDLOCK,ROWLOCK)",StringComparison.Ordinal))Reached.TrySetResult();
             return ValueTask.FromResult(result);
         }
     }

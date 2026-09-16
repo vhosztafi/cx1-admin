@@ -20,6 +20,9 @@ public sealed class Quote : MutableRecord
 
 public sealed class QuoteRevision : StoredRecord
 {
+    // Retained ownership at save time; reassociation never rewrites old revisions.
+    public Guid ClientId { get; set; }
+    public Guid RelationshipId { get; set; }
     public Guid QuoteId { get; set; }
     public Guid AgencyId { get; set; }
     public Guid ProductId { get; set; }

@@ -41,11 +41,13 @@ public static class MatchEndpoints
     {
         var ids=rows.Select(x=>x.SubmissionId).ToArray();var submissions=await db.Set<MatchSubmission>().AsNoTracking().Where(x=>ids.Contains(x.Id)).ToDictionaryAsync(x=>x.Id,token);
         var agencyIds=submissions.Values.Select(x=>x.AgencyId).ToArray();var agencies=await db.Set<Agency>().AsNoTracking().Where(x=>agencyIds.Contains(x.Id)).ToDictionaryAsync(x=>x.Id,token);
+        var quoteIds=submissions.Values.Where(x=>x.QuoteId!=null).Select(x=>x.QuoteId!.Value).ToArray();
+        var quotes=await db.Set<Quote>().AsNoTracking().Where(x=>quoteIds.Contains(x.Id)).ToDictionaryAsync(x=>x.Id,token);
         return rows.Select(row=>
         {
-            var s=submissions[row.SubmissionId];return (object)new {row.Id,row.SubmissionId,row.CandidateClientId,row.CandidateRelationshipId,row.Confidence,row.State,row.RuleVersionId,
+            var s=submissions[row.SubmissionId];var quote=s.QuoteId is Guid quoteId ? quotes.GetValueOrDefault(quoteId) : null;return (object)new {row.Id,row.SubmissionId,row.CandidateClientId,row.CandidateRelationshipId,row.Confidence,row.State,row.RuleVersionId,
                 signals=JsonSerializer.Deserialize<MatchSignal[]>(row.Signals,ClientEndpoints.Json),rule=JsonSerializer.Deserialize<MatchRuleSnapshot>(row.RuleSnapshot,ClientEndpoints.Json),
-                submission=new {s.Id,s.Reference,s.AgencyId,agencyName=agencies[s.AgencyId].LegalName,identity=JsonSerializer.Deserialize<ClientWrite>(s.IdentitySnapshot,ClientEndpoints.Json),s.CreatedAt,s.LinkedClientId,s.LinkedRelationshipId}};
+                submission=new {s.Id,s.Reference,s.AgencyId,agencyName=agencies[s.AgencyId].LegalName,identity=JsonSerializer.Deserialize<ClientWrite>(s.IdentitySnapshot,ClientEndpoints.Json),s.CreatedAt,s.LinkedClientId,s.LinkedRelationshipId,s.QuoteId,quoteEtag=quote is null ? null : Etag(quote.RowVersion),captureClosed=quote is null ? (bool?)null : quote.State!="draft" || quote.CaptureClosedAt!=null}};
         }).ToArray();
     }
     private static Task<IResult> Decisions(Guid matchId,HttpContext context,IDbContextFactory<BackOfficeDbContext> factory,PartyPaging paging)=>Trail(matchId,false,context,factory,paging);
@@ -78,13 +80,15 @@ public static class MatchEndpoints
             var actor=LocalIdentityService.Actor(context.User);var token=context.RequestAborted;var fields=MatchRules.Validate(ClientEndpoints.Input<MatchDecisionWrite>(input));
             await using var read=await factory.CreateDbContextAsync(token);await MatchService.AuthorizeAsync(read,actor,matchId,fields,token);
             var key=ClientEndpoints.Key(context);var version=ClientEndpoints.Version(context);var route=$"/api/v1/matches/{matchId}/decisions";
-            var result=await commands.ExecuteAsync(new CommandIdentity(actor.UserId,route,key,Guid.NewGuid()),fields,"match."+fields.Outcome,async(db,ct)=>
+            var result=await commands.ExecuteAuthorizedAsync(new CommandIdentity(actor.UserId,route,key,Guid.NewGuid()),fields,"match."+fields.Outcome,
+                (db,ct)=>MatchService.AuthorizeHeldAsync(db,actor,matchId,fields,ct),async(db,ct)=>
             {
-                var review=await MatchService.DecideAsync(db,actor,matchId,version,fields,time.GetUtcNow(),ct);
+                var review=await MatchService.DecideAsync(db,actor,matchId,version,fields,time.GetUtcNow(),ct,fields.ExpectedQuoteEtag is null ? null : Convert.FromBase64String(fields.ExpectedQuoteEtag[1..^1]));
                 return new CommandOutcome(review.Id,200,JsonSerializer.Serialize(new {id=review.Id}),Etag:Etag(review.RowVersion));
             },token);
             context.Response.Headers.ETag=result.Etag;return Results.Content(result.Body,"application/json",statusCode:result.Status);
         }
+        catch(Exception error) when(QuoteEndpoints.Known(error)){return QuoteEndpoints.Failure(context,error);}
         catch(MatchTransitionException){return IdentityEndpoints.Problem(context,409,"invalid-match-transition","Reload the review and choose an available decision.");}
         catch(MatchOperationException error){return IdentityEndpoints.Problem(context,error.Status,error.Code,"Reload the review and check the requested decision.");}
         catch(Exception error) when(ClientEndpoints.IsCommandError(error)){return ClientEndpoints.CommandError(context,error,"match");}

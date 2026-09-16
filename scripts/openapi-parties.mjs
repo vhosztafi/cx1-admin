@@ -25,14 +25,14 @@ export function addPartyContracts({schemas:s,ref:r,text:t,enumeration:e,object:o
  s.RelationshipAgency=o({id,reference:t(40),legalName:t(),state:e('draft','active','suspended','abandoned')});
  list('/relationship-agencies','listRelationshipAgencies','relationship-read',r('RelationshipAgency'));
  op('get','/relationships/{relationshipId}','getClientRelationship','relationship-read',{output:r('Relationship')});
- s.ClientRecordAvailability={oneOf:[o({state:{const:'unavailable'}}),o({state:{const:'available'},policyCount:integer,quoteCount:integer})]};
+ s.ClientRecordAvailability={oneOf:[o({state:{const:'unavailable'}}),o({state:{const:'partial'},quoteCount:integer,policyState:{const:'unavailable'}}),o({state:{const:'available'},policyCount:integer,quoteCount:integer})]};
  s.ClientSummary=o({...s.Client.properties,primaryContactName:t(),agencies:a(o({id,name:t(),reference:t(40)})),records:r('ClientRecordAvailability'),tradeActivities:a(t(100))},[...s.Client.required,'agencies','records']);
  paths['/clients'].get.responses[200].content['application/json'].schema.properties.items.items=r('ClientSummary');
  s.ClientActivity=o({id,occurredAt:instant,actorLabel:t(),eventType:t(100),summary:t(500),relationshipId:id,recordId:id,recordKind:e('client','contact','match','quote')},['id','occurredAt','actorLabel','eventType','summary']);
  list('/clients/{clientId}/activity','listClientActivity','client-read',r('ClientActivity'));
  s.ClientRecordLink=o({id,kind:e('quote','policy'),reference:t(40),relationshipId:id,agencyName:t(),productCode:e('motor-trade-road-risks','motor-trade-combined','commercial-combined'),state:t(30)});
  list('/clients/{clientId}/records','listClientRecords','client-read',r('ClientRecordLink'),[['kind',e('quote','policy')]]);
- paths['/clients/{clientId}/records'].get.description+=' Only actual implemented quote/policy records are returned. Module unavailability is 503, not an invented empty live portfolio.';
+ paths['/clients/{clientId}/records'].get.description+=' Defaults to kind=quote. Quote links are available to quote-read identities; kind=policy remains 503. Only actual implemented quote/policy records are returned. Module unavailability is 503, not an invented empty live portfolio.';
 
  s.PartyMutationReceipt=o({id});
  s.PartyMutationReceipt.description='Safe identity-only command receipt. The original strong ETag is returned in the header; fetch current details through an authorized GET.';
@@ -53,7 +53,7 @@ export function addPartyContracts({schemas:s,ref:r,text:t,enumeration:e,object:o
 
  s.MatchSignal=o({code:t(100),summary:t(500),submittedValue:t(500),candidateValue:t(500),weight:e('definitive','strong','moderate','weak'),result:e('match','near-match','different','cannot-compare')});
  s.MatchRuleSnapshot=o({id,version:{type:'integer',minimum:1},duplicateQuotePolicy:e('allow-competing','broker-of-record','refer'),requireReview:b,summary:t(1000)});
- s.MatchSubmission=o({id,reference:t(40),agencyId:id,agencyName:t(),identity:r('ClientWrite'),createdAt:instant,quoteId:id,linkedClientId:id,linkedRelationshipId:id},['id','reference','agencyId','agencyName','identity','createdAt']);
+ s.MatchSubmission=o({id,reference:t(40),agencyId:id,agencyName:t(),identity:r('ClientWrite'),createdAt:instant,quoteId:id,quoteEtag:t(100),captureClosed:b,linkedClientId:id,linkedRelationshipId:id},['id','reference','agencyId','agencyName','identity','createdAt']);
  s.MatchReview.properties.submissionId=id;s.MatchReview.properties.submission=r('MatchSubmission');
  s.MatchReview.properties.candidateRelationshipId={...id,description:'The captured candidate relationship, for unambiguous internal agency context; never infer it from the first account relationship.'};
  s.MatchReview.properties.rule=r('MatchRuleSnapshot');s.MatchReview.properties.signals={...a(r('MatchSignal')),maxItems:100};
@@ -64,6 +64,7 @@ export function addPartyContracts({schemas:s,ref:r,text:t,enumeration:e,object:o
  list('/matches/{matchId}/decisions','listMatchDecisions','match-review',r('MatchDecision'));
  list('/matches/{matchId}/information-requests','listMatchInformationRequests','match-review',r('MatchInformationRequest'));
  const decision=paths['/matches/{matchId}/decisions'].post;
+ decision.requestBody.content['application/json'].schema.properties.expectedQuoteEtag={type:'string',pattern:'^"[A-Za-z0-9+/]{11}="$',description:'Required current quote ETag for an attached draft; fresh changes to a closed quote are rejected.'};
  s.MatchMutationResult=o({id});output('/matches/{matchId}/decisions','post','MatchMutationResult');
  for(const path of ['/matches','/matches/{matchId}','/matches/{matchId}/decisions','/matches/{matchId}/information-requests']){
   paths[path].get['x-permission']='match-read';paths[path].get.description=paths[path].get.description.replace('Requires match-review.','Requires match-read.');

@@ -29,6 +29,9 @@ public static partial class AgencySharingService
         object visible;
         switch (section)
         {
+            case "quotes":
+                visible = await QuoteRows(db, agencyId, query).ToListAsync(token);
+                break;
             case "clients":
                 visible = (await ClientRows(db, agencyId, query).ToListAsync(token)).Select(x => new { x.Id, x.RelationshipId, x.Reference, x.LegalName }).ToArray();
                 break;

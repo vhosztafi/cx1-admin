@@ -1,4 +1,6 @@
+using System.Data;
 using System.Text.Json;
+using BackOffice.Infrastructure.Quotes;
 using System.Text.Json.Serialization;
 using BackOffice.Application.Parties;
 using BackOffice.Infrastructure.Identity;
@@ -43,9 +45,10 @@ public static partial class ClientEndpoints
         var agencies=await (from r in scope.Relationships(db) join a in scope.Agencies(db) on r.AgencyId equals a.Id
             where ids.Contains(r.ClientId) select new {r.ClientId,a.Id,Name=a.LegalName,a.Reference}).ToListAsync(context.RequestAborted);
         var primaries=await scope.Contacts(db).Where(x=>ids.Contains(x.ClientId) && x.IsPrimary).Select(x=>new {x.ClientId,x.DeclaredFullName}).ToListAsync(context.RequestAborted);
+        var quoteCounts=actor.HasCapability("quote-read") ? await db.Set<Quote>().AsNoTracking().Where(x=>ids.Contains(x.ClientId) && x.CurrentRevisionId!=null).GroupBy(x=>x.ClientId).Select(x=>new {Id=x.Key,Count=x.Count()}).ToDictionaryAsync(x=>x.Id,x=>x.Count,context.RequestAborted) : new Dictionary<Guid,int>();
         return Results.Json(new {items=rows.Select(x => new {x.Id,x.Reference,x.LegalName,x.EntityType,x.CompanyNumber,
             primaryContactName=agencies.Count(a=>a.ClientId==x.Id)==1 ? primaries.SingleOrDefault(c=>c.ClientId==x.Id)?.DeclaredFullName : null,
-            Address=Address(x),x.CreatedAt,x.IdentityState,agencies=agencies.Where(a => a.ClientId==x.Id).OrderBy(a => a.Name).Select(a => new {a.Id,a.Name,a.Reference}),records=new {state="unavailable"}}),
+            Address=Address(x),x.CreatedAt,x.IdentityState,agencies=agencies.Where(a => a.ClientId==x.Id).OrderBy(a => a.Name).Select(a => new {a.Id,a.Name,a.Reference}),records=actor.HasCapability("quote-read") ? (object)new {state="partial",quoteCount=quoteCounts.GetValueOrDefault(x.Id),policyState="unavailable"} : new {state="unavailable"}}),
             totalCount=total,nextCursor=paging.Next(page,page.Offset+rows.Count<total)},Json);
     }
 
@@ -104,8 +107,8 @@ public static partial class ClientEndpoints
             (x.EventType=="client.demo-created" || x.EventType=="client.created" || x.EventType=="client.updated" || x.EventType=="client.relationship-created" ||
              x.EventType=="contact.created" || x.EventType=="contact.updated" || x.EventType=="contact.primary-changed" || x.EventType=="contact.ended" ||
              (support && (x.EventType=="support-flag.created" || x.EventType=="support-flag.amended" || x.EventType=="support-flag.reviewed" || x.EventType=="support-flag.ended")) ||
-             (matchRead && (x.EventType=="match.link" || x.EventType=="match.separate" || x.EventType=="match.decline" || x.EventType=="match.query" || x.EventType=="match.reopen")) ||
-             (quoteRead && (x.EventType=="quote.created" || x.EventType=="quote.saved"))));
+             (matchRead && (x.EventType=="match.link" || x.EventType=="match.separate" || x.EventType=="match.decline" || x.EventType=="match.query" || x.EventType=="match.reopen" || x.EventType=="match.created")) ||
+             (quoteRead && (x.EventType=="quote.created" || x.EventType=="quote.saved" || x.EventType=="quote.withdrawn" || x.EventType=="quote.reassociated"))));
         var total=await query.CountAsync(context.RequestAborted);
         var rows=await query.OrderByDescending(x => x.OccurredAt).ThenBy(x => x.Id).Skip(page.Offset).Take(page.Size).ToListAsync(context.RequestAborted);
         var actorIds=rows.Where(x=>x.ActorId!=null).Select(x=>x.ActorId!.Value).Distinct().ToArray();
@@ -117,7 +120,12 @@ public static partial class ClientEndpoints
         var matchScope=new MatchScope(actor);
         var matches=await matchScope.Reviews(db).Where(x=>matchIds.Contains(x.Id)).Select(x=>new {x.Id,x.CandidateClientId,x.CandidateRelationshipId}).ToListAsync(context.RequestAborted);
         var decisions=await matchScope.Decisions(db).Where(x=>matchIds.Contains(x.MatchId) && x.ClientId==clientId).Select(x=>new {x.MatchId,x.RelationshipId}).ToListAsync(context.RequestAborted);
-        bool CanLink(ClientActivity x)=>x.RecordKind=="client" && x.RecordId==clientId ||
+        var quoteIds=rows.Where(x=>x.RecordKind=="quote" && x.RecordId!=null).Select(x=>x.RecordId!.Value).ToArray();
+        var quotes=await db.Set<QuoteRevision>().AsNoTracking().Where(x=>quoteRead && quoteIds.Contains(x.QuoteId) && x.ClientId==clientId).Select(x=>new {Id=x.QuoteId,x.RelationshipId}).Distinct().ToListAsync(context.RequestAborted);
+        var intakeMatches=matchRead ? await db.Set<MatchSubmission>().AsNoTracking().Where(x=>x.LinkedClientId==clientId).Select(x=>x.Id).ToListAsync(context.RequestAborted) : [];
+        var linkedReviews=await matchScope.Reviews(db).Where(x=>intakeMatches.Contains(x.SubmissionId)).Select(x=>x.Id).ToListAsync(context.RequestAborted);
+        bool CanLink(ClientActivity x)=>x.RecordKind=="quote" && quoteRead && x.RecordId is Guid quoteId && quotes.Any(q=>q.Id==quoteId && q.RelationshipId==x.RelationshipId) ||
+            x.RecordKind=="match" && x.RecordId is Guid reviewId && linkedReviews.Contains(reviewId) ||x.RecordKind=="client" && x.RecordId==clientId ||
             x.RecordKind=="contact" && contacts.Any(c=>c.Id==x.RecordId && c.RelationshipId==x.RelationshipId) ||
             x.RecordKind=="match" && matches.Any(m=>m.Id==x.RecordId && (m.CandidateClientId==clientId && m.CandidateRelationshipId==x.RelationshipId || decisions.Any(d=>d.MatchId==m.Id && d.RelationshipId==x.RelationshipId)));
         return Results.Json(new {items=rows.Select(x => new {x.Id,x.OccurredAt,actorLabel=x.ActorId is Guid actorId ? actors.GetValueOrDefault(actorId,"Unavailable staff identity") : "System",x.EventType,
@@ -126,18 +134,35 @@ public static partial class ClientEndpoints
                 "contact.primary-changed"=>"Primary contact changed.","contact.ended"=>"Relationship contact ended.",
                 "support-flag.created"=>"Support instruction recorded.","support-flag.amended"=>"Support instruction amended.",
                 "support-flag.reviewed"=>"Support instruction reviewed.","support-flag.ended"=>"Support instruction ended.",
-                "match.link"=>"Intake linked to this client.","match.separate"=>"Intake recorded as a separate client.","match.decline"=>"Intake declined.",
+                "match.created"=>"Account matching review created.","match.link"=>"Intake linked to this client.","match.separate"=>"Intake recorded as a separate client.","match.decline"=>"Intake declined.",
                 "match.query"=>"Match information request recorded.","match.reopen"=>"Match review reopened.",
-                "quote.created"=>"Quote created.","quote.saved"=>"Quote saved.",_=>"Client identity created."},
+                "quote.created"=>"Quote created.","quote.saved"=>"Quote saved.","quote.withdrawn"=>"Quote withdrawn.","quote.reassociated"=>"Quote account association updated.",_=>"Client identity created."},
             x.RelationshipId,recordId=CanLink(x) ? x.RecordId : null,
             recordKind=CanLink(x) ? x.RecordKind : null}),totalCount=total,nextCursor=paging.Next(page,page.Offset+rows.Count<total)},Json);
     }
 
-    private static async Task<IResult> Records(Guid clientId,HttpContext context,IDbContextFactory<BackOfficeDbContext> factory)
+    private static async Task<IResult> Records(Guid clientId,HttpContext context,IDbContextFactory<BackOfficeDbContext> factory,PartyPaging paging)
     {
-        await using var db=await factory.CreateDbContextAsync(context.RequestAborted);
-        return await Scope(context).Clients(db).AnyAsync(x => x.Id==clientId,context.RequestAborted)
-            ? IdentityEndpoints.Problem(context,503,"client-records-unavailable","Quote and policy records are not available yet.") : Missing(context);
+        var actor=LocalIdentityService.Actor(context.User);var token=context.RequestAborted;
+        var kind=context.Request.Query["kind"].ToString();
+        if(kind.Length>0 && kind is not ("quote" or "policy"))return BadQuery(context);
+        await using var db=await factory.CreateDbContextAsync(token);
+        if(!await Scope(context).Clients(db).AnyAsync(x=>x.Id==clientId,token))return Missing(context);
+        if(kind=="policy")return IdentityEndpoints.Problem(context,503,"client-records-unavailable","Policy records are not available yet.");
+        try
+        {
+            await using var transaction=await db.Database.BeginTransactionAsync(IsolationLevel.Serializable,token);
+            await QuoteDiscovery.AuthorizeAsync(db,actor,token);
+            var page=paging.ReadBound(context,actor,"reference,id",await QuoteDiscovery.VersionAsync(db,token),"kind");
+            if(page is null)return BadQuery(context);
+            var rows=QuoteDiscovery.Rows(db).Where(x=>x.ClientId==clientId);
+            var total=await rows.CountAsync(token);
+            var items=await rows.OrderBy(x=>x.Reference).ThenBy(x=>x.Id).Skip(page.Offset).Take(page.Size)
+                .Select(x=>new {x.Id,kind="quote",x.Reference,x.RelationshipId,x.AgencyName,x.ProductCode,x.State}).ToListAsync(token);
+            await transaction.CommitAsync(token);
+            return Results.Json(new {items,totalCount=total,nextCursor=paging.Next(page,page.Offset+items.Count<total)},Json);
+        }
+        catch(Exception error)when(QuoteEndpoints.Known(error)){return QuoteEndpoints.Failure(context,error);}
     }
 
     private static PartyScope Scope(HttpContext context)=>new(LocalIdentityService.Actor(context.User));

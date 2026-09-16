@@ -6372,6 +6372,11 @@
                     "type": "string",
                     "format": "uuid",
                     "description": "If supplied, must equal the review's immutable candidate; arbitrary reassignment is rejected."
+                  },
+                  "expectedQuoteEtag": {
+                    "type": "string",
+                    "pattern": "^\"[A-Za-z0-9+/]{11}=\"$",
+                    "description": "Required current quote ETag for an attached draft; fresh changes to a closed quote are rejected."
                   }
                 },
                 "required": [
@@ -6540,7 +6545,7 @@
       "post": {
         "operationId": "createQuote",
         "summary": "create Quote",
-        "description": "Requires quote-capture. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Draft create/read/save are available. Readiness reports structural and term issues but remains blocked until semantic, evidence and matching assessments are implemented. Optional matchSubmissionId currently returns 409 without creating a quote. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
+        "description": "Requires quote-capture. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Draft create/read/save are available. Readiness reports structural and term issues but remains blocked until semantic, evidence and matching assessments are implemented. Optional matchSubmissionId attaches an existing intake only when its current agency, client and relationship match; an already attached intake rejects a fresh creation. Matching decisions preserve historical ownership and fence closed capture. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
         "tags": [
           "quotes"
         ],
@@ -6984,7 +6989,7 @@
                     "items": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/QuoteCaptureSummary"
+                        "$ref": "#/components/schemas/QuoteDiscoverySummary"
                       },
                       "maxItems": 1000
                     },
@@ -7127,7 +7132,7 @@
       "get": {
         "operationId": "getQuote",
         "summary": "get Quote",
-        "description": "Requires quote-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Draft create/read/save are available. Readiness reports structural and term issues but remains blocked until semantic, evidence and matching assessments are implemented. Optional matchSubmissionId currently returns 409 without creating a quote. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
+        "description": "Requires quote-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Draft create/read/save are available. Readiness reports structural and term issues but remains blocked until semantic, evidence and matching assessments are implemented. Optional matchSubmissionId attaches an existing intake only when its current agency, client and relationship match; an already attached intake rejects a fresh creation. Matching decisions preserve historical ownership and fence closed capture. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
         "tags": [
           "quotes"
         ],
@@ -7300,7 +7305,7 @@
       "put": {
         "operationId": "saveQuoteProposal",
         "summary": "save Quote Proposal",
-        "description": "Requires quote-capture. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Draft create/read/save are available. Readiness reports structural and term issues but remains blocked until semantic, evidence and matching assessments are implemented. Optional matchSubmissionId currently returns 409 without creating a quote. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
+        "description": "Requires quote-capture. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Draft create/read/save are available. Readiness reports structural and term issues but remains blocked until semantic, evidence and matching assessments are implemented. Optional matchSubmissionId attaches an existing intake only when its current agency, client and relationship match; an already attached intake rejects a fresh creation. Matching decisions preserve historical ownership and fence closed capture. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
         "tags": [
           "quotes"
         ],
@@ -41535,7 +41540,7 @@
       "get": {
         "operationId": "compareQuoteRevisions",
         "summary": "compare Quote Revisions",
-        "description": "Requires quote-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Compare revisions belonging to this quote under current authorization. Child UUIDs determine identity; before/after paths are JSON pointers into their respective snapshots. JSON strings retain exact typed values. Paginate complete changes with a protected cursor bound to both revision IDs and current scope; never truncate a value. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
+        "description": "Requires quote-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Compare revisions belonging to this quote under current authorization. Child UUIDs determine identity; before/after paths address proposal values, except /clientId and /relationshipId which address the immutable revision ownership fields. JSON strings retain exact typed values. Paginate complete changes with a protected cursor bound to both revision IDs and current scope; never truncate a value. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
         "tags": [
           "quotes"
         ],
@@ -50926,7 +50931,7 @@
       "get": {
         "operationId": "listClientRecords",
         "summary": "list Client Records",
-        "description": "Requires client-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Only actual implemented quote/policy records are returned. Module unavailability is 503, not an invented empty live portfolio.",
+        "description": "Requires client-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Defaults to kind=quote. Quote links are available to quote-read identities; kind=policy remains 503. Only actual implemented quote/policy records are returned. Module unavailability is 503, not an invented empty live portfolio.",
         "tags": [
           "clients"
         ],
@@ -55903,6 +55908,169 @@
         }
       }
     },
+    "/agencies/{agencyId}/sharing/quotes": {
+      "get": {
+        "operationId": "listPreviewAgencyQuotes",
+        "summary": "list Preview Agency Quotes",
+        "description": "Requires agency-read-audited. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
+        "tags": [
+          "agencies"
+        ],
+        "x-permission": "agency-read-audited",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "agencyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AgencySharedQuote"
+                      },
+                      "maxItems": 1000
+                    },
+                    "nextCursor": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2048
+                    },
+                    "totalCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/agencies/{agencyId}/sharing/clients": {
       "get": {
         "operationId": "listPreviewAgencyClients",
@@ -56307,6 +56475,160 @@
                       "type": "array",
                       "items": {
                         "$ref": "#/components/schemas/AgencySharedInstruction"
+                      },
+                      "maxItems": 1000
+                    },
+                    "nextCursor": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2048
+                    },
+                    "totalCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agency-context/quotes": {
+      "get": {
+        "operationId": "listCurrentAgencyQuotes",
+        "summary": "list Current Agency Quotes",
+        "description": "Requires active-own-agency. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Recheck current agency and actor scope before receipts/data. Agency mutations lock Agency, then ordered users, then child records. A proposal has its own ETag and creation does not advance its agency base. See Phase 4 data/access protocols.",
+        "tags": [
+          "agency-context"
+        ],
+        "x-permission": "active-own-agency",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AgencySharedQuote"
                       },
                       "maxItems": 1000
                     },
@@ -57044,7 +57366,7 @@
       "get": {
         "operationId": "validateQuote",
         "summary": "Assess current revision readiness without changing quote state",
-        "description": "Requires quote-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Draft create/read/save are available. Readiness reports structural and term issues but remains blocked until semantic, evidence and matching assessments are implemented. Optional matchSubmissionId currently returns 409 without creating a quote. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
+        "description": "Requires quote-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Draft create/read/save are available. Readiness reports structural and term issues but remains blocked until semantic, evidence and matching assessments are implemented. Optional matchSubmissionId attaches an existing intake only when its current agency, client and relationship match; an already attached intake rejects a fresh creation. Matching decisions preserve historical ownership and fence closed capture. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
         "tags": [
           "quotes"
         ],
@@ -67511,6 +67833,27 @@
             "additionalProperties": false,
             "properties": {
               "state": {
+                "const": "partial"
+              },
+              "quoteCount": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "policyState": {
+                "const": "unavailable"
+              }
+            },
+            "required": [
+              "state",
+              "quoteCount",
+              "policyState"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "state": {
                 "const": "available"
               },
               "policyCount": {
@@ -67923,6 +68266,14 @@
           "quoteId": {
             "type": "string",
             "format": "uuid"
+          },
+          "quoteEtag": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "captureClosed": {
+            "type": "boolean"
           },
           "linkedClientId": {
             "type": "string",
@@ -69665,10 +70016,77 @@
           "available"
         ]
       },
+      "AgencySharedQuote": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "clientName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "productCode": {
+            "type": "string",
+            "enum": [
+              "motor-trade-road-risks",
+              "motor-trade-combined"
+            ]
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "withdrawn"
+            ]
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "required": [
+          "id",
+          "reference",
+          "clientName",
+          "productCode",
+          "state",
+          "updatedAt"
+        ]
+      },
       "AgencySharing": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "quotes": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "state": {
+                "const": "available"
+              },
+              "totalCount": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "state",
+              "totalCount"
+            ]
+          },
           "agency": {
             "type": "object",
             "additionalProperties": false,
@@ -69744,6 +70162,7 @@
           }
         },
         "required": [
+          "quotes",
           "agency",
           "products",
           "permissions",
@@ -70194,6 +70613,101 @@
           "updatedAt"
         ]
       },
+      "QuoteDiscoverySummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "relationshipId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "clientId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "agencyId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "clientName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "agencyName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "productCode": {
+            "type": "string",
+            "enum": [
+              "motor-trade-road-risks",
+              "motor-trade-combined"
+            ]
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "withdrawn"
+            ]
+          },
+          "revisionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revisionNumber": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "clientReference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "startDate": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "reference",
+          "relationshipId",
+          "clientId",
+          "agencyId",
+          "clientName",
+          "agencyName",
+          "productCode",
+          "state",
+          "revisionId",
+          "revisionNumber",
+          "updatedAt",
+          "clientReference",
+          "startDate"
+        ]
+      },
       "QuoteReadiness": {
         "type": "object",
         "additionalProperties": false,
@@ -70288,6 +70802,14 @@
             "type": "string",
             "format": "uuid"
           },
+          "clientId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "relationshipId": {
+            "type": "string",
+            "format": "uuid"
+          },
           "number": {
             "type": "integer",
             "minimum": 1
@@ -70335,6 +70857,8 @@
         "required": [
           "id",
           "quoteId",
+          "clientId",
+          "relationshipId",
           "number",
           "productVersionId",
           "agencyTermsVersionId",
@@ -70446,6 +70970,17 @@
           "captureClosed": {
             "type": "boolean"
           },
+          "matchReviewId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "captureClosedAt": {
             "anyOf": [
               {
@@ -70514,6 +71049,7 @@
           "captureVersions",
           "proposal",
           "captureClosed",
+          "matchReviewId",
           "captureClosedAt",
           "captureClosedReason",
           "capabilities",

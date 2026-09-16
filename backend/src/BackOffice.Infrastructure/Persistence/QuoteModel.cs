@@ -21,6 +21,7 @@ public sealed partial class BackOfficeDbContext
         quote.HasIndex(x => new { x.AgencyId, x.State, x.UpdatedAt, x.Id });
         quote.HasIndex(x => new { x.ClientId, x.UpdatedAt, x.Id });
         quote.HasAlternateKey(x => new { x.Id, x.AgencyId, x.ProductId });
+        quote.HasAlternateKey(x => new { x.Id, x.AgencyId });
         quote.HasOne<ClientAgencyRelationship>().WithMany().HasForeignKey(x => new { x.RelationshipId, x.ClientId, x.AgencyId })
             .HasPrincipalKey(x => new { x.Id, x.ClientId, x.AgencyId }).OnDelete(DeleteBehavior.NoAction);
         quote.HasOne<Product>().WithMany().HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.NoAction);
@@ -41,6 +42,8 @@ public sealed partial class BackOfficeDbContext
         revision.HasIndex(x => new { x.QuoteId, x.Number }).IsUnique();
         revision.HasOne<Quote>().WithMany().HasForeignKey(x => new { x.QuoteId, x.AgencyId, x.ProductId })
             .HasPrincipalKey(x => new { x.Id, x.AgencyId, x.ProductId }).OnDelete(DeleteBehavior.NoAction);
+        revision.HasOne<ClientAgencyRelationship>().WithMany().HasForeignKey(x => new { x.RelationshipId, x.ClientId, x.AgencyId })
+            .HasPrincipalKey(x => new { x.Id, x.ClientId, x.AgencyId }).OnDelete(DeleteBehavior.NoAction);
         revision.HasOne<ProductVersion>().WithMany().HasForeignKey(x => new { x.ProductVersionId, x.ProductId })
             .HasPrincipalKey(x => new { x.Id, x.ProductId }).OnDelete(DeleteBehavior.NoAction);
         revision.HasOne<AgencyTermsVersion>().WithMany().HasForeignKey(x => new { x.AgencyTermsVersionId, x.AgencyId })

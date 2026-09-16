@@ -12,7 +12,7 @@ public static class QuoteReadiness
 {
     public static QuoteReadinessResult Assess(Guid quoteId, Guid revisionId, JsonElement proposal,
         QuoteTermAssessment term, string? captureUnavailableCode, DateOnly asOf, IReadOnlyDictionary<Guid, string>? vehicleCaptureModes = null,
-        IReadOnlySet<(string Code, Guid? RiskItemId)>? currentEvidence = null)
+        IReadOnlySet<(string Code, Guid? RiskItemId)>? currentEvidence = null, string? matchingCode = null)
     {
         // Capture APIs precede semantic sections (05-03..06), evidence (05-08)
         // and matching (05-10). Never report readiness until those gates run.
@@ -21,6 +21,8 @@ public static class QuoteReadiness
         {
             new("/", "quote-assessment-unavailable", "The quote cannot yet be assessed for progression.", "configuration", "error")
         };
+        if (matchingCode is not null)
+            issues.Add(new("/", matchingCode, "An underwriter must resolve the account matching review before progression.", "matching", "error"));
         if (captureUnavailableCode is not null)
             issues.Add(new("/", captureUnavailableCode, "Capture is unavailable for this quote. Review its current status and product access.", "eligibility", "error"));
         issues.AddRange(term.Issues.Select(x => new QuoteReadinessIssue(x.Path, x.Code, "Complete or correct the policy term.", "capture", "error")));

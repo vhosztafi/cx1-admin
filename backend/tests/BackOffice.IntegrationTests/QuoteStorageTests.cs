@@ -216,7 +216,8 @@ public sealed partial class QuoteStorageTests
             Assert.All(quoteEvents, x =>
             {
                 Assert.False(x.TryGetProperty("proposal", out _));
-                Assert.False(x.TryGetProperty("recordId", out var id) && id.ValueKind != JsonValueKind.Null); // Quote linking is still unavailable.
+                Assert.Equal(create.ResourceId, x.GetProperty("recordId").GetGuid());
+                Assert.Equal("quote", x.GetProperty("recordKind").GetString());
             });
             using var agencyReader = host.CreateClient();
             var agencyCsrf = (await agencyReader.GetFromJsonAsync<JsonElement>("/api/v1/auth/csrf")).GetProperty("requestToken").GetString()!;
@@ -444,7 +445,7 @@ public sealed partial class QuoteStorageTests
     {
         const string proposal = "{\"schemaVersion\":\"1.0\",\"productCode\":\"motor-trade-road-risks\"}";
         var now = DateTimeOffset.UtcNow;
-        return new QuoteRevision { QuoteId = quote.Id, AgencyId = fixture.Agency, ProductId = fixture.Product,
+        return new QuoteRevision { ClientId = quote.ClientId, RelationshipId = quote.RelationshipId, QuoteId = quote.Id, AgencyId = fixture.Agency, ProductId = fixture.Product,
             ProductVersionId = fixture.ProductVersion, AgencyTermsVersionId = fixture.Terms, Number = number,
             QuestionSetVersion = QuoteCatalogueIdentity.Version, ProposalJson = proposal,
             ContentHash = SHA256.HashData(Encoding.UTF8.GetBytes(proposal)), CreatedBy = fixture.Actor, SavedBy = fixture.Actor,

@@ -112,7 +112,7 @@ public sealed partial class QuoteStorageTests
             var invalidBody = await invalidShape.Content.ReadFromJsonAsync<JsonElement>();
             Assert.Equal("quote-input-invalid", invalidBody.GetProperty("code").GetString());
             Assert.All(invalidBody.GetProperty("errors").EnumerateArray(), error => Assert.False(string.IsNullOrEmpty(error.GetProperty("message").GetString())));
-            await Problem(await Write(HttpMethod.Post, "/api/v1/quotes", new { relationshipId = fixture.Relationship, productVersionId = fixture.ProductVersion, matchSubmissionId = Guid.NewGuid() }, "api-match-0000001"), 409, "quote-match-association-unavailable");
+            await Problem(await Write(HttpMethod.Post, "/api/v1/quotes", new { relationshipId = fixture.Relationship, productVersionId = fixture.ProductVersion, matchSubmissionId = Guid.NewGuid() }, "api-match-0000001"), 404, "quote-match-context-not-found");
             using var malformed = await Write(HttpMethod.Put, route + "/proposal", "{\"proposal\":{},\"proposal\":{}}", "api-duplicate-001", savedTag);
             Assert.Equal(HttpStatusCode.BadRequest, malformed.StatusCode);
             await Problem(await Write(HttpMethod.Post, "/api/v1/quotes", new string(' ', 1024 * 1024 + 1), "api-oversized-001"), 413, "quote-request-too-large");

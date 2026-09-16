@@ -1,16 +1,17 @@
 'use client';
+import Link from 'next/link';
 import { createContext, useContext, useState } from 'react';
 import type { Page } from '../../lib/clients';
 import type { QuoteProposal, QuoteView } from '../../lib/quotes';
 import { Panel } from '../primitives';
 import { LoadFeedback, Paging, useQuoteResource } from './shared';
 
-type Revision = { id: string; number: number; savedAt: string; savedByLabel: string; reason?: string; proposal: QuoteProposal; proposalHash: string };
+type Revision = { id: string; clientId: string; relationshipId: string; number: number; savedAt: string; savedByLabel: string; reason?: string; proposal: QuoteProposal; proposalHash: string };
 type Side = { path: string; json: string };
 type Change = { kind: 'added' | 'removed' | 'changed' | 'reordered'; path: string; before?: Side; after?: Side };
 type Comparison = { changes: Change[]; totalChanges: number; nextCursor?: string };
 const QuestionLabels = createContext<Record<string, string>>({});
-const label = (path: string) => path.split('/').filter(Boolean).filter(value => value !== 'risk').map(value => /^\d+$/.test(value) ? String(Number(value) + 1) :
+const label = (path: string) => path === '/clientId' ? 'Client account' : path === '/relationshipId' ? 'Agency relationship' : path.split('/').filter(Boolean).filter(value => value !== 'risk').map(value => /^\d+$/.test(value) ? String(Number(value) + 1) :
   value.replaceAll('~1', '/').replaceAll('~0', '~').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, first => first.toUpperCase())).join(' · ') || 'Proposal';
 
 export function QuoteHistory({ quote, selected, select, questionLabels }: { quote: QuoteView; selected: string; select: (id: string) => void; questionLabels: Record<string, string> }) {
@@ -36,7 +37,7 @@ export function QuoteHistory({ quote, selected, select, questionLabels }: { quot
 function Snapshot({ quoteId, revisionId }: { quoteId: string; revisionId: string }) {
   const revision = useQuoteResource<Revision>(`/api/v1/quotes/${quoteId}/revisions/${revisionId}`);
   return <details className="quote-rail-body"><summary>Selected revision details</summary>{!revision.data ? <LoadFeedback error={revision.error} retry={revision.refresh} /> :
-    <><p>Revision {revision.data.number} · {revision.data.savedByLabel} · {new Date(revision.data.savedAt).toLocaleString('en-GB')}</p><Value value={revision.data.proposal} /></>}</details>;
+    <><p>Revision {revision.data.number} · {revision.data.savedByLabel} · {new Date(revision.data.savedAt).toLocaleString('en-GB')}</p><p><Link href={`/clients/${revision.data.clientId}`}>Account recorded at this revision</Link></p><Value value={revision.data.proposal} /></>}</details>;
 }
 function Compare({ quoteId, left, right }: { quoteId: string; left: string; right: string }) {
   const [pages, setPages] = useState(['']); const cursor = pages.at(-1)!;
@@ -44,11 +45,17 @@ function Compare({ quoteId, left, right }: { quoteId: string; left: string; righ
   return <section className="quote-rail-body" aria-label="Revision comparison"><h2>Revision comparison</h2>
     {!result.data ? <LoadFeedback error={result.error} retry={result.refresh} /> : <><p>{result.data.totalChanges} {result.data.totalChanges === 1 ? 'change' : 'changes'}. Reordered entries are matched to the same saved risk.</p>
       {result.data.changes.map((item, index) => <details className="quote-driver-card" key={`${item.path}:${index}`} open><summary>{label(item.path)} · {item.kind}</summary>
-        <div className="quote-form-grid"><div><h3>Before</h3>{item.before ? <Value value={JSON.parse(item.before.json)} /> : <p>Not recorded</p>}</div>
-          <div><h3>After</h3>{item.after ? <Value value={JSON.parse(item.after.json)} /> : <p>Not recorded</p>}</div></div></details>)}
+        <div className="quote-form-grid"><div><h3>Before</h3>{item.before ? <ChangeValue path={item.path} side={item.before} /> : <p>Not recorded</p>}</div>
+          <div><h3>After</h3>{item.after ? <ChangeValue path={item.path} side={item.after} /> : <p>Not recorded</p>}</div></div></details>)}
       <Paging total={result.data.totalChanges} previous={pages.length > 1 ? () => setPages(value => value.slice(0, -1)) : undefined}
         next={result.data.nextCursor ? () => setPages(value => [...value, result.data!.nextCursor!]) : undefined} /></>}
   </section>;
+}
+function ChangeValue({ path, side }: { path: string; side: Side }) {
+  const value: unknown = JSON.parse(side.json);
+  if (path === '/clientId' && typeof value === 'string') return <Link href={`/clients/${value}`}>View client account</Link>;
+  if (path === '/relationshipId') return <span>Agency relationship for the recorded client account</span>;
+  return <Value value={value} />;
 }
 function Value({ value }: { value: unknown }) {
   const labels = useContext(QuestionLabels);

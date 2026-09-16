@@ -21,7 +21,7 @@ export type QuoteView = {
   clientName: string; agencyName: string; productCode: QuoteProductCode; state: string;
   revisionId: string; revisionNumber: number; updatedAt: string; productVersionId: string;
   proposal: QuoteProposal; captureClosed: boolean;
-  captureClosedAt: string | null; captureClosedReason: string | null;
+  captureClosedAt: string | null; captureClosedReason: string | null; matchReviewId?: string | null;
   captureVersions: { schemaVersion: string; questionSetVersion: string; referenceDataVersion: string };
   capabilities: { canSave: boolean; canClone: boolean; canWithdraw: boolean; canAttachEvidence: boolean };
   readiness: QuoteReadiness;
@@ -68,9 +68,10 @@ function commandKey(key: string) {
   if (key.length < 16 || key.length > 200 || key.trim() !== key || /[\u0000-\u001f\u007f-\u009f]/.test(key)) throw new Error('The save command identity is invalid.');
   return key;
 }
-export function createQuoteCommand(relationshipId: string, productVersionId: string, proposal: QuoteProposal, key: string = crypto.randomUUID()): PendingQuoteCommand {
+export function createQuoteCommand(relationshipId: string, productVersionId: string, proposal: QuoteProposal, key: string = crypto.randomUUID(), matchSubmissionId?: string): PendingQuoteCommand {
   if (!validId(relationshipId) || !validId(productVersionId)) throw new Error('Select a saved relationship and product.');
-  return Object.freeze({ method: 'POST', url: '/api/v1/quotes', body: JSON.stringify({ relationshipId, productVersionId, proposal }), key: commandKey(key) });
+  if (matchSubmissionId !== undefined && !validId(matchSubmissionId)) throw new Error('Select a saved matching intake.');
+  return Object.freeze({ method: 'POST', url: '/api/v1/quotes', body: JSON.stringify({ relationshipId, productVersionId, proposal, ...(matchSubmissionId ? { matchSubmissionId } : {}) }), key: commandKey(key) });
 }
 export function saveQuoteCommand(id: string, etag: string, proposal: QuoteProposal, reason?: string, key: string = crypto.randomUUID()): PendingQuoteCommand {
   if (!validId(id) || !validQuoteEtag(etag)) throw new Error('Reload the saved quote version before saving.');
