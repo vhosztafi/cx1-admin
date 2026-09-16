@@ -4,14 +4,15 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { csrfToken, type Actor } from '../lib/auth';
+import { canCaptureQuotes } from '../lib/quotes';
 
 const navigation = [['Dashboard', '/'], ['Clients', '/clients'], ['Quotes', '/quotes'], ['Policies', '/policies'], ['Agents', '/agents'], ['Tasks', '/tasks'], ['Accounting', '/accounting'], ['Reporting', '/reporting'], ['Admin', '/admin']];
 
-function Navigation({ close }: { close?: () => void }) {
+function Navigation({ close, canQuote }: { close?: () => void; canQuote: boolean }) {
   const pathname = usePathname();
   return <><div className="sidebar-brand"><Link href="/" onClick={close} className="brand-word">Cover</Link><span className="brand-subtitle">Motor Trade MGA</span></div>
     <nav className="navigation" aria-label="Main navigation">{navigation.map(([label, href]) => <Link key={href} href={href} prefetch={false} onClick={close} aria-current={pathname === href || (href !== '/' && pathname.startsWith(`${href}/`)) || (href === '/clients' && (pathname === '/matches' || pathname.startsWith('/matches/'))) ? 'page' : undefined} className={label === 'Accounting' ? 'nav-divider' : ''}>{label}</Link>)}</nav>
-    <div className="sidebar-footer"><Link href="/quotes" onClick={close} className="button button-primary">New Quote</Link><p className="demo-label">DEMO DATA · v1.0</p></div></>;
+    <div className="sidebar-footer">{canQuote && <Link href="/quotes/new" onClick={close} className="button button-primary">New Quote</Link>}<p className="demo-label">DEMO DATA · v1.0</p></div></>;
 }
 
 export function WorkspaceShell({ actor, children }: { actor: Actor; children: React.ReactNode }) {
@@ -32,9 +33,9 @@ export function WorkspaceShell({ actor, children }: { actor: Actor; children: Re
   }
 
   return <div className="workspace"><a href="#main-content" className="skip-link">Skip to content</a>
-    <aside className="desktop-sidebar"><Navigation /></aside>
+    <aside className="desktop-sidebar"><Navigation canQuote={canCaptureQuotes(actor.roles)} /></aside>
     <dialog ref={drawer} className="mobile-drawer" aria-label="Navigation" onClick={event => { if (event.target === event.currentTarget) drawer.current?.close(); }}>
-      <div className="drawer-content"><button className="drawer-close button" onClick={() => drawer.current?.close()} aria-label="Close navigation">Close ×</button><Navigation close={() => drawer.current?.close()} /></div>
+      <div className="drawer-content"><button className="drawer-close button" onClick={() => drawer.current?.close()} aria-label="Close navigation">Close ×</button><Navigation canQuote={canCaptureQuotes(actor.roles)} close={() => drawer.current?.close()} /></div>
     </dialog>
     <div className="workspace-body"><header className="topbar"><button className="button mobile-menu" aria-label="Open navigation" onClick={() => drawer.current?.showModal()}>☰</button>
       <div className="search-box"><input aria-label="Search clients, policies, quotes and registrations (not available yet)" placeholder="Search clients, policies, quotes, registrations" disabled /><span>All</span></div>
