@@ -10,10 +10,14 @@ public static class QuoteCaptureShape
 {
     public const int MaximumIssues = 100;
     private static readonly Lazy<JsonSchema> Draft = new(() => BuildBundled("QuoteCapture.DraftSchema"));
+    private static readonly Lazy<JsonSchema> Ready = new(() => BuildBundled("QuoteCapture.ReadySchema"));
 
-    public static IReadOnlyList<QuoteFieldIssue> Validate(JsonElement proposal)
+    public static IReadOnlyList<QuoteFieldIssue> Validate(JsonElement proposal) => Evaluate(Draft.Value, proposal);
+    public static IReadOnlyList<QuoteFieldIssue> ValidateCompleteness(JsonElement proposal) => Evaluate(Ready.Value, proposal);
+
+    private static IReadOnlyList<QuoteFieldIssue> Evaluate(JsonSchema schema, JsonElement proposal)
     {
-        var result = Draft.Value.Evaluate(proposal, new EvaluationOptions
+        var result = schema.Evaluate(proposal, new EvaluationOptions
         {
             RequireFormatValidation = true,
             OutputFormat = OutputFormat.List

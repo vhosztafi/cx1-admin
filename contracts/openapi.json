@@ -6540,11 +6540,11 @@
       "post": {
         "operationId": "createQuote",
         "summary": "create Quote",
-        "description": "Requires quote-write. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
+        "description": "Requires quote-capture. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Draft create/read/save are available. Readiness reports structural and term issues but remains blocked until semantic, evidence and matching assessments are implemented. Optional matchSubmissionId currently returns 409 without creating a quote. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
         "tags": [
           "quotes"
         ],
-        "x-permission": "quote-write",
+        "x-permission": "quote-capture",
         "x-idempotency": "required",
         "security": [
           {
@@ -6713,6 +6713,44 @@
               }
             }
           },
+          "413": {
+            "description": "Quote request exceeds the UTF-8 byte limit",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "JSON request content type required",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
           "422": {
             "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
             "content": {
@@ -6800,7 +6838,8 @@
             }
           }
         },
-        "x-runtime-status": "planned-phase-05"
+        "x-runtime-status": "implemented-capture-only",
+        "x-readiness-status": "partial-fail-closed"
       },
       "get": {
         "operationId": "listQuotes",
@@ -7088,7 +7127,7 @@
       "get": {
         "operationId": "getQuote",
         "summary": "get Quote",
-        "description": "Requires quote-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
+        "description": "Requires quote-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Draft create/read/save are available. Readiness reports structural and term issues but remains blocked until semantic, evidence and matching assessments are implemented. Optional matchSubmissionId currently returns 409 without creating a quote. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
         "tags": [
           "quotes"
         ],
@@ -7253,18 +7292,19 @@
             }
           }
         },
-        "x-runtime-status": "planned-phase-05"
+        "x-runtime-status": "implemented-capture-only",
+        "x-readiness-status": "partial-fail-closed"
       }
     },
     "/quotes/{quoteId}/proposal": {
       "put": {
         "operationId": "saveQuoteProposal",
         "summary": "save Quote Proposal",
-        "description": "Requires quote-write. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
+        "description": "Requires quote-capture. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Draft create/read/save are available. Readiness reports structural and term issues but remains blocked until semantic, evidence and matching assessments are implemented. Optional matchSubmissionId currently returns 409 without creating a quote. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
         "tags": [
           "quotes"
         ],
-        "x-permission": "quote-write",
+        "x-permission": "quote-capture",
         "x-idempotency": "required",
         "security": [
           {
@@ -7445,6 +7485,44 @@
               }
             }
           },
+          "413": {
+            "description": "Quote request exceeds the UTF-8 byte limit",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "JSON request content type required",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
           "422": {
             "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
             "content": {
@@ -7532,7 +7610,8 @@
             }
           }
         },
-        "x-runtime-status": "planned-phase-05"
+        "x-runtime-status": "implemented-capture-only",
+        "x-readiness-status": "partial-fail-closed"
       }
     },
     "/quotes/{quoteId}/rate": {
@@ -7888,11 +7967,11 @@
       "post": {
         "operationId": "withdrawQuote",
         "summary": "withdraw Quote",
-        "description": "Requires quote-write. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
+        "description": "Requires quote-capture. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
         "tags": [
           "quotes"
         ],
-        "x-permission": "quote-write",
+        "x-permission": "quote-capture",
         "x-idempotency": "required",
         "security": [
           {
@@ -40642,11 +40721,11 @@
       "post": {
         "operationId": "cloneQuote",
         "summary": "clone Quote",
-        "description": "Requires quote-write. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
+        "description": "Requires quote-capture. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
         "tags": [
           "quotes"
         ],
-        "x-permission": "quote-write",
+        "x-permission": "quote-capture",
         "x-idempotency": "required",
         "security": [
           {
@@ -46047,11 +46126,11 @@
       "post": {
         "operationId": "attachQuoteEvidence",
         "summary": "attach Quote Evidence",
-        "description": "Requires quote-write. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
+        "description": "Requires quote-capture. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
         "tags": [
           "quotes"
         ],
-        "x-permission": "quote-write",
+        "x-permission": "quote-capture",
         "x-idempotency": "required",
         "security": [
           {
@@ -46333,11 +46412,11 @@
       "post": {
         "operationId": "withdrawQuoteEvidence",
         "summary": "withdraw Quote Evidence",
-        "description": "Requires quote-write. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
+        "description": "Requires quote-capture. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
         "tags": [
           "quotes"
         ],
-        "x-permission": "quote-write",
+        "x-permission": "quote-capture",
         "x-idempotency": "required",
         "security": [
           {
@@ -56818,7 +56897,7 @@
       "get": {
         "operationId": "validateQuote",
         "summary": "Assess current revision readiness without changing quote state",
-        "description": "Requires quote-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
+        "description": "Requires quote-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Draft create/read/save are available. Readiness reports structural and term issues but remains blocked until semantic, evidence and matching assessments are implemented. Optional matchSubmissionId currently returns 409 without creating a quote. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
         "tags": [
           "quotes"
         ],
@@ -56983,7 +57062,8 @@
             }
           }
         },
-        "x-runtime-status": "planned-phase-05"
+        "x-runtime-status": "implemented-capture-only",
+        "x-readiness-status": "partial-fail-closed"
       }
     },
     "/quotes/{quoteId}/revisions/{revisionId}": {
@@ -57356,11 +57436,11 @@
       "post": {
         "operationId": "startQuoteLookup",
         "summary": "start Quote Lookup",
-        "description": "Requires quote-write. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
+        "description": "Requires quote-capture. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
         "tags": [
           "quotes"
         ],
-        "x-permission": "quote-write",
+        "x-permission": "quote-capture",
         "x-idempotency": "required",
         "security": [
           {
@@ -57823,11 +57903,11 @@
       "post": {
         "operationId": "selectQuoteLookup",
         "summary": "select Quote Lookup",
-        "description": "Requires quote-write. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
+        "description": "Requires quote-capture. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
         "tags": [
           "quotes"
         ],
-        "x-permission": "quote-write",
+        "x-permission": "quote-capture",
         "x-idempotency": "required",
         "security": [
           {
@@ -58102,11 +58182,11 @@
       "post": {
         "operationId": "uploadQuoteEvidenceFile",
         "summary": "upload Quote Evidence File",
-        "description": "Requires quote-write. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
+        "description": "Requires quote-capture. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
         "tags": [
           "quotes"
         ],
-        "x-permission": "quote-write",
+        "x-permission": "quote-capture",
         "x-idempotency": "required",
         "security": [
           {

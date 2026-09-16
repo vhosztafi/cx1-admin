@@ -17,7 +17,7 @@ using Xunit;
 
 namespace BackOffice.IntegrationTests;
 
-public sealed class QuoteStorageTests
+public sealed partial class QuoteStorageTests
 {
     [Fact]
     public async Task RealSqlQuoteReadProjectsCurrentCaptureAvailabilityWithoutLosingHistory()

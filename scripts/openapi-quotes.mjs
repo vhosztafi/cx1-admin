@@ -17,12 +17,12 @@ export function addQuoteContracts({schemas:s,ref:r,text:t,enumeration:e,object:o
   s.QuoteCaptureProduct=o({productVersionId:id,productCode:product,displayName:t(),versionLabel:t(100),questionSetVersion:t(100),referenceDataVersion:t(100),captureEligible:b,unavailableReason:t(1000)},['productVersionId','productCode','displayName','versionLabel','questionSetVersion','referenceDataVersion','captureEligible']);
   const replace=(method,path,...args)=>{delete paths[path]?.[method];op(method,path,...args);};
   const replaceList=(path,...args)=>{delete paths[path]?.get;list(path,...args);};
-  replace('post','/quotes','createQuote','quote-write',{input:r('QuoteCreateRequest'),output:r('QuoteIdentityResult'),status:201});
+  replace('post','/quotes','createQuote','quote-capture',{input:r('QuoteCreateRequest'),output:r('QuoteIdentityResult'),status:201});
   replaceList('/quotes','listQuotes','quote-read',r('QuoteCaptureSummary'),[['q',t(200)],['productCode',product],['agencyId',id],['clientId',id],['status',state],['sort',e('reference','updated','start')],['direction',e('asc','desc')]]);
   replace('get','/quotes/{quoteId}','getQuote','quote-read',{output:r('QuoteCaptureView')});
-  replace('put','/quotes/{quoteId}/proposal','saveQuoteProposal','quote-write',{existing:true,input:r('QuoteSaveRequest'),output:r('QuoteIdentityResult')});
-  replace('post','/quotes/{quoteId}/withdraw','withdrawQuote','quote-write',{existing:true,input:o({reason:t(1000)}),output:r('QuoteIdentityResult')});
-  replace('post','/quotes/{quoteId}/clone','cloneQuote','quote-write',{existing:true,input:r('QuoteCloneRequest'),output:r('QuoteIdentityResult'),status:201});
+  replace('put','/quotes/{quoteId}/proposal','saveQuoteProposal','quote-capture',{existing:true,input:r('QuoteSaveRequest'),output:r('QuoteIdentityResult')});
+  replace('post','/quotes/{quoteId}/withdraw','withdrawQuote','quote-capture',{existing:true,input:o({reason:t(1000)}),output:r('QuoteIdentityResult')});
+  replace('post','/quotes/{quoteId}/clone','cloneQuote','quote-capture',{existing:true,input:r('QuoteCloneRequest'),output:r('QuoteIdentityResult'),status:201});
   delete paths['/quotes/{quoteId}/validate'];
   op('get','/quotes/{quoteId}/readiness','validateQuote','quote-read',{output:r('QuoteReadiness'),summary:'Assess current revision readiness without changing quote state'});
   replaceList('/quotes/{quoteId}/revisions','listQuoteRevisions','quote-read',r('QuoteCaptureRevision'));
@@ -48,6 +48,15 @@ export function addQuoteContracts({schemas:s,ref:r,text:t,enumeration:e,object:o
   for(const path of [...supportPaths,'/quotes','/quotes/{quoteId}','/quotes/{quoteId}/proposal','/quotes/{quoteId}/withdraw','/quotes/{quoteId}/clone','/quotes/{quoteId}/readiness','/quotes/{quoteId}/revisions','/quotes/{quoteId}/revisions/{revisionId}','/quotes/{quoteId}/compare','/quote-products'])
     for(const operation of Object.values(paths[path])) {
       operation['x-runtime-status']='planned-phase-05';
+      if(['createQuote','saveQuoteProposal','getQuote','validateQuote'].includes(operation.operationId)) {
+        operation['x-runtime-status']='implemented-capture-only';
+        operation['x-readiness-status']='partial-fail-closed';
+        if(['createQuote','saveQuoteProposal'].includes(operation.operationId)) {
+          operation.responses[413]={...operation.responses[400],description:'Quote request exceeds the UTF-8 byte limit'};
+          operation.responses[415]={...operation.responses[400],description:'JSON request content type required'};
+        }
+        operation.description+=' Draft create/read/save are available. Readiness reports structural and term issues but remains blocked until semantic, evidence and matching assessments are implemented. Optional matchSubmissionId currently returns 409 without creating a quote.';
+      }
       operation.description+=' Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.';
       for(const [status,response] of Object.entries(operation.responses))operation.responses[status]={...response,headers:{...response.headers,'Cache-Control':{description:'Confidential quote response; never cache.',schema:{type:'string',const:'no-store'}}}};
     }

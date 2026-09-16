@@ -42,6 +42,8 @@ Implemented save validation boundary: QuoteCaptureBoundary returns canonical inp
 
 Readiness is calculated for a specific persisted revision plus current eligibility/evidence and returns issue codes/paths/section/item IDs. It is neither rating nor approval. Phase6 must pin the revision/hash and reject every stale rating/acceptance after risk, terms or applicable configuration changes. No fake RatingResult/Acceptance rows are created in Phase5.
 
+Runtime sequencing clarification (2026-09-16):05-02 exposes persisted draft capture with structural/term assessment and an unconditional server-owned quote-assessment-unavailable error. The result is explicitly partial and ready=false until the dependent semantic sections (05-03..06), evidence (05-08) and matching (05-10) assessments are implemented and composed. This avoids requiring those later plans before their prerequisite capture API can exist. No caller field can remove this blocker; full readiness remains required for Phase5 acceptance and all Phase6 progression. Quote-read and quote-capture are the actual runtime policies; no quote-write alias is introduced.
+
 ## Authority and lock order
 
 Internal quote-read/capture: servicing, underwriter, senior-underwriter. Internal agency-admin has safe own-agency preview access, not full quote risk by implication. System-admin/finance get no new blanket capture rights. Agency accounts remain read-only safe-context consumers in this phase; future broker writes need an explicit owned capability and tests, not product membership alone.

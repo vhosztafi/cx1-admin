@@ -23,10 +23,10 @@ export function addQuoteSupportContracts({schemas:s,ref:r,text:t,enumeration:e,o
   s.QuoteEvidenceAttachRequest=o({...fingerprint,requirementCode:t(100),riskItemId:id,fileId:id,reason:t(1000)},['revisionId','inputFingerprint','requirementCode','fileId','reason']);
   s.QuoteCaptureEvidence=o({id,quoteId:id,...s.QuoteEvidenceAttachRequest.properties,state:e('current','stale','withdrawn'),createdAt:instant,createdByLabel:t(),etag:t(100),file:r('QuoteEvidenceFile')},['id','quoteId',...s.QuoteEvidenceAttachRequest.required,'state','createdAt','createdByLabel','etag','file']);
   const replace=(method,path,...args)=>{delete paths[path]?.[method];op(method,path,...args);};
-  op('post','/quotes/{quoteId}/lookups','startQuoteLookup','quote-write',{existing:true,input:r('QuoteLookupRequest'),output:r('QuoteIdentityResult'),status:202});
+  op('post','/quotes/{quoteId}/lookups','startQuoteLookup','quote-capture',{existing:true,input:r('QuoteLookupRequest'),output:r('QuoteIdentityResult'),status:202});
   op('get','/quotes/{quoteId}/lookups/{lookupId}','getQuoteLookup','quote-read',{output:r('QuoteLookupView')});
-  op('post','/quotes/{quoteId}/lookup-selections','selectQuoteLookup','quote-write',{existing:true,input:r('QuoteLookupSelectionRequest'),output:r('QuoteIdentityResult')});
-  op('post','/quotes/{quoteId}/evidence-files','uploadQuoteEvidenceFile','quote-write',{existing:true,output:r('QuoteIdentityResult'),status:201});
+  op('post','/quotes/{quoteId}/lookup-selections','selectQuoteLookup','quote-capture',{existing:true,input:r('QuoteLookupSelectionRequest'),output:r('QuoteIdentityResult')});
+  op('post','/quotes/{quoteId}/evidence-files','uploadQuoteEvidenceFile','quote-capture',{existing:true,output:r('QuoteIdentityResult'),status:201});
   paths['/quotes/{quoteId}/evidence-files'].post.requestBody={required:true,content:{'multipart/form-data':{schema:o({file:{type:'string',format:'binary',minLength:1,maxLength:10485760},fileName:t(150),contentType:media})}}};
   list('/quotes/{quoteId}/evidence-files','listQuoteEvidenceFiles','quote-read',r('QuoteEvidenceFile'));
   op('get','/quotes/{quoteId}/evidence-files/{fileId}/content','downloadQuoteEvidenceFile','quote-read',{output:r('QuoteEvidenceFile')});
@@ -35,8 +35,8 @@ export function addQuoteSupportContracts({schemas:s,ref:r,text:t,enumeration:e,o
   Object.assign(download.headers,{'Content-Disposition':{description:'Attachment with sanitized filename.',schema:t(300)},'X-Content-Type-Options':{description:'Block MIME sniffing.',schema:{const:'nosniff'}}});
   delete paths['/quotes/{quoteId}/evidence'].get;
   list('/quotes/{quoteId}/evidence','listQuoteEvidence','quote-read',r('QuoteCaptureEvidence'),[['revisionId',id]]);
-  replace('post','/quotes/{quoteId}/evidence','attachQuoteEvidence','quote-write',{existing:true,input:r('QuoteEvidenceAttachRequest'),output:r('QuoteIdentityResult'),status:201});
-  replace('post','/quotes/{quoteId}/evidence/{evidenceId}/withdraw','withdrawQuoteEvidence','quote-write',{existing:true,input:o({reason:t(1000)}),output:r('QuoteIdentityResult')});
+  replace('post','/quotes/{quoteId}/evidence','attachQuoteEvidence','quote-capture',{existing:true,input:r('QuoteEvidenceAttachRequest'),output:r('QuoteIdentityResult'),status:201});
+  replace('post','/quotes/{quoteId}/evidence/{evidenceId}/withdraw','withdrawQuoteEvidence','quote-capture',{existing:true,input:o({reason:t(1000)}),output:r('QuoteIdentityResult')});
   paths['/quotes/{quoteId}/evidence/{evidenceId}/withdraw'].post.parameters.find(parameter=>parameter.name==='If-Match').description='Current evidence ETag, not quote ETag; authorize and lock the owning quote before replay.';
   return Object.keys(paths).filter(path=>path.startsWith('/quotes/{quoteId}/')&&(/\/lookups|\/lookup-selections|\/evidence/.test(path)));
 }
