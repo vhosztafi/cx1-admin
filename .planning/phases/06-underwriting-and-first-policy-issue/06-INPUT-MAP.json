@@ -2,7 +2,7 @@
   "status": "input/source contract preparation; generated schemas and API contract work pending06-01",
   "referenceVersion": "mt-capture-57b711ca02317ca0",
   "sourceFiles": {
-    "contracts\\reference-data\\motor-trade-capture.json": "c5434ebc16a1c10ef09874ce52bd6b8543457eb57ebec7d202e379f508ba590c",
+    "contracts/reference-data/motor-trade-capture.json": "c5434ebc16a1c10ef09874ce52bd6b8543457eb57ebec7d202e379f508ba590c",
     "contracts/schemas/quote-ready.schema.json": "ccd6d0e51b7b9d11ecff20fae17051d71b7050413d0df3fc5115a661aa2dfcab"
   },
   "inputs": [

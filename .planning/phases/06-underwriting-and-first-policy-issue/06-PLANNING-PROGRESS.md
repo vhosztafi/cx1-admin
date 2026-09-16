@@ -40,3 +40,8 @@ Auto-execution preflight: invoked init.execute-phase6;14incomplete/0summaries, s
 ## Heartbeat2026-09-16T17:40Z —06-01 source input gate
 
 Inspected current generated draft/ready contracts, real complete fixtures, metadata and prototype underwriting/Cover table rows. Created06-INPUT-MAP.json:19input mappings(18existing paths),73reference bindings,86source question rows,8trusted collections,3missing requested-section kinds and6source rules. Corrected absent risk.losses/driverBasis assumptions; actual any-driver MTS answers and trusted numeric metadata now explicit. Found source UW-22/UW-09/factor/W-07 and stock/premises/tools capture obligations not covered by button ownership alone; refined06-01..05 and RULE-CATALOG before runtime. Cover.requestedSections will be additive draft input, while issued cover.sections stays system-owned. No production-code edits, test pass or06-01completion claimed. Next generate strict OpenAPI/config/requested-section schemas/fixtures and tests from these contracts; no further user decision required. No processes active.
+
+
+## Heartbeat2026-09-16T17:57Z —06-01 contract implementation
+
+Closed config/condition/requested-section schemas, deterministic eight-definition demo generation and12newsemantic/source tests implemented in working tree. Complete contract check306passed/0skips,949controls/341operations; four generated artifacts byte-deterministic. OpenAPI mutation/read DTO replacement and documentation still pending;06-01notcomplete. Resume06-01-PROGRESS.md and preserve uncommitted implementation cohort. No backend/browser changes or active processes.
