@@ -42,7 +42,7 @@
       "code": "named-drivers",
       "proposalPath": "/risk/drivers",
       "schemaPathExists": true,
-      "interpretation": "unique stable driver identities, dateOfBirth/licence.testDate, convictions and losses",
+      "interpretation": "unique stable driver identities, dateOfBirth/licence.issuedOn (MTS-06-Q24), convictions and losses; optional licence.testDate must not replace the required source licence-held date",
       "plan": "06-01",
       "runtimeStatus": "contract preparation; no runtime change"
     },
