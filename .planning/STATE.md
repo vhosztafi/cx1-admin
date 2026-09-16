@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-16T07:29:11.859703+00:00"
+last_updated: "2026-09-16T08:23:16.134818+00:00"
 last_activity: 2026-09-16
 progress:
   total_phases: 13
@@ -20,14 +20,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute05-04; initial driver assessment and stable row helpers verified. Complete remaining eligibility/reconciliation and driver/history UI.
+**Current focus:** Execute05-04; driver/history forms, eligibility and global history reconciliation verified. Finish driver chronology/text and cover-dependent options.
 
 ## Current Position
 
 Phase: 5 of 13 (Motor Trade quote capture)
 Plan: 05-04 of11 in progress;05-01/02/03complete
 Status: In progress — autonomous
-Last activity: 2026-09-16 — Initial driver assessment and stable-row helpers verified;538backend/67SQL,62frontend plus lint/typecheck and existing readiness browser regression pass.05-04incomplete.
+Last activity: 2026-09-16 — Driver/history capture checkpoint ff5db28 verified;560backend/67SQL,67frontend,294contracts and both-product Chrome capture/recovery pass.05-04incomplete.
 
 Progress: Phases1–4 complete;4/13phases,27completed plans.
 
@@ -54,8 +54,8 @@ Progress: Phases1–4 complete;4/13phases,27completed plans.
 ## Session Continuity
 
 Last session: 2026-09-16
-Stopped at:05-04core assessment and driver/history list helpers verified. NEXT port driver eligibility/dynamic options/declaration/history reconciliation, then actual driver/plan/history fields and browser acceptance. Read05-04-PROGRESS. No owned previews or tests remain.
-Resume file: .planning/phases/05-motor-trade-quote-capture/05-03-PLAN.md
+Stopped at:05-04driver/history forms and eligibility checkpoint verified. NEXT remaining chronology/text checks and cover-dependent dynamic options. Read05-04-PROGRESS. No owned previews or tests remain.
+Resume file: .planning/phases/05-motor-trade-quote-capture/05-04-PLAN.md
 
 ## Autonomous continuation
 
@@ -63,4 +63,4 @@ User approved requirements/roadmap and autonomous choices/progression on 2026-09
 
 Thread heartbeat: continue-cover-mga-back-office-mvp, active every 10 minutes. Resume unfinished work in this same task; notify meaningful progress/blockers only; pause on actual milestone completion, user stop or persistent external blocker with no remaining useful work.
 
-Latest checkpoint:538backend/67SQL,62frontend. Contracts293from05-03remain latest unchanged. Full readiness stays blocked; no QUO signoff before05-11.
+Latest checkpoint:560backend/67SQL,67frontend,294contracts. Browser driver/history80/85, business81/83, readiness82/84. Full readiness stays blocked; no QUO signoff before05-11.

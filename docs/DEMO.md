@@ -141,3 +141,10 @@ Under **Trade activities**, add Motor Trade occupations and their turnover share
 **Motor trader details** on Proposer now captures full/part-time trading, experience, main occupation, employment status and other business/directorship. **Trade declarations** captures trading location, each source activity declaration and supporting details. These use the saved quote catalogue. Retained conditional details are visible and can be cleared explicitly; saving does not mean readiness. Reproduce all15 new controls with `node scripts/verify-quote-source-business-browser.mjs`. Readiness links and final source reconciliation remain pending.
 
 **Saved draft readiness** lists issues from the saved revision. Choose **Review…** to open the relevant stage and focus its control. Save unsaved edits before using these links. General and later-section checks remain separate; a saved draft cannot yet be rated or issued. Business description and start date are now under Proposer, matching the prototype. Test with `node scripts/verify-quote-readiness-browser.mjs`.
+
+
+## Driver and history capture checkpoint
+
+For a saved Motor Trade quote, choose Edit quote draft, then Drivers or Claims & convictions. Add named drivers and record their independent name, address, licence, residence and cover declarations. Add occupations, motoring convictions, accidents/claims, criminal convictions and county court judgments. Rows can be edited, reordered and removed; Save draft persists a new immutable revision. Related vehicles/trips/history prevent removal that would leave an orphan reference.
+
+Use the separate global declarations for the proposer and all named drivers. Saved readiness guidance links to specific available controls. An uncertain save retains the original request for Retry same save; a stale revision offers comparison and explicit discard. Age-dependent indemnity/engine options still disclose their unavailable derived configuration. Full quote readiness, rating and issue remain unavailable while Phase5 continues.
