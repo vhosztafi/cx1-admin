@@ -301,3 +301,8 @@ h1, h2, p { margin: 0; }
 .quote-reference-checks input { width:18px; height:18px; accent-color:#3f5ef5; }
 .quote-reference-checks .operations-actions { flex-wrap:wrap; margin-top:14px; }
 .quote-reference-checks .button { white-space:normal; }
+.quote-occupations { margin-top:24px; border-top:1px solid #e4e6ec; padding-top:18px; }
+.quote-occupation { border:1px solid #e4e6ec; border-radius:8px; padding:16px; margin:18px 0; min-width:0; }
+.quote-occupation legend { font-weight:600; padding:0 5px; }
+.quote-occupation .operations-actions { flex-wrap:wrap; gap:8px; }
+.quote-occupation .button { white-space:normal; }

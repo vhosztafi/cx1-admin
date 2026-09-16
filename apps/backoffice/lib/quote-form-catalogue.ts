@@ -1,11 +1,12 @@
-// Imported by the server page only: send the four needed collections, not the
+// Imported by the server page only: send only the needed collections, not the
 // entire reference source (and never import the sales snapshot at runtime).
 import source from '../../../contracts/reference-data/motor-trade-capture.json';
-import type { ProposerCatalogue } from './quote-catalogue';
+import type { QuoteFormCatalogue } from './quote-catalogue';
 
-export const proposerCatalogue: ProposerCatalogue = {
+export const quoteFormCatalogue: QuoteFormCatalogue = {
   version: source.version,
   collections: {
+    mtOccupations: source.collections.mtOccupations.map(({ value, text, requireCarJockeyRadius }) => ({ value, text, requireCarJockeyRadius })),
     companyTypes: source.collections.companyTypes.map(({ value, text }) => ({ value, text })),
     proposerTitles: source.collections.proposerTitles.map(({ value, text }) => ({ value, text })),
     marketingConsents: source.collections.marketingConsents.map(({ value, text }) => ({ value, text })),

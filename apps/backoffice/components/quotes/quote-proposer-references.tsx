@@ -1,10 +1,10 @@
 'use client';
-import { matchingQuoteCatalogue, type ProposerCatalogue } from '../../lib/quote-catalogue';
+import { matchingQuoteCatalogue, type QuoteFormCatalogue } from '../../lib/quote-catalogue';
 import { changeAnswer, fieldValue, selectedReference, type ReferenceChoice } from '../../lib/quote-form';
 import type { QuoteObject, QuoteProposal, QuoteValue, QuoteView } from '../../lib/quotes';
 
 export function QuoteProposerReferences({ proposal, versions, catalogue, change, replace }: {
-  proposal: QuoteProposal; versions: QuoteView['captureVersions']; catalogue: ProposerCatalogue;
+  proposal: QuoteProposal; versions: QuoteView['captureVersions']; catalogue: QuoteFormCatalogue;
   change: (path: string, value: QuoteValue | undefined) => void; replace: (proposal: QuoteProposal) => void;
 }) {
   const responses = fieldValue(proposal, 'insured.responses') as QuoteObject | undefined;
@@ -28,7 +28,7 @@ export function QuoteProposerReferences({ proposal, versions, catalogue, change,
   </fieldset>;
 }
 
-function ReferenceSelect({ label, value, collection, catalogue, change }: { label: string; value: QuoteValue | undefined; collection: 'proposerTitles' | 'companyTypes'; catalogue: ProposerCatalogue; change: (value: QuoteValue | undefined) => void }) {
+function ReferenceSelect({ label, value, collection, catalogue, change }: { label: string; value: QuoteValue | undefined; collection: 'proposerTitles' | 'companyTypes'; catalogue: QuoteFormCatalogue; change: (value: QuoteValue | undefined) => void }) {
   const choices = catalogue.collections[collection]; const saved = value as QuoteObject | undefined;
   const index = choices.findIndex(choice => saved?.collection === collection && choice.value === saved.value && choice.text === saved.label && saved.version === catalogue.version);
   return <label>{label}<select aria-label={label} value={value === undefined ? '' : String(index)} onChange={event => change(event.target.value === '' ? undefined : selectedReference(collection, catalogue.version, choices, choices[Number(event.target.value)].value))}>
@@ -37,7 +37,7 @@ function ReferenceSelect({ label, value, collection, catalogue, change }: { labe
   </select></label>;
 }
 
-function ReferenceChecks({ label, questionId, collection, catalogue, value, update }: { label: string; questionId: string; collection: 'marketingConsents' | 'marketingMethods'; catalogue: ProposerCatalogue; value: QuoteValue | undefined; update: (id: string, kind: string, value: QuoteValue | undefined) => void }) {
+function ReferenceChecks({ label, questionId, collection, catalogue, value, update }: { label: string; questionId: string; collection: 'marketingConsents' | 'marketingMethods'; catalogue: QuoteFormCatalogue; value: QuoteValue | undefined; update: (id: string, kind: string, value: QuoteValue | undefined) => void }) {
   const selected = (value ?? []) as QuoteObject[];
   const matches = (reference: QuoteObject, choice: ReferenceChoice) => reference.collection === collection && reference.value === choice.value;
   return <fieldset className="quote-reference-checks"><legend>{label}</legend>

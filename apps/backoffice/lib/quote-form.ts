@@ -98,3 +98,44 @@ export function selectedReference(collection: string, version: string, choices: 
   if (!collection || !version || matches.length !== 1 || !matches[0].text) throw new Error('Choose an option from the matching saved catalogue.');
   return { collection, version, value: matches[0].value, label: matches[0].text };
 }
+
+export function quoteActivities(proposal: QuoteProposal): QuoteObject[] {
+  const value = fieldValue(proposal, 'risk.business.activities');
+  if (value === undefined) return [];
+  if (!Array.isArray(value) || value.some(row => !row || typeof row !== 'object' || Array.isArray(row) || typeof row.id !== 'string')) throw new Error('The saved occupation rows cannot be edited.');
+  const rows = value as QuoteObject[];
+  if (new Set(rows.map(row => String(row.id).toLowerCase())).size !== rows.length) throw new Error('Occupation row identities must be distinct.');
+  return rows;
+}
+
+function indexOf(rows: QuoteObject[], id: string) {
+  const index = rows.findIndex(row => row.id === id);
+  if (index < 0) throw new Error('The occupation row has changed.');
+  return index;
+}
+
+export function addQuoteActivity(proposal: QuoteProposal, id = crypto.randomUUID()): QuoteProposal {
+  const rows = quoteActivities(proposal);
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id) || id === '00000000-0000-0000-0000-000000000000' || rows.some(row => String(row.id).toLowerCase() === id.toLowerCase()) || rows.length >= 1000) throw new Error('A distinct occupation row is required.');
+  return changeField(proposal, 'risk.business.activities', [...rows, { id }]);
+}
+
+export function changeQuoteActivity(proposal: QuoteProposal, id: string, field: 'code' | 'turnoverBasisPoints', value: QuoteValue | undefined): QuoteProposal {
+  if (!['code', 'turnoverBasisPoints'].includes(field)) throw new Error('Occupation row identity is not editable.');
+  const rows = structuredClone(quoteActivities(proposal)); const row = rows[indexOf(rows, id)];
+  if (value === undefined) delete row[field]; else row[field] = structuredClone(value);
+  return changeField(proposal, 'risk.business.activities', rows);
+}
+
+export function removeQuoteActivity(proposal: QuoteProposal, id: string): QuoteProposal {
+  const rows = [...quoteActivities(proposal)]; rows.splice(indexOf(rows, id), 1);
+  return changeField(proposal, 'risk.business.activities', rows);
+}
+
+export function moveQuoteActivity(proposal: QuoteProposal, id: string, direction: -1 | 1): QuoteProposal {
+  if (direction !== -1 && direction !== 1) throw new Error('Choose an adjacent occupation position.');
+  const rows = [...quoteActivities(proposal)]; const from = indexOf(rows, id); const to = from + direction;
+  if (to < 0 || to >= rows.length) return proposal;
+  [rows[from], rows[to]] = [rows[to], rows[from]];
+  return changeField(proposal, 'risk.business.activities', rows);
+}
