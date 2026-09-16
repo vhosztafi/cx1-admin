@@ -3,13 +3,13 @@ phase: 06
 slug: underwriting-and-first-policy-issue
 status: planned
 nyquist_compliant: true
-wave_0_complete: false
+wave_0_complete: true
 created: 2026-09-16
 ---
 
 # Phase6 validation strategy
 
-This is the planning contract, not passing Phase6 evidence. Every executable task below has a bounded semantic verification owner; runtime results remain pending. Existing infrastructure is sufficient; no new test framework is required.
+06-01 contract gate passed:314 tests, zero failures/skips,354 operations; implementation4800d71. See06-01-SUMMARY for deterministic generation and source evidence. Runtime results remain pending. Every executable task below has a bounded semantic verification owner. Existing infrastructure is sufficient; no new test framework is required.
 
 ## Infrastructure and sampling
 
