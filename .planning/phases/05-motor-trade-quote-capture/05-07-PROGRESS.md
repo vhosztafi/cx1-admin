@@ -24,3 +24,21 @@ Focused real-SQL storage test passed in `.local/phase5-lookup-storage-focused-20
 
 
 The final SQL test also rejects replacement of a completed lookup outcome. It verifies target membership, same-quote new revisions, exact source fingerprint, fabricated pending candidate selections, duplicate selections and immutable input/decision history. The initial EF command used the API as startup and reported its missing Design package; corrected to the existing Infrastructure design-time factory, without adding a dependency. No demo database reset or migration, endpoint activation, browser claim or final QUO acceptance. Next: scoped command service and private durable provider/worker integration, followed by HTTP/UI and their race/restart/security/browser tests.
+
+
+## Runtime integration checkpoint — 2026-09-16
+
+Command service, deterministic durable provider/worker, Development dispatcher, HTTP routes, private scoped outcome/list projections, generated contracts and editor controls are now implemented (uncommitted pending final acceptance). Candidate/manual selection appends an immutable revision and provenance; authority precedes replay, while exact source revision/fingerprint/ETag checks precede new effects. Final lease exhaustion writes a failed private outcome in the work transaction. Vehicle capture mode comes only from saved selection/new-revision fingerprints; unrelated edits retain it and changed/removed targets invalidate it. Overall readiness remains closed.
+
+Focused three SQL tests passed in .local/phase5-lookup-api-focused-20260916. The first complete runtime suite passed648=549unit+99integration,72realSQL,0skips in .local/phase5-lookup-backend-final-20260916; assertion648/72passed,14.0749minutes. Subsequent provenance addition passed all4focused SQL cases in .local/phase5-lookup-provenance-focused-20260916. Final fresh full suite including provenance is RUNNING in .local/phase5-lookups-complete-20260916 and matching.log (expected649/73; do not claim until actual TRX/assertion passes).
+
+78frontend tests and294contract tests pass; API operation count now337 (owned lookup list). Final functional Chrome .local/phase5-lookups-browser-accepted.log passed bothproducts121/122 atrevision8/7, with multiple/no-match/manual/reject/fail-once/timeout recovery, exact lost-response replay, edited input while pending, stale result prevention, vehicle/licence/driver/premises controls, real response schema validation and314px/390px checks. Report and screenshots: .local/browser-evidence/quote-lookups/. Captured screenshot review found unstyled history/manual controls, fixed using existing form classes; production build .local/phase5-lookups-build-visual-final.log passes. Final visual reload smoke remains to run. Last lint/typecheck .local/phase5-lookups-lint-final.log / typecheck-final.log passed before the class-only correction.
+
+Applied migration and append-only scenario seed to existing CoverMGA_Demo through --initialize-demo (no reset): .local/phase5-lookups-demo-initialize.log. No real provider request. Initial browser attempt failed because the runtime web API origin was missing; corrected BACKOFFICE_API_ORIGIN=5087. Initial worker exhaustion test incorrectly attempted budget1 (SQL correctly permits6/12/18); corrected test to expire all6leases. An xUnit analyzer and a test raw-string literal were corrected before successful focused/full runs. These failed attempts are not accepted evidence.
+
+Contract refinement is explicit in05-DATA-API-DESIGN: derive request query/initial fingerprint from saved target; only persisted lookup/candidate or manual reason enters selection. No caller candidate values or verification flag. Manual declarations use ordinary draft save before requesting the decision. Next: await final full backend TRX and result assertion; finish visual reload smoke, clean owned preview PIDs, review/commit implementation, write05-07-SUMMARY and advance to05-08evidence.
+
+
+## Final acceptance
+
+`a509e6e` committed the implementation. Final649/73fresh full suite and assertion passed; styled-control visual reload passed, screenshots inspected, final API67508/web49308stopped. Plan05-07complete; see05-07-SUMMARY.md for authoritative final evidence. No test or preview remains. Continue05-08evidence.

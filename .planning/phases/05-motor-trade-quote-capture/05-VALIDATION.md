@@ -238,3 +238,8 @@ bdd8205 implements vehicles, specified/ordinary roles, modifications, portfolio 
 ## 05-07 storage prerequisite — 2026-09-16
 
 035be54 input rules and f480e6e lookup storage: fresh .local/phase5-lookup-storage-final-20260916 passed644=549unit+95integration,69realSQL,0skips;644/69assertion passed, integration6.6742minutes. New real-SQL test covers lookup/selection ownership, source fingerprint, target membership, immutable input/outcome/decisions, candidate prerequisites and duplicate selection. EF migration/model synchronization passed. No runtime routes/workers/UI enabled, no demo DB migration, no05-07completion or QUO signoff. Details and next integration work are in05-07-PROGRESS.md.
+
+
+## Final05-07 acceptance — 2026-09-16
+
+`a509e6e` completes durable private lookups, six demo scenarios, leased/recoverable workers, immutable candidate/manual selection, trusted vehicle provenance and actual quote controls. Fresh .local/phase5-lookups-complete-20260916 passed649=549unit+100integration,73realSQL,0skips;649/73assertion passed,8.8346minutes.78frontend,294contracts/337operations, lint/types/final build passed. Both-product Chrome121/122revision8/7passes every target, schema validation, pending-input edits, exact replay and stale/failed recovery; final visual reload confirms styled controls and314px/390pxlayout. Final API67508/web49308stopped. Detailed evidence and corrections in05-07-SUMMARY. No funnel edits or final QUO signoff. Next05-08.

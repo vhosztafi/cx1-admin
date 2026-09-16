@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-16T10:59:43.655774+00:00"
+last_updated: "2026-09-16T11:56:14.651050+00:00"
 last_activity: 2026-09-16
 progress:
   total_phases: 13
   completed_phases: 4
   total_plans: 35
-  completed_plans: 30
+  completed_plans: 31
   percent: 31
 ---
 
@@ -20,16 +20,16 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute05-07 durable quote lookups and manual recovery;05-06complete and verified.
+**Current focus:** Execute05-08 revision-bound proposal evidence;05-07complete and verified.
 
 ## Current Position
 
 Phase: 5 of 13 (Motor Trade quote capture)
-Plan: 05-07 of11 in progress;05-01/02/03/04/05/06complete
+Plan: 05-08 of11 next;05-01/02/03/04/05/06/07complete
 Status: In progress — autonomous
-Last activity: 2026-09-16 — 05-07 lookup storage prerequisite committed (f480e6e);644backend/69SQL pass. Command service, worker and routes remain unimplemented.
+Last activity: 2026-09-16 — 05-07complete (a509e6e);649backend/73SQL,78frontend,294contracts and both-product Chrome pass. Next05-08evidence.
 
-Progress: Phases1–4 complete;4/13phases,30completed plans.
+Progress: Phases1–4 complete;4/13phases,31completed plans.
 
 ## Accumulated Context
 
@@ -43,7 +43,7 @@ Progress: Phases1–4 complete;4/13phases,30completed plans.
 
 ### Pending Todos
 
-- Execute05-07 durable lookups and manual recovery; consume05-06-SUMMARY,05-07-PLAN,UI-SPEC,source mappings and ACCEPTANCE-BACKLOG. Retain all runtime gates.
+- Execute05-08 revision-bound evidence; consume05-07-SUMMARY,05-08-PLAN,UI-SPEC,source mappings and ACCEPTANCE-BACKLOG. Retain all runtime gates.
 - Keep future business endpoints closed until their owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,8 +54,8 @@ Progress: Phases1–4 complete;4/13phases,30completed plans.
 ## Session Continuity
 
 Last session: 2026-09-16
-Stopped at:05-07lookup input rules and storage verified; read05-07-PROGRESS.md. NEXTscoped command service and durable workers. No owned previews or tests remain.
-Resume file: .planning/phases/05-motor-trade-quote-capture/05-07-PLAN.md
+Stopped at:05-07complete and verified; read05-07-SUMMARY. Next05-08evidence. No owned previews or tests remain.
+Resume file: .planning/phases/05-motor-trade-quote-capture/05-08-PLAN.md
 
 ## Autonomous continuation
 
