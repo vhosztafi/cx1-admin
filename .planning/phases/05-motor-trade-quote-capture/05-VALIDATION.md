@@ -253,3 +253,8 @@ bdd8205 implements vehicles, specified/ordinary roles, modifications, portfolio 
 ## Final05-08 acceptance — 2026-09-16
 
 be78212 completes scoped HTTP evidence, persisted readiness and actual upload/attach/download/withdrawal controls. Full service661/75 and final HTTP662/76 regressions completed successfully with0skips.79frontend,294contracts/338operations, lint/types/final build and Chrome125/126revision2 passed. Demo migration preserves history; no running tests/previews remain. See05-08-SUMMARY for exact artifacts and corrections. Next05-09; no final QUO signoff.
+
+
+## Final 05-09 acceptance — 2026-09-16
+
+d8ab279 and 13c8bf0 complete revision history/comparison, historical cloning and atomic withdrawal. Fresh .local/phase5-lifecycle-final-20260916 passed 671=565 unit+106 integration,79 real SQL,0 skips; assertion671/79 passed, integration9m19s. 79 frontend,294 contracts/339 operations, final lint/types/build and both-product Chrome source141/clone142/source143/clone144 passed. Full typed comparison, terms confirmation, independent IDs, no process transfer, exact lost-response retries, authority/rollback/races and terminal closure details covered. Screenshots inspected; all owned previews stopped. See05-09-SUMMARY. Next05-10; no final QUO signoff.
