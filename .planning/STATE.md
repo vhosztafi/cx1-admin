@@ -25,7 +25,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 ## Current Position
 
 Phase: 6 of 13 (Underwriting and first policy issue)
-Plan: 06-01 of14 — contract gate preflight
+Plan:06-01 of14 — source input gate mapped; strict schema generation next
 Status: Executing — autonomous; contract gate first
 Last activity: 2026-09-16 — Phase5 complete; implementatione2741f3 and evidencea4498dd.680backend/85SQL,80frontend,294contracts,37browser journeys and actual restart passed.
 
@@ -54,7 +54,7 @@ Progress: Phases1–5 complete;5/13 phases,35 completed implementation plans.
 ## Session Continuity
 
 Last session: 2026-09-16T17:30:14.703696+00:00
-Stopped at: Phase6 planning/review passed; execute-phase6 --auto --no-transition initialized;06-01 contracts preflight
+Stopped at:06-01 source input mapping complete; generate strict schemas/fixtures next; see06-PLANNING-PROGRESS heartbeat17:40Z
 Resume file: .planning/phases/06-underwriting-and-first-policy-issue/06-PLANNING-PROGRESS.md
 
 ## Autonomous continuation

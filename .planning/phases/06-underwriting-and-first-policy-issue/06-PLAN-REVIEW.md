@@ -48,3 +48,8 @@ No unresolved blocker or warning remains in the plan review. Any contract/source
 ## Mechanical evidence
 
 GSD verify.plan-structure reports14valid plans,33tasks,0errors,0warnings in `.local/phase6-plan-structure.json`. Supplemental checks require all7requirements/all12decisions; all51Phase6 placement controls, Phase6 display occurrences and all15shared Phase6 operation IDs have task owners.211candidate controls/98display occurrences retained with original source hashes and explicit later owners. These checks prove planning traceability only.06-01 provides exact schema pointer/option validation;06-14 supplies runtime coverage.
+
+
+## Contract-preflight revision,17:40 heartbeat
+
+A further source-to-schema check found BLOCKER omissions before public contract generation: source UW-22/trading age, UW-09 valeting exposure, loading/discount/W-07 rows and requested stock/premises/tools sections. Button/display-field ownership alone did not prove these table-row inputs existed. Resolved at plan level by06-INPUT-MAP and explicit06-01..05 task refinements; actual generated schema/fixture tests are still the blocking06-01 gate. Existing ready proposal has no risk.losses or driverBasis; concrete response IDs now replace those assumptions. No runtime completion or independent peer-review claim. Dependencies remain unchanged and the additions are within the already-owned Cover/rating/referral slices.

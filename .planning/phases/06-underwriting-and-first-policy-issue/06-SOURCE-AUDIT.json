@@ -5809,7 +5809,101 @@
     "Ownership is planning evidence, not implemented functionality.",
     "06-01 gates exact schema pointer/option fixtures before any runtime plan. Task ownership is not proof of implementation;06-14 reconciles actual source/runtime evidence.",
     "Shared methods may include MTA or CC examples: implement actual quote parents now and preserve named later owners.",
-    "Source14-day validity wins over inconsistent sample dates and provisional30-day fallback."
+    "Source14-day validity wins over inconsistent sample dates and provisional30-day fallback.",
+    "Button and field occurrence coverage excludes some read-only table semantics;06-INPUT-MAP sourceTableRuleSupplement and requestedSectionSupplement are mandatory06-01 fixture coverage."
   ],
-  "extractedTemplateSha256": "d1f91c3c6ab4bd6aa40de31d46397d62674c370d809644bddbe1001992458705"
+  "extractedTemplateSha256": "d1f91c3c6ab4bd6aa40de31d46397d62674c370d809644bddbe1001992458705",
+  "sourceTableRuleSupplement": [
+    {
+      "source": "pQuote Underwriting Referrals",
+      "code": "UW-09",
+      "predicate": "Valeting activity and requested/declared per-vehicle exposure above50000",
+      "target": "vehicle or current customer/own indemnity limit",
+      "owner": "06-02/05"
+    },
+    {
+      "source": "pQuote Underwriting Referrals",
+      "code": "UW-22",
+      "predicate": "Business trading fewer than5completed years at inception",
+      "target": "business",
+      "owner": "06-02/05"
+    },
+    {
+      "source": "pQuote Cover Rating factors",
+      "code": "valeting-loading",
+      "effect": "versioned +12% demo factor when declared valeting share>0",
+      "owner": "06-02"
+    },
+    {
+      "source": "pQuote Cover Rating factors",
+      "code": "young-driver-loading",
+      "effect": "versioned +18% demo factor when effective youngest permitted driver<25",
+      "owner": "06-02"
+    },
+    {
+      "source": "pQuote Cover Rating factors",
+      "code": "no-claims-discount",
+      "effect": "versioned -8% only when captured claims-free eligibility>=5 and no conflicting history; required proof remains separate",
+      "owner": "06-02/05"
+    },
+    {
+      "source": "pQuote Cover Insurer/terms",
+      "code": "W-07",
+      "effect": "versioned minimum security warranty; typed condition and actual wording/evidence",
+      "owner": "06-05/06"
+    }
+  ],
+  "requestedSectionSupplement": [
+    {
+      "code": "stock-custody",
+      "proposalPath": "/cover/requestedSections",
+      "fields": [
+        "id",
+        "code",
+        "selected",
+        "limit",
+        "excess",
+        "anyOneVehicleLimit"
+      ],
+      "products": [
+        "motor-trade-combined"
+      ],
+      "source": "pQuote Cover / pPolicy Stock, custody & road risks basis",
+      "behavior": "Explicit selected state and requested sums; never sum registered vehicle values as stock limit."
+    },
+    {
+      "code": "premises",
+      "proposalPath": "/cover/requestedSections",
+      "fields": [
+        "id",
+        "code",
+        "selected",
+        "limit",
+        "excess",
+        "premisesIds"
+      ],
+      "products": [
+        "motor-trade-combined"
+      ],
+      "source": "pQuote Proposed cover",
+      "behavior": "Explicit selected section and linked premises; do not charge merely because premises list is populated."
+    },
+    {
+      "code": "tools-equipment",
+      "proposalPath": "/cover/requestedSections",
+      "fields": [
+        "id",
+        "code",
+        "selected",
+        "limit",
+        "excess"
+      ],
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "source": "pQuote Proposed cover / Rating factors",
+      "behavior": "Explicit tools limit/excess and deterministic component; no substitution with arbitrary cover responses."
+    }
+  ]
 }

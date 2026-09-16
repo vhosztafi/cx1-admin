@@ -1,0 +1,2848 @@
+{
+  "status": "input/source contract preparation; generated schemas and API contract work pending06-01",
+  "referenceVersion": "mt-capture-57b711ca02317ca0",
+  "sourceFiles": {
+    "contracts\\reference-data\\motor-trade-capture.json": "c5434ebc16a1c10ef09874ce52bd6b8543457eb57ebec7d202e379f508ba590c",
+    "contracts/schemas/quote-ready.schema.json": "ccd6d0e51b7b9d11ecff20fae17051d71b7050413d0df3fc5115a661aa2dfcab"
+  },
+  "inputs": [
+    {
+      "code": "term",
+      "proposalPath": "/termIntent",
+      "schemaPathExists": true,
+      "interpretation": "annual and short-period; existing London fold/gap resolution",
+      "plan": "06-01",
+      "runtimeStatus": "contract preparation; no runtime change"
+    },
+    {
+      "code": "business-start",
+      "proposalPath": "/risk/business/startedOn",
+      "schemaPathExists": true,
+      "interpretation": "completed trading years at term inception; source UW-22 below5years",
+      "plan": "06-01",
+      "runtimeStatus": "contract preparation; no runtime change"
+    },
+    {
+      "code": "trade-activities",
+      "proposalPath": "/risk/business/activities",
+      "schemaPathExists": true,
+      "interpretation": "stable target, trusted occupation code and turnoverBasisPoints; source valeting loading",
+      "plan": "06-01",
+      "runtimeStatus": "contract preparation; no runtime change"
+    },
+    {
+      "code": "declared-activity-split",
+      "proposalPath": "/risk/business/declaredActivitySplit",
+      "schemaPathExists": true,
+      "interpretation": "existing reconciliation with activities; never independently invent an extra share",
+      "plan": "06-01",
+      "runtimeStatus": "contract preparation; no runtime change"
+    },
+    {
+      "code": "named-drivers",
+      "proposalPath": "/risk/drivers",
+      "schemaPathExists": true,
+      "interpretation": "unique stable driver identities, dateOfBirth/licence.testDate, convictions and losses",
+      "plan": "06-01",
+      "runtimeStatus": "contract preparation; no runtime change"
+    },
+    {
+      "code": "vehicles",
+      "proposalPath": "/risk/vehicles",
+      "schemaPathExists": true,
+      "interpretation": "specified vehicles only; stable IDs, value and owner; no invented first vehicle when unspecified",
+      "plan": "06-01",
+      "runtimeStatus": "contract preparation; no runtime change"
+    },
+    {
+      "code": "premises",
+      "proposalPath": "/risk/premises",
+      "schemaPathExists": true,
+      "interpretation": "stable IDs, address/use/security and declared amounts; source proof purpose",
+      "plan": "06-01",
+      "runtimeStatus": "contract preparation; no runtime change"
+    },
+    {
+      "code": "no-claims-years",
+      "proposalPath": "/risk/previousInsurance/noClaimsYears",
+      "schemaPathExists": true,
+      "interpretation": "pair with noClaimsYearsBasis; at-least5 qualifies for>=5, never equals exact5",
+      "plan": "06-01",
+      "runtimeStatus": "contract preparation; no runtime change"
+    },
+    {
+      "code": "no-claims-basis",
+      "proposalPath": "/risk/previousInsurance/noClaimsYearsBasis",
+      "schemaPathExists": true,
+      "interpretation": "exact or at-least retained",
+      "plan": "06-01",
+      "runtimeStatus": "contract preparation; no runtime change"
+    },
+    {
+      "code": "proposal-losses",
+      "proposalPath": "/risk/losses",
+      "schemaPathExists": false,
+      "interpretation": "Not present in current ready schema: use existing named-driver loss and previous-insurance declarations; do not read an invented risk.losses property.",
+      "plan": "06-01",
+      "runtimeStatus": "contract preparation; no runtime change"
+    },
+    {
+      "code": "road-cover",
+      "proposalPath": "/cover/responses",
+      "schemaPathExists": true,
+      "interpretation": "MTS-05-Q01; trusted coverLevels version/value; label is never authority",
+      "plan": "06-01",
+      "runtimeStatus": "contract preparation; no runtime change"
+    },
+    {
+      "code": "own-indemnity",
+      "proposalPath": "/cover/responses",
+      "schemaPathExists": true,
+      "interpretation": "MTS-05-Q02; trusted indemnityOwnVehicles.numericValue",
+      "plan": "06-01",
+      "runtimeStatus": "contract preparation; no runtime change"
+    },
+    {
+      "code": "customer-indemnity",
+      "proposalPath": "/cover/responses",
+      "schemaPathExists": true,
+      "interpretation": "MTS-05-Q03 only where split/current applicability permits; trusted numericValue",
+      "plan": "06-01",
+      "runtimeStatus": "contract preparation; no runtime change"
+    },
+    {
+      "code": "road-excess",
+      "proposalPath": "/cover/responses",
+      "schemaPathExists": true,
+      "interpretation": "MTS-05-Q04; correct parent-limit dependent excess collection.numericValue",
+      "plan": "06-01",
+      "runtimeStatus": "contract preparation; no runtime change"
+    },
+    {
+      "code": "driver-plan",
+      "proposalPath": "/risk/responses",
+      "schemaPathExists": true,
+      "interpretation": "MTS-06-Q01 values1named/2mixed/3any-driver; any-driver declared count and age range use MTS answers, not absent driverBasis",
+      "plan": "06-01",
+      "runtimeStatus": "contract preparation; no runtime change"
+    },
+    {
+      "code": "any-driver-min-age",
+      "proposalPath": "/risk/responses",
+      "schemaPathExists": true,
+      "interpretation": "MTS-06-Q03 trusted aadDriverMinAge; unknown numeric meaning denies",
+      "plan": "06-01",
+      "runtimeStatus": "contract preparation; no runtime change"
+    },
+    {
+      "code": "any-driver-max-age",
+      "proposalPath": "/risk/responses",
+      "schemaPathExists": true,
+      "interpretation": "MTS-06-Q04 trusted aadDriverMaxAge; unknown numeric meaning denies",
+      "plan": "06-01",
+      "runtimeStatus": "contract preparation; no runtime change"
+    },
+    {
+      "code": "salvage",
+      "proposalPath": "/risk/business/responses",
+      "schemaPathExists": true,
+      "interpretation": "prototype.quote.ba9d4158ae2c boolean; source binder exclusion independent of occupation wording",
+      "plan": "06-01",
+      "runtimeStatus": "contract preparation; no runtime change"
+    },
+    {
+      "code": "any-driver-count",
+      "proposalPath": "/risk/responses",
+      "schemaPathExists": true,
+      "interpretation": "MTS-06-Q02 count, positive for driver-plan2/3. Mixed plan counts named stable drivers plus declared additional any drivers; no absent driverBasis fallback.",
+      "plan": "06-01",
+      "runtimeStatus": "contract preparation; no runtime change"
+    }
+  ],
+  "trustedCollections": {
+    "mtOccupations": [
+      {
+        "value": 1,
+        "label": "Accessory Fitter",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 2,
+        "label": "Accident/Breakdown Recovery - National",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 3,
+        "label": "Accident/Breakdown Recovery - Local",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 4,
+        "label": "Agricultural Engineer",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 5,
+        "label": "Buying & Selling of Motorcycles",
+        "customerLOI": false,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 6,
+        "label": "Buying & Selling of Quad Bikes",
+        "customerLOI": false,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 7,
+        "label": "Buying & Selling of Sports & High Performance Vehicles",
+        "customerLOI": false,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 8,
+        "label": "Buying & Selling of Standard Cars & Vans",
+        "customerLOI": false,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 9,
+        "label": "Car Jockey",
+        "customerLOI": true,
+        "requireShunterRadius": true,
+        "requireCarJockeyRadius": true
+      },
+      {
+        "value": 10,
+        "label": "Crash Body Repairs / Spraying",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 11,
+        "label": "Fleet Manager",
+        "customerLOI": false,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 12,
+        "label": "Get You Home",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 13,
+        "label": "Importing &  Exporting",
+        "customerLOI": false,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 14,
+        "label": "Kit Car Builder",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 15,
+        "label": "Liquidators / Repossession Agent",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 16,
+        "label": "Mechanical / Servicing / Overhauls - Motorcycles",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 17,
+        "label": "Mechanical / Servicing / Overhauls - Quad Bikes",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 18,
+        "label": "Mechanical / Servicing / Overhauls - Vehicles",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 19,
+        "label": "Misfueling",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 20,
+        "label": "MOT Testing",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 21,
+        "label": "Motor Journalist",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 22,
+        "label": "Rally / Race Car Preparation",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 23,
+        "label": "Sale of Accident or Salvaged/damaged/repairable vehicles",
+        "customerLOI": false,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 24,
+        "label": "Self Drive Hire Fleet",
+        "customerLOI": false,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 25,
+        "label": "Tyre & Exhaust Fitter",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 26,
+        "label": "Valeting - at Premises Only",
+        "customerLOI": true,
+        "requireShunterRadius": true,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 27,
+        "label": "Valeting - including Collection & Delivery",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 28,
+        "label": "Vehicle Auctioneer",
+        "customerLOI": false,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 29,
+        "label": "Vehicle Breaker",
+        "customerLOI": false,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 30,
+        "label": "Vehicle Collection & Delivery",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 31,
+        "label": "Vehicle conversions",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 32,
+        "label": "Vehicle Purchase Agent",
+        "customerLOI": false,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 33,
+        "label": "Vehicle remapping",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 34,
+        "label": "Vehicle restorations",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 35,
+        "label": "Vehicle wrapping",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 36,
+        "label": "Windscreen Replacement / Repair",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      },
+      {
+        "value": 37,
+        "label": "Repair of Accident or Salvaged Damaged Repairable Vehicles",
+        "customerLOI": true,
+        "requireShunterRadius": false,
+        "requireCarJockeyRadius": false
+      }
+    ],
+    "coverLevels": [
+      {
+        "value": 1,
+        "label": "Comprehensive",
+        "isComprehensive": true
+      },
+      {
+        "value": 2,
+        "label": "Third Party Fire & Theft",
+        "isComprehensive": false
+      },
+      {
+        "value": 3,
+        "label": "Third Party Only",
+        "isComprehensive": false
+      }
+    ],
+    "indemnityOwnVehicles": [
+      {
+        "value": 1,
+        "label": "£0",
+        "numericValue": 0
+      },
+      {
+        "value": 2,
+        "label": "£2,500",
+        "numericValue": 2500
+      },
+      {
+        "value": 3,
+        "label": "£5,000",
+        "numericValue": 5000
+      },
+      {
+        "value": 4,
+        "label": "£7,500",
+        "numericValue": 7500
+      },
+      {
+        "value": 5,
+        "label": "£10,000",
+        "numericValue": 10000
+      },
+      {
+        "value": 6,
+        "label": "£12,500",
+        "numericValue": 12500
+      },
+      {
+        "value": 7,
+        "label": "£15,000",
+        "numericValue": 15000
+      },
+      {
+        "value": 8,
+        "label": "£20,000",
+        "numericValue": 20000
+      },
+      {
+        "value": 9,
+        "label": "£25,000",
+        "numericValue": 25000
+      },
+      {
+        "value": 10,
+        "label": "£35,000",
+        "numericValue": 35000
+      },
+      {
+        "value": 11,
+        "label": "£40,000",
+        "numericValue": 40000
+      },
+      {
+        "value": 12,
+        "label": "£50,000",
+        "numericValue": 50000
+      },
+      {
+        "value": 13,
+        "label": "£75,000",
+        "numericValue": 75000
+      },
+      {
+        "value": 14,
+        "label": "£100,000",
+        "numericValue": 100000
+      },
+      {
+        "value": 15,
+        "label": "£150,000",
+        "numericValue": 150000
+      },
+      {
+        "value": 16,
+        "label": "£200,000",
+        "numericValue": 200000
+      },
+      {
+        "value": 17,
+        "label": "£250,000",
+        "numericValue": 250000
+      }
+    ],
+    "indemnityCustomerVehicles": [
+      {
+        "value": 1,
+        "label": "£15,000",
+        "numericValue": 15000
+      },
+      {
+        "value": 2,
+        "label": "£30,000",
+        "numericValue": 30000
+      },
+      {
+        "value": 3,
+        "label": "£50,000",
+        "numericValue": 50000
+      },
+      {
+        "value": 4,
+        "label": "£75,000",
+        "numericValue": 75000
+      },
+      {
+        "value": 5,
+        "label": "£100,000",
+        "numericValue": 100000
+      },
+      {
+        "value": 6,
+        "label": "£150,000",
+        "numericValue": 150000
+      },
+      {
+        "value": 7,
+        "label": "£200,000",
+        "numericValue": 200000
+      },
+      {
+        "value": 8,
+        "label": "£250,000",
+        "numericValue": 250000
+      }
+    ],
+    "driverPlans": [
+      {
+        "value": 1,
+        "label": "Named Driver"
+      },
+      {
+        "value": 2,
+        "label": "Named Driver & Any Driver"
+      },
+      {
+        "value": 3,
+        "label": "Any Driver"
+      }
+    ],
+    "aadDriverMinAge": [
+      {
+        "value": 1,
+        "label": "21"
+      },
+      {
+        "value": 2,
+        "label": "23"
+      },
+      {
+        "value": 3,
+        "label": "25"
+      },
+      {
+        "value": 4,
+        "label": "30"
+      }
+    ],
+    "aadDriverMaxAge": [
+      {
+        "value": 1,
+        "label": "65"
+      },
+      {
+        "value": 2,
+        "label": "70"
+      }
+    ],
+    "noClaimBonuses": [
+      {
+        "value": 1,
+        "label": "No NCB"
+      },
+      {
+        "value": 2,
+        "label": "1 Year"
+      },
+      {
+        "value": 3,
+        "label": "2 Years"
+      },
+      {
+        "value": 4,
+        "label": "3 Years"
+      },
+      {
+        "value": 5,
+        "label": "4 Years"
+      },
+      {
+        "value": 6,
+        "label": "5 Years"
+      },
+      {
+        "value": 7,
+        "label": "6 Years"
+      },
+      {
+        "value": 8,
+        "label": "7 Years"
+      },
+      {
+        "value": 9,
+        "label": "8 Years"
+      },
+      {
+        "value": 10,
+        "label": "9 Years"
+      },
+      {
+        "value": 11,
+        "label": "10 Years"
+      },
+      {
+        "value": 12,
+        "label": "11 Years"
+      },
+      {
+        "value": 13,
+        "label": "12 Years"
+      },
+      {
+        "value": 14,
+        "label": "13 Years"
+      },
+      {
+        "value": 15,
+        "label": "14 Years"
+      },
+      {
+        "value": 16,
+        "label": "15+ Years"
+      }
+    ]
+  },
+  "referenceBindings": [
+    {
+      "owner": "MTS-11-Q12",
+      "canonicalPath": "cover.annualEuropeanCover[].usage",
+      "selectionRule": "fixed",
+      "collections": [
+        "europeanTripUsage"
+      ]
+    },
+    {
+      "owner": "MTS-11-Q17",
+      "canonicalPath": "cover.temporaryEuropeanCover[].area",
+      "selectionRule": "fixed",
+      "collections": [
+        "europeanArea"
+      ]
+    },
+    {
+      "owner": "MTS-11-Q19",
+      "canonicalPath": "cover.temporaryEuropeanCover[].cover",
+      "selectionRule": "fixed",
+      "collections": [
+        "europeanTripCover"
+      ]
+    },
+    {
+      "owner": "MTS-11-Q20",
+      "canonicalPath": "cover.temporaryEuropeanCover[].usage",
+      "selectionRule": "fixed",
+      "collections": [
+        "europeanTripUsage"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q08",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "questionId": "MTS-06-Q08",
+      "selectionRule": "fixed",
+      "collections": [
+        "driverTitles"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q12",
+      "canonicalPath": "risk.drivers[].relationship",
+      "selectionRule": "fixed",
+      "collections": [
+        "driverRelationshipsPolicyHolder"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q19",
+      "canonicalPath": "risk.drivers[].usage",
+      "selectionRule": "fixed",
+      "collections": [
+        "driverUsages"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q20",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "questionId": "MTS-06-Q20",
+      "selectionRule": "fixed",
+      "collections": [
+        "driverGVWLimits"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q23",
+      "canonicalPath": "risk.drivers[].licence.type",
+      "selectionRule": "fixed",
+      "collections": [
+        "driverLicenceTypes"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q25",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "questionId": "MTS-06-Q25",
+      "selectionRule": "fixed",
+      "collections": [
+        "driverMotorcycleCovers"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q27",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "questionId": "MTS-06-Q27",
+      "selectionRule": "fixed",
+      "collections": [
+        "driverMaxABIGroups"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q28",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "questionId": "MTS-06-Q28",
+      "selectionRule": "fixed",
+      "collections": [
+        "driverTradeEmploymentBasises"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q29",
+      "canonicalPath": "risk.drivers[].occupations[].occupation",
+      "selectionRule": "fixed",
+      "collections": [
+        "occupations"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q35",
+      "canonicalPath": "risk.drivers[].convictions[].code",
+      "selectionRule": "fixed",
+      "collections": [
+        "driverMTConvictionCodes"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q42",
+      "canonicalPath": "risk.drivers[].losses[].type",
+      "selectionRule": "fixed",
+      "collections": [
+        "driverClaimTypes"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q45",
+      "canonicalPath": "risk.drivers[].losses[].declaredStatus",
+      "selectionRule": "fixed",
+      "collections": [
+        "driverClaimStatuses"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q50",
+      "canonicalPath": "risk.drivers[].criminalConvictions[].code",
+      "selectionRule": "fixed",
+      "collections": [
+        "driverCriminalConvictionCodes"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q55",
+      "canonicalPath": "risk.drivers[].countyCourtJudgments[].status",
+      "selectionRule": "fixed",
+      "collections": [
+        "driverCCJStatuses"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q59",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "questionId": "MTS-06-Q59",
+      "selectionRule": "driver-age-indemnity",
+      "collections": [
+        "youngDriverConfiguration/0/indemnities",
+        "youngDriverConfiguration/1/indemnities",
+        "youngDriverConfiguration/2/indemnities",
+        "youngDriverConfiguration/3/indemnities"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q60",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "questionId": "MTS-06-Q60",
+      "selectionRule": "driver-age-cc",
+      "collections": [
+        "youngDriverConfiguration/0/cCs",
+        "youngDriverConfiguration/1/cCs",
+        "youngDriverConfiguration/2/cCs",
+        "youngDriverConfiguration/3/cCs"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q61",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "questionId": "MTS-06-Q61",
+      "selectionRule": "fixed",
+      "collections": [
+        "driverExperienceBasedExcesses"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q62",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "questionId": "MTS-06-Q62",
+      "selectionRule": "fixed",
+      "collections": [
+        "driverExperienceBasedVehicleCCLimits"
+      ]
+    },
+    {
+      "owner": "MTS-08-Q06",
+      "canonicalPath": "risk.vehicles[].vehicleType",
+      "selectionRule": "fixed",
+      "collections": [
+        "vehicleType"
+      ]
+    },
+    {
+      "owner": "MTS-08-Q19",
+      "canonicalPath": "risk.vehicles[].declaredOwnerType",
+      "selectionRule": "fixed",
+      "collections": [
+        "vehicleOwnerTypes"
+      ]
+    },
+    {
+      "owner": "MTS-08-Q20",
+      "canonicalPath": "risk.vehicles[].keptOvernightType",
+      "selectionRule": "fixed",
+      "collections": [
+        "vehicleKeptOvernightType"
+      ]
+    },
+    {
+      "owner": "MTS-08-Q26",
+      "canonicalPath": "risk.vehicles[].modifications[].code",
+      "selectionRule": "fixed",
+      "collections": [
+        "vehicleModifications"
+      ]
+    },
+    {
+      "owner": "MTS-09-Q07",
+      "canonicalPath": "risk.vehicles[].vehicleType",
+      "selectionRule": "fixed",
+      "collections": [
+        "vehicleType"
+      ]
+    },
+    {
+      "owner": "MTS-09-Q20",
+      "canonicalPath": "risk.vehicles[].declaredOwnerType",
+      "selectionRule": "fixed",
+      "collections": [
+        "vehicleOwnerTypes"
+      ]
+    },
+    {
+      "owner": "MTS-09-Q21",
+      "canonicalPath": "risk.vehicles[].keptOvernightType",
+      "selectionRule": "fixed",
+      "collections": [
+        "vehicleKeptOvernightType"
+      ]
+    },
+    {
+      "owner": "MTS-09-Q26",
+      "canonicalPath": "risk.vehicles[].modifications[].code",
+      "selectionRule": "fixed",
+      "collections": [
+        "vehicleModifications"
+      ]
+    },
+    {
+      "owner": "MTS-04-Q01",
+      "canonicalPath": "risk.business.activities[].code",
+      "selectionRule": "fixed",
+      "collections": [
+        "mtOccupations"
+      ]
+    },
+    {
+      "owner": "MTS-01-Q02",
+      "canonicalPath": "insured.responses.answers[]",
+      "questionId": "MTS-01-Q02",
+      "selectionRule": "fixed",
+      "collections": [
+        "marketingConsents"
+      ]
+    },
+    {
+      "owner": "MTS-01-Q03",
+      "canonicalPath": "insured.responses.answers[]",
+      "questionId": "MTS-01-Q03",
+      "selectionRule": "fixed",
+      "collections": [
+        "marketingMethods"
+      ]
+    },
+    {
+      "owner": "MTS-01-Q06",
+      "canonicalPath": "insured.declaredCompanyType",
+      "selectionRule": "fixed",
+      "collections": [
+        "companyTypes"
+      ]
+    },
+    {
+      "owner": "MTS-01-Q07",
+      "canonicalPath": "insured.title",
+      "selectionRule": "fixed",
+      "collections": [
+        "proposerTitles"
+      ]
+    },
+    {
+      "owner": "MTS-05-Q01",
+      "canonicalPath": "cover.responses.answers[]",
+      "questionId": "MTS-05-Q01",
+      "selectionRule": "fixed",
+      "collections": [
+        "coverLevels"
+      ]
+    },
+    {
+      "owner": "MTS-05-Q02",
+      "canonicalPath": "cover.responses.answers[]",
+      "questionId": "MTS-05-Q02",
+      "selectionRule": "fixed",
+      "collections": [
+        "indemnityOwnVehicles"
+      ]
+    },
+    {
+      "owner": "MTS-05-Q03",
+      "canonicalPath": "cover.responses.answers[]",
+      "questionId": "MTS-05-Q03",
+      "selectionRule": "fixed",
+      "collections": [
+        "indemnityCustomerVehicles"
+      ]
+    },
+    {
+      "owner": "MTS-05-Q04",
+      "canonicalPath": "cover.responses.answers[]",
+      "questionId": "MTS-05-Q04",
+      "selectionRule": "own-indemnity-excess",
+      "collections": [
+        "indemnityOwnVehicles/number:1/excesses",
+        "indemnityOwnVehicles/number:2/excesses",
+        "indemnityOwnVehicles/number:3/excesses",
+        "indemnityOwnVehicles/number:4/excesses",
+        "indemnityOwnVehicles/number:5/excesses",
+        "indemnityOwnVehicles/number:6/excesses",
+        "indemnityOwnVehicles/number:7/excesses",
+        "indemnityOwnVehicles/number:8/excesses",
+        "indemnityOwnVehicles/number:9/excesses",
+        "indemnityOwnVehicles/number:10/excesses",
+        "indemnityOwnVehicles/number:11/excesses",
+        "indemnityOwnVehicles/number:12/excesses",
+        "indemnityOwnVehicles/number:13/excesses",
+        "indemnityOwnVehicles/number:14/excesses",
+        "indemnityOwnVehicles/number:15/excesses",
+        "indemnityOwnVehicles/number:16/excesses",
+        "indemnityOwnVehicles/number:17/excesses"
+      ]
+    },
+    {
+      "owner": "MTS-05-Q06",
+      "canonicalPath": "cover.responses.answers[]",
+      "questionId": "MTS-05-Q06",
+      "selectionRule": "fixed",
+      "collections": [
+        "excessLates"
+      ]
+    },
+    {
+      "owner": "MTS-05-Q09",
+      "canonicalPath": "cover.responses.answers[]",
+      "questionId": "MTS-05-Q09",
+      "selectionRule": "fixed",
+      "collections": [
+        "customerLoanCoverLevels"
+      ]
+    },
+    {
+      "owner": "MTS-05-Q10",
+      "canonicalPath": "risk.previousInsurance.responses.answers[]",
+      "questionId": "MTS-05-Q10",
+      "selectionRule": "fixed",
+      "collections": [
+        "noClaimBonuses"
+      ]
+    },
+    {
+      "owner": "MTS-05-Q11",
+      "canonicalPath": "risk.previousInsurance.responses.answers[]",
+      "questionId": "MTS-05-Q11",
+      "selectionRule": "fixed",
+      "collections": [
+        "noClaimBonusesEarned"
+      ]
+    },
+    {
+      "owner": "MTS-05-Q13",
+      "canonicalPath": "risk.previousInsurance.responses.answers[]",
+      "questionId": "MTS-05-Q13",
+      "selectionRule": "fixed",
+      "collections": [
+        "noClaimBonusPreviousInsurers"
+      ]
+    },
+    {
+      "owner": "MTS-05-Q15",
+      "canonicalPath": "risk.previousInsurance.responses.answers[]",
+      "questionId": "MTS-05-Q15",
+      "selectionRule": "fixed",
+      "collections": [
+        "noClaimBonusIntroRenewalYears"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q01",
+      "canonicalPath": "risk.responses.answers[]",
+      "questionId": "MTS-06-Q01",
+      "selectionRule": "fixed",
+      "collections": [
+        "driverPlans"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q03",
+      "canonicalPath": "risk.responses.answers[]",
+      "questionId": "MTS-06-Q03",
+      "selectionRule": "fixed",
+      "collections": [
+        "aadDriverMinAge"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q04",
+      "canonicalPath": "risk.responses.answers[]",
+      "questionId": "MTS-06-Q04",
+      "selectionRule": "fixed",
+      "collections": [
+        "aadDriverMaxAge"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q05",
+      "canonicalPath": "risk.responses.answers[]",
+      "questionId": "MTS-06-Q05",
+      "selectionRule": "fixed",
+      "collections": [
+        "aadMaxVehicleGrouping"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q06",
+      "canonicalPath": "risk.responses.answers[]",
+      "questionId": "MTS-06-Q06",
+      "selectionRule": "fixed",
+      "collections": [
+        "aadMaxVehicleGvw"
+      ]
+    },
+    {
+      "owner": "MTS-06-Q07",
+      "canonicalPath": "risk.responses.answers[]",
+      "questionId": "MTS-06-Q07",
+      "selectionRule": "fixed",
+      "collections": [
+        "aadMaxMotorcycleCc"
+      ]
+    },
+    {
+      "owner": "MTS-02-Q01",
+      "canonicalPath": "risk.business.responses.answers[]",
+      "questionId": "MTS-02-Q01",
+      "selectionRule": "fixed",
+      "collections": [
+        "tradingFroms"
+      ]
+    },
+    {
+      "owner": "MTS-02-Q03",
+      "canonicalPath": "risk.premises[].use",
+      "selectionRule": "fixed",
+      "collections": [
+        "tradingPremiseTypes"
+      ]
+    },
+    {
+      "owner": "MTS-13-Q02",
+      "canonicalPath": "risk.responses.answers[]",
+      "questionId": "MTS-13-Q02",
+      "selectionRule": "fixed",
+      "collections": [
+        "carJockeyRadii"
+      ]
+    },
+    {
+      "owner": "MTS-11-Q02",
+      "canonicalPath": "cover.responses.answers[]",
+      "questionId": "MTS-11-Q02",
+      "selectionRule": "fixed",
+      "collections": [
+        "demonstrationCovers"
+      ]
+    },
+    {
+      "owner": "MTS-11-Q05",
+      "canonicalPath": "cover.responses.answers[]",
+      "questionId": "MTS-11-Q05",
+      "selectionRule": "fixed",
+      "collections": [
+        "windScreenCovers"
+      ]
+    },
+    {
+      "owner": "MTS-11-Q09",
+      "canonicalPath": "cover.responses.answers[]",
+      "questionId": "MTS-11-Q09",
+      "selectionRule": "fixed",
+      "collections": [
+        "thirdPartyDamageLimits"
+      ]
+    },
+    {
+      "owner": "prototype.quote.c6181a11c34c",
+      "questionId": "prototype.quote.c6181a11c34c",
+      "canonicalPath": "risk.business.responses.answers[]",
+      "selectionRule": "fixed",
+      "collections": [
+        "prototype.quote.c6181a11c34c"
+      ]
+    },
+    {
+      "owner": "prototype.quote.0552d5a68ba2",
+      "questionId": "prototype.quote.0552d5a68ba2",
+      "canonicalPath": "risk.business.responses.answers[]",
+      "selectionRule": "fixed",
+      "collections": [
+        "prototype.quote.0552d5a68ba2"
+      ]
+    },
+    {
+      "owner": "prototype.quote.34613c23e95d",
+      "questionId": "prototype.quote.34613c23e95d",
+      "canonicalPath": "risk.business.responses.answers[]",
+      "selectionRule": "fixed",
+      "collections": [
+        "prototype.quote.34613c23e95d"
+      ]
+    },
+    {
+      "owner": "prototype.quote.af67cb40b4de",
+      "questionId": "prototype.quote.af67cb40b4de",
+      "canonicalPath": "risk.business.responses.answers[]",
+      "selectionRule": "fixed",
+      "collections": [
+        "prototype.quote.af67cb40b4de"
+      ]
+    },
+    {
+      "owner": "prototype.quote.c0650c760167",
+      "questionId": "prototype.quote.c0650c760167",
+      "canonicalPath": "risk.previousInsurance.responses.answers[]",
+      "selectionRule": "fixed",
+      "collections": [
+        "prototype.quote.c0650c760167"
+      ]
+    },
+    {
+      "owner": "prototype.quote.2beaf3b8d546",
+      "questionId": "prototype.quote.2beaf3b8d546",
+      "canonicalPath": "cover.responses.answers[]",
+      "selectionRule": "fixed",
+      "collections": [
+        "prototype.quote.2beaf3b8d546"
+      ]
+    },
+    {
+      "owner": "prototype.quote.d9dd069a314c",
+      "questionId": "prototype.quote.d9dd069a314c",
+      "canonicalPath": "cover.responses.answers[]",
+      "selectionRule": "fixed",
+      "collections": [
+        "prototype.quote.d9dd069a314c"
+      ]
+    },
+    {
+      "owner": "prototype.quote.b4c7e25f7781",
+      "questionId": "prototype.quote.b4c7e25f7781",
+      "canonicalPath": "cover.responses.answers[]",
+      "selectionRule": "fixed",
+      "collections": [
+        "prototype.quote.b4c7e25f7781"
+      ]
+    },
+    {
+      "owner": "prototype.quote.00216de47ab5",
+      "questionId": "prototype.quote.00216de47ab5",
+      "canonicalPath": "cover.responses.answers[]",
+      "selectionRule": "fixed",
+      "collections": [
+        "prototype.quote.00216de47ab5"
+      ]
+    },
+    {
+      "owner": "prototype.adddriver.trade-employment",
+      "questionId": "prototype.adddriver.trade-employment",
+      "canonicalPath": "risk.drivers[].responses.answers[]",
+      "selectionRule": "fixed",
+      "collections": [
+        "prototype.adddriver.trade-employment"
+      ]
+    },
+    {
+      "owner": "prototype.addconv.prosecution-status",
+      "questionId": "prototype.addconv.prosecution-status",
+      "canonicalPath": "risk.drivers[].convictions[].responses.answers[]",
+      "selectionRule": "fixed",
+      "collections": [
+        "prototype.addconv.prosecution-status"
+      ]
+    },
+    {
+      "owner": "prototype.addveh.special-characteristics",
+      "questionId": "prototype.addveh.special-characteristics",
+      "canonicalPath": "risk.vehicles[].responses.answers[]",
+      "selectionRule": "fixed",
+      "collections": [
+        "prototype.addveh.special-characteristics"
+      ]
+    },
+    {
+      "owner": "CTL-6c4f6c3ca8c9",
+      "canonicalPath": "risk.vehicles[].body",
+      "selectionRule": "fixed",
+      "collections": [
+        "prototype.vehicle-body"
+      ]
+    },
+    {
+      "owner": "CTL-196064c77a8f",
+      "canonicalPath": "risk.premises[].declaredUse",
+      "selectionRule": "fixed",
+      "collections": [
+        "prototype.premises-use"
+      ]
+    },
+    {
+      "owner": "CTL-7390fe5a19a7",
+      "canonicalPath": "risk.premises[].security",
+      "selectionRule": "fixed",
+      "collections": [
+        "prototype.premises-security"
+      ]
+    },
+    {
+      "owner": "CTL-83d6fe0f983f",
+      "canonicalPath": "risk.drivers[].losses[].declaredType",
+      "selectionRule": "fixed",
+      "collections": [
+        "prototype.incident-type"
+      ]
+    }
+  ],
+  "sourceQuestions": [
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.c6181a11c34c",
+      "label": "Full time or part time motor trader",
+      "kind": "reference",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-c6181a11c34c",
+      "sourceOptions": [
+        "Full time",
+        "Part time"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-2",
+        "Motor Trade Combined:step-2"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Full time"
+        },
+        {
+          "value": 2,
+          "label": "Part time"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.0552d5a68ba2",
+      "label": "Years experience in the motor trade",
+      "kind": "reference",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-0552d5a68ba2",
+      "sourceOptions": [
+        "Under 1",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6–10",
+        "Over 10"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-2",
+        "Motor Trade Combined:step-2"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Under 1"
+        },
+        {
+          "value": 2,
+          "label": "1"
+        },
+        {
+          "value": 3,
+          "label": "2"
+        },
+        {
+          "value": 4,
+          "label": "3"
+        },
+        {
+          "value": 5,
+          "label": "4"
+        },
+        {
+          "value": 6,
+          "label": "5"
+        },
+        {
+          "value": 7,
+          "label": "6–10"
+        },
+        {
+          "value": 8,
+          "label": "Over 10"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.34613c23e95d",
+      "label": "Employment status in that occupation",
+      "kind": "reference",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-34613c23e95d",
+      "sourceOptions": [
+        "Not applicable",
+        "Employed",
+        "Self employed"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-2",
+        "Motor Trade Combined:step-2"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Not applicable"
+        },
+        {
+          "value": 2,
+          "label": "Employed"
+        },
+        {
+          "value": 3,
+          "label": "Self employed"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.ea4580cbac7a",
+      "label": "Any other business or directorship",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-ea4580cbac7a",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-2",
+        "Motor Trade Combined:step-2"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.ba9d4158ae2c",
+      "label": "Vehicle salvage, dismantling, breaking, scrap, sale of parts, or recovery for such purpose",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-ba9d4158ae2c",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-3",
+        "Motor Trade Combined:step-3"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.35350a32e79e",
+      "label": "Selling, repairing, servicing or restoring motorcycles, scooters, quad bikes or trikes",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-35350a32e79e",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-3",
+        "Motor Trade Combined:step-3"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.2ad460339240",
+      "label": "Import or export of vehicles",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-2ad460339240",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-3",
+        "Motor Trade Combined:step-3"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.f5e77ab8ec93",
+      "label": "Specialise in sports, high performance or prestige cars",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-f5e77ab8ec93",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-3",
+        "Motor Trade Combined:step-3"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.7fe8e3151553",
+      "label": "Specialise in veteran, vintage or classic cars",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-7fe8e3151553",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-3",
+        "Motor Trade Combined:step-3"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.27322dcfabf5",
+      "label": "Specialise in vehicles other than cars or light commercials",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-27322dcfabf5",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-3",
+        "Motor Trade Combined:step-3"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.f856f5891026",
+      "label": "Specialise in grey imports",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-f856f5891026",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-3",
+        "Motor Trade Combined:step-3"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.46414cc10100",
+      "label": "Convicted of, or charged but not tried with, a criminal offence",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-46414cc10100",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-5",
+        "Motor Trade Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.ef70e80708bb",
+      "label": "Motoring conviction or pending prosecution in the last 5 years, including fixed penalties",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-ef70e80708bb",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-5",
+        "Motor Trade Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.36da21d3c935",
+      "label": "Any accident, loss or claim in the last 3 years, whether or not a claim was made",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-36da21d3c935",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-5",
+        "Motor Trade Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.6c1927f561b8",
+      "label": "Any condition notifiable to the DVLA — vision, hearing, heart, epilepsy, diabetes, blackouts or fits",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-6c1927f561b8",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-5",
+        "Motor Trade Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.f7972c55f517",
+      "label": "Motor insurance cancelled, refused, or special terms applied in the last 5 years",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-f7972c55f517",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-5",
+        "Motor Trade Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.382ce4de8253",
+      "label": "Any claim repudiated or refused",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-382ce4de8253",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-5",
+        "Motor Trade Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.922ca15dc9ed",
+      "label": "County court judgment served, or declared bankrupt, in the last 5 years",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-922ca15dc9ed",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-5",
+        "Motor Trade Combined:step-6"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.d7a75768e505",
+      "label": "Any vehicle adapted for disability",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-d7a75768e505",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-6",
+        "Motor Trade Combined:step-7"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.5f9e8331ac6f",
+      "label": "Any vehicle modified or altered in any way",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-5f9e8331ac6f",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-6",
+        "Motor Trade Combined:step-7"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.488ecf4bdc09",
+      "label": "Any left-hand drive vehicle",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-488ecf4bdc09",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-6",
+        "Motor Trade Combined:step-7"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.87fad6b4a9fe",
+      "label": "Any vehicle imported other than by the manufacturer",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-87fad6b4a9fe",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-6",
+        "Motor Trade Combined:step-7"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.af67cb40b4de",
+      "label": "Courtesy vehicles",
+      "kind": "reference",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-af67cb40b4de",
+      "sourceOptions": [
+        "None",
+        "Insured under this policy",
+        "Covered by the customer’s own insurer"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-6",
+        "Motor Trade Combined:step-7"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "None"
+        },
+        {
+          "value": 2,
+          "label": "Insured under this policy"
+        },
+        {
+          "value": 3,
+          "label": "Covered by the customer’s own insurer"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.1bdc05ff8b3d",
+      "label": "Discount being claimed",
+      "kind": "boolean",
+      "targetContainer": "risk.previousInsurance.responses",
+      "sourceControlId": "CTL-1bdc05ff8b3d",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-7"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.c0650c760167",
+      "label": "Discount earned on",
+      "kind": "reference",
+      "targetContainer": "risk.previousInsurance.responses",
+      "sourceControlId": "CTL-c0650c760167",
+      "sourceOptions": [
+        "Motor trade",
+        "Private car",
+        "Commercial vehicle"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-7"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Motor trade"
+        },
+        {
+          "value": 2,
+          "label": "Private car"
+        },
+        {
+          "value": 3,
+          "label": "Commercial vehicle"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.61a13bb828b2",
+      "label": "Protect the discount",
+      "kind": "boolean",
+      "targetContainer": "risk.previousInsurance.responses",
+      "sourceControlId": "CTL-61a13bb828b2",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-7"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.3fad63dd9abf",
+      "label": "Introductory discount claimed",
+      "kind": "boolean",
+      "targetContainer": "risk.previousInsurance.responses",
+      "sourceControlId": "CTL-3fad63dd9abf",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-7"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.2beaf3b8d546",
+      "label": "Cover basis",
+      "kind": "reference",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-2beaf3b8d546",
+      "sourceOptions": [
+        "Comprehensive",
+        "Third party fire and theft",
+        "Third party only"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-8",
+        "Motor Trade Combined:step-8"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "Comprehensive"
+        },
+        {
+          "value": 2,
+          "label": "Third party fire and theft"
+        },
+        {
+          "value": 3,
+          "label": "Third party only"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.d9dd069a314c",
+      "label": "Indemnity limit — own vehicles, any one vehicle",
+      "kind": "reference",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-d9dd069a314c",
+      "sourceOptions": [
+        "£7,500",
+        "£10,000",
+        "£12,500",
+        "£15,000",
+        "£20,000",
+        "£25,000",
+        "£30,000"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-8",
+        "Motor Trade Combined:step-8"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "£7,500"
+        },
+        {
+          "value": 2,
+          "label": "£10,000"
+        },
+        {
+          "value": 3,
+          "label": "£12,500"
+        },
+        {
+          "value": 4,
+          "label": "£15,000"
+        },
+        {
+          "value": 5,
+          "label": "£20,000"
+        },
+        {
+          "value": 6,
+          "label": "£25,000"
+        },
+        {
+          "value": 7,
+          "label": "£30,000"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.b4c7e25f7781",
+      "label": "Indemnity limit — customer vehicles, any one vehicle",
+      "kind": "reference",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-b4c7e25f7781",
+      "sourceOptions": [
+        "£7,500",
+        "£10,000",
+        "£12,500",
+        "£15,000",
+        "£20,000",
+        "£25,000",
+        "£30,000"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-8",
+        "Motor Trade Combined:step-8"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "£7,500"
+        },
+        {
+          "value": 2,
+          "label": "£10,000"
+        },
+        {
+          "value": 3,
+          "label": "£12,500"
+        },
+        {
+          "value": 4,
+          "label": "£15,000"
+        },
+        {
+          "value": 5,
+          "label": "£20,000"
+        },
+        {
+          "value": 6,
+          "label": "£25,000"
+        },
+        {
+          "value": 7,
+          "label": "£30,000"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.00216de47ab5",
+      "label": "Accidental damage, fire and theft excess",
+      "kind": "reference",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-00216de47ab5",
+      "sourceOptions": [
+        "£250",
+        "£500",
+        "£750",
+        "£1,000"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-8",
+        "Motor Trade Combined:step-8"
+      ],
+      "referenceValues": [
+        {
+          "value": 1,
+          "label": "£250"
+        },
+        {
+          "value": 2,
+          "label": "£500"
+        },
+        {
+          "value": 3,
+          "label": "£750"
+        },
+        {
+          "value": 4,
+          "label": "£1,000"
+        }
+      ],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.becc2653d0de",
+      "label": "Demonstration cover",
+      "kind": "boolean",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-becc2653d0de",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-8",
+        "Motor Trade Combined:step-8"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-questions.json",
+      "questionId": "prototype.quote.4c5df77ffba1",
+      "label": "Private use in addition to motor trade use",
+      "kind": "boolean",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-4c5df77ffba1",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "stages": [
+        "Motor Trade Road Risks:step-8",
+        "Motor Trade Combined:step-8"
+      ],
+      "referenceValues": [],
+      "requiredWhenApplicable": true
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-value-questions.json",
+      "questionId": "prototype.quote-value.3fd9edd7e66e",
+      "label": "Main or normal occupation",
+      "kind": "text",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-3fd9edd7e66e",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-value-questions.json",
+      "questionId": "prototype.quote-value.3e4fdf2b682e",
+      "label": "Other activity description",
+      "kind": "text",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-3e4fdf2b682e",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-value-questions.json",
+      "questionId": "prototype.quote-value.909e1c6eff8c",
+      "label": "Details of any Yes answers",
+      "kind": "text",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-909e1c6eff8c",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-value-questions.json",
+      "questionId": "prototype.quote-value.2d662a3ec81d",
+      "label": "Details of any Yes answers",
+      "kind": "text",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-2d662a3ec81d",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-value-questions.json",
+      "questionId": "prototype.quote-value.ec9fcabe7952",
+      "label": "Recovery vehicles — single vehicle capacity",
+      "kind": "count",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-ec9fcabe7952",
+      "sourceOptions": [],
+      "unit": "count"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-value-questions.json",
+      "questionId": "prototype.quote-value.4500a357b44b",
+      "label": "Recovery vehicles — two vehicle capacity",
+      "kind": "count",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-4500a357b44b",
+      "sourceOptions": [],
+      "unit": "count"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-value-questions.json",
+      "questionId": "prototype.quote-value.35a0dd933924",
+      "label": "Passenger carriers over 8 seats",
+      "kind": "count",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-35a0dd933924",
+      "sourceOptions": [],
+      "unit": "count"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-value-questions.json",
+      "questionId": "prototype.quote-value.636aa0774e1c",
+      "label": "Motorcycles, scooters, quads or trikes",
+      "kind": "count",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-636aa0774e1c",
+      "sourceOptions": [],
+      "unit": "count"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-value-questions.json",
+      "questionId": "prototype.quote-value.315960b57ab1",
+      "label": "Trade plates held",
+      "kind": "boolean",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-315960b57ab1",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-value-questions.json",
+      "questionId": "prototype.quote-value.0b9bf2ac4b8f",
+      "label": "Percentage of turnover from overseas work, excluding USA and Canada",
+      "kind": "percentage",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-0b9bf2ac4b8f",
+      "sourceOptions": [],
+      "unit": "basis-points"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-value-questions.json",
+      "questionId": "prototype.quote-value.c2b0372b4040",
+      "label": "Percentage of turnover from USA or Canada",
+      "kind": "percentage",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-c2b0372b4040",
+      "sourceOptions": [],
+      "unit": "basis-points"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-value-questions.json",
+      "questionId": "prototype.quote-value.b99b3a5b3004",
+      "label": "Details of any Yes answers",
+      "kind": "text",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-b99b3a5b3004",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-value-questions.json",
+      "questionId": "prototype.quote-value.7adfff3ade76",
+      "label": "Previous insurer",
+      "kind": "text",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-7adfff3ade76",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-value-questions.json",
+      "questionId": "prototype.quote-value.59c91e8db152",
+      "label": "If not the sole occupier, what other tenants do",
+      "kind": "text",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-59c91e8db152",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-value-questions.json",
+      "questionId": "prototype.quote-value.acace76b1053",
+      "label": "Distance to the nearest building, where detached",
+      "kind": "text",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-acace76b1053",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-value-questions.json",
+      "questionId": "prototype.quote-value.5fcb5378a1fd",
+      "label": "Interested party and nature of interest",
+      "kind": "text",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-5fcb5378a1fd",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-value-questions.json",
+      "questionId": "prototype.quote-value.4799b8daa1ca",
+      "label": "Details of any Yes answers",
+      "kind": "text",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-4799b8daa1ca",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-value-questions.json",
+      "questionId": "prototype.quote-value.5743fa7db272",
+      "label": "Machinery and plant",
+      "kind": "money",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-5743fa7db272",
+      "sourceOptions": [],
+      "unit": "GBP"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-value-questions.json",
+      "questionId": "prototype.quote-value.fa63248f9ae1",
+      "label": "Computers and electronic equipment",
+      "kind": "money",
+      "targetContainer": "cover.responses",
+      "sourceControlId": "CTL-fa63248f9ae1",
+      "sourceOptions": [],
+      "unit": "GBP"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-value-questions.json",
+      "questionId": "prototype.quote-value.92094fbe9a4b",
+      "label": "Total principals and employees",
+      "kind": "count",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-92094fbe9a4b",
+      "sourceOptions": [],
+      "unit": "count"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-value-questions.json",
+      "questionId": "prototype.quote-value.433ec08d2c67",
+      "label": "Machinery used",
+      "kind": "text",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-433ec08d2c67",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-value-questions.json",
+      "questionId": "prototype.quote-value.4479e664ad2f",
+      "label": "Hazardous processes or substances used",
+      "kind": "text",
+      "targetContainer": "risk.business.responses",
+      "sourceControlId": "CTL-4479e664ad2f",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-quote-value-questions.json",
+      "questionId": "prototype.quote-value.a0e5d1b910f8",
+      "label": "Details of any No or outstanding answers",
+      "kind": "text",
+      "targetContainer": "risk.declarations",
+      "sourceControlId": "CTL-a0e5d1b910f8",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.adddriver.residency-years",
+      "label": "Years living in the UK",
+      "kind": "count",
+      "targetContainer": "risk.drivers[].responses",
+      "sourceControlId": "CTL-4574923e7c59",
+      "sourceOptions": [],
+      "unit": "years"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.adddriver.licence-years",
+      "label": "Years full UK licence held",
+      "kind": "count",
+      "targetContainer": "risk.drivers[].responses",
+      "sourceControlId": "CTL-4460295e4600",
+      "sourceOptions": [],
+      "unit": "years"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.adddriver.occupation",
+      "label": "Occupation",
+      "kind": "text",
+      "targetContainer": "risk.drivers[].responses",
+      "sourceControlId": "CTL-95e2521d72f3",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.adddriver.trade-employment",
+      "label": "Full or part time in the motor trade",
+      "kind": "reference",
+      "targetContainer": "risk.drivers[].responses",
+      "sourceControlId": "CTL-af53c0345061",
+      "sourceOptions": [
+        "Full time",
+        "Part time"
+      ],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.adddriver.other-occupation",
+      "label": "Other occupation if part time",
+      "kind": "text",
+      "targetContainer": "risk.drivers[].responses",
+      "sourceControlId": "CTL-5d9076259527",
+      "sourceOptions": [],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addconv.prosecution-status",
+      "label": "Pending or convicted",
+      "kind": "reference",
+      "targetContainer": "risk.drivers[].convictions[].responses",
+      "sourceControlId": "CTL-022959719b23",
+      "sourceOptions": [
+        "Convicted",
+        "Prosecution pending"
+      ],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addinc.own-damage",
+      "label": "Cost of damage to own vehicle",
+      "kind": "money",
+      "targetContainer": "risk.drivers[].losses[].responses",
+      "sourceControlId": "CTL-b5ec82596c2e",
+      "sourceOptions": [],
+      "unit": "GBP"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addinc.third-party-damage",
+      "label": "Cost to third party",
+      "kind": "money",
+      "targetContainer": "risk.drivers[].losses[].responses",
+      "sourceControlId": "CTL-b4085cf94a2b",
+      "sourceOptions": [],
+      "unit": "GBP"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addinc.claim-made",
+      "label": "Was a claim made",
+      "kind": "boolean",
+      "targetContainer": "risk.drivers[].losses[].responses",
+      "sourceControlId": "CTL-ff933bc8115b",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addveh.special-characteristics",
+      "label": "Modified, left-hand drive, imported or adapted",
+      "kind": "reference",
+      "targetContainer": "risk.vehicles[].responses",
+      "sourceControlId": "CTL-b9bd8f87ee50",
+      "sourceOptions": [
+        "None",
+        "Modified or altered",
+        "Left-hand drive",
+        "Imported other than by the manufacturer",
+        "Adapted for disability",
+        "More than one of these"
+      ],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addveh.report-mid",
+      "label": "Report to the motor insurance database",
+      "kind": "boolean",
+      "targetContainer": "risk.vehicles[].responses",
+      "sourceControlId": "CTL-f97ee713214d",
+      "sourceOptions": [
+        "Yes",
+        "No — not used on a road or public place"
+      ],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addloc.sole-occupier",
+      "label": "Sole occupier",
+      "kind": "boolean",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-eddd76e84e6c",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addloc.detached",
+      "label": "Detached building",
+      "kind": "boolean",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-42e96d372e0b",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addloc.year-built",
+      "label": "Approximate year built",
+      "kind": "count",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-a5e78a6ee6b0",
+      "sourceOptions": [],
+      "unit": "calendar-year"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addloc.storeys",
+      "label": "Number of storeys",
+      "kind": "reference",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-e6e67be50457",
+      "sourceOptions": [
+        "1",
+        "2",
+        "3",
+        "4 or more"
+      ],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addloc.wall-construction",
+      "label": "Construction of external walls",
+      "kind": "reference",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-b3e2c50057a2",
+      "sourceOptions": [
+        "Brick",
+        "Brick and steel frame",
+        "Steel frame, profile clad",
+        "Concrete",
+        "Timber",
+        "Composite panel",
+        "Other"
+      ],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addloc.roof-construction",
+      "label": "Construction of roof",
+      "kind": "reference",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-36421d4e1119",
+      "sourceOptions": [
+        "Profile steel sheet",
+        "Tile",
+        "Slate",
+        "Concrete",
+        "Felt",
+        "Asbestos cement",
+        "Other"
+      ],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addloc.flat-roof",
+      "label": "Flat roof",
+      "kind": "reference",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-3de8c7420b82",
+      "sourceOptions": [
+        "None",
+        "Under 25% of roof area",
+        "25% to 50%",
+        "Over 50%"
+      ],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addloc.composite-panels",
+      "label": "Composite panels present",
+      "kind": "reference",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-0f6311356da8",
+      "sourceOptions": [
+        "No",
+        "Yes — non-combustible core",
+        "Yes — core unknown"
+      ],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addloc.timber-frame",
+      "label": "Timber framed",
+      "kind": "boolean",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-74cd9227a5c9",
+      "sourceOptions": [
+        "No",
+        "Yes"
+      ],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addloc.heritage-listed",
+      "label": "Heritage listed",
+      "kind": "reference",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-9df1a55e473e",
+      "sourceOptions": [
+        "No",
+        "Grade II",
+        "Grade II*",
+        "Grade I"
+      ],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addloc.heating",
+      "label": "Method of heating",
+      "kind": "reference",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-6e1391ebe64d",
+      "sourceOptions": [
+        "Gas warm air",
+        "Gas central heating",
+        "Electric",
+        "Oil fired",
+        "Bottled gas heaters",
+        "Paraffin or exposed flame heaters"
+      ],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addloc.basement",
+      "label": "Basement or cellar",
+      "kind": "reference",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-348671532dea",
+      "sourceOptions": [
+        "No",
+        "Yes — empty",
+        "Yes — property stored"
+      ],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addloc.intruder-alarm",
+      "label": "Intruder alarm",
+      "kind": "reference",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-03fc40e5f3cc",
+      "sourceOptions": [
+        "None",
+        "Local bell only",
+        "SSAIB Grade 2, remote signalling",
+        "NSI Grade 2, remote signalling",
+        "NSI Grade 3, remote signalling",
+        "NSI Grade 3 with CCTV"
+      ],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addloc.police-response",
+      "label": "Level 1 police response",
+      "kind": "boolean",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-2a59588da63c",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addloc.fire-alarm",
+      "label": "Fire alarm",
+      "kind": "reference",
+      "targetContainer": "risk.locations[].responses",
+      "sourceControlId": "CTL-7d01cde3f070",
+      "sourceOptions": [
+        "None",
+        "Yes — L1, maintained",
+        "Yes — L2, maintained",
+        "Yes — L3, maintained",
+        "Yes — not maintained"
+      ],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addwage.headcount",
+      "label": "Number of people in this category",
+      "kind": "count",
+      "targetContainer": "risk.wages[].responses",
+      "sourceControlId": "CTL-f768786add68",
+      "sourceOptions": [],
+      "unit": "count"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addloss.insured",
+      "label": "Was it insured",
+      "kind": "boolean",
+      "targetContainer": "risk.losses[].responses",
+      "sourceControlId": "CTL-08587a457fdc",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addprem.overnight-vehicles",
+      "label": "Vehicles kept overnight",
+      "kind": "boolean",
+      "targetContainer": "risk.premises[].responses",
+      "sourceControlId": "CTL-2cefab50c985",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "unit": "none"
+    },
+    {
+      "sourceFile": "contracts/examples/prototype-detail-questions.json",
+      "questionId": "prototype.addprem.public-access",
+      "label": "Open to the public",
+      "kind": "boolean",
+      "targetContainer": "risk.premises[].responses",
+      "sourceControlId": "CTL-c375f28658c4",
+      "sourceOptions": [
+        "Yes",
+        "No"
+      ],
+      "unit": "none"
+    }
+  ],
+  "captureAdditionsRequired": [
+    {
+      "code": "stock-custody",
+      "proposalPath": "/cover/requestedSections",
+      "fields": [
+        "id",
+        "code",
+        "selected",
+        "limit",
+        "excess",
+        "anyOneVehicleLimit"
+      ],
+      "products": [
+        "motor-trade-combined"
+      ],
+      "source": "pQuote Cover / pPolicy Stock, custody & road risks basis",
+      "behavior": "Explicit selected state and requested sums; never sum registered vehicle values as stock limit."
+    },
+    {
+      "code": "premises",
+      "proposalPath": "/cover/requestedSections",
+      "fields": [
+        "id",
+        "code",
+        "selected",
+        "limit",
+        "excess",
+        "premisesIds"
+      ],
+      "products": [
+        "motor-trade-combined"
+      ],
+      "source": "pQuote Proposed cover",
+      "behavior": "Explicit selected section and linked premises; do not charge merely because premises list is populated."
+    },
+    {
+      "code": "tools-equipment",
+      "proposalPath": "/cover/requestedSections",
+      "fields": [
+        "id",
+        "code",
+        "selected",
+        "limit",
+        "excess"
+      ],
+      "products": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ],
+      "source": "pQuote Proposed cover / Rating factors",
+      "behavior": "Explicit tools limit/excess and deterministic component; no substitution with arbitrary cover responses."
+    }
+  ],
+  "sourceRowRules": [
+    {
+      "source": "pQuote Underwriting Referrals",
+      "code": "UW-09",
+      "predicate": "Valeting activity and requested/declared per-vehicle exposure above50000",
+      "target": "vehicle or current customer/own indemnity limit",
+      "owner": "06-02/05"
+    },
+    {
+      "source": "pQuote Underwriting Referrals",
+      "code": "UW-22",
+      "predicate": "Business trading fewer than5completed years at inception",
+      "target": "business",
+      "owner": "06-02/05"
+    },
+    {
+      "source": "pQuote Cover Rating factors",
+      "code": "valeting-loading",
+      "effect": "versioned +12% demo factor when declared valeting share>0",
+      "owner": "06-02"
+    },
+    {
+      "source": "pQuote Cover Rating factors",
+      "code": "young-driver-loading",
+      "effect": "versioned +18% demo factor when effective youngest permitted driver<25",
+      "owner": "06-02"
+    },
+    {
+      "source": "pQuote Cover Rating factors",
+      "code": "no-claims-discount",
+      "effect": "versioned -8% only when captured claims-free eligibility>=5 and no conflicting history; required proof remains separate",
+      "owner": "06-02/05"
+    },
+    {
+      "source": "pQuote Cover Insurer/terms",
+      "code": "W-07",
+      "effect": "versioned minimum security warranty; typed condition and actual wording/evidence",
+      "owner": "06-05/06"
+    }
+  ],
+  "counts": {
+    "inputMappings": 19,
+    "presentSchemaPaths": 18,
+    "referenceBindings": 73,
+    "sourceQuestions": 86,
+    "trustedCollections": 8,
+    "newSectionKinds": 3,
+    "sourceRowRules": 6
+  }
+}
