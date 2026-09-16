@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-16T12:29:26.132488+00:00"
+last_updated: "2026-09-16T12:53:45.154651+00:00"
 last_activity: 2026-09-16
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 5 of 13 (Motor Trade quote capture)
 Plan: 05-08 of11 in progress;05-01/02/03/04/05/06/07complete
 Status: In progress — autonomous
-Last activity: 2026-09-16 — 05-08storage committed (ecab402);focused SQL/model checks pass. Full660/74regression is running (session93726); services/API/UI next.
+Last activity: 2026-09-16 — 05-08storage660/74passed. Scoped services/read model committed (b632dc7), focusedSQLpassed; full661/75running(session94761). HTTP/API/UI next.
 
 Progress: Phases1–4 complete;4/13phases,31completed plans.
 
@@ -54,7 +54,7 @@ Progress: Phases1–4 complete;4/13phases,31completed plans.
 ## Session Continuity
 
 Last session: 2026-09-16
-Stopped at:05-08storage focused verification passed; read05-08-PROGRESS. FIRSTcheck active full regression session93726/log phase5-evidence-storage-final-20260916; no duplicate run. Thenheld-authority evidence services. No previews.
+Stopped at:05-08services/read model focusedSQLpassed; read05-08-PROGRESS. FIRSTcheck active full regression session94761/log phase5-evidence-services-final-20260916; no duplicate run. Thenclosed HTTP/API tests and UI. No previews.
 Resume file: .planning/phases/05-motor-trade-quote-capture/05-08-PLAN.md
 
 ## Autonomous continuation

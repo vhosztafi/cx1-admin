@@ -243,3 +243,8 @@ bdd8205 implements vehicles, specified/ordinary roles, modifications, portfolio 
 ## Final05-07 acceptance — 2026-09-16
 
 `a509e6e` completes durable private lookups, six demo scenarios, leased/recoverable workers, immutable candidate/manual selection, trusted vehicle provenance and actual quote controls. Fresh .local/phase5-lookups-complete-20260916 passed649=549unit+100integration,73realSQL,0skips;649/73assertion passed,8.8346minutes.78frontend,294contracts/337operations, lint/types/final build passed. Both-product Chrome121/122revision8/7passes every target, schema validation, pending-input edits, exact replay and stale/failed recovery; final visual reload confirms styled controls and314px/390pxlayout. Final API67508/web49308stopped. Detailed evidence and corrections in05-07-SUMMARY. No funnel edits or final QUO signoff. Next05-08.
+
+
+## 05-08 evidence storage prerequisite — 2026-09-16
+
+`b543b81` rules and `ecab402` storage verified: fresh .local/phase5-evidence-storage-final-20260916 passed660=559unit+101integration,74realSQL,0skips;660/74assertion passed,7.5947minutes. New SQL storage coverage binds hashes/lengths, actual drivers, same-quote files/revisions and immutable withdrawal history; model snapshot check passed. Subsequent b632dc7scoped services/read model passed focused SQL but its full regression is still running; see05-08-PROGRESS. No runtime endpoints/UI/readiness acceptance or05-08completion claimed.
