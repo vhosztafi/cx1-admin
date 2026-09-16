@@ -86,12 +86,12 @@ public sealed partial class UnderwritingRuntimeTests
     }
 
     private sealed record RatingFixture(Guid Quote, Guid ProductVersion, Guid Terms, ActorContext Actor);
-    private static async Task<RatingFixture> Fixture(BackOfficeDbContext db, int productVersion = 2)
+    private static async Task<RatingFixture> Fixture(BackOfficeDbContext db, int productVersion = 2, string productCode = "motor-trade-road-risks")
     {
         var admin = await db.Set<StaffUser>().SingleAsync(x => x.Email == "system-admin@cover.example");
         var requester = await db.Set<StaffUser>().SingleAsync(x => x.Email == "agency-admin@cover.example");
         var servicing = await db.Set<StaffUser>().SingleAsync(x => x.Email == "servicing@cover.example");
-        var product = await db.Set<Product>().SingleAsync(x => x.Code == "motor-trade-road-risks");
+        var product = await db.Set<Product>().SingleAsync(x => x.Code == productCode);
         var version = await db.Set<ProductVersion>().SingleAsync(x => x.ProductId == product.Id && x.Version == productVersion);
         var agency = new Agency { Reference = "AG-UW-RUNTIME", LegalName = "Fictional underwriting agency" };
         var client = new ClientAccount { Reference = "CL-UW-RUNTIME", LegalName = "Fictional underwriting client", NormalizedName = "FICTIONAL UNDERWRITING CLIENT", EntityType = "sole-trader",
@@ -111,7 +111,7 @@ public sealed partial class UnderwritingRuntimeTests
         await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Agency SET State=N'active' WHERE Id={agency.Id}");
         var quote = new Quote { AgencyId = agency.Id, ClientId = client.Id, RelationshipId = relationship.Id, ProductId = product.Id, CreatedBy = servicing.Id };
         db.Add(quote); await db.SaveChangesAsync();
-        const string proposal = "{\"schemaVersion\":\"1.0\",\"productCode\":\"motor-trade-road-risks\"}";
+        var proposal = JsonSerializer.Serialize(new { schemaVersion = "1.0", productCode });
         var revision = new QuoteRevision { QuoteId = quote.Id, AgencyId = agency.Id, ClientId = client.Id, RelationshipId = relationship.Id,
             ProductId = product.Id, ProductVersionId = version.Id, AgencyTermsVersionId = terms.Id, Number = 1,
             QuestionSetVersion = QuoteCatalogueIdentity.Version, ProposalJson = proposal, ContentHash = SHA256.HashData(Encoding.UTF8.GetBytes(proposal)), CreatedBy = servicing.Id, CreatedAt = Now, SavedBy = servicing.Id, SavedAt = Now };

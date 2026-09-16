@@ -100,6 +100,7 @@ public sealed class QuoteSubmission : StoredRecord
 }
 public sealed class QuoteReferral : MutableRecord
 {
+    public Guid? LatestDecisionId { get; set; }
     public Guid CycleId { get; set; }
     public Guid QuoteId { get; set; }
     public Guid RatingId { get; set; }

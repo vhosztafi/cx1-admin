@@ -9331,7 +9331,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending"
+        "x-runtime-status": "phase-6-05-implemented"
       }
     },
     "/referrals/{referralId}": {
@@ -9442,7 +9442,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending"
+        "x-runtime-status": "phase-6-05-implemented"
       }
     },
     "/referrals/{referralId}/decisions": {
@@ -9625,7 +9625,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending",
+        "x-runtime-status": "phase-6-05-implemented",
         "x-etag-resource": "quote"
       },
       "get": {
@@ -9777,7 +9777,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending"
+        "x-runtime-status": "phase-6-05-implemented"
       }
     },
     "/policies": {
@@ -42431,7 +42431,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending",
+        "x-runtime-status": "phase-6-05-implemented",
         "x-etag-resource": "quote"
       }
     },
@@ -60763,7 +60763,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending",
+        "x-runtime-status": "phase-6-05-implemented",
         "x-etag-resource": "quote"
       },
       "get": {
@@ -60915,7 +60915,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending"
+        "x-runtime-status": "phase-6-05-implemented"
       }
     },
     "/quotes/{quoteId}/underwriting/evidence/{associationId}/events": {
@@ -61077,7 +61077,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending"
+        "x-runtime-status": "phase-6-05-implemented"
       }
     },
     "/quotes/{quoteId}/underwriting/evidence/{associationId}/reviews": {
@@ -61269,7 +61269,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending",
+        "x-runtime-status": "phase-6-05-implemented",
         "x-etag-resource": "quote"
       }
     },
@@ -61462,7 +61462,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending",
+        "x-runtime-status": "phase-6-05-implemented",
         "x-etag-resource": "quote"
       }
     },
@@ -61643,7 +61643,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending",
+        "x-runtime-status": "phase-6-05-implemented",
         "x-etag-resource": "quote",
         "requestBody": {
           "required": true,
@@ -61874,7 +61874,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending",
+        "x-runtime-status": "phase-6-05-implemented",
         "x-etag-resource": "quote"
       }
     },
@@ -75045,6 +75045,56 @@
           "effectiveFrom"
         ]
       },
+      "UnderwritingProofRequirement": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 60,
+            "pattern": "\\S"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000,
+            "pattern": "\\S"
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500,
+            "pattern": "\\S"
+          },
+          "riskItemId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "conditionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "termsVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "inputFingerprint": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "satisfied": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "code",
+          "label",
+          "path",
+          "inputFingerprint",
+          "satisfied"
+        ]
+      },
       "UnderwritingAssessment": {
         "type": "object",
         "additionalProperties": false,
@@ -75155,6 +75205,24 @@
             "maxItems": 32,
             "uniqueItems": true
           },
+          "proofRequirements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnderwritingProofRequirement"
+            },
+            "minItems": 0,
+            "maxItems": 1000,
+            "uniqueItems": true
+          },
+          "appliedEndorsements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnderwritingEndorsement"
+            },
+            "minItems": 0,
+            "maxItems": 100,
+            "uniqueItems": true
+          },
           "blockers": {
             "type": "array",
             "items": {
@@ -75223,7 +75291,9 @@
           "providerLabel",
           "blockers",
           "capabilities",
-          "refreshOptions"
+          "refreshOptions",
+          "proofRequirements",
+          "appliedEndorsements"
         ]
       },
       "UnderwritingRateRequest": {
@@ -75774,6 +75844,12 @@
             "maxLength": 2000,
             "pattern": "\\S"
           },
+          "question": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
           "actorId": {
             "type": "string",
             "format": "uuid"
@@ -75834,6 +75910,11 @@
             "type": "string",
             "format": "uuid"
           },
+          "etag": {
+            "type": "string",
+            "pattern": "^\"[!#-~]+\"$",
+            "maxLength": 100
+          },
           "definition": {
             "$ref": "#/components/schemas/UnderwritingConditionWrite"
           },
@@ -75858,6 +75939,7 @@
           "id",
           "decisionId",
           "cycleId",
+          "etag",
           "definition",
           "state"
         ]

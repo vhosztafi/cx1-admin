@@ -80,9 +80,20 @@ public sealed partial class QuoteUnderwritingReadModel(IDbContextFactory<BackOff
         if (cycle is not null)
             foreach (var referral in await db.Set<QuoteReferral>().AsNoTracking().Where(x => x.CycleId == cycle.Id && x.State != "approved" && x.State != "superseded").OrderBy(x => x.Sequence).ToArrayAsync(token))
                 blockers.Add(new UnderwritingReadBlocker(referral.RuleCode, referral.Reason, TargetId: referral.RiskItemId, Dimension: referral.Dimension));
-        foreach (var proof in (await QuoteEvidenceReadModel.AssessAsync(db, revision, token)).Requirements.Where(x => x.State != "current"))
+        IReadOnlyList<UnderwritingProofRequirement> proofRequirements = [];
+        if (cycle is not null)
+        {
+            var storedInput = JsonSerializer.Deserialize<StoredRatingInput>(cycle.InputJson, QuoteRatingService.Json)!;
+            proofRequirements = await UnderwritingEvidenceService.Requirements(db, cycle, revision, storedInput, token);
+            foreach (var proof in proofRequirements.Where(x => !x.Satisfied))
+                blockers.Add(new UnderwritingReadBlocker("evidence-review-required-" + proof.Code, proof.Label + " requires current underwriting review.", proof.Path, proof.RiskItemId));
+        }
+        else foreach (var proof in (await QuoteEvidenceReadModel.AssessAsync(db, revision, token)).Requirements.Where(x => x.State != "current"))
             blockers.Add(new UnderwritingReadBlocker("evidence-missing-" + proof.Code, proof.Label + " is required before later progression.", proof.Path, proof.RiskItemId));
         var writable = owned.Scope.Agency.State == "active" && owned.Scope.Client.IdentityState == "active" && owned.Scope.Relationship.State == "active";
+        var grants = current && eligible is not null && term.Term is not null
+            ? await QuoteUnderwritingScope.GrantsAsync(db, owned, revision.ProductVersionId, eligible.BinderVersion, eligible.Capture.Product.Code, term.Term, now, token) : [];
+        var decisionContext = writable && current && cycle?.State == "rated" && quote.State is not ("bound" or "withdrawn" or "draft");
         var productDetails = await (from version in db.Set<ProductVersion>().AsNoTracking()
                                     join product in db.Set<Product>().AsNoTracking() on version.ProductId equals product.Id
                                     join provider in db.Set<CapacityProvider>().AsNoTracking() on version.ProviderId equals provider.Id
@@ -95,7 +106,21 @@ public sealed partial class QuoteUnderwritingReadModel(IDbContextFactory<BackOff
             ["capabilities"] = new { canRate = writable && readyToRate && quote.State is "draft" or "rated" or "referred",
                 canSubmit = writable && current && matching.Code is null && cycle?.State == "rated" && rating is { Outcome: "rated" } && rating.ExpiresAt > now && quote.State is "rated" or "referred",
                 canRevise = writable && cycle is not null && UnderwritingLifecycleRules.CanReturnToDraft(quote.State),
-                canReviewEvidence = false, canDecide = false, canEscalate = false, canPrepareTerms = false, canSend = false, canAccept = false, canIssue = false } };
+                canReviewEvidence = decisionContext && grants.Count > 0 && owned.Scope.Actor.HasCapability("underwriting-evidence-review"),
+                canDecide = decisionContext && grants.Count > 0 && rating?.ExpiresAt > now && owned.Scope.Actor.HasCapability("underwriting-decide-within-authority"),
+                canEscalate = false, canPrepareTerms = false, canSend = false, canAccept = false, canIssue = false } };
+        result["proofRequirements"] = proofRequirements;
+        if (cycle is not null) result["assuranceHash"] = await UnderwritingEvidenceService.Assurance(db, cycle, revision, token);
+        var endorsements = new List<object>();
+        if (cycle is not null)
+            foreach (var condition in await UnderwritingEvidenceService.ActiveConditions(db, cycle.Id, token))
+            {
+                if (condition.Kind != "warranty") continue;
+                var definition = QuoteReferralService.Parse(condition.DefinitionJson, proposal.RootElement);
+                endorsements.Add(new { code = condition.EndorsementCode!, version = "1", wording = condition.Wording,
+                    decisionId = condition.DecisionId, targetIds = definition.TargetIds });
+            }
+        result["appliedEndorsements"] = endorsements;
         if (cycle is not null) result["context"] = new { quoteId, cycleId = cycle.Id, revisionId = cycle.QuoteRevisionId, pricingInputHash = Convert.ToHexStringLower(cycle.PricingInputHash),
             cycle.ClientId, cycle.RelationshipId, cycle.ProductVersionId, cycle.AgencyTermsVersionId, cycle.RatingRuleVersionId, cycle.BinderVersionId, cycle.AuthorityVersionId };
         if (cycle is not null) result["jobId"] = cycle.WorkId;

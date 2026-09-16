@@ -43,7 +43,7 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Equal("v2", assessment.GetProperty("productVersionLabel").GetString());
         Assert.False(string.IsNullOrWhiteSpace(assessment.GetProperty("providerLabel").GetString()));
         Assert.True(assessment.GetProperty("createdAt").GetDateTimeOffset() > DateTimeOffset.MinValue);
-        Assert.Contains(assessment.GetProperty("blockers").EnumerateArray(), x => x.GetProperty("code").GetString()!.StartsWith("evidence-missing-", StringComparison.Ordinal));
+        Assert.Contains(assessment.GetProperty("blockers").EnumerateArray(), x => x.GetProperty("code").GetString()!.StartsWith("evidence-review-required-", StringComparison.Ordinal));
         using var price = await client.GetAsync($"/api/v1/ratings/{ratingId:D}"); price.EnsureSuccessStatusCode(); Assert.True(price.Headers.CacheControl!.NoStore);
         var result = await price.Content.ReadFromJsonAsync<JsonElement>(); Assert.Equal("600.00", result.GetProperty("annualPremium").GetString()); Assert.True(result.GetProperty("applicable").GetBoolean());
         Assert.Equal(revisionId, result.GetProperty("revisionId").GetGuid()); Assert.Equal(quoteId, result.GetProperty("quoteId").GetGuid());

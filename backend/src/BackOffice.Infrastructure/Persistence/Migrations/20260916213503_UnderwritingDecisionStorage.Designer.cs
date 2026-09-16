@@ -4,6 +4,7 @@ using BackOffice.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackOffice.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(BackOfficeDbContext))]
-    partial class BackOfficeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260916213503_UnderwritingDecisionStorage")]
+    partial class UnderwritingDecisionStorage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -4782,8 +4785,6 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
                             t.HasCheckConstraint("CK_UnderwritingEvidenceAssociation_CreatedAt_Utc", "DATEPART(TZOFFSET,[CreatedAt]) = 0");
 
                             t.HasCheckConstraint("CK_UnderwritingEvidenceAssociation_Fingerprint", "LEN([InputFingerprint])=64 AND [InputFingerprint] NOT LIKE '%[^0-9a-f]%' COLLATE Latin1_General_100_BIN2");
-
-                            t.HasCheckConstraint("CK_UnderwritingEvidenceAssociation_PreparedTermsOwner", "[TermsVersionId] IS NULL");
 
                             t.HasCheckConstraint("CK_UnderwritingEvidenceAssociation_Purpose", "[RequirementCode] IN ('motor-trader-proof','no-claims-proof','photocard-both-sides','driving-record','premises-security','trading-history','signed-statement','warranty-acknowledgement','acceptance-proof','capacity-response')");
 

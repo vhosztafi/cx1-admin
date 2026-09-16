@@ -12,7 +12,7 @@ using Xunit;
 
 namespace BackOffice.IntegrationTests;
 
-public sealed class UnderwritingStorageTests
+public sealed partial class UnderwritingStorageTests
 {
     [Fact]
     public async Task RealSqlUnderwritingStorageEnforcesOwnershipHistoryAndExactMoney()

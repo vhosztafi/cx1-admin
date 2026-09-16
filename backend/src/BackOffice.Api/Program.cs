@@ -41,6 +41,9 @@ DiagnosticDispatcher.Register(builder);
 AgencyNotificationDispatcher.Register(builder);
 QuoteLookupDispatcher.Register(builder);
 QuoteRatingDispatcher.Register(builder);
+builder.Services.AddScoped<BackOffice.Infrastructure.Underwriting.UnderwritingEvidenceService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Underwriting.QuoteReferralService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Underwriting.QuoteReferralReadModel>();
 var app = builder.Build();
 if(args.Contains("--seed-quote-demo",StringComparer.Ordinal))
 {
@@ -101,6 +104,8 @@ app.MapQuoteLookups();
 app.MapQuoteEvidence();
 app.MapQuoteLifecycle();
 app.MapQuoteUnderwriting();
+app.MapUnderwritingEvidence();
+app.MapQuoteReferrals();
 // Domain endpoints are added only alongside their authentication and persistence.
 app.Run();
 

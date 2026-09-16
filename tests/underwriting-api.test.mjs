@@ -79,6 +79,15 @@ test('issue response exposes durable identities without a fabricated paid balanc
   for(const key of ['policyId','policyReference','termId','versionId','transactionId','obligationId','documentRequestIds','quoteEtag'])assert.ok(schema.required.includes(key),key);
   for(const key of ['totalCollected','paidAt','cashReceiptId'])assert.equal(schema.properties[key],undefined);
 });
+test('decision projections expose exact proof purpose, child concurrency and recorded query',()=>{
+  const schemas=spec.components.schemas;
+  for(const key of ['proofRequirements','appliedEndorsements'])assert.ok(schemas.UnderwritingAssessment.required.includes(key),key);
+  for(const key of ['code','label','path','inputFingerprint','satisfied'])assert.ok(schemas.UnderwritingProofRequirement.required.includes(key),key);
+  for(const key of ['riskItemId','conditionId','termsVersionId'])assert.ok(schemas.UnderwritingProofRequirement.properties[key],key);
+  assert.ok(schemas.UnderwritingConditionView.required.includes('etag'));
+  assert.equal(schemas.UnderwritingDecisionView.properties.question.maxLength,2000);
+  assert.equal(schemas.UnderwritingProofRequirement.additionalProperties,false);
+});
 test('proof and decision histories are paged and policy discovery has real registration/filter contracts',()=>{
   for(const name of ['listUnderwritingEvidence','listUnderwritingEvidenceEvents','listReferralDecisions','listEscalationMessages']){
     const op=operation(name);for(const key of ['cursor','pageSize'])assert.ok(op.parameters.some(p=>p.name===key),`${name}/${key}`);

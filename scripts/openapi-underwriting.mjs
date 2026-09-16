@@ -16,8 +16,9 @@ export function addUnderwritingContracts({schemas:s,ref:r,operation:op,paths}){
   s.UnderwritingWorkResult=o({id,quoteId:id,quoteEtag:etag,jobId:id,state:{const:'queued'}});
   s.UnderwritingBlocker=o({code:t(100),message:t(1000),path:t(500),targetId:id,dimension:t(60)},['code','message']);
   s.UnderwritingRefreshOption=o({productVersionId:id,displayName:t(),versionLabel:t(60),agencyTermsVersionId:id,termsVersion:{type:'integer',minimum:1},effectiveFrom:{type:'string',format:'date'}});
-  s.UnderwritingAssessment=o({quoteId:id,quoteEtag:etag,state:enumeration,createdAt:instant,productLabel:t(),productVersionLabel:t(60),providerLabel:t(),context:r('UnderwritingContext'),ratingId:id,jobId:id,termsVersionId:id,termsHash:hash,assuranceHash:hash,acceptanceId:id,assignedUserId:id,assignedUserLabel:t(),submissionId:id,assignedTeamId:id,assignedTeamLabel:t(),refreshOptions:many(r('UnderwritingRefreshOption'),32),
-    blockers:many(r('UnderwritingBlocker'),200),capabilities:o(Object.fromEntries(['canRate','canSubmit','canRevise','canReviewEvidence','canDecide','canEscalate','canPrepareTerms','canSend','canAccept','canIssue'].map(k=>[k,bool])))},['quoteId','quoteEtag','state','createdAt','productLabel','productVersionLabel','providerLabel','blockers','capabilities','refreshOptions']);
+  s.UnderwritingProofRequirement=o({code:t(60),label:t(1000),path:t(500),riskItemId:id,conditionId:id,termsVersionId:id,inputFingerprint:hash,satisfied:bool},['code','label','path','inputFingerprint','satisfied']);
+  s.UnderwritingAssessment=o({quoteId:id,quoteEtag:etag,state:enumeration,createdAt:instant,productLabel:t(),productVersionLabel:t(60),providerLabel:t(),context:r('UnderwritingContext'),ratingId:id,jobId:id,termsVersionId:id,termsHash:hash,assuranceHash:hash,acceptanceId:id,assignedUserId:id,assignedUserLabel:t(),submissionId:id,assignedTeamId:id,assignedTeamLabel:t(),refreshOptions:many(r('UnderwritingRefreshOption'),32),proofRequirements:many(r('UnderwritingProofRequirement'),1000),appliedEndorsements:many(r('UnderwritingEndorsement'),100),
+    blockers:many(r('UnderwritingBlocker'),200),capabilities:o(Object.fromEntries(['canRate','canSubmit','canRevise','canReviewEvidence','canDecide','canEscalate','canPrepareTerms','canSend','canAccept','canIssue'].map(k=>[k,bool])))},['quoteId','quoteEtag','state','createdAt','productLabel','productVersionLabel','providerLabel','blockers','capabilities','refreshOptions','proofRequirements','appliedEndorsements']);
   s.UnderwritingRateRequest=o({revisionId:id,reason:t(1000)});
   s.UnderwritingCycleRequest=o({...commandContext,reason});
   s.UnderwritingRefreshRequest=o({revisionId:id,productVersionId:id,confirmedTermsVersionId:id,reason:t(1000)});
@@ -33,8 +34,8 @@ export function addUnderwritingContracts({schemas:s,ref:r,operation:op,paths}){
   }))};
   s.UnderwritingDecisionRequest=o({...commandContext,decisions:many(r('UnderwritingDecisionItem'),50,1)});
   s.UnderwritingSingleDecisionRequest=o({...commandContext,decision:r('UnderwritingDecisionItem')});
-  s.UnderwritingDecisionView=o({id,referralId:id,...context,outcome:e('approve','approve-with-conditions','query','decline','reopen'),reason,actorId:id,actorLabel:t(),authorityVersionId:id,recordedAt:instant,conditions:many(r('UnderwritingConditionWrite'),20)});
-  s.UnderwritingConditionView=o({id,decisionId:id,cycleId:id,definition:r('UnderwritingConditionWrite'),state:e('outstanding','resolved','superseded'),evidenceAssociationId:id,latestResolutionId:id},['id','decisionId','cycleId','definition','state']);
+  s.UnderwritingDecisionView=o({id,referralId:id,...context,outcome:e('approve','approve-with-conditions','query','decline','reopen'),reason,question:t(2000),actorId:id,actorLabel:t(),authorityVersionId:id,recordedAt:instant,conditions:many(r('UnderwritingConditionWrite'),20)},['id','referralId',...Object.keys(context),'outcome','reason','actorId','actorLabel','authorityVersionId','recordedAt','conditions']);
+  s.UnderwritingConditionView=o({id,decisionId:id,cycleId:id,etag,definition:r('UnderwritingConditionWrite'),state:e('outstanding','resolved','superseded'),evidenceAssociationId:id,latestResolutionId:id},['id','decisionId','cycleId','etag','definition','state']);
   s.UnderwritingReferralView=o({id,...context,etag,ruleCode:t(60),dimension:t(60),targetId:id,reason,state:e('open','approved','conditional','queried','declined','superseded'),assignedUserId:id,
     requestedAmount:money,actorLimit:money,binderLimit:money,decisions:many(r('UnderwritingDecisionView'),100),conditions:many(r('UnderwritingConditionView'),100)},['id',...Object.keys(context),'etag','ruleCode','dimension','reason','state','decisions','conditions']);
   s.UnderwritingEvidenceAttachRequest=o({...commandContext,fileId:id,requirementCode:t(60),riskItemId:id,conditionId:id,termsVersionId:id,inputFingerprint:hash,reason},['cycleId','fileId','requirementCode','inputFingerprint','reason']);
@@ -82,7 +83,10 @@ export function addUnderwritingContracts({schemas:s,ref:r,operation:op,paths}){
     delete paths[path]?.[method];op(method,path,name,permission,{...options,existing:method!=='get'});
     const operation=paths[path][method];
     operation['x-runtime-status']=['rateQuote','submitQuote','returnQuoteToDraft','refreshQuoteUnderwritingVersion','getQuoteUnderwriting','getRating'].includes(name)
-      ? 'phase-6-03-implemented' : name === 'listQuoteRatings' ? 'phase-6-04-implemented' : 'phase-6-pending';
+      ? 'phase-6-03-implemented' : name === 'listQuoteRatings' ? 'phase-6-04-implemented'
+        : ['decideQuoteReferrals','decideReferral','getReferral','listReferrals','attachUnderwritingEvidence','listUnderwritingEvidence',
+          'listUnderwritingEvidenceEvents','listReferralDecisions','reviewUnderwritingEvidence','withdrawUnderwritingEvidence',
+          'uploadUnderwritingEvidenceFile','resolveReferralCondition'].includes(name) ? 'phase-6-05-implemented' : 'phase-6-pending';
     operation.description+=' Phase 6 contract; runtime availability requires owning-plan verification. Current identity, agency and subject scope apply before receipt replay. Responses are no-store.';
     if(method!=='get'){
       operation['x-etag-resource']='quote';
