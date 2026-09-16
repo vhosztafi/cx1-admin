@@ -238,7 +238,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 3. Clients and contact servicing | 6/6 | Complete | 2026-09-14 |
 | 4. Agency onboarding and access | 8/8 | Complete | 2026-09-15 |
 | 5. Motor Trade quote capture | 11/11 | Complete    | 2026-09-16 |
-| 6. Underwriting and first policy issue | 4/14 | In progress | — |
+| 6. Underwriting and first policy issue | 5/14 | In progress | — |
 | 7. Policy lifecycle and history | 0/TBD | Not started | — |
 | 8. Commercial Combined back office | 0/TBD | Not started | — |
 | 9. Tasks, documents, communication and incidents | 0/TBD | Not started | — |

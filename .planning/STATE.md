@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-last_updated: "2026-09-16T21:27:19.683Z"
+last_updated: "2026-09-16T22:28:45.2316864Z"
 last_activity: 2026-09-16
 progress:
   total_phases: 13
   completed_phases: 5
   total_plans: 49
-  completed_plans: 39
+  completed_plans: 40
   percent: 38
 ---
 
@@ -20,16 +20,16 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Phase6 execution; rating UI verified; proof review and referral decisions next.
+**Current focus:** Phase6 execution; proof and decision backend verified; Underwriting UI next.
 
 ## Current Position
 
 Phase: 6 of 13 (Underwriting and first policy issue)
-Plan:06-05 of14 — proof review, referrals and typed conditions
-Status: Executing — autonomous; proof/decision schema and semantic tests next
-Last activity: 2026-09-16 —06-04 verified in da15815:727backend/99SQL,86frontend,316contracts and both-product browser.
+Plan:06-06 of14 — Underwriting decisions and evidence UI
+Status: Executing — autonomous; source-aligned decision UI and authority projections next
+Last activity: 2026-09-16 —06-05 verified in4ace720:741backend/108SQL,317contracts; evidence d3d3a4f.
 
-Progress: Phases1–5 complete;5/13 phases,39 completed implementation plans.
+Progress: Phases1–5 complete;5/13 phases,40 completed implementation plans.
 
 ## Accumulated Context
 
@@ -54,8 +54,8 @@ Progress: Phases1–5 complete;5/13 phases,39 completed implementation plans.
 ## Session Continuity
 
 Last session: 2026-09-16T21:27:19.684Z
-Stopped at:06-04 complete; implementation da15815; executing06-05
-Resume file: .planning/phases/06-underwriting-and-first-policy-issue/06-05-PLAN.md
+Stopped at:06-05 complete; implementation4ace720; executing06-06
+Resume file: .planning/phases/06-underwriting-and-first-policy-issue/06-06-PLAN.md
 
 ## Autonomous continuation
 
