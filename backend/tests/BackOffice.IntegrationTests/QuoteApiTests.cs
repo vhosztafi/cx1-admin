@@ -82,7 +82,7 @@ public sealed partial class QuoteStorageTests
             Assert.Equal("Fictional quote client", view.GetProperty("clientName").GetString());
             Assert.Equal("Fictional quote storage", view.GetProperty("agencyName").GetString());
             Assert.True(view.GetProperty("capabilities").GetProperty("canSave").GetBoolean());
-            foreach (var name in new[] { "canClone", "canWithdraw", "canAttachEvidence" }) Assert.False(view.GetProperty("capabilities").GetProperty(name).GetBoolean());
+            foreach (var name in new[] { "canClone", "canWithdraw" }) Assert.False(view.GetProperty("capabilities").GetProperty(name).GetBoolean());
             Assert.False(view.GetProperty("readiness").GetProperty("ready").GetBoolean());
             var captureVersions = view.GetProperty("captureVersions");
             Assert.Equal("1.0", captureVersions.GetProperty("schemaVersion").GetString());

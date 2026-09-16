@@ -9,6 +9,7 @@ import { coverExcessOptions } from '../../lib/quote-cover-options';
 import { driverOptionStates } from '../../lib/quote-driver-options';
 import { readinessTarget, type ReadinessTarget } from '../../lib/quote-readiness';
 import { termFeedback } from '../../lib/quote-term';
+import { QuoteEvidence } from './quote-evidence';
 import { QuoteDrivers } from './quote-drivers';
 import { QuoteVehicles } from './quote-vehicles';
 import { QuoteLookupControl, QuoteLookupProvider } from './quote-lookup';
@@ -59,7 +60,7 @@ function Editor({ actorId, initial, initialEtag, catalogue }: { actorId: string;
   const [conflict, setConflict] = useState(false); const [comparison, setComparison] = useState<{ data: QuoteView; etag: string }>();
   const [formRevision, setFormRevision] = useState(0);
   const [lookupRefresh, setLookupRefresh] = useState(0);
-  const commandKind = useRef<'save' | 'lookup-request' | 'lookup-select'>('save');
+  const commandKind = useRef<'save' | 'lookup-request' | 'lookup-select' | 'evidence'>('save');
   const [commandLabel, setCommandLabel] = useState('save');
   const [focusTarget, setFocusTarget] = useState<ReadinessTarget>();
   useEffect(() => {
@@ -126,14 +127,14 @@ function Editor({ actorId, initial, initialEtag, catalogue }: { actorId: string;
     setSaved(comparison.data); setProposal(comparison.data.proposal); setEtag(comparison.etag); setInvalid({}); setBuffers({}); setFormRevision(value => value + 1);
     setComparison(undefined); setConflict(false); setError(''); setStatus('Loaded the saved revision.'); navigationState.current.dirty = false;
   }
-  async function save(nextAction: 'stay' | 'continue' | 'exit', lookupCommand?: PendingQuoteCommand, lookupKind?: 'lookup-request' | 'lookup-select') {
+  async function save(nextAction: 'stay' | 'continue' | 'exit', lookupCommand?: PendingQuoteCommand, lookupKind?: 'lookup-request' | 'lookup-select' | 'evidence') {
     if (navigationState.current.busy || conflict || !saved.capabilities.canSave || inputErrors) return;
     const recovering = navigationState.current.uncertain;
     if (!recovering) {
       if (lookupCommand && navigationState.current.dirty) return;
       command.current = lookupCommand ?? saveQuoteCommand(saved.id, etag, proposal); action.current = nextAction;
       commandKind.current = lookupKind ?? 'save';
-      setCommandLabel(lookupKind ? 'lookup' : 'save');
+      setCommandLabel(lookupKind === 'evidence' ? 'evidence action' : lookupKind ? 'lookup' : 'save');
     }
     if (!command.current) return;
     navigationState.current.busy = true; setBusy(true); setError(''); setStatus(''); let attempted = false; let acknowledged = false;
@@ -144,10 +145,10 @@ function Editor({ actorId, initial, initialEtag, catalogue }: { actorId: string;
       const latest = await quoteFetch<QuoteView>(`/api/v1/quotes/${saved.id}`);
       if (!validQuoteEtag(latest.etag)) throw new Error('The saved version could not be confirmed.');
       navigationState.current.uncertain = false; setUncertain(false); command.current = null;
-      if (latest.etag !== receipt.etag) { setComparison({ data: latest.data, etag: latest.etag }); setConflict(true); throw new QuoteError(412); }
+      if (latest.etag !== (commandKind.current === 'evidence' ? etag : receipt.etag)) { setComparison({ data: latest.data, etag: latest.etag }); setConflict(true); throw new QuoteError(412); }
       setSaved(latest.data); setProposal(latest.data.proposal); setEtag(latest.etag); navigationState.current.dirty = false;
       setLookupRefresh(value => value + 1);
-      setStatus(commandKind.current === 'lookup-request' ? 'Lookup queued. Check the result before making a decision.' : commandKind.current === 'lookup-select' ? `Lookup decision recorded · Revision ${latest.data.revisionNumber}` : `Draft saved · Revision ${latest.data.revisionNumber}`);
+      setStatus(commandKind.current === 'evidence' ? 'Evidence action recorded. Saved requirements refreshed.' : commandKind.current === 'lookup-request' ? 'Lookup queued. Check the result before making a decision.' : commandKind.current === 'lookup-select' ? `Lookup decision recorded · Revision ${latest.data.revisionNumber}` : `Draft saved · Revision ${latest.data.revisionNumber}`);
       navigationState.current.busy = false;
       if (action.current === 'exit') router.push(`/quotes/${saved.id}`);
       else if (action.current === 'continue') setStage(value => editableStages.find(next => next > value) ?? value);
@@ -188,9 +189,10 @@ function Editor({ actorId, initial, initialEtag, catalogue }: { actorId: string;
           </> : stage === 8 ? <QuoteDeclarations {...sectionProps} /> : stage === 7 ? <QuoteCover {...sectionProps} /> : stage === 6 && saved.productCode === 'motor-trade-road-risks' ? <QuoteInsurance {...sectionProps} /> : stage === 3 && saved.productCode === 'motor-trade-combined' ? <QuotePremises {...sectionProps} /> : stage === vehicleStage ? <QuoteVehicles proposal={proposal} versions={saved.captureVersions} catalogue={catalogue} buffers={buffers} setBuffer={(key, value) => setBuffers(current => { const next = { ...current }; if (value === undefined) delete next[key]; else next[key] = value; return next; })} validity={validity} replace={next => { navigationState.current.dirty = true; setProposal(next); setStatus(''); }} /> : <QuoteDrivers proposal={proposal} versions={saved.captureVersions} catalogue={catalogue} history={stage === historyStage} buffers={buffers} setBuffer={(key, value) => setBuffers(current => { const next = { ...current }; if (value === undefined) delete next[key]; else next[key] = value; return next; })} validity={validity} replace={next => { navigationState.current.dirty = true; setProposal(next); setStatus(''); }} />}
         </fieldset>
       </Panel>
+      <QuoteEvidence saved={saved} etag={etag} disabled={frozen} dirty={dirty} refreshToken={lookupRefresh} run={pending => void save('stay', pending, 'evidence')} />
       <Panel title="Saved draft readiness"><div className="quote-rail-body">
         <p>Checks apply to saved revision {saved.revisionNumber}. {dirty ? 'Save your changes to refresh this guidance.' : 'Review the fields below; incomplete drafts can still be saved.'}</p>
-        <p className="client-help">Evidence and complete quote assessment remain unavailable. This list does not confirm readiness to rate or issue.</p>
+        <p className="client-help">Evidence checks use saved attachments. Complete quote assessment remains unavailable. This list does not confirm readiness to rate or issue.</p>
         <ul className="quote-readiness-list">{saved.readiness.issues.map((issue, index) => {
           const target = readinessTarget(issue, saved.proposal, catalogue.businessQuestions, catalogue.driverFields, savedDriverOptions, catalogue.vehicleFields, catalogue.sectionFields, savedExcessActive);
           return target ? <li key={`${issue.code}-${issue.path}-${index}`}><button type="button" className="button" disabled={dirty || frozen} onClick={() => { setStage(target.stage); setFocusTarget({ ...target }); }}>Review {target.label}</button><span>{issue.message}</span></li> : null;
@@ -202,9 +204,9 @@ function Editor({ actorId, initial, initialEtag, catalogue }: { actorId: string;
         {comparison && <><p>Current saved revision: {comparison.data.revisionNumber}. Other sections also remain as recorded in that revision.</p><div className="table-scroll" role="region" aria-label="Quote changes" tabIndex={0}><table><thead><tr><th>Field</th><th>Your draft</th><th>Saved revision</th></tr></thead><tbody>{comparisonFields.filter(field => JSON.stringify(fieldValue(proposal, field.path)) !== JSON.stringify(fieldValue(comparison.data.proposal, field.path))).map(field => <tr key={field.path}><th>{field.label}</th><td>{display(fieldValue(proposal, field.path), Object.fromEntries([...catalogue.businessQuestions, ...(catalogue.driverFields ?? []), ...(catalogue.vehicleFields ?? []), ...(catalogue.sectionFields ?? [])].map(question => [question.id, question.label])))}</td><td>{display(fieldValue(comparison.data.proposal, field.path), Object.fromEntries([...catalogue.businessQuestions, ...(catalogue.driverFields ?? []), ...(catalogue.vehicleFields ?? []), ...(catalogue.sectionFields ?? [])].map(question => [question.id, question.label])))}</td></tr>)}</tbody></table></div><button className="button" disabled={busy || uncertain} onClick={replaceWithSaved}>Discard my edits and load saved revision</button></>}
       </div></Panel>}
     </div><aside className="quote-create-rail"><Panel title="Quote progress"><div className="quote-rail-body"><nav className="agency-steps" aria-label="Quote stages">{stages.map((name, index) => <button className="button" key={name} type="button" disabled={!editableStages.includes(index) || busy || uncertain} aria-current={index === stage ? 'step' : undefined} onClick={() => setStage(index)}><span>{index + 1}</span>{name}{!editableStages.includes(index) ? ' · unavailable' : ''}</button>)}</nav>
-      <p className="client-help">Save incomplete details at any stage. The quote cannot progress to rating or issue while required assessment and evidence checks are unavailable.</p>
+      <p className="client-help">Save incomplete details at any stage. The quote cannot progress to rating or issue until the required assessment checks are implemented and passed.</p>
       {error && <p className="error-message" role="alert">{error}</p>}{term.errors.map(message => <p key={message} role="alert">{message}</p>)}{Object.entries(invalid).map(([path, message]) => <p key={path} role="alert">{message}</p>)}
-      {status && <p role="status">{status}</p>}{uncertain && <p className="quote-pending" role="status">{commandLabel === 'save' ? 'Save' : 'Lookup'} result unconfirmed. Your draft is locked until the original action is confirmed.</p>}
+      {status && <p role="status">{status}</p>}{uncertain && <p className="quote-pending" role="status">{commandLabel === 'save' ? 'Save' : commandLabel === 'evidence action' ? 'Evidence action' : 'Lookup'} result unconfirmed. Your draft is locked until the original action is confirmed.</p>}
       {!saved.capabilities.canSave && <p role="alert">This quote is currently closed to editing.</p>}
       <div className="quote-save-actions"><button className="button button-primary" disabled={busy || conflict || !saved.capabilities.canSave || inputErrors > 0} onClick={() => void save('stay')}>{busy ? 'Saving…' : uncertain ? `Retry same ${commandLabel}` : 'Save draft'}</button>
         <button className="button" disabled={frozen || stage >= stages.length - 1 || inputErrors > 0} onClick={() => void save('continue')}>Save and continue</button>

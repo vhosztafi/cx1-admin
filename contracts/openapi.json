@@ -45926,27 +45926,6 @@
             }
           },
           {
-            "name": "cursor",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 2048
-            }
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "minimum": 1,
-              "maximum": 100,
-              "default": 25
-            }
-          },
-          {
             "name": "revisionId",
             "in": "query",
             "required": false,
@@ -45979,29 +45958,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "properties": {
-                    "items": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/QuoteCaptureEvidence"
-                      },
-                      "maxItems": 1000
-                    },
-                    "nextCursor": {
-                      "type": "string",
-                      "minLength": 1,
-                      "maxLength": 2048
-                    },
-                    "totalCount": {
-                      "type": "integer",
-                      "minimum": 0
-                    }
-                  },
-                  "required": [
-                    "items"
-                  ]
+                  "$ref": "#/components/schemas/QuoteEvidenceSnapshot"
                 }
               }
             }
@@ -58697,27 +58654,6 @@
               "type": "string",
               "format": "uuid"
             }
-          },
-          {
-            "name": "cursor",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 2048
-            }
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "minimum": 1,
-              "maximum": 100,
-              "default": 25
-            }
           }
         ],
         "responses": {
@@ -58751,16 +58687,7 @@
                       "items": {
                         "$ref": "#/components/schemas/QuoteEvidenceFile"
                       },
-                      "maxItems": 1000
-                    },
-                    "nextCursor": {
-                      "type": "string",
-                      "minLength": 1,
-                      "maxLength": 2048
-                    },
-                    "totalCount": {
-                      "type": "integer",
-                      "minimum": 0
+                      "maxItems": 100
                     }
                   },
                   "required": [
@@ -58962,6 +58889,211 @@
                 "schema": {
                   "type": "string",
                   "format": "binary"
+                }
+              },
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/png": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/jpeg": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          }
+        },
+        "x-runtime-status": "planned-phase-05"
+      }
+    },
+    "/quotes/{quoteId}/evidence/{evidenceId}": {
+      "get": {
+        "operationId": "getQuoteEvidence",
+        "summary": "get Quote Evidence",
+        "description": "Requires quote-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
+        "tags": [
+          "quotes"
+        ],
+        "x-permission": "quote-read",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "quoteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "evidenceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              },
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteCaptureEvidence"
                 }
               }
             }
@@ -71094,9 +71226,13 @@
           "screeningState": {
             "type": "string",
             "enum": [
-              "pending",
-              "accepted",
-              "rejected"
+              "accepted"
+            ]
+          },
+          "screeningMethod": {
+            "type": "string",
+            "enum": [
+              "demo-signature-v1"
             ]
           }
         },
@@ -71108,7 +71244,8 @@
           "length",
           "sha256",
           "uploadedAt",
-          "screeningState"
+          "screeningState",
+          "screeningMethod"
         ]
       },
       "QuoteEvidenceAttachRequest": {
@@ -71139,7 +71276,8 @@
           "reason": {
             "type": "string",
             "minLength": 1,
-            "maxLength": 1000
+            "maxLength": 1000,
+            "pattern": "\\S"
           }
         },
         "required": [
@@ -71176,8 +71314,15 @@
             "maxLength": 100
           },
           "riskItemId": {
-            "type": "string",
-            "format": "uuid"
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "fileId": {
             "type": "string",
@@ -71186,7 +71331,8 @@
           "reason": {
             "type": "string",
             "minLength": 1,
-            "maxLength": 1000
+            "maxLength": 1000,
+            "pattern": "\\S"
           },
           "state": {
             "type": "string",
@@ -71212,6 +71358,29 @@
           },
           "file": {
             "$ref": "#/components/schemas/QuoteEvidenceFile"
+          },
+          "withdrawnAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "withdrawalReason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "required": [
@@ -71220,13 +71389,108 @@
           "revisionId",
           "inputFingerprint",
           "requirementCode",
+          "riskItemId",
           "fileId",
           "reason",
           "state",
           "createdAt",
           "createdByLabel",
           "etag",
-          "file"
+          "file",
+          "withdrawnAt",
+          "withdrawalReason"
+        ]
+      },
+      "QuoteEvidenceRequirement": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "riskItemId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "inputFingerprint": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "missing",
+              "current"
+            ]
+          },
+          "evidenceId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "path",
+          "riskItemId",
+          "label",
+          "inputFingerprint",
+          "state",
+          "evidenceId"
+        ]
+      },
+      "QuoteEvidenceSnapshot": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "revisionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "requirements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuoteEvidenceRequirement"
+            },
+            "maxItems": 1000
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuoteCaptureEvidence"
+            },
+            "maxItems": 1000
+          }
+        },
+        "required": [
+          "revisionId",
+          "requirements",
+          "items"
         ]
       }
     }

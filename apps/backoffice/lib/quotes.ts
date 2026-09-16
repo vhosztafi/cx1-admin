@@ -61,7 +61,7 @@ export const validQuoteEtag = (etag: string | null | undefined): etag is string 
 // Body bytes are snapshotted once, before any request. Keep this object in a ref
 // through uncertain outcomes; retries must not recapture current form values.
 export type PendingQuoteCommand = Readonly<{
-  method: 'POST' | 'PUT'; url: string; body: string; key: string; etag?: string; expectedId?: string;
+  method: 'POST' | 'PUT'; url: string; body: string; key: string; etag?: string; expectedId?: string; upload?: File;
 }>;
 function commandKey(key: string) {
   if (key.length < 16 || key.length > 200 || key.trim() !== key || /[\u0000-\u001f\u007f-\u009f]/.test(key)) throw new Error('The save command identity is invalid.');
@@ -79,9 +79,14 @@ export function saveQuoteCommand(id: string, etag: string, proposal: QuotePropos
 }
 export async function sendQuoteCommand(command: PendingQuoteCommand, csrf: string): Promise<{ id: string; etag: string }> {
   if (!csrf) throw new Error('The security token is unavailable. Retry this save.');
+  let body: string | FormData = command.body;
+  if (command.upload) {
+    body = new FormData(); body.append('file', command.upload, command.upload.name);
+    body.append('fileName', command.upload.name); body.append('contentType', command.upload.type);
+  }
   const result = await quoteFetch<{ id: string }>(command.url, {
-    method: command.method, body: command.body,
-    headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf, 'Idempotency-Key': command.key, ...(command.etag ? { 'If-Match': command.etag } : {}) },
+    method: command.method, body,
+    headers: { ...(command.upload ? {} : { 'Content-Type': 'application/json' }), 'X-CSRF-Token': csrf, 'Idempotency-Key': command.key, ...(command.etag ? { 'If-Match': command.etag } : {}) },
   });
   if (!result.data || typeof result.data.id !== 'string' || !validId(result.data.id) || !validQuoteEtag(result.etag) ||
       (command.expectedId && command.expectedId.toLowerCase() !== result.data.id.toLowerCase())) {

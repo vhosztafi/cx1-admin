@@ -12,7 +12,7 @@ namespace BackOffice.Infrastructure.Quotes;
 // availability is independent of proposal readiness and does not authorize a write.
 public sealed record StoredQuote(Quote Quote, QuoteRevision Revision, string ClientName, string AgencyName,
     string ProductCode, bool CanSave, string? CaptureUnavailableCode, QuoteTermAssessment TermAssessment, QuoteVersionPins VersionPins,
-    IReadOnlyDictionary<Guid, string> VehicleCaptureModes);
+    IReadOnlyDictionary<Guid, string> VehicleCaptureModes, IReadOnlySet<(string Code, Guid? RiskItemId)> CurrentEvidence);
 
 // Internal command service. HTTP DTO/CSRF/size handling and match attachment are
 // separate integration work; these methods do not expose an endpoint.
@@ -86,9 +86,11 @@ public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory,
             .FromSqlInterpolated($"SELECT * FROM Product WITH(HOLDLOCK) WHERE Id={owned.Quote.ProductId}")
             .AsNoTracking().SingleAsync(token);
         using var intent = JsonDocument.Parse(revision.TermIntentJson);
+        var evidence = await QuoteEvidenceReadModel.AssessAsync(db, revision, token);
         var result = new StoredQuote(owned.Quote, revision, owned.Scope.Client.LegalName, owned.Scope.Agency.LegalName,
             product.Code, availability.Code is null, availability.Code, QuoteTerm.Assess(intent.RootElement), Pins(revision),
-            await QuoteLookupProvenance.VehicleModesAsync(db, revision, token));
+            await QuoteLookupProvenance.VehicleModesAsync(db, revision, token),
+            evidence.Requirements.Where(x => x.State == "current").Select(x => (x.Code, x.RiskItemId)).ToHashSet());
         await transaction.CommitAsync(token);
         return result;
     }

@@ -77,7 +77,7 @@ public static class QuoteEndpoints
             var stored = await service.GetAsync(LocalIdentityService.Actor(context.User), quoteId, context.RequestAborted);
             using var proposal = JsonDocument.Parse(stored.Revision.ProposalJson);
             var readiness = QuoteReadiness.Assess(quoteId, stored.Revision.Id, proposal.RootElement, stored.TermAssessment, stored.CaptureUnavailableCode,
-                DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(time.GetUtcNow(), TimeZoneInfo.FindSystemTimeZoneById("Europe/London")).DateTime), stored.VehicleCaptureModes);
+                DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(time.GetUtcNow(), TimeZoneInfo.FindSystemTimeZoneById("Europe/London")).DateTime), stored.VehicleCaptureModes, stored.CurrentEvidence);
             context.Response.Headers.ETag = "\"" + Convert.ToBase64String(stored.Quote.RowVersion) + "\"";
             if (assessmentOnly) return Results.Ok(readiness);
             return Results.Ok(new
@@ -88,7 +88,7 @@ public static class QuoteEndpoints
                 stored.Revision.ProductVersionId, proposal = proposal.RootElement.Clone(),
                 captureVersions = new { stored.VersionPins.SchemaVersion, stored.VersionPins.QuestionSetVersion, referenceDataVersion = stored.VersionPins.ReferenceVersion },
                 captureClosed = stored.Quote.CaptureClosedAt is not null,
-                capabilities = new { stored.CanSave, canClone = false, canWithdraw = false, canAttachEvidence = false }, readiness
+                capabilities = new { stored.CanSave, canClone = false, canWithdraw = false, canAttachEvidence = stored.CanSave }, readiness
             });
         }
         catch (Exception error) when (Known(error)) { return Failure(context, error); }

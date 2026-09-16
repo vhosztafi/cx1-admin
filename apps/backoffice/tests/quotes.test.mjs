@@ -93,3 +93,21 @@ test('read requests retain no-store and expose their actual saved ETag', async (
   try { assert.deepEqual(await quoteFetch('/api/v1/quote-products'), { data: { items: [] }, etag }); }
   finally { globalThis.fetch = previous; }
 });
+
+test('multipart evidence retries preserve immutable file bytes metadata key and version', async () => {
+  const previous = globalThis.fetch, seen = [];
+  const upload = new File(['Fictional proof\r\n'], 'proof.txt', { type: 'text/plain' });
+  const command = Object.freeze({ method: 'POST', url: `/api/v1/quotes/${id}/evidence-files`, body: '{}', key: 'evidence-retry-0001', etag, upload });
+  try {
+    globalThis.fetch = async (url, init) => {
+      assert.ok(init.body instanceof FormData); assert.equal(init.headers['Content-Type'], undefined);
+      seen.push({ url, key: init.headers['Idempotency-Key'], etag: init.headers['If-Match'],
+        bytes: await init.body.get('file').text(), name: init.body.get('fileName'), type: init.body.get('contentType') });
+      if (seen.length === 1) throw new TypeError('Lost response');
+      return new Response(JSON.stringify({ id: product }), { status: 201, headers: { ETag: etag } });
+    };
+    await assert.rejects(sendQuoteCommand(command, 'csrf'), uncertainQuoteFailure);
+    assert.equal((await sendQuoteCommand(command, 'fresh-csrf')).id, product);
+    assert.deepEqual(seen[0], seen[1]); assert.equal(seen[1].bytes, 'Fictional proof\r\n');
+  } finally { globalThis.fetch = previous; }
+});
