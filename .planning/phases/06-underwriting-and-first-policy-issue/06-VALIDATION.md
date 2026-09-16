@@ -90,3 +90,6 @@ Implementation625bf90: full696cases/87realSQL,0skips; final unit583cases after p
 ## 06-03 runtime evidence
 Implementation b3c642d:727 full backend cases (601unit/126integration),99realSQL, zero skips;315contract/source tests. Six rating/lifecycle routes implemented. See06-03-SUMMARY.md for exact paths, preservation and limitations. UI and later underwriting/policy acceptance remain pending.
 
+
+## 06-04 runtime evidence
+Implementation da15815:727 full backend/99 realSQL,86 frontend,316 contracts; zero skips. Both-product actual browser and labelled presentation fixtures passed. Final desktop/mobile screenshots inspected. See06-04-SUMMARY for paths and remaining owners.

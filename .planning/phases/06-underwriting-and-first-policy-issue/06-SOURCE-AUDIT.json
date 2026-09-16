@@ -1,5 +1,5 @@
 {
-  "status": "06-03 rating/lifecycle backend verified in b3c642d:727 backend/99 real SQL and315 contract tests; source UI acceptance pending06-04 and final06-14",
+  "status": "06-04 rating UI verified in da15815:727 backend/99 real SQL,86 frontend,316 contracts and both-product browser; later decision/terms/issue owners remain pending",
   "inventorySha256": "459974f15088fef3da518bb08fd4f0e88a8f0fdffcf319416fcf458228288c78",
   "apiMapSha256": "bee7cae6b0c29b298eeaf63d915b854c7ec8f5e9191a709247008882cb1430b1",
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
@@ -8,15 +8,15 @@
     "originalPhase6": 44,
     "candidateControls": 211,
     "placementOwners": {
-      "7": 69,
-      "6": 51,
-      "9": 8,
-      "12": 8,
       "3": 15,
       "4": 2,
+      "6": 51,
+      "7": 69,
+      "8": 51,
+      "9": 8,
       "10": 6,
       "11": 1,
-      "8": 51
+      "12": 8
     },
     "displayFieldOccurrences": 98
   },
@@ -1407,7 +1407,7 @@
       "disposition": "command",
       "acceptanceId": "AT-0b1d8505538d",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "06-04 browser verified both-product rating/return/edit flow; exact retry and stale recovery covered.",
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs"
@@ -1428,7 +1428,7 @@
       "disposition": "navigation-read",
       "acceptanceId": "AT-df0c0aba7253",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "06-04 browser verified both-product rating/return/edit flow; exact retry and stale recovery covered.",
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs"
@@ -1487,7 +1487,7 @@
       "disposition": "command",
       "acceptanceId": "AT-47ad572ff959",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "06-04 retains working capture clone/withdraw/revision comparison controls; 06-03 SQL covers progressed lifecycle; final cross-surface acceptance remains06-14.",
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs"
@@ -1508,7 +1508,7 @@
       "disposition": "navigation-read",
       "acceptanceId": "AT-3d003747c2ad",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "06-04 retains working capture clone/withdraw/revision comparison controls; 06-03 SQL covers progressed lifecycle; final cross-surface acceptance remains06-14.",
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs"
@@ -1529,7 +1529,7 @@
       "disposition": "opens-command-form",
       "acceptanceId": "AT-32b4f87c9518",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "06-04 retains working capture clone/withdraw/revision comparison controls; 06-03 SQL covers progressed lifecycle; final cross-surface acceptance remains06-14.",
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs"
@@ -1598,7 +1598,7 @@
       "disposition": "command",
       "acceptanceId": "AT-831d06857ca3",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "06-04 browser verified both-product rating/return/edit flow; exact retry and stale recovery covered.",
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs"
@@ -1619,7 +1619,7 @@
       "disposition": "navigation-read",
       "acceptanceId": "AT-a550e5d2bb1d",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "06-04 browser verified both-product rating/return/edit flow; exact retry and stale recovery covered.",
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs"
@@ -1678,7 +1678,7 @@
       "disposition": "command",
       "acceptanceId": "AT-7f2b0fedb3a8",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "06-04 retains working capture clone/withdraw/revision comparison controls; 06-03 SQL covers progressed lifecycle; final cross-surface acceptance remains06-14.",
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs"
@@ -1699,7 +1699,7 @@
       "disposition": "navigation-read",
       "acceptanceId": "AT-50c993937b6c",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "06-04 retains working capture clone/withdraw/revision comparison controls; 06-03 SQL covers progressed lifecycle; final cross-surface acceptance remains06-14.",
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs"
@@ -1720,7 +1720,7 @@
       "disposition": "opens-command-form",
       "acceptanceId": "AT-807425c1bbac",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "06-04 retains working capture clone/withdraw/revision comparison controls; 06-03 SQL covers progressed lifecycle; final cross-surface acceptance remains06-14.",
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs"
@@ -1898,7 +1898,7 @@
       "disposition": "edit-then-save",
       "acceptanceId": "AT-9571bab22998",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "06-04 retains working capture clone/withdraw/revision comparison controls; 06-03 SQL covers progressed lifecycle; final cross-surface acceptance remains06-14.",
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs"
@@ -2098,7 +2098,7 @@
       "disposition": "read",
       "acceptanceId": "AT-67a650111cef",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "06-04 retains working capture clone/withdraw/revision comparison controls; 06-03 SQL covers progressed lifecycle; final cross-surface acceptance remains06-14.",
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs"
@@ -4879,7 +4879,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "06-04 real persisted overview/rating projection and exhaustive state display; both-product browser and frontend tests passed."
     },
     {
       "method": "pQuote",
@@ -4890,7 +4890,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "06-04 real persisted overview/rating projection and exhaustive state display; both-product browser and frontend tests passed."
     },
     {
       "method": "pQuote",
@@ -4901,7 +4901,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "06-04 real persisted overview/rating projection and exhaustive state display; both-product browser and frontend tests passed."
     },
     {
       "method": "pQuote",
@@ -4919,7 +4919,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "06-04 real persisted overview/rating projection and exhaustive state display; both-product browser and frontend tests passed."
     },
     {
       "method": "pQuote",
@@ -4930,7 +4930,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "06-04 real persisted overview/rating projection and exhaustive state display; both-product browser and frontend tests passed."
     },
     {
       "method": "pQuote",
@@ -4983,7 +4983,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "06-04 real persisted overview/rating projection and exhaustive state display; both-product browser and frontend tests passed."
     },
     {
       "method": "pQuote",
@@ -4994,7 +4994,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "06-04 real persisted overview/rating projection and exhaustive state display; both-product browser and frontend tests passed."
     },
     {
       "method": "pQuote",
@@ -5005,7 +5005,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "06-04 real persisted overview/rating projection and exhaustive state display; both-product browser and frontend tests passed."
     },
     {
       "method": "pQuote",
@@ -5016,7 +5016,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "06-04 real persisted overview/rating projection and exhaustive state display; both-product browser and frontend tests passed."
     },
     {
       "method": "pQuote",
@@ -5027,7 +5027,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "06-04 real persisted overview/rating projection and exhaustive state display; both-product browser and frontend tests passed."
     },
     {
       "method": "pQuote",
@@ -5038,7 +5038,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "06-04 real persisted overview/rating projection and exhaustive state display; both-product browser and frontend tests passed."
     },
     {
       "method": "pQuote",
@@ -5060,7 +5060,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "06-04 real persisted overview/rating projection and exhaustive state display; both-product browser and frontend tests passed."
     },
     {
       "method": "pQuote",
@@ -5082,7 +5082,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "06-04 real persisted overview/rating projection and exhaustive state display; both-product browser and frontend tests passed."
     },
     {
       "method": "pQuote",
@@ -5093,7 +5093,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "06-04 real persisted overview/rating projection and exhaustive state display; both-product browser and frontend tests passed."
     },
     {
       "method": "pQuote",
@@ -5104,7 +5104,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "06-04 real persisted overview/rating projection and exhaustive state display; both-product browser and frontend tests passed."
     },
     {
       "method": "pQuote",
@@ -5115,7 +5115,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "06-04 real persisted overview/rating projection and exhaustive state display; both-product browser and frontend tests passed."
     },
     {
       "method": "pQuote",
@@ -5243,7 +5243,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "06-04 real persisted overview/rating projection and exhaustive state display; both-product browser and frontend tests passed."
     },
     {
       "method": "pQuote",
@@ -5254,7 +5254,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "06-04 real persisted overview/rating projection and exhaustive state display; both-product browser and frontend tests passed."
     },
     {
       "method": "pQuote",
@@ -5265,7 +5265,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "06-04 real persisted overview/rating projection and exhaustive state display; both-product browser and frontend tests passed."
     },
     {
       "method": "pQuote",
@@ -5276,7 +5276,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "06-04 real persisted overview/rating projection and exhaustive state display; both-product browser and frontend tests passed."
     },
     {
       "method": "pQuote",
@@ -5287,7 +5287,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Explicit not-yet-prepared display; applied decisions/terms owned06-05/06-09."
     },
     {
       "method": "pQuote",
@@ -5423,7 +5423,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Actual source documentary blockers displayed; independent proof review owned06-05/06-06."
     },
     {
       "method": "pQuote",
@@ -5435,7 +5435,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Actual source documentary blockers displayed; independent proof review owned06-05/06-06."
     },
     {
       "method": "pQuote",
@@ -5446,7 +5446,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Explicit not-yet-reviewed display; review outcome owned06-05/06-06."
     },
     {
       "method": "pQuote",
