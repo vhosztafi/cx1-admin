@@ -6,7 +6,7 @@ Status: **PASS after one revision**, 2026-09-16. Sequential inline review using 
 
 | Severity | Finding | Correction / verification |
 |---|---|---|
-| BLOCKER | Initial rating draft restricted new business to annual despite QuoteTerm/QuoteTermTests supporting short-period capture | RULE-CATALOG now defines both existing term kinds, London civil-duration proration, partial days and180-day worked example;06-01/02 cover pointer fixtures, arithmetic and effective interval boundaries |
+| BLOCKER | Initial rating draft restricted new business to annual despite QuoteTerm/QuoteTermTests supporting short-period capture | RULE-CATALOG now defines both existing term kinds, London civil-duration proration, partial days and180-day worked example; the existing design-rules maximum anniversary is retained with an explicit eligibility blocker for longer captures;06-01/02 cover pointer fixtures, arithmetic and effective interval boundaries |
 | BLOCKER | Creating all underwriting/capacity/terms storage in06-02 made a broad migration precede feature knowledge | Feature-owned migrations now belong to06-02/05/07/08/10, each with blocking isolated/retained SQL application and history checks |
 | BLOCKER | Provider approval text alone could appear to override a hard binder limit | RULE-CATALOG and06-07/11 require typed authorised dimensions, exact submission/cycle hash and validity; no global authority mutation or unrelated blocker waiver |
 | BLOCKER | Acceptance-evidence creation could change the assurance hash while recording acceptance | Evidence must exist and be reviewed before computing acceptance hash; acceptance itself is excluded from assurance input;06-08 explicitly tests the complete signature/send/accept path |
