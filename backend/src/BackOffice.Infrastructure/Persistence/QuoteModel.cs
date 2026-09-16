@@ -30,7 +30,7 @@ public sealed partial class BackOfficeDbContext
             .HasPrincipalKey(x => new { x.Id, x.QuoteId }).OnDelete(DeleteBehavior.NoAction);
         quote.HasOne<QuoteRevision>().WithMany().HasForeignKey(x => x.ClonedFromQuoteRevisionId).OnDelete(DeleteBehavior.NoAction);
         Check(quote, "Number", "[Number] BETWEEN 1 AND 9999999999");
-        Check(quote, "State", "[State] IN ('draft','withdrawn')");
+        Check(quote, "State", "[State] IN ('draft','rating-pending','rated','referred','approved','sent','accepted','declined','bound','withdrawn')");
         Check(quote, "Creator", "[CreatedBy] IS NOT NULL");
         Check(quote, "CaptureClosure", "([CaptureClosedAt] IS NULL AND [CaptureClosedReason] IS NULL) OR ([CaptureClosedAt] IS NOT NULL AND [CaptureClosedAt]>=[CreatedAt] AND [CaptureClosedReason] IS NOT NULL AND LEN(TRIM([CaptureClosedReason]))>0)");
 

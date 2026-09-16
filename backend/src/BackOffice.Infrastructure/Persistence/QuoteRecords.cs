@@ -12,6 +12,7 @@ public sealed class Quote : MutableRecord
     // Nullable only for the initial in-transaction insert. Commands must set it
     // before commit; privileged unfinished rows are detected by integrity checks.
     public Guid? CurrentRevisionId { get; set; }
+    public Guid? CurrentUnderwritingCycleId { get; set; }
     public DateTimeOffset? CaptureClosedAt { get; set; }
     public string? CaptureClosedReason { get; set; }
     public Guid? AssignedUserId { get; set; }

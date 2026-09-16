@@ -2,6 +2,7 @@
   <ItemGroup><ProjectReference Include="../BackOffice.Application/BackOffice.Application.csproj" /></ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="../../../contracts/examples/quote-capture-*.json" LogicalName="QuoteDemo.%(Filename)%(Extension)" />
+    <EmbeddedResource Include="../../../contracts/examples/underwriting-demo.json" LogicalName="UnderwritingDemo.Definitions" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />

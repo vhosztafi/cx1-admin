@@ -2,6 +2,7 @@
   <ItemGroup><ProjectReference Include="../BackOffice.Domain/BackOffice.Domain.csproj" /></ItemGroup>
   <ItemGroup>
     <PackageReference Include="JsonSchema.Net" />
+    <EmbeddedResource Include="../../../contracts/schemas/underwriting-config.schema.json" LogicalName="Underwriting.ConfigSchema" />
     <EmbeddedResource Include="../../../contracts/schemas/quote-draft.schema.json" LogicalName="QuoteCapture.DraftSchema" />
     <EmbeddedResource Include="../../../contracts/schemas/quote-ready.schema.json" LogicalName="QuoteCapture.ReadySchema" />
     <EmbeddedResource Include="../../../contracts/quote-question-catalogue.json" LogicalName="QuoteCapture.Questions" />

@@ -24,10 +24,10 @@ public static class DemoDatabase
         await using var db = new BackOfficeDbContext(new DbContextOptionsBuilder<BackOfficeDbContext>().UseSqlServer(connectionString, sql => sql.UseCompatibilityLevel(160)).Options);
         if (reset) await db.Database.EnsureDeletedAsync(cancellationToken);
         await db.Database.MigrateAsync(cancellationToken);
-        await SeedAsync(db,password,cancellationToken,includeSupportFlags:true,includeMatches:true,includeQuoteCapture:true);
+        await SeedAsync(db,password,cancellationToken,includeSupportFlags:true,includeMatches:true,includeQuoteCapture:true,includeUnderwriting:true);
     }
 
-    public static async Task SeedAsync(BackOfficeDbContext db,string password,CancellationToken cancellationToken = default,bool includeSupportFlags=false,bool includeMatches=false,bool includeQuoteCapture=false)
+    public static async Task SeedAsync(BackOfficeDbContext db,string password,CancellationToken cancellationToken = default,bool includeSupportFlags=false,bool includeMatches=false,bool includeQuoteCapture=false,bool includeUnderwriting=false)
     {
         ValidatePassword(password);
         await using var transaction = await db.Database.BeginTransactionAsync(IsolationLevel.Serializable,cancellationToken);
@@ -93,6 +93,7 @@ public static class DemoDatabase
         }
         if(includeSupportFlags)await SupportFlagDemoSeed.SeedAsync(db,cancellationToken);
         if(includeMatches)await MatchDemoSeed.SeedAsync(db,cancellationToken);
+        if(includeUnderwriting)await Underwriting.UnderwritingSeed.SeedAsync(db,cancellationToken);
         await transaction.CommitAsync(cancellationToken);
     }
 
