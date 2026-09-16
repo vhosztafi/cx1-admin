@@ -155,3 +155,12 @@ Use the separate global declarations for the proposer and all named drivers. Sav
 Choose Vehicles & trade plates in either Motor Trade wizard. Add/edit/reorder vehicles, choose their register and ownership purpose separately, and explicitly select specified vehicles. Enter manual vehicle attributes, exact GBP values, kg/cc, independent manufacture/registration dates, overnight postcode and modifications. Named owners come from proposal drivers with personal cover. Retained owner/loss/specification links protect removal. No provider verification or MID submission is implied.
 
 Expand Vehicle portfolio and proportions for categories and percentages. Expand Trade plates to maintain distinct held inventory and covered rows. Save draft retains incomplete declarations and shows field-linked guidance; changed circumstances never silently delete rows. Vehicle changes appear in stale-save comparisons. Reproduce the real two-product journey with `node scripts/verify-quote-vehicles-browser.mjs`. Current registration indexes are persisted; quote search and historical viewing remain scheduled for their later plans.
+
+
+## Premises, insurance, cover and declarations
+
+All nine Motor Trade capture stages are now editable. Combined has a dedicated Premises stage; Road Risks has trading premises under Trade activities. Premises retain stable identities, source address/use declarations and, for Combined, separate declared use, security, sums insured, overnight and public access answers.
+
+Use Previous insurance & NCD for Road Risks, or the previous-insurance subsection of Cover & excess for Combined. Policy expiry and NCB expiry are separate, as are exact years and at-least years. Cover & excess includes the source limits, dynamic own-vehicle excess, loan and optional covers, annual European vehicles and temporary trips linked to actual named drivers. Changing a controlling answer retains earlier details for explicit review.
+
+Declarations & review captures each Yes/No answer and its explanation, plus material facts. Save/reload and stale-edit comparison preserve these sections. Readiness lists actual missing photocard/DVLA proof per driver, motor-trader proof and applicable discount proof; uploads remain unavailable until the evidence plan. Rating and progression remain unavailable. Reproduce the two-product persistence, trip-error focus, retry and comparison journey with `node scripts/verify-quote-cover-browser.mjs`.

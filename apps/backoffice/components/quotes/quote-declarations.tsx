@@ -1,0 +1,2 @@
+import { QuoteSectionControls, type QuoteSectionProps } from './quote-section-controls';
+export function QuoteDeclarations(props: QuoteSectionProps) { return <><p className="client-help">Review each declaration and its supporting details. A No answer and an unanswered question remain distinct. Saving these answers does not confirm readiness to rate or issue.</p><QuoteSectionControls {...props} group="declarations" prefix="Declarations" /></>; }

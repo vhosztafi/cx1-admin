@@ -5,11 +5,15 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { csrfToken, type Actor } from '../../lib/auth';
 import { amountInput, changeField, fieldValue, percentageInput } from '../../lib/quote-form';
 import { QuoteError, quoteFetch, saveQuoteCommand, sendQuoteCommand, staleQuoteFailure, uncertainQuoteFailure, validQuoteEtag, type PendingQuoteCommand, type QuoteValue, type QuoteView } from '../../lib/quotes';
+import { coverExcessOptions } from '../../lib/quote-cover-options';
 import { driverOptionStates } from '../../lib/quote-driver-options';
 import { readinessTarget, type ReadinessTarget } from '../../lib/quote-readiness';
 import { termFeedback } from '../../lib/quote-term';
 import { QuoteDrivers } from './quote-drivers';
 import { QuoteVehicles } from './quote-vehicles';
+import { QuotePremises } from './quote-premises';
+import { QuoteCover, QuoteInsurance } from './quote-cover';
+import { QuoteDeclarations } from './quote-declarations';
 import { QuoteTermFields } from './quote-term-fields';
 import { QuoteSourceBusiness } from './quote-source-business';
 import { QuoteBusinessAnswers } from './quote-business-answers';
@@ -36,6 +40,7 @@ const splitFields = [['sales', 'Vehicle sales'], ['servicing', 'Servicing'], ['m
 const comparisonFields = [...identityFields.map(([path, label]) => ({ path, label })),
   { path: 'insured.title', label: 'Proposer title' }, { path: 'insured.declaredCompanyType', label: 'Company category' }, { path: 'insured.responses', label: 'Quotation and marketing answers' }, { path: 'insured.entityType', label: 'Legal entity' }, { path: 'insured.proposerNames', label: 'Full proposer names' },
   { path: 'risk.drivers', label: 'Drivers and history' }, { path: 'risk.responses', label: 'Driver basis, vehicle portfolio and plate cover' },
+  { path: 'risk.premises', label: 'Trading premises' }, { path: 'risk.previousInsurance', label: 'Previous insurance and no-claims' }, { path: 'cover', label: 'Cover and European trips' }, { path: 'risk.declarations', label: 'Declarations' }, { path: 'risk.materialFacts', label: 'Material facts' },
   { path: 'risk.vehicles', label: 'Vehicles and modifications' }, { path: 'risk.specifiedVehiclesRequested', label: 'Specified vehicles required' }, { path: 'risk.specifiedVehicleIds', label: 'Specified vehicle selections' }, { path: 'risk.heldTradePlates', label: 'Held trade plates' }, { path: 'risk.tradePlates', label: 'Covered trade plates' },
   { path: 'risk.business.responses', label: 'Business answers' }, { path: 'risk.business.activities', label: 'Motor Trade occupations' }, { path: 'risk.business.description', label: 'Business description' }, { path: 'risk.business.startedOn', label: 'Business start date' },
   { path: 'risk.business.turnover', label: 'Annual turnover' }, { path: 'risk.business.wageRoll', label: 'Annual wage roll' },
@@ -47,6 +52,7 @@ function Editor({ actorId, initial, initialEtag, catalogue }: { actorId: string;
   const router = useRouter();
   const [saved, setSaved] = useState(initial); const [etag, setEtag] = useState(initialEtag); const [proposal, setProposal] = useState(initial.proposal);
   const savedDriverOptions = useMemo(() => driverOptionStates(saved.proposal, catalogue.driverOptions?.version === catalogue.version ? catalogue.driverOptions : undefined), [saved.proposal, catalogue.driverOptions, catalogue.version]);
+  const savedExcessActive = useMemo(() => coverExcessOptions(saved.proposal, catalogue.driverOptions?.version === catalogue.version ? catalogue.driverOptions : undefined).active, [saved.proposal, catalogue.driverOptions, catalogue.version]);
   const [stage, setStage] = useState(1); const [busy, setBusy] = useState(false); const [uncertain, setUncertain] = useState(false);
   const [error, setError] = useState(''); const [status, setStatus] = useState(''); const [invalid, setInvalid] = useState<Record<string, string>>({});
   const [conflict, setConflict] = useState(false); const [comparison, setComparison] = useState<{ data: QuoteView; etag: string }>();
@@ -76,7 +82,7 @@ function Editor({ actorId, initial, initialEtag, catalogue }: { actorId: string;
   const driverStage = saved.productCode === 'motor-trade-combined' ? 4 : 3;
   const historyStage = driverStage + 1;
   const vehicleStage = driverStage + 2;
-  const editableStages = [0, 1, 2, driverStage, historyStage, vehicleStage];
+  const editableStages = stages.map((_, index) => index);
 
   useEffect(() => {
     const allow = () => {
@@ -144,6 +150,9 @@ function Editor({ actorId, initial, initialEtag, catalogue }: { actorId: string;
     } finally { navigationState.current.busy = false; setBusy(false); }
   }
 
+  const sectionProps = { proposal, versions: saved.captureVersions, catalogue, buffers, validity,
+    setBuffer: (key: string, value: string | undefined) => setBuffers(current => { const next = { ...current }; if (value === undefined) delete next[key]; else next[key] = value; return next; }),
+    replace: (next: typeof proposal) => { navigationState.current.dirty = true; setProposal(next); setStatus(''); } };
   return <><div className="page-heading"><div><h1>Edit {saved.reference}</h1><p>Saved revision {saved.revisionNumber} · {dirty ? 'Unsaved changes' : 'No unsaved changes'}</p></div><Link className="button" href={`/quotes/${saved.id}`}>View saved quote</Link></div>
     <div className="agency-layout"><div>
       <Panel title={stages[stage]} note="Incomplete answers can be saved. Saving does not confirm readiness.">
@@ -165,28 +174,30 @@ function Editor({ actorId, initial, initialEtag, catalogue }: { actorId: string;
             <p role="status">Total activity split: {splitFields.reduce((sum, [name]) => sum + Number(fieldValue(proposal, `risk.business.declaredActivitySplit.${name}`) ?? 0), 0) / 100}%</p>
             <QuoteSourceBusiness proposal={proposal} versions={saved.captureVersions} catalogue={catalogue} stage={2} replace={next => { navigationState.current.dirty = true; setProposal(next); setStatus(''); }} />
             <QuoteActivities proposal={proposal} versions={saved.captureVersions} catalogue={catalogue} buffers={buffers} setBuffer={(path, value) => setBuffers(current => { const next = { ...current }; if (value === undefined) delete next[path]; else next[path] = value; return next; })} validity={validity} replace={next => { navigationState.current.dirty = true; setProposal(next); setStatus(''); }} />
-          </> : stage === vehicleStage ? <QuoteVehicles proposal={proposal} versions={saved.captureVersions} catalogue={catalogue} buffers={buffers} setBuffer={(key, value) => setBuffers(current => { const next = { ...current }; if (value === undefined) delete next[key]; else next[key] = value; return next; })} validity={validity} replace={next => { navigationState.current.dirty = true; setProposal(next); setStatus(''); }} /> : <QuoteDrivers proposal={proposal} versions={saved.captureVersions} catalogue={catalogue} history={stage === historyStage} buffers={buffers} setBuffer={(key, value) => setBuffers(current => { const next = { ...current }; if (value === undefined) delete next[key]; else next[key] = value; return next; })} validity={validity} replace={next => { navigationState.current.dirty = true; setProposal(next); setStatus(''); }} />}
+            {saved.productCode === 'motor-trade-road-risks' && <QuotePremises {...sectionProps} />}
+          </> : stage === 8 ? <QuoteDeclarations {...sectionProps} /> : stage === 7 ? <QuoteCover {...sectionProps} /> : stage === 6 && saved.productCode === 'motor-trade-road-risks' ? <QuoteInsurance {...sectionProps} /> : stage === 3 && saved.productCode === 'motor-trade-combined' ? <QuotePremises {...sectionProps} /> : stage === vehicleStage ? <QuoteVehicles proposal={proposal} versions={saved.captureVersions} catalogue={catalogue} buffers={buffers} setBuffer={(key, value) => setBuffers(current => { const next = { ...current }; if (value === undefined) delete next[key]; else next[key] = value; return next; })} validity={validity} replace={next => { navigationState.current.dirty = true; setProposal(next); setStatus(''); }} /> : <QuoteDrivers proposal={proposal} versions={saved.captureVersions} catalogue={catalogue} history={stage === historyStage} buffers={buffers} setBuffer={(key, value) => setBuffers(current => { const next = { ...current }; if (value === undefined) delete next[key]; else next[key] = value; return next; })} validity={validity} replace={next => { navigationState.current.dirty = true; setProposal(next); setStatus(''); }} />}
         </fieldset>
       </Panel>
       <Panel title="Saved draft readiness"><div className="quote-rail-body">
         <p>Checks apply to saved revision {saved.revisionNumber}. {dirty ? 'Save your changes to refresh this guidance.' : 'Review the fields below; incomplete drafts can still be saved.'}</p>
-        <p className="client-help">Later sections and complete quote assessment remain unavailable. This list does not confirm readiness to rate or issue.</p>
+        <p className="client-help">Lookup decisions, evidence and complete quote assessment remain unavailable. This list does not confirm readiness to rate or issue.</p>
         <ul className="quote-readiness-list">{saved.readiness.issues.map((issue, index) => {
-          const target = readinessTarget(issue, saved.proposal, catalogue.businessQuestions, catalogue.driverFields, savedDriverOptions, catalogue.vehicleFields);
+          const target = readinessTarget(issue, saved.proposal, catalogue.businessQuestions, catalogue.driverFields, savedDriverOptions, catalogue.vehicleFields, catalogue.sectionFields, savedExcessActive);
           return target ? <li key={`${issue.code}-${issue.path}-${index}`}><button type="button" className="button" disabled={dirty || frozen} onClick={() => { setStage(target.stage); setFocusTarget({ ...target }); }}>Review {target.label}</button><span>{issue.message}</span></li> : null;
         })}</ul>
-        <p className="client-help">{saved.readiness.issues.filter(issue => !readinessTarget(issue, saved.proposal, catalogue.businessQuestions, catalogue.driverFields, savedDriverOptions, catalogue.vehicleFields)).length} other checks concern later sections or quote-level requirements.</p>
+        <ul className="quote-readiness-list">{saved.readiness.issues.filter(issue => issue.category === 'evidence').map((issue, index) => <li key={`evidence-${issue.code}-${issue.path}-${index}`}><span>{/^\/risk\/drivers\/\d+$/.test(issue.path) ? `Driver ${Number(issue.path.split('/').at(-1)) + 1}: ` : ''}{issue.message}</span></li>)}</ul>
+        <p className="client-help">{saved.readiness.issues.filter(issue => issue.category !== 'evidence' && !readinessTarget(issue, saved.proposal, catalogue.businessQuestions, catalogue.driverFields, savedDriverOptions, catalogue.vehicleFields, catalogue.sectionFields, savedExcessActive)).length} other checks concern later sections or quote-level requirements.</p>
       </div></Panel>
       {conflict && <Panel title="Saved version changed"><div className="quote-rail-body"><p>Your draft is retained. Load the saved revision to compare before deciding to replace your edits.</p><button className="button" disabled={busy} onClick={() => void compare()}>Load saved comparison</button>
-        {comparison && <><p>Current saved revision: {comparison.data.revisionNumber}. Other sections also remain as recorded in that revision.</p><div className="table-scroll" role="region" aria-label="Quote changes" tabIndex={0}><table><thead><tr><th>Field</th><th>Your draft</th><th>Saved revision</th></tr></thead><tbody>{comparisonFields.filter(field => JSON.stringify(fieldValue(proposal, field.path)) !== JSON.stringify(fieldValue(comparison.data.proposal, field.path))).map(field => <tr key={field.path}><th>{field.label}</th><td>{display(fieldValue(proposal, field.path), Object.fromEntries([...catalogue.businessQuestions, ...(catalogue.driverFields ?? []), ...(catalogue.vehicleFields ?? [])].map(question => [question.id, question.label])))}</td><td>{display(fieldValue(comparison.data.proposal, field.path), Object.fromEntries([...catalogue.businessQuestions, ...(catalogue.driverFields ?? []), ...(catalogue.vehicleFields ?? [])].map(question => [question.id, question.label])))}</td></tr>)}</tbody></table></div><button className="button" disabled={busy || uncertain} onClick={replaceWithSaved}>Discard my edits and load saved revision</button></>}
+        {comparison && <><p>Current saved revision: {comparison.data.revisionNumber}. Other sections also remain as recorded in that revision.</p><div className="table-scroll" role="region" aria-label="Quote changes" tabIndex={0}><table><thead><tr><th>Field</th><th>Your draft</th><th>Saved revision</th></tr></thead><tbody>{comparisonFields.filter(field => JSON.stringify(fieldValue(proposal, field.path)) !== JSON.stringify(fieldValue(comparison.data.proposal, field.path))).map(field => <tr key={field.path}><th>{field.label}</th><td>{display(fieldValue(proposal, field.path), Object.fromEntries([...catalogue.businessQuestions, ...(catalogue.driverFields ?? []), ...(catalogue.vehicleFields ?? []), ...(catalogue.sectionFields ?? [])].map(question => [question.id, question.label])))}</td><td>{display(fieldValue(comparison.data.proposal, field.path), Object.fromEntries([...catalogue.businessQuestions, ...(catalogue.driverFields ?? []), ...(catalogue.vehicleFields ?? []), ...(catalogue.sectionFields ?? [])].map(question => [question.id, question.label])))}</td></tr>)}</tbody></table></div><button className="button" disabled={busy || uncertain} onClick={replaceWithSaved}>Discard my edits and load saved revision</button></>}
       </div></Panel>}
     </div><aside className="quote-create-rail"><Panel title="Quote progress"><div className="quote-rail-body"><nav className="agency-steps" aria-label="Quote stages">{stages.map((name, index) => <button className="button" key={name} type="button" disabled={!editableStages.includes(index) || busy || uncertain} aria-current={index === stage ? 'step' : undefined} onClick={() => setStage(index)}><span>{index + 1}</span>{name}{!editableStages.includes(index) ? ' · unavailable' : ''}</button>)}</nav>
-      <p className="client-help">This capture form is being completed. Missing sections remain incomplete; the quote cannot progress to rating or issue.</p>
+      <p className="client-help">Save incomplete details at any stage. The quote cannot progress to rating or issue while required assessment and evidence checks are unavailable.</p>
       {error && <p className="error-message" role="alert">{error}</p>}{term.errors.map(message => <p key={message} role="alert">{message}</p>)}{Object.entries(invalid).map(([path, message]) => <p key={path} role="alert">{message}</p>)}
       {status && <p role="status">{status}</p>}{uncertain && <p className="quote-pending" role="status">Save result unconfirmed. Your draft is locked until the original save is confirmed.</p>}
       {!saved.capabilities.canSave && <p role="alert">This quote is currently closed to editing.</p>}
       <div className="quote-save-actions"><button className="button button-primary" disabled={busy || conflict || !saved.capabilities.canSave || inputErrors > 0} onClick={() => void save('stay')}>{busy ? 'Saving…' : uncertain ? 'Retry same save' : 'Save draft'}</button>
-        <button className="button" disabled={frozen || stage >= vehicleStage || inputErrors > 0} onClick={() => void save('continue')}>Save and continue</button>
+        <button className="button" disabled={frozen || stage >= stages.length - 1 || inputErrors > 0} onClick={() => void save('continue')}>Save and continue</button>
         <button className="button" disabled={frozen || inputErrors > 0} onClick={() => void save('exit')}>Save and exit</button></div>
     </div></Panel></aside></div></>;
 }

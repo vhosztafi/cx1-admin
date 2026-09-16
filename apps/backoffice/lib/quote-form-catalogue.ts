@@ -1,6 +1,7 @@
 import fieldLabels from '../../../docs/design/funnel-field-mapping.json';
 import { sourceDriverFields } from './quote-driver-fields';
 import { sourceVehicleFields } from './quote-vehicle-fields';
+import { sourceSectionFields } from './quote-section-fields';
 import questions from '../../../contracts/quote-question-catalogue.json';
 import { sourceBusinessQuestions } from './quote-source-questions';
 // Imported by the server page only: send only the needed collections, not the
@@ -10,6 +11,7 @@ import type { QuoteFormCatalogue } from './quote-catalogue';
 
 export const quoteFormCatalogue: QuoteFormCatalogue = {
   version: source.version,
+  sectionFields: sourceSectionFields(questions.mappings, source.bindings, source.collections, Object.fromEntries(fieldLabels.mappings.map(row => [row.owner, row.label]))),
   vehicleFields: sourceVehicleFields(questions.mappings, source.bindings, source.collections, Object.fromEntries(fieldLabels.mappings.map(row => [row.owner, row.label]))),
   driverOptions: { version: source.version, youngDriverConfiguration: source.youngDriverConfiguration,
     collections: Object.fromEntries(Object.entries(source.collections).filter(([name]) =>

@@ -33,8 +33,17 @@ public static class QuoteReadiness
             x.Path, x.Code, "Review the vehicle owner and the named driver's personal vehicle cover.", "capture", "error", x.QuestionId)));
         issues.AddRange(QuoteDriverRules.AssessHistory(proposal, asOf).Select(x => new QuoteReadinessIssue(
             x.Path, x.Code, x.Code == "history-date-after-assessment" ? "The incident date is after the assessment date." : "Recorded history requires a Yes answer to this business declaration.", "capture", "error", x.QuestionId, x.RelatedPath)));
+        // Until persisted attestations are implemented, each applicable requirement is missing.
+        issues.AddRange(QuoteEvidenceRequirements.ForProposal(proposal).Select(x => new QuoteReadinessIssue(
+            x.Path, "evidence-missing-" + x.Code, x.Label + " is missing. Evidence attachment is not yet available.", "evidence", "error")));
         issues.AddRange(QuoteVehicleRules.Assess(proposal, asOf).Select(x => new QuoteReadinessIssue(
             x.Path, x.Code, x.Code == "vehicle-capture-context-required" ? "A saved manual-entry or lookup decision is not yet available for this vehicle." : "Complete or correct the vehicle, portfolio or trade-plate details.", "capture", "error", x.QuestionId)));
+        issues.AddRange(QuoteInsuranceRules.Assess(proposal).Select(x => new QuoteReadinessIssue(
+            x.Path, x.Code, "Review the previous insurance and no-claims declarations.", "capture", "error", x.QuestionId)));
+        issues.AddRange(QuoteCoverRules.Assess(proposal).Select(x => new QuoteReadinessIssue(
+            x.Path, x.Code, "Review the selected cover, limits and additional cover details.", "capture", "error", x.QuestionId)));
+        issues.AddRange(QuoteAdditionalRules.Assess(proposal).Select(x => new QuoteReadinessIssue(
+            x.Path, x.Code, "Review the premises and additional trade declarations.", "capture", "error", x.QuestionId)));
         issues.AddRange(QuoteCaptureShape.ValidateCompleteness(proposal).Select(x => new QuoteReadinessIssue(
             x.Path.Length is > 0 and <= 500 ? x.Path : "/", x.Code, "Complete or correct the captured details.", "capture", "error")));
         return new(quoteId, revisionId, false, issues.Distinct().Take(100).ToArray());

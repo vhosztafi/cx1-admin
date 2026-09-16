@@ -100,7 +100,7 @@ public sealed class QuoteReadinessTests
     }
 
     [Fact]
-    public void AllSixCompleteSourceFixturesStillRequireUnimplementedSemanticAndEvidenceGates()
+    public void AllSixCompleteSourceFixturesRequireStoredVehicleContextAndActualEvidence()
     {
         var names = typeof(QuoteReadinessTests).Assembly.GetManifestResourceNames().Where(x => x.StartsWith("QuoteExamples.quote-capture-", StringComparison.Ordinal)).ToArray();
         Assert.Equal(6, names.Length);
@@ -113,7 +113,9 @@ public sealed class QuoteReadinessTests
             var term = QuoteTerm.Assess(proposal.GetProperty("termIntent")); Assert.Empty(term.Issues);
             var result = QuoteReadiness.Assess(Guid.NewGuid(), Guid.NewGuid(), proposal, term, null, new DateOnly(2026,9,15));
             Assert.False(result.Ready);
-            Assert.Equal("quote-assessment-unavailable", Assert.Single(result.Issues, issue => issue.Code != "vehicle-capture-context-required").Code);
+            Assert.Equal("quote-assessment-unavailable", Assert.Single(result.Issues, issue => issue.Code != "vehicle-capture-context-required" && issue.Category != "evidence").Code);
+            Assert.Equal(QuoteEvidenceRequirements.ForProposal(proposal).Count, result.Issues.Count(issue => issue.Category == "evidence"));
+            Assert.All(result.Issues.Where(issue => issue.Category == "evidence"), issue => Assert.StartsWith("evidence-missing-", issue.Code));
             Assert.Equal(proposal.GetProperty("risk").GetProperty("vehicles").GetArrayLength(), result.Issues.Count(issue => issue.Code == "vehicle-capture-context-required"));
         }
     }
