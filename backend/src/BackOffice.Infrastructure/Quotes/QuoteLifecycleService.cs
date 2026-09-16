@@ -5,6 +5,7 @@ using BackOffice.Application;
 using BackOffice.Application.Quotes;
 using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Platform;
+using BackOffice.Infrastructure.Underwriting;
 using Microsoft.EntityFrameworkCore;
 
 namespace BackOffice.Infrastructure.Quotes;
@@ -57,7 +58,7 @@ public sealed class QuoteLifecycleService(IDbContextFactory<BackOfficeDbContext>
     {
         await using var db = await factory.CreateDbContextAsync(token); await using var transaction = await db.Database.BeginTransactionAsync(token);
         var context = await CloneContext(db, actor, quoteId, sourceRevisionId, relationshipId, token);
-        QuoteRules.EnsureEditable(context.Source.Quote.State, context.Source.Quote.CaptureClosedAt);
+        Cloneable(context.Source.Quote);
         var terms = context.Destination.Terms;
         var result = new QuoteCloneTerms(sourceRevisionId, relationshipId, terms.Id, terms.Version, terms.EffectiveFrom, terms.Id != context.Revision.AgencyTermsVersionId);
         await transaction.CommitAsync(token); return result;
@@ -74,7 +75,7 @@ public sealed class QuoteLifecycleService(IDbContextFactory<BackOfficeDbContext>
             async (db, ct) =>
             {
                 var context = authorized ?? throw new InvalidOperationException("Clone requires held authority.");
-                Current(context.Source.Quote, version);
+                Cloneable(context.Source.Quote); Current(context.Source.Quote, version, progressed: true);
                 if ((context.Revision.AgencyTermsVersionId != context.Destination.Terms.Id || confirmedTermsId is not null) && confirmedTermsId != context.Destination.Terms.Id)
                     throw new QuoteOperationException(409, "quote-clone-terms-confirmation-required");
                 var prepared = QuoteLifecycleRules.Clone(context.Revision.ProposalJson, context.Destination.Product.Code,
@@ -106,7 +107,10 @@ public sealed class QuoteLifecycleService(IDbContextFactory<BackOfficeDbContext>
             },
             async (db, ct) =>
             {
-                var quote = owned!.Quote; Current(quote, version); var now = time.GetUtcNow(); db.Attach(quote);
+                var quote = owned!.Quote;
+                if (quote.State is "bound" or "withdrawn") throw new QuoteInputException("quote-capture-closed");
+                Current(quote, version, progressed: quote.CurrentUnderwritingCycleId is not null); var now = time.GetUtcNow();
+                await QuoteUnderwritingLifecycle.SupersedeAsync(db, quote, reason, now, ct); db.Attach(quote); quote.CurrentUnderwritingCycleId = null;
                 quote.State = "withdrawn"; quote.CaptureClosedAt = now; quote.CaptureClosedReason = reason;
                 db.Add(new QuoteActivity { QuoteId = quoteId, RevisionId = revision!.Id, ActorId = actor.UserId, CreatedBy = actor.UserId,
                     CreatedAt = now, OccurredAt = now, EventType = "quote.withdrawn" });
@@ -151,9 +155,15 @@ public sealed class QuoteLifecycleService(IDbContextFactory<BackOfficeDbContext>
         }).ToArray();
     }
     private static void Version(byte[] version) { if (version.Length != 8) throw new QuoteOperationException(400, "invalid-quote-version"); }
-    private static void Current(Quote quote, byte[] version)
+    private static void Cloneable(Quote quote)
     {
-        QuoteRules.EnsureEditable(quote.State, quote.CaptureClosedAt);
+        if (quote.State == "draft") QuoteRules.EnsureEditable(quote.State, quote.CaptureClosedAt);
+        else if (quote.State is not ("rating-pending" or "rated" or "referred" or "approved" or "sent" or "accepted" or "declined" or "bound"))
+            throw new QuoteInputException("quote-capture-closed");
+    }
+    private static void Current(Quote quote, byte[] version, bool progressed = false)
+    {
+        if (!progressed) QuoteRules.EnsureEditable(quote.State, quote.CaptureClosedAt);
         if (!CryptographicOperations.FixedTimeEquals(quote.RowVersion, version)) throw new QuoteOperationException(412, "stale-quote");
     }
     private static CommandOutcome Receipt(Quote quote, int status) => new(quote.Id, status, JsonSerializer.Serialize(new { id = quote.Id }), Etag: "\"" + Convert.ToBase64String(quote.RowVersion) + "\"");

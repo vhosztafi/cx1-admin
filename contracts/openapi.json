@@ -7814,7 +7814,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending",
+        "x-runtime-status": "phase-6-03-implemented",
         "x-etag-resource": "quote"
       }
     },
@@ -7998,7 +7998,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending",
+        "x-runtime-status": "phase-6-03-implemented",
         "x-etag-resource": "quote"
       }
     },
@@ -9178,7 +9178,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending"
+        "x-runtime-status": "phase-6-03-implemented"
       }
     },
     "/referrals": {
@@ -60124,7 +60124,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending",
+        "x-runtime-status": "phase-6-03-implemented",
         "x-etag-resource": "quote"
       }
     },
@@ -60308,7 +60308,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending",
+        "x-runtime-status": "phase-6-03-implemented",
         "x-etag-resource": "quote"
       }
     },
@@ -60420,7 +60420,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending"
+        "x-runtime-status": "phase-6-03-implemented"
       }
     },
     "/quotes/{quoteId}/underwriting/evidence": {
@@ -74628,6 +74628,28 @@
             "additionalProperties": false,
             "properties": {
               "code": {
+                "const": "any-driver-minimum-licence"
+              },
+              "minimumYears": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 80
+              },
+              "wordingVersion": {
+                "const": "1"
+              }
+            },
+            "required": [
+              "code",
+              "minimumYears",
+              "wordingVersion"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
                 "const": "revise-stock-limit"
               },
               "maximumAmount": {
@@ -74970,7 +74992,7 @@
           "reason": {
             "type": "string",
             "minLength": 1,
-            "maxLength": 2000,
+            "maxLength": 1000,
             "pattern": "\\S"
           }
         },
@@ -75018,7 +75040,7 @@
           "reason": {
             "type": "string",
             "minLength": 1,
-            "maxLength": 2000,
+            "maxLength": 1000,
             "pattern": "\\S"
           }
         },

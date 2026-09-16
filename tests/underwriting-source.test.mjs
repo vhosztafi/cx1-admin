@@ -12,6 +12,22 @@ const mapping=await read(`${phase}06-INPUT-MAP.json`);
 const references=await read('contracts/reference-data/motor-trade-capture.json');
 const schema=await read('contracts/schemas/quote-ready.schema.json');
 const fixtures=await read('contracts/examples/underwriting-demo.json');
+test('pinned server meanings resolve source ages and NCB without runtime label parsing',async()=>{
+  const meanings=await read('contracts/reference-data/underwriting-meanings.json');
+  assert.equal(meanings.referenceVersion,references.version);
+  assert.deepEqual(meanings.collections.aadDriverMinAge.map(x=>x.numericValue),[21,23,25,30]);
+  assert.deepEqual(meanings.collections.aadDriverMaxAge.map(x=>x.numericValue),[65,70]);
+  assert.equal(meanings.collections.noClaimBonuses.at(-1).numericValue,15);
+  assert.equal(meanings.collections.noClaimBonuses.at(-1).atLeast,true);
+  for(const [name,rows] of Object.entries(meanings.collections)){
+    assert.deepEqual(rows.map(x=>x.value),references.collections[name].map(x=>x.value));
+    for(const row of rows){
+      const source=references.collections[name].find(x=>x.value===row.value);
+      const expected=name==='noClaimBonuses'?(row.numericValue===0?'No NCB':`${row.numericValue}${row.atLeast?'+':''} ${row.numericValue===1?'Year':'Years'}`):String(row.numericValue);
+      assert.equal(source.text,expected);
+    }
+  }
+});
 
 function resolve(path){
   let node=schema;
@@ -74,6 +90,7 @@ test('condition catalog rejects arbitrary wording, effects, empty targets and fo
     {code:'provide-trading-history'},
     {code:'overnight-security',premisesId:id,wordingVersion:'1'},
     {code:'named-drivers-only',driverIds:[id],wordingVersion:'1'},
+    {code:'any-driver-minimum-licence',minimumYears:2,wordingVersion:'1'},
     {code:'revise-stock-limit',maximumAmount:'125000.00'},
     {code:'revise-vehicle-limit',vehicleId:id,maximumAmount:'50000.00'},
   ]){
@@ -82,6 +99,7 @@ test('condition catalog rejects arbitrary wording, effects, empty targets and fo
     assert.equal(validate({...value,description:'Arbitrary authority override'}),false);
   }
   assert.equal(validate({code:'named-drivers-only',driverIds:[],wordingVersion:'1'}),false);
+  assert.equal(validate({code:'any-driver-minimum-licence',minimumYears:0,wordingVersion:'1'}),false);
   assert.equal(validate({code:'provide-signed-statement',termsVersionId:id,termsHash:'not-a-hash'}),false);
 });
 test('worked examples independently reconcile exact pennies and existing short-period arithmetic',()=>{

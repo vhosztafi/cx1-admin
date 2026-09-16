@@ -17,9 +17,9 @@ export function addUnderwritingContracts({schemas:s,ref:r,operation:op,paths}){
   s.UnderwritingBlocker=o({code:t(100),message:t(1000),path:t(500),targetId:id,dimension:t(60)},['code','message']);
   s.UnderwritingAssessment=o({quoteId:id,quoteEtag:etag,state:enumeration,context:r('UnderwritingContext'),ratingId:id,termsVersionId:id,termsHash:hash,assuranceHash:hash,acceptanceId:id,assignedUserId:id,assignedUserLabel:t(),submissionId:id,
     blockers:many(r('UnderwritingBlocker'),200),capabilities:o(Object.fromEntries(['canRate','canSubmit','canRevise','canReviewEvidence','canDecide','canEscalate','canPrepareTerms','canSend','canAccept','canIssue'].map(k=>[k,bool])))},['quoteId','quoteEtag','state','blockers','capabilities']);
-  s.UnderwritingRateRequest=o({revisionId:id,reason});
+  s.UnderwritingRateRequest=o({revisionId:id,reason:t(1000)});
   s.UnderwritingCycleRequest=o({...commandContext,reason});
-  s.UnderwritingRefreshRequest=o({revisionId:id,productVersionId:id,confirmedTermsVersionId:id,reason});
+  s.UnderwritingRefreshRequest=o({revisionId:id,productVersionId:id,confirmedTermsVersionId:id,reason:t(1000)});
   s.UnderwritingRatingFactor=o({code:t(60),label:t(),amount:money,direction:e('charge','discount'),basisAmount:money,basisPoints:count,targetId:id},['code','label','amount','direction']);
   s.UnderwritingRatingView=o({id,...context,ruleVersionId:id,completedAt:instant,expiresAt:instant,applicable:bool,
     currency:{const:'GBP'},annualPremium:money,termPremium:money,tax:money,fee:money,grossPayable:money,brokerCommission:money,
@@ -78,7 +78,9 @@ export function addUnderwritingContracts({schemas:s,ref:r,operation:op,paths}){
 
   const replace=(method,path,name,permission,options={})=>{
     delete paths[path]?.[method];op(method,path,name,permission,{...options,existing:method!=='get'});
-    const operation=paths[path][method];operation['x-runtime-status']='phase-6-pending';
+    const operation=paths[path][method];
+    operation['x-runtime-status']=['rateQuote','submitQuote','returnQuoteToDraft','refreshQuoteUnderwritingVersion','getQuoteUnderwriting','getRating'].includes(name)
+      ? 'phase-6-03-implemented' : 'phase-6-pending';
     operation.description+=' Phase 6 contract; runtime availability requires owning-plan verification. Current identity, agency and subject scope apply before receipt replay. Responses are no-store.';
     if(method!=='get'){
       operation['x-etag-resource']='quote';

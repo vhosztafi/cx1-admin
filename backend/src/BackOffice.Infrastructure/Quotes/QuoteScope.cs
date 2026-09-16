@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackOffice.Infrastructure.Quotes;
 
-public enum QuoteAccess { Read, Capture }
+public enum QuoteAccess { Read, Capture, Underwriting }
 public sealed class QuoteOperationException(int status, string code) : Exception("The quote operation cannot be completed.")
 {
     public int Status { get; } = status;
@@ -47,7 +47,7 @@ public static class QuoteScope
         var agency = await AgencyLock(db, hint.AgencyId, access, token);
         var current = await ActorLock(db, actor, access, token);
         DemandAgencyState(agency, access);
-        var query = access == QuoteAccess.Capture
+        var query = access != QuoteAccess.Read
             ? db.Set<Quote>().FromSqlInterpolated($"SELECT * FROM Quote WITH(UPDLOCK,HOLDLOCK,ROWLOCK) WHERE Id={quoteId}")
             : db.Set<Quote>().FromSqlInterpolated($"SELECT * FROM Quote WITH(HOLDLOCK,ROWLOCK) WHERE Id={quoteId}");
         var quote = await query.AsNoTracking().SingleOrDefaultAsync(token);
@@ -59,13 +59,13 @@ public static class QuoteScope
     private static void DemandTransactionAndCapability(BackOfficeDbContext db, ActorContext actor, QuoteAccess access)
     {
         if (db.Database.CurrentTransaction is null) throw new InvalidOperationException("Quote scope requires a held transaction.");
-        if (access is not (QuoteAccess.Read or QuoteAccess.Capture)) throw new ArgumentOutOfRangeException(nameof(access));
-        if (!actor.HasCapability(access == QuoteAccess.Read ? "quote-read" : "quote-capture")) throw Denied();
+        if (access is not (QuoteAccess.Read or QuoteAccess.Capture or QuoteAccess.Underwriting)) throw new ArgumentOutOfRangeException(nameof(access));
+        if (!actor.HasCapability(access == QuoteAccess.Capture ? "quote-capture" : "quote-read")) throw Denied();
     }
 
     private static async Task<Agency> AgencyLock(BackOfficeDbContext db, Guid id, QuoteAccess access, CancellationToken token)
     {
-        var query = access == QuoteAccess.Capture
+        var query = access != QuoteAccess.Read
             ? db.Set<Agency>().FromSqlInterpolated($"SELECT * FROM Agency WITH(UPDLOCK,HOLDLOCK,ROWLOCK) WHERE Id={id}")
             : db.Set<Agency>().FromSqlInterpolated($"SELECT * FROM Agency WITH(HOLDLOCK,ROWLOCK) WHERE Id={id}");
         var agency = await query.AsNoTracking().SingleOrDefaultAsync(token) ?? throw Missing();
@@ -74,7 +74,7 @@ public static class QuoteScope
 
     private static void DemandAgencyState(Agency agency, QuoteAccess access)
     {
-        if (access == QuoteAccess.Capture && agency.State != "active") throw new QuoteOperationException(409, "agency-unavailable");
+        if (access != QuoteAccess.Read && agency.State != "active") throw new QuoteOperationException(409, "agency-unavailable");
     }
 
     private static async Task<ActorContext> ActorLock(BackOfficeDbContext db, ActorContext actor, QuoteAccess access, CancellationToken token)
@@ -83,7 +83,7 @@ public static class QuoteScope
         if (identity is null || !actor.Roles.SetEquals(identity.Roles.Select(x => x.Code))) throw Denied();
         var current = new ActorContext(identity.User.Id, identity.User.TeamId, identity.User.AgencyId,
             identity.Roles.Select(x => x.Code).ToHashSet(StringComparer.Ordinal));
-        if (!current.HasCapability(access == QuoteAccess.Read ? "quote-read" : "quote-capture")) throw Denied();
+        if (!current.HasCapability(access == QuoteAccess.Capture ? "quote-capture" : "quote-read")) throw Denied();
         return current;
     }
 
@@ -94,7 +94,7 @@ public static class QuoteScope
         var relationship = await db.Set<ClientAgencyRelationship>().FromSqlInterpolated($"SELECT * FROM ClientAgencyRelationship WITH(HOLDLOCK,ROWLOCK) WHERE Id={id}")
             .AsNoTracking().SingleOrDefaultAsync(token);
         if (relationship is null || relationship.ClientId != clientId || relationship.AgencyId != agency.Id) throw Missing();
-        if (access == QuoteAccess.Capture && (client.IdentityState != "active" || relationship.State != "active"))
+        if (access != QuoteAccess.Read && (client.IdentityState != "active" || relationship.State != "active"))
             throw new QuoteOperationException(409, "quote-relationship-unavailable");
         return new(actor, agency, client, relationship);
     }

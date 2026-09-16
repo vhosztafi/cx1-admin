@@ -7,6 +7,18 @@ namespace BackOffice.UnitTests;
 
 public sealed class UnderwritingEligibilityTests
 {
+    [Fact]
+    public void AnyDriverLicenceExperienceIsUnknownAndCannotBeInferredFromTheAgeRange()
+    {
+        var config = QuoteRatingRulesTests.Definition("authority");
+        var risk = Risk() with { AnyDriverCount = 3, AnyDriverMinimumAge = 30, AnyDriverMaximumAge = 65 };
+        Assert.Contains(UnderwritingRules.AssessAuthority(config, risk), x => x.RuleCode == "any-driver-licence-years");
+        var tooYoung = risk with { AnyDriverMinimumAge = 16 };
+        var requirements = UnderwritingRules.AssessAuthority(config, tooYoung);
+        Assert.Contains(requirements, x => x.RuleCode == "any-driver-age");
+        Assert.Contains(requirements, x => x.RuleCode == "any-driver-licence-years");
+        Assert.Throws<ArgumentException>(() => UnderwritingRules.AssessAuthority(config, risk with { AnyDriverMaximumAge = null }));
+    }
     private static JsonElement Json(JsonNode node) => JsonSerializer.SerializeToElement(node);
     private static UnderwritingRisk Risk() => new(600m, 0m, 30000m, 10, false, false, [1],
         [new(Guid.Parse("11111111-1111-4111-8111-111111111111"), 35, 10, false, false)],

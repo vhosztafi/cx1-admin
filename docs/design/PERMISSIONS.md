@@ -82,4 +82,29 @@ Source role dialogs aguser/invite both map Broker administrator -> broker-admin,
 
 Internal servicing, underwriter and senior-underwriter roles have quote-read and quote-capture. Agency-scoped identities, internal agency-admin, finance and system-admin alone have neither capability. Create/save HTTP routes require quote-capture; detail/readiness require quote-read. Stored actor, agency and relationship authority is rechecked under the quote scope before command receipts. Historical reads can remain available when capture eligibility is revoked. Phase 5 capture mutations use quote-capture consistently; quote-write is not a runtime alias. Later policy-to-quote cloning retains its separate planned contract until that workflow is implemented.
 
+## Phase 6 underwriting progression
+
+Internal servicing, underwriter and senior-underwriter can request rating, submit,
+return to draft and explicitly refresh product/agency-term versions. Their
+underwriting-read capability is subject to the current quote owner scope. Rating
+does not require a UserAuthorityGrant and does not grant approval or issue rights.
+Its baseline referral configuration is pinned independently of the requesting user.
+Decision/evidence-review/escalation/capacity/issue capabilities are restricted to
+underwriter and senior-underwriter; each owning service must additionally resolve
+current effective UserAuthorityGrant, binder and whole-policy-term applicability.
+Declaring a capability does not expose a future-phase endpoint.
+
+Current stored identity, agency/relationship state and version eligibility precede
+rating receipt replay. Return-to-draft permits recovery from retired configuration
+while retaining the current active owner/identity boundary. Old cycles and prices
+remain immutable history and no longer authorize progression after supersession.
+Agency-scoped identities and system-admin alone have no underwriting access.
+
+Rating job reads use the quote subject scope; diagnostic creator/admin access
+does not apply. Manual rating recovery retains the existing integration-retry
+permission and also requires quote-rate access, current cycle/configuration and
+the exact job ETag. A deliberately combined internal system-admin plus servicing
+or underwriting role can perform that recovery. It expands the bounded existing
+retry budget, preserves provider identity/attempts, and never starts a new cycle.
+
 The initial runtime exposes create, detail, proposal save, readiness and relationship-scoped capture product selection. Readiness includes structural and local-term issues and an explicit progression blocker until semantic, evidence and matching checks are implemented. Clone, withdrawal, evidence actions and match attachment remain unavailable; matchSubmissionId returns409 without a quote or receipt. Product selection uses quote-read and held stored relationship authority; current eligibility is advisory and is rechecked on create. The remaining quote routes are still planned.

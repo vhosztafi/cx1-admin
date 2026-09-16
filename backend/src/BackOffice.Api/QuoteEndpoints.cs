@@ -88,7 +88,7 @@ public static class QuoteEndpoints
                 captureVersions = new { stored.VersionPins.SchemaVersion, stored.VersionPins.QuestionSetVersion, referenceDataVersion = stored.VersionPins.ReferenceVersion },
                 captureClosed = stored.Quote.CaptureClosedAt is not null,
                 stored.Quote.CaptureClosedAt, stored.Quote.CaptureClosedReason, stored.MatchReviewId,
-                capabilities = new { stored.CanSave, canClone = stored.CanSave, canWithdraw = stored.CanSave, canAttachEvidence = stored.CanSave }, readiness
+                capabilities = new { stored.CanSave, stored.CanClone, stored.CanWithdraw, canAttachEvidence = stored.CanSave }, readiness
             });
         }
         catch (Exception error) when (Known(error)) { return Failure(context, error); }

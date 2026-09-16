@@ -40,6 +40,7 @@ builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyPermissionSe
 DiagnosticDispatcher.Register(builder);
 AgencyNotificationDispatcher.Register(builder);
 QuoteLookupDispatcher.Register(builder);
+QuoteRatingDispatcher.Register(builder);
 var app = builder.Build();
 if(args.Contains("--seed-quote-demo",StringComparer.Ordinal))
 {
@@ -99,6 +100,7 @@ app.MapQuoteDiscovery();
 app.MapQuoteLookups();
 app.MapQuoteEvidence();
 app.MapQuoteLifecycle();
+app.MapQuoteUnderwriting();
 // Domain endpoints are added only alongside their authentication and persistence.
 app.Run();
 

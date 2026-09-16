@@ -2,6 +2,17 @@ import {readFile,writeFile} from 'node:fs/promises';
 import {underwritingConfigSchema} from './underwriting-contract-model.mjs';
 const read=async path=>JSON.parse(await readFile(new URL(`../contracts/${path}`,import.meta.url),'utf8'));
 const references=await read('reference-data/motor-trade-capture.json');
+// Some source collections have numeric display text but no numericValue.
+// Translate once into a pinned, versioned server meaning table. Runtime never
+// parses a client label or interprets an option identity as its numeric value.
+const meanings={version:'uw-source-meanings-1',referenceVersion:references.version,collections:{}};
+for(const name of ['aadDriverMinAge','aadDriverMaxAge','noClaimBonuses']){
+  meanings.collections[name]=references.collections[name].map(row=>{
+    const match=name==='noClaimBonuses'?/^(\d+)(\+)? Years?$/.exec(row.text):/^(\d+)$/.exec(row.text);
+    if(!match&&!(name==='noClaimBonuses'&&row.text==='No NCB'))throw new Error(`Unresolved numeric source meaning ${name}/${row.value}`);
+    return {value:row.value,numericValue:match?Number(match[1]):0,atLeast:Boolean(match?.[2])};
+  });
+}
 // Match the known source catalog once during generation, then persist numeric
 // identities. Runtime predicates use pinned IDs and never labels.
 const trades=references.collections.mtOccupations;
@@ -59,6 +70,6 @@ for(const productCode of ['motor-trade-road-risks','motor-trade-combined']){
   );
   example.proposals[productCode]=proposal;
 }
-for(const [path,value] of [['schemas/underwriting-config.schema.json',underwritingConfigSchema],['examples/underwriting-demo.json',example]])
+for(const [path,value] of [['schemas/underwriting-config.schema.json',underwritingConfigSchema],['examples/underwriting-demo.json',example],['reference-data/underwriting-meanings.json',meanings]])
   await writeFile(new URL(`../contracts/${path}`,import.meta.url),JSON.stringify(value,null,2)+'\n');
 console.log(`Generated closed underwriting config and ${configurations.length} fictional definitions.`);

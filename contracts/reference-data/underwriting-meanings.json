@@ -1,0 +1,122 @@
+{
+  "version": "uw-source-meanings-1",
+  "referenceVersion": "mt-capture-57b711ca02317ca0",
+  "collections": {
+    "aadDriverMinAge": [
+      {
+        "value": 1,
+        "numericValue": 21,
+        "atLeast": false
+      },
+      {
+        "value": 2,
+        "numericValue": 23,
+        "atLeast": false
+      },
+      {
+        "value": 3,
+        "numericValue": 25,
+        "atLeast": false
+      },
+      {
+        "value": 4,
+        "numericValue": 30,
+        "atLeast": false
+      }
+    ],
+    "aadDriverMaxAge": [
+      {
+        "value": 1,
+        "numericValue": 65,
+        "atLeast": false
+      },
+      {
+        "value": 2,
+        "numericValue": 70,
+        "atLeast": false
+      }
+    ],
+    "noClaimBonuses": [
+      {
+        "value": 1,
+        "numericValue": 0,
+        "atLeast": false
+      },
+      {
+        "value": 2,
+        "numericValue": 1,
+        "atLeast": false
+      },
+      {
+        "value": 3,
+        "numericValue": 2,
+        "atLeast": false
+      },
+      {
+        "value": 4,
+        "numericValue": 3,
+        "atLeast": false
+      },
+      {
+        "value": 5,
+        "numericValue": 4,
+        "atLeast": false
+      },
+      {
+        "value": 6,
+        "numericValue": 5,
+        "atLeast": false
+      },
+      {
+        "value": 7,
+        "numericValue": 6,
+        "atLeast": false
+      },
+      {
+        "value": 8,
+        "numericValue": 7,
+        "atLeast": false
+      },
+      {
+        "value": 9,
+        "numericValue": 8,
+        "atLeast": false
+      },
+      {
+        "value": 10,
+        "numericValue": 9,
+        "atLeast": false
+      },
+      {
+        "value": 11,
+        "numericValue": 10,
+        "atLeast": false
+      },
+      {
+        "value": 12,
+        "numericValue": 11,
+        "atLeast": false
+      },
+      {
+        "value": 13,
+        "numericValue": 12,
+        "atLeast": false
+      },
+      {
+        "value": 14,
+        "numericValue": 13,
+        "atLeast": false
+      },
+      {
+        "value": 15,
+        "numericValue": 14,
+        "atLeast": false
+      },
+      {
+        "value": 16,
+        "numericValue": 15,
+        "atLeast": true
+      }
+    ]
+  }
+}

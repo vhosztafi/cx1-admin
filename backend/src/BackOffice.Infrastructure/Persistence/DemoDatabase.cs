@@ -93,7 +93,11 @@ public static class DemoDatabase
         }
         if(includeSupportFlags)await SupportFlagDemoSeed.SeedAsync(db,cancellationToken);
         if(includeMatches)await MatchDemoSeed.SeedAsync(db,cancellationToken);
-        if(includeUnderwriting)await Underwriting.UnderwritingSeed.SeedAsync(db,cancellationToken);
+        if(includeUnderwriting)
+        {
+            await Underwriting.UnderwritingSeed.SeedAsync(db,cancellationToken);
+            await Underwriting.UnderwritingRuntimeSeed.SeedAsync(db,cancellationToken);
+        }
         await transaction.CommitAsync(cancellationToken);
     }
 

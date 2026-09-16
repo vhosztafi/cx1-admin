@@ -2,6 +2,9 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using BackOffice.Infrastructure.Identity;
 using BackOffice.Infrastructure.Platform;
+using BackOffice.Infrastructure.Persistence;
+using BackOffice.Infrastructure.Underwriting;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackOffice.Api;
 
@@ -52,8 +55,18 @@ public static class OperationalRetryEndpoints
         catch (CommandBusyException) { return IdentityEndpoints.Problem(context, 409, "command-busy", "Retry with the same command key."); }
     }
 
-    private static async Task<IResult> Retry(Guid jobId, RetryInput input, HttpContext context, SqlCommandBoundary commands, TimeProvider time)
+    private static async Task<IResult> Retry(Guid jobId, HttpContext context, SqlCommandBoundary commands, TimeProvider time,
+        IDbContextFactory<BackOfficeDbContext> factory, QuoteRatingJobs ratingJobs)
     {
+        RetryInput input;
+        try
+        {
+            QuoteEndpoints.Id(jobId);
+            using var doc = await QuoteHttpInput.Read(context.Request, context.RequestAborted); QuoteHttpInput.Keys(doc.RootElement, "reason");
+            if (!doc.RootElement.TryGetProperty("reason", out var reason) || reason.ValueKind != JsonValueKind.String) throw new QuoteHttpException(422, "reason-required");
+            input = new(reason.GetString()!);
+        }
+        catch (Exception error) when (QuoteEndpoints.Known(error)) { return QuoteEndpoints.Failure(context, error); }
         if (string.IsNullOrWhiteSpace(input.Reason) || input.Reason.Length > 1000)
             return IdentityEndpoints.Problem(context, 422, "reason-required", "Supply a reason of at most 1000 characters.");
         var keys = context.Request.Headers["Idempotency-Key"];
@@ -67,6 +80,13 @@ public static class OperationalRetryEndpoints
         var correlation = Guid.NewGuid();
         try
         {
+            await using var db = await factory.CreateDbContextAsync(context.RequestAborted);
+            if (await db.Set<OutboxWork>().AsNoTracking().AnyAsync(x => x.Id == jobId && x.Kind == QuoteRatingService.WorkKind, context.RequestAborted))
+            {
+                var ratingOutcome = await ratingJobs.RetryAsync(actor, jobId, expected, input.Reason, key, correlation, context.RequestAborted);
+                context.Response.Headers.Location = "/api/v1/jobs/" + jobId;
+                return QuoteEndpoints.Outcome(context, ratingOutcome);
+            }
             // Preconditions run inside the handler: a prior successful result replays first.
             var outcome = await commands.ExecuteAsync(new CommandIdentity(actor.UserId, $"/api/v1/jobs/{jobId}/retry", key, correlation),
                 new RetryInput(input.Reason.Trim()), "diagnostic.retry-requested", async (db, token) =>
@@ -80,6 +100,7 @@ public static class OperationalRetryEndpoints
         catch (JobRetryException failure) { return IdentityEndpoints.Problem(context, failure.Status, failure.Code, "Refresh the job; this retry cannot be applied."); }
         catch (CommandKeyConflictException) { return IdentityEndpoints.Problem(context, 409, "idempotency-conflict", "This command key was used with different input."); }
         catch (CommandBusyException) { return IdentityEndpoints.Problem(context, 409, "command-busy", "Retry with the same command key."); }
+        catch (Exception error) when (QuoteEndpoints.Known(error)) { return QuoteEndpoints.Failure(context, error); }
     }
 
     private static bool TryVersion(string? text, out byte[] version)

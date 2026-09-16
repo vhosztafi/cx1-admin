@@ -1,6 +1,6 @@
 # Underwriting and first-issue contracts
 
-Phase6 contract implementation. These generated contracts and fixtures do **not** enable runtime underwriting, issue, policy reads or new capture fields. Runtime remains closed until the owning service/API/UI plans pass. Both MotorTrade products are covered; Commercial Combined and servicing drafts keep their separate later-phase contracts. No live provider, message or payment is involved.
+Phase6 contracts and staged runtime implementation. The rating, submission, return-to-draft, explicit version refresh and scoped assessment/rating reads are implemented in06-03. Decision, proof review, capacity, terms, acceptance and policy issue remain closed until their owning plans pass. Both Motor Trade products are covered; Commercial Combined and servicing drafts keep their separate later-phase contracts. No live provider, message or payment is involved.
 
 ## Sources and generation
 
@@ -52,7 +52,7 @@ All paths below have `/api/v1` prefix. Generated schemas list exact property bou
 | getPolicy GET policies/{policyId} | None | FirstPolicyView: exact snapshot/term/transaction, financial component/journal summary and document requests;06-11 |
 | listPolicies / listPolicyTerms / listPolicyVersions / getPolicyVersion | Existing scoped routes; expanded discovery query | Actual policy identities, immutable versions;06-11/13 |
 
-Quote capture summary/view and status-filter contracts now enumerate progressed states. That does not enable these states in existing SQL;06-02 migration and06-03 readers/commands must implement them. All newly replaced/added Phase6 operations carry `x-runtime-status: phase-6-pending`; remove/change it only when verified runtime supports the operation. Existing design-only operations elsewhere retain their own phase ownership.
+Quote capture summary/view and status-filter contracts enumerate progressed states, supported by the06-02 additive migration and06-03 rating/lifecycle commands. Operation-level `x-runtime-status` distinguishes verified06-03 routes from `phase-6-pending` contracts. Later states in an enumeration do not imply that issue or acceptance is implemented. Existing design-only operations elsewhere retain their own phase ownership.
 
 ## Source input map and requested cover
 

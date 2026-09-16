@@ -52,12 +52,22 @@ public static class OperationalJobEndpoints
         catch (DiagnosticConfigurationException) { return IdentityEndpoints.Problem(context, 503, "demo-not-initialized", "Initialize the demo scenarios before starting a probe."); }
     }
 
-    private static async Task<IResult> GetJob(Guid jobId, HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, TimeProvider time)
+    private static async Task<IResult> GetJob(Guid jobId, HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, TimeProvider time, BackOffice.Infrastructure.Underwriting.QuoteRatingJobs ratingJobs)
     {
         var actor = LocalIdentityService.Actor(context.User);
         if (actor.AgencyId != null) return IdentityEndpoints.Problem(context, 403, "forbidden", "Access denied.");
         var administrator = actor.HasCapability("integration-admin");
         await using var db = await factory.CreateDbContextAsync(context.RequestAborted);
+        if (await db.Set<OutboxWork>().AsNoTracking().AnyAsync(x => x.Id == jobId && x.Kind == "quote-rating", context.RequestAborted))
+        {
+            try
+            {
+                var read = await ratingJobs.ReadAsync(actor, jobId, context.RequestAborted);
+                context.Response.Headers.ETag = "\"" + Convert.ToBase64String(read.Work.RowVersion) + "\"";
+                return Results.Json(View(read.Work) with { RetryAllowed = read.RetryAllowed }, Json);
+            }
+            catch (Exception error) when (QuoteEndpoints.Known(error)) { return QuoteEndpoints.Failure(context, error); }
+        }
         // Business-job subject scope is supplied by its owning phase. It cannot inherit
         // diagnostic creator access or administrator access by sharing this endpoint.
         var job = await db.Set<OutboxWork>().AsNoTracking().SingleOrDefaultAsync(x => x.Id == jobId &&

@@ -23,6 +23,22 @@ public sealed class ActorContextTests
     }
 
     [Fact]
+    public void RatingPermissionDoesNotGrantReferralOrIssueAuthority()
+    {
+        foreach (var role in new[] { "servicing", "underwriter", "senior-underwriter", "agency-admin", "system-admin", "finance" })
+        {
+            var actor = new ActorContext(Guid.NewGuid(), null, null, new HashSet<string> { role });
+            foreach (var capability in new[] { "quote-rate", "quote-submit", "quote-revise", "underwriting-read" })
+            {
+                Assert.Equal(role is "servicing" or "underwriter" or "senior-underwriter", actor.HasCapability(capability));
+                Assert.False((actor with { AgencyId = Guid.NewGuid() }).HasCapability(capability));
+            }
+            foreach (var capability in new[] { "underwriting-decide-within-authority", "policy-issue-within-authority", "underwriting-record-capacity" })
+                Assert.Equal(role is "underwriter" or "senior-underwriter", actor.HasCapability(capability));
+        }
+    }
+
+    [Fact]
     public void AdministrationDoesNotGrantBusinessAuthority()
     {
         var administrator=new ActorContext(Guid.NewGuid(),null,null,new HashSet<string> {"system-admin"});

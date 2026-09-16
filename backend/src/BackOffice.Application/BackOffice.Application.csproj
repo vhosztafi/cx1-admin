@@ -3,6 +3,7 @@
   <ItemGroup>
     <PackageReference Include="JsonSchema.Net" />
     <EmbeddedResource Include="../../../contracts/schemas/underwriting-config.schema.json" LogicalName="Underwriting.ConfigSchema" />
+    <EmbeddedResource Include="../../../contracts/reference-data/underwriting-meanings.json" LogicalName="Underwriting.SourceMeanings" />
     <EmbeddedResource Include="../../../contracts/schemas/quote-draft.schema.json" LogicalName="QuoteCapture.DraftSchema" />
     <EmbeddedResource Include="../../../contracts/schemas/quote-ready.schema.json" LogicalName="QuoteCapture.ReadySchema" />
     <EmbeddedResource Include="../../../contracts/quote-question-catalogue.json" LogicalName="QuoteCapture.Questions" />

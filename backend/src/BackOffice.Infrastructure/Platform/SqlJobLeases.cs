@@ -25,7 +25,7 @@ public sealed class SqlJobLeases(IDbContextFactory<BackOfficeDbContext> factory,
 
     private async Task<JobLease?> ClaimCoreAsync(string kind,Guid? workId,CancellationToken cancellationToken)
     {
-        if(kind is not (DiagnosticKind or "agency-notification" or "quote-lookup"))throw new ArgumentException("Unsupported job kind.");
+        if(kind is not (DiagnosticKind or "agency-notification" or "quote-lookup" or "quote-rating"))throw new ArgumentException("Unsupported job kind.");
         await using var db=await factory.CreateDbContextAsync(cancellationToken);
         // REPEATABLE READ permits READPAST even when the database uses read-committed snapshots.
         await using var transaction=await db.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead,cancellationToken);
@@ -89,6 +89,11 @@ public sealed class SqlJobLeases(IDbContextFactory<BackOfficeDbContext> factory,
     internal static async Task MarkTerminalAsync(BackOfficeDbContext db,OutboxWork job,string code,DateTimeOffset now,CancellationToken cancellationToken)
     {
         job.State="failed"; job.CompletedAt=now; job.ErrorCode=code; job.LeaseToken=null; job.LeaseExpiresAt=null;
+        if (job.Kind == "quote-rating")
+        {
+            var cycle = await db.Set<UnderwritingCycle>().SingleOrDefaultAsync(x => x.WorkId == job.Id, cancellationToken);
+            if (cycle is { State: "rating-pending" }) { cycle.State = "failed"; cycle.UpdatedAt = now; }
+        }
         if (job.Kind == "quote-lookup")
         {
             // Final lease expiry and explicit failures must complete the private

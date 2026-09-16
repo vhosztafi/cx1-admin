@@ -11,6 +11,9 @@ public sealed record UnderwritingRisk(decimal AnnualPremium, decimal StockLimit,
     IReadOnlyDictionary<string, decimal> CoverLimits)
 {
     public bool HasSalvageOrBreaking { get; init; }
+    public int AnyDriverCount { get; init; }
+    public int? AnyDriverMinimumAge { get; init; }
+    public int? AnyDriverMaximumAge { get; init; }
 }
 public sealed record UnderwritingRequirement(string RuleCode, string Dimension, Guid? TargetId = null,
     decimal? RequestedAmount = null, decimal? AuthorisedAmount = null);
@@ -31,6 +34,15 @@ public static class UnderwritingRules
         if (minimumTradingYears is < 0 or > 100) throw new ArgumentException("Invalid trading threshold.");
         var limits = config.GetProperty("limits"); var result = new List<UnderwritingRequirement>();
         if (risk.HasSalvageOrBreaking && !limits.GetProperty("allowSalvage").GetBoolean()) result.Add(new("salvage-breaking", "trade-restriction"));
+        if (risk.AnyDriverCount > 0)
+        {
+            if (risk.AnyDriverMinimumAge < limits.GetProperty("minimumDriverAge").GetInt32() || risk.AnyDriverMaximumAge > limits.GetProperty("maximumDriverAge").GetInt32())
+                result.Add(new("any-driver-age", "driver-age"));
+            // The captured unnamed-driver range is not evidence of an actual
+            // licence-held date. Require explicit applicable contractual/proof
+            // resolution rather than manufacture a compliant named driver.
+            if (limits.GetProperty("minimumLicenceYears").GetInt32() > 0) result.Add(new("any-driver-licence-years", "licence-years"));
+        }
         void Amount(string code, decimal requested, decimal allowed) { if (requested > allowed) result.Add(new(code, code, RequestedAmount: requested, AuthorisedAmount: allowed)); }
         Amount("premium-limit", risk.AnnualPremium, UnderwritingConfiguration.Amount(limits, "annualPremiumLimit"));
         Amount("stock-limit", risk.StockLimit, UnderwritingConfiguration.Amount(limits, "stockLimit"));
@@ -130,6 +142,9 @@ public static class UnderwritingRules
     {
         bool MoneyValue(decimal value) => value >= 0 && value <= QuoteRatingRules.MaximumMoney && decimal.Round(value, 2) == value;
         if (!MoneyValue(risk.AnnualPremium) || risk.AnnualPremium == 0 || !MoneyValue(risk.StockLimit) || !MoneyValue(risk.VehicleLimit) ||
+            risk.AnyDriverCount is < 0 or > 1000 ||
+            (risk.AnyDriverCount == 0 && (risk.AnyDriverMinimumAge is not null || risk.AnyDriverMaximumAge is not null)) ||
+            (risk.AnyDriverCount > 0 && (risk.AnyDriverMinimumAge is null or < 16 or > 100 || risk.AnyDriverMaximumAge is null or < 16 or > 100 || risk.AnyDriverMinimumAge > risk.AnyDriverMaximumAge)) ||
             risk.TradingYears is < 0 or > 300 || risk.TradeValues.Count == 0 || risk.TradeValues.Any(x => x <= 0) || risk.TradeValues.Distinct().Count() != risk.TradeValues.Count ||
             risk.Drivers.Any(x => x.Id == Guid.Empty || x.Age is < 16 or > 100 || x.LicenceYears < 0 || x.LicenceYears > x.Age - 16) || risk.Drivers.Select(x => x.Id).Distinct().Count() != risk.Drivers.Count ||
             !risk.CoverLimits.ContainsKey("road-risks") || risk.CoverLimits.Any(x => !Covers.Contains(x.Key) || !MoneyValue(x.Value)))

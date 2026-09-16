@@ -12,7 +12,7 @@ public static class QuoteReadiness
 {
     public static QuoteReadinessResult Assess(Guid quoteId, Guid revisionId, JsonElement proposal,
         QuoteTermAssessment term, string? captureUnavailableCode, DateOnly asOf, IReadOnlyDictionary<Guid, string>? vehicleCaptureModes = null,
-        IReadOnlySet<(string Code, Guid? RiskItemId)>? currentEvidence = null, string? matchingCode = null)
+        IReadOnlySet<(string Code, Guid? RiskItemId)>? currentEvidence = null, string? matchingCode = null, bool includeEvidence = true)
     {
         // All capture sections and trusted evidence/lookup/matching context are
         // composed here. This is capture readiness, never rating or issue authority.
@@ -33,7 +33,7 @@ public static class QuoteReadiness
         issues.AddRange(QuoteDriverRules.AssessHistory(proposal, asOf).Select(x => new QuoteReadinessIssue(
             x.Path, x.Code, x.Code == "history-date-after-assessment" ? "The incident date is after the assessment date." : "Recorded history requires a Yes answer to this business declaration.", "capture", "error", x.QuestionId, x.RelatedPath)));
         // Only the held, server-owned evidence projection supplies satisfied requirements.
-        issues.AddRange(QuoteEvidenceRequirements.ForProposal(proposal)
+        if (includeEvidence) issues.AddRange(QuoteEvidenceRequirements.ForProposal(proposal)
             .Where(x => currentEvidence?.Contains((x.Code, x.RiskItemId)) != true).Select(x => new QuoteReadinessIssue(
             x.Path, "evidence-missing-" + x.Code, x.Label + " is missing. Attach current evidence for the saved proposal.", "evidence", "error")));
         issues.AddRange(QuoteVehicleRules.Assess(proposal, asOf, vehicleCaptureModes).Select(x => new QuoteReadinessIssue(

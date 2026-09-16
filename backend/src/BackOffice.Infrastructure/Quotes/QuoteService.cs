@@ -12,7 +12,8 @@ namespace BackOffice.Infrastructure.Quotes;
 // availability is independent of proposal readiness and does not authorize a write.
 public sealed record StoredQuote(Quote Quote, QuoteRevision Revision, string ClientName, string AgencyName,
     string ProductCode, bool CanSave, string? CaptureUnavailableCode, QuoteTermAssessment TermAssessment, QuoteVersionPins VersionPins,
-    IReadOnlyDictionary<Guid, string> VehicleCaptureModes, IReadOnlySet<(string Code, Guid? RiskItemId)> CurrentEvidence, string? MatchingCode, Guid? MatchReviewId);
+    IReadOnlyDictionary<Guid, string> VehicleCaptureModes, IReadOnlySet<(string Code, Guid? RiskItemId)> CurrentEvidence, string? MatchingCode, Guid? MatchReviewId,
+    bool CanClone = false, bool CanWithdraw = false);
 
 // Internal audited command service; HTTP validation remains at the API boundary.
 public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory, TimeProvider time)
@@ -103,7 +104,9 @@ public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory,
             product.Code, availability.Code is null, availability.Code, QuoteTerm.Assess(intent.RootElement), Pins(revision),
             await QuoteLookupProvenance.VehicleModesAsync(db, revision, token),
             evidence.Requirements.Where(x => x.State == "current").Select(x => (x.Code, x.RiskItemId)).ToHashSet(), matching.Code,
-            actor.HasCapability("match-read") ? matching.ReviewId : null);
+            actor.HasCapability("match-read") ? matching.ReviewId : null,
+            availability.Code is null || availability.Code == "quote-capture-closed" && owned.Quote.State is "rating-pending" or "rated" or "referred" or "approved" or "sent" or "accepted" or "declined" or "bound",
+            availability.Code is null || availability.Code == "quote-capture-closed" && owned.Quote.CurrentUnderwritingCycleId is not null && owned.Quote.State is "rating-pending" or "rated" or "referred" or "approved" or "sent" or "accepted" or "declined");
         await transaction.CommitAsync(token);
         return result;
     }
@@ -115,10 +118,10 @@ public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory,
         if (!scope.Actor.HasCapability("quote-capture")) return (null, "quote-access-denied");
         if (scope.Agency.State != "active") return (null, "agency-unavailable");
         if (scope.Client.IdentityState != "active" || scope.Relationship.State != "active") return (null, "quote-relationship-unavailable");
-        if (owned.Quote.State != "draft" || owned.Quote.CaptureClosedAt is not null) return (null, "quote-capture-closed");
         try
         {
             var selection = await QuoteCaptureEligibility.ResolveAsync(db, scope, revision.ProductVersionId, now, revision.AgencyTermsVersionId, token);
+            if (Pins(revision) == selection.Pins && (owned.Quote.State != "draft" || owned.Quote.CaptureClosedAt is not null)) return (selection.Product, "quote-capture-closed");
             return (selection.Product, Pins(revision) == selection.Pins ? null : "quote-pinned-configuration-unavailable");
         }
         catch (QuoteOperationException error) when (error.Code is "quote-product-unavailable" or "quote-capture-configuration-unavailable" or "quote-pinned-configuration-unavailable")

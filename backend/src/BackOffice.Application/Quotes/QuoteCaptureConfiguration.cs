@@ -20,7 +20,7 @@ public static class QuoteCaptureConfiguration
             if (!Keys(root, "demo", "kind", "products") || root.GetProperty("demo").ValueKind != JsonValueKind.True ||
                 root.GetProperty("kind").ValueKind != JsonValueKind.String || root.GetProperty("kind").GetString() != "quote-capture") return null;
             var products = root.GetProperty("products");
-            if (products.ValueKind != JsonValueKind.Array || products.GetArrayLength() > 2) return null;
+            if (products.ValueKind != JsonValueKind.Array || products.GetArrayLength() > 32) return null;
             var result = new Dictionary<Guid, QuoteCaptureVersion>();
             foreach (var product in products.EnumerateArray())
             {

@@ -23,7 +23,7 @@ const operation=name=>{const op=operations.find(x=>x.operationId===name);assert.
 const request=name=>ajv.compile(relocate(operation(name).requestBody.content['application/json'].schema));
 
 test('every Phase6 JSON command has an actual positive fixture and rejects client authority overrides',()=>{
-  const writes=operations.filter(op=>op['x-runtime-status']==='phase-6-pending'&&op.requestBody?.content?.['application/json']);
+  const writes=operations.filter(op=>op['x-runtime-status']?.startsWith('phase-6-')&&op.requestBody?.content?.['application/json']);
   assert.equal(writes.length,Object.keys(examples).length);
   for(const op of writes){
     const body=examples[op.operationId];assert.ok(body,op.operationId);
@@ -33,7 +33,7 @@ test('every Phase6 JSON command has an actual positive fixture and rejects clien
   }
 });
 test('all underwriting writes require CSRF, command identity and owning quote concurrency',()=>{
-  for(const op of operations.filter(x=>x['x-runtime-status']==='phase-6-pending'&&x['x-idempotency']==='required')){
+  for(const op of operations.filter(x=>x['x-runtime-status']?.startsWith('phase-6-')&&x['x-idempotency']==='required')){
     assert.equal(op['x-etag-resource'],'quote',op.operationId);
     assert.ok(op.parameters.some(x=>x.name==='If-Match'&&x.required),op.operationId);
     assert.ok(op.parameters.some(x=>x.name==='Idempotency-Key'&&x.required),op.operationId);

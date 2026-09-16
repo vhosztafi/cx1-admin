@@ -67,6 +67,7 @@ export const conditionSchema={oneOf:[
   closed({code:{const:'provide-trading-history'}}),
   closed({code:{const:'overnight-security'},premisesId:uid,wordingVersion:{const:'1'}}),
   closed({code:{const:'named-drivers-only'},driverIds:many(uid,100,1),wordingVersion:{const:'1'}}),
+  closed({code:{const:'any-driver-minimum-licence'},minimumYears:bounded(1,80),wordingVersion:{const:'1'}}),
   closed({code:{const:'revise-stock-limit'},maximumAmount:positiveMoney}),
   closed({code:{const:'revise-vehicle-limit'},vehicleId:uid,maximumAmount:positiveMoney}),
 ]};
