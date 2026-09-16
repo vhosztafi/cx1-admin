@@ -81,7 +81,8 @@ test('issue response exposes durable identities without a fabricated paid balanc
 });
 test('decision projections expose exact proof purpose, child concurrency and recorded query',()=>{
   const schemas=spec.components.schemas;
-  for(const key of ['proofRequirements','appliedEndorsements'])assert.ok(schemas.UnderwritingAssessment.required.includes(key),key);
+  for(const key of ['proofRequirements','appliedEndorsements','authorityViews'])assert.ok(schemas.UnderwritingAssessment.required.includes(key),key);
+  for(const key of ['requested','actorLimit','binderLimit','actorAllows','binderAllows'])assert.ok(schemas.UnderwritingAuthorityRow.required.includes(key),key);
   for(const key of ['code','label','path','inputFingerprint','satisfied'])assert.ok(schemas.UnderwritingProofRequirement.required.includes(key),key);
   for(const key of ['riskItemId','conditionId','termsVersionId'])assert.ok(schemas.UnderwritingProofRequirement.properties[key],key);
   assert.ok(schemas.UnderwritingConditionView.required.includes('etag'));

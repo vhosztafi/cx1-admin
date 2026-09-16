@@ -341,6 +341,18 @@ h1, h2, p { margin: 0; }
 .quote-proposal-details .quote-saved-details dd { min-width:0; }
 .quote-proposal-details .quote-saved-details dt { margin-bottom:6px; }
 .underwriting-layout { display:grid; grid-template-columns:minmax(0,1fr) 314px; gap:20px; align-items:start; }
+.underwriting-workspace .panel { min-width:0; }
+.underwriting-workspace label { display:grid; gap:6px; margin:12px 0; font-size:12px; font-weight:600; min-width:0; }
+.underwriting-workspace input:not([type=checkbox]), .underwriting-workspace select, .underwriting-workspace textarea { width:100%; min-width:0; padding:9px 10px; border:1px solid #d9dce4; border-radius:7px; background:white; font:inherit; font-size:14px; font-weight:400; }
+.underwriting-workspace textarea { min-height:88px; resize:vertical; }
+.underwriting-workspace .contact-check { display:flex; align-items:center; gap:8px; }
+.underwriting-workspace .contact-check input { flex-shrink:0; width:18px; height:18px; }
+.underwriting-workspace .quote-reference-fields > .button { margin:8px 0; white-space:normal; }
+.underwriting-workspace .quote-reference-fields > strong { display:block; margin-bottom:12px; }
+.underwriting-workspace .table-scroll table { min-width:680px; }
+.underwriting-workspace details > summary { cursor:pointer; padding:8px 0; font-weight:600; }
+.underwriting-workspace .quote-driver-card h4, .underwriting-workspace .quote-driver-card p { overflow-wrap:anywhere; }
+.underwriting-workspace .quote-row-actions { margin-bottom:16px; }
 .underwriting-main,.underwriting-rail { display:grid; gap:16px; min-width:0; }
 .underwriting-action-list { display:flex; flex-direction:column; gap:10px; }
 .underwriting-action-list .button { width:100%; white-space:normal; text-align:center; }

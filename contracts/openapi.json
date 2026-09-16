@@ -75095,6 +75095,83 @@
           "satisfied"
         ]
       },
+      "UnderwritingAuthorityRow": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "pattern": "\\S"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "\\S"
+          },
+          "requested": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "\\S"
+          },
+          "actorLimit": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "\\S"
+          },
+          "binderLimit": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "\\S"
+          },
+          "actorAllows": {
+            "type": "boolean"
+          },
+          "binderAllows": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "code",
+          "label",
+          "requested",
+          "actorLimit",
+          "binderLimit",
+          "actorAllows",
+          "binderAllows"
+        ]
+      },
+      "UnderwritingAuthorityView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "hasCurrentGrant": {
+            "type": "boolean"
+          },
+          "authorityVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "rows": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnderwritingAuthorityRow"
+            },
+            "minItems": 0,
+            "maxItems": 1000,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "hasCurrentGrant",
+          "rows"
+        ]
+      },
       "UnderwritingAssessment": {
         "type": "object",
         "additionalProperties": false,
@@ -75223,6 +75300,15 @@
             "maxItems": 100,
             "uniqueItems": true
           },
+          "authorityViews": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnderwritingAuthorityView"
+            },
+            "minItems": 0,
+            "maxItems": 1000,
+            "uniqueItems": true
+          },
           "blockers": {
             "type": "array",
             "items": {
@@ -75293,7 +75379,8 @@
           "capabilities",
           "refreshOptions",
           "proofRequirements",
-          "appliedEndorsements"
+          "appliedEndorsements",
+          "authorityViews"
         ]
       },
       "UnderwritingRateRequest": {

@@ -63,6 +63,15 @@ public sealed partial class UnderwritingRuntimeTests
             foreach (var email in new[] { "system-admin@cover.example", "agency-admin@cover.example" })
             { var denied = await Login(email); using var other = denied.Client; using var response = await other.GetAsync($"/api/v1/referrals/{referralId:D}"); Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode); }
             var assessment = await Assessment(); var proof = assessment.GetProperty("proofRequirements").EnumerateArray().Single(x => x.GetProperty("code").GetString() == "motor-trader-proof");
+            Assert.All(assessment.GetProperty("authorityViews").EnumerateArray(), view => {
+                Assert.True(view.GetProperty("hasCurrentGrant").GetBoolean());
+                Assert.True(view.TryGetProperty("authorityVersionId", out _));
+                Assert.Contains(view.GetProperty("rows").EnumerateArray(), row => row.GetProperty("code").GetString() == "premium-limit");
+            });
+            var servicingAuthority = await serviceClient.GetFromJsonAsync<JsonElement>(quoteRoute + "/underwriting");
+            var withoutGrant = Assert.Single(servicingAuthority.GetProperty("authorityViews").EnumerateArray());
+            Assert.False(withoutGrant.GetProperty("hasCurrentGrant").GetBoolean());
+            Assert.All(withoutGrant.GetProperty("rows").EnumerateArray(), row => Assert.False(row.GetProperty("actorAllows").GetBoolean()));
             using var form = new MultipartFormDataContent(); form.Add(new StringContent("proof.txt"), "fileName"); form.Add(new StringContent("text/plain"), "contentType");
             var bytes = new ByteArrayContent(Encoding.UTF8.GetBytes("Fictional actual document")); bytes.Headers.ContentType = new("text/plain"); form.Add(bytes, "file", "proof.txt");
             using var upload = new HttpRequestMessage(HttpMethod.Post, quoteRoute + "/underwriting/evidence-files") { Content = form };

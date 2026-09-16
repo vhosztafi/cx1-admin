@@ -8,6 +8,9 @@ export type UnderwritingAssessment = {
   createdAt: string; productLabel: string; productVersionLabel: string; providerLabel: string;
   submissionId?: string; assignedTeamId?: string; assignedTeamLabel?: string; assignedUserId?: string; assignedUserLabel?: string;
   blockers: UnderwritingBlocker[]; refreshOptions: UnderwritingRefreshOption[];
+  proofRequirements: ProofRequirement[]; appliedEndorsements: { code: string; version: string; wording: string; decisionId: string; targetIds: string[] }[];
+  authorityViews: { hasCurrentGrant: boolean; authorityVersionId?: string; rows: { code: string; label: string; requested: string; actorLimit: string; binderLimit: string; actorAllows: boolean; binderAllows: boolean }[] }[];
+  assuranceHash?: string;
   capabilities: { canRate: boolean; canSubmit: boolean; canRevise: boolean; canReviewEvidence: boolean; canDecide: boolean; canEscalate: boolean; canPrepareTerms: boolean; canSend: boolean; canAccept: boolean; canIssue: boolean };
 };
 export type UnderwritingRating = {
@@ -21,6 +24,13 @@ export type UnderwritingRefreshOption = { productVersionId: string; displayName:
 export type RatingHistoryItem = { id: string; cycleId: string; revisionId: string; revisionNumber: number; completedAt: string; expiresAt: string; outcome: string; grossPayable: string };
 export type UnderwritingReceipt = { id: string; quoteId: string; quoteEtag: string; jobId?: string; state?: 'queued' };
 export type UnderwritingAction = 'rate' | 'submit' | 'return-to-draft' | 'underwriting/refresh';
+export type ProofRequirement = { code: string; label: string; path: string; riskItemId?: string; conditionId?: string; termsVersionId?: string; inputFingerprint: string; satisfied: boolean };
+export type ConditionDefinition = { code: string; driverId?: string; driverIds?: string[]; premisesId?: string; vehicleId?: string; requirementCode?: string; wordingVersion?: string; minimumYears?: number; maximumAmount?: string };
+export type ReferralCondition = { id: string; decisionId: string; cycleId: string; etag: string; definition: ConditionDefinition; state: 'outstanding' | 'resolved' | 'superseded'; evidenceAssociationId?: string };
+export type ReferralDecision = { id: string; referralId: string; outcome: string; reason: string; question?: string; actorLabel: string; recordedAt: string; conditions: ConditionDefinition[] };
+export type Referral = { id: string; quoteId: string; cycleId: string; revisionId: string; etag: string; ruleCode: string; dimension: string; targetId?: string; reason: string; state: string; decisions: ReferralDecision[]; conditions: ReferralCondition[] };
+export type UnderwritingEvidence = { id: string; quoteId: string; cycleId: string; revisionId: string; fileId: string; fileName: string; requirementCode: string; riskItemId?: string; conditionId?: string; termsVersionId?: string; inputFingerprint: string; etag: string; screeningState: string; reviewState: string; withdrawn: boolean };
+export type EvidenceEvent = { id: string; kind: string; outcome?: string; reason: string; actorLabel: string; recordedAt: string };
 
 const stateLabels: Record<UnderwritingState, string> = { draft: 'Draft', 'rating-pending': 'Rating requested', rated: 'Rated', referred: 'Referred', approved: 'Approved', sent: 'Sent', accepted: 'Accepted', declined: 'Declined', bound: 'Policy issued', withdrawn: 'Withdrawn' };
 export function quoteStateLabel(state: string, expiresAt?: string, now: number = Date.now()): string {
@@ -45,8 +55,10 @@ export function underwritingCommand(quoteId: string, action: UnderwritingAction,
 }
 export async function sendUnderwritingCommand(command: PendingQuoteCommand, csrf: string): Promise<UnderwritingReceipt> {
   if (!csrf) throw new Error('The security token is unavailable. Retry this action.');
-  const { data, etag } = await quoteFetch<UnderwritingReceipt>(command.url, { method: command.method, body: command.body,
-    headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf, 'Idempotency-Key': command.key, 'If-Match': command.etag! } });
+  let body: BodyInit = command.body;
+  if (command.upload) { const form = new FormData(); form.append('file', command.upload, command.upload.name); form.append('fileName', command.upload.name); form.append('contentType', command.upload.type); body = form; }
+  const { data, etag } = await quoteFetch<UnderwritingReceipt>(command.url, { method: command.method, body,
+    headers: { ...(command.upload ? {} : { 'Content-Type': 'application/json' }), 'X-CSRF-Token': csrf, 'Idempotency-Key': command.key, 'If-Match': command.etag! } });
   if (!data || !validId(data.id) || data.quoteId?.toLowerCase() !== command.expectedId?.toLowerCase() || !validQuoteEtag(etag) || data.quoteEtag !== etag ||
       (command.url.endsWith('/rate') && (!validId(data.jobId) || data.state !== 'queued'))) throw new Error('The saved outcome could not be confirmed. Retry this same action.');
   return data;

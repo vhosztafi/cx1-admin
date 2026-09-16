@@ -110,6 +110,15 @@ public sealed partial class QuoteUnderwritingReadModel(IDbContextFactory<BackOff
                 canDecide = decisionContext && grants.Count > 0 && rating?.ExpiresAt > now && owned.Scope.Actor.HasCapability("underwriting-decide-within-authority"),
                 canEscalate = false, canPrepareTerms = false, canSend = false, canAccept = false, canIssue = false } };
         result["proofRequirements"] = proofRequirements;
+        var authorityViews = new List<object>();
+        if (current && cycle is not null && eligible is not null && rating is { Outcome: "rated" })
+        {
+            var risk = JsonSerializer.Deserialize<StoredRatingInput>(cycle.InputJson, QuoteRatingService.Json)!.Input.RiskForPremium(rating.AnnualPremium);
+            if (grants.Count == 0) authorityViews.Add(new { hasCurrentGrant = false, rows = UnderwritingAuthorityView.Rows(risk, eligible.Binder, null) });
+            foreach (var grant in grants) authorityViews.Add(new { hasCurrentGrant = true, authorityVersionId = grant.Version.Id,
+                rows = UnderwritingAuthorityView.Rows(risk, eligible.Binder, grant.Definition) });
+        }
+        result["authorityViews"] = authorityViews;
         if (cycle is not null) result["assuranceHash"] = await UnderwritingEvidenceService.Assurance(db, cycle, revision, token);
         var endorsements = new List<object>();
         if (cycle is not null)
