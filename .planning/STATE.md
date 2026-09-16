@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-16T03:58:13.2348977+00:00"
+last_updated: "2026-09-16T04:12:59.5265921+00:00"
 last_activity: 2026-09-16
 progress:
   total_phases: 13
@@ -27,7 +27,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 5 of 13 (Motor Trade quote capture)
 Plan: 05-03 of11 in progress; creation/receipt verified; business/term wizard pending
 Status: In progress — autonomous
-Last activity: 2026-09-16 — ee0fffd creation/receipt UI;37frontend tests, lint/typecheck/build and real Chrome both-product recovery/access/mobile checks passed.05-03 remains incomplete.
+Last activity: 2026-09-16 — Typed draft editing helpers verified;45frontend tests plus typecheck/lint pass. Creation browser slice remains verified.05-03 still incomplete.
 
 Progress: Phases1–4 complete;4/13phases,26completed plans.
 
@@ -54,7 +54,7 @@ Progress: Phases1–4 complete;4/13phases,26completed plans.
 ## Session Continuity
 
 Last session: 2026-09-16
-Stopped at:05-03 creation/receipt verified (ee0fffd). NEXT source-based business/term edit wizard and nine-stage shell. Read05-03-PROGRESS,05-03-PLAN and05-UI-SPEC; use sourceStages from ownership contract. Latest520backend/67SQL,292contracts remain applicable (backend unchanged); fresh37frontend tests and real Chrome pass. Owned preview PIDs65648/65616 stopped. No running checks.
+Stopped at:Typed form helpers in lib/quote-form.ts verified (45frontend tests, lint/typecheck). NEXT actual source-based business/term wizard controls and nine-stage shell, using these helpers and immutable quote transport. Read05-03-PROGRESS/PLAN/UI-SPEC and sourceStages in ownership contract. Creation UI/browser already verified; no edit UI yet. No running previews/checks.
 Resume file: .planning/phases/05-motor-trade-quote-capture/05-03-PLAN.md
 
 ## Autonomous continuation
