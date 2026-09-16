@@ -44,10 +44,10 @@ Core value: complete persistent insurance and servicing journeys with consistent
 ### Product and quote capture
 
 - [ ] **QUO-01**: Staff can browse, search, sort, filter and page policies/quotes by product, agency, client, reference, registration and status.
-- [ ] **QUO-02**: Staff can create, save and resume Motor Trade Road Risks and Motor Trade Combined quotes linked to a client, agency and effective product configuration.
+- [x] **QUO-02**: Staff can create, save and resume Motor Trade Road Risks and Motor Trade Combined quotes linked to a client, agency and effective product configuration.
 - [ ] **QUO-03**: Staff can capture business activities, experience, declarations, premises, cover, endorsements, previous insurance and claims history with field validation.
-- [ ] **QUO-04**: Staff can add/edit/remove drivers, licence evidence, convictions, losses, vehicles and trade plates with stable risk-item identities.
-- [ ] **QUO-05**: Staff can run deterministic postcode/vehicle/driver lookup adapters, inspect failure outcomes and complete supported manual entry.
+- [x] **QUO-04**: Staff can add/edit/remove drivers, licence evidence, convictions, losses, vehicles and trade plates with stable risk-item identities.
+- [x] **QUO-05**: Staff can run deterministic postcode/vehicle/driver lookup adapters, inspect failure outcomes and complete supported manual entry.
 - [ ] **QUO-06**: Staff can revise, clone and withdraw quotes with reasons and version history; changed risk or terms invalidates prior rating and acceptance.
 
 ### Rating, referrals and issue
@@ -164,21 +164,21 @@ Every v1 requirement has one owning delivery phase; later phases may consume its
 | FND-04 | 2 | Complete |
 | FND-05 | 2 | Complete |
 | FND-06 | 2 | Complete |
-| CLI-01 | 3 | Partial: client discovery/contacts/activity verified; real quote/policy links due5/6 |
+| CLI-01 | 3 | Partial: client discovery/contacts/activity and actual quote links verified; policy links due6 |
 | CLI-02 | 3 | Complete: native SQL/API/browser verified2026-09-14 |
 | CLI-03 | 3 | Complete: native SQL/API/browser verified2026-09-14 |
 | CLI-04 | 3 | Complete: saved intake review verified2026-09-14; quote integration due5 |
 | AGY-01 | 4 | Complete |
 | AGY-02 | 4 | Complete |
 | AGY-03 | 4 / 10 | Partial — Phase4 terms/access/activity complete; ledger/statements Phase10 |
-| AGY-04 | 4 / 5 / 6 / 9 | Partial — Phase4 restricted sharing complete; quote/policy/task records later |
+| AGY-04 | 4 / 5 / 6 / 9 | Partial — restricted sharing and actual quotes complete; policy/task records due6/9 |
 | AGY-05 | 4 | Complete |
-| QUO-01 | 5 | Pending |
-| QUO-02 | 5 | Pending |
-| QUO-03 | 5 | Pending |
-| QUO-04 | 5 | Pending |
-| QUO-05 | 5 | Pending |
-| QUO-06 | 5 | Pending |
+| QUO-01 | 5 / 6 | Partial — quotes verified; actual policy discovery due6 |
+| QUO-02 | 5 | Complete — Phase5 verified2026-09-16 |
+| QUO-03 | 5 / 6 | Partial — capture verified; applied endorsements/warranties due6 |
+| QUO-04 | 5 | Complete — Phase5 verified2026-09-16 |
+| QUO-05 | 5 | Complete — Phase5 verified2026-09-16 |
+| QUO-06 | 5 / 6 | Partial — lifecycle/revision fence verified; actual rating/acceptance invalidation due6 |
 | UWR-01 | 6 | Pending |
 | UWR-02 | 6 | Pending |
 | UWR-03 | 6 | Pending |
@@ -236,4 +236,4 @@ Every v1 requirement has one owning delivery phase; later phases may consume its
 | ACC-05 | 13 | Pending |
 | ACC-06 | 13 | Pending |
 
-**Coverage:** 83 v1 requirements; 83 mapped; 0 unmapped. All pending, none verified.
+**Coverage:** 83 v1 requirements; 83 mapped; 0 unmapped. Completion is recorded per requirement above; compound requirements remain partial until their downstream acceptance passes.

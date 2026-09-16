@@ -1,8 +1,8 @@
 ---
 phase: 05
 slug: motor-trade-quote-capture
-status: in_progress
-nyquist_compliant: false
+status: complete
+nyquist_compliant: true
 wave_0_complete: true
 created: 2026-09-15
 ---
@@ -263,3 +263,26 @@ d8ab279 and 13c8bf0 complete revision history/comparison, historical cloning and
 ## Final05-10 acceptance — 2026-09-16
 
 1491934 completes discovery, actual client links, version-fenced matching with retained ownership, and common safe agency summaries. Fresh .local/phase5-integration-final-20260916 passes676=566unit+110integration,83realSQL,0skips;676/83gate passes, integration10m8s.80frontend,294contracts/341operations, final lint/types/productionbuild and Chrome148revision4/Combined149 pass. Desktop/mobile screenshots inspected;314pxrail and390pxcontainment verified. Migration/model synchronized; preserved demo, no funnel changes, owned previews stopped. See05-10-SUMMARY. Next05-11; no final QUO signoff.
+
+
+## Final05-11 acceptance — 2026-09-16
+
+
+- Fresh `.local/phase5-acceptance-final`: **680 tests = 568 unit + 112 integration; 85 real SQL scenarios; zero skips**. Integration15m57s. `assert-test-results.ps1 -MinimumTests 680 -MinimumSqlTests 85` passed. Earlier composition679/85 also passed; final680 includes the missing-review-property regression.
+- **80 frontend tests**, ESLint and TypeScript pass: `.local/phase5-acceptance-final-{webtests,lint,types}.log`. Final production build: `.local/phase5-acceptance-visual-final-build.log`.
+- **294 contract/design checks**,949 inventoried controls/341 operations: `.local/phase5-acceptance-contracts.log`. Inventory totals are milestone mapping, not a claim that future endpoints exist.
+- `.local/quote-suite/2026-09-16T15-56-50-912Z/report.json`: all17 quote journeys plus the retained agency suite passed sequentially. Nested `.local/agency-suite/2026-09-16T16-02-00-298Z/report.json`: all20 stages passed. Full log `.local/phase5-acceptance-suite-verified.log`. The three terms presentation/recovery fixtures remain labelled; real publication has independent lifecycle/SQL evidence.
+- Both products reached capture-ready with actual bytes/attachments and persisted worker/manual vehicle decisions: Combined **QT-MT-0000000257**, Road Risks **QT-MT-0000000258**, revision2. Saved tabs and1560px/390px screenshots inspected; nested spacing is fixed. Existing suite retains314px rail checks.
+- `verify-quote-restart-browser.mjs capture` and `verify` passed around actual API54912/web66480 stop and API66504/web56644 start. Original/current revisions, current read, revision history, evidence metadata/files/download bytes and lookup IDs/attempts hashed identically. Fresh login and saved history UI passed. `.local/browser-evidence/quote-ready/restart.json` verified at2026-09-16T16:05:27.794Z; both final previews then stopped.
+- Windows CI minima680/85, Linux678/83 (two Windows-only SQL cases excluded);30-minute SQL timeout. Rejection gate passes for skips/failures/absent SQL/report/undercount; YAML parses as three jobs. Hosted execution was not performed.
+- Source/security/six-dimension review:05-IMPLEMENTATION-REVIEW.md.05-RUNTIME-COVERAGE.json reconciles255 field occurrences and183 Phase5 control identities to existing verification owners. No unreviewed Phase5 mapping holes. Shared family coverage does not mean255 separate browser assertions.
+
+## Corrections and limits
+
+The first positive browser upload omitted required multipart metadata; corrected harness passed. The first legacy matching test used a clock before the freshly seeded rule; corrected to the current test clock and full regression passed. Initial consolidated attempts stopped on ambiguous agency Clear search/alert selectors after quote search and the Next route announcer were present. Scoped selectors preserve all assertions; the complete final rerun passed. These failed attempts are not accepted evidence.
+
+QUO-01/CLI-01 retain actual policy discovery inPhase6. QUO-03 applied endorsements and QUO-06 invalidation of actual rating/acceptance records also retain Phase6 ownership; Phase5 supplies capture, immutable revision tokens and closure fences. AGY-04 quotes are implemented; policy/task portions remain6/9. See05-PHASE06-HANDOFF and ACCEPTANCE-BACKLOG.
+
+Native SQL/Chrome verified; human business/assistive-technology UAT, hostedCI and Docker runtime remain unperformed. No reset, funnel changes, provider calls, real delivery/payment or deployment. All owned test/preview processes completed/stopped. Diff check passed.
+
+ContinuePhase6 under the user's autonomous agreement, with data/API/source design and tests before enabling underwriting/issue.
