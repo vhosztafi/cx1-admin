@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-16T09:28:33.284648+00:00"
+last_updated: "2026-09-16T10:21:12.949573+00:00"
 last_activity: 2026-09-16
 progress:
   total_phases: 13
   completed_phases: 4
   total_plans: 35
-  completed_plans: 29
+  completed_plans: 30
   percent: 31
 ---
 
@@ -20,16 +20,16 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute05-06 premises, insurance, cover and declarations;05-05complete and verified.
+**Current focus:** Execute05-07 durable quote lookups and manual recovery;05-06complete and verified.
 
 ## Current Position
 
 Phase: 5 of 13 (Motor Trade quote capture)
-Plan: 05-06 of11 next;05-01/02/03/04/05complete
+Plan: 05-07 of11 next;05-01/02/03/04/05/06complete
 Status: In progress — autonomous
-Last activity: 2026-09-16 — Completed05-05;602backend/68SQL,74frontend,294contracts and both-product Chrome vehicles/drivers/readiness pass.
+Last activity: 2026-09-16 — Completed05-06;633backend/68SQL,78frontend,294contracts and both-product Chrome sections/vehicles/readiness pass.
 
-Progress: Phases1–4 complete;4/13phases,29completed plans.
+Progress: Phases1–4 complete;4/13phases,30completed plans.
 
 ## Accumulated Context
 
@@ -43,7 +43,7 @@ Progress: Phases1–4 complete;4/13phases,29completed plans.
 
 ### Pending Todos
 
-- Execute05-06 remaining capture sections; consume05-05-SUMMARY,05-06-PLAN,UI-SPEC,source mappings and ACCEPTANCE-BACKLOG. Retain all runtime gates.
+- Execute05-07 durable lookups and manual recovery; consume05-06-SUMMARY,05-07-PLAN,UI-SPEC,source mappings and ACCEPTANCE-BACKLOG. Retain all runtime gates.
 - Keep future business endpoints closed until their owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,8 +54,8 @@ Progress: Phases1–4 complete;4/13phases,29completed plans.
 ## Session Continuity
 
 Last session: 2026-09-16
-Stopped at:05-05complete. NEXT05-06premises/insurance/cover/declarations. No owned previews or tests remain.
-Resume file: .planning/phases/05-motor-trade-quote-capture/05-06-PLAN.md
+Stopped at:05-06complete. NEXT05-07durable address/vehicle/licence lookups and manual recovery. No owned previews or tests remain.
+Resume file: .planning/phases/05-motor-trade-quote-capture/05-07-PLAN.md
 
 ## Autonomous continuation
 
@@ -63,4 +63,4 @@ User approved requirements/roadmap and autonomous choices/progression on 2026-09
 
 Thread heartbeat: continue-cover-mga-back-office-mvp, active every 10 minutes. Resume unfinished work in this same task; notify meaningful progress/blockers only; pause on actual milestone completion, user stop or persistent external blocker with no remaining useful work.
 
-Latest checkpoint:602backend/68SQL,74frontend,294contracts. Browser vehicles100/101, drivers97/99, readiness96/98. Full readiness stays blocked; no QUO signoff before05-11.
+Latest checkpoint:633backend/68SQL,78frontend,294contracts. Browser sections114/115, vehicles109/110, readiness105/106. Full readiness stays blocked; no QUO signoff before05-11.
