@@ -86,7 +86,11 @@ public static class DemoDatabase
         await db.SaveChangesAsync(cancellationToken);
         await ContactDemoSeed.SeedAsync(db,cancellationToken);
         await AgencyDemoSeed.SeedAsync(db,cancellationToken);
-        if(includeQuoteCapture)await QuoteCaptureDemoSeed.SeedAsync(db,cancellationToken);
+        if(includeQuoteCapture)
+        {
+            await QuoteCaptureDemoSeed.SeedAsync(db,cancellationToken);
+            await QuoteLookupDemoSeed.SeedAsync(db,cancellationToken);
+        }
         if(includeSupportFlags)await SupportFlagDemoSeed.SeedAsync(db,cancellationToken);
         if(includeMatches)await MatchDemoSeed.SeedAsync(db,cancellationToken);
         await transaction.CommitAsync(cancellationToken);

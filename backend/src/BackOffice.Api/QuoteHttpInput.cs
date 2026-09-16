@@ -79,7 +79,7 @@ public static class QuoteHttpInput
         throw new QuoteHttpException(400, "invalid-version");
     }
 
-    private static async Task<JsonDocument> Read(HttpRequest request, CancellationToken token)
+    internal static async Task<JsonDocument> Read(HttpRequest request, CancellationToken token)
     {
         NoQuery(request);
         if (!request.HasJsonContentType()) throw new QuoteHttpException(415, "json-required");
@@ -125,12 +125,12 @@ public static class QuoteHttpInput
         else if (value.ValueKind == JsonValueKind.Array) foreach (var item in value.EnumerateArray()) ValidateTree(item);
     }
 
-    private static void Keys(JsonElement root, params string[] allowed)
+    internal static void Keys(JsonElement root, params string[] allowed)
     {
         if (root.EnumerateObject().Any(x => !allowed.Contains(x.Name, StringComparer.Ordinal))) throw new QuoteHttpException(400, "unknown-field");
     }
 
-    private static Guid Id(JsonElement root, string name)
+    internal static Guid Id(JsonElement root, string name)
     {
         if (!root.TryGetProperty(name, out var value) || value.ValueKind != JsonValueKind.String || value.GetString() is not { Length: 36 } text || !Guid.TryParseExact(text, "D", out var id) || id == Guid.Empty)
             throw new QuoteHttpException(422, "invalid-identity");

@@ -37,6 +37,7 @@ builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyTermsService
 builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyPermissionService>();
 DiagnosticDispatcher.Register(builder);
 AgencyNotificationDispatcher.Register(builder);
+QuoteLookupDispatcher.Register(builder);
 var app = builder.Build();
 if(args.Contains("--seed-quote-demo",StringComparer.Ordinal))
 {
@@ -92,6 +93,7 @@ app.MapContacts();
 app.MapSupportFlags();
 app.MapMatches();
 app.MapQuotes();
+app.MapQuoteLookups();
 // Domain endpoints are added only alongside their authentication and persistence.
 app.Run();
 

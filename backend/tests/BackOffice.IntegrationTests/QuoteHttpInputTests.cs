@@ -10,6 +10,22 @@ namespace BackOffice.IntegrationTests;
 public sealed class QuoteHttpInputTests
 {
     [Fact]
+    public async Task LookupCommandsRejectCallerQueriesAndAmbiguousSelections()
+    {
+        var revision = Guid.NewGuid(); var lookup = Guid.NewGuid(); var candidate = Guid.NewGuid();
+        var fingerprint = new string('a', 64);
+        var request = await QuoteLookupHttpInput.RequestAsync(Request($$"""{"revisionId":"{{revision}}","kind":"address","scope":"insured","scenario":"success"}"""));
+        Assert.Equal(revision, request.RevisionId); Assert.Null(request.Target.RiskItemId);
+        var selection = await QuoteLookupHttpInput.SelectionAsync(Request($$"""{"lookupId":"{{lookup}}","revisionId":"{{revision}}","inputFingerprint":"{{fingerprint}}","candidateId":"{{candidate}}"}"""));
+        Assert.Equal(candidate, selection.CandidateId);
+        foreach (var extra in new[] { "\"query\":\"AB12CD\"", "\"url\":\"https://example.invalid\"", "\"kind\":\"vehicle\"", "\"verified\":true" })
+            await Assert.ThrowsAsync<QuoteHttpException>(() => QuoteLookupHttpInput.RequestAsync(Request($$"""{"revisionId":"{{revision}}","kind":"address","scope":"insured","scenario":"success",{{extra}}}""")));
+        foreach (var decision in new[] { "", ",\"candidateId\":\"" + candidate + "\",\"manualReason\":\"Both\"", ",\"manualReason\":\" \"", ",\"candidateId\":null" })
+            await Assert.ThrowsAsync<QuoteHttpException>(() => QuoteLookupHttpInput.SelectionAsync(Request($$"""{"lookupId":"{{lookup}}","revisionId":"{{revision}}","inputFingerprint":"{{fingerprint}}"{{decision}}}""")));
+        await Assert.ThrowsAsync<QuoteHttpException>(() => QuoteLookupHttpInput.SelectionAsync(Request($$"""{"lookupId":"{{lookup}}","revisionId":"{{revision}}","inputFingerprint":"{{new string('G',64)}}","manualReason":"Checked"}""")));
+    }
+
+    [Fact]
     public void ProductSelectionRequiresOneExactRelationshipQuery()
     {
         var id = Guid.NewGuid(); var request = new DefaultHttpContext().Request;

@@ -70,7 +70,7 @@ All paths under `/api/v1`; authenticate and current-scope filter before counts/s
 | GET /quotes/{id}/compare?leftRevisionId=...&rightRevisionId=... | Both revisions belong to quote; keyed child diff includes adds/removals/value changes and exact prior values. |
 | POST /quotes/{id}/clone | Source quote ETag, source revisionId, destination relationshipId, reason;201 new quote ID. Current source/destination authority; clear evidence/process state, remap child IDs. Policy clone unavailable until Phase6/7. |
 | POST /quotes/{id}/withdraw | Reason, CSRF/key/quote ETag; terminal withdrawn; retain all snapshots and no destructive delete. |
-| POST /quotes/{id}/lookups | Allowlisted kind address/vehicle/licence; revisionId/itemId/query/scenario; CSRF/key/quote ETag;202 lookup ID and scoped status Location. No arbitrary external URL. |
+| POST /quotes/{id}/lookups | Allowlisted kind address/vehicle/licence, scope insured/driver/vehicle/premises, revisionId, optional riskItemId and required demo scenario; CSRF/key/quote ETag;202 lookup ID and scoped status Location. Derive query and initial input fingerprint from the held saved proposal; reject caller query, provider URL or result fields. |
 | GET /quotes/{id}/lookups/{lookupId} | Safe owned outcome/candidates/attempt states; pending is not success. |
 | POST /quotes/{id}/lookup-selections | Persisted lookup/candidate or manual entry reason, expected revision/item fingerprint; CSRF/key/quote ETag;200 ID+new ETag. |
 | POST /quotes/{id}/evidence-files | Multipart bounded bytes and filename/type; CSRF/key/quote ETag;201 file ID. Retry exact file identity without duplicate business evidence. |
@@ -102,3 +102,12 @@ Product selection runtime clarification (2026-09-16): /quote-products offers the
 ### Readiness question identity (05-03)
 
 The optional questionId on a readiness issue is a trusted catalogue identifier, not caller-owned error text. Preserve it through rule calculation, de-duplication and API serialization. Missing answer-array entries share a real container path; their different question IDs keep their issues distinct. Existing answers retain the actual indexed value path plus stable question identity. Ordinary scalar/term/configuration issues omit the property rather than emitting null. Clients must resolve path plus questionId against actual rendered controls and the saved revision; this metadata does not itself prove a field link exists or that a quote is ready. The global partial-assessment blocker remains until all dependent assessments are composed.
+
+
+## 05-07 implemented lookup contract refinement
+
+Initial lookup requests identify the saved revision and actual target; the service derives query and fingerprint from that immutable revision. This replaces the planned caller query/initial fingerprint to eliminate two competing sources of input. Closed selection envelopes contain lookupId, revisionId, inputFingerprint and exactly one candidateId or manualReason. Manual values use the ordinary draft save contract before a new lookup/decision; selection never accepts arbitrary replacement values or a verified boolean. Candidate patches come only from persisted deterministic outcomes. Generated OpenAPI and executable API/browser checks use this same contract.
+
+GET /quotes/{quoteId}/lookups returns the latest100 owned requests for editor reload (newest first); the owned single-result route remains available for older IDs. Read DTOs expose state, bounded candidates, safe attempt/error state and selected revision, without raw query, provider operation or private result JSON. Six scenarios: success, multiple, no-match, reject, fail-once, timeout-after-success. Development dispatcher uses existing bounded leases; final lease exhaustion writes the private failed outcome atomically. Generic operations carry opaque lookup IDs only.
+
+Vehicle readiness modes derive from immutable selection/new-revision records, compared to the current vehicle subject and trusted pins. Unrelated edits retain the decision; changed/removed vehicles lose current provenance. This is a demo capture decision, never live verification, licence entitlement, MID submission or permission to rate/issue.

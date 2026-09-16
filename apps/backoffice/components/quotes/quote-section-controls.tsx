@@ -1,4 +1,5 @@
 'use client';
+import { QuoteLookupControl } from './quote-lookup';
 import { coverExcessOptions } from '../../lib/quote-cover-options';
 import { matchingQuoteCatalogue, type QuoteFormCatalogue } from '../../lib/quote-catalogue';
 import { changeField, changeResponses, fieldValue } from '../../lib/quote-form';
@@ -49,6 +50,7 @@ export function QuoteRepeatedSection({ group, singular, title, ...props }: Quote
           if (container?.questionSetVersion && container.questionSetVersion !== props.versions.questionSetVersion) return <p role="alert" key={field.id}>Existing answers need their matching question version.</p>;
           return <Control key={field.id} field={field} value={field.questionId ? answerValue(container, field.questionId) : get(row, field.path)} label={`${prefix} · ${field.label}`} buffer={`${buffer}/${field.id}`} props={props} change={value => attempt(() => changeSectionRow(props.proposal, group, id, field.questionId ? field.container! : field.path, field.questionId ? changeResponses(container, props.versions.questionSetVersion, field.questionId, field.kind, value) : field.path === 'registration' && typeof value === 'string' ? value.toUpperCase() : value))} />;
         })}</div>
+        {group === 'premises' && <QuoteLookupControl kind="address" scope="premises" riskItemId={id} label={`${prefix} address`} />}
         {group === 'temporaryEuropeanCover' && <fieldset className="quote-reference-fields"><legend>Trip drivers</legend>{((props.proposal.risk?.drivers ?? []) as QuoteObject[]).map((driver, position) => <label key={String(driver.id)}><input type="checkbox" aria-label={`${prefix} · Trip driver ${position + 1}`} checked={((row.driverIds ?? []) as string[]).some(value => value.toLowerCase() === String(driver.id).toLowerCase())} onChange={event => attempt(() => setTripDriver(props.proposal, id, String(driver.id), event.target.checked))} /> {String(driver.fullName ?? `Driver ${position + 1}`)}</label>)}</fieldset>}
       </details>;
     })}

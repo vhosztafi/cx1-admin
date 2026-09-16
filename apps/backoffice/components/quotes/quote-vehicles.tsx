@@ -1,4 +1,5 @@
 'use client';
+import { QuoteLookupControl } from './quote-lookup';
 import { matchingQuoteCatalogue, type QuoteFormCatalogue } from '../../lib/quote-catalogue';
 import { amountInput, changeField, changeResponses, countInput, percentageInput, selectedReference } from '../../lib/quote-form';
 import { addVehicleRow, changeVehicleModification, changeVehicleRow, moveVehicleRow, removeVehicleRow, setSpecifiedVehicle, vehicleModifications, vehicleRows, type VehicleRows } from '../../lib/quote-vehicle-form';
@@ -29,7 +30,7 @@ export function QuoteVehicles(props: Props) {
   const overnight = [...new Set([postcode(proposal.insured), ...((risk.premises ?? []) as QuoteObject[]).map(postcode), ...drivers.filter(personal).map(postcode)].filter(value => typeof value === 'string' && value.trim()) as string[])];
   const company = (proposal.insured?.declaredCompanyType as QuoteObject | undefined)?.value;
   return <div className="quote-driver-section">
-    <p className="client-help">Enter vehicle details manually. No registration lookup, licence check or MID submission has been performed. Changing a declaration retains existing details for review.</p>
+    <p className="client-help">Enter declared vehicle details or select a fictional demo lookup result. Changing a declaration retains existing details for review. MID submission is not available.</p>
     <fieldset className="quote-reference-fields"><legend>Specified vehicles</legend><div className="quote-form-grid"><label>Are specified vehicles required?<select aria-label="Are specified vehicles required?" value={risk.specifiedVehiclesRequested === undefined ? '' : String(risk.specifiedVehiclesRequested)} onChange={event => attempt(() => changeField(proposal, 'risk.specifiedVehiclesRequested', event.target.value === '' ? undefined : event.target.value === 'true'))}><option value="">Not answered</option><option value="true">Yes</option><option value="false">No</option></select></label></div><p className="client-help">Select individual vehicles below. The specified selection, vehicle register and legal owner are separate declarations.</p></fieldset>
     <p className="client-help">Owned, not for sale: {vehicles.filter(row => row.register === 'owned-not-for-sale').length} · Held for sale: {vehicles.filter(row => row.register === 'held-for-sale').length} · Register not recorded: {vehicles.filter(row => !row.register).length}</p>
     <button type="button" className="button" onClick={() => attempt(() => addVehicleRow(proposal, 'vehicles'))}>Add vehicle</button>
@@ -43,6 +44,7 @@ export function QuoteVehicles(props: Props) {
         <div className="quote-form-grid">{controls(vehicle, 'vehicle', prefix, buffer, (field, value) => attempt(() => changeVehicleRow(proposal, 'vehicles', id, field, value)), choose)}
           <label>Named driver owner<select aria-label={`${prefix} · Named driver owner`} value={String(vehicle.ownerDriverId ?? '')} onChange={event => attempt(() => changeVehicleRow(proposal, 'vehicles', id, 'ownerDriverId', event.target.value || undefined))}><option value="">Not recorded</option>{vehicle.ownerDriverId && !owners.some(driver => driver.id === vehicle.ownerDriverId) && <option value={String(vehicle.ownerDriverId)} disabled>Saved owner is not currently eligible</option>}{owners.map((driver, position) => <option key={String(driver.id)} value={String(driver.id)}>{String(driver.fullName ?? ([driver.firstName, driver.surname].filter(Boolean).join(' ') || `Driver ${position + 1}`))}</option>)}</select></label>
         </div>
+        <QuoteLookupControl kind="vehicle" scope="vehicle" riskItemId={id} label={prefix} />
         <fieldset className="quote-reference-fields"><legend>Modifications</legend><button type="button" className="button" aria-label={`Add modification for vehicle ${index + 1}`} onClick={() => attempt(() => changeVehicleModification(proposal, id, 'add', crypto.randomUUID()))}>Add modification</button>
           {vehicleModifications(proposal, id).map((row, child) => <div className="quote-form-grid" key={String(row.id)}>{controls(row, 'modification', `${prefix} · Modification ${child + 1}`, `${buffer}/modification/${row.id}`, (_path, value) => attempt(() => changeVehicleModification(proposal, id, 'change', String(row.id), value)))}<button type="button" className="button" aria-label={`Remove modification ${child + 1} for vehicle ${index + 1}`} onClick={() => attempt(() => changeVehicleModification(proposal, id, 'remove', String(row.id)))}>Remove modification</button></div>)}
         </fieldset>

@@ -11,7 +11,7 @@ public sealed record QuoteReadinessResult(Guid QuoteId, Guid RevisionId, bool Re
 public static class QuoteReadiness
 {
     public static QuoteReadinessResult Assess(Guid quoteId, Guid revisionId, JsonElement proposal,
-        QuoteTermAssessment term, string? captureUnavailableCode, DateOnly asOf)
+        QuoteTermAssessment term, string? captureUnavailableCode, DateOnly asOf, IReadOnlyDictionary<Guid, string>? vehicleCaptureModes = null)
     {
         // Capture APIs precede semantic sections (05-03..06), evidence (05-08)
         // and matching (05-10). Never report readiness until those gates run.
@@ -36,7 +36,7 @@ public static class QuoteReadiness
         // Until persisted attestations are implemented, each applicable requirement is missing.
         issues.AddRange(QuoteEvidenceRequirements.ForProposal(proposal).Select(x => new QuoteReadinessIssue(
             x.Path, "evidence-missing-" + x.Code, x.Label + " is missing. Evidence attachment is not yet available.", "evidence", "error")));
-        issues.AddRange(QuoteVehicleRules.Assess(proposal, asOf).Select(x => new QuoteReadinessIssue(
+        issues.AddRange(QuoteVehicleRules.Assess(proposal, asOf, vehicleCaptureModes).Select(x => new QuoteReadinessIssue(
             x.Path, x.Code, x.Code == "vehicle-capture-context-required" ? "A saved manual-entry or lookup decision is not yet available for this vehicle." : "Complete or correct the vehicle, portfolio or trade-plate details.", "capture", "error", x.QuestionId)));
         issues.AddRange(QuoteInsuranceRules.Assess(proposal).Select(x => new QuoteReadinessIssue(
             x.Path, x.Code, "Review the previous insurance and no-claims declarations.", "capture", "error", x.QuestionId)));

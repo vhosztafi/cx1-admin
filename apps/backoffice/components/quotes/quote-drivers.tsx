@@ -1,4 +1,5 @@
 'use client';
+import { QuoteLookupControl } from './quote-lookup';
 import { matchingQuoteCatalogue, type QuoteFormCatalogue } from '../../lib/quote-catalogue';
 import { amountInput, changeAnswer, changeResponses, countInput, selectedReference } from '../../lib/quote-form';
 import { addQuoteDriver, addQuoteDriverHistory, changeQuoteDriverField, changeQuoteDriverHistoryField, moveQuoteDriver, moveQuoteDriverHistory, quoteDriverHistory, quoteDrivers, removeQuoteDriver, removeQuoteDriverHistory, type DriverHistory } from '../../lib/quote-driver-form';
@@ -57,8 +58,8 @@ export function QuoteDrivers(props: Props) {
       const name = String(driver.fullName ?? ([driver.firstName, driver.surname].filter(Boolean).join(' ') || 'Name not recorded'));
       return <details className="quote-driver-card" key={driverId} open={driverIndex === 0}><summary>{prefix} · {name}</summary>
         {!history && <><div className="quote-row-actions"><button type="button" className="button" aria-label={`Move ${prefix.toLowerCase()} up`} disabled={driverIndex === 0} onClick={() => attempt(() => moveQuoteDriver(proposal, driverId, -1))}>Move up</button><button type="button" className="button" aria-label={`Move ${prefix.toLowerCase()} down`} disabled={driverIndex === drivers.length - 1} onClick={() => attempt(() => moveQuoteDriver(proposal, driverId, 1))}>Move down</button><button type="button" className="button" aria-label={`Remove ${prefix.toLowerCase()}`} onClick={() => attempt(() => { const next = removeQuoteDriver(proposal, driverId); clearBuffers(bufferPrefix + '/'); return next; })}>Remove driver</button></div>
-          <p className="client-help">Full name and separate names are independent declarations. Licence issue date and driving test date are also distinct. Licence checks and document evidence are not yet available.</p>
-          <div className="quote-form-grid">{controls(driver, 'driver', prefix, bufferPrefix, (path, value) => attempt(() => changeQuoteDriverField(proposal, driverId, path, value)), driverIndex)}</div></>}
+          <p className="client-help">Full name and separate names are independent declarations. Licence issue date and driving test date are also distinct. Demo licence lookups do not verify entitlement. Document evidence is not yet available.</p>
+          <div className="quote-form-grid">{controls(driver, 'driver', prefix, bufferPrefix, (path, value) => attempt(() => changeQuoteDriverField(proposal, driverId, path, value)), driverIndex)}</div><QuoteLookupControl kind="address" scope="driver" riskItemId={driverId} label={`${prefix} address`} /><QuoteLookupControl kind="licence" scope="driver" riskItemId={driverId} label={`${prefix} licence`} /></>}
         {histories.filter(group => history ? group.key !== 'occupations' : group.key === 'occupations').map(group => {
           const rows = quoteDriverHistory(proposal, driverId, group.key);
           return <fieldset className="quote-reference-fields" key={group.key}><legend>{group.label}</legend><button type="button" className="button" onClick={() => attempt(() => addQuoteDriverHistory(proposal, driverId, group.key))}>Add {group.label.toLowerCase()} for {prefix.toLowerCase()}</button>

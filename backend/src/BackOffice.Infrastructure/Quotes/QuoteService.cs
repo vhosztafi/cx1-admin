@@ -11,7 +11,8 @@ namespace BackOffice.Infrastructure.Quotes;
 // Internal snapshot, materialized while quote authority is held. Capture
 // availability is independent of proposal readiness and does not authorize a write.
 public sealed record StoredQuote(Quote Quote, QuoteRevision Revision, string ClientName, string AgencyName,
-    string ProductCode, bool CanSave, string? CaptureUnavailableCode, QuoteTermAssessment TermAssessment, QuoteVersionPins VersionPins);
+    string ProductCode, bool CanSave, string? CaptureUnavailableCode, QuoteTermAssessment TermAssessment, QuoteVersionPins VersionPins,
+    IReadOnlyDictionary<Guid, string> VehicleCaptureModes);
 
 // Internal command service. HTTP DTO/CSRF/size handling and match attachment are
 // separate integration work; these methods do not expose an endpoint.
@@ -86,7 +87,8 @@ public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory,
             .AsNoTracking().SingleAsync(token);
         using var intent = JsonDocument.Parse(revision.TermIntentJson);
         var result = new StoredQuote(owned.Quote, revision, owned.Scope.Client.LegalName, owned.Scope.Agency.LegalName,
-            product.Code, availability.Code is null, availability.Code, QuoteTerm.Assess(intent.RootElement), Pins(revision));
+            product.Code, availability.Code is null, availability.Code, QuoteTerm.Assess(intent.RootElement), Pins(revision),
+            await QuoteLookupProvenance.VehicleModesAsync(db, revision, token));
         await transaction.CommitAsync(token);
         return result;
     }
@@ -112,10 +114,10 @@ public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory,
         }
     }
 
-    private static Task<QuoteRevision> CurrentRevision(BackOfficeDbContext db, Quote quote, CancellationToken token) =>
+    internal static Task<QuoteRevision> CurrentRevision(BackOfficeDbContext db, Quote quote, CancellationToken token) =>
         db.Set<QuoteRevision>().AsNoTracking().SingleAsync(x => x.Id == quote.CurrentRevisionId && x.QuoteId == quote.Id, token);
 
-    private static QuoteVersionPins Pins(QuoteRevision revision)
+    internal static QuoteVersionPins Pins(QuoteRevision revision)
     {
         using var references = JsonDocument.Parse(revision.ReferenceVersionsJson);
         if (!references.RootElement.TryGetProperty("referenceVersion", out var version) || version.ValueKind != JsonValueKind.String)
@@ -123,7 +125,7 @@ public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory,
         return new(revision.ProductVersionId, revision.AgencyTermsVersionId, revision.SchemaVersion, revision.QuestionSetVersion, version.GetString()!);
     }
 
-    private static async Task Append(BackOfficeDbContext db, Quote quote, EligibleQuoteCapture selection, PreparedQuoteCapture prepared,
+    internal static async Task Append(BackOfficeDbContext db, Quote quote, EligibleQuoteCapture selection, PreparedQuoteCapture prepared,
         int number, string? reason, Guid actor, DateTimeOffset now, CancellationToken token)
     {
         var revision = new QuoteRevision { QuoteId = quote.Id, AgencyId = quote.AgencyId, ProductId = quote.ProductId, Number = number,

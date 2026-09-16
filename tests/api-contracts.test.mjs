@@ -65,7 +65,7 @@ test('quote readiness and revision discovery are scoped reads with required cont
 test('quote lookup requests restrict target kinds and never accept arbitrary provider URLs',()=>{
  const check=ajv.getSchema(`${rootId}#/$defs/QuoteLookupRequest`);
  const id='00000000-0000-4000-8000-000000000001';
- const request={kind:'vehicle',revisionId:id,inputFingerprint:'a'.repeat(64),target:{kind:'vehicle',riskItemId:id},query:{registration:'DEMO 01'}};
+ const request={kind:'vehicle',revisionId:id,scope:'vehicle',riskItemId:id,scenario:'success'};
  assert.equal(check(request),true);
  assert.equal(check({...request,url:'https://example.com'}),false);
  assert.equal(check({...request,target:{kind:'insured'}}),false);
@@ -74,15 +74,15 @@ test('quote lookup requests restrict target kinds and never accept arbitrary pro
  assert.equal(check({...request,inputFingerprint:'invalid'}),false);
 });
 
-test('candidate and manual lookup selection have distinct provenance and bounded typed values',()=>{
+test('candidate and manual lookup selection require persisted identity and exclusive provenance',()=>{
  const check=ajv.getSchema(`${rootId}#/$defs/QuoteLookupSelectionRequest`);
  const id='00000000-0000-4000-8000-000000000001';
  const base={revisionId:id,inputFingerprint:'a'.repeat(64)};
- assert.equal(check({...base,mode:'candidate',lookupId:id,candidateId:id}),true);
- assert.equal(check({...base,mode:'candidate',lookupId:id,candidateId:id,values:{}}),false);
- const manual={...base,mode:'manual',kind:'address',target:{kind:'insured'},values:{line1:'1 Example Street',town:'Example',postcode:'S9 2QT',country:'GB'},reason:'No lookup match'};
+ assert.equal(check({...base,lookupId:id,candidateId:id}),true);
+ assert.equal(check({...base,lookupId:id,candidateId:id,values:{}}),false);
+ const manual={...base,lookupId:id,manualReason:'No lookup match'};
  assert.equal(check(manual),true);
- const missing=structuredClone(manual);delete missing.reason;assert.equal(check(missing),false);
+ const missing=structuredClone(manual);delete missing.manualReason;assert.equal(check(missing),false);
  assert.equal(check({...manual,candidateId:id}),false);
  assert.equal(check({...manual,values:{...manual.values,premium:'100.00'}}),false);
 });
@@ -90,9 +90,9 @@ test('candidate and manual lookup selection have distinct provenance and bounded
 test('pending and failed quote lookups cannot expose successful candidates',()=>{
  const check=ajv.getSchema(`${rootId}#/$defs/QuoteLookupView`);
  const id='00000000-0000-4000-8000-000000000001';
- const view={id,quoteId:id,revisionId:id,inputFingerprint:'a'.repeat(64),kind:'vehicle',state:'pending',candidates:[],attempts:0,source:'deterministic-demo'};
+ const view={id,revisionId:id,inputFingerprint:'a'.repeat(64),kind:'vehicle',scope:'vehicle',riskItemId:id,scenario:'success',state:'pending',candidates:[],attempts:0,source:null,asOf:null,createdAt:'2026-09-16T12:00:00Z',completedAt:null,workState:'pending',errorCode:null,nextAttemptAt:null,selectedRevisionId:null};
  assert.equal(check(view),true);
- const candidate={id,kind:'vehicle',values:{registration:'DEMO 01',make:'Example',model:'Demo',manufactureYear:2020}};
+ const candidate={id,label:'Fictional vehicle match',patch:{make:'Example',model:'Demo'}};
  for(const state of ['pending','no-match','failed'])assert.equal(check({...view,state,candidates:[candidate]}),false);
  assert.equal(check({...view,state:'succeeded'}),false);
  assert.equal(check({...view,state:'succeeded',candidates:[candidate]}),true);

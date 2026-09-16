@@ -57716,6 +57716,189 @@
           }
         },
         "x-runtime-status": "planned-phase-05"
+      },
+      "get": {
+        "operationId": "listQuoteLookups",
+        "summary": "list Quote Lookups",
+        "description": "Requires quote-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
+        "tags": [
+          "quotes"
+        ],
+        "x-permission": "quote-read",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "quoteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              },
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/QuoteLookupView"
+                      },
+                      "maxItems": 100
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Confidential quote response; never cache.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          }
+        },
+        "x-runtime-status": "planned-phase-05"
       }
     },
     "/quotes/{quoteId}/lookups/{lookupId}": {
@@ -70201,351 +70384,227 @@
           "totalChanges"
         ]
       },
-      "QuoteLookupReference": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "collection": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 100
-          },
-          "value": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 100
-              }
-            ]
-          },
-          "label": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 250
-          },
-          "version": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 100
-          }
-        },
-        "required": [
-          "collection",
-          "value",
-          "label",
-          "version"
-        ]
-      },
       "QuoteLookupRequest": {
         "oneOf": [
           {
             "type": "object",
             "additionalProperties": false,
             "properties": {
+              "revisionId": {
+                "type": "string",
+                "format": "uuid"
+              },
               "kind": {
                 "const": "address"
               },
-              "revisionId": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "inputFingerprint": {
-                "type": "string",
-                "pattern": "^[a-f0-9]{64}$"
-              },
-              "target": {
-                "oneOf": [
-                  {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "properties": {
-                      "kind": {
-                        "const": "insured"
-                      }
-                    },
-                    "required": [
-                      "kind"
-                    ]
-                  },
-                  {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "properties": {
-                      "kind": {
-                        "type": "string",
-                        "enum": [
-                          "driver",
-                          "premises"
-                        ]
-                      },
-                      "riskItemId": {
-                        "type": "string",
-                        "format": "uuid"
-                      }
-                    },
-                    "required": [
-                      "kind",
-                      "riskItemId"
-                    ]
-                  }
-                ]
-              },
-              "query": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "postcode": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 10
-                  },
-                  "houseNumber": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 50
-                  }
-                },
-                "required": [
-                  "postcode"
-                ]
+              "scope": {
+                "const": "insured"
               },
               "scenario": {
                 "type": "string",
                 "enum": [
-                  "match",
+                  "success",
                   "no-match",
-                  "temporary-failure",
-                  "permanent-failure"
+                  "multiple",
+                  "reject",
+                  "fail-once",
+                  "timeout-after-success"
                 ]
               }
             },
             "required": [
-              "kind",
               "revisionId",
-              "inputFingerprint",
-              "target",
-              "query"
+              "kind",
+              "scope",
+              "scenario"
             ]
           },
           {
             "type": "object",
             "additionalProperties": false,
             "properties": {
+              "revisionId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "kind": {
+                "const": "address"
+              },
+              "scope": {
+                "type": "string",
+                "enum": [
+                  "driver",
+                  "premises"
+                ]
+              },
+              "riskItemId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "scenario": {
+                "type": "string",
+                "enum": [
+                  "success",
+                  "no-match",
+                  "multiple",
+                  "reject",
+                  "fail-once",
+                  "timeout-after-success"
+                ]
+              }
+            },
+            "required": [
+              "revisionId",
+              "kind",
+              "scope",
+              "riskItemId",
+              "scenario"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "revisionId": {
+                "type": "string",
+                "format": "uuid"
+              },
               "kind": {
                 "const": "vehicle"
               },
-              "revisionId": {
+              "scope": {
+                "const": "vehicle"
+              },
+              "riskItemId": {
                 "type": "string",
                 "format": "uuid"
-              },
-              "inputFingerprint": {
-                "type": "string",
-                "pattern": "^[a-f0-9]{64}$"
-              },
-              "target": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "kind": {
-                    "const": "vehicle"
-                  },
-                  "riskItemId": {
-                    "type": "string",
-                    "format": "uuid"
-                  }
-                },
-                "required": [
-                  "kind",
-                  "riskItemId"
-                ]
-              },
-              "query": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "registration": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 12
-                  }
-                },
-                "required": [
-                  "registration"
-                ]
               },
               "scenario": {
                 "type": "string",
                 "enum": [
-                  "match",
+                  "success",
                   "no-match",
-                  "temporary-failure",
-                  "permanent-failure"
+                  "multiple",
+                  "reject",
+                  "fail-once",
+                  "timeout-after-success"
                 ]
               }
             },
             "required": [
-              "kind",
               "revisionId",
-              "inputFingerprint",
-              "target",
-              "query"
+              "kind",
+              "scope",
+              "riskItemId",
+              "scenario"
             ]
           },
           {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "kind": {
-                "const": "licence"
-              },
               "revisionId": {
                 "type": "string",
                 "format": "uuid"
               },
-              "inputFingerprint": {
+              "kind": {
+                "const": "licence"
+              },
+              "scope": {
+                "const": "driver"
+              },
+              "riskItemId": {
                 "type": "string",
-                "pattern": "^[a-f0-9]{64}$"
-              },
-              "target": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "kind": {
-                    "const": "driver"
-                  },
-                  "riskItemId": {
-                    "type": "string",
-                    "format": "uuid"
-                  }
-                },
-                "required": [
-                  "kind",
-                  "riskItemId"
-                ]
-              },
-              "query": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "number": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 40
-                  },
-                  "dateOfBirth": {
-                    "type": "string",
-                    "format": "date"
-                  }
-                },
-                "required": [
-                  "number",
-                  "dateOfBirth"
-                ]
+                "format": "uuid"
               },
               "scenario": {
                 "type": "string",
                 "enum": [
-                  "match",
+                  "success",
                   "no-match",
-                  "temporary-failure",
-                  "permanent-failure"
+                  "multiple",
+                  "reject",
+                  "fail-once",
+                  "timeout-after-success"
                 ]
               }
             },
             "required": [
-              "kind",
               "revisionId",
-              "inputFingerprint",
-              "target",
-              "query"
+              "kind",
+              "scope",
+              "riskItemId",
+              "scenario"
             ]
           }
         ]
       },
       "QuoteLookupCandidate": {
-        "oneOf": [
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "id": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "kind": {
-                "const": "address"
-              },
-              "values": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 250
+          },
+          "patch": {
+            "oneOf": [
+              {
                 "type": "object",
                 "additionalProperties": false,
                 "properties": {
-                  "line1": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 200
-                  },
-                  "line2": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 200
-                  },
-                  "town": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 100
-                  },
-                  "county": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 100
-                  },
-                  "postcode": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 10
-                  },
-                  "country": {
-                    "const": "GB"
+                  "address": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "houseNumber": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 50
+                      },
+                      "street": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 50
+                      },
+                      "town": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 50
+                      },
+                      "county": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 50
+                      },
+                      "postcode": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 10
+                      }
+                    },
+                    "required": [
+                      "houseNumber",
+                      "street",
+                      "town",
+                      "county",
+                      "postcode"
+                    ]
                   }
                 },
                 "required": [
-                  "line1",
-                  "town",
-                  "postcode",
-                  "country"
+                  "address"
                 ]
-              }
-            },
-            "required": [
-              "id",
-              "kind",
-              "values"
-            ]
-          },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "id": {
-                "type": "string",
-                "format": "uuid"
               },
-              "kind": {
-                "const": "vehicle"
-              },
-              "values": {
+              {
                 "type": "object",
                 "additionalProperties": false,
                 "properties": {
-                  "registration": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 12
-                  },
                   "make": {
                     "type": "string",
                     "minLength": 1,
@@ -70555,81 +70614,26 @@
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 100
-                  },
-                  "manufactureYear": {
-                    "type": "integer",
-                    "minimum": 1900,
-                    "maximum": 2200
-                  },
-                  "bodyDescription": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 200
-                  },
-                  "engineCc": {
-                    "type": "integer",
-                    "minimum": 0
-                  },
-                  "grossWeightKg": {
-                    "type": "integer",
-                    "minimum": 0
                   }
                 },
                 "required": [
-                  "registration",
                   "make",
-                  "model",
-                  "manufactureYear"
+                  "model"
                 ]
-              }
-            },
-            "required": [
-              "id",
-              "kind",
-              "values"
-            ]
-          },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "id": {
-                "type": "string",
-                "format": "uuid"
               },
-              "kind": {
-                "const": "licence"
-              },
-              "values": {
+              {
                 "type": "object",
                 "additionalProperties": false,
-                "properties": {
-                  "number": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 40
-                  },
-                  "issuedOn": {
-                    "type": "string",
-                    "format": "date"
-                  },
-                  "type": {
-                    "$ref": "#/components/schemas/QuoteLookupReference"
-                  }
-                },
-                "required": [
-                  "number",
-                  "issuedOn",
-                  "type"
-                ]
+                "properties": {},
+                "required": []
               }
-            },
-            "required": [
-              "id",
-              "kind",
-              "values"
             ]
           }
+        },
+        "required": [
+          "id",
+          "label",
+          "patch"
         ]
       },
       "QuoteLookupView": {
@@ -70637,10 +70641,6 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "quoteId": {
             "type": "string",
             "format": "uuid"
           },
@@ -70660,13 +70660,60 @@
               "licence"
             ]
           },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "insured",
+              "driver",
+              "vehicle",
+              "premises"
+            ]
+          },
+          "riskItemId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "scenario": {
+            "type": "string",
+            "enum": [
+              "success",
+              "no-match",
+              "multiple",
+              "reject",
+              "fail-once",
+              "timeout-after-success"
+            ]
+          },
           "state": {
             "type": "string",
             "enum": [
               "pending",
               "succeeded",
               "no-match",
+              "rejected",
               "failed"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "completedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
             ]
           },
           "candidates": {
@@ -70674,37 +70721,98 @@
             "items": {
               "$ref": "#/components/schemas/QuoteLookupCandidate"
             },
-            "maxItems": 50
+            "maxItems": 2
           },
           "attempts": {
             "type": "integer",
             "minimum": 0
           },
-          "source": {
+          "workState": {
             "type": "string",
-            "minLength": 1,
-            "maxLength": 100
+            "enum": [
+              "pending",
+              "leased",
+              "succeeded",
+              "failed"
+            ]
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "asOf": {
-            "type": "string",
-            "format": "date-time"
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "errorCode": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 100
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "nextAttemptAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "selectedRevisionId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "required": [
           "id",
-          "quoteId",
           "revisionId",
           "inputFingerprint",
           "kind",
+          "scope",
+          "riskItemId",
+          "scenario",
           "state",
+          "createdAt",
+          "completedAt",
           "candidates",
           "attempts",
-          "source"
+          "workState",
+          "source",
+          "asOf",
+          "errorCode",
+          "nextAttemptAt",
+          "selectedRevisionId"
         ],
         "allOf": [
           {
@@ -70753,8 +70861,52 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "kind": {
-                        "const": "address"
+                      "patch": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "address": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "houseNumber": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 50
+                              },
+                              "street": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 50
+                              },
+                              "town": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 50
+                              },
+                              "county": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 50
+                              },
+                              "postcode": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 10
+                              }
+                            },
+                            "required": [
+                              "houseNumber",
+                              "street",
+                              "town",
+                              "county",
+                              "postcode"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "address"
+                        ]
                       }
                     }
                   }
@@ -70780,8 +70932,25 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "kind": {
-                        "const": "vehicle"
+                      "patch": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "make": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "model": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          }
+                        },
+                        "required": [
+                          "make",
+                          "model"
+                        ]
                       }
                     }
                   }
@@ -70807,8 +70976,11 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "kind": {
-                        "const": "licence"
+                      "patch": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {},
+                        "required": []
                       }
                     }
                   }
@@ -70824,9 +70996,6 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "mode": {
-                "const": "candidate"
-              },
               "revisionId": {
                 "type": "string",
                 "format": "uuid"
@@ -70845,7 +71014,6 @@
               }
             },
             "required": [
-              "mode",
               "revisionId",
               "inputFingerprint",
               "lookupId",
@@ -70856,12 +71024,6 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "mode": {
-                "const": "manual"
-              },
-              "kind": {
-                "const": "address"
-              },
               "revisionId": {
                 "type": "string",
                 "format": "uuid"
@@ -70870,279 +71032,22 @@
                 "type": "string",
                 "pattern": "^[a-f0-9]{64}$"
               },
-              "target": {
-                "oneOf": [
-                  {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "properties": {
-                      "kind": {
-                        "const": "insured"
-                      }
-                    },
-                    "required": [
-                      "kind"
-                    ]
-                  },
-                  {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "properties": {
-                      "kind": {
-                        "type": "string",
-                        "enum": [
-                          "driver",
-                          "premises"
-                        ]
-                      },
-                      "riskItemId": {
-                        "type": "string",
-                        "format": "uuid"
-                      }
-                    },
-                    "required": [
-                      "kind",
-                      "riskItemId"
-                    ]
-                  }
-                ]
-              },
-              "values": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "line1": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 200
-                  },
-                  "line2": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 200
-                  },
-                  "town": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 100
-                  },
-                  "county": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 100
-                  },
-                  "postcode": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 10
-                  },
-                  "country": {
-                    "const": "GB"
-                  }
-                },
-                "required": [
-                  "line1",
-                  "town",
-                  "postcode",
-                  "country"
-                ]
-              },
-              "reason": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 1000
-              },
               "lookupId": {
                 "type": "string",
                 "format": "uuid"
-              }
-            },
-            "required": [
-              "mode",
-              "kind",
-              "revisionId",
-              "inputFingerprint",
-              "target",
-              "values",
-              "reason"
-            ]
-          },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "mode": {
-                "const": "manual"
               },
-              "kind": {
-                "const": "vehicle"
-              },
-              "revisionId": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "inputFingerprint": {
-                "type": "string",
-                "pattern": "^[a-f0-9]{64}$"
-              },
-              "target": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "kind": {
-                    "const": "vehicle"
-                  },
-                  "riskItemId": {
-                    "type": "string",
-                    "format": "uuid"
-                  }
-                },
-                "required": [
-                  "kind",
-                  "riskItemId"
-                ]
-              },
-              "values": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "registration": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 12
-                  },
-                  "make": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 100
-                  },
-                  "model": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 100
-                  },
-                  "manufactureYear": {
-                    "type": "integer",
-                    "minimum": 1900,
-                    "maximum": 2200
-                  },
-                  "bodyDescription": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 200
-                  },
-                  "engineCc": {
-                    "type": "integer",
-                    "minimum": 0
-                  },
-                  "grossWeightKg": {
-                    "type": "integer",
-                    "minimum": 0
-                  }
-                },
-                "required": [
-                  "registration",
-                  "make",
-                  "model",
-                  "manufactureYear"
-                ]
-              },
-              "reason": {
+              "manualReason": {
                 "type": "string",
                 "minLength": 1,
-                "maxLength": 1000
-              },
-              "lookupId": {
-                "type": "string",
-                "format": "uuid"
+                "maxLength": 1000,
+                "pattern": "\\S"
               }
             },
             "required": [
-              "mode",
-              "kind",
               "revisionId",
               "inputFingerprint",
-              "target",
-              "values",
-              "reason"
-            ]
-          },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "mode": {
-                "const": "manual"
-              },
-              "kind": {
-                "const": "licence"
-              },
-              "revisionId": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "inputFingerprint": {
-                "type": "string",
-                "pattern": "^[a-f0-9]{64}$"
-              },
-              "target": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "kind": {
-                    "const": "driver"
-                  },
-                  "riskItemId": {
-                    "type": "string",
-                    "format": "uuid"
-                  }
-                },
-                "required": [
-                  "kind",
-                  "riskItemId"
-                ]
-              },
-              "values": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "number": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 40
-                  },
-                  "issuedOn": {
-                    "type": "string",
-                    "format": "date"
-                  },
-                  "type": {
-                    "$ref": "#/components/schemas/QuoteLookupReference"
-                  }
-                },
-                "required": [
-                  "number",
-                  "issuedOn",
-                  "type"
-                ]
-              },
-              "reason": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 1000
-              },
-              "lookupId": {
-                "type": "string",
-                "format": "uuid"
-              }
-            },
-            "required": [
-              "mode",
-              "kind",
-              "revisionId",
-              "inputFingerprint",
-              "target",
-              "values",
-              "reason"
+              "lookupId",
+              "manualReason"
             ]
           }
         ]

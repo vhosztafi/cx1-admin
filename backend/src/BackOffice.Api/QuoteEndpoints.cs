@@ -77,7 +77,7 @@ public static class QuoteEndpoints
             var stored = await service.GetAsync(LocalIdentityService.Actor(context.User), quoteId, context.RequestAborted);
             using var proposal = JsonDocument.Parse(stored.Revision.ProposalJson);
             var readiness = QuoteReadiness.Assess(quoteId, stored.Revision.Id, proposal.RootElement, stored.TermAssessment, stored.CaptureUnavailableCode,
-                DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(time.GetUtcNow(), TimeZoneInfo.FindSystemTimeZoneById("Europe/London")).DateTime));
+                DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(time.GetUtcNow(), TimeZoneInfo.FindSystemTimeZoneById("Europe/London")).DateTime), stored.VehicleCaptureModes);
             context.Response.Headers.ETag = "\"" + Convert.ToBase64String(stored.Quote.RowVersion) + "\"";
             if (assessmentOnly) return Results.Ok(readiness);
             return Results.Ok(new
@@ -94,17 +94,17 @@ public static class QuoteEndpoints
         catch (Exception error) when (Known(error)) { return Failure(context, error); }
     }
 
-    private static IResult Outcome(HttpContext context, CommandOutcome outcome)
+    internal static IResult Outcome(HttpContext context, CommandOutcome outcome)
     {
         context.Response.Headers.ETag = outcome.Etag;
         if (outcome.Status == 201) context.Response.Headers.Location = $"/api/v1/quotes/{outcome.ResourceId:D}";
         return Results.Content(outcome.Body, "application/json", statusCode: outcome.Status);
     }
 
-    private static void Id(Guid id) { if (id == Guid.Empty) throw new QuoteHttpException(400, "invalid-quote-id"); }
-    private static bool Known(Exception error) => error is QuoteHttpException or QuoteOperationException or QuoteInputException or
+    internal static void Id(Guid id) { if (id == Guid.Empty) throw new QuoteHttpException(400, "invalid-quote-id"); }
+    internal static bool Known(Exception error) => error is QuoteHttpException or QuoteOperationException or QuoteInputException or
         QuoteValidationException or CommandKeyConflictException or CommandBusyException or DbUpdateConcurrencyException;
-    private static IResult Failure(HttpContext context, Exception error)
+    internal static IResult Failure(HttpContext context, Exception error)
     {
         var (status, code) = error switch
         {
