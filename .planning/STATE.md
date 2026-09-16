@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-16T06:55:42.938010+00:00"
+last_updated: "2026-09-16T07:14:58.280632+00:00"
 last_activity: 2026-09-16
 progress:
   total_phases: 13
   completed_phases: 4
   total_plans: 35
-  completed_plans: 26
+  completed_plans: 27
   percent: 31
 ---
 
@@ -20,16 +20,16 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute05-03; source trader/trade declarations verified. Complete readiness links, source-stage placement and final source reconciliation.
+**Current focus:** Execute05-04 driver and repeated history capture;05-03accepted with saved readiness links and source-stage reconciliation.
 
 ## Current Position
 
 Phase: 5 of 13 (Motor Trade quote capture)
-Plan: 05-03 of11 in progress; creation/receipt and partial business editor verified; source-complete wizard pending
+Plan: 05-04 of11 ready to execute;05-01/02/03complete
 Status: In progress — autonomous
-Last activity: 2026-09-16 —15 source-stage controls verified;57frontend tests, lint/typecheck/build and both-product Chrome persistence/readiness/recovery checks pass.05-03 incomplete.
+Last activity: 2026-09-16 —05-03complete;59frontend,293contracts, lint/typecheck/build and all eight both-product Chrome journeys pass. Latest backend523/67SQL unchanged.
 
-Progress: Phases1–4 complete;4/13phases,26completed plans.
+Progress: Phases1–4 complete;4/13phases,27completed plans.
 
 ## Accumulated Context
 
@@ -43,7 +43,7 @@ Progress: Phases1–4 complete;4/13phases,26completed plans.
 
 ### Pending Todos
 
-- Execute05-03 quote creation/business/term wizard; consume05-02-SUMMARY/REVIEW,05-03-PLAN,UI-SPEC,source mappings and ACCEPTANCE-BACKLOG. Retain all runtime gates.
+- Execute05-04 driver/history capture; consume05-03-SUMMARY,05-04-PLAN,UI-SPEC,source mappings and ACCEPTANCE-BACKLOG. Retain all runtime gates.
 - Keep future business endpoints closed until their owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,7 +54,7 @@ Progress: Phases1–4 complete;4/13phases,26completed plans.
 ## Session Continuity
 
 Last session: 2026-09-16
-Stopped at:Source trader/trade questions verified. NEXT readiness field links and input guidance, source-stage placement and full05-03source acceptance. Read05-03-PROGRESS. Owned previews37756/40896 stopped.
+Stopped at:05-03summary committed7b9238c after implementatione43af11. Next05-04 driver basis, driver identities/nested histories and readiness. No owned previews remain.
 Resume file: .planning/phases/05-motor-trade-quote-capture/05-03-PLAN.md
 
 ## Autonomous continuation
@@ -63,4 +63,4 @@ User approved requirements/roadmap and autonomous choices/progression on 2026-09
 
 Thread heartbeat: continue-cover-mga-back-office-mvp, active every 10 minutes. Resume unfinished work in this same task; notify meaningful progress/blockers only; pause on actual milestone completion, user stop or persistent external blocker with no remaining useful work.
 
-Latest checkpoint:Source-question fixturesQT-MT-0000000051/52 revision8; all15 answers persisted, conditional retention/clearing and mismatch denial verified.57frontend tests. Latest backend523/67SQL and293contracts unchanged. No QUO signoff before05-11.
+Latest checkpoint:05-03-SUMMARY contains source acceptance and final browser evidence.59frontend/293contracts; latest backend523/67SQL. Full readiness stays blocked and no QUO signoff before05-11.
