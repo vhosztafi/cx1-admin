@@ -9,12 +9,13 @@ export function addQuoteContracts({schemas:s,ref:r,text:t,enumeration:e,object:o
   s.QuoteIdentityResult=o({id});
   s.QuoteCreateRequest=o({relationshipId:id,productVersionId:id,matchSubmissionId:id,proposal:r('QuoteCaptureProposal')},['relationshipId','productVersionId']);
   s.QuoteSaveRequest=o({proposal:r('QuoteCaptureProposal'),reason:t(1000)},['proposal']);
-  s.QuoteCloneRequest=o({sourceRevisionId:id,relationshipId:id,reason:t(1000)});
+  s.QuoteCloneRequest=o({sourceRevisionId:id,relationshipId:id,confirmedTermsId:id,reason:{...t(1000),pattern:'\\S'}},['sourceRevisionId','relationshipId','reason']);
+  s.QuoteCloneTerms=o({sourceRevisionId:id,relationshipId:id,agencyTermsVersionId:id,version:{type:'integer',minimum:1},effectiveFrom:{type:'string',format:'date'},confirmationRequired:b});
   s.QuoteCaptureSummary=o({id,reference:t(40),relationshipId:id,clientId:id,agencyId:id,clientName:t(),agencyName:t(),productCode:product,state,revisionId:id,revisionNumber:{type:'integer',minimum:1},updatedAt:instant});
   s.QuoteReadiness=o({quoteId:id,revisionId:id,ready:b,issues:a(o({path:t(500),code:t(100),message:t(1000),category:e('capture','evidence','eligibility','matching','configuration'),severity:e('error','warning'),questionId:t(200),relatedPath:t(500)},['path','code','message','category','severity']))});
   s.QuoteCaptureRevision=o({id,quoteId:id,number:{type:'integer',minimum:1},productVersionId:id,agencyTermsVersionId:id,questionSetVersion:t(100),referenceDataVersion:t(100),proposal:r('QuoteCaptureProposal'),proposalHash:hash,savedAt:instant,savedByLabel:t(),reason:t(1000)},['id','quoteId','number','productVersionId','agencyTermsVersionId','questionSetVersion','referenceDataVersion','proposal','proposalHash','savedAt','savedByLabel']);
   s.QuoteCaptureVersions=o({schemaVersion:t(100),questionSetVersion:t(100),referenceDataVersion:t(100)});
-  s.QuoteCaptureView=o({...s.QuoteCaptureSummary.properties,productVersionId:id,captureVersions:r('QuoteCaptureVersions'),proposal:r('QuoteCaptureProposal'),captureClosed:b,capabilities:o({canSave:b,canClone:b,canWithdraw:b,canAttachEvidence:b}),readiness:r('QuoteReadiness')});
+  s.QuoteCaptureView=o({...s.QuoteCaptureSummary.properties,productVersionId:id,captureVersions:r('QuoteCaptureVersions'),proposal:r('QuoteCaptureProposal'),captureClosed:b,captureClosedAt:{anyOf:[instant,{type:'null'}]},captureClosedReason:{anyOf:[t(1000),{type:'null'}]},capabilities:o({canSave:b,canClone:b,canWithdraw:b,canAttachEvidence:b}),readiness:r('QuoteReadiness')});
   s.QuoteCaptureProduct=o({productVersionId:id,productCode:product,displayName:t(),versionLabel:t(100),questionSetVersion:t(100),referenceDataVersion:t(100),captureEligible:b,unavailableReason:t(1000)},['productVersionId','productCode','displayName','versionLabel','questionSetVersion','referenceDataVersion','captureEligible']);
   const replace=(method,path,...args)=>{delete paths[path]?.[method];op(method,path,...args);};
   const replaceList=(path,...args)=>{delete paths[path]?.get;list(path,...args);};
@@ -24,6 +25,8 @@ export function addQuoteContracts({schemas:s,ref:r,text:t,enumeration:e,object:o
   replace('put','/quotes/{quoteId}/proposal','saveQuoteProposal','quote-capture',{existing:true,input:r('QuoteSaveRequest'),output:r('QuoteIdentityResult')});
   replace('post','/quotes/{quoteId}/withdraw','withdrawQuote','quote-capture',{existing:true,input:o({reason:t(1000)}),output:r('QuoteIdentityResult')});
   replace('post','/quotes/{quoteId}/clone','cloneQuote','quote-capture',{existing:true,input:r('QuoteCloneRequest'),output:r('QuoteIdentityResult'),status:201});
+  op('get','/quotes/{quoteId}/clone-terms','getQuoteCloneTerms','quote-capture',{query:[['sourceRevisionId',id],['relationshipId',id]],output:r('QuoteCloneTerms')});
+  for(const parameter of paths['/quotes/{quoteId}/clone-terms'].get.parameters.filter(x=>x.in==='query'))parameter.required=true;
   delete paths['/quotes/{quoteId}/validate'];
   op('get','/quotes/{quoteId}/readiness','validateQuote','quote-read',{output:r('QuoteReadiness'),summary:'Assess current revision readiness without changing quote state'});
   replaceList('/quotes/{quoteId}/revisions','listQuoteRevisions','quote-read',r('QuoteCaptureRevision'));
@@ -46,7 +49,7 @@ export function addQuoteContracts({schemas:s,ref:r,text:t,enumeration:e,object:o
   comparison.parameters.push({name:'cursor',in:'query',required:false,schema:t(2048)},{name:'pageSize',in:'query',required:false,schema:{type:'integer',minimum:1,maximum:100,default:25}});
   comparison.description+=' Compare revisions belonging to this quote under current authorization. Child UUIDs determine identity; before/after paths are JSON pointers into their respective snapshots. JSON strings retain exact typed values. Paginate complete changes with a protected cursor bound to both revision IDs and current scope; never truncate a value.';
   const supportPaths=addQuoteSupportContracts({schemas:s,ref:r,text:t,enumeration:e,object:o,array:a,id,instant,operation:op,list,paths});
-  for(const path of [...supportPaths,'/quotes','/quotes/{quoteId}','/quotes/{quoteId}/proposal','/quotes/{quoteId}/withdraw','/quotes/{quoteId}/clone','/quotes/{quoteId}/readiness','/quotes/{quoteId}/revisions','/quotes/{quoteId}/revisions/{revisionId}','/quotes/{quoteId}/compare','/quote-products'])
+  for(const path of [...supportPaths,'/quotes/{quoteId}/clone-terms','/quotes','/quotes/{quoteId}','/quotes/{quoteId}/proposal','/quotes/{quoteId}/withdraw','/quotes/{quoteId}/clone','/quotes/{quoteId}/readiness','/quotes/{quoteId}/revisions','/quotes/{quoteId}/revisions/{revisionId}','/quotes/{quoteId}/compare','/quote-products'])
     for(const operation of Object.values(paths[path])) {
       operation['x-runtime-status']='planned-phase-05';
       if(operation.operationId==='listQuoteProducts') {

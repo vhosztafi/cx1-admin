@@ -19,6 +19,7 @@ builder.AddLocalIdentity();
 builder.Services.AddSingleton<PartyPaging>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Quotes.QuoteService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Quotes.QuoteEvidenceService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Quotes.QuoteLifecycleService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Quotes.QuoteProducts>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyDraftService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyEvidenceService>();
@@ -96,6 +97,7 @@ app.MapMatches();
 app.MapQuotes();
 app.MapQuoteLookups();
 app.MapQuoteEvidence();
+app.MapQuoteLifecycle();
 // Domain endpoints are added only alongside their authentication and persistence.
 app.Run();
 

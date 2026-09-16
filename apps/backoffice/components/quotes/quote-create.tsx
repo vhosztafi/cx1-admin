@@ -100,7 +100,7 @@ export function QuoteCreate({ actorId }: { actorId: string }) {
     </Panel></aside></div></>;
 }
 
-function ClientChoice({ onSelect }: { onSelect: (client: ClientSummary) => void }) {
+export function ClientChoice({ onSelect }: { onSelect: (client: ClientSummary) => void }) {
   const [search, setSearch] = useState(''); const [query, setQuery] = useState(''); const [history, setHistory] = useState<string[]>(['']);
   const cursor = history.at(-1)!;
   const clients = useQuoteResource<Page<ClientSummary>>(`/api/v1/clients?pageSize=10${query ? `&q=${encodeURIComponent(query)}` : ''}${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`);
@@ -110,7 +110,7 @@ function ClientChoice({ onSelect }: { onSelect: (client: ClientSummary) => void 
     <Paging total={clients.data?.totalCount} previous={history.length > 1 ? () => setHistory(value => value.slice(0, -1)) : undefined} next={clients.data?.nextCursor ? () => setHistory(value => [...value, clients.data!.nextCursor!]) : undefined} /></>;
 }
 
-function RelationshipChoice({ clientId, selected, onSelect }: { clientId: string; selected?: string; onSelect: (relationship: Relationship) => void }) {
+export function RelationshipChoice({ clientId, selected, onSelect }: { clientId: string; selected?: string; onSelect: (relationship: Relationship) => void }) {
   const [history, setHistory] = useState<string[]>(['']); const cursor = history.at(-1)!;
   const relationships = useQuoteResource<Page<Relationship>>(`/api/v1/clients/${clientId}/relationships?pageSize=10${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`);
   return <>{!relationships.data ? <LoadFeedback error={relationships.error} retry={relationships.refresh} /> : relationships.data.items.length === 0 ? <EmptyState title="No agency relationships">Add a relationship from the client account before creating a quote.</EmptyState> : <div className="quote-relationships">{relationships.data.items.map(item => <label className="quote-product" key={item.id}><input type="radio" name="relationship" checked={selected === item.id} disabled={item.state !== 'active'} onChange={() => onSelect(item)} /><span><strong>{item.agencyName}</strong><small>{item.agencyReference} · {item.state}</small></span></label>)}</div>}

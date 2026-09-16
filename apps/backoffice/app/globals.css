@@ -320,3 +320,8 @@ h1, h2, p { margin: 0; }
 .quote-row-actions { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
 .quote-row-actions .button { white-space:normal; text-align:left; overflow-wrap:anywhere; }
 .quote-driver-section .quote-reference-fields > .button { margin-bottom:16px; }
+
+.table-scroll[aria-label="Saved quote revisions"] table { min-width:900px; }
+.table-scroll[aria-label="Saved quote revisions"] td { vertical-align:top; }
+.table-scroll[aria-label="Saved quote revisions"] td:last-child { min-width:380px; }
+.quote-record-tabs [aria-selected="true"] { color:var(--accent,#405cf5); border-color:var(--accent,#405cf5); background:#f0f3ff; }
