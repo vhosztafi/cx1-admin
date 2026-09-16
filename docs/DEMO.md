@@ -129,3 +129,7 @@ This editor is still partial: title/company category, consent/marketing controls
 ### Requested policy term
 
 In **Edit quote draft → Agency & product**, enter annual or short-period dates and London local times. An annual leap-day start uses28February for the next non-leap anniversary. Skipped spring clock times cannot be saved; repeated autumn times offer independent GMT/British Summer Time choices for start and end. Switching from a short period to annual retains its end fields until you explicitly remove them. Incomplete terms remain saveable drafts. These controls supersede the earlier term-unavailable note; other missing source questions and rating remain unavailable. Reproduce the saved term checks with `node scripts/verify-quote-term-browser.mjs` against the documented native previews.
+
+### Proposer selections and consent
+
+The quote editor now captures proposer title, source company category, quotation-data consent, marketing consent and contact methods using the saved quote’s catalogue version. **Record no…** records an explicit empty answer; **Clear… answer** returns it to unanswered. Removing marketing consent retains contact-method choices for explicit review. These answers belong to the quote and do not change client contact records or send messages. A missing or unsupported catalogue version makes these controls unavailable rather than substituting current options. Reproduce this slice with `node scripts/verify-quote-proposer-browser.mjs`; remaining conditional business questions and occupations are still under implementation.
