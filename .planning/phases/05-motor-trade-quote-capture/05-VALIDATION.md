@@ -218,3 +218,8 @@ Readiness navigation and source-stage alignment committede43af11.59frontendtests
 ## Driver/history capture checkpoint — 2026-09-16
 
 ff5db28:560backend=467unit+93integration,67realSQL,0skips in fresh .local/phase5-driver-history-final-20260916;560/67assertion passed. Earlier failed history run and corrected clock test are documented in05-04-PROGRESS.md.67frontendtests plus lint/typecheck/build and294contracttests pass. Final Chrome both-product driver/history capture and recovery fixtures80/85 revision23 pass; business regression81/83 and43readiness targets per product82/84 also pass. Exact logs, screenshots, prior attempts and process cleanup are recorded in05-04-PROGRESS. Driver forms are functional;05-04is incomplete pending chronology/text and dynamic cover-dependent rules/options. Full assessment remains blocked. No skippedSQL, funnel change or humanUAT claim.
+
+
+## Final05-04 acceptance — 2026-09-16
+
+573a9eb completes chronology/text limits, ban bands, reconciled cover-dependent options and personal vehicle owner prerequisites. Driver option choices are per-instance, exact and pinned; stale values are retained for explicit clearing with precise saved-readiness focus. Final fresh587backend=494unit+93integration,67realSQL,0skips passed in .local/phase5-driver-options-20260916;587/67result assertion passed, integration9.9447minutes.70frontend, lint/typecheck/build and294contracts pass. Both-product Chrome dynamic options86/87revision14, full driver/history88/89revision23 and readiness90/91(43targets each) pass. Exact logs, screenshots and scope are in05-04-SUMMARY.md. Owned previews32848/33900verified and stopped. Plan05-04complete; next05-05vehicles. Full readiness and QUO signoff remain gated.
