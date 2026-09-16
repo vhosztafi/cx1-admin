@@ -94,3 +94,18 @@ test('canonical amount and percentage answer metadata passes the strict draft sc
     assert.ok(valid(proposal), JSON.stringify(valid.errors));
   }
 });
+
+
+test('business conditional answers retain child details and unrelated answers until explicitly cleared', () => {
+  const version = references.version;
+  let draft = changeAnswer(empty(), 'risk.business.responses', version, 'MTS-03-Q04', 'boolean', true);
+  draft = changeAnswer(draft, 'risk.business.responses', version, 'MTS-03-Q05', 'text', 'Fictional Trade Association');
+  draft = changeAnswer(draft, 'risk.business.responses', version, 'MTS-03-Q08', 'count', 0);
+  const previous = structuredClone(draft);
+  draft = changeAnswer(draft, 'risk.business.responses', version, 'MTS-03-Q04', 'boolean', false);
+  assert.equal(draft.risk.business.responses.answers.find(x => x.questionId === 'MTS-03-Q05').value, 'Fictional Trade Association');
+  assert.equal(previous.risk.business.responses.answers[0].value, true);
+  draft = changeAnswer(draft, 'risk.business.responses', version, 'MTS-03-Q05', 'text', undefined);
+  assert.deepEqual(draft.risk.business.responses.answers.map(x => [x.questionId, x.value]), [['MTS-03-Q04', false], ['MTS-03-Q08', 0]]);
+  assert.equal(valid(draft), true, JSON.stringify(valid.errors));
+});

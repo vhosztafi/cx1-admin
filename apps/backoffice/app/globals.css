@@ -288,6 +288,7 @@ h1, h2, p { margin: 0; }
 .quote-form-grid input, .quote-form-grid select, .quote-form-label textarea { width:100%; min-width:0; padding:9px 10px; font:inherit; font-size:14px; font-weight:400; border:1px solid #d9dce4; border-radius:6px; background:white; }
 .quote-form-label textarea { min-height:100px; resize:vertical; margin-bottom:18px; }
 .quote-form-grid small { color:#b42318; font-weight:400; }
+.quote-form-grid .client-help { color:var(--muted); font-weight:400; }
 .quote-save-actions { display:grid; gap:10px; }
 .quote-save-actions .button { white-space:normal; }
 .quote-create-rail .agency-steps { margin-bottom:18px; }
