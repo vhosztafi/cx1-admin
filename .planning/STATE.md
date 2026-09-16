@@ -20,13 +20,13 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Phase6 underwriting and first policy issue.
+**Current focus:** Phase6 detailed source/data/API/UI planning; context and research recorded.
 
 ## Current Position
 
 Phase: 6 of 13 (Underwriting and first policy issue)
 Plan: Not started
-Status: Ready to plan — autonomous
+Status: Planning — autonomous
 Last activity: 2026-09-16 — Phase5 complete; implementatione2741f3 and evidencea4498dd.680backend/85SQL,80frontend,294contracts,37browser journeys and actual restart passed.
 
 Progress: Phases1–5 complete;5/13 phases,35 completed implementation plans.
@@ -53,9 +53,9 @@ Progress: Phases1–5 complete;5/13 phases,35 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-16
-Stopped at: Phase5 verified and committed; automatic transition toPhase6 planning.
-Resume file: .planning/phases/05-motor-trade-quote-capture/05-PHASE06-HANDOFF.md
+Last session: 2026-09-16T16:16:36.059Z
+Stopped at: Phase6 context and research complete; detailed source/data/API/UI planning gates next
+Resume file: .planning/phases/06-underwriting-and-first-policy-issue/06-PLANNING-PROGRESS.md
 
 ## Autonomous continuation
 
