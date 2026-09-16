@@ -113,7 +113,8 @@ public sealed class QuoteReadinessTests
             var term = QuoteTerm.Assess(proposal.GetProperty("termIntent")); Assert.Empty(term.Issues);
             var result = QuoteReadiness.Assess(Guid.NewGuid(), Guid.NewGuid(), proposal, term, null, new DateOnly(2026,9,15));
             Assert.False(result.Ready);
-            Assert.Equal("quote-assessment-unavailable", Assert.Single(result.Issues).Code);
+            Assert.Equal("quote-assessment-unavailable", Assert.Single(result.Issues, issue => issue.Code != "vehicle-capture-context-required").Code);
+            Assert.Equal(proposal.GetProperty("risk").GetProperty("vehicles").GetArrayLength(), result.Issues.Count(issue => issue.Code == "vehicle-capture-context-required"));
         }
     }
 

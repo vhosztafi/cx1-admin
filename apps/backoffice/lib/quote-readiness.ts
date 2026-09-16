@@ -1,5 +1,6 @@
 import type { DriverOptionState } from '../../../scripts/quote-dynamic-options.mjs';
 import type { DriverField } from './quote-driver-fields';
+import type { VehicleField } from './quote-vehicle-fields';
 import type { SourceQuestion } from './quote-source-questions';
 import type { QuoteIssue, QuoteObject, QuoteProposal } from './quotes';
 
@@ -19,7 +20,9 @@ const answers: Record<string, ReadinessTarget> = Object.fromEntries([
 
 // Only explicit editable targets are linked. Never infer a wizard stage from
 // risk.business: that container also owns later claims/vehicle answers.
-export function readinessTarget(issue: QuoteIssue, proposal: QuoteProposal, questions: SourceQuestion[], driverFields: DriverField[] = [], driverOptions: DriverOptionState[] = []): ReadinessTarget | undefined {
+export function readinessTarget(issue: QuoteIssue, proposal: QuoteProposal, questions: SourceQuestion[], driverFields: DriverField[] = [], driverOptions: DriverOptionState[] = [], vehicleFields: VehicleField[] = []): ReadinessTarget | undefined {
+  const vehicleTarget = vehicleReadinessTarget(issue, proposal, vehicleFields);
+  if (vehicleTarget) return vehicleTarget;
   const driverTarget = driverReadinessTarget(issue, proposal, driverFields, driverOptions);
   if (driverTarget) return driverTarget;
   if (issue.questionId) {
@@ -39,6 +42,31 @@ export function readinessTarget(issue: QuoteIssue, proposal: QuoteProposal, ques
     const index = Number(activity[1]);
     if (Array.isArray(rows) && index < rows.length) return { stage: 2, label: `Occupation ${index + 1}${activity[2] === 'turnoverBasisPoints' ? ' turnover share (%)' : ''}` };
   }
+  return undefined;
+}
+
+function vehicleReadinessTarget(issue: QuoteIssue, proposal: QuoteProposal, fields: VehicleField[]): ReadinessTarget | undefined {
+  if (!fields.length) return undefined;
+  const stage = proposal.productCode === 'motor-trade-combined' ? 6 : 5;
+  if (issue.path === '/risk/specifiedVehiclesRequested') return { stage, label: 'Are specified vehicles required?' };
+  const plate = /^\/risk\/(heldTradePlates|tradePlates)\/(\d+)\/number$/.exec(issue.path);
+  if (plate && Array.isArray(proposal.risk?.[plate[1]]) && Number(plate[2]) < (proposal.risk[plate[1]] as unknown[]).length) return { stage, label: `${plate[1] === 'heldTradePlates' ? 'Held' : 'Covered'} trade plates ${Number(plate[2]) + 1} · Plate number` };
+  const match = /^\/risk\/vehicles\/(\d+)\/(.+)$/.exec(issue.path);
+  if (match) {
+    const vehicle = (proposal.risk?.vehicles as QuoteObject[] | undefined)?.[Number(match[1])]; if (!vehicle) return undefined;
+    let prefix = `Vehicle ${Number(match[1]) + 1}`, path = match[2], group = 'vehicle';
+    if (path === 'ownerDriverId') return { stage, label: `${prefix} · Named driver owner` };
+    if (path === 'modifications' && !((vehicle.modifications ?? []) as QuoteObject[]).length) return { stage, label: `Add modification for vehicle ${Number(match[1]) + 1}` };
+    const modification = /^modifications\/(\d+)\/code(?:\/.*)?$/.exec(path);
+    if (modification) { if (!((vehicle.modifications ?? []) as QuoteObject[])[Number(modification[1])]) return undefined; group = 'modification'; path = 'code'; prefix += ` · Modification ${Number(modification[1]) + 1}`; }
+    const offset = /^responses\/answers\/(\d+)/.exec(path);
+    const answer = offset ? ((vehicle.responses as QuoteObject | undefined)?.answers as QuoteObject[] | undefined)?.[Number(offset[1])] : undefined;
+    const question = issue.questionId ?? answer?.questionId;
+    const field = fields.find(field => field.group === group && (question ? field.questionId === question : !field.questionId && field.path === path.split('/')[0]));
+    return field ? { stage, label: `${prefix} · ${field.label}` } : undefined;
+  }
+  const field = issue.questionId && fields.find(field => ['portfolio', 'plates'].includes(field.group) && field.questionId === issue.questionId);
+  if (field) return { stage, label: `${field.group === 'portfolio' ? 'Vehicle portfolio' : 'Trade plates'} · ${field.label}` };
   return undefined;
 }
 
