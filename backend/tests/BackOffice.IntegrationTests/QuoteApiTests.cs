@@ -117,6 +117,8 @@ public sealed partial class QuoteStorageTests
             Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("code").GetString() == "required-capture-field" && x.GetProperty("path").GetString() == "/insured/firstName");
             Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("code").GetString() == "activity-split-share-required" && x.GetProperty("path").GetString() == "/risk/business/declaredActivitySplit/sales");
             Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("code").GetString() == "business-description-required");
+            Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("code").GetString() == "proposer-name-required" && x.GetProperty("path").GetString() == "/insured/proposerNames");
+            Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("code").GetString() == "business-activity-required" && x.GetProperty("path").GetString() == "/risk/business/activities");
             Assert.Equal(2, await db.Set<QuoteRevision>().CountAsync()); Assert.Equal(3, await db.Set<IdempotencyRecord>().CountAsync());
             foreach (var email in new[] { "agency-admin@cover.example", "system-admin@cover.example" })
             {

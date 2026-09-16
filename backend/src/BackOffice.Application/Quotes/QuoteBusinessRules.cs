@@ -77,7 +77,80 @@ public static class QuoteBusinessRules
         }
         AssessSplit(proposal, Add);
         AssessPrototype(proposal, Add);
+        AssessEntity(proposal, Add);
+        AssessActivities(proposal, Add);
+        AssessBusinessBounds(proposal, Add);
         return issues;
+    }
+
+    private static void AssessEntity(JsonElement proposal, Action<string, string> add)
+    {
+        var insured = At(proposal, "insured"); var names = Items(At(insured, "proposerNames")).ToArray();
+        if (names.Length == 0) add("proposer-name-required", "/insured/proposerNames");
+        for (var index = 0; index < names.Length; index++)
+            if (!Present(names[index])) add("proposer-name-required", $"/insured/proposerNames/{index}");
+        var entity = At(insured, "entityType");
+        if (!Present(entity)) { add("legal-entity-required", "/insured/entityType"); return; }
+        var company = QuoteCatalogueIdentity.TrustedValue(At(insured, "declaredCompanyType"), "companyTypes");
+        if (company is null) add("legal-entity-company-context-required", "/insured/declaredCompanyType");
+        else if (!(entity.GetString() switch {
+            "sole-trader" => company == 1,
+            "partnership" or "llp" => company == 4,
+            "limited-company" => company is 2 or 3,
+            _ => false }))
+        {
+            add("conflicting-legal-entity", "/insured/entityType");
+            add("conflicting-legal-entity", "/insured/declaredCompanyType");
+        }
+        if (entity.GetString() is "limited-company" or "llp" && !Present(At(insured, "companyNumber")))
+            add("incorporated-company-number-required", "/insured/companyNumber");
+    }
+
+    private static void AssessActivities(JsonElement proposal, Action<string, string> add)
+    {
+        const string path = "/risk/business/activities";
+        var value = At(proposal, "risk.business.activities"); var activities = Items(value).ToArray();
+        if (activities.Length == 0) add("business-activity-required", path);
+        var codes = new HashSet<(string?, long)>(); long total = 0; var complete = activities.Length > 0;
+        for (var index = 0; index < activities.Length; index++)
+        {
+            var activity = activities[index]; var code = At(activity, "code"); var share = Number(At(activity, "turnoverBasisPoints"));
+            var itemPath = path + "/" + index;
+            if (code.ValueKind == JsonValueKind.Undefined) add("business-activity-code-required", itemPath + "/code");
+            else
+            {
+                if (!codes.Add((At(code, "collection").GetString(), At(code, "value").GetInt64()))) add("duplicate-business-activity", itemPath + "/code");
+                if (activities.Length > 1 && QuoteCatalogueIdentity.RequiresCarJockeyRadius(code)) add("car-jockey-must-be-only-activity", itemPath + "/code");
+            }
+            if (share is null or < 100) add("business-activity-minimum-one-percent", itemPath + "/turnoverBasisPoints");
+            if (share is null) complete = false; else total += share.Value;
+        }
+        if (value.ValueKind != JsonValueKind.Undefined)
+        {
+            if (!complete) add("activity-share-required", path);
+            else if (total != 10000) add("activity-total-must-equal-100-percent", path);
+        }
+    }
+
+    private static void AssessBusinessBounds(JsonElement proposal, Action<string, string> add)
+    {
+        var started = At(proposal, "risk.business.startedOn"); var policyStart = At(proposal, "termIntent.localStartDate");
+        if (Present(started) && Present(policyStart) && string.CompareOrdinal(started.GetString(), policyStart.GetString()) > 0)
+            add("business-start-after-policy", "/risk/business/startedOn");
+        void Limit(JsonElement value, int maximum, string path)
+        {
+            if (value.ValueKind == JsonValueKind.String && value.GetString()!.Length > maximum) add("source-text-too-long", path);
+        }
+        void Address(JsonElement address, string path)
+        {
+            Limit(At(address, "postcode"), 10, path + "/postcode");
+            foreach (var field in new[] { "houseNumber", "street", "town", "city", "county" }) Limit(At(address, field), 50, path + "/" + field);
+        }
+        Address(At(proposal, "insured.address"), "/insured/address"); var index = 0;
+        foreach (var premise in Items(At(proposal, "risk.premises"))) Address(At(premise, "address"), $"/risk/premises/{index++}/address");
+        var association = Answer(proposal, "risk.business.responses", "MTS-03-Q07"); Limit(association.Value, 20, association.Path);
+        var facts = At(proposal, "risk.materialFacts");
+        if (facts.ValueKind == JsonValueKind.String && facts.GetString()!.Length > 1000) add("material-facts-too-long", "/risk/materialFacts");
     }
 
     private static void AssessPrototype(JsonElement proposal, Action<string, string> add)

@@ -11,7 +11,7 @@ public static class QuoteCatalogueIdentity
     private sealed record Binding(string[] Collections, string Rule);
     private sealed record Catalogue(string Version, FrozenDictionary<(string Product, string Scope, string Question), string> Questions,
         FrozenDictionary<(string Scope, string? Question), Binding> Bindings,
-        FrozenDictionary<string, FrozenDictionary<long, string>> Collections, string[] Products);
+        FrozenDictionary<string, FrozenDictionary<long, string>> Collections, string[] Products, FrozenSet<long> CarJockeyOccupations);
     private static readonly Lazy<Catalogue> Data = new(Load);
     public static string Version => Data.Value.Version;
 
@@ -25,6 +25,9 @@ public static class QuoteCatalogueIdentity
             !reference.TryGetProperty("label", out var suppliedLabel) || suppliedLabel.GetString() != label) return null;
         return id;
     }
+
+    internal static bool RequiresCarJockeyRadius(JsonElement reference) =>
+        TrustedValue(reference, "mtOccupations") is { } value && Data.Value.CarJockeyOccupations.Contains(value);
 
     public static IReadOnlyList<QuoteFieldIssue> ValidateQuestions(JsonElement proposal)
     {
@@ -136,7 +139,10 @@ public static class QuoteCatalogueIdentity
             bindings[key] = new(families, rule);
         }
         return new(version, definitions.ToFrozenDictionary(), bindings.ToFrozenDictionary(), collections.ToFrozenDictionary(StringComparer.Ordinal),
-            q.GetProperty("products").EnumerateArray().Select(value => value.GetString()!).ToArray());
+            q.GetProperty("products").EnumerateArray().Select(value => value.GetString()!).ToArray(),
+            r.GetProperty("collections").GetProperty("mtOccupations").EnumerateArray()
+                .Where(row => row.TryGetProperty("requireCarJockeyRadius", out var required) && required.ValueKind == JsonValueKind.True)
+                .Select(row => row.GetProperty("value").GetInt64()).ToFrozenSet());
     }
 
     private static JsonDocument Read(string name)
