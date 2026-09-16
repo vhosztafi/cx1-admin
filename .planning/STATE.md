@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-16T00:45:13.740297+00:00"
+last_updated: "2026-09-16T01:09:41.481712+00:00"
 last_activity: 2026-09-16
 progress:
   total_phases: 13
@@ -25,9 +25,9 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 ## Current Position
 
 Phase: 5 of 13 (Motor Trade quote capture)
-Plan: 05-02 of11 in progress; authenticated quote capture API verified
+Plan: 05-02 of11 in progress; relationship-scoped product selection verified
 Status: In progress — autonomous
-Last activity: 2026-09-16 — Core quote capture API and partial readiness verified;473backend/65SQL,291contracts,30frontend.
+Last activity: 2026-09-16 — Capture product selection API verified;475backend/66SQL,291contracts,30frontend.
 
 Progress: Phases1–4 complete;4/13phases,25completed plans.
 
@@ -54,7 +54,7 @@ Progress: Phases1–4 complete;4/13phases,25completed plans.
 ## Session Continuity
 
 Last session: 2026-09-16
-Stopped at:05-02 create/detail/save/readiness API verified;473backend/65SQL,291contracts,30frontend. NEXT product selection and supported-service quote demo examples, then remaining05-02 acceptance/summary. Read05-02-PROGRESS.
+Stopped at:05-02 capture product selection verified;475backend/66SQL,291contracts,30frontend. NEXT supported-service complete/incomplete demo quotes, then remaining05-02 acceptance/summary. Preserve existing draft/suspended agencies; read05-02-PROGRESS.
 Resume file: .planning/phases/05-motor-trade-quote-capture/05-02-PROGRESS.md
 
 ## Autonomous continuation
@@ -63,4 +63,4 @@ User approved requirements/roadmap and autonomous choices/progression on 2026-09
 
 Thread heartbeat: continue-cover-mga-back-office-mvp, active every 10 minutes. Resume unfinished work in this same task; notify meaningful progress/blockers only; pause on actual milestone completion, user stop or persistent external blocker with no remaining useful work.
 
-Latest checkpoint:05-02-PROGRESS records four authenticated quote routes and truthful partial readiness.05-02 incomplete; progression remains blocked until dependent semantic/evidence/matching checks run.
+Latest checkpoint:05-02-PROGRESS records current capture product selection.05-02 incomplete; full readiness remains blocked pending dependent semantic/evidence/matching checks.

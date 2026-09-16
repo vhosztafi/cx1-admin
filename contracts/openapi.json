@@ -57251,7 +57251,7 @@
       "get": {
         "operationId": "listQuoteProducts",
         "summary": "list Quote Products",
-        "description": "Requires quote-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
+        "description": "Requires quote-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Offers are the current explicit Motor Trade capture catalogue. Valid empty capture settings revoke all offers; missing, malformed or dangling configuration returns 503. Eligibility is calculated for the selected relationship and does not imply rating or progression readiness. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
         "tags": [
           "quote-products"
         ],
@@ -57429,7 +57429,7 @@
             }
           }
         },
-        "x-runtime-status": "planned-phase-05"
+        "x-runtime-status": "implemented-capture-selection"
       }
     },
     "/quotes/{quoteId}/lookups": {

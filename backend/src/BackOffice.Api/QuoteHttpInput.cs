@@ -16,6 +16,15 @@ public sealed record QuoteSaveInput(string Proposal, string? Reason);
 // catalogue, capture shape and ownership validation after this bounded parse.
 public static class QuoteHttpInput
 {
+    public static Guid ProductRelationship(HttpRequest request)
+    {
+        if (request.Query.Count != 1 || request.Query.Keys.Single() != "relationshipId") throw new QuoteHttpException(400, "invalid-query");
+        var values = request.Query["relationshipId"];
+        if (values.Count != 1 || values[0] is not { Length: 36 } text || !Guid.TryParseExact(text, "D", out var id) || id == Guid.Empty)
+            throw new QuoteHttpException(400, "invalid-query");
+        return id;
+    }
+
     public static async Task<QuoteCreateInput> CreateAsync(HttpRequest request, CancellationToken token = default)
     {
         using var document = await Read(request, token);

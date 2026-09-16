@@ -15,6 +15,29 @@ public static class QuoteEndpoints
         app.MapPut("/api/v1/quotes/{quoteId:guid}/proposal", Save).RequireAuthorization("quote-capture");
         app.MapGet("/api/v1/quotes/{quoteId:guid}", Get).RequireAuthorization("quote-read");
         app.MapGet("/api/v1/quotes/{quoteId:guid}/readiness", Readiness).RequireAuthorization("quote-read");
+        app.MapGet("/api/v1/quote-products", Products).RequireAuthorization("quote-read");
+    }
+
+    private static async Task<IResult> Products(HttpContext context, QuoteProducts service)
+    {
+        try
+        {
+            var relationship = QuoteHttpInput.ProductRelationship(context.Request);
+            var selections = await service.ListAsync(LocalIdentityService.Actor(context.User), relationship, context.RequestAborted);
+            return Results.Ok(new { items = selections.Select(product =>
+            {
+                var item = new Dictionary<string, object?>
+                {
+                    ["productVersionId"] = product.ProductVersionId, ["productCode"] = product.ProductCode,
+                    ["displayName"] = product.DisplayName, ["versionLabel"] = product.VersionLabel,
+                    ["questionSetVersion"] = product.QuestionSetVersion, ["referenceDataVersion"] = product.ReferenceDataVersion,
+                    ["captureEligible"] = product.CaptureEligible
+                };
+                if (product.UnavailableReason is not null) item["unavailableReason"] = product.UnavailableReason;
+                return item;
+            }).ToArray() });
+        }
+        catch (Exception error) when (Known(error)) { return Failure(context, error); }
     }
 
     private static async Task<IResult> Create(HttpContext context, QuoteService service)

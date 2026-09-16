@@ -18,6 +18,7 @@ builder.Services.AddHealthChecks();
 builder.AddLocalIdentity();
 builder.Services.AddSingleton<PartyPaging>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Quotes.QuoteService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Quotes.QuoteProducts>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyDraftService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyEvidenceService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Agencies.AgencyNotificationRetry>();

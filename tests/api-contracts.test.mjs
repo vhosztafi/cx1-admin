@@ -57,7 +57,7 @@ test('quote readiness and revision discovery are scoped reads with required cont
  const revision=getOperation('getQuoteRevision');assert.deepEqual(revision.parameters.filter(parameter=>parameter.in==='path').map(parameter=>parameter.name),['quoteId','revisionId']);
  const comparison=getOperation('compareQuoteRevisions');assert.ok(comparison.parameters.filter(parameter=>['leftRevisionId','rightRevisionId'].includes(parameter.name)).every(parameter=>parameter.required));
  for(const name of ['getQuote','validateQuote','getQuoteRevision','listQuoteProducts']) {
-  const operation=getOperation(name);assert.equal(operation['x-runtime-status'],['getQuote','validateQuote'].includes(name)?'implemented-capture-only':'planned-phase-05');
+  const operation=getOperation(name);assert.equal(operation['x-runtime-status'],['getQuote','validateQuote'].includes(name)?'implemented-capture-only':name==='listQuoteProducts'?'implemented-capture-selection':'planned-phase-05');
   assert.equal(operation.responses[200].headers['Cache-Control'].schema.const,'no-store');
  }
 });
@@ -356,5 +356,6 @@ test('implemented quote capture routes use the stored quote capability and retai
   assert.equal(operation['x-readiness-status'],'partial-fail-closed');
   assert.equal(operation['x-permission'],['createQuote','saveQuoteProposal'].includes(name)?'quote-capture':'quote-read');
  }
- for(const name of ['cloneQuote','withdrawQuote','listQuoteProducts'])assert.equal(getOperation(name)['x-runtime-status'],'planned-phase-05');
+ assert.equal(getOperation('listQuoteProducts')['x-runtime-status'],'implemented-capture-selection');
+ for(const name of ['cloneQuote','withdrawQuote'])assert.equal(getOperation(name)['x-runtime-status'],'planned-phase-05');
 });

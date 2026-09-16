@@ -48,6 +48,10 @@ export function addQuoteContracts({schemas:s,ref:r,text:t,enumeration:e,object:o
   for(const path of [...supportPaths,'/quotes','/quotes/{quoteId}','/quotes/{quoteId}/proposal','/quotes/{quoteId}/withdraw','/quotes/{quoteId}/clone','/quotes/{quoteId}/readiness','/quotes/{quoteId}/revisions','/quotes/{quoteId}/revisions/{revisionId}','/quotes/{quoteId}/compare','/quote-products'])
     for(const operation of Object.values(paths[path])) {
       operation['x-runtime-status']='planned-phase-05';
+      if(operation.operationId==='listQuoteProducts') {
+        operation['x-runtime-status']='implemented-capture-selection';
+        operation.description+=' Offers are the current explicit Motor Trade capture catalogue. Valid empty capture settings revoke all offers; missing, malformed or dangling configuration returns 503. Eligibility is calculated for the selected relationship and does not imply rating or progression readiness.';
+      }
       if(['createQuote','saveQuoteProposal','getQuote','validateQuote'].includes(operation.operationId)) {
         operation['x-runtime-status']='implemented-capture-only';
         operation['x-readiness-status']='partial-fail-closed';

@@ -9,6 +9,23 @@ namespace BackOffice.IntegrationTests;
 
 public sealed class QuoteHttpInputTests
 {
+    [Fact]
+    public void ProductSelectionRequiresOneExactRelationshipQuery()
+    {
+        var id = Guid.NewGuid(); var request = new DefaultHttpContext().Request;
+        request.QueryString = new QueryString($"?relationshipId={id:D}");
+        Assert.Equal(id, QuoteHttpInput.ProductRelationship(request));
+        foreach (var query in new[] { "", "?relationshipId=", $"?RelationshipId={id:D}", $"?relationshipId={id:N}",
+            "?relationshipId=00000000-0000-0000-0000-000000000000", $"?relationshipId=%20{id:D}",
+            $"?relationshipId={id:D}&relationshipId={id:D}", $"?relationshipId={id:D}&agencyId={id:D}",
+            $"?relationshipId={id:D}&RelationshipId={id:D}" })
+        {
+            request.QueryString = new QueryString(query);
+            var error = Assert.Throws<QuoteHttpException>(() => QuoteHttpInput.ProductRelationship(request));
+            Assert.Equal(400, error.Status); Assert.Equal("invalid-query", error.Code);
+        }
+    }
+
     private const string Create = "{\"relationshipId\":\"aaaaaaaa-0000-4000-8000-000000000001\",\"productVersionId\":\"aaaaaaaa-0000-4000-8000-000000000002\"}";
     private static HttpRequest Request(string json, bool length = true)
     {
