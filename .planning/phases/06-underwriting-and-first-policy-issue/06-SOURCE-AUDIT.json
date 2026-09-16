@@ -1,5 +1,5 @@
 {
-  "status": "06-01 typed contracts and source dependency checks passed in4800d71; 314 contract tests; runtime acceptance pending",
+  "status": "06-03 rating/lifecycle backend verified in b3c642d:727 backend/99 real SQL and315 contract tests; source UI acceptance pending06-04 and final06-14",
   "inventorySha256": "459974f15088fef3da518bb08fd4f0e88a8f0fdffcf319416fcf458228288c78",
   "apiMapSha256": "bee7cae6b0c29b298eeaf63d915b854c7ec8f5e9191a709247008882cb1430b1",
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",

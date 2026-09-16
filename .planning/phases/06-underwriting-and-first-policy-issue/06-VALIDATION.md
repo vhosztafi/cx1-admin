@@ -86,3 +86,7 @@ All tasks test in the same plan, so no more than one task elapses without automa
 ## 06-02 core evidence
 
 Implementation625bf90: full696cases/87realSQL,0skips; final unit583cases after pure lifecycle helper addition. Additive migration20260916184737 applied to preserved demo with unchanged retained counts/hashes. See06-02-SUMMARY for exact directories and limitations. Public underwriting commands/browser/issue acceptance remain pending.
+
+## 06-03 runtime evidence
+Implementation b3c642d:727 full backend cases (601unit/126integration),99realSQL, zero skips;315contract/source tests. Six rating/lifecycle routes implemented. See06-03-SUMMARY.md for exact paths, preservation and limitations. UI and later underwriting/policy acceptance remain pending.
+
