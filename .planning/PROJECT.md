@@ -18,7 +18,7 @@ Staff can complete a quote-to-policy-to-servicing journey and trust that its pol
 
 ### Validated
 
-Phase 1 design, Phase 2 native foundation and Phase 3 client servicing are verified locally. See DES-01..06, FND-01..06 and CLI-02..04 in REQUIREMENTS.md and their phase verification reports. CLI-01 remains partial until real quote/policy links in Phases 5/6. The prototype and copied sales funnel remain reference material; full business MVP delivery is still in progress.
+Phases1–5 are verified locally: design, persistent foundation, clients, agencies and complete Motor Trade quote capture. QUO-02/04/05 are validated inPhase5. QUO-01/CLI-01 retain real policy discovery inPhase6; QUO-03 retains applied endorsements, QUO-06 actual rating/acceptance invalidation, and AGY-03/04 later finance/policy/task portions. See REQUIREMENTS.md and each phase verification. The prototype and sales funnel remain references; the full business MVP remains in progress.
 
 ### Active
 
@@ -80,7 +80,9 @@ Keep research, plan checks, unit tests, integration checks and verification enab
 
 Commit reviewed local work in manageable units. No production deployment, real payment/delivery or separate customer-facing funnel is authorised. Continue in this task; no additional user-owned tasks are needed.
 
-Last updated: 2026-09-13 — full requirements/roadmap approved; autonomous progression authorised.
+Last updated: 2026-09-16 — Phase5 verified; autonomous Phase6 progression.
 
 
-Phase 2 completed 2026-09-14: native SQL persistence, local authenticated shell and durable diagnostic operations verified. FND-01 through FND-06 complete; see phase verification for scope. Next: Phase 3 client/contact servicing. Business workflows, human UAT and hosted deployment remain pending.
+## Current State
+
+Phase5 complete: both Motor Trade products have persistent capture, evidence/lookups, matching, discovery, immutable history and ready checks.680backend/85realSQL,80frontend,294contract checks,37browser journeys and actual restart pass. Phase6 supplies deterministic rating, referrals, exact-version acceptance and atomic first policy issue. Human business UAT and hosted deployment remain pending.

@@ -2,65 +2,63 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
-status: in_progress
-last_updated: "2026-09-16T14:17:14.428900+00:00"
+status: planning
+last_updated: "2026-09-16T16:09:11.462572+00:00"
 last_activity: 2026-09-16
 progress:
   total_phases: 13
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 35
-  completed_plans: 34
-  percent: 31
+  completed_plans: 35
+  percent: 38
 ---
 
 # Project State
 
 ## Project Reference
 
-See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
+See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute05-11 final quote acceptance;05-10 verified and committed.
+**Current focus:** Phase6 underwriting and first policy issue.
 
 ## Current Position
 
-Phase: 5 of 13 (Motor Trade quote capture)
-Plan: 05-11 of11 in progress;05-01 through05-10 complete
-Status: In progress — autonomous
-Last activity: 2026-09-16 —05-10 complete1491934/ceeb93a;676 backend/83 SQL,80 frontend,294 contracts/341operations and Chrome148/149 pass. Next05-11.
+Phase: 6 of 13 (Underwriting and first policy issue)
+Plan: Not started
+Status: Ready to plan — autonomous
+Last activity: 2026-09-16 — Phase5 complete; implementatione2741f3 and evidencea4498dd.680backend/85SQL,80frontend,294contracts,37browser journeys and actual restart passed.
 
-Progress: Phases1–4 complete;4/13phases,34 completed plans.
+Progress: Phases1–5 complete;5/13 phases,35 completed implementation plans.
 
 ## Accumulated Context
 
 ### Decisions
 
 - Both Motor Trade products and Commercial Combined in back office; CC assumptions authorised.
-- External services use persistent deterministic demo adapters.
-- Sales funnel stays unchanged and serves only as reference.
-- Separate broker portal excluded by explicit prototype boundary; internal sharing reference included.
-- Focused research completed; see research/SUMMARY.md and ARCHITECTURE.md.
+- External services use persistent deterministic demo adapters; sales funnel remains read-only.
+- Capture readiness is current server assessment, not rating/issue authority.
+- Actual applied endorsements, policy discovery and rating/acceptance invalidation remainPhase6; consume05-PHASE06-HANDOFF and ACCEPTANCE-BACKLOG.
+- Simple local identity remains; separate broker portal excluded by prototype boundary.
 
 ### Pending Todos
 
-- Execute05-11 consolidated quote/agency acceptance, restart persistence, source review and readiness composition; see05-10-SUMMARY.
-- Keep future business endpoints closed until their owning phases implement and verify them.
+- Plan and executePhase6 with source/data/API design, actual progression fences and exact-version acceptance/atomic issue.
+- Keep future endpoints closed until owning phases implement and verify them.
 
 ### Blockers/Concerns
 
-- No implementation blocker. Optional Docker runtime remains unverified; native SQL2022 is verified.
-- GSD state patch unexpectedly reset milestone metadata during this session. Recovered with state.milestone-switch; verify metadata before future generic state commands.
+- No implementation blocker. Human business/assistive-technology UAT, hostedCI and Docker runtime remain unperformed; native SQL2022/Chrome verified.
+- Generic GSD state commands reset milestone metadata/counts and may over-complete compound requirements. Reconcile actual files and approved downstream boundaries after each call.
 
 ## Session Continuity
 
 Last session: 2026-09-16
-Stopped at:05-11 acceptance runner prepared; no running tests or previews. Read05-10-SUMMARY and05-11-PLAN.
-Resume file: .planning/phases/05-motor-trade-quote-capture/05-11-PLAN.md
+Stopped at: Phase5 verified and committed; automatic transition toPhase6 planning.
+Resume file: .planning/phases/05-motor-trade-quote-capture/05-PHASE06-HANDOFF.md
 
 ## Autonomous continuation
 
-User approved requirements/roadmap and autonomous choices/progression on 2026-09-13. Routine confirmation is no longer required. Keep checks enabled; fix gaps instead of silently deferring them. Mode and auto_advance verified through GSD init.
+User approved requirements/roadmap and autonomous choices/progression on2026-09-13. Routine confirmation is not required. Keep research, design, checks and verification enabled; fix gaps instead of silently deferring them. Current request execute-phase5 --auto requires automatic transition.
 
-Thread heartbeat: continue-cover-mga-back-office-mvp, active every 10 minutes. Resume unfinished work in this same task; notify meaningful progress/blockers only; pause on actual milestone completion, user stop or persistent external blocker with no remaining useful work.
-
-Latest backend checkpoint:676 backend/83 realSQL,0skips for05-10;80frontend,294contracts/341operations, lint/types/build/browser pass. Full readiness remains gated; finalQUO signoff requires05-11.
+Thread heartbeat: continue-cover-mga-back-office-mvp, every10minutes. Continue in this task; notify meaningful progress/blockers only. No running test or preview processes remain fromPhase5.

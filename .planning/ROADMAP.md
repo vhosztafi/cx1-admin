@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1–4 and05-01 through05-10 complete;34plans complete overall. Next05-11 final acceptance.676backend/83realSQL,294contracts,80frontend and final lint/types/build/Chrome pass. Full quote readiness stays gated until composition and acceptance.
+**Status:** Autonomous progression authorised. Phases1–5 complete;35 implementation plans complete. Phase6 underwriting and first issue is ready for planning.680backend/85realSQL,294contracts,80frontend,37browser journeys and actual restart passed. Capture readiness is implemented; rating/issue remainPhase6.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
@@ -14,7 +14,7 @@
 - [x] **Phase 2: Application and persistence foundation** — Run a persistent authenticated system with the prototype shell.
 - [x] **Phase 3: Clients and contact servicing** — Maintain insured businesses and person-level servicing information.
 - [x] **Phase 4: Agency onboarding and access** — Onboard agencies and enforce their sharing boundaries.
-- [ ] **Phase 5: Motor Trade quote capture** — Capture complete persistent Motor Trade risks in the back office.
+- [x] **Phase 5: Motor Trade quote capture** — Capture complete persistent Motor Trade risks in the back office. (completed 2026-09-16)
 - [ ] **Phase 6: Underwriting and first policy issue** — Complete the first quote-to-issued-policy journey.
 - [ ] **Phase 7: Policy lifecycle and history** — Service issued policies without corrupting history.
 - [ ] **Phase 8: Commercial Combined back office** — Demonstrate shared workflows with a different risk structure.
@@ -91,7 +91,7 @@
 **Goal:** Capture complete persistent Motor Trade risks in the back office.
 **Depends on:** Phase 4
 **Requirements:** QUO-01 through QUO-06
-**Plans:** 11 sequential plans: source/contracts; quote storage/scope; business/term capture; drivers/history; vehicles/plates; premises/cover/declarations; lookups; evidence; revision/clone/withdraw; discovery/match/sharing; acceptance.
+**Plans:** 11/11 plans complete
 
 **Execution constraints:** 05-01 completes the strict source/schema/API gate before live quote endpoints. Every plan depends on its predecessor; preserve current authority before replay, agency-first locks, no funnel edits and no-reset tests.
 
@@ -237,7 +237,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 2. Application and persistence foundation | 6/6 | Complete | 2026-09-14 |
 | 3. Clients and contact servicing | 6/6 | Complete | 2026-09-14 |
 | 4. Agency onboarding and access | 8/8 | Complete | 2026-09-15 |
-| 5. Motor Trade quote capture | 10/11 | In progress; final acceptance next | — |
+| 5. Motor Trade quote capture | 11/11 | Complete    | 2026-09-16 |
 | 6. Underwriting and first policy issue | 0/TBD | Not started | — |
 | 7. Policy lifecycle and history | 0/TBD | Not started | — |
 | 8. Commercial Combined back office | 0/TBD | Not started | — |
@@ -246,7 +246,6 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 11. Configuration and account administration | 0/TBD | Not started | — |
 | 12. Dashboards, search and reports | 0/TBD | Not started | — |
 | 13. Complete demo and acceptance | 0/TBD | Not started | — |
-
 
 ### Phase 3 downstream acceptance obligations
 
