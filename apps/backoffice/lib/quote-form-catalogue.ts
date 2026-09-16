@@ -28,3 +28,9 @@ export const quoteFormCatalogue: QuoteFormCatalogue = {
     marketingMethods: source.collections.marketingMethods.map(({ value, text }) => ({ value, text })),
   },
 };
+
+export const quoteQuestionLabels: Record<string, string> = Object.fromEntries([
+  ...fieldLabels.mappings.map(item => [item.owner, item.label]),
+  ...[...quoteFormCatalogue.businessQuestions, ...(quoteFormCatalogue.driverFields ?? []), ...(quoteFormCatalogue.vehicleFields ?? []), ...(quoteFormCatalogue.sectionFields ?? [])]
+    .map(item => [('questionId' in item && item.questionId) || item.id, item.label]),
+]);

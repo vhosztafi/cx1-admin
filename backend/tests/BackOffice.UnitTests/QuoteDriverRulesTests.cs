@@ -29,13 +29,13 @@ public sealed class QuoteDriverRulesTests
     public void SourceBaselineHasNoDriverSectionIssues(string product) => Assert.Empty(Check(Example(product)));
 
     [Fact]
-    public void ComposedReadinessIncludesDriverQuestionIdentityAndRetainsGlobalBlock()
+    public void ComposedReadinessIncludesDriverQuestionIdentityAndRemainsIncomplete()
     {
         var proposal = Example(); Answer(proposal["risk"]!,1)["value"] = Reference("driverPlans",3);
         using var document = JsonDocument.Parse(proposal.ToJsonString());
         var result = QuoteReadiness.Assess(Guid.NewGuid(),Guid.NewGuid(),document.RootElement,QuoteTerm.Assess(),null, new DateOnly(2026,9,15));
         Assert.Contains(result.Issues,issue => issue.Code == "any-driver-answer-required" && issue.QuestionId == "MTS-06-Q02");
-        Assert.Contains(result.Issues,issue => issue.Code == "quote-assessment-unavailable");
+        Assert.Contains(result.Issues,issue => issue.Category == "evidence");
         Assert.False(result.Ready);
     }
 

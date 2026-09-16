@@ -6,7 +6,7 @@ public sealed record MatchDecisionWrite([property:JsonRequired]string? Outcome,[
 public sealed record ValidatedMatchDecision(string Outcome,string Reason,Guid? CandidateClientId,
     [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? ExpectedQuoteEtag=null);
 public sealed record MatchSignal(string Code,string Summary,string SubmittedValue,string CandidateValue,string Weight,string Result);
-public sealed record MatchRuleSnapshot(Guid Id,int Version,string DuplicateQuotePolicy,bool RequireReview,string Summary);
+public sealed record MatchRuleSnapshot(Guid Id,int Version,string DuplicateQuotePolicy,[property:JsonRequired]bool RequireReview,string Summary);
 public sealed record ValidatedMatchEvidence(ClientWrite Identity,MatchSignal[] Signals,MatchRuleSnapshot Rule,string Confidence);
 public sealed class MatchTransitionException() : Exception("This decision is not available in the current review state.");
 

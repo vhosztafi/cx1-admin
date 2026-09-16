@@ -47,7 +47,7 @@ public sealed class QuoteReadinessTests
         foreach (var id in new[] { "prototype.quote.c6181a11c34c", "prototype.quote.0552d5a68ba2", "prototype.quote.34613c23e95d" })
             Assert.Contains(result.Issues, x => x.Code == "required-prototype-business-answer" && x.QuestionId == id);
         Assert.False(result.Ready); Assert.True(result.Issues.Count <= 100);
-        Assert.Contains(result.Issues, x => x.Code == "quote-assessment-unavailable" && x.QuestionId is null);
+        Assert.Contains(result.Issues, x => x.Code == "required-term-field" && x.QuestionId is null);
     }
 
     [Fact]
@@ -96,7 +96,7 @@ public sealed class QuoteReadinessTests
         Assert.Contains(result.Issues, x => x.Code == "required-term-field" && x.Path == "/termIntent/localStartDate");
         Assert.Contains(result.Issues, x => x.Code == "schema-required");
         Assert.Contains(result.Issues, x => x.Code == "agency-unavailable" && x.Category == "eligibility");
-        Assert.Contains(result.Issues, x => x.Code == "quote-assessment-unavailable" && x.Severity == "error");
+        Assert.All(result.Issues, x => Assert.Equal("error", x.Severity));
     }
 
     [Fact]
@@ -113,7 +113,7 @@ public sealed class QuoteReadinessTests
             var term = QuoteTerm.Assess(proposal.GetProperty("termIntent")); Assert.Empty(term.Issues);
             var result = QuoteReadiness.Assess(Guid.NewGuid(), Guid.NewGuid(), proposal, term, null, new DateOnly(2026,9,15));
             Assert.False(result.Ready);
-            Assert.Equal("quote-assessment-unavailable", Assert.Single(result.Issues, issue => issue.Code != "vehicle-capture-context-required" && issue.Category != "evidence").Code);
+            Assert.DoesNotContain(result.Issues, issue => issue.Code != "vehicle-capture-context-required" && issue.Category != "evidence");
             Assert.Equal(QuoteEvidenceRequirements.ForProposal(proposal).Count, result.Issues.Count(issue => issue.Category == "evidence"));
             Assert.All(result.Issues.Where(issue => issue.Category == "evidence"), issue => Assert.StartsWith("evidence-missing-", issue.Code));
             Assert.Equal(proposal.GetProperty("risk").GetProperty("vehicles").GetArrayLength(), result.Issues.Count(issue => issue.Code == "vehicle-capture-context-required"));
@@ -121,12 +121,34 @@ public sealed class QuoteReadinessTests
     }
 
     [Fact]
-    public void BoundedResultsRetainTheProgressionBlocker()
+    public void BoundedResultsRetainActualProgressionFailures()
     {
         using var proposal = JsonDocument.Parse("{}");
         var term = new QuoteTermAssessment(null, Enumerable.Range(0, 150).Select(x => new QuoteFieldIssue("required-term-field", "/termIntent/" + x)).ToArray());
         var result = QuoteReadiness.Assess(Guid.NewGuid(), Guid.NewGuid(), proposal.RootElement, term, null, new DateOnly(2026,9,15));
         Assert.False(result.Ready); Assert.Equal(100, result.Issues.Count);
-        Assert.Equal("quote-assessment-unavailable", result.Issues[0].Code);
+        Assert.Equal("required-term-field", result.Issues[0].Code);
     }
+    [Fact]
+    public void CompleteSourceFixturesAreReadyOnlyWithTrustedContextAndNoCurrentBlocks()
+    {
+        var names = typeof(QuoteReadinessTests).Assembly.GetManifestResourceNames().Where(x => x.StartsWith("QuoteExamples.quote-capture-", StringComparison.Ordinal)).ToArray();
+        Assert.Equal(6, names.Length);
+        foreach (var name in names)
+        {
+            using var stream = typeof(QuoteReadinessTests).Assembly.GetManifestResourceStream(name)!;
+            using var document = JsonDocument.Parse(stream);
+            var proposal = document.RootElement.GetProperty("proposal");
+            var modes = proposal.GetProperty("risk").GetProperty("vehicles").EnumerateArray().ToDictionary(x => x.GetProperty("id").GetGuid(), _ => "manual");
+            var evidence = QuoteEvidenceRequirements.ForProposal(proposal).Select(x => (x.Code, x.RiskItemId)).ToHashSet();
+            QuoteReadinessResult Assess(string? eligibility = null, string? matching = null) => QuoteReadiness.Assess(Guid.NewGuid(), Guid.NewGuid(), proposal,
+                QuoteTerm.Assess(proposal.GetProperty("termIntent")), eligibility, new DateOnly(2026,9,15), modes, evidence, matching);
+            var ready = Assess(); Assert.True(ready.Ready, string.Join(",", ready.Issues.Select(x => x.Code + x.Path))); Assert.Empty(ready.Issues);
+            Assert.False(Assess("agency-unavailable").Ready);
+            foreach (var code in new[] { "quote-match-review-required", "quote-match-identity-incomplete", "quote-match-assessment-required" })
+            { var blocked = Assess(matching: code); Assert.False(blocked.Ready); Assert.Equal(code, Assert.Single(blocked.Issues).Code); }
+            evidence.Clear(); Assert.False(Assess().Ready);
+        }
+    }
+
 }

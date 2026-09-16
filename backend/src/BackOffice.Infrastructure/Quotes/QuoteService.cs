@@ -14,8 +14,7 @@ public sealed record StoredQuote(Quote Quote, QuoteRevision Revision, string Cli
     string ProductCode, bool CanSave, string? CaptureUnavailableCode, QuoteTermAssessment TermAssessment, QuoteVersionPins VersionPins,
     IReadOnlyDictionary<Guid, string> VehicleCaptureModes, IReadOnlySet<(string Code, Guid? RiskItemId)> CurrentEvidence, string? MatchingCode, Guid? MatchReviewId);
 
-// Internal command service. HTTP DTO/CSRF/size handling and match attachment are
-// separate integration work; these methods do not expose an endpoint.
+// Internal audited command service; HTTP validation remains at the API boundary.
 public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory, TimeProvider time)
 {
     private readonly SqlCommandBoundary commands = new(factory, time);
@@ -69,8 +68,17 @@ public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory,
                 QuoteRules.EnsureEditable(quote.State, quote.CaptureClosedAt);
                 if (!CryptographicOperations.FixedTimeEquals(quote.RowVersion, expectedVersion)) throw new QuoteOperationException(412, "stale-quote");
                 var prepared = QuoteRules.Prepare(proposal, selection!.Product.Code, selection.Pins);
-                if (QuoteRules.IsUnchanged(current!.ContentHash, prepared)) return Outcome(quote, 200);
                 db.Attach(quote);
+                if (!await db.Set<MatchSubmission>().AnyAsync(x => x.QuoteId == quote.Id, ct))
+                {
+                    await QuoteMatching.AttachOrReviewAsync(db, quote, owned.Scope, null, actor.UserId, time.GetUtcNow(), ct);
+                    if (await db.Set<MatchSubmission>().AnyAsync(x => x.QuoteId == quote.Id, ct))
+                    {
+                        quote.UpdatedAt = time.GetUtcNow(); db.Entry(quote).Property(x => x.UpdatedAt).IsModified = true;
+                        await db.SaveChangesAsync(ct);
+                    }
+                }
+                if (QuoteRules.IsUnchanged(current!.ContentHash, prepared)) return Outcome(quote, 200);
                 await Append(db, quote, selection, prepared, checked(current.Number + 1), reason, actor.UserId, time.GetUtcNow(), ct);
                 return Outcome(quote, 200);
             }, token);
@@ -90,7 +98,7 @@ public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory,
             .AsNoTracking().SingleAsync(token);
         using var intent = JsonDocument.Parse(revision.TermIntentJson);
         var evidence = await QuoteEvidenceReadModel.AssessAsync(db, revision, token);
-        var matching = await QuoteMatching.AssessAsync(db, owned.Quote, token);
+        var matching = await QuoteMatching.AssessAsync(db, owned.Quote, time.GetUtcNow(), token);
         var result = new StoredQuote(owned.Quote, revision, owned.Scope.Client.LegalName, owned.Scope.Agency.LegalName,
             product.Code, availability.Code is null, availability.Code, QuoteTerm.Assess(intent.RootElement), Pins(revision),
             await QuoteLookupProvenance.VehicleModesAsync(db, revision, token),

@@ -14,15 +14,11 @@ public static class QuoteReadiness
         QuoteTermAssessment term, string? captureUnavailableCode, DateOnly asOf, IReadOnlyDictionary<Guid, string>? vehicleCaptureModes = null,
         IReadOnlySet<(string Code, Guid? RiskItemId)>? currentEvidence = null, string? matchingCode = null)
     {
-        // Capture APIs precede semantic sections (05-03..06), evidence (05-08)
-        // and matching (05-10). Never report readiness until those gates run.
-        // This server-owned blocker cannot be cleared by captured answers.
-        var issues = new List<QuoteReadinessIssue>
-        {
-            new("/", "quote-assessment-unavailable", "The quote cannot yet be assessed for progression.", "configuration", "error")
-        };
+        // All capture sections and trusted evidence/lookup/matching context are
+        // composed here. This is capture readiness, never rating or issue authority.
+        var issues = new List<QuoteReadinessIssue>();
         if (matchingCode is not null)
-            issues.Add(new("/", matchingCode, "An underwriter must resolve the account matching review before progression.", "matching", "error"));
+            issues.Add(new("/", matchingCode, MatchingMessage(matchingCode), "matching", "error"));
         if (captureUnavailableCode is not null)
             issues.Add(new("/", captureUnavailableCode, "Capture is unavailable for this quote. Review its current status and product access.", "eligibility", "error"));
         issues.AddRange(term.Issues.Select(x => new QuoteReadinessIssue(x.Path, x.Code, "Complete or correct the policy term.", "capture", "error")));
@@ -50,8 +46,14 @@ public static class QuoteReadiness
             x.Path, x.Code, "Review the premises and additional trade declarations.", "capture", "error", x.QuestionId)));
         issues.AddRange(QuoteCaptureShape.ValidateCompleteness(proposal).Select(x => new QuoteReadinessIssue(
             x.Path.Length is > 0 and <= 500 ? x.Path : "/", x.Code, "Complete or correct the captured details.", "capture", "error")));
-        return new(quoteId, revisionId, false, issues.Distinct().Take(100).ToArray());
+        return new(quoteId, revisionId, !issues.Any(x => x.Severity == "error"), issues.Distinct().Take(100).ToArray());
     }
+    private static string MatchingMessage(string code) => code switch
+    {
+        "quote-match-identity-incomplete" => "Complete the stored client identity, then save the quote to assess matching.",
+        "quote-match-assessment-required" => "Save the quote to create an account matching review for the current client identity.",
+        _ => "An underwriter must resolve the account matching review before progression."
+    };
     private static string DriverMessage(string code) => code switch
     {
         "driver-relationship-ineligible" => "This relationship is not available for the declared company category.",

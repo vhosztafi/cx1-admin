@@ -122,7 +122,7 @@ public sealed partial class QuoteStorageTests
             using var readiness = await client.GetAsync(route + "/readiness"); readiness.EnsureSuccessStatusCode();
             var assessment = await readiness.Content.ReadFromJsonAsync<JsonElement>();
             Assert.Equal(quoteId, assessment.GetProperty("quoteId").GetGuid()); Assert.False(assessment.GetProperty("ready").GetBoolean());
-            Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("code").GetString() == "quote-assessment-unavailable");
+            Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("code").GetString() == "business-description-required");
             Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("code").GetString() == "required-capture-field" && x.GetProperty("path").GetString() == "/insured/firstName");
             Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("code").GetString() == "activity-split-share-required" && x.GetProperty("path").GetString() == "/risk/business/declaredActivitySplit/sales");
             Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("code").GetString() == "business-description-required");
@@ -131,7 +131,7 @@ public sealed partial class QuoteStorageTests
             foreach (var question in new[] { "MTS-03-Q04", "MTS-03-Q06" })
                 Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("path").GetString() == "/risk/business/responses/answers" &&
                     x.TryGetProperty("questionId", out var identity) && identity.GetString() == question);
-            Assert.False(assessment.GetProperty("issues").EnumerateArray().Single(x => x.GetProperty("code").GetString() == "quote-assessment-unavailable").TryGetProperty("questionId", out _));
+            Assert.False(assessment.GetProperty("issues").EnumerateArray().Single(x => x.GetProperty("code").GetString() == "business-description-required").TryGetProperty("questionId", out _));
             Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("code").GetString() == "history-declaration-required" &&
                 x.GetProperty("relatedPath").GetString() == "/risk/drivers/0/losses/0");
             Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("code").GetString() == "history-date-after-assessment" &&

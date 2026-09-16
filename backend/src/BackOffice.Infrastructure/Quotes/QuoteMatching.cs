@@ -12,12 +12,30 @@ public static class QuoteMatching
 {
     private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
 
-    public static async Task<(string? Code, Guid? ReviewId)> AssessAsync(BackOfficeDbContext db, Quote quote, CancellationToken token)
+    public static async Task<(string? Code, Guid? ReviewId)> AssessAsync(BackOfficeDbContext db, Quote quote, DateTimeOffset now, CancellationToken token)
     {
         if (db.Database.CurrentTransaction is null) throw new InvalidOperationException("Matching assessment requires held quote scope.");
         var intake = await db.Set<MatchSubmission>().AsNoTracking().SingleOrDefaultAsync(x => x.QuoteId == quote.Id, token);
-        if (intake is null) return (null, null);
-        var review = await db.Set<MatchReview>().AsNoTracking().SingleOrDefaultAsync(x => x.SubmissionId == intake.Id, token);
+        var review = intake is null ? null : await db.Set<MatchReview>().AsNoTracking().SingleOrDefaultAsync(x => x.SubmissionId == intake.Id, token);
+        var client = await db.Set<ClientAccount>().AsNoTracking().SingleAsync(x => x.Id == quote.ClientId, token);
+        try { ClientIdentity.Validate(new(client.LegalName, client.EntityType, JsonSerializer.Deserialize<AddressWrite>(client.Address, Json), client.CompanyNumber)); }
+        catch (Exception error) when (error is PartyValidationException or JsonException) { return ("quote-match-identity-incomplete", review?.Id); }
+        if (intake is null)
+        {
+            var candidate = await (from other in db.Set<ClientAccount>() join relationship in db.Set<ClientAgencyRelationship>() on other.Id equals relationship.ClientId
+                where other.Id != client.Id && other.IdentityState == "active" && relationship.State == "active" &&
+                    (other.NormalizedName == client.NormalizedName || client.CompanyNumber != null && other.CompanyNumber == client.CompanyNumber)
+                select other.Id).AnyAsync(token);
+            if (!candidate) return (null, null);
+            var setting = await db.Set<SettingVersion>().AsNoTracking().Where(x => x.Scope == "matching-rule" && x.EffectiveFrom <= now)
+                .OrderByDescending(x => x.Version).FirstOrDefaultAsync(token);
+            MatchRuleSnapshot? rule = null;
+            try { if (setting is not null) rule = JsonSerializer.Deserialize<MatchRuleSnapshot>(setting.Values, Json); }
+            catch (JsonException) { /* Missing or malformed configuration cannot permit progression. */ }
+            return (rule is not null && rule.Id == setting!.Id && rule.Version == setting.Version && !rule.RequireReview &&
+                rule.DuplicateQuotePolicy == "allow-competing" && !string.IsNullOrWhiteSpace(rule.Summary) && rule.Summary.Length <= 1000 && !rule.Summary.Any(c => char.IsControl(c) && c is not ('\r' or '\n' or '\t'))
+                    ? null : "quote-match-assessment-required", null);
+        }
         if (intake.LinkedClientId != quote.ClientId || intake.LinkedRelationshipId != quote.RelationshipId || intake.AgencyId != quote.AgencyId)
             return ("quote-match-context-changed", review?.Id);
         return (review?.State is "linked" or "separate" ? null : "quote-match-review-required", review?.Id);

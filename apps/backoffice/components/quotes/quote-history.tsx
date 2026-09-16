@@ -57,6 +57,24 @@ function ChangeValue({ path, side }: { path: string; side: Side }) {
   if (path === '/relationshipId') return <span>Agency relationship for the recorded client account</span>;
   return <Value value={value} />;
 }
+export function QuoteProposalDetails({ value, proposal, questionLabels }: { value: unknown; proposal: QuoteProposal; questionLabels: Record<string, string> }) {
+  const names = new Map<string, string>();
+  function collect(item: unknown, context = 'Risk item') {
+    if (Array.isArray(item)) { item.forEach((child, index) => collect(child, `${context} ${index + 1}`)); return; }
+    if (!item || typeof item !== 'object') return;
+    const row = item as Record<string, unknown>;
+    if (typeof row.id === 'string') names.set(row.id, String(row.fullName || row.registration || [row.firstName, row.surname].filter(Boolean).join(' ') || context));
+    Object.entries(row).forEach(([key, child]) => collect(child, label(key)));
+  }
+  collect(proposal);
+  function readable(item: unknown): unknown {
+    if (typeof item === 'string' && /^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(item)) return names.get(item) ?? 'Linked risk item';
+    if (Array.isArray(item)) return item.map(readable);
+    if (item && typeof item === 'object') return Object.fromEntries(Object.entries(item).map(([key, child]) => [({ ownerDriverId: 'Owner driver', driverIds: 'Drivers', vehicleId: 'Vehicle', specifiedVehicleIds: 'Specified vehicles' } as Record<string, string>)[key] ?? key, readable(child)]));
+    return item;
+  }
+  return <QuestionLabels.Provider value={questionLabels}><div className="quote-proposal-details">{value === undefined || Array.isArray(value) && value.length === 0 ? <p>Not recorded</p> : <Value value={readable(value)} />}</div></QuestionLabels.Provider>;
+}
 function Value({ value }: { value: unknown }) {
   const labels = useContext(QuestionLabels);
   if (value === null) return <span>Explicitly empty</span>;
@@ -64,9 +82,9 @@ function Value({ value }: { value: unknown }) {
   if (Array.isArray(value)) return <ol>{value.map((item, index) => <li key={index}><Value value={item} /></li>)}</ol>;
   if (typeof value === 'object' && 'questionId' in value && typeof value.questionId === 'string') {
     const answer = value as Record<string, unknown>;
-    return <div><strong>{labels[value.questionId] ?? 'Recorded declaration'}</strong><Value value={answer.value ?? Object.fromEntries(Object.entries(answer).filter(([key]) => !['questionId', 'kind'].includes(key)))} /></div>;
+    return <div className="quote-answer-display"><strong>{labels[value.questionId] ?? 'Recorded declaration'}</strong><Value value={answer.value ?? Object.fromEntries(Object.entries(answer).filter(([key]) => !['questionId', 'kind'].includes(key)))} /></div>;
   }
   if (typeof value === 'object' && 'label' in value && typeof value.label === 'string') return <span>{value.label}</span>;
-  if (typeof value === 'object') return <dl className="quote-saved-details">{Object.entries(value).filter(([key]) => !['id', 'schemaVersion', 'questionSetVersion', 'referenceVersion'].includes(key)).map(([key, item]) => <div key={key}><dt>{label(key)}</dt><dd><Value value={item} /></dd></div>)}</dl>;
+  if (typeof value === 'object') return <dl className="quote-saved-details">{Object.entries(value).filter(([key, item]) => item !== undefined && !['id', 'schemaVersion', 'questionSetVersion', 'referenceVersion'].includes(key)).map(([key, item]) => <div key={key}><dt>{label(key)}</dt><dd><Value value={item} /></dd></div>)}</dl>;
   return <span style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>{String(value)}</span>;
 }

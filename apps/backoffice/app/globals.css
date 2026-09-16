@@ -331,3 +331,12 @@ h1, h2, p { margin: 0; }
 .quote-agency-filter { padding: 0 20px 18px; max-width: 560px; }
 .quote-agency-filter label { display: grid; gap: 6px; font-weight: 500; }
 .quote-agency-filter select { width: 100%; min-width: 0; }
+
+.quote-answer-display { display:grid; gap:6px; }
+.quote-proposal-details .quote-saved-details { padding:0; gap:18px 24px; }
+.quote-proposal-details .quote-saved-details > div:has(> dd > dl),
+.quote-proposal-details .quote-saved-details > div:has(> dd > ol) { grid-column:1 / -1; }
+.quote-proposal-details ol { list-style:none; padding:0; display:grid; gap:16px; }
+.quote-proposal-details ol > li { min-width:0; padding:16px; border:1px solid #e4e6ec; border-radius:8px; }
+.quote-proposal-details .quote-saved-details dd { min-width:0; }
+.quote-proposal-details .quote-saved-details dt { margin-bottom:6px; }

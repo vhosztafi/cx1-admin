@@ -59,10 +59,10 @@ try {
   await page.evaluate(()=>{document.activeElement?.blur();window.scrollTo(0,0);});
   await page.screenshot({path:output+'/agency-sharing-desktop.png',fullPage:true});
   await page.getByLabel('Search shared clients').fill('no-match-'+crypto.randomUUID());await page.getByLabel('Search shared clients').press('Enter');await page.getByText('No shared clients match this search.',{exact:true}).waitFor();assert.equal(await page.getByRole('region',{name:'Shared contacts',exact:true}).count(),0);
-  await page.getByRole('button',{name:'Clear search',exact:true}).click();await page.getByRole('button',{name:`View contacts for ${name}`,exact:true}).waitFor();
+  await page.locator('form').filter({has:page.getByLabel('Search shared clients')}).getByRole('button',{name:'Clear search',exact:true}).click();await page.getByRole('button',{name:`View contacts for ${name}`,exact:true}).waitFor();
   const route=`**/api/v1/agencies/${agencyId}/sharing`;
   await page.route(route,r=>r.fulfill({status:503,contentType:'application/json',body:JSON.stringify({detail:privateText})}));
-  await page.getByRole('button',{name:'Refresh shared data',exact:true}).click();await page.getByRole('alert').waitFor();assert.ok(!(await page.locator('main').innerText()).includes(privateText));
+  await page.getByRole('button',{name:'Refresh shared data',exact:true}).click();await page.locator('main').getByRole('alert').waitFor();assert.ok(!(await page.locator('main').innerText()).includes(privateText));
   await page.unroute(route);await page.getByRole('button',{name:'Try again',exact:true}).click();await page.getByRole('heading',{name:'Hidden from agency users',exact:true}).waitFor();
   await page.setViewportSize({width:390,height:844});await page.getByLabel('Search shared clients').fill(name);await page.getByLabel('Search shared clients').press('Enter');await page.getByRole('button',{name:`View contacts for ${name}`,exact:true}).click();await page.getByText('Please provide large print correspondence.',{exact:true}).waitFor();
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Mobile page must contain table overflow');

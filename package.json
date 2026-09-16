@@ -25,7 +25,8 @@
     "web:browser:contacts": "node scripts/verify-contacts-browser.mjs",
     "web:browser:support": "node scripts/verify-support-flags-browser.mjs",
     "web:browser:matches": "node scripts/verify-matches-browser.mjs",
-    "web:browser:agencies": "node scripts/verify-agency-suite.mjs"
+    "web:browser:agencies": "node scripts/verify-agency-suite.mjs",
+    "web:browser:quotes": "node scripts/verify-quote-suite.mjs"
   },
   "devDependencies": {
     "@redocly/cli": "2.52.1",

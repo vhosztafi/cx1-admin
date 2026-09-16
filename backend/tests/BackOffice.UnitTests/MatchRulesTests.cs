@@ -1,10 +1,21 @@
 using BackOffice.Application.Parties;
+using System.Text.Json;
 using Xunit;
 
 namespace BackOffice.UnitTests;
 
 public sealed class MatchRulesTests
 {
+    [Fact]
+    public void MissingReviewRequirementCannotDefaultToPermissionForCompetingQuotes()
+    {
+        var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+        var missing = JsonSerializer.Serialize(new { id = Guid.NewGuid(), version = 1, duplicateQuotePolicy = "allow-competing", summary = "Fictional rule" }, options);
+        Assert.Throws<JsonException>(() => JsonSerializer.Deserialize<MatchRuleSnapshot>(missing, options));
+        var explicitFalse = missing[..^1] + ",\"requireReview\":false}";
+        Assert.False(JsonSerializer.Deserialize<MatchRuleSnapshot>(explicitFalse, options)!.RequireReview);
+    }
+
     [Fact]
     public void AttachedQuoteVersionMustBeACanonicalStrongEightByteEtag()
     {
