@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-16T10:21:12.949573+00:00"
+last_updated: "2026-09-16T10:36:16.381270+00:00"
 last_activity: 2026-09-16
 progress:
   total_phases: 13
@@ -25,9 +25,9 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 ## Current Position
 
 Phase: 5 of 13 (Motor Trade quote capture)
-Plan: 05-07 of11 next;05-01/02/03/04/05/06complete
+Plan: 05-07 of11 in progress;05-01/02/03/04/05/06complete
 Status: In progress — autonomous
-Last activity: 2026-09-16 — Completed05-06;633backend/68SQL,78frontend,294contracts and both-product Chrome sections/vehicles/readiness pass.
+Last activity: 2026-09-16 — Started05-07 lookup target/fingerprint rules (035be54);549unit tests pass. Runtime persistence and routes remain unimplemented.
 
 Progress: Phases1–4 complete;4/13phases,30completed plans.
 
@@ -54,7 +54,7 @@ Progress: Phases1–4 complete;4/13phases,30completed plans.
 ## Session Continuity
 
 Last session: 2026-09-16
-Stopped at:05-06complete. NEXT05-07durable address/vehicle/licence lookups and manual recovery. No owned previews or tests remain.
+Stopped at:05-07pure lookup input rules committed; read05-07-PROGRESS.md. NEXTlookup storage, command service and durable workers. No owned previews or tests remain.
 Resume file: .planning/phases/05-motor-trade-quote-capture/05-07-PLAN.md
 
 ## Autonomous continuation
