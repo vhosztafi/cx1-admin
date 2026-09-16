@@ -140,3 +140,23 @@ No support flags, credential/session material or private cross-agency context in
 Require unit/property fixtures for hash partitions, state progression,14-day boundary, all authority dimensions and balanced money; realSQL constraints/immutability/migration/replay/late rollback/parallel different-key issue; provider crash and stale apply; both-product UI and current scoped policy discovery. Explicitly test proof completion does not force an endless new rating, signed statement preparation does not deadlock send, and proof changes after acceptance prohibit bind until fresh valid acceptance.
 
 This design is accompanied by06-RULE-CATALOG,06-UI-SPEC, source task mapping and06-PLAN-REVIEW. Task06-01-01 produces and validates exact generated schemas/JSON-pointer fixtures before runtime execution. Plans06-02/05/07/08/10 apply feature-owned migrations before verification. Capacity extensions require exact dimension/submission/validity, and acceptance proof must be present before hashing assurance. No new runtime capability is enabled by these planning documents.
+## 06-05 implementation handoff (verified in4ace720)
+
+The proof/decision slice uses immutable `UnderwritingEvidenceEvent` rows for both
+review and withdrawal, with explicit kinds and separate latest-review/withdrawal
+pointers on the association. `QuoteConditionResolution` records both the exact
+association and accepted review ID; later review changes or withdrawal invalidate
+resolution without rewriting history. All pointers have same-owner composite
+foreign keys and append-only/monotonic guards.
+
+`UnderwritingPreparedTermsFence` keeps association TermsVersionId NULL until
+06-08 creates prepared terms. That plan must replace the fence with same-quote,
+same-cycle terms ownership and enable signed-statement conditions. A supplied GUID
+cannot currently stand in for a prepared terms record.
+
+The assessment now projects proofRequirements (purpose, stable target, optional
+condition/terms identity, inputFingerprint and satisfaction), actual applied
+endorsements and assuranceHash. Conditions expose child ETags; decisions expose
+the stored query question. UI06 must consume these projections. Terms08 must use
+actual applied warranty wording in the terms hash and current assurance in
+acceptance, retaining the distinction from the unchanged pricing hash.

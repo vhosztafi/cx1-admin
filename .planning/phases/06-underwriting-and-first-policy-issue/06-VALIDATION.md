@@ -93,3 +93,11 @@ Implementation b3c642d:727 full backend cases (601unit/126integration),99realSQL
 
 ## 06-04 runtime evidence
 Implementation da15815:727 full backend/99 realSQL,86 frontend,316 contracts; zero skips. Both-product actual browser and labelled presentation fixtures passed. Final desktop/mobile screenshots inspected. See06-04-SUMMARY for paths and remaining owners.
+
+## 06-05 runtime evidence
+
+Implementation4ace720:741full backend (606unit/135integration),108realSQL,
+zero skips;317contract/source tests. Additional foreign-file/superseded-cycle
+proof assertions pass in the follow-up test. Fresh and retained SQL upgrade paths
+pass; both additive migrations applied with unchanged historical hashes and
+credentials. See06-05-SUMMARY for exact evidence. Decision UI remains06-06.

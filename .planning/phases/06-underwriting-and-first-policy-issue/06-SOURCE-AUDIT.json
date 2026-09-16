@@ -1,5 +1,5 @@
 {
-  "status": "06-04 rating UI verified in da15815:727 backend/99 real SQL,86 frontend,316 contracts and both-product browser; later decision/terms/issue owners remain pending",
+  "status": "06-05 backend verified in 4ace720:741 backend/108 SQL and317 contracts; decision UI and later owners pending",
   "inventorySha256": "459974f15088fef3da518bb08fd4f0e88a8f0fdffcf319416fcf458228288c78",
   "apiMapSha256": "bee7cae6b0c29b298eeaf63d915b854c7ec8f5e9191a709247008882cb1430b1",
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
@@ -1337,7 +1337,8 @@
       "acceptanceId": "AT-4c6212277cb7",
       "review": "Retain source screen ownership; shared operation dependencies are listed separately.",
       "runtimeStatus": "pending Phase6 design/execution, or retained/deferred owner; not completion evidence",
-      "acceptanceOwner": "Retained/deferred Phase 7; Phase6 operation dependencies tested in the mapped owner plans."
+      "acceptanceOwner": "Retained/deferred Phase 7; Phase6 operation dependencies tested in the mapped owner plans.",
+      "backendEvidence": "06-05/4ace720: scoped referral read/decision API verified; UI acceptance remains with mapped placement owner"
     },
     {
       "controlId": "CTL-e39aeff1b11d",
@@ -1364,7 +1365,8 @@
       "acceptanceId": "AT-e39aeff1b11d",
       "review": "Retain source screen ownership; shared operation dependencies are listed separately.",
       "runtimeStatus": "pending Phase6 design/execution, or retained/deferred owner; not completion evidence",
-      "acceptanceOwner": "Retained/deferred Phase 7; Phase6 operation dependencies tested in the mapped owner plans."
+      "acceptanceOwner": "Retained/deferred Phase 7; Phase6 operation dependencies tested in the mapped owner plans.",
+      "backendEvidence": "06-05/4ace720: scoped referral read/decision API verified; UI acceptance remains with mapped placement owner"
     },
     {
       "controlId": "CTL-2221ef0bd60e",
@@ -1387,7 +1389,8 @@
       "runtimeStatus": "planned; runtime pending",
       "plan": "06-06",
       "task": "06-06-01",
-      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs"
+      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs",
+      "backendEvidence": "06-05/4ace720: scoped referral read/decision API verified; UI acceptance remains with mapped placement owner"
     },
     {
       "controlId": "CTL-0b1d8505538d",
@@ -1555,7 +1558,8 @@
       "runtimeStatus": "planned; runtime pending",
       "plan": "06-06",
       "task": "06-06-01",
-      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs"
+      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs",
+      "backendEvidence": "06-05/4ace720: scoped referral read/decision API verified; UI acceptance remains with mapped placement owner"
     },
     {
       "controlId": "CTL-2b226870f9d7",
@@ -1578,7 +1582,8 @@
       "runtimeStatus": "planned; runtime pending",
       "plan": "06-06",
       "task": "06-06-01",
-      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs"
+      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs",
+      "backendEvidence": "06-05/4ace720: scoped referral read/decision API verified; UI acceptance remains with mapped placement owner"
     },
     {
       "controlId": "CTL-831d06857ca3",
@@ -1792,7 +1797,8 @@
       "runtimeStatus": "planned; runtime pending",
       "plan": "06-06",
       "task": "06-06-01",
-      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs"
+      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs",
+      "backendEvidence": "06-05/4ace720: scoped referral read/decision API verified; UI acceptance remains with mapped placement owner"
     },
     {
       "controlId": "CTL-efcbbfb01992",
@@ -1924,7 +1930,8 @@
       "runtimeStatus": "planned; runtime pending",
       "plan": "06-06",
       "task": "06-06-01",
-      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs"
+      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs",
+      "backendEvidence": "06-05/4ace720: scoped referral read/decision API verified; UI acceptance remains with mapped placement owner"
     },
     {
       "controlId": "CTL-9c747f3b26c3",
@@ -1947,7 +1954,8 @@
       "runtimeStatus": "planned; runtime pending",
       "plan": "06-06",
       "task": "06-06-01",
-      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs"
+      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs",
+      "backendEvidence": "06-05/4ace720: scoped referral read/decision API verified; UI acceptance remains with mapped placement owner"
     },
     {
       "controlId": "CTL-9febb5f22d93",
@@ -1982,7 +1990,8 @@
       "runtimeStatus": "planned; runtime pending",
       "plan": "06-06",
       "task": "06-06-01",
-      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs"
+      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs",
+      "backendEvidence": "06-05/4ace720: scoped referral read/decision API verified; UI acceptance remains with mapped placement owner"
     },
     {
       "controlId": "CTL-696c000f3a53",
@@ -2034,7 +2043,8 @@
       "runtimeStatus": "planned; runtime pending",
       "plan": "06-06",
       "task": "06-06-01",
-      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs"
+      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs",
+      "backendEvidence": "06-05/4ace720: scoped referral read/decision API verified; UI acceptance remains with mapped placement owner"
     },
     {
       "controlId": "CTL-8931890ed3f6",
@@ -2080,7 +2090,8 @@
       "runtimeStatus": "planned; runtime pending",
       "plan": "06-06",
       "task": "06-06-01",
-      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs"
+      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs",
+      "backendEvidence": "06-05/4ace720: scoped referral read/decision API verified; UI acceptance remains with mapped placement owner"
     },
     {
       "controlId": "CTL-67a650111cef",
