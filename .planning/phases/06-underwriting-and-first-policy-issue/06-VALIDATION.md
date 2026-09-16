@@ -1,15 +1,15 @@
 ---
 phase: 06
 slug: underwriting-and-first-policy-issue
-status: draft
-nyquist_compliant: false
+status: planned
+nyquist_compliant: true
 wave_0_complete: false
 created: 2026-09-16
 ---
 
 # Phase6 validation strategy
 
-This is the planning contract, not passing Phase6 evidence. Detailed PLAN task/wave IDs must be added after plans are written and reviewed. Existing infrastructure is sufficient; no new test framework is required.
+This is the planning contract, not passing Phase6 evidence. Every executable task below has a bounded semantic verification owner; runtime results remain pending. Existing infrastructure is sufficient; no new test framework is required.
 
 ## Infrastructure and sampling
 
@@ -60,4 +60,25 @@ Human business and assistive-technology UAT remainsPhase13 when available; agent
 
 ## Sign-off
 
-Pending executable plans and plan-check coverage. nyquist_compliant remainsfalse until every task/test owner and sampling dependency is complete; runtime pass evidence is recorded separately during execution.
+Plan-check coverage approved2026-09-16. nyquist_compliant=true describes complete task sampling/ownership only; wave_0_complete=false until06-01 fixtures actually pass. No Phase6 runtime pass is claimed. Semantic families may be consolidated within named files, never removed from coverage.
+
+## Executable task sampling map
+
+| Tasks | Wave | Semantic verification and dependencies | Runtime status |
+|---|---:|---|---|
+| 06-01-01, 06-01-02 | 1 | Strict underwriting contracts and source fixtures; node --test tests/underwriting-contracts.test.mjs tests/underwriting-source.test.mjs; node scripts/validate-contracts.mjs | Pending |
+| 06-02-01, 06-02-02, 06-02-03 | 2 | Underwriting storage, authority and deterministic domain rules; dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter "FullyQualifiedName~QuoteRatingRulesTests\|FullyQualifiedName~UnderwritingEligibilityTests"; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter FullyQualifiedName~UnderwritingStorageTests | Pending |
+| 06-03-01, 06-03-02 | 3 | Persistent rating, submission and revision lifecycle; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter "FullyQualifiedName~QuoteRating\|FullyQualifiedName~QuoteUnderwritingLifecycle\|FullyQualifiedName~QuoteMatch" | Pending |
+| 06-04-01, 06-04-02 | 4 | Quote overview, rating and revision UI; pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs | Pending |
+| 06-05-01, 06-05-02, 06-05-03 | 5 | Proof review, referrals and typed conditions; dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~ReferralConditionTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter "FullyQualifiedName~QuoteEvidenceReview\|FullyQualifiedName~QuoteReferral" | Pending |
+| 06-06-01, 06-06-02 | 6 | Underwriting decisions and evidence UI; pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs | Pending |
+| 06-07-01, 06-07-02, 06-07-03 | 7 | Capacity escalation and correspondence vertical slice; dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter "FullyQualifiedName~CapacityEscalation\|FullyQualifiedName~CapacityApi"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs | Pending |
+| 06-08-01, 06-08-02, 06-08-03 | 8 | Immutable terms, delivery and exact acceptance backend; dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~QuoteTermsRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter "FullyQualifiedName~QuoteTermsTests\|FullyQualifiedName~QuoteDeliveryTests\|FullyQualifiedName~QuoteAcceptanceTests" | Pending |
+| 06-09-01, 06-09-02 | 9 | Quotation preparation, send and acceptance UI; pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-terms-browser.mjs | Pending |
+| 06-10-01, 06-10-02, 06-10-03 | 10 | Policy storage and balanced first-issue posting; dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~IssuePostingRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter "FullyQualifiedName~PolicyStorageTests\|FullyQualifiedName~IssuePostingStorageTests" | Pending |
+| 06-11-01, 06-11-02 | 11 | Atomic policy issue and protected policy reads; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter "FullyQualifiedName~QuoteIssue\|FullyQualifiedName~PolicyReadTests" | Pending |
+| 06-12-01, 06-12-02 | 12 | Issue confirmation, receipt and policy record UI; pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-issue-browser.mjs | Pending |
+| 06-13-01, 06-13-02 | 13 | Policy discovery, client links and safe agency sharing; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter "FullyQualifiedName~PolicyDiscoveryTests\|FullyQualifiedName~PolicySharingTests"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs | Pending |
+| 06-14-01, 06-14-02 | 14 | Both-product acceptance, restart and phase verification; dotnet test backend/BackOffice.slnx --no-restore --logger trx --results-directory .local/phase6-final-fresh; ./scripts/assert-test-results.ps1 -ResultsDirectory .local/phase6-final-fresh -MinimumTests 680 -MinimumSqlTests 85; node scripts/validate-contracts.mjs; pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-suite.mjs | Pending |
+
+All tasks test in the same plan, so no more than one task elapses without automated feedback. Schema tasks additionally execute initialize-demo and inspect applied migration/retained hashes. Integration tasks repeat affected checks and run full backend only when runtime backend changed. Browser commands assume a production build and owned local hosts; frontend-only tasks still run retained targeted API journeys. No watch modes or placeholders. Additional promised families QuoteRatingTests, UnderwritingEligibilityTests, QuoteRatingWorkerTests, QuoteUnderwritingLifecycleTests, QuoteEvidenceReviewTests, QuoteReferralTests/API, ReferralConditionTests, CapacityEscalationTests/API, QuoteTerms/Delivery/AcceptanceTests, IssuePostingRules/StorageTests, QuoteIssue/API, PolicyStorage/Discovery/Sharing all have owning files in06-02..13. The final suite/restart in06-14 covers every earlier slice.

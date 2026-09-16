@@ -1,6 +1,6 @@
 # Phase6 data and API design
 
-Design draft2026-09-16. This refines approved Phase1 contracts against the actual Phase5 runtime; no table/endpoint below is claimed implemented. Complete strict schema generation, source/UI coverage and plan review before runtime execution. SQL Server2022 remains authoritative; all external effects use persisted deterministic demo adapters.
+Reviewed planning design2026-09-16; implementation contracts gated by06-01. This refines approved Phase1 contracts against the actual Phase5 runtime; no table/endpoint below is claimed implemented. Complete strict schema generation, source/UI coverage and plan review before runtime execution. SQL Server2022 remains authoritative; all external effects use persisted deterministic demo adapters.
 
 ## 1. Aggregate ownership and version boundaries
 
@@ -139,4 +139,4 @@ No support flags, credential/session material or private cross-agency context in
 
 Require unit/property fixtures for hash partitions, state progression,14-day boundary, all authority dimensions and balanced money; realSQL constraints/immutability/migration/replay/late rollback/parallel different-key issue; provider crash and stale apply; both-product UI and current scoped policy discovery. Explicitly test proof completion does not force an endless new rating, signed statement preparation does not deadlock send, and proof changes after acceptance prohibit bind until fresh valid acceptance.
 
-This draft resolves storage and route responsibilities. Still required before execution: exact typed configuration/endorsement/condition catalog fixtures, full schema/API examples, UI-SPEC, task-level source mapping and plan-check review. Any remaining inconsistencies must be corrected before a plan is marked executable; no new runtime capability is enabled by this document.
+This design is accompanied by06-RULE-CATALOG,06-UI-SPEC, source task mapping and06-PLAN-REVIEW. Task06-01-01 produces and validates exact generated schemas/JSON-pointer fixtures before runtime execution. Plans06-02/05/07/08/10 apply feature-owned migrations before verification. Capacity extensions require exact dimension/submission/validity, and acceptance proof must be present before hashing assurance. No new runtime capability is enabled by these planning documents.

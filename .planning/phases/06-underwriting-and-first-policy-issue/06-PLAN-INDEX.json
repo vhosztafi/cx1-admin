@@ -1,0 +1,302 @@
+[
+  {
+    "id": "06-01",
+    "title": "Strict underwriting contracts and source fixtures",
+    "wave": 1,
+    "requirements": [
+      "UWR-01",
+      "UWR-02",
+      "UWR-03",
+      "UWR-04",
+      "UWR-05",
+      "UWR-06",
+      "UWR-07"
+    ],
+    "decisions": [
+      "D-01",
+      "D-02",
+      "D-03",
+      "D-04",
+      "D-05",
+      "D-06",
+      "D-07",
+      "D-08",
+      "D-09",
+      "D-10",
+      "D-11",
+      "D-12"
+    ],
+    "schemaGate": false,
+    "ui": false,
+    "verification": "node --test tests/underwriting-contracts.test.mjs tests/underwriting-source.test.mjs; node scripts/validate-contracts.mjs"
+  },
+  {
+    "id": "06-02",
+    "title": "Underwriting storage, authority and deterministic domain rules",
+    "wave": 2,
+    "requirements": [
+      "UWR-01",
+      "UWR-02",
+      "UWR-03"
+    ],
+    "decisions": [
+      "D-01",
+      "D-03",
+      "D-04",
+      "D-05",
+      "D-06",
+      "D-12"
+    ],
+    "schemaGate": true,
+    "ui": false,
+    "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter \"FullyQualifiedName~QuoteRatingRulesTests|FullyQualifiedName~UnderwritingEligibilityTests\"; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter FullyQualifiedName~UnderwritingStorageTests"
+  },
+  {
+    "id": "06-03",
+    "title": "Persistent rating, submission and revision lifecycle",
+    "wave": 3,
+    "requirements": [
+      "UWR-01",
+      "UWR-02",
+      "QUO-06"
+    ],
+    "decisions": [
+      "D-01",
+      "D-02",
+      "D-03",
+      "D-04",
+      "D-05",
+      "D-12"
+    ],
+    "schemaGate": false,
+    "ui": false,
+    "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~QuoteRating|FullyQualifiedName~QuoteUnderwritingLifecycle|FullyQualifiedName~QuoteMatch\""
+  },
+  {
+    "id": "06-04",
+    "title": "Quote overview, rating and revision UI",
+    "wave": 4,
+    "requirements": [
+      "UWR-01",
+      "UWR-02",
+      "QUO-06"
+    ],
+    "decisions": [
+      "D-02",
+      "D-04",
+      "D-05",
+      "D-11",
+      "D-12"
+    ],
+    "schemaGate": false,
+    "ui": true,
+    "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs"
+  },
+  {
+    "id": "06-05",
+    "title": "Proof review, referrals and typed conditions",
+    "wave": 5,
+    "requirements": [
+      "UWR-02",
+      "UWR-03",
+      "QUO-03"
+    ],
+    "decisions": [
+      "D-01",
+      "D-05",
+      "D-06",
+      "D-12"
+    ],
+    "schemaGate": true,
+    "ui": false,
+    "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~ReferralConditionTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~QuoteEvidenceReview|FullyQualifiedName~QuoteReferral\""
+  },
+  {
+    "id": "06-06",
+    "title": "Underwriting decisions and evidence UI",
+    "wave": 6,
+    "requirements": [
+      "UWR-02",
+      "UWR-03",
+      "QUO-03"
+    ],
+    "decisions": [
+      "D-05",
+      "D-06",
+      "D-12"
+    ],
+    "schemaGate": false,
+    "ui": true,
+    "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs"
+  },
+  {
+    "id": "06-07",
+    "title": "Capacity escalation and correspondence vertical slice",
+    "wave": 7,
+    "requirements": [
+      "UWR-04",
+      "UWR-03"
+    ],
+    "decisions": [
+      "D-01",
+      "D-05",
+      "D-06",
+      "D-12"
+    ],
+    "schemaGate": true,
+    "ui": true,
+    "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs"
+  },
+  {
+    "id": "06-08",
+    "title": "Immutable terms, delivery and exact acceptance backend",
+    "wave": 8,
+    "requirements": [
+      "UWR-05",
+      "UWR-06"
+    ],
+    "decisions": [
+      "D-01",
+      "D-03",
+      "D-06",
+      "D-07",
+      "D-08",
+      "D-12"
+    ],
+    "schemaGate": true,
+    "ui": false,
+    "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~QuoteTermsRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~QuoteTermsTests|FullyQualifiedName~QuoteDeliveryTests|FullyQualifiedName~QuoteAcceptanceTests\""
+  },
+  {
+    "id": "06-09",
+    "title": "Quotation preparation, send and acceptance UI",
+    "wave": 9,
+    "requirements": [
+      "UWR-05",
+      "UWR-06"
+    ],
+    "decisions": [
+      "D-03",
+      "D-07",
+      "D-08",
+      "D-12"
+    ],
+    "schemaGate": false,
+    "ui": true,
+    "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-terms-browser.mjs"
+  },
+  {
+    "id": "06-10",
+    "title": "Policy storage and balanced first-issue posting",
+    "wave": 10,
+    "requirements": [
+      "UWR-07"
+    ],
+    "decisions": [
+      "D-01",
+      "D-08",
+      "D-09",
+      "D-10",
+      "D-12"
+    ],
+    "schemaGate": true,
+    "ui": false,
+    "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~IssuePostingRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyStorageTests|FullyQualifiedName~IssuePostingStorageTests\""
+  },
+  {
+    "id": "06-11",
+    "title": "Atomic policy issue and protected policy reads",
+    "wave": 11,
+    "requirements": [
+      "UWR-06",
+      "UWR-07"
+    ],
+    "decisions": [
+      "D-01",
+      "D-03",
+      "D-05",
+      "D-07",
+      "D-08",
+      "D-09",
+      "D-10",
+      "D-12"
+    ],
+    "schemaGate": false,
+    "ui": false,
+    "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~QuoteIssue|FullyQualifiedName~PolicyReadTests\""
+  },
+  {
+    "id": "06-12",
+    "title": "Issue confirmation, receipt and policy record UI",
+    "wave": 12,
+    "requirements": [
+      "UWR-06",
+      "UWR-07"
+    ],
+    "decisions": [
+      "D-07",
+      "D-08",
+      "D-09",
+      "D-10",
+      "D-11",
+      "D-12"
+    ],
+    "schemaGate": false,
+    "ui": true,
+    "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-issue-browser.mjs"
+  },
+  {
+    "id": "06-13",
+    "title": "Policy discovery, client links and safe agency sharing",
+    "wave": 13,
+    "requirements": [
+      "QUO-01",
+      "CLI-01",
+      "AGY-04",
+      "UWR-07"
+    ],
+    "decisions": [
+      "D-11",
+      "D-12"
+    ],
+    "schemaGate": false,
+    "ui": true,
+    "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs"
+  },
+  {
+    "id": "06-14",
+    "title": "Both-product acceptance, restart and phase verification",
+    "wave": 14,
+    "requirements": [
+      "UWR-01",
+      "UWR-02",
+      "UWR-03",
+      "UWR-04",
+      "UWR-05",
+      "UWR-06",
+      "UWR-07",
+      "QUO-01",
+      "QUO-03",
+      "QUO-06",
+      "CLI-01",
+      "AGY-04"
+    ],
+    "decisions": [
+      "D-01",
+      "D-02",
+      "D-03",
+      "D-04",
+      "D-05",
+      "D-06",
+      "D-07",
+      "D-08",
+      "D-09",
+      "D-10",
+      "D-11",
+      "D-12"
+    ],
+    "schemaGate": false,
+    "ui": true,
+    "verification": "dotnet test backend/BackOffice.slnx --no-restore --logger trx --results-directory .local/phase6-final-fresh; ./scripts/assert-test-results.ps1 -ResultsDirectory .local/phase6-final-fresh -MinimumTests 680 -MinimumSqlTests 85; node scripts/validate-contracts.mjs; pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-suite.mjs"
+  }
+]

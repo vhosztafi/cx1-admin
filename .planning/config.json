@@ -10,7 +10,8 @@
     "nyquist_validation": true,
     "code_review": true,
     "ui_phase": true,
-    "ui_review": true
+    "ui_review": true,
+    "_auto_chain_active": true
   },
   "planning": {
     "commit_docs": true,

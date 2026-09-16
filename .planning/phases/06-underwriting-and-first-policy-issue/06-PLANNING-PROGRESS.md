@@ -28,3 +28,8 @@ New source requirements to carry into detailed design:14-day expiry; premises-se
 Created06-DATA-API-DESIGN.md as an explicit draft: proposed table/constraint ownership, state/closure transitions, scoped command/read routes, atomic first policy/posting/outbox and exact error/concurrency semantics. Separated pricing input, contractual terms and assurance hashes so completing evidence/referrals cannot create an endless rerating loop; acceptance binds all applicable context. Dedicated cycle evidence writes preserve closed capture. Preparing immutable terms before collecting signed-statement proof avoids circular send prerequisites. Binder validity must cover the term; source14-day quote expiry retained. Reviewed and clarified separate quote/childETags and first-issue uniqueness.
 
 Remaining: precise typed rule/condition/endorsement fixture catalogue, API/schema examples, UI-SPEC, final source/task mapping, bounded plans and inline plan review. Design is not runtime, not executable-plan completion; no Phase6 tests claimed. No active processes or implementation changes.
+
+
+## User-requested plan-phase6 --auto,2026-09-16
+
+Planning complete:14sequential plans/33tasks, UI-SPEC and typed demo rule/condition catalog, source/task mapping, five realSQL schema gates, validation sampling and inline plan review. Review corrected annual-only scope against existing short-period capture, oversized migration, provider extension provenance, acceptance hash ordering and nonexistent client service path. GSD structure check14/14valid,0warnings; all7UWR/all12decisions mapped. No runtime pass claimed. Next execute06-01, preserving all contracts/source gates; auto-advance authorised. No active processes.

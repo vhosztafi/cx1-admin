@@ -108,7 +108,7 @@
 **Goal:** Complete the first quote-to-issued-policy journey.
 **Depends on:** Phase 5
 **Requirements:** UWR-01 through UWR-07
-**Plans:** Not yet planned.
+**Plans:** 14 reviewed sequential plans (06-01 through06-14); contracts, rating, decisions, capacity, terms/acceptance, atomic issue, policy discovery and acceptance/restart.
 
 **Success criteria:**
 
@@ -238,7 +238,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 3. Clients and contact servicing | 6/6 | Complete | 2026-09-14 |
 | 4. Agency onboarding and access | 8/8 | Complete | 2026-09-15 |
 | 5. Motor Trade quote capture | 11/11 | Complete    | 2026-09-16 |
-| 6. Underwriting and first policy issue | 0/TBD | Not started | — |
+| 6. Underwriting and first policy issue | 0/14 | Planned | — |
 | 7. Policy lifecycle and history | 0/TBD | Not started | — |
 | 8. Commercial Combined back office | 0/TBD | Not started | — |
 | 9. Tasks, documents, communication and incidents | 0/TBD | Not started | — |
