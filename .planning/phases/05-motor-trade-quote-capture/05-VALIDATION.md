@@ -258,3 +258,8 @@ be78212 completes scoped HTTP evidence, persisted readiness and actual upload/at
 ## Final 05-09 acceptance — 2026-09-16
 
 d8ab279 and 13c8bf0 complete revision history/comparison, historical cloning and atomic withdrawal. Fresh .local/phase5-lifecycle-final-20260916 passed 671=565 unit+106 integration,79 real SQL,0 skips; assertion671/79 passed, integration9m19s. 79 frontend,294 contracts/339 operations, final lint/types/build and both-product Chrome source141/clone142/source143/clone144 passed. Full typed comparison, terms confirmation, independent IDs, no process transfer, exact lost-response retries, authority/rollback/races and terminal closure details covered. Screenshots inspected; all owned previews stopped. See05-09-SUMMARY. Next05-10; no final QUO signoff.
+
+
+## Final05-10 acceptance — 2026-09-16
+
+1491934 completes discovery, actual client links, version-fenced matching with retained ownership, and common safe agency summaries. Fresh .local/phase5-integration-final-20260916 passes676=566unit+110integration,83realSQL,0skips;676/83gate passes, integration10m8s.80frontend,294contracts/341operations, final lint/types/productionbuild and Chrome148revision4/Combined149 pass. Desktop/mobile screenshots inspected;314pxrail and390pxcontainment verified. Migration/model synchronized; preserved demo, no funnel changes, owned previews stopped. See05-10-SUMMARY. Next05-11; no final QUO signoff.
