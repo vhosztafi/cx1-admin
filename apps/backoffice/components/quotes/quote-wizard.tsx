@@ -1,10 +1,11 @@
 'use client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { csrfToken, type Actor } from '../../lib/auth';
 import { amountInput, changeField, fieldValue, percentageInput } from '../../lib/quote-form';
 import { QuoteError, quoteFetch, saveQuoteCommand, sendQuoteCommand, staleQuoteFailure, uncertainQuoteFailure, validQuoteEtag, type PendingQuoteCommand, type QuoteValue, type QuoteView } from '../../lib/quotes';
+import { driverOptionStates } from '../../lib/quote-driver-options';
 import { readinessTarget, type ReadinessTarget } from '../../lib/quote-readiness';
 import { termFeedback } from '../../lib/quote-term';
 import { QuoteDrivers } from './quote-drivers';
@@ -43,6 +44,7 @@ const display = (value: QuoteValue | undefined, sourceLabels: Record<string, str
 function Editor({ actorId, initial, initialEtag, catalogue }: { actorId: string; initial: QuoteView; initialEtag: string; catalogue: QuoteFormCatalogue }) {
   const router = useRouter();
   const [saved, setSaved] = useState(initial); const [etag, setEtag] = useState(initialEtag); const [proposal, setProposal] = useState(initial.proposal);
+  const savedDriverOptions = useMemo(() => driverOptionStates(saved.proposal, catalogue.driverOptions?.version === catalogue.version ? catalogue.driverOptions : undefined), [saved.proposal, catalogue.driverOptions, catalogue.version]);
   const [stage, setStage] = useState(1); const [busy, setBusy] = useState(false); const [uncertain, setUncertain] = useState(false);
   const [error, setError] = useState(''); const [status, setStatus] = useState(''); const [invalid, setInvalid] = useState<Record<string, string>>({});
   const [conflict, setConflict] = useState(false); const [comparison, setComparison] = useState<{ data: QuoteView; etag: string }>();
@@ -167,10 +169,10 @@ function Editor({ actorId, initial, initialEtag, catalogue }: { actorId: string;
         <p>Checks apply to saved revision {saved.revisionNumber}. {dirty ? 'Save your changes to refresh this guidance.' : 'Review the fields below; incomplete drafts can still be saved.'}</p>
         <p className="client-help">Later sections and complete quote assessment remain unavailable. This list does not confirm readiness to rate or issue.</p>
         <ul className="quote-readiness-list">{saved.readiness.issues.map((issue, index) => {
-          const target = readinessTarget(issue, saved.proposal, catalogue.businessQuestions, catalogue.driverFields);
+          const target = readinessTarget(issue, saved.proposal, catalogue.businessQuestions, catalogue.driverFields, savedDriverOptions);
           return target ? <li key={`${issue.code}-${issue.path}-${index}`}><button type="button" className="button" disabled={dirty || frozen} onClick={() => { setStage(target.stage); setFocusTarget({ ...target }); }}>Review {target.label}</button><span>{issue.message}</span></li> : null;
         })}</ul>
-        <p className="client-help">{saved.readiness.issues.filter(issue => !readinessTarget(issue, saved.proposal, catalogue.businessQuestions, catalogue.driverFields)).length} other checks concern later sections or quote-level requirements.</p>
+        <p className="client-help">{saved.readiness.issues.filter(issue => !readinessTarget(issue, saved.proposal, catalogue.businessQuestions, catalogue.driverFields, savedDriverOptions)).length} other checks concern later sections or quote-level requirements.</p>
       </div></Panel>
       {conflict && <Panel title="Saved version changed"><div className="quote-rail-body"><p>Your draft is retained. Load the saved revision to compare before deciding to replace your edits.</p><button className="button" disabled={busy} onClick={() => void compare()}>Load saved comparison</button>
         {comparison && <><p>Current saved revision: {comparison.data.revisionNumber}. Other sections also remain as recorded in that revision.</p><div className="table-scroll" role="region" aria-label="Quote changes" tabIndex={0}><table><thead><tr><th>Field</th><th>Your draft</th><th>Saved revision</th></tr></thead><tbody>{comparisonFields.filter(field => JSON.stringify(fieldValue(proposal, field.path)) !== JSON.stringify(fieldValue(comparison.data.proposal, field.path))).map(field => <tr key={field.path}><th>{field.label}</th><td>{display(fieldValue(proposal, field.path), Object.fromEntries([...catalogue.businessQuestions, ...(catalogue.driverFields ?? [])].map(question => [question.id, question.label])))}</td><td>{display(fieldValue(comparison.data.proposal, field.path), Object.fromEntries([...catalogue.businessQuestions, ...(catalogue.driverFields ?? [])].map(question => [question.id, question.label])))}</td></tr>)}</tbody></table></div><button className="button" disabled={busy || uncertain} onClick={replaceWithSaved}>Discard my edits and load saved revision</button></>}

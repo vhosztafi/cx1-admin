@@ -1,3 +1,4 @@
+import type { DriverOptionState } from '../../../scripts/quote-dynamic-options.mjs';
 import type { DriverField } from './quote-driver-fields';
 import type { SourceQuestion } from './quote-source-questions';
 import type { QuoteIssue, QuoteObject, QuoteProposal } from './quotes';
@@ -18,8 +19,8 @@ const answers: Record<string, ReadinessTarget> = Object.fromEntries([
 
 // Only explicit editable targets are linked. Never infer a wizard stage from
 // risk.business: that container also owns later claims/vehicle answers.
-export function readinessTarget(issue: QuoteIssue, proposal: QuoteProposal, questions: SourceQuestion[], driverFields: DriverField[] = []): ReadinessTarget | undefined {
-  const driverTarget = driverReadinessTarget(issue, proposal, driverFields);
+export function readinessTarget(issue: QuoteIssue, proposal: QuoteProposal, questions: SourceQuestion[], driverFields: DriverField[] = [], driverOptions: DriverOptionState[] = []): ReadinessTarget | undefined {
+  const driverTarget = driverReadinessTarget(issue, proposal, driverFields, driverOptions);
   if (driverTarget) return driverTarget;
   if (issue.questionId) {
     const question = questions.find(item => item.id === issue.questionId && item.products.includes(proposal.productCode));
@@ -42,7 +43,7 @@ export function readinessTarget(issue: QuoteIssue, proposal: QuoteProposal, ques
 }
 
 
-function driverReadinessTarget(issue: QuoteIssue, proposal: QuoteProposal, fields: DriverField[]): ReadinessTarget | undefined {
+function driverReadinessTarget(issue: QuoteIssue, proposal: QuoteProposal, fields: DriverField[], options: DriverOptionState[]): ReadinessTarget | undefined {
   if (!fields.length) return undefined;
   const stage = proposal.productCode === 'motor-trade-combined' ? 4 : 3;
   const globalLabels: Record<string, string> = { 'prototype.quote.ef70e80708bb': 'Motoring convictions in the last five years or pending prosecutions', 'prototype.quote.36da21d3c935': 'Accidents, claims or losses in the last three years', 'prototype.quote.922ca15dc9ed': 'County court judgments in the last five years', 'prototype.quote.46414cc10100': 'Criminal convictions or pending prosecutions' };
@@ -68,6 +69,13 @@ function driverReadinessTarget(issue: QuoteIssue, proposal: QuoteProposal, field
   const answer = answerIndex && Array.isArray(responses?.answers) ? responses.answers[Number(answerIndex[1])] as QuoteObject | undefined : undefined;
   const id = issue.questionId ?? (typeof answer?.questionId === 'string' ? answer.questionId : undefined);
   const field = fields.find(field => field.group === group && (id ? field.questionId === id || field.id === id : !field.questionId && field.path === path.replaceAll('/', '.')));
-  if (!field || field.unavailable) return undefined;
+  if (!field) return undefined;
+  if (/^MTS-06-Q(58|59|60|61|62)$/.test(field.id)) {
+    const state = options.find(item => item.driverIndex === Number(match[1]) && item.questionId === field.id);
+    if (state?.active !== true) {
+      const retained = Array.isArray(responses?.answers) && responses.answers.some(item => (item as QuoteObject).questionId === field.questionId);
+      return state && retained ? { stage, label: `Clear ${prefix} · ${field.label}` } : undefined;
+    }
+  } else if (field.unavailable) return undefined;
   return { stage: group === 'driver' || group === 'occupations' ? stage : stage + 1, label: `${prefix} · ${field.label}` };
 }

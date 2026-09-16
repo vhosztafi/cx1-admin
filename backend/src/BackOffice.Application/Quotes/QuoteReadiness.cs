@@ -25,8 +25,12 @@ public static class QuoteReadiness
         issues.AddRange(term.Issues.Select(x => new QuoteReadinessIssue(x.Path, x.Code, "Complete or correct the policy term.", "capture", "error")));
         issues.AddRange(QuoteBusinessRules.Assess(proposal).Select(x => new QuoteReadinessIssue(
             x.Path, x.Code, "Complete or correct the business details.", "capture", "error", x.QuestionId)));
-        issues.AddRange(QuoteDriverRules.Assess(proposal).Select(x => new QuoteReadinessIssue(
+        issues.AddRange(QuoteDriverRules.Assess(proposal, asOf).Select(x => new QuoteReadinessIssue(
             x.Path, x.Code, DriverMessage(x.Code), "capture", "error", x.QuestionId)));
+        issues.AddRange(QuoteDriverRules.AssessDynamic(proposal).Issues.Select(x => new QuoteReadinessIssue(
+            x.Path, x.Code, "Review the selected cover, driver age and licence experience.", "capture", "error", x.QuestionId)));
+        issues.AddRange(QuoteVehicleOwnership.Assess(proposal).Select(x => new QuoteReadinessIssue(
+            x.Path, x.Code, "Review the vehicle owner and the named driver's personal vehicle cover.", "capture", "error", x.QuestionId)));
         issues.AddRange(QuoteDriverRules.AssessHistory(proposal, asOf).Select(x => new QuoteReadinessIssue(
             x.Path, x.Code, x.Code == "history-date-after-assessment" ? "The incident date is after the assessment date." : "Recorded history requires a Yes answer to this business declaration.", "capture", "error", x.QuestionId, x.RelatedPath)));
         issues.AddRange(QuoteCaptureShape.ValidateCompleteness(proposal).Select(x => new QuoteReadinessIssue(
@@ -47,7 +51,14 @@ public static class QuoteReadiness
         "conflicting-driver-employment" => "The two motor trade employment declarations do not agree.",
         "conflicting-driver-years" => "The declared years do not match complete years at policy inception.",
         "inactive-driver-history-retained" or "inactive-prototype-other-occupation" => "Retained details conflict with the controlling answer. Review the answer or remove the details explicitly.",
+        "inactive-named-drivers-retained" => "The any-driver-only basis retains named driver rows. Review the basis or remove the rows explicitly.",
+        "inactive-any-driver-answer-retained" => "Any-driver restrictions remain recorded for a different driver basis. Review or clear them explicitly.",
         "driver-history-required" => "Add the history declared by this answer.",
+        "licence-before-seventeenth-birthday" => "The licence issue date must be on or after the driver's seventeenth birthday.",
+        "residency-before-birth" => "UK residency cannot start before the recorded date of birth.",
+        "residency-in-future" => "UK residency cannot start after the assessment date.",
+        "ban-duration-outside-declared-band" => "The exact ban duration does not match the declared band.",
+        "conflicting-disqualification-declaration" => "The disqualification answer does not agree with the declared ban period.",
         "driver-age-out-of-range" => "Named drivers must be between 17 and 85 at policy inception.",
         "provisional-licence-not-covered" => "Provisional licences are not covered by this product.",
         "young-driver-licence-experience" => "A driver under 25 needs at least one complete year of licence experience.",

@@ -20,7 +20,7 @@ public static partial class QuoteDriverRules
         new("convictions",33,null,[34,35,36,37,38]), new("losses",40,null,[41,42,43,44,45]),
         new("criminalConvictions",48,null,[49,50,51,52]), new("countyCourtJudgments",53,null,[54,55,56,57])];
 
-    public static IReadOnlyList<QuoteFieldIssue> Assess(JsonElement proposal)
+    public static IReadOnlyList<QuoteFieldIssue> Assess(JsonElement proposal, DateOnly asOf)
     {
         var product = Text(At(proposal,"productCode"));
         if (product is not ("motor-trade-road-risks" or "motor-trade-combined")) return [new("unsupported-capture-product","/productCode")];
@@ -88,7 +88,7 @@ public static partial class QuoteDriverRules
                 }
             }
         }
-        return issues.Concat(AssessEligibility(proposal)).Concat(AssessDeclarations(proposal)).Take(QuoteCaptureShape.MaximumIssues).ToArray();
+        return issues.Concat(AssessEligibility(proposal)).Concat(AssessDeclarations(proposal)).Concat(AssessChronologyAndDeclarations(proposal, asOf)).Take(QuoteCaptureShape.MaximumIssues).ToArray();
     }
     private static string Id(int number) => $"MTS-06-Q{number:00}";
     private static string? Text(JsonElement value) => value.ValueKind == JsonValueKind.String ? value.GetString() : null;

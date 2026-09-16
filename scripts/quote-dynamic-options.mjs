@@ -1,4 +1,4 @@
-// Design contract for trusted, per-instance option selection. Run strict schema,
+// Pure per-instance option selection, shared by contract checks and the quote form. Run strict schema,
 // question and identity checks first; do not accept this context from a caller.
 import {reconcileQuoteCover} from './quote-cover-reconciliation.mjs';
 const validDate=value=>typeof value==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(value)&&Number.isFinite(Date.parse(`${value}T00:00:00Z`))&&new Date(`${value}T00:00:00Z`).toISOString().slice(0,10)===value;
@@ -10,8 +10,8 @@ export function ageOn(dateOfBirth,onDate) {
   return years-(onDate<birthday?1:0);
 }
 
-export function selectQuoteDynamicOptions(proposal,catalogue,{requireDriverAnswers=false}={}) {
-  const selectedCollections={};const issues=[];
+export function selectQuoteDynamicOptions(proposal,catalogue,{requireDriverAnswers=false,includeDriverOptions=false}={}) {
+  const selectedCollections={};const issues=[];const driverOptions=[];
   const add=(code,path)=>issues.push({code,path});
   const trusted=(reference,collection)=>{
     if(!reference||reference.collection!==collection||reference.version!==catalogue.version)return undefined;
@@ -66,7 +66,7 @@ export function selectQuoteDynamicOptions(proposal,catalogue,{requireDriverAnswe
   (proposal.risk?.drivers??[]).forEach((driver,index)=>{
     const age=ageOn(driver.dateOfBirth,proposal.termIntent?.localStartDate);
     const band=age===undefined?-1:catalogue.youngDriverConfiguration.findIndex(row=>(row.ageFrom??0)<=age&&age<=(row.ageTo??1000));
-    if(requireDriverAnswers) {
+    if(requireDriverAnswers||includeDriverOptions) {
       const root=`/risk/drivers/${index}/responses/answers`;
       const experience=ageOn(driver.licence?.issuedOn,proposal.termIntent?.localStartDate);
       const young=age===undefined?undefined:age<25;
@@ -84,6 +84,14 @@ export function selectQuoteDynamicOptions(proposal,catalogue,{requireDriverAnswe
         ['MTS-06-Q62',inexperienced],
       ];
       for(const [id,active] of conditions) {
+        if(includeDriverOptions) {
+          const collection=id==='MTS-06-Q59'&&band>=0?`youngDriverConfiguration/${band}/indemnities`:
+            id==='MTS-06-Q60'&&band>=0?`youngDriverConfiguration/${band}/cCs`:
+            id==='MTS-06-Q61'?'driverExperienceBasedExcesses':id==='MTS-06-Q62'?'driverExperienceBasedVehicleCCLimits':undefined;
+          const rows=id==='MTS-06-Q59'?indemnities:id==='MTS-06-Q61'?excesses:collection?catalogue.collections[collection]:[];
+          driverOptions.push({driverIndex:index,questionId:id,active,...(collection?{collection}:{}),choices:active?(rows??[]).map(({value,text})=>({value,text})):[]});
+        }
+        if(!requireDriverAnswers)continue;
         const entry=find(driver.responses?.answers,id);
         const path=entry?`${root}/${entry.index}/value`:root;
         if(active===undefined)add('driver-option-context-required',path);
@@ -91,7 +99,7 @@ export function selectQuoteDynamicOptions(proposal,catalogue,{requireDriverAnswe
         else if(!active&&entry)add('inactive-driver-option-retained',path);
       }
       const excess=find(driver.responses?.answers,'MTS-06-Q61');
-      if(excess&&inexperienced&&limited&&excesses) {
+      if(requireDriverAnswers&&excess&&inexperienced&&limited&&excesses) {
         const row=trusted(excess.answer.value,'driverExperienceBasedExcesses');
         if(row&&!excesses.some(item=>item.value===row.value))add('experience-excess-exceeds-policy-limit',`${root}/${excess.index}/value`);
       }
@@ -110,5 +118,5 @@ export function selectQuoteDynamicOptions(proposal,catalogue,{requireDriverAnswe
       }
     }
   });
-  return {selectedCollections,issues:[...issues,...reconciled.issues]};
+  return {selectedCollections,issues:[...issues,...reconciled.issues],...(includeDriverOptions?{driverOptions}:{})};
 }

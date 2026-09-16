@@ -13,7 +13,7 @@ public sealed class QuoteDriverRulesTests
         return JsonNode.Parse(stream)!["proposal"]!;
     }
     private static IReadOnlyList<QuoteFieldIssue> Check(JsonNode proposal)
-    { using var document = JsonDocument.Parse(proposal.ToJsonString()); return QuoteDriverRules.Assess(document.RootElement); }
+    { using var document = JsonDocument.Parse(proposal.ToJsonString()); return QuoteDriverRules.Assess(document.RootElement, new DateOnly(2026,9,15)); }
     private static JsonNode Driver(JsonNode proposal) => proposal["risk"]!["drivers"]![0]!;
     private static JsonNode Answer(JsonNode holder,int number) => holder["responses"]!["answers"]!.AsArray().First(item => item!["questionId"]!.GetValue<string>() == $"MTS-06-Q{number:00}")!;
     private static JsonNode Reference(string collection,int value)

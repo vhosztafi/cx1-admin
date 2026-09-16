@@ -2,6 +2,7 @@
 import { matchingQuoteCatalogue, type QuoteFormCatalogue } from '../../lib/quote-catalogue';
 import { amountInput, changeAnswer, changeResponses, countInput, selectedReference } from '../../lib/quote-form';
 import { addQuoteDriver, addQuoteDriverHistory, changeQuoteDriverField, changeQuoteDriverHistoryField, moveQuoteDriver, moveQuoteDriverHistory, quoteDriverHistory, quoteDrivers, removeQuoteDriver, removeQuoteDriverHistory, type DriverHistory } from '../../lib/quote-driver-form';
+import { driverOptionStates, resolvedDriverField } from '../../lib/quote-driver-options';
 import type { DriverField } from '../../lib/quote-driver-fields';
 import type { QuoteObject, QuoteProposal, QuoteValue, QuoteView } from '../../lib/quotes';
 
@@ -27,9 +28,11 @@ export function QuoteDrivers(props: Props) {
   const fields = catalogue.driverFields;
   if (!matchingQuoteCatalogue(versions, catalogue) || !fields) return <p role="alert">Driver details need the catalogue matching this saved quote. Existing details are retained.</p>;
   const drivers = quoteDrivers(proposal);
+  const optionStates = driverOptionStates(proposal, catalogue.driverOptions?.version === catalogue.version ? catalogue.driverOptions : undefined);
   const attempt = (action: () => QuoteProposal) => { try { replace(action()); props.validity('driver-action'); } catch (error) { props.validity('driver-action', error instanceof Error ? error.message : 'The driver change could not be applied.'); } };
   const clearBuffers = (prefix: string) => { for (const key of Object.keys(props.buffers).filter(key => key.startsWith(prefix))) { props.setBuffer(key, undefined); props.validity(key); } };
-  const controls = (row: QuoteObject, group: DriverField['group'], prefix: string, bufferPrefix: string, update: (path: string, value: QuoteValue | undefined) => void) => fields.filter(field => field.group === group).map(field => {
+  const controls = (row: QuoteObject, group: DriverField['group'], prefix: string, bufferPrefix: string, update: (path: string, value: QuoteValue | undefined) => void, driverIndex = -1) => fields.filter(field => field.group === group).map(sourceField => {
+    const field = group === 'driver' ? resolvedDriverField(sourceField, driverIndex, optionStates) : sourceField;
     const responses = row.responses as QuoteObject | undefined;
     if (field.questionId && responses?.questionSetVersion && responses.questionSetVersion !== versions.questionSetVersion) return <p role="alert" key={field.id}>{prefix} answers need their matching question version. Existing answers are retained.</p>;
     const value = field.questionId ? answers(row).find(answer => answer.questionId === field.questionId)?.value : objectValue(row, field.path);
@@ -55,7 +58,7 @@ export function QuoteDrivers(props: Props) {
       return <details className="quote-driver-card" key={driverId} open={driverIndex === 0}><summary>{prefix} · {name}</summary>
         {!history && <><div className="quote-row-actions"><button type="button" className="button" aria-label={`Move ${prefix.toLowerCase()} up`} disabled={driverIndex === 0} onClick={() => attempt(() => moveQuoteDriver(proposal, driverId, -1))}>Move up</button><button type="button" className="button" aria-label={`Move ${prefix.toLowerCase()} down`} disabled={driverIndex === drivers.length - 1} onClick={() => attempt(() => moveQuoteDriver(proposal, driverId, 1))}>Move down</button><button type="button" className="button" aria-label={`Remove ${prefix.toLowerCase()}`} onClick={() => attempt(() => { const next = removeQuoteDriver(proposal, driverId); clearBuffers(bufferPrefix + '/'); return next; })}>Remove driver</button></div>
           <p className="client-help">Full name and separate names are independent declarations. Licence issue date and driving test date are also distinct. Licence checks and document evidence are not yet available.</p>
-          <div className="quote-form-grid">{controls(driver, 'driver', prefix, bufferPrefix, (path, value) => attempt(() => changeQuoteDriverField(proposal, driverId, path, value)))}</div></>}
+          <div className="quote-form-grid">{controls(driver, 'driver', prefix, bufferPrefix, (path, value) => attempt(() => changeQuoteDriverField(proposal, driverId, path, value)), driverIndex)}</div></>}
         {histories.filter(group => history ? group.key !== 'occupations' : group.key === 'occupations').map(group => {
           const rows = quoteDriverHistory(proposal, driverId, group.key);
           return <fieldset className="quote-reference-fields" key={group.key}><legend>{group.label}</legend><button type="button" className="button" onClick={() => attempt(() => addQuoteDriverHistory(proposal, driverId, group.key))}>Add {group.label.toLowerCase()} for {prefix.toLowerCase()}</button>
@@ -77,7 +80,7 @@ export function QuoteDrivers(props: Props) {
 }
 
 function DriverControl({ field, label, value, bufferKey, props, change }: { field: DriverField; label: string; value: QuoteValue | undefined; bufferKey: string; props: Props; change: (value: QuoteValue | undefined) => void }) {
-  if (field.unavailable) return <div><p>{field.label}</p><p className="client-help">Requires the matching cover and age assessment. {value === undefined ? 'Not recorded.' : 'The saved selection is retained.'}</p>{value !== undefined && <button className="button" type="button" aria-label={`Clear ${label}`} onClick={() => change(undefined)}>Clear saved selection</button>}</div>;
+  if (field.unavailable) return <div><p>{field.label}</p><p className="client-help">{field.unavailableReason === 'inactive' ? 'Does not apply for the current age, licence experience and cover. ' : 'Complete the policy term, age, licence and cover context to select an eligible option. '}{value === undefined ? 'Not recorded.' : 'The saved selection is retained.'}</p>{value !== undefined && <button className="button" type="button" aria-label={`Clear ${label}`} onClick={() => change(undefined)}>Clear saved selection</button>}</div>;
   if (field.kind === 'reference' || field.kind === 'enum') {
     const reference = value as QuoteObject | undefined;
     const selected = field.choices.findIndex(choice => field.kind === 'enum' ? choice.value === value : reference?.collection === field.collection && reference?.version === props.catalogue.version && reference?.value === choice.value && reference?.label === choice.text);

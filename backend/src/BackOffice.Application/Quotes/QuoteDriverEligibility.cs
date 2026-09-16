@@ -6,18 +6,7 @@ namespace BackOffice.Application.Quotes;
 
 public static partial class QuoteDriverRules
 {
-    private static readonly Lazy<JsonElement> References = new(() =>
-    {
-        _ = QuoteCatalogueIdentity.Version;
-        using var stream = typeof(QuoteDriverRules).Assembly.GetManifestResourceStream("QuoteCapture.References")!;
-        using var document = JsonDocument.Parse(stream);
-        return document.RootElement.GetProperty("collections").Clone();
-    });
-    private static JsonElement TrustedMetadata(JsonElement reference,string collection)
-    {
-        var value = QuoteCatalogueIdentity.TrustedValue(reference,collection);
-        return value is null ? default : References.Value.GetProperty(collection).EnumerateArray().First(row => Number(At(row,"value")) == value);
-    }
+    private static JsonElement TrustedMetadata(JsonElement reference,string collection) => QuoteReferenceMetadata.Trusted(reference,collection);
 
     private static IReadOnlyList<QuoteFieldIssue> AssessEligibility(JsonElement proposal)
     {

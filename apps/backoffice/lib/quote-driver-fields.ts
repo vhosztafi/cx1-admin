@@ -2,7 +2,7 @@ import type { ReferenceChoice } from './quote-form';
 import type { DriverHistory } from './quote-driver-form';
 
 export type DriverFieldGroup = 'plan' | 'driver' | DriverHistory;
-export type DriverField = { id: string; group: DriverFieldGroup; path: string; label: string; kind: 'text' | 'date' | 'boolean' | 'money' | 'count' | 'reference' | 'enum'; questionId?: string; collection?: string; choices: ReferenceChoice[]; unavailable?: boolean; max?: number };
+export type DriverField = { id: string; group: DriverFieldGroup; path: string; label: string; kind: 'text' | 'date' | 'boolean' | 'money' | 'count' | 'reference' | 'enum'; questionId?: string; collection?: string; choices: ReferenceChoice[]; unavailable?: boolean; unavailableReason?: 'context' | 'inactive'; max?: number };
 type Mapping = { owner: string; questionId?: string; label?: string; answerKind?: string; contractKind: string; canonicalPath: string };
 type Binding = { owner: string; selectionRule: string; collections: string[] };
 

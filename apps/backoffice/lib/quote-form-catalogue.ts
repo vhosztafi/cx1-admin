@@ -9,6 +9,11 @@ import type { QuoteFormCatalogue } from './quote-catalogue';
 
 export const quoteFormCatalogue: QuoteFormCatalogue = {
   version: source.version,
+  driverOptions: { version: source.version, youngDriverConfiguration: source.youngDriverConfiguration,
+    collections: Object.fromEntries(Object.entries(source.collections).filter(([name]) =>
+      ['coverLevels', 'indemnityOwnVehicles', 'indemnityCustomerVehicles', 'mtOccupations', 'driverExperienceBasedExcesses', 'driverExperienceBasedVehicleCCLimits',
+        'prototype.quote.2beaf3b8d546', 'prototype.quote.d9dd069a314c', 'prototype.quote.b4c7e25f7781', 'prototype.quote.00216de47ab5'].includes(name) ||
+      name.startsWith('indemnityOwnVehicles/') || name.startsWith('youngDriverConfiguration/'))) },
   driverFields: sourceDriverFields(questions.mappings, source.bindings, source.collections, Object.fromEntries(fieldLabels.mappings.map(row => [row.owner, row.label]))),
   businessQuestions: sourceBusinessQuestions(questions.mappings, source.bindings, source.collections),
   collections: {
