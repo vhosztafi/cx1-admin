@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-16T04:12:59.5265921+00:00"
+last_updated: "2026-09-16T04:44:19.4551773+00:00"
 last_activity: 2026-09-16
 progress:
   total_phases: 13
@@ -20,14 +20,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute05-03; protected creation and saved receipt verified. Implement source-complete business/term edit wizard next.
+**Current focus:** Execute05-03; initial persisted proposer/business editor verified. Complete remaining source controls, references, terms and readiness links.
 
 ## Current Position
 
 Phase: 5 of 13 (Motor Trade quote capture)
-Plan: 05-03 of11 in progress; creation/receipt verified; business/term wizard pending
+Plan: 05-03 of11 in progress; creation/receipt and partial business editor verified; source-complete wizard pending
 Status: In progress — autonomous
-Last activity: 2026-09-16 — Typed draft editing helpers verified;45frontend tests plus typecheck/lint pass. Creation browser slice remains verified.05-03 still incomplete.
+Last activity: 2026-09-16 — b5f63eb initial editor;45frontend tests plus lint/typecheck/build and real Chrome edit/recovery/conflict/mobile and creation regression passed.05-03 remains incomplete.
 
 Progress: Phases1–4 complete;4/13phases,26completed plans.
 
@@ -54,7 +54,7 @@ Progress: Phases1–4 complete;4/13phases,26completed plans.
 ## Session Continuity
 
 Last session: 2026-09-16
-Stopped at:Typed form helpers in lib/quote-form.ts verified (45frontend tests, lint/typecheck). NEXT actual source-based business/term wizard controls and nine-stage shell, using these helpers and immutable quote transport. Read05-03-PROGRESS/PLAN/UI-SPEC and sourceStages in ownership contract. Creation UI/browser already verified; no edit UI yet. No running previews/checks.
+Stopped at:b5f63eb initial persisted edit route and nine-stage shell verified. NEXT missing title/company/marketing/source questions/occupation rows, term/DST controls and exact readiness links. Read05-03-PROGRESS for partial scope and browser warning limits; preserve transport/recovery tests and sourceStages. No running previews/checks; ownedAPI64440/web16008 stopped.
 Resume file: .planning/phases/05-motor-trade-quote-capture/05-03-PLAN.md
 
 ## Autonomous continuation
@@ -63,4 +63,4 @@ User approved requirements/roadmap and autonomous choices/progression on 2026-09
 
 Thread heartbeat: continue-cover-mga-back-office-mvp, active every 10 minutes. Resume unfinished work in this same task; notify meaningful progress/blockers only; pause on actual milestone completion, user stop or persistent external blocker with no remaining useful work.
 
-Latest checkpoint:05-03-PROGRESS records creation of native fictional quotesQT-MT-0000000009/10, lost-response and later-denial exact replay, access guards,314pxrail/390pxlayout and inspected screenshots. Full wizard and edit conflict/navigation still pending. No QUO signoff before05-11.
+Latest checkpoint:05-03-PROGRESS records final edit fixturesQT-MT-0000000018/19, replay/stale comparison/dirty navigation checks and desktop/mobile evidence. Source-complete business/term capture remains pending; full readiness stays blocked. No QUO signoff before05-11.
