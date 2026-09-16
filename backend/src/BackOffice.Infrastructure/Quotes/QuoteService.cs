@@ -11,7 +11,7 @@ namespace BackOffice.Infrastructure.Quotes;
 // Internal snapshot, materialized while quote authority is held. Capture
 // availability is independent of proposal readiness and does not authorize a write.
 public sealed record StoredQuote(Quote Quote, QuoteRevision Revision, string ClientName, string AgencyName,
-    string ProductCode, bool CanSave, string? CaptureUnavailableCode);
+    string ProductCode, bool CanSave, string? CaptureUnavailableCode, QuoteTermAssessment TermAssessment);
 
 // Internal command service. HTTP DTO/CSRF/size handling and match attachment are
 // separate integration work; these methods do not expose an endpoint.
@@ -84,8 +84,9 @@ public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory,
         var product = availability.Product ?? await db.Set<Product>()
             .FromSqlInterpolated($"SELECT * FROM Product WITH(HOLDLOCK) WHERE Id={owned.Quote.ProductId}")
             .AsNoTracking().SingleAsync(token);
+        using var intent = JsonDocument.Parse(revision.TermIntentJson);
         var result = new StoredQuote(owned.Quote, revision, owned.Scope.Client.LegalName, owned.Scope.Agency.LegalName,
-            product.Code, availability.Code is null, availability.Code);
+            product.Code, availability.Code is null, availability.Code, QuoteTerm.Assess(intent.RootElement));
         await transaction.CommitAsync(token);
         return result;
     }

@@ -37,6 +37,7 @@ public sealed class QuoteStorageTests
             var created = await service.CreateAsync(actor, fixture.Relationship, fixture.ProductVersion, null, "read-projection-create", Guid.NewGuid());
             var initial = await service.GetAsync(actor, created.ResourceId);
             Assert.True(initial.CanSave); Assert.Null(initial.CaptureUnavailableCode);
+            Assert.Null(initial.TermAssessment.Term); Assert.Equal(4, initial.TermAssessment.Issues.Count);
             Assert.Equal("Fictional quote client", initial.ClientName);
             Assert.Equal("Fictional quote storage", initial.AgencyName);
             Assert.Equal("motor-trade-road-risks", initial.ProductCode);
@@ -173,12 +174,16 @@ public sealed class QuoteStorageTests
             var unchanged = await service.SaveAsync(actor, create.ResourceId, first.Quote.RowVersion, first.Revision.ProposalJson, null, "unchanged", correlation);
             Assert.Equal(create.Etag, unchanged.Etag); Assert.Equal(1, await db.Set<QuoteRevision>().CountAsync());
             Assert.Equal(1, await db.Set<QuoteActivity>().CountAsync());
-            const string proposal = "{\"schemaVersion\":\"1.0\",\"productCode\":\"motor-trade-road-risks\",\"termIntent\":{\"localStartDate\":\"2026-10-01\"},\"risk\":{\"vehicles\":[{\"id\":\"bbbbbbbb-0000-4000-8000-000000000001\",\"registration\":\"DEMO 02\"}]}}";
+            const string proposal = "{\"schemaVersion\":\"1.0\",\"productCode\":\"motor-trade-road-risks\",\"termIntent\":{\"kind\":\"annual\",\"localStartDate\":\"2026-10-01\",\"localStartTime\":\"12:00\",\"timeZone\":\"Europe/London\"},\"risk\":{\"vehicles\":[{\"id\":\"bbbbbbbb-0000-4000-8000-000000000001\",\"registration\":\"DEMO 02\"}]}}";
             var save = await service.SaveAsync(actor, create.ResourceId, first.Quote.RowVersion, proposal, "Fictional revision", "save-one", correlation);
             Assert.NotEqual(create.Etag, save.Etag);
             Assert.True((await service.SaveAsync(actor, create.ResourceId, first.Quote.RowVersion, proposal, "Fictional revision", "save-one", correlation)).Replayed);
             Assert.Equal(412, (await Assert.ThrowsAsync<QuoteOperationException>(() => service.SaveAsync(actor, create.ResourceId, first.Quote.RowVersion, proposal, null, "stale", correlation))).Status);
             var second = await service.GetAsync(actor, create.ResourceId);
+            Assert.Empty(second.TermAssessment.Issues);
+            Assert.Equal(DateTimeOffset.Parse("2026-10-01T11:00:00Z"), second.TermAssessment.Term!.StartsAt);
+            Assert.Equal(DateTimeOffset.Parse("2027-10-01T11:00:00Z"), second.TermAssessment.Term.EndsAt);
+            Assert.DoesNotContain("startsAt", second.Revision.ProposalJson);
             Assert.Equal(2, second.Revision.Number); Assert.Equal("DEMO02", (await db.Set<QuoteRegistration>().SingleAsync()).NormalizedRegistration);
             Assert.Equal(first.Revision.ProposalJson, (await db.Set<QuoteRevision>().SingleAsync(x => x.Id == first.Revision.Id)).ProposalJson);
             Assert.Equal(2, await db.Set<ClientActivity>().CountAsync(x => x.RecordKind == "quote" && x.RecordId == create.ResourceId));
