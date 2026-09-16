@@ -20,6 +20,8 @@ public static class QuoteReadiness
         if (captureUnavailableCode is not null)
             issues.Add(new("/", captureUnavailableCode, "Capture is unavailable for this quote. Review its current status and product access.", "eligibility", "error"));
         issues.AddRange(term.Issues.Select(x => new QuoteReadinessIssue(x.Path, x.Code, "Complete or correct the policy term.", "capture", "error")));
+        issues.AddRange(QuoteBusinessRules.Assess(proposal).Select(x => new QuoteReadinessIssue(
+            x.Path, x.Code, "Complete or correct the business details.", "capture", "error")));
         issues.AddRange(QuoteCaptureShape.ValidateCompleteness(proposal).Select(x => new QuoteReadinessIssue(
             x.Path.Length is > 0 and <= 500 ? x.Path : "/", x.Code, "Complete or correct the captured details.", "capture", "error")));
         return new(quoteId, revisionId, false, issues.Distinct().Take(100).ToArray());

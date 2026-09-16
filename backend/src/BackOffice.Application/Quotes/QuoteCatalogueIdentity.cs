@@ -15,6 +15,17 @@ public static class QuoteCatalogueIdentity
     private static readonly Lazy<Catalogue> Data = new(Load);
     public static string Version => Data.Value.Version;
 
+    internal static long? TrustedValue(JsonElement reference, string collection)
+    {
+        if (reference.ValueKind != JsonValueKind.Object ||
+            !reference.TryGetProperty("collection", out var family) || family.GetString() != collection ||
+            !reference.TryGetProperty("version", out var version) || version.GetString() != Data.Value.Version ||
+            !reference.TryGetProperty("value", out var value) || value.ValueKind != JsonValueKind.Number || !value.TryGetInt64(out var id) ||
+            !Data.Value.Collections.TryGetValue(collection, out var options) || !options.TryGetValue(id, out var label) ||
+            !reference.TryGetProperty("label", out var suppliedLabel) || suppliedLabel.GetString() != label) return null;
+        return id;
+    }
+
     public static IReadOnlyList<QuoteFieldIssue> ValidateQuestions(JsonElement proposal)
     {
         var data = Data.Value; var issues = new List<QuoteFieldIssue>();

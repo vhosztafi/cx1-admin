@@ -114,6 +114,9 @@ public sealed partial class QuoteStorageTests
             var assessment = await readiness.Content.ReadFromJsonAsync<JsonElement>();
             Assert.Equal(quoteId, assessment.GetProperty("quoteId").GetGuid()); Assert.False(assessment.GetProperty("ready").GetBoolean());
             Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("code").GetString() == "quote-assessment-unavailable");
+            Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("code").GetString() == "required-capture-field" && x.GetProperty("path").GetString() == "/insured/firstName");
+            Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("code").GetString() == "activity-split-share-required" && x.GetProperty("path").GetString() == "/risk/business/declaredActivitySplit/sales");
+            Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("code").GetString() == "business-description-required");
             Assert.Equal(2, await db.Set<QuoteRevision>().CountAsync()); Assert.Equal(3, await db.Set<IdempotencyRecord>().CountAsync());
             foreach (var email in new[] { "agency-admin@cover.example", "system-admin@cover.example" })
             {
