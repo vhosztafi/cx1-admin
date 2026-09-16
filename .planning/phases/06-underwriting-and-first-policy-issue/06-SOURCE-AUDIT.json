@@ -1,5 +1,5 @@
 {
-  "status": "06-05 backend verified in 4ace720:741 backend/108 SQL and317 contracts; decision UI and later owners pending",
+  "status": "06-06 UI verified in f359532:743backend/108SQL,90frontend,317contracts and actual both-product browser; capacity/terms/issue pending",
   "inventorySha256": "459974f15088fef3da518bb08fd4f0e88a8f0fdffcf319416fcf458228288c78",
   "apiMapSha256": "bee7cae6b0c29b298eeaf63d915b854c7ec8f5e9191a709247008882cb1430b1",
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
@@ -1386,7 +1386,7 @@
       "disposition": "navigation-read",
       "acceptanceId": "AT-2221ef0bd60e",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Implemented f359532; actual both-product decision/proof browser, exact retry/stale/account-switch checks",
       "plan": "06-06",
       "task": "06-06-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs",
@@ -1555,7 +1555,7 @@
       "disposition": "navigation-read",
       "acceptanceId": "AT-ef363293a595",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Implemented f359532; actual both-product decision/proof browser, exact retry/stale/account-switch checks",
       "plan": "06-06",
       "task": "06-06-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs",
@@ -1579,7 +1579,7 @@
       "disposition": "navigation-read",
       "acceptanceId": "AT-2b226870f9d7",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Implemented f359532; actual both-product decision/proof browser, exact retry/stale/account-switch checks",
       "plan": "06-06",
       "task": "06-06-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs",
@@ -1794,7 +1794,7 @@
       "disposition": "navigation-read",
       "acceptanceId": "AT-064ae865d1eb",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Implemented f359532; actual both-product decision/proof browser, exact retry/stale/account-switch checks",
       "plan": "06-06",
       "task": "06-06-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs",
@@ -1927,7 +1927,7 @@
       "disposition": "command",
       "acceptanceId": "AT-31f5cd3c71f6",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Implemented f359532; actual both-product decision/proof browser, exact retry/stale/account-switch checks",
       "plan": "06-06",
       "task": "06-06-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs",
@@ -1951,7 +1951,7 @@
       "disposition": "command",
       "acceptanceId": "AT-9c747f3b26c3",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Implemented f359532; actual both-product decision/proof browser, exact retry/stale/account-switch checks",
       "plan": "06-06",
       "task": "06-06-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs",
@@ -1987,7 +1987,7 @@
       "disposition": "command",
       "acceptanceId": "AT-9febb5f22d93",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Implemented f359532; actual both-product decision/proof browser, exact retry/stale/account-switch checks",
       "plan": "06-06",
       "task": "06-06-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs",
@@ -2017,7 +2017,7 @@
       "disposition": "command",
       "acceptanceId": "AT-696c000f3a53",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Pending06-07 provider escalation owner",
       "plan": "06-06",
       "task": "06-06-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs"
@@ -2040,7 +2040,7 @@
       "disposition": "command",
       "acceptanceId": "AT-4d4d367d4f07",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Implemented f359532; actual both-product decision/proof browser, exact retry/stale/account-switch checks",
       "plan": "06-06",
       "task": "06-06-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs",
@@ -2087,7 +2087,7 @@
       "disposition": "command",
       "acceptanceId": "AT-4a1e26f9bda1",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Implemented f359532; actual both-product decision/proof browser, exact retry/stale/account-switch checks",
       "plan": "06-06",
       "task": "06-06-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs",
@@ -5060,7 +5060,7 @@
       "plan": "06-06",
       "task": "06-06-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Actual authority/referral/proof projections rendered in f359532; see06-06-SUMMARY for specific browser coverage"
     },
     {
       "method": "pQuote",
@@ -5082,7 +5082,7 @@
       "plan": "06-06",
       "task": "06-06-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Actual authority/referral/proof projections rendered in f359532; see06-06-SUMMARY for specific browser coverage"
     },
     {
       "method": "pQuote",
@@ -5243,7 +5243,7 @@
       "plan": "06-06",
       "task": "06-06-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Actual authority/referral/proof projections rendered in f359532; see06-06-SUMMARY for specific browser coverage"
     },
     {
       "method": "pQuote",
@@ -5298,7 +5298,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "Explicit not-yet-prepared display; applied decisions/terms owned06-05/06-09."
+      "runtimeStatus": "Actual applied endorsement/independent proof review projection in f359532; source At renewal timing after reviewed driver proof; no external verification claim"
     },
     {
       "method": "pQuote",
@@ -5408,7 +5408,7 @@
       "plan": "06-06",
       "task": "06-06-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Actual authority/referral/proof projections rendered in f359532; see06-06-SUMMARY for specific browser coverage"
     },
     {
       "method": "pQuote",
@@ -5434,7 +5434,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "Actual source documentary blockers displayed; independent proof review owned06-05/06-06."
+      "runtimeStatus": "Actual applied endorsement/independent proof review projection in f359532; source At renewal timing after reviewed driver proof; no external verification claim"
     },
     {
       "method": "pQuote",
@@ -5446,7 +5446,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "Actual source documentary blockers displayed; independent proof review owned06-05/06-06."
+      "runtimeStatus": "Actual applied endorsement/independent proof review projection in f359532; source At renewal timing after reviewed driver proof; no external verification claim"
     },
     {
       "method": "pQuote",
@@ -5457,7 +5457,7 @@
       "plan": "06-04",
       "task": "06-04-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-rating-browser.mjs",
-      "runtimeStatus": "Explicit not-yet-reviewed display; review outcome owned06-05/06-06."
+      "runtimeStatus": "Actual applied endorsement/independent proof review projection in f359532; source At renewal timing after reviewed driver proof; no external verification claim"
     },
     {
       "method": "pQuote",

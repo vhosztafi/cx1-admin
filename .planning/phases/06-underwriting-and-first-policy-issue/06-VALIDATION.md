@@ -101,3 +101,11 @@ zero skips;317contract/source tests. Additional foreign-file/superseded-cycle
 proof assertions pass in the follow-up test. Fresh and retained SQL upgrade paths
 pass; both additive migrations applied with unchanged historical hashes and
 credentials. See06-05-SUMMARY for exact evidence. Decision UI remains06-06.
+
+## 06-06 runtime evidence
+
+Implementationf359532:743backend/108realSQL,90frontend,317contracts;zero skips.
+Both-product actual decision/proof/recovery browser and final target-labelled
+readback/screenshots passed. Real bulk denial creates zero decisions; account
+switch prevents dispatch; stale412 retains inputs. See06-06-SUMMARY. Capacity,
+terms, acceptance and issue retain later owners.

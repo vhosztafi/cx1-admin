@@ -1,5 +1,43 @@
 # 06-06 preparation
 
+**Completed in f359532.** Full743/108SQL,90frontend,317contracts and both-product
+actual browser including account switch, stale412 and bulk denial passed.
+See06-06-SUMMARY for final evidence. All sessions collected and owned previews
+stopped. Earlier checkpoint/preparation text below is historical. Continue07.
+
+## Active execution checkpoint 2026-09-16 23:48 local
+
+Uncommitted implementation now includes server authorityViews (separate current
+grants, no merged maxima), pure2tests and real API projection assertions. Both
+targeted tests passed. Full backend running session47867, directory
+`.local/phase6-06-backend-20260916-first`, log`.local/phase6-06-backend-first.log`;
+608unit passed; integration pending. No backend changes since that build.
+
+UI files now exist: quote-underwriting/referral-decisions/underwriting-evidence,
+decision-command modal, pure underwriting-decisions helper and3semantic tests.
+QuoteReceipt has Underwriting tab, Overview actual endorsements/licence timing.
+89frontend tests, lint/typecheck/build passed. BuildAPI origin5087.
+
+Owned running previews: API66724 and Next67288, PIDfiles`.local/phase6-06-api.pid`
+and web.pid. Start-process hidden. Verify commandlines before stopping. API uses
+already built output (do not rebuild while it holds files). Workers local only,
+AgencyNotificationWorker disabled. DB/migrations from05 preserved.
+
+Actual Chrome journey running session20552, log`.local/phase6-06-browser-first.log`.
+Script`verify-underwriting-decisions-browser.mjs` depends on04rating browser report
+for existing approved product/relationship fixtures, creates fresh fictional quotes.
+Both-product query/decline/reopen/conditional, lost-response retry, actual proof
+upload/review/resolution/withdrawal, read-only servicing/focus/desktop390screens.
+Must add/verify explicit stale412 with retained form and bad bulk/no partial
+decision scenario (Combined excess stock plus missingpremisesproof), then inspect
+screenshots. No browser pass claimed yet. Any discovered UI failure must be fixed
+and rebuilt after stopping only owned Next. No new backend migration needed.
+
+Next: collect fullbackend/assert measuredcounts (expected743/108, verify), collect
+browser/fix, addmissingbrowsercases, inspectactualscreens, finalcontracts/lint etc,
+sourceownership, summary/commits/state thenautomatically07. All prior textbelow is
+preparation history, superseded by this active checkpoint.
+
 Implementation has not started. Dependency06-05 is completing full verification.
 Continue sequentially inline, no subagents. User authorised automatic progression.
 
