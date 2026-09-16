@@ -21,3 +21,10 @@ Created06-VALIDATION.md (draft, no Phase6 pass claim) and06-PATTERNS.md from exi
 Created06-SOURCE-AUDIT.json:211candidate controls (all44originalPhase6 plus relevant shared/navigation surfaces),51placements assignedPhase6 and named retained/later owners for the rest.98read-only display occurrences extracted from pQuote/pEscalation/pIssued, with explicit MTA/collected-money boundaries and separate underwriting evidence decisions. Validated unique IDs, source paths, complete originalPhase6 inclusion and lossless operation mappings. This is reviewed candidate ownership, not final typed API/UI/task coverage or runtime acceptance.
 
 New source requirements to carry into detailed design:14-day expiry; premises-security proof and signed statement of fact; dynamic assigned underwriter/authority; premium/factors and offered endorsements; capacity response underwriter/reference/body. First-issue receipt shows actual amount due, never prototype total-collected text. Next: finish06-DATA-API-DESIGN and UI-SPEC, then complete audit task/option ownership and bounded plans/review. No active processes/runtime edits.
+
+
+## Heartbeat continuation2026-09-16T16:54Z
+
+Created06-DATA-API-DESIGN.md as an explicit draft: proposed table/constraint ownership, state/closure transitions, scoped command/read routes, atomic first policy/posting/outbox and exact error/concurrency semantics. Separated pricing input, contractual terms and assurance hashes so completing evidence/referrals cannot create an endless rerating loop; acceptance binds all applicable context. Dedicated cycle evidence writes preserve closed capture. Preparing immutable terms before collecting signed-statement proof avoids circular send prerequisites. Binder validity must cover the term; source14-day quote expiry retained. Reviewed and clarified separate quote/childETags and first-issue uniqueness.
+
+Remaining: precise typed rule/condition/endorsement fixture catalogue, API/schema examples, UI-SPEC, final source/task mapping, bounded plans and inline plan review. Design is not runtime, not executable-plan completion; no Phase6 tests claimed. No active processes or implementation changes.
