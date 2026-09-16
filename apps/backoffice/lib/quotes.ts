@@ -10,7 +10,7 @@ export type QuoteProposal = {
   schemaVersion: '1.0'; productCode: QuoteProductCode;
   insured?: QuoteObject; termIntent?: QuoteTermIntent; risk?: QuoteObject; cover?: QuoteObject;
 };
-export type QuoteIssue = { path: string; code: string; message: string; category: string; severity: 'error' | 'warning'; questionId?: string };
+export type QuoteIssue = { path: string; code: string; message: string; category: string; severity: 'error' | 'warning'; questionId?: string; relatedPath?: string };
 export type QuoteReadiness = { quoteId: string; revisionId: string; ready: boolean; issues: QuoteIssue[] };
 export type QuoteProduct = {
   productVersionId: string; productCode: QuoteProductCode; displayName: string; versionLabel: string;

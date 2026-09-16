@@ -92,7 +92,11 @@ public sealed partial class QuoteStorageTests
             var proposal = view.GetProperty("proposal").Clone();
             using var noOp = await Write(HttpMethod.Put, route + "/proposal", new { proposal }, "api-no-op-0000001", firstTag);
             Assert.Equal(HttpStatusCode.OK, noOp.StatusCode); Assert.Equal(firstTag, noOp.Headers.ETag!.ToString());
-            var changed = new { schemaVersion = "1.0", productCode = "motor-trade-road-risks", termIntent = new { localStartDate = "2026-10-01" } };
+            var assessmentDate = DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow,TimeZoneInfo.FindSystemTimeZoneById("Europe/London")).DateTime);
+            var changed = new { schemaVersion = "1.0", productCode = "motor-trade-road-risks", termIntent = new { localStartDate = assessmentDate.AddYears(1).ToString("yyyy-MM-dd") },
+                risk = new { drivers = new[] { new { id = Guid.NewGuid(), losses = new[] {
+                    new { id = Guid.NewGuid(), occurredOn = assessmentDate.AddDays(-1).ToString("yyyy-MM-dd") }, new { id = Guid.NewGuid(), occurredOn = assessmentDate.AddDays(1).ToString("yyyy-MM-dd") }
+                } } } } };
             using var saved = await Write(HttpMethod.Put, route + "/proposal", new { proposal = changed }, "api-save-00000001", firstTag);
             Assert.Equal(HttpStatusCode.OK, saved.StatusCode); var savedTag = saved.Headers.ETag!.ToString(); Assert.NotEqual(firstTag, savedTag);
             using var savedReplay = await Write(HttpMethod.Put, route + "/proposal", new { proposal = changed }, "api-save-00000001", firstTag);
@@ -128,6 +132,10 @@ public sealed partial class QuoteStorageTests
                 Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("path").GetString() == "/risk/business/responses/answers" &&
                     x.TryGetProperty("questionId", out var identity) && identity.GetString() == question);
             Assert.False(assessment.GetProperty("issues").EnumerateArray().Single(x => x.GetProperty("code").GetString() == "quote-assessment-unavailable").TryGetProperty("questionId", out _));
+            Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("code").GetString() == "history-declaration-required" &&
+                x.GetProperty("relatedPath").GetString() == "/risk/drivers/0/losses/0");
+            Assert.Contains(assessment.GetProperty("issues").EnumerateArray(), x => x.GetProperty("code").GetString() == "history-date-after-assessment" &&
+                x.GetProperty("path").GetString() == "/risk/drivers/0/losses/1/occurredOn");
             Assert.Equal(2, await db.Set<QuoteRevision>().CountAsync()); Assert.Equal(3, await db.Set<IdempotencyRecord>().CountAsync());
             foreach (var email in new[] { "agency-admin@cover.example", "system-admin@cover.example" })
             {

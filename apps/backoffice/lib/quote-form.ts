@@ -58,7 +58,11 @@ export function changeField(proposal: QuoteProposal, path: string, value: QuoteV
 
 export function changeAnswer(proposal: QuoteProposal, scope: string, version: string, questionId: string, kind: string, value: QuoteValue | undefined): QuoteProposal {
   if (!version || !questionId || !scope.endsWith('.responses')) throw new Error('Question identity is required.');
-  const existing = fieldValue(proposal, scope);
+  return changeField(proposal, scope, changeResponses(fieldValue(proposal, scope), version, questionId, kind, value));
+}
+
+export function changeResponses(existing: QuoteValue | undefined, version: string, questionId: string, kind: string, value: QuoteValue | undefined): QuoteObject {
+  if (!version || !questionId) throw new Error('Question identity is required.');
   if (existing !== undefined && !object(existing)) throw new Error('Invalid saved answer container.');
   const responses: QuoteObject = existing === undefined ? {} : structuredClone(existing as QuoteObject);
   if (responses.questionSetVersion !== undefined && responses.questionSetVersion !== version) throw new Error('The saved question version is different. Reload its matching form.');
@@ -76,7 +80,7 @@ export function changeAnswer(proposal: QuoteProposal, scope: string, version: st
     if (index === undefined) answers.push(answer); else answers[index] = answer;
   }
   responses.questionSetVersion = version; responses.answers = answers;
-  return changeField(proposal, scope, responses);
+  return responses;
 }
 
 function validateAnswer(kind: string, value: QuoteValue) {

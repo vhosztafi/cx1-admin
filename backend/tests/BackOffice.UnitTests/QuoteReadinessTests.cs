@@ -41,7 +41,7 @@ public sealed class QuoteReadinessTests
     public void MissingAnswersKeepDistinctQuestionIdentitiesAtTheSameContainerPath()
     {
         using var proposal = JsonDocument.Parse("{\"schemaVersion\":\"1.0\",\"productCode\":\"motor-trade-road-risks\"}");
-        var result = QuoteReadiness.Assess(Guid.NewGuid(), Guid.NewGuid(), proposal.RootElement, QuoteTerm.Assess(), null);
+        var result = QuoteReadiness.Assess(Guid.NewGuid(), Guid.NewGuid(), proposal.RootElement, QuoteTerm.Assess(), null, new DateOnly(2026,9,15));
         foreach (var id in new[] { "MTS-03-Q04", "MTS-03-Q06", "MTS-03-Q08", "MTS-03-Q09" })
             Assert.Contains(result.Issues, x => x.Code == "required-capture-field" && x.Path == "/risk/business/responses/answers" && x.QuestionId == id);
         foreach (var id in new[] { "prototype.quote.c6181a11c34c", "prototype.quote.0552d5a68ba2", "prototype.quote.34613c23e95d" })
@@ -91,7 +91,7 @@ public sealed class QuoteReadinessTests
     {
         using var proposal = JsonDocument.Parse("{\"schemaVersion\":\"1.0\",\"productCode\":\"motor-trade-road-risks\"}");
         var quote = Guid.NewGuid(); var revision = Guid.NewGuid();
-        var result = QuoteReadiness.Assess(quote, revision, proposal.RootElement, QuoteTerm.Assess(), "agency-unavailable");
+        var result = QuoteReadiness.Assess(quote, revision, proposal.RootElement, QuoteTerm.Assess(), "agency-unavailable", new DateOnly(2026,9,15));
         Assert.Equal(quote, result.QuoteId); Assert.Equal(revision, result.RevisionId); Assert.False(result.Ready);
         Assert.Contains(result.Issues, x => x.Code == "required-term-field" && x.Path == "/termIntent/localStartDate");
         Assert.Contains(result.Issues, x => x.Code == "schema-required");
@@ -111,7 +111,7 @@ public sealed class QuoteReadinessTests
             var proposal = document.RootElement.GetProperty("proposal");
             Assert.Empty(QuoteCaptureShape.ValidateCompleteness(proposal));
             var term = QuoteTerm.Assess(proposal.GetProperty("termIntent")); Assert.Empty(term.Issues);
-            var result = QuoteReadiness.Assess(Guid.NewGuid(), Guid.NewGuid(), proposal, term, null);
+            var result = QuoteReadiness.Assess(Guid.NewGuid(), Guid.NewGuid(), proposal, term, null, new DateOnly(2026,9,15));
             Assert.False(result.Ready);
             Assert.Equal("quote-assessment-unavailable", Assert.Single(result.Issues).Code);
         }
@@ -122,7 +122,7 @@ public sealed class QuoteReadinessTests
     {
         using var proposal = JsonDocument.Parse("{}");
         var term = new QuoteTermAssessment(null, Enumerable.Range(0, 150).Select(x => new QuoteFieldIssue("required-term-field", "/termIntent/" + x)).ToArray());
-        var result = QuoteReadiness.Assess(Guid.NewGuid(), Guid.NewGuid(), proposal.RootElement, term, null);
+        var result = QuoteReadiness.Assess(Guid.NewGuid(), Guid.NewGuid(), proposal.RootElement, term, null, new DateOnly(2026,9,15));
         Assert.False(result.Ready); Assert.Equal(100, result.Issues.Count);
         Assert.Equal("quote-assessment-unavailable", result.Issues[0].Code);
     }

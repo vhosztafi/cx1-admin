@@ -381,3 +381,13 @@ test('capture views carry explicit immutable form catalogue versions',()=>{
  assert.equal(check({...value,currentProductVersion:'invented'}),false);
  assert.ok(document.components.schemas.QuoteCaptureView.required.includes('captureVersions'));
 });
+
+
+test('readiness history diagnostics preserve both the declaration and related incident paths',()=>{
+ const validate=ajv.getSchema(`${rootId}#/$defs/QuoteReadiness`);
+ const diagnostic={path:'/risk/business/responses/answers',code:'history-declaration-required',message:'Review the history declaration.',category:'capture',severity:'error',questionId:'prototype.quote.36da21d3c935',relatedPath:'/risk/drivers/0/losses/0'};
+ const result={quoteId:'51000000-0000-4000-8000-000000000001',revisionId:'51000000-0000-4000-8000-000000000002',ready:false,issues:[diagnostic]};
+ assert.equal(validate(result),true,JSON.stringify(validate.errors));
+ diagnostic.relatedPath='x'.repeat(501);assert.equal(validate(result),false);
+ delete diagnostic.relatedPath;assert.equal(validate(result),true);
+});

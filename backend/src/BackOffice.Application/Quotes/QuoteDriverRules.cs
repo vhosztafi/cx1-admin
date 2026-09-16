@@ -3,9 +3,9 @@ using System.Text.Json;
 
 namespace BackOffice.Application.Quotes;
 
-// Initial driver section rules, after strict draft and catalogue validation.
-// Relationship/dynamic eligibility and history reconciliation remain separate.
-public static class QuoteDriverRules
+// Driver section rules, after strict draft and catalogue validation.
+// Cover-dependent dynamic options and global history reconciliation have separate owners.
+public static partial class QuoteDriverRules
 {
     private static readonly Lazy<JsonElement[]> Mappings = new(() =>
     {
@@ -88,7 +88,7 @@ public static class QuoteDriverRules
                 }
             }
         }
-        return issues;
+        return issues.Concat(AssessEligibility(proposal)).Concat(AssessDeclarations(proposal)).Take(QuoteCaptureShape.MaximumIssues).ToArray();
     }
     private static string Id(int number) => $"MTS-06-Q{number:00}";
     private static string? Text(JsonElement value) => value.ValueKind == JsonValueKind.String ? value.GetString() : null;

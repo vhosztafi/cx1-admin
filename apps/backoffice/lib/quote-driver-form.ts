@@ -60,3 +60,28 @@ export function removeQuoteDriverHistory(proposal: QuoteProposal, driverId: stri
 export function moveQuoteDriverHistory(proposal: QuoteProposal, driverId: string, group: DriverHistory, id: string, direction: -1 | 1) {
   return replaceHistory(proposal, driverId, group, move(quoteDriverHistory(proposal, driverId, group), id, direction));
 }
+
+// Resolve identities at the moment of editing: captured array positions become
+// stale after reorder. Never expose identity or whole history arrays as fields.
+function editRow(row: QuoteObject, path: string, value: QuoteValue | undefined): QuoteObject {
+  const parts = path.split('.');
+  if (parts.some(part => !/^[a-zA-Z][a-zA-Z0-9]*$/.test(part) || ['id', 'constructor', 'prototype', '__proto__'].includes(part)) || Object.hasOwn(limits, parts[0])) throw new Error('Invalid driver field path.');
+  const next = structuredClone(row); let current = next;
+  for (const part of parts.slice(0, -1)) {
+    const child = current[part];
+    if (child !== undefined && (!child || typeof child !== 'object' || Array.isArray(child))) throw new Error('Cannot replace a saved field container.');
+    if (child === undefined) current[part] = {};
+    current = current[part] as QuoteObject;
+  }
+  const name = parts.at(-1)!;
+  if (value === undefined) delete current[name]; else current[name] = structuredClone(value);
+  return next;
+}
+export function changeQuoteDriverField(proposal: QuoteProposal, driverId: string, path: string, value: QuoteValue | undefined) {
+  const drivers = [...quoteDrivers(proposal)]; const selected = index(drivers, driverId);
+  drivers[selected] = editRow(drivers[selected], path, value); return replace(proposal, drivers);
+}
+export function changeQuoteDriverHistoryField(proposal: QuoteProposal, driverId: string, group: DriverHistory, id: string, path: string, value: QuoteValue | undefined) {
+  const history = [...quoteDriverHistory(proposal, driverId, group)]; const selected = index(history, id);
+  history[selected] = editRow(history[selected], path, value); return replaceHistory(proposal, driverId, group, history);
+}

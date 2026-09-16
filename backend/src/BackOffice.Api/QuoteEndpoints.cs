@@ -67,16 +67,17 @@ public static class QuoteEndpoints
         catch (Exception error) when (Known(error)) { return Failure(context, error); }
     }
 
-    private static Task<IResult> Get(Guid quoteId, HttpContext context, QuoteService service) => Read(quoteId, context, service, false);
-    private static Task<IResult> Readiness(Guid quoteId, HttpContext context, QuoteService service) => Read(quoteId, context, service, true);
-    private static async Task<IResult> Read(Guid quoteId, HttpContext context, QuoteService service, bool assessmentOnly)
+    private static Task<IResult> Get(Guid quoteId, HttpContext context, QuoteService service, TimeProvider time) => Read(quoteId, context, service, time, false);
+    private static Task<IResult> Readiness(Guid quoteId, HttpContext context, QuoteService service, TimeProvider time) => Read(quoteId, context, service, time, true);
+    private static async Task<IResult> Read(Guid quoteId, HttpContext context, QuoteService service, TimeProvider time, bool assessmentOnly)
     {
         try
         {
             Id(quoteId); QuoteHttpInput.NoQuery(context.Request);
             var stored = await service.GetAsync(LocalIdentityService.Actor(context.User), quoteId, context.RequestAborted);
             using var proposal = JsonDocument.Parse(stored.Revision.ProposalJson);
-            var readiness = QuoteReadiness.Assess(quoteId, stored.Revision.Id, proposal.RootElement, stored.TermAssessment, stored.CaptureUnavailableCode);
+            var readiness = QuoteReadiness.Assess(quoteId, stored.Revision.Id, proposal.RootElement, stored.TermAssessment, stored.CaptureUnavailableCode,
+                DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(time.GetUtcNow(), TimeZoneInfo.FindSystemTimeZoneById("Europe/London")).DateTime));
             context.Response.Headers.ETag = "\"" + Convert.ToBase64String(stored.Quote.RowVersion) + "\"";
             if (assessmentOnly) return Results.Ok(readiness);
             return Results.Ok(new

@@ -69704,6 +69704,11 @@
                   "type": "string",
                   "minLength": 1,
                   "maxLength": 200
+                },
+                "relatedPath": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 500
                 }
               },
               "required": [
