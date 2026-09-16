@@ -113,3 +113,9 @@ The command is restricted to CoverMGA_Demo. It imports a clearly labelled fictio
 Repeated execution returns the same quote IDs with Created=0 and preserves later quote revisions. Suspended context, revoked access, changed configuration or missing context are not silently repaired. Each quote creation has its own durable command receipt, so an interrupted batch can resume. Complete captured examples still report a progression blocker until the remaining semantic, evidence and matching assessments are implemented.
 
 The command prints the agency/client/relationship and quote IDs. After starting the updated API and signing in as the demo underwriter, use GET /api/v1/quote-products?relationshipId=<printed relationship ID> and GET /api/v1/quotes/<printed quote ID> to inspect persisted capture. The quote editor UI is built in the next plan; no completed browser journey is implied by these seed/API checks.
+
+### Motor Trade quote draft creation
+
+Sign in as `servicing@cover.example`, choose **New Quote**, then search for `CL-DEMO-QUOTES`. Select the active **Fictional Quote Demonstration Agency** relationship and either Motor Trade product. **Create quote draft** saves the selected relationship/product and opens the actual quote reference. Reload to show persistence. The dedicated fixture does not change the earlier draft agencies or their onboarding state.
+
+Business and risk editing, quote search and rating are still unavailable. Retain the saved quote URL to reopen it. These drafts remain incomplete and cannot be issued. Reproduce the current creation/retry/access/responsive checks with `node scripts/verify-quote-create-browser.mjs` while the documented native previews are running; it adds two fictional drafts without resetting existing records.
