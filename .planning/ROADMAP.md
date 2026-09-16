@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1–5 complete;35 implementation plans complete. Phase6 underwriting and first issue is ready for planning.680backend/85realSQL,294contracts,80frontend,37browser journeys and actual restart passed. Capture readiness is implemented; rating/issue remainPhase6.
+**Status:** Autonomous progression authorised. Phases1–5 complete;38 implementation plans complete. Phase6 has3/14 plans verified; rating/lifecycle backend passes727tests/99realSQL and315contracts. Quote UI is in progress; policy issue remains pending.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
@@ -238,7 +238,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 3. Clients and contact servicing | 6/6 | Complete | 2026-09-14 |
 | 4. Agency onboarding and access | 8/8 | Complete | 2026-09-15 |
 | 5. Motor Trade quote capture | 11/11 | Complete    | 2026-09-16 |
-| 6. Underwriting and first policy issue | 2/14 | In progress | — |
+| 6. Underwriting and first policy issue | 3/14 | In progress | — |
 | 7. Policy lifecycle and history | 0/TBD | Not started | — |
 | 8. Commercial Combined back office | 0/TBD | Not started | — |
 | 9. Tasks, documents, communication and incidents | 0/TBD | Not started | — |
