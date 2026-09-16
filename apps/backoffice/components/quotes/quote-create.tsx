@@ -23,12 +23,12 @@ export function QuoteCreate({ actorId }: { actorId: string }) {
     const unload = (event: BeforeUnloadEvent) => { if (guarded()) event.preventDefault(); };
     const click = (event: MouseEvent) => {
       const target = event.target as Element;
-      if (guarded() && target.closest?.('a[href], .account-dropdown button')) { event.preventDefault(); event.stopPropagation(); message(); }
+      if (guarded() && target.closest?.('a[href]:not([href^="#"]), .account-dropdown button')) { event.preventDefault(); event.stopPropagation(); message(); }
     };
     // Chrome's Navigation API also covers browser history traversal, which link
     // interception alone cannot protect. Reload/close retains beforeunload.
     const navigation = (window as Window & { navigation?: EventTarget }).navigation;
-    const navigate = (event: Event) => { if (guarded() && event.cancelable) { event.preventDefault(); message(); } };
+    const navigate = (event: Event) => { if ((event as Event & { hashChange?: boolean }).hashChange) return; if (guarded() && event.cancelable) { event.preventDefault(); message(); } };
     const pop = (event: PopStateEvent) => {
       if (!navigation && guarded()) { event.stopImmediatePropagation(); window.history.pushState(retainedState, '', retainedUrl); message(); }
     };
@@ -92,7 +92,7 @@ export function QuoteCreate({ actorId }: { actorId: string }) {
       <div className="quote-rail-body"><span className="quote-step-label">1 · Agency &amp; product</span><h2>Ready to get started?</h2>
         <p>Select the relationship and an available product. Creating a draft reserves its quote reference and saves your selection.</p>
         <dl><div><dt>Client</dt><dd>{client?.legalName ?? 'Choose a client'}</dd></div><div><dt>Agency</dt><dd>{relationship?.agencyName ?? 'Choose a relationship'}</dd></div><div><dt>Product</dt><dd>{product?.displayName ?? 'Choose a product'}</dd></div></dl>
-        <p className="client-help">Business and risk editing is not available yet. The saved draft will remain available through its own quote link.</p>
+        <p className="client-help">After creating the draft, capture proposer details and initial business information. Other risk sections remain unavailable.</p>
         {error && <div className="error-message" role="alert">{error}</div>}
         {uncertain && <p className="quote-pending" role="status">The result is unconfirmed. Your original selection is locked; retry the same creation to confirm it.</p>}
         {savedId ? <p role="status">Draft saved. <Link href={`/quotes/${savedId}`}>Open saved quote</Link></p> : <button className="button button-primary" type="button" disabled={busy || (!uncertain && (!client || !relationship || !product?.captureEligible))} onClick={() => void create()}>{busy ? 'Creating draft…' : uncertain ? 'Retry same creation' : 'Create quote draft'}</button>}

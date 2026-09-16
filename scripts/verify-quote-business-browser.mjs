@@ -1,0 +1,101 @@
+import { chromium } from 'playwright';
+import assert from 'node:assert/strict';
+import { readFile, mkdir, writeFile } from 'node:fs/promises';
+
+const origin = process.env.COVER_WEB_ORIGIN ?? 'http://127.0.0.1:3100';
+assert.ok(['localhost', '127.0.0.1'].includes(new URL(origin).hostname));
+const password = process.env.COVER_DEMO_PASSWORD ?? (await readFile('.local/demo-password.txt', 'utf8')).trim();
+const output = '.local/browser-evidence/quote-business'; await mkdir(output, { recursive: true });
+const browser = await chromium.launch({ channel: 'chrome', headless: true });
+const context = await browser.newContext({ viewport: { width: 1560, height: 1000 } });
+const page = await context.newPage(); page.setDefaultTimeout(20000);
+const errors = []; page.on('pageerror', error => errors.push(error.message));
+const report = { quotes: [], checks: [] };
+const relationshipId = '51000000-0000-4000-8000-000000000003';
+async function csrf() { return (await (await page.request.get(`${origin}/api/v1/auth/csrf`)).json()).requestToken; }
+try {
+  await page.goto(`${origin}/quotes/new`); await page.waitForURL('**/login');
+  await page.getByLabel('Email address', { exact: true }).fill('servicing@cover.example');
+  await page.getByLabel('Password', { exact: true }).fill(password);
+  await page.getByRole('button', { name: 'Sign in', exact: true }).click(); await page.waitForURL(`${origin}/`);
+  const products = (await (await page.request.get(`${origin}/api/v1/quote-products?relationshipId=${relationshipId}`)).json()).items;
+  for (const product of products) {
+    const response = await page.request.post(`${origin}/api/v1/quotes`, { headers: { 'X-CSRF-Token': await csrf(), 'Idempotency-Key': crypto.randomUUID() }, data: { relationshipId, productVersionId: product.productVersionId, proposal: { schemaVersion: '1.0', productCode: product.productCode, insured: { responses: { questionSetVersion: product.questionSetVersion, answers: [{ questionId: 'MTS-01-Q01', kind: 'boolean', value: false }] } } } } });
+    assert.equal(response.status(), 201); const id = (await response.json()).id;
+    await page.goto(`${origin}/quotes/${id}/edit`); await page.getByLabel('First name', { exact: true }).fill('Alex');
+    await page.getByLabel('Surname', { exact: true }).fill('Example');
+    await page.getByLabel('Proposer 1 full name', { exact: true }).fill('Alex van Example');
+    await page.getByLabel('Proposer 3 full name', { exact: true }).fill('Sam Example');
+    assert.equal(await page.getByRole('button', { name: 'Save draft', exact: true }).isDisabled(), true);
+    await page.getByRole('button', { name: 'Remove empty proposer slots', exact: true }).click();
+    await page.getByRole('button', { name: 'Save and continue', exact: true }).click();
+    await page.getByLabel('Business description', { exact: true }).fill('Fictional repairs and servicing');
+    await page.getByLabel('Annual turnover (GBP)', { exact: true }).fill('100.005');
+    assert.equal(await page.getByRole('button', { name: 'Save draft', exact: true }).isDisabled(), true);
+    await page.getByRole('button', { name: '2 Proposer', exact: true }).click();
+    await page.getByRole('button', { name: '3 Trade activities', exact: true }).click();
+    assert.equal(await page.getByLabel('Annual turnover (GBP)', { exact: true }).inputValue(), '100.005');
+    await page.getByLabel('Annual turnover (GBP)', { exact: true }).fill('123456.78');
+    await page.getByLabel('Annual wage roll (GBP)', { exact: true }).fill('0');
+    await page.getByLabel('Servicing (%)', { exact: true }).fill('33.33');
+    await page.getByLabel('Mechanical repair (%)', { exact: true }).fill('66.67');
+    await page.getByText('Total activity split: 100%', { exact: true }).waitFor();
+    // Cancelling dirty navigation keeps the exact in-progress draft.
+    page.once('dialog', dialog => dialog.dismiss());
+    await page.getByRole('link', { name: 'View saved quote', exact: true }).click(); assert.ok(page.url().endsWith('/edit'));
+    const attempts = [];
+    await page.route(`**/api/v1/quotes/${id}/proposal`, async route => {
+      attempts.push({ body: route.request().postData(), key: route.request().headers()['idempotency-key'], etag: route.request().headers()['if-match'] });
+      if (attempts.length === 1) { const sent = await route.fetch(); assert.equal(sent.status(), 200); return route.abort('failed'); }
+      return route.continue();
+    });
+    await page.getByRole('button', { name: 'Save draft', exact: true }).click();
+    await page.getByRole('button', { name: 'Retry same save', exact: true }).waitFor();
+    assert.equal(await page.getByLabel('Business description', { exact: true }).isDisabled(), true);
+    await page.getByRole('link', { name: 'View saved quote', exact: true }).click(); assert.ok(page.url().endsWith('/edit'));
+    const leaving = page.waitForEvent('dialog'); await page.evaluate(() => history.back());
+    const leavePrompt = await leaving; assert.equal(leavePrompt.type(), 'beforeunload'); await leavePrompt.dismiss();
+    assert.ok(page.url().endsWith('/edit')); await page.getByRole('button', { name: 'Retry same save', exact: true }).waitFor();
+    await page.getByRole('button', { name: 'Retry same save', exact: true }).click();
+    await page.getByText('Draft saved · Revision 3', { exact: true }).waitFor();
+    assert.equal(attempts.length, 2); assert.deepEqual(attempts[0], attempts[1]); await page.unroute(`**/api/v1/quotes/${id}/proposal`);
+    const stored = await page.request.get(`${origin}/api/v1/quotes/${id}`); const quote = await stored.json();
+    assert.deepEqual(quote.proposal.insured.proposerNames, ['Alex van Example', 'Sam Example']);
+    assert.equal(quote.proposal.insured.responses.answers[0].value, false);
+    assert.equal(quote.proposal.risk.business.turnover, '123456.78'); assert.equal(quote.proposal.risk.business.wageRoll, '0.00');
+    assert.equal(quote.proposal.risk.business.declaredActivitySplit.servicing, 3333); assert.equal(quote.readiness.ready, false);
+    await page.getByLabel('Business description', { exact: true }).fill('My retained local draft');
+    quote.proposal.risk.business.description = 'Fictional concurrent update';
+    const concurrent = await page.request.put(`${origin}/api/v1/quotes/${id}/proposal`, { headers: { 'X-CSRF-Token': await csrf(), 'Idempotency-Key': crypto.randomUUID(), 'If-Match': stored.headers().etag }, data: { proposal: quote.proposal } }); assert.equal(concurrent.status(), 200);
+    await page.getByRole('button', { name: 'Save draft', exact: true }).click();
+    await page.getByRole('heading', { name: 'Saved version changed', exact: true }).waitFor();
+    assert.equal(await page.getByLabel('Business description', { exact: true }).inputValue(), 'My retained local draft');
+    await page.getByRole('button', { name: 'Load saved comparison', exact: true }).click();
+    await page.getByRole('cell', { name: 'Fictional concurrent update', exact: true }).waitFor();
+    await page.getByRole('button', { name: 'Discard my edits and load saved revision', exact: true }).click();
+    assert.equal(await page.getByLabel('Business description', { exact: true }).inputValue(), 'Fictional concurrent update');
+    await page.locator('main').focus(); await page.evaluate(() => window.scrollTo(0, 0));
+    await page.screenshot({ path: `${output}/${product.productCode}-desktop.png`, fullPage: true });
+    await page.setViewportSize({ width: 390, height: 844 }); await page.evaluate(() => window.scrollTo(0, 0));
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    await page.screenshot({ path: `${output}/${product.productCode}-mobile.png`, fullPage: true });
+    await page.getByRole('button', { name: 'Save and exit', exact: true }).click(); await page.waitForURL(`${origin}/quotes/${id}`);
+    await page.getByRole('link', { name: 'Edit quote draft', exact: true }).click();
+    assert.equal(await page.getByLabel('Proposer 2 full name', { exact: true }).inputValue(), 'Sam Example');
+    await page.reload(); await page.getByLabel('First name', { exact: true }).waitFor();
+    await page.getByLabel('First name', { exact: true }).fill('Unsaved discard example');
+    page.once('dialog', dialog => dialog.accept());
+    await page.getByRole('link', { name: 'View saved quote', exact: true }).click(); await page.waitForURL(`${origin}/quotes/${id}`);
+    report.quotes.push({ id, reference: quote.reference, productCode: product.productCode });
+    await page.setViewportSize({ width: 1560, height: 1000 });
+  }
+  assert.equal(report.quotes.length, 2); assert.deepEqual(errors, []);
+  const deniedContext = await browser.newContext(); const denied = await deniedContext.newPage();
+  await denied.goto(`${origin}/quotes/${report.quotes[0].id}/edit`); await denied.waitForURL('**/login');
+  await denied.getByLabel('Email address', { exact: true }).fill('system-admin@cover.example');
+  await denied.getByLabel('Password', { exact: true }).fill(password); await denied.getByRole('button', { name: 'Sign in', exact: true }).click(); await denied.waitForURL(`${origin}/`);
+  await denied.goto(`${origin}/quotes/${report.quotes[0].id}/edit`); await denied.getByRole('heading', { name: 'Access restricted', exact: true }).waitFor();
+  await deniedContext.close();
+  report.checks = ['both products: incomplete identity/business save and reload', 'exact decimals and basis points; blank proposer slot repair; hidden consent preserved', 'invalid raw input retained across stages and blocks save', 'dirty cancel and uncertain link/history guards', 'exact lost-response key/body/ETag retry', 'stale edit retained; saved comparison and explicit discard', 'save and exit, resume, 390px layout'];
+  await writeFile(`${output}/report.json`, JSON.stringify(report, null, 2)); console.log(JSON.stringify(report, null, 2));
+} catch (failure) { await page.screenshot({ path: `${output}/failure.png`, fullPage: true }); await writeFile(`${output}/failure.txt`, await page.locator('main').innerText()); throw failure; } finally { await browser.close(); }
