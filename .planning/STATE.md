@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: in_progress
-last_updated: "2026-09-16T06:37:32.507490+00:00"
+last_updated: "2026-09-16T06:55:42.938010+00:00"
 last_activity: 2026-09-16
 progress:
   total_phases: 13
@@ -20,14 +20,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute05-03; occupation rows and six source business declarations verified. Complete prototype questions, source-stage reconciliation and readiness links.
+**Current focus:** Execute05-03; source trader/trade declarations verified. Complete readiness links, source-stage placement and final source reconciliation.
 
 ## Current Position
 
 Phase: 5 of 13 (Motor Trade quote capture)
 Plan: 05-03 of11 in progress; creation/receipt and partial business editor verified; source-complete wizard pending
 Status: In progress — autonomous
-Last activity: 2026-09-16 — Six business declaration controls verified;55frontend tests, lint/typecheck/build and both-product Chrome persistence/readiness/recovery checks pass.05-03 incomplete.
+Last activity: 2026-09-16 —15 source-stage controls verified;57frontend tests, lint/typecheck/build and both-product Chrome persistence/readiness/recovery checks pass.05-03 incomplete.
 
 Progress: Phases1–4 complete;4/13phases,26completed plans.
 
@@ -54,7 +54,7 @@ Progress: Phases1–4 complete;4/13phases,26completed plans.
 ## Session Continuity
 
 Last session: 2026-09-16
-Stopped at:Business declaration capture verified. NEXT prototype trader/experience/employment and trade declarations, trading-from selection, source-stage reconciliation and readiness links. Read05-03-PROGRESS. Owned previews41016/47764 stopped.
+Stopped at:Source trader/trade questions verified. NEXT readiness field links and input guidance, source-stage placement and full05-03source acceptance. Read05-03-PROGRESS. Owned previews37756/40896 stopped.
 Resume file: .planning/phases/05-motor-trade-quote-capture/05-03-PLAN.md
 
 ## Autonomous continuation
@@ -63,4 +63,4 @@ User approved requirements/roadmap and autonomous choices/progression on 2026-09
 
 Thread heartbeat: continue-cover-mga-back-office-mvp, active every 10 minutes. Resume unfinished work in this same task; notify meaningful progress/blockers only; pause on actual milestone completion, user stop or persistent external blocker with no remaining useful work.
 
-Latest checkpoint:Business-answer fixturesQT-MT-0000000045/46 revision5; conditional retention/clearing, false/zero, integer input and mismatch denial verified.55frontend tests. Latest backend523/67SQL and293contracts unchanged. No QUO signoff before05-11.
+Latest checkpoint:Source-question fixturesQT-MT-0000000051/52 revision8; all15 answers persisted, conditional retention/clearing and mismatch denial verified.57frontend tests. Latest backend523/67SQL and293contracts unchanged. No QUO signoff before05-11.
