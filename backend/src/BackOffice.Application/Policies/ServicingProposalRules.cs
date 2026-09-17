@@ -215,12 +215,14 @@ public static class ServicingProposalRules
     }
     private static JsonElement Normalize(JsonElement value)
     {
-        JsonNode? Sort(JsonNode? node) => node switch
+        JsonNode? Sort(JsonNode? node, string? field = null) => node switch
         {
-            JsonObject obj => new JsonObject(obj.OrderBy(x => x.Key, StringComparer.Ordinal).Select(x => KeyValuePair.Create(x.Key, Sort(x.Value)))),
-            JsonArray rows when rows.All(x => x is JsonObject item && (item["id"] is not null || item["questionId"] is not null)) =>
-                new JsonArray(rows.OrderBy(x => (x!["id"] ?? x["questionId"])!.GetValue<string>(), StringComparer.Ordinal).Select(Sort).ToArray()),
-            JsonArray rows => new JsonArray(rows.Select(Sort).ToArray()),
+            JsonObject obj => new JsonObject(obj.OrderBy(x => x.Key, StringComparer.Ordinal).Select(x => KeyValuePair.Create(x.Key, Sort(x.Value, x.Key)))),
+            JsonArray rows when rows.All(x => x is JsonObject item && item["questionId"] is not null) =>
+                new JsonArray(rows.OrderBy(x => x!["questionId"]!.GetValue<string>(), StringComparer.Ordinal).Select(x => Sort(x)).ToArray()),
+            JsonArray rows when field is "premisesIds" or "driverIds" or "specifiedVehicleIds" && rows.All(x => x is JsonValue item && item.TryGetValue<string>(out var text) && Guid.TryParse(text, out _)) =>
+                new JsonArray(rows.OrderBy(x => Guid.Parse(x!.GetValue<string>())).Select(x => (JsonNode?)JsonValue.Create(Guid.Parse(x!.GetValue<string>()).ToString())).ToArray()),
+            JsonArray rows => new JsonArray(rows.Select(x => Sort(x)).ToArray()),
             _ => node?.DeepClone()
         };
         return Element(Sort(JsonNode.Parse(value.GetRawText()))!);

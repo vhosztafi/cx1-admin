@@ -29,15 +29,15 @@ try {
   await page.getByLabel('Effective clock offset',{exact:true}).selectOption('60');
   await page.getByRole('button',{name:'Save draft',exact:true}).click();await page.getByText('Draft action saved.',{exact:true}).waitFor();
   const saved=await get(path);assert.equal(saved.data.proposal.commonEffectiveIntent.utcOffsetMinutes,60);assert.deepEqual(saved.data.proposal.requestedBy,{kind:'insured',name:'Fictional insured requester'});
-  // The typed picker is a separate unfinished task. Prepare a saved change via
-  // the real API here solely to verify the comparison and removal UI.
+  // Prepare via the real API solely to test comparison polling and removal;
+  // the separate category journeys exercise actual typed editors.
   const driver=before.snapshot.risk.drivers[0];const proposal=structuredClone(saved.data.proposal);
   proposal.changes=[{changeId:crypto.randomUUID(),riskItemId:driver.id,kind:'driver',operation:'update',payload:{fullName:'Fictional comparison driver'}}];
   const csrf=(await get('/api/v1/auth/csrf')).data.requestToken;
   const prepared=await page.request.put(origin+path+'/proposal',{headers:{'X-CSRF-Token':csrf,'If-Match':saved.etag,'Idempotency-Key':crypto.randomUUID(),'X-Edit-Lease':saved.data.lease.leaseToken},data:proposal});assert.equal(prepared.status(),200,await prepared.text());
   await page.getByRole('button',{name:'Remove proposed change 1',exact:true}).waitFor();
   await page.locator('.servicing-difference summary').first().click();
-  await page.getByText('Fictional comparison driver',{exact:true}).waitFor();
+  await page.locator('.servicing-difference').getByText('Fictional comparison driver',{exact:true}).waitFor();
   await page.getByText('The full name must agree with the first name and surname.',{exact:true}).waitFor();
   await page.getByLabel('Reason for change',{exact:true}).fill('Unsaved reason survives saved comparison polling');
   await page.getByText('This review describes the saved proposal. Save your local changes to update it.',{exact:true}).waitFor();
