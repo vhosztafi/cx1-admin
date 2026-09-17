@@ -361,3 +361,42 @@ then HTTP/UI integration and browser verification. Integrate this overload only 
 validated per-date condition projections; do not flatten final risk or expand a
 condition to dates where its target is absent. Phase7 remains5/16, total54/65;
 07-06 remains incomplete. Continue inline with no agents.
+
+
+## Verified condition storage checkpoint: f2e7be8
+
+Additive20260917214347_ServicingConditions retains immutable condition definitions
+under exact DecisionId/ReferralId/CycleId/DraftId/RevisionId/RatingId ownership.
+Each row records its1..20 decision-array ordinal, closed code/kind, original JSON
+and bounded applicable UTC dates. A compound decision FK prevents borrowing another
+referral/rating owner. Future resolution pointers can use the full condition key.
+The table has rowversion for future command preconditions, but all updates/deletes
+are currently rejected; no resolution pointer or resolution service exists yet.
+
+Source trigger51361 requires the latest decision to be conditional/query, current
+owned unexpired rating, exact actor and original array definition, correct kind,
+and documentary-only query conditions. Date guard51362 requires1..100 distinct UTC
+instants present in retained cumulative input. Immutable guard51360 preserves rows.
+Closed definition schema, stable-target applicability per date, current grants and
+active-condition selection remain mandatory service checks before commands are
+exposed. A code check and exact decision match alone do not establish approval.
+
+RED .local/phase7-06-condition-storage-red/sql/sql.trx has2 absent-table failures.
+The first implementation run exposed a test that used malformed JSON for a trigger
+check: SQL correctly rejected it via check547 first. The corrected test uses a
+valid-code altered definition and now verifies immutable trigger51360 directly.
+Fresh .local/phase7-06-condition-storage-reviewed/{unit,sql} passes27 pure/shared
+unit tests plus4 SQL cases. assert-test-results.ps1 verified31 cases, no skips, with
+cutoff2026-09-17T21:40:00Z. Both-product tests cover foreign parents/revisions,
+duplicate or absent ordinals, changed definitions, invalid/foreign/non-UTC/duplicate
+dates, immutable update/delete and persisted readback. File-storage cases exercise
+downgrade/reapply of the new migration over an issued graph. Issued JSON is unchanged.
+Debug build and git diff --check pass. Shared demo database/previews unchanged.
+
+Next: add condition-bound evidence ownership and immutable resolution records with
+same-condition/evidence/review keys, then actual decision/resolution commands and
+current-grant/atomic-selection/replay tests. Extend the condition immutable trigger
+via a new migration only when adding a guarded current-resolution pointer. Parse
+closed definitions against each cumulative dated proposal before using the dated
+condition authority helper. HTTP/DI/read models/UI/browser checks remain pending;
+07-06 stays incomplete, Phase7 stays5/16, total plans54/65. Continue inline, no agents.

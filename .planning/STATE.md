@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-06 dated condition authority verified; condition storage and decision services next
-last_updated: "2026-09-17T21:39:34.725348+00:00"
-last_activity: "2026-09-17 —07-06 dated condition authority 4128171 verified;27 pure/shared unit cases pass; condition storage, decision services and HTTP/UI remain."
+stopped_at: Plan07-06 condition storage verified; condition evidence/resolutions and decision services next
+last_updated: "2026-09-17T21:49:05.997863+00:00"
+last_activity: "2026-09-17 —07-06 condition storage f2e7be8 verified;27 unit and4 SQL cases pass; condition resolutions, decision services and HTTP/UI remain."
 progress:
   total_phases: 13
   completed_phases: 6
@@ -27,8 +27,8 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 Phase: 7 of 13 (Policy lifecycle and history)
 Plan: 5 of16 complete;07-06 in progress
-Status: Executing Phase7;07-06 dated condition authority verified; condition storage/decision services next
-Last activity: 2026-09-17 —07-06 dated condition authority 4128171;27-case pure unit regression passed. Resume07-06-PROGRESS.md.
+Status: Executing Phase7;07-06 condition storage verified; condition resolutions/decision services next
+Last activity: 2026-09-17 —07-06 condition storage f2e7be8;31-case unit/SQL gate passed. Resume07-06-PROGRESS.md.
 
 Progress: Phases1–6 complete;6/13 phases,54 completed implementation plans.
 
@@ -54,8 +54,8 @@ Progress: Phases1–6 complete;6/13 phases,54 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-17T21:39:34.725348+00:00
-Stopped at:07-06 dated condition authority verified; condition storage/decision services/API/UI remain
+Last session: 2026-09-17T21:49:05.997863+00:00
+Stopped at:07-06 condition storage verified; condition resolutions/decision services/API/UI remain
 Resume file: .planning/phases/07-policy-lifecycle-and-history/07-06-PROGRESS.md
 
 ## Autonomous continuation
