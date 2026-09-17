@@ -29,5 +29,7 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Equal(51360,(await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCondition SET DefinitionJson={altered} WHERE Id={condition}"))).Number);
         Assert.Equal(51360,(await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"DELETE ServicingCondition WHERE Id={condition}"))).Number);
         Assert.Equal(definition,await db.Database.SqlQuery<string>($"SELECT DefinitionJson AS Value FROM ServicingCondition WHERE Id={condition}").SingleAsync());
+        await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingReferral SET State='conditional',LatestDecisionId={decision} WHERE Id={referral}");
+        await VerifyServicingResolutionStorage(db,cycle,referral,condition,now,actor);
     }
 }
