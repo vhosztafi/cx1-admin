@@ -23,6 +23,8 @@ public sealed partial class UnderwritingRuntimeTests
     [InlineData("motor-trade-road-risks", "rotate-rule")]
     [InlineData("motor-trade-road-risks", "temporary-cover")]
     [InlineData("motor-trade-road-risks", "operator-retry")]
+    [InlineData("motor-trade-road-risks", "evidence-storage")]
+    [InlineData("motor-trade-combined", "evidence-storage")]
     public async Task RealSqlServicingRatingRequestsPinFullScheduleAndReauthorizeReplay(string product, string scenario)
     {
         await WithDatabase(async (db, password) =>
@@ -216,6 +218,13 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.Equal(cycle.Id, Assert.Single(older.Items).Id); Assert.Null(older.NextBeforeSequence);
             Assert.False(older.Items[0].Applicable); Assert.Equal("superseded", older.Items[0].State);
             Assert.Equal(applied.Id, older.Current!.Id);
+            if (scenario == "evidence-storage")
+            {
+                var sibling = await drafts.CreateAsync(f.Servicing, issued.TermId, Version((await drafts.ListAsync(f.Servicing, issued.TermId)).Etag),
+                    new("cancellation", issued.Id, JsonSerializer.SerializeToElement(new { localDate = "2026-10-01", localTime = "00:00", timeZone = "Europe/London" }), "Fictional separate proof owner"), Key(), Guid.NewGuid());
+                await VerifyServicingEvidenceAssociationStorage(db,applied,sibling.ResourceId,f.Servicing.UserId,f.Underwriter.UserId,f.Clock.GetUtcNow());
+                Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);return;
+            }
             var beforeExpiry = f.Clock.Current;
             f.Clock.Current = secondOutcome.ExpiresAt;
             var expired = await readModel.ReadAsync(f.Servicing, draftId);
