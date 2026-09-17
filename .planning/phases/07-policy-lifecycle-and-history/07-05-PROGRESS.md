@@ -53,9 +53,8 @@ below after completion. Demo database was not reset or upgraded at this checkpoi
    or reopen the bound source. Reuse its pure helpers/current eligibility through
    a servicing scope. Existing helpers in ServicingDraftService are private and
    require deliberate factoring rather than duplicate unsafe scope logic.
-2. Add append-only ServicingRatingResult and compound cycle/result/work/attempt
-   ownership, with reviewed output hashes and signed component checks, in another
-   additive migration. Never change an already applied migration.
+2. Result storage is now implemented and verified in a447229 (see below). Retain
+   its compound ownership and immutable guards while wiring the worker.
 3. Implement ServicingRatingService, worker and job retry/history. Current grants
    precede receipt replay/retry. Save/abandon invalidates applicability while late
    provider outcomes remain historical. Queue real persisted work; revalidate
@@ -81,3 +80,44 @@ These cover cycle storage/upgrade, existing draft commands/storage/API and typed
 proposal persistence. Earlier5-case SQL results are superseded by this final run.
 No worker, public rating API or rating browser result is claimed yet. Reviewed
 storage committed in a0f3f31; no unresolved high issue in this prerequisite scope.
+
+
+## 2026-09-17 rating-result storage checkpoint
+
+Added ServicingRatingResultStorage as a separate additive migration, preserving
+ServicingRatingCycleStorage history. Result ownership includes cycle/draft/revision,
+work/attempt/rule/input hash plus durable provider operation. Stored output is
+append-only and binds exact UTF-8 SHA256 to the provider outcome, matching scenario,
+operation, completion/expiry and signed premium/tax/commission/fee/gross/net fields.
+Rejected results must have zero monetary components. CurrentRatingId requires a
+same-cycle/revision result and rated state; historical/rejected results cannot be
+promoted into current authority. Late results may be stored for superseded cycles.
+This is storage prerequisite verification, not completed worker orchestration.
+
+The expanded SQL test first failed on missing result storage in
+.local/phase7-05-result-red.log. The one-case preliminary run passed in
+.local/phase7-05-result/sql/sql.trx. Final coverage now has active and superseded
+variants, including positive rated-pointer promotion, immutable signed outcome,
+wrong attempt/hash, balanced but provider-inconsistent amounts, and downgrade/
+upgrade preservation of an existing issued policy graph. Final results are recorded
+below after completion; no source action or API is promoted by storage alone.
+
+Next refine immutable worker input and versioned servicing fee settings, then
+implement request/current-eligibility/provider/apply/retry/history and real UI.
+New provider result JSON format is servicing-rating-result-1 with operationId,
+outcome, completedAt, expiresAt and rating (the CalculatedServicingRating shape).
+The worker must store all those fields using JsonSerializerDefaults.Web. It must
+read the persisted provider outcome, not accept untrusted caller-supplied money.
+The result SQL guard checks all stored component columns against that outcome;
+failed/superseded outcomes cannot restore draft authority. All worker/current-scope
+and browser race scenarios remain unperformed until their implementation.
+
+
+Final result-storage evidence:6 real SQL cases passed, zero skips, in
+.local/phase7-05-result-final/sql/sql.trx and .local/phase7-05-result-final-sql.log.
+This includes both active/superseded variants and retained draft/proposal cases.
+Production commit a447229. The713-unit full suite from the previous checkpoint
+remains prior evidence for unchanged Application code; it was not rerun for this
+Infrastructure-only extension. No demo reset, public endpoint, worker execution,
+new rating browser journey or human UAT is claimed. Next is the pinned request
+input/configuration and request/provider/apply orchestration. Phase7 stays4/16.
