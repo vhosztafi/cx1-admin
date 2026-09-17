@@ -33,6 +33,10 @@ public sealed partial class UnderwritingRuntimeTests
     [InlineData("motor-trade-combined", "referral-storage")]
     [InlineData("motor-trade-road-risks", "referral-generation")]
     [InlineData("motor-trade-combined", "referral-generation")]
+    [InlineData("motor-trade-road-risks", "referral-service")]
+    [InlineData("motor-trade-combined", "referral-service")]
+    [InlineData("motor-trade-road-risks", "referral-authority")]
+    [InlineData("motor-trade-combined", "referral-authority")]
     public async Task RealSqlServicingRatingRequestsPinFullScheduleAndReauthorizeReplay(string product, string scenario)
     {
         await WithDatabase(async (db, password) =>
@@ -87,12 +91,12 @@ public sealed partial class UnderwritingRuntimeTests
                 new { changeId = second, riskItemId = issued.PolicyId, kind = "cover", operation = "update", payload = new { },
                     effectiveIntent = new { localDate = "2026-10-15", localTime = "00:00", timeZone = "Europe/London" } }
             });
-            if (scenario is "temporary-cover" or "referral-generation")
+            if (scenario is "temporary-cover" or "referral-generation" or "referral-authority")
             {
                 var originalSections = snapshot["cover"]!["requestedSections"]!.DeepClone();
                 var temporarySections = originalSections.DeepClone();
                 var tools = temporarySections.AsArray().Single(x => x!["code"]!.GetValue<string>() == "tools-equipment")!;
-                tools["selected"] = true; tools["limit"] = scenario == "referral-generation" ? "10000.00" : "1000.00"; tools["excess"] = "100.00";
+                tools["selected"] = true; tools["limit"] = scenario is "referral-generation" or "referral-authority" ? "10000.00" : "1000.00"; tools["excess"] = "100.00";
                 proposal["changes"] = JsonSerializer.SerializeToNode(new object[] {
                     new { changeId = first, riskItemId = issued.PolicyId, kind = "cover", operation = "update", payload = new { requestedSections = temporarySections } },
                     new { changeId = second, riskItemId = issued.PolicyId, kind = "cover", operation = "update", payload = new { requestedSections = originalSections },
@@ -104,7 +108,7 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => ratings.RateAsync(f.Servicing, draftId, revisionId, Version(saved.Etag!), Guid.NewGuid(), "Wrong fictional lease must fail", Key(), Guid.NewGuid()))).Status);
             var editor = JsonSerializer.Deserialize<JsonElement>((await drafts.ReadEditorAsync(f.Servicing, draftId)).Body);
             Assert.Empty(editor.GetProperty("assessment").GetProperty("readinessIssues").EnumerateArray());
-            if (scenario is "temporary-cover" or "referral-generation") Assert.Empty(editor.GetProperty("assessment").GetProperty("changes").EnumerateArray());
+            if (scenario is "temporary-cover" or "referral-generation" or "referral-authority") Assert.Empty(editor.GetProperty("assessment").GetProperty("changes").EnumerateArray());
             var key = Key(); var reason = "Rate exact fictional cumulative proposal";
             var requested = await ratings.RateAsync(f.Servicing, draftId, revisionId, Version(saved.Etag!), fence, reason, key, Guid.NewGuid());
             Assert.Equal(202, requested.Status);
@@ -227,6 +231,12 @@ public sealed partial class UnderwritingRuntimeTests
             }
             if (scenario is "reject" or "revoke-before-apply") Assert.Empty(await db.Set<ServicingReferral>().Where(x=>x.DraftId==draftId).ToArrayAsync());
             var ratedView = await readModel.ReadAsync(f.Servicing, draftId, pageSize: 1);
+            if (scenario is "referral-service" or "referral-authority")
+            {
+                if(scenario=="referral-service") await VerifyServicingReferralService(db,f,applied,ratedView.DraftEtag);
+                else await VerifyServicingReferralAuthority(db,f,applied,ratedView.DraftEtag);
+                Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);return;
+            }
             var currentView = Assert.Single(ratedView.Items);
             Assert.Equal(applied.Id, currentView.Id);
             Assert.Equal(scenario is not ("reject" or "revoke-before-apply"), currentView.Applicable);

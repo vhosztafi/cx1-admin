@@ -10,6 +10,10 @@ namespace BackOffice.Infrastructure.Policies;
 internal static class ServicingEvidenceProjection
 {
     internal static IReadOnlyList<ServicingProofRequirement> Requirements(ServicingDecisionContext held)
+        =>ServicingEvidenceRules.Requirements(new(held.Scope.Draft.Id,held.Cycle.Id,held.Scope.Revision.Id,held.Rating.Id,Convert.ToHexStringLower(held.Cycle.InputHash),
+            held.Scope.Eligible.Capture.Pins),Slices(held));
+
+    internal static IReadOnlyList<ServicingEvidenceSlice> Slices(ServicingDecisionContext held)
     {
         var scope=held.Scope;var input=held.Input;
         if (Convert.ToHexStringLower(scope.Base.ContentHash)!=input.BaseContentHash || Convert.ToHexStringLower(scope.Revision.ContentHash)!=input.RevisionContentHash)
@@ -29,7 +33,6 @@ internal static class ServicingEvidenceProjection
                 throw new QuoteOperationException(409,"servicing-proof-source-stale");
             slices.Add(new(actual.EffectiveAt,actual.Proposed,projected.TradingYears));
         }
-        return ServicingEvidenceRules.Requirements(new(scope.Draft.Id,held.Cycle.Id,scope.Revision.Id,held.Rating.Id,Convert.ToHexStringLower(held.Cycle.InputHash),
-            scope.Eligible.Capture.Pins),slices);
+        return slices;
     }
 }
