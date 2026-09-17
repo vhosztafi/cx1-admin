@@ -25,7 +25,7 @@ public sealed class SqlJobLeases(IDbContextFactory<BackOfficeDbContext> factory,
 
     private async Task<JobLease?> ClaimCoreAsync(string kind,Guid? workId,CancellationToken cancellationToken)
     {
-        if(kind is not (DiagnosticKind or "agency-notification" or "quote-lookup" or "quote-rating" or "capacity-escalation" or "quote-delivery"))throw new ArgumentException("Unsupported job kind.");
+        if(kind is not (DiagnosticKind or "agency-notification" or "quote-lookup" or "quote-rating" or "servicing-rating" or "capacity-escalation" or "quote-delivery"))throw new ArgumentException("Unsupported job kind.");
         await using var db=await factory.CreateDbContextAsync(cancellationToken);
         // REPEATABLE READ permits READPAST even when the database uses read-committed snapshots.
         await using var transaction=await db.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead,cancellationToken);
@@ -106,6 +106,11 @@ public sealed class SqlJobLeases(IDbContextFactory<BackOfficeDbContext> factory,
         if (job.Kind == "quote-rating")
         {
             var cycle = await db.Set<UnderwritingCycle>().SingleOrDefaultAsync(x => x.WorkId == job.Id, cancellationToken);
+            if (cycle is { State: "rating-pending" }) { cycle.State = "failed"; cycle.UpdatedAt = now; }
+        }
+        if (job.Kind == "servicing-rating")
+        {
+            var cycle = await db.Set<ServicingCycle>().SingleOrDefaultAsync(x => x.WorkId == job.Id, cancellationToken);
             if (cycle is { State: "rating-pending" }) { cycle.State = "failed"; cycle.UpdatedAt = now; }
         }
         if (job.Kind == "quote-lookup")

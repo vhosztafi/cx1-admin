@@ -83,6 +83,7 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
             await DemandLease(db, draft.Id, actor.UserId, leaseToken, ct);
             var proposal = ServicingProposalInput.Parse(json, draft.BaseVersionId);
             await Assess(db, actor, draft, proposal, ct);
+            await ServicingRatingService.InvalidateAsync(db, draft, "Proposal revision changed", time.GetUtcNow(), ct);
             await Append(db, draft, proposal, actor.UserId, ct);
         }, token);
 
@@ -92,6 +93,7 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
         return Mutate(actor, draftId, version, new { leaseToken, reason }, "abandon", key, correlation, async (db, draft, ct) =>
         {
             var lease = await DemandLease(db, draft.Id, actor.UserId, leaseToken, ct);
+            await ServicingRatingService.InvalidateAsync(db, draft, reason, time.GetUtcNow(), ct);
             draft.State = "abandoned"; lease.Active = false; lease.ExpiresAt = time.GetUtcNow();
             Audit(db, draft.Id, actor.UserId, "servicing.abandon-reason", reason, new { draft.State });
         }, token);
@@ -148,7 +150,7 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
             : await db.Set<PolicyTerm>().FromSqlInterpolated($"SELECT * FROM PolicyTerm WITH(HOLDLOCK) WHERE Id={id}").SingleAsync(ct);
     }
 
-    private static async Task<ServicingDraft> HoldDraft(BackOfficeDbContext db, ActorContext actor, Guid id, bool write, CancellationToken ct)
+    internal static async Task<ServicingDraft> HoldDraft(BackOfficeDbContext db, ActorContext actor, Guid id, bool write, CancellationToken ct)
     {
         var term = await db.Set<ServicingDraft>().AsNoTracking().Where(x => x.Id == id).Select(x => (Guid?)x.BaseTermId).SingleOrDefaultAsync(ct)
             ?? throw new QuoteOperationException(404, "servicing-draft-not-found");
@@ -160,7 +162,7 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
     private static Task<ServicingLease?> Lease(BackOfficeDbContext db, Guid id, CancellationToken ct)
         => db.Set<ServicingLease>().FromSqlInterpolated($"SELECT * FROM ServicingLease WITH(UPDLOCK,HOLDLOCK) WHERE DraftId={id}").SingleOrDefaultAsync(ct);
     private static ServicingLeaseState LeaseState(ServicingLease lease) => new(lease.HolderId, lease.Token, lease.Generation, lease.ExpiresAt, lease.Active);
-    private async Task<ServicingLease> DemandLease(BackOfficeDbContext db, Guid id, Guid actor, Guid fence, CancellationToken ct)
+    internal async Task<ServicingLease> DemandLease(BackOfficeDbContext db, Guid id, Guid actor, Guid fence, CancellationToken ct)
     {
         var lease = await Lease(db, id, ct) ?? throw new QuoteOperationException(409, "servicing-lease-required");
         try { ServicingLeaseRules.Demand(LeaseState(lease), actor, fence, time.GetUtcNow()); }
@@ -175,7 +177,7 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
         db.Add(revision); await db.SaveChangesAsync(ct); draft.CurrentRevisionId = revision.Id;
     }
 
-    private async Task<ServicingProposalAssessment> Assess(BackOfficeDbContext db, ActorContext actor, ServicingDraft draft, CanonicalServicingProposal proposal, CancellationToken ct)
+    internal async Task<ServicingProposalAssessment> Assess(BackOfficeDbContext db, ActorContext actor, ServicingDraft draft, CanonicalServicingProposal proposal, CancellationToken ct)
     {
         // The caller holds policy/term/draft scope before this projection. The
         // current authority and ordering boundary are never request fields.

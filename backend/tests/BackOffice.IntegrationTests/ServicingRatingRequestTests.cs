@@ -1,0 +1,168 @@
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using BackOffice.Application.Policies;
+using BackOffice.Infrastructure.Persistence;
+using BackOffice.Infrastructure.Policies;
+using BackOffice.Infrastructure.Platform;
+using BackOffice.Infrastructure.Quotes;
+using BackOffice.Infrastructure.Underwriting;
+using Microsoft.EntityFrameworkCore;
+using Xunit;
+
+namespace BackOffice.IntegrationTests;
+
+public sealed partial class UnderwritingRuntimeTests
+{
+    [Theory]
+    [InlineData("motor-trade-road-risks", "success")]
+    [InlineData("motor-trade-combined", "success")]
+    [InlineData("motor-trade-road-risks", "fail-once")]
+    [InlineData("motor-trade-road-risks", "timeout-after-success")]
+    [InlineData("motor-trade-road-risks", "reject")]
+    [InlineData("motor-trade-road-risks", "revoke-before-apply")]
+    [InlineData("motor-trade-road-risks", "rotate-rule")]
+    [InlineData("motor-trade-road-risks", "temporary-cover")]
+    public async Task RealSqlServicingRatingRequestsPinFullScheduleAndReauthorizeReplay(string product, string scenario)
+    {
+        await WithDatabase(async (db, password) =>
+        {
+            var setup = await AcceptedIssue(db, password, product); var f = setup.Source;
+            await new QuoteIssueService(f.Factory, f.Clock).IssueAsync(f.Underwriter, f.QuoteId, setup.Version, setup.Input, Guid.NewGuid().ToString(), Guid.NewGuid());
+            await using (var seed = await db.Database.BeginTransactionAsync()) { await ServicingRatingSeed.SeedAsync(db); await seed.CommitAsync(); }
+            if (scenario == "rotate-rule")
+            {
+                var original = await db.Set<UnderwritingCycle>().AsNoTracking().SingleAsync(x => x.Id == f.CycleId);
+                var rule = await db.Set<RatingRuleVersion>().AsNoTracking().SingleAsync(x => x.Id == original.RatingRuleVersionId);
+                var definition = JsonNode.Parse(rule.DefinitionJson)!; definition["effectiveFrom"] = f.Clock.GetUtcNow();
+                definition["version"] = "servicing-current-rule";
+                var replacement = new RatingRuleVersion { ProductId = rule.ProductId, Version = "servicing-current-rule", State = "published",
+                    EffectiveFrom = f.Clock.GetUtcNow(), EffectiveTo = rule.EffectiveTo, DefinitionJson = definition.ToJsonString() };
+                await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE RatingRuleVersion SET State='retired' WHERE Id={rule.Id}");
+                db.Add(replacement); await db.SaveChangesAsync();
+                var runtime = await db.Set<SettingVersion>().Where(x => x.Scope == "underwriting-runtime").OrderByDescending(x => x.Version).FirstAsync();
+                var configuration = JsonNode.Parse(runtime.Values)!;
+                configuration["products"]!.AsArray().Single(x => x!["productVersionId"]!.GetValue<Guid>() == original.ProductVersionId)!["ratingRuleVersionId"] = replacement.Id;
+                db.Add(new SettingVersion { Scope = runtime.Scope, Version = runtime.Version + 1, EffectiveFrom = f.Clock.GetUtcNow(), Values = configuration.ToJsonString() });
+                await db.SaveChangesAsync(); db.ChangeTracker.Clear();
+            }
+            if (scenario is "fail-once" or "timeout-after-success" or "reject")
+            {
+                var runtime = await db.Set<SettingVersion>().Where(x => x.Scope == "underwriting-runtime").OrderByDescending(x => x.Version).FirstAsync();
+                var configuration = JsonNode.Parse(runtime.Values)!;
+                configuration["scenarioVersionId"] = await db.Set<SettingVersion>().Where(x => x.Scope == "quote-rating/" + scenario).Select(x => x.Id).SingleAsync();
+                db.Add(new SettingVersion { Scope = runtime.Scope, Version = runtime.Version + 1, EffectiveFrom = f.Clock.GetUtcNow(), Values = configuration.ToJsonString() });
+                await db.SaveChangesAsync(); db.ChangeTracker.Clear();
+            }
+            var issued = await db.Set<PolicyVersion>().AsNoTracking().SingleAsync();
+            var sourceQuote = await db.Set<Quote>().AsNoTracking().SingleAsync(x => x.Id == f.QuoteId);
+            var drafts = new ServicingDraftService(f.Factory, f.Clock); var ratings = new ServicingRatingService(f.Factory, f.Clock);
+            static byte[] Version(string etag) => Convert.FromBase64String(etag.Trim('"'));
+            static string Key() => Guid.NewGuid().ToString();
+            var listed = await drafts.ListAsync(f.Servicing, issued.TermId);
+            var created = await drafts.CreateAsync(f.Servicing, issued.TermId, Version(listed.Etag),
+                new("adjustment", issued.Id, JsonSerializer.SerializeToElement(new { localDate = "2026-10-01", localTime = "00:00", timeZone = "Europe/London" }), "Fictional rated servicing request"), Key(), Guid.NewGuid());
+            var acquired = await drafts.LeaseAsync(f.Servicing, created.ResourceId, Version(created.Etag!), "acquire", null, null, Key(), Guid.NewGuid());
+            var body = JsonNode.Parse(acquired.Body)!; var fence = body["lease"]!["leaseToken"]!.GetValue<Guid>();
+            var draftId = created.ResourceId; var proposal = body["proposal"]!.DeepClone();
+            Assert.Equal(422, (await Assert.ThrowsAsync<QuoteOperationException>(() => ratings.RateAsync(f.Servicing, draftId,
+                body["revisionId"]!.GetValue<Guid>(), Version(acquired.Etag!), fence, "Rate the empty fictional draft", Key(), Guid.NewGuid()))).Status);
+            var snapshot = JsonNode.Parse(issued.SnapshotJson)!; var first = Guid.NewGuid(); var second = Guid.NewGuid();
+            proposal["dateBasis"] = "per-cover-change";
+            proposal["changes"] = JsonSerializer.SerializeToNode(new object[] {
+                new { changeId = first, riskItemId = snapshot["risk"]!["drivers"]![0]!["id"]!.GetValue<Guid>(), kind = "driver", operation = "update", payload = new { fullName = "Fictional Correction", firstName = "Fictional", surname = "Correction" } },
+                new { changeId = second, riskItemId = issued.PolicyId, kind = "cover", operation = "update", payload = new { },
+                    effectiveIntent = new { localDate = "2026-10-15", localTime = "00:00", timeZone = "Europe/London" } }
+            });
+            if (scenario == "temporary-cover")
+            {
+                var originalSections = snapshot["cover"]!["requestedSections"]!.DeepClone();
+                var temporarySections = originalSections.DeepClone();
+                var tools = temporarySections.AsArray().Single(x => x!["code"]!.GetValue<string>() == "tools-equipment")!;
+                tools["selected"] = true; tools["limit"] = "1000.00"; tools["excess"] = "100.00";
+                proposal["changes"] = JsonSerializer.SerializeToNode(new object[] {
+                    new { changeId = first, riskItemId = issued.PolicyId, kind = "cover", operation = "update", payload = new { requestedSections = temporarySections } },
+                    new { changeId = second, riskItemId = issued.PolicyId, kind = "cover", operation = "update", payload = new { requestedSections = originalSections },
+                        effectiveIntent = new { localDate = "2026-10-15", localTime = "00:00", timeZone = "Europe/London" } }
+                });
+            }
+            var saved = await drafts.SaveAsync(f.Servicing, draftId, Version(acquired.Etag!), fence, proposal.ToJsonString(), Key(), Guid.NewGuid());
+            var revisionId = JsonSerializer.Deserialize<JsonElement>(saved.Body).GetProperty("revisionId").GetGuid();
+            Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => ratings.RateAsync(f.Servicing, draftId, revisionId, Version(saved.Etag!), Guid.NewGuid(), "Wrong fictional lease must fail", Key(), Guid.NewGuid()))).Status);
+            var editor = JsonSerializer.Deserialize<JsonElement>((await drafts.ReadEditorAsync(f.Servicing, draftId)).Body);
+            Assert.Empty(editor.GetProperty("assessment").GetProperty("readinessIssues").EnumerateArray());
+            if (scenario == "temporary-cover") Assert.Empty(editor.GetProperty("assessment").GetProperty("changes").EnumerateArray());
+            var key = Key(); var reason = "Rate exact fictional cumulative proposal";
+            var requested = await ratings.RateAsync(f.Servicing, draftId, revisionId, Version(saved.Etag!), fence, reason, key, Guid.NewGuid());
+            Assert.Equal(202, requested.Status);
+            Assert.True((await ratings.RateAsync(f.Servicing, draftId, revisionId, Version(saved.Etag!), fence, reason, key, Guid.NewGuid())).Replayed);
+            var cycle = await db.Set<ServicingCycle>().AsNoTracking().SingleAsync(x => x.DraftId == draftId);
+            var input = ServicingRatingInput.Read(cycle.InputJson, cycle.InputHash);
+            Assert.Equal(2, input.Slices.Count); Assert.Equal([first], input.Slices[0].ChangeIds);
+            Assert.Equal(2, input.Slices[1].ChangeIds.Count); Assert.Contains(first, input.Slices[1].ChangeIds); Assert.Contains(second, input.Slices[1].ChangeIds);
+            Assert.Equal(15m, input.Fee); Assert.Equal(cycle.CreatedAt, input.RequestedAt);
+            Assert.Equal(revisionId, input.RevisionId); Assert.Equal(Convert.ToHexStringLower(issued.ContentHash), input.BaseContentHash);
+            var work = await db.Set<OutboxWork>().AsNoTracking().SingleAsync(x => x.Id == cycle.WorkId);
+            Assert.Equal("pending", work.State); Assert.Equal("servicing-rating", work.Kind); Assert.Equal(cycle.Id, work.SubjectRecordId);
+            var jobs = new SqlJobLeases(f.Factory, f.Clock); var worker = new ServicingRatingWorker(f.Factory, f.Clock);
+            async Task<(JobLease Lease, ServicingRatingOutcome Outcome)> Execute(Guid workId)
+            {
+                var lease = Assert.IsType<JobLease>(await jobs.ClaimWorkAsync("servicing-rating", workId));
+                if (scenario is "fail-once" or "timeout-after-success")
+                {
+                    var failure = await Assert.ThrowsAsync<QuoteRatingProviderException>(() => worker.ExecuteProviderAsync(lease));
+                    Assert.Equal(scenario == "fail-once" ? JobFailure.ProviderUnavailable : JobFailure.ProviderTimeout, failure.Failure);
+                    Assert.True(await jobs.FailAsync(lease, failure.Failure));
+                    f.Clock.Current = (await db.Set<OutboxWork>().AsNoTracking().SingleAsync(x => x.Id == workId)).NextAttemptAt.AddSeconds(1);
+                    lease = Assert.IsType<JobLease>(await jobs.ClaimWorkAsync("servicing-rating", workId));
+                    Assert.Equal(2, lease.Attempt);
+                }
+                return (lease, await worker.ExecuteProviderAsync(lease));
+            }
+            var (firstLease, firstOutcome) = await Execute(work.Id);
+            Assert.Equal(JsonSerializer.Serialize(firstOutcome), JsonSerializer.Serialize(await worker.ExecuteProviderAsync(firstLease)));
+            Assert.False(await worker.ApplyAsync(firstLease with { Token = Guid.NewGuid() }, firstOutcome));
+            Assert.Empty(await db.Set<ServicingRatingResult>().Where(x => x.DraftId == draftId).ToArrayAsync());
+            Assert.Equal(412, (await Assert.ThrowsAsync<QuoteOperationException>(() => ratings.RateAsync(f.Servicing, draftId, revisionId, Version(saved.Etag!), fence, reason, Key(), Guid.NewGuid()))).Status);
+            var rerated = await ratings.RateAsync(f.Servicing, draftId, revisionId, Version(requested.Etag!), fence, "Request a fresh fictional rating", Key(), Guid.NewGuid());
+            Assert.Equal("superseded", (await db.Set<ServicingCycle>().AsNoTracking().SingleAsync(x => x.Id == cycle.Id)).State);
+            Assert.NotEqual(cycle.Id, rerated.ResourceId); Assert.Equal(2, await db.Set<ServicingCycle>().CountAsync(x => x.DraftId == draftId));
+            Assert.True(await worker.ApplyAsync(firstLease, firstOutcome));
+            Assert.False(await worker.ApplyAsync(firstLease, firstOutcome));
+            Assert.Null((await db.Set<ServicingCycle>().AsNoTracking().SingleAsync(x => x.Id == cycle.Id)).CurrentRatingId);
+            var activeCycle = await db.Set<ServicingCycle>().AsNoTracking().SingleAsync(x => x.Id == rerated.ResourceId);
+            var (secondLease, secondOutcome) = await Execute(activeCycle.WorkId);
+            Assert.Equal(JobFailure.ProviderConflict, (await Assert.ThrowsAsync<QuoteRatingProviderException>(() => worker.ApplyAsync(secondLease,
+                secondOutcome with { ExpiresAt = secondOutcome.ExpiresAt.AddDays(1) }))).Failure);
+            var roles = await db.Set<UserRole>().AsNoTracking().Where(x => x.UserId == f.Servicing.UserId).ToArrayAsync();
+            if (scenario == "revoke-before-apply") await db.Database.ExecuteSqlInterpolatedAsync($"DELETE UserRole WHERE UserId={f.Servicing.UserId}");
+            Assert.True(await worker.ApplyAsync(secondLease, secondOutcome));
+            var applied = await db.Set<ServicingCycle>().AsNoTracking().SingleAsync(x => x.Id == activeCycle.Id);
+            Assert.Equal(scenario is "reject" or "revoke-before-apply" ? "failed" : "rated", applied.State);
+            if (scenario is "reject" or "revoke-before-apply") Assert.Null(applied.CurrentRatingId); else Assert.NotNull(applied.CurrentRatingId);
+            if (scenario == "revoke-before-apply") { db.ChangeTracker.Clear(); db.AddRange(roles); await db.SaveChangesAsync(); }
+            Assert.Equal(2, await db.Set<ServicingRatingResult>().CountAsync(x => x.DraftId == draftId));
+            Assert.Equal(scenario == "reject" ? 0m : 15m, (await db.Set<ServicingRatingResult>().SingleAsync(x => x.CycleId == applied.Id)).Fee);
+            var revised = await drafts.SaveAsync(f.Servicing, draftId, Version(rerated.Etag!), fence, proposal.ToJsonString(), Key(), Guid.NewGuid());
+            Assert.Null((await db.Set<ServicingDraft>().AsNoTracking().SingleAsync(x => x.Id == draftId)).CurrentCycleId);
+            Assert.Equal("superseded", (await db.Set<ServicingCycle>().AsNoTracking().SingleAsync(x => x.Id == rerated.ResourceId)).State);
+            var revisedId = JsonSerializer.Deserialize<JsonElement>(revised.Body).GetProperty("revisionId").GetGuid();
+            var finalRating = await ratings.RateAsync(f.Servicing, draftId, revisedId, Version(revised.Etag!), fence, reason, Key(), Guid.NewGuid());
+            var finalCycle = await db.Set<ServicingCycle>().AsNoTracking().SingleAsync(x => x.Id == finalRating.ResourceId);
+            var (lastLease, lastOutcome) = await Execute(finalCycle.WorkId);
+            await drafts.AbandonAsync(f.Servicing, draftId, Version(finalRating.Etag!), fence, "Abandon fictional rated adjustment", Key(), Guid.NewGuid());
+            Assert.True(await worker.ApplyAsync(lastLease, lastOutcome));
+            Assert.Null((await db.Set<ServicingCycle>().AsNoTracking().SingleAsync(x => x.Id == finalCycle.Id)).CurrentRatingId);
+            Assert.Null((await db.Set<ServicingDraft>().AsNoTracking().SingleAsync(x => x.Id == draftId)).CurrentCycleId);
+            Assert.Equal("superseded", (await db.Set<ServicingCycle>().AsNoTracking().SingleAsync(x => x.Id == finalRating.ResourceId)).State);
+            Assert.Equal(3, await db.Set<ServicingCycle>().CountAsync(x => x.DraftId == draftId));
+            Assert.Equal(3, await db.Set<OutboxWork>().CountAsync(x => x.Kind == "servicing-rating"));
+            Assert.Equal(3, await db.Set<ServicingRatingResult>().CountAsync(x => x.DraftId == draftId));
+            Assert.Equal(3, await db.Set<DemoProviderOperation>().CountAsync(x => x.Kind == "servicing-rating"));
+            await db.Database.ExecuteSqlInterpolatedAsync($"DELETE UserRole WHERE UserId={f.Servicing.UserId}");
+            Assert.Equal(403, (await Assert.ThrowsAsync<QuoteOperationException>(() => ratings.RateAsync(f.Servicing, draftId, revisionId, Version(saved.Etag!), fence, reason, key, Guid.NewGuid()))).Status);
+            var retained = await db.Set<PolicyVersion>().AsNoTracking().SingleAsync(); Assert.Equal(issued.SnapshotJson, retained.SnapshotJson); Assert.Equal(issued.ContentHash, retained.ContentHash);
+            var retainedQuote = await db.Set<Quote>().AsNoTracking().SingleAsync(x => x.Id == f.QuoteId);
+            Assert.Equal("bound", retainedQuote.State); Assert.Equal(sourceQuote.RowVersion, retainedQuote.RowVersion);
+        });
+    }
+}
