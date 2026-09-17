@@ -75,6 +75,24 @@ Carrier and rating/delivery jobs extend the explicit SqlJobLeases kind allowlist
 
 ### First policy and minimal posting
 
+06-10 storage refinement: `IssueFinancialComponent` gives each original premium,
+tax, fee, commission and fee-share amount an immutable identity and coverage
+interval. Journal lines reference that identity and transaction through a
+composite foreign key. Zero amounts retain a component but create no journal
+lines. Each positive component has an exact debit/credit pair; the net debtor
+and broker balances match the settlement examples. SQL checks the full component
+set, settlement accounts, parties and balance when a draft journal is sealed.
+Sealed journals and their lines cannot be altered. These are liabilities only;
+no receipt, cash or paid amount is created.
+
+Policy document requests pin one published product template for each of schedule,
+certificate and statement, with identical retained payload bytes in the request
+and outbox. Template kinds are extended additively; quotation selectors continue
+to select only quote-terms templates. Requests remain `requested` until the Phase9
+generation workflow exists. Binding a quote requires its own current issued
+version, sealed posting and all three requests. Existing quote/history rows are
+preserved; `BoundPolicyId` starts nullable and has a same-source composite FK.
+
 | Proposed table | Essential columns | Constraints |
 |---|---|---|
 | Policy | Reference, SourceQuoteId, AgencyId, ClientId, RelationshipId, ProductId, CurrentTermId | Unique SourceQuoteId and Reference; same-owner current term. Current policy status derived from issued term/time, with no premature servicing state changes. |

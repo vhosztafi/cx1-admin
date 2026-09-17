@@ -41,7 +41,7 @@ public sealed class QuoteTermsReadModel(IDbContextFactory<BackOfficeDbContext> f
             deliveryViews.Add(item);
         }
         var now = time.GetUtcNow();
-        var templates = await db.Set<TemplateVersion>().AsNoTracking().Where(x => x.ProductId == owned.Quote.ProductId && x.State == "published" && x.EffectiveFrom <= now && now < x.EffectiveTo)
+        var templates = await db.Set<TemplateVersion>().AsNoTracking().Where(x => x.ProductId == owned.Quote.ProductId && x.Kind == "quote-terms" && x.State == "published" && x.EffectiveFrom <= now && now < x.EffectiveTo)
             .OrderBy(x => x.Code).ThenByDescending(x => x.Version).Select(x => new { x.Id, x.Code, x.Version, x.ContentJson }).Take(100).ToArrayAsync(token);
         var contacts = await db.Set<Contact>().AsNoTracking().Where(x => x.ClientId == owned.Quote.ClientId && x.RelationshipId == owned.Quote.RelationshipId && x.EndedAt == null && x.Email != null)
             .OrderBy(x => x.DeclaredFullName).ThenBy(x => x.Id).Select(x => new QuoteTermsRecipient(x.Id, x.DeclaredFullName, x.Email!)).Take(1000).ToArrayAsync(token);

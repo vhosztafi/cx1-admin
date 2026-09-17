@@ -42,6 +42,13 @@ ESLint is pinned to 9.39.5 because the React/import/accessibility plugins bundle
 
 ## SQL initialization
 
+Phase6 policy storage adds migration `20260917030154_FirstPolicyIssueStorage`.
+Normal initialization applies it without resetting quotes, accepted terms or
+credentials. It introduces immutable policy versions, original financial
+components, balanced sealed journals and durable policy document requests.
+Storage alone does not expose issue endpoints; those are enabled by the following
+verified issue-service slice. Document generation remains Phase9.
+
 Set COVER_DEMO_PASSWORD locally (at least 12 characters with upper/lower case, number and symbol), then run:
 
 ```powershell

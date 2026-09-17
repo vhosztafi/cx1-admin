@@ -122,8 +122,12 @@ public sealed partial class UnderwritingStorageTests
     private static async Task<Quote> InsertQuote(BackOfficeDbContext db, TestFixture f)
     {
         var quote = new Quote { AgencyId = f.Agency, ClientId = f.Client, RelationshipId = f.Relationship, ProductId = f.Product, CreatedBy = f.Actor };
-        db.Add(quote); await db.SaveChangesAsync(); var revision = Revision(quote.Id, f); db.Add(revision); await db.SaveChangesAsync();
-        quote.CurrentRevisionId = revision.Id; await db.SaveChangesAsync(); return quote;
+        // This helper also creates retained rows before later nullable columns
+        // exist. Explicit original columns keep every upgrade fixture valid.
+        await db.Database.ExecuteSqlInterpolatedAsync($"INSERT Quote(Id,AgencyId,ClientId,RelationshipId,ProductId,State,CreatedAt,CreatedBy,UpdatedAt) VALUES({quote.Id},{f.Agency},{f.Client},{f.Relationship},{f.Product},N'draft',{quote.CreatedAt},{f.Actor},{quote.UpdatedAt})");
+        var revision = Revision(quote.Id, f); db.Add(revision); await db.SaveChangesAsync();
+        quote.CurrentRevisionId = revision.Id;
+        await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Quote SET CurrentRevisionId={revision.Id} WHERE Id={quote.Id}"); return quote;
     }
     private static async Task<UnderwritingCycle> NewCycle(BackOfficeDbContext db, Quote q, TestFixture f, int sequence)
     {
