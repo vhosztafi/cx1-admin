@@ -29,6 +29,8 @@ public sealed partial class UnderwritingRuntimeTests
     [InlineData("motor-trade-combined", "evidence-service")]
     [InlineData("motor-trade-road-risks", "evidence-review")]
     [InlineData("motor-trade-combined", "evidence-review")]
+    [InlineData("motor-trade-road-risks", "referral-storage")]
+    [InlineData("motor-trade-combined", "referral-storage")]
     public async Task RealSqlServicingRatingRequestsPinFullScheduleAndReauthorizeReplay(string product, string scenario)
     {
         await WithDatabase(async (db, password) =>
@@ -222,11 +224,12 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.Equal(cycle.Id, Assert.Single(older.Items).Id); Assert.Null(older.NextBeforeSequence);
             Assert.False(older.Items[0].Applicable); Assert.Equal("superseded", older.Items[0].State);
             Assert.Equal(applied.Id, older.Current!.Id);
-            if (scenario is "evidence-storage" or "evidence-service" or "evidence-review")
+            if (scenario is "evidence-storage" or "evidence-service" or "evidence-review" or "referral-storage")
             {
                 var sibling = await drafts.CreateAsync(f.Servicing, issued.TermId, Version((await drafts.ListAsync(f.Servicing, issued.TermId)).Etag),
                     new("cancellation", issued.Id, JsonSerializer.SerializeToElement(new { localDate = "2026-10-01", localTime = "00:00", timeZone = "Europe/London" }), "Fictional separate proof owner"), Key(), Guid.NewGuid());
                 if (scenario == "evidence-storage") await VerifyServicingEvidenceAssociationStorage(db,applied,sibling.ResourceId,f.Servicing.UserId,f.Underwriter.UserId,f.Clock.GetUtcNow());
+                else if (scenario == "referral-storage") await VerifyServicingReferralStorage(db,f,applied);
                 else if (scenario == "evidence-review") await VerifyServicingEvidenceReview(db,f,applied,sibling.ResourceId,fence,ratedView.DraftEtag);
                 else await VerifyServicingEvidenceFilesService(db,f,applied,sibling.ResourceId,fence,ratedView.DraftEtag);
                 Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);return;
