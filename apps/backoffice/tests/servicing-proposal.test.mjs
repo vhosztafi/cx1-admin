@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { servicingDateFeedback, changeServicingDate, setCoverEffectiveIntent, setServicingDateBasis, matchingServicingEditor } from '../lib/servicing-proposal.ts';
-import { projectServicingCapture, putServicingChange } from '../lib/servicing-change-form.ts';
+import { projectServicingCapture, putServicingChange, putServicingVehicleChange } from '../lib/servicing-change-form.ts';
 const intent=(localDate,localTime='00:00',utcOffsetMinutes)=>({localDate,localTime,timeZone:'Europe/London',...(utcOffsetMinutes===undefined?{}:{utcOffsetMinutes})});
 const draft=()=>({schemaVersion:'1.0',baseVersionId:'base',reason:'Fictional adjustment',requestedBy:{kind:'internal'},commonEffectiveIntent:intent('2026-10-01'),changes:[{changeId:'cover',riskItemId:'section',kind:'cover',operation:'update',payload:{}},{changeId:'driver',riskItemId:'person',kind:'driver',operation:'remove'}]});
 
@@ -76,4 +76,14 @@ test('local vehicle declaration context rejects conflicting requirements and inv
  assert.throws(()=>project([{...change,operation:'remove'}]));
  assert.throws(()=>project([{...change,kind:'driver',riskItemId:'driver'}]));
  assert.throws(()=>project([change,{...change,changeId:'second',specifiedVehicle:{selected:false,required:false}}]));
+});
+
+
+test('applying an explicit vehicle requirement synchronizes prior vehicle declarations without mutating them',()=>{
+ const previous={changeId:'old',riskItemId:'one',kind:'vehicle',operation:'add',payload:{},specifiedVehicle:{selected:true,required:true}};
+ const proposal={...draft(),changes:[previous]};
+ const next=putServicingVehicleChange(proposal,{...previous,changeId:'new',riskItemId:'two',specifiedVehicle:{selected:false,required:false}});
+ assert.equal(next.changes.length,2); assert.equal(next.changes[0].specifiedVehicle.required,false);
+ assert.equal(next.changes[0].specifiedVehicle.selected,true); assert.equal(previous.specifiedVehicle.required,true);
+ assert.throws(()=>putServicingVehicleChange(proposal,{...previous,kind:'driver'}));
 });

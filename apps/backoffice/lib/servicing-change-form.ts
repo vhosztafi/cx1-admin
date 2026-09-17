@@ -8,6 +8,13 @@ export function putServicingChange(proposal: ServicingProposal, change: Servicin
   if (!exists && proposal.changes.length >= 100) throw new Error('A draft can contain at most 100 changes.');
   return { ...proposal, changes: exists ? proposal.changes.map(item => sameServicingId(item.changeId, change.changeId) ? structuredClone(change) : item) : [...proposal.changes, structuredClone(change)] };
 }
+// The dialog explicitly states that this requirement applies to all vehicle changes.
+export function putServicingVehicleChange(proposal: ServicingProposal, change: ServicingChange): ServicingProposal {
+  if (change.kind !== 'vehicle' || !change.specifiedVehicle) throw new Error('A vehicle declaration is required.');
+  const required = change.specifiedVehicle.required;
+  return putServicingChange({ ...proposal, changes: proposal.changes.map(item => item.kind === 'vehicle' && item.specifiedVehicle
+    ? { ...item, specifiedVehicle: { ...item.specifiedVehicle, required } } : item) }, change);
+}
 const object = (value: QuoteValue | undefined): QuoteObject => value && typeof value === 'object' && !Array.isArray(value) ? value : {};
 function merge(target: QuoteObject, payload: QuoteObject) {
   for (const [key, value] of Object.entries(payload)) {
