@@ -212,3 +212,36 @@ contract generation; actual evidence/referral UI and both-product browser checks
 New services are not yet registered/routed; no endpoint runtime status or source
 coverage is marked complete. No shared demo migration or preview restart occurred.
 Phase7 remains5/16, milestone54/65 plans. Continue inline without agents.
+
+
+## Verified cumulative referral-rule prerequisite: 0f0a88a
+
+ServicingReferralRules.Assess groups stable rule/dimension/item needs while retaining
+each effective date, originating binder/authority/source rule, requested amount and
+specific limit. Transient earlier risks remain visible even when the final slice
+removes the driver or reduces the exposure. Annual risk inputs are explicit; callers
+must join immutable rated annual prices to exact dated input slices, never use net
+movement/return premium as annual authority exposure.
+
+AuthorityAllows evaluates every dated risk against one candidate grant and binder.
+It does not combine grants across dates or dimensions, accept a grant exceeding the
+binder, infer unnamed-driver licence experience from ages, remove independent source
+referrals or supply evidence/approval. Ordered UTC dates inside the term, bounded
+schedule/identities/triggers and same-product typed configuration are mandatory.
+Current identity, effective grants, SQL ownership and decisions remain service duties.
+
+RED .local/phase7-06-referral-rules-red/unit.trx has6 failing cases before behavior.
+Reviewed .local/phase7-06-referral-rules-reviewed/unit.trx passes17 cases (7new,
+10shared authority regressions), no skips. Both-product monetary triggers, earlier
+removed drivers, separate source review, disjoint grants, binder ceilings, unknown
+unnamed experience and malformed schedule/configuration are covered. git diff
+--check passes. This change is pure; no SQL migration/service/API/UI behavior was
+added and no SQL execution or browser acceptance is claimed for it.
+
+Next: persistent servicing referrals and append-only decisions, with compound
+DraftId/CycleId/RevisionId/RatingId ownership and same-referral current pointers.
+Populate requirements through the cumulative rule output, storing dated triggers
+rather than flattening to the final risk. Add condition/resolution ownership before
+allowing conditional approval. Test fresh/current grants and selected atomic writes,
+then complete bounded read models, HTTP contracts/DI/UI/browser work. Keep07-06
+in progress, with Phase7 still5/16 and54/65 total plans. Demo/preview untouched.
