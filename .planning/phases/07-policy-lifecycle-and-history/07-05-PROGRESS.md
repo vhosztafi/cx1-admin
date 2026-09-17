@@ -270,3 +270,42 @@ job routing/read/retry integration, strict DTOs/CSRF/no-store/ETags, hosted work
 and DI registration; actual rating UI/browser tests; final source review. No new
 HTTP endpoint or hosted dispatcher is enabled yet. No phase/plan completion or
 business UAT is claimed; Phase7 remains4/16 and07-05 remains in progress.
+
+
+## Verified rating history checkpoint: f6994d4
+
+ServicingRatingReadModel supplies a typed, scoped read projection for pending,
+failed, current rated, expired, stale and superseded cycles. History uses bounded
+sequence-keyset pages (default25, maximum50), with the current cycle included
+separately even on an older page. Batches are bounded and every result/work row
+is constrained to the owned draft/cycle. Empty history is supported.
+
+The view contains stored state plus effective display state, exact request/input
+and result hashes, pinned rule/terms/fee-setting IDs, job state/attempts/ETag,
+component money as invariant decimal strings, complete cumulative dated slices,
+change IDs, expiry, and supersession reason/time. Current applicability rechecks
+configuration, latest base, current revision/cycle and expiry. Historical results
+remain visible without becoming current authority; read access is reauthorized.
+Unreadable legacy details are explicitly unavailable, never fabricated prices.
+DraftEtag is the draft command fence, not a representation validator for the
+entire time-sensitive history response; the future HTTP response must be no-store.
+
+Failing-first evidence: .local/phase7-05-history-red.log (3 actual SQL failures on
+unimplemented history). Final reviewed .local/phase7-05-history-reviewed/{unit,sql}
+contains96 targeted unit cases and11 real SQL scenarios, all passing, no skips.
+Logs: .local/phase7-05-history-reviewed-unit.log and -sql.log. Assertion gate
+verified107 cases with cutoff2026-09-17T18:09:00Z. Additional last review added an
+empty-first-load assertion and reran the Combined journey successfully in
+.local/phase7-05-history-empty/sql/sql.trx (1 case, a repeat rather than another
+unique scenario). That last run uses the same production code as the11-case run.
+Coverage includes page boundaries and invalid bounds, current context on older
+pages, stored money/slices, exact expiry, changed configuration, preserved late
+results, abandonment and revoked reading permission. git diff --check passes.
+
+Next: implement actual DI/hosted dispatcher and strict HTTP rate/history/job
+read/retry routes, no-store/CSRF/ETag/lease rules and negative HTTP tests, update
+OpenAPI and generated contracts; then real rating UI and both-product browser
+journeys. Preserve existing signed-paging conventions when adapting the internal
+sequence cursor to HTTP. Final source coverage and07-05 summary remain pending.
+No endpoint, preview refresh, browser check, human UAT or phase completion is
+claimed. Phase7 remains4/16 complete; frontend-code remains unchanged.
