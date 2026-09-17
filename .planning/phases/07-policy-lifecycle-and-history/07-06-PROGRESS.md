@@ -160,3 +160,55 @@ services and referral/condition graph, then strict DTOs/DI/routes/generated cont
 and actual UI/browser acceptance. Existing Source quote grants/associations are not
 servicing approval. No whole-plan summary or completion is claimed. Phase7 stays
 5/16 and overall plans 54/65. Shared demo and running 07-05 previews remain unchanged.
+
+
+## Verified base-risk evidence commands: 434289c
+
+ServicingEvidenceProjection reconstructs full cumulative proposals from the immutable
+issued base and saved revision at the retained rating instant. It checks source
+hashes, dated slice counts and exact underwriting projections against the immutable
+rating input before deriving proof purposes/fingerprints with current capture pins.
+It does not use the projected pricing subset as if it were the full risk document.
+
+ServicingEvidenceService now supports current requirements, attach, accepted/rejected
+review and withdrawal. Commands hold current source/policy/draft/cycle scope and
+require exact fresh draft/evidence ETags and actor-owned editing lease. Review holds
+current effective same-product/binder grants before receipt replay; trading-history
+proof additionally checks the reviewTradingHistory grant. Proof review is distinct
+from risk approval: full referral dimension authority remains with the unfinished
+referral service and cannot be inferred from an accepted file.
+
+Requirements readback requires current matching context, accepted screening, latest
+accepted review and no withdrawal. Unreviewed attachments do not satisfy proof.
+Rejection removes satisfaction; independent rereview restores it, while withdrawal
+is irreversible for that association. Expired rating sets Applicable=false and
+cannot expose satisfied proof as current. Every event is persisted separately;
+source quote approval and issued policy bytes remain untouched.
+
+RED: .local/phase7-06-review-service-red/sql/sql.trx has 2 failing cases before
+implementation. The first implementation run reached grant revocation but the test
+used a fixture time before seeded grant CreatedAt; it was corrected to the existing
+revocation-test convention without changing production constraints. Final reviewed
+.local/phase7-06-review-service-reviewed/{unit,sql} passes 15 unit and 2 real-SQL cases
+on both Motor Trade products. Assertion gate verified 17, cutoff2026-09-17T20:09:00Z,
+no skips. Intermediate .local/phase7-06-review-service-final/sql passed 4 cases,
+including prior upload/download service regression; final additional checks cover
+stale evidence ETag, rejection/rereview and capture-pin use. Do not double-count
+repeated runs. git diff --check passed; Debug build has no new warnings/errors.
+
+SQL service cases verify cumulative two-date purposes, source-quote proof not reused,
+actual cross-draft file denial, cross-draft cycle denial, wrong target/fingerprint,
+unauthorized review, lease takeover, exact accepted-review replay, independent
+missing requirements, expiry, accepted/rejected/rereview/withdrawal readback,
+withdrawn reactivation denial, revoked grant before replay, exact event count and
+unchanged issued snapshot. The existing service fixture is extended with two
+'evidence-review' cases, with detailed assertions in ServicingEvidenceReviewTests.cs.
+
+Remaining07-06: referral/current-decision and condition storage/services, full
+current dimension authority and selected all-or-none decisions; condition evidence
+purposes and resolution; terms/acceptance applicability integration with downstream
+owners; bounded evidence/history metadata read models; strict DTOs/DI/routes and
+contract generation; actual evidence/referral UI and both-product browser checks.
+New services are not yet registered/routed; no endpoint runtime status or source
+coverage is marked complete. No shared demo migration or preview restart occurred.
+Phase7 remains5/16, milestone54/65 plans. Continue inline without agents.
