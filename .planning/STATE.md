@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-06 resolution commands/live proof verified; readiness and API/UI next
-last_updated: "2026-09-17T23:40:41.679941+00:00"
-last_activity: "2026-09-18 —07-06 resolution commands 81e50a7 verified;37 unit and2 SQL cases pass; readiness, warranty proof and HTTP/UI remain."
+stopped_at: Plan07-06 referral read/live readiness verified; warranty proof and API/UI next
+last_updated: "2026-09-17T23:57:49.108312+00:00"
+last_activity: "2026-09-18 —07-06 referral read/readiness 1482fae verified;37 unit and2 SQL cases pass; warranty proof and HTTP/UI remain."
 progress:
   total_phases: 13
   completed_phases: 6
@@ -27,8 +27,8 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 Phase: 7 of 13 (Policy lifecycle and history)
 Plan: 5 of16 complete;07-06 in progress
-Status: Executing Phase7;07-06 resolution commands/live proof verified; readiness and API/UI next
-Last activity: 2026-09-18 —07-06 resolution commands 81e50a7;39-case unit/SQL gate passed. Resume07-06-PROGRESS.md.
+Status: Executing Phase7;07-06 referral read/live readiness verified; warranty proof and API/UI next
+Last activity: 2026-09-18 —07-06 referral read/readiness 1482fae;39-case unit/SQL gate passed. Resume07-06-PROGRESS.md.
 
 Progress: Phases1–6 complete;6/13 phases,54 completed implementation plans.
 
@@ -54,8 +54,8 @@ Progress: Phases1–6 complete;6/13 phases,54 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-17T23:40:41.679941+00:00
-Stopped at:07-06 resolution commands/live proof verified; readiness/warranty proof/API/UI remain
+Last session: 2026-09-17T23:57:49.108312+00:00
+Stopped at:07-06 referral read/live readiness verified; warranty proof/API/UI remain
 Resume file: .planning/phases/07-policy-lifecycle-and-history/07-06-PROGRESS.md
 
 ## Autonomous continuation

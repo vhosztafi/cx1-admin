@@ -632,3 +632,38 @@ check. Add guarded warranty acknowledgement requirements, then strict DI/HTTP/co
 UI and persisted browser acceptance. Resolution helpers already support documentary
 proof; consume them rather than adding duplicate state pointers.07-06 remains
 incomplete, Phase7 stays5/16, total54/65. Continue inline without agents.
+
+
+## Verified paginated referral/live readiness checkpoint: 1482fae
+
+ReadReferralsAsync returns current owned referrals in ascending sequence pages of
+1..50 with a stable next-after cursor, draft/referral/condition ETags, decision IDs,
+condition satisfaction and per-referral DecisionReady. At most100 current conditions
+are loaded. Current rated scope is held once; condition satisfaction now has an
+internal same-context helper, avoiding nested transactions while reading the page.
+
+A conditional referral becomes DecisionReady only when every current condition is
+live-satisfied and its original actor grant remains unrevoked, effective and covers
+the remaining term. The retained authority is rechecked against every cumulative
+annual risk and active dated conditions. Expiry, withdrawal or grant revocation
+removes readiness without deleting decisions or mutating conditional state. This
+preserves proof dependencies rather than rewriting a conditional decision into an
+unconditional approve with no conditions. DecisionReady is referral-level only:
+base proof, capacity, terms and acceptance remain separate issue prerequisites.
+The existing plain-approve active-condition guard remains protective; UI should
+consume live readiness rather than encouraging users to erase conditional history.
+
+RED .local/phase7-06-referral-read-red/sql/sql.trx has2 expected stub failures.
+Fresh .local/phase7-06-referral-read-reviewed/{unit,sql} passes37 unit+2 SQL cases;
+gate39/no skips with cutoff2026-09-17T23:51:00Z. Both products verify ready conditional
+state after reviewed resolution, page-size/cursor behavior, invalid page denial,
+expiry disabling all readiness, withdrawal disabling the same retained conditional
+row and revoked grants disabling an existing approved row. Existing resolution and
+decision flows still pass. Debug build/diff checks pass; no demo migration, browser
+or UAT result claimed. Shared preview and frontend-code remain untouched.
+
+Next: UW-22 live proof eligibility, guarded warranty acknowledgement requirements,
+then complete bounded evidence/history views and strict DI/HTTP/contracts, UI and
+persisted browser checks. ReadReferralsAsync is not wired to a route yet. Historical
+cycles, richer decision/trigger detail and actual role-based UI actions must be
+covered before closing07-06. Phase7 stays5/16, total54/65. Continue inline, no agents.
