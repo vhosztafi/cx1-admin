@@ -18,9 +18,18 @@ public sealed record ServicingReviewedProof(Guid DraftId, Guid CycleId, Guid Rev
 // A received flag in captured risk is never evidence of an accepted review.
 public static class ServicingEvidenceRules
 {
-    public static IReadOnlyList<ServicingProofRequirement> Requirements(ServicingProofContext context, IReadOnlyList<ServicingEvidenceSlice> slices)
+    public static IReadOnlyList<ServicingProofRequirement> Requirements(ServicingProofContext context, IReadOnlyList<ServicingEvidenceSlice> slices,
+        IReadOnlyList<DateTimeOffset>? requestedTradingHistoryDates=null)
     {
         ArgumentNullException.ThrowIfNull(context); ArgumentNullException.ThrowIfNull(slices);
+        requestedTradingHistoryDates??=[];
+        if(requestedTradingHistoryDates.Count>100) throw Invalid();
+        DateTimeOffset? priorRequested=null;
+        foreach(var date in requestedTradingHistoryDates)
+        {
+            if(date.Offset!=TimeSpan.Zero || priorRequested is not null && date<=priorRequested || !slices.Any(x=>x is not null && x.EffectiveAt==date)) throw Invalid();
+            priorRequested=date;
+        }
         if (new[] { context.DraftId, context.CycleId, context.RevisionId, context.RatingId }.Contains(Guid.Empty) ||
             !ReferralRules.Hash(context.InputHash) || context.Pins is null || slices.Count is < 1 or > 100) throw Invalid();
         var requirements = new Dictionary<(string Code, Guid? Id), (string Label, string Path, List<DateTimeOffset> Dates)>();
@@ -58,7 +67,7 @@ public static class ServicingEvidenceRules
                 if (!required.Dates.Contains(slice.EffectiveAt)) required.Dates.Add(slice.EffectiveAt);
             }
             foreach (var item in QuoteEvidenceRequirements.ForProposal(slice.Proposal)) Add(item.Code,item.Label,item.Path,item.RiskItemId);
-            if (slice.TradingYears < 5) Add("trading-history","Business trading history and experience","/risk/business");
+            if (slice.TradingYears < 5 || requestedTradingHistoryDates.Contains(slice.EffectiveAt)) Add("trading-history","Business trading history and experience","/risk/business");
             if (slice.Proposal.TryGetProperty("cover",out var cover) && cover.TryGetProperty("requestedSections",out var sections))
             {
                 if (sections.ValueKind != JsonValueKind.Array) throw Invalid();

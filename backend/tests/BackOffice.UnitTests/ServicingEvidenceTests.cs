@@ -17,6 +17,18 @@ public sealed class ServicingEvidenceTests
             premises = new[] { new { id = Premises } } }, cover = new { requestedSections = new[] { new { code = "premises", selected = premises, premisesIds = new[] { Premises } } } } }), tradingYears);
 
     [Fact]
+    public void CurrentConditionsCanRequestTradingHistoryForAnEstablishedBusiness()
+    {
+        var context=Context();var a=Slice(1);var b=Slice(15);
+        Assert.DoesNotContain(ServicingEvidenceRules.Requirements(context,[a,b]),x=>x.Code=="trading-history");
+        var requested=Assert.Single(ServicingEvidenceRules.Requirements(context,[a,b],[a.EffectiveAt]),x=>x.Code=="trading-history");
+        Assert.Equal(new[]{a.EffectiveAt},requested.EffectiveDates);
+        Assert.NotEqual(requested.InputFingerprint,Assert.Single(ServicingEvidenceRules.Requirements(context,[a,b],[a.EffectiveAt,b.EffectiveAt]),x=>x.Code=="trading-history").InputFingerprint);
+        foreach(var invalid in new[]{new[]{a.EffectiveAt,a.EffectiveAt},new[]{b.EffectiveAt,a.EffectiveAt},new[]{a.EffectiveAt.AddDays(1)},new[]{a.EffectiveAt.ToOffset(TimeSpan.FromHours(1))}})
+            Assert.Throws<ArgumentException>(()=>ServicingEvidenceRules.Requirements(context,[a,b],invalid));
+    }
+
+    [Fact]
     public void RequirementsRetainEarlierDriverAndPremisesEvenWhenRemovedFromLaterRisk()
     {
         var requirements = ServicingEvidenceRules.Requirements(Context(), [Slice(1,premises:true,tradingYears:2),Slice(15,driver:false)]);

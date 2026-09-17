@@ -19,7 +19,7 @@ public sealed partial class ServicingEvidenceService
     {
         await using var db=await factory.CreateDbContextAsync(token);await using var tx=await db.Database.BeginTransactionAsync(token);
         var held=await ServicingDecisionContext.Hold(db,actor,draftId,"policy-read",time.GetUtcNow(),token);
-        var requirements=ServicingEvidenceProjection.Requirements(held);
+        var requirements=await ServicingEvidenceProjection.RequirementsAsync(db,held,token);
         var rows=await (from a in db.Set<ServicingEvidenceAssociation>().AsNoTracking()
             join f in db.Set<ServicingEvidenceFile>().AsNoTracking() on a.FileId equals f.Id
             join e in db.Set<ServicingEvidenceEvent>().AsNoTracking() on a.LatestReviewId equals e.Id into reviews
@@ -50,7 +50,7 @@ public sealed partial class ServicingEvidenceService
             async (db,ct)=>
             {
                 await held!.Current(db,factory,time,version,leaseToken,ct);
-                var required=ServicingEvidenceProjection.Requirements(held).SingleOrDefault(x=>x.Code==code && x.RiskItemId==riskItemId)
+                var required=(await ServicingEvidenceProjection.RequirementsAsync(db,held,ct)).SingleOrDefault(x=>x.Code==code && x.RiskItemId==riskItemId)
                     ?? throw new QuoteOperationException(422,"servicing-evidence-purpose-inapplicable");
                 if (required.InputFingerprint!=fingerprint) throw new QuoteOperationException(412,"servicing-evidence-input-stale");
                 var now=time.GetUtcNow();var row=new ServicingEvidenceAssociation { DraftId=draftId,CycleId=cycleId,RevisionId=held.Cycle.RevisionId,
@@ -101,7 +101,7 @@ public sealed partial class ServicingEvidenceService
                 if (association.WithdrawnEventId is not null) throw new QuoteOperationException(409,"servicing-evidence-withdrawn");
                 if (kind=="review")
                 {
-                    var purpose=ServicingEvidenceProjection.Requirements(held).SingleOrDefault(x=>x.Code==association.RequirementCode && x.RiskItemId==association.RiskItemId);
+                    var purpose=(await ServicingEvidenceProjection.RequirementsAsync(db,held,ct)).SingleOrDefault(x=>x.Code==association.RequirementCode && x.RiskItemId==association.RiskItemId);
                     if (purpose is null || purpose.InputFingerprint!=association.InputFingerprint || fingerprint!=association.InputFingerprint)
                         throw new QuoteOperationException(412,"servicing-evidence-input-stale");
                 }

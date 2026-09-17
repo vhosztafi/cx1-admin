@@ -4,14 +4,29 @@ using BackOffice.Application.Policies;
 using BackOffice.Application.Quotes;
 using BackOffice.Application.Underwriting;
 using BackOffice.Infrastructure.Quotes;
+using BackOffice.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackOffice.Infrastructure.Policies;
 
 internal static class ServicingEvidenceProjection
 {
-    internal static IReadOnlyList<ServicingProofRequirement> Requirements(ServicingDecisionContext held)
-        =>ServicingEvidenceRules.Requirements(new(held.Scope.Draft.Id,held.Cycle.Id,held.Scope.Revision.Id,held.Rating.Id,Convert.ToHexStringLower(held.Cycle.InputHash),
-            held.Scope.Eligible.Capture.Pins),Slices(held));
+    internal static async Task<IReadOnlyList<ServicingProofRequirement>> RequirementsAsync(BackOfficeDbContext db,ServicingDecisionContext held,CancellationToken token)
+    {
+        var slices=Slices(held);
+        var conditions=await (from c in db.Set<ServicingCondition>().AsNoTracking() join r in db.Set<ServicingReferral>() on c.ReferralId equals r.Id
+            where c.DraftId==held.Scope.Draft.Id && c.CycleId==held.Cycle.Id && c.DecisionId==r.LatestDecisionId &&
+                (r.State=="conditional" || r.State=="queried") && c.Code=="provide-trading-history" select c).ToArrayAsync(token);
+        var requested=new SortedSet<DateTimeOffset>();
+        foreach(var condition in conditions)
+        {
+            var parsed=ServicingConditionRules.Parse(JsonSerializer.Deserialize<JsonElement>(condition.DefinitionJson),slices,
+                JsonSerializer.Deserialize<DateTimeOffset[]>(condition.EffectiveDatesJson)!);
+            foreach(var row in parsed) requested.Add(row.EffectiveAt);
+        }
+        return ServicingEvidenceRules.Requirements(new(held.Scope.Draft.Id,held.Cycle.Id,held.Scope.Revision.Id,held.Rating.Id,Convert.ToHexStringLower(held.Cycle.InputHash),
+            held.Scope.Eligible.Capture.Pins),slices,requested.ToArray());
+    }
 
     internal static IReadOnlyList<ServicingEvidenceSlice> Slices(ServicingDecisionContext held)
     {
