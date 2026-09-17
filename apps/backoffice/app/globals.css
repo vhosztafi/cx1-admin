@@ -274,6 +274,8 @@ h1, h2, p { margin: 0; }
 .servicing-difference section, .servicing-difference dl, .servicing-difference dd { min-width:0; overflow-wrap:anywhere; }
 .servicing-difference dd { margin:4px 0 10px; }
 .servicing-difference dt { color:#6b7184; }
+.servicing-change-dialog { width:min(1060px,calc(100vw - 32px)); max-height:88vh; overflow:auto; }
+.servicing-change-dialog .quote-form-grid > *, .servicing-change-dialog fieldset { min-width:0; }
 .quote-rail-body h2 { margin:12px 0; font-size:20px; line-height:1.3; }
 .quote-rail-body p { margin:0 0 16px; }
 .quote-rail-body dl { display:grid; gap:14px; margin:22px 0; }

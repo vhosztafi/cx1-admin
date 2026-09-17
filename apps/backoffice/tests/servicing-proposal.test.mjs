@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { servicingDateFeedback, changeServicingDate, setCoverEffectiveIntent, setServicingDateBasis, matchingServicingEditor } from '../lib/servicing-proposal.ts';
+import { projectServicingCapture, putServicingChange } from '../lib/servicing-change-form.ts';
 const intent=(localDate,localTime='00:00',utcOffsetMinutes)=>({localDate,localTime,timeZone:'Europe/London',...(utcOffsetMinutes===undefined?{}:{utcOffsetMinutes})});
 const draft=()=>({schemaVersion:'1.0',baseVersionId:'base',reason:'Fictional adjustment',requestedBy:{kind:'internal'},commonEffectiveIntent:intent('2026-10-01'),changes:[{changeId:'cover',riskItemId:'section',kind:'cover',operation:'update',payload:{}},{changeId:'driver',riskItemId:'person',kind:'driver',operation:'remove'}]});
 
@@ -35,4 +36,24 @@ test('saved comparison is usable only for the same draft, revision and strong ET
  assert.equal(matchingServicingEditor(view,{...editor,data:{...editor.data,draftId:'foreign'}}),false);
  assert.equal(matchingServicingEditor(view,null),false);
  assert.equal(matchingServicingEditor({...view,etag:'W/"one"'},{...editor,etag:'W/"one"'}),false);
+});
+
+test('typed local replacement clears fields while retaining identity and original issued capture',()=>{
+ const base={schemaVersion:'1.0',productCode:'motor-trade-road-risks',insured:{legalName:'Old'},risk:{drivers:[{id:'driver',fullName:'Original',dateOfBirth:'1980-01-01'}]},cover:{requestedSections:[]}};
+ const proposal={...draft(),changes:[{changeId:'change',riskItemId:'driver',kind:'driver',operation:'update',payloadMode:'replace',payload:{fullName:'Corrected'}}]};
+ const projected=projectServicingCapture(base,proposal,'policy','client');
+ assert.deepEqual(projected.risk.drivers,[{id:'driver',fullName:'Corrected'}]);assert.equal(base.risk.drivers[0].dateOfBirth,'1980-01-01');
+ assert.throws(()=>projectServicingCapture(base,{...proposal,changes:[{...proposal.changes[0],riskItemId:'foreign'}]},'policy','client'));
+});
+test('editing an existing proposal retains its change ID and stable addition ID',()=>{
+ const proposal={...draft(),changes:[]}; const row={changeId:'change',riskItemId:'new-driver',kind:'driver',operation:'add',payload:{fullName:'First'}};
+ const added=putServicingChange(proposal,row),updated=putServicingChange(added,{...row,payload:{fullName:'Edited'}});
+ assert.equal(updated.changes.length,1);assert.equal(updated.changes[0].riskItemId,'new-driver');assert.equal(added.changes[0].payload.fullName,'First');assert.equal(proposal.changes.length,0);
+});
+
+test('typed projection treats alternate UUID casing as the same item identity',()=>{
+ const id='aaaa0000-0000-4000-8000-000000000001';
+ const base={schemaVersion:'1.0',productCode:'motor-trade-road-risks',risk:{drivers:[{id,fullName:'Original'}]}};
+ const proposal={...draft(),changes:[{changeId:'change',riskItemId:id.toUpperCase(),kind:'driver',operation:'update',payload:{fullName:'Corrected'}}]};
+ assert.equal(projectServicingCapture(base,proposal,'policy','client').risk.drivers[0].fullName,'Corrected');
 });

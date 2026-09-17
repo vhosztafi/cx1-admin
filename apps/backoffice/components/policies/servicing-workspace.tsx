@@ -7,14 +7,17 @@ import { sendServicing, servicingCommand, type ServicingCommand, type ServicingD
 import { matchingServicingEditor, setCoverEffectiveIntent, setServicingDateBasis } from '../../lib/servicing-proposal';
 import { ServicingEffectiveFields } from './servicing-effective-fields';
 import { ServicingSavedReview } from './servicing-saved-review';
+import { ServicingDriverEditor } from './servicing-driver-editor';
+import type { QuoteFormCatalogue } from '../../lib/quote-catalogue';
 
-export function ServicingWorkspace({ draftId, actorId, canTakeover }: { draftId: string; actorId: string; canTakeover: boolean }) {
+export function ServicingWorkspace({ draftId, actorId, canTakeover, catalogue }: { draftId: string; actorId: string; canTakeover: boolean; catalogue: QuoteFormCatalogue }) {
   const [view, setView] = useState<{ data: ServicingDraft; etag: string } | null>(null), [proposal, setProposal] = useState<ServicingProposal | null>(null);
   const [fence, setFence] = useState<string | null>(null), [busy, setBusy] = useState(false), [error, setError] = useState(''), [notice, setNotice] = useState('');
   const [reason, setReason] = useState(''), [retry, setRetry] = useState(false), [dirty, setDirty] = useState(false);
   const [confirmAbandon, setConfirmAbandon] = useState(false);
   const [observedAt, setObservedAt] = useState(0);
   const [editor, setEditor] = useState<{ data: ServicingEditor; etag: string | null } | null>(null);
+  const [editorReadOk, setEditorReadOk] = useState(false);
   const dirtyRef = useRef(false), pending = useRef<ServicingCommand | null>(null), busyRef = useRef(false);
   const url = `/api/v1/drafts/${draftId}`;
   useEffect(() => {
@@ -28,7 +31,8 @@ export function ServicingWorkspace({ draftId, actorId, canTakeover }: { draftId:
         if (controller.signal.aborted || busyRef.current) return;
         if (draftRead.status === 'rejected') throw draftRead.reason;
         const result = draftRead.value; if (!result.etag) return;
-        setEditor(editorRead.status === 'fulfilled' ? editorRead.value : null);
+        setEditorReadOk(editorRead.status === 'fulfilled');
+        if (editorRead.status === 'fulfilled') setEditor(editorRead.value);
         setView({ data: result.data, etag: result.etag }); if (!dirtyRef.current) setProposal(result.data.proposal);
       } catch { if (!controller.signal.aborted) setError('Unable to refresh ownership. Your local edits are retained.'); }
     }
@@ -81,7 +85,7 @@ export function ServicingWorkspace({ draftId, actorId, canTakeover }: { draftId:
       </fieldset>)}
       </fieldset><p>{proposal.changes.length} proposed risk changes{dirty ? ' including local edits' : ' saved'}. Saved draft details do not alter issued cover.</p>
       <button className="button button-primary" type="submit" disabled={!editing || busy || retry}>Save draft</button>
-    </form></Panel><ServicingSavedReview editor={matchingServicingEditor(view, editor) ? editor!.data : null} dirty={dirty} /></div><aside className="underwriting-rail" aria-label="Draft actions"><Panel title="Editing controls"><div className="quote-rail-body servicing-controls">
+    </form></Panel>{editor?.data.draftId === draftId ? <Panel title="Risk changes"><div className="quote-rail-body"><ServicingDriverEditor proposal={proposal} editor={editor.data} policyId={view.data.policyId} catalogue={catalogue} disabled={!editing || busy || retry || !editorReadOk || !matchingServicingEditor(view, editor)} change={change} /></div></Panel> : null}<ServicingSavedReview editor={editorReadOk && matchingServicingEditor(view, editor) ? editor!.data : null} dirty={dirty} /></div><aside className="underwriting-rail" aria-label="Draft actions"><Panel title="Editing controls"><div className="quote-rail-body servicing-controls">
       {retry ? <button className="button button-primary" disabled={busy} onClick={() => void run('save')}>Retry same action</button> : null}
       <button className="button" disabled={busy || retry || editing || otherEditor || view.data.state !== 'draft'} onClick={() => void run('acquire')}>Acquire editing lease</button>
       <button className="button" disabled={busy || retry || !editing} onClick={() => void run('renew')}>Renew editing lease</button>

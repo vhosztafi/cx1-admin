@@ -8,7 +8,7 @@ import type { DriverField } from '../../lib/quote-driver-fields';
 import type { QuoteObject, QuoteProposal, QuoteValue, QuoteView } from '../../lib/quotes';
 
 type Props = {
-  proposal: QuoteProposal; versions: QuoteView['captureVersions']; catalogue: QuoteFormCatalogue; history?: boolean;
+  proposal: QuoteProposal; versions: QuoteView['captureVersions']; catalogue: QuoteFormCatalogue; history?: boolean; targetId?: string;
   replace: (proposal: QuoteProposal) => void; buffers: Record<string, string>;
   setBuffer: (key: string, value: string | undefined) => void; validity: (key: string, error?: string) => void;
 };
@@ -42,8 +42,8 @@ export function QuoteDrivers(props: Props) {
   });
   return <div className="quote-driver-section">
     <p className="client-help">Save incomplete details at any time. Changing a declaration retains existing rows for review. Remove a row explicitly when it no longer applies.</p>
-    {!history && <fieldset className="quote-reference-fields"><legend>Driver basis and restrictions</legend><div className="quote-form-grid">{controls(proposal.risk ?? {}, 'plan', 'Driver basis', 'drivers/plan', (_path, value) => attempt(() => ({ ...proposal, risk: { ...proposal.risk, responses: value! } })))}</div></fieldset>}
-    {history && <fieldset className="quote-reference-fields"><legend>Proposer and named driver declarations</legend><p className="client-help">These declarations cover the proposer as well as all named drivers. A Yes answer does not create a history row.</p><div className="quote-form-grid">{[
+    {!history && !props.targetId && <fieldset className="quote-reference-fields"><legend>Driver basis and restrictions</legend><div className="quote-form-grid">{controls(proposal.risk ?? {}, 'plan', 'Driver basis', 'drivers/plan', (_path, value) => attempt(() => ({ ...proposal, risk: { ...proposal.risk, responses: value! } })))}</div></fieldset>}
+    {history && !props.targetId && <fieldset className="quote-reference-fields"><legend>Proposer and named driver declarations</legend><p className="client-help">These declarations cover the proposer as well as all named drivers. A Yes answer does not create a history row.</p><div className="quote-form-grid">{[
       ['ef70e80708bb', 'Motoring convictions in the last five years or pending prosecutions'], ['36da21d3c935', 'Accidents, claims or losses in the last three years'],
       ['922ca15dc9ed', 'County court judgments in the last five years'], ['46414cc10100', 'Criminal convictions or pending prosecutions'],
     ].map(([suffix, label]) => {
@@ -51,14 +51,14 @@ export function QuoteDrivers(props: Props) {
       const value = business ? answers(business).find(answer => answer.questionId === id)?.value : undefined;
       return <label key={id}>{label}<select aria-label={label} value={value === undefined ? '' : String(value)} onChange={event => attempt(() => changeAnswer(proposal, 'risk.business.responses', versions.questionSetVersion, id, 'boolean', event.target.value === '' ? undefined : event.target.value === 'true'))}><option value="">Not answered</option><option value="true">Yes</option><option value="false">No</option></select></label>;
     })}</div></fieldset>}
-    {!history && <button type="button" className="button" onClick={() => attempt(() => addQuoteDriver(proposal))}>Add driver</button>}
+    {!history && !props.targetId && <button type="button" className="button" onClick={() => attempt(() => addQuoteDriver(proposal))}>Add driver</button>}
     {drivers.length === 0 && <p>No named drivers recorded. Choose the appropriate driver basis and add named drivers when required.</p>}
     {drivers.map((driver, driverIndex) => {
-      const driverId = String(driver.id); const prefix = `Driver ${driverIndex + 1}`; const bufferPrefix = `drivers/${driverId}`;
+      const driverId = String(driver.id); if (props.targetId && driverId !== props.targetId) return null; const prefix = `Driver ${driverIndex + 1}`; const bufferPrefix = `drivers/${driverId}`;
       const name = String(driver.fullName ?? ([driver.firstName, driver.surname].filter(Boolean).join(' ') || 'Name not recorded'));
-      return <details className="quote-driver-card" key={driverId} open={driverIndex === 0}><summary>{prefix} · {name}</summary>
-        {!history && <><div className="quote-row-actions"><button type="button" className="button" aria-label={`Move ${prefix.toLowerCase()} up`} disabled={driverIndex === 0} onClick={() => attempt(() => moveQuoteDriver(proposal, driverId, -1))}>Move up</button><button type="button" className="button" aria-label={`Move ${prefix.toLowerCase()} down`} disabled={driverIndex === drivers.length - 1} onClick={() => attempt(() => moveQuoteDriver(proposal, driverId, 1))}>Move down</button><button type="button" className="button" aria-label={`Remove ${prefix.toLowerCase()}`} onClick={() => attempt(() => { const next = removeQuoteDriver(proposal, driverId); clearBuffers(bufferPrefix + '/'); return next; })}>Remove driver</button></div>
-          <p className="client-help">Full name and separate names are independent declarations. Licence issue date and driving test date are also distinct. Demo licence lookups do not verify entitlement. Attach licence and driving record documents in Proposal evidence below.</p>
+      return <details className="quote-driver-card" key={driverId} open={!!props.targetId || driverIndex === 0}><summary>{prefix} · {name}</summary>
+        {!history && <>{!props.targetId && <div className="quote-row-actions"><button type="button" className="button" aria-label={`Move ${prefix.toLowerCase()} up`} disabled={driverIndex === 0} onClick={() => attempt(() => moveQuoteDriver(proposal, driverId, -1))}>Move up</button><button type="button" className="button" aria-label={`Move ${prefix.toLowerCase()} down`} disabled={driverIndex === drivers.length - 1} onClick={() => attempt(() => moveQuoteDriver(proposal, driverId, 1))}>Move down</button><button type="button" className="button" aria-label={`Remove ${prefix.toLowerCase()}`} onClick={() => attempt(() => { const next = removeQuoteDriver(proposal, driverId); clearBuffers(bufferPrefix + '/'); return next; })}>Remove driver</button></div>}
+          <p className="client-help">{props.targetId ? "Full name and separate names are independent declarations. Licence issue date and driving test date are also distinct. These proposed details are captured for review." : "Full name and separate names are independent declarations. Licence issue date and driving test date are also distinct. Demo licence lookups do not verify entitlement. Attach licence and driving record documents in Proposal evidence below."}</p>
           <div className="quote-form-grid">{controls(driver, 'driver', prefix, bufferPrefix, (path, value) => attempt(() => changeQuoteDriverField(proposal, driverId, path, value)), driverIndex)}</div><QuoteLookupControl kind="address" scope="driver" riskItemId={driverId} label={`${prefix} address`} /><QuoteLookupControl kind="licence" scope="driver" riskItemId={driverId} label={`${prefix} licence`} /></>}
         {histories.filter(group => history ? group.key !== 'occupations' : group.key === 'occupations').map(group => {
           const rows = quoteDriverHistory(proposal, driverId, group.key);
