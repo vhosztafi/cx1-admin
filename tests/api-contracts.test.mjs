@@ -323,9 +323,11 @@ test('evidence associations retain item scope and withdrawal cannot masquerade a
  for(const name of ['Quote','Draft']){
   const body=getOperation(`attach${name}Evidence`).requestBody.content['application/json'].schema;
   const attach=body.$ref?document.components.schemas[body.$ref.split('/').at(-1)]:body;
-  assert.ok(attach.required.includes(name==='Quote'?'fileId':'documentVersionId'));assert.ok(attach.properties.riskItemId);
+  assert.ok(attach.required.includes(name==='Quote'?'fileId':'fileVersionId'));assert.ok(attach.properties.riskItemId);
+  if(name==='Draft')assert.ok(attach.required.includes('cycleId'));
   if(name==='Quote')for(const field of ['revisionId','inputFingerprint'])assert.ok(attach.required.includes(field));
-  const withdraw=getOperation(`withdraw${name}Evidence`).requestBody.content['application/json'].schema;
+  const withdrawRef=getOperation(`withdraw${name}Evidence`).requestBody.content['application/json'].schema;
+  const withdraw=withdrawRef.$ref?document.components.schemas[withdrawRef.$ref.split('/').at(-1)]:withdrawRef;
   assert.deepEqual(withdraw.required,['reason']);assert.equal(withdraw.additionalProperties,false);
  }
 });

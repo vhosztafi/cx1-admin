@@ -4671,7 +4671,7 @@
     "apiFields": [
       {
         "operationId": "savePolicyDraft",
-        "field": "effectiveAt"
+        "field": "commonEffectiveIntent"
       }
     ],
     "reason": "Change timing and requestor are persisted with the lease/ETag; schedule timing changes invalidate rating and acceptance."
@@ -4926,7 +4926,7 @@
     "apiFields": [
       {
         "operationId": "savePolicyDraft",
-        "field": "effectiveAt"
+        "field": "commonEffectiveIntent"
       }
     ],
     "reason": "Cancellation modal retains a structured reason selection and separate audit detail in command intent; neither control issues cancellation."

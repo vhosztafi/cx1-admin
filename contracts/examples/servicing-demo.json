@@ -1,0 +1,33 @@
+{
+  "description": "Fictional design fixtures, not persisted policy or payment outcomes",
+  "ruleVersion": "demo-servicing-1",
+  "cancellationRules": [
+    {"code":"insured-request","noticeDays":0,"evidencePurposes":["cancellation-request"],"authority":"underwriter","separateApprover":false},
+    {"code":"non-payment","noticeDays":7,"evidencePurposes":["cancellation-notice"],"authority":"senior","separateApprover":true},
+    {"code":"non-disclosure","noticeDays":7,"evidencePurposes":["cancellation-notice","cancellation-reason"],"authority":"senior","separateApprover":true},
+    {"code":"trade-ceased","noticeDays":0,"evidencePurposes":["cancellation-request"],"authority":"underwriter","separateApprover":false},
+    {"code":"insurer-instruction","noticeDays":0,"evidencePurposes":["insurer-instruction"],"authority":"senior","separateApprover":true}
+  ],
+  "renewalRules": {"invitationDaysBeforeExpiry":45,"lapseDaysAfterExpiry":14,"experienceThresholdBasisPoints":5000,"experienceLoadingBasisPoints":800,"missingExperienceOutcome":"information-required"},
+  "proposal": {
+    "schemaVersion":"1.0",
+    "baseVersionId":"10000000-0000-4000-8000-000000000001",
+    "reason":"Fictional multi-date cover adjustment",
+    "requestedBy":{"kind":"broker","name":"Demo broker"},
+    "commonEffectiveIntent":{"localDate":"2026-09-15","localTime":"00:00","timeZone":"Europe/London"},
+    "dateBasis":"per-cover-change",
+    "changes":[
+      {"changeId":"10000000-0000-4000-8000-000000000002","riskItemId":"10000000-0000-4000-8000-000000000003","kind":"business","operation":"update","payload":{"turnover":"700000.00"}},
+      {"changeId":"10000000-0000-4000-8000-000000000004","riskItemId":"10000000-0000-4000-8000-000000000005","kind":"cover","operation":"update","payload":{},"effectiveIntent":{"localDate":"2026-10-01","localTime":"00:00","timeZone":"Europe/London"}}
+    ]
+  },
+  "mixedDateAdjustment": {
+    "termStartsOn":"2026-01-01","termEndsOn":"2027-01-01",
+    "slices":[
+      {"effectiveOn":"2026-09-15","annualDelta":"600.00","premium":"177.53","tax":"21.30","commission":"17.75"},
+      {"effectiveOn":"2026-10-01","annualDelta":"-300.00","premium":"-75.62","tax":"-9.07","commission":"-7.56"}
+    ],
+    "singleFee":"15.00","premium":"101.91","tax":"12.23","commission":"10.19","gross":"129.14","net":"118.95"
+  },
+  "cancellation": {"effectiveOn":"2026-10-15","premium":"-320.55","tax":"-38.46","commission":"-32.05","retainedFeeMovement":"0.00","netCredit":"326.96","cashPaid":false}
+}
