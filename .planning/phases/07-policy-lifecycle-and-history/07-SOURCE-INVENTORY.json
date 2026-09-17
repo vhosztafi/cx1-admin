@@ -1375,9 +1375,15 @@
       "handlers": {
         "onClick": "() => this.rateMta()"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-05"
+      "owner": "07-05",
+      "evidence": [
+        ".local/browser-evidence/servicing-rating/report.json",
+        ".local/phase7-05-http-reviewed/sql/sql.trx",
+        "07-05-SUMMARY.md"
+      ],
+      "implementation": "Review & rate panel rates the complete cumulative saved adjustment through the scoped durable API; rerating preserves superseded history. Both products and exact lost-response retry verified."
     },
     {
       "id": "CTL-9085e4bbc3bb",
@@ -1628,9 +1634,15 @@
       "handlers": {
         "onClick": "() => this.rateMta()"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-05"
+      "owner": "07-05",
+      "evidence": [
+        ".local/browser-evidence/servicing-rating/report.json",
+        ".local/phase7-05-http-reviewed/sql/sql.trx",
+        "07-05-SUMMARY.md"
+      ],
+      "implementation": "Review & rate panel rates the complete cumulative saved adjustment through the scoped durable API; rerating preserves superseded history. Both products and exact lost-response retry verified."
     },
     {
       "id": "CTL-ee26e427d19a",
@@ -1728,9 +1740,15 @@
       "handlers": {
         "onAction": "() => this.rateMta()"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-05"
+      "owner": "07-05",
+      "evidence": [
+        ".local/browser-evidence/servicing-rating/report.json",
+        ".local/phase7-05-http-reviewed/sql/sql.trx",
+        "07-05-SUMMARY.md"
+      ],
+      "implementation": "Review & rate panel rates the complete cumulative saved adjustment through the scoped durable API; rerating preserves superseded history. Both products and exact lost-response retry verified."
     },
     {
       "id": "CTL-d2bf3015d449",

@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1–6 complete;53 implementation plans complete. Phase7 has4/16 plans verified.07-05 pricing, cycle/result storage and pinned input/configuration verified (latest30 unit/2 real SQL cases); request/worker/API/UI remain.
+**Status:** Autonomous progression authorised. Phases1-6 complete;54 implementation plans complete. Phase7 has5/16 plans verified.07-05 durable rating API, worker and review UI verified;07-06 evidence/referrals next.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
@@ -139,7 +139,7 @@
 - [x] 07-02 — Temporal policy reads and current discovery.
 - [x] 07-03 — Persistent servicing drafts and editing leases.
 - [x] 07-04 — Typed adjustment editors and stable-item comparison.
-- [ ] 07-05 — Servicing rating cycles and cumulative-slice pricing.
+- [x] 07-05 — Servicing rating cycles and cumulative-slice pricing.
 - [ ] 07-06 — Servicing evidence and referral decisions.
 - [ ] 07-07 — Servicing capacity referral lifecycle.
 - [ ] 07-08 — Servicing terms delivery and exact acceptance.
@@ -260,7 +260,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 4. Agency onboarding and access | 8/8 | Complete | 2026-09-15 |
 | 5. Motor Trade quote capture | 11/11 | Complete    | 2026-09-16 |
 | 6. Underwriting and first policy issue | 14/14 | Complete | 2026-09-17 |
-| 7. Policy lifecycle and history | 4/16 | In progress | — |
+| 7. Policy lifecycle and history | 5/16 | In progress | — |
 | 8. Commercial Combined back office | 0/TBD | Not started | — |
 | 9. Tasks, documents, communication and incidents | 0/TBD | Not started | — |
 | 10. Accounting and insurer reporting | 0/TBD | Not started | — |

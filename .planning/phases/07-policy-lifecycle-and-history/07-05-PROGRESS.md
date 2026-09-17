@@ -1,4 +1,6 @@
-# 07-05 execution checkpoint - not complete
+Completion: see 07-05-SUMMARY.md and 07-05-REVIEW.md. Earlier checkpoint statements below describe their original times.
+
+# 07-05 execution checkpoints - completed 2026-09-17
 
 The approved plan remains in progress. Do not create a completed SUMMARY or mark
 source actions verified from these prerequisite checks. Continue inline with no
