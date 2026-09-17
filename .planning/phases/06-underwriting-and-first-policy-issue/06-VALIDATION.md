@@ -138,3 +138,12 @@ accept, retained exact retry, proof withdrawal/fresh acceptance and314px/390px
 layout. Separate negative journey verifies actual queued/failed jobs, ended
 recipient, account switch and superseded terms without extra delivery. No backend
 change;799backend/144realSQL baseline from06-08 retained. See06-09-SUMMARY.
+
+## 06-10 runtime evidence
+
+Implementation af10de7:811backend (635unit/176integration),149realSQL,zero skips.
+Integration22m41s; exact result gate passed. Five new SQL cases cover premature
+binding, owner/uniqueness/immutability, retained upgrade, exact posting/sealing and
+document requests. Additive migration20260917030154 and repeat initialization
+preserved31count/hash sets and credentials. See06-10-SUMMARY. Issue endpoints and
+UI remain06-11..12; compound requirement completion remains06-14.

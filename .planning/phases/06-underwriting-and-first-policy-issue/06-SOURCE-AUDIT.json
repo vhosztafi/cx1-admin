@@ -6012,5 +6012,11 @@
         "status": "Implemented with weekend/DST unit, SQL seed-preservation and real browser evidence"
       }
     ]
+  },
+  "policyStorageEvidence": {
+    "plan": "06-10",
+    "commit": "af10de7",
+    "summary": "06-10-SUMMARY.md",
+    "status": "Storage verified:811backend/149realSQL/zero skips; additive migration and repeat preserved31 count/hash sets. Issue API/UI and final source acceptance remain06-11..14."
   }
 }
