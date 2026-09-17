@@ -31,6 +31,8 @@ public sealed partial class UnderwritingRuntimeTests
     [InlineData("motor-trade-combined", "evidence-review")]
     [InlineData("motor-trade-road-risks", "referral-storage")]
     [InlineData("motor-trade-combined", "referral-storage")]
+    [InlineData("motor-trade-road-risks", "referral-generation")]
+    [InlineData("motor-trade-combined", "referral-generation")]
     public async Task RealSqlServicingRatingRequestsPinFullScheduleAndReauthorizeReplay(string product, string scenario)
     {
         await WithDatabase(async (db, password) =>
@@ -85,12 +87,12 @@ public sealed partial class UnderwritingRuntimeTests
                 new { changeId = second, riskItemId = issued.PolicyId, kind = "cover", operation = "update", payload = new { },
                     effectiveIntent = new { localDate = "2026-10-15", localTime = "00:00", timeZone = "Europe/London" } }
             });
-            if (scenario == "temporary-cover")
+            if (scenario is "temporary-cover" or "referral-generation")
             {
                 var originalSections = snapshot["cover"]!["requestedSections"]!.DeepClone();
                 var temporarySections = originalSections.DeepClone();
                 var tools = temporarySections.AsArray().Single(x => x!["code"]!.GetValue<string>() == "tools-equipment")!;
-                tools["selected"] = true; tools["limit"] = "1000.00"; tools["excess"] = "100.00";
+                tools["selected"] = true; tools["limit"] = scenario == "referral-generation" ? "10000.00" : "1000.00"; tools["excess"] = "100.00";
                 proposal["changes"] = JsonSerializer.SerializeToNode(new object[] {
                     new { changeId = first, riskItemId = issued.PolicyId, kind = "cover", operation = "update", payload = new { requestedSections = temporarySections } },
                     new { changeId = second, riskItemId = issued.PolicyId, kind = "cover", operation = "update", payload = new { requestedSections = originalSections },
@@ -102,7 +104,7 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => ratings.RateAsync(f.Servicing, draftId, revisionId, Version(saved.Etag!), Guid.NewGuid(), "Wrong fictional lease must fail", Key(), Guid.NewGuid()))).Status);
             var editor = JsonSerializer.Deserialize<JsonElement>((await drafts.ReadEditorAsync(f.Servicing, draftId)).Body);
             Assert.Empty(editor.GetProperty("assessment").GetProperty("readinessIssues").EnumerateArray());
-            if (scenario == "temporary-cover") Assert.Empty(editor.GetProperty("assessment").GetProperty("changes").EnumerateArray());
+            if (scenario is "temporary-cover" or "referral-generation") Assert.Empty(editor.GetProperty("assessment").GetProperty("changes").EnumerateArray());
             var key = Key(); var reason = "Rate exact fictional cumulative proposal";
             var requested = await ratings.RateAsync(f.Servicing, draftId, revisionId, Version(saved.Etag!), fence, reason, key, Guid.NewGuid());
             Assert.Equal(202, requested.Status);
@@ -211,6 +213,19 @@ public sealed partial class UnderwritingRuntimeTests
             if (scenario == "revoke-before-apply") { db.ChangeTracker.Clear(); db.AddRange(roles); await db.SaveChangesAsync(); }
             Assert.Equal(2, await db.Set<ServicingRatingResult>().CountAsync(x => x.DraftId == draftId));
             Assert.Equal(scenario == "reject" ? 0m : 15m, (await db.Set<ServicingRatingResult>().SingleAsync(x => x.CycleId == applied.Id)).Fee);
+            if (scenario == "referral-generation")
+            {
+                Assert.Empty(await db.Set<ServicingReferral>().Where(x=>x.CycleId==cycle.Id).ToArrayAsync());
+                var generated=await db.Set<ServicingReferral>().AsNoTracking().Where(x=>x.CycleId==applied.Id).ToArrayAsync();
+                var toolsReferral=Assert.Single(generated,x=>x.RuleCode=="cover-tools-equipment");
+                Assert.Equal("open",toolsReferral.State);Assert.Equal(applied.CurrentRatingId,toolsReferral.RatingId);Assert.Equal(revisionId,toolsReferral.RevisionId);
+                using var required=JsonDocument.Parse(toolsReferral.RequiredAuthorityJson);var triggers=required.RootElement.GetProperty("triggers").EnumerateArray().ToArray();
+                Assert.Equal(2,triggers.Length);Assert.Contains(triggers,x=>x.GetProperty("source").GetString()=="binder");Assert.Contains(triggers,x=>x.GetProperty("source").GetString()=="authority");
+                Assert.All(triggers,x=>{Assert.Equal(input.Slices[0].EffectiveAt,x.GetProperty("effectiveAt").GetDateTimeOffset());Assert.Equal(10000m,x.GetProperty("requirement").GetProperty("requestedAmount").GetDecimal());});
+                Assert.False(await worker.ApplyAsync(secondLease,secondOutcome));
+                Assert.Equal(generated.Length,await db.Set<ServicingReferral>().CountAsync(x=>x.CycleId==applied.Id));
+            }
+            if (scenario is "reject" or "revoke-before-apply") Assert.Empty(await db.Set<ServicingReferral>().Where(x=>x.DraftId==draftId).ToArrayAsync());
             var ratedView = await readModel.ReadAsync(f.Servicing, draftId, pageSize: 1);
             var currentView = Assert.Single(ratedView.Items);
             Assert.Equal(applied.Id, currentView.Id);
@@ -243,6 +258,11 @@ public sealed partial class UnderwritingRuntimeTests
             var revised = await drafts.SaveAsync(f.Servicing, draftId, Version(rerated.Etag!), fence, proposal.ToJsonString(), Key(), Guid.NewGuid());
             Assert.Null((await db.Set<ServicingDraft>().AsNoTracking().SingleAsync(x => x.Id == draftId)).CurrentCycleId);
             Assert.Equal("superseded", (await db.Set<ServicingCycle>().AsNoTracking().SingleAsync(x => x.Id == rerated.ResourceId)).State);
+            if (scenario == "referral-generation")
+            {
+                var retainedReferrals=await db.Set<ServicingReferral>().AsNoTracking().Where(x=>x.CycleId==applied.Id).ToArrayAsync();
+                Assert.NotEmpty(retainedReferrals);Assert.All(retainedReferrals,x=>Assert.Equal("superseded",x.State));
+            }
             var revisedId = JsonSerializer.Deserialize<JsonElement>(revised.Body).GetProperty("revisionId").GetGuid();
             var finalRating = await ratings.RateAsync(f.Servicing, draftId, revisedId, Version(revised.Etag!), fence, reason, Key(), Guid.NewGuid());
             var finalCycle = await db.Set<ServicingCycle>().AsNoTracking().SingleAsync(x => x.Id == finalRating.ResourceId);

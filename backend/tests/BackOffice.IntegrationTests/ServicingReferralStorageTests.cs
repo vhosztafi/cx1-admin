@@ -11,6 +11,7 @@ public sealed partial class UnderwritingRuntimeTests
     private static async Task VerifyServicingReferralStorage(BackOfficeDbContext db,DecisionFixture f,ServicingCycle cycle)
     {
         var now=f.Clock.GetUtcNow();var rating=cycle.CurrentRatingId!.Value;
+        var baseSequence=await db.Set<ServicingReferral>().Where(x=>x.CycleId==cycle.Id).Select(x=>(int?)x.Sequence).MaxAsync()??0;
         using var input=JsonDocument.Parse(cycle.InputJson);var slice=input.RootElement.GetProperty("slices")[0];
         var target=slice.GetProperty("input").GetProperty("drivers")[0].GetProperty("id").GetGuid();
         var required=JsonSerializer.Serialize(new {triggers=new[]{new {effectiveAt=slice.GetProperty("effectiveAt").GetDateTimeOffset(),source="authority",requirement=new {ruleCode="driver-age",dimension="driver-age",targetId=target}}}});
@@ -18,6 +19,7 @@ public sealed partial class UnderwritingRuntimeTests
         async Task Insert(Guid referral,int sequence,Guid price,Guid revision,string code="driver-age",Guid? item=null,string? definition=null)
         {
             var actual=item??target;
+            sequence+=baseSequence;
             var json=definition??JsonSerializer.Serialize(new {triggers=new[]{new {effectiveAt=slice.GetProperty("effectiveAt").GetDateTimeOffset(),source="authority",requirement=new {ruleCode=code,dimension=code,targetId=actual}}}});
             await db.Database.ExecuteSqlInterpolatedAsync($"INSERT ServicingReferral (Id,DraftId,CycleId,RevisionId,RatingId,Sequence,RuleCode,Dimension,RiskItemId,TargetKey,RequiredAuthorityJson,Reason,State,CreatedBy,CreatedAt,UpdatedAt) VALUES ({referral},{cycle.DraftId},{cycle.Id},{revision},{price},{sequence},{code},{code},{actual},{actual},{json},'Fictional servicing referral','open',{f.Servicing.UserId},{now},{now})");
         }

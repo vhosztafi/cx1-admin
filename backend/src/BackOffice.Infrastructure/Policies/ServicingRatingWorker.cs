@@ -114,6 +114,34 @@ public sealed class ServicingRatingWorker(IDbContextFactory<BackOfficeDbContext>
         if (eligible is not null)
         { cycle.CurrentRatingId = rating is null ? null : result.Id; cycle.State = rating is null ? "failed" : "rated"; cycle.UpdatedAt = now; }
         else if (cycle.State == "rating-pending") { cycle.State = "failed"; cycle.UpdatedAt = now; }
+        if (eligible is not null && rating is not null)
+        {
+            // Assess every cumulative risk using its annual price, including
+            // temporary cover that a later change removes again.
+            if (rating.Slices.Count != input.Slices.Count) throw Failure(JobFailure.ProviderConflict);
+            var slices = new List<ServicingAuthoritySlice>();
+            for (var index = 0; index < input.Slices.Count; index++)
+            {
+                var source = input.Slices[index]; var priced = rating.Slices[index];
+                // Each price movement earns through the term end.
+                var endsAt = input.Term.EndsAt;
+                if (source.EffectiveAt != priced.EffectiveAt || priced.CoverageEndsAt != endsAt ||
+                    !source.ChangeIds.Order().SequenceEqual(priced.ChangeIds.Order())) throw Failure(JobFailure.ProviderConflict);
+                slices.Add(new(source.EffectiveAt, source.Input.RiskForPremium(priced.AnnualPremium)));
+            }
+            var needs = ServicingReferralRules.Assess(input.Term, slices, eligible.Eligible.Binder, eligible.Eligible.Authority,
+                input.RatingDefinition.GetProperty("minimumTradingYears").GetInt32());
+            // Referral provenance guards require the current rated pointer to
+            // exist; both saves remain within this worker transaction.
+            await db.SaveChangesAsync(token);
+            var sequence = 0;
+            foreach (var need in needs)
+                db.Add(new ServicingReferral { DraftId = draft.Id, CycleId = cycle.Id, RevisionId = cycle.RevisionId,
+                    RatingId = result.Id, Sequence = ++sequence, RuleCode = need.RuleCode, Dimension = need.Dimension,
+                    RiskItemId = need.RiskItemId, TargetKey = need.RiskItemId ?? Guid.Empty,
+                    RequiredAuthorityJson = JsonSerializer.Serialize(new { triggers = need.Triggers }, Json),
+                    Reason = "Review required: " + need.Dimension, CreatedBy = cycle.RequestedBy, CreatedAt = now, UpdatedAt = now });
+        }
         attempt.EndedAt = now; attempt.Outcome = eligible is null ? "superseded" : rating is null ? "rejected" : "succeeded";
         attempt.Response = JsonSerializer.Serialize(new { cycleId = cycle.Id, ratingId = result.Id, applicable = eligible is not null }, Json);
         work.State = "succeeded"; work.CompletedAt = now; work.LeaseToken = null; work.LeaseExpiresAt = null; work.ErrorCode = null; work.Result = attempt.Response;

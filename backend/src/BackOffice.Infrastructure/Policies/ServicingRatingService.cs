@@ -94,6 +94,9 @@ public sealed class ServicingRatingService(IDbContextFactory<BackOfficeDbContext
         var previous = await db.Set<ServicingCycle>().FromSqlInterpolated($"SELECT * FROM ServicingCycle WITH(UPDLOCK,HOLDLOCK) WHERE Id={id} AND DraftId={draft.Id}").SingleAsync(token);
         if (previous.State != "superseded")
         { previous.State = "superseded"; previous.SupersededAt = now; previous.SupersededReason = reason; previous.UpdatedAt = now; }
+        var referrals = await db.Set<ServicingReferral>().FromSqlInterpolated($"SELECT * FROM ServicingReferral WITH(UPDLOCK,HOLDLOCK) WHERE CycleId={id} AND DraftId={draft.Id}").ToArrayAsync(token);
+        foreach (var referral in referrals)
+        { referral.State = "superseded"; referral.UpdatedAt = now; }
         draft.CurrentCycleId = null;
     }
 }
