@@ -1,7 +1,7 @@
 {
-  "status": "in-progress",
+  "status": "planning-mapped-runtime-unverified",
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
-  "scope": "All 137 original controls assigned to the proposed 16-plan decomposition or explicit later-phase owners; conditional branches/display fields still require completion.",
+  "scope": "All 137 original controls assigned to the approved 16-plan decomposition or explicit later-phase owners; 393 source occurrences and 10 conditional branches are mapped in 07-SOURCE-FIELDS.json. Mapping is not runtime verification.",
   "controlCount": 137,
   "apiOperationCount": 29,
   "controls": [
