@@ -13,12 +13,15 @@ internal sealed record ServicingDecisionContext(HeldServicingRating Scope,Servic
     ServicingRatingRequestInput Input)
 {
     internal static async Task<ServicingDecisionContext> Hold(BackOfficeDbContext db,ActorContext actor,Guid draftId,
-        string capability,DateTimeOffset now,CancellationToken token)
+        string capability,DateTimeOffset now,CancellationToken token,Guid? requestedCycle=null)
     {
         if (!actor.HasCapability(capability)) throw new QuoteOperationException(403,"servicing-evidence-denied");
         var scope=await ServicingRatingScope.HoldAsync(db,actor,draftId,now,token);
         if (!scope.Source.Scope.Actor.HasCapability(capability)) throw new QuoteOperationException(403,"servicing-evidence-denied");
+        if (requestedCycle is { } requested && !await db.Set<ServicingCycle>().AnyAsync(x=>x.Id==requested && x.DraftId==draftId,token))
+            throw new QuoteOperationException(404,"servicing-cycle-not-found");
         var id=scope.Draft.CurrentCycleId ?? throw new QuoteOperationException(409,"servicing-rating-required");
+        if (requestedCycle is { } expected && expected!=id) throw new QuoteOperationException(409,"servicing-rating-cycle-stale");
         var cycle=await db.Set<ServicingCycle>().FromSqlInterpolated($"SELECT * FROM ServicingCycle WITH(UPDLOCK,HOLDLOCK) WHERE Id={id} AND DraftId={draftId}").SingleAsync(token);
         ServicingRatingRequestInput input;
         try { input=ServicingRatingInput.Read(cycle.InputJson,cycle.InputHash); }
