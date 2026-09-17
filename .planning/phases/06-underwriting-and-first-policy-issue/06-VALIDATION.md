@@ -129,3 +129,12 @@ OpenAPI355operations pass (10existingwarnings). Applied additive migration and
 repeated initialization preserve all23retained count/hash sets and credentials.
 See06-08-SUMMARY for paths, strict HTTP, delivery recovery and immutable acceptance
 evidence. UI remains06-09 and policy storage/issue06-10..12.
+
+## 06-09 runtime evidence
+
+Implementation9d68ee6:100frontend tests,317contracts/source, lint/typecheck/build
+passed. Both-product actual Chrome and final readback verify prepared/sign/send/
+accept, retained exact retry, proof withdrawal/fresh acceptance and314px/390px
+layout. Separate negative journey verifies actual queued/failed jobs, ended
+recipient, account switch and superseded terms without extra delivery. No backend
+change;799backend/144realSQL baseline from06-08 retained. See06-09-SUMMARY.

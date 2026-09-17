@@ -1748,11 +1748,17 @@
       "disposition": "command",
       "acceptanceId": "AT-950f2a4088a6",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "06-09 verified in9d68ee6: quotation workspace opened from quote Overview/Underwriting; real preparation, exact signed proof, scoped delivery and explicit acceptance. Both-product Chrome plus queued/failed, stale/account, exact-retry and proof-invalidation checks passed.",
       "plan": "06-09",
       "task": "06-09-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-terms-browser.mjs",
-      "backendEvidence": "06-08 verified in0ba6132:799backend/144realSQL,0skips; actual immutable terms, scoped demo delivery and exact acceptance. UI acceptance remains06-09."
+      "backendEvidence": "06-08 verified in0ba6132:799backend/144realSQL,0skips; actual immutable terms, scoped demo delivery and exact acceptance. UI acceptance remains06-09.",
+      "runtimeEvidence": [
+        "06-09-SUMMARY.md",
+        "scripts/verify-underwriting-terms-browser.mjs",
+        ".local/browser-evidence/underwriting-terms/report.json",
+        ".local/browser-evidence/underwriting-terms/negative-report.json"
+      ]
     },
     {
       "controlId": "CTL-6bed59ad0e72",
@@ -1819,11 +1825,17 @@
       "disposition": "command",
       "acceptanceId": "AT-efcbbfb01992",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "06-09 verified in9d68ee6: quotation workspace opened from quote Overview/Underwriting; real preparation, exact signed proof, scoped delivery and explicit acceptance. Both-product Chrome plus queued/failed, stale/account, exact-retry and proof-invalidation checks passed.",
       "plan": "06-09",
       "task": "06-09-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-terms-browser.mjs",
-      "backendEvidence": "06-08 verified in0ba6132:799backend/144realSQL,0skips; actual immutable terms, scoped demo delivery and exact acceptance. UI acceptance remains06-09."
+      "backendEvidence": "06-08 verified in0ba6132:799backend/144realSQL,0skips; actual immutable terms, scoped demo delivery and exact acceptance. UI acceptance remains06-09.",
+      "runtimeEvidence": [
+        "06-09-SUMMARY.md",
+        "scripts/verify-underwriting-terms-browser.mjs",
+        ".local/browser-evidence/underwriting-terms/report.json",
+        ".local/browser-evidence/underwriting-terms/negative-report.json"
+      ]
     },
     {
       "controlId": "CTL-b6b101bf1420",
@@ -2067,11 +2079,17 @@
       "disposition": "command",
       "acceptanceId": "AT-8931890ed3f6",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "06-09 verified in9d68ee6: quotation workspace opened from quote Overview/Underwriting; real preparation, exact signed proof, scoped delivery and explicit acceptance. Both-product Chrome plus queued/failed, stale/account, exact-retry and proof-invalidation checks passed.",
       "plan": "06-09",
       "task": "06-09-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-terms-browser.mjs",
-      "backendEvidence": "06-08 verified in0ba6132:799backend/144realSQL,0skips; actual immutable terms, scoped demo delivery and exact acceptance. UI acceptance remains06-09."
+      "backendEvidence": "06-08 verified in0ba6132:799backend/144realSQL,0skips; actual immutable terms, scoped demo delivery and exact acceptance. UI acceptance remains06-09.",
+      "runtimeEvidence": [
+        "06-09-SUMMARY.md",
+        "scripts/verify-underwriting-terms-browser.mjs",
+        ".local/browser-evidence/underwriting-terms/report.json",
+        ".local/browser-evidence/underwriting-terms/negative-report.json"
+      ]
     },
     {
       "controlId": "CTL-4a1e26f9bda1",
@@ -5792,7 +5810,14 @@
       "reason": "Required by approved lifecycle/requirements even where prototype sends/binds with no explicit acceptance form.",
       "plan": "06-09",
       "task": "06-09-01",
-      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-terms-browser.mjs"
+      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-terms-browser.mjs",
+      "runtimeStatus": "06-09 verified in9d68ee6: quotation workspace opened from quote Overview/Underwriting; real preparation, exact signed proof, scoped delivery and explicit acceptance. Both-product Chrome plus queued/failed, stale/account, exact-retry and proof-invalidation checks passed.",
+      "runtimeEvidence": [
+        "06-09-SUMMARY.md",
+        "scripts/verify-underwriting-terms-browser.mjs",
+        ".local/browser-evidence/underwriting-terms/report.json",
+        ".local/browser-evidence/underwriting-terms/negative-report.json"
+      ]
     },
     {
       "feature": "underwriting evidence review and condition proof",
