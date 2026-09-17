@@ -1,7 +1,7 @@
 # Phase 7 research: policy lifecycle and history
 
-Researched: 2026-09-17. Status: architecture investigation in progress.
-This is research evidence, not an approved implementation plan or completed gate.
+Researched: 2026-09-17. Status: complete for planning; refined by07-RULES-AND-RELATIONSHIPS.
+Research evidence informs the approved plans; it is not runtime verification.
 Read 07-CONTEXT.md and 06-PHASE07-HANDOFF.md alongside this document.
 
 ## Findings and recommended boundaries
@@ -152,19 +152,14 @@ Use fresh TRX directories and actual-start cutoffs. Full SQL regression previous
 took about 37 minutes; do not substitute a skipped or filtered run for that gate.
 Human business and assistive-technology UAT remain separate unperformed work.
 
-## Remaining research and planning gates
+## Research completion
 
-1. Complete source audit: 137 originally assigned controls across pPolicy(62),
-   pMta(24), pRenewal(14), pCancelReview(5), pIssued(2), pVehicle(2), pDriver(2),
-   pAsAt(6), modalVals(20), plus conditional branches and display fields. Map
-   real implementation owners; POL-01 retains Phase 9/10 compound portions.
-2. Inspect existing financial keys/triggers, evidence/capacity service boundaries,
-   all design-only term/draft endpoints and source data shapes. The initial scout
-   matched policy-prefixed paths only and is not a complete API inventory.
-3. Write explicit data/API design, financial examples for mixed multi-date MTA,
-   state machines, migration strategy and source-to-plan traceability.
-4. Produce UI-SPEC, validation task map and bounded sequential plans, then run
-   plan, requirement and decision coverage checks. No plan is ready to execute yet.
+Follow-up inspection resolved initial open items in07-SOURCE-AUDIT,
+07-SOURCE-FIELDS,07-DATA-API-DESIGN and07-RULES-AND-RELATIONSHIPS. SQL guard/key
+hazards and quote-subject service boundaries are explicitly addressed. All16
+plans and32 validation tasks consume those findings;07-PLAN-REVIEW records the
+resolved five findings. No production behavior is claimed by research.
 
-Research was performed inline under the GSD skill's Codex adapter. No agent,
-production edit, database mutation or live external delivery was used.
+Research performed inline under the GSD Codex adapter, with official Microsoft
+sources above and local approved business contracts. No new dependency, agent,
+live provider or sales-funnel modification is required.

@@ -1,6 +1,6 @@
-# Phase 7 source audit — in progress
+# Phase 7 source audit — planning coverage complete
 
-Inspected 2026-09-17. This is not a passed source coverage gate.
+Inspected 2026-09-17. Planning ownership is complete; runtime source coverage remains unverified.
 07-SOURCE-INVENTORY.json preserves all 137 original control IDs and handlers,
 and 29 policy/term/draft path-family operations from the existing OpenAPI.
 Runtime support is not inferred from the presence of a contract.
@@ -62,14 +62,20 @@ backend/src/BackOffice.Infrastructure/Persistence (guards in Migrations).
 These are anticipated extension hazards, not defects in the verified first-issue
 scope. Do not edit old migrations; add a new migration with replacement guards.
 
-## Remaining audit work
+## Completed planning inventory
 
-Inspect remaining policy display fields and implied branches in addition to
-original control IDs. MTA review/document and servicing modal branches were read:
-non-driver Description/Effective date/Supporting evidence inputs are missing from
-the original rendered control subset, and conditional Issue adjustment must be
-added explicitly. Replace generic descriptions with typed editors for all eight
-change categories; evidence selection must reference actual reviewed files.
-Complete exact evidence/capacity contracts from the subject-bound service analysis.
-Then produce UI/validation contracts and plans and run coverage checks. No Phase7
-implementation or source-audit completion is claimed by this inventory.
+07-SOURCE-FIELDS.json records393 source occurrences with exact source lines,
+method/branch and owning capability, plus10 explicitly enumerated conditional
+branches. It includes policyTab, driver/vehicle detail, MTA review/documents and
+cancel/picker/edit modal branches. It is a static expression inventory with
+explicit workflow branches, not a claim to exhaustively render every input
+combination. Existing source row fixtures illustrate values; implementation
+must display persisted values or explicit unavailable state, never copy fiction
+as real policy data. Phase7 plans consume both inventories and final16 checks
+actual source coverage. All original137 control IDs remain assigned exactly once.
+
+Typed editors replace generic Description for non-driver changes; later dates
+are cover-only and Supporting evidence is an actual association. These adaptations
+preserve implied functionality rather than storing human descriptions as risk.
+POL-01 keeps Phase9/10 generic module ownership; this planning audit does not
+close that compound requirement or claim any new runtime behavior.

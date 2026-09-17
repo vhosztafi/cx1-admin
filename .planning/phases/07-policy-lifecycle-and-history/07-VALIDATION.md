@@ -1,18 +1,18 @@
 ---
 phase: 07
 slug: policy-lifecycle-and-history
-status: draft
-nyquist_compliant: false
+status: approved
+nyquist_compliant: true
 wave_0_complete: false
 created: 2026-09-17
 ---
 
 # Phase 7 validation strategy
 
-Plan writing is incomplete. This file records test obligations, not passed tests.
-The first four draft plans passed GSD structural validation on 2026-09-17 with
-two tasks each and no structural errors/warnings. Semantic phase-plan review,
-source completeness and full decision/requirement coverage are still pending.
+All16 plans and32 tasks have explicit automated checks. GSD structural and
+decision coverage checks and inline semantic review pass; runtime tests remain
+pending. wave_0_complete=false reflects that new tests/harnesses are created by
+their owning implementation plans, not already run during planning.
 
 ## Infrastructure and cadence
 
@@ -33,19 +33,47 @@ is not a quick-feedback promise. Pure tests are the short feedback loop. Full
 frontend/contract suites, retained37 browser journeys plus Phase6 scenarios,
 servicing journeys, restart and extended44-set preservation are final obligations.
 
-## Current per-task map
+## Complete per-task map
 
-| Tasks | Requirement | Threat | Automated behavior gate | Status |
+All32 task commands are copied from their owning plans. New test/harness files
+are implementation outputs and must exist with nonzero meaningful assertions
+before their task can pass. Evidence-only task02 reuses unchanged successful
+task01 runs and adds diff/source review; do not repeat expensive checks blindly.
+
+| Task | Requirements | Threat | Automated gate | Runtime status |
 | --- | --- | --- | --- | --- |
-| 07-01-01/02 | POL-02/04/05/06/07/08/09 | T07-01 forged authority/money, source omission | ServicingRulesTests, servicing-contracts/source Node suites, validate-contracts | Tests to create in07-01 |
-| 07-02-01/02 | POL-01/05/06 | T07-02 temporal disclosure, scope leakage | PolicyTemporalTests, verify-policy-temporal-browser, web:typecheck | Tests to create in07-02; persisted servicing chronology rechecked after issue plans |
-| 07-03-01/02 | POL-02/03/06 | T07-03 stale lease/base and lost writes | ServicingDraftTests, two-session verify-servicing-draft-browser, typecheck/lint | Tests to create in07-03 |
-| 07-04-01/02 | POL-01/02/03/06 | T07-04 risk identity and backdate violations | ServicingProposalTests unit+SQL, frontend proposal tests, all-category browser | Tests to create in07-04 |
-
-Plans07-05..16 and their task-specific checks must be written before this strategy
-can pass. New verification files named in plans are required implementation
-outputs, not currently existing tools. Every filtered .NET run must assert a
-nonzero expected test count; a filter matching nothing is not a pass.
+| 07-01-01 | POL-02, POL-04, POL-05, POL-06, POL-07, POL-08, POL-09 | T07-01 | `node --test tests/servicing-contracts.test.mjs tests/servicing-source.test.mjs; node scripts/validate-contracts.mjs; dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~ServicingRulesTests` | Pending implementation |
+| 07-01-02 | POL-02, POL-04, POL-05, POL-06, POL-07, POL-08, POL-09 | T07-01 | `git diff --check; node --test tests/servicing-contracts.test.mjs tests/servicing-source.test.mjs; node scripts/validate-contracts.mjs; dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~ServicingRulesTests` | Pending implementation |
+| 07-02-01 | POL-01, POL-05, POL-06 | T07-02 | `dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~PolicyTemporalTests; node scripts/verify-policy-temporal-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-02-02 | POL-01, POL-05, POL-06 | T07-02 | `git diff --check; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~PolicyTemporalTests; node scripts/verify-policy-temporal-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-03-01 | POL-02, POL-03, POL-06 | T07-03 | `dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~ServicingDraftTests; node scripts/verify-servicing-draft-browser.mjs; pnpm web:typecheck; pnpm web:lint` | Pending implementation |
+| 07-03-02 | POL-02, POL-03, POL-06 | T07-03 | `git diff --check; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~ServicingDraftTests; node scripts/verify-servicing-draft-browser.mjs; pnpm web:typecheck; pnpm web:lint` | Pending implementation |
+| 07-04-01 | POL-01, POL-02, POL-03, POL-06 | T07-04 | `dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~ServicingProposalTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~ServicingProposalTests; node --test apps/backoffice/tests/servicing-proposal.test.mjs; node scripts/verify-servicing-editors-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-04-02 | POL-01, POL-02, POL-03, POL-06 | T07-04 | `git diff --check; dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~ServicingProposalTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~ServicingProposalTests; node --test apps/backoffice/tests/servicing-proposal.test.mjs; node scripts/verify-servicing-editors-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-05-01 | POL-04, POL-06 | T07-05 | `dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~ServicingRatingTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~ServicingRatingTests; node scripts/verify-servicingrating-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-05-02 | POL-04, POL-06 | T07-05 | `git diff --check; dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~ServicingRatingTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~ServicingRatingTests; node scripts/verify-servicingrating-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-06-01 | POL-04 | T07-06 | `dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~ServicingEvidenceTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~ServicingEvidenceTests; node scripts/verify-servicingevidence-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-06-02 | POL-04 | T07-06 | `git diff --check; dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~ServicingEvidenceTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~ServicingEvidenceTests; node scripts/verify-servicingevidence-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-07-01 | POL-04 | T07-07 | `dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~ServicingCapacityTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~ServicingCapacityTests; node scripts/verify-servicingcapacity-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-07-02 | POL-04 | T07-07 | `git diff --check; dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~ServicingCapacityTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~ServicingCapacityTests; node scripts/verify-servicingcapacity-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-08-01 | POL-04, POL-07 | T07-08 | `dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~ServicingTermsTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~ServicingTermsTests; node scripts/verify-servicingterms-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-08-02 | POL-04, POL-07 | T07-08 | `git diff --check; dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~ServicingTermsTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~ServicingTermsTests; node scripts/verify-servicingterms-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-09-01 | POL-04, POL-09 | T07-09 | `dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~ServicingPostingTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~ServicingPostingTests; pnpm web:typecheck` | Pending implementation |
+| 07-09-02 | POL-04, POL-09 | T07-09 | `git diff --check; dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~ServicingPostingTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~ServicingPostingTests; pnpm web:typecheck` | Pending implementation |
+| 07-10-01 | POL-04, POL-05, POL-06 | T07-10 | `dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~ServicingIssueTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~ServicingIssueTests; node scripts/verify-servicingissue-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-10-02 | POL-04, POL-05, POL-06 | T07-10 | `git diff --check; dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~ServicingIssueTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~ServicingIssueTests; node scripts/verify-servicingissue-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-11-01 | POL-07 | T07-11 | `dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~RenewalPreparationTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~RenewalPreparationTests; node scripts/verify-renewalpreparation-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-11-02 | POL-07 | T07-11 | `git diff --check; dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~RenewalPreparationTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~RenewalPreparationTests; node scripts/verify-renewalpreparation-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-12-01 | POL-07, POL-08 | T07-12 | `dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~RenewalLifecycleTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~RenewalLifecycleTests; node scripts/verify-renewallifecycle-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-12-02 | POL-07, POL-08 | T07-12 | `git diff --check; dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~RenewalLifecycleTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~RenewalLifecycleTests; node scripts/verify-renewallifecycle-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-13-01 | POL-09 | T07-13 | `dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~CancellationReviewTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~CancellationReviewTests; node scripts/verify-cancellationreview-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-13-02 | POL-09 | T07-13 | `git diff --check; dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~CancellationReviewTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~CancellationReviewTests; node scripts/verify-cancellationreview-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-14-01 | POL-09, POL-05, POL-06 | T07-14 | `dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~CancellationIssueTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~CancellationIssueTests; node scripts/verify-cancellationissue-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-14-02 | POL-09, POL-05, POL-06 | T07-14 | `git diff --check; dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~CancellationIssueTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~CancellationIssueTests; node scripts/verify-cancellationissue-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-15-01 | POL-01, POL-02, POL-05 | T07-15 | `dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~PolicyHistoryTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~PolicyHistoryTests; node scripts/verify-policyhistory-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-15-02 | POL-01, POL-02, POL-05 | T07-15 | `git diff --check; dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~PolicyHistoryTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~PolicyHistoryTests; node scripts/verify-policyhistory-browser.mjs; pnpm web:typecheck` | Pending implementation |
+| 07-16-01 | POL-01, POL-02, POL-03, POL-04, POL-05, POL-06, POL-07, POL-08, POL-09 | T07-16 | `Run the unique-directory backend and assert-test-results procedure in07-VALIDATION.md; pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; pnpm test; node scripts/verify-underwriting-suite.mjs; node scripts/verify-servicing-suite.mjs` | Pending implementation |
+| 07-16-02 | POL-01, POL-02, POL-03, POL-04, POL-05, POL-06, POL-07, POL-08, POL-09 | T07-16 | `git diff --check; Run the unique-directory backend and assert-test-results procedure in07-VALIDATION.md; pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; pnpm test; node scripts/verify-underwriting-suite.mjs; node scripts/verify-servicing-suite.mjs` | Pending implementation |
 
 ## Mandatory final scenarios
 
@@ -73,6 +101,46 @@ them human UAT. Hosted CI and Docker runtime are not inferred from native tests.
 
 ## Sign-off
 
-Pending: all16 executable plans, exact source/display ownership, full task map,
-semantic plan review and decision coverage. Keep nyquist_compliant=false until
-the planning contract is complete; keep execution results separately pending.
+Planning sign-off:2026-09-17. All32 tasks mapped, all new test files have explicit
+creation owners, no watch mode, short pure/domain feedback plus meaningful SQL
+and browser gates. Runtime statuses stay pending until actual execution.
+
+## Final backend gate procedure
+
+Use native SQL2022 with the already authorized test connection. Keep the run
+inside its own directory; record start before dotnet. PowerShell example:
+
+```powershell
+$ErrorActionPreference = 'Stop'
+$runId = [Guid]::NewGuid().ToString('N')
+$results = Join-Path '.local' ('phase7-final-' + $runId)
+$started = [DateTimeOffset]::UtcNow
+New-Item -ItemType Directory -Path $results | Out-Null
+$started.ToString('o') | Set-Content (Join-Path $results 'started.txt')
+dotnet test backend/BackOffice.slnx --no-restore --logger trx --results-directory $results
+if ($LASTEXITCODE -ne 0) { throw 'Backend suite failed' }
+```
+
+Before running, count the newly implemented unit/SQL cases in owning-plan
+summaries and test discovery. Write expected backend minimum =838 plus new cases
+and SQL minimum =169 plus new real-SQL cases to the final run manifest. Never
+derive minimums solely from the possibly incomplete output under test. Then:
+
+```powershell
+./scripts/assert-test-results.ps1 -ResultsDirectory $results -MinimumTests $expectedTests -MinimumSqlTests $expectedSql -NotBeforeUtc $started
+```
+
+Define expectedTests/expectedSql from that reviewed manifest before invocation.
+No fallback to baseline-only minimums when added tests are missing. The result
+gate must reject skips/failures/stale files/duplicate runs. Run full web tests,
+lint/typecheck/build and contracts using actual package scripts; set the API
+origin before web build. Check each external exit code independently.
+
+Final harness outputs: verify-servicing-suite.mjs, verify-servicing-restart.mjs,
+verify-servicing-preservation.ps1. Plan16 must define their explicit capture/
+verify options and report paths using the existing Phase6 patterns. Preserve
+old44 named sets and extend with every new servicing aggregate; validate SQL
+output shape before comparing hashes. Capture before, initialize twice without
+reset, compare both, restart only verified owned previews, fresh login and read
+the exact issued graphs. No production Release build while the owned API holds
+those binaries; use Debug or orderly owned-process stop/restart.

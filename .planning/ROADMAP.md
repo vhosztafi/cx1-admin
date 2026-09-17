@@ -123,7 +123,7 @@
 **Goal:** Service issued policies without corrupting history.
 **Depends on:** Phase 6
 **Requirements:** POL-01 through POL-09
-**Plans:** Not yet planned.
+**Plans:** 16 checked sequential plans;32 tasks. Planning approved2026-09-17.
 
 **Success criteria:**
 
@@ -132,6 +132,27 @@
 3. Renewal creates a linked term and cancellation creates auditable return-premium/refund obligations; lapse and notification work persist.
 
 **Deliverables and boundaries:** MTA workspace; editing leases; version diff/as-at; renewal and cancellation commands; finance obligations. Split detailed plans by MTA, chronology, renewal and cancellation.
+
+**Sequential plan waves** (each wave after the preceding plan completes):
+
+- [ ] 07-01 — Strict servicing contracts and pure lifecycle rules.
+- [ ] 07-02 — Temporal policy reads and current discovery.
+- [ ] 07-03 — Persistent servicing drafts and editing leases.
+- [ ] 07-04 — Typed adjustment editors and stable-item comparison.
+- [ ] 07-05 — Servicing rating cycles and cumulative-slice pricing.
+- [ ] 07-06 — Servicing evidence and referral decisions.
+- [ ] 07-07 — Servicing capacity referral lifecycle.
+- [ ] 07-08 — Servicing terms delivery and exact acceptance.
+- [ ] 07-09 — Signed financial components and locked posting periods.
+- [ ] 07-10 — Atomic multi-slice adjustment issue.
+- [ ] 07-11 — Renewal preparation and supplied experience.
+- [ ] 07-12 — Renewal invitation issue and lapse.
+- [ ] 07-13 — Cancellation proposal preview and approval.
+- [ ] 07-14 — Atomic cancellation and durable consequences.
+- [ ] 07-15 — Complete policy record history reconstruction and cloning.
+- [ ] 07-16 — Servicing end-to-end acceptance and Phase8 handoff.
+
+Cross-cutting constraints: current scope before replay; same-policy immutable provenance; effective/processing chronology; atomic signed posting; exact evidence/acceptance; preserve first-issue hashes and later-module boundaries.
 
 ### Phase 8: Commercial Combined back office
 
@@ -239,7 +260,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 4. Agency onboarding and access | 8/8 | Complete | 2026-09-15 |
 | 5. Motor Trade quote capture | 11/11 | Complete    | 2026-09-16 |
 | 6. Underwriting and first policy issue | 14/14 | Complete | 2026-09-17 |
-| 7. Policy lifecycle and history | 0/TBD | Not started | — |
+| 7. Policy lifecycle and history | 0/16 | Planned | — |
 | 8. Commercial Combined back office | 0/TBD | Not started | — |
 | 9. Tasks, documents, communication and incidents | 0/TBD | Not started | — |
 | 10. Accounting and insurer reporting | 0/TBD | Not started | — |
