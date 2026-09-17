@@ -14,8 +14,21 @@ public static class AgencyContextEndpoints
         app.MapGet("/api/v1/agency-context", (HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, TimeProvider time) => Context(LocalIdentityService.Actor(context.User).AgencyId!.Value, context, factory, time)).RequireAuthorization("agency-context");
         app.MapGet("/api/v1/agency-context/clients", (HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, PartyPaging paging) => Page(LocalIdentityService.Actor(context.User).AgencyId!.Value, null, "clients", context, factory, paging)).RequireAuthorization("agency-context");
         app.MapGet("/api/v1/agency-context/quotes", (HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, PartyPaging paging) => Page(LocalIdentityService.Actor(context.User).AgencyId!.Value, null, "quotes", context, factory, paging)).RequireAuthorization("agency-context");
+        app.MapGet("/api/v1/agency-context/policies", (HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, PartyPaging paging) => Page(LocalIdentityService.Actor(context.User).AgencyId!.Value, null, "policies", context, factory, paging)).RequireAuthorization("agency-context");
+        app.MapGet("/api/v1/agency-context/policies/{policyId:guid}", (Guid policyId, HttpContext context, IDbContextFactory<BackOfficeDbContext> factory) => PolicySummary(LocalIdentityService.Actor(context.User).AgencyId!.Value, policyId, context, factory, false)).RequireAuthorization("agency-context");
         foreach (var section in new[] { "contacts", "instructions" })
             app.MapGet($"/api/v1/agency-context/relationships/{{relationshipId:guid}}/{section}", (Guid relationshipId, HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, PartyPaging paging) => Page(LocalIdentityService.Actor(context.User).AgencyId!.Value, relationshipId, section, context, factory, paging)).RequireAuthorization("agency-context");
+    }
+
+    internal static async Task<IResult> PolicySummary(Guid agencyId, Guid policyId, HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, bool preview)
+    {
+        if (policyId == Guid.Empty || context.Request.Query.Count != 0) return IdentityEndpoints.Problem(context, 400, "invalid-query", "Use the current shared policy reference.");
+        try {
+            await using var db = await factory.CreateDbContextAsync(context.RequestAborted); var actor = LocalIdentityService.Actor(context.User);
+            var rows = preview ? await AgencySharingService.PreviewPolicies(db, actor, agencyId, new(PolicyId: policyId), context.RequestAborted)
+                : await AgencySharingService.Policies(db, actor, agencyId, new(PolicyId: policyId), context.RequestAborted);
+            return rows.Items.Count == 1 ? Results.Json(rows.Items[0], ClientEndpoints.Json) : IdentityEndpoints.Problem(context, 404, "policy-not-found", "This shared policy is unavailable.");
+        } catch (AgencyCommandException ex) { return IdentityEndpoints.Problem(context, ex.Status, ex.Code, "Refresh the current agency sharing reference."); }
     }
 
     private static async Task<IResult> Page(Guid agencyId, Guid? relationshipId, string section, HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, PartyPaging paging)
@@ -23,15 +36,20 @@ public static class AgencyContextEndpoints
         try
         {
             var token = context.RequestAborted; var actor = LocalIdentityService.Actor(context.User);
-            var query = new AgencySharingQuery(Search: section is "clients" or "quotes" ? context.Request.Query["q"].ToString() : null, RelationshipId: relationshipId);
+            var query = new AgencySharingQuery(Search: section is "clients" or "quotes" or "policies" ? context.Request.Query["q"].ToString() : null, RelationshipId: relationshipId);
             await using var db = await factory.CreateDbContextAsync(token);
             await using var transaction = await db.Database.BeginTransactionAsync(IsolationLevel.Serializable, token);
             var scope = await AgencySharingService.PageScope(db, actor, agencyId, section, query, token);
-            var page = paging.ReadBound(context, actor, section, scope, section is "clients" or "quotes" ? ["q"] : []);
+            var page = paging.ReadBound(context, actor, section, scope, section is "clients" or "quotes" or "policies" ? ["q"] : []);
             if (page == null) return IdentityEndpoints.Problem(context, 400, "invalid-query", "Refresh the sharing list and use its current cursor.");
             query = query with { Offset = page.Offset, Size = page.Size };
             object response;
-            if (section == "quotes")
+            if (section == "policies")
+            {
+                var rows = await AgencySharingService.Policies(db, actor, agencyId, query, token);
+                response = new { items = rows.Items, totalCount = rows.Total, nextCursor = paging.Next(page, page.Offset + rows.Items.Count < rows.Total) };
+            }
+            else if (section == "quotes")
             {
                 var rows = await AgencySharingService.Quotes(db, actor, agencyId, query, token);
                 response = new { items = rows.Items, totalCount = rows.Total, nextCursor = paging.Next(page, page.Offset + rows.Items.Count < rows.Total) };

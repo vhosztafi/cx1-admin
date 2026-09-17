@@ -93,8 +93,9 @@ public sealed partial class UnderwritingRuntimeTests
         var servicing = await db.Set<StaffUser>().SingleAsync(x => x.Email == "servicing@cover.example");
         var product = await db.Set<Product>().SingleAsync(x => x.Code == productCode);
         var version = await db.Set<ProductVersion>().SingleAsync(x => x.ProductId == product.Id && x.Version == productVersion);
-        var agency = new Agency { Reference = "AG-UW-RUNTIME", LegalName = "Fictional underwriting agency" };
-        var client = new ClientAccount { Reference = "CL-UW-RUNTIME", LegalName = "Fictional underwriting client", NormalizedName = "FICTIONAL UNDERWRITING CLIENT", EntityType = "sole-trader",
+        var fixtureKey = Guid.NewGuid().ToString("N")[..8];
+        var agency = new Agency { Reference = "AG-UW-" + fixtureKey, LegalName = "Fictional underwriting agency" };
+        var client = new ClientAccount { Reference = "CL-UW-" + fixtureKey, LegalName = "Fictional underwriting client " + fixtureKey, NormalizedName = "FICTIONAL UNDERWRITING CLIENT " + fixtureKey.ToUpperInvariant(), EntityType = "sole-trader",
             Address = "{\"line1\":\"1 Fictional Lane\",\"town\":\"Sheffield\",\"postcode\":\"S1 1AA\",\"country\":\"GB\"}" };
         db.AddRange(agency, client); await db.SaveChangesAsync();
         var relationship = new ClientAgencyRelationship { AgencyId = agency.Id, ClientId = client.Id };

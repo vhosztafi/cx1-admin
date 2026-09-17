@@ -26,14 +26,14 @@ public static class QuoteDiscoveryEndpoints
         }
         if (search.Length > 200 || search.Any(char.IsControl) || search.Length > 0 && string.IsNullOrWhiteSpace(search) ||
             product.Length > 0 && product is not ("motor-trade-road-risks" or "motor-trade-combined") ||
-            state.Length > 0 && state is not ("draft" or "withdrawn") || sort is not ("reference" or "updated" or "start") ||
+            state.Length > 0 && state is not ("draft" or "rating-pending" or "rated" or "referred" or "approved" or "sent" or "accepted" or "declined" or "bound" or "withdrawn") || sort is not ("reference" or "updated" or "start") ||
             direction is not ("asc" or "desc") || !Identifier("clientId", out clientId) || !Identifier("agencyId", out agencyId)) return BadQuery(context);
         try
         {
             await using var db = await factory.CreateDbContextAsync(token);
             await using var transaction = await db.Database.BeginTransactionAsync(IsolationLevel.Serializable, token);
             await QuoteDiscovery.AuthorizeAsync(db, actor, token);
-            var page = paging.ReadBound(context, actor, sort + ":" + direction, await QuoteDiscovery.VersionAsync(db, token), "q", "productCode", "status", "sort", "direction", "clientId", "agencyId");
+            var page = paging.ReadBound(context, actor, sort + ":" + direction, await QuoteDiscovery.ListVersionAsync(db, token), "q", "productCode", "status", "sort", "direction", "clientId", "agencyId");
             if (page is null) return BadQuery(context);
             var rows = QuoteDiscovery.Search(db, QuoteDiscovery.Rows(db), search);
             if (clientId is not null) rows = rows.Where(x => x.ClientId == clientId);

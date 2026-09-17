@@ -78,13 +78,13 @@ public sealed class ClientApiTests
             var nextAgency=await Read(staff,"/api/v1/relationship-agencies?pageSize=1&cursor="+Uri.EscapeDataString(agencyPage.GetProperty("nextCursor").GetString()!));
             Assert.NotEqual(agencyPage.GetProperty("items")[0].GetProperty("id").GetGuid(),nextAgency.GetProperty("items")[0].GetProperty("id").GetGuid());
             Assert.False(nextAgency.TryGetProperty("nextCursor",out _));
-            Assert.Equal(HttpStatusCode.ServiceUnavailable,(await staff.GetAsync(route+"/records?kind=policy")).StatusCode);
+            Assert.Equal(0,(await Read(staff,route+"/records?kind=policy")).GetProperty("totalCount").GetInt32());
             Assert.Equal(HttpStatusCode.NotFound,(await staff.GetAsync("/api/v1/clients/"+Guid.NewGuid()+"/records")).StatusCode);
             var activity=await Read(staff,route+"/activity");Assert.Equal(4,activity.GetProperty("totalCount").GetInt32());
             Assert.DoesNotContain("concurrent",activity.ToString());
             var page=await Read(staff,"/api/v1/clients?pageSize=2");Assert.Equal(33,page.GetProperty("totalCount").GetInt32());
-            Assert.Equal("partial",page.GetProperty("items")[0].GetProperty("records").GetProperty("state").GetString());
-            Assert.Equal("unavailable",page.GetProperty("items")[0].GetProperty("records").GetProperty("policyState").GetString());
+            Assert.Equal("available",page.GetProperty("items")[0].GetProperty("records").GetProperty("state").GetString());
+            Assert.Equal(0,page.GetProperty("items")[0].GetProperty("records").GetProperty("policyCount").GetInt32());
             Assert.Equal(0,(await Read(staff,route+"/records?kind=quote")).GetProperty("totalCount").GetInt32());
             var cursor=Uri.EscapeDataString(page.GetProperty("nextCursor").GetString()!);
             var next="/api/v1/clients?pageSize=2&cursor="+cursor;

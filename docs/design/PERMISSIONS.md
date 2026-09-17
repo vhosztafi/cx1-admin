@@ -108,3 +108,7 @@ or underwriting role can perform that recovery. It expands the bounded existing
 retry budget, preserves provider identity/attempts, and never starts a new cycle.
 
 The initial runtime exposes create, detail, proposal save, readiness and relationship-scoped capture product selection. Readiness includes structural and local-term issues and an explicit progression blocker until semantic, evidence and matching checks are implemented. Clone, withdrawal, evidence actions and match attachment remain unavailable; matchSubmissionId returns409 without a quote or receipt. Product selection uses quote-read and held stored relationship authority; current eligibility is advisory and is rechecked on create. The remaining quote routes are still planned.
+
+## Issued policy discovery (Phase6)
+
+Internal `policy-discovery-read` is granted to servicing, underwriter and senior-underwriter identities only; stored identity is rechecked under the read transaction. Policy details retain `policy-read`. Agency-scoped identities use accepted-cookie `/agency-context/policies` and owned summary links only. The shared allowlist is id, reference, clientName, productCode, state, startsAt and endsAt. Registration, risk, underwriting and money cannot affect shared search/count/cursor values. Internal preview uses the same projection and is audited. Current agency state, user state/roles and relationship membership are rechecked; suspension or loss of membership applies on the next read. No agency workflow UI is introduced.

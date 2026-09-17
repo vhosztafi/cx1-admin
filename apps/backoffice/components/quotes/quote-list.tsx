@@ -38,7 +38,7 @@ export function QuoteList({ clientId, agencyId: initialAgency, embedded = false 
     </Panel></>;
 }
 
-function AgencyFilter({ value, change }: { value: string; change: (id: string) => void }) {
+export function AgencyFilter({ value, change }: { value: string; change: (id: string) => void }) {
   const [cursors, setCursors] = useState<string[]>([]);
   const resource = useQuoteResource<Page<Agency>>(`/api/v1/relationship-agencies?pageSize=25${cursors.at(-1) ? `&cursor=${encodeURIComponent(cursors.at(-1)!)}` : ''}`);
   return <div className="quote-agency-filter"><label>Agency<select aria-label="Filter by agency" value={value} onChange={event => change(event.target.value)}><option value="">All agencies</option>{value && !resource.data?.items.some(x => x.id === value) && <option value={value}>Selected agency (another page)</option>}{resource.data?.items.map(agency => <option key={agency.id} value={agency.id}>{agency.legalName} · {agency.reference}</option>)}</select></label>

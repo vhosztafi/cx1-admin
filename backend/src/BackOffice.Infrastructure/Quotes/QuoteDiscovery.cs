@@ -28,6 +28,24 @@ public static class QuoteDiscovery
     public static Task<string> VersionAsync(BackOfficeDbContext db, CancellationToken token) =>
         db.Database.SqlQueryRaw<string>("SELECT CONVERT(varchar(18),@@DBTS,1) AS [Value]").SingleAsync(token);
 
+    // List rows and registration indexes change with their owning quote/term.
+    // Bind paging to those owners and visible party/product masters, not session
+    // maintenance or unrelated adapter jobs. Counts also detect deletions.
+    public static Task<string> ListVersionAsync(BackOfficeDbContext db, CancellationToken token) =>
+        db.Database.SqlQueryRaw<string>("""
+            SELECT CONVERT(varchar(64),HASHBYTES('SHA2_256',(
+                SELECT Source,Total,Stamp FROM (
+                    SELECT 'quote' AS Source,COUNT_BIG(*) AS Total,MAX(RowVersion) AS Stamp FROM Quote
+                    UNION ALL SELECT 'policy',COUNT_BIG(*),MAX(RowVersion) FROM Policy
+                    UNION ALL SELECT 'term',COUNT_BIG(*),MAX(RowVersion) FROM PolicyTerm
+                    UNION ALL SELECT 'client',COUNT_BIG(*),MAX(RowVersion) FROM ClientAccount
+                    UNION ALL SELECT 'agency',COUNT_BIG(*),MAX(RowVersion) FROM Agency
+                    UNION ALL SELECT 'relationship',COUNT_BIG(*),MAX(RowVersion) FROM ClientAgencyRelationship
+                    UNION ALL SELECT 'product',COUNT_BIG(*),MAX(RowVersion) FROM Product
+                ) versions ORDER BY Source FOR JSON PATH,INCLUDE_NULL_VALUES
+            )),2) AS [Value]
+            """).SingleAsync(token);
+
     // Call only under current authority; agency sharing applies its own trusted
     // AgencyId predicate and projects a smaller allowlist before materialization.
     public static IQueryable<QuoteDiscoveryRow> Rows(BackOfficeDbContext db) => db.Database.SqlQueryRaw<QuoteDiscoveryRow>("""

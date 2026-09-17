@@ -138,6 +138,7 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.Empty(await db.Set<PolicyDocumentRequest>().ToArrayAsync()); Assert.False(await db.Set<OutboxWork>().AnyAsync(x => x.Kind == "policy-document"));
             Assert.Equal("accepted", await db.Set<Quote>().Where(x => x.Id == f.QuoteId).Select(x => x.State).SingleAsync());
             Assert.False(await db.Set<IdempotencyRecord>().AnyAsync(x => x.Route.EndsWith("/issue")));
+            Assert.False(await db.Set<ClientActivity>().AnyAsync(x => x.EventType == "policy.issued"));
         });
     }
 

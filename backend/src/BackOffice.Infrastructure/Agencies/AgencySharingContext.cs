@@ -14,6 +14,7 @@ public sealed record AgencyUnavailableSection(string Kind, string State, int Own
 public sealed record AgencySharingContext(AgencySharedIdentity Agency, IReadOnlyList<AgencySharedProduct> Products, IReadOnlyList<AgencySharedPermission> Permissions, IReadOnlyList<AgencyUnavailableSection> UnavailableSections)
 {
     public AgencySharedQuoteSection Quotes { get; init; } = new("available", 0);
+    public AgencySharedQuoteSection Policies { get; init; } = new("available", 0);
     [System.Text.Json.Serialization.JsonIgnore]
     public byte[] AgencyVersion { get; init; } = [];
 }
@@ -51,8 +52,7 @@ public static partial class AgencySharingService
         // workflows. These summaries must never fabricate policy or ledger data.
         var result = new AgencySharingContext(new(agency.Id, agency.Reference, agency.LegalName, agency.State), products,
             [new(AgencyPermissionRules.BordereauDownload, granted, false)],
-            [new("policies", "unavailable", 6, "Policy workflows are delivered in phase 6."),
-             new("tasks", "unavailable", 9, "Shared task workflows are delivered in phase 9."),
+            [new("tasks", "unavailable", 9, "Shared task workflows are delivered in phase 9."),
              new("statements", "unavailable", 10, "Statements and bordereau downloads are delivered in phase 10.")]);
         if (preview)
         {
@@ -60,6 +60,7 @@ public static partial class AgencySharingService
             await db.SaveChangesAsync(token);
         }
         var quoteCount = await QuoteRows(db, agencyId, new()).CountAsync(token);
-        await transaction.CommitAsync(token); return result with { AgencyVersion = agency.RowVersion, Quotes = new("available", quoteCount) };
+        var policyCount = await PolicyRows(db, agencyId, new()).CountAsync(token);
+        await transaction.CommitAsync(token); return result with { AgencyVersion = agency.RowVersion, Quotes = new("available", quoteCount), Policies = new("available", policyCount) };
     }
 }

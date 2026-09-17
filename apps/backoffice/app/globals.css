@@ -379,3 +379,9 @@ h1, h2, p { margin: 0; }
 .requested-cover-card > label > select { width:100%; min-width:0; min-height:36px; padding:7px 10px; border:1px solid #d9dce4; border-radius:7px; background:white; font:inherit; font-weight:400; }
 @media(max-width:1100px) { .underwriting-layout { grid-template-columns:minmax(0,1fr); }.underwriting-rail { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:600px) { .underwriting-rail { grid-template-columns:minmax(0,1fr); }.underwriting-premium .underwriting-total { font-size:16px; } }
+
+.policy-discovery-parties { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; padding:0 20px 18px; }
+.policy-discovery-parties .quote-agency-filter { padding:0; max-width:none; min-width:0; }
+.policy-discovery-parties label { font-size:12px; color:#6b7184; }
+.policy-discovery-parties select { min-height:36px; border:1px solid #d9dce4; border-radius:7px; background:white; padding:7px 10px; color:#22252e; font:inherit; }
+@media(max-width:640px) { .policy-discovery-parties { grid-template-columns:minmax(0,1fr); } }

@@ -13,7 +13,7 @@ public sealed record ActorContext(Guid UserId,Guid? TeamId,Guid? AgencyId,IReadO
         "audit-read" => Roles.Contains("system-admin"),
         "client-servicing" => Roles.Overlaps(["servicing","underwriter","senior-underwriter"]),
         "quote-read" or "quote-capture" => Roles.Overlaps(["servicing","underwriter","senior-underwriter"]),
-        "quote-rate" or "quote-submit" or "quote-revise" or "quote-terms" or "quote-acceptance" or "underwriting-read" or "underwriting-evidence-write" or "policy-read"
+        "quote-rate" or "quote-submit" or "quote-revise" or "quote-terms" or "quote-acceptance" or "underwriting-read" or "underwriting-evidence-write" or "policy-read" or "policy-discovery-read"
             => Roles.Overlaps(["servicing","underwriter","senior-underwriter"]),
         "underwriting-decide-within-authority" or "underwriting-evidence-review" or "underwriting-escalate" or "underwriting-record-capacity" or "policy-issue-within-authority"
             => Roles.Overlaps(["underwriter","senior-underwriter"]),

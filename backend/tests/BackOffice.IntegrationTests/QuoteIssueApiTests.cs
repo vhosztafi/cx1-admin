@@ -42,7 +42,7 @@ public sealed partial class UnderwritingRuntimeTests
             using (var missing = await Send(setup.Input, etag: false)) Assert.Equal(HttpStatusCode.PreconditionRequired, missing.StatusCode);
             using (var unknown = await Send(new { setup.Input.CycleId, setup.Input.RatingId, setup.Input.AcceptanceId, setup.Input.TermsHash, setup.Input.AssuranceHash, setup.Input.Reason, premium = "1.00" })) Assert.Equal(HttpStatusCode.BadRequest, unknown.StatusCode);
             string body;
-            using (var issued = await Send(setup.Input)) { body = await issued.Content.ReadAsStringAsync(); Assert.True(issued.StatusCode == HttpStatusCode.Created, body); Assert.True(issued.Headers.CacheControl!.NoStore); }
+            using (var issued = await Send(setup.Input)) { body = await issued.Content.ReadAsStringAsync(); Assert.True(issued.StatusCode == HttpStatusCode.Created, body); Assert.True(issued.Headers.CacheControl!.NoStore); using var locationReceipt = JsonDocument.Parse(body); Assert.Equal("/api/v1/policies/" + locationReceipt.RootElement.GetProperty("policyId").GetString(), issued.Headers.Location!.ToString()); }
             using (var retry = await Send(setup.Input)) { Assert.Equal(HttpStatusCode.Created, retry.StatusCode); Assert.Equal(body, await retry.Content.ReadAsStringAsync()); }
             using var receipt = JsonDocument.Parse(body); var p = receipt.RootElement;
             var policyId = p.GetProperty("policyId").GetGuid(); var termId = p.GetProperty("termId").GetGuid(); var versionId = p.GetProperty("versionId").GetGuid();

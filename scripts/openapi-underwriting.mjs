@@ -150,6 +150,12 @@ export function addUnderwritingContracts({schemas:s,ref:r,operation:op,paths}){
   read('/policies/{policyId}/terms/{termId}/transactions/{transactionId}','getIssuedPolicyTransaction','policy-read','FirstPolicyView');
   read('/policies/{policyId}/terms/{termId}/obligations/{obligationId}','getIssuedPolicyObligation','policy-read','FirstPolicyView');
   for(const name of ['QuoteCaptureSummary','QuoteDiscoverySummary','QuoteCaptureView'])s[name].properties.state=enumeration;
+  s.PolicySummary=o({id,reference:t(40),clientId:id,agencyId:id,relationshipId:id,clientName:t(),clientReference:t(40),agencyName:t(),productCode:e('motor-trade-road-risks','motor-trade-combined'),state:e('scheduled','active','expired','cancelled'),currentTermId:id,currentVersionId:id,startsAt:instant,endsAt:instant,issuedAt:instant,inceptionDate:{type:'string',format:'date'}});
+  s.AgencySharedQuote.properties.state=enumeration;
+  paths['/policies'].get['x-permission']='policy-discovery-read';
+  paths['/policies'].get.parameters=paths['/policies'].get.parameters.filter(p=>p.name!=='status');
+  paths['/policies'].get.parameters.find(p=>p.name==='productCode').schema=e('motor-trade-road-risks','motor-trade-combined');
+  paths['/policies'].get['x-runtime-status']='phase-6-13-implemented';
   s.QuoteCaptureView.properties.boundPolicyId={anyOf:[id,{type:'null'}]};
   s.UnderwritingAssessment.properties.boundPolicyId=id;
   paths['/quotes'].get.parameters.find(p=>p.name==='status').schema=enumeration;

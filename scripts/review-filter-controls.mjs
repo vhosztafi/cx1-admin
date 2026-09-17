@@ -2,7 +2,7 @@ import {readFile,writeFile} from 'node:fs/promises';
 const inventory=JSON.parse(await readFile('docs/design/control-inventory.json','utf8'));
 const file='docs/design/reviewed-api-controls.json';const rows=JSON.parse(await readFile(file,'utf8'));
 const queries={
- f219d18ccb4a:[['listPolicies'],'status'],'7e3297dc0fdf':[['listQuotes'],'status'],
+ f219d18ccb4a:[['listPolicies'],'state'],'7e3297dc0fdf':[['listQuotes'],'status'],
  '536ecaf3079e':[['listPolicies','listQuotes'],'productCode'],e9415f15b16e:[['listPolicies','listQuotes'],'agencyId'],
  '547b106bce55':[['listClients'],'entityType'],'6ffa74bf0063':[['listAgencies'],'state'],db272aea89f2:[['listAgencies'],'relationshipManagerId'],
  d6cec7d66670:[['listTasks'],'priority'],ed74b3103b7c:[['listTasks'],'kind'],'429bddccb3a4':[['listTasks'],'dueWindow'],

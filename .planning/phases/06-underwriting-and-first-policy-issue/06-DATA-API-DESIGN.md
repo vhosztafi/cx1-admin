@@ -288,3 +288,7 @@ The plan's ActorContext capabilities already existed, so they are reused. Backen
 runtime verification is recorded in06-08-SUMMARY after the full gate; source-facing
 quotation/acceptance controls and browser verification remain06-09, generic document
 generation remainsPhase9 and final source acceptance remains06-14.
+
+### 06-13 discovery wiring refinement
+
+The implemented list uses explicit `policy-discovery-read`, a current stored identity check and a serializable query. Protected cursors bind path, actor, filters, ordering, page size and database version; coverage state is calculated at the cursor as-of instant. Existing client `/records?kind=policy` returns its existing ClientRecordLink shape. Client issue activity retains the existing quote record-link kind and links through the actual bound source quote, avoiding a second activity schema. Initialization appends missing projections from actual issue transactions without rewriting original history. Accepted agency-cookie list/detail and staff preview share the same seven-field policy allowlist; hidden risk and registration fields do not enter shared search or cursor fingerprints.

@@ -399,3 +399,19 @@ test('readiness history diagnostics preserve both the declaration and related in
  diagnostic.relatedPath='x'.repeat(501);assert.equal(validate(result),false);
  delete diagnostic.relatedPath;assert.equal(validate(result),true);
 });
+
+test('agency policy projection rejects risk and financial facts and has no hidden-data search filters',()=>{
+ const check=ajv.getSchema(`${rootId}#/$defs/AgencySharedPolicy`);
+ const value={id:'11111111-1111-4111-8111-111111111111',reference:'PL-MT-0000000001',clientName:'Fictional client',
+  productCode:'motor-trade-road-risks',state:'scheduled',startsAt:'2026-09-18T08:00:00Z',endsAt:'2027-09-18T08:00:00Z'};
+ assert.equal(check(value),true,JSON.stringify(check.errors));
+ for(const field of ['registration','premium','risk','snapshot','authority','acceptanceId']) assert.equal(check({...value,[field]:'hidden'}),false);
+ for(const path of ['/agency-context/policies','/agencies/{agencyId}/sharing/policies']) {
+  const operation=document.paths[path].get;
+  const filters=operation.parameters.filter(x=>x.in==='query').map(x=>x.name).sort();
+  assert.deepEqual(filters,['cursor','pageSize','q']);
+ }
+ assert.equal(document.paths['/policies'].get['x-permission'],'policy-discovery-read');
+ assert.equal(document.paths['/policies'].get.parameters.some(x=>x.name==='status'),false);
+ assert.deepEqual(document.paths['/policies'].get.parameters.find(x=>x.name==='productCode').schema.enum,['motor-trade-road-risks','motor-trade-combined']);
+});

@@ -38,6 +38,8 @@ public sealed class QuoteIssueService(IDbContextFactory<BackOfficeDbContext> fac
                 var quote = held.Owned.Quote; if (db.Entry(quote).State == EntityState.Detached) db.Attach(quote);
                 quote.BoundPolicyId = result.Policy.Id; quote.State = "bound";
                 quote.CaptureClosedAt ??= now; quote.CaptureClosedReason = "policy-issued";
+                db.Add(new ClientActivity { ClientId = quote.ClientId, RelationshipId = quote.RelationshipId, RecordKind = "quote", RecordId = quote.Id,
+                    EventType = "policy.issued", ActorId = actor.UserId, CreatedBy = actor.UserId, CreatedAt = now, OccurredAt = now });
                 var receipt = await held.Receipt(db, result.Policy.Id, 201, "policy.issued", now, ct);
                 return receipt with { Body = JsonSerializer.Serialize(new { policyId = result.Policy.Id, policyReference = result.Policy.Reference, quoteId,
                     quoteEtag = receipt.Etag, termId = result.Term.Id, versionId = result.Version.Id, transactionId = result.Transaction.Id,

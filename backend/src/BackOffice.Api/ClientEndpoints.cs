@@ -46,9 +46,10 @@ public static partial class ClientEndpoints
             where ids.Contains(r.ClientId) select new {r.ClientId,a.Id,Name=a.LegalName,a.Reference}).ToListAsync(context.RequestAborted);
         var primaries=await scope.Contacts(db).Where(x=>ids.Contains(x.ClientId) && x.IsPrimary).Select(x=>new {x.ClientId,x.DeclaredFullName}).ToListAsync(context.RequestAborted);
         var quoteCounts=actor.HasCapability("quote-read") ? await db.Set<Quote>().AsNoTracking().Where(x=>ids.Contains(x.ClientId) && x.CurrentRevisionId!=null).GroupBy(x=>x.ClientId).Select(x=>new {Id=x.Key,Count=x.Count()}).ToDictionaryAsync(x=>x.Id,x=>x.Count,context.RequestAborted) : new Dictionary<Guid,int>();
+        var policyCounts=actor.HasCapability("policy-read") ? await db.Set<Policy>().AsNoTracking().Where(x=>ids.Contains(x.ClientId) && x.CurrentTermId!=null).GroupBy(x=>x.ClientId).Select(x=>new {Id=x.Key,Count=x.Count()}).ToDictionaryAsync(x=>x.Id,x=>x.Count,context.RequestAborted) : new Dictionary<Guid,int>();
         return Results.Json(new {items=rows.Select(x => new {x.Id,x.Reference,x.LegalName,x.EntityType,x.CompanyNumber,
             primaryContactName=agencies.Count(a=>a.ClientId==x.Id)==1 ? primaries.SingleOrDefault(c=>c.ClientId==x.Id)?.DeclaredFullName : null,
-            Address=Address(x),x.CreatedAt,x.IdentityState,agencies=agencies.Where(a => a.ClientId==x.Id).OrderBy(a => a.Name).Select(a => new {a.Id,a.Name,a.Reference}),records=actor.HasCapability("quote-read") ? (object)new {state="partial",quoteCount=quoteCounts.GetValueOrDefault(x.Id),policyState="unavailable"} : new {state="unavailable"}}),
+            Address=Address(x),x.CreatedAt,x.IdentityState,agencies=agencies.Where(a => a.ClientId==x.Id).OrderBy(a => a.Name).Select(a => new {a.Id,a.Name,a.Reference}),records=actor.HasCapability("quote-read") ? (object)new {state="available",quoteCount=quoteCounts.GetValueOrDefault(x.Id),policyCount=policyCounts.GetValueOrDefault(x.Id)} : new {state="unavailable"}}),
             totalCount=total,nextCursor=paging.Next(page,page.Offset+rows.Count<total)},Json);
     }
 
@@ -108,7 +109,7 @@ public static partial class ClientEndpoints
              x.EventType=="contact.created" || x.EventType=="contact.updated" || x.EventType=="contact.primary-changed" || x.EventType=="contact.ended" ||
              (support && (x.EventType=="support-flag.created" || x.EventType=="support-flag.amended" || x.EventType=="support-flag.reviewed" || x.EventType=="support-flag.ended")) ||
              (matchRead && (x.EventType=="match.link" || x.EventType=="match.separate" || x.EventType=="match.decline" || x.EventType=="match.query" || x.EventType=="match.reopen" || x.EventType=="match.created")) ||
-             (quoteRead && (x.EventType=="quote.created" || x.EventType=="quote.saved" || x.EventType=="quote.withdrawn" || x.EventType=="quote.reassociated"))));
+             (quoteRead && (x.EventType=="quote.created" || x.EventType=="quote.saved" || x.EventType=="quote.withdrawn" || x.EventType=="quote.reassociated" || x.EventType=="policy.issued"))));
         var total=await query.CountAsync(context.RequestAborted);
         var rows=await query.OrderByDescending(x => x.OccurredAt).ThenBy(x => x.Id).Skip(page.Offset).Take(page.Size).ToListAsync(context.RequestAborted);
         var actorIds=rows.Where(x=>x.ActorId!=null).Select(x=>x.ActorId!.Value).Distinct().ToArray();
@@ -136,7 +137,7 @@ public static partial class ClientEndpoints
                 "support-flag.reviewed"=>"Support instruction reviewed.","support-flag.ended"=>"Support instruction ended.",
                 "match.created"=>"Account matching review created.","match.link"=>"Intake linked to this client.","match.separate"=>"Intake recorded as a separate client.","match.decline"=>"Intake declined.",
                 "match.query"=>"Match information request recorded.","match.reopen"=>"Match review reopened.",
-                "quote.created"=>"Quote created.","quote.saved"=>"Quote saved.","quote.withdrawn"=>"Quote withdrawn.","quote.reassociated"=>"Quote account association updated.",_=>"Client identity created."},
+                "policy.issued"=>"Policy issued. View source quote.","quote.created"=>"Quote created.","quote.saved"=>"Quote saved.","quote.withdrawn"=>"Quote withdrawn.","quote.reassociated"=>"Quote account association updated.",_=>"Client identity created."},
             x.RelationshipId,recordId=CanLink(x) ? x.RecordId : null,
             recordKind=CanLink(x) ? x.RecordKind : null}),totalCount=total,nextCursor=paging.Next(page,page.Offset+rows.Count<total)},Json);
     }
@@ -148,12 +149,12 @@ public static partial class ClientEndpoints
         if(kind.Length>0 && kind is not ("quote" or "policy"))return BadQuery(context);
         await using var db=await factory.CreateDbContextAsync(token);
         if(!await Scope(context).Clients(db).AnyAsync(x=>x.Id==clientId,token))return Missing(context);
-        if(kind=="policy")return IdentityEndpoints.Problem(context,503,"client-records-unavailable","Policy records are not available yet.");
+        if(kind=="policy")return await PolicyEndpoints.List(context,factory,paging,context.RequestServices.GetRequiredService<BackOffice.Infrastructure.Policies.PolicyDiscoveryService>(),context.RequestServices.GetRequiredService<TimeProvider>(),clientId);
         try
         {
             await using var transaction=await db.Database.BeginTransactionAsync(IsolationLevel.Serializable,token);
             await QuoteDiscovery.AuthorizeAsync(db,actor,token);
-            var page=paging.ReadBound(context,actor,"reference,id",await QuoteDiscovery.VersionAsync(db,token),"kind");
+            var page=paging.ReadBound(context,actor,"reference,id",await QuoteDiscovery.ListVersionAsync(db,token),"kind");
             if(page is null)return BadQuery(context);
             var rows=QuoteDiscovery.Rows(db).Where(x=>x.ClientId==clientId);
             var total=await rows.CountAsync(token);

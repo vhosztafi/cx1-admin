@@ -56,6 +56,9 @@ public sealed partial class QuoteStorageTests
             Assert.Equal(HttpStatusCode.Forbidden, (await admin.GetAsync("/api/v1/quotes")).StatusCode);
             var page = await Read(staff, "/api/v1/quotes?pageSize=1"); Assert.Equal(3, page.GetProperty("totalCount").GetInt32());
             var cursor = Uri.EscapeDataString(page.GetProperty("nextCursor").GetString()!);
+            // Session maintenance must not invalidate a data-list cursor. The
+            // next authenticated request will touch this session again as well.
+            await db.Database.ExecuteSqlRawAsync("UPDATE [Session] SET LastSeenAt=DATEADD(minute,-2,LastSeenAt)");
             var next = await Read(staff, "/api/v1/quotes?pageSize=1&cursor=" + cursor);
             Assert.NotEqual(page.GetProperty("items")[0].GetProperty("id"), next.GetProperty("items")[0].GetProperty("id"));
             Assert.Equal(HttpStatusCode.BadRequest, (await staff.GetAsync("/api/v1/quotes?pageSize=1&sort=updated&cursor=" + cursor)).StatusCode);
@@ -69,7 +72,7 @@ public sealed partial class QuoteStorageTests
             Assert.Equal(second.ResourceId, filtered.GetProperty("items")[0].GetProperty("id").GetGuid());
             Assert.Equal("2026-11-01", filtered.GetProperty("items")[0].GetProperty("startDate").GetString());
             var records = await Read(staff, $"/api/v1/clients/{fixture.Client}/records?kind=quote"); Assert.Equal(2, records.GetProperty("totalCount").GetInt32());
-            Assert.Equal(HttpStatusCode.ServiceUnavailable, (await staff.GetAsync($"/api/v1/clients/{fixture.Client}/records?kind=policy")).StatusCode);
+            Assert.Equal(0, (await Read(staff, $"/api/v1/clients/{fixture.Client}/records?kind=policy")).GetProperty("totalCount").GetInt32());
             var activity = await Read(staff, $"/api/v1/clients/{fixture.Client}/activity");
             Assert.All(activity.GetProperty("items").EnumerateArray(), x => Assert.Equal("quote", x.GetProperty("recordKind").GetString()));
             var current = await service.GetAsync(actor, first.ResourceId);

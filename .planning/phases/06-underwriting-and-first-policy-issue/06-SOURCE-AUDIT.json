@@ -1,7 +1,7 @@
 {
   "status": "06-07 verified in aea6645: 767 backend tests, 126 real SQL, zero skips; 94 frontend and 317 contract/source tests; both-product actual Chrome and persisted readback. Conditional source supplement remains the explicit 06-14 final gate; terms, acceptance and issue retain later owners.",
   "inventorySha256": "459974f15088fef3da518bb08fd4f0e88a8f0fdffcf319416fcf458228288c78",
-  "apiMapSha256": "bee7cae6b0c29b298eeaf63d915b854c7ec8f5e9191a709247008882cb1430b1",
+  "apiMapSha256": "3d90d4e1850c5d86137c5284315594aca30be86e5f0d94e7dc9541348e9f9dbc",
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
   "candidateSelection": "All originalPhase6; all pQuote/pEscalation/pPolicy/pIssued/pRisks/pPortal/pClient controls; all mapped operation dependencies ownedPhase6. Includes deferred screens rather than silently dropping their controls.",
   "counts": {
@@ -1778,10 +1778,15 @@
       "disposition": "command",
       "acceptanceId": "AT-6bed59ad0e72",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Verified in82aa340: actual both-product issue, immutable policy/transaction/effective version readback, exact uncertain retry and stale/account denials. Rating-expiry presentation remains final06-14.",
       "plan": "06-12",
       "task": "06-12-01",
-      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-issue-browser.mjs"
+      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-issue-browser.mjs",
+      "runtimeEvidence": [
+        "06-12-SUMMARY.md",
+        "scripts/verify-underwriting-issue-browser.mjs",
+        ".local/browser-evidence/underwriting-issue/report.json"
+      ]
     },
     {
       "controlId": "CTL-064ae865d1eb",
@@ -1855,10 +1860,15 @@
       "disposition": "command",
       "acceptanceId": "AT-b6b101bf1420",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Verified in82aa340: actual both-product issue, immutable policy/transaction/effective version readback, exact uncertain retry and stale/account denials. Rating-expiry presentation remains final06-14.",
       "plan": "06-12",
       "task": "06-12-01",
-      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-issue-browser.mjs"
+      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-issue-browser.mjs",
+      "runtimeEvidence": [
+        "06-12-SUMMARY.md",
+        "scripts/verify-underwriting-issue-browser.mjs",
+        ".local/browser-evidence/underwriting-issue/report.json"
+      ]
     },
     {
       "controlId": "CTL-985ab2e4f5a0",
@@ -3290,10 +3300,15 @@
       "disposition": "navigation-read",
       "acceptanceId": "AT-386b48061d53",
       "review": "First-issue receipt links actual policy and transaction. MTA-specific premium/change/collection wording staysPhase7/10; never report collected money from posting.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Verified in82aa340: actual both-product issue, immutable policy/transaction/effective version readback, exact uncertain retry and stale/account denials. Rating-expiry presentation remains final06-14.",
       "plan": "06-12",
       "task": "06-12-01",
-      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-issue-browser.mjs"
+      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-issue-browser.mjs",
+      "runtimeEvidence": [
+        "06-12-SUMMARY.md",
+        "scripts/verify-underwriting-issue-browser.mjs",
+        ".local/browser-evidence/underwriting-issue/report.json"
+      ]
     },
     {
       "controlId": "CTL-3e9bec10fb71",
@@ -3313,10 +3328,15 @@
       "disposition": "navigation-read",
       "acceptanceId": "AT-3e9bec10fb71",
       "review": "First-issue receipt links actual policy and transaction. MTA-specific premium/change/collection wording staysPhase7/10; never report collected money from posting.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Verified in82aa340: actual both-product issue, immutable policy/transaction/effective version readback, exact uncertain retry and stale/account denials. Rating-expiry presentation remains final06-14.",
       "plan": "06-12",
       "task": "06-12-01",
-      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-issue-browser.mjs"
+      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-issue-browser.mjs",
+      "runtimeEvidence": [
+        "06-12-SUMMARY.md",
+        "scripts/verify-underwriting-issue-browser.mjs",
+        ".local/browser-evidence/underwriting-issue/report.json"
+      ]
     },
     {
       "controlId": "CTL-7db7432939a1",
@@ -5564,7 +5584,12 @@
       "plan": "06-12",
       "task": "06-12-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-issue-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Verified in82aa340: actual both-product issue, immutable policy/transaction/effective version readback, exact uncertain retry and stale/account denials. Rating-expiry presentation remains final06-14.",
+      "runtimeEvidence": [
+        "06-12-SUMMARY.md",
+        "scripts/verify-underwriting-issue-browser.mjs",
+        ".local/browser-evidence/underwriting-issue/report.json"
+      ]
     },
     {
       "method": "pIssued",
@@ -5575,7 +5600,12 @@
       "plan": "06-12",
       "task": "06-12-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-issue-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Verified in82aa340: actual both-product issue, immutable policy/transaction/effective version readback, exact uncertain retry and stale/account denials. Rating-expiry presentation remains final06-14.",
+      "runtimeEvidence": [
+        "06-12-SUMMARY.md",
+        "scripts/verify-underwriting-issue-browser.mjs",
+        ".local/browser-evidence/underwriting-issue/report.json"
+      ]
     },
     {
       "method": "pIssued",
@@ -5586,7 +5616,12 @@
       "plan": "06-12",
       "task": "06-12-01",
       "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-issue-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Verified in82aa340: actual both-product issue, immutable policy/transaction/effective version readback, exact uncertain retry and stale/account denials. Rating-expiry presentation remains final06-14.",
+      "runtimeEvidence": [
+        "06-12-SUMMARY.md",
+        "scripts/verify-underwriting-issue-browser.mjs",
+        ".local/browser-evidence/underwriting-issue/report.json"
+      ]
     },
     {
       "method": "pIssued",
