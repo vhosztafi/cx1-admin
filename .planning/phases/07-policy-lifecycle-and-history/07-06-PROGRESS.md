@@ -324,3 +324,40 @@ only in earlier slices, and terms-specific evidence depends on the later terms
 slice. Complete bounded read models, HTTP/DI/contracts, UI and persisted browser
 acceptance before closing07-06. No new decision endpoint is enabled by this change.
 Phase7 remains5/16 complete and54/65 total plans. Continue inline with no agents.
+
+
+## Verified dated condition authority prerequisite: 4128171
+
+Added a pure AuthorityAllows overload consuming ServicingConditionSlice values.
+It checks every cumulative annual risk with the existing closed ReferralRules
+warranty semantics, applying each condition only on its exact retained risk date.
+An any-driver licence warranty must cover every affected date and both authority
+and binder minima; it cannot waive stock, premium, age or other dimensions. A
+single eligible grant must still stay within the binder. Documentary proof alone
+never substitutes for a warranty, and this predicate neither accepts evidence nor
+resolves independent source referrals. It does not fabricate unnamed-driver facts.
+
+The entire input risk/configuration schedule is validated before evaluating results.
+Condition dates must be unique, UTC and present in that schedule, with nonnull rows
+and typed conditions. Bounds permit100 active conditions at each of100 dates: a
+condition applicable throughout the term is not counted as100 separate decisions.
+Callers MUST parse each definition with ReferralRules.Condition against its dated
+proposal and verify current ownership/active decision status before passing it here.
+This pure overload is a prerequisite, not an exposed approval service.
+
+RED .local/phase7-06-condition-authority-red/unit.trx has5 expected stub failures
+(after correcting a test fixture's use of init-only risk properties). Reviewed
+.local/phase7-06-condition-authority-reviewed/unit.trx passes27 cases:7 new dated
+condition cases plus20 existing referral/shared authority/condition cases, no skips.
+Tests cover both products, incomplete date coverage, independent risk dimensions,
+higher licence minima, documentary proof, malformed later risk, foreign/duplicate/
+non-UTC dates, null/oversized conditions, over-binder grants and a100-date schedule.
+This change touches pure code only; no SQL migration, service, API or browser result
+is claimed. git diff --check passes. Prior runtime SQL evidence remains recorded
+above; it was not copied into this pure test run.
+
+Next remains owned condition/resolution storage and current-grant decision services,
+then HTTP/UI integration and browser verification. Integrate this overload only with
+validated per-date condition projections; do not flatten final risk or expand a
+condition to dates where its target is absent. Phase7 remains5/16, total54/65;
+07-06 remains incomplete. Continue inline with no agents.
