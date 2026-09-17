@@ -20,9 +20,14 @@
       "handlers": {
         "onClick": "() => this.go('mta')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-editor-audit/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Functional equivalent: the policy Servicing drafts panel creates typed drafts or resumes their actual saved identities. Shared creation selects Policy adjustment; fixed prototype MTA-007 links become real draft links. Native SQL verifies lifecycle invariants; browser audit verifies policy-to-draft and back/resume navigation. Duplicate prototype navigation entry points share this implementation."
     },
     {
       "id": "CTL-9f0b18626d19",
@@ -191,9 +196,14 @@
       "handlers": {
         "onAction": "() => this.go('mta')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-editor-audit/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Functional equivalent: the policy Servicing drafts panel creates typed drafts or resumes their actual saved identities. Shared creation selects Policy adjustment; fixed prototype MTA-007 links become real draft links. Native SQL verifies lifecycle invariants; browser audit verifies policy-to-draft and back/resume navigation. Duplicate prototype navigation entry points share this implementation."
     },
     {
       "id": "CTL-1fad476114e9",
@@ -305,9 +315,14 @@
       "handlers": {
         "onClick": "() => this.go('mta')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-editor-audit/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Functional equivalent: the policy Servicing drafts panel creates typed drafts or resumes their actual saved identities. Shared creation selects Policy adjustment; fixed prototype MTA-007 links become real draft links. Native SQL verifies lifecycle invariants; browser audit verifies policy-to-draft and back/resume navigation. Duplicate prototype navigation entry points share this implementation."
     },
     {
       "id": "CTL-fb6a7c690bb9",
@@ -591,9 +606,14 @@
       "handlers": {
         "onAction": "() => this.go('mta')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-editor-audit/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Functional equivalent: the policy Servicing drafts panel creates typed drafts or resumes their actual saved identities. Shared creation selects Policy adjustment; fixed prototype MTA-007 links become real draft links. Native SQL verifies lifecycle invariants; browser audit verifies policy-to-draft and back/resume navigation. Duplicate prototype navigation entry points share this implementation."
     },
     {
       "id": "CTL-865e4d442990",
@@ -895,9 +915,14 @@
       "handlers": {
         "onAction": "() => this.go('mta')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-editor-audit/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Functional equivalent: the policy Servicing drafts panel creates typed drafts or resumes their actual saved identities. Shared creation selects Policy adjustment; fixed prototype MTA-007 links become real draft links. Native SQL verifies lifecycle invariants; browser audit verifies policy-to-draft and back/resume navigation. Duplicate prototype navigation entry points share this implementation."
     },
     {
       "id": "CTL-c6c247c8e374",
@@ -914,9 +939,14 @@
       "handlers": {
         "onAction": "() => this.go('mta')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-editor-audit/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Functional equivalent: the policy Servicing drafts panel creates typed drafts or resumes their actual saved identities. Shared creation selects Policy adjustment; fixed prototype MTA-007 links become real draft links. Native SQL verifies lifecycle invariants; browser audit verifies policy-to-draft and back/resume navigation. Duplicate prototype navigation entry points share this implementation."
     },
     {
       "id": "CTL-aedc83465580",
@@ -933,9 +963,14 @@
       "handlers": {
         "onAction": "() => this.go('mta')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-editor-audit/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Functional equivalent: the policy Servicing drafts panel creates typed drafts or resumes their actual saved identities. Shared creation selects Policy adjustment; fixed prototype MTA-007 links become real draft links. Native SQL verifies lifecycle invariants; browser audit verifies policy-to-draft and back/resume navigation. Duplicate prototype navigation entry points share this implementation."
     },
     {
       "id": "CTL-56e9c654446b",
@@ -952,9 +987,14 @@
       "handlers": {
         "onAction": "() => this.go('mta')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-editor-audit/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Functional equivalent: the policy Servicing drafts panel creates typed drafts or resumes their actual saved identities. Shared creation selects Policy adjustment; fixed prototype MTA-007 links become real draft links. Native SQL verifies lifecycle invariants; browser audit verifies policy-to-draft and back/resume navigation. Duplicate prototype navigation entry points share this implementation."
     },
     {
       "id": "CTL-bf0ca76b9d5d",
@@ -971,9 +1011,14 @@
       "handlers": {
         "onAction": "() => this.go('mta')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-editor-audit/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Functional equivalent: the policy Servicing drafts panel creates typed drafts or resumes their actual saved identities. Shared creation selects Policy adjustment; fixed prototype MTA-007 links become real draft links. Native SQL verifies lifecycle invariants; browser audit verifies policy-to-draft and back/resume navigation. Duplicate prototype navigation entry points share this implementation."
     },
     {
       "id": "CTL-c7700e80208a",
@@ -1009,9 +1054,14 @@
       "handlers": {
         "onAction": "() => this.go('mta')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-editor-audit/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Functional equivalent: the policy Servicing drafts panel creates typed drafts or resumes their actual saved identities. Shared creation selects Policy adjustment; fixed prototype MTA-007 links become real draft links. Native SQL verifies lifecycle invariants; browser audit verifies policy-to-draft and back/resume navigation. Duplicate prototype navigation entry points share this implementation."
     },
     {
       "id": "CTL-d32d3244fb5d",
@@ -1066,9 +1116,14 @@
       "handlers": {
         "onAction": "() => this.go('mta')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-editor-audit/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Functional equivalent: the policy Servicing drafts panel creates typed drafts or resumes their actual saved identities. Shared creation selects Policy adjustment; fixed prototype MTA-007 links become real draft links. Native SQL verifies lifecycle invariants; browser audit verifies policy-to-draft and back/resume navigation. Duplicate prototype navigation entry points share this implementation."
     },
     {
       "id": "CTL-71af2ba1c4ce",
@@ -1085,9 +1140,14 @@
       "handlers": {
         "onAction": "() => this.go('mta')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-editor-audit/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Functional equivalent: the policy Servicing drafts panel creates typed drafts or resumes their actual saved identities. Shared creation selects Policy adjustment; fixed prototype MTA-007 links become real draft links. Native SQL verifies lifecycle invariants; browser audit verifies policy-to-draft and back/resume navigation. Duplicate prototype navigation entry points share this implementation."
     },
     {
       "id": "CTL-92991f22c2a4",
@@ -1269,9 +1329,14 @@
       "handlers": {
         "onClick": "() => this.go('policy')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-editor-audit/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Category actions open typed dialogs; Apply updates the proposal and Save draft persists it. Retained items are edited through their category selector; Remove proposed change cancels the stable change. Removing a removal restores the item before a new typed update, avoiding ignored payload edits on removal commands. See explicit source action equivalences in07-04-REVIEW."
     },
     {
       "id": "CTL-811c233ef5c7",
@@ -1351,9 +1416,14 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-date-review/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Saved draft controls persist requester and explicit London dates/clock offsets. Later cover date handling is verified separately in the cover browser scenario."
     },
     {
       "id": "CTL-60ada0e23106",
@@ -1369,9 +1439,14 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-date-review/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Saved draft controls persist requester and explicit London dates/clock offsets. Later cover date handling is verified separately in the cover browser scenario."
     },
     {
       "id": "CTL-37837fb0eb28",
@@ -1387,9 +1462,14 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-date-review/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Saved draft controls persist requester and explicit London dates/clock offsets. Later cover date handling is verified separately in the cover browser scenario."
     },
     {
       "id": "CTL-f3fb94ad182a",
@@ -1405,9 +1485,14 @@
       "handlers": {
         "onAction": "() => this.setState({modal:{kind:'picker'}})"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-editor-audit/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Category actions open typed dialogs; Apply updates the proposal and Save draft persists it. Retained items are edited through their category selector; Remove proposed change cancels the stable change. Removing a removal restores the item before a new typed update, avoiding ignored payload edits on removal commands. See explicit source action equivalences in07-04-REVIEW."
     },
     {
       "id": "CTL-14cfcc4b503f",
@@ -1424,9 +1509,14 @@
         "onEdit": "() => this.setState({modal:{kind:'edit', i: i}})",
         "onRemove": "() => this.setState((s) => ({mtaChanges: s.mtaChanges.filter((x, j) => j !== i), mtaRated: false}))"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-driver/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Category actions open typed dialogs; Apply updates the proposal and Save draft persists it. Retained items are edited through their category selector; Remove proposed change cancels the stable change. Removing a removal restores the item before a new typed update, avoiding ignored payload edits on removal commands. See explicit source action equivalences in07-04-REVIEW."
     },
     {
       "id": "CTL-3a07d9af3916",
@@ -1443,9 +1533,14 @@
         "onEdit": "() => this.setState({modal:{kind:'edit', i: i}})",
         "onRemove": "() => this.setState((s) => ({mtaChanges: s.mtaChanges.filter((x, j) => j !== i), mtaRated: false}))"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-driver/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Category actions open typed dialogs; Apply updates the proposal and Save draft persists it. Retained items are edited through their category selector; Remove proposed change cancels the stable change. Removing a removal restores the item before a new typed update, avoiding ignored payload edits on removal commands. See explicit source action equivalences in07-04-REVIEW."
     },
     {
       "id": "CTL-c4a0292cbe34",
@@ -1462,9 +1557,14 @@
         "onEdit": "() => this.setState({modal:{kind:'edit', i: i}})",
         "onRemove": "() => this.setState((s) => ({mtaChanges: s.mtaChanges.filter((x, j) => j !== i), mtaRated: false}))"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-driver/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Category actions open typed dialogs; Apply updates the proposal and Save draft persists it. Retained items are edited through their category selector; Remove proposed change cancels the stable change. Removing a removal restores the item before a new typed update, avoiding ignored payload edits on removal commands. See explicit source action equivalences in07-04-REVIEW."
     },
     {
       "id": "CTL-0bb078b5d224",
@@ -1481,9 +1581,14 @@
         "onEdit": "() => this.setState({modal:{kind:'edit', i: i}})",
         "onRemove": "() => this.setState((s) => ({mtaChanges: s.mtaChanges.filter((x, j) => j !== i), mtaRated: false}))"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-premises/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Category actions open typed dialogs; Apply updates the proposal and Save draft persists it. Retained items are edited through their category selector; Remove proposed change cancels the stable change. Removing a removal restores the item before a new typed update, avoiding ignored payload edits on removal commands. See explicit source action equivalences in07-04-REVIEW."
     },
     {
       "id": "CTL-f53d17d61db1",
@@ -1500,9 +1605,14 @@
         "onEdit": "() => this.setState({modal:{kind:'edit', i: i}})",
         "onRemove": "() => this.setState((s) => ({mtaChanges: s.mtaChanges.filter((x, j) => j !== i), mtaRated: false}))"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-editor-audit/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Category actions open typed dialogs; Apply updates the proposal and Save draft persists it. Retained items are edited through their category selector; Remove proposed change cancels the stable change. Removing a removal restores the item before a new typed update, avoiding ignored payload edits on removal commands. See explicit source action equivalences in07-04-REVIEW."
     },
     {
       "id": "CTL-cc443272c9e7",
@@ -2267,9 +2377,14 @@
       "handlers": {
         "onConfirm": "() => this.setState({modal: null})"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-editor-audit/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Category actions open typed dialogs; Apply updates the proposal and Save draft persists it. Retained items are edited through their category selector; Remove proposed change cancels the stable change. Removing a removal restores the item before a new typed update, avoiding ignored payload edits on removal commands. See explicit source action equivalences in07-04-REVIEW."
     },
     {
       "id": "CTL-48357417c7d9",
@@ -2477,9 +2592,14 @@
       "handlers": {
         "onConfirm": "() => {\n          const licOk = !isDrv || (this.fv('edLicNo','').trim() && this.fv('edTest','').trim());\n          this.setState((s) => ({\n            modal: null, mtaRated: false, mtaApproved: false,\n            mtaChanges: s.mtaChanges.map((c, j) => j !== m.i ? c : Object.assign({}, c, {\n              state: licOk ? 'Valid' : 'Needs information',\n              tone: licOk ? 'ok' : 'warn',\n              after: isDrv && licOk ? 'Liam Doherty · DOB 02/11/2003 · licence ' + this.fv('edLicNo','') + ' · 1 fault claim (2025)' : c.after,\n              msg: licOk ? '' : c.msg\n            }))\n          }));\n          this.toast(licOk ? 'Change saved and validated. Re-rate the transaction.' : 'Saved, but licence number and date of test are still required.', '', null);\n        }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-editor-audit/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Category actions open typed dialogs; Apply updates the proposal and Save draft persists it. Retained items are edited through their category selector; Remove proposed change cancels the stable change. Removing a removal restores the item before a new typed update, avoiding ignored payload edits on removal commands. See explicit source action equivalences in07-04-REVIEW."
     },
     {
       "id": "CTL-2be8051a493d",
@@ -2495,9 +2615,14 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-editor-audit/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Source field is represented by its typed driver capture control; full name, DOB, licence type/number/test date and detailed claim rows persist. Claims summary choices map to richer dated fault/status/amount records rather than fixed display strings."
     },
     {
       "id": "CTL-006262166a6c",
@@ -2513,9 +2638,14 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-editor-audit/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Source field is represented by its typed driver capture control; full name, DOB, licence type/number/test date and detailed claim rows persist. Claims summary choices map to richer dated fault/status/amount records rather than fixed display strings."
     },
     {
       "id": "CTL-67729c63e82c",
@@ -2531,9 +2661,14 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-editor-audit/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Source field is represented by its typed driver capture control; full name, DOB, licence type/number/test date and detailed claim rows persist. Claims summary choices map to richer dated fault/status/amount records rather than fixed display strings."
     },
     {
       "id": "CTL-31515d181764",
@@ -2549,9 +2684,14 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-editor-audit/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Source field is represented by its typed driver capture control; full name, DOB, licence type/number/test date and detailed claim rows persist. Claims summary choices map to richer dated fault/status/amount records rather than fixed display strings."
     },
     {
       "id": "CTL-48fcf50be539",
@@ -2567,9 +2707,14 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-editor-audit/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Source field is represented by its typed driver capture control; full name, DOB, licence type/number/test date and detailed claim rows persist. Claims summary choices map to richer dated fault/status/amount records rather than fixed display strings."
     },
     {
       "id": "CTL-3b28acf92b73",
@@ -2585,9 +2730,14 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-editor-audit/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-REVIEW.md"
+      ],
+      "implementation": "Source field is represented by its typed driver capture control; full name, DOB, licence type/number/test date and detailed claim rows persist. Claims summary choices map to richer dated fault/status/amount records rather than fixed display strings."
     },
     {
       "id": "CTL-dc77305d175b",

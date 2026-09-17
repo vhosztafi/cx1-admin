@@ -1,3 +1,8 @@
+# Historical 07-04 execution checkpoints
+
+Completed 2026-09-17; see 07-04-SUMMARY.md for final measured evidence.
+The following checkpoints are retained as execution history.
+
 # 07-04 execution checkpoint — not complete
 
 2026-09-17. Sequential inline execution under the approved `--auto` scope.
