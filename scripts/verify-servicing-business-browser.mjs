@@ -18,7 +18,7 @@ try{
   await page.goto(origin+`/policies/${fixture.policyId}`);await field('Draft type').selectOption('cancellation');await field('Requested effective date').fill('2026-10-25');await field('Reason for draft').fill('Fictional trade activity browser scenario');await button('Create servicing draft').click();await page.waitForURL(/\/drafts\//);
   const draftId=page.url().split('/').at(-1),path=`/api/v1/drafts/${draftId}`;
   await button('Acquire editing lease').click();await page.getByRole('heading',{name:'You are editing this draft',exact:true}).waitFor();await button('Amend trade activities').click();
-  await field('Annual turnover (GBP)').fill('123456.78');
+  await field('Annual turnover (GBP)').fill('123456.78');await field('Business description').fill('Fictional servicing business correction');await field('Business start date').fill('2015-01-01');
   await other.goto(origin+`/drafts/${draftId}`);await other.getByLabel('Takeover or abandonment reason',{exact:true}).fill('Fictional business lease takeover');await other.getByRole('button',{name:'Take over editing',exact:true}).click();
   await page.getByText('Editing ownership changed. These form values are retained; reacquire the draft before applying them.',{exact:true}).waitFor();assert.equal(await button('Apply to draft').isDisabled(),true);
   await button('Keep form and return').click();assert.equal(await button('Resume trade activity form').evaluate(el=>el===document.activeElement),true);
@@ -28,7 +28,7 @@ try{
   const number=(before.snapshot.risk.business.activities??[]).length+1;
   await button('Add occupation').click();await field(`Occupation ${number}`).selectOption({label:'Valeting - at Premises Only'});await field(`Occupation ${number} turnover share (%)`).fill('25');
   await button('Apply to draft').click();await page.waitForFunction(()=>document.activeElement?.textContent==='Amend trade activities');await save();
-  let saved=await get(path);const initial=saved.proposal.changes.find(x=>x.kind==='business');assert.equal(initial.riskItemId,fixture.policyId);assert.equal(initial.payload.turnover,'123456.78');assert.equal(initial.payload.declaredActivitySplit.sales,7500);assert.equal(initial.payload.activities.at(-1).turnoverBasisPoints,2500);
+  let saved=await get(path);const initial=saved.proposal.changes.find(x=>x.kind==='business');assert.equal(initial.riskItemId,fixture.policyId);assert.equal(initial.payload.description,'Fictional servicing business correction');assert.equal(initial.payload.startedOn,'2015-01-01');assert.equal(initial.payload.turnover,'123456.78');assert.equal(initial.payload.declaredActivitySplit.sales,7500);assert.equal(initial.payload.activities.at(-1).turnoverBasisPoints,2500);
   const activityId=initial.payload.activities.at(-1).id;assert.ok(activityId);assert.ok((await get(path+'/editor')).assessment.readinessIssues.length>0);
   await page.reload();await button('Acquire editing lease').click();await page.getByRole('heading',{name:'You are editing this draft',exact:true}).waitFor();await button('Amend trade activities').click();assert.equal(await field('Annual turnover (GBP)').inputValue(),'123456.78');
   await field('Annual turnover (GBP)').fill('');await field(`Occupation ${number} turnover share (%)`).fill('33.33');
