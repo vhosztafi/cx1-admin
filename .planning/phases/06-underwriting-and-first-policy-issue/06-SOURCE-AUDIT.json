@@ -804,7 +804,7 @@
       "controlId": "CTL-0e889362450f",
       "method": "pPolicy",
       "sourcePath": ".sections[0].rows[0].cells[5]",
-      "label": "Preview · Download · Send",
+      "label": "Preview Â· Download Â· Send",
       "originalPhase": 7,
       "placementOwnerPhase": 7,
       "operationOwners": [
@@ -827,7 +827,7 @@
       "controlId": "CTL-efe5919f52c7",
       "method": "pPolicy",
       "sourcePath": ".sections[0].rows[1].cells[5]",
-      "label": "Preview · Download · Send",
+      "label": "Preview Â· Download Â· Send",
       "originalPhase": 7,
       "placementOwnerPhase": 7,
       "operationOwners": [
@@ -2183,10 +2183,16 @@
       "disposition": "query-filter",
       "acceptanceId": "AT-f219d18ccb4a",
       "review": "Phase6 actual Motor Trade policy discovery plus retained Phase5quote discovery; Commercial CombinedPhase8/global advanced searchPhase12.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Verified in a19685e: actual both-product policy discovery, client links and restricted agency summary; current-scope and cursor SQL tests, persisted Chrome readback.",
       "plan": "06-13",
       "task": "06-13-01",
-      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs"
+      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs",
+      "runtimeEvidence": [
+        "06-13-SUMMARY.md",
+        "scripts/verify-policy-discovery-browser.mjs",
+        ".local/phase6-13-backend-full-2",
+        ".local/browser-evidence/policy-discovery/report.json"
+      ]
     },
     {
       "controlId": "CTL-536ecaf3079e",
@@ -2210,10 +2216,16 @@
       "disposition": "query-filter",
       "acceptanceId": "AT-536ecaf3079e",
       "review": "Phase6 actual Motor Trade policy discovery plus retained Phase5quote discovery; Commercial CombinedPhase8/global advanced searchPhase12.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Verified in a19685e: actual both-product policy discovery, client links and restricted agency summary; current-scope and cursor SQL tests, persisted Chrome readback.",
       "plan": "06-13",
       "task": "06-13-01",
-      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs"
+      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs",
+      "runtimeEvidence": [
+        "06-13-SUMMARY.md",
+        "scripts/verify-policy-discovery-browser.mjs",
+        ".local/phase6-13-backend-full-2",
+        ".local/browser-evidence/policy-discovery/report.json"
+      ]
     },
     {
       "controlId": "CTL-e9415f15b16e",
@@ -2237,10 +2249,16 @@
       "disposition": "query-filter",
       "acceptanceId": "AT-e9415f15b16e",
       "review": "Phase6 actual Motor Trade policy discovery plus retained Phase5quote discovery; Commercial CombinedPhase8/global advanced searchPhase12.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Verified in a19685e: actual both-product policy discovery, client links and restricted agency summary; current-scope and cursor SQL tests, persisted Chrome readback.",
       "plan": "06-13",
       "task": "06-13-01",
-      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs"
+      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs",
+      "runtimeEvidence": [
+        "06-13-SUMMARY.md",
+        "scripts/verify-policy-discovery-browser.mjs",
+        ".local/phase6-13-backend-full-2",
+        ".local/browser-evidence/policy-discovery/report.json"
+      ]
     },
     {
       "controlId": "CTL-8a66a5c20198",
@@ -2268,10 +2286,16 @@
       "disposition": "navigation-read",
       "acceptanceId": "AT-8a66a5c20198",
       "review": "Phase6 actual Motor Trade policy discovery plus retained Phase5quote discovery; Commercial CombinedPhase8/global advanced searchPhase12.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Verified in a19685e: actual both-product policy discovery, client links and restricted agency summary; current-scope and cursor SQL tests, persisted Chrome readback.",
       "plan": "06-13",
       "task": "06-13-01",
-      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs"
+      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs",
+      "runtimeEvidence": [
+        "06-13-SUMMARY.md",
+        "scripts/verify-policy-discovery-browser.mjs",
+        ".local/phase6-13-backend-full-2",
+        ".local/browser-evidence/policy-discovery/report.json"
+      ]
     },
     {
       "controlId": "CTL-b4fa09cd9056",
@@ -2299,10 +2323,16 @@
       "disposition": "navigation-read",
       "acceptanceId": "AT-b4fa09cd9056",
       "review": "Phase6 actual Motor Trade policy discovery plus retained Phase5quote discovery; Commercial CombinedPhase8/global advanced searchPhase12.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Verified in a19685e: actual both-product policy discovery, client links and restricted agency summary; current-scope and cursor SQL tests, persisted Chrome readback.",
       "plan": "06-13",
       "task": "06-13-01",
-      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs"
+      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs",
+      "runtimeEvidence": [
+        "06-13-SUMMARY.md",
+        "scripts/verify-policy-discovery-browser.mjs",
+        ".local/phase6-13-backend-full-2",
+        ".local/browser-evidence/policy-discovery/report.json"
+      ]
     },
     {
       "controlId": "CTL-80230239bc79",
@@ -2330,10 +2360,16 @@
       "disposition": "navigation-read",
       "acceptanceId": "AT-80230239bc79",
       "review": "Phase6 actual Motor Trade policy discovery plus retained Phase5quote discovery; Commercial CombinedPhase8/global advanced searchPhase12.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Verified in a19685e: actual both-product policy discovery, client links and restricted agency summary; current-scope and cursor SQL tests, persisted Chrome readback.",
       "plan": "06-13",
       "task": "06-13-01",
-      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs"
+      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs",
+      "runtimeEvidence": [
+        "06-13-SUMMARY.md",
+        "scripts/verify-policy-discovery-browser.mjs",
+        ".local/phase6-13-backend-full-2",
+        ".local/browser-evidence/policy-discovery/report.json"
+      ]
     },
     {
       "controlId": "CTL-54896cbfe7ce",
@@ -2361,10 +2397,16 @@
       "disposition": "navigation-read",
       "acceptanceId": "AT-54896cbfe7ce",
       "review": "Phase6 actual Motor Trade policy discovery plus retained Phase5quote discovery; Commercial CombinedPhase8/global advanced searchPhase12.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Verified in a19685e: actual both-product policy discovery, client links and restricted agency summary; current-scope and cursor SQL tests, persisted Chrome readback.",
       "plan": "06-13",
       "task": "06-13-01",
-      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs"
+      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs",
+      "runtimeEvidence": [
+        "06-13-SUMMARY.md",
+        "scripts/verify-policy-discovery-browser.mjs",
+        ".local/phase6-13-backend-full-2",
+        ".local/browser-evidence/policy-discovery/report.json"
+      ]
     },
     {
       "controlId": "CTL-e9cae754ebc1",
@@ -2392,10 +2434,16 @@
       "disposition": "navigation-read",
       "acceptanceId": "AT-e9cae754ebc1",
       "review": "Phase6 actual Motor Trade policy discovery plus retained Phase5quote discovery; Commercial CombinedPhase8/global advanced searchPhase12.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Verified in a19685e: actual both-product policy discovery, client links and restricted agency summary; current-scope and cursor SQL tests, persisted Chrome readback.",
       "plan": "06-13",
       "task": "06-13-01",
-      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs"
+      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs",
+      "runtimeEvidence": [
+        "06-13-SUMMARY.md",
+        "scripts/verify-policy-discovery-browser.mjs",
+        ".local/phase6-13-backend-full-2",
+        ".local/browser-evidence/policy-discovery/report.json"
+      ]
     },
     {
       "controlId": "CTL-50a2db5d342c",
@@ -2423,10 +2471,16 @@
       "disposition": "navigation-read",
       "acceptanceId": "AT-50a2db5d342c",
       "review": "Phase6 actual Motor Trade policy discovery plus retained Phase5quote discovery; Commercial CombinedPhase8/global advanced searchPhase12.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Verified in a19685e: actual both-product policy discovery, client links and restricted agency summary; current-scope and cursor SQL tests, persisted Chrome readback.",
       "plan": "06-13",
       "task": "06-13-01",
-      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs"
+      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs",
+      "runtimeEvidence": [
+        "06-13-SUMMARY.md",
+        "scripts/verify-policy-discovery-browser.mjs",
+        ".local/phase6-13-backend-full-2",
+        ".local/browser-evidence/policy-discovery/report.json"
+      ]
     },
     {
       "controlId": "CTL-9b502b0d13d3",
@@ -2439,10 +2493,16 @@
       "disposition": "client-only",
       "acceptanceId": "AT-9b502b0d13d3",
       "review": "Phase6 actual Motor Trade policy discovery plus retained Phase5quote discovery; Commercial CombinedPhase8/global advanced searchPhase12.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Verified in a19685e: actual both-product policy discovery, client links and restricted agency summary; current-scope and cursor SQL tests, persisted Chrome readback.",
       "plan": "06-13",
       "task": "06-13-01",
-      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs"
+      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs",
+      "runtimeEvidence": [
+        "06-13-SUMMARY.md",
+        "scripts/verify-policy-discovery-browser.mjs",
+        ".local/phase6-13-backend-full-2",
+        ".local/browser-evidence/policy-discovery/report.json"
+      ]
     },
     {
       "controlId": "CTL-006066201056",
@@ -2479,10 +2539,16 @@
       "disposition": "query-filter",
       "acceptanceId": "AT-7e3297dc0fdf",
       "review": "Phase6 actual Motor Trade policy discovery plus retained Phase5quote discovery; Commercial CombinedPhase8/global advanced searchPhase12.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Verified in a19685e: actual both-product policy discovery, client links and restricted agency summary; current-scope and cursor SQL tests, persisted Chrome readback.",
       "plan": "06-13",
       "task": "06-13-01",
-      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs"
+      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs",
+      "runtimeEvidence": [
+        "06-13-SUMMARY.md",
+        "scripts/verify-policy-discovery-browser.mjs",
+        ".local/phase6-13-backend-full-2",
+        ".local/browser-evidence/policy-discovery/report.json"
+      ]
     },
     {
       "controlId": "CTL-bdcd358d2e9b",
@@ -3508,7 +3574,7 @@
       "controlId": "CTL-6c04b9b858a7",
       "method": "pEscalation",
       "sourcePath": ".rail[0].items[1]",
-      "label": "Reduce the request to £125,000",
+      "label": "Reduce the request to Â£125,000",
       "originalPhase": 6,
       "placementOwnerPhase": 6,
       "operationOwners": [
@@ -5197,7 +5263,7 @@
     },
     {
       "method": "pQuote",
-      "label": "Indemnity limit — any one vehicle",
+      "label": "Indemnity limit â€” any one vehicle",
       "sourceLine": 1878,
       "phase": 5,
       "qualification": "Actual saved capture or calculated versioned underwriting value; no literal mock totals."
@@ -5902,7 +5968,14 @@
       "reason": "Persisted first-policy IDs close inherited discovery obligations; task/finance portions remain later.",
       "plan": "06-13",
       "task": "06-13-01",
-      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs"
+      "verification": "dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~PolicyDiscoveryTests|FullyQualifiedName~PolicySharingTests\"; pnpm web:test; node scripts/verify-policy-discovery-browser.mjs",
+      "runtimeStatus": "Verified in a19685e: actual both-product policy discovery, client links and restricted agency summary; current-scope and cursor SQL tests, persisted Chrome readback.",
+      "runtimeEvidence": [
+        "06-13-SUMMARY.md",
+        "scripts/verify-policy-discovery-browser.mjs",
+        ".local/phase6-13-backend-full-2",
+        ".local/browser-evidence/policy-discovery/report.json"
+      ]
     }
   ],
   "limits": [
@@ -6007,7 +6080,7 @@
     }
   ],
   "conditionalEscalationSupplement": {
-    "source": "docs/design/source/prototype-template.txt:5187–5289",
+    "source": "docs/design/source/prototype-template.txt:5187â€“5289",
     "reason": "Final 06-07 source read exposed conditional branches and table rows absent from the default-state control inventory. Preserve them explicitly for the final source gate.",
     "ownerPlan": "06-14",
     "entries": [
@@ -6043,7 +6116,7 @@
       },
       {
         "label": "Two working day standard",
-        "equivalent": "Versioned Monday–Friday demo calendar preserving London wall time",
+        "equivalent": "Versioned Mondayâ€“Friday demo calendar preserving London wall time",
         "status": "Implemented with weekend/DST unit, SQL seed-preservation and real browser evidence"
       }
     ]

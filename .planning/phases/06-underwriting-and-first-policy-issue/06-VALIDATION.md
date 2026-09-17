@@ -26,19 +26,19 @@ New test names below are intended outputs, not existing symbols. Exact file/task
 
 | Feature / requirement | Threat | Secure behavior and required evidence | Planned test family |
 |---|---|---|---|
-| Source/contracts / UWR01–07 | T06-source HIGH | Every relevant control/option has explicit current or later owner; strict requests reject system-owned identity/state/price and wrong reference/ownership. Existing design-only operations cannot imply runtime availability. | tests/underwriting-contracts.test.mjs; source audit gate |
+| Source/contracts / UWR01â€“07 | T06-source HIGH | Every relevant control/option has explicit current or later owner; strict requests reject system-owned identity/state/price and wrong reference/ownership. Existing design-only operations cannot imply runtime availability. | tests/underwriting-contracts.test.mjs; source audit gate |
 | Rating / UWR01 | T06-rate HIGH | Same exact proposal/rule input produces equal components; source14-day expiry boundaries; rounding and rule pinning; no support-flag inputs; incomplete shape/invalid term/matching/vehicle provenance blocks. | QuoteRatingRulesTests; QuoteRatingTests |
-| Configuration / UWR01–03 | T06-config HIGH | Capture-enabled draft metadata cannot rate; missing/unknown dimensions deny; current and retained term grant distinction; retired product/provider/binder and effective-date boundaries. | UnderwritingEligibilityTests |
+| Configuration / UWR01â€“03 | T06-config HIGH | Capture-enabled draft metadata cannot rate; missing/unknown dimensions deny; current and retained term grant distinction; retired product/provider/binder and effective-date boundaries. | UnderwritingEligibilityTests |
 | Rating worker / UWR01 | T06-worker HIGH | Duplicate dispatch, provider-success-before-apply crash, expired lease and conflicting callback cannot duplicate effects; stale result remains history and never changes current pointer. | QuoteRatingWorkerTests |
 | Revision/cycle / QUO06 | T06-stale HIGH | Same hash/different revision ownership, explicit reopen, re-rating, terms refresh, evidence and condition changes invalidate old applicability/acceptance; stale worker cannot reopen closed/bound state. | QuoteUnderwritingLifecycleTests |
-| Evidence / UWR02–03 | T06-proof HIGH | Screened attached file is not underwriter approval; accepted/rejected decisions bind exact attachment/fingerprint; revoked or stale proof blocks; missing proof and stock limit remain independent. | QuoteEvidenceReviewTests |
-| Referral / UWR02–03 | T06-authority HIGH | Each relevant dimension and exact boundary checked against effective actor/product/binder authority; servicing/system-admin cannot gain implicit authority; selected bulk decisions all-or-none under versions. | QuoteReferralTests; QuoteReferralApiTests |
+| Evidence / UWR02â€“03 | T06-proof HIGH | Screened attached file is not underwriter approval; accepted/rejected decisions bind exact attachment/fingerprint; revoked or stale proof blocks; missing proof and stock limit remain independent. | QuoteEvidenceReviewTests |
+| Referral / UWR02â€“03 | T06-authority HIGH | Each relevant dimension and exact boundary checked against effective actor/product/binder authority; servicing/system-admin cannot gain implicit authority; selected bulk decisions all-or-none under versions. | QuoteReferralTests; QuoteReferralApiTests |
 | Conditions / UWR03 | T06-condition HIGH | Typed condition identities; same-quote evidence; unsatisfied condition blocks; changing contractual cover/endorsement changes terms hash and requires new acceptance. | ReferralConditionTests |
 | Carrier / UWR04 | T06-carrier HIGH | No internal actor impersonation; typed outcome/reference/underwriter/time/body/proof persisted; query/decline/pending blocks; dedupe/retry/restart and stale responses retained without authorizing current cycle. | CapacityEscalationTests; CapacityApiTests |
 | Terms/delivery / UWR05 | T06-delivery HIGH | Safe current recipients and immutable contractual payload; queued versus delivered truth; exact retry and durable outcome; changed current terms/config require explicit new cycle. | QuoteTermsTests; QuoteDeliveryTests |
-| Acceptance / UWR05–06 | T06-accept HIGH | Exact current rating/revision/terms/evidence context; expired/future/foreign/unsent/obsolete acceptance rejected; named accepter/time/channel/proof retained; no arbitrary status patch. | QuoteAcceptanceTests |
+| Acceptance / UWR05â€“06 | T06-accept HIGH | Exact current rating/revision/terms/evidence context; expired/future/foreign/unsent/obsolete acceptance rejected; named accepter/time/channel/proof retained; no arbitrary status patch. | QuoteAcceptanceTests |
 | Posting / UWR07 | T06-finance HIGH | GBP exact pennies; balance per journal; net/separate commission, fee share and direct debtor all reconcile to approved examples; unique source transaction; no negative debit/credit or fabricated payment. | IssuePostingRulesTests; IssuePostingStorageTests |
-| Issue / UWR06–07 | T06-issue CRITICAL | Re-evaluate all prerequisites under held authority, not UI flag; multiple keys concurrently create one policy/version/transaction/posting; failure after financial write before audit/outbox rolls everything back; current auth precedes replay. | QuoteIssueTests; QuoteIssueApiTests |
+| Issue / UWR06â€“07 | T06-issue CRITICAL | Re-evaluate all prerequisites under held authority, not UI flag; multiple keys concurrently create one policy/version/transaction/posting; failure after financial write before audit/outbox rolls everything back; current auth precedes replay. | QuoteIssueTests; QuoteIssueApiTests |
 | Immutable policy / UWR07 | T06-history HIGH | Same-agency/client/term/transaction/version constraints, immutable JSON/hash and source lineage, current pointer ownership; additive migration preserves old quotes/evidence. | PolicyStorageTests |
 | Discovery / QUO01,CLI01,AGY04 | T06-disclosure HIGH | Real policy IDs, filters/order/paging/registration, scoped client links and common safe agency projection; accepted agency cookies prove foreign and hidden-field/count/cursor denial. | PolicyDiscoveryTests; PolicySharingTests |
 | UI / all | T06-recovery HIGH | Actual persisted journeys for both products, dirty/stale/uncertain exact body/key/ETag retention, safe retry, keyboard/focus,314pxrail/390pxcontainment; no fake carrier/delivery success. | Dedicated verify-underwriting-*-browser.mjs scripts |
@@ -162,3 +162,11 @@ Implementation82aa340:104frontend tests,lint/types/build and both-product actual
 Chrome issue/readback pass. Current role/account and stale acceptance denial,
 exact retry after lost committed response, balanced journals, requested documents,
 314px rail/390px containment and focus inspected. See06-12-SUMMARY.
+
+## 06-13 runtime evidence
+
+Implementation a19685e:836 backend (642 unit/194 integration),167 real SQL,
+zero skips; full integration32m53s, exact start-bound gate passed.104 frontend
+and327 contract/source+gate tests; lint/types/build and actual both-product
+discovery/sharing Chrome pass. Session-maintenance cursor regression corrected;
+44 preserved count/hash sets. See06-13-SUMMARY.

@@ -1,28 +1,28 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1–5 complete;39 implementation plans complete. Phase6 has4/14 plans verified; rating UI passes727backend/99realSQL,86frontend,316contracts and both-product browser. Proof/decisions are next; policy issue remains pending.
+**Status:** Autonomous progression authorised. Phases1â€“5 complete;39 implementation plans complete. Phase6 has4/14 plans verified; rating UI passes727backend/99realSQL,86frontend,316contracts and both-product browser. Proof/decisions are next; policy issue remains pending.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
 ## Milestones
 
-- [ ] v1.0 Functional Back Office MVP — phases 1–13 (approved, in progress)
+- [ ] v1.0 Functional Back Office MVP â€” phases 1â€“13 (approved, in progress)
 
 ## Phases
 
-- [x] **Phase 1: Data and API design** — Translate both references into implementable contracts.
-- [x] **Phase 2: Application and persistence foundation** — Run a persistent authenticated system with the prototype shell.
-- [x] **Phase 3: Clients and contact servicing** — Maintain insured businesses and person-level servicing information.
-- [x] **Phase 4: Agency onboarding and access** — Onboard agencies and enforce their sharing boundaries.
-- [x] **Phase 5: Motor Trade quote capture** — Capture complete persistent Motor Trade risks in the back office. (completed 2026-09-16)
-- [ ] **Phase 6: Underwriting and first policy issue** — Complete the first quote-to-issued-policy journey.
-- [ ] **Phase 7: Policy lifecycle and history** — Service issued policies without corrupting history.
-- [ ] **Phase 8: Commercial Combined back office** — Demonstrate shared workflows with a different risk structure.
-- [ ] **Phase 9: Tasks, documents, communication and incidents** — Make servicing activities and demo handoffs operational.
-- [ ] **Phase 10: Accounting and insurer reporting** — Reconcile policy movements through finance workflows.
-- [ ] **Phase 11: Configuration and account administration** — Expose controlled configuration and complete account functions.
-- [ ] **Phase 12: Dashboards, search and reports** — Provide trustworthy cross-module discovery and reporting.
-- [ ] **Phase 13: Complete demo and acceptance** — Verify prototype completeness and deliver a repeatable demonstration.
+- [x] **Phase 1: Data and API design** â€” Translate both references into implementable contracts.
+- [x] **Phase 2: Application and persistence foundation** â€” Run a persistent authenticated system with the prototype shell.
+- [x] **Phase 3: Clients and contact servicing** â€” Maintain insured businesses and person-level servicing information.
+- [x] **Phase 4: Agency onboarding and access** â€” Onboard agencies and enforce their sharing boundaries.
+- [x] **Phase 5: Motor Trade quote capture** â€” Capture complete persistent Motor Trade risks in the back office. (completed 2026-09-16)
+- [ ] **Phase 6: Underwriting and first policy issue** â€” Complete the first quote-to-issued-policy journey.
+- [ ] **Phase 7: Policy lifecycle and history** â€” Service issued policies without corrupting history.
+- [ ] **Phase 8: Commercial Combined back office** â€” Demonstrate shared workflows with a different risk structure.
+- [ ] **Phase 9: Tasks, documents, communication and incidents** â€” Make servicing activities and demo handoffs operational.
+- [ ] **Phase 10: Accounting and insurer reporting** â€” Reconcile policy movements through finance workflows.
+- [ ] **Phase 11: Configuration and account administration** â€” Expose controlled configuration and complete account functions.
+- [ ] **Phase 12: Dashboards, search and reports** â€” Provide trustworthy cross-module discovery and reporting.
+- [ ] **Phase 13: Complete demo and acceptance** â€” Verify prototype completeness and deliver a repeatable demonstration.
 
 ## Phase details
 
@@ -238,14 +238,14 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 3. Clients and contact servicing | 6/6 | Complete | 2026-09-14 |
 | 4. Agency onboarding and access | 8/8 | Complete | 2026-09-15 |
 | 5. Motor Trade quote capture | 11/11 | Complete    | 2026-09-16 |
-| 6. Underwriting and first policy issue | 12/14 | In progress | — |
-| 7. Policy lifecycle and history | 0/TBD | Not started | — |
-| 8. Commercial Combined back office | 0/TBD | Not started | — |
-| 9. Tasks, documents, communication and incidents | 0/TBD | Not started | — |
-| 10. Accounting and insurer reporting | 0/TBD | Not started | — |
-| 11. Configuration and account administration | 0/TBD | Not started | — |
-| 12. Dashboards, search and reports | 0/TBD | Not started | — |
-| 13. Complete demo and acceptance | 0/TBD | Not started | — |
+| 6. Underwriting and first policy issue | 13/14 | In progress | â€” |
+| 7. Policy lifecycle and history | 0/TBD | Not started | â€” |
+| 8. Commercial Combined back office | 0/TBD | Not started | â€” |
+| 9. Tasks, documents, communication and incidents | 0/TBD | Not started | â€” |
+| 10. Accounting and insurer reporting | 0/TBD | Not started | â€” |
+| 11. Configuration and account administration | 0/TBD | Not started | â€” |
+| 12. Dashboards, search and reports | 0/TBD | Not started | â€” |
+| 13. Complete demo and acceptance | 0/TBD | Not started | â€” |
 
 ### Phase 3 downstream acceptance obligations
 
