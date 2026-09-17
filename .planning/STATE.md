@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-05 complete; next07-06 evidence and referrals
-last_updated: "2026-09-17T19:00:59.274116+00:00"
-last_activity: "2026-09-17 —07-05 complete,725 unit/13 SQL/119 web/352 root and both-product browser pass."
+stopped_at: Plan07-06 cumulative proof rules verified; storage/services/API/UI next
+last_updated: "2026-09-17T19:08:05.451826+00:00"
+last_activity: "2026-09-17 —07-05 complete;07-06 proof prerequisite4893ba1 passes8 targeted unit cases."
 progress:
   total_phases: 13
   completed_phases: 6
@@ -21,14 +21,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute Phase7;07-01..05 complete;07-05 rating API/worker/UI verified;07-06 evidence/referrals next.
+**Current focus:** Execute Phase7;07-01..05 complete;07-05 rating API/worker/UI verified;07-06 cumulative proof rules verified; storage and evidence/referral workflows next.
 
 ## Current Position
 
 Phase: 7 of 13 (Policy lifecycle and history)
-Plan: 5 of16 complete;07-06 next
-Status: Executing Phase7;07-05 complete; evidence/referrals next
-Last activity: 2026-09-17 —07-05 complete; API4a930af/UI7de730a verified. Next07-06.
+Plan: 5 of16 complete;07-06 in progress
+Status: Executing Phase7;07-06 pure proof prerequisite verified; persistence/runtime next
+Last activity: 2026-09-17 —07-06 prerequisite4893ba1;8 targeted cases pass. Resume07-06-PROGRESS.md.
 
 Progress: Phases1–6 complete;6/13 phases,54 completed implementation plans.
 
@@ -54,9 +54,9 @@ Progress: Phases1–6 complete;6/13 phases,54 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-17T19:00:59.274116+00:00
-Stopped at:07-05 complete;07-06 evidence and referral decisions next
-Resume file: .planning/phases/07-policy-lifecycle-and-history/07-06-PLAN.md
+Last session: 2026-09-17T19:08:05.451826+00:00
+Stopped at:07-06 cumulative proof rules verified; storage/services/API/UI remain
+Resume file: .planning/phases/07-policy-lifecycle-and-history/07-06-PROGRESS.md
 
 ## Autonomous continuation
 
