@@ -1,0 +1,41 @@
+using System.Text.Json;
+using BackOffice.Application;
+using BackOffice.Infrastructure.Persistence;
+using BackOffice.Infrastructure.Quotes;
+using Microsoft.EntityFrameworkCore;
+
+namespace BackOffice.Infrastructure.Policies;
+
+public sealed class PolicyReadService(IDbContextFactory<BackOfficeDbContext> factory)
+{
+    public async Task<Dictionary<string, object>> ReadAsync(ActorContext actor, Guid policyId, Guid? termId = null, Guid? versionId = null, Guid? transactionId = null, Guid? obligationId = null, CancellationToken token = default)
+    {
+        await using var db = await factory.CreateDbContextAsync(token); await using var tx = await db.Database.BeginTransactionAsync(token);
+        var policy = await PolicyScope.Hold(db, actor, policyId, token);
+        var term = await db.Set<PolicyTerm>().AsNoTracking().SingleOrDefaultAsync(x => x.PolicyId == policy.Id && x.Id == (termId ?? policy.CurrentTermId), token)
+            ?? throw new QuoteOperationException(404, "policy-term-not-found");
+        var versions = db.Set<PolicyVersion>().AsNoTracking().Where(x => x.PolicyId == policy.Id && x.TermId == term.Id);
+        var version = await (transactionId is Guid transaction ? versions.Where(x => x.TransactionId == transaction && x.SliceOrdinal == 1) : versions.Where(x => x.Id == (versionId ?? term.CurrentVersionId))).SingleOrDefaultAsync(token)
+            ?? throw new QuoteOperationException(404, "policy-version-not-found");
+        var issued = await db.Set<PolicyTransaction>().AsNoTracking().SingleAsync(x => x.Id == version.TransactionId && x.PolicyId == policy.Id && x.TermId == term.Id, token);
+        var obligation = await db.Set<IssueFinancialObligation>().AsNoTracking().SingleAsync(x => x.TransactionId == issued.Id && x.PolicyId == policy.Id, token);
+        if (obligationId is Guid expected && expected != obligation.Id) throw new QuoteOperationException(404, "policy-obligation-not-found");
+        var journal = await db.Set<Journal>().AsNoTracking().SingleAsync(x => x.ObligationId == obligation.Id && x.PostedAt != null, token);
+        var lines = await db.Set<JournalLine>().AsNoTracking().Where(x => x.JournalId == journal.Id).OrderBy(x => x.ComponentCode).ThenBy(x => x.AccountCode).ToArrayAsync(token);
+        var documents = await db.Set<PolicyDocumentRequest>().AsNoTracking().Where(x => x.VersionId == version.Id).OrderBy(x => x.Kind).ToArrayAsync(token);
+        string Money(decimal n) => PolicyIssueWriter.Money(n);
+        var result = new Dictionary<string, object> { ["id"] = policy.Id, ["reference"] = policy.Reference, ["sourceQuoteId"] = policy.SourceQuoteId,
+            ["clientId"] = policy.ClientId, ["relationshipId"] = policy.RelationshipId, ["agencyId"] = policy.AgencyId, ["termId"] = term.Id, ["versionId"] = version.Id,
+            ["transactionId"] = issued.Id, ["issuedAt"] = issued.ProcessedAt, ["snapshot"] = JsonSerializer.Deserialize<JsonElement>(version.SnapshotJson),
+            ["contentHash"] = Convert.ToHexStringLower(version.ContentHash), ["sourceCycleId"] = issued.CycleId, ["ratingId"] = issued.RatingId,
+            ["acceptanceId"] = issued.AcceptanceId, ["effectiveAt"] = issued.EffectiveAt, ["reason"] = issued.Reason,
+            ["termNumber"] = term.Number, ["versionSequence"] = version.Sequence, ["transactionSequence"] = issued.Sequence,
+            ["financials"] = new { obligationId = obligation.Id, transactionId = issued.Id, journalId = journal.Id, currency = "GBP", debtorKind = obligation.DebtorKind,
+                debtorId = obligation.DebtorAgencyId ?? obligation.DebtorRelationshipId!.Value, amountDue = Money(obligation.InvoiceDue), premium = Money(obligation.Premium), tax = Money(obligation.Tax),
+                fee = Money(obligation.Fee), brokerCommission = Money(obligation.Commission), brokerFeeShare = Money(obligation.FeeShare), insurerPayable = Money(obligation.Premium + obligation.Tax - obligation.Commission),
+                retainedFeeIncome = Money(obligation.Fee - obligation.FeeShare), brokerRemunerationPayable = Money(obligation.BrokerPayable),
+                lines = lines.Select(x => new { accountCode = x.AccountCode, side = x.Debit > 0 ? "debit" : "credit", amount = Money(x.Debit + x.Credit), componentCode = x.ComponentCode }).ToArray() },
+            ["documentRequests"] = documents.Select(x => new { id = x.Id, versionId = x.VersionId, templateVersionId = x.TemplateVersionId, kind = x.Kind, state = x.State }).ToArray() };
+        await tx.CommitAsync(token); return result;
+    }
+}

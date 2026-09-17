@@ -83,13 +83,17 @@ export function addUnderwritingContracts({schemas:s,ref:r,operation:op,paths}){
   s.UnderwritingTermsTemplate=o({id,code:t(60),version:{type:'integer',minimum:1},title:t(300)});
   s.UnderwritingDeliveryAttempt=o({number:{type:'integer',minimum:1,maximum:18},outcome:t(30),startedAt:instant,endedAt:instant,errorCode:t(100)},['number','outcome','startedAt']);
   s.UnderwritingDeliveryView=o({id,termsVersionId:id,jobId:id,state:e('queued','delivered','failed','superseded'),recipientContactIds:many(id,20,1),recipients:many(r('UnderwritingTermsRecipient'),20,1),payloadHash:hash,queuedAt:instant,attempts:many(r('UnderwritingDeliveryAttempt'),18),completedAt:instant,errorCode:t(100)},['id','termsVersionId','jobId','state','recipientContactIds','recipients','payloadHash','queuedAt','attempts']);
-  s.UnderwritingIssueRequest=o({...commandContext,ratingId:id,acceptanceId:id,termsHash:hash,assuranceHash:hash,reason});
+  s.UnderwritingIssueRequest=o({...commandContext,ratingId:id,acceptanceId:id,termsHash:hash,assuranceHash:hash,reason:t(1000)});
   s.UnderwritingIssueResult=o({policyId:id,policyReference:t(40),quoteId:id,quoteEtag:etag,termId:id,versionId:id,transactionId:id,obligationId:id,documentRequestIds:many(id,20,1)});
   s.FirstPolicyFinancialView=o({obligationId:id,transactionId:id,journalId:id,currency:{const:'GBP'},debtorKind:e('agency','relationship'),debtorId:id,amountDue:money,
     premium:money,tax:money,fee:money,brokerCommission:money,brokerFeeShare:money,insurerPayable:money,retainedFeeIncome:money,brokerRemunerationPayable:money,
     lines:many(o({accountCode:t(60),side:e('debit','credit'),amount:positiveMoney,componentCode:t(60)}),30,1)});
-  s.FirstPolicyDocumentRequest=o({id,versionId:id,templateVersionId:id,kind:e('policy-schedule','statement-of-fact','quote-terms'),state:e('queued','generated','failed'),documentVersionId:id},['id','versionId','templateVersionId','kind','state']);
-  s.FirstPolicyView=o({id,reference:t(40),sourceQuoteId:id,clientId:id,relationshipId:id,agencyId:id,termId:id,versionId:id,transactionId:id,issuedAt:instant,snapshot:r('PolicySnapshot'),financials:r('FirstPolicyFinancialView'),documentRequests:many(r('FirstPolicyDocumentRequest'),20)});
+  s.FirstPolicyDocumentRequest=o({id,versionId:id,templateVersionId:id,kind:e('policy-schedule','policy-certificate','policy-statement'),state:e('requested','generated','failed'),documentVersionId:id},['id','versionId','templateVersionId','kind','state']);
+  s.IssuedPolicySnapshot={$ref:'./schemas/issued-policy.schema.json'};
+  s.FirstPolicyView=o({id,reference:t(40),sourceQuoteId:id,clientId:id,relationshipId:id,agencyId:id,termId:id,versionId:id,transactionId:id,issuedAt:instant,snapshot:r('IssuedPolicySnapshot'),financials:r('FirstPolicyFinancialView'),documentRequests:many(r('FirstPolicyDocumentRequest'),20)});
+  Object.assign(s.FirstPolicyView.properties,{contentHash:hash,sourceCycleId:id,ratingId:id,acceptanceId:id,effectiveAt:instant,reason,
+    termNumber:{type:'integer',minimum:1},versionSequence:{type:'integer',minimum:1},transactionSequence:{type:'integer',minimum:1}});
+  s.FirstPolicyView.required.push('contentHash','sourceCycleId','ratingId','acceptanceId','effectiveAt','reason','termNumber','versionSequence','transactionSequence');
 
   const replace=(method,path,name,permission,options={})=>{
     delete paths[path]?.[method];op(method,path,name,permission,{...options,existing:method!=='get'});
@@ -98,7 +102,8 @@ export function addUnderwritingContracts({schemas:s,ref:r,operation:op,paths}){
       ? 'phase-6-03-implemented' : name === 'listQuoteRatings' ? 'phase-6-04-implemented'
         : ['decideQuoteReferrals','decideReferral','getReferral','listReferrals','attachUnderwritingEvidence','listUnderwritingEvidence',
           'listUnderwritingEvidenceEvents','listReferralDecisions','reviewUnderwritingEvidence','withdrawUnderwritingEvidence',
-          'uploadUnderwritingEvidenceFile','resolveReferralCondition'].includes(name) ? 'phase-6-05-implemented' : 'phase-6-pending';
+          'uploadUnderwritingEvidenceFile','resolveReferralCondition'].includes(name) ? 'phase-6-05-implemented'
+          : ['issueQuote','getPolicy','getIssuedPolicyTerm','getIssuedPolicyVersion','getIssuedPolicyTransaction','getIssuedPolicyObligation'].includes(name) ? 'phase-6-11-implemented' : 'phase-6-pending';
     operation.description+=' Phase 6 contract; runtime availability requires owning-plan verification. Current identity, agency and subject scope apply before receipt replay. Responses are no-store.';
     if(method!=='get'){
       operation['x-etag-resource']='quote';
@@ -140,7 +145,13 @@ export function addUnderwritingContracts({schemas:s,ref:r,operation:op,paths}){
   write('/quotes/{quoteId}/issue','issueQuote','policy-issue-within-authority','UnderwritingIssueRequest','UnderwritingIssueResult',201);
   // This first-issue detail does not change the later servicing draft contracts.
   read('/policies/{policyId}','getPolicy','policy-read','FirstPolicyView');
+  read('/policies/{policyId}/terms/{termId}','getIssuedPolicyTerm','policy-read','FirstPolicyView');
+  read('/policies/{policyId}/terms/{termId}/versions/{versionId}','getIssuedPolicyVersion','policy-read','FirstPolicyView');
+  read('/policies/{policyId}/terms/{termId}/transactions/{transactionId}','getIssuedPolicyTransaction','policy-read','FirstPolicyView');
+  read('/policies/{policyId}/terms/{termId}/obligations/{obligationId}','getIssuedPolicyObligation','policy-read','FirstPolicyView');
   for(const name of ['QuoteCaptureSummary','QuoteDiscoverySummary','QuoteCaptureView'])s[name].properties.state=enumeration;
+  s.QuoteCaptureView.properties.boundPolicyId={anyOf:[id,{type:'null'}]};
+  s.UnderwritingAssessment.properties.boundPolicyId=id;
   paths['/quotes'].get.parameters.find(p=>p.name==='status').schema=enumeration;
   const existing=new Set(paths['/policies'].get.parameters.map(p=>p.name));
   for(const [name,schema] of [['productCode',e('motor-trade-road-risks','motor-trade-combined')],['clientId',id],['registration',t(12)],['inceptionFrom',{type:'string',format:'date'}],['inceptionTo',{type:'string',format:'date'}],['sort',e('reference','inception','issued')],['direction',e('asc','desc')]])

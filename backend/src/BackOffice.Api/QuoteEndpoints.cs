@@ -82,7 +82,7 @@ public static class QuoteEndpoints
             return Results.Ok(new
             {
                 id = quoteId, stored.Quote.Reference, stored.Quote.RelationshipId, stored.Quote.ClientId, stored.Quote.AgencyId,
-                stored.ClientName, stored.AgencyName, stored.ProductCode, stored.Quote.State,
+                stored.ClientName, stored.AgencyName, stored.ProductCode, stored.Quote.State, stored.Quote.BoundPolicyId,
                 revisionId = stored.Revision.Id, revisionNumber = stored.Revision.Number, stored.Quote.UpdatedAt,
                 stored.Revision.ProductVersionId, proposal = proposal.RootElement.Clone(),
                 captureVersions = new { stored.VersionPins.SchemaVersion, stored.VersionPins.QuestionSetVersion, referenceDataVersion = stored.VersionPins.ReferenceVersion },

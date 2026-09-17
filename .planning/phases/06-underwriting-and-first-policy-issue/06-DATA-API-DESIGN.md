@@ -75,6 +75,29 @@ Carrier and rating/delivery jobs extend the explicit SqlJobLeases kind allowlist
 
 ### First policy and minimal posting
 
+06-11 contract refinement: the early `policy.schema.json` describes normalized
+servicing data and requires facts absent from some valid source declarations
+(for example licence test date, normalized vehicle ownership and postal address
+line1). Issue must not invent those facts. `issued-policy.schema.json` is the
+closed `issued-quote-1` snapshot contract: it retains the validated ready-capture
+insured/risk/cover declarations, adds owned client/relationship/product IDs,
+resolved term, explicitly projected driver basis, selected cover sections,
+current endorsements/warranties, exact rated premium/settlement and provenance.
+The old normalized contract is preserved for its existing fixtures and later
+servicing work. `FirstPolicyView.snapshot` references the issued contract.
+Selected section IDs and their premises/vehicle limits remain retained; declared
+unselected sections and source responses remain available. Own/customer vehicle
+cover is projected only when actually selected in the trusted cover facts.
+No licence date, address or zero-valued cover is fabricated during issue.
+
+The issuance service validates this entire bundled schema before any policy
+insert. Policy source history remains immutable and exact, including later
+changes to client master data. Read routes for policy, owned term, version,
+transaction and obligation expose the same first-issue record with source cycle,
+rating, acceptance, hash and sequence metadata. These are protected read routes;
+later servicing writes remain separate phases. First-issue document kinds are
+schedule, certificate and statement, with `requested` status until Phase9.
+
 06-10 storage refinement: `IssueFinancialComponent` gives each original premium,
 tax, fee, commission and fee-share amount an immutable identity and coverage
 interval. Journal lines reference that identity and transaction through a

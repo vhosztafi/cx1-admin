@@ -1,0 +1,2170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.cover-mga.example/issued-policy/1.0",
+  "title": "Issued policy retaining validated source declarations",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0"
+    },
+    "productCode": {
+      "enum": [
+        "motor-trade-road-risks",
+        "motor-trade-combined"
+      ]
+    },
+    "insured": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "entityType": {
+          "type": "string",
+          "enum": [
+            "sole-trader",
+            "partnership",
+            "limited-company",
+            "llp"
+          ]
+        },
+        "legalName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "tradingName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "companyNumber": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 30
+        },
+        "address": {
+          "$ref": "#/$defs/Address"
+        },
+        "proposerNames": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "minItems": 1,
+          "maxItems": 3
+        },
+        "contact": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "telephone": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 50
+            },
+            "email": {
+              "type": "string",
+              "format": "email"
+            },
+            "mobile": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 50
+            }
+          },
+          "required": []
+        },
+        "firstName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "surname": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "title": {
+          "$ref": "#/$defs/Reference"
+        },
+        "declaredCompanyType": {
+          "$ref": "#/$defs/Reference"
+        },
+        "responses": {
+          "$ref": "#/$defs/Responses"
+        },
+        "clientId": {
+          "$ref": "#/$defs/Id"
+        },
+        "clientAgencyRelationshipId": {
+          "$ref": "#/$defs/Id"
+        }
+      },
+      "required": [
+        "entityType",
+        "proposerNames",
+        "declaredCompanyType",
+        "firstName",
+        "surname",
+        "address",
+        "contact",
+        "clientId",
+        "clientAgencyRelationshipId"
+      ]
+    },
+    "risk": {
+      "$ref": "#/$defs/RoadRisk"
+    },
+    "cover": {
+      "$ref": "#/$defs/Cover"
+    },
+    "productVersionId": {
+      "$ref": "#/$defs/Id"
+    },
+    "term": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "annual",
+            "short-period"
+          ]
+        },
+        "startsAt": {
+          "$ref": "#/$defs/Instant"
+        },
+        "endsAt": {
+          "$ref": "#/$defs/Instant"
+        },
+        "timeZone": {
+          "const": "Europe/London"
+        }
+      },
+      "required": [
+        "kind",
+        "startsAt",
+        "endsAt",
+        "timeZone"
+      ]
+    },
+    "premium": {
+      "$ref": "#/$defs/Premium"
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": [
+            "backoffice",
+            "demo-seed"
+          ]
+        },
+        "quoteRevisionId": {
+          "$ref": "#/$defs/Id"
+        },
+        "authorityVersionId": {
+          "$ref": "#/$defs/Id"
+        }
+      },
+      "required": [
+        "source",
+        "quoteRevisionId",
+        "authorityVersionId"
+      ]
+    },
+    "snapshotFormat": {
+      "const": "issued-quote-1"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "productCode",
+    "insured",
+    "risk",
+    "cover",
+    "productVersionId",
+    "term",
+    "premium",
+    "provenance",
+    "snapshotFormat"
+  ],
+  "$defs": {
+    "Id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "Date": {
+      "type": "string",
+      "format": "date"
+    },
+    "Instant": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "Amount": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+    },
+    "Reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "collection": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          ]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 250
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        }
+      },
+      "required": [
+        "collection",
+        "value",
+        "label",
+        "version"
+      ]
+    },
+    "Address": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "line1": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "line2": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "town": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "county": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "postcode": {
+          "type": "string",
+          "pattern": "^[A-Z0-9 ]{5,10}$"
+        },
+        "country": {
+          "const": "GB"
+        },
+        "houseNumber": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50
+        },
+        "street": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "city": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        }
+      },
+      "required": [
+        "postcode"
+      ]
+    },
+    "Answer": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "questionId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "kind": {
+              "const": "boolean"
+            },
+            "value": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "questionId",
+            "kind",
+            "value"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "questionId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "kind": {
+              "const": "text"
+            },
+            "value": {
+              "type": "string",
+              "maxLength": 4000
+            }
+          },
+          "required": [
+            "questionId",
+            "kind",
+            "value"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "questionId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "kind": {
+              "const": "date"
+            },
+            "value": {
+              "$ref": "#/$defs/Date"
+            }
+          },
+          "required": [
+            "questionId",
+            "kind",
+            "value"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "questionId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "kind": {
+              "const": "count"
+            },
+            "value": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000
+            }
+          },
+          "required": [
+            "questionId",
+            "kind",
+            "value"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "questionId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "kind": {
+              "const": "money"
+            },
+            "value": {
+              "$ref": "#/$defs/Amount"
+            },
+            "currency": {
+              "const": "GBP"
+            }
+          },
+          "required": [
+            "questionId",
+            "kind",
+            "value",
+            "currency"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "questionId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "kind": {
+              "const": "reference"
+            },
+            "value": {
+              "$ref": "#/$defs/Reference"
+            }
+          },
+          "required": [
+            "questionId",
+            "kind",
+            "value"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "questionId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "kind": {
+              "const": "references"
+            },
+            "value": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Reference"
+              },
+              "minItems": 0,
+              "maxItems": 1000
+            }
+          },
+          "required": [
+            "questionId",
+            "kind",
+            "value"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "questionId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "kind": {
+              "const": "percentage"
+            },
+            "value": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "unit": {
+              "const": "basis-points"
+            }
+          },
+          "required": [
+            "questionId",
+            "kind",
+            "value",
+            "unit"
+          ]
+        }
+      ]
+    },
+    "Responses": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "questionSetVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "answers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Answer"
+          },
+          "minItems": 0,
+          "maxItems": 1000
+        }
+      },
+      "required": [
+        "questionSetVersion",
+        "answers"
+      ]
+    },
+    "Activity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "code": {
+          "$ref": "#/$defs/Reference"
+        },
+        "turnoverBasisPoints": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        }
+      },
+      "required": [
+        "id",
+        "code",
+        "turnoverBasisPoints"
+      ]
+    },
+    "Loss": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "occurredOn": {
+          "$ref": "#/$defs/Date"
+        },
+        "type": {
+          "$ref": "#/$defs/Reference"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "amount": {
+          "$ref": "#/$defs/Amount"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "open",
+            "closed",
+            "notification-only"
+          ]
+        },
+        "fault": {
+          "type": "string",
+          "enum": [
+            "fault",
+            "non-fault",
+            "unknown",
+            "split"
+          ]
+        },
+        "riskItemId": {
+          "$ref": "#/$defs/Id"
+        },
+        "responses": {
+          "$ref": "#/$defs/Responses"
+        },
+        "declaredStatus": {
+          "$ref": "#/$defs/Reference"
+        },
+        "declaredType": {
+          "$ref": "#/$defs/Reference"
+        }
+      },
+      "required": [
+        "id",
+        "occurredOn",
+        "type",
+        "declaredType",
+        "description",
+        "amount",
+        "declaredStatus",
+        "fault",
+        "responses"
+      ]
+    },
+    "Conviction": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "occurredOn": {
+          "$ref": "#/$defs/Date"
+        },
+        "code": {
+          "$ref": "#/$defs/Reference"
+        },
+        "fine": {
+          "$ref": "#/$defs/Amount"
+        },
+        "points": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "banMonths": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1200
+        },
+        "responses": {
+          "$ref": "#/$defs/Responses"
+        },
+        "disqualified": {
+          "type": "boolean"
+        },
+        "declaredBanPeriod": {
+          "type": "string",
+          "enum": [
+            "none",
+            "under-3-months",
+            "3-to-6-months",
+            "6-to-12-months",
+            "over-12-months"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "occurredOn",
+        "code",
+        "fine",
+        "points",
+        "disqualified",
+        "declaredBanPeriod",
+        "responses"
+      ]
+    },
+    "Driver": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "firstName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "surname": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "dateOfBirth": {
+          "$ref": "#/$defs/Date"
+        },
+        "address": {
+          "$ref": "#/$defs/Address"
+        },
+        "relationship": {
+          "$ref": "#/$defs/Reference"
+        },
+        "usage": {
+          "$ref": "#/$defs/Reference"
+        },
+        "licence": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "$ref": "#/$defs/Reference"
+            },
+            "number": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 40
+            },
+            "testDate": {
+              "$ref": "#/$defs/Date"
+            },
+            "issuedOn": {
+              "$ref": "#/$defs/Date"
+            }
+          },
+          "required": [
+            "type",
+            "issuedOn"
+          ]
+        },
+        "convictions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Conviction"
+          },
+          "minItems": 0,
+          "maxItems": 1000
+        },
+        "losses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Loss"
+          },
+          "minItems": 0,
+          "maxItems": 1000
+        },
+        "responses": {
+          "$ref": "#/$defs/Responses"
+        },
+        "fullName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "occupations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DriverOccupation"
+          },
+          "minItems": 0,
+          "maxItems": 5
+        },
+        "criminalConvictions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CriminalConviction"
+          },
+          "minItems": 0,
+          "maxItems": 100
+        },
+        "countyCourtJudgments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CountyCourtJudgment"
+          },
+          "minItems": 0,
+          "maxItems": 100
+        }
+      },
+      "required": [
+        "id",
+        "firstName",
+        "surname",
+        "dateOfBirth",
+        "address",
+        "relationship",
+        "usage",
+        "licence",
+        "responses"
+      ],
+      "anyOf": [
+        {
+          "properties": {
+            "fullName": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "required": [
+            "fullName"
+          ]
+        },
+        {
+          "properties": {
+            "firstName": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "surname": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          },
+          "required": [
+            "firstName",
+            "surname"
+          ]
+        }
+      ]
+    },
+    "Vehicle": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "registration": {
+          "type": "string",
+          "pattern": "^[A-Z0-9 ]{2,12}$"
+        },
+        "make": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "manufactureYear": {
+          "type": "integer",
+          "minimum": 1900,
+          "maximum": 2200
+        },
+        "body": {
+          "$ref": "#/$defs/Reference"
+        },
+        "ownership": {
+          "type": "string",
+          "enum": [
+            "business-owned",
+            "stock-for-sale",
+            "driver-personal",
+            "customer"
+          ]
+        },
+        "ownerDriverId": {
+          "$ref": "#/$defs/Id"
+        },
+        "value": {
+          "$ref": "#/$defs/Amount"
+        },
+        "purchasePrice": {
+          "$ref": "#/$defs/Amount"
+        },
+        "purchasedOn": {
+          "$ref": "#/$defs/Date"
+        },
+        "grossWeightKg": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "engineCc": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "responses": {
+          "$ref": "#/$defs/Responses"
+        },
+        "modifications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/VehicleModification"
+          },
+          "minItems": 0,
+          "maxItems": 1000
+        },
+        "register": {
+          "type": "string",
+          "enum": [
+            "owned-not-for-sale",
+            "held-for-sale"
+          ]
+        },
+        "abiCode": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "abiGroup": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "vehicleType": {
+          "$ref": "#/$defs/Reference"
+        },
+        "bodyDescription": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "seats": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "doors": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "fuelType": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "transmission": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "declaredEngineSize": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "registrationYear": {
+          "type": "integer",
+          "minimum": 1900,
+          "maximum": 2200
+        },
+        "registeredOn": {
+          "$ref": "#/$defs/Date"
+        },
+        "imported": {
+          "type": "boolean"
+        },
+        "declaredOwnerType": {
+          "$ref": "#/$defs/Reference"
+        },
+        "keptOvernightType": {
+          "$ref": "#/$defs/Reference"
+        },
+        "keptOvernightAddress": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "partOfLeaseAgreement": {
+          "type": "boolean"
+        },
+        "leaseLengthYears": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "customerLoan": {
+          "type": "boolean"
+        },
+        "modified": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "registration",
+        "register",
+        "body",
+        "value",
+        "purchasedOn",
+        "declaredOwnerType",
+        "keptOvernightType",
+        "keptOvernightAddress",
+        "partOfLeaseAgreement",
+        "modified",
+        "responses"
+      ]
+    },
+    "Premises": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "address": {
+          "$ref": "#/$defs/Address"
+        },
+        "use": {
+          "$ref": "#/$defs/Reference"
+        },
+        "security": {
+          "$ref": "#/$defs/Reference"
+        },
+        "buildings": {
+          "$ref": "#/$defs/Amount"
+        },
+        "contents": {
+          "$ref": "#/$defs/Amount"
+        },
+        "responses": {
+          "$ref": "#/$defs/Responses"
+        },
+        "yearsTrading": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "sharedWorksite": {
+          "type": "boolean"
+        },
+        "declaredUse": {
+          "$ref": "#/$defs/Reference"
+        }
+      },
+      "required": [
+        "id",
+        "address",
+        "use",
+        "yearsTrading",
+        "sharedWorksite"
+      ]
+    },
+    "Business": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "startedOn": {
+          "$ref": "#/$defs/Date"
+        },
+        "turnover": {
+          "$ref": "#/$defs/Amount"
+        },
+        "wageRoll": {
+          "$ref": "#/$defs/Amount"
+        },
+        "activities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Activity"
+          },
+          "minItems": 1,
+          "maxItems": 1000
+        },
+        "responses": {
+          "$ref": "#/$defs/Responses"
+        },
+        "declaredActivitySplit": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sales": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "servicing": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "mechanicalRepair": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "breakdownRecovery": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "bodyRepairs": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "valeting": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "other": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            }
+          },
+          "required": [
+            "sales",
+            "servicing",
+            "mechanicalRepair",
+            "breakdownRecovery",
+            "bodyRepairs",
+            "valeting",
+            "other"
+          ]
+        }
+      },
+      "required": [
+        "description",
+        "startedOn",
+        "turnover",
+        "wageRoll",
+        "activities",
+        "responses",
+        "declaredActivitySplit"
+      ]
+    },
+    "PreviousInsurance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "insurer": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "expiresOn": {
+          "$ref": "#/$defs/Date"
+        },
+        "noClaimsYears": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "responses": {
+          "$ref": "#/$defs/Responses"
+        },
+        "noClaimsYearsBasis": {
+          "type": "string",
+          "enum": [
+            "exact",
+            "at-least"
+          ]
+        },
+        "policyNumber": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "policyholderName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "noClaimsBonusExpiresOn": {
+          "$ref": "#/$defs/Date"
+        }
+      },
+      "required": [
+        "responses"
+      ]
+    },
+    "DriverBasis": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "named"
+            },
+            "responses": {
+              "$ref": "#/$defs/Responses"
+            }
+          },
+          "required": [
+            "kind",
+            "responses"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "enum": [
+                "any-driver",
+                "named-and-any-driver"
+              ]
+            },
+            "minimumAge": {
+              "type": "integer",
+              "minimum": 16,
+              "maximum": 100
+            },
+            "maximumAge": {
+              "type": "integer",
+              "minimum": 16,
+              "maximum": 100
+            },
+            "driverCount": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000
+            },
+            "responses": {
+              "$ref": "#/$defs/Responses"
+            },
+            "maximumVehicleGrouping": {
+              "$ref": "#/$defs/Reference"
+            },
+            "maximumGrossVehicleWeight": {
+              "$ref": "#/$defs/Reference"
+            },
+            "maximumMotorcycleCapacity": {
+              "$ref": "#/$defs/Reference"
+            }
+          },
+          "required": [
+            "kind",
+            "minimumAge",
+            "maximumAge",
+            "driverCount",
+            "responses",
+            "maximumVehicleGrouping",
+            "maximumGrossVehicleWeight",
+            "maximumMotorcycleCapacity"
+          ]
+        }
+      ]
+    },
+    "RoadRisk": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "business": {
+          "$ref": "#/$defs/Business"
+        },
+        "drivers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Driver"
+          },
+          "minItems": 0,
+          "maxItems": 1000
+        },
+        "vehicles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Vehicle"
+          },
+          "minItems": 0,
+          "maxItems": 1000
+        },
+        "specifiedVehicleIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Id"
+          },
+          "minItems": 0,
+          "maxItems": 1000
+        },
+        "tradePlates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/Id"
+              },
+              "number": {
+                "type": "string",
+                "pattern": "^[A-Z0-9 ]{2,12}$"
+              }
+            },
+            "required": [
+              "id",
+              "number"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 1000
+        },
+        "premises": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Premises"
+          },
+          "minItems": 0,
+          "maxItems": 1000
+        },
+        "previousInsurance": {
+          "$ref": "#/$defs/PreviousInsurance"
+        },
+        "declarations": {
+          "$ref": "#/$defs/Responses"
+        },
+        "materialFacts": {
+          "type": "string",
+          "maxLength": 8000
+        },
+        "specifiedVehiclesRequested": {
+          "type": "boolean"
+        },
+        "responses": {
+          "$ref": "#/$defs/Responses"
+        },
+        "heldTradePlates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/Id"
+              },
+              "number": {
+                "type": "string",
+                "pattern": "^[A-Z0-9 ]{2,12}$"
+              }
+            },
+            "required": [
+              "id",
+              "number"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 1000
+        },
+        "driverBasis": {
+          "$ref": "#/$defs/DriverBasis"
+        }
+      },
+      "required": [
+        "business",
+        "responses",
+        "previousInsurance",
+        "declarations",
+        "specifiedVehiclesRequested",
+        "driverBasis"
+      ]
+    },
+    "Location": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "address": {
+          "$ref": "#/$defs/Address"
+        },
+        "occupancy": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "construction": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "security": {
+          "$ref": "#/$defs/Reference"
+        },
+        "floodZone": {
+          "type": "string",
+          "enum": [
+            "1",
+            "2",
+            "3"
+          ]
+        },
+        "buildings": {
+          "$ref": "#/$defs/Amount"
+        },
+        "contents": {
+          "$ref": "#/$defs/Amount"
+        },
+        "stock": {
+          "$ref": "#/$defs/Amount"
+        },
+        "maximumEstimatedLoss": {
+          "$ref": "#/$defs/Amount"
+        },
+        "responses": {
+          "$ref": "#/$defs/Responses"
+        }
+      },
+      "required": [
+        "id",
+        "address",
+        "occupancy",
+        "construction",
+        "security",
+        "floodZone",
+        "buildings",
+        "contents",
+        "stock",
+        "maximumEstimatedLoss",
+        "responses"
+      ]
+    },
+    "Wage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "category": {
+          "$ref": "#/$defs/Reference"
+        },
+        "employees": {
+          "$ref": "#/$defs/Amount"
+        },
+        "labourOnlySubcontractors": {
+          "$ref": "#/$defs/Amount"
+        },
+        "bonaFideSubcontractors": {
+          "$ref": "#/$defs/Amount"
+        },
+        "responses": {
+          "$ref": "#/$defs/Responses"
+        }
+      },
+      "required": [
+        "id",
+        "category",
+        "employees",
+        "labourOnlySubcontractors",
+        "bonaFideSubcontractors"
+      ]
+    },
+    "Cover": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "responses": {
+          "$ref": "#/$defs/Responses"
+        },
+        "annualEuropeanCover": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AnnualEuropeanCover"
+          },
+          "minItems": 0,
+          "maxItems": 1000
+        },
+        "temporaryEuropeanCover": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TemporaryEuropeanCover"
+          },
+          "minItems": 0,
+          "maxItems": 1000
+        },
+        "requestedSections": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "code": {
+                    "const": "stock-custody"
+                  },
+                  "selected": {
+                    "const": false
+                  }
+                },
+                "required": [
+                  "id",
+                  "code",
+                  "selected"
+                ]
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "code": {
+                    "const": "stock-custody"
+                  },
+                  "selected": {
+                    "const": true
+                  },
+                  "limit": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$",
+                    "not": {
+                      "const": "0.00"
+                    }
+                  },
+                  "excess": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+                  },
+                  "anyOneVehicleLimit": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$",
+                    "not": {
+                      "const": "0.00"
+                    }
+                  }
+                },
+                "required": [
+                  "id",
+                  "code",
+                  "selected",
+                  "limit",
+                  "excess",
+                  "anyOneVehicleLimit"
+                ]
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "code": {
+                    "const": "premises"
+                  },
+                  "selected": {
+                    "const": false
+                  }
+                },
+                "required": [
+                  "id",
+                  "code",
+                  "selected"
+                ]
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "code": {
+                    "const": "premises"
+                  },
+                  "selected": {
+                    "const": true
+                  },
+                  "limit": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$",
+                    "not": {
+                      "const": "0.00"
+                    }
+                  },
+                  "excess": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+                  },
+                  "premisesIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "minItems": 1,
+                    "maxItems": 100,
+                    "uniqueItems": true
+                  }
+                },
+                "required": [
+                  "id",
+                  "code",
+                  "selected",
+                  "limit",
+                  "excess",
+                  "premisesIds"
+                ]
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "code": {
+                    "const": "tools-equipment"
+                  },
+                  "selected": {
+                    "const": false
+                  }
+                },
+                "required": [
+                  "id",
+                  "code",
+                  "selected"
+                ]
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "code": {
+                    "const": "tools-equipment"
+                  },
+                  "selected": {
+                    "const": true
+                  },
+                  "limit": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$",
+                    "not": {
+                      "const": "0.00"
+                    }
+                  },
+                  "excess": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+                  }
+                },
+                "required": [
+                  "id",
+                  "code",
+                  "selected",
+                  "limit",
+                  "excess"
+                ]
+              }
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "allOf": [
+            {
+              "contains": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "const": "stock-custody"
+                  }
+                },
+                "required": [
+                  "code"
+                ]
+              },
+              "minContains": 0,
+              "maxContains": 1
+            },
+            {
+              "contains": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "const": "premises"
+                  }
+                },
+                "required": [
+                  "code"
+                ]
+              },
+              "minContains": 0,
+              "maxContains": 1
+            },
+            {
+              "contains": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "const": "tools-equipment"
+                  }
+                },
+                "required": [
+                  "code"
+                ]
+              },
+              "minContains": 0,
+              "maxContains": 1
+            }
+          ]
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "$ref": "#/$defs/Id"
+                  },
+                  "code": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "limit": {
+                    "$ref": "#/$defs/Amount"
+                  },
+                  "excess": {
+                    "$ref": "#/$defs/Amount"
+                  },
+                  "anyOneVehicleLimit": {
+                    "$ref": "#/$defs/Amount"
+                  },
+                  "premisesIds": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/Id"
+                    },
+                    "minItems": 1,
+                    "maxItems": 100,
+                    "uniqueItems": true
+                  }
+                },
+                "required": [
+                  "id",
+                  "code",
+                  "limit",
+                  "excess"
+                ]
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "$ref": "#/$defs/Id"
+                  },
+                  "code": {
+                    "const": "road-risks"
+                  },
+                  "coverLevel": {
+                    "enum": [
+                      "comprehensive",
+                      "third-party-fire-theft",
+                      "third-party-only"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "code",
+                  "coverLevel"
+                ]
+              }
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 1000
+        },
+        "endorsements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 50
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 8000
+              }
+            },
+            "required": [
+              "code",
+              "version",
+              "text"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 1000
+        },
+        "warranties": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 50
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 8000
+              }
+            },
+            "required": [
+              "code",
+              "version",
+              "text"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 1000
+        }
+      },
+      "required": [
+        "responses",
+        "sections",
+        "endorsements",
+        "warranties"
+      ]
+    },
+    "Premium": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "currency": {
+          "const": "GBP"
+        },
+        "annualPremium": {
+          "$ref": "#/$defs/Amount"
+        },
+        "termPremium": {
+          "$ref": "#/$defs/Amount"
+        },
+        "tax": {
+          "$ref": "#/$defs/Amount"
+        },
+        "fee": {
+          "$ref": "#/$defs/Amount"
+        },
+        "brokerCommission": {
+          "$ref": "#/$defs/Amount"
+        },
+        "grossPayable": {
+          "$ref": "#/$defs/Amount"
+        },
+        "netBrokerDue": {
+          "$ref": "#/$defs/Amount"
+        },
+        "insurerDue": {
+          "$ref": "#/$defs/Amount"
+        },
+        "taxBasisPoints": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "commissionBasisPoints": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "ratingResultId": {
+          "$ref": "#/$defs/Id"
+        },
+        "ruleVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "settlement": {
+          "$ref": "#/$defs/Settlement"
+        }
+      },
+      "required": [
+        "currency",
+        "annualPremium",
+        "termPremium",
+        "tax",
+        "fee",
+        "brokerCommission",
+        "grossPayable",
+        "netBrokerDue",
+        "insurerDue",
+        "taxBasisPoints",
+        "commissionBasisPoints",
+        "ratingResultId",
+        "ruleVersion",
+        "settlement"
+      ]
+    },
+    "Settlement": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "termsVersionId": {
+          "$ref": "#/$defs/Id"
+        },
+        "collector": {
+          "type": "string",
+          "enum": [
+            "agency",
+            "mga"
+          ]
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "net-remittance",
+            "separate-payment"
+          ]
+        },
+        "feeShareBasisPoints": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "brokerFeeShare": {
+          "$ref": "#/$defs/Amount"
+        },
+        "mgaFeeIncome": {
+          "$ref": "#/$defs/Amount"
+        },
+        "brokerRemuneration": {
+          "$ref": "#/$defs/Amount"
+        },
+        "invoiceDue": {
+          "$ref": "#/$defs/Amount"
+        },
+        "remunerationPayable": {
+          "$ref": "#/$defs/Amount"
+        },
+        "netEconomicDue": {
+          "$ref": "#/$defs/Amount"
+        }
+      },
+      "required": [
+        "termsVersionId",
+        "collector",
+        "mode",
+        "feeShareBasisPoints",
+        "brokerFeeShare",
+        "mgaFeeIncome",
+        "brokerRemuneration",
+        "invoiceDue",
+        "remunerationPayable",
+        "netEconomicDue"
+      ]
+    },
+    "DriverOccupation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "occupation": {
+          "$ref": "#/$defs/Reference"
+        },
+        "businessUseRequired": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "occupation",
+        "businessUseRequired"
+      ]
+    },
+    "CriminalConviction": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "occurredOn": {
+          "$ref": "#/$defs/Date"
+        },
+        "code": {
+          "$ref": "#/$defs/Reference"
+        },
+        "sentenceYears": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "sentenceMonths": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 11
+        }
+      },
+      "required": [
+        "id",
+        "occurredOn",
+        "code",
+        "sentenceYears",
+        "sentenceMonths"
+      ]
+    },
+    "CountyCourtJudgment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "occurredOn": {
+          "$ref": "#/$defs/Date"
+        },
+        "status": {
+          "$ref": "#/$defs/Reference"
+        },
+        "amount": {
+          "$ref": "#/$defs/Amount"
+        },
+        "circumstances": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        }
+      },
+      "required": [
+        "id",
+        "occurredOn",
+        "status",
+        "amount",
+        "circumstances"
+      ]
+    },
+    "VehicleModification": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "code": {
+          "$ref": "#/$defs/Reference"
+        }
+      },
+      "required": [
+        "id",
+        "code"
+      ]
+    },
+    "AnnualEuropeanCover": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "registration": {
+          "type": "string",
+          "pattern": "^[A-Z0-9 ]{2,12}$"
+        },
+        "usage": {
+          "$ref": "#/$defs/Reference"
+        }
+      },
+      "required": [
+        "id",
+        "registration",
+        "usage"
+      ]
+    },
+    "TemporaryEuropeanCover": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "registration": {
+          "type": "string",
+          "pattern": "^[A-Z0-9 ]{2,12}$"
+        },
+        "startsOn": {
+          "$ref": "#/$defs/Date"
+        },
+        "endsOn": {
+          "$ref": "#/$defs/Date"
+        },
+        "area": {
+          "$ref": "#/$defs/Reference"
+        },
+        "driverIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Id"
+          },
+          "minItems": 0,
+          "maxItems": 1000,
+          "uniqueItems": true
+        },
+        "cover": {
+          "$ref": "#/$defs/Reference"
+        },
+        "usage": {
+          "$ref": "#/$defs/Reference"
+        }
+      },
+      "required": [
+        "id",
+        "registration",
+        "startsOn",
+        "endsOn",
+        "area",
+        "cover",
+        "usage"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "productCode": {
+            "const": "motor-trade-road-risks"
+          }
+        },
+        "required": [
+          "productCode"
+        ]
+      },
+      "then": {
+        "properties": {
+          "cover": {
+            "type": "object",
+            "properties": {
+              "requestedSections": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "const": "tools-equipment"
+                    }
+                  },
+                  "required": [
+                    "code"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

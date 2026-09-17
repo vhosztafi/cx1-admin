@@ -9,7 +9,7 @@ const examples=(await read('examples/underwriting-api.json')).requests;
 const operations=Object.values(spec.paths).flatMap(path=>Object.values(path)).filter(x=>x.operationId);
 const ajv=new Ajv2020({strict:true,allErrors:true});addFormats(ajv);ajv.addFormat('binary',true);
 const aliases={};
-for(const name of ['policy','policy-draft','quote-draft']){
+for(const name of ['policy','policy-draft','quote-draft','issued-policy']){
   const schema=await read(`schemas/${name}.schema.json`);ajv.addSchema(schema);aliases[`./schemas/${name}.schema.json`]=schema.$id;
 }
 const root='https://contracts.cover-mga.example/underwriting-test';

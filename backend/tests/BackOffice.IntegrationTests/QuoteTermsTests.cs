@@ -47,7 +47,7 @@ public sealed partial class UnderwritingRuntimeTests
             DeclaredFullName = person.FullName, NormalizedName = person.FullName.ToUpperInvariant(), Role = "director", Email = "quotation-customer@example.invalid",
             MarketingConsent = "{\"state\":\"not-asked\",\"email\":false,\"telephone\":false,\"source\":\"Fictional fixture\",\"recordedAt\":\"2026-09-16T12:00:00Z\"}" };
         db.Add(contact); await db.SaveChangesAsync();
-        return (f, await db.Set<TemplateVersion>().Where(x => x.ProductId == cycle.ProductId).Select(x => x.Id).SingleAsync(), cycle.CurrentRatingId!.Value, contact.Id);
+        return (f, await db.Set<TemplateVersion>().Where(x => x.ProductId == cycle.ProductId && x.Kind == "quote-terms").Select(x => x.Id).SingleAsync(), cycle.CurrentRatingId!.Value, contact.Id);
     }
 
     [Theory]

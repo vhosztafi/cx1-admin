@@ -185,5 +185,25 @@ then send to selected current relationship contacts. After delivery, upload and
 review actual acceptance evidence before recording the named accepter, received
 instant and channel. Changes to warranties, price, applicable configuration or
 proof require current reassessment; old acceptance is never a blanket permission
-for issue. Quotation UI and policy issue are implemented in subsequent Phase6
-slices; generic rendered document generation remains Phase9.
+for issue. The quotation UI supports these exact-version steps; generic rendered
+document generation remains Phase9.
+
+## First policy issue
+
+`POST /api/v1/quotes/{quoteId}/issue` requires a current authorised underwriter,
+strong quote ETag, CSRF token, idempotency key and exact current accepted context.
+It atomically saves policy/term/version/transaction identities, the opening
+obligation and balanced journal, three document requests and the quote's bound
+policy link. Repeating the same command recovers that receipt only while current
+authority still permits it. It does not collect payment or send documents.
+
+The issued JSON uses the closed `issued-quote-1` snapshot contract. It preserves
+the actual source proposal's risk details and adds resolved dates, exact money
+and provenance; the separate future-servicing schema remains unchanged. Protected
+policy and child reads enforce owned term/version/transaction/obligation IDs.
+
+Repeat initialization adds three fictional policy template kinds for each Motor
+Trade product if absent. Existing template edits/retirement, data and passwords
+are preserved. `policy-document` outbox work intentionally remains pending until
+Phase9 implements document generation. Policy discovery and agency sharing are
+separate Phase6 work; existing client-policy placeholders are replaced there.

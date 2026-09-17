@@ -41,9 +41,9 @@ public sealed partial class UnderwritingRuntimeTests
         });
     }
 
-    private static async Task<(DecisionFixture Fixture, Guid TermsId, Guid ContactId, Guid RatingId)> SignedTerms(BackOfficeDbContext db, string password, bool tradingReferral = false)
+    private static async Task<(DecisionFixture Fixture, Guid TermsId, Guid ContactId, Guid RatingId)> SignedTerms(BackOfficeDbContext db, string password, bool tradingReferral = false, string product = "motor-trade-road-risks")
     {
-        var setup = await TermsFixture(db, password, tradingReferral: tradingReferral); var f = setup.Fixture;
+        var setup = await TermsFixture(db, password, product, tradingReferral: tradingReferral); var f = setup.Fixture;
         var terms = await new QuoteTermsService(f.Factory, f.Clock).PrepareAsync(f.Servicing, f.QuoteId, f.CycleId, setup.RatingId, setup.TemplateId, await TermsVersion(db, f), Guid.NewGuid().ToString(), Guid.NewGuid());
         await TermsProof(db, f, (await new UnderwritingEvidenceService(f.Factory, f.Clock).RequirementsAsync(f.Servicing, f.QuoteId)).Single(x => x.Code == "signed-statement"));
         return (f, terms.ResourceId, setup.ContactId, setup.RatingId);
