@@ -26,7 +26,20 @@ export function projectServicingCapture(base: QuoteProposal, proposal: Servicing
     if (replace) for (const key of Object.keys(target)) if (key !== 'id') delete target[key];
     merge(target, payload);
   }
+  let specifiedRequired: boolean | undefined;
   for (const { change } of ordered) {
+    if (change.specifiedVehicle) {
+      const declaration = change.specifiedVehicle;
+      if (change.kind !== 'vehicle' || typeof declaration.selected !== 'boolean' || typeof declaration.required !== 'boolean') throw new Error('Specified vehicle declarations require a vehicle and both choices.');
+      if (change.operation === 'remove' && declaration.selected) throw new Error('A removed vehicle cannot remain specified.');
+      if (specifiedRequired !== undefined && specifiedRequired !== declaration.required) throw new Error('Vehicle changes must agree whether specified vehicles are required.');
+      specifiedRequired = declaration.required;
+      const references = (result.risk.specifiedVehicleIds ?? []) as string[];
+      result.risk.specifiedVehicleIds = declaration.selected
+        ? references.some(id => sameServicingId(id, change.riskItemId)) ? [...references] : [...references, change.riskItemId]
+        : references.filter(id => !sameServicingId(id, change.riskItemId));
+      result.risk.specifiedVehiclesRequested = declaration.required;
+    }
     const payload = structuredClone(change.payload ?? {});
     if (change.kind === 'business' || change.kind === 'policyholder' || change.kind === 'cover' && sameServicingId(change.riskItemId, policyId)) {
       if (change.operation !== 'update' || !sameServicingId(change.riskItemId, change.kind === 'policyholder' ? clientId : policyId)) throw new Error('This change does not belong to the selected policy.');

@@ -249,4 +249,58 @@ public sealed partial class ServicingProposalTests
         Assert.False(projected.GetProperty("selected").GetBoolean()); Assert.False(projected.TryGetProperty("limit", out _));
         Assert.NotNull(section["limit"]);
     }
+
+    [Fact]
+    public void RemovingSpecifiedVehicleRequiresExplicitSelectionAndRequirementDeclarations()
+    {
+        var snapshot = Snapshot(); var id = Guid.Parse(snapshot["risk"]!["vehicles"]![0]!["id"]!.GetValue<string>());
+        snapshot["risk"]!["specifiedVehicleIds"] = new JsonArray(id.ToString()); snapshot["risk"]!["specifiedVehiclesRequested"] = true;
+        var removal = Change("vehicle", id, "remove");
+        Assert.Throws<QuoteValidationException>(() => ServicingProposalRules.Assess(snapshot.ToJsonString(), Draft(removal), Context()));
+        removal["specifiedVehicle"] = new JsonObject { ["selected"] = false, ["required"] = true };
+        var result = ServicingProposalRules.Assess(snapshot.ToJsonString(), Draft(removal), Context());
+        Assert.Empty(result.Proposed.GetProperty("risk").GetProperty("specifiedVehicleIds").EnumerateArray());
+        Assert.Contains(result.ReadinessIssues, issue => issue.Code == "specified-vehicle-required");
+        removal["specifiedVehicle"]!["required"] = false;
+        result = ServicingProposalRules.Assess(snapshot.ToJsonString(), Draft(removal), Context());
+        Assert.False(result.Proposed.GetProperty("risk").GetProperty("specifiedVehiclesRequested").GetBoolean());
+        Assert.DoesNotContain(result.ReadinessIssues, issue => issue.Code == "specified-vehicle-required");
+        Assert.Single(snapshot["risk"]!["specifiedVehicleIds"]!.AsArray());
+    }
+
+    [Fact]
+    public void NewSpecifiedVehicleUsesItsOwnStableIdAndCannotSelectARemovedVehicle()
+    {
+        var id = Guid.NewGuid(); var addition = Change("vehicle", id, "add", new JsonObject());
+        addition["specifiedVehicle"] = new JsonObject { ["selected"] = true, ["required"] = true };
+        var result = ServicingProposalRules.Assess(Snapshot().ToJsonString(), Draft(addition), Context());
+        Assert.Contains(result.Proposed.GetProperty("risk").GetProperty("specifiedVehicleIds").EnumerateArray(), item => item.GetGuid() == id);
+        var existing = Guid.Parse(Snapshot()["risk"]!["vehicles"]![0]!["id"]!.GetValue<string>());
+        var removal = Change("vehicle", existing, "remove"); removal["specifiedVehicle"] = addition["specifiedVehicle"]!.DeepClone();
+        Assert.Throws<QuoteValidationException>(() => ServicingProposalRules.Assess(Snapshot().ToJsonString(), Draft(removal), Context()));
+    }
+
+    [Fact]
+    public void ConflictingGlobalSpecifiedDeclarationsAndNonVehicleDeclarationsFail()
+    {
+        var one = Change("vehicle", Guid.NewGuid(), "add", new JsonObject());
+        var two = Change("vehicle", Guid.NewGuid(), "add", new JsonObject());
+        one["specifiedVehicle"] = new JsonObject { ["selected"] = false, ["required"] = true };
+        two["specifiedVehicle"] = new JsonObject { ["selected"] = false, ["required"] = false };
+        Assert.Throws<QuoteValidationException>(() => ServicingProposalRules.Assess(Snapshot().ToJsonString(), Draft(one, two), Context()));
+        one["kind"] = "driver";
+        Assert.Throws<QuoteInputException>(() => ServicingProposalInput.Parse(Draft(one), Base));
+    }
+
+    [Fact]
+    public void RestatingSpecifiedSelectionIsNotAMaterialChange()
+    {
+        var snapshot = Snapshot(); var original = snapshot["risk"]!["vehicles"]![0]!;
+        var id = Guid.Parse(original["id"]!.GetValue<string>()); var secondId = Guid.NewGuid();
+        var second = original.DeepClone(); second["id"] = secondId.ToString(); snapshot["risk"]!["vehicles"]!.AsArray().Add(second);
+        snapshot["risk"]!["specifiedVehicleIds"] = new JsonArray(id.ToString(), secondId.ToString()); snapshot["risk"]!["specifiedVehiclesRequested"] = true;
+        var change = Change("vehicle", id, "update", new JsonObject());
+        change["specifiedVehicle"] = new JsonObject { ["selected"] = true, ["required"] = true };
+        Assert.Empty(ServicingProposalRules.Assess(snapshot.ToJsonString(), Draft(change), Context()).Changes);
+    }
 }

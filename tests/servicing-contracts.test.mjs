@@ -58,6 +58,15 @@ test('explicit typed replacement is update-only and never admits target IDs or u
   assert.equal(change({...value,payload:{agencyId:id}}),false);
  }
 });
+
+test('specified-vehicle declarations are explicit vehicle-only booleans without foreign targets',()=>{
+ const value={changeId:id,riskItemId:other,kind:'vehicle',operation:'remove',specifiedVehicle:{selected:false,required:false}};
+ assert.ok(change(value),JSON.stringify(change.errors));
+ assert.equal(change({...value,kind:'driver'}),false);
+ assert.equal(change({...value,specifiedVehicle:{selected:false}}),false);
+ assert.equal(change({...value,specifiedVehicle:{selected:false,required:false,riskItemId:id}}),false);
+ assert.equal(change({...value,specifiedVehicle:{selected:'false',required:false}}),false);
+});
 test('lease commands enforce takeover reason and prevent client supplied expiry or holder',()=>{
  const validate=check('ServicingLeaseAcquire');
  assert.ok(validate({mode:'acquire'}));

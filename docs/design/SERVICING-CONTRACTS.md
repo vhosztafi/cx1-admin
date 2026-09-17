@@ -172,3 +172,15 @@ with their owning plans.
 The typed dialogs, explicit clearing/dependency UX, frontend comparison/date
 tests and actual desktop/mobile editor journeys are not yet implemented or
 verified. This backend checkpoint does not complete 07-04 or Phase 7.
+
+### Specified vehicle declarations in servicing
+
+Vehicle changes optionally carry a closed `specifiedVehicle` object with both
+`selected` and `required` booleans. Selection affects only the change's stable
+vehicle ID; required is the shared specified-vehicle requirement. Omission
+preserves prior declarations. Removal cannot select its removed vehicle, and
+removing a selected vehicle requires explicit deselection. Keeping the requirement
+with no selected vehicles produces an incomplete-capture readiness issue.
+Conflicting requirement values across vehicle changes are rejected. Restating
+membership preserves its order and produces no spurious material difference.
+The local form projection follows these rules; the API remains authoritative.

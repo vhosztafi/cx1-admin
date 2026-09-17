@@ -28,10 +28,17 @@ public static class ServicingProposalRules
         var issues = new List<QuoteFieldIssue>(); var dates = new List<(JsonObject Change, DateTimeOffset? Effective, int Index)>();
         var common = Resolve(envelope["commonEffectiveIntent"]!, "/commonEffectiveIntent", issues);
         var duplicate = new HashSet<(string Kind, Guid Id, DateTimeOffset? Instant)>();
+        bool? specifiedRequired = null;
         var changes = envelope["changes"]!.AsArray();
         for (var i = 0; i < changes.Count; i++)
         {
             var change = changes[i]!.AsObject(); var kind = change["kind"]!.GetValue<string>();
+            if (change["specifiedVehicle"] is { } selection)
+            {
+                var required = selection["required"]!.GetValue<bool>();
+                if (specifiedRequired is { } previous && previous != required) Fail("conflicting-specified-vehicle-declaration", $"/changes/{i}/specifiedVehicle/required");
+                specifiedRequired = required;
+            }
             var effective = change["effectiveIntent"] is { } intent ? Resolve(intent, $"/changes/{i}/effectiveIntent", issues) : common;
             if (!duplicate.Add((kind, Id(change, "riskItemId"), effective))) Fail("conflicting-target-change", $"/changes/{i}/riskItemId");
             if (change["effectiveIntent"] is not null && envelope["dateBasis"]?.GetValue<string>() != "per-cover-change")
@@ -110,6 +117,16 @@ public static class ServicingProposalRules
         var kind = change["kind"]!.GetValue<string>(); var operation = change["operation"]!.GetValue<string>(); var id = Id(change, "riskItemId");
         var risk = capture["risk"]!.AsObject(); var payload = change["payload"] as JsonObject;
         var replace = change["payloadMode"]?.GetValue<string>() == "replace";
+        if (kind == "vehicle" && change["specifiedVehicle"] is { } selection)
+        {
+            var selected = selection["selected"]!.GetValue<bool>();
+            if (operation == "remove" && selected) Fail("removed-vehicle-cannot-be-specified", path + "/specifiedVehicle/selected");
+            var references = risk["specifiedVehicleIds"] as JsonArray ?? [];
+            var updated = selected ? references.DeepClone().AsArray()
+                : new JsonArray(references.Where(item => Guid.Parse(item!.GetValue<string>()) != id).Select(item => item!.DeepClone()).ToArray());
+            if (selected && !references.Any(item => Guid.Parse(item!.GetValue<string>()) == id)) updated.Add(id.ToString());
+            risk["specifiedVehicleIds"] = updated; risk["specifiedVehiclesRequested"] = selection["required"]!.GetValue<bool>();
+        }
         if (kind is "business" or "policyholder" || kind == "cover" && id == policy)
         {
             if (id != (kind == "policyholder" ? client : policy) || operation != "update") Fail("invalid-singleton-operation", path);

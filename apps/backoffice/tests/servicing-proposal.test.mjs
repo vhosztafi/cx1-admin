@@ -57,3 +57,23 @@ test('typed projection treats alternate UUID casing as the same item identity',(
  const proposal={...draft(),changes:[{changeId:'change',riskItemId:id.toUpperCase(),kind:'driver',operation:'update',payload:{fullName:'Corrected'}}]};
  assert.equal(projectServicingCapture(base,proposal,'policy','client').risk.drivers[0].fullName,'Corrected');
 });
+
+test('specified vehicle declarations select only their target and preserve issued capture and membership order',()=>{
+ const base={risk:{vehicles:[{id:'one'},{id:'two'}],specifiedVehicleIds:['one','two'],specifiedVehiclesRequested:true}};
+ const change={changeId:'change',riskItemId:'one',kind:'vehicle',operation:'update',payload:{},specifiedVehicle:{selected:true,required:true}};
+ const project=(changes)=>projectServicingCapture(base,{...draft(),changes},'policy','client');
+ assert.deepEqual(project([change]).risk.specifiedVehicleIds,['one','two']);
+ const added=project([{...change,riskItemId:'three',operation:'add'}]);
+ assert.deepEqual(added.risk.specifiedVehicleIds,['one','two','three']);
+ const removed=project([{...change,operation:'remove',specifiedVehicle:{selected:false,required:false}}]);
+ assert.deepEqual(removed.risk.specifiedVehicleIds,['two']); assert.equal(removed.risk.specifiedVehiclesRequested,false);
+ assert.deepEqual(base.risk.specifiedVehicleIds,['one','two']); assert.equal(base.risk.vehicles.length,2);
+});
+test('local vehicle declaration context rejects conflicting requirements and invalid targets',()=>{
+ const base={risk:{vehicles:[{id:'one'}],drivers:[{id:'driver'}]}};
+ const change={changeId:'change',riskItemId:'one',kind:'vehicle',operation:'update',payload:{},specifiedVehicle:{selected:true,required:true}};
+ const project=(changes)=>projectServicingCapture(base,{...draft(),changes},'policy','client');
+ assert.throws(()=>project([{...change,operation:'remove'}]));
+ assert.throws(()=>project([{...change,kind:'driver',riskItemId:'driver'}]));
+ assert.throws(()=>project([change,{...change,changeId:'second',specifiedVehicle:{selected:false,required:false}}]));
+});

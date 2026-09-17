@@ -3,7 +3,8 @@ import type { QuoteObject, QuoteProposal, QuoteView } from './quotes';
 
 export type ServicingEffectiveIntent = { localDate: string; localTime: string; timeZone: 'Europe/London'; utcOffsetMinutes?: 0 | 60 };
 export type ServicingChange = { changeId: string; riskItemId: string; kind: 'driver' | 'vehicle' | 'premises' | 'business' | 'cover' | 'policyholder';
-  operation: 'add' | 'update' | 'remove'; payload?: QuoteObject; payloadMode?: 'replace'; effectiveIntent?: ServicingEffectiveIntent };
+  operation: 'add' | 'update' | 'remove'; payload?: QuoteObject; payloadMode?: 'replace'; effectiveIntent?: ServicingEffectiveIntent;
+  specifiedVehicle?: { selected: boolean; required: boolean } };
 export type ServicingProposal = { schemaVersion: '1.0'; baseVersionId: string; reason: string; requestedBy: { kind: 'internal' | 'insured' | 'broker'; name?: string };
   commonEffectiveIntent: ServicingEffectiveIntent; dateBasis?: 'shared' | 'per-cover-change'; changes: ServicingChange[] };
 export type ServicingDifference = { kind: 'added' | 'removed' | 'changed'; path: string; itemId?: string; before?: { path: string; json: string }; after?: { path: string; json: string } };

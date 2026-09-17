@@ -42,7 +42,7 @@ public sealed partial class UnderwritingRuntimeTests
             var addedId = Guid.NewGuid();
             proposal["changes"] = JsonSerializer.SerializeToNode(new object[] {
                 new { changeId = Guid.NewGuid(), riskItemId = driverId, kind = "driver", operation = "update", payloadMode = "replace", payload = new { fullName = "Fictional updated driver" } },
-                new { changeId = Guid.NewGuid(), riskItemId = addedId, kind = "vehicle", operation = "add", payload = new { } }
+                new { changeId = Guid.NewGuid(), riskItemId = addedId, kind = "vehicle", operation = "add", payload = new { }, specifiedVehicle = new { selected = true, required = true } }
             });
             var saved = await service.SaveAsync(f.Servicing, created.ResourceId, Version(acquired.Etag!), fence, proposal.ToJsonString(), Key(), Guid.NewGuid());
             var reloaded = await service.ReadAsync(f.Servicing, created.ResourceId);
@@ -57,6 +57,9 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.Null(assessment["proposed"]!["risk"]!["drivers"]![0]!["dateOfBirth"]);
             Assert.NotNull(assessment["base"]!["risk"]!["drivers"]![0]!["dateOfBirth"]);
             Assert.Equal("replace", savedProposal["changes"]![0]!["payloadMode"]!.GetValue<string>());
+            Assert.True(savedProposal["changes"]![1]!["specifiedVehicle"]!["selected"]!.GetValue<bool>());
+            Assert.True(assessment["proposed"]!["risk"]!["specifiedVehiclesRequested"]!.GetValue<bool>());
+            Assert.Contains(assessment["proposed"]!["risk"]!["specifiedVehicleIds"]!.AsArray(), item => Guid.Parse(item!.GetValue<string>()) == addedId);
             Assert.Contains(assessment["readinessIssues"]!.AsArray(), issue => issue!["path"]!.GetValue<string>() == "/risk/vehicles/1/registration");
             Assert.Equal(snapshot["risk"]!["drivers"]![0]!["fullName"]!.GetValue<string>(), assessment["base"]!["risk"]!["drivers"]![0]!["fullName"]!.GetValue<string>());
             Assert.Equal(2, await db.Set<ServicingRevision>().CountAsync(x => x.DraftId == created.ResourceId));

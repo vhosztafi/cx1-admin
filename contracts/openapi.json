@@ -111883,6 +111883,22 @@
               },
               "payloadMode": {
                 "const": "replace"
+              },
+              "specifiedVehicle": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "selected": {
+                    "type": "boolean"
+                  },
+                  "required": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "selected",
+                  "required"
+                ]
               }
             },
             "required": [
@@ -111931,6 +111947,22 @@
               },
               "operation": {
                 "const": "remove"
+              },
+              "specifiedVehicle": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "selected": {
+                    "type": "boolean"
+                  },
+                  "required": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "selected",
+                  "required"
+                ]
               }
             },
             "required": [
