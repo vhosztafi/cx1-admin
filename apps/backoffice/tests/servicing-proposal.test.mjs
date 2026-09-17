@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { servicingDateFeedback, changeServicingDate, setCoverEffectiveIntent, setServicingDateBasis, matchingServicingEditor } from '../lib/servicing-proposal.ts';
-import { projectServicingCapture, putServicingChange, putServicingVehicleChange } from '../lib/servicing-change-form.ts';
+import { projectServicingCapture, projectServicingCaptureAt, putServicingChange, putServicingVehicleChange } from '../lib/servicing-change-form.ts';
 const intent=(localDate,localTime='00:00',utcOffsetMinutes)=>({localDate,localTime,timeZone:'Europe/London',...(utcOffsetMinutes===undefined?{}:{utcOffsetMinutes})});
 const draft=()=>({schemaVersion:'1.0',baseVersionId:'base',reason:'Fictional adjustment',requestedBy:{kind:'internal'},commonEffectiveIntent:intent('2026-10-01'),changes:[{changeId:'cover',riskItemId:'section',kind:'cover',operation:'update',payload:{}},{changeId:'driver',riskItemId:'person',kind:'driver',operation:'remove'}]});
 
@@ -97,4 +97,16 @@ test('premises replacement clears nested address fields without changing another
  assert.equal(base.risk.premises[0].address.postcode,'AB1 2CD');
  const removed=projectServicingCapture(base,{...proposal,changes:[{...proposal.changes[0],operation:'remove'}]},'policy','client');
  assert.deepEqual(removed.risk.premises,[base.risk.premises[1]]);
+});
+
+
+test('cover form context never imports later values into an earlier replacement',()=>{
+ const base={cover:{requestedSections:[{id:'section',code:'road-risks',selected:true,limit:'1000.00'}]},risk:{}};
+ const early={changeId:'early',riskItemId:'policy',kind:'cover',operation:'update',payload:{description:'Early'}};
+ const late={changeId:'late',riskItemId:'section',kind:'cover',operation:'update',effectiveIntent:intent('2026-10-03'),payload:{requestedSections:[{id:'section',code:'road-risks',selected:true,limit:'2000.00'}]}};
+ const proposal={...draft(),dateBasis:'per-cover-change',changes:[early,late]};
+ assert.equal(projectServicingCaptureAt(base,proposal,'policy','client',intent('2026-10-01')).cover.requestedSections[0].limit,'1000.00');
+ assert.equal(projectServicingCaptureAt(base,proposal,'policy','client',intent('2026-10-03')).cover.requestedSections[0].limit,'2000.00');
+ assert.equal(base.cover.requestedSections[0].limit,'1000.00');
+ assert.throws(()=>projectServicingCaptureAt(base,proposal,'policy','client',intent('2026-10-25','01:30')));
 });

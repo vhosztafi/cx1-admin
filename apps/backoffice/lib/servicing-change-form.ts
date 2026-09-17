@@ -1,7 +1,18 @@
 import type { QuoteObject, QuoteProposal, QuoteValue } from './quotes';
-import type { ServicingChange, ServicingProposal } from './servicing-api';
+import type { ServicingChange, ServicingEffectiveIntent, ServicingProposal } from './servicing-api';
 import { servicingDateFeedback } from './servicing-proposal.ts';
 export const sameServicingId = (left: unknown, right: string) => typeof left === 'string' && left.toLowerCase() === right.toLowerCase();
+
+export function projectServicingCaptureAt(base: QuoteProposal, proposal: ServicingProposal, policyId: string, clientId: string, intent: ServicingEffectiveIntent): QuoteProposal {
+  const instant = servicingDateFeedback(intent).instant;
+  if (instant === undefined) throw new Error('Resolve the effective date and clock offset before editing cover.');
+  const changes = proposal.changes.filter(change => {
+    const effective = servicingDateFeedback(change.effectiveIntent ?? proposal.commonEffectiveIntent).instant;
+    if (effective === undefined) throw new Error('Resolve all change dates before editing cover.');
+    return effective <= instant;
+  });
+  return projectServicingCapture(base, { ...proposal, changes }, policyId, clientId);
+}
 
 export function putServicingChange(proposal: ServicingProposal, change: ServicingChange): ServicingProposal {
   const exists = proposal.changes.some(item => sameServicingId(item.changeId, change.changeId));

@@ -3,8 +3,8 @@ import { changeRequestedCover, requestedCoverCodes, requestedCoverLabels, reques
 import type { QuoteObject } from '../../lib/quotes';
 import type { QuoteSectionProps } from './quote-section-controls';
 
-export function RequestedCover(props: QuoteSectionProps) {
-  return <section aria-label="Requested cover sections"><h3>Requested cover sections</h3><p className="client-help">Choose Selected or Not selected for every available section. Limits and excesses must be recorded explicitly.</p>{requestedCoverCodes(props.proposal).map(code => <RequestedSection key={code} code={code} {...props} />)}</section>;
+export function RequestedCover(props: QuoteSectionProps & { onlyCode?: RequestedCoverCode }) {
+  return <section aria-label="Requested cover sections"><h3>Requested cover sections</h3><p className="client-help">Choose Selected or Not selected for every available section. Limits and excesses must be recorded explicitly.</p>{requestedCoverCodes(props.proposal).filter(code => !props.onlyCode || props.onlyCode === code).map(code => <RequestedSection key={code} code={code} {...props} />)}</section>;
 }
 function RequestedSection({ code, ...props }: QuoteSectionProps & { code: RequestedCoverCode }) {
   const existing = requestedCoverRows(props.proposal).find(row => row.code === code), prefix = `requested-cover/${code}/`;
