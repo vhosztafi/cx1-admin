@@ -98,7 +98,7 @@ public static class ServicingEndpoints
         return Results.Content(outcome.Body, "application/json", statusCode: outcome.Status);
     }
 
-    private static Guid Fence(HttpRequest request)
+    internal static Guid Fence(HttpRequest request)
     {
         var values = request.Headers["X-Edit-Lease"];
         if (values.Count != 1 || values[0] is not { Length: 36 } value || !Guid.TryParseExact(value, "D", out var id) || id == Guid.Empty)

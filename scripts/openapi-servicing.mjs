@@ -1,3 +1,4 @@
+import {addServicingRatingContracts} from './openapi-servicing-rating.mjs';
 import {readFileSync} from 'node:fs';
 import {servicingDefinitions} from './servicing-contract-model.mjs';
 
@@ -25,6 +26,7 @@ export function addServicingContracts({schemas,ref,operation,paths}) {
    response.headers={...response.headers,'Cache-Control':{description:'Personal policy and servicing information is never cacheable.',schema:{type:'string',const:'no-store'}}};
   }
  };
+ addServicingRatingContracts({schemas,ref,route,paths});
  const root='/drafts/{draftId}';
  route('get','/terms/{termId}/drafts','listPolicyDrafts','policy-read',undefined,'ServicingDraftList');
  route('get',root,'getPolicyDraft','policy-read',undefined,'ServicingDraft');

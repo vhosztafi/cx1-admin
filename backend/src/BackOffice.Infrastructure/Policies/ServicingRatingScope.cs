@@ -34,7 +34,7 @@ internal static class ServicingRatingScope
         var quoteId = await db.Set<Policy>().Where(x => x.Id == hint.PolicyId).Select(x => x.SourceQuoteId).SingleAsync(token);
         var source = write ? await QuoteUnderwritingScope.HoldAsync(db, actor, quoteId, "quote-rate", token)
             : await QuoteScope.ForQuoteAsync(db, actor, quoteId, QuoteAccess.Read, token);
-        if (write && !source.Scope.Actor.HasCapability("policy-draft-write")) throw new QuoteOperationException(403, "servicing-rating-denied");
+        if (write && (!source.Scope.Actor.HasCapability("policy-draft-write") || !source.Scope.Actor.HasCapability("policy-draft-rate"))) throw new QuoteOperationException(403, "servicing-rating-denied");
         var draft = await ServicingDraftService.HoldDraft(db, source.Scope.Actor, draftId, write, token);
         var term = await db.Set<PolicyTerm>().SingleAsync(x => x.Id == draft.BaseTermId, token);
         var revision = await db.Set<ServicingRevision>().AsNoTracking().SingleAsync(x => x.Id == draft.CurrentRevisionId && x.DraftId == draft.Id, token);

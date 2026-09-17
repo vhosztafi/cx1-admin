@@ -41,6 +41,7 @@ DiagnosticDispatcher.Register(builder);
 AgencyNotificationDispatcher.Register(builder);
 QuoteLookupDispatcher.Register(builder);
 QuoteRatingDispatcher.Register(builder);
+ServicingRatingDispatcher.Register(builder);
 CapacityDispatcher.Register(builder);
 QuoteDeliveryDispatcher.Register(builder);
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.QuoteIssueService>();
@@ -117,6 +118,7 @@ app.MapQuoteTerms();
 app.MapQuoteIssue();
 app.MapPolicies();
 app.MapServicingDrafts();
+app.MapServicingRatings();
 // Domain endpoints are added only alongside their authentication and persistence.
 app.Run();
 

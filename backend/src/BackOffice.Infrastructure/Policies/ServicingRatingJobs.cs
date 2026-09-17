@@ -33,7 +33,7 @@ public sealed class ServicingRatingJobs(IDbContextFactory<BackOfficeDbContext> f
                 var latest = await db.Set<PolicyVersion>().Where(x => x.PolicyId == cycle.PolicyId && x.TermId == cycle.BaseTermId)
                     .OrderByDescending(x => x.EffectiveAt).ThenByDescending(x => x.Sequence).Select(x => x.Id).FirstAsync(token);
                 allowed = currentActor.HasCapability("integration-retry") && currentActor.HasCapability("quote-rate") &&
-                    currentActor.HasCapability("policy-draft-write") && latest == cycle.BaseVersionId &&
+                    currentActor.HasCapability("policy-draft-write") && currentActor.HasCapability("policy-draft-rate") && latest == cycle.BaseVersionId &&
                     ServicingRatingScope.Matches(held, cycle, ServicingRatingInput.Read(cycle.InputJson, cycle.InputHash));
             }
             catch (QuoteOperationException) { allowed = false; }

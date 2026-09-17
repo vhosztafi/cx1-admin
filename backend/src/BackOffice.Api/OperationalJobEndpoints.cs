@@ -52,7 +52,7 @@ public static class OperationalJobEndpoints
         catch (DiagnosticConfigurationException) { return IdentityEndpoints.Problem(context, 503, "demo-not-initialized", "Initialize the demo scenarios before starting a probe."); }
     }
 
-    private static async Task<IResult> GetJob(Guid jobId, HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, TimeProvider time, BackOffice.Infrastructure.Underwriting.QuoteRatingJobs ratingJobs, BackOffice.Infrastructure.Underwriting.CapacityJobs capacityJobs, BackOffice.Infrastructure.Underwriting.QuoteDeliveryJobs deliveryJobs)
+    private static async Task<IResult> GetJob(Guid jobId, HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, TimeProvider time, BackOffice.Infrastructure.Underwriting.QuoteRatingJobs ratingJobs, BackOffice.Infrastructure.Underwriting.CapacityJobs capacityJobs, BackOffice.Infrastructure.Underwriting.QuoteDeliveryJobs deliveryJobs, BackOffice.Infrastructure.Policies.ServicingRatingJobs servicingJobs)
     {
         var actor = LocalIdentityService.Actor(context.User);
         if (actor.AgencyId != null) return IdentityEndpoints.Problem(context, 403, "forbidden", "Access denied.");
@@ -83,6 +83,18 @@ public static class OperationalJobEndpoints
             try
             {
                 var read = await ratingJobs.ReadAsync(actor, jobId, context.RequestAborted);
+                context.Response.Headers.ETag = "\"" + Convert.ToBase64String(read.Work.RowVersion) + "\"";
+                return Results.Json(View(read.Work) with { RetryAllowed = read.RetryAllowed }, Json);
+            }
+            catch (Exception error) when (QuoteEndpoints.Known(error)) { return QuoteEndpoints.Failure(context, error); }
+        }
+        if (await db.Set<OutboxWork>().AsNoTracking().AnyAsync(x => x.Id == jobId && x.Kind == "servicing-rating", context.RequestAborted))
+        {
+            context.Response.Headers.CacheControl = "no-store";
+            try
+            {
+                QuoteHttpInput.NoQuery(context.Request);
+                var read = await servicingJobs.ReadAsync(actor, jobId, context.RequestAborted);
                 context.Response.Headers.ETag = "\"" + Convert.ToBase64String(read.Work.RowVersion) + "\"";
                 return Results.Json(View(read.Work) with { RetryAllowed = read.RetryAllowed }, Json);
             }

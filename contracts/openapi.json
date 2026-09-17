@@ -16968,7 +16968,7 @@
       "post": {
         "operationId": "ratePolicyDraft",
         "summary": "rate Policy Draft",
-        "description": "Requires policy-draft-rate. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "description": "Queue an immutable rating of the exact saved adjustment revision and cumulative effective slices. Requires current policy scope, strong draft ETag, holder-bound editing lease and idempotency key. Current grants are checked before replay. One configured adjustment fee is charged. Rating does not grant underwriting, acceptance or issue authority. Responses are no-store.",
         "tags": [
           "drafts"
         ],
@@ -17026,25 +17026,31 @@
             "description": "Durable work accepted; inspect Location for completion.",
             "headers": {
               "ETag": {
-                "description": "Opaque resource version for subsequent conditional writes.",
+                "description": "Strong updated draft command version.",
                 "schema": {
                   "type": "string",
-                  "minLength": 1,
-                  "maxLength": 100
+                  "minLength": 14,
+                  "maxLength": 14
                 }
               },
               "Location": {
-                "description": "Created resource or durable job URI.",
+                "description": "Scoped persisted job resource.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
-                  "format": "uri-reference"
+                  "const": "no-store"
                 }
               }
             },
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Job"
+                  "$ref": "#/components/schemas/ServicingRateReceipt"
                 }
               }
             }
@@ -17060,7 +17066,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -17079,7 +17085,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -17098,7 +17104,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -17117,7 +17123,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -17136,7 +17142,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -17155,7 +17161,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -17174,7 +17180,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -17193,7 +17199,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -17212,7 +17218,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -17231,7 +17237,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -17239,7 +17245,18 @@
               }
             }
           }
-        }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServicingRateRequest"
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-7-05-implemented"
       }
     },
     "/drafts/{draftId}/submit": {
@@ -55702,7 +55719,8 @@
                       "payment",
                       "bordereau",
                       "export",
-                      "diagnostic-probe"
+                      "diagnostic-probe",
+                      "servicing-rating"
                     ]
                   },
                   "enabled": {
@@ -55987,7 +56005,8 @@
                 "payment",
                 "bordereau",
                 "export",
-                "diagnostic-probe"
+                "diagnostic-probe",
+                "servicing-rating"
               ]
             }
           }
@@ -88813,6 +88832,189 @@
         "x-runtime-status": "phase-6-11-implemented"
       }
     },
+    "/drafts/{draftId}/ratings": {
+      "get": {
+        "operationId": "listServicingRatings",
+        "summary": "list Servicing Ratings",
+        "description": "Scoped current rating and immutable cycle history with bounded sequence-keyset pagination. Cursor is signed and bound to actor roles, route, page size and draft command version; it expires after 15 minutes. Current applicability rechecks configuration, revision, base and expiry. draftEtag is a command fence, not a history response validator. Responses are no-store.",
+        "tags": [
+          "drafts"
+        ],
+        "x-permission": "policy-read",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "draftId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 25
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicingRatingHistory"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-7-05-implemented"
+      }
+    },
     "/drafts/{draftId}/editor": {
       "get": {
         "operationId": "getPolicyDraftEditor",
@@ -93164,7 +93366,8 @@
               "payment",
               "bordereau",
               "export",
-              "diagnostic-probe"
+              "diagnostic-probe",
+              "servicing-rating"
             ]
           },
           "state": {
@@ -99030,7 +99233,8 @@
               "payment",
               "bordereau",
               "export",
-              "diagnostic-probe"
+              "diagnostic-probe",
+              "servicing-rating"
             ]
           },
           "enabled": {
@@ -115321,6 +115525,502 @@
           "termId",
           "policyId",
           "items"
+        ]
+      },
+      "ServicingRateRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "revisionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "revisionId",
+          "reason"
+        ]
+      },
+      "ServicingRateReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "draftId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revisionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "jobId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "state": {
+            "const": "queued"
+          },
+          "draftEtag": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 14
+          }
+        },
+        "required": [
+          "id",
+          "draftId",
+          "revisionId",
+          "jobId",
+          "state",
+          "draftEtag"
+        ]
+      },
+      "ServicingRatingSlice": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "effectiveAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "coverageEndsAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "changeIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "maxItems": 1000
+          },
+          "annualPremium": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
+          "annualDelta": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
+          "remainingDays": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "annualDays": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "premium": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
+          "tax": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
+          "brokerCommission": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          }
+        },
+        "required": [
+          "effectiveAt",
+          "coverageEndsAt",
+          "changeIds",
+          "annualPremium",
+          "annualDelta",
+          "remainingDays",
+          "annualDays",
+          "premium",
+          "tax",
+          "brokerCommission"
+        ]
+      },
+      "ServicingRatingResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "rated",
+              "rejected"
+            ]
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "resultHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "currency": {
+            "const": "GBP"
+          },
+          "baseAnnualPremium": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
+          "premium": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
+          "tax": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
+          "brokerCommission": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
+          "fee": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
+          "grossPayable": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
+          "netDue": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
+          "detailsAvailable": {
+            "type": "boolean"
+          },
+          "changeIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "maxItems": 1000
+          },
+          "slices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServicingRatingSlice"
+            },
+            "maxItems": 1000
+          }
+        },
+        "required": [
+          "id",
+          "outcome",
+          "completedAt",
+          "expiresAt",
+          "resultHash",
+          "currency",
+          "baseAnnualPremium",
+          "premium",
+          "tax",
+          "brokerCommission",
+          "fee",
+          "grossPayable",
+          "netDue",
+          "detailsAvailable",
+          "changeIds",
+          "slices"
+        ]
+      },
+      "ServicingRatingCycle": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "revisionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "baseVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "requestedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "rating-pending",
+              "rated",
+              "failed",
+              "expired",
+              "stale",
+              "superseded"
+            ]
+          },
+          "storedState": {
+            "type": "string",
+            "enum": [
+              "rating-pending",
+              "rated",
+              "failed",
+              "superseded"
+            ]
+          },
+          "isCurrent": {
+            "type": "boolean"
+          },
+          "applicable": {
+            "type": "boolean"
+          },
+          "workId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "jobState": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "leased",
+              "succeeded",
+              "failed"
+            ]
+          },
+          "attempts": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "attemptLimit": {
+            "type": "integer",
+            "enum": [
+              6,
+              12,
+              18
+            ]
+          },
+          "errorCode": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "jobEtag": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 14
+          },
+          "nextAttemptAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "inputHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "ruleVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "agencyTermsVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "servicingSettingVersionId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "supersededAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "supersededReason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2000
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ServicingRatingResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "sequence",
+          "revisionId",
+          "baseVersionId",
+          "requestedAt",
+          "state",
+          "storedState",
+          "isCurrent",
+          "applicable",
+          "workId",
+          "jobState",
+          "attempts",
+          "attemptLimit",
+          "errorCode",
+          "jobEtag",
+          "nextAttemptAt",
+          "inputHash",
+          "ruleVersionId",
+          "agencyTermsVersionId",
+          "servicingSettingVersionId",
+          "supersededAt",
+          "supersededReason",
+          "result"
+        ]
+      },
+      "ServicingRatingHistory": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "draftId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revisionId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "draftState": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "abandoned",
+              "issued"
+            ]
+          },
+          "draftEtag": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 14
+          },
+          "assessedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "currentCycleId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "current": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ServicingRatingCycle"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServicingRatingCycle"
+            },
+            "maxItems": 50
+          },
+          "nextCursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2048
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "blockers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "maxItems": 1000
+          }
+        },
+        "required": [
+          "draftId",
+          "revisionId",
+          "draftState",
+          "draftEtag",
+          "assessedAt",
+          "currentCycleId",
+          "current",
+          "items",
+          "nextCursor",
+          "blockers"
         ]
       },
       "PolicyNotCovered": {

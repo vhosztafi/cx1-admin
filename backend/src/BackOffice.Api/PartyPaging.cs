@@ -37,5 +37,8 @@ public sealed class PartyPaging(IDataProtectionProvider protection, TimeProvider
     }
     public string? Next(Page page,bool more) => more && page.Offset<=int.MaxValue-page.Size
         ? protector.Protect(JsonSerializer.Serialize(page with {Offset=page.Offset+page.Size})) : null;
+    // Distinct ordering names separate keyset sequence positions from offsets.
+    public string? NextKeyset(Page page,int? beforeSequence) => beforeSequence is >0
+        ? protector.Protect(JsonSerializer.Serialize(page with {Offset=beforeSequence.Value})) : null;
     public sealed record Page(string Scope,string Route,string Filter,string Ordering,int Size,int Offset,DateTimeOffset AsOf,DateTimeOffset ExpiresAt);
 }

@@ -15,9 +15,11 @@ public sealed class ServicingLeaseTests
     {
         var actor = new BackOffice.Application.ActorContext(Guid.NewGuid(), null, null, new HashSet<string> { role });
         Assert.Equal(write, actor.HasCapability("policy-draft-write"));
+        Assert.Equal(write, actor.HasCapability("policy-draft-rate"));
         Assert.Equal(takeover, actor.HasCapability("policy-draft-takeover"));
         var agency = actor with { AgencyId = Guid.NewGuid() };
         Assert.False(agency.HasCapability("policy-draft-write")); Assert.False(agency.HasCapability("policy-draft-takeover"));
+        Assert.False(agency.HasCapability("policy-draft-rate"));
     }
 
     private static readonly DateTimeOffset Now=new(2026,9,17,12,0,0,TimeSpan.Zero);

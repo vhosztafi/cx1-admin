@@ -138,6 +138,7 @@ public sealed partial class UnderwritingRuntimeTests
                 Assert.True((await recovery.ReadAsync(recoveryActor, work.Id)).RetryAllowed);
                 Assert.Equal(412, (await Assert.ThrowsAsync<QuoteOperationException>(() => recovery.RetryAsync(recoveryActor, work.Id,
                     work.RowVersion, retryReason, Key(), Guid.NewGuid()))).Status);
+                await VerifyServicingRatingHttpRetry(db, f.Clock, password, work.Id, failedWork.RowVersion, retryReason, retryKey);
                 var recovered = await recovery.RetryAsync(recoveryActor, work.Id, failedWork.RowVersion, retryReason, retryKey, Guid.NewGuid());
                 Assert.Equal(202, recovered.Status);
                 Assert.False((await recovery.ReadAsync(recoveryActor, work.Id)).RetryAllowed);

@@ -417,3 +417,24 @@ test('agency policy projection rejects risk and financial facts and has no hidde
  assert.equal(document.paths['/policies'].get.parameters.some(x=>x.name==='status'),false);
  assert.deepEqual(document.paths['/policies'].get.parameters.find(x=>x.name==='productCode').schema.enum,['motor-trade-road-risks','motor-trade-combined']);
 });
+
+
+test('servicing rating contracts bind saved revision and expose immutable scoped history',()=>{
+ const rate=getOperation('ratePolicyDraft'),history=getOperation('listServicingRatings');
+ assert.equal(rate['x-permission'],'policy-draft-rate');
+ assert.equal(rate['x-runtime-status'],'phase-7-05-implemented');
+ assert.ok(rate.parameters.some(x=>x.name==='X-Edit-Lease'&&x.required));
+ assert.ok(rate.parameters.some(x=>x.name==='If-Match'&&x.required));
+ const validate=ajv.getSchema(`${rootId}#/$defs/ServicingRateRequest`);
+ const request={revisionId:'10000000-0000-4000-8000-000000000001',reason:'Rate the saved adjustment'};
+ assert.equal(validate(request),true,JSON.stringify(validate.errors));
+ for(const key of ['premium','fee','actorId','ruleVersionId'])assert.equal(validate({...request,[key]:'forged'}),false,key);
+ assert.equal(history.parameters.find(x=>x.name==='pageSize').schema.maximum,50);
+ assert.equal(history.responses[200].headers['Cache-Control'].schema.const,'no-store');
+ assert.equal(history.responses[200].headers.ETag,undefined);
+ const schema=document.components.schemas.ServicingRatingHistory;
+ assert.equal(schema.additionalProperties,false);
+ assert.equal(schema.properties.items.maxItems,50);
+ assert.ok(schema.properties.nextCursor);
+ assert.equal(schema.properties.nextBeforeSequence,undefined);
+});

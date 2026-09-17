@@ -56,7 +56,7 @@ public static class OperationalRetryEndpoints
     }
 
     private static async Task<IResult> Retry(Guid jobId, HttpContext context, SqlCommandBoundary commands, TimeProvider time,
-        IDbContextFactory<BackOfficeDbContext> factory, QuoteRatingJobs ratingJobs, CapacityJobs capacityJobs, QuoteDeliveryJobs deliveryJobs)
+        IDbContextFactory<BackOfficeDbContext> factory, QuoteRatingJobs ratingJobs, CapacityJobs capacityJobs, QuoteDeliveryJobs deliveryJobs, BackOffice.Infrastructure.Policies.ServicingRatingJobs servicingJobs)
     {
         RetryInput input;
         try
@@ -98,6 +98,13 @@ public static class OperationalRetryEndpoints
                 var ratingOutcome = await ratingJobs.RetryAsync(actor, jobId, expected, input.Reason, key, correlation, context.RequestAborted);
                 context.Response.Headers.Location = "/api/v1/jobs/" + jobId;
                 return QuoteEndpoints.Outcome(context, ratingOutcome);
+            }
+            if (await db.Set<OutboxWork>().AsNoTracking().AnyAsync(x => x.Id == jobId && x.Kind == "servicing-rating", context.RequestAborted))
+            {
+                context.Response.Headers.CacheControl = "no-store";
+                var servicingOutcome = await servicingJobs.RetryAsync(actor, jobId, expected, input.Reason, key, correlation, context.RequestAborted);
+                context.Response.Headers.Location = "/api/v1/jobs/" + jobId;
+                return QuoteEndpoints.Outcome(context, servicingOutcome);
             }
             // Preconditions run inside the handler: a prior successful result replays first.
             var outcome = await commands.ExecuteAsync(new CommandIdentity(actor.UserId, $"/api/v1/jobs/{jobId}/retry", key, correlation),
