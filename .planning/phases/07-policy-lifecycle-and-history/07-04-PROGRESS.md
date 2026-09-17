@@ -52,9 +52,10 @@ the earliest unfinished plan. No completion SUMMARY or source coverage claim.
    using existing source capture controls and current catalogue. Consume the
    new scoped editor read, checking revision/ETag before displaying saved diff.
    Preserve dirty local state and frozen uncertain retries on conflicts.
-2. Resolve explicit clearing/dependency UX before connecting edits: current
-   object payloads are partial patches, so omitted scalar fields are retained;
-   arrays replace explicitly. Never silently drop a user's clear action.
+2. Connect explicit clearing/dependency UX: updates now support
+   `payloadMode: "replace"` (checkpoint `cad94b0` below). Normal partial patches
+   still retain omitted scalar fields; arrays replace explicitly. Editors that
+   submit a complete typed target should use replacement for explicit clearing.
    Specified-vehicle/driver-reference removals need deliberate dependent edits,
    not silent dangling-reference cleanup. Make any needed closed contract
    refinement with negative tests, rather than allowing arbitrary JSON paths.
@@ -72,3 +73,24 @@ completion is claimed. No new migration was needed for this checkpoint.
 The owned Release API/web previews still run 07-03 builds; rebuild/restart only
 those verified owned processes before 07-04 browser work. PID record remains
 `.local/phase7-03-preview-pids.json` (verify live command lines before stopping).
+
+## Autonomous continuation — explicit clearing contract
+
+Checkpoint `cad94b0` adds update-only `payloadMode: "replace"` to the closed
+typed change contract. It replaces the selected target while preserving its
+stable envelope-owned identity. Add/remove reject the mode. Existing partial
+patch callers keep their semantics. Foreign ownership, system fields and
+dependency validation remain enforced. This enables clearing an optional driver
+field, explicitly removing a dependent vehicle owner, and deselecting a cover
+section without retaining inactive limits/excesses.
+
+Meaningful failing-first tests captured unsupported replacement before the
+implementation in `.local/phase7-04-replacement-red.log`. Final verification:
+26 focused unit cases, 1 real SQL persistence/authorization case, 12 servicing
+contract tests; no skips. `assert-test-results.ps1` verified the 27 backend cases
+in `.local/phase7-04-replacement-verified` with timestamps after12:00UTC.
+Logs: `phase7-04-replacement-verified-unit.log`,
+`phase7-04-replacement-final-sql.log`, `phase7-04-replacement-contracts.log`.
+OpenAPI lint passed (24 unused-component warnings); `git diff --check` passed.
+No UI/browser completion is claimed; 07-04 remains open. Next implement the
+typed UI using this explicit replacement mode and deliberate dependency edits.

@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-04 backend checkpoint committed; typed dialogs and browser evidence remain
-last_updated: "2026-09-17T11:49:12.076803+00:00"
-last_activity: "2026-09-17 —07-04 typed projection/backend checkpoint f654ae8; frontend remains."
+stopped_at: Plan07-04 explicit replacement committed; typed dialogs and browser evidence remain
+last_updated: "2026-09-17T12:07:02.206400+00:00"
+last_activity: "2026-09-17 —07-04 explicit field clearing checkpoint cad94b0; frontend remains."
 progress:
   total_phases: 13
   completed_phases: 6
@@ -28,7 +28,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 Phase: 7 of 13 (Policy lifecycle and history)
 Plan: 3 of16 complete;07-04 in progress
 Status: Executing Phase7;07-04 backend verified, typed dialogs/browser work outstanding
-Last activity: 2026-09-17 —07-04 backend checkpoint f654ae8;692 backend cases (3 SQL/API),349 contract/source checks pass. Resume 07-04-PROGRESS.md.
+Last activity: 2026-09-17 —07-04 clearing checkpoint cad94b0;26 focused unit,1 real SQL and12 contract cases pass. Resume 07-04-PROGRESS.md.
 
 Progress: Phases1–6 complete;6/13 phases,52 completed implementation plans.
 
@@ -54,8 +54,8 @@ Progress: Phases1–6 complete;6/13 phases,52 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-17T11:49:12.076803+00:00
-Stopped at:07-03 complete; implement07-04 typed changes, comparisons and dates
+Last session: 2026-09-17T12:07:02.206400+00:00
+Stopped at:07-04 backend and explicit clearing verified; implement typed UI and browser journeys
 Resume file: .planning/phases/07-policy-lifecycle-and-history/07-04-PLAN.md
 
 ## Autonomous continuation
