@@ -62,3 +62,41 @@ Source coverage:07-05 verified its three rating actions. The broad393-field
 extraction includes downstream review composites;07-06 owns actual referrals,
 requirements and evidence. Keep later terms/acceptance/financial/document items
 with their approved owners and retain final07-16 completeness audit.
+
+
+## Verified immutable file storage checkpoint:cf3511b
+
+ServicingEvidenceFile now stores draft-owned immutable bytes, bounded filename/media,
+byte length, SHA256, uploader and UTC creation time. Screening is explicitly the
+existing demo-signature-v1 outcome; it is separate from underwriting acceptance.
+Alternate key(Id,DraftId) enables later association ownership FKs without borrowing
+source-quote associations. No public storage locator exists.
+
+New additive migration20260917192246_ServicingEvidenceFiles enforces actual content
+length1..10MiB, matching binary-collated lowercase SHA256, supported media, safe
+non-path name, existing uploader/draft and creation no earlier than the draft.
+Append-only SQL trigger blocks updates/deletes (51310); time guard uses51311.
+EF disables SQL OUTPUT for the triggered table. Prior migrations are unchanged.
+
+Failing-first .local/phase7-06-files-red/sql/sql.trx has2 real failures on the absent
+file table. Final .local/phase7-06-files-reviewed/{unit,sql} passes8 unit and2SQL
+cases, no skips. Assertion gate verified10 with cutoff2026-09-17T19:18:00Z.
+SQL tests cover both products, additive upgrade over an already issued graph,
+valid bytes/hash readback, absent draft/uploader, path/media/length/hash/screening
+rejection, early timestamps, immutable update/delete and unchanged issued JSON.
+Debug API builds without warnings/errors; git diff --check passes.
+
+Next: associations, append-only review/withdrawal events, full compound
+cycle/revision/rating ownership, servicing decision context and actual services.
+File upload/read authorization and actual signature screening must use the existing
+QuoteEvidenceRules.File analogue at runtime; storage checks alone do not screen
+arbitrary content. Align the servicing200-character contract with the shared
+file helper's current150-character limit explicitly when exposing uploads.
+No file API, review UI, association approval or whole-plan completion is claimed.
+No demo migration/seed or preview restart was performed in this storage checkpoint.
+
+EF tooling: DOTNET_CLI_HOME=.local/dotnet; build Debug --no-restore first, then
+use dotnet ef migrations add ... --project backend/src/BackOffice.Infrastructure
+--startup-project backend/src/BackOffice.Infrastructure --output-dir Persistence/Migrations
+--no-build. The API startup lacks EF.Design, so it is not the tooling startup.
+Earlier tooling startup/build failures are retained in logs, not passing evidence.
