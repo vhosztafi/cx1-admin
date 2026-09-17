@@ -85,7 +85,9 @@ public sealed partial class QuoteUnderwritingReadModel(IDbContextFactory<BackOff
         {
             var storedInput = JsonSerializer.Deserialize<StoredRatingInput>(cycle.InputJson, QuoteRatingService.Json)!;
             proofRequirements = await UnderwritingEvidenceService.Requirements(db, cycle, revision, storedInput, token);
-            foreach (var proof in proofRequirements.Where(x => !x.Satisfied))
+            // A capacity-response purpose is an attachment option for supplied
+            // letters. Demo provider events have their own durable provenance.
+            foreach (var proof in proofRequirements.Where(x => !x.Satisfied && x.Code != "capacity-response"))
                 blockers.Add(new UnderwritingReadBlocker("evidence-review-required-" + proof.Code, proof.Label + " requires current underwriting review.", proof.Path, proof.RiskItemId));
         }
         else foreach (var proof in (await QuoteEvidenceReadModel.AssessAsync(db, revision, token)).Requirements.Where(x => x.State != "current"))
@@ -98,17 +100,18 @@ public sealed partial class QuoteUnderwritingReadModel(IDbContextFactory<BackOff
                                     join product in db.Set<Product>().AsNoTracking() on version.ProductId equals product.Id
                                     join provider in db.Set<CapacityProvider>().AsNoTracking() on version.ProviderId equals provider.Id
                                     where version.Id == revision.ProductVersionId && product.Id == quote.ProductId
-                                    select new { productLabel = product.Name, version.Version, providerLabel = provider.Name }).SingleAsync(token);
+                                    select new { productLabel = product.Name, version.Version, providerLabel = provider.Name, providerId = provider.Id }).SingleAsync(token);
         var result = new Dictionary<string, object> {
             ["quoteId"] = quoteId, ["quoteEtag"] = "\"" + Convert.ToBase64String(quote.RowVersion) + "\"", ["state"] = quote.State, ["blockers"] = blockers.Take(200).ToList(),
             ["createdAt"] = quote.CreatedAt, ["productLabel"] = productDetails.productLabel,
-            ["productVersionLabel"] = "v" + productDetails.Version.ToString(CultureInfo.InvariantCulture), ["providerLabel"] = productDetails.providerLabel,
+            ["productVersionLabel"] = "v" + productDetails.Version.ToString(CultureInfo.InvariantCulture), ["providerLabel"] = productDetails.providerLabel, ["providerId"] = productDetails.providerId,
             ["capabilities"] = new { canRate = writable && readyToRate && quote.State is "draft" or "rated" or "referred",
                 canSubmit = writable && current && matching.Code is null && cycle?.State == "rated" && rating is { Outcome: "rated" } && rating.ExpiresAt > now && quote.State is "rated" or "referred",
                 canRevise = writable && cycle is not null && UnderwritingLifecycleRules.CanReturnToDraft(quote.State),
                 canReviewEvidence = decisionContext && grants.Count > 0 && owned.Scope.Actor.HasCapability("underwriting-evidence-review"),
                 canDecide = decisionContext && grants.Count > 0 && rating?.ExpiresAt > now && owned.Scope.Actor.HasCapability("underwriting-decide-within-authority"),
-                canEscalate = false, canPrepareTerms = false, canSend = false, canAccept = false, canIssue = false } };
+                canEscalate = decisionContext && grants.Count > 0 && rating?.ExpiresAt > now && owned.Scope.Actor.HasCapability("underwriting-escalate"),
+                canPrepareTerms = false, canSend = false, canAccept = false, canIssue = false } };
         result["proofRequirements"] = proofRequirements;
         var authorityViews = new List<object>();
         if (current && cycle is not null && eligible is not null && rating is { Outcome: "rated" })

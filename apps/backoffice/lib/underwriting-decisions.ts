@@ -53,5 +53,5 @@ export function referralDecisionCommand(quoteId: string, cycleId: string, etag: 
   return underwritingWrite(quoteId, `/api/v1/quotes/${quoteId}/referral-decisions`, etag, { cycleId, decisions });
 }
 export function proofMatches(evidence: UnderwritingEvidence, purpose: ProofRequirement, cycleId: string): boolean {
-  return evidence.cycleId === cycleId && evidence.requirementCode === purpose.code && evidence.conditionId === purpose.conditionId && evidence.riskItemId === purpose.riskItemId && evidence.termsVersionId === purpose.termsVersionId && evidence.inputFingerprint === purpose.inputFingerprint && evidence.screeningState === 'accepted' && evidence.reviewState === 'accepted' && !evidence.withdrawn;
+  return evidence.cycleId === cycleId && evidence.requirementCode === purpose.code && evidence.conditionId === purpose.conditionId && evidence.riskItemId === purpose.riskItemId && evidence.termsVersionId === purpose.termsVersionId && evidence.capacitySubmissionId === purpose.capacitySubmissionId && evidence.inputFingerprint === purpose.inputFingerprint && evidence.screeningState === 'accepted' && evidence.reviewState === 'accepted' && !evidence.withdrawn;
 }

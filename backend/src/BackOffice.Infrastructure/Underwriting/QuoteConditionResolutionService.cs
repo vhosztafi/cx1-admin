@@ -28,16 +28,16 @@ public sealed partial class QuoteReferralService
                 using var proposal = JsonDocument.Parse(held.Revision.ProposalJson); definition = Parse(condition.DefinitionJson, proposal.RootElement);
                 var decision = await db.Set<QuoteReferralDecision>().AsNoTracking().SingleAsync(x => x.Id == condition.DecisionId, ct);
                 var active = (await UnderwritingEvidenceService.ActiveConditions(db, cycleId, ct)).Select(x => Parse(x.DefinitionJson, proposal.RootElement)).ToArray();
-                grant = held.Grants.FirstOrDefault(x =>
-                    (definition.RequirementCode != "trading-history" || x.Definition.GetProperty("limits").GetProperty("reviewTradingHistory").GetBoolean()) &&
-                    (decision.Outcome == "query" || ReferralRules.AuthorityBlockers(x.Definition, held.Eligible.Binder, held.Risk, active).Count == 0))
-                    ?? throw new QuoteOperationException(403, "underwriting-dimension-authority-required");
+                foreach (var candidate in held.Grants)
+                    if ((definition.RequirementCode != "trading-history" || candidate.Definition.GetProperty("limits").GetProperty("reviewTradingHistory").GetBoolean()) &&
+                        (decision.Outcome == "query" || await CapacityAuthority.Allows(db, held, candidate.Definition, active, time.GetUtcNow(), ct))) { grant = candidate; break; }
+                if (grant is null) throw new QuoteOperationException(403, "underwriting-dimension-authority-required");
             },
             async (db, ct) =>
             {
                 var now = time.GetUtcNow(); held!.Current(quoteVersion, now, currentPrice: true);
                 UnderwritingDecisionContext.CheckVersion(condition!.RowVersion, conditionVersion, "stale-condition");
-                if (referral!.LatestDecisionId != condition.DecisionId || referral.State is "superseded" or "declined") throw new QuoteOperationException(409, "condition-superseded");
+                if (!(await UnderwritingEvidenceService.ActiveConditions(db, cycleId, ct)).Any(x => x.Id == condition.Id) || referral!.State is "superseded" or "declined") throw new QuoteOperationException(409, "condition-superseded");
                 if (!ReferralRules.CanResolveWithEvidence(definition!)) throw new QuoteOperationException(409, "condition-requires-risk-revision");
                 var evidence = await db.Set<UnderwritingEvidenceAssociation>().FromSqlInterpolated($"SELECT * FROM UnderwritingEvidenceAssociation WITH(HOLDLOCK) WHERE Id={evidenceAssociationId} AND QuoteId={quoteId} AND CycleId={cycleId}").AsNoTracking().SingleOrDefaultAsync(ct)
                     ?? throw new QuoteOperationException(404, "underwriting-evidence-not-found");
@@ -51,7 +51,7 @@ public sealed partial class QuoteReferralService
                     EvidenceAssociationId = evidence.Id, EvidenceReviewId = review.Id, Outcome = outcome, ActorId = actor.UserId, AuthorityVersionId = grant!.Version.Id,
                     Reason = reason, RecordedAt = now, CreatedAt = now, CreatedBy = actor.UserId };
                 db.Add(row); await db.SaveChangesAsync(ct); condition.LatestResolutionId = row.Id; await db.SaveChangesAsync(ct);
-                await RefreshState(db, held, ct); return await held.Receipt(db, row.Id, 200, "underwriting.condition-resolved", now, ct);
+                await RefreshState(db, held, now, ct); return await held.Receipt(db, row.Id, 200, "underwriting.condition-resolved", now, ct);
             }, token);
     }
 }

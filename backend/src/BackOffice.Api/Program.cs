@@ -41,6 +41,7 @@ DiagnosticDispatcher.Register(builder);
 AgencyNotificationDispatcher.Register(builder);
 QuoteLookupDispatcher.Register(builder);
 QuoteRatingDispatcher.Register(builder);
+CapacityDispatcher.Register(builder);
 builder.Services.AddScoped<BackOffice.Infrastructure.Underwriting.UnderwritingEvidenceService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Underwriting.QuoteReferralService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Underwriting.QuoteReferralReadModel>();
@@ -106,6 +107,7 @@ app.MapQuoteLifecycle();
 app.MapQuoteUnderwriting();
 app.MapUnderwritingEvidence();
 app.MapQuoteReferrals();
+app.MapCapacity();
 // Domain endpoints are added only alongside their authentication and persistence.
 app.Run();
 

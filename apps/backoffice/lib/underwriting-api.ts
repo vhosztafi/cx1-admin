@@ -5,7 +5,7 @@ export type UnderwritingBlocker = { code: string; message: string; path?: string
 export type UnderwritingContext = { quoteId: string; cycleId: string; revisionId: string; pricingInputHash: string; clientId: string; relationshipId: string; productVersionId: string; agencyTermsVersionId: string; ratingRuleVersionId: string; binderVersionId: string; authorityVersionId: string };
 export type UnderwritingAssessment = {
   quoteId: string; quoteEtag: string; state: UnderwritingState; context?: UnderwritingContext; ratingId?: string; jobId?: string;
-  createdAt: string; productLabel: string; productVersionLabel: string; providerLabel: string;
+  createdAt: string; productLabel: string; productVersionLabel: string; providerLabel: string; providerId: string;
   submissionId?: string; assignedTeamId?: string; assignedTeamLabel?: string; assignedUserId?: string; assignedUserLabel?: string;
   blockers: UnderwritingBlocker[]; refreshOptions: UnderwritingRefreshOption[];
   proofRequirements: ProofRequirement[]; appliedEndorsements: { code: string; version: string; wording: string; decisionId: string; targetIds: string[] }[];
@@ -24,12 +24,12 @@ export type UnderwritingRefreshOption = { productVersionId: string; displayName:
 export type RatingHistoryItem = { id: string; cycleId: string; revisionId: string; revisionNumber: number; completedAt: string; expiresAt: string; outcome: string; grossPayable: string };
 export type UnderwritingReceipt = { id: string; quoteId: string; quoteEtag: string; jobId?: string; state?: 'queued' };
 export type UnderwritingAction = 'rate' | 'submit' | 'return-to-draft' | 'underwriting/refresh';
-export type ProofRequirement = { code: string; label: string; path: string; riskItemId?: string; conditionId?: string; termsVersionId?: string; inputFingerprint: string; satisfied: boolean };
+export type ProofRequirement = { code: string; label: string; path: string; riskItemId?: string; conditionId?: string; termsVersionId?: string; capacitySubmissionId?: string; inputFingerprint: string; satisfied: boolean };
 export type ConditionDefinition = { code: string; driverId?: string; driverIds?: string[]; premisesId?: string; vehicleId?: string; requirementCode?: string; wordingVersion?: string; minimumYears?: number; maximumAmount?: string };
 export type ReferralCondition = { id: string; decisionId: string; cycleId: string; etag: string; definition: ConditionDefinition; state: 'outstanding' | 'resolved' | 'superseded'; evidenceAssociationId?: string };
 export type ReferralDecision = { id: string; referralId: string; outcome: string; reason: string; question?: string; actorLabel: string; recordedAt: string; conditions: ConditionDefinition[] };
-export type Referral = { id: string; quoteId: string; cycleId: string; revisionId: string; etag: string; ruleCode: string; dimension: string; targetId?: string; reason: string; state: string; decisions: ReferralDecision[]; conditions: ReferralCondition[] };
-export type UnderwritingEvidence = { id: string; quoteId: string; cycleId: string; revisionId: string; fileId: string; fileName: string; requirementCode: string; riskItemId?: string; conditionId?: string; termsVersionId?: string; inputFingerprint: string; etag: string; screeningState: string; reviewState: string; withdrawn: boolean };
+export type Referral = { id: string; quoteId: string; cycleId: string; revisionId: string; etag: string; ruleCode: string; dimension: string; targetId?: string; reason: string; state: string; escalationId?: string; decisions: ReferralDecision[]; conditions: ReferralCondition[] };
+export type UnderwritingEvidence = { id: string; quoteId: string; cycleId: string; revisionId: string; fileId: string; fileName: string; requirementCode: string; riskItemId?: string; conditionId?: string; termsVersionId?: string; capacitySubmissionId?: string; inputFingerprint: string; etag: string; screeningState: string; reviewState: string; withdrawn: boolean };
 export type EvidenceEvent = { id: string; kind: string; outcome?: string; reason: string; actorLabel: string; recordedAt: string };
 
 const stateLabels: Record<UnderwritingState, string> = { draft: 'Draft', 'rating-pending': 'Rating requested', rated: 'Rated', referred: 'Referred', approved: 'Approved', sent: 'Sent', accepted: 'Accepted', declined: 'Declined', bound: 'Policy issued', withdrawn: 'Withdrawn' };

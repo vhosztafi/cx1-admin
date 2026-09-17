@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import Link from 'next/link';
 import type { QuoteView } from '../../lib/quotes';
 import type { UnderwritingAssessment, Referral, ReferralDecision, ConditionDefinition, UnderwritingEvidence } from '../../lib/underwriting-api';
 import { conditionFromForm, conditionLabels, referralDecisionCommand, riskItems, proofMatches, underwritingWrite } from '../../lib/underwriting-decisions';
@@ -26,6 +27,7 @@ export function ReferralDecisions({ quote, assessment, referrals, evidence, run 
         <p>{row.reason}</p><Status tone={row.state === 'approved' ? 'success' : row.state === 'declined' ? 'error' : 'warning'}>{row.state}</Status>
         {row.conditions.map(condition => <ConditionResolution key={condition.id} referral={row} conditionId={condition.id} quote={quote} assessment={assessment} evidence={evidence} run={run} />)}
         <DecisionHistory referralId={row.id} />
+        <CapacityReferralAction row={row} assessment={assessment} run={run} />
       </article>)}
       {referrals.filter(row => row.cycleId !== cycle || row.state === 'superseded').map(row => <details key={row.id}><summary>{row.ruleCode} · historical cycle · {row.state}</summary><p>{row.reason}</p><DecisionHistory referralId={row.id} /></details>)}
     </div></Panel>
@@ -46,7 +48,7 @@ export function ReferralDecisions({ quote, assessment, referrals, evidence, run 
   </>;
 }
 
-function ConditionForm({ quote, documentaryOnly, add }: { quote: QuoteView; documentaryOnly: boolean; add: (condition: ConditionDefinition) => void }) {
+export function ConditionForm({ quote, documentaryOnly, add }: { quote: QuoteView; documentaryOnly: boolean; add: (condition: ConditionDefinition) => void }) {
   const [code, setCode] = useState('provide-trading-history'), [targetId, setTarget] = useState(''), [requirementCode, setRequirement] = useState('photocard-both-sides');
   const [driverIds, setDrivers] = useState<string[]>([]), [minimumYears, setYears] = useState('2'), [maximumAmount, setMaximum] = useState(''), [error, setError] = useState('');
   const kind = code === 'provide-driver-proof' ? 'drivers' : ['provide-premises-security','overnight-security'].includes(code) ? 'premises' : code === 'revise-vehicle-limit' ? 'vehicles' : '';
@@ -60,6 +62,16 @@ function ConditionForm({ quote, documentaryOnly, add }: { quote: QuoteView; docu
     {code.startsWith('revise-') && <><label>Maximum GBP amount<input aria-label="Maximum condition amount" inputMode="decimal" value={maximumAmount} onChange={event => setMaximum(event.target.value)} /></label><p>Requires return to draft and a new rating. Proof cannot resolve a risk change on this cycle.</p></>}
     <button className="button" onClick={() => { try { add(conditionFromForm(code, { targetId, driverIds, minimumYears, maximumAmount, requirementCode }, quote.proposal)); setError(''); } catch (failure) { setError(failure instanceof Error ? failure.message : 'Review condition.'); } }}>Add condition</button>{error && <p role="alert">{error}</p>}
   </fieldset>;
+}
+
+function CapacityReferralAction({ row, assessment, run }: { row: Referral; assessment: UnderwritingAssessment; run: (request: DecisionRequest) => void }) {
+  const [reason, setReason] = useState('');
+  if (row.escalationId) return <Link className="button" href={`/escalations/${row.escalationId}`}>Open capacity escalation</Link>;
+  return <details><summary>Refer to capacity provider</summary><p>{assessment.providerLabel}</p>
+    <label>Escalation reason<textarea aria-label={`Escalation reason for ${row.ruleCode}`} value={reason} maxLength={2000} onChange={event => setReason(event.target.value)} /></label>
+    <button className="button" disabled={!assessment.capabilities.canEscalate || row.state === 'declined' || !reason.trim()} onClick={() => run({ command: underwritingWrite(assessment.quoteId, `/api/v1/referrals/${row.id}/escalations`, assessment.quoteEtag,
+      { cycleId: row.cycleId, referralEtag: row.etag, providerId: assessment.providerId, reason }), label: 'Refer to capacity provider', description: `${assessment.providerLabel} · ${reason}` })}>Create capacity escalation</button>
+  </details>;
 }
 
 function ConditionResolution({ referral, conditionId, quote, assessment, evidence, run }: { referral: Referral; conditionId: string; quote: QuoteView; assessment: UnderwritingAssessment; evidence: UnderwritingEvidence[]; run: (request: DecisionRequest) => void }) {

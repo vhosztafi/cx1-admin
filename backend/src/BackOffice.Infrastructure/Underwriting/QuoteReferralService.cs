@@ -35,7 +35,8 @@ public sealed partial class QuoteReferralService(IDbContextFactory<BackOfficeDbC
                 held = await UnderwritingDecisionContext.Hold(db, actor, quoteId, cycleId, "underwriting-decide-within-authority", time.GetUtcNow(), true, ct);
                 using var proposal = JsonDocument.Parse(held.Revision.ProposalJson);
                 var active = await UnderwritingEvidenceService.ActiveConditions(db, cycleId, ct);
-                var retainedConditions = active.Where(x => !normalized.Any(n => n.ReferralId == x.ReferralId)).Select(x => Parse(x.DefinitionJson, proposal.RootElement)).ToArray();
+                var carrierDecisions = await CapacityAuthority.CarrierDecisionIds(db, cycleId, ct);
+                var retainedConditions = active.Where(x => carrierDecisions.Contains(x.DecisionId) || !normalized.Any(n => n.ReferralId == x.ReferralId)).Select(x => Parse(x.DefinitionJson, proposal.RootElement)).ToArray();
                 if (retainedConditions.Length + normalized.Sum(x => x.Conditions.Count) > 100) throw new QuoteOperationException(422, "underwriting-condition-limit");
                 foreach (var item in normalized.OrderBy(x => x.ReferralId))
                 {
@@ -53,9 +54,10 @@ public sealed partial class QuoteReferralService(IDbContextFactory<BackOfficeDbC
                     var revisionRequired = item.Outcome == "approve-with-conditions" && conditions.Any(x => x.Kind == "risk-change");
                     // A request to revise risk remains permanently outstanding on
                     // this cycle. It never grants an approval above authority.
-                    var grant = held.Grants.FirstOrDefault(x => !approval || revisionRequired ||
-                        ReferralRules.AuthorityBlockers(x.Definition, held.Eligible.Binder, held.Risk, retainedConditions.Concat(conditions).ToArray()).Count == 0)
-                        ?? throw new QuoteOperationException(403, "underwriting-dimension-authority-required");
+                    EffectiveUnderwritingGrant? grant = null;
+                    foreach (var candidate in held.Grants)
+                        if (!approval || revisionRequired || await CapacityAuthority.Allows(db, held, candidate.Definition, retainedConditions.Concat(conditions).ToArray(), time.GetUtcNow(), ct)) { grant = candidate; break; }
+                    if (grant is null) throw new QuoteOperationException(403, "underwriting-dimension-authority-required");
                     selected.Add(item.ReferralId, (referral, grant, conditions));
                 }
             },
@@ -68,6 +70,8 @@ public sealed partial class QuoteReferralService(IDbContextFactory<BackOfficeDbC
                 {
                     var row = selected[item.ReferralId].Row; UnderwritingDecisionContext.CheckVersion(row.RowVersion, item.Version, "stale-referral");
                     if (row.State == "superseded" || item.Outcome != "reopen" && row.State == "declined") throw new QuoteOperationException(409, "referral-reopen-required");
+                    if (item.Outcome is "approve" or "approve-with-conditions" && await CapacityAuthority.HasBlockingRequest(db, held, row.Id, now, ct))
+                        throw new QuoteOperationException(409, "capacity-response-required");
                     if (item.Outcome == "approve")
                     {
                         foreach (var condition in oldConditions.Where(x => x.ReferralId == row.Id))
@@ -92,7 +96,7 @@ public sealed partial class QuoteReferralService(IDbContextFactory<BackOfficeDbC
                         Sequence = ++number, Code = condition.Code, Kind = condition.Kind, DefinitionJson = condition.DefinitionJson, Wording = condition.Wording,
                         EndorsementCode = condition.EndorsementCode, CreatedAt = now, CreatedBy = actor.UserId, UpdatedAt = now });
                 }
-                await db.SaveChangesAsync(ct); await RefreshState(db, held, ct);
+                await db.SaveChangesAsync(ct); await RefreshState(db, held, now, ct);
                 return await held.Receipt(db, firstDecision, 200, "underwriting.referrals-decided", now, ct);
             }, token);
     }
@@ -100,16 +104,20 @@ public sealed partial class QuoteReferralService(IDbContextFactory<BackOfficeDbC
     internal static ReferralCondition Parse(string json, JsonElement proposal)
     { using var document = JsonDocument.Parse(json); return ReferralRules.Condition(document.RootElement, proposal); }
 
-    internal static async Task RefreshState(BackOfficeDbContext db, UnderwritingDecisionContext held, CancellationToken token)
+    internal static async Task RefreshState(BackOfficeDbContext db, UnderwritingDecisionContext held, DateTimeOffset now, CancellationToken token)
     {
         var referrals = await db.Set<QuoteReferral>().Where(x => x.CycleId == held.Cycle.Id && x.State != "superseded").ToArrayAsync(token);
         foreach (var referral in referrals.Where(x => x.LatestDecisionId is not null && x.State is "conditional" or "approved"))
         {
             var decision = await db.Set<QuoteReferralDecision>().AsNoTracking().SingleAsync(x => x.Id == referral.LatestDecisionId, token);
-            if (decision.Outcome != "approve-with-conditions") continue;
-            var conditions = await db.Set<QuoteCondition>().AsNoTracking().Where(x => x.DecisionId == decision.Id).ToArrayAsync(token);
-            var complete = conditions.Length > 0;
+            var conditions = (await UnderwritingEvidenceService.ActiveConditions(db, held.Cycle.Id, token)).Where(x => x.ReferralId == referral.Id).ToArray();
+            var complete = decision.Outcome == "approve" || conditions.Length > 0;
             foreach (var condition in conditions) complete &= await UnderwritingEvidenceService.Resolved(db, condition, token);
+            complete &= !await CapacityAuthority.HasBlockingRequest(db, held, referral.Id, now, token);
+            var authority = await db.Set<AuthorityVersion>().AsNoTracking().SingleAsync(x => x.Id == decision.AuthorityVersionId, token);
+            using var definition = JsonDocument.Parse(authority.DefinitionJson); using var proposal = JsonDocument.Parse(held.Revision.ProposalJson);
+            var allConditions = (await UnderwritingEvidenceService.ActiveConditions(db, held.Cycle.Id, token)).Select(x => Parse(x.DefinitionJson, proposal.RootElement)).ToArray();
+            complete &= await CapacityAuthority.Allows(db, held, definition.RootElement, allConditions, now, token);
             referral.State = complete ? "approved" : "conditional";
         }
         var quote = held.Owned.Quote; if (db.Entry(quote).State == EntityState.Detached) db.Attach(quote);

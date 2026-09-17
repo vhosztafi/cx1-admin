@@ -31,12 +31,12 @@ public sealed partial class UnderwritingEvidenceService(IDbContextFactory<BackOf
 
     public Task<CommandOutcome> AttachAsync(ActorContext actor, Guid quoteId, Guid cycleId, byte[] version, Guid fileId,
         string requirementCode, Guid? riskItemId, Guid? conditionId, Guid? termsVersionId, string fingerprint, string reason,
-        string key, Guid correlationId, CancellationToken token = default)
+        string key, Guid correlationId, CancellationToken token = default, Guid? capacitySubmissionId = null)
     {
         reason = QuoteRatingService.Reason(reason); if (!ReferralRules.Hash(fingerprint) || fileId == Guid.Empty) throw new QuoteOperationException(422, "evidence-input-invalid");
         UnderwritingDecisionContext? held = null;
         return commands.ExecuteAuthorizedAsync(new(actor.UserId, $"/api/v1/quotes/{quoteId:D}/underwriting/evidence", key, correlationId),
-            new { quoteId, cycleId, version = Convert.ToBase64String(version), fileId, requirementCode, riskItemId, conditionId, termsVersionId, fingerprint, reason }, "underwriting.evidence-attached",
+            new { quoteId, cycleId, version = Convert.ToBase64String(version), fileId, requirementCode, riskItemId, conditionId, termsVersionId, capacitySubmissionId, fingerprint, reason }, "underwriting.evidence-attached",
             async (db, ct) =>
             {
                 held = await UnderwritingDecisionContext.Hold(db, actor, quoteId, cycleId, "underwriting-evidence-write", time.GetUtcNow(), false, ct);
@@ -45,12 +45,12 @@ public sealed partial class UnderwritingEvidenceService(IDbContextFactory<BackOf
             async (db, ct) =>
             {
                 var now = time.GetUtcNow(); held!.Current(version, now);
-                var required = (await Requirements(db, held.Cycle, held.Revision, held.Input, ct)).SingleOrDefault(x => x.Code == requirementCode && x.RiskItemId == riskItemId && x.ConditionId == conditionId && x.TermsVersionId == termsVersionId)
+                var required = (await Requirements(db, held.Cycle, held.Revision, held.Input, ct)).SingleOrDefault(x => x.Code == requirementCode && x.RiskItemId == riskItemId && x.ConditionId == conditionId && x.TermsVersionId == termsVersionId && x.CapacitySubmissionId == capacitySubmissionId)
                     ?? throw new QuoteOperationException(422, "evidence-purpose-inapplicable");
                 if (required.InputFingerprint != fingerprint) throw new QuoteOperationException(412, "stale-evidence-input");
                 var row = new UnderwritingEvidenceAssociation { QuoteId = quoteId, CycleId = cycleId, FileId = fileId, RequirementCode = requirementCode, RiskItemId = riskItemId,
-                    ConditionId = conditionId, TermsVersionId = termsVersionId, InputFingerprint = fingerprint, Reason = reason, CreatedBy = actor.UserId, CreatedAt = now, UpdatedAt = now };
-                db.Add(row); await db.SaveChangesAsync(ct); await QuoteReferralService.RefreshState(db, held, ct);
+                    ConditionId = conditionId, TermsVersionId = termsVersionId, CapacitySubmissionId = capacitySubmissionId, InputFingerprint = fingerprint, Reason = reason, CreatedBy = actor.UserId, CreatedAt = now, UpdatedAt = now };
+                db.Add(row); await db.SaveChangesAsync(ct); await QuoteReferralService.RefreshState(db, held, now, ct);
                 return await held.Receipt(db, row.Id, 201, "underwriting.evidence-attached", now, ct);
             }, token);
     }
@@ -88,7 +88,7 @@ public sealed partial class UnderwritingEvidenceService(IDbContextFactory<BackOf
                 if (association.WithdrawnEventId is not null) throw new QuoteOperationException(409, "underwriting-evidence-withdrawn");
                 if (kind == "review")
                 {
-                    var purpose = (await Requirements(db, held.Cycle, held.Revision, held.Input, ct)).SingleOrDefault(x => x.Code == association.RequirementCode && x.RiskItemId == association.RiskItemId && x.ConditionId == association.ConditionId && x.TermsVersionId == association.TermsVersionId);
+                    var purpose = (await Requirements(db, held.Cycle, held.Revision, held.Input, ct)).SingleOrDefault(x => x.Code == association.RequirementCode && x.RiskItemId == association.RiskItemId && x.ConditionId == association.ConditionId && x.TermsVersionId == association.TermsVersionId && x.CapacitySubmissionId == association.CapacitySubmissionId);
                     if (purpose is null || purpose.InputFingerprint != association.InputFingerprint || expectedFingerprint != association.InputFingerprint) throw new QuoteOperationException(412, "stale-evidence-input");
                     if (!await db.Set<QuoteEvidenceFile>().AnyAsync(x => x.Id == association.FileId && x.QuoteId == quoteId && x.ScreeningState == "accepted", ct)) throw new QuoteOperationException(409, "evidence-screening-required");
                 }
@@ -99,7 +99,7 @@ public sealed partial class UnderwritingEvidenceService(IDbContextFactory<BackOf
                 db.Add(row); await db.SaveChangesAsync(ct);
                 if (kind == "review") association.LatestReviewId = row.Id; else association.WithdrawnEventId = row.Id;
                 await db.SaveChangesAsync(ct);
-                await QuoteReferralService.RefreshState(db, held, ct);
+                await QuoteReferralService.RefreshState(db, held, now, ct);
                 return await held.Receipt(db, row.Id, 200, "underwriting.evidence-" + kind, now, ct);
             }, token);
     }

@@ -34,3 +34,10 @@ test('reviewed condition proof must match purpose, target, fingerprint and cycle
   assert.ok(proofMatches(evidence, requirement, cycle));
   for (const change of [{ withdrawn: true }, { reviewState: 'unreviewed' }, { inputFingerprint: 'b'.repeat(64) }, { cycleId: quote }, { conditionId: undefined }]) assert.equal(proofMatches({ ...evidence, ...change }, requirement, cycle), false);
 });
+test('carrier proof cannot satisfy a different submitted request', () => {
+  const purpose = { code: 'capacity-response', capacitySubmissionId: child, inputFingerprint: 'a'.repeat(64) };
+  const evidence = { cycleId: cycle, requirementCode: purpose.code, capacitySubmissionId: child, inputFingerprint: purpose.inputFingerprint, reviewState: 'accepted', screeningState: 'accepted', withdrawn: false };
+  assert.ok(proofMatches(evidence, purpose, cycle));
+  assert.equal(proofMatches({ ...evidence, capacitySubmissionId: quote }, purpose, cycle), false);
+  assert.equal(proofMatches({ ...evidence, capacitySubmissionId: undefined }, purpose, cycle), false);
+});

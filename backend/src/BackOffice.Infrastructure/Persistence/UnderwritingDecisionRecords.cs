@@ -47,6 +47,7 @@ public sealed class QuoteConditionResolution : StoredRecord
 
 public sealed class UnderwritingEvidenceAssociation : MutableRecord
 {
+    public Guid? CapacitySubmissionId { get; set; }
     public Guid QuoteId { get; set; }
     public Guid CycleId { get; set; }
     public Guid FileId { get; set; }

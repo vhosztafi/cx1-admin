@@ -46,11 +46,11 @@ public static class UnderwritingEvidenceEndpoints
         {
             QuoteEndpoints.Id(quoteId); var key = QuoteHttpInput.Key(context.Request); var version = QuoteHttpInput.Version(context.Request);
             using var doc = await QuoteHttpInput.Read(context.Request, context.RequestAborted); var root = doc.RootElement;
-            QuoteHttpInput.Keys(root, "cycleId", "fileId", "requirementCode", "riskItemId", "conditionId", "termsVersionId", "inputFingerprint", "reason");
+            QuoteHttpInput.Keys(root, "cycleId", "fileId", "requirementCode", "riskItemId", "conditionId", "termsVersionId", "capacitySubmissionId", "inputFingerprint", "reason");
             Guid? Optional(string field) => root.TryGetProperty(field, out _) ? QuoteHttpInput.Id(root, field) : null;
             return QuoteEndpoints.Outcome(context, await service.AttachAsync(LocalIdentityService.Actor(context.User), quoteId, QuoteHttpInput.Id(root, "cycleId"), version,
                 QuoteHttpInput.Id(root, "fileId"), QuoteReferralEndpoints.Text(root, "requirementCode", 60), Optional("riskItemId"), Optional("conditionId"), Optional("termsVersionId"),
-                QuoteReferralEndpoints.Text(root, "inputFingerprint", 64), QuoteReferralEndpoints.Text(root, "reason", 2000), key, Guid.NewGuid(), context.RequestAborted));
+                QuoteReferralEndpoints.Text(root, "inputFingerprint", 64), QuoteReferralEndpoints.Text(root, "reason", 2000), key, Guid.NewGuid(), context.RequestAborted, Optional("capacitySubmissionId")));
         }
         catch (Exception error) when (QuoteEndpoints.Known(error)) { return QuoteEndpoints.Failure(context, error); }
     }

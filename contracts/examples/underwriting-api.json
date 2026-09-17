@@ -79,6 +79,7 @@
     },
     "sendEscalation": {
       "cycleId": "00000001-0000-4000-8000-000000000001",
+      "scenarioVersionId": "00000018-0000-4000-8000-000000000001",
       "escalationEtag": "\"v1\"",
       "body": "Request stock cover of150000.00 under the attached exact proposal.",
       "evidenceAssociationIds": [

@@ -1,0 +1,108 @@
+'use client';
+import Link from 'next/link';
+import { useState } from 'react';
+import type { QuoteView } from '../../lib/quotes';
+import type { UnderwritingAssessment, UnderwritingEvidence as Evidence, ConditionDefinition } from '../../lib/underwriting-api';
+import { formatGbp } from '../../lib/underwriting-api';
+import { capacityDimension, capacityExtension, capacityInstant, type CapacityView, type CapacityMessage } from '../../lib/capacity';
+import { underwritingWrite, proofMatches, conditionLabels } from '../../lib/underwriting-decisions';
+import { LoadFeedback, useQuoteResource } from '../quotes/shared';
+import { Panel, Status } from '../primitives';
+import { DecisionCommand, type DecisionRequest } from './decision-command';
+import { ConditionForm } from './referral-decisions';
+import { UnderwritingEvidence } from './underwriting-evidence';
+
+const date = (value?: string) => value ? new Date(value).toLocaleString('en-GB') : 'Not recorded';
+export function CapacityEscalation({ id, actorId }: { id: string; actorId: string }) {
+  const record = useQuoteResource<CapacityView>(`/api/v1/escalations/${id}`);
+  const [readGeneration, setReadGeneration] = useState(0);
+  function reload() { setReadGeneration(value => value + 1); record.refresh(); }
+  if (!record.data) return <Panel title="Capacity escalation"><LoadFeedback error={record.error} retry={record.refresh} /></Panel>;
+  return <CapacityWorkspace key={`${record.data.etag}:${record.data.quoteEtag}:${readGeneration}`} view={record.data} actorId={actorId} reload={reload} />;
+}
+function CapacityWorkspace({ view, actorId, reload }: { view: CapacityView; actorId: string; reload: () => void }) {
+  const quote = useQuoteResource<QuoteView>(`/api/v1/quotes/${view.quoteId}`);
+  const assessment = useQuoteResource<UnderwritingAssessment>(`/api/v1/quotes/${view.quoteId}/underwriting`);
+  const job = useQuoteResource<{ id: string; state: string; attempts: number; attemptLimit: number; retryAllowed: boolean }>(view.jobId ? `/api/v1/jobs/${view.jobId}` : null);
+  const [recoveryReason, setRecoveryReason] = useState('');
+  const [readAt] = useState(() => Date.now());
+  const [evidenceCursor, setEvidenceCursor] = useState(''), [messageCursor, setMessageCursor] = useState('');
+  const evidence = useQuoteResource<{ items: Evidence[]; nextCursor?: string }>(`/api/v1/quotes/${view.quoteId}/underwriting/evidence?pageSize=100${evidenceCursor ? '&cursor=' + encodeURIComponent(evidenceCursor) : ''}`);
+  const messages = useQuoteResource<{ items: CapacityMessage[]; nextCursor?: string }>(`/api/v1/escalations/${view.id}/messages?pageSize=20${messageCursor ? '&cursor=' + encodeURIComponent(messageCursor) : ''}`);
+  const [tab, setTab] = useState('escalation'), [request, setRequest] = useState<DecisionRequest>(), [revisionReason, setRevisionReason] = useState('');
+  const coherent = !!quote.data && !!assessment.data && view.current && quote.data.revisionId === view.revisionId && assessment.data.context?.cycleId === view.cycleId && assessment.data.quoteEtag === view.quoteEtag;
+  return <div className="underwriting-workspace capacity-workspace">
+    <div className="page-heading"><div><p className="quote-step-label">Underwriting · Capacity</p><h1>Capacity escalation</h1><p>{view.providerLabel} · {view.ruleCode}</p></div><Link className="button" href={`/quotes/${view.quoteId}`}>Back to quote{quote.data ? ` ${quote.data.reference}` : ''}</Link></div>
+    <section className="quote-saved-banner"><div><h2>{quote.data?.clientName ?? view.providerLabel}</h2><p>{view.reason}</p></div><Status tone={view.state === 'approved' ? 'success' : view.state === 'declined' || view.state === 'failed' ? 'error' : 'warning'}>{view.state.replaceAll('-', ' ')}</Status></section>
+    {!view.current && <p role="status" className="quote-selected">Historical request. Its correspondence is retained; actions use the current quote cycle.</p>}
+    {view.conflictCount > 0 && <p role="status" className="quote-selected">{view.conflictCount} conflicting provider event quarantined. The original response remains recorded.</p>}
+    <div role="tablist" aria-label="Capacity sections" className="quote-row-actions quote-record-tabs"><button className="button" role="tab" aria-selected={tab === 'escalation'} onClick={() => setTab('escalation')}>Escalation</button><button className="button" role="tab" aria-selected={tab === 'authority'} onClick={() => setTab('authority')}>Authority context</button></div>
+    <div className="underwriting-layout"><div className="underwriting-main">
+      {tab === 'authority' ? <><Panel title="Requested cover and retained binder limits" note="The carrier response applies only to its stated extent"><div className="quote-rail-body"><div className="table-scroll" role="region" aria-label="Retained capacity limits" tabIndex={0}><table><thead><tr><th>Dimension</th><th>Requested</th><th>Binder limit</th></tr></thead><tbody>{view.binderContext.map(row => <tr key={row.code}><th scope="row">{row.label}</th><td>{row.requested}</td><td>{row.binderLimit}</td></tr>)}</tbody></table></div></div></Panel>
+        {coherent && assessment.data!.authorityViews.map((grant, index) => <Panel key={grant.authorityVersionId ?? 'none'} title={grant.hasCurrentGrant ? `Your current authority ${index + 1}` : 'No current grant'}><div className="quote-rail-body"><div className="table-scroll" role="region" aria-label={`Current authority ${index + 1}`} tabIndex={0}><table><thead><tr><th>Dimension</th><th>Requested</th><th>Your limit</th></tr></thead><tbody>{grant.rows.map(row => <tr key={row.code}><th scope="row">{row.label}</th><td>{row.requested}</td><td>{row.actorLimit}</td></tr>)}</tbody></table></div></div></Panel>)}</> : <>
+        <Panel title="Correspondence" note="Demo provider results and supplied responses retain their provenance"><div className="quote-rail-body">
+          {view.state === 'queued' && <p role="status">Submission queued for the demo provider. A queued request is not a recorded response. Refresh to check progress.</p>}
+          {!messages.data ? <LoadFeedback error={messages.error} retry={messages.refresh} /> : <>{!messages.data.items.length && <p>No correspondence yet. Prepare the first submission below.</p>}{messages.data.items.map(message => <article className="quote-driver-card capacity-message" key={message.id}><div className="capacity-message-heading"><strong>{message.direction === 'outbound' ? 'Submitted request' : message.outcome?.replaceAll('-', ' ')}</strong><Status tone={message.applicationState === 'superseded' ? 'warning' : 'info'}>{message.provenance.replaceAll('-', ' ')}</Status></div><p className="client-help">{date(message.recordedAt)} · {message.recordedByLabel}{message.applicationState === 'superseded' ? ' · Retained, not applied' : ''}</p><p className="capacity-correspondence">{message.body}</p>
+            {message.providerUnderwriter && <p>{message.providerUnderwriter} · {message.providerReference} · Received {date(message.receivedAt)}</p>}
+            {message.authorisedLimits?.map((limit, index) => <p key={index}><strong>{limit.dimension.replaceAll('-', ' ')}:</strong> {limit.maximumAmount ? formatGbp(limit.maximumAmount) : limit.dimension === 'driver-age' ? `${limit.minimumAge}–${limit.maximumAge} years` : `Permission for ${limit.questionId}`}</p>)}
+            {message.validFrom && <p>Valid {date(message.validFrom)} to {date(message.validTo)}</p>}{message.conditions?.map((condition, index) => <p key={index}>Condition: {conditionLabels[condition.code] ?? condition.code}</p>)}
+          </article>)}<div className="quote-row-actions"><button className="button" disabled={!messageCursor} onClick={() => setMessageCursor('')}>Latest correspondence</button><button className="button" disabled={!messages.data.nextCursor} onClick={() => setMessageCursor(messages.data!.nextCursor!)}>Older correspondence</button></div></>}
+        </div></Panel>
+        {coherent && evidence.data ? <><CapacitySend view={view} assessment={assessment.data!} evidence={evidence.data.items} run={setRequest} /><CapacityResponse view={view} quote={quote.data!} assessment={assessment.data!} evidence={evidence.data.items} run={setRequest} />
+          <details><summary>Attach and review supporting proof</summary><UnderwritingEvidence quote={quote.data!} assessment={assessment.data!} evidence={evidence.data.items} run={setRequest} /><div className="quote-row-actions"><button className="button" disabled={!evidenceCursor} onClick={() => setEvidenceCursor('')}>Latest evidence</button><button className="button" disabled={!evidence.data.nextCursor} onClick={() => setEvidenceCursor(evidence.data!.nextCursor!)}>Older evidence</button></div></details></> : view.current && <Panel title="Action context"><div className="quote-rail-body"><p>Load the current quote and evidence before taking an action. If the quote changed, refresh this escalation.</p>{quote.error || assessment.error || evidence.error ? <p role="alert">{quote.error ?? assessment.error ?? evidence.error}</p> : null}</div></Panel>}
+      </>}
+    </div><aside className="underwriting-rail"><Panel title="Request details"><div className="quote-rail-body"><dl><div><dt>Capacity provider</dt><dd>{view.providerLabel}</dd></div><div><dt>Raised</dt><dd>{date(view.raisedAt)}<br />{view.raisedByLabel}</dd></div><div><dt>Submitted</dt><dd>{date(view.submittedAt)}</dd></div><div><dt>Response due</dt><dd>{date(view.responseDueAt)}</dd></div><div><dt>Assigned underwriter</dt><dd>{view.assignedUserLabel ?? 'No individual assignment'}</dd></div></dl><button className="button" onClick={reload}>Refresh escalation</button></div></Panel>
+      <Panel title="Escalation route"><div className="quote-rail-body"><dl><div><dt>First level</dt><dd>{view.assignedUserLabel ?? 'Underwriting team'}</dd></div><div><dt>Second level</dt><dd>{view.providerLabel}</dd></div><div><dt>Service standard</dt><dd>{view.serviceStandard ? view.serviceStandard : 'Set by the selected demo scenario on submission'}</dd></div><div><dt>Days open</dt><dd>{Math.max(0, Math.floor((readAt - Date.parse(view.raisedAt)) / 86_400_000))}</dd></div><div><dt>If declined</dt><dd>Review the response, revise the quote request or record the underwriting decline.</dd></div></dl></div></Panel>
+      <Panel title="Quote readiness"><div className="quote-rail-body"><dl><div><dt>Transaction status</dt><dd>{quote.data?.state ?? 'Loading quote'}</dd></div><div><dt>Issue permitted</dt><dd>{coherent && assessment.data?.capabilities.canIssue ? 'Yes' : 'No'}</dd></div></dl><strong>Other blockers</strong>{coherent ? <>{assessment.data!.blockers.length ? <ul>{assessment.data!.blockers.map((blocker, index) => <li key={index}>{blocker.message}</li>)}</ul> : <p>No other assessment blockers recorded.</p>}<p className="client-help">A carrier response does not itself issue a policy. Return to the quote to complete decisions and terms.</p></> : <p>Review the current quote assessment.</p>}</div></Panel>
+      <Panel title="Processing history"><div className="quote-rail-body">{!view.attemptHistory.length && <p>No provider attempt recorded.</p>}{view.attemptHistory.map(attempt => <p key={attempt.number}>Attempt {attempt.number} · {attempt.outcome}<br /><span className="client-help">{date(attempt.startedAt)}{attempt.errorCode ? ` · ${attempt.errorCode}` : ''}</span></p>)}
+        {job.data?.retryAllowed && coherent && job.etag && <><label>Recovery reason<textarea aria-label="Capacity recovery reason" value={recoveryReason} maxLength={1000} onChange={event => setRecoveryReason(event.target.value)} /></label><button className="button" disabled={!recoveryReason.trim()} onClick={() => setRequest({ command: underwritingWrite(view.quoteId, `/api/v1/jobs/${view.jobId}/retry`, job.etag!, { reason: recoveryReason }), jobId: view.jobId, label: 'Recover original capacity job', description: recoveryReason })}>Review job recovery</button></>}
+        {job.data?.state === 'failed' && !job.data.retryAllowed && <p className="client-help">Recovery requires integration recovery permission and current underwriting authority. Only eligible transient failures can be retried.</p>}
+      </div></Panel>
+      {coherent && view.capabilities.canRevise && <Panel title="Reduce request or remove a change"><div className="quote-rail-body"><p>Return this quote to draft, change the saved risk and obtain a new rating. The current request stays in history.</p><label>Revision reason<textarea value={revisionReason} maxLength={2000} onChange={event => setRevisionReason(event.target.value)} /></label><button className="button" disabled={!revisionReason.trim()} onClick={() => setRequest({ command: underwritingWrite(view.quoteId, `/api/v1/quotes/${view.quoteId}/return-to-draft`, view.quoteEtag, { cycleId: view.cycleId, reason: revisionReason }), label: 'Return quote to draft', description: revisionReason })}>Return quote to draft</button></div></Panel>}
+    </aside></div>{request && <DecisionCommand request={request} actorId={actorId} close={() => setRequest(undefined)} completed={() => { setRequest(undefined); reload(); }} />}
+  </div>;
+}
+
+function CapacitySend({ view, assessment, evidence, run }: { view: CapacityView; assessment: UnderwritingAssessment; evidence: Evidence[]; run: (request: DecisionRequest) => void }) {
+  const [body, setBody] = useState(''), [scenario, setScenario] = useState(''), [selected, setSelected] = useState<string[]>([]);
+  const options = evidence.filter(x => x.cycleId === view.cycleId && !x.withdrawn && x.screeningState === 'accepted' && assessment.proofRequirements.some(p => p.inputFingerprint === x.inputFingerprint));
+  return <Panel title="Submit to capacity provider" note="Fictional demo processing"><div className="quote-rail-body"><fieldset className="quote-reference-fields" disabled={!view.capabilities.canSend}><legend>Exact request</legend>
+    <label>Submission message<textarea aria-label="Capacity submission message" value={body} maxLength={8000} onChange={event => setBody(event.target.value)} /></label>
+    <label>Demo scenario<select aria-label="Capacity demo scenario" value={scenario} onChange={event => setScenario(event.target.value)}><option value="">Select a demo outcome</option>{view.scenarios.map(x => <option key={x.id} value={x.id}>{x.label} · v{x.version}</option>)}</select></label>
+    <p>Include selected supporting proof on this page:</p>{options.length ? options.map(item => <label className="contact-check" key={item.id}><input type="checkbox" checked={selected.includes(item.id)} onChange={event => setSelected(ids => event.target.checked ? [...ids, item.id] : ids.filter(id => id !== item.id))} />{item.fileName} · {item.requirementCode} · {item.reviewState}</label>) : <p className="client-help">No current proof on this page. Attach evidence below if it is needed for the request.</p>}
+    <button className="button button-primary" disabled={!body.trim() || !scenario || selected.length > 20} onClick={() => run({ command: underwritingWrite(view.quoteId, `/api/v1/escalations/${view.id}/send`, view.quoteEtag, { cycleId: view.cycleId, escalationEtag: view.etag, body, evidenceAssociationIds: selected, scenarioVersionId: scenario }), label: 'Send to demo provider', description: `${view.providerLabel} · ${body}` })}>Review submission</button>
+  </fieldset>{!view.capabilities.canSend && <p className="client-help">A current request, rating and underwriting authority are required. A queued request must finish before another submission.</p>}</div></Panel>;
+}
+
+function CapacityResponse({ view, quote, assessment, evidence, run }: { view: CapacityView; quote: QuoteView; assessment: UnderwritingAssessment; evidence: Evidence[]; run: (request: DecisionRequest) => void }) {
+  const [outcome, setOutcome] = useState('query'), [underwriter, setUnderwriter] = useState(''), [reference, setReference] = useState(''), [body, setBody] = useState(''), [received, setReceived] = useState('');
+  const [from, setFrom] = useState(''), [to, setTo] = useState(''), [amount, setAmount] = useState(''), [minimum, setMinimum] = useState(''), [maximum, setMaximum] = useState(''), [proof, setProof] = useState('');
+  const [conditions, setConditions] = useState<ConditionDefinition[]>([]), [error, setError] = useState('');
+  const purpose = assessment.proofRequirements.find(x => x.capacitySubmissionId === view.currentSubmissionId && x.code === 'capacity-response');
+  const proofs = purpose ? evidence.filter(x => proofMatches(x, purpose, view.cycleId)) : [];
+  const approving = outcome === 'approve' || outcome === 'approve-with-conditions', dimension = capacityDimension(view.ruleCode, view.dimension);
+  const extensible = ['premium-limit','stock-limit','vehicle-limit','tools-limit','premises-limit','driver-age','trade-restriction'].includes(dimension);
+  function record() {
+    try {
+      if (!view.currentSubmissionId || !view.submissionHash || !proofs.some(x => x.id === proof)) throw new Error('Select reviewed proof for this exact submission.');
+      const response = { cycleId: view.cycleId, escalationEtag: view.etag, submissionId: view.currentSubmissionId, submissionHash: view.submissionHash,
+        outcome, providerUnderwriter: underwriter, providerReference: reference, body, receivedAt: capacityInstant(received), evidenceAssociationId: proof,
+        ...(approving ? { validFrom: capacityInstant(from), validTo: capacityInstant(to), authorisedLimits: [capacityExtension(view.ruleCode, view.dimension, { maximumAmount: amount, minimumAge: minimum, maximumAge: maximum })] } : {}),
+        ...(outcome === 'approve-with-conditions' ? { conditions } : {}) };
+      setError(''); run({ command: underwritingWrite(view.quoteId, `/api/v1/escalations/${view.id}/responses`, view.quoteEtag, response), label: 'Record supplied response', description: `${underwriter} · ${reference} · ${outcome.replaceAll('-', ' ')}` });
+    } catch (failure) { setError(failure instanceof Error ? failure.message : 'Review the response.'); }
+  }
+  return <Panel title="Record supplied response" note="Record the actual carrier letter and its exact scope"><div className="quote-rail-body"><fieldset disabled={!view.capabilities.canRecordResponse} className="quote-reference-fields"><legend>Supplied carrier response</legend>
+    <label>Response outcome<select aria-label="Capacity response outcome" value={outcome} onChange={event => { setOutcome(event.target.value); setConditions([]); }}><option value="query">Query</option><option value="decline">Decline</option><option value="approve" disabled={!extensible}>Approve</option><option value="approve-with-conditions" disabled={!extensible}>Approve with conditions</option></select></label>
+    <label>Provider underwriter<input aria-label="Provider underwriter" value={underwriter} maxLength={200} onChange={event => setUnderwriter(event.target.value)} /></label><label>Provider reference<input aria-label="Provider reference" value={reference} maxLength={100} onChange={event => setReference(event.target.value)} /></label>
+    <label>Response received at<input aria-label="Response received at" type="datetime-local" step="1" value={received} onChange={event => setReceived(event.target.value)} /></label><label>Response body<textarea aria-label="Capacity response body" value={body} maxLength={8000} onChange={event => setBody(event.target.value)} /></label>
+    {approving && <><p>Authorised dimension: <strong>{dimension.replaceAll('-', ' ')}</strong></p>{dimension === 'driver-age' ? <><label>Minimum driver age<input value={minimum} onChange={event => setMinimum(event.target.value)} inputMode="numeric" /></label><label>Maximum driver age<input value={maximum} onChange={event => setMaximum(event.target.value)} inputMode="numeric" /></label></> : dimension === 'trade-restriction' ? <p>Explicit permission for {view.ruleCode} only.</p> : <label>Authorised GBP limit<input aria-label="Authorised GBP limit" value={amount} onChange={event => setAmount(event.target.value)} inputMode="decimal" placeholder="150000.00" /></label>}
+      <label>Authority valid from<input aria-label="Authority valid from" type="datetime-local" step="1" value={from} onChange={event => setFrom(event.target.value)} /></label><label>Authority valid until<input aria-label="Authority valid until" type="datetime-local" step="1" value={to} onChange={event => setTo(event.target.value)} /></label></>}
+    {outcome === 'approve-with-conditions' && <><ConditionForm quote={quote} documentaryOnly={false} add={condition => setConditions(items => [...items, condition])} /><ol>{conditions.map((condition, index) => <li key={index}>{conditionLabels[condition.code]} <button className="button" onClick={() => setConditions(items => items.filter((_, i) => i !== index))}>Remove condition {index + 1}</button></li>)}</ol></>}
+    <label>Reviewed response evidence<select aria-label="Reviewed response evidence" value={proof} onChange={event => setProof(event.target.value)}><option value="">Select evidence reviewed for this submission</option>{proofs.map(x => <option key={x.id} value={x.id}>{x.fileName}</option>)}</select></label>
+    <p className="client-help">Attach the actual carrier letter under “Supplied capacity provider response” below, then record an underwriting review.</p>
+    <button className="button button-primary" disabled={!underwriter.trim() || !reference.trim() || !body.trim() || !received || !proof || outcome === 'approve-with-conditions' && (!conditions.length || conditions.length > 20)} onClick={record}>Review supplied response</button>
+  </fieldset>{error && <p role="alert">{error}</p>}</div></Panel>;
+}
+
+

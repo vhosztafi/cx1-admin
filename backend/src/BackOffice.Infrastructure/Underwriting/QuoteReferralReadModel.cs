@@ -90,11 +90,13 @@ public sealed class QuoteReferralReadModel(IDbContextFactory<BackOfficeDbContext
     {
         var result = await Context(db, row.Id, row.QuoteId, row.CycleId, token);
         result["etag"] = UnderwritingDecisionContext.Etag(row.RowVersion); result["ruleCode"] = row.RuleCode; result["dimension"] = row.Dimension; result["reason"] = row.Reason; result["state"] = row.State;
+        var escalationId = await db.Set<CapacityEscalation>().AsNoTracking().Where(x => x.ReferralId == row.Id).Select(x => (Guid?)x.Id).SingleOrDefaultAsync(token);
+        if (escalationId is Guid capacityId) result["escalationId"] = capacityId;
         if (row.RiskItemId is Guid target) result["targetId"] = target; if (row.AssignedUserId is Guid assigned) result["assignedUserId"] = assigned;
         var decisions = await db.Set<QuoteReferralDecision>().AsNoTracking().Where(x => x.ReferralId == row.Id).OrderByDescending(x => x.Sequence).Take(latestOnly ? 1 : 100).ToArrayAsync(token);
         var history = new List<object>(); foreach (var decision in decisions) history.Add(await Decision(db, decision, token)); result["decisions"] = history;
         var conditions = new List<object>();
-        foreach (var condition in await db.Set<QuoteCondition>().AsNoTracking().Where(x => x.ReferralId == row.Id && x.DecisionId == row.LatestDecisionId).OrderBy(x => x.Sequence).Take(100).ToArrayAsync(token))
+        foreach (var condition in (await UnderwritingEvidenceService.ActiveConditions(db, row.CycleId, token)).Where(x => x.ReferralId == row.Id).Take(100))
         {
             using var definition = JsonDocument.Parse(condition.DefinitionJson);
             var item = new Dictionary<string, object> { ["id"] = condition.Id, ["decisionId"] = condition.DecisionId, ["cycleId"] = condition.CycleId,
@@ -118,6 +120,7 @@ public sealed class QuoteReferralReadModel(IDbContextFactory<BackOfficeDbContext
         result["reviewState"] = row.LatestReviewId is Guid review ? (await db.Set<UnderwritingEvidenceEvent>().Where(x => x.Id == review).Select(x => x.Outcome).SingleAsync(token))! : "unreviewed";
         if (row.LatestReviewId is Guid latest) result["latestReviewId"] = latest;
         if (row.RiskItemId is Guid target) result["riskItemId"] = target; if (row.ConditionId is Guid condition) result["conditionId"] = condition; if (row.TermsVersionId is Guid terms) result["termsVersionId"] = terms;
+        if (row.CapacitySubmissionId is Guid submission) result["capacitySubmissionId"] = submission;
         return result;
     }
 }

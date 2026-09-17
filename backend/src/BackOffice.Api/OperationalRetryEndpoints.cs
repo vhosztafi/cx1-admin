@@ -56,7 +56,7 @@ public static class OperationalRetryEndpoints
     }
 
     private static async Task<IResult> Retry(Guid jobId, HttpContext context, SqlCommandBoundary commands, TimeProvider time,
-        IDbContextFactory<BackOfficeDbContext> factory, QuoteRatingJobs ratingJobs)
+        IDbContextFactory<BackOfficeDbContext> factory, QuoteRatingJobs ratingJobs, CapacityJobs capacityJobs)
     {
         RetryInput input;
         try
@@ -81,6 +81,12 @@ public static class OperationalRetryEndpoints
         try
         {
             await using var db = await factory.CreateDbContextAsync(context.RequestAborted);
+            if (await db.Set<OutboxWork>().AsNoTracking().AnyAsync(x => x.Id == jobId && x.Kind == CapacityService.WorkKind, context.RequestAborted))
+            {
+                var capacityOutcome = await capacityJobs.RetryAsync(actor, jobId, expected, input.Reason, key, correlation, context.RequestAborted);
+                context.Response.Headers.Location = "/api/v1/jobs/" + jobId;
+                return QuoteEndpoints.Outcome(context, capacityOutcome);
+            }
             if (await db.Set<OutboxWork>().AsNoTracking().AnyAsync(x => x.Id == jobId && x.Kind == QuoteRatingService.WorkKind, context.RequestAborted))
             {
                 var ratingOutcome = await ratingJobs.RetryAsync(actor, jobId, expected, input.Reason, key, correlation, context.RequestAborted);

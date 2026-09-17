@@ -163,7 +163,7 @@ All nine Motor Trade capture stages are now editable. Combined has a dedicated P
 
 Use Previous insurance & NCD for Road Risks, or the previous-insurance subsection of Cover & excess for Combined. Policy expiry and NCB expiry are separate, as are exact years and at-least years. Cover & excess includes the source limits, dynamic own-vehicle excess, loan and optional covers, annual European vehicles and temporary trips linked to actual named drivers. Changing a controlling answer retains earlier details for explicit review.
 
-Declarations & review captures each Yes/No answer and its explanation, plus material facts. Save/reload and stale-edit comparison preserve these sections. Readiness lists actual missing photocard/DVLA proof per driver, motor-trader proof and applicable discount proof; upload and attach fictional proof in the evidence panel. Rating and issue remain unavailable. Reproduce the two-product persistence, trip-error focus, retry and comparison journey with `node scripts/verify-quote-cover-browser.mjs`.
+Declarations & review captures each Yes/No answer and its explanation, plus material facts. Save/reload and stale-edit comparison preserve these sections. Readiness lists actual missing photocard/DVLA proof per driver, motor-trader proof and applicable discount proof; upload and attach fictional proof in the evidence panel. Capture checks do not themselves authorise issue; use the Underwriting tab for the current rating and referral assessment. Reproduce the two-product persistence, trip-error focus, retry and comparison journey with `node scripts/verify-quote-cover-browser.mjs`.
 
 
 ## Complete Motor Trade capture and discovery
@@ -179,3 +179,37 @@ History compares saved values and ownership. Cloning creates new child identitie
 Run `pnpm web:browser:quotes` for sequential additive Motor Trade journeys and all20retained agency journeys. The readiness journey creates complete fictional Road Risks and Combined records with real persisted manual decisions and evidence. Reports/screenshots are local under `.local/quote-suite` and `.local/browser-evidence`. Recovery interceptions are labelled test fixtures, never provider or publication proof. Human business UAT remains a separate activity.
 
 The final 2026-09-16 acceptance run created capture-ready **QT-MT-0000000257 (Motor Trade Combined)** and **QT-MT-0000000258 (Motor Trade Road Risks)** in the preserved native demo. Both are revision2 and remain fictional drafts. Sign in as the demo underwriter, search either reference in Quotes, inspect its saved Risk details/Cover/Drivers/Vehicles tabs and open the editor to see current capture checks. These local records are not automatically present in a fresh database; rerun the readiness journey there to create equivalent examples.
+
+## Capacity referrals and carrier correspondence
+
+Sign in as the demo underwriter and open a rated quote's Underwriting tab. Expand
+**Refer to capacity provider** on the relevant referral, enter the reason and
+create the escalation. Open it to compare the requested exposure with retained
+binder limits and your current authority, then select an explicit fictional demo
+scenario and submit a message. Refresh escalation to see the persisted provider
+response and processing history. A queued submission is not an approval.
+
+For a supplied carrier response, expand **Attach and review supporting proof**.
+Upload the fictional letter, attach it to **Supplied capacity provider response**
+for this exact submission and record an underwriting review. The response form
+requires the actual underwriter, reference, received date/time, body and reviewed
+letter. Approvals also require the exact permitted limit and validity interval;
+conditional approvals use the same typed warranty/condition catalogue as the
+quote. Carrier approval only extends its stated scope. Other referrals and proof
+requirements still need attention on the parent quote.
+
+**Return quote to draft** adapts the prototype's Reduce request/Remove change
+controls for new business. Give a reason, revise the saved risk and obtain a new
+rating. Previous submissions, responses and their provenance remain readable.
+Servicing staff can inspect correspondence; recording and sending require current
+underwriting authority. Failed transient jobs expose recovery only to an operator
+with both integration recovery permission and underwriting authority.
+
+The native demo's **QT-MT-0000000284** shows a supplied £150,000 stock response with
+an overnight-security W-07 condition. **QT-MT-0000000285** demonstrates a queried
+Road Risks escalation retained after return to draft. These are fictional records
+created by the local Chrome journey, not fixtures guaranteed in a fresh database.
+Reproduce with `node scripts/verify-underwriting-capacity-browser.mjs`; add
+`--readback` to check saved correspondence and page-refresh recovery without new
+business mutations. Screenshots/report are in `.local/browser-evidence/underwriting-capacity`.
+Terms, acceptance and first policy issue remain the next Phase 6 slices.
