@@ -137,7 +137,7 @@
 
 - [x] 07-01 — Strict servicing contracts and pure lifecycle rules.
 - [x] 07-02 — Temporal policy reads and current discovery.
-- [ ] 07-03 — Persistent servicing drafts and editing leases.
+- [x] 07-03 — Persistent servicing drafts and editing leases.
 - [ ] 07-04 — Typed adjustment editors and stable-item comparison.
 - [ ] 07-05 — Servicing rating cycles and cumulative-slice pricing.
 - [ ] 07-06 — Servicing evidence and referral decisions.
@@ -260,7 +260,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 4. Agency onboarding and access | 8/8 | Complete | 2026-09-15 |
 | 5. Motor Trade quote capture | 11/11 | Complete    | 2026-09-16 |
 | 6. Underwriting and first policy issue | 14/14 | Complete | 2026-09-17 |
-| 7. Policy lifecycle and history | 2/16 | In progress | — |
+| 7. Policy lifecycle and history | 3/16 | In progress | — |
 | 8. Commercial Combined back office | 0/TBD | Not started | — |
 | 9. Tasks, documents, communication and incidents | 0/TBD | Not started | — |
 | 10. Accounting and insurer reporting | 0/TBD | Not started | — |
