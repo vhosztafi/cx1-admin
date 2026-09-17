@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-last_updated: "2026-09-17T02:37:10.276780+00:00"
+last_updated: "2026-09-17T02:51:32.735519+00:00"
 last_activity: 2026-09-17
 progress:
   total_phases: 13
   completed_phases: 5
   total_plans: 49
-  completed_plans: 43
+  completed_plans: 44
   percent: 38
 ---
 
@@ -20,16 +20,16 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Phase6 execution; Immutable quotation/delivery/acceptance backend verified; quotation UI verification underway.
+**Current focus:** Phase6 execution; Quotation and exact acceptance UI verified; policy storage and balanced issue posting next.
 
 ## Current Position
 
 Phase: 6 of 13 (Underwriting and first policy issue)
-Plan:06-09 of14 — Quotation preparation, delivery and acceptance UI
-Status: Executing — autonomous; quotation UI and actual Chrome journeys
-Last activity: 2026-09-17 — 06-08 verified in0ba6132:799backend/144SQL,317contracts,23retained data sets preserved.
+Plan:06-10 of14 — Policy storage and balanced first-issue posting
+Status: Executing — autonomous; policy schema and exact posting rules
+Last activity: 2026-09-17 — 06-09 verified in9d68ee6:100frontend/317contracts, both-product persisted Chrome and negative delivery cases.
 
-Progress: Phases1–5 complete;5/13 phases,43 completed implementation plans.
+Progress: Phases1–5 complete;5/13 phases,44 completed implementation plans.
 
 ## Accumulated Context
 
@@ -53,9 +53,9 @@ Progress: Phases1–5 complete;5/13 phases,43 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-17T02:37:10.276780+00:00
-Stopped at:06-08 complete; implementation0ba6132; executing06-09
-Resume file: .planning/phases/06-underwriting-and-first-policy-issue/06-09-PLAN.md
+Last session: 2026-09-17T02:51:32.735519+00:00
+Stopped at:06-09 complete; implementation9d68ee6; executing06-10
+Resume file: .planning/phases/06-underwriting-and-first-policy-issue/06-10-PLAN.md
 
 ## Autonomous continuation
 
