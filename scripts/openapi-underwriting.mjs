@@ -73,13 +73,16 @@ export function addUnderwritingContracts({schemas:s,ref:r,operation:op,paths}){
   s.UnderwritingPrepareTermsRequest=o({...commandContext,ratingId:id,templateVersionId:id});
   s.UnderwritingSendTermsRequest=o({termsVersionId:id,recipientContactIds:many(id,20,1)});
   s.UnderwritingAcceptanceRequest=o({...commandContext,ratingId:id,termsVersionId:id,termsHash:hash,assuranceHash:hash,accepterLabel:t(),acceptedAt:instant,channel:e('email','written','telephone'),evidenceAssociationId:id});
-  s.UnderwritingAcceptanceView=o({id,...s.UnderwritingAcceptanceRequest.properties,quoteId:id,recordedBy:id,recordedAt:instant});
+  s.UnderwritingAcceptanceView=o({id,...s.UnderwritingAcceptanceRequest.properties,quoteId:id,deliveryId:id,recordedBy:id,recordedAt:instant});
   s.UnderwritingTermCover=o({code:e('road-risks','stock-custody','premises','tools-equipment'),limit:money,excess:money,targetIds:many(id,100)});
   s.UnderwritingEndorsement=o({code:t(60),version:t(60),wording:t(8000),decisionId:id,targetIds:many(id,100)});
   s.UnderwritingTermsView=o({id,...context,ratingId:id,number:{type:'integer',minimum:1},termsHash:hash,assuranceHashAtPreparation:hash,templateVersionId:id,preparedAt:instant,preparedBy:id,
     cover:many(r('UnderwritingTermCover'),20,1),endorsements:many(r('UnderwritingEndorsement'),100),conditions:many(r('UnderwritingConditionView'),100),rating:r('UnderwritingRatingView'),agencyTermsVersionId:id,
     settlement:o({collector:e('agency','mga'),mode:e('net-remittance','separate-payment'),commissionRateBps:{type:'integer',minimum:0,maximum:10000},feeShareBps:{type:'integer',minimum:0,maximum:10000}}),documentState:e('structured-payload','generation-queued','generated')});
-  s.UnderwritingDeliveryView=o({id,termsVersionId:id,jobId:id,state:e('queued','delivered','failed','superseded'),recipientContactIds:many(id,20,1),payloadHash:hash,completedAt:instant,errorCode:t(100)},['id','termsVersionId','jobId','state','recipientContactIds','payloadHash']);
+  s.UnderwritingTermsRecipient=o({id,name:t(),email:{...t(254),format:'email'}});
+  s.UnderwritingTermsTemplate=o({id,code:t(60),version:{type:'integer',minimum:1},title:t(300)});
+  s.UnderwritingDeliveryAttempt=o({number:{type:'integer',minimum:1,maximum:18},outcome:t(30),startedAt:instant,endedAt:instant,errorCode:t(100)},['number','outcome','startedAt']);
+  s.UnderwritingDeliveryView=o({id,termsVersionId:id,jobId:id,state:e('queued','delivered','failed','superseded'),recipientContactIds:many(id,20,1),recipients:many(r('UnderwritingTermsRecipient'),20,1),payloadHash:hash,queuedAt:instant,attempts:many(r('UnderwritingDeliveryAttempt'),18),completedAt:instant,errorCode:t(100)},['id','termsVersionId','jobId','state','recipientContactIds','recipients','payloadHash','queuedAt','attempts']);
   s.UnderwritingIssueRequest=o({...commandContext,ratingId:id,acceptanceId:id,termsHash:hash,assuranceHash:hash,reason});
   s.UnderwritingIssueResult=o({policyId:id,policyReference:t(40),quoteId:id,quoteEtag:etag,termId:id,versionId:id,transactionId:id,obligationId:id,documentRequestIds:many(id,20,1)});
   s.FirstPolicyFinancialView=o({obligationId:id,transactionId:id,journalId:id,currency:{const:'GBP'},debtorKind:e('agency','relationship'),debtorId:id,amountDue:money,
@@ -132,7 +135,7 @@ export function addUnderwritingContracts({schemas:s,ref:r,operation:op,paths}){
   write('/escalations/{escalationId}/responses','recordCapacityResponse','underwriting-record-capacity','UnderwritingCapacityResponseRequest','UnderwritingCommandResult',201);
   write('/quotes/{quoteId}/terms/prepare','prepareQuoteTerms','quote-terms','UnderwritingPrepareTermsRequest','UnderwritingCommandResult',201);
   write('/quotes/{quoteId}/terms','sendQuoteTerms','quote-terms','UnderwritingSendTermsRequest','UnderwritingWorkResult',202);
-  replace('get','/quotes/{quoteId}/terms','listQuoteTerms','quote-read',{output:o({terms:many(r('UnderwritingTermsView'),100),deliveries:many(r('UnderwritingDeliveryView'),100),acceptances:many(r('UnderwritingAcceptanceView'),100),nextTermsCursor:t(2048),nextDeliveriesCursor:t(2048),nextAcceptancesCursor:t(2048)},['terms','deliveries','acceptances']),query:[['termsCursor',t(2048)],['deliveriesCursor',t(2048)],['acceptancesCursor',t(2048)],['pageSize',{type:'integer',minimum:1,maximum:100}]]});
+  replace('get','/quotes/{quoteId}/terms','listQuoteTerms','quote-read',{output:o({terms:many(r('UnderwritingTermsView'),100),deliveries:many(r('UnderwritingDeliveryView'),100),acceptances:many(r('UnderwritingAcceptanceView'),100),templates:many(r('UnderwritingTermsTemplate'),100),recipientOptions:many(r('UnderwritingTermsRecipient'),1000),nextTermsCursor:t(2048),nextDeliveriesCursor:t(2048),nextAcceptancesCursor:t(2048)},['terms','deliveries','acceptances','templates','recipientOptions']),query:[['termsCursor',t(2048)],['deliveriesCursor',t(2048)],['acceptancesCursor',t(2048)],['pageSize',{type:'integer',minimum:1,maximum:100}]]});
   write('/quotes/{quoteId}/acceptances','recordQuoteAcceptance','quote-acceptance','UnderwritingAcceptanceRequest','UnderwritingCommandResult',201);
   write('/quotes/{quoteId}/issue','issueQuote','policy-issue-within-authority','UnderwritingIssueRequest','UnderwritingIssueResult',201);
   // This first-issue detail does not change the later servicing draft contracts.

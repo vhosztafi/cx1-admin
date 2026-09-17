@@ -64,6 +64,9 @@ public sealed class UnderwritingCycle : MutableRecord
     public Guid RequestedBy { get; set; }
     public string State { get; set; } = "rating-pending";
     public Guid? CurrentRatingId { get; set; }
+    public Guid? CurrentTermsVersionId { get; set; }
+    public Guid? CurrentDeliveryId { get; set; }
+    public Guid? CurrentAcceptanceId { get; set; }
     public DateTimeOffset? SupersededAt { get; set; }
     public string? SupersededReason { get; set; }
 }

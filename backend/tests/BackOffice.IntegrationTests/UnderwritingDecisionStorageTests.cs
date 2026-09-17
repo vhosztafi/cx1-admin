@@ -21,7 +21,7 @@ public sealed partial class UnderwritingStorageTests
             if (upgrade) await db.GetService<IMigrator>().MigrateAsync("20260916184737_UnderwritingCoreStorage");
             await Seed(db); var f = await Fixture(db, published: true);
             var quote = await InsertQuote(db, f); var other = await InsertQuote(db, f);
-            var cycle = await InsertCycle(db, quote, f); var foreign = await InsertCycle(db, other, f);
+            var cycle = await InsertCycle(db, quote, f, legacy: upgrade); var foreign = await InsertCycle(db, other, f, legacy: upgrade);
             var rating = await InsertRating(db, cycle); var otherRating = await InsertRating(db, foreign);
             var retained = await db.Set<QuoteRevision>().AsNoTracking().OrderBy(x => x.Id).Select(x => x.ProposalJson).ToArrayAsync();
             if (upgrade) { await db.Database.MigrateAsync(); db.ChangeTracker.Clear(); }

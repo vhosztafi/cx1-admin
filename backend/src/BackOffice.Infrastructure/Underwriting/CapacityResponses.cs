@@ -64,7 +64,11 @@ public sealed partial class CapacityService
                 if (extensions.Any(x => x.Dimension != dimension || x.Dimension == "trade-restriction" && x.QuestionId != referral.RuleCode) ||
                     extensions.Select(x => x.Dimension).Distinct().Count() != extensions.Length || conditions.Select(x => x.DefinitionJson).Distinct().Count() != conditions.Length)
                     throw new QuoteOperationException(422, "capacity-response-extent");
-                if (conditions.Any(x => x.TermsVersionId is not null)) throw new QuoteOperationException(409, "prepared-terms-required");
+                foreach (var signed in conditions.Where(x => x.TermsVersionId is not null))
+                {
+                    var terms = await QuoteTermsService.CurrentTerms(db, held, signed.TermsVersionId!.Value, now, ct);
+                    if (terms.TermsHash != signed.TermsHash) throw new QuoteOperationException(412, "quote-terms-stale");
+                }
                 var definition = JsonSerializer.Serialize(new { quoteId, cycleId, submissionId = submission.Id, submissionHash = submission.ContextHash,
                     outcome = response.Outcome, validFrom = response.ValidFrom, validTo = response.ValidTo, authorisedLimits = response.AuthorisedLimits, conditions = response.Conditions }, QuoteRatingService.Json);
                 var message = new CapacityMessage { QuoteId = quoteId, CycleId = cycleId, EscalationId = escalationId, SubmissionId = submission.Id,

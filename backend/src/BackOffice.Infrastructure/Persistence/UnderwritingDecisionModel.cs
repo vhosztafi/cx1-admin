@@ -36,8 +36,6 @@ public sealed partial class BackOfficeDbContext
         evidence.HasOne<QuoteCondition>().WithMany().HasForeignKey(x => new { x.ConditionId, x.CycleId, x.QuoteId }).HasPrincipalKey(x => new { x.Id, x.CycleId, x.QuoteId }).OnDelete(DeleteBehavior.NoAction);
         Check(evidence, "Fingerprint", "LEN([InputFingerprint])=64 AND [InputFingerprint] NOT LIKE '%[^0-9a-f]%' COLLATE Latin1_General_100_BIN2");
         Check(evidence, "Reason", "LEN(TRIM([Reason]))>0 AND [CreatedBy] IS NOT NULL");
-        //06-08 replaces this fence with a same-quote/cycle prepared-terms FK.
-        Check(evidence, "PreparedTermsOwner", "[TermsVersionId] IS NULL");
         Check(evidence, "Purpose", "[RequirementCode] IN ('motor-trader-proof','no-claims-proof','photocard-both-sides','driving-record','premises-security','trading-history','signed-statement','warranty-acknowledgement','acceptance-proof','capacity-response')");
 
         var review = Record<UnderwritingEvidenceEvent>(model, "UnderwritingEvidenceEvent"); review.ToTable(t => t.UseSqlOutputClause(false));

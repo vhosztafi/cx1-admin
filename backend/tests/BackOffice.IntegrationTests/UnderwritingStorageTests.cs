@@ -136,8 +136,15 @@ public sealed partial class UnderwritingStorageTests
         var work = new OutboxWork { Kind = "quote-rating", SubjectRecordId = cycle.Id, OperationKey = Guid.NewGuid().ToString(), NextAttemptAt = DateTimeOffset.UtcNow };
         db.Add(work); await db.SaveChangesAsync(); cycle.WorkId = work.Id; return cycle;
     }
-    private static async Task<UnderwritingCycle> InsertCycle(BackOfficeDbContext db, Quote q, TestFixture f)
-    { var cycle = await NewCycle(db, q, f, 1); db.Add(cycle); await db.SaveChangesAsync(); return cycle; }
+    private static async Task<UnderwritingCycle> InsertCycle(BackOfficeDbContext db, Quote q, TestFixture f, bool legacy = false)
+    {
+        var cycle = await NewCycle(db, q, f, 1);
+        if (!legacy) { db.Add(cycle); await db.SaveChangesAsync(); return cycle; }
+        // Retained-schema fixtures must insert only columns present at that
+        // migration, rather than using today's EF model against yesterday's table.
+        await db.Database.ExecuteSqlInterpolatedAsync($"INSERT UnderwritingCycle(Id,CreatedAt,CreatedBy,UpdatedAt,QuoteId,QuoteRevisionId,AgencyId,ClientId,RelationshipId,ProductId,ProductVersionId,AgencyTermsVersionId,RatingRuleVersionId,BinderVersionId,AuthorityVersionId,Sequence,WorkId,PricingInputHash,InputJson,StartsAt,EndsAt,RequestedBy,State) VALUES({cycle.Id},{cycle.CreatedAt},{cycle.CreatedBy},{cycle.UpdatedAt},{cycle.QuoteId},{cycle.QuoteRevisionId},{cycle.AgencyId},{cycle.ClientId},{cycle.RelationshipId},{cycle.ProductId},{cycle.ProductVersionId},{cycle.AgencyTermsVersionId},{cycle.RatingRuleVersionId},{cycle.BinderVersionId},{cycle.AuthorityVersionId},{cycle.Sequence},{cycle.WorkId},{cycle.PricingInputHash},{cycle.InputJson},{cycle.StartsAt},{cycle.EndsAt},{cycle.RequestedBy},{cycle.State})");
+        return cycle;
+    }
     private static async Task<QuoteRatingResult> NewRating(BackOfficeDbContext db, UnderwritingCycle cycle)
     {
         var count = await db.Set<AdapterAttempt>().CountAsync(x => x.WorkId == cycle.WorkId);

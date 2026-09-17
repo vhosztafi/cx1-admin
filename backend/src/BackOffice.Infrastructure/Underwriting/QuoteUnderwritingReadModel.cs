@@ -41,7 +41,7 @@ public sealed partial class QuoteUnderwritingReadModel(IDbContextFactory<BackOff
         await tx.CommitAsync(token); return result;
     }
 
-    private async Task<Dictionary<string, object>> Assess(BackOfficeDbContext db, ActorContext actor, Guid quoteId, CancellationToken token)
+    internal async Task<Dictionary<string, object>> Assess(BackOfficeDbContext db, ActorContext actor, Guid quoteId, CancellationToken token)
     {
         var owned = await QuoteScope.ForQuoteAsync(db, actor, quoteId, QuoteAccess.Read, token); var quote = owned.Quote;
         if (!owned.Scope.Actor.HasCapability("underwriting-read")) throw new QuoteOperationException(403, "underwriting-access-denied");
@@ -87,7 +87,7 @@ public sealed partial class QuoteUnderwritingReadModel(IDbContextFactory<BackOff
             proofRequirements = await UnderwritingEvidenceService.Requirements(db, cycle, revision, storedInput, token);
             // A capacity-response purpose is an attachment option for supplied
             // letters. Demo provider events have their own durable provenance.
-            foreach (var proof in proofRequirements.Where(x => !x.Satisfied && x.Code != "capacity-response"))
+            foreach (var proof in proofRequirements.Where(x => !x.Satisfied && x.Code is not ("capacity-response" or "acceptance-proof")))
                 blockers.Add(new UnderwritingReadBlocker("evidence-review-required-" + proof.Code, proof.Label + " requires current underwriting review.", proof.Path, proof.RiskItemId));
         }
         else foreach (var proof in (await QuoteEvidenceReadModel.AssessAsync(db, revision, token)).Requirements.Where(x => x.State != "current"))
@@ -96,6 +96,33 @@ public sealed partial class QuoteUnderwritingReadModel(IDbContextFactory<BackOff
         var grants = current && eligible is not null && term.Term is not null
             ? await QuoteUnderwritingScope.GrantsAsync(db, owned, revision.ProductVersionId, eligible.BinderVersion, eligible.Capture.Product.Code, term.Term, now, token) : [];
         var decisionContext = writable && current && cycle?.State == "rated" && quote.State is not ("bound" or "withdrawn" or "draft");
+        var canPrepareTerms = false; var canSend = false; var canAccept = false; var acceptanceCurrent = false; QuoteTermsVersion? currentTerms = null;
+        if (decisionContext && cycle is not null && eligible is not null && rating is { Outcome: "rated" } && rating.ExpiresAt > now)
+        {
+            var input = JsonSerializer.Deserialize<StoredRatingInput>(cycle.InputJson, QuoteRatingService.Json)!;
+            var held = new UnderwritingDecisionContext(owned, cycle, revision, rating, input, eligible, grants);
+            try
+            {
+                await QuoteTermsService.Ready(db, held, now, false, token);
+                canPrepareTerms = owned.Scope.Actor.HasCapability("quote-terms") && await db.Set<TemplateVersion>().AnyAsync(x => x.ProductId == cycle.ProductId && x.State == "published" && x.EffectiveFrom <= now && now < x.EffectiveTo, token);
+                if (cycle.CurrentTermsVersionId is Guid termsId)
+                {
+                    currentTerms = await QuoteTermsService.CurrentTerms(db, held, termsId, now, token);
+                    await QuoteTermsService.Ready(db, held, now, true, token); canSend = owned.Scope.Actor.HasCapability("quote-terms");
+                    var delivery = await db.Set<QuoteTermsDelivery>().AsNoTracking().SingleOrDefaultAsync(x => x.Id == cycle.CurrentDeliveryId && x.TermsVersionId == termsId && x.State == "delivered", token);
+                    if (delivery is not null)
+                    {
+                        var recipients = JsonSerializer.Deserialize<QuoteTermsRecipient[]>(delivery.RecipientSnapshotJson, QuoteRatingService.Json)!;
+                        var actual = await QuoteTermsService.Recipients(db, held, recipients.Select(x => x.Id).ToArray(), token);
+                        canAccept = recipients.SequenceEqual(actual) && owned.Scope.Actor.HasCapability("quote-acceptance") && proofRequirements.Any(x => x.Code == "acceptance-proof" && x.TermsVersionId == termsId && x.Satisfied);
+                        var assurance = await UnderwritingEvidenceService.Assurance(db, cycle, revision, token);
+                        acceptanceCurrent = recipients.SequenceEqual(actual) && await db.Set<QuoteAcceptance>().AnyAsync(x => x.Id == cycle.CurrentAcceptanceId && x.TermsVersionId == termsId && x.DeliveryId == delivery.Id && x.TermsHash == currentTerms.TermsHash && x.AssuranceHash == assurance, token);
+                    }
+                }
+            }
+            catch (QuoteOperationException error) { if (cycle.CurrentTermsVersionId is not null) blockers.Add(new UnderwritingReadBlocker(error.Code, "Refresh the current quotation prerequisites.")); }
+        }
+        if (cycle?.CurrentAcceptanceId is not null && !acceptanceCurrent) blockers.Add(new UnderwritingReadBlocker("quote-acceptance-stale", "Record fresh acceptance of current delivered terms and reviewed proof."));
         var productDetails = await (from version in db.Set<ProductVersion>().AsNoTracking()
                                     join product in db.Set<Product>().AsNoTracking() on version.ProductId equals product.Id
                                     join provider in db.Set<CapacityProvider>().AsNoTracking() on version.ProviderId equals provider.Id
@@ -111,7 +138,9 @@ public sealed partial class QuoteUnderwritingReadModel(IDbContextFactory<BackOff
                 canReviewEvidence = decisionContext && grants.Count > 0 && owned.Scope.Actor.HasCapability("underwriting-evidence-review"),
                 canDecide = decisionContext && grants.Count > 0 && rating?.ExpiresAt > now && owned.Scope.Actor.HasCapability("underwriting-decide-within-authority"),
                 canEscalate = decisionContext && grants.Count > 0 && rating?.ExpiresAt > now && owned.Scope.Actor.HasCapability("underwriting-escalate"),
-                canPrepareTerms = false, canSend = false, canAccept = false, canIssue = false } };
+                canPrepareTerms, canSend, canAccept, canIssue = false } };
+        if (currentTerms is not null) { result["termsVersionId"] = currentTerms.Id; result["termsHash"] = currentTerms.TermsHash; }
+        if (acceptanceCurrent && cycle?.CurrentAcceptanceId is Guid acceptanceId) result["acceptanceId"] = acceptanceId;
         result["proofRequirements"] = proofRequirements;
         var authorityViews = new List<object>();
         if (current && cycle is not null && eligible is not null && rating is { Outcome: "rated" })

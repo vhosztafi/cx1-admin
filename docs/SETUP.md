@@ -157,3 +157,26 @@ Attached matching decisions now require `expectedQuoteEtag` in addition to the r
 The additive `20260916184737_UnderwritingCoreStorage` migration introduces versioned rating/binder/authority configuration, revocable internal grants, immutable cycle inputs/results/submissions and referral shells. Repeat `--initialize-demo` preserves retained capture data and credentials. It adds two published Motor Trade product versions, two rating definitions, two binders, four authority profiles and four grants once; retirement/revocation is preserved by a stored initialization marker. Approved agency terms and capture/distribution settings require explicit later adoption and are not changed by this seed.
 
 Pure rating rules use exact decimal arithmetic, London civil term fractions and the versioned fictional source factors. The contracts do not make rating or issue endpoints operational: the progression service, worker, UI and acceptance/issue flows are delivered by subsequent Phase 6 plans.
+
+## Prepared quotations and demo delivery
+
+Additive migration `20260917013041_QuoteTermsDeliveryStorage` stores immutable
+quotation/template/acceptance history and durable recipient-specific delivery
+requests. Repeat `--initialize-demo` preserves existing data and credentials; it
+adds two Motor Trade demo templates and one versioned `quote-delivery` setting.
+Retired templates and operator scenario versions are retained.
+
+The Development worker is controlled by `Cover__QuoteDeliveryWorkerEnabled`
+(default `true`). Delivery is entirely fictional: `202` means queued, and only a
+successfully applied provider outcome becomes delivered. No real email is sent.
+The exact server-selected setting supports `success`, `reject`, `transient-once`
+and `timeout-after-success`. Failed recoverable jobs retain their payload,
+recipient snapshots, operation identity and attempt history.
+
+Prepare terms before uploading the exact signed statement; review that proof,
+then send to selected current relationship contacts. After delivery, upload and
+review actual acceptance evidence before recording the named accepter, received
+instant and channel. Changes to warranties, price, applicable configuration or
+proof require current reassessment; old acceptance is never a blanket permission
+for issue. Quotation UI and policy issue are implemented in subsequent Phase6
+slices; generic rendered document generation remains Phase9.

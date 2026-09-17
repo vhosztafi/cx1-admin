@@ -46,9 +46,11 @@ public sealed partial class QuoteReferralService(IDbContextFactory<BackOfficeDbC
                     try { conditions = item.Conditions.Select(x => ReferralRules.Condition(x, proposal.RootElement)).ToArray(); }
                     catch (ArgumentException) { throw new QuoteOperationException(422, "referral-condition-invalid"); }
                     if (conditions.Select(x => x.DefinitionJson).Distinct().Count() != conditions.Length) throw new QuoteOperationException(422, "duplicate-referral-condition");
-                    // Exact prepared-terms ownership arrives with06-08. No supplied
-                    // GUID can stand in for a terms record before that handler exists.
-                    if (conditions.Any(x => x.TermsVersionId is not null)) throw new QuoteOperationException(409, "prepared-terms-required");
+                    foreach (var signed in conditions.Where(x => x.TermsVersionId is not null))
+                    {
+                        var terms = await QuoteTermsService.CurrentTerms(db, held, signed.TermsVersionId!.Value, time.GetUtcNow(), ct);
+                        if (terms.TermsHash != signed.TermsHash) throw new QuoteOperationException(412, "quote-terms-stale");
+                    }
                     if (item.Outcome == "query" && conditions.Any(x => x.Kind != "documentary")) throw new QuoteOperationException(422, "query-documentary-condition-required");
                     var approval = item.Outcome is "approve" or "approve-with-conditions";
                     var revisionRequired = item.Outcome == "approve-with-conditions" && conditions.Any(x => x.Kind == "risk-change");

@@ -8596,6 +8596,24 @@
                       "maxItems": 100,
                       "uniqueItems": true
                     },
+                    "templates": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/UnderwritingTermsTemplate"
+                      },
+                      "minItems": 0,
+                      "maxItems": 100,
+                      "uniqueItems": true
+                    },
+                    "recipientOptions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/UnderwritingTermsRecipient"
+                      },
+                      "minItems": 0,
+                      "maxItems": 1000,
+                      "uniqueItems": true
+                    },
                     "nextTermsCursor": {
                       "type": "string",
                       "minLength": 1,
@@ -8618,7 +8636,9 @@
                   "required": [
                     "terms",
                     "deliveries",
-                    "acceptances"
+                    "acceptances",
+                    "templates",
+                    "recipientOptions"
                   ]
                 }
               }
@@ -77570,6 +77590,10 @@
             "type": "string",
             "format": "uuid"
           },
+          "deliveryId": {
+            "type": "string",
+            "format": "uuid"
+          },
           "recordedBy": {
             "type": "string",
             "format": "uuid"
@@ -77591,6 +77615,7 @@
           "channel",
           "evidenceAssociationId",
           "quoteId",
+          "deliveryId",
           "recordedBy",
           "recordedAt"
         ]
@@ -77832,6 +77857,102 @@
           "documentState"
         ]
       },
+      "UnderwritingTermsRecipient": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "\\S"
+          },
+          "email": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 254,
+            "pattern": "\\S",
+            "format": "email"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "email"
+        ]
+      },
+      "UnderwritingTermsTemplate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 60,
+            "pattern": "\\S"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "id",
+          "code",
+          "version",
+          "title"
+        ]
+      },
+      "UnderwritingDeliveryAttempt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "number": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 18
+          },
+          "outcome": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 30,
+            "pattern": "\\S"
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "errorCode": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "number",
+          "outcome",
+          "startedAt"
+        ]
+      },
       "UnderwritingDeliveryView": {
         "type": "object",
         "additionalProperties": false,
@@ -77867,9 +77988,31 @@
             "maxItems": 20,
             "uniqueItems": true
           },
+          "recipients": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnderwritingTermsRecipient"
+            },
+            "minItems": 1,
+            "maxItems": 20,
+            "uniqueItems": true
+          },
           "payloadHash": {
             "type": "string",
             "pattern": "^[a-f0-9]{64}$"
+          },
+          "queuedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "attempts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnderwritingDeliveryAttempt"
+            },
+            "minItems": 0,
+            "maxItems": 18,
+            "uniqueItems": true
           },
           "completedAt": {
             "type": "string",
@@ -77888,7 +78031,10 @@
           "jobId",
           "state",
           "recipientContactIds",
-          "payloadHash"
+          "recipients",
+          "payloadHash",
+          "queuedAt",
+          "attempts"
         ]
       },
       "UnderwritingIssueRequest": {

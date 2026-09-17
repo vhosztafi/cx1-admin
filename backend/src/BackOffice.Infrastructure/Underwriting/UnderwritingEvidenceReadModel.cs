@@ -48,6 +48,11 @@ public sealed partial class UnderwritingEvidenceService
             if (ReferralRules.CanResolveWithEvidence(definition)) Add(definition.RequirementCode!, definition.Kind == "warranty" ? "Acknowledgement: " + definition.Code.Replace('-', ' ') : definition.Code.Replace('-', ' '),
                 "/underwriting/conditions/" + condition.Id, definition.TargetIds.Count == 1 ? definition.TargetIds[0] : null, condition, definition.TermsVersionId);
         }
+        if (cycle.CurrentTermsVersionId is Guid preparedId)
+        {
+            Add("signed-statement", "Signed statement of fact for the prepared terms", "/underwriting/terms/" + preparedId, termsId: preparedId);
+            Add("acceptance-proof", "Customer acceptance of the delivered terms", "/underwriting/terms/" + preparedId, termsId: preparedId);
+        }
         var submissions = await (from e in db.Set<CapacityEscalation>().AsNoTracking()
                                  join s in db.Set<CapacitySubmission>().AsNoTracking() on e.CurrentSubmissionId equals s.Id
                                  where e.CycleId == cycle.Id && e.QuoteId == cycle.QuoteId && e.State != "superseded"

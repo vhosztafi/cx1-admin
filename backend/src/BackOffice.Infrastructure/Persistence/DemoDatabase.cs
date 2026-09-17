@@ -98,6 +98,7 @@ public static class DemoDatabase
             await Underwriting.UnderwritingSeed.SeedAsync(db,cancellationToken);
             await Underwriting.UnderwritingRuntimeSeed.SeedAsync(db,cancellationToken);
             await Underwriting.CapacitySeed.SeedAsync(db,cancellationToken);
+            await Underwriting.QuoteTermsSeed.SeedAsync(db,cancellationToken);
         }
         await transaction.CommitAsync(cancellationToken);
     }
