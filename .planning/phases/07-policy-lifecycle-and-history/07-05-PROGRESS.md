@@ -183,3 +183,57 @@ while both current and retained superseded outcomes persist correctly. Earlier
 full713-unit and6-SQL results remain historical, not rerun counts for this change.
 No unresolved high finding in this prerequisite scope. Actual request/worker/API/
 UI and final07-05 source acceptance remain unfinished. Phase7 stays4/16 complete.
+
+
+## Verified request and worker checkpoint: e0433b9
+
+Implemented actual transactional ServicingRatingService, held ServicingRatingScope,
+and durable ServicingRatingWorker. Requests pin the full cumulative schedule,
+immutable base/revision hashes, current rule/terms/runtime/scenario/fee settings
+and request clock. Current scope precedes receipt replay; ETag, revision, lease,
+latest issued base, readiness and materiality precede fresh work creation.
+
+Save, re-rate and abandon supersede previous cycles while preserving queue and
+result history. Provider operations are durable and deduplicated by operation
+key/input hash/scenario. Fail-once and timeout-after-success recover without a
+second provider result. Apply fences the actual work lease, verifies exact stored
+provider bytes, and rechecks current actor grants, configuration and draft/base
+identity. Late/abandoned/revoked outcomes remain historical and gain no authority.
+SqlJobLeases now supports servicing-rating and terminates pending cycles with jobs.
+
+Two correctness fixes were proven with failing-first SQL tests:
+- Eligibility covers the adjustment's remaining coverage, not original inception;
+  an eligible newly published rule may begin after the original policy. Original
+  full-term dates remain pinned for annual pricing and London-day earning.
+- Materiality is assessed across every dated slice. Temporary added cover that
+  later returns to the original snapshot remains a valid adjustment.
+The earlier readiness failure was a conflicting driver name in the test fixture;
+its first/surname and full name were corrected without weakening validation.
+
+Fresh final evidence: .local/phase7-05-runtime-final/{unit,sql}/*.trx;
+logs .local/phase7-05-runtime-final-unit.log and -sql.log. All725 unit cases
+and10 real SQL cases passed, zero skips. assert-test-results.ps1 verified735
+cases with cutoff2026-09-17T17:20:00Z. SQL includes8 actual request/provider
+journeys (both products, failure/retry/rejection, revoked requester, replacement
+rule and temporary cover) plus2 existing storage provenance/late-output cases.
+Wrong work fences, forged provider outcomes, stale ETags, save/abandon invalidation,
+receipt revocation, exact operation/result counts, and unchanged issued snapshot
+and bound source quote are asserted. git diff --check passes.
+
+Failing-first evidence includes .local/phase7-05-request-red.log,
+.local/phase7-05-invalidate-red.log, .local/phase7-05-worker-red.log,
+.local/phase7-05-eligibility-red-current.log and .local/phase7-05-temporary-red.log.
+Earlier eligibility-red and eligibility-red-valid runs failed fixture publication
+constraints; only eligibility-red-current demonstrates the actual eligibility gap.
+
+Remaining07-05 work (no completed SUMMARY yet):
+1. Read/history/expired/applicability projection and exact operator retry semantics,
+   including current authorization before replay and terminal failure recovery.
+2. DI and hosted dispatcher, strict API DTOs, CSRF/no-store/ETag/lease contracts,
+   generated contract updates and real negative HTTP tests. No rating endpoint or
+   dispatcher was enabled in this checkpoint; runtime services are tested directly.
+3. Real pending/failure/expired/history/component/slice UI and persisted browser
+   journeys for both products; revalidate required source inventory actions.
+4. Final code/source coverage review and measured summary before completing07-05.
+No browser check, preview refresh, demo database initialization, business UAT or
+phase completion is claimed. frontend-code remains unchanged. Phase7 remains4/16.

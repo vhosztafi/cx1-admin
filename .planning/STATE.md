@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-05 pinned input and fee settings verified; request/worker/API/UI remain
-last_updated: "2026-09-17T16:40:20.663902+00:00"
-last_activity: "2026-09-17 —07-05 pinned input/config0310e25;30 unit and2 SQL cases pass. Request/worker/API/UI remain."
+stopped_at: Plan07-05 request and worker verified; read/retry/API/UI remain
+last_updated: "2026-09-17T17:28:56.565535+00:00"
+last_activity: "2026-09-17 —07-05 runtime e0433b9;725 unit and10 SQL cases pass. Read/retry/API/UI remain."
 progress:
   total_phases: 13
   completed_phases: 6
@@ -21,14 +21,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute Phase7;07-01..04 complete;07-05 pricing/storage/pinned-input prerequisites verified; actual rating request/worker next.
+**Current focus:** Execute Phase7;07-01..04 complete;07-05 request/provider/application runtime verified; read/retry/API/UI next.
 
 ## Current Position
 
 Phase: 7 of 13 (Policy lifecycle and history)
 Plan: 4 of16 complete;07-05 in progress
-Status: Executing Phase7;07-05 input hashes and fee-setting storage verified; no rating endpoint enabled yet
-Last activity: 2026-09-17 —07-05 checkpoint0310e25;30 unit and2 real SQL cases pass. Resume07-05-PROGRESS.md.
+Status: Executing Phase7;07-05 request and worker verified; rating HTTP/UI not yet enabled
+Last activity: 2026-09-17 —07-05 runtime e0433b9;725 unit and10 real SQL cases pass. Resume07-05-PROGRESS.md.
 
 Progress: Phases1–6 complete;6/13 phases,53 completed implementation plans.
 
@@ -54,8 +54,8 @@ Progress: Phases1–6 complete;6/13 phases,53 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-17T16:40:20.663902+00:00
-Stopped at:07-05 pinned input/configuration verified; implement request and worker orchestration
+Last session: 2026-09-17T17:28:56.565535+00:00
+Stopped at:07-05 request/worker verified; read/retry projections, API/dispatcher and UI remain
 Resume file: .planning/phases/07-policy-lifecycle-and-history/07-05-PROGRESS.md
 
 ## Autonomous continuation
