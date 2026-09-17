@@ -294,3 +294,36 @@ Next: cover/limits/excesses and policyholder correction. Then finish all07-04
 source actions, later cover dates and dependent removal journeys before its
 SUMMARY. Phase counts stay3/16. Owned API58760 unchanged; web74776 serves this
 build. Verify against `.local/phase7-04-preview-pids.json` before restarting.
+
+## Policyholder correction checkpoint
+
+Commit `e8f4701` adds contractual policyholder editing: identity/address/contact
+fields, legal entity, ordered proposer names, source references and consent
+answers. The typed change targets editor.clientId; transfer/relationship fields
+are absent from editable capture. Explicit replacement clears optional values.
+Name gaps block Apply until corrected. Existing server ownership/system-field
+unit tests remain applicable; no backend production change was made.
+
+Source review also found business description/start date were not exposed by
+the previous trade editor. They are now editable and verified through the
+extended business browser scenario. This closes that UI omission.
+
+115 frontend tests, typecheck, lint and Next build pass. Both-product native
+SQL-backed browser journeys verify policyholder persistence/reload, stable
+change identity, trading-name/postcode clearing, proposer-name validation,
+two-user lease retention, focus and390px containment. Issued snapshots remain
+unchanged; client transfer is never offered. Policyholder desktop/mobile images
+were inspected. Logs `.local/phase7-04-policyholder-*`, report
+`.local/browser-evidence/servicing-policyholder/report.json`. Extended business
+journeys pass in `.local/phase7-04-business-complete-browser.log`, including
+persisted description/start date. Only CTL-b84c84a05598 gains new coverage.
+
+Next: cover/limits/excesses, then remaining07-04 source and full later-date and
+cross-category dependency journeys. Cover must preserve existing individual
+effective intents when editing. Do not accidentally project later cover values
+into an earlier replacement. QuoteCover includes previous-insurance fields
+outside cover payload in Combined, so scope the servicing controls explicitly;
+never display edits that are discarded. Requested sections and European trips
+are within cover. Plan07-04 still incomplete; no SUMMARY yet.
+Owned API58760 unchanged; web70136 now current. Verify PID identities before
+stopping. Preview record remains `.local/phase7-04-preview-pids.json`.

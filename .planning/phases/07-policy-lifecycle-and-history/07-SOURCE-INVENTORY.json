@@ -2411,7 +2411,8 @@
       "evidence": [
         ".local/browser-evidence/servicing-business/report.json",
         ".local/phase7-04-business-browser.log",
-        ".local/phase7-04-business-web-tests.log"
+        ".local/phase7-04-business-web-tests.log",
+        ".local/phase7-04-business-complete-browser.log"
       ],
       "implementation": "Typed trade activity dialog reuses business declarations, exact GBP amounts, percentage controls and stable occupation rows. Both-product persisted browser checks verify incomplete saves, invalid percentage blocking, exact shares, occupation edit/remove, turnover clearing, lease retention and unchanged issued data."
     },
@@ -2447,9 +2448,14 @@
       "handlers": {
         "onClick": "() => this.setState((s) => ({\n            modal: null, mtaRated: false,\n            mtaChanges: s.mtaChanges.concat([{group:o.g, title:o.t, before:o.bf, after:o.af, state:'Needs information', tone:'warn', msg:'Complete the section editor to validate this change.'}])\n          }))"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-policyholder/report.json",
+        ".local/phase7-04-policyholder-browser.log"
+      ],
+      "implementation": "Contractual policyholder editor targets the scoped client identity and excludes relationship transfer fields. Both-product SQL-backed browser journeys verify proposer-name gap validation, persisted edits/reload, clearing trading name/postcode, lease retention, focus, mobile containment and unchanged issued snapshots."
     },
     {
       "id": "CTL-fd38a2890d20",
