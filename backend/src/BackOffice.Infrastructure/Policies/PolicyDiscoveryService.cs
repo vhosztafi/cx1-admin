@@ -16,19 +16,8 @@ public sealed class PolicyDiscoveryService
         if (!actor.HasCapability("policy-discovery-read")) throw new QuoteOperationException(403, "policy-access-denied");
         await QuoteDiscovery.AuthorizeAsync(db, actor, token);
     }
-    public static IQueryable<PolicyDiscoveryRow> Rows(BackOfficeDbContext db, DateTimeOffset now) => db.Database.SqlQuery<PolicyDiscoveryRow>($"""
-        SELECT p.Id,p.Reference,p.ClientId,p.AgencyId,p.RelationshipId,c.LegalName AS ClientName,c.Reference AS ClientReference,
-            a.LegalName AS AgencyName,product.Code AS ProductCode,
-            CASE WHEN {now}<t.StartsAt THEN 'scheduled' WHEN {now}>=t.EndsAt THEN 'expired' ELSE 'active' END AS State,
-            t.Id AS CurrentTermId,v.Id AS CurrentVersionId,t.StartsAt,t.EndsAt,issued.ProcessedAt AS IssuedAt,
-            CONVERT(date,JSON_VALUE(t.LocalTermIntentJson,'$.localStartDate')) AS InceptionDate
-        FROM Policy p JOIN PolicyTerm t ON t.Id=p.CurrentTermId AND t.PolicyId=p.Id
-        JOIN PolicyVersion v ON v.Id=t.CurrentVersionId AND v.PolicyId=p.Id AND v.TermId=t.Id
-        JOIN PolicyTransaction issued ON issued.Id=v.TransactionId AND issued.PolicyId=p.Id AND issued.TermId=t.Id
-        JOIN ClientAccount c ON c.Id=p.ClientId JOIN Agency a ON a.Id=p.AgencyId
-        JOIN ClientAgencyRelationship rel ON rel.Id=p.RelationshipId AND rel.ClientId=p.ClientId AND rel.AgencyId=p.AgencyId
-        JOIN Product product ON product.Id=p.ProductId
-        """);
+    public static IQueryable<PolicyDiscoveryRow> Rows(BackOfficeDbContext db, DateTimeOffset effectiveAt, DateTimeOffset? knownAt = null)
+        => PolicyTemporalSelector.DiscoveryRows(db, effectiveAt, knownAt ?? effectiveAt);
     public static IQueryable<PolicyDiscoveryRow> Search(BackOfficeDbContext db, IQueryable<PolicyDiscoveryRow> rows, string search)
     {
         if (search.Length == 0) return rows;

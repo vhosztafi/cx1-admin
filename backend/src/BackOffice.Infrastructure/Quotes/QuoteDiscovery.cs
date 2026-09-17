@@ -38,6 +38,8 @@ public static class QuoteDiscovery
                     SELECT 'quote' AS Source,COUNT_BIG(*) AS Total,MAX(RowVersion) AS Stamp FROM Quote
                     UNION ALL SELECT 'policy',COUNT_BIG(*),MAX(RowVersion) FROM Policy
                     UNION ALL SELECT 'term',COUNT_BIG(*),MAX(RowVersion) FROM PolicyTerm
+                    UNION ALL SELECT 'policy-version',COUNT_BIG(*),CAST(NULL AS binary(8)) FROM PolicyVersion
+                    UNION ALL SELECT 'policy-transaction',COUNT_BIG(*),CAST(NULL AS binary(8)) FROM PolicyTransaction
                     UNION ALL SELECT 'client',COUNT_BIG(*),MAX(RowVersion) FROM ClientAccount
                     UNION ALL SELECT 'agency',COUNT_BIG(*),MAX(RowVersion) FROM Agency
                     UNION ALL SELECT 'relationship',COUNT_BIG(*),MAX(RowVersion) FROM ClientAgencyRelationship

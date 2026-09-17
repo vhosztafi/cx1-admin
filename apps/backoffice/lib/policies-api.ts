@@ -22,6 +22,7 @@ export type IssuedPolicySnapshot = Omit<QuoteProposal, 'termIntent'> & {
   provenance: { source: string; quoteRevisionId: string; authorityVersionId: string };
 };
 export type PolicyView = {
+  coverageState: 'scheduled' | 'active' | 'expired' | 'cancelled'; effectiveCutoff: string; knownCutoff: string;
   id: string; reference: string; sourceQuoteId: string; clientId: string; relationshipId: string; agencyId: string;
   termId: string; versionId: string; transactionId: string; issuedAt: string; effectiveAt: string; reason: string;
   termNumber: number; versionSequence: number; transactionSequence: number; contentHash: string; sourceCycleId: string; ratingId: string; acceptanceId: string;
@@ -31,6 +32,7 @@ export type PolicyView = {
     lines: { accountCode: string; side: 'debit' | 'credit'; amount: string; componentCode: string }[] };
   documentRequests: { id: string; versionId: string; templateVersionId: string; kind: string; state: string }[];
 };
+export type PolicyTemporalView = PolicyView | { id: string; coverageState: 'not-covered'; effectiveCutoff: string; knownCutoff: string };
 export function issuePolicyCommand(quoteId: string, etag: string, body: Record<string, unknown>): PendingQuoteCommand {
   const fields = ['cycleId', 'ratingId', 'acceptanceId', 'termsHash', 'assuranceHash', 'reason'];
   if (Object.keys(body).length !== fields.length || fields.some(x => !Object.hasOwn(body, x)) ||

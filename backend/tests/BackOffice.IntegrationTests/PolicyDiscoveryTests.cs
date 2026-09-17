@@ -18,8 +18,8 @@ public sealed partial class UnderwritingRuntimeTests
             await new PolicyDiscoveryService().AuthorizeAsync(db, f.Servicing);
             var all = PolicyDiscoveryService.Rows(db, f.Clock.GetUtcNow());
             var row = await all.SingleAsync(); Assert.Equal(receipt.ResourceId, row.Id); Assert.Equal("active", row.State);
-            Assert.Equal("scheduled", (await PolicyDiscoveryService.Rows(db, row.StartsAt.AddTicks(-1)).SingleAsync()).State);
-            Assert.Equal("active", (await PolicyDiscoveryService.Rows(db, row.StartsAt).SingleAsync()).State);
+            Assert.Equal("scheduled", (await PolicyDiscoveryService.Rows(db, row.StartsAt.AddTicks(-1), f.Clock.GetUtcNow()).SingleAsync()).State);
+            Assert.Equal("active", (await PolicyDiscoveryService.Rows(db, row.StartsAt, f.Clock.GetUtcNow()).SingleAsync()).State);
             Assert.Equal("expired", (await PolicyDiscoveryService.Rows(db, row.EndsAt).SingleAsync()).State);
             var registration = await db.Set<PolicyRegistration>().Select(x => x.NormalizedRegistration).FirstAsync();
             Assert.Equal(row.Id, (await PolicyDiscoveryService.Search(db, all, registration).SingleAsync()).Id);

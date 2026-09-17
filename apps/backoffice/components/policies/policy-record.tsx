@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
-import { type PolicyView, policyCoverageLabel } from '../../lib/policies-api';
+import { type PolicyTemporalView, policyCoverageLabel } from '../../lib/policies-api';
 import { formatGbp } from '../../lib/underwriting-api';
 import { DataTable, Panel, Status } from '../primitives';
 import { LoadFeedback, useQuoteResource } from '../quotes/shared';
@@ -12,12 +12,23 @@ const date = (value: string) => new Date(value).toLocaleString('en-GB', { timeZo
 const tabs = ['Overview', 'Risk details', 'Cover', 'Drivers', 'Vehicles', 'Transactions', 'Documents'] as const;
 
 export function PolicyRecord({ policyId, questionLabels }: { policyId: string; questionLabels: Record<string, string> }) {
-  const record = useQuoteResource<PolicyView>(`/api/v1/policies/${policyId}`), [tab, setTab] = useState<typeof tabs[number]>('Overview');
-  if (!record.data) return <Panel title="Policy record"><LoadFeedback error={record.error} retry={record.refresh} /></Panel>;
+  const [cutoffs, setCutoffs] = useState(''), [effectiveInput, setEffectiveInput] = useState(''), [knownInput, setKnownInput] = useState('');
+  const record = useQuoteResource<PolicyTemporalView>(`/api/v1/policies/${policyId}${cutoffs ? `/as-at?${cutoffs}` : ''}`), [tab, setTab] = useState<typeof tabs[number]>('Overview');
+  const chronology = <Panel title="View policy as at" note="Effective date selects cover; known-at date limits which issued changes were recorded."><form className="quote-rail-body" onSubmit={event => {
+    event.preventDefault();
+    const query = new URLSearchParams({ effectiveAt: new Date(effectiveInput + 'Z').toISOString(), knownAt: new Date(knownInput + 'Z').toISOString() });
+    setCutoffs(query.toString());
+  }}><div className="quote-form-grid"><label>Effective date and time (UTC)<input type="datetime-local" step="1" required value={effectiveInput} onChange={event => setEffectiveInput(event.target.value)} /></label>
+    <label>Known-at date and time (UTC)<input type="datetime-local" step="1" required value={knownInput} onChange={event => setKnownInput(event.target.value)} /></label>
+    </div><div className="quote-row-actions"><button className="button" type="submit">View selected dates</button><button className="button" type="button" onClick={() => { setCutoffs(''); record.refresh(); }}>View current policy</button></div>
+    {record.data ? <p role="status">Effective cutoff: {date(record.data.effectiveCutoff)} · London. Known at: {date(record.data.knownCutoff)} · London.</p> : null}
+  </form></Panel>;
+  if (!record.data) return <>{chronology}<Panel title="Policy record"><LoadFeedback error={record.error} retry={record.refresh} /></Panel></>;
+  if (!('snapshot' in record.data)) return <>{chronology}<Panel title="No cover recorded at these dates"><div className="quote-rail-body"><p>No issued policy version was known and applicable to this selection. Choose different dates or return to the current policy.</p></div></Panel></>;
   const policy = record.data, snapshot = policy.snapshot, financial = policy.financials;
   const product = snapshot.productCode === 'motor-trade-road-risks' ? 'Motor Trade Road Risks' : 'Motor Trade Combined';
   const declaredName = typeof snapshot.insured.legalName === 'string' ? snapshot.insured.legalName : [snapshot.insured.firstName, snapshot.insured.surname].filter(x => typeof x === 'string').join(' ') || 'Declared insured';
-  const coverage = policyCoverageLabel(snapshot.term.startsAt, snapshot.term.endsAt);
+  const coverage = policy.coverageState === 'cancelled' ? 'Cancelled' : policyCoverageLabel(snapshot.term.startsAt, snapshot.term.endsAt, Date.parse(policy.effectiveCutoff));
   const fields = (items: [string, string][]) => <dl className="underwriting-provenance">{items.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>;
   const documents = <Panel title="Policy documents" note="Requests retained with the issued version"><DataTable caption="Policy document requests" columns={['Document', 'Version', 'Status']}>
     {policy.documentRequests.map(item => <tr key={item.id}><th scope="row">{documentNames[item.kind] ?? item.kind}</th><td>v{policy.versionSequence}</td><td><Status tone="info">{item.state === 'requested' ? 'Generation requested' : item.state}</Status></td></tr>)}
@@ -31,6 +42,7 @@ export function PolicyRecord({ policyId, questionLabels }: { policyId: string; q
   </div></Panel>;
   return <><div className="page-heading"><div><h1>{policy.reference}</h1><p>New-business policy · Term {policy.termNumber} · Version {policy.versionSequence}</p></div><Link className="button" href={`/quotes/${policy.sourceQuoteId}`}>Open source quote</Link></div>
     <section className="quote-saved-banner" aria-label="Issued policy"><div><span className="quote-step-label">{product}</span><h2>{declaredName}</h2><p>Policy issued · {date(policy.issuedAt)} · London</p></div><Status tone={coverage === 'In force' ? 'success' : 'info'}>{coverage}</Status></section>
+    {chronology}
     <div className="quote-row-actions quote-record-tabs" role="tablist" aria-label="Policy record tabs">{tabs.map(item => <button key={item} className="button" role="tab" aria-selected={tab === item} onClick={() => setTab(item)}>{item}</button>)}</div>
     <div className="underwriting-workspace"><div className="underwriting-layout"><div className="underwriting-main">
       {tab === 'Overview' ? <><Panel title="Policy issued" note="Accepted cover and opening balance saved"><div className="quote-rail-body"><Status tone="success">Issued</Status><p>The accepted new-business cover is retained as version {policy.versionSequence}. Coverage follows the dates below.</p>{fields([['Inception', date(snapshot.term.startsAt) + ' · London'], ['Expiry', date(snapshot.term.endsAt) + ' · London'], ['Term basis', snapshot.term.kind === 'annual' ? 'Annual' : 'Short period'], ['Collection', snapshot.premium.settlement.collector === 'agency' ? 'Agency collection' : 'Direct MGA collection']])}</div></Panel>{transaction}{documents}</> : tab === 'Transactions' ? transaction : tab === 'Documents' ? documents : <Panel title={tab} note={`Immutable declared details · issued version ${policy.versionSequence}`}><div className="quote-rail-body"><QuoteProposalDetails proposal={snapshot} questionLabels={questionLabels} value={tab === 'Risk details' ? { insured: snapshot.insured, term: snapshot.term, business: snapshot.risk.business, premises: snapshot.risk.premises, previousInsurance: snapshot.risk.previousInsurance, declarations: snapshot.risk.declarations, materialFacts: snapshot.risk.materialFacts } : tab === 'Cover' ? snapshot.cover : tab === 'Drivers' ? { basis: snapshot.risk.driverBasis, drivers: snapshot.risk.drivers } : { vehicles: snapshot.risk.vehicles, specifiedVehicleIds: snapshot.risk.specifiedVehicleIds, tradePlates: snapshot.risk.tradePlates, heldTradePlates: snapshot.risk.heldTradePlates }} /></div></Panel>}
