@@ -109,3 +109,14 @@ Both-product actual decision/proof/recovery browser and final target-labelled
 readback/screenshots passed. Real bulk denial creates zero decisions; account
 switch prevents dispatch; stale412 retains inputs. See06-06-SUMMARY. Capacity,
 terms, acceptance and issue retain later owners.
+
+## 06-07 runtime evidence
+
+Implementation aea6645: 767 backend (614 unit, 153 integration), 126 real SQL,
+zero skips; 94 frontend, 317 contracts/source; lint/typecheck/build passed.
+Both-product actual Chrome and persisted readback passed, including supplied
+reviewed response, exact retry, stale draft, account switch, working-day deadline
+and explicit dependent evidence Refresh recovery. Additive migration and repeated
+seed preserved historical counts/hashes and credentials. See 06-07-SUMMARY for
+exact artifacts. Conditional source supplement requires the explicit 06-14 gate;
+terms, acceptance and issue retain their later owners.

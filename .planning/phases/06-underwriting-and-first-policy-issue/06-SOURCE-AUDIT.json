@@ -1,5 +1,5 @@
 {
-  "status": "06-06 UI verified in f359532:743backend/108SQL,90frontend,317contracts and actual both-product browser; capacity/terms/issue pending",
+  "status": "06-07 verified in aea6645: 767 backend tests, 126 real SQL, zero skips; 94 frontend and 317 contract/source tests; both-product actual Chrome and persisted readback. Conditional source supplement remains the explicit 06-14 final gate; terms, acceptance and issue retain later owners.",
   "inventorySha256": "459974f15088fef3da518bb08fd4f0e88a8f0fdffcf319416fcf458228288c78",
   "apiMapSha256": "bee7cae6b0c29b298eeaf63d915b854c7ec8f5e9191a709247008882cb1430b1",
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
@@ -1338,7 +1338,7 @@
       "review": "Retain source screen ownership; shared operation dependencies are listed separately.",
       "runtimeStatus": "pending Phase6 design/execution, or retained/deferred owner; not completion evidence",
       "acceptanceOwner": "Retained/deferred Phase 7; Phase6 operation dependencies tested in the mapped owner plans.",
-      "backendEvidence": "06-05/4ace720: scoped referral read/decision API verified; UI acceptance remains with mapped placement owner"
+      "backendEvidence": "06-05/4ace720: scoped referral read/decision API verified; UI acceptance remains with mapped placement owner; 06-07 scoped capacity read implemented; placement acceptance remains with its mapped later phase"
     },
     {
       "controlId": "CTL-e39aeff1b11d",
@@ -1366,7 +1366,7 @@
       "review": "Retain source screen ownership; shared operation dependencies are listed separately.",
       "runtimeStatus": "pending Phase6 design/execution, or retained/deferred owner; not completion evidence",
       "acceptanceOwner": "Retained/deferred Phase 7; Phase6 operation dependencies tested in the mapped owner plans.",
-      "backendEvidence": "06-05/4ace720: scoped referral read/decision API verified; UI acceptance remains with mapped placement owner"
+      "backendEvidence": "06-05/4ace720: scoped referral read/decision API verified; UI acceptance remains with mapped placement owner; 06-07 scoped capacity read implemented; placement acceptance remains with its mapped later phase"
     },
     {
       "controlId": "CTL-2221ef0bd60e",
@@ -2017,10 +2017,11 @@
       "disposition": "command",
       "acceptanceId": "AT-696c000f3a53",
       "review": "Phase6 quote surface integrates existing capture/history and new underwriting. Query decision gets a durable case-specific demo request; generic messaging remainsPhase9.",
-      "runtimeStatus": "Pending06-07 provider escalation owner",
-      "plan": "06-06",
-      "task": "06-06-01",
-      "verification": "pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; node scripts/verify-underwriting-decisions-browser.mjs"
+      "runtimeStatus": "Implemented and browser verified: persisted new-business capacity workflow; final backend regression pending",
+      "plan": "06-07",
+      "task": "06-07-01",
+      "verification": "node scripts/verify-underwriting-capacity-browser.mjs",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "controlId": "CTL-4d4d367d4f07",
@@ -3381,11 +3382,12 @@
       "disposition": "navigation-read",
       "acceptanceId": "AT-2ce0c490faab",
       "review": "Implement new-business escalation and return to actual parent quote. Literal MTA reduction/removal/back-navigation staysPhase7; shared interaction is adapted to an explicit quote revise action.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Implemented and browser verified: persisted new-business capacity workflow; final backend regression pending",
       "plan": "06-07",
       "task": "06-07-01",
       "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
-      "adaptation": "New-business equivalent navigates to the actual quote or audited Return to draft; changing captured limit requires a new revision/rating. Literal MTA operation staysPhase7."
+      "adaptation": "New-business equivalent navigates to the actual quote or audited Return to draft; changing captured limit requires a new revision/rating. Literal MTA operation staysPhase7.",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "controlId": "CTL-43fe4f266852",
@@ -3407,10 +3409,11 @@
       "disposition": "navigation-read",
       "acceptanceId": "AT-43fe4f266852",
       "review": "Implement new-business escalation and return to actual parent quote. Literal MTA reduction/removal/back-navigation staysPhase7; shared interaction is adapted to an explicit quote revise action.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Implemented and browser verified: persisted new-business capacity workflow; final backend regression pending",
       "plan": "06-07",
       "task": "06-07-01",
-      "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs"
+      "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "controlId": "CTL-4aa26265290c",
@@ -3430,10 +3433,11 @@
       "disposition": "edit-then-save",
       "acceptanceId": "AT-4aa26265290c",
       "review": "Implement new-business escalation and return to actual parent quote. Literal MTA reduction/removal/back-navigation staysPhase7; shared interaction is adapted to an explicit quote revise action.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Implemented and browser verified: persisted new-business capacity workflow; final backend regression pending",
       "plan": "06-07",
       "task": "06-07-01",
-      "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs"
+      "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "controlId": "CTL-7aed007d8279",
@@ -3453,10 +3457,11 @@
       "disposition": "command",
       "acceptanceId": "AT-7aed007d8279",
       "review": "Implement new-business escalation and return to actual parent quote. Literal MTA reduction/removal/back-navigation staysPhase7; shared interaction is adapted to an explicit quote revise action.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Implemented and browser verified: persisted new-business capacity workflow; final backend regression pending",
       "plan": "06-07",
       "task": "06-07-01",
-      "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs"
+      "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "controlId": "CTL-6c04b9b858a7",
@@ -3478,11 +3483,12 @@
       "disposition": "edit-then-save",
       "acceptanceId": "AT-6c04b9b858a7",
       "review": "Implement new-business escalation and return to actual parent quote. Literal MTA reduction/removal/back-navigation staysPhase7; shared interaction is adapted to an explicit quote revise action.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Implemented and browser verified: persisted new-business capacity workflow; final backend regression pending",
       "plan": "06-07",
       "task": "06-07-01",
       "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
-      "adaptation": "New-business equivalent navigates to the actual quote or audited Return to draft; changing captured limit requires a new revision/rating. Literal MTA operation staysPhase7."
+      "adaptation": "New-business equivalent navigates to the actual quote or audited Return to draft; changing captured limit requires a new revision/rating. Literal MTA operation staysPhase7.",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "controlId": "CTL-16da8d8485a7",
@@ -3504,11 +3510,12 @@
       "disposition": "edit-then-save",
       "acceptanceId": "AT-16da8d8485a7",
       "review": "Implement new-business escalation and return to actual parent quote. Literal MTA reduction/removal/back-navigation staysPhase7; shared interaction is adapted to an explicit quote revise action.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Implemented and browser verified: persisted new-business capacity workflow; final backend regression pending",
       "plan": "06-07",
       "task": "06-07-01",
       "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
-      "adaptation": "New-business equivalent navigates to the actual quote or audited Return to draft; changing captured limit requires a new revision/rating. Literal MTA operation staysPhase7."
+      "adaptation": "New-business equivalent navigates to the actual quote or audited Return to draft; changing captured limit requires a new revision/rating. Literal MTA operation staysPhase7.",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "controlId": "CTL-56d3a14f67cc",
@@ -4753,10 +4760,11 @@
       "disposition": "command",
       "acceptanceId": "AT-12694b54dab5",
       "review": "New underwriting command/form with strict persisted authority and exact current version.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Implemented and browser verified: persisted new-business capacity workflow; final backend regression pending",
       "plan": "06-07",
       "task": "06-07-01",
-      "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs"
+      "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "controlId": "CTL-996063cc0f6f",
@@ -4776,10 +4784,11 @@
       "disposition": "edit-then-save",
       "acceptanceId": "AT-996063cc0f6f",
       "review": "New underwriting command/form with strict persisted authority and exact current version.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Implemented and browser verified: persisted new-business capacity workflow; final backend regression pending",
       "plan": "06-07",
       "task": "06-07-01",
-      "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs"
+      "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "controlId": "CTL-544b08dc9b9d",
@@ -4799,10 +4808,11 @@
       "disposition": "edit-then-save",
       "acceptanceId": "AT-544b08dc9b9d",
       "review": "New underwriting command/form with strict persisted authority and exact current version.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Implemented and browser verified: persisted new-business capacity workflow; final backend regression pending",
       "plan": "06-07",
       "task": "06-07-01",
-      "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs"
+      "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "controlId": "CTL-4d20dd209c0d",
@@ -4822,10 +4832,11 @@
       "disposition": "edit-then-save",
       "acceptanceId": "AT-4d20dd209c0d",
       "review": "New underwriting command/form with strict persisted authority and exact current version.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Implemented and browser verified: persisted new-business capacity workflow; final backend regression pending",
       "plan": "06-07",
       "task": "06-07-01",
-      "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs"
+      "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "controlId": "CTL-ae1b5b522c32",
@@ -4845,10 +4856,11 @@
       "disposition": "edit-then-save",
       "acceptanceId": "AT-ae1b5b522c32",
       "review": "New underwriting command/form with strict persisted authority and exact current version.",
-      "runtimeStatus": "planned; runtime pending",
+      "runtimeStatus": "Implemented and browser verified: persisted new-business capacity workflow; final backend regression pending",
       "plan": "06-07",
       "task": "06-07-01",
-      "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs"
+      "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "controlId": "CTL-27261fc05988",
@@ -5599,7 +5611,8 @@
       "plan": "06-07",
       "task": "06-07-01",
       "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Implemented and browser verified using stored request, current quote assessment and actual correspondence",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "method": "pEscalation",
@@ -5610,7 +5623,8 @@
       "plan": "06-07",
       "task": "06-07-01",
       "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Implemented and browser verified using stored request, current quote assessment and actual correspondence",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "method": "pEscalation",
@@ -5621,7 +5635,8 @@
       "plan": "06-07",
       "task": "06-07-01",
       "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Implemented and browser verified using stored request, current quote assessment and actual correspondence",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "method": "pEscalation",
@@ -5632,7 +5647,8 @@
       "plan": "06-07",
       "task": "06-07-01",
       "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Implemented and browser verified using stored request, current quote assessment and actual correspondence",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "method": "pEscalation",
@@ -5643,7 +5659,8 @@
       "plan": "06-07",
       "task": "06-07-01",
       "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Implemented and browser verified using stored request, current quote assessment and actual correspondence",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "method": "pEscalation",
@@ -5654,7 +5671,8 @@
       "plan": "06-07",
       "task": "06-07-01",
       "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Implemented and browser verified using stored request, current quote assessment and actual correspondence",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "method": "pEscalation",
@@ -5665,7 +5683,8 @@
       "plan": "06-07",
       "task": "06-07-01",
       "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Implemented and browser verified using stored request, current quote assessment and actual correspondence",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "method": "pEscalation",
@@ -5676,7 +5695,8 @@
       "plan": "06-07",
       "task": "06-07-01",
       "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Implemented and browser verified using stored request, current quote assessment and actual correspondence",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "method": "pEscalation",
@@ -5687,7 +5707,8 @@
       "plan": "06-07",
       "task": "06-07-01",
       "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Implemented and browser verified using stored request, current quote assessment and actual correspondence",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "method": "pEscalation",
@@ -5698,7 +5719,8 @@
       "plan": "06-07",
       "task": "06-07-01",
       "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Implemented and browser verified using stored request, current quote assessment and actual correspondence",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "method": "pEscalation",
@@ -5709,7 +5731,8 @@
       "plan": "06-07",
       "task": "06-07-01",
       "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Implemented and browser verified using stored request, current quote assessment and actual correspondence",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "method": "pEscalation",
@@ -5720,7 +5743,8 @@
       "plan": "06-07",
       "task": "06-07-01",
       "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Implemented and browser verified using stored request, current quote assessment and actual correspondence",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "method": "pEscalation",
@@ -5731,7 +5755,8 @@
       "plan": "06-07",
       "task": "06-07-01",
       "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Implemented and browser verified using stored request, current quote assessment and actual correspondence",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "method": "pEscalation",
@@ -5742,7 +5767,8 @@
       "plan": "06-07",
       "task": "06-07-01",
       "verification": "dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~CapacityRulesTests; dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter \"FullyQualifiedName~CapacityEscalation|FullyQualifiedName~CapacityApi\"; pnpm web:test; node scripts/verify-underwriting-capacity-browser.mjs",
-      "runtimeStatus": "planned; runtime pending"
+      "runtimeStatus": "Implemented and browser verified using stored request, current quote assessment and actual correspondence",
+      "runtimeEvidence": "06-07: real SQL capacity tests and actual Chrome both-product journey/readback; scripts/verify-underwriting-capacity-browser.mjs; .local/browser-evidence/underwriting-capacity/report.json"
     },
     {
       "method": "pEscalation",
@@ -5916,5 +5942,47 @@
       "source": "pQuote Proposed cover / Rating factors",
       "behavior": "Explicit tools limit/excess and deterministic component; no substitution with arbitrary cover responses."
     }
-  ]
+  ],
+  "conditionalEscalationSupplement": {
+    "source": "docs/design/source/prototype-template.txt:5187–5289",
+    "reason": "Final 06-07 source read exposed conditional branches and table rows absent from the default-state control inventory. Preserve them explicitly for the final source gate.",
+    "ownerPlan": "06-14",
+    "entries": [
+      {
+        "label": "Answer the query / Send reply",
+        "equivalent": "Existing exact follow-up submission and immutable correspondence",
+        "status": "Runtime service exists; verify deliberate second submission in final journey"
+      },
+      {
+        "label": "Record a further response",
+        "equivalent": "Existing supplied-response form retains successive messages",
+        "status": "Runtime exists; verify successive supplied responses in final journey"
+      },
+      {
+        "label": "Withdraw / Reopen referral",
+        "equivalent": "Explicit return-to-draft or deliberate new capacity submission; never erase history",
+        "status": "Revision/history verified; reconcile distinct reopening behavior in final source gate"
+      },
+      {
+        "label": "Apply carrier conditions",
+        "equivalent": "Parent quote condition evidence/review/resolution",
+        "status": "SQL resolution and supplied W07 browser creation verified; final end-to-end issue must prove resolution"
+      },
+      {
+        "label": "Chase a response / Escalate internally",
+        "equivalent": "Case-specific correspondence and underwriting routing; generic messages/tasks retain Phase9 owner",
+        "status": "Final source gate must verify a functional equivalent or explicit approved milestone owner; no completion claim"
+      },
+      {
+        "label": "Similar past referrals",
+        "equivalent": "Scoped persisted comparison and real parent links",
+        "status": "Coverage gap to close in06-14; no fabricated source sample rows"
+      },
+      {
+        "label": "Two working day standard",
+        "equivalent": "Versioned Monday–Friday demo calendar preserving London wall time",
+        "status": "Implemented with weekend/DST unit, SQL seed-preservation and real browser evidence"
+      }
+    ]
+  }
 }

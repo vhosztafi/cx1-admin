@@ -160,3 +160,45 @@ endorsements and assuranceHash. Conditions expose child ETags; decisions expose
 the stored query question. UI06 must consume these projections. Terms08 must use
 actual applied warranty wording in the terms hash and current assurance in
 acceptance, retaining the distinction from the unchanged pricing hash.
+
+## Capacity escalation implementation (06-07)
+
+CapacityEscalation is the mutable current pointer for one quote/cycle/referral.
+CapacitySubmission, CapacitySubmissionEvidence and CapacityMessage are immutable,
+with same-owner composite keys and SQL append-only guards. The selected provider
+must own the retained binder. Submission context includes exact revision, pricing
+hash, term, rule/dimension/target, selected proof IDs and versioned demo scenario;
+it excludes full proposal, contacts, support flags and file bodies.
+
+Six capacity-escalation/* SettingVersions define explicit fictional outcomes.
+Each submitted request owns one durable outbox operation; retries retain its
+submission, operation identity and attempt history. The source-aligned default
+is two working days, using a Monday–Friday demo calendar and preserving London
+wall-clock time across DST. A bank-holiday calendar is not configured. Schema2
+settings support1–10workingdays. Original schema1 elapsed-hour defaults receive an
+appended version only when they exactly match the original demo seed; operator
+overrides and all recorded deadlines are preserved.
+Duplicate provider events reuse the inbox; conflicting content is quarantined.
+Superseded responses remain visible and cannot grant current authority.
+
+A supplied response requires an actual uploaded, accepted file associated with
+capacity-response and the exact CapacitySubmissionId/fingerprint, plus its current
+accepted underwriting review. Record actual underwriter, reference, body and UTC
+received time. Carrier conditions have an explicit decision row linked from the
+message; they remain active independently of subsequent staff decisions. All
+active conditions share the 100-condition quote-cycle bound. Withdrawal of relied
+upon proof invalidates approval without rewriting correspondence or pricing.
+
+A capacity extension overrides only its exact dimension, quote/cycle/submission
+hash, target where applicable, amount/age/trade permission and validity interval
+covering the whole term. It does not amend grants/binders or approve unrelated
+referrals. Current identity/grants and provider availability precede receipt replay.
+Read capability projections retain shared scope locks; they do not upgrade to
+write locks after taking quote read locks. Mutations and workers retain their
+established agency→identity→quote→work/child lock ordering.
+
+The escalation page adapts prototype MTA actions to the actual new-business quote:
+return to draft, revise captured risk and obtain a new rating. Literal MTA changes
+remain Phase 7. Generic admin jobs remain diagnostic; capacity jobs use the scoped
+job route, and recovery requires both integration-retry and underwriting-escalate.
+Preparing terms, delivery, acceptance and policy issue remain subsequent slices.
