@@ -400,3 +400,46 @@ via a new migration only when adding a guarded current-resolution pointer. Parse
 closed definitions against each cumulative dated proposal before using the dated
 condition authority helper. HTTP/DI/read models/UI/browser checks remain pending;
 07-06 stays incomplete, Phase7 stays5/16, total plans54/65. Continue inline, no agents.
+
+
+## Verified condition resolution storage checkpoint: 21a1102
+
+Additive20260917220333_ServicingConditionResolutions stores append-only resolutions
+with exact condition/referral/cycle/draft/revision/rating ownership, association plus
+input fingerprint, exact review event and actor/grant/version compound foreign keys.
+Sequence is unique per condition. Latest resolution is selected by indexed sequence;
+no mutable condition pointer is needed and condition definitions remain immutable.
+This refines the earlier proposed pointer approach while preserving complete history.
+An explicit resolution is the condition-to-evidence binding: merely having base proof
+never resolves a condition. Current service checks must validate the full fingerprint,
+condition applicability and live proof before using that resolution as satisfaction.
+
+Trigger51370 rejects updates/deletes.51371 requires the active latest decision's
+conditional/queried referral, current unexpired rated draft, exact latest nonwithdrawn
+review and ordered time/sequence; satisfied requires an accepted review.51372 matches
+purpose and stable documentary target.51373 checks an unrevoked effective same-product/
+binder actor grant. Compound keys reject borrowed actors, reviews, associations and
+condition owners. Risk-change conditions cannot resolve with proof. Warranty/signed
+statement evidence remains unavailable under existing association purpose constraints;
+extend it with actual owning requirements/contracts, not an unguarded success path.
+
+RED .local/phase7-06-resolution-storage-red/sql/sql.trx has2 missing-table failures.
+Initial green exposed an incomplete test revocation (missing actor/reason). The test
+now uses a full grant revocation inside a rolled-back test transaction, respecting
+production final-revocation semantics; it does not un-revoke a committed grant.
+Fresh .local/phase7-06-resolution-storage-reviewed/{unit,sql} passes31 pure/shared
+unit tests and4 SQL cases. Gate verified35 with cutoff2026-09-17T21:59:00Z, no skips.
+Both products cover successful/rejected immutable resolutions, wrong purpose,
+another association's real review, foreign owners/IDs, duplicate/gapped sequences,
+other-actor grants, revocation, stale/rejected review and post-withdrawal rejection.
+Migration downgrade/reapply over issued policies also passes. Issued snapshots and
+shared demo/previews remain unchanged. Debug build and git diff --check pass.
+
+Next: implement real decision and resolution services, closed per-date condition
+projection, current-grant checks before replay, selected all-or-none decisions and
+live satisfaction that rechecks latest resolution/review/withdrawal/active decision.
+Add warranty acknowledgement proof under a guarded association-purpose extension;
+signed statement remains tied to the later actual terms graph. Then complete bounded
+read models, DI/HTTP/contracts and UI/browser verification. No approval/resolution
+endpoint is enabled by this storage work.07-06 remains in progress; Phase7 stays5/16,
+total plans54/65. Continue inline without agents.
