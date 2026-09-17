@@ -2381,9 +2381,15 @@
       "handlers": {
         "onClick": "() => this.setState((s) => ({\n            modal: null, mtaRated: false,\n            mtaChanges: s.mtaChanges.concat([{group:o.g, title:o.t, before:o.bf, after:o.af, state:'Needs information', tone:'warn', msg:'Complete the section editor to validate this change.'}])\n          }))"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-premises/report.json",
+        ".local/phase7-04-premises-browser.log",
+        ".local/phase7-04-premises-unit.log"
+      ],
+      "implementation": "Typed premises add/edit/remove proposal controls use product-specific source fields and stable identities. Both products persist additions and edits; Combined verifies exact sums and clearing an issued postcode. Modal retention through takeover, focus and mobile containment pass. Referenced-premises removal is rejected by server unit tests; full dependent cover removal awaits the cover editor."
     },
     {
       "id": "CTL-d333e12d28da",

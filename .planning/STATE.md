@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-04 vehicle dialogs verified; four picker categories remain
-last_updated: "2026-09-17T13:50:33.354106+00:00"
-last_activity: "2026-09-17 —07-04 vehicle checkpoint cd54956; four typed categories remain."
+stopped_at: Plan07-04 premises dialogs verified; three picker categories remain
+last_updated: "2026-09-17T14:06:54.045267+00:00"
+last_activity: "2026-09-17 —07-04 premises checkpoint4fe6e84; three typed categories remain."
 progress:
   total_phases: 13
   completed_phases: 6
@@ -27,8 +27,8 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 Phase: 7 of 13 (Policy lifecycle and history)
 Plan: 3 of16 complete;07-04 in progress
-Status: Executing Phase7;07-04 backend/date/review, driver and vehicle dialogs verified; four categories outstanding
-Last activity: 2026-09-17 —07-04 vehicle dialogs cd54956;114 frontend cases and both-product two-user browser journeys pass. Resume07-04-PROGRESS.md.
+Status: Executing Phase7;07-04 backend/date/review, driver, vehicle and premises dialogs verified; three categories outstanding
+Last activity: 2026-09-17 —07-04 premises dialogs4fe6e84;115 frontend and31 focused unit cases plus both-product browser journeys pass. Resume07-04-PROGRESS.md.
 
 Progress: Phases1–6 complete;6/13 phases,52 completed implementation plans.
 
@@ -54,8 +54,8 @@ Progress: Phases1–6 complete;6/13 phases,52 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-17T13:50:33.354106+00:00
-Stopped at:07-04 vehicle dialogs verified; implement premises, trade activities, cover and policyholder correction
+Last session: 2026-09-17T14:06:54.045267+00:00
+Stopped at:07-04 premises dialogs verified; implement trade activities, cover and policyholder correction
 Resume file: .planning/phases/07-policy-lifecycle-and-history/07-04-PLAN.md
 
 ## Autonomous continuation

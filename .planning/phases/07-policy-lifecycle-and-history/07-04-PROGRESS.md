@@ -243,3 +243,29 @@ Owned previews now API58760 and web42752, with current API and web builds; verif
 identities before stopping. Build Next with BACKOFFICE_API_ORIGIN set to5087;
 rewrites are baked into the build. Preview record is still
 `.local/phase7-04-preview-pids.json`.
+
+## Typed premises checkpoint
+
+Commit `4fe6e84` adds premises add/edit/remove proposal dialogs. Source fields
+remain product-specific, with whole capture context and a single targetId in
+QuoteRepeatedSection. Nested address clearing uses explicit replacement; IDs
+survive edits/reload. No backend production change or migration was required.
+
+115 frontend tests,31 focused backend unit tests, typecheck, lint and Next build
+pass; logs `.local/phase7-04-premises-*`. The new unit case checks postcode
+clearing and rejects deleting premises referenced by covered sections. This is
+regression coverage of existing backend rules, not a claimed failing-first fix.
+Both-product Chrome journeys persist new premises and edits, cancellation of
+additions, two-user modal retention, focus restoration and390px containment.
+Combined also verifies exact buildings amount and clearing an issued postcode;
+the Road Risks fixture has no issued premises, so that branch is not claimed.
+Issued snapshots remain unchanged. Evidence:
+`.local/browser-evidence/servicing-premises/report.json` and
+`.local/phase7-04-premises-browser.log`; desktop/mobile images were inspected.
+Actual persisted browser APIs use native SQL; no fresh standalone SQL suite
+was needed for this UI-only production change. CTL-8c4c56e91474 is verified.
+
+Next: trade activities, cover/limits/excesses and policyholder correction, then
+remaining07-04 source and complete later-cover-date/dependency journeys. Do not
+complete07-04 yet. Owned API58760 unchanged, web12364 now serves this build;
+verify process identities before stopping. The preview PID file is current.
