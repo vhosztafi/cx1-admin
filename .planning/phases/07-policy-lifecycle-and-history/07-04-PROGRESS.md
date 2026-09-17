@@ -70,9 +70,9 @@ the earliest unfinished plan. No completion SUMMARY or source coverage claim.
 
 No 07-04 browser, frontend, human UAT, rating, issue, renewal or cancellation
 completion is claimed. No new migration was needed for this checkpoint.
-The owned Release API/web previews still run 07-03 builds; rebuild/restart only
-those verified owned processes before 07-04 browser work. PID record remains
-`.local/phase7-03-preview-pids.json` (verify live command lines before stopping).
+The owned Release API/web previews now run the 07-04 date/review checkpoint.
+PID record is `.local/phase7-04-preview-pids.json` (verify live command lines
+before stopping). The earlier 07-03 PID record is obsolete.
 
 ## Autonomous continuation — explicit clearing contract
 
@@ -94,3 +94,41 @@ Logs: `phase7-04-replacement-verified-unit.log`,
 OpenAPI lint passed (24 unused-component warnings); `git diff --check` passed.
 No UI/browser completion is claimed; 07-04 remains open. Next implement the
 typed UI using this explicit replacement mode and deliberate dependency edits.
+
+## Autonomous continuation — dates and saved comparison UI
+
+Checkpoint `72b2e55` wires the saved editor projection into the workspace. It
+only displays comparison for an exact draft/revision/strong-ETag match. Draft
+and editor reads run together; mismatched reads wait for the next refresh.
+Dirty local edits are retained and explicitly excluded from the saved review.
+Before/after values and readiness messages are readable, with cumulative saved
+dates. Requester kind/name, London date/time/offset, shared versus individual
+cover dates and removal of proposed changes are wired to persisted proposals.
+Common date changes clear a stale offset; switching to shared mode refuses to
+silently discard cover overrides. All edit controls obey the lease/uncertain
+retry gates already in place.
+
+Verification:108 frontend tests (including4 new meaningful date/stale-diff
+cases), typecheck, lint and production Next/API builds passed. Final logs:
+`.local/phase7-04-date-review-web-tests.log`, `-typecheck-final.log`,
+`-lint-reviewed.log`, `-web-reviewed.log`, and `-api-build.log` (same prefix).
+`verify-servicing-date-review-browser.mjs` passed both products: London gap/fold
+feedback, persisted offset/requester, real saved comparison/blocker, retained
+local text across polling, proposal removal persisted, unchanged issued JSON,
+no page errors or390px overflow. Report/screenshots under
+`.local/browser-evidence/servicing-date-review`; desktop/mobile inspected.
+`phase7-04-date-review-browser-final.log` is the final browser log.
+The existing two-user lease browser regression also passed for both products:
+`.local/phase7-04-date-review-lease-regression.log`.
+
+The browser harness explicitly prepares one driver change through the real API
+to exercise comparison/removal; it does NOT claim typed picker coverage.
+Cancellation drafts are used as disposable-but-retained test records because
+they may coexist; all test drafts are abandoned, never deleted or reset.
+
+Next: build the eight typed picker/edit dialogs and explicit dependent edit UX,
+consume the current catalogue/base from the editor projection, cover the full
+typed data/clear/reload and later cover-date browser journeys, verify focus
+restoration and source-owned controls, then complete07-04. The date fields and
+saved review components should be reused, not reimplemented. Existing focused
+frontend tests should be extended. No plan completion or human UAT claim.
