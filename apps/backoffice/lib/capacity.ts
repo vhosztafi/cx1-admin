@@ -23,11 +23,11 @@ export function capacityExtension(ruleCode: string, dimension: string, fields: {
 export function capacityInstant(value: string): string {
   const date = new Date(value); if (!value || !Number.isFinite(date.getTime())) throw new Error('Enter an actual response date and time.'); return date.toISOString();
 }
-export async function sendCapacityRecovery(command: PendingQuoteCommand, jobId: string, csrf: string): Promise<void> {
-  if (!csrf || command.url !== `/api/v1/jobs/${jobId}/retry`) throw new Error('Reload the original capacity job before recovery.');
+export async function sendCapacityRecovery(command: PendingQuoteCommand, jobId: string, csrf: string, kind: 'capacity-escalation' | 'quote-delivery' = 'capacity-escalation'): Promise<void> {
+  if (!csrf || command.url !== `/api/v1/jobs/${jobId}/retry`) throw new Error(`Reload the original ${kind === 'capacity-escalation' ? 'capacity' : 'delivery'} job before recovery.`);
   const result = await quoteFetch<{ id: string; kind: string; state: string }>(command.url, { method: 'POST', body: command.body,
     headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf, 'Idempotency-Key': command.key, 'If-Match': command.etag! } });
-  if (result.data.id !== jobId || result.data.kind !== 'capacity-escalation' || result.data.state !== 'pending' || !validQuoteEtag(result.etag))
+  if (result.data.id !== jobId || result.data.kind !== kind || result.data.state !== 'pending' || !validQuoteEtag(result.etag))
     throw new Error('The recovery outcome could not be confirmed. Retry the same action.');
 }
 

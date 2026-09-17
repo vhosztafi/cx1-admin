@@ -9,7 +9,7 @@ import { UnderwritingEvidence } from './underwriting-evidence';
 import { DecisionCommand, type DecisionRequest } from './decision-command';
 import { riskTargetLabel } from '../../lib/underwriting-decisions';
 
-export function QuoteUnderwriting({ quote, actorId, refresh }: { quote: QuoteView; actorId: string; refresh: () => void }) {
+export function QuoteUnderwriting({ quote, actorId, refresh, openQuotation }: { quote: QuoteView; actorId: string; refresh: () => void; openQuotation: () => void }) {
   const assessment = useQuoteResource<UnderwritingAssessment>(`/api/v1/quotes/${quote.id}/underwriting`);
   const [referralCursor, setReferralCursor] = useState(''), [evidenceCursor, setEvidenceCursor] = useState(''), [request, setRequest] = useState<DecisionRequest>();
   const referrals = useQuoteResource<{ items: Referral[]; nextCursor?: string }>(`/api/v1/referrals?quoteId=${quote.id}&pageSize=50${referralCursor ? '&cursor=' + encodeURIComponent(referralCursor) : ''}`);
@@ -22,7 +22,7 @@ export function QuoteUnderwriting({ quote, actorId, refresh }: { quote: QuoteVie
     <Panel title="Authority and assignment" note={`${current.assignedTeamLabel ?? 'Not submitted'} · ${current.assignedUserLabel ?? 'No individually assigned underwriter'}`}><div className="quote-rail-body">
       {!coherent && <p role="alert">The quote changed while loading. Reload before taking an action.</p>}
       {!current.context && <p>Rate the saved proposal from Overview to start an underwriting cycle.</p>}
-      <button className="button" onClick={refresh}>Reload underwriting</button>
+      <div className="quote-row-actions"><button className="button" onClick={refresh}>Reload underwriting</button><button className="button" onClick={openQuotation}>Send quote to agency</button></div>
       {current.authorityViews.map((view, index) => <details key={view.authorityVersionId ?? 'none'} open><summary>{view.hasCurrentGrant ? `Your current authority ${index + 1}` : 'No current underwriting grant'}</summary>
         <p className="client-help">All dimensions must be covered by one current grant and the binder. Proof requirements remain independent. Applied warranties are assessed by the decision service.</p>
         <div className="table-scroll" role="region" aria-label={`Authority dimensions ${index + 1}`} tabIndex={0}><table><thead><tr><th>Dimension</th><th>Requested</th><th>Your limit</th><th>Binder limit</th></tr></thead><tbody>{view.rows.map(row => <tr key={row.code}><th scope="row">{row.label}{row.code.includes(':') && <span className="client-help"> · {riskTargetLabel(quote.proposal, row.code.split(':')[1])}</span>}</th><td>{row.requested}</td><td>{row.actorLimit}{!row.actorAllows && <span className="client-help"> · Requires further authority or an applicable condition</span>}</td><td>{row.binderLimit}{!row.binderAllows && <span className="client-help"> · Outside binder extent</span>}</td></tr>)}</tbody></table></div>

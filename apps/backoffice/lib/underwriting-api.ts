@@ -10,7 +10,7 @@ export type UnderwritingAssessment = {
   blockers: UnderwritingBlocker[]; refreshOptions: UnderwritingRefreshOption[];
   proofRequirements: ProofRequirement[]; appliedEndorsements: { code: string; version: string; wording: string; decisionId: string; targetIds: string[] }[];
   authorityViews: { hasCurrentGrant: boolean; authorityVersionId?: string; rows: { code: string; label: string; requested: string; actorLimit: string; binderLimit: string; actorAllows: boolean; binderAllows: boolean }[] }[];
-  assuranceHash?: string;
+  assuranceHash?: string; termsVersionId?: string; termsHash?: string; acceptanceId?: string;
   capabilities: { canRate: boolean; canSubmit: boolean; canRevise: boolean; canReviewEvidence: boolean; canDecide: boolean; canEscalate: boolean; canPrepareTerms: boolean; canSend: boolean; canAccept: boolean; canIssue: boolean };
 };
 export type UnderwritingRating = {
@@ -31,6 +31,18 @@ export type ReferralDecision = { id: string; referralId: string; outcome: string
 export type Referral = { id: string; quoteId: string; cycleId: string; revisionId: string; etag: string; ruleCode: string; dimension: string; targetId?: string; reason: string; state: string; escalationId?: string; decisions: ReferralDecision[]; conditions: ReferralCondition[] };
 export type UnderwritingEvidence = { id: string; quoteId: string; cycleId: string; revisionId: string; fileId: string; fileName: string; requirementCode: string; riskItemId?: string; conditionId?: string; termsVersionId?: string; capacitySubmissionId?: string; inputFingerprint: string; etag: string; screeningState: string; reviewState: string; withdrawn: boolean };
 export type EvidenceEvent = { id: string; kind: string; outcome?: string; reason: string; actorLabel: string; recordedAt: string };
+export type QuotationTerms = {
+  id: string; quoteId: string; cycleId: string; revisionId: string; ratingId: string; number: number;
+  termsHash: string; assuranceHashAtPreparation: string; templateVersionId: string; preparedAt: string; preparedBy: string;
+  cover: { code: string; limit: string; excess: string; targetIds: string[] }[];
+  endorsements: { code: string; version: string; wording: string; decisionId: string; targetIds: string[] }[];
+  conditions: ReferralCondition[]; rating: UnderwritingRating; agencyTermsVersionId: string;
+  settlement: { collector: string; mode: string; commissionRateBps: number; feeShareBps: number }; documentState: 'structured-payload';
+};
+export type QuotationRecipient = { id: string; name: string; email: string };
+export type QuotationDelivery = { id: string; termsVersionId: string; jobId: string; state: string; recipients: QuotationRecipient[]; queuedAt: string; completedAt?: string; errorCode?: string; attempts: { number: number; outcome: string; startedAt: string; endedAt?: string; errorCode?: string }[] };
+export type QuotationAcceptance = { id: string; termsVersionId: string; deliveryId: string; termsHash: string; assuranceHash: string; accepterLabel: string; acceptedAt: string; channel: string; evidenceAssociationId: string; recordedAt: string };
+export type QuotationHistory = { terms: QuotationTerms[]; deliveries: QuotationDelivery[]; acceptances: QuotationAcceptance[]; templates: { id: string; code: string; version: number; title: string }[]; recipientOptions: QuotationRecipient[]; nextTermsCursor?: string; nextDeliveriesCursor?: string; nextAcceptancesCursor?: string };
 
 const stateLabels: Record<UnderwritingState, string> = { draft: 'Draft', 'rating-pending': 'Rating requested', rated: 'Rated', referred: 'Referred', approved: 'Approved', sent: 'Sent', accepted: 'Accepted', declined: 'Declined', bound: 'Policy issued', withdrawn: 'Withdrawn' };
 export function quoteStateLabel(state: string, expiresAt?: string, now: number = Date.now()): string {
@@ -60,6 +72,6 @@ export async function sendUnderwritingCommand(command: PendingQuoteCommand, csrf
   const { data, etag } = await quoteFetch<UnderwritingReceipt>(command.url, { method: command.method, body,
     headers: { ...(command.upload ? {} : { 'Content-Type': 'application/json' }), 'X-CSRF-Token': csrf, 'Idempotency-Key': command.key, 'If-Match': command.etag! } });
   if (!data || !validId(data.id) || data.quoteId?.toLowerCase() !== command.expectedId?.toLowerCase() || !validQuoteEtag(etag) || data.quoteEtag !== etag ||
-      (command.url.endsWith('/rate') && (!validId(data.jobId) || data.state !== 'queued'))) throw new Error('The saved outcome could not be confirmed. Retry this same action.');
+      ((command.url.endsWith('/rate') || command.url.endsWith('/terms')) && (!validId(data.jobId) || data.state !== 'queued'))) throw new Error('The saved outcome could not be confirmed. Retry this same action.');
   return data;
 }

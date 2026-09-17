@@ -19,7 +19,7 @@ export function UnderwritingEvidence({ quote, assessment, evidence, run }: { quo
       <button className="button" disabled={!file} onClick={() => file && run({ command: underwritingWrite(quote.id, `/api/v1/quotes/${quote.id}/underwriting/evidence-files`, assessment.quoteEtag, {}, file), label: 'Upload underwriting evidence', description: 'Store this document, then attach it to a current proof purpose.' })}>Upload document</button>
     </fieldset>{error && <p role="alert">{error}</p>}
     {!files.data ? <LoadFeedback error={files.error} retry={files.refresh} /> : <>
-      {assessment.proofRequirements.map(item => <Attachment key={`${item.code}:${item.riskItemId ?? ''}:${item.conditionId ?? ''}`} requirement={item} files={files.data!.items} quote={quote} assessment={assessment} disabled={!active} run={run} />)}
+      {assessment.proofRequirements.map(item => <Attachment key={`${item.code}:${item.riskItemId ?? ''}:${item.conditionId ?? ''}:${item.termsVersionId ?? ''}:${item.capacitySubmissionId ?? ''}`} requirement={item} files={files.data!.items} quote={quote} assessment={assessment} disabled={!active} run={run} />)}
       <details><summary>Saved documents ({files.data.items.length})</summary>{files.data.items.map(item => <p key={item.id}><a href={`/api/v1/quotes/${quote.id}/evidence-files/${item.id}/content`} download>{item.fileName}</a> · {item.contentType} · {item.length.toLocaleString('en-GB')} bytes</p>)}</details>
     </>}
     <h3>Evidence and review history</h3>{!evidence.length && <p>No evidence associations on this page.</p>}
@@ -30,7 +30,7 @@ function Attachment({ requirement, files, quote, assessment, disabled, run }: { 
   const [fileId, setFile] = useState(''), [reason, setReason] = useState('');
   return <fieldset className="quote-reference-fields" disabled={disabled}><legend>{requirement.label}{requirement.riskItemId && ` · ${riskTargetLabel(quote.proposal, requirement.riskItemId)}`}</legend>
     <Status tone={requirement.satisfied ? 'success' : 'warning'}>{requirement.satisfied ? 'Current proof reviewed' : 'Underwriting review required'}</Status>
-    {requirement.conditionId && <p>Attach specifically for this condition before resolving it.</p>}
+    {requirement.termsVersionId && <p className="underwriting-provenance">Exact terms version <code>{requirement.termsVersionId}</code></p>}{requirement.conditionId && <p>Attach specifically for this condition before resolving it.</p>}
     <label>Saved document<select aria-label={`${requirement.label} · Saved document`} value={fileId} onChange={event => setFile(event.target.value)}><option value="">Select document</option>{files.map(item => <option key={item.id} value={item.id}>{item.fileName}</option>)}</select></label>
     <label>Attachment reason<textarea aria-label={`${requirement.label} · Attachment reason`} value={reason} maxLength={2000} onChange={event => setReason(event.target.value)} /></label>
     <button className="button" disabled={!fileId || !reason.trim()} onClick={() => run({ command: underwritingWrite(quote.id, `/api/v1/quotes/${quote.id}/underwriting/evidence`, assessment.quoteEtag, { cycleId: assessment.context!.cycleId, fileId, requirementCode: requirement.code, inputFingerprint: requirement.inputFingerprint, ...(requirement.riskItemId ? { riskItemId: requirement.riskItemId } : {}), ...(requirement.conditionId ? { conditionId: requirement.conditionId } : {}), ...(requirement.capacitySubmissionId ? { capacitySubmissionId: requirement.capacitySubmissionId } : {}), ...(requirement.termsVersionId ? { termsVersionId: requirement.termsVersionId } : {}), reason }), label: 'Attach supporting proof', description: `${requirement.label} · ${reason}` })}>Attach proof</button>
@@ -38,13 +38,13 @@ function Attachment({ requirement, files, quote, assessment, disabled, run }: { 
 }
 function EvidenceCard({ item, quote, assessment, active, run }: { item: Evidence; quote: QuoteView; assessment: UnderwritingAssessment; active: boolean; run: (request: DecisionRequest) => void }) {
   const [reason, setReason] = useState(''), [outcome, setOutcome] = useState('accepted');
-  const applicable = assessment.proofRequirements.some(x => x.code === item.requirementCode && x.conditionId === item.conditionId && x.riskItemId === item.riskItemId && x.inputFingerprint === item.inputFingerprint);
+  const applicable = assessment.proofRequirements.some(x => x.code === item.requirementCode && x.conditionId === item.conditionId && x.riskItemId === item.riskItemId && x.termsVersionId === item.termsVersionId && x.capacitySubmissionId === item.capacitySubmissionId && x.inputFingerprint === item.inputFingerprint);
   function action(withdraw: boolean) {
     run({ command: underwritingWrite(quote.id, `/api/v1/quotes/${quote.id}/underwriting/evidence/${item.id}/${withdraw ? 'withdraw' : 'reviews'}`, assessment.quoteEtag, { cycleId: item.cycleId, associationEtag: item.etag, reason, ...(!withdraw ? { outcome, expectedFingerprint: item.inputFingerprint } : {}) }), label: withdraw ? 'Withdraw proof' : 'Record evidence review', description: `${item.fileName} · ${withdraw ? 'Withdrawal' : outcome} · ${reason}` });
   }
   return <article className="quote-driver-card" data-evidence-id={item.id}>
     <h4><a href={`/api/v1/quotes/${quote.id}/evidence-files/${item.fileId}/content`} download>{item.fileName}</a></h4><p>{item.requirementCode.replaceAll('-', ' ')}{item.conditionId ? ' · Condition proof' : ''}</p>
-    {item.riskItemId && <p>{riskTargetLabel(quote.proposal, item.riskItemId)}</p>}
+    {item.termsVersionId && <p className="underwriting-provenance">Terms version <code>{item.termsVersionId}</code></p>}{item.riskItemId && <p>{riskTargetLabel(quote.proposal, item.riskItemId)}</p>}
     <p>{item.screeningState === 'accepted' ? 'File screening passed' : `File screening: ${item.screeningState}`} · Underwriting review: {item.reviewState}</p>
     {item.withdrawn && <Status tone="warning">Withdrawn — no longer satisfies proof</Status>}{!active && <p>Historical cycle — retained for audit.</p>}{active && !applicable && <p>Purpose has changed — retained proof does not satisfy a current requirement.</p>}
     {active && !item.withdrawn && <fieldset className="quote-reference-fields"><legend>Review or withdraw</legend>

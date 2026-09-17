@@ -5,7 +5,7 @@ import { quoteFetch, QuoteError, uncertainQuoteFailure, staleQuoteFailure, type 
 import { sendUnderwritingCommand, type UnderwritingAssessment } from '../../lib/underwriting-api';
 import { sendCapacityRecovery } from '../../lib/capacity';
 
-export type DecisionRequest = { command: PendingQuoteCommand; label: string; description: string; jobId?: string };
+export type DecisionRequest = { command: PendingQuoteCommand; label: string; description: string; jobId?: string; jobKind?: 'capacity-escalation' | 'quote-delivery' };
 export function DecisionCommand({ request, actorId, close, completed }: { request: DecisionRequest; actorId: string; close: () => void; completed: () => void }) {
   const dialog = useRef<HTMLDialogElement>(null), guard = useRef({ busy: false, uncertain: false }), closeRef = useRef(close);
   const [busy, setBusy] = useState(false), [uncertain, setUncertain] = useState(false), [stale, setStale] = useState(false), [error, setError] = useState('');
@@ -43,7 +43,7 @@ export function DecisionCommand({ request, actorId, close, completed }: { reques
       const [csrf, account] = await Promise.all([csrfToken(), quoteFetch<Actor>('/api/v1/account')]);
       if (account.data.id !== actorId) throw new QuoteError(403);
       attempted = true;
-      if (request.jobId) await sendCapacityRecovery(request.command, request.jobId, csrf); else await sendUnderwritingCommand(request.command, csrf);
+      if (request.jobId) await sendCapacityRecovery(request.command, request.jobId, csrf, request.jobKind); else await sendUnderwritingCommand(request.command, csrf);
       guard.current = { busy: false, uncertain: false }; completed();
     } catch (failure) {
       const retain = recovering || attempted && uncertainQuoteFailure(failure);
