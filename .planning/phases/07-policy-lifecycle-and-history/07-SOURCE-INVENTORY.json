@@ -1,0 +1,2513 @@
+{
+  "status": "in-progress",
+  "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
+  "scope": "Original Phase7 controls and policy/term/draft API path families; conditional source additions remain to audit.",
+  "controlCount": 137,
+  "apiOperationCount": 29,
+  "controls": [
+    {
+      "id": "CTL-8045da3f31a1",
+      "method": "pPolicy",
+      "path": ".recordHeader.menu[0]",
+      "label": "Make an Adjustment",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go('mta')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-9f0b18626d19",
+      "method": "pPolicy",
+      "path": ".recordHeader.menu[1]",
+      "label": "Start Renewal",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go('renewal')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-9a93665d17ad",
+      "method": "pPolicy",
+      "path": ".recordHeader.menu[2]",
+      "label": "Send Documents",
+      "kind": "action",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Document pack queued for brightside@ (mock send).', '', null)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-41c6ab527690",
+      "method": "pPolicy",
+      "path": ".recordHeader.menu[3]",
+      "label": "Create Task",
+      "kind": "action",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.setState({modal:{kind:'task'}})"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-5a327c3b623f",
+      "method": "pPolicy",
+      "path": ".recordHeader.menu[4]",
+      "label": "Add Note",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.setTab('Notes')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-3cb0cf7677f1",
+      "method": "pPolicy",
+      "path": ".recordHeader.menu[5]",
+      "label": "Log an Incident",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go('logclaim')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-c6af006ce244",
+      "method": "pPolicy",
+      "path": ".recordHeader.menu[6]",
+      "label": "Clone to New Quote",
+      "kind": "action",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Cloned to draft quote QT/MT/004190 (mock).', 'Open', () => this.go('quote'))"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-6f298b5183b0",
+      "method": "pPolicy",
+      "path": ".recordHeader.menu[7]",
+      "label": "View transactions & versions",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.setTab('Transactions')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-a90cc5e42de1",
+      "method": "pPolicy",
+      "path": ".recordHeader.menu[8]",
+      "label": "Cancel Policy",
+      "kind": "action",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.setState({modal:{kind:'cancel'}})"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-44449472c9d0",
+      "method": "pPolicy",
+      "path": ".sections[0]",
+      "label": "Open MTA-007 workspace",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onAction": "() => this.go('mta')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-1fad476114e9",
+      "method": "pPolicy",
+      "path": ".sections[1].fields[5]",
+      "label": "In-force version",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go(o.go, o.tab)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-5b50e8eb46fa",
+      "method": "pPolicy",
+      "path": ".sections[1].fields[8]",
+      "label": "Agency",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go(o.go, o.tab)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-29c128398a46",
+      "method": "pPolicy",
+      "path": ".sections[2].fields[4]",
+      "label": "Vehicle register",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go(o.go, o.tab)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-a599ed5f7746",
+      "method": "pPolicy",
+      "path": ".sections[4]",
+      "label": "All notes",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onAction": "() => this.setTab('Notes')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-d1cdc62aa154",
+      "method": "pPolicy",
+      "path": ".sections[5]",
+      "label": "All documents",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onAction": "() => this.setTab('Documents')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-d85e718d3878",
+      "method": "pPolicy",
+      "path": ".rail[0].items[0]",
+      "label": "Make an Adjustment",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go('mta')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-fb6a7c690bb9",
+      "method": "pPolicy",
+      "path": ".rail[0].items[1]",
+      "label": "Start Renewal",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go('renewal')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-21e20d4ce3cd",
+      "method": "pPolicy",
+      "path": ".rail[0].items[2]",
+      "label": "Send Documents",
+      "kind": "action",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Document pack queued for brightside@ (mock send).', '', null)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-737c18fda414",
+      "method": "pPolicy",
+      "path": ".rail[0].items[3]",
+      "label": "Create Task",
+      "kind": "action",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.setState({modal:{kind:'task'}})"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-9cd13ac877a5",
+      "method": "pPolicy",
+      "path": ".rail[0].items[4]",
+      "label": "Add Note",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.setTab('Notes')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-9ce9ceaff0ff",
+      "method": "pPolicy",
+      "path": ".rail[0].items[5]",
+      "label": "Log an Incident",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go('logclaim')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-2bcbed5a8b35",
+      "method": "pPolicy",
+      "path": ".rail[0].items[6]",
+      "label": "Clone to New Quote",
+      "kind": "action",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Cloned to draft quote QT/MT/004190 (mock).', 'Open', () => this.go('quote'))"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-e230948b7fd9",
+      "method": "pPolicy",
+      "path": ".rail[0].items[7]",
+      "label": "View transactions & versions",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.setTab('Transactions')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-e0b763ff7753",
+      "method": "pPolicy",
+      "path": ".rail[0].items[8]",
+      "label": "Cancel Policy",
+      "kind": "action",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.setState({modal:{kind:'cancel'}})"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-721a19d5dbfa",
+      "method": "pPolicy",
+      "path": ".rail[1].fields[1]",
+      "label": "Open referrals",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go(o.go, o.tab)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-40c2953f1cf1",
+      "method": "pPolicy",
+      "path": ".rail[2]",
+      "label": "All",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onAction": "() => this.setTab('Tasks')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-44e9e414e2c2",
+      "method": "pPolicy",
+      "path": ".rail[2].rows[0]",
+      "label": ".rail[2].rows[0]",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go(o.go, o.tab)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-dcd53246e184",
+      "method": "pPolicy",
+      "path": ".rail[2].rows[1]",
+      "label": ".rail[2].rows[1]",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go(o.go, o.tab)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-60ba3b194aa0",
+      "method": "pPolicy",
+      "path": ".rail[2].rows[2]",
+      "label": ".rail[2].rows[2]",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go(o.go, o.tab)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-1becc6b0d735",
+      "method": "pPolicy",
+      "path": ".sections[0]",
+      "label": "Add note",
+      "kind": "input",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onChange": "(e) => this.setState({noteDraft: e.target.value})",
+        "onSend": "() => {\n          const t = this.state.noteDraft.trim();\n          if (!t) { this.toast('Enter a note before saving.', '', null); return; }\n          this.setState((s) => ({notes: [{title:'Note added', meta:'James Smith · 09/09/2026 08:24', body: t}].concat(s.notes), noteDraft: ''}));\n          this.toast('Note added to PN/CC/000622.', '', null);\n        }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-73d14fdf3487",
+      "method": "pPolicy",
+      "path": ".sections[0]",
+      "label": "Open draft",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onAction": "() => this.go('mta')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-865e4d442990",
+      "method": "pPolicy",
+      "path": ".sections[1]",
+      "label": "Policy as at a date",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onAction": "() => this.go('asat')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-c2f7efead94c",
+      "method": "pPolicy",
+      "path": ".sections[2].rows[0]",
+      "label": ".sections[2].rows[0]",
+      "kind": "action",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Before/after comparison for ' + t[0] + ' (mock).', '', null)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-64a95d6b56a5",
+      "method": "pPolicy",
+      "path": ".sections[2].rows[1]",
+      "label": ".sections[2].rows[1]",
+      "kind": "action",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Before/after comparison for ' + t[0] + ' (mock).', '', null)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-13581e1a3c26",
+      "method": "pPolicy",
+      "path": ".sections[2].rows[2]",
+      "label": ".sections[2].rows[2]",
+      "kind": "action",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Before/after comparison for ' + t[0] + ' (mock).', '', null)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-a32dc8670b0a",
+      "method": "pPolicy",
+      "path": ".sections[2].rows[3]",
+      "label": ".sections[2].rows[3]",
+      "kind": "action",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Before/after comparison for ' + t[0] + ' (mock).', '', null)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-600cfa71899e",
+      "method": "pPolicy",
+      "path": ".sections[2].rows[4]",
+      "label": ".sections[2].rows[4]",
+      "kind": "action",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Before/after comparison for ' + t[0] + ' (mock).', '', null)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-a5137896520d",
+      "method": "pPolicy",
+      "path": ".sections[2].rows[5]",
+      "label": ".sections[2].rows[5]",
+      "kind": "action",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Before/after comparison for ' + t[0] + ' (mock).', '', null)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-f7e2892adf6c",
+      "method": "pPolicy",
+      "path": ".sections[0]",
+      "label": "Upload evidence",
+      "kind": "action",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onAction": "() => this.toast('File picker would open here (mock).', '', null)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-0e889362450f",
+      "method": "pPolicy",
+      "path": ".sections[0].rows[0].cells[5]",
+      "label": "Preview · Download · Send",
+      "kind": "action",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Document sent to brightside@ (mock).', '', null)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-efe5919f52c7",
+      "method": "pPolicy",
+      "path": ".sections[0].rows[1].cells[5]",
+      "label": "Preview · Download · Send",
+      "kind": "action",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Document sent to brightside@ (mock).', '', null)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-de77892116b5",
+      "method": "pPolicy",
+      "path": ".sections[0]",
+      "label": "Create task",
+      "kind": "action",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onAction": "() => this.setState({modal:{kind:'task'}})"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-9f19b2755047",
+      "method": "pPolicy",
+      "path": ".sections[0].rows[0]",
+      "label": ".sections[0].rows[0]",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go(o.go, o.tab)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-607dadbd889b",
+      "method": "pPolicy",
+      "path": ".sections[0].rows[1]",
+      "label": ".sections[0].rows[1]",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go(o.go, o.tab)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-b8980c2b5423",
+      "method": "pPolicy",
+      "path": ".sections[0].rows[2]",
+      "label": ".sections[0].rows[2]",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go(o.go, o.tab)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-8985852d89f3",
+      "method": "pPolicy",
+      "path": ".sections[0].rows[3]",
+      "label": ".sections[0].rows[3]",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go(o.go, o.tab)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-1c646d814d99",
+      "method": "pPolicy",
+      "path": ".sections[0]",
+      "label": "Propose a change",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onAction": "() => this.go('mta')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-c6c247c8e374",
+      "method": "pPolicy",
+      "path": ".sections[1]",
+      "label": "Propose a change",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onAction": "() => this.go('mta')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-aedc83465580",
+      "method": "pPolicy",
+      "path": ".sections[2]",
+      "label": "Propose a change",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onAction": "() => this.go('mta')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-56e9c654446b",
+      "method": "pPolicy",
+      "path": ".sections[3]",
+      "label": "Propose a change",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onAction": "() => this.go('mta')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-bf0ca76b9d5d",
+      "method": "pPolicy",
+      "path": ".sections[0]",
+      "label": "Propose a change",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onAction": "() => this.go('mta')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-c7700e80208a",
+      "method": "pPolicy",
+      "path": ".sections[0]",
+      "label": "Open exception task",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onAction": "() => this.go('tasks')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-e121d4d60dfb",
+      "method": "pPolicy",
+      "path": ".sections[1]",
+      "label": "Propose a change",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onAction": "() => this.go('mta')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-d32d3244fb5d",
+      "method": "pPolicy",
+      "path": ".sections[1].rows[0]",
+      "label": ".sections[1].rows[0]",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go(o.go, o.tab)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-833c66cac316",
+      "method": "pPolicy",
+      "path": ".sections[0]",
+      "label": "Open driver record",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onAction": "() => this.go('driver')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-1583baae154f",
+      "method": "pPolicy",
+      "path": ".sections[1]",
+      "label": "Open MTA-007",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onAction": "() => this.go('mta')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-71af2ba1c4ce",
+      "method": "pPolicy",
+      "path": ".sections[2]",
+      "label": "Propose a change",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onAction": "() => this.go('mta')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-92991f22c2a4",
+      "method": "pPolicy",
+      "path": ".sections[1].fields[4]",
+      "label": "Broker account",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go(o.go, o.tab)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-5da00f228867",
+      "method": "pPolicy",
+      "path": ".sections[1]",
+      "label": "Send to agency",
+      "kind": "input",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onChange": "(e) => this.setState({msgDraft: e.target.value})",
+        "onSend": "() => {\n          const t = this.state.msgDraft.trim();\n          if (!t) { this.toast('Write a message before sending.', '', null); return; }\n          this.setState((s) => ({messages: s.messages.concat([{who:'James Smith · Cover MGA', tag:'External', when:'09/09/2026 08:31', body: t, attach:''}]), msgDraft: ''}));\n          this.toast('Reply sent to Brightside and logged against the policy.', '', null);\n        }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-4c97724a5bfa",
+      "method": "pPolicy",
+      "path": ".sections[0]",
+      "label": "Log an incident",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onAction": "() => this.go('logclaim')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-ba17ee21e305",
+      "method": "pPolicy",
+      "path": ".sections[1].rows[0]",
+      "label": ".sections[1].rows[0]",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => { this.setState({claimRef: 'CL-91043'}); this.go('claim'); }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-08231528f503",
+      "method": "pPolicy",
+      "path": ".sections[1].rows[1]",
+      "label": ".sections[1].rows[1]",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => { this.setState({claimRef: 'CL-91043'}); this.go('claim'); }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-1ef57f2aabee",
+      "method": "pMta",
+      "path": ".recordHeader.actions[0]",
+      "label": "Take over draft",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {
+        "onClick": "() => { this.setState({lockHeld: false}); this.toast('You now hold the draft. Amy Jones has been notified and put into read-only.', '', null); }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-4215a62af861",
+      "method": "pMta",
+      "path": ".sections[0]",
+      "label": "Take over draft",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {
+        "onAction": "() => { this.setState({lockHeld: false}); this.toast('You now hold the draft. Amy Jones has been notified and put into read-only.', '', null); }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-5024c53b5eaf",
+      "method": "pMta",
+      "path": ".rail[1].items[0]",
+      "label": "Take over draft",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {
+        "onClick": "() => { this.setState({lockHeld: false}); this.toast('You now hold the draft. Amy Jones has been notified and put into read-only.', '', null); }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-630153edbb1f",
+      "method": "pMta",
+      "path": ".rail[1].items[6]",
+      "label": "Back to policy",
+      "kind": "navigation",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go('policy')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-811c233ef5c7",
+      "method": "pMta",
+      "path": ".recordHeader.actions[0]",
+      "label": "Save draft",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Draft MTA-007 saved. You can resume it from the policy.', '', null)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-bcb0e563f02d",
+      "method": "pMta",
+      "path": ".recordHeader.actions[1]",
+      "label": "Re-rate",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.rateMta()"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-9085e4bbc3bb",
+      "method": "pMta",
+      "path": ".sections[0]",
+      "label": "Release lock",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "ready"
+      ],
+      "handlers": {
+        "onAction": "() => { this.setState({lockHeld: true}); this.toast('Lock released — the draft is editable by the team again.', '', null); }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-a5cbae9b8992",
+      "method": "pMta",
+      "path": ".sections[3].inputs[0]",
+      "label": "Effective date (all changes)",
+      "kind": "input",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "ready"
+      ],
+      "handlers": {
+        "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-60ada0e23106",
+      "method": "pMta",
+      "path": ".sections[3].inputs[1]",
+      "label": "Date basis",
+      "kind": "input",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "ready"
+      ],
+      "handlers": {
+        "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-37837fb0eb28",
+      "method": "pMta",
+      "path": ".sections[3].inputs[2]",
+      "label": "Requested by",
+      "kind": "input",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "ready"
+      ],
+      "handlers": {
+        "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-f3fb94ad182a",
+      "method": "pMta",
+      "path": ".sections[4]",
+      "label": "Add change",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "ready"
+      ],
+      "handlers": {
+        "onAction": "() => this.setState({modal:{kind:'picker'}})"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-14cfcc4b503f",
+      "method": "pMta",
+      "path": ".sections[4].items[0]",
+      "label": "Add named driver — Rebecca Hall",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "ready"
+      ],
+      "handlers": {
+        "onEdit": "() => this.setState({modal:{kind:'edit', i: i}})",
+        "onRemove": "() => this.setState((s) => ({mtaChanges: s.mtaChanges.filter((x, j) => j !== i), mtaRated: false}))"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-3a07d9af3916",
+      "method": "pMta",
+      "path": ".sections[4].items[1]",
+      "label": "Add named driver — Liam Doherty",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "ready"
+      ],
+      "handlers": {
+        "onEdit": "() => this.setState({modal:{kind:'edit', i: i}})",
+        "onRemove": "() => this.setState((s) => ({mtaChanges: s.mtaChanges.filter((x, j) => j !== i), mtaRated: false}))"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-c4a0292cbe34",
+      "method": "pMta",
+      "path": ".sections[4].items[2]",
+      "label": "Remove named driver — Kevin Pryce",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "ready"
+      ],
+      "handlers": {
+        "onEdit": "() => this.setState({modal:{kind:'edit', i: i}})",
+        "onRemove": "() => this.setState((s) => ({mtaChanges: s.mtaChanges.filter((x, j) => j !== i), mtaRated: false}))"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-0bb078b5d224",
+      "method": "pMta",
+      "path": ".sections[4].items[3]",
+      "label": "Amend premises address — location 2",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "ready"
+      ],
+      "handlers": {
+        "onEdit": "() => this.setState({modal:{kind:'edit', i: i}})",
+        "onRemove": "() => this.setState((s) => ({mtaChanges: s.mtaChanges.filter((x, j) => j !== i), mtaRated: false}))"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-f53d17d61db1",
+      "method": "pMta",
+      "path": ".sections[4].items[4]",
+      "label": "Increase stock & custody limit",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "ready"
+      ],
+      "handlers": {
+        "onEdit": "() => this.setState({modal:{kind:'edit', i: i}})",
+        "onRemove": "() => this.setState((s) => ({mtaChanges: s.mtaChanges.filter((x, j) => j !== i), mtaRated: false}))"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-cc443272c9e7",
+      "method": "pMta",
+      "path": ".rail[1].items[0]",
+      "label": "Re-rate combined risk",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.rateMta()"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-ee26e427d19a",
+      "method": "pMta",
+      "path": ".rail[1].items[1]",
+      "label": "Save draft",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Draft MTA-007 saved. You can resume it from the policy.', '', null)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-909dc8df1733",
+      "method": "pMta",
+      "path": ".rail[1].items[2]",
+      "label": "Submit to underwriting",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.submitMta()"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-4c6212277cb7",
+      "method": "pMta",
+      "path": ".rail[1].items[3]",
+      "label": "Refer to capacity provider",
+      "kind": "navigation",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go('escalation')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-efe1569b8296",
+      "method": "pMta",
+      "path": ".rail[1].items[5]",
+      "label": "Abandon draft",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Draft would be abandoned after confirmation (mock).', '', null)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-17cfb5f13bd1",
+      "method": "pMta",
+      "path": ".sections[0]",
+      "label": "Review & rate now",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {
+        "onAction": "() => this.rateMta()"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-d2bf3015d449",
+      "method": "pMta",
+      "path": ".sections[3].rows[0]",
+      "label": ".sections[3].rows[0]",
+      "kind": "navigation",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go(o.go, o.tab)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-e39aeff1b11d",
+      "method": "pMta",
+      "path": ".sections[3].rows[1]",
+      "label": ".sections[3].rows[1]",
+      "kind": "navigation",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go(o.go, o.tab)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-a1d207a609ca",
+      "method": "pRenewal",
+      "path": ".pageActions[0]",
+      "label": "Back to policy",
+      "kind": "navigation",
+      "requirement": "POL-07",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready",
+        "wizard"
+      ],
+      "handlers": {
+        "onClick": "() => this.go('policy')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-40d27394607d",
+      "method": "pRenewal",
+      "path": ".pageActions[1]",
+      "label": "Rate renewal",
+      "kind": "action",
+      "requirement": "POL-07",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready",
+        "wizard"
+      ],
+      "handlers": {
+        "onClick": "() => {\n              const msgs = {1:'Renewal rated (mock): £2,608.85, +8.0%. Referral UW-31 open.', 2:'Renewal invitation issued and sent to Vantage Trade Brokers.', 3:'Acceptance recorded. Renewal policy would be issued at inception.'};\n              this.toast(msgs[step], '', null); this.setState({rnStep: step + 1});\n            }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-76ad64b9c550",
+      "method": "pRenewal",
+      "path": ".sections[1].fields[0]",
+      "label": "Policy",
+      "kind": "navigation",
+      "requirement": "POL-07",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready",
+        "wizard"
+      ],
+      "handlers": {
+        "onClick": "() => this.go(o.go, o.tab)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-6feeac107975",
+      "method": "pRenewal",
+      "path": ".rail[0].items[1]",
+      "label": "Amend renewal terms",
+      "kind": "action",
+      "requirement": "POL-07",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready",
+        "wizard"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Renewal terms editor (mock) — would invalidate rating.', '', null)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-35c70199197b",
+      "method": "pRenewal",
+      "path": ".rail[0].items[2]",
+      "label": "Lapse at expiry",
+      "kind": "action",
+      "requirement": "POL-07",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready",
+        "wizard"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Lapse requires a reason and broker notification (mock).', '', null)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-879db9a21bfd",
+      "method": "pRenewal",
+      "path": ".rail[1]",
+      "label": ".rail[1]",
+      "kind": "action",
+      "requirement": "POL-07",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready",
+        "wizard"
+      ],
+      "handlers": {
+        "onStyle": "() => this.setState({progStyle: next})"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-9914b0bf4f9f",
+      "method": "pRenewal",
+      "path": ".rail[1].items[0]",
+      "label": "Review risk",
+      "kind": "action",
+      "requirement": "POL-07",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready",
+        "wizard"
+      ],
+      "handlers": {
+        "onClick": "() => onJump(n)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-f70a8d0246fc",
+      "method": "pRenewal",
+      "path": ".rail[1].items[1]",
+      "label": "Rate renewal",
+      "kind": "action",
+      "requirement": "POL-07",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready",
+        "wizard"
+      ],
+      "handlers": {
+        "onClick": "() => onJump(n)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-07199cfc7aaf",
+      "method": "pRenewal",
+      "path": ".rail[1].items[2]",
+      "label": "Issue invitation",
+      "kind": "action",
+      "requirement": "POL-07",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready",
+        "wizard"
+      ],
+      "handlers": {
+        "onClick": "() => onJump(n)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-5ebc3446d851",
+      "method": "pRenewal",
+      "path": ".rail[1].items[3]",
+      "label": "Await acceptance",
+      "kind": "action",
+      "requirement": "POL-07",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready",
+        "wizard"
+      ],
+      "handlers": {
+        "onClick": "() => onJump(n)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-657eee864831",
+      "method": "pCancelReview",
+      "path": ".pageActions[0]",
+      "label": "Back to policy",
+      "kind": "navigation",
+      "requirement": "POL-09",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go('policy')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-c85ad01a33e0",
+      "method": "pCancelReview",
+      "path": ".pageActions[1]",
+      "label": "Issue cancellation",
+      "kind": "action",
+      "requirement": "POL-09",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Cancellation issued (mock): policy PN/CC/000622 cancelled, version 7, refund RF-0221 raised.', 'Open policy', () => this.go('policy'))"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-be7dce14a48f",
+      "method": "pCancelReview",
+      "path": ".rail[0].items[0]",
+      "label": "Issue cancellation",
+      "kind": "action",
+      "requirement": "POL-09",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Cancellation issued (mock): version 7, refund RF-0221 raised.', 'Open policy', () => this.go('policy'))"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-bfe2f6136895",
+      "method": "pCancelReview",
+      "path": ".rail[0].items[1]",
+      "label": "Amend reason or date",
+      "kind": "action",
+      "requirement": "POL-09",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.setState({modal:{kind:'cancel'}})"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-2e6fe589364b",
+      "method": "pCancelReview",
+      "path": ".rail[0].items[2]",
+      "label": "Abandon cancellation",
+      "kind": "action",
+      "requirement": "POL-09",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => { this.toast('Cancellation abandoned — policy unchanged.', '', null); this.go('policy'); }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-386b48061d53",
+      "method": "pIssued",
+      "path": ".pageActions[0]",
+      "label": "Open policy",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go('policy')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-3e9bec10fb71",
+      "method": "pIssued",
+      "path": ".pageActions[1]",
+      "label": "View transactions",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go('policy', 'Transactions')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-902e6ba91260",
+      "method": "pVehicle",
+      "path": ".recordHeader.actions[0]",
+      "label": "Retry data submission",
+      "kind": "action",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Submission retried (mock): awaiting response.', '', null)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-66cf696c0aa1",
+      "method": "pVehicle",
+      "path": ".sections[0]",
+      "label": "Open exception task",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onAction": "() => this.go('tasks')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-7d9b07c0fc34",
+      "method": "pDriver",
+      "path": ".recordHeader.actions[0]",
+      "label": "Open referral task",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go('task')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-d5646e53396b",
+      "method": "pDriver",
+      "path": ".sections[0]",
+      "label": "Chase agency",
+      "kind": "navigation",
+      "requirement": "POL-01",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onAction": "() => this.go('policy', 'Messages')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-0e965122693a",
+      "method": "pAsAt",
+      "path": ".pageActions[0]",
+      "label": "Back to transactions",
+      "kind": "navigation",
+      "requirement": "POL-05",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.go('policy', 'Transactions')"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-c7575e4e2213",
+      "method": "pAsAt",
+      "path": ".pageActions[1]",
+      "label": "Export this view",
+      "kind": "action",
+      "requirement": "POL-05",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Reconstruction exported as a PDF for the claims file (mock).', '', null)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-6e2b2ebf7bc6",
+      "method": "pAsAt",
+      "path": ".sections[1].inputs[0]",
+      "label": "Show the policy as at",
+      "kind": "input",
+      "requirement": "POL-05",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-ff9e226baf10",
+      "method": "pAsAt",
+      "path": ".sections[1].inputs[1]",
+      "label": "Include draft transactions",
+      "kind": "input",
+      "requirement": "POL-05",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-d27b77003a60",
+      "method": "pAsAt",
+      "path": ".sections[1].inputs[2]",
+      "label": "Basis",
+      "kind": "input",
+      "requirement": "POL-05",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-f3387357521c",
+      "method": "pAsAt",
+      "path": ".sections[4].fields[0]",
+      "label": "Schedule",
+      "kind": "action",
+      "requirement": "POL-05",
+      "phase": 7,
+      "scenarios": [
+        "default",
+        "ready"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Opening the ' + v.v + ' schedule as issued (mock).', '', null)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-cb7e499f5ef9",
+      "method": "modalVals",
+      "path": "",
+      "label": "Review cancellation",
+      "kind": "action",
+      "requirement": "POL-09",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {},
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-bdb6e9ab15e0",
+      "method": "modalVals",
+      "path": ".inputs[0]",
+      "label": "Cancellation reason",
+      "kind": "input",
+      "requirement": "POL-09",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {
+        "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-c6ed3365f90b",
+      "method": "modalVals",
+      "path": ".inputs[1]",
+      "label": "Effective date",
+      "kind": "input",
+      "requirement": "POL-09",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {
+        "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-9c276d4c11eb",
+      "method": "modalVals",
+      "path": ".inputs[2]",
+      "label": "Notes for audit trail",
+      "kind": "input",
+      "requirement": "POL-09",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {
+        "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-69897d577944",
+      "method": "modalVals",
+      "path": "",
+      "label": "Done",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {
+        "onConfirm": "() => this.setState({modal: null})"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-48357417c7d9",
+      "method": "modalVals",
+      "path": ".options[0]",
+      "label": "Add named driver",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {
+        "onClick": "() => this.setState((s) => ({\n            modal: null, mtaRated: false,\n            mtaChanges: s.mtaChanges.concat([{group:o.g, title:o.t, before:o.bf, after:o.af, state:'Needs information', tone:'warn', msg:'Complete the section editor to validate this change.'}])\n          }))"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-d95a33ac4ba9",
+      "method": "modalVals",
+      "path": ".options[1]",
+      "label": "Remove named driver",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {
+        "onClick": "() => this.setState((s) => ({\n            modal: null, mtaRated: false,\n            mtaChanges: s.mtaChanges.concat([{group:o.g, title:o.t, before:o.bf, after:o.af, state:'Needs information', tone:'warn', msg:'Complete the section editor to validate this change.'}])\n          }))"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-06d9667cb5b0",
+      "method": "modalVals",
+      "path": ".options[2]",
+      "label": "Add vehicle to register",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {
+        "onClick": "() => this.setState((s) => ({\n            modal: null, mtaRated: false,\n            mtaChanges: s.mtaChanges.concat([{group:o.g, title:o.t, before:o.bf, after:o.af, state:'Needs information', tone:'warn', msg:'Complete the section editor to validate this change.'}])\n          }))"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-2ce7af342224",
+      "method": "modalVals",
+      "path": ".options[3]",
+      "label": "Remove vehicle",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {
+        "onClick": "() => this.setState((s) => ({\n            modal: null, mtaRated: false,\n            mtaChanges: s.mtaChanges.concat([{group:o.g, title:o.t, before:o.bf, after:o.af, state:'Needs information', tone:'warn', msg:'Complete the section editor to validate this change.'}])\n          }))"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-8c4c56e91474",
+      "method": "modalVals",
+      "path": ".options[4]",
+      "label": "Amend premises",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {
+        "onClick": "() => this.setState((s) => ({\n            modal: null, mtaRated: false,\n            mtaChanges: s.mtaChanges.concat([{group:o.g, title:o.t, before:o.bf, after:o.af, state:'Needs information', tone:'warn', msg:'Complete the section editor to validate this change.'}])\n          }))"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-d333e12d28da",
+      "method": "modalVals",
+      "path": ".options[5]",
+      "label": "Amend trade activities",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {
+        "onClick": "() => this.setState((s) => ({\n            modal: null, mtaRated: false,\n            mtaChanges: s.mtaChanges.concat([{group:o.g, title:o.t, before:o.bf, after:o.af, state:'Needs information', tone:'warn', msg:'Complete the section editor to validate this change.'}])\n          }))"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-27a26f44394a",
+      "method": "modalVals",
+      "path": ".options[6]",
+      "label": "Cover, limits or excesses",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {
+        "onClick": "() => this.setState((s) => ({\n            modal: null, mtaRated: false,\n            mtaChanges: s.mtaChanges.concat([{group:o.g, title:o.t, before:o.bf, after:o.af, state:'Needs information', tone:'warn', msg:'Complete the section editor to validate this change.'}])\n          }))"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-b84c84a05598",
+      "method": "modalVals",
+      "path": ".options[7]",
+      "label": "Policyholder details",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {
+        "onClick": "() => this.setState((s) => ({\n            modal: null, mtaRated: false,\n            mtaChanges: s.mtaChanges.concat([{group:o.g, title:o.t, before:o.bf, after:o.af, state:'Needs information', tone:'warn', msg:'Complete the section editor to validate this change.'}])\n          }))"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-fd38a2890d20",
+      "method": "modalVals",
+      "path": "",
+      "label": "Save change",
+      "kind": "action",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {
+        "onConfirm": "() => {\n          const licOk = !isDrv || (this.fv('edLicNo','').trim() && this.fv('edTest','').trim());\n          this.setState((s) => ({\n            modal: null, mtaRated: false, mtaApproved: false,\n            mtaChanges: s.mtaChanges.map((c, j) => j !== m.i ? c : Object.assign({}, c, {\n              state: licOk ? 'Valid' : 'Needs information',\n              tone: licOk ? 'ok' : 'warn',\n              after: isDrv && licOk ? 'Liam Doherty · DOB 02/11/2003 · licence ' + this.fv('edLicNo','') + ' · 1 fault claim (2025)' : c.after,\n              msg: licOk ? '' : c.msg\n            }))\n          }));\n          this.toast(licOk ? 'Change saved and validated. Re-rate the transaction.' : 'Saved, but licence number and date of test are still required.', '', null);\n        }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-2be8051a493d",
+      "method": "modalVals",
+      "path": ".inputs[0]",
+      "label": "Full name",
+      "kind": "input",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {
+        "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-006262166a6c",
+      "method": "modalVals",
+      "path": ".inputs[1]",
+      "label": "Date of birth",
+      "kind": "input",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {
+        "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-67729c63e82c",
+      "method": "modalVals",
+      "path": ".inputs[2]",
+      "label": "Licence type",
+      "kind": "input",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {
+        "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-31515d181764",
+      "method": "modalVals",
+      "path": ".inputs[3]",
+      "label": "Licence number",
+      "kind": "input",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {
+        "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-48fcf50be539",
+      "method": "modalVals",
+      "path": ".inputs[4]",
+      "label": "Date of test",
+      "kind": "input",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {
+        "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-3b28acf92b73",
+      "method": "modalVals",
+      "path": ".inputs[5]",
+      "label": "Claims in last 3 years",
+      "kind": "input",
+      "requirement": "POL-04",
+      "phase": 7,
+      "scenarios": [
+        "default"
+      ],
+      "handlers": {
+        "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-dc77305d175b",
+      "method": "pRenewal",
+      "path": ".pageActions[1]",
+      "label": "Issue invitation",
+      "kind": "action",
+      "requirement": "POL-07",
+      "phase": 7,
+      "scenarios": [
+        "wizard"
+      ],
+      "handlers": {
+        "onClick": "() => {\n              const msgs = {1:'Renewal rated (mock): £2,608.85, +8.0%. Referral UW-31 open.', 2:'Renewal invitation issued and sent to Vantage Trade Brokers.', 3:'Acceptance recorded. Renewal policy would be issued at inception.'};\n              this.toast(msgs[step], '', null); this.setState({rnStep: step + 1});\n            }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-fa18c029e256",
+      "method": "pRenewal",
+      "path": ".rail[0].items[0]",
+      "label": "Decide referral UW-31",
+      "kind": "action",
+      "requirement": "POL-07",
+      "phase": 7,
+      "scenarios": [
+        "wizard"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Referral UW-31 approved — loss ratio accepted with 8% loading.', '', null)"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-7ef8d04057b2",
+      "method": "pRenewal",
+      "path": ".pageActions[1]",
+      "label": "Record acceptance",
+      "kind": "action",
+      "requirement": "POL-07",
+      "phase": 7,
+      "scenarios": [
+        "wizard"
+      ],
+      "handlers": {
+        "onClick": "() => {\n              const msgs = {1:'Renewal rated (mock): £2,608.85, +8.0%. Referral UW-31 open.', 2:'Renewal invitation issued and sent to Vantage Trade Brokers.', 3:'Acceptance recorded. Renewal policy would be issued at inception.'};\n              this.toast(msgs[step], '', null); this.setState({rnStep: step + 1});\n            }"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    },
+    {
+      "id": "CTL-d320aa79a17e",
+      "method": "pRenewal",
+      "path": ".pageActions[1]",
+      "label": "Issue renewal policy",
+      "kind": "action",
+      "requirement": "POL-07",
+      "phase": 7,
+      "scenarios": [
+        "wizard"
+      ],
+      "handlers": {
+        "onClick": "() => this.toast('Renewal policy issued (mock): PN/CC/000571 version 5, term 01/10/2026 – 30/09/2027.', 'Open policy', () => this.go('policy'))"
+      },
+      "reviewStatus": "pending-detailed-owner-and-branch-review"
+    }
+  ],
+  "apiOperations": [
+    {
+      "method": "GET",
+      "path": "/policies",
+      "operationId": "listPolicies",
+      "summary": "list Policies",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "GET",
+      "path": "/policies/{policyId}",
+      "operationId": "getPolicy",
+      "summary": "get Policy",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "GET",
+      "path": "/policies/{policyId}/terms",
+      "operationId": "listPolicyTerms",
+      "summary": "list Policy Terms",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "GET",
+      "path": "/terms/{termId}/versions",
+      "operationId": "listPolicyVersions",
+      "summary": "list Policy Versions",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "GET",
+      "path": "/terms/{termId}/as-at",
+      "operationId": "getPolicyAsAt",
+      "summary": "get Policy As At",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "GET",
+      "path": "/terms/{termId}/drafts",
+      "operationId": "listPolicyDrafts",
+      "summary": "list Policy Drafts",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "POST",
+      "path": "/terms/{termId}/drafts",
+      "operationId": "createPolicyDraft",
+      "summary": "create Policy Draft",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "GET",
+      "path": "/drafts/{draftId}",
+      "operationId": "getPolicyDraft",
+      "summary": "get Policy Draft",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "POST",
+      "path": "/drafts/{draftId}/lease",
+      "operationId": "acquireDraftLease",
+      "summary": "acquire Draft Lease",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "PUT",
+      "path": "/drafts/{draftId}/lease",
+      "operationId": "renewDraftLease",
+      "summary": "renew Draft Lease",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "DELETE",
+      "path": "/drafts/{draftId}/lease",
+      "operationId": "releaseDraftLease",
+      "summary": "release Draft Lease",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "PUT",
+      "path": "/drafts/{draftId}/proposal",
+      "operationId": "savePolicyDraft",
+      "summary": "save Policy Draft",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "POST",
+      "path": "/drafts/{draftId}/rate",
+      "operationId": "ratePolicyDraft",
+      "summary": "rate Policy Draft",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "POST",
+      "path": "/drafts/{draftId}/submit",
+      "operationId": "submitPolicyDraft",
+      "summary": "submit Policy Draft",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "POST",
+      "path": "/drafts/{draftId}/abandon",
+      "operationId": "abandonPolicyDraft",
+      "summary": "abandon Policy Draft",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "POST",
+      "path": "/drafts/{draftId}/acceptances",
+      "operationId": "recordDraftAcceptance",
+      "summary": "record Draft Acceptance",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "POST",
+      "path": "/drafts/{draftId}/issue",
+      "operationId": "issuePolicyDraft",
+      "summary": "issue Policy Draft",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "POST",
+      "path": "/drafts/{draftId}/renewal-invitation",
+      "operationId": "sendRenewalInvitation",
+      "summary": "send Renewal Invitation",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "POST",
+      "path": "/terms/{termId}/lapse",
+      "operationId": "lapseRenewal",
+      "summary": "lapse Renewal",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "GET",
+      "path": "/drafts/{draftId}/cancellation-preview",
+      "operationId": "getCancellationPreview",
+      "summary": "get Cancellation Preview",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "POST",
+      "path": "/terms/{termId}/as-at/export",
+      "operationId": "exportPolicyReconstruction",
+      "summary": "export Policy Reconstruction",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "GET",
+      "path": "/terms/{termId}",
+      "operationId": "getPolicyTerm",
+      "summary": "get Policy Term",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "GET",
+      "path": "/drafts/{draftId}/evidence",
+      "operationId": "listDraftEvidence",
+      "summary": "list Draft Evidence",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "POST",
+      "path": "/drafts/{draftId}/evidence",
+      "operationId": "attachDraftEvidence",
+      "summary": "attach Draft Evidence",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "POST",
+      "path": "/drafts/{draftId}/evidence/{evidenceId}/withdraw",
+      "operationId": "withdrawDraftEvidence",
+      "summary": "Withdraw evidence association, retaining the document and audit history; verify target ownership and invalidate dependent validation",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "GET",
+      "path": "/policies/{policyId}/terms/{termId}",
+      "operationId": "getIssuedPolicyTerm",
+      "summary": "get Issued Policy Term",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "GET",
+      "path": "/policies/{policyId}/terms/{termId}/versions/{versionId}",
+      "operationId": "getIssuedPolicyVersion",
+      "summary": "get Issued Policy Version",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "GET",
+      "path": "/policies/{policyId}/terms/{termId}/transactions/{transactionId}",
+      "operationId": "getIssuedPolicyTransaction",
+      "summary": "get Issued Policy Transaction",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "GET",
+      "path": "/policies/{policyId}/terms/{termId}/obligations/{obligationId}",
+      "operationId": "getIssuedPolicyObligation",
+      "summary": "get Issued Policy Obligation",
+      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    }
+  ]
+}
