@@ -591,3 +591,44 @@ approval blockers only after those paths pass. Warranty acknowledgement still ne
 its guarded proof-purpose extension; signed statements depend on real later terms.
 Then finish bounded read models, DI/HTTP/contracts, UI/browser verification.07-06
 remains incomplete; Phase7 stays5/16, total54/65. Continue inline without agents.
+
+
+## Verified resolution command/live proof checkpoint: 81e50a7
+
+ServicingReferralService is now partial with ServicingConditionService implementing
+ResolveAsync and ConditionSatisfiedAsync. Resolution commands require current actor
+capability/grants before receipt replay, exact owned condition/evidence, current
+lease and draft/condition versions, active latest decision, matching purpose/target/
+fingerprint and current reviewed nonwithdrawn proof. Conditional approvals require
+one effective grant covering all cumulative annual risks and active dated conditions;
+query proof resolution grants no risk approval. Trading-history review permission
+is independently required. Writes append immutable resolution history and a new
+draft ETag; retries reuse receipts and revoked grants cannot replay.
+
+Live satisfaction checks the latest resolution outcome against the current condition,
+current unexpired rating and requirement fingerprint, exact latest evidence review,
+accepted file/review and withdrawal. A later rejected resolution or withdrawn proof
+removes satisfaction without changing history. Risk-change, unavailable warranty and
+signed-statement purposes cannot be satisfied through this command. No schema change,
+DI/HTTP/UI exposure or business UAT is claimed for this slice.
+
+RED .local/phase7-06-resolution-service-red/sql/sql.trx has2 expected stub failures.
+Fresh .local/phase7-06-resolution-service-reviewed/{unit,sql} passes37 pure/shared
+unit tests plus2 SQL workflows, gate39/no skips at cutoff2026-09-17T23:32:00Z. Both
+products execute condition request, upload/attach/review, initially false satisfaction,
+role/stale-condition/foreign-evidence denial, resolution and exact retry, latest
+satisfied/rejected/satisfied history, withdrawal-driven loss of satisfaction, denied
+new resolution on withdrawn proof and revoked-grant replay. Three resolution rows
+remain immutable. Issued snapshots are unchanged. Debug build/diff checks pass;
+shared demo/previews and frontend-code untouched.
+
+Next: integrate live satisfaction into a bounded referral/readiness read model and
+retain proof dependencies when deriving conditional approval readiness. Do NOT just
+allow plain approve to drop old conditions: the new approve decision has ConditionsJson
+empty and would hide the old requirement; withdrawal must still invalidate readiness.
+The current plain-approve active-condition guard remains deliberately closed pending
+that assurance design/integration. UW-22 proof eligibility also still needs its live
+check. Add guarded warranty acknowledgement requirements, then strict DI/HTTP/contracts,
+UI and persisted browser acceptance. Resolution helpers already support documentary
+proof; consume them rather than adding duplicate state pointers.07-06 remains
+incomplete, Phase7 stays5/16, total54/65. Continue inline without agents.
