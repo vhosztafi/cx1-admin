@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-04 verified and summarized; next07-05 persisted rating
-last_updated: "2026-09-17T15:36:30.467684+00:00"
-last_activity: "2026-09-17 —07-04 complete; begin07-05 persisted rating cycles."
+stopped_at: Plan07-05 pricing and cycle storage verified; worker/API/UI remain
+last_updated: "2026-09-17T15:55:04.912814+00:00"
+last_activity: "2026-09-17 —07-05 pricing393d4c2 and storagea0f3f31;713 unit and5 SQL cases pass."
 progress:
   total_phases: 13
   completed_phases: 6
@@ -21,14 +21,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute Phase7;07-01..04 verified;07-05 persisted rating cycles next.
+**Current focus:** Execute Phase7;07-01..04 complete;07-05 pricing and cycle storage verified, rating worker/API/UI next.
 
 ## Current Position
 
 Phase: 7 of 13 (Policy lifecycle and history)
-Plan: 4 of16 complete;07-05 next
-Status: Executing Phase7; typed servicing editors verified; rating implementation next
-Last activity: 2026-09-17 —07-04 completed in0d38d91, summary7036e8e; measured evidence in07-04-SUMMARY.md.
+Plan: 4 of16 complete;07-05 in progress
+Status: Executing Phase7;07-05 calculator and cycle provenance verified; no rating endpoint enabled yet
+Last activity: 2026-09-17 —07-05 checkpoints393d4c2/a0f3f31;713 unit and5 real SQL cases pass. Resume07-05-PROGRESS.md.
 
 Progress: Phases1–6 complete;6/13 phases,53 completed implementation plans.
 
@@ -54,9 +54,9 @@ Progress: Phases1–6 complete;6/13 phases,53 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-17T15:36:30.467684+00:00
-Stopped at:07-04 completed;07-05 rating next
-Resume file: .planning/phases/07-policy-lifecycle-and-history/07-05-PLAN.md
+Last session: 2026-09-17T15:55:04.912814+00:00
+Stopped at:07-05 pricing and cycle storage verified; implement result storage and rating worker/API/UI
+Resume file: .planning/phases/07-policy-lifecycle-and-history/07-05-PROGRESS.md
 
 ## Autonomous continuation
 

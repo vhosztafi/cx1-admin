@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1–6 complete;53 implementation plans complete. Phase7 has4/16 plans verified; typed servicing editors complete. Next:07-05 persisted rating cycles and cumulative-slice pricing.
+**Status:** Autonomous progression authorised. Phases1–6 complete;53 implementation plans complete. Phase7 has4/16 plans verified.07-05 pricing and cycle storage pass713 unit/5 real SQL cases; rating result/worker/API/UI remain.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
