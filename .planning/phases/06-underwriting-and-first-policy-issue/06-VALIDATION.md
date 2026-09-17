@@ -147,3 +147,11 @@ binding, owner/uniqueness/immutability, retained upgrade, exact posting/sealing 
 document requests. Additive migration20260917030154 and repeat initialization
 preserved31count/hash sets and credentials. See06-10-SUMMARY. Issue endpoints and
 UI remain06-11..12; compound requirement completion remains06-14.
+
+## 06-11 runtime evidence
+
+Implementation4d55d06:834backend (642unit/192integration),165realSQL,zero skips.
+Full integration25m38s; exact834/165 gate passed. Sixteen new SQL/API cases cover
+atomic issue/races/rollback/current authority before replay/exact accepted proof/
+protected reads.319contracts;OpenAPI359operations valid with12warnings. Repeated
+seed preserved31hash sets and credentials. See06-11-SUMMARY.

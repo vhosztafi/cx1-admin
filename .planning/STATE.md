@@ -9,7 +9,7 @@ progress:
   total_phases: 13
   completed_phases: 5
   total_plans: 49
-  completed_plans: 45
+  completed_plans: 46
   percent: 38
 ---
 
@@ -20,16 +20,16 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Phase6 execution; Policy storage and balanced posting verified; atomic issue and protected policy reads in progress.
+**Current focus:** Phase6 execution; Atomic issue and protected policy reads verified; issue UI acceptance in progress.
 
 ## Current Position
 
 Phase: 6 of 13 (Underwriting and first policy issue)
-Plan:06-11 of14 — Atomic policy issue and protected reads
-Status: Executing — autonomous; atomic issue, strict APIs and immutable policy readback
-Last activity: 2026-09-17 — 06-10 verified inaf10de7:811backend/149realSQL, no skips; demo migration/repeat preserved31hash sets.
+Plan:06-12 of14 — Issue confirmation and policy record UI
+Status: Executing — autonomous; both-product issue UI and browser evidence
+Last activity: 2026-09-17 — 06-11 verified in4d55d06:834backend/165realSQL, no skips; repeated seed preserved31hash sets.
 
-Progress: Phases1–5 complete;5/13 phases,45 completed implementation plans.
+Progress: Phases1–5 complete;5/13 phases,46 completed implementation plans.
 
 ## Accumulated Context
 
@@ -54,8 +54,8 @@ Progress: Phases1–5 complete;5/13 phases,45 completed implementation plans.
 ## Session Continuity
 
 Last session: 2026-09-17T03:40:28.047535+00:00
-Stopped at:06-10 complete; implementationaf10de7; executing06-11
-Resume file: .planning/phases/06-underwriting-and-first-policy-issue/06-11-PLAN.md
+Stopped at:06-11 complete; implementation4d55d06; executing06-12
+Resume file: .planning/phases/06-underwriting-and-first-policy-issue/06-12-PLAN.md
 
 ## Autonomous continuation
 

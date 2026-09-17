@@ -6018,5 +6018,11 @@
     "commit": "af10de7",
     "summary": "06-10-SUMMARY.md",
     "status": "Storage verified:811backend/149realSQL/zero skips; additive migration and repeat preserved31 count/hash sets. Issue API/UI and final source acceptance remain06-11..14."
+  },
+  "policyIssueEvidence": {
+    "plan": "06-11",
+    "commit": "4d55d06",
+    "summary": "06-11-SUMMARY.md",
+    "status": "Atomic issue/protected immutable reads verified:834backend/165realSQL/zero skips;319contracts;31 seed-preservation hash sets. UI12/discovery13/final source14 remain separately owned."
   }
 }
