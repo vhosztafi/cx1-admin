@@ -269,6 +269,8 @@ h1, h2, p { margin: 0; }
 .quote-product-selected { border-color:#3f5ef5; background:#f0f3ff; }
 .quote-product-unavailable { background:#f7f8fa; color:#677184; }
 .quote-rail-body { padding:18px; line-height:1.6; overflow-wrap:anywhere; }
+.servicing-controls { display:flex; flex-direction:column; gap:10px; }
+.servicing-controls .quote-form-label textarea { margin-bottom:0; }
 .quote-rail-body h2 { margin:12px 0; font-size:20px; line-height:1.3; }
 .quote-rail-body p { margin:0 0 16px; }
 .quote-rail-body dl { display:grid; gap:14px; margin:22px 0; }

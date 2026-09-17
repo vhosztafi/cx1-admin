@@ -1,9 +1,9 @@
 # Servicing contracts — Phase 7 prerequisite
 
-Plan 07-01 supplies strict design contracts and tested pure rules. It does not
-implement servicing persistence, public endpoint handlers or an editing screen.
-The API catalogue marks added/refined commands `phase-7-pending`. Runtime commands
-remain unavailable until their owning plans implement and verify them.
+Plan07-01 supplies strict contracts and pure rules. Plan07-03 adds persistent
+drafts, revision history, editing leases and their scoped HTTP routes. Those
+operations are marked `phase-7-03-implemented`; later rating, evidence, terms and
+issue operations remain `phase-7-pending`.
 
 ## Formats and capture
 
@@ -99,3 +99,40 @@ ownership, not working UI behavior. Later owners must produce persisted browser
 readback. Unit tests cover pure money/date/experience rules; AJV and OpenAPI tests
 cover malformed input, strict unions, provenance and command safeguards. No SQL,
 browser, human UAT, hosted CI or delivery/payment outcome is claimed by this plan.
+
+## Persistent drafts and leases (07-03)
+
+ServicingDraft retains immutable policy/term/base-version ownership through a
+compound foreign key. ServicingRevision is append-only with same-draft current
+revision, unique sequence, exact UTF-8 SHA256 and base-version validation. Only
+one live adjustment and one live renewal may exist per base term; cancellation
+drafts may coexist. Abandonment is final and preserves saved revisions.
+
+Internal servicing, underwriter and senior-underwriter roles may write drafts.
+Only underwriter/senior-underwriter may take over with a10..2000-character reason.
+System administration and agency identity do not bypass these capabilities.
+Current identity/roles and same-policy ownership are locked before receipt lookup.
+Writes lock policy, base term, draft and lease in that order after the existing
+agency/identity/source-quote/relationship scope; they never reopen the source quote.
+
+Five-minute leases use a fresh GUID fencing token and increasing generation on
+every acquisition/takeover. Both current authenticated holder and current token
+are required; a token never authenticates its bearer. Renewal/release cannot
+affect a replacement lease. Every lease change advances the draft ETag.
+
+GET /terms/{termId}/drafts supplies the term ETag for creation. Draft reads and
+all draft/lease commands return the complete saved draft plus its strong ETag,
+including nullable lease state, so callers do not guess a parent version after
+changing a lease. Creation Location points to /api/v1/drafts/{draftId}. All reads
+and writes are no-store. Proposal writes are closed, duplicate-safe and bounded
+at2MiB/100 changes/1000 aggregate array items. The shared HTTP reader retains its
+existing1MiB default for quotes. Reason/date capture remains distinct from
+readiness, rating or issue.
+
+Stable targets use issued driver/vehicle/premises IDs, cover section IDs, policy
+ID for singleton business/whole cover, and client ID for the policyholder.
+Foreign update/remove targets and duplicate addition identities fail. Full
+nested dependency validation, product-specific editors, common/cover date
+assessment and comparison belong to07-04. No servicing policy transaction,
+payment, document delivery, renewal invitation or cancellation issue is claimed
+by the draft/lease implementation.

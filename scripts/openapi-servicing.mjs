@@ -26,11 +26,21 @@ export function addServicingContracts({schemas,ref,operation,paths}) {
   }
  };
  const root='/drafts/{draftId}';
+ route('get','/terms/{termId}/drafts','listPolicyDrafts','policy-read',undefined,'ServicingDraftList');
+ route('get',root,'getPolicyDraft','policy-read',undefined,'ServicingDraft');
  route('post','/terms/{termId}/drafts','createPolicyDraft','policy-draft-write','ServicingDraftCreate','ServicingDraft',{lease:false,status:201});
- route('post',`${root}/lease`,'acquireDraftLease','policy-draft-write','ServicingLeaseAcquire','ServicingLease',{lease:false});
- route('put',`${root}/lease`,'renewDraftLease','lease-owner',undefined,'ServicingLease');
- route('delete',`${root}/lease`,'releaseDraftLease','lease-owner');
+ route('post',`${root}/lease`,'acquireDraftLease','policy-draft-write','ServicingLeaseAcquire','ServicingDraft',{lease:false});
+ route('put',`${root}/lease`,'renewDraftLease','policy-draft-write',undefined,'ServicingDraft');
+ route('delete',`${root}/lease`,'releaseDraftLease','policy-draft-write',undefined,'ServicingDraft');
  route('put',`${root}/proposal`,'savePolicyDraft','policy-draft-write','ServicingProposal','ServicingDraft');
+ route('post',`${root}/abandon`,'abandonPolicyDraft','policy-draft-write','ServicingReason','ServicingDraft');
+ for(const [path,method] of [['/terms/{termId}/drafts','get'],['/terms/{termId}/drafts','post'],[root,'get'],[`${root}/lease`,'post'],[`${root}/lease`,'put'],[`${root}/lease`,'delete'],[`${root}/proposal`,'put'],[`${root}/abandon`,'post']]) {
+  const op=paths[path][method];
+  op.responses=structuredClone(op.responses);
+  op['x-runtime-status']='phase-7-03-implemented';
+  op.description='Persistent servicing draft or editing lease. Current internal identity, capability and policy ownership are checked before receipt replay. Mutations require the current strong ETag; editing additionally requires a live holder-bound X-Edit-Lease fence. Takeover requires policy-draft-takeover and a reason. Renew/release take no body. Lease changes return the draft and its new ETag. Responses are no-store. Capture does not grant authority to rate or issue.';
+  for(const response of Object.values(op.responses)) response.headers={...response.headers,ETag:{description:'Strong term version for listing/creation; strong draft version for draft commands.',schema:{type:'string'}}};
+ }
  route('post',`${root}/acceptances`,'recordDraftAcceptance','policy-acceptance','ServicingAcceptance','CommandResult',{status:201});
  route('post',`${root}/issue`,'issuePolicyDraft','policy-issue-within-authority','ServicingIssueWrite','ServicingIssueResult',{status:201});
  route('get',`${root}/cancellation-preview`,'getCancellationPreview','cancellation-review',undefined,'ServicingCancellationPreview');

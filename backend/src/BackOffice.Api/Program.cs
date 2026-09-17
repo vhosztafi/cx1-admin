@@ -45,6 +45,7 @@ CapacityDispatcher.Register(builder);
 QuoteDeliveryDispatcher.Register(builder);
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.QuoteIssueService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.PolicyReadService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Policies.ServicingDraftService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.PolicyDiscoveryService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Underwriting.UnderwritingEvidenceService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Underwriting.QuoteReferralService>();
@@ -115,6 +116,7 @@ app.MapCapacity();
 app.MapQuoteTerms();
 app.MapQuoteIssue();
 app.MapPolicies();
+app.MapServicingDrafts();
 // Domain endpoints are added only alongside their authentication and persistence.
 app.Run();
 

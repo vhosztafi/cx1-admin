@@ -59,6 +59,9 @@ export function servicingDefinitions(quote) {
  ]};
  defs.ServicingDraftCreate=o({kind,baseVersionId:id,commonEffectiveIntent:r('ServicingEffectiveIntent'),reason});
  defs.ServicingDraft=o({id,policyId:id,baseTermId:id,baseVersionId:id,revisionId:id,kind,state:e('draft','rating','referral','quoted','accepted','issued','abandoned'),proposal:r('ServicingProposal'),createdAt:instant,updatedAt:instant});
+ defs.ServicingDraft.properties.lease={anyOf:[o({...defs.ServicingLease.properties,active:{type:'boolean'}}),{type:'null'}]};
+ defs.ServicingDraft.required.push('lease');
+ defs.ServicingDraftList=o({termId:id,policyId:id,items:many(o({id,kind,state:e('draft','abandoned'),currentRevisionId:id,baseVersionId:id,updatedAt:instant}),10000)});
  return defs;
 }
 

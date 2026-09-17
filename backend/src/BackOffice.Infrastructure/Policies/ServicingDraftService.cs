@@ -1,0 +1,208 @@
+using System.Text.Json;
+using BackOffice.Application;
+using BackOffice.Application.Policies;
+using BackOffice.Application.Quotes;
+using BackOffice.Infrastructure.Persistence;
+using BackOffice.Infrastructure.Platform;
+using BackOffice.Infrastructure.Quotes;
+using Microsoft.EntityFrameworkCore;
+
+namespace BackOffice.Infrastructure.Policies;
+
+public sealed record ServicingDraftRead(string Body, string Etag);
+public sealed record ServicingDraftCreate(string Kind, Guid BaseVersionId, JsonElement CommonEffectiveIntent, string Reason);
+
+public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext> factory, TimeProvider time)
+{
+    private readonly SqlCommandBoundary commands = new(factory, time);
+    private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
+    private static string Etag(byte[] value) => "\"" + Convert.ToBase64String(value) + "\"";
+    private static void Current(byte[] actual, byte[] expected)
+    { if (expected.Length != 8 || !actual.SequenceEqual(expected)) throw new QuoteOperationException(412, "servicing-version-conflict"); }
+    private static void Active(ServicingDraft draft)
+    { if (draft.State != "draft") throw new QuoteOperationException(409, "servicing-draft-closed"); }
+
+    public async Task<ServicingDraftRead> ListAsync(ActorContext actor, Guid termId, CancellationToken token = default)
+    {
+        await using var db = await factory.CreateDbContextAsync(token); await using var tx = await db.Database.BeginTransactionAsync(token);
+        var term = await HoldTerm(db, actor, termId, false, token);
+        var drafts = await db.Set<ServicingDraft>().AsNoTracking().Where(x => x.BaseTermId == term.Id).OrderByDescending(x => x.CreatedAt)
+            .Select(x => new { x.Id, x.Kind, x.State, x.CurrentRevisionId, x.BaseVersionId, x.UpdatedAt }).ToArrayAsync(token);
+        var result = new ServicingDraftRead(JsonSerializer.Serialize(new { termId, policyId = term.PolicyId, items = drafts }, Json), Etag(term.RowVersion));
+        await tx.CommitAsync(token); return result;
+    }
+
+    public async Task<ServicingDraftRead> ReadAsync(ActorContext actor, Guid draftId, CancellationToken token = default)
+    {
+        await using var db = await factory.CreateDbContextAsync(token); await using var tx = await db.Database.BeginTransactionAsync(token);
+        var draft = await HoldDraft(db, actor, draftId, false, token);
+        var result = await View(db, draft, token); await tx.CommitAsync(token); return result;
+    }
+
+    public Task<CommandOutcome> CreateAsync(ActorContext actor, Guid termId, byte[] version, ServicingDraftCreate input, string key, Guid correlation, CancellationToken token = default)
+    {
+        if (input.Kind is not ("adjustment" or "renewal" or "cancellation")) throw new QuoteInputException("servicing-invalid-kind");
+        var proposal = ServicingProposalInput.Parse(JsonSerializer.Serialize(new
+        { schemaVersion = "1.0", baseVersionId = input.BaseVersionId, reason = input.Reason, requestedBy = new { kind = "internal" }, commonEffectiveIntent = input.CommonEffectiveIntent, changes = Array.Empty<object>() }, Json), input.BaseVersionId);
+        PolicyTerm? term = null;
+        return commands.ExecuteAuthorizedAsync(new(actor.UserId, $"/api/v1/terms/{termId:D}/drafts", key, correlation),
+            new { termId, version, input.Kind, proposal.Json }, "servicing.draft-created",
+            async (db, ct) => { term = await HoldTerm(db, actor, termId, true, ct); },
+            async (db, ct) =>
+            {
+                Current(term!.RowVersion, version);
+                if (!await db.Set<PolicyVersion>().AnyAsync(x => x.Id == input.BaseVersionId && x.TermId == termId && x.PolicyId == term.PolicyId, ct))
+                    throw new QuoteOperationException(422, "servicing-base-mismatch");
+                if (input.Kind != "cancellation" && await db.Set<ServicingDraft>().AnyAsync(x => x.BaseTermId == termId && x.Kind == input.Kind && x.State == "draft", ct))
+                    throw new QuoteOperationException(409, "servicing-active-draft-exists");
+                var draft = new ServicingDraft { PolicyId = term.PolicyId, BaseTermId = termId, BaseVersionId = input.BaseVersionId, Kind = input.Kind,
+                    CreatedBy = actor.UserId, CreatedAt = time.GetUtcNow(), UpdatedAt = time.GetUtcNow() };
+                db.Add(draft); await db.SaveChangesAsync(ct);
+                await Append(db, draft, proposal, actor.UserId, ct);
+                term.UpdatedAt = time.GetUtcNow(); db.Entry(term).Property(x => x.UpdatedAt).IsModified = true;
+                await db.SaveChangesAsync(ct); return await Receipt(db, draft, 201, ct);
+            }, token);
+    }
+
+    public Task<CommandOutcome> SaveAsync(ActorContext actor, Guid draftId, byte[] version, Guid leaseToken, string json, string key, Guid correlation, CancellationToken token = default)
+        => Mutate(actor, draftId, version, new { leaseToken, json }, "save", key, correlation, async (db, draft, ct) =>
+        {
+            await DemandLease(db, draft.Id, actor.UserId, leaseToken, ct);
+            var proposal = ServicingProposalInput.Parse(json, draft.BaseVersionId);
+            await ValidateTargets(db, draft, proposal, ct);
+            await Append(db, draft, proposal, actor.UserId, ct);
+        }, token);
+
+    public Task<CommandOutcome> AbandonAsync(ActorContext actor, Guid draftId, byte[] version, Guid leaseToken, string reason, string key, Guid correlation, CancellationToken token = default)
+    {
+        reason = Reason(reason);
+        return Mutate(actor, draftId, version, new { leaseToken, reason }, "abandon", key, correlation, async (db, draft, ct) =>
+        {
+            var lease = await DemandLease(db, draft.Id, actor.UserId, leaseToken, ct);
+            draft.State = "abandoned"; lease.Active = false; lease.ExpiresAt = time.GetUtcNow();
+            Audit(db, draft.Id, actor.UserId, "servicing.abandon-reason", reason, new { draft.State });
+        }, token);
+    }
+
+    public Task<CommandOutcome> LeaseAsync(ActorContext actor, Guid draftId, byte[] version, string action, Guid? leaseToken, string? reason, string key, Guid correlation, CancellationToken token = default)
+    {
+        if (action is not ("acquire" or "takeover" or "renew" or "release")) throw new QuoteInputException("servicing-invalid-lease-action");
+        if (action == "takeover") reason = Reason(reason);
+        return Mutate(actor, draftId, version, new { action, leaseToken, reason }, "lease/" + action, key, correlation, async (db, draft, ct) =>
+        {
+            var lease = await Lease(db, draft.Id, ct); var before = lease is null ? null : LeaseState(lease);
+            ServicingLeaseState after;
+            try
+            {
+                after = action switch
+                {
+                    "acquire" or "takeover" => ServicingLeaseRules.Acquire(before, actor.UserId, time.GetUtcNow(), action == "takeover", actor.HasCapability("policy-draft-takeover"), reason),
+                    "renew" when before is not null => ServicingLeaseRules.Renew(before, actor.UserId, leaseToken ?? Guid.Empty, time.GetUtcNow()),
+                    "release" when before is not null => ServicingLeaseRules.Release(before, actor.UserId, leaseToken ?? Guid.Empty, time.GetUtcNow()),
+                    _ => throw new ArgumentException("No current lease.")
+                };
+            }
+            catch (ArgumentException) { throw new QuoteOperationException(409, "servicing-lease-conflict"); }
+            if (lease is null) { lease = new() { DraftId = draft.Id, CreatedBy = actor.UserId, CreatedAt = time.GetUtcNow() }; db.Add(lease); }
+            lease.HolderId = after.HolderId; lease.Token = after.Token; lease.Generation = after.Generation; lease.ExpiresAt = after.ExpiresAt; lease.Active = after.Active;
+            Audit(db, draft.Id, actor.UserId, "servicing.lease-ownership", reason, new { beforeHolderId = before?.HolderId, after.HolderId, after.Generation, after.ExpiresAt, after.Active });
+        }, token, action == "takeover");
+    }
+
+    private Task<CommandOutcome> Mutate<T>(ActorContext actor, Guid id, byte[] version, T input, string action, string key, Guid correlation,
+        Func<BackOfficeDbContext, ServicingDraft, CancellationToken, Task> handler, CancellationToken token, bool takeover = false)
+    {
+        ServicingDraft? draft = null;
+        return commands.ExecuteAuthorizedAsync(new(actor.UserId, $"/api/v1/drafts/{id:D}/{action}", key, correlation), new { id, version, input }, "servicing." + action.Replace('/', '-'),
+            async (db, ct) =>
+            {
+                draft = await HoldDraft(db, actor, id, true, ct);
+                if (takeover && !actor.HasCapability("policy-draft-takeover")) throw new QuoteOperationException(403, "servicing-takeover-denied");
+            }, async (db, ct) =>
+            {
+                Active(draft!); Current(draft!.RowVersion, version); await handler(db, draft, ct);
+                draft.UpdatedAt = time.GetUtcNow(); db.Entry(draft).Property(x => x.UpdatedAt).IsModified = true;
+                await db.SaveChangesAsync(ct); return await Receipt(db, draft, 200, ct);
+            }, token);
+    }
+
+    private static async Task<PolicyTerm> HoldTerm(BackOfficeDbContext db, ActorContext actor, Guid id, bool write, CancellationToken ct)
+    {
+        var owner = await db.Set<PolicyTerm>().AsNoTracking().Where(x => x.Id == id).Select(x => (Guid?)x.PolicyId).SingleOrDefaultAsync(ct)
+            ?? throw new QuoteOperationException(404, "policy-term-not-found");
+        await PolicyScope.Hold(db, actor, owner, ct, write);
+        return write ? await db.Set<PolicyTerm>().FromSqlInterpolated($"SELECT * FROM PolicyTerm WITH(UPDLOCK,HOLDLOCK) WHERE Id={id}").SingleAsync(ct)
+            : await db.Set<PolicyTerm>().FromSqlInterpolated($"SELECT * FROM PolicyTerm WITH(HOLDLOCK) WHERE Id={id}").SingleAsync(ct);
+    }
+
+    private static async Task<ServicingDraft> HoldDraft(BackOfficeDbContext db, ActorContext actor, Guid id, bool write, CancellationToken ct)
+    {
+        var term = await db.Set<ServicingDraft>().AsNoTracking().Where(x => x.Id == id).Select(x => (Guid?)x.BaseTermId).SingleOrDefaultAsync(ct)
+            ?? throw new QuoteOperationException(404, "servicing-draft-not-found");
+        await HoldTerm(db, actor, term, write, ct);
+        return write ? await db.Set<ServicingDraft>().FromSqlInterpolated($"SELECT * FROM ServicingDraft WITH(UPDLOCK,HOLDLOCK) WHERE Id={id}").SingleAsync(ct)
+            : await db.Set<ServicingDraft>().FromSqlInterpolated($"SELECT * FROM ServicingDraft WITH(HOLDLOCK) WHERE Id={id}").SingleAsync(ct);
+    }
+
+    private static Task<ServicingLease?> Lease(BackOfficeDbContext db, Guid id, CancellationToken ct)
+        => db.Set<ServicingLease>().FromSqlInterpolated($"SELECT * FROM ServicingLease WITH(UPDLOCK,HOLDLOCK) WHERE DraftId={id}").SingleOrDefaultAsync(ct);
+    private static ServicingLeaseState LeaseState(ServicingLease lease) => new(lease.HolderId, lease.Token, lease.Generation, lease.ExpiresAt, lease.Active);
+    private async Task<ServicingLease> DemandLease(BackOfficeDbContext db, Guid id, Guid actor, Guid fence, CancellationToken ct)
+    {
+        var lease = await Lease(db, id, ct) ?? throw new QuoteOperationException(409, "servicing-lease-required");
+        try { ServicingLeaseRules.Demand(LeaseState(lease), actor, fence, time.GetUtcNow()); }
+        catch (ArgumentException) { throw new QuoteOperationException(409, "servicing-lease-conflict"); }
+        return lease;
+    }
+
+    private async Task Append(BackOfficeDbContext db, ServicingDraft draft, CanonicalServicingProposal proposal, Guid actor, CancellationToken ct)
+    {
+        var number = (await db.Set<ServicingRevision>().Where(x => x.DraftId == draft.Id).MaxAsync(x => (int?)x.Sequence, ct) ?? 0) + 1;
+        var revision = new ServicingRevision { DraftId = draft.Id, Sequence = number, ProposalJson = proposal.Json, ContentHash = proposal.ContentHash, CreatedBy = actor, CreatedAt = time.GetUtcNow() };
+        db.Add(revision); await db.SaveChangesAsync(ct); draft.CurrentRevisionId = revision.Id;
+    }
+
+    private static async Task ValidateTargets(BackOfficeDbContext db, ServicingDraft draft, CanonicalServicingProposal proposal, CancellationToken ct)
+    {
+        var snapshot = await db.Set<PolicyVersion>().Where(x => x.Id == draft.BaseVersionId).Select(x => x.SnapshotJson).SingleAsync(ct);
+        using var issued = JsonDocument.Parse(snapshot); using var proposed = JsonDocument.Parse(proposal.Json);
+        var targets = new Dictionary<string, HashSet<Guid>>(StringComparer.Ordinal);
+        foreach (var (kind, collection) in new[] { ("driver", "drivers"), ("vehicle", "vehicles"), ("premises", "premises") })
+            targets[kind] = issued.RootElement.GetProperty("risk").TryGetProperty(collection, out var rows)
+                ? rows.EnumerateArray().Select(x => x.GetProperty("id").GetGuid()).ToHashSet() : [];
+        targets["business"] = [draft.PolicyId]; targets["policyholder"] = [issued.RootElement.GetProperty("insured").GetProperty("clientId").GetGuid()];
+        targets["cover"] = [draft.PolicyId];
+        if (issued.RootElement.TryGetProperty("cover", out var cover) && cover.TryGetProperty("requestedSections", out var sections))
+            foreach (var section in sections.EnumerateArray()) targets["cover"].Add(section.GetProperty("id").GetGuid());
+        var all = targets.Values.SelectMany(x => x).ToHashSet();
+        foreach (var change in proposed.RootElement.GetProperty("changes").EnumerateArray())
+        {
+            var kind = change.GetProperty("kind").GetString()!; var id = change.GetProperty("riskItemId").GetGuid(); var operation = change.GetProperty("operation").GetString();
+            if (operation == "add")
+            {
+                if (kind is "business" or "policyholder" || !all.Add(id)) throw new QuoteInputException("servicing-target-conflict");
+                targets[kind].Add(id);
+            }
+            else if (!targets[kind].Contains(id)) throw new QuoteInputException("servicing-foreign-target");
+        }
+    }
+
+    private async Task<CommandOutcome> Receipt(BackOfficeDbContext db, ServicingDraft draft, int status, CancellationToken ct)
+    { var view = await View(db, draft, ct); return new(draft.Id, status, view.Body, Etag: view.Etag); }
+
+    private static async Task<ServicingDraftRead> View(BackOfficeDbContext db, ServicingDraft draft, CancellationToken ct)
+    {
+        var revision = await db.Set<ServicingRevision>().AsNoTracking().SingleAsync(x => x.Id == draft.CurrentRevisionId, ct);
+        var lease = await db.Set<ServicingLease>().AsNoTracking().SingleOrDefaultAsync(x => x.DraftId == draft.Id, ct);
+        // The fence is never sufficient authority: every command binds it to the
+        // authenticated current holder and freshly checked policy permission.
+        return new(JsonSerializer.Serialize(new { draft.Id, draft.PolicyId, draft.BaseTermId, draft.BaseVersionId, revisionId = revision.Id, draft.Kind, draft.State,
+            proposal = JsonSerializer.Deserialize<JsonElement>(revision.ProposalJson), draft.CreatedAt, draft.UpdatedAt,
+            lease = lease is null ? null : new { lease.Id, lease.HolderId, lease.Generation, leaseToken = lease.Token, lease.ExpiresAt, lease.Active } }, Json), Etag(draft.RowVersion));
+    }
+
+    private static string Reason(string? value) => value?.Trim() is { Length: >= 10 and <= 2000 } reason ? reason : throw new QuoteInputException("servicing-reason-required");
+    private void Audit(BackOfficeDbContext db, Guid id, Guid actor, string kind, string? reason, object after)
+        => db.Add(new AuditEvent { ActorId = actor, CreatedBy = actor, SubjectRecordId = id, EventType = kind, OccurredAt = time.GetUtcNow(),
+            After = JsonSerializer.Serialize(new { reason, detail = after }, Json) });
+}

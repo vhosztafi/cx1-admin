@@ -26,12 +26,12 @@ test('field audit remains tied to exact prototype source bytes',async()=>{
  for(const entry of fields.entries)assert.ok(lines[entry.line-1]?.includes(entry.source.trim()),entry.id);
 });
 test('servicing writes preserve current scope, no-store, CSRF, conditional writes and operation keys',()=>{
- const operations=Object.values(api.paths).flatMap(x=>Object.values(x)).filter(x=>x['x-runtime-status']==='phase-7-pending');
+ const operations=Object.values(api.paths).flatMap(x=>Object.values(x)).filter(x=>['phase-7-pending','phase-7-03-implemented'].includes(x['x-runtime-status']));
  assert.ok(operations.length>=20);
  for(const operation of operations) {
-  assert.match(operation.description,/before replay/);
+  assert.match(operation.description,/before (?:receipt )?replay/);
   for(const response of Object.values(operation.responses))assert.equal(response.headers['Cache-Control'].schema.const,'no-store');
-  if(operation.operationId==='getCancellationPreview')continue;
+  if(['getCancellationPreview','getPolicyDraft','listPolicyDrafts'].includes(operation.operationId))continue;
   for(const name of ['If-Match','Idempotency-Key'])assert.ok(operation.parameters.some(p=>p.name===name&&p.required),`${operation.operationId} ${name}`);
   assert.ok(operation.security.some(x=>'Csrf' in x));
  }

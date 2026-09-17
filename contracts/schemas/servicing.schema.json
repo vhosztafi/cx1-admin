@@ -4726,6 +4726,53 @@
         "updatedAt": {
           "type": "string",
           "format": "date-time"
+        },
+        "lease": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "holderId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "generation": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 2147483647
+                },
+                "leaseToken": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256,
+                  "pattern": "\\S"
+                },
+                "expiresAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "active": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "id",
+                "holderId",
+                "generation",
+                "leaseToken",
+                "expiresAt",
+                "active"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -4738,7 +4785,78 @@
         "state",
         "proposal",
         "createdAt",
-        "updatedAt"
+        "updatedAt",
+        "lease"
+      ]
+    },
+    "ServicingDraftList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "termId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "policyId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "adjustment",
+                  "renewal",
+                  "cancellation"
+                ]
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "draft",
+                  "abandoned"
+                ]
+              },
+              "currentRevisionId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "baseVersionId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "state",
+              "currentRevisionId",
+              "baseVersionId",
+              "updatedAt"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 10000,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "termId",
+        "policyId",
+        "items"
       ]
     }
   }

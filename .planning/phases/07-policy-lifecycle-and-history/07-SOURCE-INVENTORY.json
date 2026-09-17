@@ -1,5 +1,5 @@
 {
-  "status": "planning-mapped-runtime-unverified",
+  "status": "partially-runtime-verified",
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
   "scope": "All 137 original controls assigned to the approved 16-plan decomposition or explicit later-phase owners; 393 source occurrences and 10 conditional branches are mapped in 07-SOURCE-FIELDS.json. Mapping is not runtime verification.",
   "controlCount": 137,
@@ -1199,9 +1199,14 @@
       "handlers": {
         "onClick": "() => { this.setState({lockHeld: false}); this.toast('You now hold the draft. Amy Jones has been notified and put into read-only.', '', null); }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-03"
+      "owner": "07-03",
+      "evidence": [
+        ".local/browser-evidence/servicing-draft/report.json",
+        ".local/phase7-03-verified-sql.log"
+      ],
+      "implementation": "Persistent draft workspace: save/resume, holder-bound takeover, release and explicit abandonment. Prior editor receives read-only ownership update while local edits remain visible; no external notification is sent."
     },
     {
       "id": "CTL-4215a62af861",
@@ -1217,9 +1222,14 @@
       "handlers": {
         "onAction": "() => { this.setState({lockHeld: false}); this.toast('You now hold the draft. Amy Jones has been notified and put into read-only.', '', null); }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-03"
+      "owner": "07-03",
+      "evidence": [
+        ".local/browser-evidence/servicing-draft/report.json",
+        ".local/phase7-03-verified-sql.log"
+      ],
+      "implementation": "Persistent draft workspace: save/resume, holder-bound takeover, release and explicit abandonment. Prior editor receives read-only ownership update while local edits remain visible; no external notification is sent."
     },
     {
       "id": "CTL-5024c53b5eaf",
@@ -1235,9 +1245,14 @@
       "handlers": {
         "onClick": "() => { this.setState({lockHeld: false}); this.toast('You now hold the draft. Amy Jones has been notified and put into read-only.', '', null); }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-03"
+      "owner": "07-03",
+      "evidence": [
+        ".local/browser-evidence/servicing-draft/report.json",
+        ".local/phase7-03-verified-sql.log"
+      ],
+      "implementation": "Persistent draft workspace: save/resume, holder-bound takeover, release and explicit abandonment. Prior editor receives read-only ownership update while local edits remain visible; no external notification is sent."
     },
     {
       "id": "CTL-630153edbb1f",
@@ -1272,9 +1287,14 @@
       "handlers": {
         "onClick": "() => this.toast('Draft MTA-007 saved. You can resume it from the policy.', '', null)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-03"
+      "owner": "07-03",
+      "evidence": [
+        ".local/browser-evidence/servicing-draft/report.json",
+        ".local/phase7-03-verified-sql.log"
+      ],
+      "implementation": "Persistent draft workspace: save/resume, holder-bound takeover, release and explicit abandonment. Prior editor receives read-only ownership update while local edits remain visible; no external notification is sent."
     },
     {
       "id": "CTL-bcb0e563f02d",
@@ -1308,9 +1328,14 @@
       "handlers": {
         "onAction": "() => { this.setState({lockHeld: true}); this.toast('Lock released — the draft is editable by the team again.', '', null); }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-03"
+      "owner": "07-03",
+      "evidence": [
+        ".local/browser-evidence/servicing-draft/report.json",
+        ".local/phase7-03-verified-sql.log"
+      ],
+      "implementation": "Persistent draft workspace: save/resume, holder-bound takeover, release and explicit abandonment. Prior editor receives read-only ownership update while local edits remain visible; no external notification is sent."
     },
     {
       "id": "CTL-a5cbae9b8992",
@@ -1511,9 +1536,14 @@
       "handlers": {
         "onClick": "() => this.toast('Draft MTA-007 saved. You can resume it from the policy.', '', null)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-03"
+      "owner": "07-03",
+      "evidence": [
+        ".local/browser-evidence/servicing-draft/report.json",
+        ".local/phase7-03-verified-sql.log"
+      ],
+      "implementation": "Persistent draft workspace: save/resume, holder-bound takeover, release and explicit abandonment. Prior editor receives read-only ownership update while local edits remain visible; no external notification is sent."
     },
     {
       "id": "CTL-909dc8df1733",
@@ -1565,9 +1595,14 @@
       "handlers": {
         "onClick": "() => this.toast('Draft would be abandoned after confirmation (mock).', '', null)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-03"
+      "owner": "07-03",
+      "evidence": [
+        ".local/browser-evidence/servicing-draft/report.json",
+        ".local/phase7-03-verified-sql.log"
+      ],
+      "implementation": "Persistent draft workspace: save/resume, holder-bound takeover, release and explicit abandonment. Prior editor receives read-only ownership update while local edits remain visible; no external notification is sent."
     },
     {
       "id": "CTL-17cfb5f13bd1",

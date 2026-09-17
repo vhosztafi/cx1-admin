@@ -79,18 +79,18 @@ public static class QuoteHttpInput
         throw new QuoteHttpException(400, "invalid-version");
     }
 
-    internal static async Task<JsonDocument> Read(HttpRequest request, CancellationToken token)
+    internal static async Task<JsonDocument> Read(HttpRequest request, CancellationToken token, int maximumBytes = QuoteCanonicalJson.MaximumBytes)
     {
         NoQuery(request);
         if (!request.HasJsonContentType()) throw new QuoteHttpException(415, "json-required");
-        if (request.ContentLength > QuoteCanonicalJson.MaximumBytes) throw new QuoteHttpException(413, "quote-request-too-large");
+        if (request.ContentLength > maximumBytes) throw new QuoteHttpException(413, "quote-request-too-large");
         using var body = new MemoryStream(); var buffer = new byte[8192];
         while (true)
         {
-            var count = await request.Body.ReadAsync(buffer.AsMemory(0, Math.Min(buffer.Length, QuoteCanonicalJson.MaximumBytes + 1 - (int)body.Length)), token);
+            var count = await request.Body.ReadAsync(buffer.AsMemory(0, Math.Min(buffer.Length, maximumBytes + 1 - (int)body.Length)), token);
             if (count == 0) break;
             body.Write(buffer, 0, count);
-            if (body.Length > QuoteCanonicalJson.MaximumBytes) throw new QuoteHttpException(413, "quote-request-too-large");
+            if (body.Length > maximumBytes) throw new QuoteHttpException(413, "quote-request-too-large");
         }
         JsonDocument? document = null;
         try
