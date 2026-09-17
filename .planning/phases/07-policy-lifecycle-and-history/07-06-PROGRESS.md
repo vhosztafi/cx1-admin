@@ -474,3 +474,50 @@ closed typed definitions and per-date authority. Implement current-grant checks
 before replay, selected atomic decisions, live resolution/proof checks and guarded
 warranty purposes before wiring APIs/UI. Keep07-06 incomplete; Phase7 stays5/16 and
 54/65 total plans. Continue inline without agents.
+
+
+## Verified initial referral command service checkpoint: b465dfc
+
+ServicingReferralService.DecideAsync executes bounded single/selected decisions
+through SqlCommandBoundary with current identity, owned rated context and effective
+actor grants checked before receipt replay. It holds all selected referrals, checks
+all rowversions and the editing lease before writes, persists decisions/conditions
+atomically and returns the new draft ETag. Exact retries reuse the receipt; revoked
+actors cannot replay. Approvals assess annual risk across all retained dated slices
+using one eligible grant and parsed applicable conditions. Above-binder temporary
+cover remains unapprovable even when later removed. Decline/reopen retain history.
+
+ServicingEvidenceProjection now exposes its existing verified cumulative proposal
+reconstruction as Slices. Conditions use closed parsing against server-derived
+target-presence dates; named-driver wording is parsed per date. JSON whitespace is
+normalized before both decision and child storage, preserving exact SQL provenance;
+semantic duplicate definitions are rejected. Up to100 active conditions are retained.
+Risk-change conditional outcomes remain outstanding and grant no issue eligibility.
+
+Intentional unfinished boundaries: this service is NOT wired to DI/HTTP/UI yet.
+Any active condition still blocks plain approve until real resolution commands and
+live proof validation are integrated. UW-22 plain approval remains blocked pending
+that trading-history proof integration. Signed-statement conditions reject until
+the later terms graph exists. Warranty conditions can be retained but their guarded
+acknowledgement requirement remains to implement. Query code exists but still needs
+its dedicated behavioral integration case before endpoint exposure. Add strict
+serialized ConditionsJson byte/character bounds in command validation before HTTP
+exposure, matching the database's131072-byte bound; current excess rolls back at DB.
+
+RED .local/phase7-06-referral-service-red/sql/sql.trx has2 expected stub failures.
+Fresh .local/phase7-06-referral-service-reviewed/{unit,sql} passes36 pure/shared unit
+and6 SQL cases, gate42/no skips with cutoff2026-09-17T22:34:00Z. Both products cover
+role/lease denial, foreign selection, stale second member with zero partial writes,
+approval, exact retry, conditional rows from pretty JSON, unresolved-condition
+blocking and revoked-grant replay. Two additional cases use real generated temporary
+above-binder cover referrals to reject approval then persist decline/reopen. Synthetic
+owned referrals in the ordinary decision fixture isolate command-boundary tests;
+generation is independently verified. Both-product evidence-review regression also
+passes after projection extraction. Issued snapshots remain unchanged. Debug build
+and git diff --check pass; shared demo/previews and frontend-code untouched.
+
+Next: implement resolution commands/live satisfaction, replace the explicit pending
+condition/trading-history blockers with validated proof checks, harden boundary
+validation, test query and malformed conditions, then add guarded warranty evidence,
+bounded read models, strict DI/HTTP/contracts, UI and persisted browser acceptance.
+Keep07-06 in progress; Phase7 stays5/16 and54/65 total plans. Continue inline, no agents.
