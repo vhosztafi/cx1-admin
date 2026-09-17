@@ -6024,5 +6024,11 @@
     "commit": "4d55d06",
     "summary": "06-11-SUMMARY.md",
     "status": "Atomic issue/protected immutable reads verified:834backend/165realSQL/zero skips;319contracts;31 seed-preservation hash sets. UI12/discovery13/final source14 remain separately owned."
+  },
+  "policyIssueUiEvidence": {
+    "plan": "06-12",
+    "commit": "82aa340",
+    "summary": "06-12-SUMMARY.md",
+    "status": "104frontend,lint/types/build,both-product actual Chrome issue/retry/stale/account/focus/persisted policy+posting+documents,314px/390px verified. Expiry presentation and conditional source supplement retain06-14 final gate."
   }
 }

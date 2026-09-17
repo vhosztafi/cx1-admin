@@ -155,3 +155,10 @@ Full integration25m38s; exact834/165 gate passed. Sixteen new SQL/API cases cove
 atomic issue/races/rollback/current authority before replay/exact accepted proof/
 protected reads.319contracts;OpenAPI359operations valid with12warnings. Repeated
 seed preserved31hash sets and credentials. See06-11-SUMMARY.
+
+## 06-12 runtime evidence
+
+Implementation82aa340:104frontend tests,lint/types/build and both-product actual
+Chrome issue/readback pass. Current role/account and stale acceptance denial,
+exact retry after lost committed response, balanced journals, requested documents,
+314px rail/390px containment and focus inspected. See06-12-SUMMARY.
