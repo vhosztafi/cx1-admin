@@ -211,3 +211,35 @@ vehicle declarations before applying to the draft. Preserve incomplete capture,
 lease retention, item identities, and issued state. Rebuild the owned API/web
 previews before fresh browser testing; current previews predate this refinement.
 No plan completion SUMMARY or additional source coverage is claimed.
+
+## Typed vehicle dialog checkpoint
+
+Commit `cd54956` implements add/edit/remove vehicles with source fields and
+modification rows, explicit selection/global requirement choices, stable IDs,
+and explicit replacement clearing. Cancellation of a proposed addition clearly
+removes its declaration. Existing vehicle removal requires deselection. A
+requirement choice synchronizes other vehicle declarations with visible copy.
+QuoteVehicles targetId mode keeps ownership/premises context but hides unrelated
+portfolio/trade-plate controls and register row actions; default quote use stays
+unchanged. Dialog values survive takeover, return and reacquisition.
+
+Verified:114 frontend tests, typecheck, lint, Next build and4 source checks.
+Logs `.local/phase7-04-vehicle-*`; failing-first synchronization test retained.
+Both Motor Trade products passed actual Chrome persistence, incomplete capture,
+modification IDs after reload, addition cancellation, issued registration clear,
+explicit deselection/removal, two-user lease retention, focus restoration and
+390px containment. Issued snapshots remain unchanged. Evidence:
+`.local/browser-evidence/servicing-vehicle/report.json` and
+`.local/phase7-04-vehicle-browser-reviewed.log`. Desktop/mobile screenshots were
+inspected. Earlier browser attempts failed on build-origin/test-selector setup;
+the corrected run completed both journeys. No new backend changes since the
+verified dependency checkpoint. Only source options CTL-06d9667cb5b0 and
+CTL-2ce7af342224 gained verified coverage.
+
+Next: premises, trade activities, cover/limits/excesses and policyholder
+correction, then all remaining07-04 source/browser checks including later cover
+dates. Do not complete the plan yet. Full phase gate and human UAT remain open.
+Owned previews now API58760 and web42752, with current API and web builds; verify
+identities before stopping. Build Next with BACKOFFICE_API_ORIGIN set to5087;
+rewrites are baked into the build. Preview record is still
+`.local/phase7-04-preview-pids.json`.
