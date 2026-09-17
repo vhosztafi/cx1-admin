@@ -83,9 +83,23 @@ public sealed partial class UnderwritingRuntimeTests
         resolved=await service.ResolveAsync(f.Underwriter,cycle.DraftId,cycle.Id,condition.Id,Version(rejectedResolution.Etag!),fence,condition.RowVersion,association.Id,"satisfied","Resolve rechecked business history",Key(),Guid.NewGuid());
         Assert.True(await service.ConditionSatisfiedAsync(f.Underwriter,cycle.DraftId,condition.Id));
         Assert.Equal(3,await db.Set<ServicingConditionResolution>().CountAsync(x=>x.ConditionId==condition.Id));
+        var referralView=Assert.Single((await service.ReadReferralsAsync(f.Underwriter,cycle.DraftId)).Items,x=>x.Id==condition.ReferralId);
+        Assert.Equal("conditional",referralView.State);Assert.True(referralView.DecisionReady);Assert.True(Assert.Single(referralView.Conditions).Satisfied);
+        var firstPage=await service.ReadReferralsAsync(f.Underwriter,cycle.DraftId,pageSize:1);
+        Assert.Single(firstPage.Items);Assert.NotNull(firstPage.NextAfterSequence);
+        var secondPage=await service.ReadReferralsAsync(f.Underwriter,cycle.DraftId,firstPage.NextAfterSequence!.Value,1);
+        Assert.Single(secondPage.Items);Assert.NotEqual(firstPage.Items[0].Id,secondPage.Items[0].Id);
+        Assert.Equal(422,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.ReadReferralsAsync(f.Underwriter,cycle.DraftId,pageSize:0))).Status);
+        var beforeExpiry=f.Clock.Current;
+        f.Clock.Current=(await db.Set<ServicingRatingResult>().AsNoTracking().SingleAsync(x=>x.Id==cycle.CurrentRatingId)).ExpiresAt;
+        var expiredPage=await service.ReadReferralsAsync(f.Underwriter,cycle.DraftId);
+        Assert.False(expiredPage.Applicable);Assert.All(expiredPage.Items,x=>Assert.False(x.DecisionReady));
+        f.Clock.Current=beforeExpiry;
         association=await db.Set<ServicingEvidenceAssociation>().AsNoTracking().SingleAsync(x=>x.Id==association.Id);
         var withdrawn=await evidence.WithdrawAsync(f.Underwriter,cycle.DraftId,cycle.Id,association.Id,Version(resolved.Etag!),fence,association.RowVersion,"Withdraw resolved business proof",Key(),Guid.NewGuid());
         Assert.False(await service.ConditionSatisfiedAsync(f.Underwriter,cycle.DraftId,condition.Id));
+        referralView=Assert.Single((await service.ReadReferralsAsync(f.Underwriter,cycle.DraftId)).Items,x=>x.Id==condition.ReferralId);
+        Assert.Equal("conditional",referralView.State);Assert.False(referralView.DecisionReady);Assert.False(Assert.Single(referralView.Conditions).Satisfied);
         Assert.Equal(409,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.ResolveAsync(f.Underwriter,cycle.DraftId,cycle.Id,condition.Id,Version(withdrawn.Etag!),fence,condition.RowVersion,association.Id,"satisfied",reason,Key(),Guid.NewGuid()))).Status);
         fresh=await db.Set<ServicingReferral>().AsNoTracking().SingleAsync(x=>x.Id==fresh.Id);
         Assert.Equal(409,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.DecideAsync(f.Underwriter,cycle.DraftId,cycle.Id,Version(withdrawn.Etag!),fence,[selected[0] with{Version=fresh.RowVersion}],Key(),Guid.NewGuid()))).Status);
@@ -103,5 +117,6 @@ public sealed partial class UnderwritingRuntimeTests
         await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE UserAuthorityGrant SET RevokedAt={DateTimeOffset.UtcNow},RevokedBy={f.Underwriter.UserId},RevocationReason='Withdraw fictional decision authority' WHERE UserId={f.Underwriter.UserId} AND RevokedAt IS NULL");
         Assert.Equal(403,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.DecideAsync(f.Underwriter,cycle.DraftId,cycle.Id,current,fence,selected,key,Guid.NewGuid()))).Status);
         Assert.Equal(403,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.ResolveAsync(f.Underwriter,cycle.DraftId,cycle.Id,condition.Id,Version(reviewed.Etag!),fence,condition.RowVersion,association.Id,"satisfied",reason,resolutionKey,Guid.NewGuid()))).Status);
+        Assert.False(Assert.Single((await service.ReadReferralsAsync(f.Underwriter,cycle.DraftId)).Items,x=>x.Id==rows[1].Id).DecisionReady);
     }
 }

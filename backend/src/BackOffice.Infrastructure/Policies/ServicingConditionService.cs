@@ -66,10 +66,16 @@ public sealed partial class ServicingReferralService
         var held=await ServicingDecisionContext.Hold(db,actor,draftId,"policy-read",time.GetUtcNow(),token);
         var condition=await db.Set<ServicingCondition>().AsNoTracking().SingleOrDefaultAsync(x=>x.Id==conditionId && x.DraftId==draftId && x.CycleId==held.Cycle.Id,token)
             ??throw new QuoteOperationException(404,"servicing-condition-not-found");
+        var result=await ConditionSatisfied(db,held,condition,token);
+        await tx.CommitAsync(token);return result;
+    }
+
+    private async Task<bool> ConditionSatisfied(BackOfficeDbContext db,ServicingDecisionContext held,ServicingCondition condition,CancellationToken token)
+    {
         var satisfied=false;
         if(held.Rating.ExpiresAt>time.GetUtcNow() && await ConditionActive(db,condition,token))
         {
-            var resolution=await db.Set<ServicingConditionResolution>().AsNoTracking().Where(x=>x.ConditionId==conditionId).OrderByDescending(x=>x.Sequence).FirstOrDefaultAsync(token);
+            var resolution=await db.Set<ServicingConditionResolution>().AsNoTracking().Where(x=>x.ConditionId==condition.Id).OrderByDescending(x=>x.Sequence).FirstOrDefaultAsync(token);
             var required=await ConditionRequirement(db,held,condition,token);
             if(resolution?.Outcome=="satisfied" && required is not null && resolution.InputFingerprint==required.InputFingerprint)
             {
@@ -81,7 +87,7 @@ public sealed partial class ServicingReferralService
                         association.InputFingerprint,file.ScreeningState,review.Outcome??"unreviewed",association.WithdrawnEventId is not null));
             }
         }
-        await tx.CommitAsync(token);return satisfied;
+        return satisfied;
     }
 
     private static Task<bool> ConditionActive(BackOfficeDbContext db,ServicingCondition condition,CancellationToken token)=>
