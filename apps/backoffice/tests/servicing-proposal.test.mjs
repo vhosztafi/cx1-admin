@@ -87,3 +87,14 @@ test('applying an explicit vehicle requirement synchronizes prior vehicle declar
  assert.equal(next.changes[0].specifiedVehicle.selected,true); assert.equal(previous.specifiedVehicle.required,true);
  assert.throws(()=>putServicingVehicleChange(proposal,{...previous,kind:'driver'}));
 });
+
+test('premises replacement clears nested address fields without changing another premises or issued capture',()=>{
+ const base={risk:{premises:[{id:'site-one',address:{street:'First',postcode:'AB1 2CD'}},{id:'site-two',address:{street:'Second',postcode:'EF3 4GH'}}]}};
+ const proposal={...draft(),changes:[{changeId:'edit',riskItemId:'site-one',kind:'premises',operation:'update',payloadMode:'replace',payload:{address:{street:'Corrected'}}}]};
+ const result=projectServicingCapture(base,proposal,'policy','client');
+ assert.deepEqual(result.risk.premises[0],{id:'site-one',address:{street:'Corrected'}});
+ assert.deepEqual(result.risk.premises[1],base.risk.premises[1]);
+ assert.equal(base.risk.premises[0].address.postcode,'AB1 2CD');
+ const removed=projectServicingCapture(base,{...proposal,changes:[{...proposal.changes[0],operation:'remove'}]},'policy','client');
+ assert.deepEqual(removed.risk.premises,[base.risk.premises[1]]);
+});
