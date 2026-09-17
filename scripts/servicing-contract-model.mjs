@@ -24,7 +24,9 @@ export function servicingDefinitions(quote) {
  defs.ServicingChange={oneOf:Object.entries(payloads).flatMap(([target,payload])=>{
   const common={changeId:id,riskItemId:id,kind:{const:target}};
   const effective=target==='cover'?{effectiveIntent:r('ServicingEffectiveIntent')}:{};
-  return [o({...common,operation:e('add','update'),payload,...effective},[...Object.keys(common),'operation','payload']),o({...common,operation:{const:'remove'},...effective},[...Object.keys(common),'operation'])];
+  const write=o({...common,operation:e('add','update'),payload,payloadMode:{const:'replace'},...effective},[...Object.keys(common),'operation','payload']);
+  write.allOf=[{if:{properties:{payloadMode:{const:'replace'}},required:['payloadMode']},then:{properties:{operation:{const:'update'}}}}];
+  return [write,o({...common,operation:{const:'remove'},...effective},[...Object.keys(common),'operation'])];
  })};
  defs.ServicingProposal=o({schemaVersion:{const:'1.0'},baseVersionId:id,reason,requestedBy:{oneOf:[o({kind:{const:'internal'}}),o({kind:e('insured','broker'),name:t(200)})]},commonEffectiveIntent:r('ServicingEffectiveIntent'),changes:many(r('ServicingChange'),100)});
  defs.ServicingProposal.properties.dateBasis=e('shared','per-cover-change');

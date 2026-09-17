@@ -111642,6 +111642,9 @@
                   }
                 },
                 "required": []
+              },
+              "payloadMode": {
+                "const": "replace"
               }
             },
             "required": [
@@ -111650,6 +111653,27 @@
               "kind",
               "operation",
               "payload"
+            ],
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "payloadMode": {
+                      "const": "replace"
+                    }
+                  },
+                  "required": [
+                    "payloadMode"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "operation": {
+                      "const": "update"
+                    }
+                  }
+                }
+              }
             ]
           },
           {
@@ -111856,6 +111880,9 @@
                   }
                 },
                 "required": []
+              },
+              "payloadMode": {
+                "const": "replace"
               }
             },
             "required": [
@@ -111864,6 +111891,27 @@
               "kind",
               "operation",
               "payload"
+            ],
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "payloadMode": {
+                      "const": "replace"
+                    }
+                  },
+                  "required": [
+                    "payloadMode"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "operation": {
+                      "const": "update"
+                    }
+                  }
+                }
+              }
             ]
           },
           {
@@ -111949,6 +111997,9 @@
                   }
                 },
                 "required": []
+              },
+              "payloadMode": {
+                "const": "replace"
               }
             },
             "required": [
@@ -111957,6 +112008,27 @@
               "kind",
               "operation",
               "payload"
+            ],
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "payloadMode": {
+                      "const": "replace"
+                    }
+                  },
+                  "required": [
+                    "payloadMode"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "operation": {
+                      "const": "update"
+                    }
+                  }
+                }
+              }
             ]
           },
           {
@@ -112079,6 +112151,9 @@
                   }
                 },
                 "required": []
+              },
+              "payloadMode": {
+                "const": "replace"
               }
             },
             "required": [
@@ -112087,6 +112162,27 @@
               "kind",
               "operation",
               "payload"
+            ],
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "payloadMode": {
+                      "const": "replace"
+                    }
+                  },
+                  "required": [
+                    "payloadMode"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "operation": {
+                      "const": "update"
+                    }
+                  }
+                }
+              }
             ]
           },
           {
@@ -112404,6 +112500,9 @@
                 },
                 "required": []
               },
+              "payloadMode": {
+                "const": "replace"
+              },
               "effectiveIntent": {
                 "$ref": "#/components/schemas/ServicingEffectiveIntent"
               }
@@ -112414,6 +112513,27 @@
               "kind",
               "operation",
               "payload"
+            ],
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "payloadMode": {
+                      "const": "replace"
+                    }
+                  },
+                  "required": [
+                    "payloadMode"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "operation": {
+                      "const": "update"
+                    }
+                  }
+                }
+              }
             ]
           },
           {
@@ -112548,6 +112668,9 @@
                     "$ref": "#/components/schemas/ServicingCaptureResponses"
                   }
                 }
+              },
+              "payloadMode": {
+                "const": "replace"
               }
             },
             "required": [
@@ -112556,6 +112679,27 @@
               "kind",
               "operation",
               "payload"
+            ],
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "payloadMode": {
+                      "const": "replace"
+                    }
+                  },
+                  "required": [
+                    "payloadMode"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "operation": {
+                      "const": "update"
+                    }
+                  }
+                }
+              }
             ]
           },
           {

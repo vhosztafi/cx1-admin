@@ -145,7 +145,12 @@ at one instant, foreign targets, duplicate/nested identity ownership changes and
 unresolved driver/vehicle/premises references fail atomically. Incomplete typed
 declarations remain saveable; capture readiness is not permission to progress.
 Object patches retain omitted fields; arrays explicitly replace their contents.
-The UI must not represent an omitted scalar as an explicit deletion.
+An update may explicitly specify `payloadMode: "replace"` to replace the whole
+typed target, preserving its envelope-owned ID while clearing omitted fields.
+Replacement is forbidden on add/remove and still rejects system-owned fields,
+foreign targets, nested identity movement and dangling references. Use this
+mode for explicit field clearing or deselecting a cover section; omission from
+a normal partial patch never means deletion.
 
 GET /drafts/{draftId}/editor is an additive, current-scope, no-store read with the
 strong draft ETag and saved revision ID. It returns typed base/proposed capture,

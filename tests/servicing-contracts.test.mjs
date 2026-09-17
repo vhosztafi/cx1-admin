@@ -46,6 +46,18 @@ test('editor projection contains typed capture and cannot expose issued pricing 
   assert.equal(validate(value),false);
  }
 });
+
+test('explicit typed replacement is update-only and never admits target IDs or unknown fields',()=>{
+ for(const kind of ['driver','vehicle','premises','business','cover','policyholder']) {
+  const value={changeId:id,riskItemId:other,kind,operation:'update',payload:{},payloadMode:'replace'};
+  assert.ok(change(value),JSON.stringify(change.errors));
+  assert.equal(change({...value,operation:'add'}),false);
+  assert.equal(change({...value,operation:'remove'}),false);
+  assert.equal(change({...value,payloadMode:'unset-paths'}),false);
+  assert.equal(change({...value,payload:{id}}),false);
+  assert.equal(change({...value,payload:{agencyId:id}}),false);
+ }
+});
 test('lease commands enforce takeover reason and prevent client supplied expiry or holder',()=>{
  const validate=check('ServicingLeaseAcquire');
  assert.ok(validate({mode:'acquire'}));

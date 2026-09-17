@@ -109,11 +109,12 @@ public static class ServicingProposalRules
     {
         var kind = change["kind"]!.GetValue<string>(); var operation = change["operation"]!.GetValue<string>(); var id = Id(change, "riskItemId");
         var risk = capture["risk"]!.AsObject(); var payload = change["payload"] as JsonObject;
+        var replace = change["payloadMode"]?.GetValue<string>() == "replace";
         if (kind is "business" or "policyholder" || kind == "cover" && id == policy)
         {
             if (id != (kind == "policyholder" ? client : policy) || operation != "update") Fail("invalid-singleton-operation", path);
             var target = kind == "business" ? risk["business"]!.AsObject() : capture[kind == "policyholder" ? "insured" : "cover"]!.AsObject();
-            Merge(target, payload!); return;
+            Update(target, payload!, replace); return;
         }
         JsonArray rows;
         if (kind == "cover")
@@ -142,8 +143,20 @@ public static class ServicingProposalRules
         {
             if (existing is null) Fail("foreign-risk-item", path + "/riskItemId");
             if (operation == "remove") rows.Remove(existing);
-            else Merge(existing!, payload!);
+            else Update(existing!, payload!, replace);
         }
+    }
+
+    private static void Update(JsonObject target, JsonObject payload, bool replace)
+    {
+        // Explicit typed replacement clears omitted declarations but retains the
+        // envelope-owned identity. Partial patches remain backward compatible.
+        if (replace)
+        {
+            var identity = target["id"]?.DeepClone(); target.Clear();
+            if (identity is not null) target["id"] = identity;
+        }
+        Merge(target, payload);
     }
 
     private static void Merge(JsonObject target, JsonObject patch)

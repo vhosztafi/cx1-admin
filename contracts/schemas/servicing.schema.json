@@ -1848,6 +1848,9 @@
                 }
               },
               "required": []
+            },
+            "payloadMode": {
+              "const": "replace"
             }
           },
           "required": [
@@ -1856,6 +1859,27 @@
             "kind",
             "operation",
             "payload"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "payloadMode": {
+                    "const": "replace"
+                  }
+                },
+                "required": [
+                  "payloadMode"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "operation": {
+                    "const": "update"
+                  }
+                }
+              }
+            }
           ]
         },
         {
@@ -2062,6 +2086,9 @@
                 }
               },
               "required": []
+            },
+            "payloadMode": {
+              "const": "replace"
             }
           },
           "required": [
@@ -2070,6 +2097,27 @@
             "kind",
             "operation",
             "payload"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "payloadMode": {
+                    "const": "replace"
+                  }
+                },
+                "required": [
+                  "payloadMode"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "operation": {
+                    "const": "update"
+                  }
+                }
+              }
+            }
           ]
         },
         {
@@ -2155,6 +2203,9 @@
                 }
               },
               "required": []
+            },
+            "payloadMode": {
+              "const": "replace"
             }
           },
           "required": [
@@ -2163,6 +2214,27 @@
             "kind",
             "operation",
             "payload"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "payloadMode": {
+                    "const": "replace"
+                  }
+                },
+                "required": [
+                  "payloadMode"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "operation": {
+                    "const": "update"
+                  }
+                }
+              }
+            }
           ]
         },
         {
@@ -2285,6 +2357,9 @@
                 }
               },
               "required": []
+            },
+            "payloadMode": {
+              "const": "replace"
             }
           },
           "required": [
@@ -2293,6 +2368,27 @@
             "kind",
             "operation",
             "payload"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "payloadMode": {
+                    "const": "replace"
+                  }
+                },
+                "required": [
+                  "payloadMode"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "operation": {
+                    "const": "update"
+                  }
+                }
+              }
+            }
           ]
         },
         {
@@ -2610,6 +2706,9 @@
               },
               "required": []
             },
+            "payloadMode": {
+              "const": "replace"
+            },
             "effectiveIntent": {
               "$ref": "#/$defs/ServicingEffectiveIntent"
             }
@@ -2620,6 +2719,27 @@
             "kind",
             "operation",
             "payload"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "payloadMode": {
+                    "const": "replace"
+                  }
+                },
+                "required": [
+                  "payloadMode"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "operation": {
+                    "const": "update"
+                  }
+                }
+              }
+            }
           ]
         },
         {
@@ -2754,6 +2874,9 @@
                   "$ref": "#/$defs/Responses"
                 }
               }
+            },
+            "payloadMode": {
+              "const": "replace"
             }
           },
           "required": [
@@ -2762,6 +2885,27 @@
             "kind",
             "operation",
             "payload"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "payloadMode": {
+                    "const": "replace"
+                  }
+                },
+                "required": [
+                  "payloadMode"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "operation": {
+                    "const": "update"
+                  }
+                }
+              }
+            }
           ]
         },
         {

@@ -191,4 +191,62 @@ public sealed partial class ServicingProposalTests
         change["payload"]!["requestedSections"]![0]!["limit"] = "0.00";
         Assert.Throws<QuoteInputException>(() => ServicingProposalRules.Assess(road.ToJsonString(), Draft(change), Context()));
     }
+
+    [Fact]
+    public void ExplicitReplacementClearsOptionalFieldsWithoutChangingTargetIdentity()
+    {
+        var snapshot = Snapshot(); var driver = snapshot["risk"]!["drivers"]![0]!;
+        var id = Guid.Parse(driver["id"]!.GetValue<string>());
+        var change = Change("driver", id, "update", new JsonObject { ["fullName"] = "Replacement driver details" });
+        change["payloadMode"] = "replace";
+        var result = ServicingProposalRules.Assess(snapshot.ToJsonString(), Draft(change), Context());
+        var projected = result.Proposed.GetProperty("risk").GetProperty("drivers")[0];
+        Assert.Equal(id, projected.GetProperty("id").GetGuid());
+        Assert.False(projected.TryGetProperty("dateOfBirth", out _));
+        Assert.Contains(result.ReadinessIssues, x => x.Path == "/risk/drivers/0/dateOfBirth");
+        Assert.Contains(result.Changes, x => x.Kind == "removed" && x.Path.EndsWith("/dateOfBirth", StringComparison.Ordinal));
+        Assert.NotNull(driver["dateOfBirth"]);
+    }
+
+    [Fact]
+    public void DriverRemovalCanExplicitlyClearDependentVehicleOwnerByReplacement()
+    {
+        var snapshot = Snapshot(); var driver = snapshot["risk"]!["drivers"]![0]!;
+        var driverId = Guid.Parse(driver["id"]!.GetValue<string>());
+        var vehicle = snapshot["risk"]!["vehicles"]![0]!;
+        vehicle["ownerDriverId"] = driverId.ToString();
+        var vehicleId = Guid.Parse(vehicle["id"]!.GetValue<string>());
+        var payload = vehicle.DeepClone().AsObject(); payload.Remove("id"); payload.Remove("ownerDriverId");
+        var update = Change("vehicle", vehicleId, "update", payload); update["payloadMode"] = "replace";
+        var result = ServicingProposalRules.Assess(snapshot.ToJsonString(), Draft(Change("driver", driverId, "remove"), update), Context());
+        Assert.Empty(result.Proposed.GetProperty("risk").GetProperty("drivers").EnumerateArray());
+        Assert.False(result.Proposed.GetProperty("risk").GetProperty("vehicles")[0].TryGetProperty("ownerDriverId", out _));
+        Assert.Equal(vehicleId, result.Proposed.GetProperty("risk").GetProperty("vehicles")[0].GetProperty("id").GetGuid());
+    }
+
+    [Theory]
+    [InlineData("add")]
+    [InlineData("remove")]
+    public void ReplacementModeCannotBeAppliedToAdditionOrRemoval(string operation)
+    {
+        var change = Change("driver", Guid.NewGuid(), operation, operation == "add" ? new JsonObject() : null);
+        change["payloadMode"] = "replace";
+        Assert.Throws<QuoteInputException>(() => ServicingProposalInput.Parse(Draft(change), Base));
+    }
+
+    [Fact]
+    public void ExplicitCoverReplacementCanDeselectWithoutRetainingInactiveAmounts()
+    {
+        var snapshot = Snapshot(); var section = snapshot["cover"]!["requestedSections"]![1]!;
+        var id = Guid.Parse(section["id"]!.GetValue<string>());
+        var payload = new JsonObject { ["requestedSections"] = new JsonArray(new JsonObject {
+            ["id"] = id.ToString(), ["code"] = "stock-custody", ["selected"] = false }) };
+        var change = Change("cover", id, "update", payload);
+        Assert.Throws<QuoteValidationException>(() => ServicingProposalRules.Assess(snapshot.ToJsonString(), Draft(change), Context()));
+        change["payloadMode"] = "replace";
+        var result = ServicingProposalRules.Assess(snapshot.ToJsonString(), Draft(change), Context());
+        var projected = result.Proposed.GetProperty("cover").GetProperty("requestedSections").EnumerateArray().Single(x => x.GetProperty("id").GetGuid() == id);
+        Assert.False(projected.GetProperty("selected").GetBoolean()); Assert.False(projected.TryGetProperty("limit", out _));
+        Assert.NotNull(section["limit"]);
+    }
 }

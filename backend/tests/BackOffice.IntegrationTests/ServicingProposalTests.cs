@@ -41,7 +41,7 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.Equal(acquired.Etag, (await service.ReadAsync(f.Servicing, created.ResourceId)).Etag);
             var addedId = Guid.NewGuid();
             proposal["changes"] = JsonSerializer.SerializeToNode(new object[] {
-                new { changeId = Guid.NewGuid(), riskItemId = driverId, kind = "driver", operation = "update", payload = new { fullName = "Fictional updated driver" } },
+                new { changeId = Guid.NewGuid(), riskItemId = driverId, kind = "driver", operation = "update", payloadMode = "replace", payload = new { fullName = "Fictional updated driver" } },
                 new { changeId = Guid.NewGuid(), riskItemId = addedId, kind = "vehicle", operation = "add", payload = new { } }
             });
             var saved = await service.SaveAsync(f.Servicing, created.ResourceId, Version(acquired.Etag!), fence, proposal.ToJsonString(), Key(), Guid.NewGuid());
@@ -54,6 +54,9 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.Equal(saved.Etag, editor.Etag);
             var assessment = JsonNode.Parse(editor.Body)!["assessment"]!;
             Assert.Equal("Fictional updated driver", assessment["proposed"]!["risk"]!["drivers"]![0]!["fullName"]!.GetValue<string>());
+            Assert.Null(assessment["proposed"]!["risk"]!["drivers"]![0]!["dateOfBirth"]);
+            Assert.NotNull(assessment["base"]!["risk"]!["drivers"]![0]!["dateOfBirth"]);
+            Assert.Equal("replace", savedProposal["changes"]![0]!["payloadMode"]!.GetValue<string>());
             Assert.Contains(assessment["readinessIssues"]!.AsArray(), issue => issue!["path"]!.GetValue<string>() == "/risk/vehicles/1/registration");
             Assert.Equal(snapshot["risk"]!["drivers"]![0]!["fullName"]!.GetValue<string>(), assessment["base"]!["risk"]!["drivers"]![0]!["fullName"]!.GetValue<string>());
             Assert.Equal(2, await db.Set<ServicingRevision>().CountAsync(x => x.DraftId == created.ResourceId));
