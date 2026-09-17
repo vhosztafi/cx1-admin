@@ -3,7 +3,10 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { Panel, Status } from '../primitives';
 import { quoteFetch, uncertainQuoteFailure } from '../../lib/quotes';
-import { sendServicing, servicingCommand, type ServicingCommand, type ServicingDraft, type ServicingProposal } from '../../lib/servicing-api';
+import { sendServicing, servicingCommand, type ServicingCommand, type ServicingDraft, type ServicingEditor, type ServicingProposal } from '../../lib/servicing-api';
+import { matchingServicingEditor, setCoverEffectiveIntent, setServicingDateBasis } from '../../lib/servicing-proposal';
+import { ServicingEffectiveFields } from './servicing-effective-fields';
+import { ServicingSavedReview } from './servicing-saved-review';
 
 export function ServicingWorkspace({ draftId, actorId, canTakeover }: { draftId: string; actorId: string; canTakeover: boolean }) {
   const [view, setView] = useState<{ data: ServicingDraft; etag: string } | null>(null), [proposal, setProposal] = useState<ServicingProposal | null>(null);
@@ -11,6 +14,7 @@ export function ServicingWorkspace({ draftId, actorId, canTakeover }: { draftId:
   const [reason, setReason] = useState(''), [retry, setRetry] = useState(false), [dirty, setDirty] = useState(false);
   const [confirmAbandon, setConfirmAbandon] = useState(false);
   const [observedAt, setObservedAt] = useState(0);
+  const [editor, setEditor] = useState<{ data: ServicingEditor; etag: string | null } | null>(null);
   const dirtyRef = useRef(false), pending = useRef<ServicingCommand | null>(null), busyRef = useRef(false);
   const url = `/api/v1/drafts/${draftId}`;
   useEffect(() => {
@@ -19,8 +23,12 @@ export function ServicingWorkspace({ draftId, actorId, canTakeover }: { draftId:
       setObservedAt(Date.now());
       if (busyRef.current) return;
       try {
-        const result = await quoteFetch<ServicingDraft>(url, { signal: controller.signal });
-        if (controller.signal.aborted || busyRef.current || !result.etag) return;
+        const [draftRead, editorRead] = await Promise.allSettled([
+          quoteFetch<ServicingDraft>(url, { signal: controller.signal }), quoteFetch<ServicingEditor>(url + '/editor', { signal: controller.signal })]);
+        if (controller.signal.aborted || busyRef.current) return;
+        if (draftRead.status === 'rejected') throw draftRead.reason;
+        const result = draftRead.value; if (!result.etag) return;
+        setEditor(editorRead.status === 'fulfilled' ? editorRead.value : null);
         setView({ data: result.data, etag: result.etag }); if (!dirtyRef.current) setProposal(result.data.proposal);
       } catch { if (!controller.signal.aborted) setError('Unable to refresh ownership. Your local edits are retained.'); }
     }
@@ -31,6 +39,7 @@ export function ServicingWorkspace({ draftId, actorId, canTakeover }: { draftId:
   const editing = !!(view?.data.state === 'draft' && fence && lease?.active && lease.holderId === actorId && lease.leaseToken === fence && Date.parse(lease.expiresAt) > observedAt);
   const otherEditor = !!(lease?.active && lease.holderId !== actorId && Date.parse(lease.expiresAt) > observedAt);
   function change(next: ServicingProposal) { dirtyRef.current = true; setDirty(true); setProposal(next); }
+  function attempt(action: () => ServicingProposal) { try { change(action()); setError(''); } catch (failure) { setError(failure instanceof Error ? failure.message : 'This draft change could not be applied.'); } }
   async function run(action: 'acquire' | 'takeover' | 'renew' | 'release' | 'save' | 'abandon') {
     if (!view || !proposal || busyRef.current) return; busyRef.current = true; setBusy(true); setError(''); setNotice('');
     try {
@@ -58,11 +67,21 @@ export function ServicingWorkspace({ draftId, actorId, canTakeover }: { draftId:
     <div className="underwriting-layout"><div className="underwriting-main"><Panel title="Requested change" note="Draft details"><form className="quote-rail-body" onSubmit={event => { event.preventDefault(); void run('save'); }}>
       <fieldset disabled={!editing || busy || retry}><div className="quote-form-grid">
         <label>Reason for change<textarea aria-label="Reason for change" minLength={10} maxLength={2000} required value={proposal.reason} onChange={event => change({ ...proposal, reason: event.target.value })} /></label>
-        <label>Effective date (London)<input type="date" required value={proposal.commonEffectiveIntent.localDate} onChange={event => change({ ...proposal, commonEffectiveIntent: { ...proposal.commonEffectiveIntent, localDate: event.target.value } })} /></label>
-        <label>Effective time (London)<input type="time" required value={proposal.commonEffectiveIntent.localTime} onChange={event => change({ ...proposal, commonEffectiveIntent: { ...proposal.commonEffectiveIntent, localTime: event.target.value } })} /></label>
-      </div></fieldset><p>{proposal.changes.length} proposed risk changes saved. Saved draft details do not alter issued cover.</p>
+        <label>Requested by<select aria-label="Requested by" value={proposal.requestedBy.kind} onChange={event => {
+          const kind = event.target.value as ServicingProposal['requestedBy']['kind']; change({ ...proposal, requestedBy: kind === 'internal' ? { kind } : { kind, name: proposal.requestedBy.name ?? '' } });
+        }}><option value="internal">Internal request</option><option value="insured">Insured</option><option value="broker">Broker</option></select></label>
+        {proposal.requestedBy.kind !== 'internal' ? <label>Requester name<input aria-label="Requester name" required maxLength={200} value={proposal.requestedBy.name ?? ''} onChange={event => change({ ...proposal, requestedBy: { ...proposal.requestedBy, name: event.target.value } })} /></label> : null}
+        <ServicingEffectiveFields intent={proposal.commonEffectiveIntent} change={intent => change({ ...proposal, commonEffectiveIntent: intent })} />
+        <label>Effective date basis<select aria-label="Effective date basis" value={proposal.dateBasis ?? 'shared'} onChange={event => attempt(() => setServicingDateBasis(proposal, event.target.value as 'shared' | 'per-cover-change'))}><option value="shared">One shared date</option><option value="per-cover-change">Individual dates for cover changes</option></select></label>
+      </div><p className="client-help">Driver changes cannot be backdated. Other backdated changes require current senior authority. Cover dates must be on or after the shared date and within the policy term.</p>
+      {proposal.changes.map((item, index) => <fieldset className="quote-reference-fields" key={item.changeId}><legend>Change {index + 1} · {item.operation} {item.kind}</legend>
+        {item.kind === 'cover' && proposal.dateBasis === 'per-cover-change' ? <><label><input type="checkbox" checked={!!item.effectiveIntent} onChange={event => attempt(() => setCoverEffectiveIntent(proposal, item.changeId, event.target.checked ? proposal.commonEffectiveIntent : undefined))} /> Use an individual cover date</label>
+          {item.effectiveIntent ? <div className="quote-form-grid"><ServicingEffectiveFields prefix={`Cover change ${index + 1}`} intent={item.effectiveIntent} change={intent => attempt(() => setCoverEffectiveIntent(proposal, item.changeId, intent))} /></div> : null}</> : null}
+        <button type="button" className="button" onClick={() => change({ ...proposal, changes: proposal.changes.filter(current => current.changeId !== item.changeId) })}>Remove proposed change {index + 1}</button>
+      </fieldset>)}
+      </fieldset><p>{proposal.changes.length} proposed risk changes{dirty ? ' including local edits' : ' saved'}. Saved draft details do not alter issued cover.</p>
       <button className="button button-primary" type="submit" disabled={!editing || busy || retry}>Save draft</button>
-    </form></Panel></div><aside className="underwriting-rail" aria-label="Draft actions"><Panel title="Editing controls"><div className="quote-rail-body servicing-controls">
+    </form></Panel><ServicingSavedReview editor={matchingServicingEditor(view, editor) ? editor!.data : null} dirty={dirty} /></div><aside className="underwriting-rail" aria-label="Draft actions"><Panel title="Editing controls"><div className="quote-rail-body servicing-controls">
       {retry ? <button className="button button-primary" disabled={busy} onClick={() => void run('save')}>Retry same action</button> : null}
       <button className="button" disabled={busy || retry || editing || otherEditor || view.data.state !== 'draft'} onClick={() => void run('acquire')}>Acquire editing lease</button>
       <button className="button" disabled={busy || retry || !editing} onClick={() => void run('renew')}>Renew editing lease</button>
