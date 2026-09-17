@@ -51,6 +51,21 @@ test('all underwriting writes require CSRF, command identity and owning quote co
     for(const code of ['401','403','404','409','412','422','503'])assert.ok(op.responses[code],`${op.operationId}/${code}`);
   }
 });
+
+test('capacity routing and lifecycle actions have distinct closed request shapes',()=>{
+ const validate=request('recordCapacityAction'),assign=examples.recordCapacityAction;
+ assert.equal(validate(assign),true);
+ for(const action of ['withdraw','reopen']) {
+  const body={...assign,action};delete body.assignedUserId;
+  assert.equal(validate(body),true,JSON.stringify(validate.errors));
+  assert.equal(validate({...body,assignedUserId:assign.assignedUserId}),false);
+ }
+ for(const action of ['approve','delete','send',''])assert.equal(validate({...assign,action}),false);
+ assert.equal(validate({...assign,assignedUserId:null}),false);
+ const view=spec.components.schemas.UnderwritingEscalationView;
+ assert.equal(view.properties.similarReferrals.maxItems,10);
+ assert.equal(view.properties.actionHistory.maxItems,50);
+});
 test('exact acceptance rejects absent assurance, evidence or terms identity and unsupported channels',()=>{
   const validate=request('recordQuoteAcceptance'),base=examples.recordQuoteAcceptance;
   for(const key of ['termsHash','assuranceHash'])assert.equal(validate({...base,[key]:'not-a-hash'}),false,key);

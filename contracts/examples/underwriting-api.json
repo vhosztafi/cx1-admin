@@ -135,6 +135,13 @@
       "termsHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
       "assuranceHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
       "reason": "Fictional demonstration review"
+    },
+    "recordCapacityAction": {
+      "cycleId": "00000001-0000-4000-8000-000000000001",
+      "escalationEtag": "\"AAAAAAAAAAE=\"",
+      "action": "assign",
+      "assignedUserId": "00000002-0000-4000-8000-000000000001",
+      "reason": "Route this fictional request for senior review"
     }
   }
 }

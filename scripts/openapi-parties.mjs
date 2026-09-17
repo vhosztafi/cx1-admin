@@ -32,7 +32,7 @@ export function addPartyContracts({schemas:s,ref:r,text:t,enumeration:e,object:o
  list('/clients/{clientId}/activity','listClientActivity','client-read',r('ClientActivity'));
  s.ClientRecordLink=o({id,kind:e('quote','policy'),reference:t(40),relationshipId:id,agencyName:t(),productCode:e('motor-trade-road-risks','motor-trade-combined','commercial-combined'),state:t(30)});
  list('/clients/{clientId}/records','listClientRecords','client-read',r('ClientRecordLink'),[['kind',e('quote','policy')]]);
- paths['/clients/{clientId}/records'].get.description+=' Defaults to kind=quote. Quote links are available to quote-read identities; kind=policy remains 503. Only actual implemented quote/policy records are returned. Module unavailability is 503, not an invented empty live portfolio.';
+ paths['/clients/{clientId}/records'].get.description+=' Defaults to kind=quote. Quote links require current quote-read authority; kind=policy requires policy-discovery-read. Both kinds return actual persisted records, with an empty list only when no owned records exist.';
 
  s.PartyMutationReceipt=o({id});
  s.PartyMutationReceipt.description='Safe identity-only command receipt. The original strong ETag is returned in the header; fetch current details through an authorized GET.';

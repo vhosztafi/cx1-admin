@@ -93,7 +93,7 @@ try {
   await page.screenshot({path:`${output}/client-relationship-desktop.png`,fullPage:true});
   await page.getByRole('link',{name:'Activity',exact:true}).click();await page.getByRole('region',{name:'Client activity',exact:true}).waitFor();
   await page.getByRole('region',{name:'Client activity',exact:true}).getByText('Demo servicing',{exact:true}).first().waitFor();
-  await page.getByRole('link',{name:'Policies',exact:true}).last().click();await page.getByRole('heading',{name:'Policies are not available yet'}).waitFor();
+  await page.getByRole('link',{name:'Policies',exact:true}).last().click();await page.getByRole('heading',{name:'No policies match these filters'}).waitFor();assert.equal((await (await page.request.get(`${origin}/api/v1/clients/${clientId}/records?kind=policy`)).json()).totalCount,0);
   await page.goto(`${origin}/clients`);await page.getByLabel('Search clients',{exact:true}).fill(name);await page.getByRole('button',{name:'Search',exact:true}).click();await page.getByText('1 records',{exact:true}).waitFor();
   await page.getByLabel('Search clients',{exact:true}).fill('No such fictional business 000');await page.getByRole('button',{name:'Search',exact:true}).click();await page.getByRole('heading',{name:'No clients match your search'}).waitFor();
   await page.getByRole('button',{name:'Clear filters'}).click();await page.getByRole('link',{name:'CN-0000001',exact:true}).waitFor();

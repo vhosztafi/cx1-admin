@@ -25,7 +25,7 @@ async function selectProduct(name) {
   await page.getByRole('button', { name: 'Search', exact: true }).click();
   await page.getByRole('button', { name: /Alex Example \(fictional\)/ }).click();
   await page.getByRole('radio', { name: /Fictional Quote Demonstration Agency/ }).check();
-  await page.getByRole('radio', { name: new RegExp(name) }).check();
+  await page.getByRole('radio', { name: new RegExp(name) }).and(page.locator(':enabled')).check();
   assert.equal(await page.getByRole('button', { name: 'Create quote draft', exact: true }).isEnabled(), true);
 }
 async function verifySaved(expectedId, productCode) {

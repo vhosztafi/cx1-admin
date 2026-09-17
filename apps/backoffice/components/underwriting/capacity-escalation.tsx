@@ -11,6 +11,7 @@ import { Panel, Status } from '../primitives';
 import { DecisionCommand, type DecisionRequest } from './decision-command';
 import { ConditionForm } from './referral-decisions';
 import { UnderwritingEvidence } from './underwriting-evidence';
+import { CapacityCaseActions, SimilarCapacityReferrals } from './capacity-case-actions';
 
 const date = (value?: string) => value ? new Date(value).toLocaleString('en-GB') : 'Not recorded';
 export function CapacityEscalation({ id, actorId }: { id: string; actorId: string }) {
@@ -48,6 +49,8 @@ function CapacityWorkspace({ view, actorId, reload }: { view: CapacityView; acto
             {message.validFrom && <p>Valid {date(message.validFrom)} to {date(message.validTo)}</p>}{message.conditions?.map((condition, index) => <p key={index}>Condition: {conditionLabels[condition.code] ?? condition.code}</p>)}
           </article>)}<div className="quote-row-actions"><button className="button" disabled={!messageCursor} onClick={() => setMessageCursor('')}>Latest correspondence</button><button className="button" disabled={!messages.data.nextCursor} onClick={() => setMessageCursor(messages.data!.nextCursor!)}>Older correspondence</button></div></>}
         </div></Panel>
+        <CapacityCaseActions view={view} coherent={coherent} run={setRequest} />
+        <SimilarCapacityReferrals view={view} />
         {coherent && evidence.data ? <><CapacitySend view={view} assessment={assessment.data!} evidence={evidence.data.items} run={setRequest} /><CapacityResponse view={view} quote={quote.data!} assessment={assessment.data!} evidence={evidence.data.items} run={setRequest} />
           <details><summary>Attach and review supporting proof</summary><UnderwritingEvidence quote={quote.data!} assessment={assessment.data!} evidence={evidence.data.items} run={setRequest} /><div className="quote-row-actions"><button className="button" disabled={!evidenceCursor} onClick={() => setEvidenceCursor('')}>Latest evidence</button><button className="button" disabled={!evidence.data.nextCursor} onClick={() => setEvidenceCursor(evidence.data!.nextCursor!)}>Older evidence</button></div></details></> : view.current && <Panel title="Action context"><div className="quote-rail-body"><p>Load the current quote and evidence before taking an action. If the quote changed, refresh this escalation.</p>{quote.error || assessment.error || evidence.error ? <p role="alert">{quote.error ?? assessment.error ?? evidence.error}</p> : null}</div></Panel>}
       </>}
@@ -67,10 +70,11 @@ function CapacitySend({ view, assessment, evidence, run }: { view: CapacityView;
   const [body, setBody] = useState(''), [scenario, setScenario] = useState(''), [selected, setSelected] = useState<string[]>([]);
   const options = evidence.filter(x => x.cycleId === view.cycleId && !x.withdrawn && x.screeningState === 'accepted' && assessment.proofRequirements.some(p => p.inputFingerprint === x.inputFingerprint));
   return <Panel title="Submit to capacity provider" note="Fictional demo processing"><div className="quote-rail-body"><fieldset className="quote-reference-fields" disabled={!view.capabilities.canSend}><legend>Exact request</legend>
+    {view.currentSubmissionId && <><p className="client-help">A follow-up creates a new submission and requires a new carrier response. Earlier approval and acceptance cannot authorise the changed request.</p><div className="quote-row-actions">{view.state === 'queried' && <button className="button" type="button" onClick={() => setBody('Reply to the carrier query: ')}>Answer the query</button>}<button className="button" type="button" onClick={() => setBody('Please provide a response to this retained capacity request.')}>Chase a response</button></div></>}
     <label>Submission message<textarea aria-label="Capacity submission message" value={body} maxLength={8000} onChange={event => setBody(event.target.value)} /></label>
     <label>Demo scenario<select aria-label="Capacity demo scenario" value={scenario} onChange={event => setScenario(event.target.value)}><option value="">Select a demo outcome</option>{view.scenarios.map(x => <option key={x.id} value={x.id}>{x.label} · v{x.version}</option>)}</select></label>
     <p>Include selected supporting proof on this page:</p>{options.length ? options.map(item => <label className="contact-check" key={item.id}><input type="checkbox" checked={selected.includes(item.id)} onChange={event => setSelected(ids => event.target.checked ? [...ids, item.id] : ids.filter(id => id !== item.id))} />{item.fileName} · {item.requirementCode} · {item.reviewState}</label>) : <p className="client-help">No current proof on this page. Attach evidence below if it is needed for the request.</p>}
-    <button className="button button-primary" disabled={!body.trim() || !scenario || selected.length > 20} onClick={() => run({ command: underwritingWrite(view.quoteId, `/api/v1/escalations/${view.id}/send`, view.quoteEtag, { cycleId: view.cycleId, escalationEtag: view.etag, body, evidenceAssociationIds: selected, scenarioVersionId: scenario }), label: 'Send to demo provider', description: `${view.providerLabel} · ${body}` })}>Review submission</button>
+    <button className="button button-primary" disabled={!body.trim() || !scenario || selected.length > 20} onClick={() => run({ command: underwritingWrite(view.quoteId, `/api/v1/escalations/${view.id}/send`, view.quoteEtag, { cycleId: view.cycleId, escalationEtag: view.etag, body, evidenceAssociationIds: selected, scenarioVersionId: scenario }), label: 'Send to demo provider', description: `${view.providerLabel} · ${body}${view.currentSubmissionId ? ' · New submission: prior approval and acceptance must be reviewed again.' : ''}` })}>Review submission</button>
   </fieldset>{!view.capabilities.canSend && <p className="client-help">A current request, rating and underwriting authority are required. A queued request must finish before another submission.</p>}</div></Panel>;
 }
 

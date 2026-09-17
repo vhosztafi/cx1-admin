@@ -12,7 +12,7 @@ async function get(path){const r=await page.request.get(origin+path);assert.equa
 async function post(path,data,etag,multipart){const csrf=(await get('/api/v1/auth/csrf')).data.requestToken;const r=await page.request.post(origin+path,{headers:{'X-CSRF-Token':csrf,'Idempotency-Key':crypto.randomUUID(),...(etag?{'If-Match':etag}:{})},...(multipart?{multipart}:{data})});assert.ok(r.ok(),await r.text());return await r.json();}
 try{
  await page.goto(`${origin}/login`);await page.getByLabel('Email address').fill('underwriter@cover.example');await page.getByLabel('Password',{exact:true}).fill(password);await page.getByRole('button',{name:'Sign in',exact:true}).click();await page.waitForURL(`${origin}/`);
- const relationshipId='51000000-0000-4000-8000-000000000003',products=(await get(`/api/v1/quote-products?relationshipId=${relationshipId}`)).data.items;assert.equal(products.length,2);
+ const relationshipId='51000000-0000-4000-8000-000000000003',products=(await get(`/api/v1/quote-products?relationshipId=${relationshipId}`)).data.items.filter(product => product.captureEligible);assert.equal(products.length,2);
  for(const product of products){
   const proposal=JSON.parse(await readFile(`contracts/examples/quote-capture-${product.productCode}.json`,'utf8')).proposal;
   const created=await post('/api/v1/quotes',{relationshipId,productVersionId:product.productVersionId,proposal});const route=`/api/v1/quotes/${created.id}`;

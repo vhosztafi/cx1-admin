@@ -90,7 +90,7 @@ public sealed class CapacityWorker(IDbContextFactory<BackOfficeDbContext> factor
         if (work.SubjectRecordId != submission.Id || work.OperationKey != lease.OperationKey || operation.Result != serialized) throw Failure(JobFailure.ProviderConflict);
         var escalation = await db.Set<CapacityEscalation>().FromSqlInterpolated($"SELECT * FROM CapacityEscalation WITH(UPDLOCK,HOLDLOCK) WHERE Id={submission.EscalationId}").SingleAsync(token);
         UnderwritingDecisionContext? held = null;
-        if (identity is not null && escalation.CurrentSubmissionId == submission.Id && escalation.CurrentResponseId is null && quote.CurrentUnderwritingCycleId == cycle.Id)
+        if (identity is not null && escalation.State is not ("draft" or "superseded") && escalation.CurrentSubmissionId == submission.Id && escalation.CurrentResponseId is null && quote.CurrentUnderwritingCycleId == cycle.Id)
         {
             try
             {
@@ -126,7 +126,7 @@ public sealed class CapacityWorker(IDbContextFactory<BackOfficeDbContext> factor
             await db.SaveChangesAsync(token); await QuoteReferralService.RefreshState(db, held, now, token);
             await held.Receipt(db, message.Id, 201, "capacity.demo-response", now, token);
         }
-        else if (escalation.CurrentSubmissionId == submission.Id && escalation.CurrentResponseId is null) { escalation.State = "superseded"; escalation.UpdatedAt = now; }
+        else if (escalation.State != "draft" && escalation.CurrentSubmissionId == submission.Id && escalation.CurrentResponseId is null) { escalation.State = "superseded"; escalation.UpdatedAt = now; }
         var attempt = await db.Set<AdapterAttempt>().SingleAsync(x => x.WorkId == work.Id && x.AttemptNumber == lease.Attempt, token);
         attempt.EndedAt = now; attempt.Outcome = held is null ? "superseded" : "succeeded";
         attempt.Response = JsonSerializer.Serialize(new { escalationId = escalation.Id, messageId = message.Id, applicable = held is not null });

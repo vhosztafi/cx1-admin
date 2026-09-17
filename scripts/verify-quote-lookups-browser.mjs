@@ -24,7 +24,7 @@ async function outcome(id,scenario,kind='address',scope='insured'){
 async function request(label,scenario){await field(`${label} · Demo outcome`).selectOption(scenario);await button(`Look up ${label.toLowerCase()}`).click();await page.getByText('Lookup queued. Check the result before making a decision.',{exact:true}).waitFor();}
 try{
  await page.goto(`${origin}/quotes/new`);await page.waitForURL('**/login');await field('Email address').fill('servicing@cover.example');await field('Password').fill(password);await button('Sign in').click();await page.waitForURL(`${origin}/`);
- const relationshipId='51000000-0000-4000-8000-000000000003';const products=(await(await page.request.get(`${origin}/api/v1/quote-products?relationshipId=${relationshipId}`)).json()).items;
+ const relationshipId='51000000-0000-4000-8000-000000000003';const products=(await(await page.request.get(`${origin}/api/v1/quote-products?relationshipId=${relationshipId}`)).json()).items.filter(product => product.captureEligible);
  for(const product of products){
   const proposal=JSON.parse(await readFile(`contracts/examples/quote-capture-${product.productCode}.json`,'utf8')).proposal;
   proposal.insured.address={...proposal.insured.address,postcode:'AB1 2CD'};

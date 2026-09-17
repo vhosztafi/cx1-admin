@@ -32,7 +32,7 @@ jobs:
 
   sql-container:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 60
     services:
       sql:
         image: mcr.microsoft.com/mssql/server:2022-latest
@@ -58,14 +58,19 @@ jobs:
       - run: dotnet restore backend/BackOffice.slnx --configfile NuGet.Config --packages .local/nuget --locked-mode
       # Production cookie/key tests exercise Windows DPAPI and run in full below.
       # This job still runs real SQL migration, scope, batch, lease, inbox and OS restart tests.
+      - name: Record fresh test run boundary
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force .local | Out-Null
+          [DateTimeOffset]::UtcNow.ToString('o') | Set-Content .local/test-start.txt
       - run: dotnet test backend/BackOffice.slnx --no-restore --logger trx --results-directory .local/test-results --filter 'FullyQualifiedName!~AuthenticationTests&FullyQualifiedName!~OperationalJobTests'
       - name: Reject missing, skipped or failed tests
         shell: pwsh
-        run: ./scripts/assert-test-results.ps1 -ResultsDirectory .local/test-results -MinimumTests 678 -MinimumSqlTests 83
+        run: ./scripts/assert-test-results.ps1 -ResultsDirectory .local/test-results -MinimumTests 836 -MinimumSqlTests 167 -NotBeforeUtc (Get-Content .local/test-start.txt)
 
   windows-sql-and-identity:
     runs-on: windows-2025
-    timeout-minutes: 30
+    timeout-minutes: 60
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: '1'
       COVER_SQL_TEST_CONNECTION: Server=(localdb)\CoverMGA_CI;Database=CoverMGA_Demo;Integrated Security=true;Encrypt=true;TrustServerCertificate=true
@@ -87,13 +92,18 @@ jobs:
           & sqllocaldb create CoverMGA_CI ($supported[0].ToString()) -s
           if ($LASTEXITCODE -ne 0) { throw 'Could not start the owned CI SQL instance.' }
       - run: dotnet restore backend/BackOffice.slnx --configfile NuGet.Config --packages .local/nuget --locked-mode
+      - name: Record fresh test run boundary
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force .local | Out-Null
+          [DateTimeOffset]::UtcNow.ToString('o') | Set-Content .local/test-start.txt
       - run: dotnet test backend/BackOffice.slnx --no-restore --logger trx --results-directory .local/test-results
       - name: Exercise result-gate rejection cases
         shell: pwsh
         run: ./scripts/test-result-gate.ps1
       - name: Reject missing, skipped or failed tests
         shell: pwsh
-        run: ./scripts/assert-test-results.ps1 -ResultsDirectory .local/test-results -MinimumTests 680 -MinimumSqlTests 85
+        run: ./scripts/assert-test-results.ps1 -ResultsDirectory .local/test-results -MinimumTests 838 -MinimumSqlTests 169 -NotBeforeUtc (Get-Content .local/test-start.txt)
       - name: Stop owned CI instance
         if: always()
         shell: pwsh

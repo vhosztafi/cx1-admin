@@ -205,5 +205,43 @@ policy and child reads enforce owned term/version/transaction/obligation IDs.
 Repeat initialization adds three fictional policy template kinds for each Motor
 Trade product if absent. Existing template edits/retirement, data and passwords
 are preserved. `policy-document` outbox work intentionally remains pending until
-Phase9 implements document generation. Policy discovery and agency sharing are
-separate Phase6 work; existing client-policy placeholders are replaced there.
+Phase9 implements document generation. Policy discovery, client policy links and restricted agency sharing read the actual
+issued records. They do not expose future servicing or generic document controls.
+
+
+## Phase 6 final verification and restart
+
+Run the full backend suite against the configured native SQL Server in a shell
+that can use Windows integrated authentication. The restricted desktop sandbox may
+fail SQL encryption initialization; this is a failed run, never permission to skip
+SQL tests. Use a fresh results directory and capture UTC immediately before test
+execution, then pass that value to `assert-test-results.ps1 -NotBeforeUtc`.
+The Windows baseline is 838 tests including 169 real-SQL scenarios. Linux CI
+excludes only the two existing Windows identity/job scenarios (836/167); hosted
+Linux CI and Docker are not claimed as locally executed. SQL jobs allow 60 minutes;
+a full native run takes tens of minutes. Duplicate, stale, failed, skipped or
+insufficient reports fail the gate.
+
+With successful underwriting browser reports present, run
+`node scripts/verify-underwriting-restart-browser.mjs capture`. Record the exact
+owned API and Next process IDs, stop only those processes, and restart with the
+same database, signing/data-protection keys, file storage and worker configuration.
+Set `BACKOFFICE_API_ORIGIN=http://127.0.0.1:5087` before Next build/start. Wait for
+health, then run `node scripts/verify-underwriting-restart-browser.mjs verify`.
+Each invocation signs in with fresh cookies and compares complete policy graphs,
+source revisions, acceptance, underwriting history and financial/document links.
+The verifier does not reset a database or stop unidentified processes.
+
+Keep `Cover__AgencyNotificationWorkerEnabled=false` during the local browser suite;
+quote lookup, capacity and quotation-delivery demo workers must be enabled. These
+persist deterministic local outcomes and do not call live providers or email.
+The policy-document outbox kind remains intentionally unprocessed until Phase 9.
+
+For repeat-initialization preservation, with those owned preview/worker processes
+stopped, run `./scripts/verify-underwriting-preservation.ps1 -EvidenceDirectory
+.local/preservation-<fresh-name>`. It uses native integrated SQL authentication,
+executes additive initialization twice and compares 44 validated named count/hash
+sets, including old revisions, credentials, policy graphs, journals and document
+requests. It rejects SQL errors, NULL/malformed hashes, missing or duplicate rows
+and any changed set. Empty tables hash the explicit empty JSON array. This is
+separate from the API restart readback and does not reset the database.

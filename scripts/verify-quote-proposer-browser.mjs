@@ -21,7 +21,7 @@ try {
   await field('Email address').fill('servicing@cover.example'); await field('Password').fill(password);
   await page.getByRole('button', { name: 'Sign in', exact: true }).click(); await page.waitForURL(`${origin}/`);
   const relationshipId = '51000000-0000-4000-8000-000000000003';
-  const products = (await (await page.request.get(`${origin}/api/v1/quote-products?relationshipId=${relationshipId}`)).json()).items;
+  const products = (await (await page.request.get(`${origin}/api/v1/quote-products?relationshipId=${relationshipId}`)).json()).items.filter(product => product.captureEligible);
   for (const product of products) {
     const token = (await (await page.request.get(`${origin}/api/v1/auth/csrf`)).json()).requestToken;
     const created = await page.request.post(`${origin}/api/v1/quotes`, { headers: { 'X-CSRF-Token': token, 'Idempotency-Key': crypto.randomUUID() }, data: { relationshipId, productVersionId: product.productVersionId } });

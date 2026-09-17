@@ -18,7 +18,7 @@ async function capture(name){await page.screenshot({path:`${output}/${name}-desk
 try{
  await login(page,'underwriter');const marker=Date.now().toString(36),name=`Fictional Integration Traders ${marker}`;
  const baseRelationship=(await get('/api/v1/relationships/51000000-0000-4000-8000-000000000003')).data,agencyId=baseRelationship.agencyId;
- const products=(await get(`/api/v1/quote-products?relationshipId=${baseRelationship.id}`)).data.items;assert.equal(products.length,2);
+ const products=(await get(`/api/v1/quote-products?relationshipId=${baseRelationship.id}`)).data.items.filter(product => product.captureEligible);assert.equal(products.length,2);
  const clients=[];
  for(let index=0;index<2;index++){
   const created=await write('POST','/api/v1/clients',{legalName:name,entityType:'sole-trader',address:{line1:'1 Fictional Workshop Lane',town:'Sheffield',postcode:'S1 1AA',country:'GB'}});
@@ -26,7 +26,7 @@ try{
   const relationship=await write('POST',`/api/v1/clients/${client.id}/relationships`,{agencyId},created.etag);clients.push({...client,relationshipId:relationship.data.id});
  }
  await page.goto(`${origin}/clients/${clients[1].id}`);await page.getByRole('link',{name:'New quote',exact:true}).click();await page.getByText(clients[1].reference,{exact:true}).first().waitFor();
- await page.getByRole('radio',{name:new RegExp(baseRelationship.agencyName)}).check();await page.getByRole('radio',{name:/Motor Trade Road Risks/}).check();
+ await page.getByRole('radio',{name:new RegExp(baseRelationship.agencyName)}).check();await page.getByRole('radio',{name:/Motor Trade Road Risks/}).and(page.locator(':enabled')).check();
  let first=true;const attempts=[];await page.route('**/api/v1/quotes',async route=>{if(route.request().method()!=='POST')return route.continue();attempts.push({body:route.request().postData(),key:route.request().headers()['idempotency-key']});if(first){first=false;const response=await route.fetch();assert.equal(response.status(),201,await response.text());await route.abort('failed');}else await route.continue();});
  await button('Create quote draft').click();await button('Retry same creation').click();await page.waitForURL(url=>/^\/quotes\/[0-9a-f-]+$/.test(url.pathname));await button('Withdraw quote').waitFor();await page.unroute('**/api/v1/quotes');assert.equal(attempts.length,2);assert.deepEqual(attempts[0],attempts[1]);
  const quoteId=page.url().split('/').at(-1),original=(await get(`/api/v1/quotes/${quoteId}`)).data;assert.ok(original.matchReviewId);assert.ok(original.readiness.issues.some(x=>x.category==='matching'));
@@ -51,7 +51,7 @@ try{
  await page.getByRole('link',{name:name,exact:true}).click();await page.getByLabel('Client sections',{exact:true}).getByRole('link',{name:'Quotes',exact:true}).click();await page.getByRole('link',{name:linked.reference,exact:true}).waitFor();await capture('client-quotes');
  await page.getByRole('link',{name:'Activity',exact:true}).click();await page.getByRole('link',{name:'Quote saved.',exact:true}).first().click();await button('Withdraw quote').waitFor();
  await page.goto(`${origin}/quotes`);const table=page.getByRole('region',{name:'Saved quotes',exact:true});await table.waitFor();const initialRef=await table.locator('tbody tr').first().innerText();await button('Next page').last().click();await page.waitForFunction(old=>{const row=document.querySelector('table tbody tr');return row&&row.innerText!==old;},initialRef);await table.waitFor();
- await page.goto(`${origin}/agents/${agencyId}/sharing`);await page.getByLabel('Search shared quote summaries',{exact:true}).fill(linked.reference);await page.getByRole('button',{name:'Search',exact:true}).last().click();await page.getByRole('region',{name:'Shared quote summaries',exact:true}).getByText(linked.reference,{exact:true}).waitFor();
+ await page.goto(`${origin}/agents/${agencyId}/sharing`);await page.getByLabel('Search shared quote summaries',{exact:true}).fill(linked.reference);await page.locator('form').filter({has:page.getByLabel('Search shared quote summaries',{exact:true})}).getByRole('button',{name:'Search',exact:true}).click();await page.getByRole('region',{name:'Shared quote summaries',exact:true}).getByText(linked.reference,{exact:true}).waitFor();
  const sharedQuotes=(await get(`/api/v1/agencies/${agencyId}/sharing/quotes?q=${linked.reference}`)).data;assert.equal(sharedQuotes.totalCount,1);assert.ok(shared(sharedQuotes.items[0]),JSON.stringify(shared.errors));assert.ok(!JSON.stringify(sharedQuotes).includes(registration));await capture('agency-sharing');
  const combined=products.find(x=>x.productCode==='motor-trade-combined');const combinedCreate=await write('POST','/api/v1/quotes',{relationshipId:baseRelationship.id,productVersionId:combined.productVersionId,proposal:{schemaVersion:'1.0',productCode:combined.productCode}});
  const combinedRead=(await get(`/api/v1/quotes/${combinedCreate.data.id}`)).data;const combinedList=(await get(`/api/v1/quotes?q=${combinedRead.reference}&productCode=motor-trade-combined`)).data;assert.equal(combinedList.totalCount,1);assert.ok(summary(combinedList.items[0]),JSON.stringify(summary.errors));

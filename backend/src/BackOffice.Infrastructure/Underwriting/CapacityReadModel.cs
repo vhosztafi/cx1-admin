@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackOffice.Infrastructure.Underwriting;
 
-public sealed class CapacityReadModel(IDbContextFactory<BackOfficeDbContext> factory, TimeProvider time)
+public sealed partial class CapacityReadModel(IDbContextFactory<BackOfficeDbContext> factory, TimeProvider time)
 {
     public async Task<Guid> QuoteForEscalationAsync(ActorContext actor, Guid id, CancellationToken token = default)
     {
@@ -55,7 +55,10 @@ public sealed class CapacityReadModel(IDbContextFactory<BackOfficeDbContext> fac
             ["ruleCode"] = referral.RuleCode, ["dimension"] = referral.Dimension,
             ["binderContext"] = binderContext,
             ["capabilities"] = new { canSend = canWrite && row.State is not ("queued" or "superseded") && referral.State is not ("superseded" or "declined"),
-                canRecordResponse = canWrite && row.CurrentSubmissionId is not null && owned.Scope.Actor.HasCapability("underwriting-record-capacity"),
+                canRecordResponse = canWrite && row.State is not ("draft" or "superseded") && row.CurrentSubmissionId is not null && owned.Scope.Actor.HasCapability("underwriting-record-capacity"),
+                canWithdraw = canWrite && row.State is "queued" or "sent" or "queried" or "failed",
+                canReopen = canWrite && row.State is "approved" or "conditional" or "declined",
+                canAssign = canWrite && row.State != "superseded",
                 canRevise = current && owned.Scope.Actor.HasCapability("quote-revise") },
             ["blockers"] = current ? Array.Empty<object>() : new object[] { new { code = "underwriting-cycle-stale", message = "This request belongs to an earlier quote cycle." } }
         };
@@ -80,6 +83,7 @@ public sealed class CapacityReadModel(IDbContextFactory<BackOfficeDbContext> fac
         result["conflictCount"] = await (from quarantine in db.Set<AdapterQuarantine>().AsNoTracking()
                                         join message in db.Set<CapacityMessage>().AsNoTracking() on quarantine.InboxId equals message.InboxId
                                         where message.EscalationId == id select quarantine.Id).CountAsync(token);
+        await AddCaseDetails(db, row, owned.Quote, referral, result, token);
         await tx.CommitAsync(token); return result;
     }
     public async Task<(object[] Items, bool More)> MessagesAsync(ActorContext actor, Guid id, string expectedVersion, int offset, int size, CancellationToken token = default)

@@ -168,7 +168,7 @@ Declarations & review captures each Yes/No answer and its explanation, plus mate
 
 ## Complete Motor Trade capture and discovery
 
-Use Quotes to search current registrations, quote/client references, business names or agencies. Product, draft/withdrawn status, agency, requested start and updated order are available with paging. Lists refresh after versioned changes rather than silently skipping records. Client Overview, Quotes and Activity open actual quotes; policy records remain unavailable until Phase6.
+Use Quotes to search current registrations, quote/client references, business names or agencies. Product, draft/withdrawn status, agency, requested start and updated order are available with paging. Lists refresh after versioned changes rather than silently skipping records. Client Overview, Quotes and Activity open actual quotes; Policies opens actual issued records and their immutable source snapshots.
 
 The quote editor reports **Capture checks passed** only for a complete saved proposal with current eligibility, matching, actual attached evidence and recorded vehicle lookup/manual decisions. This is not a rate, bind or issue decision. Incomplete drafts remain saveable. Evidence files and attachments survive reload; changed relevant answers make evidence stale. Deterministic lookup scenarios make no external provider calls. Entering a registration alone does not verify a vehicle or submit it to MID.
 
@@ -212,4 +212,56 @@ created by the local Chrome journey, not fixtures guaranteed in a fresh database
 Reproduce with `node scripts/verify-underwriting-capacity-browser.mjs`; add
 `--readback` to check saved correspondence and page-refresh recovery without new
 business mutations. Screenshots/report are in `.local/browser-evidence/underwriting-capacity`.
-Terms, acceptance and first policy issue remain the next Phase 6 slices.
+Terms, acceptance and first policy issue are available as described below.
+
+
+## Rate, accept and issue a Motor Trade policy
+
+Use the demo underwriter account. On a complete Motor Trade quote, open Underwriting
+and rate the saved revision. Inspect the actual component breakdown, rule/binder
+versions, authority limits, referrals and current proof requirements. Review proof
+and resolve each applicable referral; an attachment alone is not accepted evidence.
+A new rating or a material change requires current reassessment.
+
+Capacity correspondence supports Answer the query and Chase a response. Each is a
+new explicit submission with immutable correspondence; old approval/acceptance no
+longer applies. Withdraw an open request or reopen a concluded request to draft;
+prior messages remain visible. Escalate internally assigns an active senior
+underwriter and records the reason separately from carrier correspondence. Similar
+past referrals show the latest ten actual same-agency/product/provider/rule cases,
+with source links. Previous decisions do not confer authority on the new request.
+
+Open Quotation, prepare the exact terms, attach/review the signed statement and
+choose a current relationship contact. Demo delivery must reach Delivered before
+acceptance. Attach/review acceptance proof, then record the named accepter, received
+instant and channel for those exact terms. Review policy issue shows the client,
+agency, cover dates and opening amount due. Confirming atomically creates the
+policy, immutable version, transaction, obligation, balanced journal and three
+requested documents. A lost response can be retried with the same saved command.
+No payment is collected and document generation is still pending Phase 9.
+
+Policies supports current reference/client/agency/registration search, product and
+state/date filters, sort and paging. Client Policies and Activity open the same
+records. The agency-sharing view exposes only safe own-agency policy summaries;
+internal risk, evidence, rating and finance fields are not shared.
+
+The preserved local demo contains PL-MT-0000000001 (Combined) and
+PL-MT-0000000002 (Road Risks), both issued through the actual acceptance journey.
+PL-MT-0000000005 is the final Combined carrier example. Further examples created
+by the final suite retain the reviewed W-07
+overnight-security condition, supplied carrier responses and internal action history.
+They are local demo records, not guaranteed IDs in a fresh database.
+
+Run `pnpm web:browser:underwriting` against the configured local API/Next previews.
+It adds a fictional carrier case, reads both retained issued product examples,
+checks discovery/sharing, and runs all 37 earlier quote/agency/client journeys.
+On a fresh initialized demo, first run these additive journeys in order:
+`node scripts/verify-underwriting-rating-browser.mjs`,
+`node scripts/verify-underwriting-terms-browser.mjs`, and
+`node scripts/verify-underwriting-issue-browser.mjs`. They produce the prerequisite
+reports and two actually issued product examples. The final suite requires those
+reports; retain them alongside the preserved local database. Reports live under `.local/underwriting-suite`
+and `.local/browser-evidence`. UI failure fixtures are explicitly labelled and do
+not count as persisted business outcomes. Restart capture/verify is a separate
+operator step documented in SETUP. Human business/assistive-technology UAT remains
+unperformed.

@@ -18,7 +18,7 @@ try {
   await page.getByLabel('Email address', { exact: true }).fill('servicing@cover.example');
   await page.getByLabel('Password', { exact: true }).fill(password);
   await page.getByRole('button', { name: 'Sign in', exact: true }).click(); await page.waitForURL(`${origin}/`);
-  const products = (await (await page.request.get(`${origin}/api/v1/quote-products?relationshipId=${relationshipId}`)).json()).items;
+  const products = (await (await page.request.get(`${origin}/api/v1/quote-products?relationshipId=${relationshipId}`)).json()).items.filter(product => product.captureEligible);
   for (const product of products) {
     const response = await page.request.post(`${origin}/api/v1/quotes`, { headers: { 'X-CSRF-Token': await csrf(), 'Idempotency-Key': crypto.randomUUID() }, data: { relationshipId, productVersionId: product.productVersionId, proposal: { schemaVersion: '1.0', productCode: product.productCode, insured: { responses: { questionSetVersion: product.questionSetVersion, answers: [{ questionId: 'MTS-01-Q01', kind: 'boolean', value: false }] } } } } });
     assert.equal(response.status(), 201); const id = (await response.json()).id;

@@ -20,7 +20,7 @@ internal static class CapacityAuthority
                                join r in db.Set<QuoteReferral>().AsNoTracking() on e.ReferralId equals r.Id
                                join p in db.Set<CapacityProvider>().AsNoTracking() on e.ProviderId equals p.Id
                                where e.CycleId == held.Cycle.Id && e.QuoteId == held.Cycle.QuoteId && e.BinderVersionId == held.Cycle.BinderVersionId &&
-                                   p.State == "active" && e.State != "superseded" && m.SubmissionId == s.Id && m.ApplicationState == "applied" &&
+                                   p.State == "active" && (e.State == "approved" || e.State == "conditional") && m.SubmissionId == s.Id && m.ApplicationState == "applied" &&
                                    (m.Outcome == "approve" || m.Outcome == "approve-with-conditions")
                                select new { Submission = s, Message = m, Referral = r }).ToArrayAsync(token);
         var eligible = new List<(CapacitySubmission Submission, QuoteReferral Referral, CapacityDecision Decision)>();
@@ -79,6 +79,6 @@ internal static class CapacityAuthority
 
     internal static Task<Guid[]> CarrierDecisionIds(BackOfficeDbContext db, Guid cycleId, CancellationToken token) =>
         (from e in db.Set<CapacityEscalation>().AsNoTracking() join m in db.Set<CapacityMessage>().AsNoTracking() on e.CurrentResponseId equals m.Id
-         where e.CycleId == cycleId && e.State != "superseded" && m.SubmissionId == e.CurrentSubmissionId && m.DecisionId != null
+         where e.CycleId == cycleId && (e.State == "approved" || e.State == "conditional") && m.SubmissionId == e.CurrentSubmissionId && m.DecisionId != null
          select m.DecisionId!.Value).ToArrayAsync(token);
 }

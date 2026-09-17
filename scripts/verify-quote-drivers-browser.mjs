@@ -25,7 +25,7 @@ try {
   await page.goto(`${origin}/quotes/new`); await page.waitForURL('**/login');
   await field('Email address').fill('servicing@cover.example'); await field('Password').fill(password); await button('Sign in').click(); await page.waitForURL(`${origin}/`);
   const relationshipId = '51000000-0000-4000-8000-000000000003';
-  const products = (await (await page.request.get(`${origin}/api/v1/quote-products?relationshipId=${relationshipId}`)).json()).items;
+  const products = (await (await page.request.get(`${origin}/api/v1/quote-products?relationshipId=${relationshipId}`)).json()).items.filter(product => product.captureEligible);
   for (const product of products) {
     const fixture = JSON.parse(await readFile(`contracts/examples/quote-capture-${product.productCode}.json`,'utf8')).proposal;
     const created = await page.request.post(`${origin}/api/v1/quotes`, { headers: { 'X-CSRF-Token': await csrf(), 'Idempotency-Key': crypto.randomUUID() }, data: { relationshipId, productVersionId: product.productVersionId, proposal: fixture } });

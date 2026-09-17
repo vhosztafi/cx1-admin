@@ -17,7 +17,7 @@ async function evidence(id){const response=await page.request.get(`${origin}/api
 async function settled(){await page.getByText('Evidence action recorded. Saved requirements refreshed.',{exact:true}).waitFor();await button('Upload evidence file').isEnabled();await page.getByText('Loading saved evidence…',{exact:true}).waitFor({state:'hidden'});}
 try {
  await page.goto(`${origin}/quotes/new`);await page.waitForURL('**/login');await field('Email address').fill('servicing@cover.example');await field('Password').fill(password);await button('Sign in').click();await page.waitForURL(`${origin}/`);
- const relationshipId='51000000-0000-4000-8000-000000000003';const products=(await(await page.request.get(`${origin}/api/v1/quote-products?relationshipId=${relationshipId}`)).json()).items;
+ const relationshipId='51000000-0000-4000-8000-000000000003';const products=(await(await page.request.get(`${origin}/api/v1/quote-products?relationshipId=${relationshipId}`)).json()).items.filter(product => product.captureEligible);
  for(const product of products){
   const proposal=JSON.parse(await readFile(`contracts/examples/quote-capture-${product.productCode}.json`,'utf8')).proposal;
   const response=await page.request.post(`${origin}/api/v1/quotes`,{headers:{'X-CSRF-Token':await csrf(),'Idempotency-Key':crypto.randomUUID()},data:{relationshipId,productVersionId:product.productVersionId,proposal}});assert.equal(response.status(),201,await response.text());const id=(await response.json()).id;

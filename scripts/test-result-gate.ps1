@@ -2,7 +2,9 @@ $ErrorActionPreference = 'Stop'
 $root = Join-Path (Get-Location) ('.local/trx-gate-cases-' + [guid]::NewGuid().ToString('N'))
 $gate = Join-Path $PSScriptRoot 'assert-test-results.ps1'
 function Write-Report([string]$directory,[string]$name,[string]$testName,[int]$passed,[int]$skipped,[string]$outcome) {
-    $xml = '<TestRun><Results><UnitTestResult testName="' + $testName + '" outcome="' + $outcome + '" /></Results><ResultSummary><Counters total="1" passed="' + $passed + '" notExecuted="' + $skipped + '" /></ResultSummary></TestRun>'
+    $identity = [guid]::NewGuid().ToString('D')
+    $now = [DateTimeOffset]::UtcNow.ToString('o')
+    $xml = '<TestRun id="' + $identity + '"><Times start="' + $now + '" finish="' + $now + '"/><Results><UnitTestResult testId="' + $identity + '" testName="' + $testName + '" outcome="' + $outcome + '" /></Results><ResultSummary><Counters total="1" passed="' + $passed + '" notExecuted="' + $skipped + '" /></ResultSummary></TestRun>'
     [IO.File]::WriteAllText((Join-Path $directory $name),$xml)
 }
 foreach ($case in @('pass','skip','failure','missing-sql','missing-report','undercount')) {

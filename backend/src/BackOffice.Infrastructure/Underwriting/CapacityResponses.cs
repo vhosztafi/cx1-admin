@@ -45,7 +45,7 @@ public sealed partial class CapacityService
             {
                 var now = time.GetUtcNow(); held!.Current(version, now, currentPrice: true);
                 UnderwritingDecisionContext.CheckVersion(escalation!.RowVersion, escalationVersion, "stale-capacity-escalation");
-                if (escalation.CurrentSubmissionId != submission!.Id || submission.ContextHash != response.SubmissionHash || escalation.State == "superseded")
+                if (escalation.CurrentSubmissionId != submission!.Id || submission.ContextHash != response.SubmissionHash || escalation.State is "draft" or "superseded")
                     throw new QuoteOperationException(412, "stale-capacity-submission");
                 if (response.ReceivedAt.Offset != TimeSpan.Zero || response.ReceivedAt > now || response.ReceivedAt < submission.SubmittedAt)
                     throw new QuoteOperationException(422, "capacity-response-time");

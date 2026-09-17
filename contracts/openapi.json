@@ -8479,7 +8479,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending",
+        "x-runtime-status": "phase-6-08-implemented",
         "x-etag-resource": "quote"
       },
       "get": {
@@ -8705,7 +8705,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending"
+        "x-runtime-status": "phase-6-08-implemented"
       }
     },
     "/quotes/{quoteId}/acceptances": {
@@ -8895,7 +8895,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending",
+        "x-runtime-status": "phase-6-08-implemented",
         "x-etag-resource": "quote"
       }
     },
@@ -18328,7 +18328,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending",
+        "x-runtime-status": "phase-6-07-implemented",
         "x-etag-resource": "quote"
       }
     },
@@ -18440,7 +18440,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending"
+        "x-runtime-status": "phase-6-07-implemented"
       }
     },
     "/escalations/{escalationId}/messages": {
@@ -18593,7 +18593,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending"
+        "x-runtime-status": "phase-6-07-implemented"
       }
     },
     "/escalations/{escalationId}/send": {
@@ -18783,7 +18783,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending",
+        "x-runtime-status": "phase-6-07-implemented",
         "x-etag-resource": "quote"
       }
     },
@@ -18974,7 +18974,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending",
+        "x-runtime-status": "phase-6-07-implemented",
         "x-etag-resource": "quote"
       }
     },
@@ -51153,7 +51153,7 @@
       "get": {
         "operationId": "listClientRecords",
         "summary": "list Client Records",
-        "description": "Requires client-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Defaults to kind=quote. Quote links are available to quote-read identities; kind=policy remains 503. Only actual implemented quote/policy records are returned. Module unavailability is 503, not an invented empty live portfolio.",
+        "description": "Requires client-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Defaults to kind=quote. Quote links require current quote-read authority; kind=policy requires policy-discovery-read. Both kinds return actual persisted records, with an empty list only when no owned records exist.",
         "tags": [
           "clients"
         ],
@@ -62430,6 +62430,190 @@
         "x-etag-resource": "quote"
       }
     },
+    "/escalations/{escalationId}/actions": {
+      "post": {
+        "operationId": "recordCapacityAction",
+        "summary": "record Capacity Action",
+        "description": "Requires underwriting-escalate. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Phase 6 contract; runtime availability requires owning-plan verification. Current identity, agency and subject scope apply before receipt replay. Responses are no-store.",
+        "tags": [
+          "escalations"
+        ],
+        "x-permission": "underwriting-escalate",
+        "x-idempotency": "required",
+        "security": [
+          {
+            "Session": [],
+            "Csrf": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "escalationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 200
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "description": "Strong current owning quote ETag. Relevant child ETags are separate request fields; lock the quote and authorise before replay."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnderwritingCommandResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnderwritingCapacityActionRequest"
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-6-14-implemented",
+        "x-etag-resource": "quote"
+      }
+    },
     "/quotes/{quoteId}/terms/prepare": {
       "post": {
         "operationId": "prepareQuoteTerms",
@@ -62617,7 +62801,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-6-pending",
+        "x-runtime-status": "phase-6-08-implemented",
         "x-etag-resource": "quote"
       }
     },
@@ -78348,6 +78532,79 @@
           "outcome"
         ]
       },
+      "UnderwritingCapacityActionRequest": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "cycleId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "escalationEtag": {
+                "type": "string",
+                "pattern": "^\"[!#-~]+\"$",
+                "maxLength": 100
+              },
+              "action": {
+                "type": "string",
+                "enum": [
+                  "withdraw",
+                  "reopen"
+                ]
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "cycleId",
+              "escalationEtag",
+              "action",
+              "reason"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "cycleId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "escalationEtag": {
+                "type": "string",
+                "pattern": "^\"[!#-~]+\"$",
+                "maxLength": 100
+              },
+              "action": {
+                "const": "assign"
+              },
+              "assignedUserId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "cycleId",
+              "escalationEtag",
+              "action",
+              "assignedUserId",
+              "reason"
+            ]
+          }
+        ]
+      },
       "UnderwritingEscalationView": {
         "type": "object",
         "additionalProperties": false,
@@ -78523,6 +78780,164 @@
             "type": "string",
             "format": "uuid"
           },
+          "assignmentOptions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200,
+                  "pattern": "\\S"
+                }
+              },
+              "required": [
+                "id",
+                "label"
+              ]
+            },
+            "minItems": 0,
+            "maxItems": 1000,
+            "uniqueItems": true
+          },
+          "actionHistory": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "occurredAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2000,
+                  "pattern": "\\S"
+                },
+                "actorLabel": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200,
+                  "pattern": "\\S"
+                },
+                "action": {
+                  "type": "string",
+                  "enum": [
+                    "withdraw",
+                    "reopen",
+                    "assign"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "occurredAt",
+                "reason",
+                "actorLabel",
+                "action"
+              ]
+            },
+            "minItems": 0,
+            "maxItems": 50,
+            "uniqueItems": true
+          },
+          "similarReferrals": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "quoteId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "referralId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "quoteReference": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 40,
+                  "pattern": "\\S"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "state": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 30,
+                  "pattern": "\\S"
+                },
+                "request": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2000,
+                  "pattern": "\\S"
+                },
+                "policyId": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "outcome": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "conditions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100,
+                    "pattern": "\\S"
+                  },
+                  "minItems": 0,
+                  "maxItems": 20,
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "id",
+                "quoteId",
+                "referralId",
+                "quoteReference",
+                "createdAt",
+                "state",
+                "request",
+                "conditions"
+              ]
+            },
+            "minItems": 0,
+            "maxItems": 10,
+            "uniqueItems": true
+          },
           "scenarios": {
             "type": "array",
             "items": {
@@ -78557,12 +78972,24 @@
               },
               "canRevise": {
                 "type": "boolean"
+              },
+              "canWithdraw": {
+                "type": "boolean"
+              },
+              "canReopen": {
+                "type": "boolean"
+              },
+              "canAssign": {
+                "type": "boolean"
               }
             },
             "required": [
               "canSend",
               "canRecordResponse",
-              "canRevise"
+              "canRevise",
+              "canWithdraw",
+              "canReopen",
+              "canAssign"
             ]
           },
           "messages": {
@@ -78609,7 +79036,10 @@
           "binderContext",
           "capabilities",
           "messages",
-          "blockers"
+          "blockers",
+          "assignmentOptions",
+          "actionHistory",
+          "similarReferrals"
         ]
       },
       "UnderwritingPrepareTermsRequest": {

@@ -64,12 +64,17 @@ export function addUnderwritingContracts({schemas:s,ref:r,operation:op,paths}){
     providerUnderwriter:t(),providerReference:t(100),outcome:e('approve','approve-with-conditions','query','decline'),validFrom:instant,validTo:instant,evidenceAssociationId:id,providerEventId:t(100),authorisedLimits:many(r('UnderwritingCapacityExtension'),20),conditions:many(r('UnderwritingConditionWrite'),20)},['id','escalationId','submissionId','submissionHash','direction','provenance','body','recordedAt']);
   s.UnderwritingCapacityScenario=o({id,label:t(),version:{type:'integer',minimum:1}});
   s.UnderwritingCapacityAttempt=o({number:{type:'integer',minimum:1,maximum:18},startedAt:instant,endedAt:instant,outcome:t(30),errorCode:t(100)},['number','startedAt','outcome']);
+  s.UnderwritingCapacityActionRequest={oneOf:[
+    o({...commandContext,escalationEtag:etag,action:e('withdraw','reopen'),reason}),
+    o({...commandContext,escalationEtag:etag,action:{const:'assign'},assignedUserId:id,reason})]};
   s.UnderwritingEscalationView=o({id,...context,referralId:id,providerId:id,binderVersionId:id,etag,quoteEtag:etag,state:e('draft','queued','sent','queried','approved','conditional','declined','superseded','failed'),
     binderContext:many(o({code:t(100),label:t(200),requested:t(200),binderLimit:t(200)}),1000),current:bool,reason,raisedAt:instant,raisedByLabel:t(),providerLabel:t(),ruleCode:t(60),dimension:t(60),assignedUserLabel:t(),
     currentSubmissionId:id,submissionHash:hash,submittedAt:instant,responseDueAt:instant,serviceStandard:t(200),jobId:id,currentResponseId:id,
-    scenarios:many(r('UnderwritingCapacityScenario'),6),attemptHistory:many(r('UnderwritingCapacityAttempt'),18),conflictCount:count,capabilities:o({canSend:bool,canRecordResponse:bool,canRevise:bool}),
+    assignmentOptions:many(o({id,label:t()}),1000),actionHistory:many(o({id,occurredAt:instant,reason,actorLabel:t(),action:e('withdraw','reopen','assign')}),50),
+    similarReferrals:many(o({id,quoteId:id,referralId:id,quoteReference:t(40),createdAt:instant,state:t(30),request:t(2000),policyId:{anyOf:[id,{type:'null'}]},outcome:{type:['string','null']},conditions:many(t(100),20)},['id','quoteId','referralId','quoteReference','createdAt','state','request','conditions']),10),
+    scenarios:many(r('UnderwritingCapacityScenario'),6),attemptHistory:many(r('UnderwritingCapacityAttempt'),18),conflictCount:count,capabilities:o({canSend:bool,canRecordResponse:bool,canRevise:bool,canWithdraw:bool,canReopen:bool,canAssign:bool}),
     messages:many(r('UnderwritingCapacityMessage'),100),blockers:many(r('UnderwritingBlocker'),200)},
-    ['id',...Object.keys(context),'referralId','providerId','binderVersionId','etag','quoteEtag','state','current','reason','raisedAt','raisedByLabel','providerLabel','ruleCode','dimension','scenarios','attemptHistory','conflictCount','binderContext','capabilities','messages','blockers']);
+    ['id',...Object.keys(context),'referralId','providerId','binderVersionId','etag','quoteEtag','state','current','reason','raisedAt','raisedByLabel','providerLabel','ruleCode','dimension','scenarios','attemptHistory','conflictCount','binderContext','capabilities','messages','blockers','assignmentOptions','actionHistory','similarReferrals']);
   s.UnderwritingPrepareTermsRequest=o({...commandContext,ratingId:id,templateVersionId:id});
   s.UnderwritingSendTermsRequest=o({termsVersionId:id,recipientContactIds:many(id,20,1)});
   s.UnderwritingAcceptanceRequest=o({...commandContext,ratingId:id,termsVersionId:id,termsHash:hash,assuranceHash:hash,accepterLabel:t(),acceptedAt:instant,channel:e('email','written','telephone'),evidenceAssociationId:id});
@@ -103,6 +108,9 @@ export function addUnderwritingContracts({schemas:s,ref:r,operation:op,paths}){
         : ['decideQuoteReferrals','decideReferral','getReferral','listReferrals','attachUnderwritingEvidence','listUnderwritingEvidence',
           'listUnderwritingEvidenceEvents','listReferralDecisions','reviewUnderwritingEvidence','withdrawUnderwritingEvidence',
           'uploadUnderwritingEvidenceFile','resolveReferralCondition'].includes(name) ? 'phase-6-05-implemented'
+          : ['createEscalation','getEscalation','listEscalationMessages','sendEscalation','recordCapacityResponse'].includes(name) ? 'phase-6-07-implemented'
+          : ['prepareQuoteTerms','sendQuoteTerms','listQuoteTerms','recordQuoteAcceptance'].includes(name) ? 'phase-6-08-implemented'
+          : name === 'recordCapacityAction' ? 'phase-6-14-implemented'
           : ['issueQuote','getPolicy','getIssuedPolicyTerm','getIssuedPolicyVersion','getIssuedPolicyTransaction','getIssuedPolicyObligation'].includes(name) ? 'phase-6-11-implemented' : 'phase-6-pending';
     operation.description+=' Phase 6 contract; runtime availability requires owning-plan verification. Current identity, agency and subject scope apply before receipt replay. Responses are no-store.';
     if(method!=='get'){
@@ -138,6 +146,7 @@ export function addUnderwritingContracts({schemas:s,ref:r,operation:op,paths}){
   replace('get','/escalations/{escalationId}/messages','listEscalationMessages','underwriting-read',{output:page(r('UnderwritingCapacityMessage')),query:paging});
   write('/escalations/{escalationId}/send','sendEscalation','underwriting-escalate','UnderwritingEscalationSendRequest','UnderwritingWorkResult',202);
   write('/escalations/{escalationId}/responses','recordCapacityResponse','underwriting-record-capacity','UnderwritingCapacityResponseRequest','UnderwritingCommandResult',201);
+  write('/escalations/{escalationId}/actions','recordCapacityAction','underwriting-escalate','UnderwritingCapacityActionRequest');
   write('/quotes/{quoteId}/terms/prepare','prepareQuoteTerms','quote-terms','UnderwritingPrepareTermsRequest','UnderwritingCommandResult',201);
   write('/quotes/{quoteId}/terms','sendQuoteTerms','quote-terms','UnderwritingSendTermsRequest','UnderwritingWorkResult',202);
   replace('get','/quotes/{quoteId}/terms','listQuoteTerms','quote-read',{output:o({terms:many(r('UnderwritingTermsView'),100),deliveries:many(r('UnderwritingDeliveryView'),100),acceptances:many(r('UnderwritingAcceptanceView'),100),templates:many(r('UnderwritingTermsTemplate'),100),recipientOptions:many(r('UnderwritingTermsRecipient'),1000),nextTermsCursor:t(2048),nextDeliveriesCursor:t(2048),nextAcceptancesCursor:t(2048)},['terms','deliveries','acceptances','templates','recipientOptions']),query:[['termsCursor',t(2048)],['deliveriesCursor',t(2048)],['acceptancesCursor',t(2048)],['pageSize',{type:'integer',minimum:1,maximum:100}]]});

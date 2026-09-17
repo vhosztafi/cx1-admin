@@ -14,6 +14,22 @@ public static class CapacityEndpoints
         app.MapGet("/api/v1/escalations/{escalationId:guid}/messages", Messages).RequireAuthorization("underwriting-read");
         app.MapPost("/api/v1/escalations/{escalationId:guid}/send", Send).RequireAuthorization("underwriting-escalate");
         app.MapPost("/api/v1/escalations/{escalationId:guid}/responses", Response).RequireAuthorization("underwriting-record-capacity");
+        app.MapPost("/api/v1/escalations/{escalationId:guid}/actions", Action).RequireAuthorization("underwriting-escalate");
+    }
+    private static async Task<IResult> Action(Guid escalationId, HttpContext context, CapacityService service, CapacityReadModel reads)
+    {
+        try
+        {
+            QuoteEndpoints.Id(escalationId); var key = QuoteHttpInput.Key(context.Request); var version = QuoteHttpInput.Version(context.Request);
+            using var doc = await QuoteHttpInput.Read(context.Request, context.RequestAborted); var root = doc.RootElement;
+            var action = QuoteReferralEndpoints.Text(root, "action", 20);
+            QuoteHttpInput.Keys(root, action == "assign" ? ["cycleId", "escalationEtag", "action", "assignedUserId", "reason"] : ["cycleId", "escalationEtag", "action", "reason"]);
+            var actor = LocalIdentityService.Actor(context.User); var quoteId = await reads.QuoteForEscalationAsync(actor, escalationId, context.RequestAborted);
+            return QuoteEndpoints.Outcome(context, await service.ActionAsync(actor, quoteId, QuoteHttpInput.Id(root, "cycleId"), escalationId, version,
+                QuoteReferralEndpoints.Version(root, "escalationEtag"), action, action == "assign" ? QuoteHttpInput.Id(root, "assignedUserId") : null,
+                QuoteReferralEndpoints.Text(root, "reason", 2000), key, Guid.NewGuid(), context.RequestAborted));
+        }
+        catch (Exception error) when (QuoteEndpoints.Known(error)) { return QuoteEndpoints.Failure(context, error); }
     }
     private static async Task<IResult> Create(Guid referralId, HttpContext context, CapacityService service, QuoteReferralReadModel referrals)
     {
