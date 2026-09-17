@@ -15,17 +15,27 @@ internal sealed record HeldServicingRating(OwnedQuoteScope Source, ServicingDraf
 
 internal static class ServicingRatingScope
 {
+    internal static bool Matches(HeldServicingRating held, ServicingCycle cycle, ServicingRatingRequestInput input)
+        => held.Draft.State == "draft" && held.Draft.Kind == "adjustment" && held.Draft.CurrentCycleId == cycle.Id &&
+            held.Draft.CurrentRevisionId == cycle.RevisionId && held.Draft.BaseVersionId == cycle.BaseVersionId &&
+            held.Eligible.Capture.Terms.Id == input.AgencyTermsVersionId && held.Eligible.RatingVersion.Id == input.RatingRuleVersionId &&
+            held.Eligible.BinderVersion.Id == input.BinderVersionId && held.Eligible.AuthorityVersion.Id == input.AuthorityVersionId &&
+            held.Eligible.RuntimeVersion.Id == input.RuntimeVersionId && held.Eligible.ScenarioVersion.Id == input.ScenarioVersionId &&
+            held.Setting.Id == input.ServicingSettingVersionId && held.Settings.AdjustmentFee == input.Fee &&
+            held.Eligible.CommissionBasisPoints == input.CommissionBasisPoints && held.Eligible.MinimumPremium == input.MinimumPremium;
+
     // Source quote is an immutable ownership/configuration anchor, never a
     // reopened capture or a surrogate servicing underwriting cycle.
     internal static async Task<HeldServicingRating> HoldAsync(BackOfficeDbContext db, ActorContext actor, Guid draftId,
-        DateTimeOffset now, CancellationToken token)
+        DateTimeOffset now, CancellationToken token, bool write = true)
     {
         var hint = await db.Set<ServicingDraft>().AsNoTracking().Where(x => x.Id == draftId).Select(x => new { x.PolicyId }).SingleOrDefaultAsync(token)
             ?? throw new QuoteOperationException(404, "servicing-draft-not-found");
         var quoteId = await db.Set<Policy>().Where(x => x.Id == hint.PolicyId).Select(x => x.SourceQuoteId).SingleAsync(token);
-        var source = await QuoteUnderwritingScope.HoldAsync(db, actor, quoteId, "quote-rate", token);
-        if (!source.Scope.Actor.HasCapability("policy-draft-write")) throw new QuoteOperationException(403, "servicing-rating-denied");
-        var draft = await ServicingDraftService.HoldDraft(db, source.Scope.Actor, draftId, true, token);
+        var source = write ? await QuoteUnderwritingScope.HoldAsync(db, actor, quoteId, "quote-rate", token)
+            : await QuoteScope.ForQuoteAsync(db, actor, quoteId, QuoteAccess.Read, token);
+        if (write && !source.Scope.Actor.HasCapability("policy-draft-write")) throw new QuoteOperationException(403, "servicing-rating-denied");
+        var draft = await ServicingDraftService.HoldDraft(db, source.Scope.Actor, draftId, write, token);
         var term = await db.Set<PolicyTerm>().SingleAsync(x => x.Id == draft.BaseTermId, token);
         var revision = await db.Set<ServicingRevision>().AsNoTracking().SingleAsync(x => x.Id == draft.CurrentRevisionId && x.DraftId == draft.Id, token);
         var basis = await db.Set<PolicyVersion>().AsNoTracking().SingleAsync(x => x.Id == draft.BaseVersionId && x.TermId == term.Id && x.PolicyId == draft.PolicyId, token);

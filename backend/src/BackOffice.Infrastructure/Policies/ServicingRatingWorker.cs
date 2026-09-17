@@ -88,11 +88,7 @@ public sealed class ServicingRatingWorker(IDbContextFactory<BackOfficeDbContext>
                 eligible = await ServicingRatingScope.HoldAsync(db, actor, draft.Id, now, token);
                 var latest = await db.Set<PolicyVersion>().Where(x => x.PolicyId == hint.PolicyId && x.TermId == hint.BaseTermId)
                     .OrderByDescending(x => x.EffectiveAt).ThenByDescending(x => x.Sequence).Select(x => x.Id).FirstAsync(token);
-                if (latest != hint.BaseVersionId || eligible.Eligible.Capture.Terms.Id != input.AgencyTermsVersionId ||
-                    eligible.Eligible.RatingVersion.Id != input.RatingRuleVersionId || eligible.Eligible.BinderVersion.Id != input.BinderVersionId ||
-                    eligible.Eligible.AuthorityVersion.Id != input.AuthorityVersionId || eligible.Eligible.RuntimeVersion.Id != input.RuntimeVersionId ||
-                    eligible.Eligible.ScenarioVersion.Id != input.ScenarioVersionId || eligible.Setting.Id != input.ServicingSettingVersionId ||
-                    eligible.Eligible.CommissionBasisPoints != input.CommissionBasisPoints || eligible.Eligible.MinimumPremium != input.MinimumPremium) eligible = null;
+                if (latest != hint.BaseVersionId || !ServicingRatingScope.Matches(eligible, hint, input)) eligible = null;
             }
             catch (QuoteOperationException) { eligible = null; }
         }

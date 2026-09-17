@@ -22,6 +22,7 @@ public sealed partial class UnderwritingRuntimeTests
     [InlineData("motor-trade-road-risks", "revoke-before-apply")]
     [InlineData("motor-trade-road-risks", "rotate-rule")]
     [InlineData("motor-trade-road-risks", "temporary-cover")]
+    [InlineData("motor-trade-road-risks", "operator-retry")]
     public async Task RealSqlServicingRatingRequestsPinFullScheduleAndReauthorizeReplay(string product, string scenario)
     {
         await WithDatabase(async (db, password) =>
@@ -104,6 +105,53 @@ public sealed partial class UnderwritingRuntimeTests
             var work = await db.Set<OutboxWork>().AsNoTracking().SingleAsync(x => x.Id == cycle.WorkId);
             Assert.Equal("pending", work.State); Assert.Equal("servicing-rating", work.Kind); Assert.Equal(cycle.Id, work.SubjectRecordId);
             var jobs = new SqlJobLeases(f.Factory, f.Clock); var worker = new ServicingRatingWorker(f.Factory, f.Clock);
+            if (scenario == "operator-retry")
+            {
+                for (var attempt = 1; attempt <= 6; attempt++)
+                {
+                    var failedLease = Assert.IsType<JobLease>(await jobs.ClaimWorkAsync("servicing-rating", work.Id));
+                    Assert.Equal(attempt, failedLease.Attempt);
+                    Assert.True(await jobs.FailAsync(failedLease, JobFailure.ProviderUnavailable));
+                    var failed = await db.Set<OutboxWork>().AsNoTracking().SingleAsync(x => x.Id == work.Id);
+                    if (attempt < 6) f.Clock.Current = failed.NextAttemptAt.AddSeconds(1);
+                }
+                var failedWork = await db.Set<OutboxWork>().AsNoTracking().SingleAsync(x => x.Id == work.Id);
+                Assert.Equal("failed", failedWork.State);
+                Assert.Equal("failed", (await db.Set<ServicingCycle>().AsNoTracking().SingleAsync(x => x.Id == cycle.Id)).State);
+                var recovery = new ServicingRatingJobs(f.Factory, f.Clock); var retryKey = Key();
+                const string retryReason = "Recover fictional servicing rating";
+                Assert.False((await recovery.ReadAsync(f.Servicing, work.Id)).RetryAllowed);
+                Assert.Equal(403, (await Assert.ThrowsAsync<QuoteOperationException>(() => recovery.RetryAsync(f.Servicing, work.Id,
+                    failedWork.RowVersion, retryReason, retryKey, Guid.NewGuid()))).Status);
+                var adminRole = await db.Set<Role>().SingleAsync(x => x.Code == "system-admin");
+                var link = new UserRole { UserId = f.Servicing.UserId, RoleId = adminRole.Id }; db.Add(link); await db.SaveChangesAsync();
+                var recoveryActor = f.Servicing with { Roles = new HashSet<string> { "servicing", "system-admin" } };
+                Assert.True((await recovery.ReadAsync(recoveryActor, work.Id)).RetryAllowed);
+                Assert.Equal(412, (await Assert.ThrowsAsync<QuoteOperationException>(() => recovery.RetryAsync(recoveryActor, work.Id,
+                    work.RowVersion, retryReason, Key(), Guid.NewGuid()))).Status);
+                var recovered = await recovery.RetryAsync(recoveryActor, work.Id, failedWork.RowVersion, retryReason, retryKey, Guid.NewGuid());
+                Assert.Equal(202, recovered.Status);
+                Assert.False((await recovery.ReadAsync(recoveryActor, work.Id)).RetryAllowed);
+                Assert.True((await recovery.RetryAsync(recoveryActor, work.Id, failedWork.RowVersion, retryReason, retryKey, Guid.NewGuid())).Replayed);
+                await db.Database.ExecuteSqlInterpolatedAsync($"DELETE UserRole WHERE Id={link.Id}"); db.ChangeTracker.Clear();
+                Assert.Equal(403, (await Assert.ThrowsAsync<QuoteOperationException>(() => recovery.RetryAsync(recoveryActor, work.Id,
+                    failedWork.RowVersion, retryReason, retryKey, Guid.NewGuid()))).Status);
+                var recoveredLease = Assert.IsType<JobLease>(await jobs.ClaimWorkAsync("servicing-rating", work.Id));
+                Assert.Equal(7, recoveredLease.Attempt);
+                Assert.True(await worker.ApplyAsync(recoveredLease, await worker.ExecuteProviderAsync(recoveredLease)));
+                Assert.Equal("rated", (await db.Set<ServicingCycle>().AsNoTracking().SingleAsync(x => x.Id == cycle.Id)).State);
+                Assert.Equal(7, await db.Set<AdapterAttempt>().CountAsync(x => x.WorkId == work.Id));
+                Assert.Single(await db.Set<ServicingRatingResult>().Where(x => x.CycleId == cycle.Id).ToArrayAsync());
+                db.Add(new UserRole { UserId = f.Servicing.UserId, RoleId = adminRole.Id });
+                var previousSetting = await db.Set<SettingVersion>().AsNoTracking().SingleAsync(x => x.Scope == ServicingRatingSeed.Scope);
+                var changedSetting = JsonNode.Parse(previousSetting.Values)!; changedSetting["adjustmentFee"] = "16.00";
+                db.Add(new SettingVersion { Scope = previousSetting.Scope, Version = previousSetting.Version + 1,
+                    EffectiveFrom = f.Clock.GetUtcNow(), Values = changedSetting.ToJsonString() });
+                await db.SaveChangesAsync();
+                Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => recovery.RetryAsync(recoveryActor, work.Id,
+                    failedWork.RowVersion, retryReason, retryKey, Guid.NewGuid()))).Status);
+                return;
+            }
             async Task<(JobLease Lease, ServicingRatingOutcome Outcome)> Execute(Guid workId)
             {
                 var lease = Assert.IsType<JobLease>(await jobs.ClaimWorkAsync("servicing-rating", workId));
