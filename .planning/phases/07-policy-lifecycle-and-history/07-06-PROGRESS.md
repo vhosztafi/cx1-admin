@@ -554,3 +554,40 @@ proof checks; add guarded warranty acknowledgement requirements, bounded read mo
 strict DI/HTTP/contracts and UI/browser verification. Shared demo/previews and sales
 funnel remain unchanged.07-06 stays incomplete; Phase7 stays5/16, total54/65. Continue
 inline without agents.
+
+
+## Verified condition-requested trading proof checkpoint: e4a80d1
+
+Active latest conditional/query decisions can now request trading-history evidence
+for an established business, even when automatic age-based proof rules would not.
+The evidence projection loads owned active conditions, reparses their closed dated
+definitions against reconstructed risk, and unions their exact dates into current
+requirements. Requirements, attachment and review all use the same asynchronous
+projection. Requested dates are bounded, ordered, unique UTC members of the schedule
+and contribute to the existing exact proof fingerprint. Other base proof behavior
+is unchanged. Superseded decision conditions no longer keep a requirement active.
+
+Both products now exercise a real condition-to-proof flow through UploadAsync,
+AttachAsync and ReviewAsync, followed by persisted satisfaction readback. Accepted
+proof still creates no condition resolution and cannot bypass the separate unresolved
+condition approval gate. Query/reopen removes the current extra proof request while
+retaining both historical condition rows and immutable evidence. This supplies the
+previously missing prerequisite for documentary resolution commands; those commands
+and live resolution evaluation are still next. No HTTP/DI/UI exposure is claimed.
+
+RED .local/phase7-06-requested-proof-red contains1 pure and2 SQL missing-requirement
+failures. The broader reviewed run passes37 unit+4 SQL cases, including both-product
+base evidence review regression. After adding the superseded-requirement/history
+assertions, fresh .local/phase7-06-requested-proof-final/{unit,sql} passes37 unit+2
+SQL cases; gate39/no skips with cutoff2026-09-17T23:13:00Z. Final SQL tests cover the
+complete amended decision/proof workflow. Debug build and git diff --check pass.
+Issued snapshots, shared demo/previews and frontend-code remain unchanged.
+
+Next: ResolveAsync with current grants before replay, editing/version fences, exact
+condition/evidence/review ownership and immutable resolution append; implement live
+satisfaction that rechecks latest resolution, latest accepted review, withdrawal,
+active decision and exact requirement fingerprint. Replace pending-condition/UW-22
+approval blockers only after those paths pass. Warranty acknowledgement still needs
+its guarded proof-purpose extension; signed statements depend on real later terms.
+Then finish bounded read models, DI/HTTP/contracts, UI/browser verification.07-06
+remains incomplete; Phase7 stays5/16, total54/65. Continue inline without agents.

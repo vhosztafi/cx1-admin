@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-06 decision validation/query verified; resolution/live proof and API/UI next
-last_updated: "2026-09-17T23:02:42.699815+00:00"
-last_activity: "2026-09-18 —07-06 decision validation/query 4ba4905 verified;36 unit and4 SQL cases pass; resolution/live proof and HTTP/UI remain."
+stopped_at: Plan07-06 condition-requested trading proof verified; resolution/live satisfaction next
+last_updated: "2026-09-17T23:21:38.695521+00:00"
+last_activity: "2026-09-18 —07-06 requested proof e4a80d1 verified;37 unit and2 SQL cases pass; resolution/live satisfaction and HTTP/UI remain."
 progress:
   total_phases: 13
   completed_phases: 6
@@ -27,8 +27,8 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 Phase: 7 of 13 (Policy lifecycle and history)
 Plan: 5 of16 complete;07-06 in progress
-Status: Executing Phase7;07-06 decision validation/query verified; resolution/live proof next
-Last activity: 2026-09-18 —07-06 decision validation/query 4ba4905;40-case unit/SQL gate passed. Resume07-06-PROGRESS.md.
+Status: Executing Phase7;07-06 condition-requested trading proof verified; resolution/live satisfaction next
+Last activity: 2026-09-18 —07-06 requested proof e4a80d1;39-case unit/SQL gate passed. Resume07-06-PROGRESS.md.
 
 Progress: Phases1–6 complete;6/13 phases,54 completed implementation plans.
 
@@ -54,8 +54,8 @@ Progress: Phases1–6 complete;6/13 phases,54 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-17T23:02:42.699815+00:00
-Stopped at:07-06 decision validation/query verified; resolution/live proof/API/UI remain
+Last session: 2026-09-17T23:21:38.695521+00:00
+Stopped at:07-06 condition-requested proof verified; resolution/live satisfaction/API/UI remain
 Resume file: .planning/phases/07-policy-lifecycle-and-history/07-06-PROGRESS.md
 
 ## Autonomous continuation
