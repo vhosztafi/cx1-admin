@@ -100,3 +100,63 @@ use dotnet ef migrations add ... --project backend/src/BackOffice.Infrastructure
 --startup-project backend/src/BackOffice.Infrastructure --output-dir Persistence/Migrations
 --no-build. The API startup lacks EF.Design, so it is not the tooling startup.
 Earlier tooling startup/build failures are retained in logs, not passing evidence.
+
+
+## Verified association storage checkpoint: 2e4df59
+
+Added servicing-owned evidence associations and append-only review/withdrawal
+history with full draft/cycle/revision/rating/fingerprint ownership. SQL requires
+an owned file, an actual cumulative driver or selected premises target, current
+rated revision at association time, ordered events and matching authority product/
+binder. Review and withdrawal pointers cannot cross associations; latest review
+cannot roll back and withdrawal cannot be cleared. Service-level grants, exact
+requirement fingerprints and command authorization remain separate checks.
+
+Additive migration 20260917194034_ServicingEvidenceAssociations was tested on both
+Motor Trade products, including downgrade/upgrade of isolated databases containing
+issued policies. The shared demo database and preview were not changed.
+
+Final .local/phase7-06-associations-final/{unit,sql} contains 14 unit and 4 actual
+SQL cases, no skips; assertion gate verified 18. Tests include a real file owned
+by another cancellation draft, incorrect purposes/targets, sequence/fingerprint
+errors, cross-association pointers, old acceptance rollback, irreversible
+withdrawal, immutable events and unchanged issued JSON. Initial storage RED had
+2 absent-table failures. The first expanded review run had 2 test-setup failures
+because a second active adjustment is forbidden; using a distinct cancellation
+draft respects that invariant and the final suite passed. git diff --check passed.
+
+Next work underway: scoped servicing file upload/download service tests. No new
+HTTP route or browser evidence behavior is enabled yet. 07-06 remains incomplete.
+
+
+## Verified file-service checkpoint: 54d0c46
+
+ServicingEvidenceService.UploadAsync now retains exact screened file bytes under
+current identity/policy/rating/configuration scope, fresh draft ETag and actor-bound
+editing lease. ServicingDecisionContext holds that boundary and advances the draft
+ETag with the write. SQL command receipts reauthorize before replay; the identical
+command returns the original file ID and changed bytes cannot reuse its key.
+DownloadAsync separately holds current policy read scope and exact draft/file
+ownership, allowing historical downloads after rating expiry without an edit lease.
+No file read or upload grants an evidence acceptance.
+
+Shared signature screening now accepts an explicitly bounded maximum filename
+length; quote callers keep the existing 150-character default and servicing uses
+the planned 200-character limit. Unit tests verify both boundaries; SQL service
+tests persist a 200-character filename and reject 201 characters/spoofed media.
+
+Failing-first .local/phase7-06-file-service-red/sql/sql.trx contains 2 genuine failing
+SQL service tests before implementation. Final .local/phase7-06-file-service-green
+contains 15 unit and 2 real-SQL cases with no skips. Assertion gate passed 17 cases
+with cutoff 2026-09-17T19:50:00Z. Both products verify ETag/lease denial, exact replay,
+changed-payload conflict, persisted bytes/screening, real cross-draft file denial,
+expired-rating write denial, historical download and revoked-role denial before
+receipt replay/download. Issued JSON remains unchanged; no association is fabricated.
+
+This is a service prerequisite, not HTTP/browser completion. It is not registered
+in DI or routed yet. Next: extend the held context with current underwriting grants
+and full immutable cumulative risk slices, implement association/review/withdrawal
+services and referral/condition graph, then strict DTOs/DI/routes/generated contracts
+and actual UI/browser acceptance. Existing Source quote grants/associations are not
+servicing approval. No whole-plan summary or completion is claimed. Phase7 stays
+5/16 and overall plans 54/65. Shared demo and running 07-05 previews remain unchanged.
