@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { Panel, Status } from '../primitives';
 import { quoteFetch, uncertainQuoteFailure } from '../../lib/quotes';
-import { sendServicing, servicingCommand, type ServicingCommand, type ServicingDraft, type ServicingEditor, type ServicingProposal } from '../../lib/servicing-api';
+import { sendServicing, sendServicingRating, servicingCommand, type ServicingCommand, type ServicingDraft, type ServicingEditor, type ServicingProposal } from '../../lib/servicing-api';
 import { matchingServicingEditor, setCoverEffectiveIntent, setServicingDateBasis } from '../../lib/servicing-proposal';
 import { ServicingEffectiveFields } from './servicing-effective-fields';
 import { ServicingSavedReview } from './servicing-saved-review';
@@ -12,6 +12,7 @@ import { ServicingVehicleEditor } from './servicing-vehicle-editor';
 import { ServicingPremisesEditor } from './servicing-premises-editor';
 import { ServicingBusinessEditor } from './servicing-business-editor';
 import { ServicingPolicyholderEditor } from './servicing-policyholder-editor';
+import { ServicingRating } from './servicingrating';
 import { ServicingCoverEditor } from './servicing-cover-editor';
 import type { QuoteFormCatalogue } from '../../lib/quote-catalogue';
 
@@ -49,16 +50,24 @@ export function ServicingWorkspace({ draftId, actorId, canTakeover, catalogue }:
   const otherEditor = !!(lease?.active && lease.holderId !== actorId && Date.parse(lease.expiresAt) > observedAt);
   function change(next: ServicingProposal) { dirtyRef.current = true; setDirty(true); setProposal(next); }
   function attempt(action: () => ServicingProposal) { try { change(action()); setError(''); } catch (failure) { setError(failure instanceof Error ? failure.message : 'This draft change could not be applied.'); } }
-  async function run(action: 'acquire' | 'takeover' | 'renew' | 'release' | 'save' | 'abandon') {
+  async function run(action: 'acquire' | 'takeover' | 'renew' | 'release' | 'save' | 'abandon' | 'rate') {
     if (!view || !proposal || busyRef.current) return; busyRef.current = true; setBusy(true); setError(''); setNotice('');
     try {
       if (!pending.current) {
-        const path = action === 'save' ? '/proposal' : action === 'abandon' ? '/abandon' : '/lease';
+        const path = action === 'rate' ? '/rate' : action === 'save' ? '/proposal' : action === 'abandon' ? '/abandon' : '/lease';
         const method = action === 'release' ? 'DELETE' : action === 'renew' || action === 'save' ? 'PUT' : 'POST';
-        const body = action === 'save' ? proposal : action === 'abandon' ? { reason } : action === 'acquire' ? { mode: 'acquire' } : action === 'takeover' ? { mode: 'takeover', reason } : undefined;
+        const body = action === 'rate' ? { revisionId: view.data.revisionId, reason: proposal.reason } : action === 'save' ? proposal : action === 'abandon' ? { reason } : action === 'acquire' ? { mode: 'acquire' } : action === 'takeover' ? { mode: 'takeover', reason } : undefined;
         pending.current = servicingCommand(url + path, method, view.etag, body, fence ?? undefined);
       }
-      const sent = pending.current; const result = await sendServicing(sent); setView(result);
+      const sent = pending.current;
+      if (sent.url.endsWith('/rate')) {
+        await sendServicingRating(sent);
+        const refreshed = await quoteFetch<ServicingDraft>(url);
+        if (!refreshed.etag) throw new Error('Draft refresh required.');
+        setView({ data: refreshed.data, etag: refreshed.etag });
+        pending.current = null; setRetry(false); setNotice('Rating requested. Results will appear when processing finishes.'); return;
+      }
+      const result = await sendServicing(sent); setView(result);
       if (sent.url.endsWith('/lease') && sent.method === 'POST') setFence(result.data.lease?.leaseToken ?? null);
       if (sent.method === 'DELETE' || result.data.state !== 'draft') setFence(null);
       if (sent.url.endsWith('/proposal')) { dirtyRef.current = false; setDirty(false); setProposal(result.data.proposal); }
@@ -90,7 +99,7 @@ export function ServicingWorkspace({ draftId, actorId, canTakeover, catalogue }:
       </fieldset>)}
       </fieldset><p>{proposal.changes.length} proposed risk changes{dirty ? ' including local edits' : ' saved'}. Saved draft details do not alter issued cover.</p>
       <button className="button button-primary" type="submit" disabled={!editing || busy || retry}>Save draft</button>
-    </form></Panel>{editor?.data.draftId === draftId ? <Panel title="Risk changes"><div className="quote-rail-body"><ServicingDriverEditor proposal={proposal} editor={editor.data} policyId={view.data.policyId} catalogue={catalogue} disabled={!editing || busy || retry || !editorReadOk || !matchingServicingEditor(view, editor)} change={change} /><ServicingVehicleEditor proposal={proposal} editor={editor.data} policyId={view.data.policyId} catalogue={catalogue} disabled={!editing || busy || retry || !editorReadOk || !matchingServicingEditor(view, editor)} change={change} /><ServicingPremisesEditor proposal={proposal} editor={editor.data} policyId={view.data.policyId} catalogue={catalogue} disabled={!editing || busy || retry || !editorReadOk || !matchingServicingEditor(view, editor)} change={change} /><ServicingBusinessEditor proposal={proposal} editor={editor.data} policyId={view.data.policyId} catalogue={catalogue} disabled={!editing || busy || retry || !editorReadOk || !matchingServicingEditor(view, editor)} change={change} /><ServicingPolicyholderEditor proposal={proposal} editor={editor.data} policyId={view.data.policyId} catalogue={catalogue} disabled={!editing || busy || retry || !editorReadOk || !matchingServicingEditor(view, editor)} change={change} /><ServicingCoverEditor proposal={proposal} editor={editor.data} policyId={view.data.policyId} catalogue={catalogue} disabled={!editing || busy || retry || !editorReadOk || !matchingServicingEditor(view, editor)} change={change} /></div></Panel> : null}<ServicingSavedReview editor={editorReadOk && matchingServicingEditor(view, editor) ? editor!.data : null} dirty={dirty} /></div><aside className="underwriting-rail" aria-label="Draft actions"><Panel title="Editing controls"><div className="quote-rail-body servicing-controls">
+    </form></Panel>{editor?.data.draftId === draftId ? <Panel title="Risk changes"><div className="quote-rail-body"><ServicingDriverEditor proposal={proposal} editor={editor.data} policyId={view.data.policyId} catalogue={catalogue} disabled={!editing || busy || retry || !editorReadOk || !matchingServicingEditor(view, editor)} change={change} /><ServicingVehicleEditor proposal={proposal} editor={editor.data} policyId={view.data.policyId} catalogue={catalogue} disabled={!editing || busy || retry || !editorReadOk || !matchingServicingEditor(view, editor)} change={change} /><ServicingPremisesEditor proposal={proposal} editor={editor.data} policyId={view.data.policyId} catalogue={catalogue} disabled={!editing || busy || retry || !editorReadOk || !matchingServicingEditor(view, editor)} change={change} /><ServicingBusinessEditor proposal={proposal} editor={editor.data} policyId={view.data.policyId} catalogue={catalogue} disabled={!editing || busy || retry || !editorReadOk || !matchingServicingEditor(view, editor)} change={change} /><ServicingPolicyholderEditor proposal={proposal} editor={editor.data} policyId={view.data.policyId} catalogue={catalogue} disabled={!editing || busy || retry || !editorReadOk || !matchingServicingEditor(view, editor)} change={change} /><ServicingCoverEditor proposal={proposal} editor={editor.data} policyId={view.data.policyId} catalogue={catalogue} disabled={!editing || busy || retry || !editorReadOk || !matchingServicingEditor(view, editor)} change={change} /></div></Panel> : null}<ServicingSavedReview editor={editorReadOk && matchingServicingEditor(view, editor) ? editor!.data : null} dirty={dirty} />{view.data.kind === 'adjustment' ? <ServicingRating draftId={draftId} draftEtag={view.etag} dirty={dirty} busy={busy || retry} canRate={editing && !dirty && editorReadOk && matchingServicingEditor(view, editor) && editor!.data.assessment.readinessIssues.length === 0 && proposal.changes.length > 0} rate={() => void run('rate')} /> : null}</div><aside className="underwriting-rail" aria-label="Draft actions"><Panel title="Editing controls"><div className="quote-rail-body servicing-controls">
       {retry ? <button className="button button-primary" disabled={busy} onClick={() => void run('save')}>Retry same action</button> : null}
       <button className="button" disabled={busy || retry || editing || otherEditor || view.data.state !== 'draft'} onClick={() => void run('acquire')}>Acquire editing lease</button>
       <button className="button" disabled={busy || retry || !editing} onClick={() => void run('renew')}>Renew editing lease</button>

@@ -27,3 +27,13 @@ export async function sendServicing(command: ServicingCommand) {
   if (!validQuoteEtag(result.etag) || !result.data?.id || !result.data.proposal) throw new Error('The saved result could not be confirmed. Retry this action.');
   return { data: result.data, etag: result.etag };
 }
+
+export async function sendServicingRating(command: ServicingCommand) {
+  const { data: csrf } = await quoteFetch<{ requestToken: string }>('/api/v1/auth/csrf');
+  const result = await quoteFetch<import('./servicing-rating').ServicingRateReceipt>(command.url, { method: command.method, body: command.body,
+    headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf.requestToken, 'Idempotency-Key': command.key, 'If-Match': command.etag,
+      ...(command.fence ? { 'X-Edit-Lease': command.fence } : {}) } });
+  if (!validQuoteEtag(result.etag) || result.data?.state !== 'queued' || !result.data.id || !result.data.jobId || result.data.draftEtag !== result.etag)
+    throw new Error('The rating request could not be confirmed. Retry this action.');
+  return result;
+}

@@ -392,3 +392,6 @@ h1, h2, p { margin: 0; }
 .policy-discovery-parties label { font-size:12px; color:#6b7184; }
 .policy-discovery-parties select { min-height:36px; border:1px solid #d9dce4; border-radius:7px; background:white; padding:7px 10px; color:#22252e; font:inherit; }
 @media(max-width:640px) { .policy-discovery-parties { grid-template-columns:minmax(0,1fr); } }
+
+.table-scroll[aria-label="Dated rating slices"] table { min-width: 780px; }
+.table-scroll[aria-label="Dated rating slices"] th, .table-scroll[aria-label="Dated rating slices"] td { white-space: nowrap; }
