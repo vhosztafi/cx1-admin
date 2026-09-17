@@ -1,7 +1,7 @@
 {
   "status": "in-progress",
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
-  "scope": "Original Phase7 controls and policy/term/draft API path families; conditional source additions remain to audit.",
+  "scope": "All 137 original controls assigned to the proposed 16-plan decomposition or explicit later-phase owners; conditional branches/display fields still require completion.",
   "controlCount": 137,
   "apiOperationCount": 29,
   "controls": [
@@ -20,7 +20,9 @@
       "handlers": {
         "onClick": "() => this.go('mta')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-9f0b18626d19",
@@ -37,7 +39,9 @@
       "handlers": {
         "onClick": "() => this.go('renewal')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-11"
     },
     {
       "id": "CTL-9a93665d17ad",
@@ -54,7 +58,9 @@
       "handlers": {
         "onClick": "() => this.toast('Document pack queued for brightside@ (mock send).', '', null)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-41c6ab527690",
@@ -71,7 +77,9 @@
       "handlers": {
         "onClick": "() => this.setState({modal:{kind:'task'}})"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-5a327c3b623f",
@@ -88,7 +96,9 @@
       "handlers": {
         "onClick": "() => this.setTab('Notes')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-3cb0cf7677f1",
@@ -105,7 +115,9 @@
       "handlers": {
         "onClick": "() => this.go('logclaim')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-c6af006ce244",
@@ -122,7 +134,9 @@
       "handlers": {
         "onClick": "() => this.toast('Cloned to draft quote QT/MT/004190 (mock).', 'Open', () => this.go('quote'))"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-15"
     },
     {
       "id": "CTL-6f298b5183b0",
@@ -139,7 +153,9 @@
       "handlers": {
         "onClick": "() => this.setTab('Transactions')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-15"
     },
     {
       "id": "CTL-a90cc5e42de1",
@@ -156,7 +172,9 @@
       "handlers": {
         "onClick": "() => this.setState({modal:{kind:'cancel'}})"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-13"
     },
     {
       "id": "CTL-44449472c9d0",
@@ -173,7 +191,9 @@
       "handlers": {
         "onAction": "() => this.go('mta')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-1fad476114e9",
@@ -190,7 +210,9 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-15"
     },
     {
       "id": "CTL-5b50e8eb46fa",
@@ -207,7 +229,9 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-15"
     },
     {
       "id": "CTL-29c128398a46",
@@ -224,7 +248,9 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-15"
     },
     {
       "id": "CTL-a599ed5f7746",
@@ -241,7 +267,9 @@
       "handlers": {
         "onAction": "() => this.setTab('Notes')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-d1cdc62aa154",
@@ -258,7 +286,9 @@
       "handlers": {
         "onAction": "() => this.setTab('Documents')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-d85e718d3878",
@@ -275,7 +305,9 @@
       "handlers": {
         "onClick": "() => this.go('mta')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-fb6a7c690bb9",
@@ -292,7 +324,9 @@
       "handlers": {
         "onClick": "() => this.go('renewal')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-11"
     },
     {
       "id": "CTL-21e20d4ce3cd",
@@ -309,7 +343,9 @@
       "handlers": {
         "onClick": "() => this.toast('Document pack queued for brightside@ (mock send).', '', null)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-737c18fda414",
@@ -326,7 +362,9 @@
       "handlers": {
         "onClick": "() => this.setState({modal:{kind:'task'}})"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-9cd13ac877a5",
@@ -343,7 +381,9 @@
       "handlers": {
         "onClick": "() => this.setTab('Notes')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-9ce9ceaff0ff",
@@ -360,7 +400,9 @@
       "handlers": {
         "onClick": "() => this.go('logclaim')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-2bcbed5a8b35",
@@ -377,7 +419,9 @@
       "handlers": {
         "onClick": "() => this.toast('Cloned to draft quote QT/MT/004190 (mock).', 'Open', () => this.go('quote'))"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-15"
     },
     {
       "id": "CTL-e230948b7fd9",
@@ -394,7 +438,9 @@
       "handlers": {
         "onClick": "() => this.setTab('Transactions')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-15"
     },
     {
       "id": "CTL-e0b763ff7753",
@@ -411,7 +457,9 @@
       "handlers": {
         "onClick": "() => this.setState({modal:{kind:'cancel'}})"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-13"
     },
     {
       "id": "CTL-721a19d5dbfa",
@@ -428,7 +476,9 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-06"
     },
     {
       "id": "CTL-40c2953f1cf1",
@@ -445,7 +495,9 @@
       "handlers": {
         "onAction": "() => this.setTab('Tasks')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-15"
     },
     {
       "id": "CTL-44e9e414e2c2",
@@ -462,7 +514,9 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-dcd53246e184",
@@ -479,7 +533,9 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-60ba3b194aa0",
@@ -496,7 +552,9 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-1becc6b0d735",
@@ -514,7 +572,9 @@
         "onChange": "(e) => this.setState({noteDraft: e.target.value})",
         "onSend": "() => {\n          const t = this.state.noteDraft.trim();\n          if (!t) { this.toast('Enter a note before saving.', '', null); return; }\n          this.setState((s) => ({notes: [{title:'Note added', meta:'James Smith · 09/09/2026 08:24', body: t}].concat(s.notes), noteDraft: ''}));\n          this.toast('Note added to PN/CC/000622.', '', null);\n        }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-73d14fdf3487",
@@ -531,7 +591,9 @@
       "handlers": {
         "onAction": "() => this.go('mta')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-865e4d442990",
@@ -548,7 +610,9 @@
       "handlers": {
         "onAction": "() => this.go('asat')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-15"
     },
     {
       "id": "CTL-c2f7efead94c",
@@ -565,7 +629,9 @@
       "handlers": {
         "onClick": "() => this.toast('Before/after comparison for ' + t[0] + ' (mock).', '', null)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-15"
     },
     {
       "id": "CTL-64a95d6b56a5",
@@ -582,7 +648,9 @@
       "handlers": {
         "onClick": "() => this.toast('Before/after comparison for ' + t[0] + ' (mock).', '', null)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-15"
     },
     {
       "id": "CTL-13581e1a3c26",
@@ -599,7 +667,9 @@
       "handlers": {
         "onClick": "() => this.toast('Before/after comparison for ' + t[0] + ' (mock).', '', null)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-15"
     },
     {
       "id": "CTL-a32dc8670b0a",
@@ -616,7 +686,9 @@
       "handlers": {
         "onClick": "() => this.toast('Before/after comparison for ' + t[0] + ' (mock).', '', null)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-15"
     },
     {
       "id": "CTL-600cfa71899e",
@@ -633,7 +705,9 @@
       "handlers": {
         "onClick": "() => this.toast('Before/after comparison for ' + t[0] + ' (mock).', '', null)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-15"
     },
     {
       "id": "CTL-a5137896520d",
@@ -650,7 +724,9 @@
       "handlers": {
         "onClick": "() => this.toast('Before/after comparison for ' + t[0] + ' (mock).', '', null)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-15"
     },
     {
       "id": "CTL-f7e2892adf6c",
@@ -667,7 +743,9 @@
       "handlers": {
         "onAction": "() => this.toast('File picker would open here (mock).', '', null)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-0e889362450f",
@@ -684,7 +762,9 @@
       "handlers": {
         "onClick": "() => this.toast('Document sent to brightside@ (mock).', '', null)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-efe5919f52c7",
@@ -701,7 +781,9 @@
       "handlers": {
         "onClick": "() => this.toast('Document sent to brightside@ (mock).', '', null)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-de77892116b5",
@@ -718,7 +800,9 @@
       "handlers": {
         "onAction": "() => this.setState({modal:{kind:'task'}})"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-9f19b2755047",
@@ -735,7 +819,9 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-607dadbd889b",
@@ -752,7 +838,9 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-b8980c2b5423",
@@ -769,7 +857,9 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-8985852d89f3",
@@ -786,7 +876,9 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-1c646d814d99",
@@ -803,7 +895,9 @@
       "handlers": {
         "onAction": "() => this.go('mta')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-c6c247c8e374",
@@ -820,7 +914,9 @@
       "handlers": {
         "onAction": "() => this.go('mta')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-aedc83465580",
@@ -837,7 +933,9 @@
       "handlers": {
         "onAction": "() => this.go('mta')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-56e9c654446b",
@@ -854,7 +952,9 @@
       "handlers": {
         "onAction": "() => this.go('mta')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-bf0ca76b9d5d",
@@ -871,7 +971,9 @@
       "handlers": {
         "onAction": "() => this.go('mta')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-c7700e80208a",
@@ -888,7 +990,9 @@
       "handlers": {
         "onAction": "() => this.go('tasks')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-e121d4d60dfb",
@@ -905,7 +1009,9 @@
       "handlers": {
         "onAction": "() => this.go('mta')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-d32d3244fb5d",
@@ -922,7 +1028,9 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-15"
     },
     {
       "id": "CTL-833c66cac316",
@@ -939,7 +1047,9 @@
       "handlers": {
         "onAction": "() => this.go('driver')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-15"
     },
     {
       "id": "CTL-1583baae154f",
@@ -956,7 +1066,9 @@
       "handlers": {
         "onAction": "() => this.go('mta')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-71af2ba1c4ce",
@@ -973,7 +1085,9 @@
       "handlers": {
         "onAction": "() => this.go('mta')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-92991f22c2a4",
@@ -990,7 +1104,9 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 10,
+      "owner": "Phase10 agency finance"
     },
     {
       "id": "CTL-5da00f228867",
@@ -1008,7 +1124,9 @@
         "onChange": "(e) => this.setState({msgDraft: e.target.value})",
         "onSend": "() => {\n          const t = this.state.msgDraft.trim();\n          if (!t) { this.toast('Write a message before sending.', '', null); return; }\n          this.setState((s) => ({messages: s.messages.concat([{who:'James Smith · Cover MGA', tag:'External', when:'09/09/2026 08:31', body: t, attach:''}]), msgDraft: ''}));\n          this.toast('Reply sent to Brightside and logged against the policy.', '', null);\n        }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-4c97724a5bfa",
@@ -1025,7 +1143,9 @@
       "handlers": {
         "onAction": "() => this.go('logclaim')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-ba17ee21e305",
@@ -1042,7 +1162,9 @@
       "handlers": {
         "onClick": "() => { this.setState({claimRef: 'CL-91043'}); this.go('claim'); }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-08231528f503",
@@ -1059,7 +1181,9 @@
       "handlers": {
         "onClick": "() => { this.setState({claimRef: 'CL-91043'}); this.go('claim'); }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules"
     },
     {
       "id": "CTL-1ef57f2aabee",
@@ -1075,7 +1199,9 @@
       "handlers": {
         "onClick": "() => { this.setState({lockHeld: false}); this.toast('You now hold the draft. Amy Jones has been notified and put into read-only.', '', null); }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-03"
     },
     {
       "id": "CTL-4215a62af861",
@@ -1091,7 +1217,9 @@
       "handlers": {
         "onAction": "() => { this.setState({lockHeld: false}); this.toast('You now hold the draft. Amy Jones has been notified and put into read-only.', '', null); }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-03"
     },
     {
       "id": "CTL-5024c53b5eaf",
@@ -1107,7 +1235,9 @@
       "handlers": {
         "onClick": "() => { this.setState({lockHeld: false}); this.toast('You now hold the draft. Amy Jones has been notified and put into read-only.', '', null); }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-03"
     },
     {
       "id": "CTL-630153edbb1f",
@@ -1124,7 +1254,9 @@
       "handlers": {
         "onClick": "() => this.go('policy')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-811c233ef5c7",
@@ -1140,7 +1272,9 @@
       "handlers": {
         "onClick": "() => this.toast('Draft MTA-007 saved. You can resume it from the policy.', '', null)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-03"
     },
     {
       "id": "CTL-bcb0e563f02d",
@@ -1156,7 +1290,9 @@
       "handlers": {
         "onClick": "() => this.rateMta()"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-05"
     },
     {
       "id": "CTL-9085e4bbc3bb",
@@ -1172,7 +1308,9 @@
       "handlers": {
         "onAction": "() => { this.setState({lockHeld: true}); this.toast('Lock released — the draft is editable by the team again.', '', null); }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-03"
     },
     {
       "id": "CTL-a5cbae9b8992",
@@ -1188,7 +1326,9 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-60ada0e23106",
@@ -1204,7 +1344,9 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-37837fb0eb28",
@@ -1220,7 +1362,9 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-f3fb94ad182a",
@@ -1236,7 +1380,9 @@
       "handlers": {
         "onAction": "() => this.setState({modal:{kind:'picker'}})"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-14cfcc4b503f",
@@ -1253,7 +1399,9 @@
         "onEdit": "() => this.setState({modal:{kind:'edit', i: i}})",
         "onRemove": "() => this.setState((s) => ({mtaChanges: s.mtaChanges.filter((x, j) => j !== i), mtaRated: false}))"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-3a07d9af3916",
@@ -1270,7 +1418,9 @@
         "onEdit": "() => this.setState({modal:{kind:'edit', i: i}})",
         "onRemove": "() => this.setState((s) => ({mtaChanges: s.mtaChanges.filter((x, j) => j !== i), mtaRated: false}))"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-c4a0292cbe34",
@@ -1287,7 +1437,9 @@
         "onEdit": "() => this.setState({modal:{kind:'edit', i: i}})",
         "onRemove": "() => this.setState((s) => ({mtaChanges: s.mtaChanges.filter((x, j) => j !== i), mtaRated: false}))"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-0bb078b5d224",
@@ -1304,7 +1456,9 @@
         "onEdit": "() => this.setState({modal:{kind:'edit', i: i}})",
         "onRemove": "() => this.setState((s) => ({mtaChanges: s.mtaChanges.filter((x, j) => j !== i), mtaRated: false}))"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-f53d17d61db1",
@@ -1321,7 +1475,9 @@
         "onEdit": "() => this.setState({modal:{kind:'edit', i: i}})",
         "onRemove": "() => this.setState((s) => ({mtaChanges: s.mtaChanges.filter((x, j) => j !== i), mtaRated: false}))"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-cc443272c9e7",
@@ -1337,7 +1493,9 @@
       "handlers": {
         "onClick": "() => this.rateMta()"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-05"
     },
     {
       "id": "CTL-ee26e427d19a",
@@ -1353,7 +1511,9 @@
       "handlers": {
         "onClick": "() => this.toast('Draft MTA-007 saved. You can resume it from the policy.', '', null)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-03"
     },
     {
       "id": "CTL-909dc8df1733",
@@ -1369,7 +1529,9 @@
       "handlers": {
         "onClick": "() => this.submitMta()"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-06"
     },
     {
       "id": "CTL-4c6212277cb7",
@@ -1385,7 +1547,9 @@
       "handlers": {
         "onClick": "() => this.go('escalation')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-07"
     },
     {
       "id": "CTL-efe1569b8296",
@@ -1401,7 +1565,9 @@
       "handlers": {
         "onClick": "() => this.toast('Draft would be abandoned after confirmation (mock).', '', null)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-03"
     },
     {
       "id": "CTL-17cfb5f13bd1",
@@ -1417,7 +1583,9 @@
       "handlers": {
         "onAction": "() => this.rateMta()"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-05"
     },
     {
       "id": "CTL-d2bf3015d449",
@@ -1434,7 +1602,9 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-06"
     },
     {
       "id": "CTL-e39aeff1b11d",
@@ -1451,7 +1621,9 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-07"
     },
     {
       "id": "CTL-a1d207a609ca",
@@ -1469,7 +1641,9 @@
       "handlers": {
         "onClick": "() => this.go('policy')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-11"
     },
     {
       "id": "CTL-40d27394607d",
@@ -1487,7 +1661,9 @@
       "handlers": {
         "onClick": "() => {\n              const msgs = {1:'Renewal rated (mock): £2,608.85, +8.0%. Referral UW-31 open.', 2:'Renewal invitation issued and sent to Vantage Trade Brokers.', 3:'Acceptance recorded. Renewal policy would be issued at inception.'};\n              this.toast(msgs[step], '', null); this.setState({rnStep: step + 1});\n            }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-11"
     },
     {
       "id": "CTL-76ad64b9c550",
@@ -1505,7 +1681,9 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-11"
     },
     {
       "id": "CTL-6feeac107975",
@@ -1523,7 +1701,9 @@
       "handlers": {
         "onClick": "() => this.toast('Renewal terms editor (mock) — would invalidate rating.', '', null)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-11"
     },
     {
       "id": "CTL-35c70199197b",
@@ -1541,7 +1721,9 @@
       "handlers": {
         "onClick": "() => this.toast('Lapse requires a reason and broker notification (mock).', '', null)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-12"
     },
     {
       "id": "CTL-879db9a21bfd",
@@ -1559,7 +1741,9 @@
       "handlers": {
         "onStyle": "() => this.setState({progStyle: next})"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-12"
     },
     {
       "id": "CTL-9914b0bf4f9f",
@@ -1577,7 +1761,9 @@
       "handlers": {
         "onClick": "() => onJump(n)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-11"
     },
     {
       "id": "CTL-f70a8d0246fc",
@@ -1595,7 +1781,9 @@
       "handlers": {
         "onClick": "() => onJump(n)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-11"
     },
     {
       "id": "CTL-07199cfc7aaf",
@@ -1613,7 +1801,9 @@
       "handlers": {
         "onClick": "() => onJump(n)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-12"
     },
     {
       "id": "CTL-5ebc3446d851",
@@ -1631,7 +1821,9 @@
       "handlers": {
         "onClick": "() => onJump(n)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-12"
     },
     {
       "id": "CTL-657eee864831",
@@ -1648,7 +1840,9 @@
       "handlers": {
         "onClick": "() => this.go('policy')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-13"
     },
     {
       "id": "CTL-c85ad01a33e0",
@@ -1665,7 +1859,9 @@
       "handlers": {
         "onClick": "() => this.toast('Cancellation issued (mock): policy PN/CC/000622 cancelled, version 7, refund RF-0221 raised.', 'Open policy', () => this.go('policy'))"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-14"
     },
     {
       "id": "CTL-be7dce14a48f",
@@ -1682,7 +1878,9 @@
       "handlers": {
         "onClick": "() => this.toast('Cancellation issued (mock): version 7, refund RF-0221 raised.', 'Open policy', () => this.go('policy'))"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-14"
     },
     {
       "id": "CTL-bfe2f6136895",
@@ -1699,7 +1897,9 @@
       "handlers": {
         "onClick": "() => this.setState({modal:{kind:'cancel'}})"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-13"
     },
     {
       "id": "CTL-2e6fe589364b",
@@ -1716,7 +1916,9 @@
       "handlers": {
         "onClick": "() => { this.toast('Cancellation abandoned — policy unchanged.', '', null); this.go('policy'); }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-13"
     },
     {
       "id": "CTL-386b48061d53",
@@ -1733,7 +1935,9 @@
       "handlers": {
         "onClick": "() => this.go('policy')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-10"
     },
     {
       "id": "CTL-3e9bec10fb71",
@@ -1750,7 +1954,9 @@
       "handlers": {
         "onClick": "() => this.go('policy', 'Transactions')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-10"
     },
     {
       "id": "CTL-902e6ba91260",
@@ -1767,7 +1973,9 @@
       "handlers": {
         "onClick": "() => this.toast('Submission retried (mock): awaiting response.', '', null)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 tasks, messages and MID delivery"
     },
     {
       "id": "CTL-66cf696c0aa1",
@@ -1784,7 +1992,9 @@
       "handlers": {
         "onAction": "() => this.go('tasks')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 tasks, messages and MID delivery"
     },
     {
       "id": "CTL-7d9b07c0fc34",
@@ -1801,7 +2011,9 @@
       "handlers": {
         "onClick": "() => this.go('task')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 tasks, messages and MID delivery"
     },
     {
       "id": "CTL-d5646e53396b",
@@ -1818,7 +2030,9 @@
       "handlers": {
         "onAction": "() => this.go('policy', 'Messages')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 9,
+      "owner": "Phase9 tasks, messages and MID delivery"
     },
     {
       "id": "CTL-0e965122693a",
@@ -1835,7 +2049,9 @@
       "handlers": {
         "onClick": "() => this.go('policy', 'Transactions')"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-15"
     },
     {
       "id": "CTL-c7575e4e2213",
@@ -1852,7 +2068,9 @@
       "handlers": {
         "onClick": "() => this.toast('Reconstruction exported as a PDF for the claims file (mock).', '', null)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-15"
     },
     {
       "id": "CTL-6e2b2ebf7bc6",
@@ -1869,7 +2087,9 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-15"
     },
     {
       "id": "CTL-ff9e226baf10",
@@ -1886,7 +2106,9 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-15"
     },
     {
       "id": "CTL-d27b77003a60",
@@ -1903,7 +2125,9 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-15"
     },
     {
       "id": "CTL-f3387357521c",
@@ -1920,7 +2144,9 @@
       "handlers": {
         "onClick": "() => this.toast('Opening the ' + v.v + ' schedule as issued (mock).', '', null)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-15"
     },
     {
       "id": "CTL-cb7e499f5ef9",
@@ -1934,7 +2160,9 @@
         "default"
       ],
       "handlers": {},
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-13"
     },
     {
       "id": "CTL-bdb6e9ab15e0",
@@ -1950,7 +2178,9 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-13"
     },
     {
       "id": "CTL-c6ed3365f90b",
@@ -1966,7 +2196,9 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-13"
     },
     {
       "id": "CTL-9c276d4c11eb",
@@ -1982,7 +2214,9 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-13"
     },
     {
       "id": "CTL-69897d577944",
@@ -1998,7 +2232,9 @@
       "handlers": {
         "onConfirm": "() => this.setState({modal: null})"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-48357417c7d9",
@@ -2014,7 +2250,9 @@
       "handlers": {
         "onClick": "() => this.setState((s) => ({\n            modal: null, mtaRated: false,\n            mtaChanges: s.mtaChanges.concat([{group:o.g, title:o.t, before:o.bf, after:o.af, state:'Needs information', tone:'warn', msg:'Complete the section editor to validate this change.'}])\n          }))"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-d95a33ac4ba9",
@@ -2030,7 +2268,9 @@
       "handlers": {
         "onClick": "() => this.setState((s) => ({\n            modal: null, mtaRated: false,\n            mtaChanges: s.mtaChanges.concat([{group:o.g, title:o.t, before:o.bf, after:o.af, state:'Needs information', tone:'warn', msg:'Complete the section editor to validate this change.'}])\n          }))"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-06d9667cb5b0",
@@ -2046,7 +2286,9 @@
       "handlers": {
         "onClick": "() => this.setState((s) => ({\n            modal: null, mtaRated: false,\n            mtaChanges: s.mtaChanges.concat([{group:o.g, title:o.t, before:o.bf, after:o.af, state:'Needs information', tone:'warn', msg:'Complete the section editor to validate this change.'}])\n          }))"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-2ce7af342224",
@@ -2062,7 +2304,9 @@
       "handlers": {
         "onClick": "() => this.setState((s) => ({\n            modal: null, mtaRated: false,\n            mtaChanges: s.mtaChanges.concat([{group:o.g, title:o.t, before:o.bf, after:o.af, state:'Needs information', tone:'warn', msg:'Complete the section editor to validate this change.'}])\n          }))"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-8c4c56e91474",
@@ -2078,7 +2322,9 @@
       "handlers": {
         "onClick": "() => this.setState((s) => ({\n            modal: null, mtaRated: false,\n            mtaChanges: s.mtaChanges.concat([{group:o.g, title:o.t, before:o.bf, after:o.af, state:'Needs information', tone:'warn', msg:'Complete the section editor to validate this change.'}])\n          }))"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-d333e12d28da",
@@ -2094,7 +2340,9 @@
       "handlers": {
         "onClick": "() => this.setState((s) => ({\n            modal: null, mtaRated: false,\n            mtaChanges: s.mtaChanges.concat([{group:o.g, title:o.t, before:o.bf, after:o.af, state:'Needs information', tone:'warn', msg:'Complete the section editor to validate this change.'}])\n          }))"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-27a26f44394a",
@@ -2110,7 +2358,9 @@
       "handlers": {
         "onClick": "() => this.setState((s) => ({\n            modal: null, mtaRated: false,\n            mtaChanges: s.mtaChanges.concat([{group:o.g, title:o.t, before:o.bf, after:o.af, state:'Needs information', tone:'warn', msg:'Complete the section editor to validate this change.'}])\n          }))"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-b84c84a05598",
@@ -2126,7 +2376,9 @@
       "handlers": {
         "onClick": "() => this.setState((s) => ({\n            modal: null, mtaRated: false,\n            mtaChanges: s.mtaChanges.concat([{group:o.g, title:o.t, before:o.bf, after:o.af, state:'Needs information', tone:'warn', msg:'Complete the section editor to validate this change.'}])\n          }))"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-fd38a2890d20",
@@ -2142,7 +2394,9 @@
       "handlers": {
         "onConfirm": "() => {\n          const licOk = !isDrv || (this.fv('edLicNo','').trim() && this.fv('edTest','').trim());\n          this.setState((s) => ({\n            modal: null, mtaRated: false, mtaApproved: false,\n            mtaChanges: s.mtaChanges.map((c, j) => j !== m.i ? c : Object.assign({}, c, {\n              state: licOk ? 'Valid' : 'Needs information',\n              tone: licOk ? 'ok' : 'warn',\n              after: isDrv && licOk ? 'Liam Doherty · DOB 02/11/2003 · licence ' + this.fv('edLicNo','') + ' · 1 fault claim (2025)' : c.after,\n              msg: licOk ? '' : c.msg\n            }))\n          }));\n          this.toast(licOk ? 'Change saved and validated. Re-rate the transaction.' : 'Saved, but licence number and date of test are still required.', '', null);\n        }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-2be8051a493d",
@@ -2158,7 +2412,9 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-006262166a6c",
@@ -2174,7 +2430,9 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-67729c63e82c",
@@ -2190,7 +2448,9 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-31515d181764",
@@ -2206,7 +2466,9 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-48fcf50be539",
@@ -2222,7 +2484,9 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-3b28acf92b73",
@@ -2238,7 +2502,9 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-04"
     },
     {
       "id": "CTL-dc77305d175b",
@@ -2254,7 +2520,9 @@
       "handlers": {
         "onClick": "() => {\n              const msgs = {1:'Renewal rated (mock): £2,608.85, +8.0%. Referral UW-31 open.', 2:'Renewal invitation issued and sent to Vantage Trade Brokers.', 3:'Acceptance recorded. Renewal policy would be issued at inception.'};\n              this.toast(msgs[step], '', null); this.setState({rnStep: step + 1});\n            }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-12"
     },
     {
       "id": "CTL-fa18c029e256",
@@ -2270,7 +2538,9 @@
       "handlers": {
         "onClick": "() => this.toast('Referral UW-31 approved — loss ratio accepted with 8% loading.', '', null)"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-11"
     },
     {
       "id": "CTL-7ef8d04057b2",
@@ -2286,7 +2556,9 @@
       "handlers": {
         "onClick": "() => {\n              const msgs = {1:'Renewal rated (mock): £2,608.85, +8.0%. Referral UW-31 open.', 2:'Renewal invitation issued and sent to Vantage Trade Brokers.', 3:'Acceptance recorded. Renewal policy would be issued at inception.'};\n              this.toast(msgs[step], '', null); this.setState({rnStep: step + 1});\n            }"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-12"
     },
     {
       "id": "CTL-d320aa79a17e",
@@ -2302,7 +2574,9 @@
       "handlers": {
         "onClick": "() => this.toast('Renewal policy issued (mock): PN/CC/000571 version 5, term 01/10/2026 – 30/09/2027.', 'Open policy', () => this.go('policy'))"
       },
-      "reviewStatus": "pending-detailed-owner-and-branch-review"
+      "reviewStatus": "owner-assigned-not-implemented",
+      "ownerPhase": 7,
+      "owner": "07-12"
     }
   ],
   "apiOperations": [

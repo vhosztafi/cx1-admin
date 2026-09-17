@@ -5,6 +5,14 @@ Inspected 2026-09-17. This is not a passed source coverage gate.
 and 29 policy/term/draft path-family operations from the existing OpenAPI.
 Runtime support is not inferred from the presence of a contract.
 
+Original-control owner mapping is now recorded: 105 controls belong to the
+proposed Phase7 plans, 31 to Phase9 operational modules and one to Phase10 broker
+finance. Every original ID is retained exactly once. Plan IDs refer to
+07-PLAN-OUTLINE until executable plans are written and checked; owner assignment
+does not mean implementation. As-at export has a Phase7 persisted-request owner
+and a Phase9 renderer dependency. Driver/vehicle detail displays are Phase7 even
+where their task/chase/MID action buttons have Phase9 owners.
+
 ## Source-specific obligations found
 
 - pMta (prototype-template.txt:1529) has separate locked, editable, rated,
@@ -56,9 +64,12 @@ scope. Do not edit old migrations; add a new migration with replacement guards.
 
 ## Remaining audit work
 
-Map every control to an owning capability and plan; inspect the remaining policy
-tabs, servicing modal branches and MTA review/document sections; inventory fields
-and implied branches in addition to original control IDs. Complete evidence and
-capacity reuse analysis, financial data/API contracts and mixed-date examples.
+Inspect remaining policy display fields and implied branches in addition to
+original control IDs. MTA review/document and servicing modal branches were read:
+non-driver Description/Effective date/Supporting evidence inputs are missing from
+the original rendered control subset, and conditional Issue adjustment must be
+added explicitly. Replace generic descriptions with typed editors for all eight
+change categories; evidence selection must reference actual reviewed files.
+Complete exact evidence/capacity contracts from the subject-bound service analysis.
 Then produce UI/validation contracts and plans and run coverage checks. No Phase7
 implementation or source-audit completion is claimed by this inventory.
