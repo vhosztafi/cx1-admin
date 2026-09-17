@@ -327,3 +327,39 @@ never display edits that are discarded. Requested sections and European trips
 are within cover. Plan07-04 still incomplete; no SUMMARY yet.
 Owned API58760 unchanged; web70136 now current. Verify PID identities before
 stopping. Preview record remains `.local/phase7-04-preview-pids.json`.
+
+## Dated cover editor checkpoint
+
+Commit `480a5e5` implements whole cover/European-trip controls and individual
+requested sections. It scopes away previous-insurance inputs that would write
+outside the cover payload. Existing individual effective intents survive edits.
+The new projectServicingCaptureAt helper excludes future changes from an earlier
+form; invalid/ambiguous dates fail closed, and changing the date while a form is
+retained requires restoring that date or reopening before Apply. Section IDs
+remain stable. Whole and section changes use existing closed typed contracts.
+
+116 frontend tests, typecheck, lint and Next build pass. Failing-first dated
+context test is `.local/phase7-04-cover-context-red.log`. Both-product actual
+Chrome journeys verify exact section limits, retained later dates after edits,
+no future values in earlier replacements, two cumulative server slices, lease
+retention, focus/mobile containment and unchanged issued JSON. Combined also
+explicitly deselects premises cover before removing its issued premises; the
+server persists the corrected dependency across cumulative slices. Screenshots
+were inspected. Evidence `.local/phase7-04-cover-browser.log`,
+`.local/browser-evidence/servicing-cover/report.json` and other cover-prefixed
+logs. No backend changes or standalone SQL rerun in this UI checkpoint; browser
+commands use native SQL persistence. CTL-27a26f44394a gains verified coverage.
+
+All eight picker categories now have implementation and category-level browser
+evidence. Do NOT complete07-04 yet: remaining source navigation/row/field actions
+must be audited against the actual implementation and evidence, required final
+checks run, and meaningful gaps fixed. Inventory still has roughly30 assigned
+controls beyond the eight options (navigation, propose/add/save/done actions,
+source MTA rows and named-driver fields). Use an overall editors browser gate
+with actual persisted assertions rather than marking those based on labels.
+Current plan requires fresh focused unit and real-SQL results for final closure;
+no full phase37-journey gate until07-16. No human UAT claim.
+
+Owned API58760 unchanged; web51508 serves this build. Verify PID identities
+against `.local/phase7-04-preview-pids.json` before restarting. Plan count3/16
+remains accurate; next is completion of07-04, then07-05 rating.

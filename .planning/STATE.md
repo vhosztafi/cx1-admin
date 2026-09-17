@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-04 policyholder corrections verified; cover editor remains
-last_updated: "2026-09-17T14:41:09.636074+00:00"
-last_activity: "2026-09-17 —07-04 policyholder checkpointe8f4701; cover editor remains."
+stopped_at: Plan07-04 all eight picker categories implemented; overall07-04 verification remains
+last_updated: "2026-09-17T15:00:03.434051+00:00"
+last_activity: "2026-09-17 —07-04 cover checkpoint480a5e5; source audit and overall plan verification remain."
 progress:
   total_phases: 13
   completed_phases: 6
@@ -27,8 +27,8 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 Phase: 7 of 13 (Policy lifecycle and history)
 Plan: 3 of16 complete;07-04 in progress
-Status: Executing Phase7;07-04 backend/date/review, driver, vehicle, premises and trade activity and policyholder dialogs verified; cover outstanding
-Last activity: 2026-09-17 —07-04 policyholder editore8f4701;115 frontend cases and both-product policyholder/business browser journeys pass. Resume07-04-PROGRESS.md.
+Status: Executing Phase7;07-04 backend/date/review, driver, vehicle, premises and trade activity and policyholder and cover dialogs verified; overall07-04 checks outstanding
+Last activity: 2026-09-17 —07-04 cover editor480a5e5;116 frontend cases and both-product dated cover browser journeys pass. Resume07-04-PROGRESS.md.
 
 Progress: Phases1–6 complete;6/13 phases,52 completed implementation plans.
 
@@ -54,8 +54,8 @@ Progress: Phases1–6 complete;6/13 phases,52 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-17T14:41:09.636074+00:00
-Stopped at:07-04 policyholder corrections verified; implement cover and remaining07-04 checks
+Last session: 2026-09-17T15:00:03.434051+00:00
+Stopped at:07-04 cover editors verified; audit remaining source actions and finish07-04 verification
 Resume file: .planning/phases/07-policy-lifecycle-and-history/07-04-PLAN.md
 
 ## Autonomous continuation

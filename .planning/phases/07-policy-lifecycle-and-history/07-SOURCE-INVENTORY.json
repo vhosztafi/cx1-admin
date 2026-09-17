@@ -2430,9 +2430,15 @@
       "handlers": {
         "onClick": "() => this.setState((s) => ({\n            modal: null, mtaRated: false,\n            mtaChanges: s.mtaChanges.concat([{group:o.g, title:o.t, before:o.bf, after:o.af, state:'Needs information', tone:'warn', msg:'Complete the section editor to validate this change.'}])\n          }))"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-04"
+      "owner": "07-04",
+      "evidence": [
+        ".local/browser-evidence/servicing-cover/report.json",
+        ".local/phase7-04-cover-browser.log",
+        ".local/phase7-04-cover-web-tests.log"
+      ],
+      "implementation": "Whole-cover and individual section editors preserve typed capture and stable identities. Both-product persisted browser journeys verify exact limits, later date preservation on edit, earlier replacements excluding future changes, cumulative slices, lease retention and mobile containment. Combined also corrects cover references before removing issued premises."
     },
     {
       "id": "CTL-b84c84a05598",
