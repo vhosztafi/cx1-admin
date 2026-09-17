@@ -237,3 +237,36 @@ Remaining07-05 work (no completed SUMMARY yet):
 4. Final code/source coverage review and measured summary before completing07-05.
 No browser check, preview refresh, demo database initialization, business UAT or
 phase completion is claimed. frontend-code remains unchanged. Phase7 remains4/16.
+
+
+## Verified operator recovery checkpoint: a337dfa
+
+ServicingRatingJobs now reads persisted job state and computes RetryAllowed from
+current policy access, operator capabilities, exact cycle/configuration pins,
+latest base, no existing result and the shared bounded retry budget. Read scope
+uses held read locks rather than upgrading shared locks into write locks.
+
+Retry requires current integration-retry, quote-rate and policy-draft-write
+capabilities, and rechecks applicability/configuration before receipt replay.
+Fresh commands also fence the job ETag, require an exhausted transient failure
+with an eligible six-attempt extension (maximum18 total), and atomically reopen
+only its current failed cycle. Work, provider identity, original request pins,
+attempts and exception history are preserved. Reason and operator are audited.
+ServicingRatingScope.Matches centralizes exact current pins for worker/retry.
+
+Meaningful failing-first tests: .local/phase7-05-retry-red.log and
+.local/phase7-05-job-read-red.log. Fresh final evidence:
+.local/phase7-05-retry-reviewed/{unit,sql}/*.trx; logs
+.local/phase7-05-retry-reviewed-unit.log and -sql.log.96 targeted servicing/retry
+unit cases and11 real SQL scenarios pass, no skips; assertion gate verified107
+cases with cutoff2026-09-17T17:45:00Z. This includes all prior10 rating/storage
+scenarios plus exhausted operator recovery: denied ordinary operator, current
+retry availability, stale ETag, successful expansion/replay, revoked permission
+before replay, seventh attempt producing one result, and changed fee setting
+rejecting an earlier receipt. The prior725-unit full run remains historical.
+
+Remaining: full rating history/expired/applicability/component read model; HTTP
+job routing/read/retry integration, strict DTOs/CSRF/no-store/ETags, hosted worker
+and DI registration; actual rating UI/browser tests; final source review. No new
+HTTP endpoint or hosted dispatcher is enabled yet. No phase/plan completion or
+business UAT is claimed; Phase7 remains4/16 and07-05 remains in progress.
