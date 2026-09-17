@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-04 all eight picker categories implemented; overall07-04 verification remains
-last_updated: "2026-09-17T15:00:03.434051+00:00"
-last_activity: "2026-09-17 —07-04 cover checkpoint480a5e5; source audit and overall plan verification remain."
+stopped_at: Plan07-04 verified and summarized; next07-05 persisted rating
+last_updated: "2026-09-17T15:36:30.467684+00:00"
+last_activity: "2026-09-17 —07-04 complete; begin07-05 persisted rating cycles."
 progress:
   total_phases: 13
   completed_phases: 6
   total_plans: 65
-  completed_plans: 52
+  completed_plans: 53
   percent: 46
 ---
 
@@ -21,16 +21,16 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute Phase7;07-01..03 verified;07-04 typed servicing editors in progress (backend verified).
+**Current focus:** Execute Phase7;07-01..04 verified;07-05 persisted rating cycles next.
 
 ## Current Position
 
 Phase: 7 of 13 (Policy lifecycle and history)
-Plan: 3 of16 complete;07-04 in progress
-Status: Executing Phase7;07-04 backend/date/review, driver, vehicle, premises and trade activity and policyholder and cover dialogs verified; overall07-04 checks outstanding
-Last activity: 2026-09-17 —07-04 cover editor480a5e5;116 frontend cases and both-product dated cover browser journeys pass. Resume07-04-PROGRESS.md.
+Plan: 4 of16 complete;07-05 next
+Status: Executing Phase7; typed servicing editors verified; rating implementation next
+Last activity: 2026-09-17 —07-04 completed in0d38d91, summary7036e8e; measured evidence in07-04-SUMMARY.md.
 
-Progress: Phases1–6 complete;6/13 phases,52 completed implementation plans.
+Progress: Phases1–6 complete;6/13 phases,53 completed implementation plans.
 
 ## Accumulated Context
 
@@ -44,7 +44,7 @@ Progress: Phases1–6 complete;6/13 phases,52 completed implementation plans.
 
 ### Pending Todos
 
-- Execute07-04..16 using the approved plans and07-01 contracts.
+- Execute07-05..16 using the approved plans and07-01 contracts.
 - Keep future endpoints closed until owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,9 +54,9 @@ Progress: Phases1–6 complete;6/13 phases,52 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-17T15:00:03.434051+00:00
-Stopped at:07-04 cover editors verified; audit remaining source actions and finish07-04 verification
-Resume file: .planning/phases/07-policy-lifecycle-and-history/07-04-PLAN.md
+Last session: 2026-09-17T15:36:30.467684+00:00
+Stopped at:07-04 completed;07-05 rating next
+Resume file: .planning/phases/07-policy-lifecycle-and-history/07-05-PLAN.md
 
 ## Autonomous continuation
 
