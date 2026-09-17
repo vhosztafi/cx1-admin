@@ -121,3 +121,65 @@ remains prior evidence for unchanged Application code; it was not rerun for this
 Infrastructure-only extension. No demo reset, public endpoint, worker execution,
 new rating browser journey or human UAT is claimed. Next is the pinned request
 input/configuration and request/provider/apply orchestration. Phase7 stays4/16.
+
+
+## 2026-09-17 pinned input and fee-setting checkpoint
+
+Added the closed persistence/worker ServicingRatingRequestInput and bounded8MiB
+ServicingRatingInput encoder/reader. SHA256 covers exact stored UTF-8 including
+all ownership/configuration pins, source hashes, requested actor/clock, fee,
+commission, minimum premium, full projected cumulative inputs, schedule dates
+and stable change/risk identities. Unknown/duplicate/missing fields, nested
+missing constructor facts, string-to-number coercion, unsupported format,
+non-UTC request clock, invalid hashes, mismatched terms/driver counts and invalid
+pricing are rejected. This is an internal worker contract, not a new HTTP DTO.
+The held service must supply independently authorized source projections.
+
+ServicingRatingConfiguration strictly reads fictional GBP/calendar-day/fee
+settings. ServicingRatingSeed adds a persistent version1 setting with15.00 fee
+only when the scope is absent; it requires held initialization and never replaces
+an operator setting. DemoDatabase includes it with underwriting demo seeds.
+The demo database was not reset or re-seeded in this checkpoint.
+
+Additive ServicingRatingSettingPin gives cycles a SettingVersion FK. The column
+is nullable to preserve historical prerequisite rows without rewriting immutable
+inputs; triggers require a real matching pin on every new cycle and prevent
+unconfigured historical rows becoming rated. SQL binds setting scope/effective
+start/fee, actor/request clock, policy/term and exact base/revision content hashes
+to the hashed input. Setting provenance is immutable. No prior migration changed.
+
+Failing-first logs: .local/phase7-05-input-red.log (4 cases),
+.local/phase7-05-setting-red.log (positive configured fee fails), and
+.local/phase7-05-fee-pin-red.log (missing SQL pin). Final measured results and
+commit are recorded below once the verification run finishes.
+
+Next implementation is the actual request service and persistent worker:
+- Resolve QuoteScope/QuoteRatingEligibility through the bound source's read-only
+  ownership/configuration context; never reopen or mutate that quote. Hold the
+  underwriting agency/identity/source-quote scope before policy/term/draft/lease
+  to preserve lock ordering. Current policy-draft-write permission and lease apply.
+- Current eligibility runs before receipt replay; the receipt fingerprint uses
+  submitted version/revision/lease/reason, not a newly generated server clock.
+  Build the frozen worker input only inside a fresh command, using one captured
+  requestedAt for both encoded input and cycle.CreatedAt.
+- Read current servicing setting under lock; it must parse and be effective.
+  Set ServicingSettingVersionId on the cycle and encode its exact fee. Preserve
+  rate/rule/binder/authority/agency terms and the immutable base/revision hashes.
+- Validate the full cumulative proposal assessment and project each full risk via
+  QuoteUnderwritingInput before encoding. Return202 for durable pending work.
+- Worker must recheck current grants/configuration/revision/base on application,
+  retain stale outcomes, and use the stored provider operation for exact retries.
+  Add service/race SQL and both-product UI checks before enabling rating endpoints.
+
+No source control, rating command, worker journey or plan completion is claimed.
+
+
+Final input/setting checkpoint: production0310e25.30 targeted unit cases plus2
+real SQL cases pass, zero skips, in .local/phase7-05-input-reviewed/{unit,sql}.
+assert-test-results.ps1 verified32 passing cases with cutoff2026-09-17T16:24:26Z.
+Logs: .local/phase7-05-input-reviewed-unit.log and -sql.log. SQL includes deliberate
+recomputed-hash substitutions of fee, clock, source hashes and policy; all reject,
+while both current and retained superseded outcomes persist correctly. Earlier
+full713-unit and6-SQL results remain historical, not rerun counts for this change.
+No unresolved high finding in this prerequisite scope. Actual request/worker/API/
+UI and final07-05 source acceptance remain unfinished. Phase7 stays4/16 complete.
