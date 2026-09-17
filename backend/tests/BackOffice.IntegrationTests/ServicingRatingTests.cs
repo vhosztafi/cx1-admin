@@ -11,8 +11,10 @@ namespace BackOffice.IntegrationTests;
 
 public sealed partial class UnderwritingRuntimeTests
 {
-    [Fact]
-    public async Task RealSqlServicingRatingTestsStorageRequiresOwnedImmutableInput()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task RealSqlServicingRatingTestsStorageRequiresOwnedImmutableInput(bool late)
     {
         await WithDatabase(async (db, password) =>
         {
@@ -55,8 +57,35 @@ public sealed partial class UnderwritingRuntimeTests
             await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCycle SET InputJson=N'{{}}' WHERE Id={id}"));
             await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCycle SET RevisionId={Guid.NewGuid()} WHERE Id={id}"));
             await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync($"DELETE ServicingCycle WHERE Id={id}"));
-            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCycle SET State='superseded',SupersededAt={now},SupersededReason=N'New revision required' WHERE Id={id}");
-            await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCycle SET State='rating-pending',SupersededAt=NULL,SupersededReason=NULL WHERE Id={id}"));
+            if (late)
+            {
+                await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCycle SET State='superseded',SupersededAt={now},SupersededReason=N'New revision required' WHERE Id={id}");
+                await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCycle SET State='rating-pending',SupersededAt=NULL,SupersededReason=NULL WHERE Id={id}"));
+            }
+            // A late provider outcome remains immutable history even when its
+            // cycle was superseded; it cannot become the current rated result.
+            var attempt = new AdapterAttempt { WorkId = workId, AttemptNumber = 1, StartedAt = now, CreatedAt = now };
+            var operation = new DemoProviderOperation { Kind = "servicing-rating", OperationKey = "servicing-rating/" + id.ToString("N"),
+                RequestHash = hash, ScenarioVersionId = scenario, State = "succeeded", CompletedAt = now, CreatedAt = now, UpdatedAt = now };
+            var output = JsonSerializer.Serialize(new { format = "servicing-rating-result-1", operationId = operation.Id, outcome = "rated", completedAt = now, expiresAt = now.AddDays(30),
+                rating = new { baseAnnualPremium = 1200m, premium = -177.53m, tax = -21.30m, brokerCommission = -17.75m, fee = 15m, grossPayable = -183.83m, netDue = -166.08m } });
+            operation.Result = output; db.AddRange(attempt, operation); await db.SaveChangesAsync();
+            var result = Guid.NewGuid(); var resultHash = System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(output));
+            async Task InsertResult(Guid attemptId, byte[] outputHash, decimal premium = -177.53m) => await db.Database.ExecuteSqlInterpolatedAsync($"INSERT ServicingRatingResult (Id,CycleId,DraftId,RevisionId,WorkId,AttemptId,ProviderOperationId,RuleVersionId,InputHash,ResultHash,ResultJson,Outcome,CompletedAt,ExpiresAt,BaseAnnualPremium,Premium,Tax,Fee,BrokerCommission,GrossPayable,NetDue,CreatedAt) VALUES ({result},{id},{created.ResourceId},{revision},{workId},{attemptId},{operation.Id},{original.RatingRuleVersionId},{hash},{outputHash},{output},'rated',{now},{now.AddDays(30)},1200,{premium},-21.30,15,-17.75,{premium - 6.30m},{premium + 11.45m},{now})");
+            await Assert.ThrowsAsync<SqlException>(() => InsertResult(Guid.NewGuid(), resultHash));
+            await Assert.ThrowsAsync<SqlException>(() => InsertResult(attempt.Id, new byte[32]));
+            await Assert.ThrowsAsync<SqlException>(() => InsertResult(attempt.Id, resultHash, -1m));
+            await InsertResult(attempt.Id, resultHash);
+            await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingRatingResult SET Premium=-1 WHERE Id={result}"));
+            await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync($"DELETE ServicingRatingResult WHERE Id={result}"));
+            if (late)
+                await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCycle SET CurrentRatingId={result} WHERE Id={id}"));
+            else
+            {
+                await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCycle SET State='rated',CurrentRatingId={result} WHERE Id={id}");
+                var rated = await db.Set<ServicingCycle>().AsNoTracking().SingleAsync(x => x.Id == id);
+                Assert.Equal("rated", rated.State); Assert.Equal(result, rated.CurrentRatingId);
+            }
             var retained = await db.Set<PolicyVersion>().AsNoTracking().SingleAsync();
             Assert.Equal(issued.SnapshotJson, retained.SnapshotJson); Assert.Equal(issued.ContentHash, retained.ContentHash);
         });

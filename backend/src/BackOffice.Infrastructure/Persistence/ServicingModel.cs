@@ -59,6 +59,24 @@ public sealed partial class BackOfficeDbContext
         draft.HasOne<ServicingCycle>().WithMany().HasForeignKey(x => new { x.CurrentCycleId, x.Id, x.PolicyId })
             .HasPrincipalKey(x => new { x.Id, x.DraftId, x.PolicyId }).OnDelete(DeleteBehavior.NoAction);
 
+        var result = Record<ServicingRatingResult>(model, "ServicingRatingResult"); result.ToTable(t => t.UseSqlOutputClause(false));
+        Text(result, ("Outcome", 20)); Hash(result, "InputHash"); Hash(result, "ResultHash"); UnderwritingJson(result, "ResultJson");
+        result.HasAlternateKey(x => new { x.Id, x.CycleId, x.DraftId, x.RevisionId });
+        result.HasIndex(x => x.WorkId).IsUnique(); result.HasIndex(x => x.AttemptId).IsUnique(); result.HasIndex(x => x.ProviderOperationId).IsUnique();
+        result.HasOne<ServicingCycle>().WithMany().HasForeignKey(x => new { x.CycleId, x.DraftId, x.RevisionId, x.WorkId, x.RuleVersionId, x.InputHash })
+            .HasPrincipalKey(x => new { x.Id, x.DraftId, x.RevisionId, x.WorkId, x.RatingRuleVersionId, x.InputHash }).OnDelete(DeleteBehavior.NoAction);
+        result.HasOne<AdapterAttempt>().WithMany().HasForeignKey(x => new { x.AttemptId, x.WorkId })
+            .HasPrincipalKey(x => new { x.Id, x.WorkId }).OnDelete(DeleteBehavior.NoAction);
+        result.HasOne<DemoProviderOperation>().WithMany().HasForeignKey(x => x.ProviderOperationId).OnDelete(DeleteBehavior.NoAction);
+        Check(result, "Outcome", "[Outcome] IN ('rated','rejected')");
+        Check(result, "Interval", "[CompletedAt]>=[CreatedAt] AND [ExpiresAt]>[CompletedAt]");
+        foreach (var name in new[] { "BaseAnnualPremium", "Premium", "Tax", "Fee", "BrokerCommission", "GrossPayable", "NetDue" })
+        { result.Property<decimal>(name).HasPrecision(19, 2); Check(result, name, $"[{name}] BETWEEN -9999999999999.99 AND 9999999999999.99"); }
+        Check(result, "Totals", "[GrossPayable]=[Premium]+[Tax]+[Fee] AND [NetDue]=[GrossPayable]-[BrokerCommission] AND [Fee]>=0 AND (([Outcome]='rated' AND [BaseAnnualPremium]>0) OR ([Outcome]='rejected' AND [BaseAnnualPremium]=0 AND [Premium]=0 AND [Tax]=0 AND [Fee]=0 AND [BrokerCommission]=0 AND [GrossPayable]=0 AND [NetDue]=0))");
+        cycle.HasOne<ServicingRatingResult>().WithMany().HasForeignKey(x => new { x.CurrentRatingId, x.Id, x.DraftId, x.RevisionId })
+            .HasPrincipalKey(x => new { x.Id, x.CycleId, x.DraftId, x.RevisionId }).OnDelete(DeleteBehavior.NoAction);
+        Check(cycle, "RatedResult", "[State]<>'rated' OR [CurrentRatingId] IS NOT NULL");
+
         var lease = Record<ServicingLease>(model, "ServicingLease");
         lease.HasIndex(x => x.DraftId).IsUnique();
         lease.HasOne<ServicingDraft>().WithMany().HasForeignKey(x => x.DraftId).OnDelete(DeleteBehavior.NoAction);

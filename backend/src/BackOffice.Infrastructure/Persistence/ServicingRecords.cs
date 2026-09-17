@@ -52,6 +52,32 @@ public sealed class ServicingCycle : MutableRecord
     public string InputJson { get; set; } = "{}";
     public Guid RequestedBy { get; set; }
     public string State { get; set; } = "rating-pending";
+    public Guid? CurrentRatingId { get; set; }
     public DateTimeOffset? SupersededAt { get; set; }
     public string? SupersededReason { get; set; }
+}
+
+
+public sealed class ServicingRatingResult : StoredRecord
+{
+    public Guid CycleId { get; set; }
+    public Guid DraftId { get; set; }
+    public Guid RevisionId { get; set; }
+    public Guid WorkId { get; set; }
+    public Guid AttemptId { get; set; }
+    public Guid ProviderOperationId { get; set; }
+    public Guid RuleVersionId { get; set; }
+    public byte[] InputHash { get; set; } = [];
+    public byte[] ResultHash { get; set; } = [];
+    public string ResultJson { get; set; } = "{}";
+    public string Outcome { get; set; } = "rated";
+    public DateTimeOffset CompletedAt { get; set; }
+    public DateTimeOffset ExpiresAt { get; set; }
+    public decimal BaseAnnualPremium { get; set; }
+    public decimal Premium { get; set; }
+    public decimal Tax { get; set; }
+    public decimal Fee { get; set; }
+    public decimal BrokerCommission { get; set; }
+    public decimal GrossPayable { get; set; }
+    public decimal NetDue { get; set; }
 }
