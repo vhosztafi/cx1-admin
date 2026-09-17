@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-06 referral and decision storage verified; conditions and decision services next
-last_updated: "2026-09-17T20:59:00.435648+00:00"
-last_activity: "2026-09-17 —07-06 referral storage fdc39a2 verified;17 unit and4 SQL cases pass; conditions/decision services and HTTP/UI remain."
+stopped_at: Plan07-06 automatic referral generation verified; conditions and decision services next
+last_updated: "2026-09-17T21:24:04.707317+00:00"
+last_activity: "2026-09-17 —07-06 automatic referrals 3bea283 verified;15 unit and19 SQL cases pass; conditions/decision services and HTTP/UI remain."
 progress:
   total_phases: 13
   completed_phases: 6
@@ -21,14 +21,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute Phase7;07-01..05 complete;07-05 rating API/worker/UI verified;07-06 evidence commands, cumulative referral rules and decision storage verified; conditions/decision services and HTTP/UI next.
+**Current focus:** Execute Phase7;07-01..05 complete;07-05 rating API/worker/UI verified;07-06 evidence commands, cumulative referral generation and decision storage verified; conditions/decision services and HTTP/UI next.
 
 ## Current Position
 
 Phase: 7 of 13 (Policy lifecycle and history)
 Plan: 5 of16 complete;07-06 in progress
-Status: Executing Phase7;07-06 referral storage verified; conditions/decision services next
-Last activity: 2026-09-17 —07-06 referral storage fdc39a2;21-case unit/SQL gate passed. Resume07-06-PROGRESS.md.
+Status: Executing Phase7;07-06 automatic referrals verified; conditions/decision services next
+Last activity: 2026-09-17 —07-06 automatic referrals 3bea283;34-case unit/SQL gate passed. Resume07-06-PROGRESS.md.
 
 Progress: Phases1–6 complete;6/13 phases,54 completed implementation plans.
 
@@ -54,8 +54,8 @@ Progress: Phases1–6 complete;6/13 phases,54 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-17T20:59:00.435648+00:00
-Stopped at:07-06 referral storage verified; conditions/decision services/API/UI remain
+Last session: 2026-09-17T21:24:04.707317+00:00
+Stopped at:07-06 automatic referral generation verified; conditions/decision services/API/UI remain
 Resume file: .planning/phases/07-policy-lifecycle-and-history/07-06-PROGRESS.md
 
 ## Autonomous continuation

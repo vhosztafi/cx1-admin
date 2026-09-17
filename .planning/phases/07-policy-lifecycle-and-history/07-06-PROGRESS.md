@@ -288,3 +288,39 @@ purposes only after their owning condition graph exists. Finish bounded read mod
 strict HTTP/DI/contracts, UI and both-product browser acceptance before closing07-06.
 Shared demo and running previews remain unchanged; no browser/UAT result claimed.
 Phase7 remains5/16; total plans54/65. Continue inline with no agents.
+
+
+## Verified automatic referral generation checkpoint: 3bea283
+
+The servicing worker now creates referrals atomically with an applicable successful
+rating. It matches all immutable cumulative input dates/change IDs to their annual
+rated risks and assesses binder, baseline authority and independent source triggers.
+Temporary cover removed by a later change still creates the required dated referral.
+Current cycle/rating pointers are saved before referral insertion inside the same
+transaction, satisfying the SQL provenance guards. Rejected, revoked, superseded and
+duplicate worker deliveries cannot create applicable referrals. Draft edits, rerating
+and abandonment supersede old-cycle referrals while retaining decision pointers.
+
+RED .local/phase7-06-referral-generation-red/sql/sql.trx contains the two expected
+missing-referral failures after fixing a test-local variable name. The first broad
+run revealed an incorrect new coverage-end assertion and was interrupted; it is not
+passing evidence. Each existing price movement earns through term end, not merely
+until the next change. The validation now follows that retained pricing contract.
+
+Fresh .local/phase7-06-referral-generation-reviewed/{unit,sql} passes15 pure/shared
+unit and19 real-SQL scenarios, with no skips. assert-test-results.ps1 verified34
+cases with cutoff2026-09-17T21:18:00Z. Both products cover temporary above-authority
+cover, exact dated binder/authority amounts, superseded worker exclusion, duplicate
+application and edit supersession. The broader SQL run also passes rating retries,
+revoked access, rejection, configuration change, evidence storage/upload/review and
+referral storage. Existing raw storage tests allocate after generated sequences.
+git diff --check passes. No shared demo migration or browser acceptance was run.
+
+Next: add owned condition/resolution storage and individual/selected decision
+services. Use current actor grants across every cumulative dated risk, retain actual
+grant identity and enforce all-or-none writes and revocation before replay. Reuse
+closed ReferralRules condition semantics carefully: stable targets may be present
+only in earlier slices, and terms-specific evidence depends on the later terms
+slice. Complete bounded read models, HTTP/DI/contracts, UI and persisted browser
+acceptance before closing07-06. No new decision endpoint is enabled by this change.
+Phase7 remains5/16 complete and54/65 total plans. Continue inline with no agents.
