@@ -50,6 +50,7 @@ public sealed partial class BackOfficeDbContext
             .HasPrincipalKey(x => new { x.Id, x.ProductVersionId, x.BinderVersionId }).OnDelete(DeleteBehavior.NoAction);
         cycle.HasOne<SettingVersion>().WithMany().HasForeignKey(x => x.RuntimeVersionId).OnDelete(DeleteBehavior.NoAction);
         cycle.HasOne<SettingVersion>().WithMany().HasForeignKey(x => x.ScenarioVersionId).OnDelete(DeleteBehavior.NoAction);
+        cycle.HasOne<SettingVersion>().WithMany().HasForeignKey(x => x.ServicingSettingVersionId).OnDelete(DeleteBehavior.NoAction);
         cycle.HasOne<StaffUser>().WithMany().HasForeignKey(x => x.RequestedBy).OnDelete(DeleteBehavior.NoAction);
         cycle.HasOne<OutboxWork>().WithMany().HasForeignKey(x => x.WorkId).OnDelete(DeleteBehavior.NoAction);
         Check(cycle, "State", "[State] IN ('rating-pending','rated','failed','superseded')");

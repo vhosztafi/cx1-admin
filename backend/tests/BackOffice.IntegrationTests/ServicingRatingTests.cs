@@ -32,21 +32,46 @@ public sealed partial class UnderwritingRuntimeTests
             var revision = JsonSerializer.Deserialize<JsonElement>(created.Body).GetProperty("revisionId").GetGuid();
             var original = await db.Set<UnderwritingCycle>().AsNoTracking().SingleAsync(x => x.Id == setup.Input.CycleId);
             var source = JsonSerializer.Deserialize<JsonElement>(original.InputJson);
+            await using (var seedTransaction = await db.Database.BeginTransactionAsync())
+            {
+                await ServicingRatingSeed.SeedAsync(db); await ServicingRatingSeed.SeedAsync(db);
+                await seedTransaction.CommitAsync();
+            }
+            var servicingSetting = await db.Set<SettingVersion>().AsNoTracking().SingleAsync(x => x.Scope == ServicingRatingSeed.Scope);
+            Assert.Equal(15m, BackOffice.Application.Policies.ServicingRatingConfiguration.Parse(servicingSetting.Values)!.AdjustmentFee);
             var now = f.Clock.GetUtcNow(); var id = Guid.NewGuid(); var workId = Guid.NewGuid();
             var scenario = source.GetProperty("scenarioVersionId").GetGuid(); var runtime = source.GetProperty("runtimeVersionId").GetGuid();
             db.Add(new OutboxWork { Id = workId, Kind = "servicing-rating", SubjectRecordId = id, OperationKey = "servicing-rating/" + id.ToString("N"), ScenarioVersionId = scenario,
                 Payload = JsonSerializer.Serialize(new { cycleId = id, draftId = created.ResourceId }), NextAttemptAt = now, CorrelationId = Guid.NewGuid(), CreatedBy = f.Servicing.UserId, CreatedAt = now, UpdatedAt = now });
             await db.SaveChangesAsync();
+            var revisionHash = await db.Set<ServicingRevision>().Where(x => x.Id == revision).Select(x => x.ContentHash).SingleAsync();
             var json = JsonSerializer.Serialize(new { format = "servicing-rating-input-1", draftId = created.ResourceId, revisionId = revision, baseVersionId = issued.Id,
                 productVersionId = original.ProductVersionId, agencyTermsVersionId = original.AgencyTermsVersionId, ratingRuleVersionId = original.RatingRuleVersionId,
-                binderVersionId = original.BinderVersionId, authorityVersionId = original.AuthorityVersionId, runtimeVersionId = runtime, scenarioVersionId = scenario });
+                binderVersionId = original.BinderVersionId, authorityVersionId = original.AuthorityVersionId, runtimeVersionId = runtime, scenarioVersionId = scenario, servicingSettingVersionId = servicingSetting.Id, fee = 15m, requestedAt = now, requestedBy = f.Servicing.UserId,
+                policyId = issued.PolicyId, baseTermId = issued.TermId, baseContentHash = Convert.ToHexStringLower(issued.ContentHash), revisionContentHash = Convert.ToHexStringLower(revisionHash) });
             var hash = System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(json));
-            async Task Insert(Guid draft, byte[] inputHash) => await db.Database.ExecuteSqlInterpolatedAsync($"INSERT ServicingCycle (Id,DraftId,PolicyId,BaseTermId,BaseVersionId,RevisionId,ProductId,ProductVersionId,AgencyTermsVersionId,RatingRuleVersionId,BinderVersionId,AuthorityVersionId,RuntimeVersionId,ScenarioVersionId,Sequence,WorkId,InputHash,InputJson,RequestedBy,State,CreatedBy,CreatedAt,UpdatedAt) VALUES ({id},{draft},{issued.PolicyId},{issued.TermId},{issued.Id},{revision},{original.ProductId},{original.ProductVersionId},{original.AgencyTermsVersionId},{original.RatingRuleVersionId},{original.BinderVersionId},{original.AuthorityVersionId},{runtime},{scenario},1,{workId},{inputHash},{json},{f.Servicing.UserId},'rating-pending',{f.Servicing.UserId},{now},{now})");
+            async Task Insert(Guid draft, byte[] inputHash, bool missingSetting = false) => await db.Database.ExecuteSqlInterpolatedAsync($"INSERT ServicingCycle (Id,DraftId,PolicyId,BaseTermId,BaseVersionId,RevisionId,ProductId,ProductVersionId,AgencyTermsVersionId,RatingRuleVersionId,BinderVersionId,AuthorityVersionId,RuntimeVersionId,ScenarioVersionId,ServicingSettingVersionId,Sequence,WorkId,InputHash,InputJson,RequestedBy,State,CreatedBy,CreatedAt,UpdatedAt) VALUES ({id},{draft},{issued.PolicyId},{issued.TermId},{issued.Id},{revision},{original.ProductId},{original.ProductVersionId},{original.AgencyTermsVersionId},{original.RatingRuleVersionId},{original.BinderVersionId},{original.AuthorityVersionId},{runtime},{scenario},{(missingSetting ? (Guid?)null : servicingSetting.Id)},1,{workId},{inputHash},{json},{f.Servicing.UserId},'rating-pending',{f.Servicing.UserId},{now},{now})");
             await Assert.ThrowsAsync<SqlException>(() => Insert(Guid.NewGuid(), hash));
             await Assert.ThrowsAsync<SqlException>(() => Insert(created.ResourceId, new byte[32]));
             await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE OutboxWork SET ScenarioVersionId=NULL WHERE Id={workId}");
             await Assert.ThrowsAsync<SqlException>(() => Insert(created.ResourceId, hash));
             await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE OutboxWork SET ScenarioVersionId={scenario} WHERE Id={workId}");
+            await Assert.ThrowsAsync<SqlException>(() => Insert(created.ResourceId, hash, missingSetting: true));
+            var originalJson = json; var originalHash = hash;
+            foreach (var property in new[] { "fee", "requestedAt", "baseContentHash", "revisionContentHash", "policyId" })
+            {
+                var altered = System.Text.Json.Nodes.JsonNode.Parse(originalJson)!;
+                altered[property] = property switch
+                {
+                    "fee" => System.Text.Json.Nodes.JsonValue.Create(16m),
+                    "requestedAt" => System.Text.Json.Nodes.JsonValue.Create(now.AddSeconds(1)),
+                    "policyId" => System.Text.Json.Nodes.JsonValue.Create(Guid.NewGuid()),
+                    _ => System.Text.Json.Nodes.JsonValue.Create(new string('0', 64))
+                };
+                json = altered.ToJsonString(); hash = System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(json));
+                await Assert.ThrowsAsync<SqlException>(() => Insert(created.ResourceId, hash));
+            }
+            json = originalJson; hash = originalHash;
             await Insert(created.ResourceId, hash);
             await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCycle SET State='rated' WHERE Id={id}"));
             var cancellation = await service.CreateAsync(f.Servicing, issued.TermId,

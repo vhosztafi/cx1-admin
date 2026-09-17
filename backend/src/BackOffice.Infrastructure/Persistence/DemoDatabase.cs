@@ -100,6 +100,7 @@ public static class DemoDatabase
             await Underwriting.CapacitySeed.SeedAsync(db,cancellationToken);
             await Underwriting.QuoteTermsSeed.SeedAsync(db,cancellationToken);
             await Policies.PolicyTemplateSeed.SeedAsync(db,cancellationToken);
+            await Policies.ServicingRatingSeed.SeedAsync(db,cancellationToken);
             await Policies.PolicyClientActivitySeed.SeedAsync(db,cancellationToken);
         }
         await transaction.CommitAsync(cancellationToken);
