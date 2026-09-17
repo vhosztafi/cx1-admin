@@ -521,3 +521,36 @@ condition/trading-history blockers with validated proof checks, harden boundary
 validation, test query and malformed conditions, then add guarded warranty evidence,
 bounded read models, strict DI/HTTP/contracts, UI and persisted browser acceptance.
 Keep07-06 in progress; Phase7 stays5/16 and54/65 total plans. Continue inline, no agents.
+
+
+## Verified decision validation/query checkpoint: 4ba4905
+
+The decision service now rejects null selections/versions/condition lists, undefined
+or non-object JSON, more than20 conditions and short trimmed reasons/questions with
+422 before normalization/persistence. Both raw per-condition and exact serialized
+ConditionsJson lengths are bounded to65536 UTF-16 units, matching SQL's131072-byte
+nvarchar limit. Oversized input now reports servicing-condition-payload-too-large
+rather than reaching a database exception. This closes the explicitly recorded
+payload-boundary gap from the preceding checkpoint.
+
+Actual query decisions are now verified on both products: a meaningful question and
+documentary conditions persist with queried state; missing questions and warranty
+query conditions reject. The fixture still checks unresolved proof blocking and
+revoked-grant replay after a query. Existing approval/conditional/decline/reopen and
+above-binder temporary-cover tests remain passing; no HTTP/DI/UI exposure was added.
+
+RED .local/phase7-06-decision-validation-red/sql/sql.trx has2 expected failures from
+unhandled null conditions. An intermediate green build overlapped the ending red
+host and retried locked test assemblies; it subsequently passed. Final verification
+ran after that host exited. Fresh .local/phase7-06-decision-validation-final/{unit,sql}
+passes36 pure/shared unit and4 SQL scenarios. Gate verified40/no skips with cutoff
+2026-09-17T22:55:00Z. Final build has no lock warnings, git diff --check passes and
+issued snapshots remain unchanged. Do not start rebuilding integration binaries
+until the previous integration-test process has fully exited.
+
+Next remains resolution commands and live condition/proof satisfaction. Replace the
+explicit pending-condition and UW-22 approval blockers only with verified current
+proof checks; add guarded warranty acknowledgement requirements, bounded read models,
+strict DI/HTTP/contracts and UI/browser verification. Shared demo/previews and sales
+funnel remain unchanged.07-06 stays incomplete; Phase7 stays5/16, total54/65. Continue
+inline without agents.
