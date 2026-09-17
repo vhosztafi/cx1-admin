@@ -42,10 +42,12 @@ does not. The real SQL regression failed before this fix and passes after it.
   `phase6-13-browser-final.log`; desktop/390px screenshots inspected under
   `.local/browser-evidence/policy-discovery`. Relevant retained integration
   navigation passes in `phase6-13-integration-fix.log`.
-- Repeated additive initialization preserves **44 count/hash sets**, including
-  issued policy graphs, old revisions, postings, work and credentials; evidence
-  `.local/phase6-13-preservation*`. Missing actual policy-issued activity is added
-  once, without rewriting existing records.
+- Additive initialization completed. Final review found that the earlier private
+  preservation query used a nonexistent PolicyRegistration.Id and produced SQL
+  error text rather than hashes. Those files are **not preservation evidence**.
+  The corrected, fail-closed 44-set comparison is owned by 06-14; no claim is made
+  that the unavailable earlier snapshots prove preservation. Actual seed behavior
+  and immutable history are independently covered by the passing SQL suite.
 
 ## Boundaries
 

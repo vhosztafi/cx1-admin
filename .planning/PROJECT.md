@@ -18,7 +18,12 @@ Staff can complete a quote-to-policy-to-servicing journey and trust that its pol
 
 ### Validated
 
-Phases1–5 are verified locally: design, persistent foundation, clients, agencies and complete Motor Trade quote capture. QUO-02/04/05 are validated inPhase5. QUO-01/CLI-01 retain real policy discovery inPhase6; QUO-03 retains applied endorsements, QUO-06 actual rating/acceptance invalidation, and AGY-03/04 later finance/policy/task portions. See REQUIREMENTS.md and each phase verification. The prototype and sales funnel remain references; the full business MVP remains in progress.
+Phases1–6 are verified locally. Both Motor Trade products now support capture,
+deterministic rating, evidence/referrals/capacity, exact terms acceptance and
+atomic first issue with immutable policy JSON, balanced postings and durable
+requests. CLI-01,QUO-01/03/06 and UWR-01..07 are complete. AGY-03 finance and AGY-04
+generic tasks retain later owners. See REQUIREMENTS.md and06-VERIFICATION. The
+prototype and untouched sales funnel remain references; the full MVP is in progress.
 
 ### Active
 
@@ -64,7 +69,7 @@ Phases1–5 are verified locally: design, persistent foundation, clients, agenci
 | Motor Trade and Commercial Combined back office | User permits CC assumptions | Accepted; assumptions tracked |
 | Persistent deterministic external adapters | User's preferred demo approach | Accepted |
 | Internal agency visibility reference only | Explicit `pPortal()` source boundary | Source-derived |
-| SQL Server relational core + versioned JSON snapshots | Aligns experience, flexible risks and transactional issue | Accepted; foundation implemented, policy snapshots follow in feature phases |
+| SQL Server relational core + versioned JSON snapshots | Aligns experience, flexible risks and transactional issue | Implemented: relational policy graph, immutable issued JSON and atomic first issue |
 | Modular .NET solution in one deployment | Clear replacement boundaries without distributed transaction overhead | Accepted; API/Domain/Application/Infrastructure implemented |
 | Focused research before requirements | User selected research | Accepted |
 
@@ -80,9 +85,12 @@ Keep research, plan checks, unit tests, integration checks and verification enab
 
 Commit reviewed local work in manageable units. No production deployment, real payment/delivery or separate customer-facing funnel is authorised. Continue in this task; no additional user-owned tasks are needed.
 
-Last updated: 2026-09-16 — Phase5 verified; autonomous Phase6 progression.
+Last updated: 2026-09-17 — Phase6 verified; autonomous Phase7 transition.
 
 
 ## Current State
 
-Phase5 complete: both Motor Trade products have persistent capture, evidence/lookups, matching, discovery, immutable history and ready checks.680backend/85realSQL,80frontend,294contract checks,37browser journeys and actual restart pass. Phase6 supplies deterministic rating, referrals, exact-version acceptance and atomic first policy issue. Human business UAT and hosted deployment remain pending.
+Phase6 complete:14/14plans,838backend/169realSQL,104frontend,334contract/source/gate
+checks,all37retained journeys,actual carrier issue,restart and44-set preservation
+pass. Phase7 owns policy lifecycle/history; consume06-PHASE07-HANDOFF. Human
+business/assistive-technology UAT,hostedCI andDocker remain unperformed.

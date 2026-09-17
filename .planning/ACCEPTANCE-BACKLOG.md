@@ -23,3 +23,14 @@ Phase 3 minor refinement observations: record-specific read-error wording and de
 
 | QUO-03 applied endorsements/warranties | Phase6, checked again13 | Capture preserves user declarations and limits.05-01 deliberately excluded authoritative endorsements/warranties/cover sections from quote writes; implement actual underwriting/rating outcomes and verify display before full compound requirement signoff. |
 | QUO-06 actual rating/acceptance invalidation | Phase6, checked again13 | Phase5 immutable revisions, ownership snapshots and MatchesCurrent token provide the boundary. Real rating/acceptance records must bind revision/hash/terms and become unusable after relevant changes; closure must race safely against actual matching and capture commands. |
+
+
+## Phase6 closures (2026-09-17)
+
+06-VERIFICATION closes actual policy discovery/client links (CLI-01/QUO-01),
+applied endorsements/warranties (QUO-03), actual rating/acceptance invalidation
+(QUO-06), progressed matching fences, current rating/distribution eligibility and
+all UWR-01..07. Earlier dependency rows above are retained historical context,
+not outstanding Phase6 gaps. Safe quote/policy agency sharing is complete; AGY-04
+generic task sharing remainsPhase9. Phase7 consumes06-PHASE07-HANDOFF. No claims
+are made for human UAT, generic document generation, collections or hostedCI.

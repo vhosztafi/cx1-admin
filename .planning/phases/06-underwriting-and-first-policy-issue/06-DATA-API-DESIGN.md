@@ -291,4 +291,9 @@ generation remainsPhase9 and final source acceptance remains06-14.
 
 ### 06-13 discovery wiring refinement
 
-The implemented list uses explicit `policy-discovery-read`, a current stored identity check and a serializable query. Protected cursors bind path, actor, filters, ordering, page size and database version; coverage state is calculated at the cursor as-of instant. Existing client `/records?kind=policy` returns its existing ClientRecordLink shape. Client issue activity retains the existing quote record-link kind and links through the actual bound source quote, avoiding a second activity schema. Initialization appends missing projections from actual issue transactions without rewriting original history. Accepted agency-cookie list/detail and staff preview share the same seven-field policy allowlist; hidden risk and registration fields do not enter shared search or cursor fingerprints.
+The implemented list uses explicit `policy-discovery-read`, a current stored identity check and a serializable query. Protected cursors bind path, actor, filters, ordering, page size and relevant-record version/count fingerprint; coverage state is calculated at the cursor as-of instant. Existing client `/records?kind=policy` returns its existing ClientRecordLink shape. Client issue activity retains the existing quote record-link kind and links through the actual bound source quote, avoiding a second activity schema. Initialization appends missing projections from actual issue transactions without rewriting original history. Accepted agency-cookie list/detail and staff preview share the same seven-field policy allowlist; hidden risk and registration fields do not enter shared search or cursor fingerprints.
+
+Capacity withdrawal/reopening preserves monotonic submission/response pointers
+and immutable correspondence. Draft state fences old provider results and
+carrier authority until an explicit new submission. Internal senior assignment
+is an audited routing action, never an authority grant. See06-14-REVIEW.
