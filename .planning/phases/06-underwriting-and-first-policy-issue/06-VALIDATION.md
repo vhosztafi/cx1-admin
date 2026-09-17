@@ -120,3 +120,12 @@ and explicit dependent evidence Refresh recovery. Additive migration and repeate
 seed preserved historical counts/hashes and credentials. See 06-07-SUMMARY for
 exact artifacts. Conditional source supplement requires the explicit 06-14 gate;
 terms, acceptance and issue retain their later owners.
+
+## 06-08 runtime evidence
+
+Implementation0ba6132:799backend (628unit/171integration),144realSQL,zero skips.
+Full integration30m20s; exact result gate passed.317contract/source cases and
+OpenAPI355operations pass (10existingwarnings). Applied additive migration and
+repeated initialization preserve all23retained count/hash sets and credentials.
+See06-08-SUMMARY for paths, strict HTTP, delivery recovery and immutable acceptance
+evidence. UI remains06-09 and policy storage/issue06-10..12.

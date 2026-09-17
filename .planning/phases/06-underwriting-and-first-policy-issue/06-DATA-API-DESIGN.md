@@ -202,3 +202,48 @@ return to draft, revise captured risk and obtain a new rating. Literal MTA chang
 remain Phase 7. Generic admin jobs remain diagnostic; capacity jobs use the scoped
 job route, and recovery requires both integration-retry and underwriting-escalate.
 Preparing terms, delivery, acceptance and policy issue remain subsequent slices.
+
+## Quotation backend implementation (06-08)
+
+Migration20260917013041 adds immutable product TemplateVersion, QuoteTermsVersion
+and QuoteAcceptance plus mutable processing state on immutable QuoteTermsDelivery
+requests. UnderwritingCycle owns exact current terms/delivery/acceptance pointers.
+Composite keys and SQL guards enforce same quote/cycle/rating/delivery/proof
+ownership, append-only history and terminal outcome provenance. The earlier
+prepared-terms NULL fence is replaced by real ownership and proof-purpose checks.
+
+Prepare clears current non-signature blockers and stores a structured contractual
+payload: exact revision/rating/template, risk facts, cover, warranty wording,
+prices and retained settlement. Documentary signature/acceptance proof is outside
+that payload; reviewing it cannot rerate or recursively regenerate terms.
+Preparing identical contractual content returns the same version. Warranty
+changes produce a new version and clear current delivery/acceptance applicability.
+
+Send snapshots actual active same-client/relationship contacts with valid email
+addresses. It requires reviewed signed-statement proof for the exact terms and
+current decisions/configuration. One durable quote-delivery work item retains
+recipients, payload hash, scenario and assurance at send. The versioned demo
+adapter supports success, rejection, transient-once and timeout-after-success;
+its operation is persisted independently of current application. Current identity,
+recipient values, proof, template, pricing and lease are rechecked on application.
+Only an applied successful outcome is delivered. Nothing is transmitted externally.
+
+Acceptance is a separate immutable command: exact current successfully delivered
+terms, rating and assurance; named accepter, explicit received instant/channel and
+actual reviewed acceptance-proof association. That proof exists before hashing
+assurance; acceptance itself is excluded. Future/before-delivery/expired/foreign/
+unreviewed/withdrawn proof and stale contractual contexts are denied. Later changes
+remove current acceptance applicability without rewriting history. Policy issue
+remains closed until its owning later slices.
+
+Current template/contact options and protected independent history cursors are
+exposed by GET quotation terms. Cursors bind to quote and delivery versions,
+avoiding invalidation by unrelated database jobs. Exact current scope is checked
+on every page. Delivery retry uses the scoped job route, both quote-terms and
+integration-retry capabilities and bounded retained attempts/operation identity.
+Generic admin discovery never confers business subject access.
+
+The plan's ActorContext capabilities already existed, so they are reused. Backend
+runtime verification is recorded in06-08-SUMMARY after the full gate; source-facing
+quotation/acceptance controls and browser verification remain06-09, generic document
+generation remainsPhase9 and final source acceptance remains06-14.
