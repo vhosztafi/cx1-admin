@@ -96,6 +96,16 @@ public sealed class QuoteEvidenceRulesTests
     }
 
     [Fact]
+    public void ServicingNameLimitDoesNotWidenExistingQuoteUploads()
+    {
+        var bytes=Encoding.UTF8.GetBytes("Fictional evidence");var name=new string('a',196)+".txt";
+        Assert.Throws<QuoteInputException>(()=>QuoteEvidenceRules.File(name,"text/plain",bytes));
+        Assert.Equal(name,QuoteEvidenceRules.File(name,"text/plain",bytes,maximumNameLength:200).FileName);
+        Assert.Throws<QuoteInputException>(()=>QuoteEvidenceRules.File("a"+name,"text/plain",bytes,maximumNameLength:200));
+        Assert.Throws<ArgumentOutOfRangeException>(()=>QuoteEvidenceRules.File(name,"text/plain",bytes,maximumNameLength:201));
+    }
+
+    [Fact]
     public void AttestationAndWithdrawalReasonsMustBeMeaningfulAndBounded()
     {
         Assert.Equal("Checked fictional proof", QuoteEvidenceRules.Reason(" Checked fictional proof "));

@@ -25,6 +25,8 @@ public sealed partial class UnderwritingRuntimeTests
     [InlineData("motor-trade-road-risks", "operator-retry")]
     [InlineData("motor-trade-road-risks", "evidence-storage")]
     [InlineData("motor-trade-combined", "evidence-storage")]
+    [InlineData("motor-trade-road-risks", "evidence-service")]
+    [InlineData("motor-trade-combined", "evidence-service")]
     public async Task RealSqlServicingRatingRequestsPinFullScheduleAndReauthorizeReplay(string product, string scenario)
     {
         await WithDatabase(async (db, password) =>
@@ -218,11 +220,12 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.Equal(cycle.Id, Assert.Single(older.Items).Id); Assert.Null(older.NextBeforeSequence);
             Assert.False(older.Items[0].Applicable); Assert.Equal("superseded", older.Items[0].State);
             Assert.Equal(applied.Id, older.Current!.Id);
-            if (scenario == "evidence-storage")
+            if (scenario is "evidence-storage" or "evidence-service")
             {
                 var sibling = await drafts.CreateAsync(f.Servicing, issued.TermId, Version((await drafts.ListAsync(f.Servicing, issued.TermId)).Etag),
                     new("cancellation", issued.Id, JsonSerializer.SerializeToElement(new { localDate = "2026-10-01", localTime = "00:00", timeZone = "Europe/London" }), "Fictional separate proof owner"), Key(), Guid.NewGuid());
-                await VerifyServicingEvidenceAssociationStorage(db,applied,sibling.ResourceId,f.Servicing.UserId,f.Underwriter.UserId,f.Clock.GetUtcNow());
+                if (scenario == "evidence-storage") await VerifyServicingEvidenceAssociationStorage(db,applied,sibling.ResourceId,f.Servicing.UserId,f.Underwriter.UserId,f.Clock.GetUtcNow());
+                else await VerifyServicingEvidenceFilesService(db,f,applied,sibling.ResourceId,fence,ratedView.DraftEtag);
                 Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);return;
             }
             var beforeExpiry = f.Clock.Current;

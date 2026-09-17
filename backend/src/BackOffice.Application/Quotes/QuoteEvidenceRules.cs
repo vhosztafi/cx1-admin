@@ -50,10 +50,11 @@ public static class QuoteEvidenceRules
         return value.Trim();
     }
 
-    public static QuoteEvidenceFileInput File(string name, string contentType, byte[] content)
+    public static QuoteEvidenceFileInput File(string name, string contentType, byte[] content, int maximumNameLength = 150)
     {
+        if (maximumNameLength is < 1 or > 200) throw new ArgumentOutOfRangeException(nameof(maximumNameLength));
         if (content.Length is 0 or > MaximumFileBytes) throw new QuoteInputException("evidence-file-size");
-        if (string.IsNullOrWhiteSpace(name) || name.Length > 150 || name != name.Trim() || name.StartsWith('.') || name.EndsWith('.') ||
+        if (string.IsNullOrWhiteSpace(name) || name.Length > maximumNameLength || name != name.Trim() || name.StartsWith('.') || name.EndsWith('.') ||
             name.Any(c => char.IsControl(c) || char.GetUnicodeCategory(c) is UnicodeCategory.Format or UnicodeCategory.Surrogate || "/\\:<>\"|?*".Contains(c)))
             throw new QuoteInputException("evidence-file-name");
         var extension = Path.GetExtension(name).ToLowerInvariant(); var bytes = content.AsSpan();
