@@ -1,5 +1,7 @@
 'use client';
 import { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import type { QuoteView } from '../../lib/quotes';
 import { formatGbp, type UnderwritingAssessment, type UnderwritingEvidence as Evidence, type QuotationHistory, type QuotationTerms, type QuotationDelivery } from '../../lib/underwriting-api';
 import { underwritingWrite } from '../../lib/underwriting-decisions';
@@ -10,7 +12,9 @@ import { QuoteProposalDetails } from '../quotes/quote-history';
 import { UnderwritingEvidence } from './underwriting-evidence';
 import { DecisionCommand, type DecisionRequest } from './decision-command';
 import { QuoteAcceptance } from './quote-acceptance';
+import { QuoteIssue } from './quote-issue';
 export function QuoteTerms({ quote, actorId, refresh, questionLabels }: { quote: QuoteView; actorId: string; refresh: () => void; questionLabels: Record<string, string> }) {
+  const router = useRouter();
   const assessment = useQuoteResource<UnderwritingAssessment>(`/api/v1/quotes/${quote.id}/underwriting`);
   const [cursors, setCursors] = useState({ terms: '', deliveries: '', acceptances: '' }), [evidenceCursor, setEvidenceCursor] = useState('');
   const query = new URLSearchParams({ pageSize: '20', ...Object.fromEntries(Object.entries(cursors).filter(([, value]) => value).map(([key, value]) => [`${key}Cursor`, value])) });
@@ -58,9 +62,9 @@ export function QuoteTerms({ quote, actorId, refresh, questionLabels }: { quote:
     {error && <p role="alert" className="error-message">{error}</p>}
     {coherent && terms && <QuoteAcceptance key={terms.id} assessment={current} terms={terms} evidence={evidence.data.items} run={setRequest} />}
     {!current.capabilities.canAccept && <p className="client-help">Acceptance needs completed current delivery and reviewed acceptance evidence. Upload acceptance proof after delivery completes.</p>}
-    <button className="button" disabled>Issue policy</button><p className="client-help">Policy issue is not available yet.</p>
+    {quote.boundPolicyId ? <Link className="button button-primary" href={`/policies/${quote.boundPolicyId}`}>Open issued policy</Link> : coherent && <QuoteIssue quote={quote} assessment={current} terms={terms} run={setRequest} />}
   </div></Panel><Panel title="Outstanding requirements"><div className="quote-rail-body">{current.blockers.length ? <ul>{current.blockers.map((x, index) => <li key={index}>{x.message}</li>)}</ul> : <p>No outstanding underwriting blockers.</p>}</div></Panel></aside></div>
-    {request && <DecisionCommand request={request} actorId={actorId} close={() => setRequest(undefined)} completed={() => { setRequest(undefined); refresh(); }} />}
+    {request && <DecisionCommand request={request} actorId={actorId} close={() => setRequest(undefined)} completed={policyId => { setRequest(undefined); if (policyId) router.push(`/policies/${policyId}`); else refresh(); }} />}
   </div>;
 }
 function TermsPreview({ terms, questionLabels }: { terms: QuotationTerms; questionLabels: Record<string, string> }) {

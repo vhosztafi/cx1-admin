@@ -359,6 +359,7 @@ h1, h2, p { margin: 0; }
 .underwriting-workspace .quote-driver-card h4, .underwriting-workspace .quote-driver-card p { overflow-wrap:anywhere; }
 .underwriting-workspace .quote-row-actions { margin-bottom:16px; }
 .underwriting-main,.underwriting-rail { display:grid; gap:16px; min-width:0; }
+.policy-opening-amount { margin:0; font-size:28px; font-weight:600; line-height:1.2; font-variant-numeric:tabular-nums; }
 .underwriting-action-list { display:flex; flex-direction:column; gap:10px; }
 .underwriting-action-list .button { width:100%; white-space:normal; text-align:center; }
 .underwriting-premium { margin:16px 0 24px; font-variant-numeric:tabular-nums; }
