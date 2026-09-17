@@ -37,7 +37,7 @@ public sealed partial class UnderwritingRuntimeTests
             var foreignProposal = System.Text.Json.Nodes.JsonNode.Parse(proposal)!;
             foreignProposal["changes"] = JsonSerializer.SerializeToNode(new[] { new { changeId = Guid.NewGuid(), riskItemId = Guid.NewGuid(), kind = "driver", operation = "update", payload = new { } } });
             Assert.Throws<BackOffice.Application.Quotes.QuoteInputException>(() => BackOffice.Application.Policies.ServicingProposalInput.Parse(proposal, Guid.NewGuid()));
-            await Assert.ThrowsAsync<BackOffice.Application.Quotes.QuoteInputException>(() => service.SaveAsync(f.Servicing, id, saveVersion, firstFence, foreignProposal.ToJsonString(), Key(), Guid.NewGuid()));
+            await Assert.ThrowsAsync<BackOffice.Application.Quotes.QuoteValidationException>(() => service.SaveAsync(f.Servicing, id, saveVersion, firstFence, foreignProposal.ToJsonString(), Key(), Guid.NewGuid()));
             var saved = await service.SaveAsync(f.Servicing, id, saveVersion, firstFence, proposal, saveKey, Guid.NewGuid());
             Assert.Equal(2, await db.Set<ServicingRevision>().CountAsync(x => x.DraftId == id));
             Assert.True((await service.SaveAsync(f.Servicing, id, saveVersion, firstFence, proposal, saveKey, Guid.NewGuid())).Replayed);

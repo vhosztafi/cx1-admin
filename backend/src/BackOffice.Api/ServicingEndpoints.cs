@@ -11,12 +11,25 @@ public static class ServicingEndpoints
     {
         app.MapGet("/api/v1/terms/{termId:guid}/drafts", (Guid termId, HttpContext c, ServicingDraftService s) => Read(termId, true, c, s)).RequireAuthorization("policy-read");
         app.MapGet("/api/v1/drafts/{draftId:guid}", (Guid draftId, HttpContext c, ServicingDraftService s) => Read(draftId, false, c, s)).RequireAuthorization("policy-read");
+        app.MapGet("/api/v1/drafts/{draftId:guid}/editor", ReadEditor).RequireAuthorization("policy-read");
         app.MapPost("/api/v1/terms/{termId:guid}/drafts", Create).RequireAuthorization("policy-draft-write");
         app.MapPut("/api/v1/drafts/{draftId:guid}/proposal", (Guid draftId, HttpContext c, ServicingDraftService s) => Write(draftId, "save", c, s)).RequireAuthorization("policy-draft-write");
         app.MapPost("/api/v1/drafts/{draftId:guid}/abandon", (Guid draftId, HttpContext c, ServicingDraftService s) => Write(draftId, "abandon", c, s)).RequireAuthorization("policy-draft-write");
         app.MapPost("/api/v1/drafts/{draftId:guid}/lease", (Guid draftId, HttpContext c, ServicingDraftService s) => Write(draftId, "acquire", c, s)).RequireAuthorization("policy-draft-write");
         app.MapPut("/api/v1/drafts/{draftId:guid}/lease", (Guid draftId, HttpContext c, ServicingDraftService s) => Write(draftId, "renew", c, s)).RequireAuthorization("policy-draft-write");
         app.MapDelete("/api/v1/drafts/{draftId:guid}/lease", (Guid draftId, HttpContext c, ServicingDraftService s) => Write(draftId, "release", c, s)).RequireAuthorization("policy-draft-write");
+    }
+
+    private static async Task<IResult> ReadEditor(Guid draftId, HttpContext context, ServicingDraftService service)
+    {
+        context.Response.Headers.CacheControl = "no-store";
+        try
+        {
+            QuoteEndpoints.Id(draftId); QuoteHttpInput.NoQuery(context.Request);
+            var view = await service.ReadEditorAsync(LocalIdentityService.Actor(context.User), draftId, context.RequestAborted);
+            context.Response.Headers.ETag = view.Etag; return Results.Content(view.Body, "application/json");
+        }
+        catch (Exception error) when (QuoteEndpoints.Known(error)) { return QuoteEndpoints.Failure(context, error); }
     }
 
     private static async Task<IResult> Read(Guid id, bool term, HttpContext context, ServicingDraftService service)

@@ -61,6 +61,19 @@ export function servicingDefinitions(quote) {
  defs.ServicingDraft=o({id,policyId:id,baseTermId:id,baseVersionId:id,revisionId:id,kind,state:e('draft','rating','referral','quoted','accepted','issued','abandoned'),proposal:r('ServicingProposal'),createdAt:instant,updatedAt:instant});
  defs.ServicingDraft.properties.lease={anyOf:[o({...defs.ServicingLease.properties,active:{type:'boolean'}}),{type:'null'}]};
  defs.ServicingDraft.required.push('lease');
+ const capture=structuredClone(quote); delete capture.$schema; delete capture.$id; delete capture.$defs;
+ defs.ServicingEditorCapture=capture;
+ const side=o({path:{type:'string',maxLength:2000},json:{type:'string',maxLength:2097152}});
+ defs.ServicingEditorChange={oneOf:[
+  o({kind:{const:'added'},path:t(2000),itemId:id,after:side},['kind','path','after']),
+  o({kind:{const:'removed'},path:t(2000),itemId:id,before:side},['kind','path','before']),
+  o({kind:{const:'changed'},path:t(2000),itemId:id,before:side,after:side},['kind','path','before','after'])
+ ]};
+ defs.ServicingEditor=o({draftId:id,revisionId:id,clientId:id,
+  captureVersions:o({schemaVersion:t(50),questionSetVersion:t(100),referenceDataVersion:t(100)}),
+  assessment:o({base:r('ServicingEditorCapture'),proposed:r('ServicingEditorCapture'),changes:many(r('ServicingEditorChange'),100000),
+   readinessIssues:many(o({code:t(200),path:{type:'string',maxLength:2000},questionId:{anyOf:[t(200),{type:'null'}]}}),100),
+   slices:many(o({effectiveAt:instant,proposed:r('ServicingEditorCapture'),changeIds:many(id,100)}),100)})});
  defs.ServicingDraftList=o({termId:id,policyId:id,items:many(o({id,kind,state:e('draft','abandoned'),currentRevisionId:id,baseVersionId:id,updatedAt:instant}),10000)});
  return defs;
 }

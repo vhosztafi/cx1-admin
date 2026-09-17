@@ -65,6 +65,13 @@ public sealed partial class UnderwritingRuntimeTests
             using var saved = await Send(HttpMethod.Put, route + "/proposal", draft.GetProperty("proposal"), fence); saved.EnsureSuccessStatusCode();
             using var read = await client.GetAsync(route); read.EnsureSuccessStatusCode(); Assert.True(read.Headers.CacheControl!.NoStore);
             Assert.Equal(await saved.Content.ReadAsStringAsync(), await read.Content.ReadAsStringAsync());
+            using var editor = await client.GetAsync(route + "/editor"); editor.EnsureSuccessStatusCode();
+            Assert.True(editor.Headers.CacheControl!.NoStore); Assert.Equal(read.Headers.ETag, editor.Headers.ETag);
+            var projected = await editor.Content.ReadFromJsonAsync<JsonElement>();
+            Assert.NotEqual(draft.GetProperty("revisionId").GetGuid(), projected.GetProperty("revisionId").GetGuid());
+            Assert.True(projected.GetProperty("assessment").GetProperty("base").TryGetProperty("risk", out _));
+            using var invalidQuery = await client.GetAsync(route + "/editor?baseVersionId=" + Guid.NewGuid());
+            Assert.Equal(HttpStatusCode.BadRequest, invalidQuery.StatusCode);
             Assert.Equal(2, await db.Set<ServicingRevision>().CountAsync());
         });
     }

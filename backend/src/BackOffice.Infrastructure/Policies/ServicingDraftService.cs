@@ -39,6 +39,19 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
         var result = await View(db, draft, token); await tx.CommitAsync(token); return result;
     }
 
+    public async Task<ServicingDraftRead> ReadEditorAsync(ActorContext actor, Guid draftId, CancellationToken token = default)
+    {
+        await using var db = await factory.CreateDbContextAsync(token); await using var tx = await db.Database.BeginTransactionAsync(token);
+        var draft = await HoldDraft(db, actor, draftId, false, token);
+        var revision = await db.Set<ServicingRevision>().AsNoTracking().SingleAsync(x => x.Id == draft.CurrentRevisionId, token);
+        var assessment = await Assess(db, actor, draft, ServicingProposalInput.Parse(revision.ProposalJson, draft.BaseVersionId), token);
+        var policy = await db.Set<Policy>().AsNoTracking().SingleAsync(x => x.Id == draft.PolicyId, token);
+        var result = new ServicingDraftRead(JsonSerializer.Serialize(new { draftId, revisionId = revision.Id, policy.ClientId,
+            captureVersions = new { schemaVersion = "1.0", questionSetVersion = QuoteCatalogueIdentity.Version, referenceDataVersion = QuoteCatalogueIdentity.Version },
+            assessment }, Json), Etag(draft.RowVersion));
+        await tx.CommitAsync(token); return result;
+    }
+
     public Task<CommandOutcome> CreateAsync(ActorContext actor, Guid termId, byte[] version, ServicingDraftCreate input, string key, Guid correlation, CancellationToken token = default)
     {
         if (input.Kind is not ("adjustment" or "renewal" or "cancellation")) throw new QuoteInputException("servicing-invalid-kind");
@@ -69,7 +82,7 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
         {
             await DemandLease(db, draft.Id, actor.UserId, leaseToken, ct);
             var proposal = ServicingProposalInput.Parse(json, draft.BaseVersionId);
-            await ValidateTargets(db, draft, proposal, ct);
+            await Assess(db, actor, draft, proposal, ct);
             await Append(db, draft, proposal, actor.UserId, ct);
         }, token);
 
@@ -162,29 +175,16 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
         db.Add(revision); await db.SaveChangesAsync(ct); draft.CurrentRevisionId = revision.Id;
     }
 
-    private static async Task ValidateTargets(BackOfficeDbContext db, ServicingDraft draft, CanonicalServicingProposal proposal, CancellationToken ct)
+    private async Task<ServicingProposalAssessment> Assess(BackOfficeDbContext db, ActorContext actor, ServicingDraft draft, CanonicalServicingProposal proposal, CancellationToken ct)
     {
-        var snapshot = await db.Set<PolicyVersion>().Where(x => x.Id == draft.BaseVersionId).Select(x => x.SnapshotJson).SingleAsync(ct);
-        using var issued = JsonDocument.Parse(snapshot); using var proposed = JsonDocument.Parse(proposal.Json);
-        var targets = new Dictionary<string, HashSet<Guid>>(StringComparer.Ordinal);
-        foreach (var (kind, collection) in new[] { ("driver", "drivers"), ("vehicle", "vehicles"), ("premises", "premises") })
-            targets[kind] = issued.RootElement.GetProperty("risk").TryGetProperty(collection, out var rows)
-                ? rows.EnumerateArray().Select(x => x.GetProperty("id").GetGuid()).ToHashSet() : [];
-        targets["business"] = [draft.PolicyId]; targets["policyholder"] = [issued.RootElement.GetProperty("insured").GetProperty("clientId").GetGuid()];
-        targets["cover"] = [draft.PolicyId];
-        if (issued.RootElement.TryGetProperty("cover", out var cover) && cover.TryGetProperty("requestedSections", out var sections))
-            foreach (var section in sections.EnumerateArray()) targets["cover"].Add(section.GetProperty("id").GetGuid());
-        var all = targets.Values.SelectMany(x => x).ToHashSet();
-        foreach (var change in proposed.RootElement.GetProperty("changes").EnumerateArray())
-        {
-            var kind = change.GetProperty("kind").GetString()!; var id = change.GetProperty("riskItemId").GetGuid(); var operation = change.GetProperty("operation").GetString();
-            if (operation == "add")
-            {
-                if (kind is "business" or "policyholder" || !all.Add(id)) throw new QuoteInputException("servicing-target-conflict");
-                targets[kind].Add(id);
-            }
-            else if (!targets[kind].Contains(id)) throw new QuoteInputException("servicing-foreign-target");
-        }
+        // The caller holds policy/term/draft scope before this projection. The
+        // current authority and ordering boundary are never request fields.
+        var snapshot = await db.Set<PolicyVersion>().AsNoTracking().Where(x => x.Id == draft.BaseVersionId && x.PolicyId == draft.PolicyId && x.TermId == draft.BaseTermId)
+            .Select(x => x.SnapshotJson).SingleAsync(ct);
+        var term = await db.Set<PolicyTerm>().SingleAsync(x => x.Id == draft.BaseTermId, ct);
+        var latest = await db.Set<PolicyVersion>().Where(x => x.PolicyId == draft.PolicyId && x.TermId == draft.BaseTermId).MaxAsync(x => x.EffectiveAt, ct);
+        return ServicingProposalRules.Assess(snapshot, proposal.Json,
+            new(draft.PolicyId, draft.BaseVersionId, term.StartsAt, term.EndsAt, latest, time.GetUtcNow(), actor.AgencyId is null && actor.Roles.Contains("senior-underwriter")));
     }
 
     private async Task<CommandOutcome> Receipt(BackOfficeDbContext db, ServicingDraft draft, int status, CancellationToken ct)

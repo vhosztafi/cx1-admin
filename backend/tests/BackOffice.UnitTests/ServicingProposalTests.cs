@@ -5,7 +5,7 @@ using Xunit;
 
 namespace BackOffice.UnitTests;
 
-public sealed class ServicingProposalTests
+public sealed partial class ServicingProposalTests
 {
     private static readonly Guid Base = Guid.NewGuid();
     private static string Proposal(object[]? changes = null) => JsonSerializer.Serialize(new

@@ -42,6 +42,12 @@ export function addServicingContracts({schemas,ref,operation,paths}) {
   for(const response of Object.values(op.responses)) response.headers={...response.headers,ETag:{description:'Strong term version for listing/creation; strong draft version for draft commands.',schema:{type:'string'}}};
  }
  route('post',`${root}/acceptances`,'recordDraftAcceptance','policy-acceptance','ServicingAcceptance','CommandResult',{status:201});
+ route('get',`${root}/editor`,'getPolicyDraftEditor','policy-read',undefined,'ServicingEditor');
+ const editor=paths[`${root}/editor`].get;
+ editor['x-runtime-status']='phase-7-04-implemented';
+ editor.description='Current scoped saved draft projection against its immutable issued base. Returns typed base/proposed capture, identity-based differences, cumulative effective slices and capture blockers. Re-evaluated with current authority and time; never rating or issue authority. Responses are no-store and carry the strong draft ETag.';
+ editor.responses=structuredClone(editor.responses);
+ editor.responses[200].headers={...editor.responses[200].headers,ETag:{description:'Strong draft version for this saved editor projection.',schema:{type:'string'}}};
  route('post',`${root}/issue`,'issuePolicyDraft','policy-issue-within-authority','ServicingIssueWrite','ServicingIssueResult',{status:201});
  route('get',`${root}/cancellation-preview`,'getCancellationPreview','cancellation-review',undefined,'ServicingCancellationPreview');
  const writes=[

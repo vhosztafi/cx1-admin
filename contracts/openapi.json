@@ -88813,6 +88813,176 @@
         "x-runtime-status": "phase-6-11-implemented"
       }
     },
+    "/drafts/{draftId}/editor": {
+      "get": {
+        "operationId": "getPolicyDraftEditor",
+        "summary": "get Policy Draft Editor",
+        "description": "Current scoped saved draft projection against its immutable issued base. Returns typed base/proposed capture, identity-based differences, cumulative effective slices and capture blockers. Re-evaluated with current authority and time; never rating or issue authority. Responses are no-store and carry the strong draft ETag.",
+        "tags": [
+          "drafts"
+        ],
+        "x-permission": "policy-read",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "draftId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Strong draft version for this saved editor projection.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicingEditor"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-7-04-implemented"
+      }
+    },
     "/drafts/{draftId}/evidence/{evidenceId}/review": {
       "post": {
         "operationId": "reviewServicingEvidence",
@@ -114411,6 +114581,500 @@
           "createdAt",
           "updatedAt",
           "lease"
+        ]
+      },
+      "ServicingEditorCapture": {
+        "title": "Incomplete Motor Trade capture write shape",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "schemaVersion": {
+            "const": "1.0"
+          },
+          "productCode": {
+            "enum": [
+              "motor-trade-road-risks",
+              "motor-trade-combined"
+            ]
+          },
+          "insured": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "entityType": {
+                "type": "string",
+                "enum": [
+                  "sole-trader",
+                  "partnership",
+                  "limited-company",
+                  "llp"
+                ]
+              },
+              "legalName": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "tradingName": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "companyNumber": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 30
+              },
+              "address": {
+                "$ref": "#/components/schemas/ServicingCaptureAddress"
+              },
+              "proposerNames": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "minItems": 0,
+                "maxItems": 3
+              },
+              "contact": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "telephone": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 50
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "mobile": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 50
+                  }
+                }
+              },
+              "firstName": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "surname": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "title": {
+                "$ref": "#/components/schemas/ServicingCaptureReference"
+              },
+              "declaredCompanyType": {
+                "$ref": "#/components/schemas/ServicingCaptureReference"
+              },
+              "responses": {
+                "$ref": "#/components/schemas/ServicingCaptureResponses"
+              }
+            }
+          },
+          "termIntent": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "annual",
+                  "short-period"
+                ]
+              },
+              "localStartDate": {
+                "$ref": "#/components/schemas/ServicingCaptureDate"
+              },
+              "localStartTime": {
+                "type": "string",
+                "pattern": "^(?:[01][0-9]|2[0-3]):[0-5][0-9]$"
+              },
+              "timeZone": {
+                "const": "Europe/London"
+              },
+              "utcOffsetMinutes": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  60
+                ]
+              },
+              "localEndDate": {
+                "$ref": "#/components/schemas/ServicingCaptureDate"
+              },
+              "localEndTime": {
+                "type": "string",
+                "pattern": "^(?:[01][0-9]|2[0-3]):[0-5][0-9]$"
+              },
+              "endUtcOffsetMinutes": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  60
+                ]
+              }
+            }
+          },
+          "risk": {
+            "$ref": "#/components/schemas/ServicingCaptureRoadRisk"
+          },
+          "cover": {
+            "$ref": "#/components/schemas/ServicingCaptureCover"
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "productCode"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "productCode": {
+                  "const": "motor-trade-road-risks"
+                }
+              },
+              "required": [
+                "productCode"
+              ]
+            },
+            "then": {
+              "properties": {
+                "cover": {
+                  "type": "object",
+                  "properties": {
+                    "requestedSections": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "const": "tools-equipment"
+                          }
+                        },
+                        "required": [
+                          "code"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "ServicingEditorChange": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "const": "added"
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000,
+                "pattern": "\\S"
+              },
+              "itemId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "after": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "maxLength": 2000
+                  },
+                  "json": {
+                    "type": "string",
+                    "maxLength": 2097152
+                  }
+                },
+                "required": [
+                  "path",
+                  "json"
+                ]
+              }
+            },
+            "required": [
+              "kind",
+              "path",
+              "after"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "const": "removed"
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000,
+                "pattern": "\\S"
+              },
+              "itemId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "before": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "maxLength": 2000
+                  },
+                  "json": {
+                    "type": "string",
+                    "maxLength": 2097152
+                  }
+                },
+                "required": [
+                  "path",
+                  "json"
+                ]
+              }
+            },
+            "required": [
+              "kind",
+              "path",
+              "before"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "const": "changed"
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000,
+                "pattern": "\\S"
+              },
+              "itemId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "before": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "maxLength": 2000
+                  },
+                  "json": {
+                    "type": "string",
+                    "maxLength": 2097152
+                  }
+                },
+                "required": [
+                  "path",
+                  "json"
+                ]
+              },
+              "after": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "maxLength": 2000
+                  },
+                  "json": {
+                    "type": "string",
+                    "maxLength": 2097152
+                  }
+                },
+                "required": [
+                  "path",
+                  "json"
+                ]
+              }
+            },
+            "required": [
+              "kind",
+              "path",
+              "before",
+              "after"
+            ]
+          }
+        ]
+      },
+      "ServicingEditor": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "draftId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revisionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "clientId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "captureVersions": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "schemaVersion": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 50,
+                "pattern": "\\S"
+              },
+              "questionSetVersion": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100,
+                "pattern": "\\S"
+              },
+              "referenceDataVersion": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "schemaVersion",
+              "questionSetVersion",
+              "referenceDataVersion"
+            ]
+          },
+          "assessment": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "base": {
+                "$ref": "#/components/schemas/ServicingEditorCapture"
+              },
+              "proposed": {
+                "$ref": "#/components/schemas/ServicingEditorCapture"
+              },
+              "changes": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ServicingEditorChange"
+                },
+                "minItems": 0,
+                "maxItems": 100000,
+                "uniqueItems": true
+              },
+              "readinessIssues": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200,
+                      "pattern": "\\S"
+                    },
+                    "path": {
+                      "type": "string",
+                      "maxLength": 2000
+                    },
+                    "questionId": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200,
+                          "pattern": "\\S"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "path",
+                    "questionId"
+                  ]
+                },
+                "minItems": 0,
+                "maxItems": 100,
+                "uniqueItems": true
+              },
+              "slices": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "effectiveAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "proposed": {
+                      "$ref": "#/components/schemas/ServicingEditorCapture"
+                    },
+                    "changeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "minItems": 0,
+                      "maxItems": 100,
+                      "uniqueItems": true
+                    }
+                  },
+                  "required": [
+                    "effectiveAt",
+                    "proposed",
+                    "changeIds"
+                  ]
+                },
+                "minItems": 0,
+                "maxItems": 100,
+                "uniqueItems": true
+              }
+            },
+            "required": [
+              "base",
+              "proposed",
+              "changes",
+              "readinessIssues",
+              "slices"
+            ]
+          }
+        },
+        "required": [
+          "draftId",
+          "revisionId",
+          "clientId",
+          "captureVersions",
+          "assessment"
         ]
       },
       "ServicingDraftList": {

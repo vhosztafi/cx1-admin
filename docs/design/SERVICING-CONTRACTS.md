@@ -136,3 +136,34 @@ nested dependency validation, product-specific editors, common/cover date
 assessment and comparison belong to07-04. No servicing policy transaction,
 payment, document delivery, renewal invitation or cancellation issue is claimed
 by the draft/lease implementation.
+
+## Typed proposal backend checkpoint (07-04, editors still outstanding)
+
+PUT /drafts/{draftId}/proposal now projects typed changes against the exact
+immutable base under the held policy/term/draft scope. Conflicting target changes
+at one instant, foreign targets, duplicate/nested identity ownership changes and
+unresolved driver/vehicle/premises references fail atomically. Incomplete typed
+declarations remain saveable; capture readiness is not permission to progress.
+Object patches retain omitted fields; arrays explicitly replace their contents.
+The UI must not represent an omitted scalar as an explicit deletion.
+
+GET /drafts/{draftId}/editor is an additive, current-scope, no-store read with the
+strong draft ETag and saved revision ID. It returns typed base/proposed capture,
+stable-ID differences, cumulative dated slices and readiness issues. Derived
+issued premium/sections/driver-basis and account ownership fields cannot become
+editable capture. The client ID is supplied separately as the policyholder
+target; writes cannot transfer that ownership. Reordering identity-keyed rows is
+not a material difference. Editor output never establishes rating applicability.
+
+London gap/fold resolution, term boundaries, latest issued effective slice,
+common-date ordering, cover-only date mode and current senior backdate authority
+are assessed on the server. Driver backdating remains blocked for every role.
+Incomplete or invalid dates are retained as draft intent with blockers. Every
+cumulative slice is checked, so later correction cannot hide an earlier invalid
+slice. Servicing vehicle capture uses manual validation rather than borrowing
+lookup authority from the bound quote. Evidence, rating and issue gates remain
+with their owning plans.
+
+The typed dialogs, explicit clearing/dependency UX, frontend comparison/date
+tests and actual desktop/mobile editor journeys are not yet implemented or
+verified. This backend checkpoint does not complete 07-04 or Phase 7.

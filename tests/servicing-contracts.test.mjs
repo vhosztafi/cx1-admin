@@ -30,6 +30,22 @@ test('typed change payloads reject arbitrary properties and unsupported categori
  assert.equal(change({changeId:id,riskItemId:other,kind:'claims',operation:'add',payload:{}}),false);
  assert.ok(change({changeId:id,riskItemId:other,kind:'business',operation:'update',payload:{description:'Vehicle servicing'}}));
 });
+
+test('editor projection contains typed capture and cannot expose issued pricing as editable data',async()=>{
+ const validate=check('ServicingEditor');
+ for(const product of ['motor-trade-road-risks','motor-trade-combined']) {
+  const issued=JSON.parse(await readFile(new URL(`../contracts/examples/issued-${product}.json`,import.meta.url),'utf8'));
+  const {clientId,clientAgencyRelationshipId,...insured}=issued.insured;
+  const {driverBasis,...risk}=issued.risk;
+  const {sections,endorsements,warranties,...cover}=issued.cover;
+  const capture={schemaVersion:'1.0',productCode:product,insured,risk,cover,termIntent:{kind:'annual',timeZone:'Europe/London',localStartDate:'2026-09-15',localStartTime:'09:00',utcOffsetMinutes:60}};
+  const value={draftId:id,revisionId:other,clientId,captureVersions:{schemaVersion:'1.0',questionSetVersion:'mt-capture-57b711ca02317ca0',referenceDataVersion:'mt-capture-57b711ca02317ca0'},
+   assessment:{base:capture,proposed:structuredClone(capture),changes:[],readinessIssues:[{code:'required-driver-field',path:'/risk/drivers/1/fullName',questionId:null}],slices:[]}};
+  assert.ok(validate(value),JSON.stringify(validate.errors));
+  value.assessment.proposed.premium=issued.premium;
+  assert.equal(validate(value),false);
+ }
+});
 test('lease commands enforce takeover reason and prevent client supplied expiry or holder',()=>{
  const validate=check('ServicingLeaseAcquire');
  assert.ok(validate({mode:'acquire'}));
