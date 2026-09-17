@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1–6 complete;52 implementation plans complete. Phase7 has3/16 plans verified;07-04 backend, dates/review, named-driver, vehicle and premises dialogs are verified; three typed categories and overall plan verification remain.
+**Status:** Autonomous progression authorised. Phases1–6 complete;52 implementation plans complete. Phase7 has3/16 plans verified;07-04 backend, dates/review, named-driver, vehicle, premises and trade activity dialogs are verified; two typed categories and overall plan verification remain.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 

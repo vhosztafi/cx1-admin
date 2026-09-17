@@ -269,3 +269,28 @@ Next: trade activities, cover/limits/excesses and policyholder correction, then
 remaining07-04 source and complete later-cover-date/dependency journeys. Do not
 complete07-04 yet. Owned API58760 unchanged, web12364 now serves this build;
 verify process identities before stopping. The preview PID file is current.
+
+## Trade activity editor checkpoint
+
+Commit `b9588b1` implements a singleton business editor targeted to the policy ID.
+It reuses Motor trader details, business answers, trade declarations, exact GBP
+controls, activity percentages and stable occupation rows. Explicit replacement
+allows clearing prior values. Local buffers survive lease loss/reacquisition;
+invalid numeric input blocks Apply while incomplete declarations can be saved.
+No new backend contract, rules or migration was needed. Existing domain tests
+cover activity totals, stable reorder and policy identity; no fresh backend run
+is claimed for this UI-only change.
+
+115 frontend tests, typecheck, lint and Next build pass. Actual both-product
+Chrome journeys verify exact money strings and basis-point percentages,
+invalid percentage rejection, occupation add/edit/remove identity persistence,
+explicit turnover clearing, incomplete saves, two-user lease retention, focus,
+390px containment and unchanged issued JSON. Desktop/mobile images inspected.
+Evidence `.local/phase7-04-business-*` and
+`.local/browser-evidence/servicing-business/report.json`. Persistence uses the
+real native SQL-backed API. Only source CTL-d333e12d28da is newly verified.
+
+Next: cover/limits/excesses and policyholder correction. Then finish all07-04
+source actions, later cover dates and dependent removal journeys before its
+SUMMARY. Phase counts stay3/16. Owned API58760 unchanged; web74776 serves this
+build. Verify against `.local/phase7-04-preview-pids.json` before restarting.
