@@ -135,7 +135,7 @@
 
 **Sequential plan waves** (each wave after the preceding plan completes):
 
-- [ ] 07-01 — Strict servicing contracts and pure lifecycle rules.
+- [x] 07-01 — Strict servicing contracts and pure lifecycle rules.
 - [ ] 07-02 — Temporal policy reads and current discovery.
 - [ ] 07-03 — Persistent servicing drafts and editing leases.
 - [ ] 07-04 — Typed adjustment editors and stable-item comparison.
@@ -260,7 +260,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 4. Agency onboarding and access | 8/8 | Complete | 2026-09-15 |
 | 5. Motor Trade quote capture | 11/11 | Complete    | 2026-09-16 |
 | 6. Underwriting and first policy issue | 14/14 | Complete | 2026-09-17 |
-| 7. Policy lifecycle and history | 0/16 | Planned | — |
+| 7. Policy lifecycle and history | 1/16 | In progress | — |
 | 8. Commercial Combined back office | 0/TBD | Not started | — |
 | 9. Tasks, documents, communication and incidents | 0/TBD | Not started | — |
 | 10. Accounting and insurer reporting | 0/TBD | Not started | — |
