@@ -245,3 +245,46 @@ rather than flattening to the final risk. Add condition/resolution ownership bef
 allowing conditional approval. Test fresh/current grants and selected atomic writes,
 then complete bounded read models, HTTP contracts/DI/UI/browser work. Keep07-06
 in progress, with Phase7 still5/16 and54/65 total plans. Demo/preview untouched.
+
+
+## Verified referral/decision storage checkpoint: fdc39a2
+
+ServicingReferral and ServicingReferralDecision now use full draft/cycle/revision/
+rating ownership, unique rule/dimension/stable target and sequence, immutable dated
+trigger provenance and same-referral current-decision pointers. Decisions retain
+explicit GrantId, ActorId and AuthorityVersionId through a compound foreign key to
+an additive UserAuthorityGrant alternate key. A decision cannot borrow another
+actor's grant. Source guards require effective unrevoked same-product/binder grants;
+current role/dimension checks and command replay remain service responsibilities.
+
+Additive20260917205247_ServicingReferrals adds two tables and the grant alternate key.
+Four SQL triggers enforce current rated source on creation, exact trigger dates/
+rule/dimension/driver target, ordered append-only decisions, matching latest outcome
+and pointer, immutable provenance, and no reactivation of superseded referrals.
+Conditional/query decision storage requires nonempty condition JSON; query also
+requires a question. Actual typed condition rows/resolution and conditional approval
+service are still pending, so this storage does not enable any approval endpoint.
+
+SQL RED .local/phase7-06-referral-storage-red/sql/sql.trx has2 absent-table failures.
+The first implementation run exposed a test assumption equating the reviewer's
+specific grant with the cycle's baseline authority version. The test now selects
+the actual same-product/binder actor grant, preserving that necessary distinction.
+Reviewed .local/phase7-06-referral-storage-reviewed/{unit,sql} passes17 unit and4 real
+SQL cases. Assertion gate verified21 with cutoff2026-09-17T20:48:00Z, no skips.
+Both products cover compound owner mismatches, duplicate referral identity, wrong
+trigger rule/foreign driver, unused-row deletion protection, cross-referral pointer,
+existing other-user grant denial, ordered decisions, empty conditional/query denial,
+old acceptance rollback, immutable history and supersession. The two file-storage
+cases also exercise downgrade/upgrade of all new migrations over an issued graph;
+issued JSON remains unchanged. Debug build and git diff --check pass.
+
+Next: populate referrals from cumulative pure requirements (save current cycle/rating
+pointers before inserting referrals to meet the SQL guard); add condition/resolution
+entities with full ownership, then individual/selected decision services with current
+per-dimension authority, atomic rollback and grant-revocation-before-replay tests.
+Do not equate a baseline AuthorityVersionId with an actor's eligible grant version.
+Retain grant coverage across the remaining dated term. Add evidence condition
+purposes only after their owning condition graph exists. Finish bounded read models,
+strict HTTP/DI/contracts, UI and both-product browser acceptance before closing07-06.
+Shared demo and running previews remain unchanged; no browser/UAT result claimed.
+Phase7 remains5/16; total plans54/65. Continue inline with no agents.
