@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: planning
-stopped_at: Phase 7 source/API inventory and SQL guard audit recorded; detailed owner mapping and design next
-last_updated: "2026-09-17T07:27:04.7571004+00:00"
-last_activity: "2026-09-17 — Phase6 verified:838backend/169SQL;all37retained journeys,restart and44-set preservation."
+stopped_at: Phase 7 proposed data/API design and mixed-date financial example recorded; complete source/UI/plan gates next
+last_updated: "2026-09-17T07:39:58.2854995+00:00"
+last_activity: "2026-09-17 — Phase7 data/API design drafted; source audit and planning gates remain."
 progress:
   total_phases: 13
   completed_phases: 6
@@ -28,7 +28,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 Phase: 7 of 13 (Policy lifecycle and history)
 Plan: Not yet planned — Phase6 completed14/14
 Status: Phase7 research in progress; no executable plans yet
-Last activity: 2026-09-17 — Phase6 verified:838backend/169SQL;all37retained journeys,restart and44-set preservation.
+Last activity: 2026-09-17 — Phase7 data/API design drafted; source audit and planning gates remain.
 
 Progress: Phases1–6 complete;6/13 phases,49 completed implementation plans.
 
@@ -54,9 +54,9 @@ Progress: Phases1–6 complete;6/13 phases,49 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-17T07:27:04.7571004+00:00
-Stopped at:Phase 7 source/API inventory and SQL guard audit recorded; detailed owner mapping and design next
-Resume file: .planning/phases/07-policy-lifecycle-and-history/07-SOURCE-AUDIT.md
+Last session: 2026-09-17T07:39:58.2854995+00:00
+Stopped at:Phase 7 proposed data/API design and mixed-date financial example recorded; complete source/UI/plan gates next
+Resume file: .planning/phases/07-policy-lifecycle-and-history/07-DATA-API-DESIGN.md
 
 ## Autonomous continuation
 

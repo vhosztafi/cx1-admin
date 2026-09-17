@@ -1,0 +1,165 @@
+# Phase 7 data and API design
+
+Status: proposed implementation contract, 2026-09-17; plan review pending.
+Decisions implement 07-CONTEXT D-01..12. Existing contracts remain unchanged until
+the owning implementation plan updates generators, schemas and runtime together.
+
+## Aggregate and provenance boundaries
+
+Policy retains immutable agency/client/relationship/product/source-quote ownership.
+An insured-name correction changes the contractual snapshot through a draft; it
+cannot silently transfer the policy to a different client or agency. Renewal
+creates another term of the same policy. A servicing operation never writes the
+bound source quote's captured risk or its underwriting cycle.
+
+| Record | Identity and contents | Integrity boundary |
+| --- | --- | --- |
+| ServicingDraft | Id, PolicyId, BaseTermId, BaseVersionId, kind adjustment/renewal/cancellation, state, current revision/cycle, requester, creator, reason, rowversion | Base term/version belong to policy; one live adjustment per term and one live renewal per expiring term; cancellation may coexist until atomic issue abandons conflicts. |
+| ServicingRevision | Id, DraftId, sequence, schema version, proposal JSON/hash, schedule, local-time intent, recorded actor/time | Append-only; unique draft/sequence; current pointer uses same-draft FK. |
+| ServicingLease | DraftId, holder user, opaque generation, expiresAt, rowversion | One row per draft; current actor and generation checked under lock; expiry uses server clock. |
+| ServicingDecisionCycle | Id, DraftId, RevisionId, BaseVersionId, input hash, configuration pins, state, current rating/terms/delivery/acceptance IDs | Same-draft and same-cycle compound ownership; edits supersede rather than delete. |
+| ServicingRating | Id, CycleId, immutable inputs/results, annual slice premiums, movement components, work/attempt IDs, expiry | Current configuration and full dated schedule bind the result; deterministic persistent adapter execution. |
+| ServicingReferral and Decision | cycle/rating/rule/dimension/stable item, required authority, status; immutable decisions with actor/grant/reason | Current authority plus specific cycle; assignment grants no authority. |
+| ServicingEvidenceAssociation and Review | cycle/revision/purpose/stable item/file-version, status; immutable review and withdrawal events | Authorize file and subject; do not reuse quote association approval as servicing approval. |
+| ServicingTerms, Delivery, Acceptance | exact cycle/rating/terms hash, recipient, work/result, evidence and recorded intent | Acceptance requires actual current delivered terms and valid evidence; amendments invalidate applicability. |
+| CancellationApproval | draft/revision/preview hash, authority version, eligible approver, reason/time | Separate explicit decision; requester cannot self-approve where a separate approver is required. |
+| RenewalExperience | revision, observation dates, declared claim count, paid/outstanding, earned premium, source, evidence, recorder | Typed auditable declaration; unknown is distinct from zero; changed experience creates a revision. |
+| ServicingLifecycleEvent | policy/term/draft, kind, effective/processed dates, actor/reason, unique operation key | Append-only lapse/abandon/takeover events; lapse does not invent an issued policy term. |
+
+Names are proposed. Final model review must make nullable relationship sets and
+insert order explicit. Prefer a servicing-owned capacity graph using the same
+pure authority rules and persisted demo provider contract. Existing capacity and
+evidence commands take quoteId/cycleId explicitly; they cannot be called against
+a servicing draft without subject-specific ownership checks.
+
+PolicyTransaction adds servicing decision provenance and nullable quote decision
+columns. New-business requires the existing complete quote provenance and no
+servicing decision; adjustment/renewal require the exact servicing issue decision;
+cancellation requires its reviewed approval/preview decision. SourceQuoteId stays
+the policy's original source, not a fake new underwriting source. Enforce these
+alternatives with SQL checks, compound FKs and branch-specific source triggers.
+
+## Proposal and immutable snapshot contracts
+
+Servicing proposal is a closed versioned envelope: baseVersionId, requestedBy,
+reason, commonEffectiveIntent, changes[]. Each change has a stable changeId,
+target kind, existing or newly allocated riskItemId, typed operation and payload.
+Only cover changes accept a later effective override. Added IDs are allocated
+once and survive retries/reloads; remove/update commands require a base or
+previously added item of the correct type. Reordering is not a material change.
+Reject duplicate/conflicting changes to the same target at the same effective
+instant. Business, premises, drivers, vehicles and cover use typed editors, not
+the prototype's generic free-text after-description as an issued risk model.
+
+Build cumulative full-risk slices in effective order and rate each full combined
+risk; calculate the incremental annual difference from the preceding slice.
+The schedule hash includes every date and stable change identity. One issue
+transaction owns every slice and one fee. Return all versionIds with the earliest
+slice's versionId for compatibility. Version sequence advances for each slice;
+transaction sequence advances once. Do not conflate them.
+
+Keep old issued-quote-1 bytes and hash unchanged. Introduce a separately validated
+issued-servicing-1 envelope retaining product, insured, term and risk locations
+needed by registration/document integrity, with explicit draft/revision/cycle
+provenance. Cancellation retains risk history plus explicit cancellation outcome.
+Versioned readers dispatch on format; unsupported format is a clear error.
+
+## Financial movements and posting periods
+
+Retain IssueFinancialObligation and Journal identities. Add purpose-specific
+movement semantics while keeping all first-issue restrictions for old rows.
+IssueFinancialComponent gains an ordinal (existing rows default to 1), yielding
+unique (ObligationId, Code, Ordinal), signed amount and original-component lineage
+for returns. Each movement has its own half-open earning interval. JournalLine
+continues to reference the new transaction's movement component; original source
+lineage is a separate FK and must belong to the same policy/term and currency.
+
+At sealing, verify all expected movement components, per-code aggregate totals,
+positive debit/credit pairs with sign-aware account directions, original parties,
+balanced journal, invoice effect and broker remuneration effect. Zero movements
+have no lines. Positive fees and negative premiums are allowed in the same MTA.
+Once sealed, no append or mutation is allowed. Existing owner/hash guards remain.
+
+Introduce the minimum AccountingPeriod record needed for real enforcement:
+Id, startsOn, exclusive endsOn, state open/closed, rowversion, with nonoverlap
+validation. Posting holds the chosen period lock. Use the period containing the
+processing date if open, otherwise the earliest permitted later open period;
+absence blocks posting. Journal stores period and posting date separately from
+insurance effective time and original correction reference. Period-closing UI
+and full finance operations remain Phase10. Tests must close a period and prove
+the open-period fallback/race behavior; a label alone is insufficient.
+
+### Mixed multi-date worked example
+
+Fictional rules: 2026 calendar-year cover, original annual premium 1200.00,
+12% tax, 10% commission, agency net settlement, no fee share. One adjustment has
+annual difference +600 from 15 September (108 days), then -300 from 1 October
+(92 days). Round each component movement to pennies away from zero. One fee 15.
+
+| Movement | Premium | Tax | Commission |
+| --- | ---: | ---: | ---: |
+| First slice delta | 177.53 | 21.30 | 17.75 |
+| Second slice incremental delta | -75.62 | -9.07 | -7.56 |
+| Adjustment totals | 101.91 | 12.23 | 10.19 |
+
+Gross due is 129.14 including the fee; net agency due is 118.95. The second delta
+is against the first cumulative risk, not the original risk. Repeating the full
+second annual premium difference would double-count the first change.
+
+Cancellation on 15 October leaves 78 days. Reverse each posted component over
+its own original interval, including the negative second movement:
+
+| Original movement reversed | Premium effect | Tax effect | Commission effect |
+| --- | ---: | ---: | ---: |
+| Original issue, 365 days | -256.44 | -30.77 | -25.64 |
+| First MTA slice, 108 days | -128.22 | -15.38 | -12.82 |
+| Second MTA slice, 92 days | 64.11 | 7.69 | 6.41 |
+| Total | -320.55 | -38.46 | -32.05 |
+
+Net agency credit is 326.96; previously charged fees remain retained with zero
+new fee. These numbers were checked using Python Decimal and ROUND_HALF_UP;
+they must become independent expected-value .NET tests, not recomputed expected
+values from the implementation. No cash payment is implied.
+
+## Command contracts and concurrency
+
+Preserve the existing /terms and /drafts contract family, mounted under /api/v1.
+Authorize policy ownership through the term/draft on every route. Do not accept
+agency/client/product ownership from request bodies. Every mutation uses CSRF,
+current permissions, a bounded strict body and the established idempotency
+receipt semantics; fresh mutations also require current ETag and lease generation
+where editing authority applies. Current authorization precedes receipt replay.
+
+| Route or operation | Required behavior |
+| --- | --- |
+| POST /terms/{termId}/drafts | Create typed adjustment/renewal/cancellation against explicit base; return persisted draft, revision and ETag. |
+| POST/PUT/DELETE /drafts/{draftId}/lease | Acquire/renew/release with generation; explicit takeover mode requires reason and permission; delayed old-generation heartbeats fail. |
+| PUT /drafts/{draftId}/proposal | Save incomplete typed revision, validation and actual diff; invalidate dependent applicability without deleting history. |
+| POST /drafts/{draftId}/rate | Queue exact immutable input; return work ID and pending state, not fabricated rated success. |
+| POST /drafts/{draftId}/submit | Require complete valid rating; create current referrals/authority workflow, not issued cover. |
+| Draft evidence/referral/capacity subresources | Explicit same-cycle authorization, upload/attach/review/withdraw, resolution and persistent provider response history. Add missing contract operations during owning plans. |
+| Draft terms/delivery/acceptances | Publish exact resolved terms, record actual demo delivery and separate evidenced acceptance. |
+| POST /drafts/{draftId}/issue | Recheck base, lease, dates, current authority, rating, proof and acceptance/approval; atomically write graph, finance, requests, audit and receipt. |
+| POST /drafts/{draftId}/abandon | Reason required; preserve history and invalidate further issue/worker authority. |
+| POST /drafts/{draftId}/renewal-invitation | Persist exact invitation/outbox; state invited only after applied delivery. |
+| POST /terms/{termId}/lapse | Require eligible unaccepted renewal, reason, configured clock; deduplicate event and queue notification. |
+| GET /drafts/{draftId}/cancellation-preview | Return revision/base/ledger/config-bound preview hash, components, notice/authority blockers; no mutation. |
+| Cancellation approval command | Persist eligible independent approval against exact preview hash; edits or changed ledger invalidate it. |
+| GET /terms/{termId}/as-at | Explicit E/K and basis, selected immutable version, applied/excluded transactions, version document requests and coverage outcome. |
+| POST /terms/{termId}/as-at/export | Durable immutable reconstruction request; pending renderer remains Phase9. |
+| Policy clone command | New incomplete quote, fresh item IDs, source lineage and target relationship authorization; no copied underwriting acceptance or private flags. |
+
+Missing precondition is 428, stale ETag 412, invalid syntax 400, field/domain
+validation follows API-CONVENTIONS, state/lease/base conflict 409, and unauthorized
+objects use established 403/404 scope conventions. Strictly validate both IDs
+and lineage for comparisons. Lists and historical reads are no-store; agency
+sharing retains its seven-field allowlist and cannot search hidden registrations.
+
+## Remaining design gates
+
+Review against full source field/control coverage, current API-CONVENTIONS and
+PERMISSIONS. Specify exact schema fields and cancellation rule/approval catalogue,
+renewal missing-experience handling, fair-value provenance, capacity subject
+records and document purposes in the owning plans. Then create UI-SPEC, validation
+mapping and checked sequential plans. This document does not activate endpoints
+or declare the phase planned.
