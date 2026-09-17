@@ -57,6 +57,7 @@ public sealed partial class UnderwritingRuntimeTests
             var issued = await db.Set<PolicyVersion>().AsNoTracking().SingleAsync();
             var sourceQuote = await db.Set<Quote>().AsNoTracking().SingleAsync(x => x.Id == f.QuoteId);
             var drafts = new ServicingDraftService(f.Factory, f.Clock); var ratings = new ServicingRatingService(f.Factory, f.Clock);
+            var readModel = new ServicingRatingReadModel(f.Factory, f.Clock);
             static byte[] Version(string etag) => Convert.FromBase64String(etag.Trim('"'));
             static string Key() => Guid.NewGuid().ToString();
             var listed = await drafts.ListAsync(f.Servicing, issued.TermId);
@@ -65,6 +66,8 @@ public sealed partial class UnderwritingRuntimeTests
             var acquired = await drafts.LeaseAsync(f.Servicing, created.ResourceId, Version(created.Etag!), "acquire", null, null, Key(), Guid.NewGuid());
             var body = JsonNode.Parse(acquired.Body)!; var fence = body["lease"]!["leaseToken"]!.GetValue<Guid>();
             var draftId = created.ResourceId; var proposal = body["proposal"]!.DeepClone();
+            var emptyView = await readModel.ReadAsync(f.Servicing, draftId);
+            Assert.Empty(emptyView.Items); Assert.Null(emptyView.Current); Assert.Null(emptyView.NextBeforeSequence);
             Assert.Equal(422, (await Assert.ThrowsAsync<QuoteOperationException>(() => ratings.RateAsync(f.Servicing, draftId,
                 body["revisionId"]!.GetValue<Guid>(), Version(acquired.Etag!), fence, "Rate the empty fictional draft", Key(), Guid.NewGuid()))).Status);
             var snapshot = JsonNode.Parse(issued.SnapshotJson)!; var first = Guid.NewGuid(); var second = Guid.NewGuid();
@@ -105,6 +108,12 @@ public sealed partial class UnderwritingRuntimeTests
             var work = await db.Set<OutboxWork>().AsNoTracking().SingleAsync(x => x.Id == cycle.WorkId);
             Assert.Equal("pending", work.State); Assert.Equal("servicing-rating", work.Kind); Assert.Equal(cycle.Id, work.SubjectRecordId);
             var jobs = new SqlJobLeases(f.Factory, f.Clock); var worker = new ServicingRatingWorker(f.Factory, f.Clock);
+            var pendingView = await readModel.ReadAsync(f.Servicing, draftId);
+            Assert.Equal(cycle.Id, pendingView.CurrentCycleId);
+            Assert.Equal("rating-pending", Assert.Single(pendingView.Items).State);
+            Assert.False(pendingView.Items[0].Applicable); Assert.Null(pendingView.Items[0].Result);
+            Assert.Equal(400, (await Assert.ThrowsAsync<QuoteOperationException>(() => readModel.ReadAsync(f.Servicing, draftId, beforeSequence: 0))).Status);
+            Assert.Equal(400, (await Assert.ThrowsAsync<QuoteOperationException>(() => readModel.ReadAsync(f.Servicing, draftId, pageSize: 51))).Status);
             if (scenario == "operator-retry")
             {
                 for (var attempt = 1; attempt <= 6; attempt++)
@@ -150,6 +159,9 @@ public sealed partial class UnderwritingRuntimeTests
                 await db.SaveChangesAsync();
                 Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => recovery.RetryAsync(recoveryActor, work.Id,
                     failedWork.RowVersion, retryReason, retryKey, Guid.NewGuid()))).Status);
+                var staleView = await readModel.ReadAsync(recoveryActor, draftId);
+                Assert.Equal("stale", staleView.Current!.State); Assert.False(staleView.Current.Applicable);
+                Assert.NotNull(staleView.Current.Result); Assert.Contains("servicing-rating-cycle-stale", staleView.Blockers);
                 return;
             }
             async Task<(JobLease Lease, ServicingRatingOutcome Outcome)> Execute(Guid workId)
@@ -190,6 +202,25 @@ public sealed partial class UnderwritingRuntimeTests
             if (scenario == "revoke-before-apply") { db.ChangeTracker.Clear(); db.AddRange(roles); await db.SaveChangesAsync(); }
             Assert.Equal(2, await db.Set<ServicingRatingResult>().CountAsync(x => x.DraftId == draftId));
             Assert.Equal(scenario == "reject" ? 0m : 15m, (await db.Set<ServicingRatingResult>().SingleAsync(x => x.CycleId == applied.Id)).Fee);
+            var ratedView = await readModel.ReadAsync(f.Servicing, draftId, pageSize: 1);
+            var currentView = Assert.Single(ratedView.Items);
+            Assert.Equal(applied.Id, currentView.Id);
+            Assert.Equal(scenario is not ("reject" or "revoke-before-apply"), currentView.Applicable);
+            Assert.Equal(scenario == "reject" ? "0.00" : "15.00", currentView.Result!.Fee);
+            Assert.Equal("GBP", currentView.Result.Currency); Assert.True(currentView.Result.DetailsAvailable);
+            Assert.Equal(scenario == "reject" ? 0 : 2, currentView.Result.Slices.Count);
+            if (scenario != "reject") { Assert.Contains(first, currentView.Result.ChangeIds); Assert.Contains(second, currentView.Result.ChangeIds); }
+            Assert.Equal(2, ratedView.NextBeforeSequence);
+            var older = await readModel.ReadAsync(f.Servicing, draftId, ratedView.NextBeforeSequence, 1);
+            Assert.Equal(cycle.Id, Assert.Single(older.Items).Id); Assert.Null(older.NextBeforeSequence);
+            Assert.False(older.Items[0].Applicable); Assert.Equal("superseded", older.Items[0].State);
+            Assert.Equal(applied.Id, older.Current!.Id);
+            var beforeExpiry = f.Clock.Current;
+            f.Clock.Current = secondOutcome.ExpiresAt;
+            var expired = await readModel.ReadAsync(f.Servicing, draftId);
+            Assert.False(expired.Items[0].Applicable);
+            if (scenario is not ("reject" or "revoke-before-apply")) Assert.Equal("expired", expired.Items[0].State);
+            f.Clock.Current = beforeExpiry;
             var revised = await drafts.SaveAsync(f.Servicing, draftId, Version(rerated.Etag!), fence, proposal.ToJsonString(), Key(), Guid.NewGuid());
             Assert.Null((await db.Set<ServicingDraft>().AsNoTracking().SingleAsync(x => x.Id == draftId)).CurrentCycleId);
             Assert.Equal("superseded", (await db.Set<ServicingCycle>().AsNoTracking().SingleAsync(x => x.Id == rerated.ResourceId)).State);
@@ -206,7 +237,11 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.Equal(3, await db.Set<OutboxWork>().CountAsync(x => x.Kind == "servicing-rating"));
             Assert.Equal(3, await db.Set<ServicingRatingResult>().CountAsync(x => x.DraftId == draftId));
             Assert.Equal(3, await db.Set<DemoProviderOperation>().CountAsync(x => x.Kind == "servicing-rating"));
+            var abandonedView = await readModel.ReadAsync(f.Servicing, draftId);
+            Assert.Null(abandonedView.CurrentCycleId); Assert.Equal(3, abandonedView.Items.Count);
+            Assert.All(abandonedView.Items, item => Assert.False(item.Applicable));
             await db.Database.ExecuteSqlInterpolatedAsync($"DELETE UserRole WHERE UserId={f.Servicing.UserId}");
+            Assert.Equal(403, (await Assert.ThrowsAsync<QuoteOperationException>(() => readModel.ReadAsync(f.Servicing, draftId))).Status);
             Assert.Equal(403, (await Assert.ThrowsAsync<QuoteOperationException>(() => ratings.RateAsync(f.Servicing, draftId, revisionId, Version(saved.Etag!), fence, reason, key, Guid.NewGuid()))).Status);
             var retained = await db.Set<PolicyVersion>().AsNoTracking().SingleAsync(); Assert.Equal(issued.SnapshotJson, retained.SnapshotJson); Assert.Equal(issued.ContentHash, retained.ContentHash);
             var retainedQuote = await db.Set<Quote>().AsNoTracking().SingleAsync(x => x.Id == f.QuoteId);
