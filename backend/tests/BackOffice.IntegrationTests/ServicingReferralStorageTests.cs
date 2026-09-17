@@ -52,9 +52,12 @@ public sealed partial class UnderwritingRuntimeTests
         await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingReferralDecision SET Outcome='approve' WHERE Id={declined}"));
         await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"DELETE ServicingReferralDecision WHERE Id={approved}"));
         await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"DELETE ServicingReferral WHERE Id={id}"));
+        var conditional=Guid.NewGuid();var definition="{\"code\":\"provide-trading-history\"}";
+        await Decide(conditional,3,"approve-with-conditions","["+definition+"]");
+        await VerifyServicingConditionStorage(db,cycle,id,conditional,definition,now,f.Underwriter.UserId);
         await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingReferral SET State='superseded' WHERE Id={id}");
         await Assert.ThrowsAsync<SqlException>(()=>Decide(Guid.NewGuid(),3,"reopen"));
         await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingReferral SET State='declined' WHERE Id={id}"));
-        Assert.Equal(2,await db.Database.SqlQueryRaw<int>("SELECT COUNT(*) AS Value FROM ServicingReferralDecision").SingleAsync());
+        Assert.Equal(3,await db.Database.SqlQueryRaw<int>("SELECT COUNT(*) AS Value FROM ServicingReferralDecision").SingleAsync());
     }
 }
