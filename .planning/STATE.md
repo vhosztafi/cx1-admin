@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-03 complete; execute07-04 typed servicing editors next
-last_updated: "2026-09-17T11:17:04.159279+00:00"
-last_activity: "2026-09-17 —07-03 drafts and leases complete;07-04 next."
+stopped_at: Plan07-04 backend checkpoint committed; typed dialogs and browser evidence remain
+last_updated: "2026-09-17T11:49:12.076803+00:00"
+last_activity: "2026-09-17 —07-04 typed projection/backend checkpoint f654ae8; frontend remains."
 progress:
   total_phases: 13
   completed_phases: 6
@@ -21,14 +21,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute Phase7;07-01..03 verified;07-04 typed servicing editors next.
+**Current focus:** Execute Phase7;07-01..03 verified;07-04 typed servicing editors in progress (backend verified).
 
 ## Current Position
 
 Phase: 7 of 13 (Policy lifecycle and history)
-Plan: 3 of16 complete;07-04 next
-Status: Executing Phase7;07-03 drafts/leases verified and committed
-Last activity: 2026-09-17 —07-03 committed;675 backend cases,2 two-user browser journeys and44-set preservation pass.
+Plan: 3 of16 complete;07-04 in progress
+Status: Executing Phase7;07-04 backend verified, typed dialogs/browser work outstanding
+Last activity: 2026-09-17 —07-04 backend checkpoint f654ae8;692 backend cases (3 SQL/API),349 contract/source checks pass. Resume 07-04-PROGRESS.md.
 
 Progress: Phases1–6 complete;6/13 phases,52 completed implementation plans.
 
@@ -54,7 +54,7 @@ Progress: Phases1–6 complete;6/13 phases,52 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-17T11:17:04.159279+00:00
+Last session: 2026-09-17T11:49:12.076803+00:00
 Stopped at:07-03 complete; implement07-04 typed changes, comparisons and dates
 Resume file: .planning/phases/07-policy-lifecycle-and-history/07-04-PLAN.md
 
