@@ -53,11 +53,22 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.All(await db.Set<ServicingReferral>().AsNoTracking().Where(x=>rows.Select(r=>r.Id).Contains(x.Id)).ToArrayAsync(),x=>Assert.Equal("approved",x.State));
         var fresh=await db.Set<ServicingReferral>().AsNoTracking().SingleAsync(x=>x.Id==rows[0].Id);
         var conditional=new ReferralDecisionInput(fresh.Id,fresh.RowVersion,"approve-with-conditions","Review additional trading proof",[JsonSerializer.Deserialize<JsonElement>("{ \"code\" : \"provide-trading-history\" }")]);
+        foreach(var invalid in new[]{conditional with{Conditions=null!},conditional with{Conditions=[default]},conditional with{Conditions=[JsonSerializer.SerializeToElement("invalid")]},conditional with{Version=null!},conditional with{Reason="short"},conditional with{Outcome="query",Question="short"}})
+            Assert.Equal(422,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.DecideAsync(f.Underwriter,cycle.DraftId,cycle.Id,Version(result.Etag!),fence,[invalid],Key(),Guid.NewGuid()))).Status);
+        var oversized=conditional with{Conditions=[JsonSerializer.SerializeToElement(new{code="provide-trading-history",invalid=new string('x',65536)})]};
+        Assert.Equal("servicing-condition-payload-too-large",(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.DecideAsync(f.Underwriter,cycle.DraftId,cycle.Id,Version(result.Etag!),fence,[oversized],Key(),Guid.NewGuid()))).Code);
         var conditioned=await service.DecideAsync(f.Underwriter,cycle.DraftId,cycle.Id,Version(result.Etag!),fence,[conditional],Key(),Guid.NewGuid());
         var condition=await db.Set<ServicingCondition>().AsNoTracking().SingleAsync(x=>x.ReferralId==fresh.Id);
         Assert.Equal("provide-trading-history",condition.Code);Assert.Equal(2,JsonSerializer.Deserialize<DateTimeOffset[]>(condition.EffectiveDatesJson)!.Length);
         fresh=await db.Set<ServicingReferral>().AsNoTracking().SingleAsync(x=>x.Id==fresh.Id);
         Assert.Equal(409,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.DecideAsync(f.Underwriter,cycle.DraftId,cycle.Id,Version(conditioned.Etag!),fence,[selected[0] with{Version=fresh.RowVersion}],Key(),Guid.NewGuid()))).Status);
+        var query=conditional with{Version=fresh.RowVersion,Outcome="query",Question="Please provide the trading history evidence"};
+        Assert.Equal(422,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.DecideAsync(f.Underwriter,cycle.DraftId,cycle.Id,Version(conditioned.Etag!),fence,[query with{Question=null}],Key(),Guid.NewGuid()))).Status);
+        Assert.Equal(422,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.DecideAsync(f.Underwriter,cycle.DraftId,cycle.Id,Version(conditioned.Etag!),fence,[query with{Conditions=[JsonSerializer.SerializeToElement(new{code="any-driver-minimum-licence",minimumYears=2,wordingVersion="1"})]}],Key(),Guid.NewGuid()))).Status);
+        var queried=await service.DecideAsync(f.Underwriter,cycle.DraftId,cycle.Id,Version(conditioned.Etag!),fence,[query],Key(),Guid.NewGuid());
+        var queryDecision=await db.Set<ServicingReferralDecision>().AsNoTracking().SingleAsync(x=>x.Id==queried.ResourceId);
+        Assert.Equal("query",queryDecision.Outcome);Assert.Equal(query.Question,queryDecision.Question);
+        Assert.Equal("queried",(await db.Set<ServicingReferral>().AsNoTracking().SingleAsync(x=>x.Id==fresh.Id)).State);
         await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE UserAuthorityGrant SET RevokedAt={DateTimeOffset.UtcNow},RevokedBy={f.Underwriter.UserId},RevocationReason='Withdraw fictional decision authority' WHERE UserId={f.Underwriter.UserId} AND RevokedAt IS NULL");
         Assert.Equal(403,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.DecideAsync(f.Underwriter,cycle.DraftId,cycle.Id,current,fence,selected,key,Guid.NewGuid()))).Status);
     }

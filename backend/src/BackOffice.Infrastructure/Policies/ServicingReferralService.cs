@@ -18,9 +18,16 @@ public sealed class ServicingReferralService(IDbContextFactory<BackOfficeDbConte
     public Task<CommandOutcome> DecideAsync(ActorContext actor,Guid draftId,Guid cycleId,byte[] version,Guid lease,
         IReadOnlyList<ReferralDecisionInput> decisions,string key,Guid correlation,CancellationToken token=default)
     {
-        if(version.Length!=8 || lease==Guid.Empty || cycleId==Guid.Empty || decisions.Count is <1 or >50 ||
-            decisions.Select(x=>x.ReferralId).Distinct().Count()!=decisions.Count || decisions.Any(x=>x.ReferralId==Guid.Empty || x.Version.Length!=8 ||
-                x.Outcome is not("approve" or "approve-with-conditions" or "query" or "decline" or "reopen"))) throw new QuoteOperationException(422,"servicing-decision-invalid");
+        if(version is null || version.Length!=8 || lease==Guid.Empty || cycleId==Guid.Empty || decisions is null || decisions.Count is <1 or >50 ||
+            decisions.Any(x=>x is null || x.ReferralId==Guid.Empty || x.Version is null || x.Version.Length!=8 || string.IsNullOrWhiteSpace(x.Reason) || x.Reason.Trim().Length<10 ||
+                x.Question is not null && x.Question.Trim().Length<10 ||
+                x.Conditions is null || x.Conditions.Count>20 || x.Conditions.Any(c=>c.ValueKind!=JsonValueKind.Object) ||
+                x.Outcome is not("approve" or "approve-with-conditions" or "query" or "decline" or "reopen")) ||
+            decisions.Select(x=>x.ReferralId).Distinct().Count()!=decisions.Count) throw new QuoteOperationException(422,"servicing-decision-invalid");
+        // Bound both raw input and the exact normalized nvarchar payload stored
+        // below. SQL's 131072-byte limit is 65536 UTF-16 code units.
+        if(decisions.Any(x=>x.Conditions.Any(c=>c.GetRawText().Length>65536) || JsonSerializer.Serialize(x.Conditions).Length>65536))
+            throw new QuoteOperationException(422,"servicing-condition-payload-too-large");
         var normalized=decisions.Select(x=>x with{Reason=QuoteRatingService.Reason(x.Reason),Question=x.Question is null?null:QuoteRatingService.Reason(x.Question),
             Conditions=x.Conditions.Select(c=>JsonSerializer.Deserialize<JsonElement>(JsonSerializer.Serialize(c))).ToArray()}).ToArray();
         foreach(var item in normalized)
