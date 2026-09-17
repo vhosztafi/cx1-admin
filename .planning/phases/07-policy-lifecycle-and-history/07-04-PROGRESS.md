@@ -132,3 +132,58 @@ typed data/clear/reload and later cover-date browser journeys, verify focus
 restoration and source-owned controls, then complete07-04. The date fields and
 saved review components should be reused, not reimplemented. Existing focused
 frontend tests should be extended. No plan completion or human UAT claim.
+
+## Autonomous continuation — typed named drivers
+
+Checkpoint `7cbb2dd` implements named-driver add/edit/remove dialogs. This is
+two of the eight source picker categories, with editing of existing proposals
+as well. `servicing-driver-editor.tsx` is a focused component rather than putting
+all categories in one large editor file; future categories should compose beside
+it. `QuoteDrivers` now accepts an optional targetId, retaining the whole risk
+context while limiting controls to that driver and its five history groups.
+Default quote behavior remains unchanged. Scope-independent driver-basis and
+business declarations are not silently modified from this item editor.
+
+Stable change/item IDs survive editing, save and reload. Updating an issued
+driver uses explicit typed replacement, so clearing a field persists. Removing
+a newly added driver cancels its addition. Removing an issued driver creates a
+typed removal. Existing dependency validation remains in force. Dialogs retain
+values through a two-user takeover; Keep form and return exposes the existing
+lease controls, then Resume driver form restores the same values. Native modal
+focus is restored, and 390px dialog contents remain within the viewport.
+
+`servicing-change-form.ts` supplies local typed context projection only, never
+server authority. It follows the saved/common effective dates and typed
+replacement semantics; UUID casing cannot invent a foreign identity. Server
+capture, ownership and readiness validation remains authoritative.
+
+Final evidence:
+- 111 frontend tests, including7 servicing date/projection/identity cases;
+  `.local/phase7-04-driver-web-tests-final.log`.
+- Typecheck, lint and Next build passed: `phase7-04-driver-typecheck-reviewed.log`,
+  `phase7-04-driver-lint-copy.log`, `phase7-04-driver-web-build-final.log` in.local.
+- Both-product, two-user actual Chrome journeys passed:
+  `.local/phase7-04-driver-browser-complete.log` and
+  `.local/browser-evidence/servicing-driver/report.json`. The test creates and
+  persists incomplete drivers, all five nested history groups, edits/reloads
+  stable identities, explicitly clears an issued DOB, proposes issued-driver
+  removal, verifies modal retention across takeover, focus and390px containment,
+  and confirms unchanged issued JSON. Desktop/mobile dialogs were inspected.
+- Meaningful failing-first module/UUID cases retained in
+  `phase7-04-driver-form-red.log` and `phase7-04-driver-id-red.log`.
+- No new backend changes/migrations in this checkpoint; existing SQL regression
+  evidence remains applicable and browser calls use real persisted APIs.
+
+Only source options CTL-48357417c7d9 and CTL-d95a33ac4ba9 were marked verified.
+Other controls and the complete plan remain open. A final help-text-only edit
+removes an inappropriate quote-evidence navigation reference from servicing;
+lint passed after it. The owned preview has the verified behavior immediately
+before that copy edit; the next frontend rebuild will include the revised copy.
+
+Next: six remaining categories — add/remove vehicle, premises, trade activities,
+cover/limits/excesses and policyholder correction. Reuse the typed projection,
+date/review components and explicit replacement contract. Resolve specified
+vehicle and other dependent declarations explicitly; implement and verify the
+complete later-cover-date journey, source row actions and overall07-04 checks
+before creating a completion SUMMARY. Current preview record remains
+`.local/phase7-04-preview-pids.json` (API71960, web37800; verify before stopping).

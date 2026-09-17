@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-04 date and comparison UI verified; eight typed picker dialogs remain
-last_updated: "2026-09-17T12:33:49.382671+00:00"
-last_activity: "2026-09-17 —07-04 date/review UI checkpoint72b2e55; typed dialogs remain."
+stopped_at: Plan07-04 typed named drivers verified; six picker categories remain
+last_updated: "2026-09-17T13:07:28.410674+00:00"
+last_activity: "2026-09-17 —07-04 named-driver checkpoint7cbb2dd; six typed categories remain."
 progress:
   total_phases: 13
   completed_phases: 6
@@ -27,8 +27,8 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 Phase: 7 of 13 (Policy lifecycle and history)
 Plan: 3 of16 complete;07-04 in progress
-Status: Executing Phase7;07-04 backend/date/review UI verified, typed picker dialogs outstanding
-Last activity: 2026-09-17 —07-04 date/review UI72b2e55;108 frontend cases and both-product date/review plus two-user lease browser checks pass. Resume07-04-PROGRESS.md.
+Status: Executing Phase7;07-04 backend/date/review and named-driver dialogs verified, six categories outstanding
+Last activity: 2026-09-17 —07-04 named-driver UI7cbb2dd;111 frontend cases and both-product two-user typed/nested-history browser checks pass. Resume07-04-PROGRESS.md.
 
 Progress: Phases1–6 complete;6/13 phases,52 completed implementation plans.
 
@@ -54,8 +54,8 @@ Progress: Phases1–6 complete;6/13 phases,52 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-17T12:33:49.382671+00:00
-Stopped at:07-04 dates and saved review verified; implement eight typed picker dialogs and their browser journeys
+Last session: 2026-09-17T13:07:28.410674+00:00
+Stopped at:07-04 named-driver dialogs verified; implement remaining six typed categories and final source/browser checks
 Resume file: .planning/phases/07-policy-lifecycle-and-history/07-04-PLAN.md
 
 ## Autonomous continuation
