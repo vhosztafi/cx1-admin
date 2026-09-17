@@ -443,3 +443,34 @@ signed statement remains tied to the later actual terms graph. Then complete bou
 read models, DI/HTTP/contracts and UI/browser verification. No approval/resolution
 endpoint is enabled by this storage work.07-06 remains in progress; Phase7 stays5/16,
 total plans54/65. Continue inline without agents.
+
+
+## Verified closed dated condition projection prerequisite: 901d37f
+
+ServicingConditionRules.Parse now validates a bounded ordered cumulative proposal
+schedule and an exact ordered subset of applicable UTC dates, then invokes the
+shared closed ReferralRules.Condition parser separately against every selected
+risk. Removed drivers/premises can receive an earlier condition but cannot be
+borrowed into a later date. Named-driver wording retains each date's actual names;
+it does not copy final-risk wording backwards. All stable-ID collections are checked
+for valid unique IDs even on unselected dates, with100 slices/100 dates/1000 items
+per collection and1MiB per proposal bounds. This closes a prerequisite for safely
+calling the previously added dated-condition authority helper from real services.
+It does not itself choose applicable dates, validate terms ownership, authorize a
+decision or resolve evidence; those remain held-scope service responsibilities.
+
+RED .local/phase7-06-condition-projection-red/unit.trx records5 expected stub failures.
+Reviewed .local/phase7-06-condition-projection-reviewed/unit.trx passes28 tests:
+5 new projection cases plus23 servicing authority/referral/evidence and shared
+condition cases, no skips. Tests cover earlier removed targets, changed captured
+names, foreign vehicle/premises, unknown definition fields, malformed/duplicate/
+foreign/non-UTC/unordered dates and malformed unselected risk. git diff --check
+passes. This is pure application code; no SQL/API/UI/browser change is claimed.
+
+Next remains actual decision/resolution services. Reconstruct trusted full proposals
+from the held base/revision/rating instant (ServicingEvidenceProjection already does
+this), derive and validate applicable dates server-side, then use this parser for
+closed typed definitions and per-date authority. Implement current-grant checks
+before replay, selected atomic decisions, live resolution/proof checks and guarded
+warranty purposes before wiring APIs/UI. Keep07-06 incomplete; Phase7 stays5/16 and
+54/65 total plans. Continue inline without agents.

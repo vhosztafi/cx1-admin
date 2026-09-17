@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-06 condition resolution storage verified; decision/resolution services next
-last_updated: "2026-09-17T22:09:39.736448+00:00"
-last_activity: "2026-09-17 —07-06 resolution storage 21a1102 verified;31 unit and4 SQL cases pass; decision/resolution services and HTTP/UI remain."
+stopped_at: Plan07-06 closed dated condition projection verified; decision/resolution services next
+last_updated: "2026-09-17T22:23:51.623645+00:00"
+last_activity: "2026-09-17 —07-06 condition projection 901d37f verified;28 pure/shared unit cases pass; decision/resolution services and HTTP/UI remain."
 progress:
   total_phases: 13
   completed_phases: 6
@@ -27,8 +27,8 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 Phase: 7 of 13 (Policy lifecycle and history)
 Plan: 5 of16 complete;07-06 in progress
-Status: Executing Phase7;07-06 resolution storage verified; decision/resolution services next
-Last activity: 2026-09-17 —07-06 resolution storage 21a1102;35-case unit/SQL gate passed. Resume07-06-PROGRESS.md.
+Status: Executing Phase7;07-06 dated condition projection verified; decision/resolution services next
+Last activity: 2026-09-17 —07-06 condition projection 901d37f;28-case pure/shared unit gate passed. Resume07-06-PROGRESS.md.
 
 Progress: Phases1–6 complete;6/13 phases,54 completed implementation plans.
 
@@ -54,8 +54,8 @@ Progress: Phases1–6 complete;6/13 phases,54 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-17T22:09:39.736448+00:00
-Stopped at:07-06 resolution storage verified; decision/resolution services/API/UI remain
+Last session: 2026-09-17T22:23:51.623645+00:00
+Stopped at:07-06 dated condition projection verified; decision/resolution services/API/UI remain
 Resume file: .planning/phases/07-policy-lifecycle-and-history/07-06-PROGRESS.md
 
 ## Autonomous continuation
