@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackOffice.Infrastructure.Policies;
 
-public sealed class ServicingReferralService(IDbContextFactory<BackOfficeDbContext> factory,TimeProvider time)
+public sealed partial class ServicingReferralService(IDbContextFactory<BackOfficeDbContext> factory,TimeProvider time)
 {
     private readonly SqlCommandBoundary commands=new(factory,time);
 

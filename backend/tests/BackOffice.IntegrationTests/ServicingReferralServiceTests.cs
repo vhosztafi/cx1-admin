@@ -69,12 +69,30 @@ public sealed partial class UnderwritingRuntimeTests
         var reviewed=await evidence.ReviewAsync(f.Underwriter,cycle.DraftId,cycle.Id,association.Id,Version(attached.Etag!),fence,association.RowVersion,"accepted",required.Requirement.InputFingerprint,"Accept requested business history",Key(),Guid.NewGuid());
         Assert.True(Assert.Single((await evidence.RequirementsAsync(f.Underwriter,cycle.DraftId)).Requirements,x=>x.Requirement.Code=="trading-history").Satisfied);
         Assert.Empty(await db.Set<ServicingConditionResolution>().Where(x=>x.ConditionId==condition.Id).ToArrayAsync());
+        Assert.False(await service.ConditionSatisfiedAsync(f.Underwriter,cycle.DraftId,condition.Id));
+        var resolutionKey=Key();var reason="Resolve reviewed business history";
+        Assert.Equal(403,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.ResolveAsync(f.Servicing,cycle.DraftId,cycle.Id,condition.Id,Version(reviewed.Etag!),fence,condition.RowVersion,association.Id,"satisfied",reason,Key(),Guid.NewGuid()))).Status);
+        Assert.Equal(412,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.ResolveAsync(f.Underwriter,cycle.DraftId,cycle.Id,condition.Id,Version(reviewed.Etag!),fence,new byte[8],association.Id,"satisfied",reason,Key(),Guid.NewGuid()))).Status);
+        Assert.Equal(404,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.ResolveAsync(f.Underwriter,cycle.DraftId,cycle.Id,condition.Id,Version(reviewed.Etag!),fence,condition.RowVersion,Guid.NewGuid(),"satisfied",reason,Key(),Guid.NewGuid()))).Status);
+        var resolved=await service.ResolveAsync(f.Underwriter,cycle.DraftId,cycle.Id,condition.Id,Version(reviewed.Etag!),fence,condition.RowVersion,association.Id,"satisfied",reason,resolutionKey,Guid.NewGuid());
+        Assert.Equal(resolved.ResourceId,(await service.ResolveAsync(f.Underwriter,cycle.DraftId,cycle.Id,condition.Id,Version(reviewed.Etag!),fence,condition.RowVersion,association.Id,"satisfied",reason,resolutionKey,Guid.NewGuid())).ResourceId);
+        Assert.True(await service.ConditionSatisfiedAsync(f.Underwriter,cycle.DraftId,condition.Id));
+        Assert.Single(await db.Set<ServicingConditionResolution>().Where(x=>x.ConditionId==condition.Id).ToArrayAsync());
+        var rejectedResolution=await service.ResolveAsync(f.Underwriter,cycle.DraftId,cycle.Id,condition.Id,Version(resolved.Etag!),fence,condition.RowVersion,association.Id,"rejected","Reject earlier condition resolution",Key(),Guid.NewGuid());
+        Assert.False(await service.ConditionSatisfiedAsync(f.Underwriter,cycle.DraftId,condition.Id));
+        resolved=await service.ResolveAsync(f.Underwriter,cycle.DraftId,cycle.Id,condition.Id,Version(rejectedResolution.Etag!),fence,condition.RowVersion,association.Id,"satisfied","Resolve rechecked business history",Key(),Guid.NewGuid());
+        Assert.True(await service.ConditionSatisfiedAsync(f.Underwriter,cycle.DraftId,condition.Id));
+        Assert.Equal(3,await db.Set<ServicingConditionResolution>().CountAsync(x=>x.ConditionId==condition.Id));
+        association=await db.Set<ServicingEvidenceAssociation>().AsNoTracking().SingleAsync(x=>x.Id==association.Id);
+        var withdrawn=await evidence.WithdrawAsync(f.Underwriter,cycle.DraftId,cycle.Id,association.Id,Version(resolved.Etag!),fence,association.RowVersion,"Withdraw resolved business proof",Key(),Guid.NewGuid());
+        Assert.False(await service.ConditionSatisfiedAsync(f.Underwriter,cycle.DraftId,condition.Id));
+        Assert.Equal(409,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.ResolveAsync(f.Underwriter,cycle.DraftId,cycle.Id,condition.Id,Version(withdrawn.Etag!),fence,condition.RowVersion,association.Id,"satisfied",reason,Key(),Guid.NewGuid()))).Status);
         fresh=await db.Set<ServicingReferral>().AsNoTracking().SingleAsync(x=>x.Id==fresh.Id);
-        Assert.Equal(409,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.DecideAsync(f.Underwriter,cycle.DraftId,cycle.Id,Version(reviewed.Etag!),fence,[selected[0] with{Version=fresh.RowVersion}],Key(),Guid.NewGuid()))).Status);
+        Assert.Equal(409,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.DecideAsync(f.Underwriter,cycle.DraftId,cycle.Id,Version(withdrawn.Etag!),fence,[selected[0] with{Version=fresh.RowVersion}],Key(),Guid.NewGuid()))).Status);
         var query=conditional with{Version=fresh.RowVersion,Outcome="query",Question="Please provide the trading history evidence"};
         Assert.Equal(422,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.DecideAsync(f.Underwriter,cycle.DraftId,cycle.Id,Version(conditioned.Etag!),fence,[query with{Question=null}],Key(),Guid.NewGuid()))).Status);
         Assert.Equal(422,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.DecideAsync(f.Underwriter,cycle.DraftId,cycle.Id,Version(conditioned.Etag!),fence,[query with{Conditions=[JsonSerializer.SerializeToElement(new{code="any-driver-minimum-licence",minimumYears=2,wordingVersion="1"})]}],Key(),Guid.NewGuid()))).Status);
-        var queried=await service.DecideAsync(f.Underwriter,cycle.DraftId,cycle.Id,Version(reviewed.Etag!),fence,[query],Key(),Guid.NewGuid());
+        var queried=await service.DecideAsync(f.Underwriter,cycle.DraftId,cycle.Id,Version(withdrawn.Etag!),fence,[query],Key(),Guid.NewGuid());
         var queryDecision=await db.Set<ServicingReferralDecision>().AsNoTracking().SingleAsync(x=>x.Id==queried.ResourceId);
         Assert.Equal("query",queryDecision.Outcome);Assert.Equal(query.Question,queryDecision.Question);
         Assert.Equal("queried",(await db.Set<ServicingReferral>().AsNoTracking().SingleAsync(x=>x.Id==fresh.Id)).State);
@@ -84,5 +102,6 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Equal(2,await db.Set<ServicingCondition>().CountAsync(x=>x.ReferralId==fresh.Id));
         await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE UserAuthorityGrant SET RevokedAt={DateTimeOffset.UtcNow},RevokedBy={f.Underwriter.UserId},RevocationReason='Withdraw fictional decision authority' WHERE UserId={f.Underwriter.UserId} AND RevokedAt IS NULL");
         Assert.Equal(403,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.DecideAsync(f.Underwriter,cycle.DraftId,cycle.Id,current,fence,selected,key,Guid.NewGuid()))).Status);
+        Assert.Equal(403,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.ResolveAsync(f.Underwriter,cycle.DraftId,cycle.Id,condition.Id,Version(reviewed.Etag!),fence,condition.RowVersion,association.Id,"satisfied",reason,resolutionKey,Guid.NewGuid()))).Status);
     }
 }
