@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-04 typed named drivers verified; six picker categories remain
-last_updated: "2026-09-17T13:07:28.410674+00:00"
+stopped_at: Plan07-04 specified vehicle dependencies verified; vehicle dialog next
+last_updated: "2026-09-17T13:30:08.275485+00:00"
 last_activity: "2026-09-17 —07-04 named-driver checkpoint7cbb2dd; six typed categories remain."
 progress:
   total_phases: 13
@@ -28,7 +28,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 Phase: 7 of 13 (Policy lifecycle and history)
 Plan: 3 of16 complete;07-04 in progress
 Status: Executing Phase7;07-04 backend/date/review and named-driver dialogs verified, six categories outstanding
-Last activity: 2026-09-17 —07-04 named-driver UI7cbb2dd;111 frontend cases and both-product two-user typed/nested-history browser checks pass. Resume07-04-PROGRESS.md.
+Last activity: 2026-09-17 —07-04 dependency refinement4bd9a3f;30 unit,1 SQL,13 contract and113 frontend cases pass. Vehicle UI remains next; resume07-04-PROGRESS.md.
 
 Progress: Phases1–6 complete;6/13 phases,52 completed implementation plans.
 
@@ -54,8 +54,8 @@ Progress: Phases1–6 complete;6/13 phases,52 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-17T13:07:28.410674+00:00
-Stopped at:07-04 named-driver dialogs verified; implement remaining six typed categories and final source/browser checks
+Last session: 2026-09-17T13:30:08.275485+00:00
+Stopped at:07-04 specified vehicle dependencies verified in4bd9a3f; implement vehicle dialog and remaining categories
 Resume file: .planning/phases/07-policy-lifecycle-and-history/07-04-PLAN.md
 
 ## Autonomous continuation

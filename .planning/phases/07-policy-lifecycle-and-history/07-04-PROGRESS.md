@@ -187,3 +187,27 @@ vehicle and other dependent declarations explicitly; implement and verify the
 complete later-cover-date journey, source row actions and overall07-04 checks
 before creating a completion SUMMARY. Current preview record remains
 `.local/phase7-04-preview-pids.json` (API71960, web37800; verify before stopping).
+
+## Specified vehicle dependency checkpoint
+
+Commit `4bd9a3f` adds optional closed vehicle-only selection/requirement
+ declarations, with matching backend and local form projection. Removing a
+selected vehicle requires explicit deselection; a removed vehicle cannot be
+selected. Conflicting global requirement values are rejected. Repeating the
+same selection preserves array order and avoids false material changes.
+
+Evidence: 30 focused unit tests and one real SQL test passed, no skips, verified
+by assert-test-results.ps1 from `.local/phase7-04-specified-verified`. The SQL
+case proves persisted declarations/projection and unchanged issued data.
+Thirteen contract tests and OpenAPI lint pass (24 existing warnings). All113
+frontend tests, typecheck and lint pass; logs use `.local/phase7-04-specified-*`.
+Failing-first backend, membership-order and frontend cases are retained there.
+
+This is a dependency refinement, not vehicle UI completion. Six picker
+categories still remain. Next implement the vehicle dialog using QuoteVehicles
+with targetId scoping, explicit selection/requirement controls, and a removal
+confirmation. Synchronize any explicit global requirement choice across prior
+vehicle declarations before applying to the draft. Preserve incomplete capture,
+lease retention, item identities, and issued state. Rebuild the owned API/web
+previews before fresh browser testing; current previews predate this refinement.
+No plan completion SUMMARY or additional source coverage is claimed.
