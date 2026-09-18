@@ -19,6 +19,23 @@ function relocate(value){
 }
 ajv.addSchema({$id:rootId,$defs:relocate(document.components.schemas)});
 const getOperation=id=>{const result=operations.find(op=>op.operationId===id);assert.ok(result,`Unknown operation ${id}`);return result;};
+
+test('implemented servicing proof reads have bounded signed paging and closed response contracts',()=>{
+ for(const name of ['listServicingEvidenceFiles','listDraftEvidence','listServicingEvidenceEvents','listServicingReferrals','listServicingReferralDecisions']) {
+  const op=getOperation(name);assert.equal(op['x-runtime-status'],'phase-7-06-read-implemented');assert.equal(op['x-permission'],'policy-read');
+  assert.equal(op.parameters.find(x=>x.name==='pageSize').schema.maximum,50);
+  assert.equal(op.parameters.find(x=>x.name==='cursor').schema.maxLength,2048);
+  assert.equal(op.responses['200'].headers.ETag,undefined);
+  assert.equal(op.responses['200'].headers['Cache-Control'].schema.const,'no-store');
+ }
+ assert.equal(getOperation('listDraftEvidence').parameters.find(x=>x.name==='cycleId').required,true);
+ const download=getOperation('downloadServicingEvidenceFile');assert.equal(download['x-permission'],'policy-read');
+ assert.equal(download.responses['200'].headers['X-Content-Type-Options'].schema.const,'nosniff');
+ assert.ok(download.responses['200'].content['application/pdf']);assert.ok(download.responses['200'].headers['Content-Disposition']);
+ for(const name of ['ServicingFilePage','ServicingAssociationPage','ServicingReviewPage','ServicingDecisionPage','ServicingReferralPage','ServicingProofRequirements'])
+  assert.equal(document.components.schemas[name].additionalProperties,false);
+ assert.equal(getOperation('uploadServicingEvidenceFile')['x-runtime-status'],'phase-7-pending');
+});
 test('API component schemas all compile strictly, including both external policy schemas',()=>{
  for(const name of Object.keys(document.components.schemas))assert.equal(typeof ajv.getSchema(`${rootId}#/$defs/${name}`),'function',name);
 });

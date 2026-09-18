@@ -30,7 +30,7 @@ public sealed class PartyPaging(IDataProtectionProvider protection, TimeProvider
         {
             var page=JsonSerializer.Deserialize<Page>(protector.Unprotect(cursor.ToString()));
             return page is not null && page.Scope==scope && page.Route==route && page.Filter==filter && page.Ordering==ordering && page.Size==size &&
-                page.Offset>=0 && page.Offset<=int.MaxValue-size && page.AsOf<=now && page.ExpiresAt>now ? page : null;
+                page.Offset>=0 && page.Offset<=int.MaxValue-size && page.KeyId!=Guid.Empty && page.AsOf<=now && page.ExpiresAt>now ? page : null;
         }
         catch (CryptographicException) {return null;}
         catch (JsonException) {return null;}
@@ -40,5 +40,7 @@ public sealed class PartyPaging(IDataProtectionProvider protection, TimeProvider
     // Distinct ordering names separate keyset sequence positions from offsets.
     public string? NextKeyset(Page page,int? beforeSequence) => beforeSequence is >0
         ? protector.Protect(JsonSerializer.Serialize(page with {Offset=beforeSequence.Value})) : null;
-    public sealed record Page(string Scope,string Route,string Filter,string Ordering,int Size,int Offset,DateTimeOffset AsOf,DateTimeOffset ExpiresAt);
+    public string? NextGuid(Page page,Guid? beforeId)=>beforeId is {} id && id!=Guid.Empty
+        ? protector.Protect(JsonSerializer.Serialize(page with {Offset=0,KeyId=id})) : null;
+    public sealed record Page(string Scope,string Route,string Filter,string Ordering,int Size,int Offset,DateTimeOffset AsOf,DateTimeOffset ExpiresAt,Guid? KeyId=null);
 }

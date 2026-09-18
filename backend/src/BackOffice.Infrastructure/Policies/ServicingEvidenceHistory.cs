@@ -15,6 +15,12 @@ public sealed record ServicingReviewPage(IReadOnlyList<ServicingReviewView> Item
 
 public sealed partial class ServicingEvidenceService
 {
+    public async Task<string> HistoryVersionAsync(ActorContext actor,Guid draftId,CancellationToken token=default)
+    {
+        await using var db=await factory.CreateDbContextAsync(token);await using var tx=await db.Database.BeginTransactionAsync(token);
+        var draft=await ServicingDraftService.HoldDraft(db,actor,draftId,false,token);
+        var result="\""+Convert.ToBase64String(draft.RowVersion)+"\"";await tx.CommitAsync(token);return result;
+    }
     public async Task<ServicingFilePage> FilesAsync(ActorContext actor,Guid draftId,Guid? beforeId=null,int pageSize=50,CancellationToken token=default)
     {
         Page(beforeId,pageSize);

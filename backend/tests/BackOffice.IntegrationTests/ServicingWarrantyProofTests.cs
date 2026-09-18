@@ -12,7 +12,7 @@ namespace BackOffice.IntegrationTests;
 
 public sealed partial class UnderwritingRuntimeTests
 {
-    private static async Task VerifyServicingWarrantyProof(BackOfficeDbContext db,DecisionFixture f,ServicingCycle cycle,string etag)
+    private static async Task VerifyServicingWarrantyProof(BackOfficeDbContext db,DecisionFixture f,ServicingCycle cycle,string etag,string password)
     {
         static byte[] Version(string value)=>Convert.FromBase64String(value.Trim('"'));
         static string Key()=>Guid.NewGuid().ToString();
@@ -95,6 +95,7 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Single(later.Items);Assert.Null(later.NextAfterSequence);Assert.NotEqual(history.Items[0].Id,later.Items[0].Id);
         Assert.Equal(404,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.DecisionsAsync(f.Underwriter,cycle.DraftId,Guid.NewGuid()))).Status);
         Assert.Equal(422,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.DecisionsAsync(f.Underwriter,cycle.DraftId,referral.Id,pageSize:51))).Status);
+        await VerifyServicingProofReadsHttp(db,f,password,cycle,association.Id,referral.Id,uploaded.ResourceId);
         f.Clock.Current=f.Clock.GetUtcNow().AddDays(1);
         Assert.Equal(2,(await evidence.ReviewsAsync(f.Underwriter,cycle.DraftId,association.Id)).Items.Count);
         Assert.Equal(2,(await service.DecisionsAsync(f.Underwriter,cycle.DraftId,referral.Id)).Items.Count);

@@ -245,7 +245,7 @@ public sealed partial class UnderwritingRuntimeTests
             if (scenario is "referral-service" or "referral-authority" or "trading-proof" or "warranty-proof")
             {
                 if(scenario=="referral-service") await VerifyServicingReferralService(db,f,applied,ratedView.DraftEtag);
-                else if(scenario=="warranty-proof") await VerifyServicingWarrantyProof(db,f,applied,ratedView.DraftEtag);
+                else if(scenario=="warranty-proof") await VerifyServicingWarrantyProof(db,f,applied,ratedView.DraftEtag,password);
                 else if(scenario=="trading-proof") await VerifyServicingTradingProof(db,f,applied,ratedView.DraftEtag);
                 else await VerifyServicingReferralAuthority(db,f,applied,ratedView.DraftEtag);
                 Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);return;
