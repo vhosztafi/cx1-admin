@@ -22,7 +22,7 @@ public sealed partial class ServicingTermsService
         var slices=ServicingEvidenceProjection.Slices(held);
         var rating=held.Rating;var cycle=held.Cycle;
         string Money(decimal value)=>value.ToString("0.00",CultureInfo.InvariantCulture);
-        var payload=JsonSerializer.Serialize(new{format="servicing-contract-1",draftId=cycle.DraftId,cycleId=cycle.Id,revisionId=cycle.RevisionId,
+        var payload=JsonSerializer.Serialize(new{format=held.Scope.Draft.Kind=="renewal"?"renewal-contract-1":"servicing-contract-1",draftId=cycle.DraftId,cycleId=cycle.Id,revisionId=cycle.RevisionId,
             baseVersionId=cycle.BaseVersionId,baseTermId=cycle.BaseTermId,policyId=cycle.PolicyId,ratingId=rating.Id,templateVersionId=template.Id,
             inputHash=Convert.ToHexStringLower(cycle.InputHash),ratingHash=Convert.ToHexStringLower(rating.ResultHash),
             effectiveDates=slices.Select(x=>x.EffectiveAt).ToArray(),slices=slices.Select(x=>new{x.EffectiveAt,proposal=x.Proposal}).ToArray(),

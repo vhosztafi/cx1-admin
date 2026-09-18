@@ -47,7 +47,8 @@ public sealed partial class ServicingTermsService
             acceptance=new(row.Id,row.TermsVersionId,row.DeliveryId,row.AccepterLabel,row.Channel,row.AcceptedAt,row.RecordedAt,row.EvidenceAssociationId,row.EvidenceReviewId);
             acceptanceApplicable=await AcceptanceCurrent(db,held,row,assurance,now,token);
         }
-        var templates=await db.Set<TemplateVersion>().AsNoTracking().Where(x=>x.ProductId==held.Cycle.ProductId && x.Kind=="servicing-terms" && x.State=="published" &&
+        var templateKind=held.Scope.Draft.Kind=="renewal"?"renewal-invitation":"servicing-terms";
+        var templates=await db.Set<TemplateVersion>().AsNoTracking().Where(x=>x.ProductId==held.Cycle.ProductId && x.Kind==templateKind && x.State=="published" &&
             x.EffectiveFrom<=now && x.EffectiveTo>now).OrderBy(x=>x.Code).ThenByDescending(x=>x.Version).Take(51).ToArrayAsync(token);
         if(templates.Length>50)throw new QuoteOperationException(409,"servicing-template-limit");
         var options=new List<ServicingTemplateOption>();

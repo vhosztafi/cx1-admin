@@ -49,6 +49,7 @@ public sealed partial class ServicingTermsService(IDbContextFactory<BackOfficeDb
 
     internal async Task Ready(BackOfficeDbContext db,ServicingDecisionContext held,DateTimeOffset now,bool signing,CancellationToken token)
     {
+        if(held.Scope.Draft.Kind=="renewal")await RenewalReady(db,held,now,token);
         if(held.Rating.ExpiresAt<=now)throw new QuoteOperationException(409,"servicing-rating-expired");
         var requirements=await ServicingEvidenceProjection.RequirementsAsync(db,held,token);
         var proofs=await (from a in db.Set<ServicingEvidenceAssociation>().AsNoTracking()
@@ -66,14 +67,15 @@ public sealed partial class ServicingTermsService(IDbContextFactory<BackOfficeDb
 
     internal static async Task<TemplateVersion> Template(BackOfficeDbContext db,ServicingDecisionContext held,Guid id,DateTimeOffset now,CancellationToken token)
     {
-        if(held.Scope.Draft.Kind!="adjustment")throw new QuoteOperationException(409,"renewal-invitation-required");
         var row=await db.Set<TemplateVersion>().FromSqlInterpolated($"SELECT * FROM TemplateVersion WITH(HOLDLOCK) WHERE Id={id} AND ProductId={held.Cycle.ProductId}").AsNoTracking().SingleOrDefaultAsync(token);
-        if(row is null || row.Kind!="servicing-terms" || row.State!="published" || row.EffectiveFrom>now || row.EffectiveTo<=now)
+        var renewal=held.Scope.Draft.Kind=="renewal";
+        if(renewal && row?.Kind!="renewal-invitation")throw new QuoteOperationException(409,"renewal-invitation-required");
+        if(row is null || row.Kind!=(renewal?"renewal-invitation":"servicing-terms") || row.State!="published" || row.EffectiveFrom>now || row.EffectiveTo<=now)
             throw new QuoteOperationException(409,"servicing-template-unavailable");
         try
         {
             using var parsed=JsonDocument.Parse(row.ContentJson);var root=parsed.RootElement;
-            if(root.EnumerateObject().Count()!=3 || root.GetProperty("format").GetString()!="servicing-template-1" ||
+            if(root.EnumerateObject().Count()!=3 || root.GetProperty("format").GetString()!=(renewal?"renewal-template-1":"servicing-template-1") ||
                 string.IsNullOrWhiteSpace(root.GetProperty("title").GetString()) || root.GetProperty("title").GetString()!.Length>300 ||
                 string.IsNullOrWhiteSpace(root.GetProperty("notice").GetString()) || root.GetProperty("notice").GetString()!.Length>8000)
                 throw new QuoteOperationException(503,"servicing-template-invalid");

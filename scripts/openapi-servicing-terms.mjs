@@ -15,7 +15,10 @@ export function addServicingTerms({schemas:s,ref:r,route,paths}) {
   template:o({format:{const:'servicing-template-1'},title:t(300),notice:t(8000)}),ratingInput:snapshot,rating:snapshot,commercialTerms:snapshot,
   conditions:a(o({id,code:t(100),kind:t(30),definition:r('UnderwritingConditionWrite'),effectiveDates:a(instant,100,1)}),100),expiresAt:instant,
   price:o({currency:{const:'GBP'},premium:money,tax:money,fee:money,brokerCommission:money,grossPayable:money,netDue:money}),documentState:{const:'structured-payload'}});
- s.ServicingTermsSnapshot=o({id,sequence:seq,ratingId:id,templateVersionId:id,termsHash:hash,preparedAt:instant,document:r('ServicingTermsDocument'),applicable:bool});
+ s.RenewalTermsDocument=structuredClone(s.ServicingTermsDocument);
+ s.RenewalTermsDocument.properties.format={const:'renewal-contract-1'};
+ s.RenewalTermsDocument.properties.template.properties.format={const:'renewal-template-1'};
+ s.ServicingTermsSnapshot=o({id,sequence:seq,ratingId:id,templateVersionId:id,termsHash:hash,preparedAt:instant,document:{oneOf:[r('ServicingTermsDocument'),r('RenewalTermsDocument')]},applicable:bool});
  s.ServicingDeliverySnapshot=o({id,termsVersionId:id,state:{enum:['queued','delivered','failed','superseded']},jobId:id,jobState:{enum:['pending','leased','succeeded','failed']},queuedAt:instant,
   completedAt:n(instant),outcomeCode:n(t()),recipients:a(r('ServicingTermsRecipient'),20,1)});
  s.ServicingAcceptanceSnapshot=o({id,termsVersionId:id,deliveryId:id,accepterLabel:t(),channel,acceptedAt:instant,recordedAt:instant,evidenceAssociationId:id,evidenceReviewId:id});

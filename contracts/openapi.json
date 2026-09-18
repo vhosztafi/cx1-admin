@@ -125600,6 +125600,238 @@
           "documentState"
         ]
       },
+      "RenewalTermsDocument": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "format": {
+            "const": "renewal-contract-1"
+          },
+          "draftId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "cycleId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revisionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "baseVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "baseTermId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "policyId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ratingId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "templateVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "inputHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "ratingHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "effectiveDates": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "minItems": 1,
+            "maxItems": 100
+          },
+          "slices": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "effectiveAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "proposal": {
+                  "$ref": "#/components/schemas/QuoteCaptureProposal"
+                }
+              },
+              "required": [
+                "effectiveAt",
+                "proposal"
+              ]
+            },
+            "minItems": 1,
+            "maxItems": 100
+          },
+          "template": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "format": {
+                "const": "renewal-template-1"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 300
+              },
+              "notice": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 8000
+              }
+            },
+            "required": [
+              "format",
+              "title",
+              "notice"
+            ]
+          },
+          "ratingInput": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "rating": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "commercialTerms": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "conditions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "code": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "kind": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 30
+                },
+                "definition": {
+                  "$ref": "#/components/schemas/UnderwritingConditionWrite"
+                },
+                "effectiveDates": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "minItems": 1,
+                  "maxItems": 100
+                }
+              },
+              "required": [
+                "id",
+                "code",
+                "kind",
+                "definition",
+                "effectiveDates"
+              ]
+            },
+            "minItems": 0,
+            "maxItems": 100
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "price": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "currency": {
+                "const": "GBP"
+              },
+              "premium": {
+                "type": "string",
+                "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+              },
+              "tax": {
+                "type": "string",
+                "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+              },
+              "fee": {
+                "type": "string",
+                "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+              },
+              "brokerCommission": {
+                "type": "string",
+                "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+              },
+              "grossPayable": {
+                "type": "string",
+                "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+              },
+              "netDue": {
+                "type": "string",
+                "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+              }
+            },
+            "required": [
+              "currency",
+              "premium",
+              "tax",
+              "fee",
+              "brokerCommission",
+              "grossPayable",
+              "netDue"
+            ]
+          },
+          "documentState": {
+            "const": "structured-payload"
+          }
+        },
+        "required": [
+          "format",
+          "draftId",
+          "cycleId",
+          "revisionId",
+          "baseVersionId",
+          "baseTermId",
+          "policyId",
+          "ratingId",
+          "templateVersionId",
+          "inputHash",
+          "ratingHash",
+          "effectiveDates",
+          "slices",
+          "template",
+          "ratingInput",
+          "rating",
+          "commercialTerms",
+          "conditions",
+          "expiresAt",
+          "price",
+          "documentState"
+        ]
+      },
       "ServicingTermsSnapshot": {
         "type": "object",
         "additionalProperties": false,
@@ -125629,7 +125861,14 @@
             "format": "date-time"
           },
           "document": {
-            "$ref": "#/components/schemas/ServicingTermsDocument"
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ServicingTermsDocument"
+              },
+              {
+                "$ref": "#/components/schemas/RenewalTermsDocument"
+              }
+            ]
           },
           "applicable": {
             "type": "boolean"
