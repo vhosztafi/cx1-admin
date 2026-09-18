@@ -1687,9 +1687,16 @@
       "handlers": {
         "onClick": "() => this.submitMta()"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-06"
+      "owner": "07-06",
+      "evidence": [
+        ".local/browser-evidence/servicing-evidence/submission-report.json",
+        ".local/phase7-06-submission-browser-reviewed.log",
+        ".local/phase7-06-submission-http-reviewed",
+        "07-06-PROGRESS.md"
+      ],
+      "implementation": "Submit the saved rated adjustment through a scoped durable handoff; exact lost-response retry and persisted recovery, missing proof remains separate, rerating and abandonment retain submission history. Both Motor Trade browser journeys verified without changing issued snapshots."
     },
     {
       "id": "CTL-4c6212277cb7",

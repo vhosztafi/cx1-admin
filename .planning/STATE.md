@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-06 submission HTTP verified; UI/browser and referral-work mapping remain
-last_updated: "2026-09-18T03:47:00Z"
-last_activity: "2026-09-18 —07-06 5301304; submission API verified with 14 backend cases,39 contract cases and12 real response validations."
+stopped_at: Plan07-06 submission UI/browser verified; referral-work source mapping and final review remain
+last_updated: "2026-09-18T04:11:00Z"
+last_activity: "2026-09-18 —07-06 5be1f37;131 frontend tests and both real submission browser journeys pass."
 progress:
   total_phases: 13
   completed_phases: 6
@@ -21,14 +21,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute Phase7;07-01..05 complete.07-06 submission API verified; implement UI/browser proof and finish referral-work source mapping.
+**Current focus:** Execute Phase7;07-01..05 complete.07-06 submission UI/browser verified; finish referral-work source mapping and final source/field review.
 
 ## Current Position
 
 Phase: 7 of 13 (Policy lifecycle and history)
 Plan: 5 of16 complete;07-06 in progress
-Status: Executing Phase7;07-06 submission HTTP verified; UI/browser and referral-work mapping remain
-Last activity: 2026-09-18 —07-06 5301304 verified with14 backend,39 contract cases and12 actual HTTP response validations. Resume latest07-06-PROGRESS.md checkpoint.
+Status: Executing Phase7;07-06 submission UI/browser verified; referral-work source mapping and final review remain
+Last activity: 2026-09-18 —07-06 5be1f37 verified with131 frontend cases and both submission browser journeys. Resume latest07-06-PROGRESS.md checkpoint.
 
 Progress: Phases1–6 complete;6/13 phases,54 completed implementation plans.
 
@@ -54,12 +54,12 @@ Progress: Phases1–6 complete;6/13 phases,54 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-18T03:47:00Z
-Stopped at:07-06 submission HTTP verified; implement submission UI and browser checks next
+Last session: 2026-09-18T04:11:00Z
+Stopped at:07-06 submission UI/browser verified; finish referral-work source mapping and review
 Resume file: .planning/phases/07-policy-lifecycle-and-history/07-06-PROGRESS.md
 
 ## Autonomous continuation
 
 User approved requirements/roadmap and autonomous choices/progression on2026-09-13. Routine confirmation is not required. Keep research, design, checks and verification enabled; fix gaps instead of silently deferring them. Current request execute-phase7 --auto authorises sequential automatic continuation.
 
-Thread heartbeat: continue-cover-mga-back-office-mvp, every10minutes. Continue in this task; notify meaningful progress/blockers only. Current owned previews are recorded in.local/phase7-05-preview-pids.json; stop only verified owned processes.
+Thread heartbeat: continue-cover-mga-back-office-mvp, every10minutes. Continue in this task; notify meaningful progress/blockers only. Current owned previews are recorded in.local/phase7-06-preview-pids.json; stop only verified owned processes.

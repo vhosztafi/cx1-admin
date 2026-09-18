@@ -206,8 +206,9 @@ lease can block an exact retry after success, so UI recovery must read persisted
 submission status rather than inventing another command or claiming failure.
 Implemented HTTP contract in5301304: strict POST submit and scoped GET submissions,
 generated schemas, actual SQL/HTTP negative tests and response validation pass.
-UI/browser submission integration remains in progress; the running demo preview
-has not yet been rebuilt or migrated to include submission support.
+UI/browser submission integration verified in5be1f37 for both Motor Trade
+products. The existing demo database is additively migrated through submission
+storage and its preview includes the verified routes and UI.
 
 Review against full source field/control coverage, current API-CONVENTIONS and
 PERMISSIONS. Specify exact schema fields and cancellation rule/approval catalogue,

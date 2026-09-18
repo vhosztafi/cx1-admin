@@ -1085,3 +1085,56 @@ previews and verify both-product browser submissions/rerating/history. Complete
 the referral-work/task source mapping and all07-06 source/field review before
 summary or advancing07-07. Still5/16 phase plans and54/65 total complete.
 No active tests. Live API82720/web81192 and demo database remain unchanged.
+
+## Submission UI/browser checkpoint — 2026-09-18
+
+Commit5be1f37 adds Submit to underwriting and paged saved handoff history within
+the existing servicing supporting-information panel. Reason/forms survive lease
+refresh; fresh scoped history, current rating and editing lease gate submission.
+Existing shared command boundary freezes key/body/revision/ETag/lease and blocks
+other draft/proof writes while uncertain. A rejected/lost response can recover
+the actual immutable handoff through bounded scoped history, without attributing
+another editor's submission to this request or treating submission as approval.
+Readback failure retains the original retry and a Check saved submission action.
+Older submissions remain visible and labelled retained after rerating/abandonment.
+
+Tests-first:2 submission command tests failed on the previously unsupported
+/submit action (.local/phase7-06-submission-ui-red.log). Final131 frontend cases
+pass, including4 new snapshot/retry/history-recovery cases; log
+.local/phase7-06-submission-ui-tests.log. Root TypeScript and changed-file ESLint
+pass. Production builds pass (.local/phase7-06-submission-api-build.log and
+.local/phase7-06-submission-web-build.log). Tested additive migration20260918025724
+applied to the existing CoverMGA_Demo without reset or reseeding; migration log
+.local/phase7-06-submission-demo-migration.log. No backend implementation changes
+in this UI checkpoint, so previous SQL/API test evidence remains separate.
+
+Both real Chrome product journeys passed at2026-09-18T04:09:50Z:
+.local/phase7-06-submission-browser-reviewed.log and
+.local/browser-evidence/servicing-evidence/submission-report.json. New harness
+mode COVER_SERVICING_SUBMISSION_ONLY=1 preserves earlier full/navigation reports.
+Coverage: submission with missing proof, deliberately lost response plus exact
+key/body/ETag/lease retry and one row, second lost response recovered from saved
+history, rerating retains old submission, reload/current/history, referral link,
+abandonment retains both records and issued snapshots unchanged. Desktop/mobile
+panel screenshots inspected;390px viewport containment passed. Intentional
+net::ERR_FAILED entries are fault injection, not unhandled page errors.
+
+First browser attempt had a harness synchronization race: the retry button
+appeared before the deliberate readback-block flag was set, leaving subsequent
+history reads blocked. The harness now waits for the explicit unconfirmed-result
+message before enabling reads/retrying. Failed log retained separately at
+.local/phase7-06-submission-browser.log, not counted as a pass. All harness-owned
+drafts were abandoned with audit retained. SourceCTL-909dc8df1733 now verified.
+
+Current previews API82536 on5087, web85040 on3100; verify actual process ownership
+from.local/phase7-06-preview-pids.json before stopping. Logs use submission-api-
+preview and submission-web-preview filenames. No active tests. frontend-code
+unchanged; human UAT/hosted CI/Docker remain unperformed.
+
+NEXT: resolve sourceCTL-d2bf3015d449, pMta.sections[3].rows[0], which navigates to
+the young-driver referral task in the prototype. A generic Review referrals link
+alone does not implement that specific referral-work navigation. Generic task
+inbox/messages remain Phase9, but this plan owns the concrete servicing referral
+work entry. Inspect exact source and current referral decision/history UI and
+implement a reviewable mapping, then finish all07-06 source/field review and
+required verification before creating07-06-SUMMARY. Still5/16 and54/65 complete.
