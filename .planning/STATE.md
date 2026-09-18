@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-07 capacity creation verified; submission/response graph next
-last_updated: "2026-09-18T05:15:33Z"
+stopped_at: Plan07-07 submission storage verified; selected evidence and response graph next
+last_updated: "2026-09-18T06:03:57Z"
 last_activity: "2026-09-18 —07-07 creation f5585cc verified;19 focused unit and2SQL pass."
 progress:
   total_phases: 13
@@ -21,13 +21,13 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute Phase7;07-01..06 complete. 07-07 capacity creation verified; submission/response graph next.
+**Current focus:** Execute Phase7;07-01..06 complete. 07-07 submission storage verified; selected evidence and response graph next.
 
 ## Current Position
 
 Phase: 7 of 13 (Policy lifecycle and history)
 Plan: 6 of16 complete;07-07 in progress
-Status: Executing Phase7;07-07 capacity creation verified; submission/response graph next
+Status: Executing Phase7;07-07 submission storage verified; selected evidence and response graph next
 Last activity: 2026-09-18 —07-07 creation f5585cc;19 focused unit and2SQL pass.
 
 Progress: Phases1–6 complete;6/13 phases,55 completed implementation plans.
@@ -54,8 +54,8 @@ Progress: Phases1–6 complete;6/13 phases,55 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-18T05:15:33Z
-Stopped at:07-07 capacity creation verified; resume submission/response graph
+Last session: 2026-09-18T06:03:57Z
+Stopped at:07-07 submission storage verified; continue selected evidence and response graph
 Resume file: .planning/phases/07-policy-lifecycle-and-history/07-07-PROGRESS.md
 
 ## Autonomous continuation

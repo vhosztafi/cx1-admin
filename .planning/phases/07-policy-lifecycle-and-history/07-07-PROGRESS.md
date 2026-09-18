@@ -101,3 +101,31 @@ remain as listed above. Preserve f5585cc creation behavior when extracting share
 held-capacity authorization. No plan summary/completion: still6/16,55/65, POL-04open.
 No active tests or browser sessions. Demo database/preview not changed by this
 checkpoint; no reset/reseed or frontend-code edits. git diff --check passed.
+
+## Submission storage verified — continuing inline, 2026-09-18
+
+User explicitly corrected premature10–15minute stops. Intermediate commits are
+checkpoints, not stopping points. Continue execution through context compaction;
+only stop for verified phase completion or a concrete blocker. No new permission
+is required. Sequential inline/no agents remains the approved plan.
+
+1b02fd4 adds ServicingCapacitySubmission and current owned submission pointer.
+Migration20260918055242 is additive; compound case ownership, UTF-8 SHA256 request
+hash, unique case sequence/work, pinned outbox/scenario, current rating/referral/
+provider source guard, append-only history and monotonic pointers verified. Draft
+withdrawal retains pointer; same submission cannot requeue. No carrier approval
+state is permitted without future response graph. Body has explicit SQL20000-byte
+limit because EF nvarchar(max) would not enforce MaxLength10000 alone.
+
+Real SQL red: both products fail on missing submission table. Initial6SQL pass,
+then final body-limit review prompted new assertions/run. Final25tests=19unit+
+6SQL pass,zero skips,cutoff2026-09-18T05:54:00Z in
+.local/phase7-07-submission-storage-reviewed. Includes both products each for
+capacity-storage,capacity-create,capacity-submission-storage; existing migration
+down/up and immutable issued snapshot preserved. No shared demo upgrade/reset.
+
+NEXT ACTIVE: selected-evidence storage red tests currently running, then owned
+immutable association/review links plus queue manifest completeness. See new
+capacity-selected-evidence scenarios and ServicingCapacitySubmissionStorageTests.
+These are uncommitted until verified. After that implement submission command,
+responses/conditions/worker, HTTP/UI/source review.07-07 remains incomplete.
