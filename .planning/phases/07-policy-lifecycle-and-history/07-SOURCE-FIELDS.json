@@ -4785,7 +4785,8 @@
       "id": "BR07-08",
       "behavior": "capacity Not submitted/Query/Conditional/Approved/Declined/Withdrawn",
       "owner": "07-07",
-      "evidence": "Owning plan tests eligible and blocked states with actual persistence."
+      "evidence": "07-07-SUMMARY.md; .local/phase7-07-capacity-filter-green; .local/browser-evidence/servicing-capacity/report.json",
+      "reviewStatus": "implemented-browser-and-sql-verified"
     },
     {
       "id": "BR07-09",

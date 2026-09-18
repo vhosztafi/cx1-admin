@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-07 submission storage verified; selected evidence and response graph next
-last_updated: "2026-09-18T06:03:57Z"
-last_activity: "2026-09-18 —07-07 creation f5585cc verified;19 focused unit and2SQL pass."
+stopped_at: Plan07-07 verified; executing07-08 terms and acceptance inline
+last_updated: "2026-09-18T09:30:33.382Z"
+last_activity: 2026-09-18 —07-07 complete in91ed93e; both product browser journeys and27 backend checks pass.
 progress:
   total_phases: 13
   completed_phases: 6
   total_plans: 65
-  completed_plans: 55
+  completed_plans: 56
   percent: 46
 ---
 
@@ -21,16 +21,16 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute Phase7;07-01..06 complete. 07-07 submission storage verified; selected evidence and response graph next.
+**Current focus:** Execute Phase7;07-01..07 complete. Continue07-08 terms delivery and exact acceptance inline.
 
 ## Current Position
 
 Phase: 7 of 13 (Policy lifecycle and history)
-Plan: 6 of16 complete;07-07 in progress
-Status: Executing Phase7;07-07 submission storage verified; selected evidence and response graph next
-Last activity: 2026-09-18 —07-07 creation f5585cc;19 focused unit and2SQL pass.
+Plan: 7 of16 complete;07-08 in progress
+Status: Executing Phase7;07-07 carrier lifecycle verified,07-08 terms/acceptance next
+Last activity: 2026-09-18 —07-07 complete in91ed93e; both product browser journeys and27 backend checks pass.
 
-Progress: Phases1–6 complete;6/13 phases,55 completed implementation plans.
+Progress: Phases1–6 complete;6/13 phases,56/65 completed implementation plans.
 
 ## Accumulated Context
 
@@ -44,7 +44,7 @@ Progress: Phases1–6 complete;6/13 phases,55 completed implementation plans.
 
 ### Pending Todos
 
-- Execute07-07..16 using the approved plans and07-01 contracts.
+- Execute07-08..16 using the approved plans and07-01 contracts.
 - Keep future endpoints closed until owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,12 +54,12 @@ Progress: Phases1–6 complete;6/13 phases,55 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-18T06:03:57Z
-Stopped at:07-07 submission storage verified; continue selected evidence and response graph
-Resume file: .planning/phases/07-policy-lifecycle-and-history/07-07-PROGRESS.md
+Last session: 2026-09-18T09:30:00Z
+Stopped at:07-07 complete; continue07-08 terms/acceptance inline without ending the active turn
+Resume file: .planning/phases/07-policy-lifecycle-and-history/07-08-PLAN.md
 
 ## Autonomous continuation
 
 User approved requirements/roadmap and autonomous choices/progression on2026-09-13. Routine confirmation is not required. Keep research, design, checks and verification enabled; fix gaps instead of silently deferring them. Current request execute-phase7 --auto authorises sequential automatic continuation.
 
-Thread heartbeat: continue-cover-mga-back-office-mvp, every10minutes. Continue in this task; notify meaningful progress/blockers only. Current owned previews are recorded in.local/phase7-06-preview-pids.json; stop only verified owned processes.
+Thread heartbeat: continue-cover-mga-back-office-mvp, every10minutes. Continue in this task; notify meaningful progress/blockers only. Current owned previews are recorded in.local/phase7-07-preview-pids.json; stop only verified owned processes.

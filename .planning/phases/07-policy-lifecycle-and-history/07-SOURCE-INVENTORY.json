@@ -1712,9 +1712,15 @@
       "handlers": {
         "onClick": "() => this.go('escalation')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-07"
+      "owner": "07-07",
+      "evidence": [
+        ".local/browser-evidence/servicing-capacity/report.json",
+        ".local/phase7-07-capacity-filter-green",
+        "07-07-SUMMARY.md"
+      ],
+      "implementation": "Persisted servicing carrier workspace: submission/query/reply, reviewed supplied response, dated conditional permission and explicit proof resolution, bounded history, assignment and withdrawal/reopen. Carrier extent never replaces separate current authority/proof/issue checks."
     },
     {
       "id": "CTL-efe1569b8296",
@@ -1803,9 +1809,15 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-07"
+      "owner": "07-07",
+      "evidence": [
+        ".local/browser-evidence/servicing-capacity/report.json",
+        ".local/phase7-07-capacity-filter-green",
+        "07-07-SUMMARY.md"
+      ],
+      "implementation": "Persisted servicing carrier workspace: submission/query/reply, reviewed supplied response, dated conditional permission and explicit proof resolution, bounded history, assignment and withdrawal/reopen. Carrier extent never replaces separate current authority/proof/issue checks."
     },
     {
       "id": "CTL-a1d207a609ca",

@@ -144,3 +144,15 @@ output shape before comparing hashes. Capture before, initialize twice without
 reset, compare both, restart only verified owned previews, fresh login and read
 the exact issued graphs. No production Release build while the owned API holds
 those binaries; use Debug or orderly owned-process stop/restart.
+
+## 07-07 measured completion — 2026-09-18
+
+Carrier lifecycle verified by final27 unit/SQL cases (25+2, no skips) in
+.local/phase7-07-capacity-filter-green, cutoff09:18UTC;38 actual responses
+validate strict schemas.52 API/frontend tests, full web lint/typecheck and
+API/Next production builds pass. Both actual Motor Trade browser journeys pass
+in.local/browser-evidence/servicing-capacity/report.json, completed09:25:52UTC;
+review alone does not resolve conditions, and carrier readiness alone does not
+approve referrals. Reopening retains history and removes applicability. Issued
+snapshots unchanged. Desktop/390px screenshots inspected. Full detail and
+overlapping prior checks are in07-07-SUMMARY.md; atomic issue remains07-10.

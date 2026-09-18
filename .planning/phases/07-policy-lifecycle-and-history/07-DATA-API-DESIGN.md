@@ -274,3 +274,33 @@ returning to queued requires a strictly newer submission. Until response storage
 is implemented no approved/conditional/queried/sent states are enabled. Every
 row is append-only and retains exact provider request bytes, caller reason and
 server-derived provenance. Storage is a prerequisite, not an activated endpoint.
+
+### Capacity correspondence and response boundary
+
+ServicingCapacityMessage is immutable staff correspondence (submission, chase,
+query-reply), separately sequenced per capacity case and linked by the complete
+submission/case/cycle/draft/revision/rating tuple. Incoming responses will use a
+separate servicing-owned response record because they carry provider provenance,
+extent and evidence that an outbound chase cannot grant. The case read model will
+merge these histories by timestamp with explicit direction/provenance.
+The correspondence hash is SHA256 of stored UTF-8 body bytes; relational ownership,
+actor, timestamp and kind are immutable and validated independently by SQL.
+
+ServicingCapacityResponseRules validates typed response extent and conditions
+before persistence. Each carrier condition has a definition and explicit ordered
+EffectiveDates; it is parsed against every corresponding cumulative proposal.
+Dates cannot be inferred from only the final snapshot. Query/decline carry no
+approval dates, limits or conditions; conditional approval requires conditions.
+These library/storage refinements do not activate routes before service/SQL/UI
+verification is complete.
+
+### Supplied-response evidence applicability
+
+The nullable CapacitySubmissionId is server-derived from an exact purpose
+fingerprint and stored with compound cycle/draft/revision/rating ownership.
+Response proof requires the current non-withdrawn capacity submission; prior
+purpose associations remain history. Projection exposes response proof as an
+available supplied-response purpose, not a universal condition for demo-provider
+responses. Final eligibility must require it when provenance is supplied-response
+and independently evaluate normal risk proof and all current carrier conditions.
+No carrier reply grants authority merely because its evidence review is accepted.
