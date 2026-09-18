@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Policies;
 using BackOffice.Application.Policies;
@@ -13,6 +14,77 @@ namespace BackOffice.IntegrationTests;
 
 public sealed partial class UnderwritingRuntimeTests
 {
+    [Theory]
+    [InlineData("motor-trade-road-risks")]
+    [InlineData("motor-trade-combined")]
+    public async Task RealSqlRenewalPreparationPreviewPinsConfiguredCoverageAndActualAssessment(string product)
+    {
+        await WithDatabase(async(db,password)=>
+        {
+            var setup=await AcceptedIssue(db,password,product);var f=setup.Source;
+            await new QuoteIssueService(f.Factory,f.Clock).IssueAsync(f.Underwriter,f.QuoteId,setup.Version,setup.Input,Guid.NewGuid().ToString(),Guid.NewGuid());
+            var issued=await db.Set<PolicyVersion>().AsNoTracking().SingleAsync();
+            var oldTerm=await db.Set<PolicyTerm>().AsNoTracking().SingleAsync();
+            var service=new RenewalPreparationService(f.Factory,f.Clock);
+            var preview=await service.PreviewAsync(f.Servicing,issued.TermId);
+            Assert.Equal(issued.Id,preview.BaseVersionId);Assert.Equal(oldTerm.EndsAt,preview.Term.StartsAt);
+            Assert.Equal("annual",preview.Term.Kind);Assert.Equal(oldTerm.ProductVersionId,preview.ProductVersionId);
+            Assert.True(preview.FairValueSatisfied);Assert.NotNull(preview.FairValueAssessmentId);
+            Assert.Equal("unavailable",preview.BrokerArrearsState);
+            Assert.Equal("short-period",(await service.PreviewAsync(f.Servicing,issued.TermId,6)).Term.Kind);
+            Assert.Equal(422,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.PreviewAsync(f.Servicing,issued.TermId,3))).Status);
+            Assert.Equal(404,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.PreviewAsync(f.Servicing,Guid.NewGuid()))).Status);
+            var originalTerms=await db.Set<AgencyTermsVersion>().AsNoTracking().SingleAsync(x=>x.Id==preview.AgencyTermsVersionId);
+            var snapshot=JsonNode.Parse(originalTerms.Snapshot)!;
+            snapshot["effectiveFrom"]="2027-09-01";snapshot["commercialTerms"]!["effectiveFrom"]="2027-09-01";
+            snapshot["products"]![0]!["effectiveFrom"]="2027-09-01";snapshot["products"]![0]!["brokerCommissionBasisPoints"]=1500;
+            var admin=await db.Set<StaffUser>().SingleAsync(x=>x.Email=="system-admin@cover.example");
+            var requester=await db.Set<StaffUser>().SingleAsync(x=>x.Email=="agency-admin@cover.example");
+            var agency=await db.Set<Agency>().AsNoTracking().SingleAsync(x=>x.Id==originalTerms.AgencyId);
+            var request=new AgencyTermsRequest{AgencyId=agency.Id,BaseVersion=agency.RowVersion,EffectiveFrom=new(2027,9,1),
+                ProposedSnapshot=snapshot.ToJsonString(),ProposedInputFingerprint=new string('c',64),RequestedBy=requester.Id,CreatedBy=requester.Id,
+                CreatedAt=f.Clock.GetUtcNow(),RequestReason="Fictional prospective renewal commercial terms"};
+            db.Add(request);await db.SaveChangesAsync();
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE AgencyTermsRequest SET State=N'applied',DecisionBy={admin.Id},DecisionReason=N'Independent fictional approval',DecidedAt={f.Clock.GetUtcNow()} WHERE Id={request.Id}");
+            var futureTerms=new AgencyTermsVersion{AgencyId=agency.Id,Version=2,EffectiveFrom=request.EffectiveFrom,ApprovedTermsRequestId=request.Id,
+                Snapshot=request.ProposedSnapshot,CreatedBy=admin.Id};db.Add(futureTerms);await db.SaveChangesAsync();db.ChangeTracker.Clear();
+            Assert.Equal(futureTerms.Id,(await service.PreviewAsync(f.Servicing,issued.TermId)).AgencyTermsVersionId);
+            await using(var tx=await db.Database.BeginTransactionAsync())
+            {
+                var source=await QuoteScope.ForQuoteAsync(db,f.Servicing,f.QuoteId,QuoteAccess.Read);
+                var today=await QuoteCaptureEligibility.ResolveAsync(db,source.Scope,preview.ProductVersionId,f.Clock.GetUtcNow());
+                Assert.Equal(originalTerms.Id,today.Terms.Id);
+                await tx.CommitAsync();
+            }
+            Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);
+            db.Add(new SettingVersion{Scope=RenewalConfiguration.Scope,Version=2,EffectiveFrom=f.Clock.GetUtcNow(),Values="{}"});await db.SaveChangesAsync();
+            Assert.Equal(503,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.PreviewAsync(f.Servicing,issued.TermId))).Status);
+        });
+    }
+
+    [Fact]
+    public async Task RealSqlRenewalPreparationSeedAddsOwnedFictionalEvidenceWithoutReplacingPublishedChoices()
+    {
+        await WithDatabase(async(db,password)=>
+        {
+            await DemoDatabase.SeedAsync(db,password,includeQuoteCapture:true,includeUnderwriting:true);
+            var assessments=await db.Set<FairValueAssessmentVersion>().AsNoTracking().OrderBy(x=>x.Id).ToArrayAsync();
+            Assert.Equal(2,assessments.Length);
+            foreach(var assessment in assessments)
+            {
+                var file=await db.Set<ProductEvidenceFileVersion>().AsNoTracking().SingleAsync(x=>x.Id==assessment.EvidenceFileVersionId);
+                Assert.Equal(assessment.ProductVersionId,file.ProductVersionId);Assert.Equal(assessment.BinderVersionId,file.BinderVersionId);
+                Assert.Contains("FICTIONAL",Encoding.UTF8.GetString(file.Content),StringComparison.Ordinal);
+                Assert.Equal(Convert.ToHexStringLower(SHA256.HashData(file.Content)),file.Sha256);
+            }
+            db.Add(new SettingVersion{Scope=RenewalConfiguration.Scope,Version=2,EffectiveFrom=Now,Values="{}"});await db.SaveChangesAsync();
+            await using(var tx=await db.Database.BeginTransactionAsync())
+            {await RenewalPreparationSeed.SeedAsync(db);await tx.CommitAsync();}
+            Assert.Equal(assessments.Select(x=>x.Id),await db.Set<FairValueAssessmentVersion>().OrderBy(x=>x.Id).Select(x=>x.Id).ToArrayAsync());
+            Assert.Equal(2,await db.Set<ProductEvidenceFileVersion>().CountAsync());
+            Assert.Equal("{}",(await db.Set<SettingVersion>().Where(x=>x.Scope==RenewalConfiguration.Scope).OrderByDescending(x=>x.Version).FirstAsync()).Values);
+        });
+    }
     [Fact]
     public async Task RealSqlRenewalPreparationExperienceCommandsEnforceLeaseExactRetryAndCurrentPermission()
     {
@@ -118,7 +190,7 @@ public sealed partial class UnderwritingRuntimeTests
             await Assert.ThrowsAsync<SqlException>(()=>Assessment(productFile.Id,"unknown"));
             await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ProductEvidenceFileVersion SET FileName='rewritten.txt' WHERE Id={productFile.Id}"));
             await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlRawAsync("DELETE FairValueAssessmentVersion"));
-            Assert.Single(await db.Set<FairValueAssessmentVersion>().ToArrayAsync());
+            Assert.Single(await db.Set<FairValueAssessmentVersion>().Where(x=>x.EvidenceFileVersionId==productFile.Id).ToArrayAsync());
             Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);
         });
     }

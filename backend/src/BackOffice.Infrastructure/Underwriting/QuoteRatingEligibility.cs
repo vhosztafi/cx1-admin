@@ -21,19 +21,20 @@ public sealed record EligibleQuoteRating(EligibleQuoteCapture Capture, SettingVe
 public static class QuoteRatingEligibility
 {
     public static async Task<EligibleQuoteRating> ResolveAsync(BackOfficeDbContext db, OwnedQuoteScope owned,
-        Guid productVersionId, Guid termsId, ResolvedQuoteTerm term, DateTimeOffset now, CancellationToken token = default)
+        Guid productVersionId, Guid termsId, ResolvedQuoteTerm term, DateTimeOffset now, CancellationToken token = default, DateOnly? commercialOn = null)
     {
         if (db.Database.CurrentTransaction is null) throw new InvalidOperationException("Rating eligibility requires held quote scope.");
-        var capture = await QuoteCaptureEligibility.ResolveAsync(db, owned.Scope, productVersionId, now, termsId, token);
+        var inceptionDay = DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(term.StartsAt, TimeZoneInfo.FindSystemTimeZoneById("Europe/London")).DateTime);
+        if (commercialOn.HasValue && commercialOn.Value != inceptionDay) throw Unavailable();
+        var capture = await QuoteCaptureEligibility.ResolveAsync(db, owned.Scope, productVersionId, now, termsId, token, commercialOn);
         var version = capture.ProductVersion;
         if (owned.Quote.ProductId != capture.Product.Id || version.State != "published" || version.QuestionSetVersion != capture.Pins.QuestionSetVersion ||
             !Interval(version.EffectiveFrom, version.EffectiveTo, now, term) || !PublishedProduct(version.Definition, capture.Product.Code)) throw Unavailable();
 
         // Current commercial terms must be adopted explicitly into a new
         // revision. Reusing an old grant must never silently change commission.
-        var currentCapture = await QuoteCaptureEligibility.ResolveAsync(db, owned.Scope, productVersionId, now, null, token);
+        var currentCapture = await QuoteCaptureEligibility.ResolveAsync(db, owned.Scope, productVersionId, now, null, token, commercialOn);
         if (currentCapture.Terms.Id != termsId) throw new QuoteOperationException(409, "quote-terms-refresh-required");
-        var inceptionDay = DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(term.StartsAt, TimeZoneInfo.FindSystemTimeZoneById("Europe/London")).DateTime);
         var commercial = Commercial(capture.Terms, productVersionId, inceptionDay);
         var rows = await db.Set<SettingVersion>().FromSqlRaw("SELECT * FROM SettingVersion WITH(HOLDLOCK) WHERE Scope=N'underwriting-runtime'")
             .AsNoTracking().ToArrayAsync(token);

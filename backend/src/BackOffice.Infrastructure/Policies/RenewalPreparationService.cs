@@ -12,7 +12,7 @@ namespace BackOffice.Infrastructure.Policies;
 
 public sealed record RenewalExperienceView(Guid DraftId,string Etag,RenewalExperienceVersion? Experience,RenewalExperienceReview? Review);
 
-public sealed class RenewalPreparationService(IDbContextFactory<BackOfficeDbContext> factory,TimeProvider time)
+public sealed partial class RenewalPreparationService(IDbContextFactory<BackOfficeDbContext> factory,TimeProvider time)
 {
     private readonly SqlCommandBoundary commands=new(factory,time);
     private static readonly JsonSerializerOptions Json=new(JsonSerializerDefaults.Web);

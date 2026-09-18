@@ -105,6 +105,7 @@ public static class DemoDatabase
             await Policies.ServicingRatingSeed.SeedAsync(db,cancellationToken);
             await Policies.ServicingTermsSeed.SeedAsync(db,cancellationToken);
             await Policies.PolicyClientActivitySeed.SeedAsync(db,cancellationToken);
+            await Policies.RenewalPreparationSeed.SeedAsync(db,cancellationToken);
         }
         await transaction.CommitAsync(cancellationToken);
     }

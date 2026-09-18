@@ -1,6 +1,6 @@
 # 07-11 renewal preparation — partial foundation
 
-This is not a completion summary. Phase7 remains9/16 plans complete,58/65
+Foundation commit: `dc34b13`. This is not a completion summary. Phase7 remains9/16 plans complete,58/65
 overall. No requirement or source control is marked complete by this foundation.
 
 ## Implemented
@@ -23,6 +23,16 @@ overall. No requirement or source control is marked complete by this foundation.
   replay; rowversion and editing lease fence new writes. Changed figures and
   changed reviews invalidate existing cycles. A new experience version never
   inherits a previous version's evidence review.
+- Strict versioned renewal settings and missing-only fictional seed now supply
+  configured term lengths, ratio threshold/loading/fee and invitation/lapse days.
+  Actual retained fair-value bytes identify the bundled product and binder.
+  An immutable initialization marker preserves published operator changes.
+- Scoped renewal preview selects the known snapshot strictly before expiry,
+  rejects cancellation/overlap and pins published product, binder and commercial
+  terms covering the next term. Future approved commercial terms can apply to
+  renewal while current quote capture keeps today's terms. Current distribution
+  authority is still independently required. Fair-value checks read actual owned
+  assessment/evidence; broker arrears remain explicitly unavailable.
 
 ## Path/design refinements
 
@@ -52,9 +62,17 @@ and must not be added together. Final foundation evidence: **13 unit +3 real
 SQL =16 passing cases**, no skips, `.local/phase7-11-foundation-final`; repository
 TRX gate passed with cutoff `2026-09-18T14:35:00Z`. `git diff --check` passed.
 
-Still required: term-end/cancellation/overlap eligibility, published renewal
-configuration and pins, fair-value demo evidence seed, current broker checks,
-rating-cycle/worker/referral integration, strict public DTOs/DI/routes and HTTP
+Configuration/eligibility follow-up: **26 unit +3 pure chronology +8 real SQL
+=37 passing cases**, no skips, `.local/phase7-11-eligibility-final`, same cutoff.
+This includes both-product preview and prospective commercial terms, original
+quote eligibility/refresh regressions, exact experience services, seed preservation
+and storage ownership. Focused red future-terms cases reproduced rejection before
+the shared optional commercial-inception extension. The first seed test omitted
+underwriting initialization; that fixture was corrected before the passing rerun.
+Intermediate `.local/phase7-11-seed-final` contains30 passes and overlaps this run.
+
+Still required: persist preparation choices/current pins into renewal drafts and
+rating cycles, rating-cycle/worker/referral integration, strict public DTOs/DI/routes and HTTP
 negative tests, four-stage UI/browser verification, shared-database migration
 with preservation evidence, and final plan source/validation updates. No new
 public endpoint or browser journey is claimed. The shared demo database and

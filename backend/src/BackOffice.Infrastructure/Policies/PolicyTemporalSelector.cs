@@ -85,6 +85,21 @@ public static class PolicyTemporalSelector
             x.PolicyId == policyId && x.TermId == termId && x.ProcessedAt <= knownAt && x.EffectiveAt < exclusiveEnd
             && x.Kind is "new-business" or "adjustment" or "renewal" or "cancellation"));
 
+    public static PolicyTemporalCandidate RenewalBase(IEnumerable<PolicyTemporalCandidate> candidates,PolicyTerm expiring,
+        DateTimeOffset renewalEndsAt,IEnumerable<PolicyTerm> existingTerms,DateTimeOffset knownAt)
+    {
+        if(expiring.StartsAt>=expiring.EndsAt || renewalEndsAt<=expiring.EndsAt)
+            throw new Quotes.QuoteOperationException(422,"renewal-term-invalid");
+        var selected=AtTermEnd(candidates,expiring.PolicyId,expiring.Id,expiring.EndsAt,knownAt)
+            ??throw new Quotes.QuoteOperationException(409,"renewal-base-unavailable");
+        if(selected.StartsAt!=expiring.StartsAt || selected.EndsAt!=expiring.EndsAt || selected.EffectiveAt<expiring.StartsAt)
+            throw new Quotes.QuoteOperationException(409,"renewal-base-unavailable");
+        if(selected.Kind=="cancellation")throw new Quotes.QuoteOperationException(409,"renewal-expiring-term-cancelled");
+        if(existingTerms.Any(x=>x.PolicyId==expiring.PolicyId && x.Id!=expiring.Id && x.StartsAt<renewalEndsAt && expiring.EndsAt<x.EndsAt))
+            throw new Quotes.QuoteOperationException(409,"renewal-term-overlap");
+        return selected;
+    }
+
     private static PolicyTemporalCandidate? Latest(IEnumerable<PolicyTemporalCandidate> candidates) => candidates
         .OrderByDescending(x => x.EffectiveAt).ThenByDescending(x => x.TransactionSequence)
         .ThenByDescending(x => x.SliceOrdinal).ThenBy(x => x.VersionId).FirstOrDefault();

@@ -16,7 +16,7 @@ internal sealed record QuoteCaptureSettings(SettingVersion Capture, SettingVersi
 public static class QuoteCaptureEligibility
 {
     public static async Task<EligibleQuoteCapture> ResolveAsync(BackOfficeDbContext db, QuoteRelationshipScope scope,
-        Guid productVersionId, DateTimeOffset now, Guid? pinnedTermsId = null, CancellationToken token = default)
+        Guid productVersionId, DateTimeOffset now, Guid? pinnedTermsId = null, CancellationToken token = default, DateOnly? commercialOn = null)
     {
         if (db.Database.CurrentTransaction is null) throw new InvalidOperationException("Capture eligibility requires held quote authority.");
         if (!scope.Actor.HasCapability("quote-capture") || scope.Agency.State != "active" || scope.Client.IdentityState != "active" || scope.Relationship.State != "active")
@@ -32,14 +32,19 @@ public static class QuoteCaptureEligibility
         if (product.Code is not ("motor-trade-road-risks" or "motor-trade-combined") || version.State == "retired" ||
             version.JsonSchemaVersion != pin.SchemaVersion || version.EffectiveFrom > now || version.EffectiveTo <= now || provider.State != "active") throw Unavailable();
         var today = DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(now, TimeZoneInfo.FindSystemTimeZoneById("Europe/London")).DateTime);
+        var commercialDay = commercialOn ?? today;
+        if (commercialDay < today) throw Unavailable();
         var terms = await db.Set<AgencyTermsVersion>().FromSqlInterpolated($"SELECT * FROM AgencyTermsVersion WITH(HOLDLOCK) WHERE AgencyId={scope.Agency.Id}")
             .AsNoTracking().ToListAsync(token);
         var current = terms.Where(x => x.EffectiveFrom <= today).OrderByDescending(x => x.EffectiveFrom).ThenByDescending(x => x.Version).FirstOrDefault() ?? throw Unavailable();
-        var retained = pinnedTermsId is null ? current : terms.SingleOrDefault(x => x.Id == pinnedTermsId && x.EffectiveFrom <= today) ?? throw Unavailable();
+        var applicable = terms.Where(x => x.EffectiveFrom <= commercialDay).OrderByDescending(x => x.EffectiveFrom).ThenByDescending(x => x.Version).FirstOrDefault() ?? throw Unavailable();
+        var retained = pinnedTermsId is null ? applicable : terms.SingleOrDefault(x => x.Id == pinnedTermsId && x.EffectiveFrom <= commercialDay) ?? throw Unavailable();
         var grants = await db.Set<AgencyProduct>().FromSqlInterpolated($"SELECT * FROM AgencyProduct WITH(HOLDLOCK) WHERE AgencyTermsVersionId={current.Id} OR AgencyTermsVersionId={retained.Id}")
             .AsNoTracking().ToListAsync(token);
-        bool Granted(Guid termsId) => grants.Any(x => x.AgencyTermsVersionId == termsId && x.ProductVersionId == productVersionId && x.EffectiveFrom <= today);
-        if (!Granted(current.Id) || !Granted(retained.Id)) throw Unavailable();
+        bool Granted(Guid termsId, DateOnly on) => grants.Any(x => x.AgencyTermsVersionId == termsId && x.ProductVersionId == productVersionId && x.EffectiveFrom <= on);
+        // Prospective renewal terms never replace the requirement for current
+        // distribution authority. Other callers retain today's selection.
+        if (!Granted(current.Id, today) || !Granted(retained.Id, commercialDay)) throw Unavailable();
         return new(product, version, retained, new(version.Id, retained.Id, pin.SchemaVersion, pin.QuestionSetVersion, pin.ReferenceVersion), settings.Capture.Id, settings.Distribution.Id);
     }
 
