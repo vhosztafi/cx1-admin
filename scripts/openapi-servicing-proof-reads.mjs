@@ -19,6 +19,9 @@ export function addServicingProofReads({schemas,ref,route,paths}) {
  const requirement=object({ruleCode:text(60),dimension:text(60),targetId:nullable(id),requestedAmount:nullable({type:'number'}),authorisedAmount:nullable({type:'number'})},['ruleCode','dimension']);
  schemas.ServicingReferralView=object({id,sequence,ruleCode:text(60),dimension:text(60),riskItemId:nullable(id),state:enumeration('open','approved','conditional','queried','declined','superseded'),etag,decisionId:nullable(id),decisionReady:flag,conditions:array(ref('ServicingConditionView'),20),reason:text(),requiredAuthority:object({triggers:array(object({effectiveAt:instant,source:enumeration('source','binder','authority'),requirement}),1000)}),decision:nullable(ref('ServicingDecisionView'))});
  const page=item=>object({items:array(ref(item)),nextCursor:nullable(text(2048)),draftEtag:etag});
+ schemas.ServicingDatedAuthority=object({effectiveAt:instant,limit:object({code:text(100),label:text(200),requested:text(200),actorLimit:text(200),binderLimit:text(200),actorAllows:flag,binderAllows:flag})});
+ schemas.ServicingCurrentGrant=object({grantId:id,authorityVersionId:id,version:text(200),effectiveFrom:instant,effectiveTo:instant,scheduleWithinAuthority:flag,rows:array(ref('ServicingDatedAuthority'),100)});
+ schemas.ServicingCurrentAuthorityPage=object({draftId:id,cycleId:id,referralId:id,draftEtag:etag,assessedAt:instant,applicable:flag,canDecide:flag,binder:array(ref('ServicingDatedAuthority'),100),items:array(ref('ServicingCurrentGrant'),5),nextCursor:nullable(text(2048))});
  schemas.ServicingFilePage=page('ServicingFileView');schemas.ServicingAssociationPage=page('ServicingAssociationView');schemas.ServicingReviewPage=page('ServicingReviewView');
  schemas.ServicingDecisionPage=object({...page('ServicingDecisionView').properties,referralId:id,cycleId:id});
  schemas.ServicingReferralPage=object({...page('ServicingReferralView').properties,draftId:id,cycleId:id,applicable:flag});
@@ -29,6 +32,7 @@ export function addServicingProofReads({schemas,ref,route,paths}) {
   ['evidence/{associationId}/events','listServicingEvidenceEvents','ServicingReviewPage',true],
   ['referrals','listServicingReferrals','ServicingReferralPage',true],
   ['referrals/{referralId}/decisions','listServicingReferralDecisions','ServicingDecisionPage',true],
+  ['referrals/{referralId}/authority','getServicingCurrentAuthority','ServicingCurrentAuthorityPage',true],
   ['evidence-files/{fileId}/content','downloadServicingEvidenceFile','ServicingFileView',false],
  ]) {
   const path=`${root}/${suffix}`;route('get',path,name,'policy-read',undefined,schema);
@@ -41,6 +45,10 @@ export function addServicingProofReads({schemas,ref,route,paths}) {
    op.description+=' Pagination uses signed cursors bound to actor scope, route, filters, page size and draft version, expiring after 15 minutes. Files/associations use CreatedAt/Id keysets; events/decisions/referrals use sequence keysets.';
   }
   if(suffix==='evidence')op.parameters.push({name:'cycleId',in:'query',required:true,schema:id});
+  if(suffix.endsWith('/authority')) {
+   op.parameters.find(p=>p.name==='pageSize').schema={type:'integer',minimum:1,maximum:5,default:5};
+   op.description='Live grants of the current actor only, individually compared against the requested referral dimension at every rated effective date. No maxima are combined. Full schedule assessment includes retained conditions, and is not overall issue readiness. Authority changes are reread even when the draft ETag is unchanged. Signed grant-key cursors are scoped to this actor, referral, draft version and page size; a removed cursor grant requires restarting pagination. Responses are no-store.';
+  }
   if(suffix.endsWith('/content')) {
    op.responses[200].content=Object.fromEntries(['application/pdf','image/png','image/jpeg','text/plain'].map(type=>[type,{schema:{type:'string',format:'binary',maxLength:10485760}}]));
    op.responses[200].headers['Content-Disposition']={description:'Always an attachment with the screened filename.',schema:{type:'string'}};

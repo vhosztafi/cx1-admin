@@ -101,5 +101,6 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Equal(2,(await service.DecisionsAsync(f.Underwriter,cycle.DraftId,referral.Id)).Items.Count);
         f.Clock.Current=beforeExpiry;
         await VerifyServicingProofCommandsHttp(db,f,password,cycle,referral.Id);
+        await VerifyServicingCurrentAuthority(db,f,password,cycle,referral.Id);
     }
 }

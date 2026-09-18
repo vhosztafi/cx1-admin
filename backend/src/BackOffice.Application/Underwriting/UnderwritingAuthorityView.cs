@@ -10,10 +10,10 @@ public sealed record UnderwritingAuthorityRow(string Code, string Label, string 
 // falsely suggest a single authority covers the entire proposed risk.
 public static class UnderwritingAuthorityView
 {
-    public static IReadOnlyList<UnderwritingAuthorityRow> Rows(UnderwritingRisk risk, JsonElement binder, JsonElement? actor)
+    public static IReadOnlyList<UnderwritingAuthorityRow> Rows(UnderwritingRisk risk, JsonElement binder, JsonElement? actor, int minimumTradingYears = 5)
     {
-        var binderFailures = UnderwritingRules.AssessAuthority(binder, risk);
-        var actorFailures = actor is JsonElement grant ? UnderwritingRules.AssessAuthority(grant, risk) : null;
+        var binderFailures = UnderwritingRules.AssessAuthority(binder, risk, minimumTradingYears);
+        var actorFailures = actor is JsonElement grant ? UnderwritingRules.AssessAuthority(grant, risk, minimumTradingYears) : null;
         var result = new List<UnderwritingAuthorityRow>();
         string Number(decimal value) => value.ToString("0.00", CultureInfo.InvariantCulture);
         string Integer(int value) => value.ToString(CultureInfo.InvariantCulture);
@@ -51,7 +51,7 @@ public static class UnderwritingAuthorityView
         foreach (var trade in risk.TradeValues)
             Add("trade-" + trade, "Trade category " + Integer(trade), "Requested", limits => limits.GetProperty("allowedTradeValues").EnumerateArray().Any(x => x.GetInt32() == trade) ? "Permitted" : "Outside authority", x => x.RuleCode == "trade-" + trade);
         if (risk.HasSalvageOrBreaking) Add("salvage-breaking", "Salvage or breaking", "Declared", limits => limits.GetProperty("allowSalvage").GetBoolean() ? "Permitted" : "Outside authority", x => x.RuleCode == "salvage-breaking");
-        Add("UW-22", "Trading history", Integer(risk.TradingYears) + " complete years", limits => limits.GetProperty("reviewTradingHistory").GetBoolean() ? "Trading-history review permitted" : "At least 5 complete years", x => x.RuleCode == "UW-22");
+        Add("UW-22", "Trading history", Integer(risk.TradingYears) + " complete years", limits => limits.GetProperty("reviewTradingHistory").GetBoolean() ? "Trading-history review permitted" : "At least " + Integer(minimumTradingYears) + " complete years", x => x.RuleCode == "UW-22");
         if (risk.HasClaims && !risk.Drivers.Any(x => x.HasClaims)) Review("claims-history", "Business claims", true, "reviewClaims");
         return result.AsReadOnly();
     }

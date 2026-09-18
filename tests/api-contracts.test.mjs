@@ -477,3 +477,16 @@ test('servicing rating contracts bind saved revision and expose immutable scoped
  assert.ok(schema.properties.nextCursor);
  assert.equal(schema.properties.nextBeforeSequence,undefined);
 });
+
+test('servicing current authority keeps grants separate and limits paged live reads',()=>{
+ const operation=getOperation('getServicingCurrentAuthority');
+ assert.equal(operation['x-permission'],'policy-read');
+ assert.equal(operation['x-runtime-status'],'phase-7-06-read-implemented');
+ assert.equal(operation.parameters.find(x=>x.name==='pageSize').schema.maximum,5);
+ assert.equal(operation.responses[200].headers['Cache-Control'].schema.const,'no-store');
+ assert.equal(operation.responses[200].headers.ETag,undefined);
+ const schema=document.components.schemas.ServicingCurrentAuthorityPage;
+ assert.equal(schema.additionalProperties,false);assert.equal(schema.properties.items.maxItems,5);
+ assert.ok(schema.required.includes('assessedAt'));assert.ok(schema.required.includes('canDecide'));
+ assert.equal(document.components.schemas.ServicingCurrentGrant.properties.rows.maxItems,100);
+});

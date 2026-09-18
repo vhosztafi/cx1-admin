@@ -14,6 +14,7 @@ public static class ServicingProofReadEndpoints
         app.MapGet("/api/v1/drafts/{draftId:guid}/evidence/{associationId:guid}/events",(Guid draftId,Guid associationId,HttpContext c,ServicingEvidenceService e,ServicingReferralService r,PartyPaging p)=>Page(draftId,"events",associationId,c,e,r,p)).RequireAuthorization("policy-read");
         app.MapGet("/api/v1/drafts/{draftId:guid}/referrals",(Guid draftId,HttpContext c,ServicingEvidenceService e,ServicingReferralService r,PartyPaging p)=>Page(draftId,"referrals",null,c,e,r,p)).RequireAuthorization("policy-read");
         app.MapGet("/api/v1/drafts/{draftId:guid}/referrals/{referralId:guid}/decisions",(Guid draftId,Guid referralId,HttpContext c,ServicingEvidenceService e,ServicingReferralService r,PartyPaging p)=>Page(draftId,"decisions",referralId,c,e,r,p)).RequireAuthorization("policy-read");
+        app.MapGet("/api/v1/drafts/{draftId:guid}/referrals/{referralId:guid}/authority",(Guid draftId,Guid referralId,HttpContext c,ServicingEvidenceService e,ServicingReferralService r,PartyPaging p)=>Page(draftId,"authority",referralId,c,e,r,p)).RequireAuthorization("policy-read");
     }
 
     private static async Task<IResult> Requirements(Guid draftId,HttpContext context,ServicingEvidenceService service)
@@ -50,9 +51,15 @@ public static class ServicingProofReadEndpoints
             var version=await evidence.HistoryVersionAsync(actor,draftId,token);
             var page=paging.ReadBound(context,actor,"servicing-proof-"+kind,version,kind=="associations"?["cycleId"]:[]);
             if(page is null || page.Size>50)throw new QuoteHttpException(400,"invalid-query");
+            if(kind=="authority" && context.Request.Query.ContainsKey("pageSize") && page.Size>5)throw new QuoteHttpException(400,"invalid-query");
             object result;
             switch(kind)
             {
+                case "authority":
+                    var authority=await referrals.CurrentAuthorityAsync(actor,draftId,child!.Value,page.KeyId,Math.Min(page.Size,5),token);
+                    if(authority.DraftEtag!=version)throw new QuoteHttpException(409,"stale-cursor");
+                    result=new {authority.DraftId,authority.CycleId,authority.ReferralId,authority.DraftEtag,authority.AssessedAt,authority.Applicable,authority.CanDecide,
+                        authority.Binder,authority.Items,nextCursor=paging.NextGuid(page,authority.NextAfterId)};break;
                 case "files":
                     var files=await evidence.FilesAsync(actor,draftId,page.KeyId,page.Size,token);
                     result=new {files.Items,nextCursor=paging.NextGuid(page,files.NextBeforeId),draftEtag=version};break;

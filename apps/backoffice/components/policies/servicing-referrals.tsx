@@ -32,12 +32,14 @@ export function ServicingReferrals({ draftId, etag, cycleId, active, paused, req
   return <section aria-label="Servicing referrals"><h3>Underwriting referrals</h3>
     <p className="client-help">Decisions apply to the full saved schedule. Outstanding proof remains a separate requirement. Current authority is checked when saving each decision.</p>
     {referrals.error && <p role="status">{referrals.error}</p>}
+    {referrals.error && cursor && <button className="button" disabled={paused} onClick={() => {setPage({etag,cursor:''}); setSelection({etag,ids:[]});}}>Restart referral pages</button>}
     {referrals.data && <>{referrals.data.items.length === 0 && <p>No referrals on this page.</p>}{referrals.data.items.map(row => <article className="quote-driver-card" key={row.id}>
       <label className="contact-check"><input type="checkbox" disabled={!enabled} checked={selected.includes(row.id)} onChange={event => setSelection({etag, ids:event.target.checked ? [...selected, row.id] : selected.filter(id => id !== row.id)})} />{row.ruleCode} · {row.dimension.replaceAll('-', ' ')}</label>
       <p>{row.reason}</p><Status tone={row.state === 'declined' ? 'error' : row.decisionReady ? 'success' : 'warning'}>{row.state}</Status>
       <p>{row.decisionReady ? 'Referral decision requirements met.' : 'Referral decision requirements remain outstanding.'}</p>
       {row.decision && <p>Latest decision: {row.decision.outcome.replaceAll('-', ' ')} · {new Date(row.decision.decidedAt).toLocaleString('en-GB')}<br />{row.decision.reason}{row.decision.question && <><br />Question: {row.decision.question}</>}</p>}
       {row.conditions.map(condition => <Resolution key={condition.id} condition={condition} cycleId={cycleId!} requirements={requirements} evidence={evidence} disabled={!enabled} run={run} />)}
+      <CurrentAuthority base={base} referralId={row.id} cycleId={cycleId!} etag={etag} paused={paused} />
       <DecisionHistory base={base} referralId={row.id} etag={etag} paused={paused} />
     </article>)}<PageButtons cursor={cursor} next={referrals.data.nextCursor} disabled={paused} change={value => { setPage({etag, cursor:value}); setSelection({etag, ids:[]}); }} /></>}
     <fieldset className="quote-reference-fields" disabled={!enabled}><legend>Record a decision · {selected.length} selected</legend>
@@ -54,6 +56,31 @@ export function ServicingReferrals({ draftId, etag, cycleId, active, paused, req
       <button className="button button-primary" disabled={!selected.length || reason.trim().length < 10 || conditional && (!conditions.length || !editor)} onClick={decide}>Record decision for {selected.length} selected</button>
     </fieldset>{error && <p role="alert">{error}</p>}
   </section>;
+}
+
+type DatedLimit = { effectiveAt: string; limit: { code: string; label: string; requested: string; actorLimit: string; binderLimit: string; actorAllows: boolean; binderAllows: boolean } };
+type CurrentAuthorityPage = ProofPage<{ grantId: string; authorityVersionId: string; version: string; effectiveFrom: string; effectiveTo: string; scheduleWithinAuthority: boolean; rows: DatedLimit[] }> & {
+  draftId: string; cycleId: string; referralId: string; assessedAt: string; applicable: boolean; canDecide: boolean; binder: DatedLimit[];
+};
+function CurrentAuthority({ base, referralId, cycleId, etag, paused }: { base: string; referralId: string; cycleId: string; etag: string; paused: boolean }) {
+  const [open, setOpen] = useState(false), [page, setPage] = useState({etag, cursor:''});
+  const cursor = page.etag === etag ? page.cursor : '';
+  const authority = useProofRead<CurrentAuthorityPage>(open ? `${base}/referrals/${referralId}/authority?pageSize=5${cursor ? '&cursor=' + encodeURIComponent(cursor) : ''}` : null, etag, paused);
+  const data = authority.data?.referralId === referralId && authority.data.cycleId === cycleId ? authority.data : null;
+  return <details onToggle={event => setOpen(event.currentTarget.open)}><summary>Your current authority and binder limits</summary>
+    <p className="client-help">Each grant is assessed separately. Covering this referral dimension does not establish overall issue readiness.</p>
+    {authority.error && <p role="status">{authority.error}</p>}
+    {authority.error && cursor && <button className="button" disabled={paused} onClick={() => setPage({etag,cursor:''})}>Refresh current authority</button>}
+    {data && <><p>Checked {new Date(data.assessedAt).toLocaleTimeString('en-GB')}. {data.canDecide ? 'Current decision authority is available; each action still checks its full requirements.' : 'No current decision authority is available for this rated draft.'}</p>
+      {data.items.length === 0 && <><p>No current grants on this page.</p>{data.binder.map(row => <p key={row.effectiveAt + row.limit.code}>{new Date(row.effectiveAt).toLocaleString('en-GB')} · {row.limit.label}: {row.limit.requested}. Binder: {row.limit.binderLimit} ({row.limit.binderAllows ? 'within limit' : 'outside limit'}).</p>)}</>}
+      {data.items.map(grant => <div className="quote-reference-fields" key={grant.grantId}><h4>Authority version {grant.version}</h4>
+        <p>Grant period: {new Date(grant.effectiveFrom).toLocaleDateString('en-GB')} to {new Date(grant.effectiveTo).toLocaleDateString('en-GB')}.</p>
+        <p>{grant.scheduleWithinAuthority ? 'This grant covers the full rated schedule with retained conditions.' : 'The full rated schedule exceeds this grant or needs further conditions.'}</p>
+        {grant.rows.map(row => <p key={row.effectiveAt + row.limit.code}>{new Date(row.effectiveAt).toLocaleString('en-GB')} · {row.limit.label}: {row.limit.requested}<br />Your limit: {row.limit.actorLimit} ({row.limit.actorAllows ? 'within limit' : 'outside limit'})<br />Binder: {row.limit.binderLimit} ({row.limit.binderAllows ? 'within limit' : 'outside limit'})</p>)}
+        {grant.rows.length === 0 && <p>This referral has no separate numeric limit; the full schedule and documentary requirements still apply.</p>}
+      </div>)}<PageButtons cursor={cursor} next={data.nextCursor} disabled={paused} change={value => setPage({etag, cursor:value})} />
+    </>}
+  </details>;
 }
 
 function Resolution({ condition, cycleId, requirements, evidence, disabled, run }: { condition: ServicingCondition; cycleId: string; requirements: ProofRequirement[]; evidence: ProofAssociation[]; disabled: boolean; run: Run }) {
@@ -75,5 +102,5 @@ function DecisionHistory({ base, referralId, etag, paused }: { base: string; ref
   const [open, setOpen] = useState(false), [page, setPage] = useState({etag, cursor:''});
   const cursor = page.etag === etag ? page.cursor : '';
   const history = useProofRead<ProofPage<ServicingDecision>>(open ? `${base}/referrals/${referralId}/decisions?pageSize=20${cursor ? '&cursor=' + encodeURIComponent(cursor) : ''}` : null, etag, paused);
-  return <details onToggle={event => setOpen(event.currentTarget.open)}><summary>Decision history</summary>{history.error && <p role="status">{history.error}</p>}{history.data && <>{history.data.items.map(item => <p key={item.id}>{item.outcome.replaceAll('-', ' ')} · {new Date(item.decidedAt).toLocaleString('en-GB')}<br />{item.reason}{item.question && <><br />Question: {item.question}</>}</p>)}<PageButtons cursor={cursor} next={history.data.nextCursor} disabled={paused} change={value => setPage({etag, cursor:value})} /></>}</details>;
+  return <details onToggle={event => setOpen(event.currentTarget.open)}><summary>Decision history</summary>{history.error && <p role="status">{history.error}</p>}{history.error && cursor && <button className="button" disabled={paused} onClick={() => setPage({etag,cursor:''})}>Restart decision history</button>}{history.data && <>{history.data.items.map(item => <p key={item.id}>{item.outcome.replaceAll('-', ' ')} · {new Date(item.decidedAt).toLocaleString('en-GB')}<br />{item.reason}{item.question && <><br />Question: {item.question}</>}</p>)}<PageButtons cursor={cursor} next={history.data.nextCursor} disabled={paused} change={value => setPage({etag, cursor:value})} /></>}</details>;
 }

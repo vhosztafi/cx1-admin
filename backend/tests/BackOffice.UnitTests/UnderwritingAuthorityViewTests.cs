@@ -6,6 +6,18 @@ namespace BackOffice.UnitTests;
 public sealed class UnderwritingAuthorityViewTests
 {
     [Fact]
+    public void ServicingDisplayUsesThePinnedTradingThreshold()
+    {
+        var risk=new UnderwritingRisk(600m,0m,30000m,6,false,false,[1],[],new Dictionary<string,decimal>{{"road-risks",30000m}});
+        var actor=System.Text.Json.Nodes.JsonNode.Parse(QuoteRatingRulesTests.Definition("authority").GetRawText())!;
+        actor["limits"]!["reviewTradingHistory"]=false;
+        var grant=System.Text.Json.JsonSerializer.Deserialize<System.Text.Json.JsonElement>(actor.ToJsonString());
+        var binder=QuoteRatingRulesTests.Definition("binder");
+        Assert.True(UnderwritingAuthorityView.Rows(risk,binder,grant).Single(x=>x.Code=="UW-22").ActorAllows);
+        var row=UnderwritingAuthorityView.Rows(risk,binder,grant,7).Single(x=>x.Code=="UW-22");
+        Assert.False(row.ActorAllows);Assert.Equal("At least 7 complete years",row.ActorLimit);
+    }
+    [Fact]
     public void DisplayKeepsStockAndAgeIndependentFromPremiumAndNeverInventsAnActorGrant()
     {
         var binder = QuoteRatingRulesTests.Definition("binder");
