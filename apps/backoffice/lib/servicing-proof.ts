@@ -30,11 +30,12 @@ export function currentProof(association: ProofAssociation, requirement: ProofRe
 export function proofCommand(scope: ProofScope, path: string, body?: unknown, file?: File): ProofCommand {
   if (![scope.draftId, scope.cycleId, scope.revisionId, scope.fence].every(id) || !validQuoteEtag(scope.etag)) throw new Error('Refresh the saved draft and acquire its editing lease.');
   const child = '[0-9a-f-]{36}';
-  if (!new RegExp(`^/(evidence/uploads|evidence|evidence/${child}/(reviews|withdraw)|referrals/decisions|referrals/${child}/decisions|conditions/${child}/resolutions)$`, 'i').test(path)) throw new Error('Invalid servicing action.');
+  if (!new RegExp(`^/(submit|evidence/uploads|evidence|evidence/${child}/(reviews|withdraw)|referrals/decisions|referrals/${child}/decisions|conditions/${child}/resolutions)$`, 'i').test(path)) throw new Error('Invalid servicing action.');
   if (path === '/evidence/uploads') {
     if (!file || body !== undefined || !file.size || file.size > 10 * 1024 * 1024 || !['application/pdf', 'image/png', 'image/jpeg', 'text/plain'].includes(file.type))
       throw new Error('Choose a PDF, PNG, JPEG or text file up to 10 MiB.');
   } else if (file || !body || typeof body !== 'object' || !('cycleId' in body) || body.cycleId !== scope.cycleId) throw new Error('The command must belong to the current rating cycle.');
+  if (path === '/submit' && (!body || typeof body !== 'object' || !('revisionId' in body) || body.revisionId !== scope.revisionId)) throw new Error('Submit the exact saved revision.');
   return Object.freeze({ scope: Object.freeze({ ...scope }), url: `/api/v1/drafts/${scope.draftId}${path}`, key: crypto.randomUUID(), body: body === undefined ? undefined : JSON.stringify(body), file });
 }
 

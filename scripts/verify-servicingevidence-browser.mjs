@@ -4,7 +4,7 @@ import {chromium} from 'playwright';
 const origin=process.env.COVER_WEB_ORIGIN??'http://127.0.0.1:3100';
 assert.ok(['127.0.0.1','localhost'].includes(new URL(origin).hostname));
 const output='.local/browser-evidence/servicing-evidence';await mkdir(output,{recursive:true});
-const navigationOnly=process.env.COVER_SERVICING_NAVIGATION_ONLY==='1';const reportPath=output+(navigationOnly?'/navigation-report.json':'/report.json');
+const navigationOnly=process.env.COVER_SERVICING_NAVIGATION_ONLY==='1',submissionOnly=process.env.COVER_SERVICING_SUBMISSION_ONLY==='1';const reportPath=output+(submissionOnly?'/submission-report.json':navigationOnly?'/navigation-report.json':'/report.json');
 const fixtures=JSON.parse(await readFile('.local/browser-evidence/underwriting-issue/report.json','utf8')).journeys;
 const password=(await readFile('.local/demo-password.txt','utf8')).trim();
 const browser=await chromium.launch({channel:'chrome',headless:true});
@@ -45,6 +45,36 @@ try{
   let requirements=await get(path+'/evidence/requirements');assert.equal(requirements.applicable,true);assert.ok(requirements.requirements.every(x=>!x.satisfied));
   const cycleId=requirements.cycleId;let referrals=await get(path+'/referrals');const referral=referrals.items.find(x=>x.ruleCode==='UW-22');assert.ok(referral);
   console.log(fixture.productCode+': saved, rated and current referral loaded');
+  if(submissionOnly){
+   const panel=page.getByRole('region',{name:'Underwriting submission',exact:true});
+   await field('Submission reason').fill('Fictional underwriting submission browser verification');
+   let originalSubmission,submissionBody,blockRecovery=false;
+   await page.route('**'+path+'/submissions?**',async route=>{if(blockRecovery)await route.abort('failed');else await route.continue();});
+   await page.route('**'+path+'/submit',async route=>{originalSubmission=route.request().headers();submissionBody=route.request().postData();const response=await route.fetch();assert.equal(response.status(),201);blockRecovery=true;await route.abort('failed');},{times:1});
+   await button('Submit to underwriting').click();await button('Retry same submission').waitFor();
+   await page.getByText('The submission result is unconfirmed. Retain this action and check the saved submission or retry.',{exact:true}).waitFor();
+   assert.equal(await button('Save draft').isDisabled(),true);assert.equal(await button('Re-rate saved adjustment').isDisabled(),true);
+   blockRecovery=false;const retry=page.waitForRequest(r=>r.url().endsWith(path+'/submit'));await button('Retry same submission').click();const repeated=await retry;
+   for(const key of ['idempotency-key','if-match','x-edit-lease'])assert.equal(repeated.headers()[key],originalSubmission[key]);assert.equal(repeated.postData(),submissionBody);
+   await page.getByText('Underwriting submission saved.',{exact:true}).waitFor();await panel.getByText('Submitted for underwriting',{exact:true}).waitFor();
+   const first=await get(path+'/submissions');assert.equal(first.items.length,1);assert.equal(first.current.applicable,true);assert.equal(first.current.cycleId,cycleId);
+   assert.ok((await get(path+'/evidence/requirements')).requirements.every(x=>!x.satisfied),'Submission must not accept missing proof');
+   assert.equal(await button('Submit to underwriting').isDisabled(),true);
+   await panel.getByRole('link',{name:'Review submitted referrals',exact:true}).click();assert.ok(page.url().endsWith('#servicing-referrals'));
+   await panel.getByText('Submission history',{exact:true}).click();await panel.locator(`[data-submission-id="${first.current.id}"]`).waitFor();
+   await panel.screenshot({path:`${output}/${fixture.productCode}-submission-desktop.png`});await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await panel.screenshot({path:`${output}/${fixture.productCode}-submission-mobile.png`});
+   await page.setViewportSize({width:1560,height:1000});await lease();await button('Re-rate saved adjustment').click();
+   await waitForRead(path+'/ratings',x=>x.current?.id!==cycleId&&x.current?.applicable);
+   await field('Submission reason').fill('Fictional second submission after a fresh rating');
+   await page.route('**'+path+'/submit',async route=>{const response=await route.fetch();assert.equal(response.status(),201);await route.abort('failed');},{times:1});
+   await button('Submit to underwriting').click();await page.getByText('Saved underwriting submission confirmed. Review its current status below.',{exact:true}).waitFor();
+   const second=await get(path+'/submissions');assert.equal(second.items.length,2);assert.equal(second.items.filter(x=>x.applicable).length,1);assert.equal(second.items.find(x=>x.id===first.current.id).applicable,false);
+   await page.reload();await panel.getByText('Submitted for underwriting',{exact:true}).waitFor();assert.equal((await get(path+'/submissions')).current.id,second.current.id);
+   await button('Acquire editing lease').click();await page.getByRole('heading',{name:'You are editing this draft',exact:true}).waitFor();await field('Takeover or abandonment reason').fill('Fictional submission browser verification complete');await field('I confirm this draft should be abandoned.').check();await button('Abandon draft').click();await page.getByText('Abandoned',{exact:true}).waitFor();
+   const retained=await get(path+'/submissions');assert.equal(retained.items.length,2);assert.equal(retained.current,null);assert.ok(retained.items.every(x=>!x.applicable));
+   assert.deepEqual((await get(`/api/v1/policies/${fixture.policyId}`)).snapshot,before.snapshot);
+   report.journeys.push({productCode:fixture.productCode,policyId:fixture.policyId,draftId,cycleId,checks:['saved scoped submission with missing proof','lost response and immutable exact retry','lost response recovered from persisted handoff','one submission per cycle','referral review navigation','desktop and390px containment','rerating retains prior handoff','reload persisted current submission','abandonment retains both submissions','issued snapshot unchanged']});await writeFile(reportPath,JSON.stringify(report,null,2));continue;
+  }
   const editor=await get(path+'/editor');const driver=editor.assessment.slices[0].proposed.risk.drivers[0];assert.ok(driver);
   const row=page.locator(`[data-referral-id="${referral.id}"]`);await row.getByRole('checkbox').check();
   await field('Decision outcome').selectOption('approve-with-conditions');await field('Condition type').selectOption('provide-driver-proof');await field('Condition risk target').selectOption(driver.id);await field('Driver proof purpose').selectOption('photocard-both-sides');await button('Add condition').click();await field('Decision reason').fill('Fictional licence content must be independently reviewed');
@@ -116,5 +146,5 @@ try{
   report.journeys.push({productCode:fixture.productCode,policyId:fixture.policyId,draftId,cycleId,fileId,referralId:referral.id,checks:['lease renewal retains proof form without stale write authority','policy-to-own-draft referral navigation and focus','draft review referral link','dirty edits block proof','conditional decision with saved driver target','current authority display','lost upload response exact retry and one stored file','driver and applicable premises proofs','rejected then accepted content','independently blocking trading proof','condition resolution','withdrawal removes readiness','replacement restores readiness','reload persistence','historical cycle readonly','scoped download','390px containment','issued snapshot unchanged']});
   await writeFile(reportPath,JSON.stringify(report,null,2));
  }
- assert.deepEqual(errors,[]);report.completedAt=new Date().toISOString();await writeFile(reportPath,JSON.stringify(report,null,2));console.log(navigationOnly?'Both Motor Trade targeted navigation and renewal browser journeys passed.':'Both Motor Trade servicing evidence browser journeys passed.');
+ assert.deepEqual(errors,[]);report.completedAt=new Date().toISOString();await writeFile(reportPath,JSON.stringify(report,null,2));console.log(submissionOnly?'Both Motor Trade submission browser journeys passed.':navigationOnly?'Both Motor Trade targeted navigation and renewal browser journeys passed.':'Both Motor Trade servicing evidence browser journeys passed.');
 }catch(error){await page.screenshot({path:`${output}/failure.png`,fullPage:true}).catch(()=>{});throw error;}finally{await browser.close();}

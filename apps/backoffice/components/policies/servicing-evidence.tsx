@@ -9,6 +9,8 @@ import { ServicingReferrals } from './servicing-referrals';
 import type { ServicingEditor } from '../../lib/servicing-api';
 import { riskTargetLabel } from '../../lib/underwriting-decisions';
 import type { ServicingRatingHistory } from '../../lib/servicing-rating';
+import { recoverSubmission } from '../../lib/servicing-submission';
+import { ServicingSubmission } from './servicing-submission';
 
 type Run = (path: string, body?: unknown, file?: File) => void;
 export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, blocked, dirty, canReview, editor, pendingChanged, saved }: {
@@ -17,6 +19,7 @@ export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, 
 }) {
   const [pendingState, setPendingState] = useState(false), [sending, setSending] = useState(false), [error, setError] = useState(''), [notice, setNotice] = useState('');
   const pending = useRef<ProofCommand | null>(null), sendingRef = useRef(false);
+  const [submissionPending,setSubmissionPending]=useState(false);
   const [file, setFile] = useState<File>(), [filePage, setFilePage] = useState({ etag, cursor: '' });
   const [associationPage, setAssociationPage] = useState({ etag, cursor: '' });
   const [cyclePage, setCyclePage] = useState({ etag, cursor: '' }), [historyCycle, setHistoryCycle] = useState('');
@@ -40,17 +43,37 @@ export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, 
       if (!pending.current) {
         const scope: ProofScope = { draftId, revisionId, cycleId: cycleId!, etag, fence: fence! };
         pending.current = proofCommand(scope, path!, body, upload);
+        setSubmissionPending(path==='/submit');
         pendingChanged(true); setPendingState(true);
       }
       await sendProof(pending.current);
       // Keep the immutable command until both the receipt and saved readback are
       // confirmed. A lost readback can be retried without creating a second file.
       try { await saved(); } catch { throw new Error('Saved draft readback is unconfirmed. Retry the same command.'); }
-      pending.current = null; pendingChanged(false); setPendingState(false); setNotice('Supporting information saved.');
+      const submitted=pending.current.url.endsWith('/submit');
+      pending.current = null; pendingChanged(false); setPendingState(false); setSubmissionPending(false);setNotice(submitted?'Underwriting submission saved.':'Supporting information saved.');
     } catch (failure) {
+      if(pending.current?.url.endsWith('/submit')) {
+        try {
+          if(await recoverSubmission(pending.current)) {
+            await saved();pending.current=null;pendingChanged(false);setPendingState(false);setSubmissionPending(false);
+            setNotice('Saved underwriting submission confirmed. Review its current status below.');return;
+          }
+        } catch {setError('The submission result is unconfirmed. Retain this action and check the saved submission or retry.');return;}
+      }
       if (!uncertainQuoteFailure(failure)) { pending.current = null; pendingChanged(false); setPendingState(false); }
       setError(pending.current ? 'The result is unconfirmed. Retry this same action before making other changes.' : failure instanceof QuoteError ? 'This action was refused. Refresh the draft and check your editing lease, proof and authority.' : failure instanceof Error ? failure.message : 'Check this action.');
     } finally { sendingRef.current = false; setSending(false); }
+  }
+  async function checkSubmission() {
+    if(sendingRef.current||!pending.current?.url.endsWith('/submit'))return;
+    sendingRef.current=true;setSending(true);setError('');
+    try {
+      if(!await recoverSubmission(pending.current)){setError('No saved submission was found. Retry the retained action.');return;}
+      await saved();pending.current=null;pendingChanged(false);setPendingState(false);setSubmissionPending(false);
+      setNotice('Saved underwriting submission confirmed. Review its current status below.');
+    } catch {setError('The saved submission could not be confirmed. Your original action is retained.');}
+    finally {sendingRef.current=false;setSending(false);}
   }
   const run: Run = (path, body, upload) => { void execute(path, body, upload); };
   return <Panel title="Supporting information" note="Saved documents and underwriting review"><div className="quote-rail-body servicing-proof">
@@ -58,7 +81,9 @@ export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, 
     {dirty && <p role="status">Save and rate your local changes before attaching or reviewing proof.</p>}
     {!editable && <p>Acquire the editing lease to change supporting information.</p>}
     {error && <p role="alert">{error}</p>}{notice && <p role="status">{notice}</p>}
-    {pendingState && <button className="button button-primary" disabled={sending} onClick={() => void execute()}>Retry same proof action</button>}
+    {pendingState && <button className="button button-primary" disabled={sending} onClick={() => void execute()}>{submissionPending?'Retry same submission':'Retry same proof action'}</button>}
+    {pendingState&&submissionPending&&<button className="button" disabled={sending} onClick={()=>void checkSubmission()}>Check saved submission</button>}
+    <ServicingSubmission draftId={draftId} revisionId={revisionId} cycleId={cycleId??null} etag={etag} active={active&&!!editor&&editor.assessment.readinessIssues.length===0} paused={paused} submit={reason=>run('/submit',{cycleId,revisionId,reason})} />
     <fieldset className="quote-reference-fields" disabled={!active}><legend>Upload a document</legend>
       <label>Supporting document<input aria-label="Supporting document" type="file" accept=".pdf,.png,.jpg,.jpeg,.txt" onChange={event => setFile(event.target.files?.[0])} /></label>
       <button className="button" disabled={!file} onClick={() => run('/evidence/uploads', undefined, file)}>Upload document</button>
