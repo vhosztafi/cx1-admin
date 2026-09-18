@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-08 verified; executing07-09 financial posting inline
+stopped_at: 07-09 adjustment foundation verified; continue07-10, return to09 cancellation checks with13/14
 last_updated: "2026-09-18T11:47:08.9281078+00:00"
 last_activity: 2026-09-18 —07-08 complete in18166c6; both product browser journeys,31backend checks and24HTTP contracts pass.
 progress:
@@ -21,13 +21,13 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute Phase7;07-01..08 complete. Continue07-09 signed financial posting and accounting periods inline.
+**Current focus:** Execute Phase7;07-01..08 complete. 07-09 adjustment posting foundation verified in44b9e02; continue07-10 atomic issue. Finish09 cancellation lineage alongside13/14 before phase completion.
 
 ## Current Position
 
 Phase: 7 of 13 (Policy lifecycle and history)
 Plan: 8 of16 complete;07-09 in progress
-Status: Executing Phase7;07-08 terms/acceptance verified,07-09 financial posting next
+Status: Executing Phase7;07-09 remains partial pending cancellation decisions;07-10 adjustment issue next
 Last activity: 2026-09-18 —07-08 complete in18166c6; both product browser journeys,31backend checks and24HTTP contracts pass.
 
 Progress: Phases1–6 complete;6/13 phases,57/65 completed implementation plans.
@@ -55,8 +55,8 @@ Progress: Phases1–6 complete;6/13 phases,57/65 completed implementation plans.
 ## Session Continuity
 
 Last session: 2026-09-18T11:47:08.9322625+00:00
-Stopped at:07-08 complete; continue07-09 financial posting inline without ending the active turn
-Resume file: .planning/phases/07-policy-lifecycle-and-history/07-09-PLAN.md
+Stopped at:07-09 adjustment foundation verified (823 checks,112existing table hashes preserved); continue07-10 inline without ending the active turn
+Resume file: .planning/phases/07-policy-lifecycle-and-history/07-10-PLAN.md
 
 ## Autonomous continuation
 
