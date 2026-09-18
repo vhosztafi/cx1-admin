@@ -192,6 +192,21 @@ post-rerating history and unchanged issued policy JSON. Generic notifications
 and task inbox projections retain their later phase ownership; do not fake an
 external delivery or completed task here.
 
+Submission history HTTP refinement: implement `GET /drafts/{draftId}/submissions`
+with `policy-read`, no-store and the existing actor/route/draft-ETag-bound signed
+cursor (`pageSize`1..50). The planned response has `draftId`, `draftEtag`,
+`assessedAt`, nullable `currentCycleId`, nullable `current`, `items`, and nullable
+`nextCursor`. Each item contains `id`, `cycleId`, `revisionId`, `ratingId`,
+`inputHash`, `reason`, `submittedBy`, `submittedAt`, and `applicable`. Current
+submission is returned separately even when browsing an older history page.
+Applicability describes whether that handoff still matches current valid rating;
+it does not represent proof acceptance, underwriting approval or issue authority.
+Historical records remain readable after rerating and abandonment. A changed
+lease can block an exact retry after success, so UI recovery must read persisted
+submission status rather than inventing another command or claiming failure.
+The service read exists at the next checkpoint; this is still a planned HTTP
+contract until its route, generated schema and negative API tests are verified.
+
 Review against full source field/control coverage, current API-CONVENTIONS and
 PERMISSIONS. Specify exact schema fields and cancellation rule/approval catalogue,
 renewal missing-experience handling, fair-value provenance, capacity subject

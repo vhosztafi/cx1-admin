@@ -990,3 +990,50 @@ referral-work source mapping and source/field review before07-06-SUMMARY.
 Still5/16 phase plans and54/65 total complete. No active test processes remain.
 Live preview API82720/web81192 remain unchanged; verify ownership before any
 restart. frontend-code remains untouched.
+
+## Submission command/history checkpoint — 2026-09-18
+
+Commit77016f9 implements ServicingSubmissionService.SubmitAsync and bounded
+ReadAsync over the existing immutable submission aggregate. Service validates
+identifiers, strong version bytes, editing fence and reason; it holds current
+policy/configuration/cycle/base ownership before receipt lookup. Revision,
+rating expiry, live capture assessment, exact dated projection and editing
+lease also remain required on retry. The original request's ETag is checked
+only for a new effect, allowing exact replay after its successful mutation.
+Duplicate new-key submissions conflict. It records one submission/audit/receipt
+atomically without granting approval or accepting outstanding proof.
+
+History reuses full rating applicability and fences the following scoped read
+against draft changes. It pages1..50 using submitted time plus SQL GUID order,
+returns current separately from older pages, and retains immutable records
+after rerating/abandonment. AssessedAt is the actual rating assessment instant.
+Service is not wired to HTTP/DI yet: no public stub success or untested route.
+07-DATA-API-DESIGN now specifies the planned submissions GET response/cursor.
+
+Tests-first:7 new pure submission validation cases failed before validation was
+implemented (.local/phase7-06-submission-command-red/unit). Initial service
+build needed the existing Application.Quotes exception namespace; corrected.
+Command-only SQL passed2, then history/rerating/paging SQL passed2. Final run
+after tightening lease/expiry error assertions and assessment timing:
+.local/phase7-06-submission-history-final,12 unit cases (7 new submission,
+5 existing evidence) and2 real SQL product scenarios; no skips. Gate passed
+MinimumTests14/MinimumSqlTests2/NotBeforeUtc2026-09-18T03:22:00Z.
+Logs: .local/phase7-06-submission-history-final-unit.log and
+.local/phase7-06-submission-history-final-sql.log. Build and diff checks pass.
+
+The SQL journeys verify servicing-role submission with missing proof, strong
+version/lease/expiry and foreign/stale cycle failures, one durable exact retry,
+different-payload key conflict, duplicate-cycle conflict, role-revoked replay
+and read denial, lost-lease replay rejection, unchanged referrals/evidence,
+new submission after a completed rerating, keyset history with current retained
+on old pages, and both records remaining after abandonment. Issued snapshot is
+unchanged. No HTTP/CSRF or browser submission coverage claimed at this checkpoint.
+
+NEXT: wire strict POST /drafts/{draftId}/submit and scoped no-store GET
+/drafts/{draftId}/submissions, current capability/CSRF/fence and signed cursor,
+generated contracts and actual negative SQL/HTTP tests. Then UI with exact
+command retention and persisted recovery, additive demo migration, both-product
+browser journeys, remaining referral-work navigation/source-field review.
+Do not create07-06-SUMMARY or advance07-07 yet. Still5/16 and54/65 complete.
+No active test processes; preview and demo database unchanged (still warranty
+migration, submission migration only exercised in isolated test databases).
