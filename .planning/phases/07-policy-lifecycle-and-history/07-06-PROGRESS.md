@@ -951,3 +951,42 @@ exact retry and explicit readback without duplicating rating-generated referrals
 Then resolve the remaining referral-work/task navigation source mapping and
 complete source/field review before07-06-SUMMARY.5/16 Phase7 plans remain complete,
 54/65 total. No phase or milestone completion claimed.
+
+## Submission storage checkpoint — 2026-09-18
+
+Commit f03514e adds immutable ServicingUnderwritingSubmission and additive
+migration20260918025724. Compound keys bind draft/cycle/revision/rating; one
+submission per cycle, matching input hashes, current live draft/revision/cycle,
+successful unexpired rating, consistent actor/time and bounded reason are
+enforced in SQL. UPDATE/DELETE are rejected. Submission never updates issued
+policy data, referral decisions or proof approval. No submission endpoint is
+exposed yet, and the demo database has not been upgraded to this migration.
+
+Tests-first evidence: the initial red run exposed a test fixture error (the
+superseded cycle deliberately has no CurrentRatingId). Corrected by querying
+its retained rating result. The meaningful subsequent red run failed both
+products because an incorrect input hash was accepted without the trigger:
+.local/phase7-06-submission-storage-guards-red/sql/sql.trx.
+Green evidence: .local/phase7-06-submission-storage-green contains 2 real SQL
+product scenarios and 5 existing evidence unit regression cases. The result
+gate passed MinimumTests7/MinimumSqlTests2/NotBeforeUtc2026-09-18T02:58:00Z,
+with no skips. SQL scenarios migrate down/up over an issued/rated graph and
+reject foreign draft/revision/rating, stale cycle, bad hash/actor/reason,
+submission before completion or at expiry, duplicates and history mutation.
+Valid submission persists once; issued snapshot remains unchanged. EF reports
+no pending model changes, build and git diff --check pass. No browser rerun
+was needed for this storage-only checkpoint; prior UI evidence remains distinct.
+
+GSD commit helper reported commit_failed due to Git auto-packing output; git
+log/status confirmed f03514e was committed successfully. No retry commit.
+
+NEXT: implement submission service with current scope before receipt replay,
+strong draft ETag and editing lease, live capture/rating checks, exact retry,
+duplicate conflict and retained historical readback. Add strict POST /submit
+and bounded scoped GET read contract, then UI and both-product browser proof.
+Do not require underwriting decision authority merely to submit; outstanding
+proof remains independently blocking approval/issue. Finish the remaining
+referral-work source mapping and source/field review before07-06-SUMMARY.
+Still5/16 phase plans and54/65 total complete. No active test processes remain.
+Live preview API82720/web81192 remain unchanged; verify ownership before any
+restart. frontend-code remains untouched.
