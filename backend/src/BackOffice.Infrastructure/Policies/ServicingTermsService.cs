@@ -42,7 +42,7 @@ public sealed partial class ServicingTermsService(IDbContextFactory<BackOfficeDb
                 var row=new ServicingTermsVersion{DraftId=draftId,CycleId=cycleId,RevisionId=held.Cycle.RevisionId,BaseVersionId=held.Cycle.BaseVersionId,
                     RatingId=ratingId,TemplateVersionId=templateId,Sequence=checked((await db.Set<ServicingTermsVersion>().Where(x=>x.CycleId==cycleId).MaxAsync(x=>(int?)x.Sequence,ct)??0)+1),
                     TermsJson=payload,TermsHash=hash,AssuranceHashAtPreparation=await Assurance(db,held,ct),PreparedAt=now,PreparedBy=actor.UserId,CreatedAt=now,CreatedBy=actor.UserId};
-                db.Add(row);await db.SaveChangesAsync(ct);held.Cycle.CurrentDeliveryId=null;held.Cycle.CurrentTermsVersionId=row.Id;
+                db.Add(row);await db.SaveChangesAsync(ct);held.Cycle.CurrentAcceptanceId=null;held.Cycle.CurrentDeliveryId=null;held.Cycle.CurrentTermsVersionId=row.Id;
                 return await held.Receipt(db,row.Id,201,now,ct);
             },token);
     }

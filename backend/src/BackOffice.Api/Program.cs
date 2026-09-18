@@ -128,6 +128,7 @@ app.MapServicingProofReads();
 app.MapServicingProofCommands();
 app.MapServicingSubmissions();
 app.MapServicingCapacity();
+app.MapServicingTerms();
 // Domain endpoints are added only alongside their authentication and persistence.
 app.Run();
 

@@ -38,6 +38,8 @@ public sealed partial class UnderwritingRuntimeTests
         var work=await db.Set<OutboxWork>().AsNoTracking().SingleAsync(x=>x.Id==delivery.WorkId);
         Assert.Equal("servicing-delivery",work.Kind);Assert.Equal(delivery.Id,work.SubjectRecordId);
         Assert.Equal(delivery.Id,(await db.Set<ServicingCycle>().AsNoTracking().SingleAsync(x=>x.Id==cycle.Id)).CurrentDeliveryId);
+        Assert.Equal("servicing-delivery-required",(await Assert.ThrowsAsync<QuoteOperationException>(()=>terms.AcceptAsync(f.Underwriter,cycle.DraftId,Version(sent.Etag!),fence,
+            new(cycle.Id,cycle.CurrentRatingId!.Value,contract.Id,delivery.Id,contract.TermsHash,new string('b',64),"Fictional customer",f.Clock.GetUtcNow(),"email",Guid.NewGuid()),Key(),Guid.NewGuid()))).Code);
         var leases=new SqlJobLeases(f.Factory,f.Clock);var worker=new ServicingDeliveryWorker(f.Factory,f.Clock);
         if(scenario=="withdraw-signature")
         {

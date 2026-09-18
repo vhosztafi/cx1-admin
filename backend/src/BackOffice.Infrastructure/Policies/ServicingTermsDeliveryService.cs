@@ -42,7 +42,7 @@ public sealed partial class ServicingTermsService
                 var work=new OutboxWork{Kind=WorkKind,SubjectRecordId=row.Id,ScenarioVersionId=setting.Id,OperationKey=$"servicing-delivery/{row.Id:N}",
                     Payload=JsonSerializer.Serialize(new{draftId,deliveryId=row.Id}),CreatedAt=now,UpdatedAt=now,CreatedBy=actor.UserId,NextAttemptAt=now,CorrelationId=correlation};
                 db.Add(work);await db.SaveChangesAsync(ct);row.WorkId=work.Id;db.Add(row);await db.SaveChangesAsync(ct);
-                held.Cycle.CurrentDeliveryId=row.Id;
+                held.Cycle.CurrentAcceptanceId=null;held.Cycle.CurrentDeliveryId=row.Id;
                 return await held.Receipt(db,row.Id,202,now,ct);
             },token);
     }

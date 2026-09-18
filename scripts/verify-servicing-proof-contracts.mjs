@@ -5,7 +5,7 @@ import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 
 const [directory,notBefore,mode='reads']=process.argv.slice(2);
-assert.ok(['reads','commands','authority','submissions','referral-work','capacity'].includes(mode),'Choose reads, commands, authority, submissions, referral-work or capacity.');
+assert.ok(['reads','commands','authority','submissions','referral-work','capacity','terms'].includes(mode),'Choose reads, commands, authority, submissions, referral-work, capacity or terms.');
 assert.ok(directory&&Number.isFinite(Date.parse(notBefore)),'Provide a fresh response directory and earliest UTC timestamp.');
 const read=async path=>JSON.parse(await readFile(path,'utf8'));
 const document=await read(new URL('../contracts/openapi.json',import.meta.url));
@@ -31,6 +31,7 @@ for(const file of files) {
  names.set(schema,(names.get(schema)??0)+1);
 }
 if(mode==='capacity') {assert.equal(names.size,8);for(const name of ['ServicingCapacityReceipt','ServicingCapacityQueuedReceipt','ServicingCapacityDetail','ServicingCapacityPage','ServicingCapacitySubmissionsPage','ServicingCapacityMessagesPage','ServicingCapacityResponsesPage','ServicingCapacityResolutionsPage'])assert.ok(names.get(name)>=2,name);}
+else if(mode==='terms') {assert.equal(names.size,2);assert.equal(names.get('ServicingTermsReceipt'),6);assert.equal(names.get('ServicingTermsView'),6);}
 else if(mode==='commands') {assert.equal(names.size,1);assert.equal(names.get('ServicingProofReceipt'),14);}
 else if(mode==='authority') {assert.equal(names.size,1);assert.equal(names.get('ServicingCurrentAuthorityPage'),4);}
 else if(mode==='submissions') {assert.equal(names.size,2);assert.equal(names.get('ServicingSubmissionReceipt'),4);assert.equal(names.get('ServicingSubmissionPage'),8);}

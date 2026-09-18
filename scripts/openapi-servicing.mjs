@@ -3,6 +3,7 @@ import {addServicingProofReads} from './openapi-servicing-proof-reads.mjs';
 import {addServicingProofCommands} from './openapi-servicing-proof-commands.mjs';
 import {addServicingSubmissions} from './openapi-servicing-submissions.mjs';
 import {addServicingCapacity} from './openapi-servicing-capacity.mjs';
+import {addServicingTerms} from './openapi-servicing-terms.mjs';
 import {readFileSync} from 'node:fs';
 import {servicingDefinitions} from './servicing-contract-model.mjs';
 
@@ -91,4 +92,5 @@ export function addServicingContracts({schemas,ref,operation,paths}) {
  addServicingProofCommands({schemas,ref,route,paths});
  addServicingSubmissions({schemas,ref,route,paths});
  addServicingCapacity({schemas,ref,route,paths});
+ addServicingTerms({schemas,ref,route,paths});
 }

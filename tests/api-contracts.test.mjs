@@ -546,3 +546,21 @@ test('referral work returns exactly one scoped referral with no unbounded collec
  assert.equal(schema.properties.nextCursor.type,'null');assert.equal(schema.additionalProperties,false);
  assert.equal(operation.responses[200].headers.ETag,undefined);assert.equal(operation.responses[200].headers['Cache-Control'].schema.const,'no-store');
 });
+
+test('servicing terms commands bind exact contracts and current assurance with leased replay',()=>{
+ for(const name of ['prepareServicingTerms','deliverServicingTerms','recordDraftAcceptance']) {
+  const op=getOperation(name);assert.equal(op['x-runtime-status'],'phase-7-08-command-implemented');assert.equal(op['x-permission'],'policy-draft-write');
+  for(const header of ['X-Edit-Lease','If-Match','Idempotency-Key'])assert.ok(op.parameters.some(x=>x.name===header&&x.required));
+  assert.ok(op.security.every(x=>Object.hasOwn(x,'Session')&&Object.hasOwn(x,'Csrf')));
+ }
+ const id='10000000-0000-4000-8000-000000000001',validate=ajv.getSchema(`${rootId}#/$defs/ServicingAcceptanceRequest`);
+ const input={cycleId:id,ratingId:id,termsVersionId:id,deliveryId:id,termsHash:'a'.repeat(64),assuranceHash:'b'.repeat(64),accepterLabel:'Customer',acceptedAt:'2026-09-18T12:00:00Z',channel:'email',evidenceAssociationId:id};
+ assert.equal(validate(input),true,JSON.stringify(validate.errors));
+ for(const field of ['termsHash','assuranceHash','deliveryId','evidenceAssociationId']){const missing={...input};delete missing[field];assert.equal(validate(missing),false,field);}
+ assert.equal(validate({...input,delivered:true}),false);assert.equal(validate({...input,channel:'sms'}),false);
+ const send=ajv.getSchema(`${rootId}#/$defs/ServicingTermsSendRequest`);
+ assert.equal(send({cycleId:id,termsVersionId:id,recipientContactIds:[id]}),true);
+ assert.equal(send({cycleId:id,termsVersionId:id,recipientContactIds:[id,id]}),false);
+ const read=getOperation('getServicingTerms');assert.equal(read.responses[200].headers.ETag,undefined);assert.equal(read.responses[200].headers['Cache-Control'].schema.const,'no-store');
+ assert.equal(read.parameters.some(x=>x.in==='query'),false);
+});

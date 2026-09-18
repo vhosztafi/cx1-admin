@@ -125,3 +125,37 @@ Still incomplete: acceptance, terms endpoints/contracts/read model,
 typed signed-statement condition integration and browser UI verification.
 The shared demo database has not been migrated for07-08. No completion or
 requirement closure is claimed; continue implementation.
+
+## Exact acceptance and HTTP boundary (continuing)
+
+Delivery checkpoint committed in8fcbced. Added immutable acceptance storage
+and migration20260918104800, exact owned delivered terms/proof review pointers,
+current assurance checks and retained applicability assessment. New terms or
+resending clears the current acceptance pointer without deleting history.
+SQL tests exercise undelivered terms, incorrect hashes, wrong proof/time,
+replay, append-only storage and proof withdrawal invalidating prior acceptance.
+.local/phase7-08-acceptance-green/sql:2passed for both products.
+
+Implemented GET terms and prepare/send/acceptance commands with bounded closed
+HTTP bodies, explicit UTC acceptance instants, CSRF, strong parent versions,
+editing lease and current scope before receipt replay. HTTP red was actual404.
+.local/phase7-08-terms-http-green/sql:2passed;12 captured responses validated
+against the generated schemas in .local/phase7-08-terms-http-green/responses.
+Tests include denied anonymous access, unknown query/body fields, missing CSRF,
+missing/weak ETag, missing/wrong lease, foreign recipients and revoked-role replay.
+
+Added bounded retained terms/delivery/acceptance history and owned single-contract
+readback. Initial history404 was expected; first implementation hit EF constructor
+projection translation503. Member-initialized projection fixed that query.
+.local/phase7-08-history-fixed/{unit,sql}:27unit+2SQLpassed, zero skips, gate
+passed with cutoff2026-09-18T11:10:00Z. Both products paginate tied timestamps
+without duplicate IDs and reject foreign contract IDs. History documents always
+report applicable:false. The12 response captures above cover the commands/current
+read model only; history passed SQL HTTP tests, not captured-response validation.
+
+Strict OpenAPI now has403 operations. API/immutable frontend retry tests:
+.local/phase7-08-terms-ui-contracts.log:52passed. OpenAPI lint passed with37
+unused-component warnings (three additional superseded provisional input shapes).
+Initial terms workspace controls are wired and typecheck passes, but browser
+verification and typed signed-statement condition integration remain outstanding.
+No07-08summary, source closure, shared-demo migration or phase completion claimed.
