@@ -48,7 +48,7 @@ export function ReferralDecisions({ quote, assessment, referrals, evidence, run 
   </>;
 }
 
-export function ConditionForm({ quote, documentaryOnly, add }: { quote: QuoteView; documentaryOnly: boolean; add: (condition: ConditionDefinition) => void }) {
+export function ConditionForm({ quote, documentaryOnly, add }: { quote: Pick<QuoteView, 'proposal'>; documentaryOnly: boolean; add: (condition: ConditionDefinition) => void }) {
   const [code, setCode] = useState('provide-trading-history'), [targetId, setTarget] = useState(''), [requirementCode, setRequirement] = useState('photocard-both-sides');
   const [driverIds, setDrivers] = useState<string[]>([]), [minimumYears, setYears] = useState('2'), [maximumAmount, setMaximum] = useState(''), [error, setError] = useState('');
   const kind = code === 'provide-driver-proof' ? 'drivers' : ['provide-premises-security','overnight-security'].includes(code) ? 'premises' : code === 'revise-vehicle-limit' ? 'vehicles' : '';

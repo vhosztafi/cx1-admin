@@ -1,0 +1,106 @@
+'use client';
+import { useRef, useState } from 'react';
+import { Panel, Status } from '../primitives';
+import { QuoteError, uncertainQuoteFailure } from '../../lib/quotes';
+import { currentProof, proofCommand, sendProof, type ProofAssociation, type ProofCommand, type ProofEvent, type ProofFile, type ProofPage, type ProofRequirement, type ProofRequirements, type ProofScope } from '../../lib/servicing-proof';
+
+import { useProofRead, PageButtons } from './servicing-proof-read';
+import { ServicingReferrals } from './servicing-referrals';
+import type { ServicingEditor } from '../../lib/servicing-api';
+import { riskTargetLabel } from '../../lib/underwriting-decisions';
+
+type Run = (path: string, body?: unknown, file?: File) => void;
+export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, blocked, dirty, canReview, editor, pendingChanged, saved }: {
+  draftId: string; revisionId: string; etag: string; fence: string | null; editable: boolean; blocked: boolean; dirty: boolean; canReview: boolean;
+  editor: ServicingEditor | null; pendingChanged: (pending: boolean) => void; saved: () => Promise<void>;
+}) {
+  const [pendingState, setPendingState] = useState(false), [sending, setSending] = useState(false), [error, setError] = useState(''), [notice, setNotice] = useState('');
+  const pending = useRef<ProofCommand | null>(null), sendingRef = useRef(false);
+  const [file, setFile] = useState<File>(), [filePage, setFilePage] = useState({ etag, cursor: '' });
+  const [associationPage, setAssociationPage] = useState({ etag, cursor: '' });
+  const base = `/api/v1/drafts/${draftId}`;
+  const requirements = useProofRead<ProofRequirements>(base + '/evidence/requirements', etag, pendingState);
+  const fileCursor = filePage.etag === etag ? filePage.cursor : '';
+  const associationCursor = associationPage.etag === etag ? associationPage.cursor : '';
+  const files = useProofRead<ProofPage<ProofFile>>(`${base}/evidence-files?pageSize=20${fileCursor ? '&cursor=' + encodeURIComponent(fileCursor) : ''}`, etag, pendingState);
+  const cycleId = requirements.data?.cycleId;
+  const associations = useProofRead<ProofPage<ProofAssociation>>(cycleId ? `${base}/evidence?cycleId=${cycleId}&pageSize=20${associationCursor ? '&cursor=' + encodeURIComponent(associationCursor) : ''}` : null, etag, pendingState);
+  const current = requirements.data?.draftId === draftId && requirements.data.requirements.every(x => x.requirement.context.draftId === draftId && x.requirement.context.revisionId === revisionId && x.requirement.context.cycleId === cycleId);
+  const active = !!(current && requirements.data?.applicable && editable && fence && !blocked && !dirty && !pendingState);
+  async function execute(path?: string, body?: unknown, upload?: File) {
+    if (sendingRef.current || (!pending.current && !active)) return;
+    sendingRef.current = true; setSending(true); setError(''); setNotice('');
+    try {
+      if (!pending.current) {
+        const scope: ProofScope = { draftId, revisionId, cycleId: cycleId!, etag, fence: fence! };
+        pending.current = proofCommand(scope, path!, body, upload);
+        pendingChanged(true); setPendingState(true);
+      }
+      await sendProof(pending.current);
+      // Keep the immutable command until both the receipt and saved readback are
+      // confirmed. A lost readback can be retried without creating a second file.
+      try { await saved(); } catch { throw new Error('Saved draft readback is unconfirmed. Retry the same command.'); }
+      pending.current = null; pendingChanged(false); setPendingState(false); setNotice('Supporting information saved.');
+    } catch (failure) {
+      if (!uncertainQuoteFailure(failure)) { pending.current = null; pendingChanged(false); setPendingState(false); }
+      setError(pending.current ? 'The result is unconfirmed. Retry this same action before making other changes.' : failure instanceof QuoteError ? 'This action was refused. Refresh the draft and check your editing lease, proof and authority.' : failure instanceof Error ? failure.message : 'Check this action.');
+    } finally { sendingRef.current = false; setSending(false); }
+  }
+  const run: Run = (path, body, upload) => { void execute(path, body, upload); };
+  return <Panel title="Supporting information" note="Saved documents and underwriting review"><div className="quote-rail-body">
+    <p className="client-help">Demo screening checks file type and size. Use fictional documents. Underwriting review separately confirms whether their content satisfies the rated change.</p>
+    {dirty && <p role="status">Save and rate your local changes before attaching or reviewing proof.</p>}
+    {!editable && <p>Acquire the editing lease to change supporting information.</p>}
+    {error && <p role="alert">{error}</p>}{notice && <p role="status">{notice}</p>}
+    {pendingState && <button className="button button-primary" disabled={sending} onClick={() => void execute()}>Retry same proof action</button>}
+    <fieldset className="quote-reference-fields" disabled={!active}><legend>Upload a document</legend>
+      <label>Supporting document<input type="file" accept=".pdf,.png,.jpg,.jpeg,.txt" onChange={event => setFile(event.target.files?.[0])} /></label>
+      <button className="button" disabled={!file} onClick={() => run('/evidence/uploads', undefined, file)}>Upload document</button>
+    </fieldset>
+    <details open><summary>Saved documents</summary>{files.error && <p role="status">{files.error}</p>}
+      {files.data ? <>{files.data.items.length === 0 && <p>No documents uploaded.</p>}{files.data.items.map(item => <p key={item.id}><a href={`${base}/evidence-files/${item.id}/content`} download>{item.fileName}</a> · {item.byteLength.toLocaleString('en-GB')} bytes · File screening: {item.screeningState}</p>)}
+        <PageButtons cursor={fileCursor} next={files.data.nextCursor} disabled={pendingState} change={cursor => setFilePage({ etag, cursor })} />
+      </> : !files.error && <p role="status">Loading documents…</p>}
+    </details>
+    <h3>Proof for the rated changes</h3>{requirements.error && <p role="status">{requirements.error}</p>}
+    {requirements.data && !requirements.data.applicable && <p>This rating is no longer current. Retained proof remains available for review.</p>}
+    {requirements.data?.requirements.map(({ requirement, satisfied }) => <AttachProof key={requirement.inputFingerprint + ':' + requirement.code + ':' + requirement.riskItemId} requirement={requirement} satisfied={satisfied} editor={editor} files={files.data?.items ?? []} disabled={!active || !files.data} run={run} />)}
+    <h3>Attached proof</h3>{associations.error && <p role="status">{associations.error}</p>}
+    {associations.data && <>{associations.data.items.length === 0 && <p>No proof attached on this page.</p>}{associations.data.items.map(item => <ProofCard key={item.id} item={item} base={base} etag={etag} requirements={requirements.data?.requirements.map(x => x.requirement) ?? []} active={active} paused={pendingState} canReview={canReview} run={run} />)}
+      <PageButtons cursor={associationCursor} next={associations.data.nextCursor} disabled={pendingState} change={cursor => setAssociationPage({ etag, cursor })} />
+    </>}
+    <ServicingReferrals draftId={draftId} etag={etag} cycleId={cycleId ?? null} active={active && canReview} paused={pendingState} requirements={requirements.data?.requirements.map(x => x.requirement) ?? []} evidence={associations.data?.items ?? []} editor={editor} run={run} />
+  </div></Panel>;
+}
+
+function AttachProof({ requirement, satisfied, editor, files, disabled, run }: { requirement: ProofRequirement; satisfied: boolean; editor: ServicingEditor | null; files: ProofFile[]; disabled: boolean; run: Run }) {
+  const [fileId, setFileId] = useState(''), [reason, setReason] = useState('');
+  return <fieldset className="quote-reference-fields" disabled={disabled}><legend>{requirement.label}</legend>
+    <Status tone={satisfied ? 'success' : 'warning'}>{satisfied ? 'Reviewed proof received' : 'Proof required'}</Status>
+    {requirement.effectiveDates.map(date => { const slice = editor?.assessment.slices.find(item => Date.parse(item.effectiveAt) === Date.parse(date)); return <p key={date}>Applies from {new Date(date).toLocaleString('en-GB')}{requirement.riskItemId && slice ? ` · ${riskTargetLabel(slice.proposed, requirement.riskItemId)}` : ''}</p>; })}
+    <label>Saved document<select value={fileId} onChange={event => setFileId(event.target.value)}><option value="">Select a document on this page</option>{files.filter(item => item.screeningState === 'accepted').map(item => <option value={item.id} key={item.id}>{item.fileName}</option>)}</select></label>
+    <label>Attachment reason<textarea maxLength={2000} value={reason} onChange={event => setReason(event.target.value)} /></label>
+    <button className="button" disabled={!files.some(item => item.id === fileId && item.screeningState === 'accepted') || reason.trim().length < 10} onClick={() => run('/evidence', {cycleId: requirement.context.cycleId, fileId, requirementCode: requirement.code, ...(requirement.riskItemId ? {riskItemId: requirement.riskItemId} : {}), inputFingerprint: requirement.inputFingerprint, reason})}>Attach proof</button>
+  </fieldset>;
+}
+function ProofCard({ item, base, etag, requirements, active, paused, canReview, run }: { item: ProofAssociation; base: string; etag: string; requirements: ProofRequirement[]; active: boolean; paused: boolean; canReview: boolean; run: Run }) {
+  const [reason, setReason] = useState(''), [outcome, setOutcome] = useState('accepted');
+  const [historyOpen, setHistoryOpen] = useState(false), [page, setPage] = useState({etag, cursor:''});
+  const cursor = page.etag === etag ? page.cursor : '';
+  const history = useProofRead<ProofPage<ProofEvent>>(historyOpen ? `${base}/evidence/${item.id}/events?pageSize=20${cursor ? '&cursor=' + encodeURIComponent(cursor) : ''}` : null, etag, paused);
+  const applicable = requirements.some(requirement => currentProof(item, requirement));
+  return <article className="quote-driver-card"><h4><a href={`${base}/evidence-files/${item.fileId}/content`} download>{item.fileName}</a></h4>
+    <p>{item.code.replaceAll('-', ' ')} · Review: {item.reviewOutcome ?? 'Not reviewed'}</p><p>{item.reason}</p>
+    {item.withdrawn ? <Status tone="warning">Withdrawn</Status> : !applicable && <p>This proof does not match a current requirement.</p>}
+    <fieldset className="quote-reference-fields" disabled={!active || item.withdrawn}><legend>Review or withdraw this proof</legend>
+      <label>Review outcome<select value={outcome} disabled={!canReview || !applicable} onChange={event => setOutcome(event.target.value)}><option value="accepted">Accept content</option><option value="rejected">Reject content</option></select></label>
+      <label>Review or withdrawal reason<textarea maxLength={2000} value={reason} onChange={event => setReason(event.target.value)} /></label>
+      <div className="quote-row-actions"><button className="button" disabled={!canReview || !applicable || reason.trim().length < 10} onClick={() => run(`/evidence/${item.id}/reviews`, {cycleId:item.cycleId, associationEtag:item.etag, outcome, expectedFingerprint:item.inputFingerprint, reason})}>Record review</button>
+        <button className="button" disabled={reason.trim().length < 10} onClick={() => run(`/evidence/${item.id}/withdraw`, {cycleId:item.cycleId, associationEtag:item.etag, reason})}>Withdraw proof</button></div>
+      {!canReview && <p>An underwriter with current authority must review the content.</p>}
+    </fieldset>
+    <details onToggle={event => setHistoryOpen(event.currentTarget.open)}><summary>Review and withdrawal history</summary>{history.error && <p role="status">{history.error}</p>}
+      {history.data && <>{history.data.items.length === 0 && <p>No review events recorded.</p>}{history.data.items.map(event => <p key={event.id}>{event.kind} {event.outcome} · {new Date(event.recordedAt).toLocaleString('en-GB')}<br />{event.reason}</p>)}<PageButtons cursor={cursor} next={history.data.nextCursor} disabled={paused} change={cursor => setPage({etag, cursor})} /></>}
+    </details>
+  </article>;
+}
