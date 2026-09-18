@@ -40,7 +40,7 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.True((await service.RequirementsAsync(f.Underwriter,capacity.DraftId)).Requirements.Single(x=>x.Requirement.InputFingerprint==purpose.InputFingerprint).Satisfied);
         Assert.Equal("queued",await db.Set<ServicingCapacityCase>().Where(x=>x.Id==capacity.Id).Select(x=>x.State).SingleAsync());
         association=await db.Set<ServicingEvidenceAssociation>().AsNoTracking().SingleAsync(x=>x.Id==association.Id);
-        await VerifyServicingCapacityResponseStorage(db,f,capacity,submission,association);
-        return reviewed.Etag!;
+        await VerifyServicingCapacityResponseStorage(db,f,capacity,submission,association,lease);
+        return "\""+Convert.ToBase64String(await db.Set<ServicingDraft>().Where(x=>x.Id==capacity.DraftId).Select(x=>x.RowVersion).SingleAsync())+"\"";
     }
 }

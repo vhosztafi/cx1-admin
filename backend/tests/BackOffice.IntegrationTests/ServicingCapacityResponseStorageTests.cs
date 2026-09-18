@@ -12,7 +12,7 @@ namespace BackOffice.IntegrationTests;
 public sealed partial class UnderwritingRuntimeTests
 {
     private static async Task VerifyServicingCapacityResponseStorage(BackOfficeDbContext db,DecisionFixture f,
-        ServicingCapacityCase capacity,Guid submissionId,ServicingEvidenceAssociation proof)
+        ServicingCapacityCase capacity,Guid submissionId,ServicingEvidenceAssociation proof,Guid lease)
     {
         Assert.Equal(0,await db.Database.SqlQueryRaw<int>("SELECT COUNT(*) AS Value FROM ServicingCapacityResponse").SingleAsync());
         var submission=await db.Set<ServicingCapacitySubmission>().AsNoTracking().SingleAsync(x=>x.Id==submissionId);
@@ -30,12 +30,12 @@ public sealed partial class UnderwritingRuntimeTests
         await Assert.ThrowsAsync<SqlException>(()=>Insert(contentHash:new byte[32]));
         Assert.Equal(51470,(await Assert.ThrowsAsync<SqlException>(()=>Insert(outcome:"approve"))).Number);
         Assert.Equal(51470,(await Assert.ThrowsAsync<SqlException>(()=>Insert(sequence:3))).Number);
-        await Insert();
+        responseId=await VerifyServicingSuppliedResponseCommand(db,f,capacity,submissionId,proof,lease);
         Assert.Equal(51471,(await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacityResponse SET Body='Altered fictional carrier message' WHERE Id={responseId}"))).Number);
         await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacityCase SET CurrentResponseId={responseId},State='queried' WHERE Id={capacity.Id}");
         Assert.Equal(51422,(await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacityCase SET State='approved' WHERE Id={capacity.Id}"))).Number);
         Assert.Equal(51422,(await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacityCase SET CurrentResponseId=NULL WHERE Id={capacity.Id}"))).Number);
-        await VerifyServicingCapacityConditionStorage(db,f,capacity,submission,proof,now);
+        await VerifyServicingCapacityConditionStorage(db,f,capacity,submission,proof,now,lease);
         await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacityCase SET State='draft' WHERE Id={capacity.Id}");
         Assert.DoesNotContain((await new ServicingEvidenceService(f.Factory,f.Clock).RequirementsAsync(f.Underwriter,capacity.DraftId)).Requirements,x=>x.Requirement.Code=="trading-history");
         responseId=Guid.NewGuid();

@@ -12,7 +12,7 @@ namespace BackOffice.IntegrationTests;
 public sealed partial class UnderwritingRuntimeTests
 {
     private static async Task VerifyServicingCapacityConditionStorage(BackOfficeDbContext db,DecisionFixture f,
-        ServicingCapacityCase capacity,ServicingCapacitySubmission submission,ServicingEvidenceAssociation proof,DateTimeOffset now)
+        ServicingCapacityCase capacity,ServicingCapacitySubmission submission,ServicingEvidenceAssociation proof,DateTimeOffset now,Guid lease)
     {
         Assert.Equal(0,await db.Database.SqlQueryRaw<int>("SELECT COUNT(*) AS Value FROM ServicingCapacityCondition").SingleAsync());
         var evidence=new ServicingEvidenceService(f.Factory,f.Clock);
@@ -48,5 +48,7 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Equal(1,await db.Database.SqlQueryRaw<int>("SELECT COUNT(*) AS Value FROM ServicingCapacityCondition").SingleAsync());
         var requirement=Assert.Single((await evidence.RequirementsAsync(f.Underwriter,capacity.DraftId)).Requirements,x=>x.Requirement.Code=="trading-history");
         Assert.Equal(dates,requirement.Requirement.EffectiveDates);Assert.False(requirement.Satisfied);
+        await VerifyServicingCarrierResolutionStorage(db,cycle,response.Id,submission.Id,capacity.Id,conditionId,now,f.Underwriter.UserId);
+        await VerifyServicingCarrierResolutionCommand(db,f,capacity,conditionId,lease);
     }
 }
