@@ -10,7 +10,7 @@ export function decisionRequest(cycleId: string, rows: Pick<ServicingReferral, '
   if (!selected.length || selected.length > 50 || new Set(selected).size !== selected.length || !['approve','approve-with-conditions','query','decline','reopen'].includes(outcome) || reason.trim().length < 10 || reason.length > 2000)
     throw new Error('Select current referrals and enter a decision reason of at least 10 characters.');
   const conditional = outcome === 'approve-with-conditions' || outcome === 'query';
-  if (conditional && (!conditions.length || conditions.length > 20) || outcome === 'query' && (!question || question.trim().length < 10 || question.length > 2000 || conditions.some(x => !['provide-driver-proof','provide-premises-security','provide-trading-history'].includes(x.code))))
+  if (conditional && (!conditions.length || conditions.length > 20) || outcome === 'query' && (!question || question.trim().length < 10 || question.length > 2000 || conditions.some(x => !['provide-driver-proof','provide-premises-security','provide-trading-history','provide-signed-statement'].includes(x.code))))
     throw new Error('Add typed conditions and a question for a request for information.');
   const decisions = selected.map(referralId => {
     const matches = rows.filter(row => row.id === referralId);
@@ -22,9 +22,9 @@ export function decisionRequest(cycleId: string, rows: Pick<ServicingReferral, '
 
 export function conditionProof(condition: ServicingCondition, requirement: ProofRequirement, proof: ProofAssociation, outcome: string): boolean {
   const definition = condition.definition;
-  const code = condition.kind === 'warranty' ? 'warranty-acknowledgement' : condition.code === 'provide-trading-history' ? 'trading-history' : condition.code === 'provide-premises-security' ? 'premises-security' : condition.code === 'provide-driver-proof' ? definition.requirementCode : null;
+  const code = condition.kind === 'warranty' ? 'warranty-acknowledgement' : condition.code === 'provide-trading-history' ? 'trading-history' : condition.code === 'provide-signed-statement' ? 'signed-statement' : condition.code === 'provide-premises-security' ? 'premises-security' : condition.code === 'provide-driver-proof' ? definition.requirementCode : null;
   const target = condition.kind === 'warranty' ? null : definition.driverId ?? definition.premisesId ?? null;
-  return !!code && requirement.code === code && requirement.riskItemId === target && condition.clauses.length > 0 &&
+  return !!code && requirement.code === code && requirement.riskItemId === target && (requirement.termsVersionId ?? null) === (definition.termsVersionId ?? null) && condition.clauses.length > 0 &&
     condition.clauses.every(clause => requirement.effectiveDates.some(date => Date.parse(date) === Date.parse(clause.effectiveAt))) &&
     currentProof(proof, requirement) && !!proof.latestReviewId && ['accepted','rejected'].includes(proof.reviewOutcome ?? '') && (outcome === 'rejected' || outcome === 'satisfied' && proof.reviewOutcome === 'accepted');
 }

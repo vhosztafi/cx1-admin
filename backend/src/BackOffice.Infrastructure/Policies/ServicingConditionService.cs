@@ -21,6 +21,7 @@ public sealed partial class ServicingReferralService
             conditionId==Guid.Empty || associationId==Guid.Empty || cycleId==Guid.Empty || reason.Length<10 || outcome is not("satisfied" or "rejected"))
             throw new QuoteOperationException(422,"servicing-resolution-invalid");
         ServicingDecisionContext? held=null;ServicingCondition? condition=null;EffectiveUnderwritingGrant? grant=null;
+        ServicingProofRequirement? required=null;ServicingEvidenceAssociation? association=null;ServicingEvidenceEvent? review=null;
         return commands.ExecuteAuthorizedAsync(new(actor.UserId,$"/api/v1/drafts/{draftId:D}/conditions/{conditionId:D}/resolutions",key,correlation),
             new{draftId,cycleId,conditionId,version=Convert.ToBase64String(version),lease,conditionVersion=Convert.ToBase64String(conditionVersion),associationId,outcome,reason},
             "servicing.condition-resolved",
@@ -39,21 +40,23 @@ public sealed partial class ServicingReferralService
                 if(grant is null) throw new QuoteOperationException(403,"servicing-resolution-authority-required");
                 if(!await db.Set<ServicingEvidenceAssociation>().AnyAsync(x=>x.Id==associationId && x.DraftId==draftId && x.CycleId==cycleId,ct))
                     throw new QuoteOperationException(404,"servicing-evidence-not-found");
+                if(!await ConditionActive(db,condition,ct)) throw new QuoteOperationException(409,"servicing-condition-superseded");
+                required=await ConditionRequirement(db,held,condition,ct)??throw new QuoteOperationException(409,"servicing-condition-proof-unavailable");
+                association=await db.Set<ServicingEvidenceAssociation>().SingleAsync(x=>x.Id==associationId,ct);
+                if(association.WithdrawnEventId is not null || association.LatestReviewId is null || association.RequirementCode!=required.Code ||
+                    association.RiskItemId!=required.RiskItemId || association.InputFingerprint!=required.InputFingerprint ||
+                    association.TermsVersionId!=required.TermsVersionId || association.CapacitySubmissionId!=required.CapacitySubmissionId ||
+                    !await db.Set<ServicingEvidenceFile>().AnyAsync(x=>x.Id==association.FileId && x.ScreeningState=="accepted",ct))
+                    throw new QuoteOperationException(409,"servicing-condition-proof-required");
+                review=await db.Set<ServicingEvidenceEvent>().AsNoTracking().SingleAsync(x=>x.Id==association.LatestReviewId && x.AssociationId==association.Id,ct);
+                if(review.Kind!="review" || outcome=="satisfied" && review.Outcome!="accepted") throw new QuoteOperationException(409,"servicing-condition-proof-review-required");
             },
             async(db,ct)=>
             {
                 await held!.Current(db,factory,time,version,lease,ct);
                 if(!CryptographicOperations.FixedTimeEquals(condition!.RowVersion,conditionVersion)) throw new QuoteOperationException(412,"servicing-condition-stale");
-                if(!await ConditionActive(db,condition,ct)) throw new QuoteOperationException(409,"servicing-condition-superseded");
-                var required=await ConditionRequirement(db,held,condition,ct)??throw new QuoteOperationException(409,"servicing-condition-proof-unavailable");
-                var association=await db.Set<ServicingEvidenceAssociation>().SingleAsync(x=>x.Id==associationId,ct);
-                if(association.WithdrawnEventId is not null || association.LatestReviewId is null || association.RequirementCode!=required.Code ||
-                    association.RiskItemId!=required.RiskItemId || association.InputFingerprint!=required.InputFingerprint)
-                    throw new QuoteOperationException(409,"servicing-condition-proof-required");
-                var review=await db.Set<ServicingEvidenceEvent>().AsNoTracking().SingleAsync(x=>x.Id==association.LatestReviewId && x.AssociationId==association.Id,ct);
-                if(review.Kind!="review" || outcome=="satisfied" && review.Outcome!="accepted") throw new QuoteOperationException(409,"servicing-condition-proof-review-required");
                 var now=time.GetUtcNow();var resolution=new ServicingConditionResolution{ConditionId=conditionId,ReferralId=condition.ReferralId,DraftId=draftId,CycleId=cycleId,
-                    RevisionId=held.Cycle.RevisionId,RatingId=held.Rating.Id,AssociationId=associationId,ReviewId=review.Id,InputFingerprint=required.InputFingerprint,
+                    RevisionId=held.Cycle.RevisionId,RatingId=held.Rating.Id,AssociationId=associationId,ReviewId=review!.Id,InputFingerprint=required!.InputFingerprint,
                     Sequence=checked((await db.Set<ServicingConditionResolution>().Where(x=>x.ConditionId==conditionId).MaxAsync(x=>(int?)x.Sequence,ct)??0)+1),
                     Outcome=outcome,Reason=reason,ActorId=actor.UserId,AuthorityVersionId=grant!.Version.Id,GrantId=grant.Grant.Id,RecordedAt=now,CreatedAt=now,CreatedBy=actor.UserId};
                 db.Add(resolution);return await held.Receipt(db,resolution.Id,200,now,ct);
@@ -84,7 +87,7 @@ public sealed partial class ServicingReferralService
                 var file=await db.Set<ServicingEvidenceFile>().AsNoTracking().SingleAsync(x=>x.Id==association.FileId,token);
                 satisfied=association.LatestReviewId==review.Id && ServicingEvidenceRules.Satisfied(required.Context,required,
                     new(association.DraftId,association.CycleId,association.RevisionId,association.RatingId,association.RequirementCode,association.RiskItemId,
-                        association.InputFingerprint,file.ScreeningState,review.Outcome??"unreviewed",association.WithdrawnEventId is not null));
+                        association.InputFingerprint,file.ScreeningState,review.Outcome??"unreviewed",association.WithdrawnEventId is not null,association.CapacitySubmissionId,association.TermsVersionId));
             }
         }
         return satisfied;
@@ -98,9 +101,10 @@ public sealed partial class ServicingReferralService
         var parsed=ServicingConditionRules.Parse(JsonSerializer.Deserialize<JsonElement>(condition.DefinitionJson),ServicingEvidenceProjection.Slices(held),
             JsonSerializer.Deserialize<DateTimeOffset[]>(condition.EffectiveDatesJson)!);
         var definition=parsed[0].Condition;
-        if(!ReferralRules.CanResolveWithEvidence(definition) || definition.TermsVersionId is not null || definition.Kind!="warranty" && definition.TargetIds.Count>1) return null;
+        if(!ReferralRules.CanResolveWithEvidence(definition) || definition.Kind!="warranty" && definition.TargetIds.Count>1) return null;
+        try{await ServicingTermsService.RequireConditionTerms(db,held,definition,token);}catch(QuoteOperationException e) when(e.Status is 404 or 409){return null;}
         var target=definition.Kind=="warranty" || definition.TargetIds.Count==0?(Guid?)null:definition.TargetIds[0];
-        return (await ServicingEvidenceProjection.RequirementsAsync(db,held,token)).SingleOrDefault(x=>x.Code==definition.RequirementCode && x.RiskItemId==target &&
+        return (await ServicingEvidenceProjection.RequirementsAsync(db,held,token)).SingleOrDefault(x=>x.Code==definition.RequirementCode && x.RiskItemId==target && x.TermsVersionId==definition.TermsVersionId &&
             parsed.All(p=>x.EffectiveDates.Contains(p.EffectiveAt)));
     }
 

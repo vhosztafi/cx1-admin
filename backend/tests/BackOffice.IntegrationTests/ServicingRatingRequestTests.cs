@@ -22,6 +22,8 @@ public sealed partial class UnderwritingRuntimeTests
     [InlineData("motor-trade-combined", "terms-prepare")]
     [InlineData("motor-trade-road-risks", "terms-http")]
     [InlineData("motor-trade-combined", "terms-http")]
+    [InlineData("motor-trade-road-risks", "terms-condition")]
+    [InlineData("motor-trade-combined", "terms-condition")]
     [InlineData("motor-trade-road-risks", "terms-delivery-withdraw-signature")]
     [InlineData("motor-trade-road-risks", "terms-delivery-timeout-after-success")]
     [InlineData("motor-trade-road-risks", "terms-delivery-transient-once")]
@@ -313,9 +315,9 @@ public sealed partial class UnderwritingRuntimeTests
                 await VerifyServicingCapacityCaseStorage(db,f,applied);
                 Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);return;
             }
-            if(scenario is "terms-prepare" or "terms-http" || scenario.StartsWith("terms-delivery-",StringComparison.Ordinal))
+            if(scenario is "terms-prepare" or "terms-http" or "terms-condition" || scenario.StartsWith("terms-delivery-",StringComparison.Ordinal))
             {
-                await VerifyServicingTermsPreparation(db,f,applied,fence,ratedView.DraftEtag,scenario is "terms-prepare" or "terms-http"?"success":scenario["terms-delivery-".Length..],scenario=="terms-http"?password:null);
+                await VerifyServicingTermsPreparation(db,f,applied,fence,ratedView.DraftEtag,scenario is "terms-prepare" or "terms-http" or "terms-condition"?"success":scenario["terms-delivery-".Length..],scenario=="terms-http"?password:null,scenario=="terms-condition");
                 Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);return;
             }
             if(scenario=="submission-storage")

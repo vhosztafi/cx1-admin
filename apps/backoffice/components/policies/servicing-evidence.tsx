@@ -11,6 +11,7 @@ import { riskTargetLabel } from '../../lib/underwriting-decisions';
 import type { ServicingRatingHistory } from '../../lib/servicing-rating';
 import { recoverSubmission } from '../../lib/servicing-submission';
 import { ServicingSubmission } from './servicing-submission';
+import { ServicingTerms } from './servicingterms';
 
 type Run = (path: string, body?: unknown, file?: File) => void;
 export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, blocked, dirty, canReview, editor, pendingChanged, saved }: {
@@ -106,6 +107,7 @@ export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, 
       <PageButtons cursor={associationCursor} next={associations.data.nextCursor} disabled={pendingState} change={cursor => setAssociationPage({ etag, cursor })} />
     </>}
     <ServicingReferrals draftId={draftId} etag={etag} cycleId={cycleId ?? null} active={active && canReview} paused={paused} requirements={requirements.data?.requirements.map(x => x.requirement) ?? []} evidence={associations.current && selectedCycle === cycleId ? associations.data?.items ?? [] : []} editor={editor} run={run} />
+    <ServicingTerms draftId={draftId} revisionId={revisionId} cycleId={cycleId ?? null} etag={etag} active={active} paused={paused} requirements={requirements.data?.requirements.map(x => x.requirement) ?? []} evidence={associations.current && selectedCycle === cycleId ? associations.data?.items ?? [] : []} run={run} />
   </div></Panel>;
 }
 

@@ -48,7 +48,7 @@ public sealed partial class ServicingCapacityService
                 required=await CarrierConditionRequirement(db,held,condition,ct);
                 if(required is null || proof.WithdrawnEventId is not null || proof.LatestReviewId is null ||
                     proof.RequirementCode!=required.Code || proof.RiskItemId!=required.RiskItemId || proof.InputFingerprint!=required.InputFingerprint ||
-                    proof.CapacitySubmissionId!=required.CapacitySubmissionId ||
+                    proof.CapacitySubmissionId!=required.CapacitySubmissionId || proof.TermsVersionId!=required.TermsVersionId ||
                     !await db.Set<ServicingEvidenceFile>().AnyAsync(x=>x.Id==proof.FileId && x.ScreeningState=="accepted",ct) ||
                     !await db.Set<ServicingEvidenceEvent>().AnyAsync(x=>x.Id==proof.LatestReviewId && x.AssociationId==associationId && x.Kind=="review" &&
                         (outcome=="rejected" || x.Outcome=="accepted"),ct))
@@ -87,7 +87,7 @@ public sealed partial class ServicingCapacityService
         if(resolution?.Outcome!="satisfied" || required is null || resolution.InputFingerprint!=required.InputFingerprint) return false;
         var proof=await db.Set<ServicingEvidenceAssociation>().AsNoTracking().SingleAsync(x=>x.Id==resolution.AssociationId,token);
         return proof.LatestReviewId==resolution.ReviewId && proof.RequirementCode==required.Code && proof.RiskItemId==required.RiskItemId &&
-            proof.CapacitySubmissionId==required.CapacitySubmissionId && await ReviewedProofCurrent(db,proof,token);
+            proof.CapacitySubmissionId==required.CapacitySubmissionId && proof.TermsVersionId==required.TermsVersionId && await ReviewedProofCurrent(db,proof,token);
     }
 
     private static Task<bool> CarrierConditionActive(BackOfficeDbContext db,ServicingCapacityCondition condition,CancellationToken token)=>
@@ -112,9 +112,10 @@ public sealed partial class ServicingCapacityService
         var parsed=ServicingConditionRules.Parse(JsonSerializer.Deserialize<JsonElement>(condition.DefinitionJson),ServicingEvidenceProjection.Slices(held),
             JsonSerializer.Deserialize<DateTimeOffset[]>(condition.EffectiveDatesJson)!);
         var definition=parsed[0].Condition;
-        if(!ReferralRules.CanResolveWithEvidence(definition) || definition.TermsVersionId is not null || definition.Kind!="warranty" && definition.TargetIds.Count>1) return null;
+        if(!ReferralRules.CanResolveWithEvidence(definition) || definition.Kind!="warranty" && definition.TargetIds.Count>1) return null;
+        try{await ServicingTermsService.RequireConditionTerms(db,held,definition,token);}catch(QuoteOperationException e) when(e.Status is 404 or 409){return null;}
         var target=definition.Kind=="warranty" || definition.TargetIds.Count==0?(Guid?)null:definition.TargetIds[0];
-        return (await ServicingEvidenceProjection.RequirementsAsync(db,held,token)).SingleOrDefault(x=>x.Code==definition.RequirementCode && x.RiskItemId==target &&
+        return (await ServicingEvidenceProjection.RequirementsAsync(db,held,token)).SingleOrDefault(x=>x.Code==definition.RequirementCode && x.RiskItemId==target && x.TermsVersionId==definition.TermsVersionId &&
             parsed.All(p=>x.EffectiveDates.Contains(p.EffectiveAt)));
     }
 }

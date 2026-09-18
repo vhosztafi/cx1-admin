@@ -57,6 +57,16 @@ builder.Services.AddScoped<BackOffice.Infrastructure.Underwriting.UnderwritingEv
 builder.Services.AddScoped<BackOffice.Infrastructure.Underwriting.QuoteReferralService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Underwriting.QuoteReferralReadModel>();
 var app = builder.Build();
+if(args.Contains("--seed-servicing-terms-demo",StringComparer.Ordinal))
+{
+    if(!app.Environment.IsDevelopment())throw new InvalidOperationException("Servicing terms fixture requires local Development.");
+    var factory=app.Services.GetRequiredService<Microsoft.EntityFrameworkCore.IDbContextFactory<BackOfficeDbContext>>();
+    await using var db=await factory.CreateDbContextAsync();
+    DemoDatabase.ValidateDemoTarget(Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.GetConnectionString(db.Database)!);
+    await using var transaction=await Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.BeginTransactionAsync(db.Database,System.Data.IsolationLevel.Serializable);
+    await BackOffice.Infrastructure.Policies.ServicingTermsSeed.SeedAsync(db);await transaction.CommitAsync();
+    Console.WriteLine("Missing fictional servicing terms templates and delivery scenario added.");return;
+}
 if(args.Contains("--seed-quote-demo",StringComparer.Ordinal))
 {
     if(!app.Environment.IsDevelopment())throw new InvalidOperationException("Quote fixture requires local Development.");

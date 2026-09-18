@@ -61,6 +61,8 @@ public sealed partial class ServicingReferralService(IDbContextFactory<BackOffic
                 var retainedParsed=retained.SelectMany(x=>ServicingConditionRules.Parse(JsonSerializer.Deserialize<JsonElement>(x.DefinitionJson),proposals,
                     JsonSerializer.Deserialize<DateTimeOffset[]>(x.EffectiveDatesJson)!)).ToArray();
                 var newConditions=normalized.ToDictionary(x=>x.ReferralId,x=>x.Conditions.Select(c=>Project(c,proposals)).ToArray());
+                foreach(var condition in newConditions.Values.SelectMany(x=>x).Select(x=>x[0].Condition))
+                    await ServicingTermsService.RequireConditionTerms(db,held,condition,ct);
                 var all=retainedParsed.Concat(newConditions.Values.SelectMany(x=>x).SelectMany(x=>x)).GroupBy(x=>x.EffectiveAt)
                     .Select(x=>new ServicingConditionSlice(x.Key,x.Select(c=>c.Condition).ToArray())).ToArray();
                 foreach(var item in normalized.OrderBy(x=>x.ReferralId))
@@ -129,7 +131,7 @@ public sealed partial class ServicingReferralService(IDbContextFactory<BackOffic
         ReferralCondition? sample=null;
         foreach(var proposal in proposals)
             try{sample=ReferralRules.Condition(definition,proposal.Proposal);break;}catch(ArgumentException){}
-        if(sample is null || sample.TermsVersionId is not null) throw new QuoteOperationException(422,"servicing-condition-invalid");
+        if(sample is null) throw new QuoteOperationException(422,"servicing-condition-invalid");
         var collection=sample.Code switch{"provide-driver-proof" or "named-drivers-only"=>"drivers","revise-vehicle-limit"=>"vehicles",_=>"premises"};
         var dates=proposals.Where(x=>sample.TargetIds.Count==0 || x.Proposal.GetProperty("risk").TryGetProperty(collection,out var items) &&
             sample.TargetIds.All(id=>items.EnumerateArray().Any(item=>item.GetProperty("id").GetGuid()==id))).Select(x=>x.EffectiveAt).ToArray();

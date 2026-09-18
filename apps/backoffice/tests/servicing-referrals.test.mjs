@@ -33,3 +33,13 @@ test('condition proof matches all dated targets; rejected reviewed content can s
  assert.equal(conditionProof(condition,{...requirement,effectiveDates:[]},proof,'rejected'),false);
  assert.equal(conditionProof(condition,requirement,{...proof,withdrawn:true},'rejected'),false);
 });
+
+test('signed condition resolution requires the exact owned terms proof',()=>{
+ const context={draftId:ids[0],cycleId:ids[1],revisionId:ids[2],ratingId:ids[3]};
+ const requirement={code:'signed-statement',riskItemId:null,termsVersionId:ids[4],inputFingerprint:'a'.repeat(64),context,effectiveDates:['2026-10-01T00:00:00Z']};
+ const condition={kind:'documentary',code:'provide-signed-statement',definition:{code:'provide-signed-statement',termsVersionId:ids[4],termsHash:'b'.repeat(64)},clauses:[{effectiveAt:requirement.effectiveDates[0],targetIds:[]}]};
+ const proof={...context,...requirement,withdrawn:false,latestReviewId:ids[0],reviewOutcome:'accepted'};
+ assert.equal(conditionProof(condition,requirement,proof,'satisfied'),true);
+ assert.equal(conditionProof({...condition,definition:{...condition.definition,termsVersionId:ids[3]}},requirement,proof,'satisfied'),false);
+ assert.equal(conditionProof(condition,requirement,{...proof,termsVersionId:ids[2]},'satisfied'),false);
+});

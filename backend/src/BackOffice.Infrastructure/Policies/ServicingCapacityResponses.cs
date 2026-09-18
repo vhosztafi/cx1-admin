@@ -47,6 +47,8 @@ public sealed partial class ServicingCapacityService
                 if(referral.State is "declined" or "superseded") throw new QuoteOperationException(409,"servicing-referral-reopen-required");
                 try { parsed=ServicingCapacityResponseRules.Parse(definition,referral.RuleCode,referral.Dimension,submission.SubmittedAt,receivedAt,time.GetUtcNow(),ServicingEvidenceProjection.Slices(held)); }
                 catch(ArgumentException) { throw new QuoteOperationException(422,"servicing-capacity-response-invalid"); }
+                foreach(var condition in parsed.Conditions)
+                    await ServicingTermsService.RequireConditionTerms(db,held,condition.Slices[0].Condition,ct);
                 proof=await db.Set<ServicingEvidenceAssociation>().FromSqlInterpolated($"SELECT * FROM ServicingEvidenceAssociation WITH(HOLDLOCK) WHERE Id={associationId} AND DraftId={draftId} AND CycleId={cycleId}").AsNoTracking().SingleOrDefaultAsync(ct)
                     ??throw new QuoteOperationException(404,"servicing-evidence-not-found");
                 var required=(await ServicingEvidenceProjection.RequirementsAsync(db,held,ct)).SingleOrDefault(x=>x.Code=="capacity-response" && x.CapacitySubmissionId==submissionId);

@@ -54,6 +54,16 @@ test('signature proof cannot be reused for different terms even with the same vi
  assert.equal(currentProof({...association,termsVersionId:ids[3]},requirement),false);
  assert.equal(currentProof({...association,termsVersionId:null},requirement),false);
 });
+
+test('terms retry retains the exact contract, recipients, acceptance proof and assurance',()=>{
+ for(const path of ['/terms/prepare','/terms/send','/acceptances']) {
+  const body={cycleId:scope.cycleId,termsVersionId:ids[4],assuranceHash:'a'.repeat(64),recipientContactIds:[ids[5]],evidenceAssociationId:ids[3]};
+  const command=proofCommand(scope,path,body);body.termsVersionId=ids[2];body.assuranceHash='b'.repeat(64);body.recipientContactIds.push(ids[2]);
+  assert.equal(JSON.parse(command.body).termsVersionId,ids[4]);assert.equal(JSON.parse(command.body).assuranceHash,'a'.repeat(64));
+  assert.deepEqual(JSON.parse(command.body).recipientContactIds,[ids[5]]);assert.equal(command.scope.etag,scope.etag);
+  assert.throws(()=>proofCommand(scope,path,{...body,cycleId:ids[5]}));
+ }
+});
 test('only a receipt for the exact saved scope and strong matching ETag confirms success', () => {
   const command = proofCommand(scope, '/evidence', {cycleId:scope.cycleId});
   assert.equal(confirmProofReceipt(command, receipt, receipt.draftEtag), receipt);

@@ -123,6 +123,8 @@ public sealed class ServicingCapacityWorker(IDbContextFactory<BackOfficeDbContex
                     await ServicingCapacityService.RequireSelectedProof(db,submission.Id,token);
                     var definition=JsonSerializer.Deserialize<ServicingCapacityResponseDefinition>(outcome.DefinitionJson,Json)??throw Failure(JobFailure.ProviderConflict);
                     parsed=ServicingCapacityResponseRules.Parse(definition,referral.RuleCode,referral.Dimension,submission.SubmittedAt,outcome.ReceivedAt,now,ServicingEvidenceProjection.Slices(held));
+                    foreach(var condition in parsed.Conditions)
+                        await ServicingTermsService.RequireConditionTerms(db,held,condition.Slices[0].Condition,token);
                 }
             }
             catch(QuoteOperationException) { held=null; }

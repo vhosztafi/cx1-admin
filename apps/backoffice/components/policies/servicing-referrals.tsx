@@ -4,6 +4,7 @@ import { Status } from '../primitives';
 import { ConditionForm } from '../underwriting/referral-decisions';
 import { conditionLabels } from '../../lib/underwriting-decisions';
 import type { ConditionDefinition } from '../../lib/underwriting-api';
+import type { TermsView } from '../../lib/servicing-terms';
 import type { ServicingEditor } from '../../lib/servicing-api';
 import type { ProofAssociation, ProofPage, ProofRequirement } from '../../lib/servicing-proof';
 import { conditionProof, decisionRequest, type ServicingCondition, type ServicingDecision, type ServicingReferrals as ReferralPage } from '../../lib/servicing-referrals';
@@ -26,6 +27,7 @@ export function ServicingReferrals({ draftId, etag, cycleId, active, paused, req
   const [conditions, setConditions] = useState<ConditionDefinition[]>([]), [sliceDate, setSliceDate] = useState('');
   const cursor = page.etag === etag ? page.cursor : '', selected = selection.etag === etag ? selection.ids.filter(id=>!focused||id===focused) : [];
   const base = `/api/v1/drafts/${draftId}`;
+  const terms = useProofRead<TermsView>(cycleId ? `${base}/terms` : null, etag, paused);
   const referrals = useProofRead<ReferralPage>(focused?`${base}/referrals/${focused}`:cycleId ? `${base}/referrals?pageSize=20${cursor ? '&cursor=' + encodeURIComponent(cursor) : ''}` : null, etag, paused);
   const current = referrals.current && referrals.data?.draftId === draftId && referrals.data.cycleId === cycleId && referrals.data.applicable;
   const enabled = active && current;
@@ -59,6 +61,10 @@ export function ServicingReferrals({ draftId, etag, cycleId, active, paused, req
       {conditional && <>{slice ? <><label>Saved risk effective date<select aria-label="Saved risk effective date" value={slice.effectiveAt} onChange={event => setSliceDate(event.target.value)}>{editor!.assessment.slices.map(item => <option key={item.effectiveAt} value={item.effectiveAt}>{new Date(item.effectiveAt).toLocaleString('en-GB')}</option>)}</select></label>
         <p>Choose a target from an actual saved date. The condition will apply on every relevant date where those targets are present.</p>
         <ConditionForm key={`${cycleId}:${slice.effectiveAt}:${outcome}`} quote={{proposal:slice.proposed}} documentaryOnly={outcome === 'query'} add={condition => setConditions(items => [...items, condition])} />
+        <button className="button" disabled={!terms.current || !terms.data?.terms?.applicable} onClick={() => {
+          const current = terms.data?.terms;
+          if (current?.applicable) setConditions(items => [...items, {code:'provide-signed-statement', termsVersionId:current.id, termsHash:current.termsHash}]);
+        }}>Require signed statement for prepared terms</button>
       </> : <p>Refresh the saved risk before choosing a condition target.</p>}
         <ol>{conditions.map((condition, index) => <li key={index}>{conditionLabels[condition.code] ?? condition.code} <button className="button" onClick={() => setConditions(items => items.filter((_, i) => i !== index))}>Remove condition {index + 1}</button></li>)}</ol>
         <p className="client-help">Signed statements require prepared terms. Risk changes require a new saved proposal and rating.</p>

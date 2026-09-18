@@ -93,17 +93,17 @@ public sealed partial class UnderwritingRuntimeTests
         using(var read=await client.GetAsync(root+"/terms")){var view=await Capture(read,HttpStatusCode.OK,"ServicingTermsView");Assert.True(view.GetProperty("acceptanceApplicable").GetBoolean());}
         foreach(var kind in new[]{"terms","deliveries","acceptances"})
         {
-            using var history=await client.GetAsync(root+"/terms/history/"+kind+"?pageSize=1");history.EnsureSuccessStatusCode();
-            var page=await history.Content.ReadFromJsonAsync<JsonElement>();Assert.Single(page.GetProperty("items").EnumerateArray());
+            using var history=await client.GetAsync(root+"/terms/history/"+kind+"?pageSize=1");
+            var page=await Capture(history,HttpStatusCode.OK,"ServicingTermsHistoryPage");Assert.Single(page.GetProperty("items").EnumerateArray());
             if(kind!="terms")
             {
                 var cursor=page.GetProperty("nextCursor").GetString();Assert.False(string.IsNullOrEmpty(cursor));
                 using var next=await client.GetAsync(root+"/terms/history/"+kind+"?pageSize=1&cursor="+Uri.EscapeDataString(cursor!));next.EnsureSuccessStatusCode();
-                var second=await next.Content.ReadFromJsonAsync<JsonElement>();Assert.Single(second.GetProperty("items").EnumerateArray());
+                var second=await Capture(next,HttpStatusCode.OK,"ServicingTermsHistoryPage");Assert.Single(second.GetProperty("items").EnumerateArray());
                 Assert.NotEqual(page.GetProperty("items")[0].GetProperty("id").GetGuid(),second.GetProperty("items")[0].GetProperty("id").GetGuid());
             }
         }
-        using(var retained=await client.GetAsync(root+$"/terms/history/terms/{contract.Id:D}"))retained.EnsureSuccessStatusCode();
+        using(var retained=await client.GetAsync(root+$"/terms/history/terms/{contract.Id:D}"))await Capture(retained,HttpStatusCode.OK,"ServicingTermsSnapshot");
         using(var denied=await client.GetAsync(root+$"/terms/history/terms/{Guid.NewGuid():D}"))Assert.Equal(HttpStatusCode.NotFound,denied.StatusCode);
         await db.Database.ExecuteSqlInterpolatedAsync($"DELETE UserRole WHERE UserId={f.Underwriter.UserId}");
         using(var denied=await Post("/acceptances",accept,acceptKey,before))Assert.Equal(HttpStatusCode.Unauthorized,denied.StatusCode);
