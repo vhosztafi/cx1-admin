@@ -35,5 +35,6 @@ public sealed partial class BackOfficeDbContext
             .HasForeignKey(x=>new{x.CurrentResponseId,x.CurrentSubmissionId,x.Id,x.CycleId,x.DraftId,x.RevisionId,x.RatingId})
             .HasPrincipalKey(x=>new{x.Id,x.SubmissionId,x.CaseId,x.CycleId,x.DraftId,x.RevisionId,x.RatingId}).OnDelete(DeleteBehavior.NoAction);
         Check(capacity,"ResponseOwner","[CurrentResponseId] IS NULL OR [CurrentSubmissionId] IS NOT NULL");
+        ConfigureServicingCarrierConditions(model);
     }
 }

@@ -16,7 +16,14 @@ internal static class ServicingEvidenceProjection
         var slices=Slices(held);
         var conditions=await (from c in db.Set<ServicingCondition>().AsNoTracking() join r in db.Set<ServicingReferral>() on c.ReferralId equals r.Id
             where c.DraftId==held.Scope.Draft.Id && c.CycleId==held.Cycle.Id && c.DecisionId==r.LatestDecisionId &&
-                (r.State=="conditional" || r.State=="queried") && (c.Code=="provide-trading-history" || c.Kind=="warranty") select c).Take(101).ToArrayAsync(token);
+                (r.State=="conditional" || r.State=="queried") && (c.Code=="provide-trading-history" || c.Kind=="warranty")
+            select new {c.Id,c.Code,c.Kind,c.DefinitionJson,c.EffectiveDatesJson}).Take(101).ToArrayAsync(token);
+        var carrier=await (from c in db.Set<ServicingCapacityCondition>().AsNoTracking()
+            join k in db.Set<ServicingCapacityCase>() on c.CaseId equals k.Id
+            where c.DraftId==held.Scope.Draft.Id && c.CycleId==held.Cycle.Id && c.ResponseId==k.CurrentResponseId &&
+                k.State=="conditional" && c.SubmissionId==k.CurrentSubmissionId && (c.Code=="provide-trading-history" || c.Kind=="warranty")
+            select new {c.Id,c.Code,c.Kind,c.DefinitionJson,c.EffectiveDatesJson}).Take(101).ToArrayAsync(token);
+        conditions=conditions.Concat(carrier).ToArray();
         if(conditions.Length>100) throw new QuoteOperationException(409,"servicing-condition-limit");
         var requested=new SortedSet<DateTimeOffset>();
         foreach(var condition in conditions.Where(x=>x.Code=="provide-trading-history"))

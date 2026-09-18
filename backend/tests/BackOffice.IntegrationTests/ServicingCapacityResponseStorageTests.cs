@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using BackOffice.Infrastructure.Persistence;
+using BackOffice.Infrastructure.Policies;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
@@ -28,17 +29,19 @@ public sealed partial class UnderwritingRuntimeTests
         await Assert.ThrowsAsync<SqlException>(()=>Insert(review:Guid.NewGuid()));
         await Assert.ThrowsAsync<SqlException>(()=>Insert(contentHash:new byte[32]));
         Assert.Equal(51470,(await Assert.ThrowsAsync<SqlException>(()=>Insert(outcome:"approve"))).Number);
-        Assert.Equal(51470,(await Assert.ThrowsAsync<SqlException>(()=>Insert(sequence:2))).Number);
+        Assert.Equal(51470,(await Assert.ThrowsAsync<SqlException>(()=>Insert(sequence:3))).Number);
         await Insert();
         Assert.Equal(51471,(await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacityResponse SET Body='Altered fictional carrier message' WHERE Id={responseId}"))).Number);
         await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacityCase SET CurrentResponseId={responseId},State='queried' WHERE Id={capacity.Id}");
         Assert.Equal(51422,(await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacityCase SET State='approved' WHERE Id={capacity.Id}"))).Number);
         Assert.Equal(51422,(await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacityCase SET CurrentResponseId=NULL WHERE Id={capacity.Id}"))).Number);
+        await VerifyServicingCapacityConditionStorage(db,f,capacity,submission,proof,now);
         await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacityCase SET State='draft' WHERE Id={capacity.Id}");
+        Assert.DoesNotContain((await new ServicingEvidenceService(f.Factory,f.Clock).RequirementsAsync(f.Underwriter,capacity.DraftId)).Requirements,x=>x.Requirement.Code=="trading-history");
         responseId=Guid.NewGuid();
-        Assert.Equal(51470,(await Assert.ThrowsAsync<SqlException>(()=>Insert(sequence:2))).Number);
+        Assert.Equal(51470,(await Assert.ThrowsAsync<SqlException>(()=>Insert(sequence:3))).Number);
         Assert.Equal("draft",await db.Set<ServicingCapacityCase>().Where(x=>x.Id==capacity.Id).Select(x=>x.State).SingleAsync());
-        Assert.Equal(1,await db.Database.SqlQueryRaw<int>("SELECT COUNT(*) AS Value FROM ServicingCapacityResponse").SingleAsync());
+        Assert.Equal(2,await db.Database.SqlQueryRaw<int>("SELECT COUNT(*) AS Value FROM ServicingCapacityResponse").SingleAsync());
         // A durable provider result may arrive after withdrawal. Keep exact
         // provider history, but never permit it to become current authority.
         var operation=new DemoProviderOperation{Kind="servicing-capacity",OperationKey=$"servicing-capacity/{submission.Id:N}",
@@ -49,11 +52,11 @@ public sealed partial class UnderwritingRuntimeTests
         var inbox=new AdapterInbox{Provider="demo-servicing-capacity",EventId=eventId,WorkId=submission.WorkId,
             ContentHash=SHA256.HashData(Encoding.UTF8.GetBytes(operation.Result)),State="applied",AppliedAt=now,CreatedAt=now,UpdatedAt=now};
         db.Add(inbox);await db.SaveChangesAsync();
-        async Task Demo(string body)=>await db.Database.ExecuteSqlInterpolatedAsync($"INSERT ServicingCapacityResponse (Id,SubmissionId,CaseId,DraftId,CycleId,RevisionId,RatingId,ProviderId,Sequence,Provenance,Outcome,Body,DefinitionJson,ContentHash,ProviderUnderwriter,ProviderReference,ProviderEventId,ProviderOperationId,InboxId,ReceivedAt,RecordedAt,RecordedBy,ApplicationState,CreatedBy,CreatedAt) VALUES ({responseId},{submissionId},{capacity.Id},{capacity.DraftId},{capacity.CycleId},{capacity.RevisionId},{capacity.RatingId},{capacity.ProviderId},2,'demo-provider','query',{body},{definition},{hash},'Fictional demo provider',{eventId},{eventId},{operation.Id},{inbox.Id},{now},{now},{f.Underwriter.UserId},'superseded',{f.Underwriter.UserId},{now})");
+        async Task Demo(string body)=>await db.Database.ExecuteSqlInterpolatedAsync($"INSERT ServicingCapacityResponse (Id,SubmissionId,CaseId,DraftId,CycleId,RevisionId,RatingId,ProviderId,Sequence,Provenance,Outcome,Body,DefinitionJson,ContentHash,ProviderUnderwriter,ProviderReference,ProviderEventId,ProviderOperationId,InboxId,ReceivedAt,RecordedAt,RecordedBy,ApplicationState,CreatedBy,CreatedAt) VALUES ({responseId},{submissionId},{capacity.Id},{capacity.DraftId},{capacity.CycleId},{capacity.RevisionId},{capacity.RatingId},{capacity.ProviderId},3,'demo-provider','query',{body},{definition},{hash},'Fictional demo provider',{eventId},{eventId},{operation.Id},{inbox.Id},{now},{now},{f.Underwriter.UserId},'superseded',{f.Underwriter.UserId},{now})");
         Assert.Equal(51470,(await Assert.ThrowsAsync<SqlException>(()=>Demo("Altered fictional provider result"))).Number);
         await Demo(providerBody);
         Assert.Equal(51422,(await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacityCase SET CurrentResponseId={responseId},State='queried' WHERE Id={capacity.Id}"))).Number);
         Assert.Equal("draft",await db.Set<ServicingCapacityCase>().Where(x=>x.Id==capacity.Id).Select(x=>x.State).SingleAsync());
-        Assert.Equal(2,await db.Database.SqlQueryRaw<int>("SELECT COUNT(*) AS Value FROM ServicingCapacityResponse").SingleAsync());
+        Assert.Equal(3,await db.Database.SqlQueryRaw<int>("SELECT COUNT(*) AS Value FROM ServicingCapacityResponse").SingleAsync());
     }
 }
