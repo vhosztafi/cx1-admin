@@ -230,3 +230,28 @@ renewal missing-experience handling, fair-value provenance, capacity subject
 records and document purposes in the owning plans. Then create UI-SPEC, validation
 mapping and checked sequential plans. This document does not activate endpoints
 or declare the phase planned.
+
+## 07-07 capacity implementation refinement
+
+Keep servicing capacity separate from quote-owned records. The first storage
+prerequisite is ServicingCapacityCase: Id,DraftId,RevisionId,CycleId,RatingId,
+ReferralId,ProviderId,BinderVersionId,Reason,State,RaisedBy and ordinary mutable
+record provenance. Unique ReferralId; compound referral FK includes all draft/
+revision/cycle/rating identifiers. Provider is derived from the pinned binder,
+never accepted as an arbitrary caller choice. Insert requires current rated draft,
+unexpired rating, current non-declined referral and active exact binder provider.
+Case provenance and original reason are immutable; deletion is forbidden.
+
+Until submission/response graph and worker are implemented, the first migration
+permits only draft or superseded states. No API is opened by this prerequisite.
+A subsequent additive migration must add owned current-submission/current-response
+FKs and replace this narrow guard with pointer/history/state consistency checks;
+it must not rewrite the initial migration or allow approved state without exact
+response provenance. Case history must survive withdrawal, reopen and rerating.
+
+ServicingCapacityRules uses explicit draft/revision/cycle/rating/case/referral/
+provider/submission/hash identity. CapacityRules.Covers is the shared subject-neutral
+limit arithmetic; no servicing draft is passed as a fake QuoteId. ExtentApplies
+is only response extent: current grants, provider, evidence, current conditions,
+proof readiness and every dated exposure remain mandatory service/worker checks.
+ActionState retains history/pointers while draft state fences late delivery.
