@@ -1,5 +1,6 @@
 import {addServicingRatingContracts} from './openapi-servicing-rating.mjs';
 import {addServicingProofReads} from './openapi-servicing-proof-reads.mjs';
+import {addServicingProofCommands} from './openapi-servicing-proof-commands.mjs';
 import {readFileSync} from 'node:fs';
 import {servicingDefinitions} from './servicing-contract-model.mjs';
 
@@ -85,4 +86,5 @@ export function addServicingContracts({schemas,ref,operation,paths}) {
  };
  paths[`${root}/evidence/uploads`].post.description+=' Exactly one file, at most 10 MiB plus 16 KiB multipart overhead, matching supplied metadata; validate actual bytes using existing evidence rules. Reject paths and unknown form fields.';
  addServicingProofReads({schemas,ref,route,paths});
+ addServicingProofCommands({schemas,ref,route,paths});
 }

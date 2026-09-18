@@ -34,7 +34,29 @@ test('implemented servicing proof reads have bounded signed paging and closed re
  assert.ok(download.responses['200'].content['application/pdf']);assert.ok(download.responses['200'].headers['Content-Disposition']);
  for(const name of ['ServicingFilePage','ServicingAssociationPage','ServicingReviewPage','ServicingDecisionPage','ServicingReferralPage','ServicingProofRequirements'])
   assert.equal(document.components.schemas[name].additionalProperties,false);
- assert.equal(getOperation('uploadServicingEvidenceFile')['x-runtime-status'],'phase-7-pending');
+ assert.equal(getOperation('uploadServicingEvidenceFile')['x-runtime-status'],'phase-7-06-command-implemented');
+});
+
+test('servicing proof commands require owned cycle, fingerprints, child versions and closed decision payloads',()=>{
+ const id='10000000-0000-4000-8000-000000000001',etag='"AAAAAAAAAAA="',fingerprint='a'.repeat(64),reason='Fictional reviewed evidence';
+ const check=name=>ajv.getSchema(`${rootId}#/$defs/${name}`);
+ const attach=check('ServicingAttachProofRequest'),review=check('ServicingReviewProofRequest'),resolve=check('ServicingResolveProofRequest');
+ const input={cycleId:id,fileId:id,requirementCode:'warranty-acknowledgement',inputFingerprint:fingerprint,reason};
+ assert.ok(attach(input),JSON.stringify(attach.errors));assert.equal(attach({...input,approved:true}),false);
+ assert.equal(attach({...input,inputFingerprint:undefined}),false);
+ assert.ok(review({cycleId:id,associationEtag:etag,outcome:'accepted',expectedFingerprint:fingerprint,reason}));
+ assert.equal(review({cycleId:id,outcome:'accepted',expectedFingerprint:fingerprint,reason}),false);
+ assert.ok(resolve({cycleId:id,conditionEtag:etag,evidenceAssociationId:id,outcome:'satisfied',reason}));
+ const decisions=check('ServicingSelectedReferralDecisionRequest');
+ const decision={referralId:id,etag,outcome:'query',reason,question:'Please supply trading proof',conditions:[{code:'provide-trading-history'}]};
+ assert.ok(decisions({cycleId:id,decisions:[decision]}),JSON.stringify(decisions.errors));
+ assert.equal(decisions({cycleId:id,decisions:[{...decision,question:undefined}]}),false);
+ assert.equal(decisions({cycleId:id,decisions:Array(51).fill(decision)}),false);
+ for(const name of ['uploadServicingEvidenceFile','attachDraftEvidence','reviewServicingEvidence','withdrawDraftEvidence','decideServicingReferrals','decideServicingReferral','resolveServicingReferralCondition']) {
+  const op=getOperation(name);assert.equal(op['x-runtime-status'],'phase-7-06-command-implemented');
+  for(const header of ['If-Match','Idempotency-Key','X-Edit-Lease'])assert.equal(op.parameters.find(x=>x.name===header)?.required,true,`${name} ${header}`);
+ }
+ assert.equal(document.paths['/drafts/{draftId}/evidence/{evidenceId}/review'],undefined);
 });
 test('API component schemas all compile strictly, including both external policy schemas',()=>{
  for(const name of Object.keys(document.components.schemas))assert.equal(typeof ajv.getSchema(`${rootId}#/$defs/${name}`),'function',name);
@@ -340,12 +362,12 @@ test('evidence associations retain item scope and withdrawal cannot masquerade a
  for(const name of ['Quote','Draft']){
   const body=getOperation(`attach${name}Evidence`).requestBody.content['application/json'].schema;
   const attach=body.$ref?document.components.schemas[body.$ref.split('/').at(-1)]:body;
-  assert.ok(attach.required.includes(name==='Quote'?'fileId':'fileVersionId'));assert.ok(attach.properties.riskItemId);
-  if(name==='Draft')assert.ok(attach.required.includes('cycleId'));
+  assert.ok(attach.required.includes('fileId'));assert.ok(attach.properties.riskItemId);
+  if(name==='Draft')for(const field of ['cycleId','inputFingerprint','reason'])assert.ok(attach.required.includes(field));
   if(name==='Quote')for(const field of ['revisionId','inputFingerprint'])assert.ok(attach.required.includes(field));
   const withdrawRef=getOperation(`withdraw${name}Evidence`).requestBody.content['application/json'].schema;
   const withdraw=withdrawRef.$ref?document.components.schemas[withdrawRef.$ref.split('/').at(-1)]:withdrawRef;
-  assert.deepEqual(withdraw.required,['reason']);assert.equal(withdraw.additionalProperties,false);
+  assert.deepEqual(withdraw.required,name==='Draft'?['cycleId','associationEtag','reason']:['reason']);assert.equal(withdraw.additionalProperties,false);
  }
 });
 test('MFA verification and activation are separate contracts with explicit acknowledgement',()=>{

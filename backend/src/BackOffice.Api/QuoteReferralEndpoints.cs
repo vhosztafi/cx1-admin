@@ -42,7 +42,7 @@ public static class QuoteReferralEndpoints
         }
         catch (Exception error) when (QuoteEndpoints.Known(error)) { return QuoteEndpoints.Failure(context, error); }
     }
-    private static ReferralDecisionInput Decision(JsonElement root)
+    internal static ReferralDecisionInput Decision(JsonElement root)
     {
         var outcome = Text(root, "outcome", 30);
         string[] keys = outcome switch { "approve-with-conditions" => ["referralId", "etag", "outcome", "reason", "conditions"],

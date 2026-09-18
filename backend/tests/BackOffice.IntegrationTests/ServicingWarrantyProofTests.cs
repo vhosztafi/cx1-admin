@@ -96,8 +96,10 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Equal(404,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.DecisionsAsync(f.Underwriter,cycle.DraftId,Guid.NewGuid()))).Status);
         Assert.Equal(422,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.DecisionsAsync(f.Underwriter,cycle.DraftId,referral.Id,pageSize:51))).Status);
         await VerifyServicingProofReadsHttp(db,f,password,cycle,association.Id,referral.Id,uploaded.ResourceId);
-        f.Clock.Current=f.Clock.GetUtcNow().AddDays(1);
+        var beforeExpiry=f.Clock.GetUtcNow();f.Clock.Current=beforeExpiry.AddDays(1);
         Assert.Equal(2,(await evidence.ReviewsAsync(f.Underwriter,cycle.DraftId,association.Id)).Items.Count);
         Assert.Equal(2,(await service.DecisionsAsync(f.Underwriter,cycle.DraftId,referral.Id)).Items.Count);
+        f.Clock.Current=beforeExpiry;
+        await VerifyServicingProofCommandsHttp(db,f,password,cycle,referral.Id);
     }
 }
