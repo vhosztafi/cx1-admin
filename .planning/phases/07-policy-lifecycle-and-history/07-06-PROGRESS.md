@@ -667,3 +667,42 @@ then complete bounded evidence/history views and strict DI/HTTP/contracts, UI an
 persisted browser checks. ReadReferralsAsync is not wired to a route yet. Historical
 cycles, richer decision/trigger detail and actual role-based UI actions must be
 covered before closing07-06. Phase7 stays5/16, total54/65. Continue inline, no agents.
+
+
+## 2026-09-18 trading-history approval and warranty acknowledgement
+
+Implemented aafa4b2: actual generated UW-22 on a business startedOn correction
+in both Motor Trade products now permits plain approval only with exact current
+accepted trading-history proof. The check also precedes receipt replay. Withdrawal
+removes referral readiness and denies replay/new approval while preserving the
+historical approved decision. Conditional dependencies remain retained.
+RED .local/phase7-06-trading-proof-red/sql has2 expected approval failures.
+.local/phase7-06-trading-proof-green contains29 unit+4 SQL passing cases, gate33,
+cutoff2026-09-18T00:10:00Z. Existing conditional flow passes alongside real UW-22.
+
+Implemented fdbbc2b: ServicingWarrantyRules constructs one policy-level
+acknowledgement covering ALL active dated warranty records. Its fingerprint binds
+current condition identities, validated definitions, per-date captured wording,
+stable targets, entire risk schedule and exact servicing ownership. Replacing even
+the same wording under a new decision requires new acknowledgement. Multiple named
+drivers are supported; old proof cannot transfer to a replacement condition.
+Requirements projection includes current warranties; resolution matches this
+aggregate purpose without reducing named-driver warranties to a single target.
+Additive migration20260918002325_ServicingWarrantyEvidence expands the closed
+purpose constraint and guards association insertion with a current owned warranty.
+No historical migration rewritten and no shared demo migration applied.
+
+RED .local/phase7-06-warranty-red has1 expected pure stub failure and2 missing
+requirement SQL failures. .local/phase7-06-warranty-reviewed passes30 unit+6 SQL
+cases (warranty, trading and existing referral flows). Final storage strengthening
+.local/phase7-06-warranty-storage passes30 unit+2 SQL, gate32/no skips, cutoff
+2026-09-18T00:25:00Z. Both products exercise reviewed resolution, withdrawal,
+replacement fingerprint invalidation, wrong target/unreviewed proof denial,
+SQL rejection without current warranties, and downgrade/reapply over existing
+issued/rated data. Issued snapshot unchanged. Debug build/diff checks pass.
+
+Remaining07-06: bounded evidence/history and richer referral/condition wording
+views, strict DI/HTTP/contracts, role-based UI and actual persisted browser checks.
+Signed-statement conditions depend on prepared terms in the later terms plan and
+remain rejected until their owner/version exists. No API/UI or browser acceptance
+claimed for07-06. Phase7 remains5/16; total54/65. Continue sequential inline.
