@@ -490,3 +490,22 @@ test('servicing current authority keeps grants separate and limits paged live re
  assert.ok(schema.required.includes('assessedAt'));assert.ok(schema.required.includes('canDecide'));
  assert.equal(document.components.schemas.ServicingCurrentGrant.properties.rows.maxItems,100);
 });
+
+test('servicing handoff requires exact saved scope and exposes bounded immutable history',()=>{
+ const command=getOperation('submitPolicyDraft'),history=getOperation('listServicingSubmissions');
+ assert.equal(command['x-permission'],'policy-draft-write');
+ assert.equal(command['x-runtime-status'],'phase-7-06-command-implemented');
+ for(const name of ['X-Edit-Lease','If-Match','Idempotency-Key'])assert.ok(command.parameters.some(x=>x.name===name&&x.required),name);
+ assert.ok(command.security.every(x=>Object.hasOwn(x,'Session')&&Object.hasOwn(x,'Csrf')));
+ assert.equal(document.components.securitySchemes.Csrf.name,'X-CSRF-Token');
+ const validate=ajv.getSchema(`${rootId}#/$defs/ServicingSubmissionRequest`);
+ const value={cycleId:'10000000-0000-4000-8000-000000000001',revisionId:'10000000-0000-4000-8000-000000000002',reason:'Submit saved servicing risk'};
+ assert.equal(validate(value),true,JSON.stringify(validate.errors));
+ for(const field of ['approved','submittedBy','ratingId','premium','inputHash'])assert.equal(validate({...value,[field]:'forged'}),false);
+ assert.equal(validate({...value,reason:'short'}),false);
+ assert.equal(command.responses[201].headers.Location,undefined);assert.ok(command.responses[201].headers.ETag);
+ assert.equal(history['x-permission'],'policy-read');assert.equal(history.parameters.find(x=>x.name==='pageSize').schema.maximum,50);
+ assert.equal(history.responses[200].headers.ETag,undefined);assert.equal(history.responses[200].headers['Cache-Control'].schema.const,'no-store');
+ assert.equal(document.components.schemas.ServicingSubmissionPage.properties.items.maxItems,50);
+ assert.ok(document.components.schemas.ServicingSubmissionPage.required.includes('current'));
+});

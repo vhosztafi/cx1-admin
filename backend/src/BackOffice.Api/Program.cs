@@ -48,6 +48,7 @@ builder.Services.AddScoped<BackOffice.Infrastructure.Policies.QuoteIssueService>
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.PolicyReadService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.ServicingDraftService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.ServicingEvidenceService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Policies.ServicingSubmissionService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.ServicingReferralService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.PolicyDiscoveryService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Underwriting.UnderwritingEvidenceService>();
@@ -123,6 +124,7 @@ app.MapServicingDrafts();
 app.MapServicingRatings();
 app.MapServicingProofReads();
 app.MapServicingProofCommands();
+app.MapServicingSubmissions();
 // Domain endpoints are added only alongside their authentication and persistence.
 app.Run();
 
