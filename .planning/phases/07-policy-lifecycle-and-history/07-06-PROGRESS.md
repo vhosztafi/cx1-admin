@@ -733,3 +733,55 @@ and current named-driver wording across both effective dates. Existing condition
 flow still passes. Debug build/diff checks pass; no shared demo migration or browser
 claim. Next is strict DI/HTTP/contracts, role-based UI and persisted browser checks.
 Phase7 remains5/16; total54/65. No07-06 summary/completion yet.
+
+
+## 2026-09-18 scoped HTTP reads and writes with runtime contracts
+
+Read API5937108 wires seven authenticated policy-read routes for requirements,
+files/downloads, owned-cycle associations, review events, current referrals and
+immutable decision history. PartyPaging supports signed GUID keysets alongside
+existing sequence cursors; actor/route/filter/size/version/expiry bindings remain.
+HistoryVersionAsync reads only the scoped draft fence; paginated responses recheck
+it and are no-store without pretending draft ETag is a response cache validator.
+File downloads are scoped attachments with nosniff. Actual DI is registered.
+
+Command APId661f62 wires upload, attachment, review, withdrawal, selected/single
+referral decisions and condition resolution. Strict bounded JSON/multipart DTOs,
+CSRF, strong draft/child ETags, editing lease and current held grants are enforced.
+Single and selected decision receipt scopes are distinct actual HTTP paths. Shared
+quote condition parsing is reused without changing its behavior. New servicing
+Outcome helper avoids the quote helper's quote-specific201 Location behavior.
+HTTP runtime names refine the planning contract: immutable fileId (not a separate
+fileVersionId), associationId, /reviews plural, required purpose fingerprints and
+child ETags. Closed runtime schemas are generated separately from pending planning
+DTOs. Pending capacity/terms/issue routes remain unimplemented and closed.
+
+Read RED .local/phase7-06-proof-reads-api-red/sql:2 missing-route failures.
+GUID paging RED .local/phase7-06-guid-paging-red:1 expected stub failure,1 existing
+pass; GREEN2 passes. Read final .local/phase7-06-proof-reads-api-reviewed passes
+30 domain unit+2 paging+2 real SQL/HTTP, gate34/no skips;36 contract tests pass;
+12 fresh HTTP response bodies validate against generated schemas. Read lint valid
+with24 unused-component warnings.
+
+Command RED .local/phase7-06-proof-commands-api-red/sql:2 missing-route failures.
+Intermediate green had4 passing servicing regressions and2 upload Location
+failures; corrected before final. An existing contract assertion assumed the old
+planned fileVersionId/reason-only withdrawal and was updated to require fileId,
+cycle/fingerprint and child ETag. Final .local/phase7-06-proof-commands-api-reviewed
+passes30 domain unit+2 paging+2 SQL/HTTP, gate34/no skips, cutoff2026-09-18T01:00:00Z.
+37 API contract tests pass;12 fresh read responses and14 actual persisted command
+receipts validate using scripts/verify-servicing-proof-contracts.mjs reads/commands.
+OpenAPI lint valid with28 unused-component warnings (includes superseded planning
+DTOs). Debug build/diff checks pass. Both products verify CSRF denial on all7 writes,
+strict form/body/query/version/lease handling, upload exact replay and download
+Location, attachment, reviewed proof, condition resolution, withdrawal, selected
+atomic validation/decline and single route matching/reopen. Read tests include
+unauthenticated access, foreign children and forged/mismatched cursors.
+
+Remaining07-06: frontend panels/forms and persisted browser checks; safe current
+actor authority display and any required resolution-history projection should be
+completed as part of that integration. Current referral trigger limits describe
+retained rating inputs; do not label those as the viewer's current grants. No UI,
+browser, shared demo migration or human UAT result claimed. Running previews still
+use07-05 Release binaries; stop only verified owned processes before rebuilding.
+Phase7 remains5/16,total54/65; no07-06-SUMMARY until full UI/source coverage passes.

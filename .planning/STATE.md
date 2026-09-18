@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-06 trading/warranty proof and bounded history verified; HTTP/contracts and UI next
-last_updated: "2026-09-18T00:39:25.563627+00:00"
-last_activity: "2026-09-18 —07-06 history265b8b2 verified;30 unit and4 SQL pass; HTTP/contracts and UI remain."
+stopped_at: Plan07-06 proof/referral HTTP reads and writes verified; UI/browser next
+last_updated: "2026-09-18T01:09:45.908311+00:00"
+last_activity: "2026-09-18 —07-06 APIs5937108/d661f62 verified;34 backend cases,37 contracts,26 live response shapes pass; UI/browser remain."
 progress:
   total_phases: 13
   completed_phases: 6
@@ -21,14 +21,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute Phase7;07-01..05 complete;07-05 rating API/worker/UI verified;07-06 proof/referral history verified; HTTP/contracts and UI next.
+**Current focus:** Execute Phase7;07-01..05 complete;07-05 rating API/worker/UI verified;07-06 proof/referral APIs and runtime contracts verified; UI/browser next.
 
 ## Current Position
 
 Phase: 7 of 13 (Policy lifecycle and history)
 Plan: 5 of16 complete;07-06 in progress
-Status: Executing Phase7;07-06 trading/warranty proof and bounded history verified; HTTP/contracts and UI next
-Last activity: 2026-09-18 —07-06 history265b8b2;34-case unit/SQL gate passed. Resume07-06-PROGRESS.md.
+Status: Executing Phase7;07-06 proof/referral HTTP reads and writes verified; UI/browser next
+Last activity: 2026-09-18 —07-06 APId661f62;34-case backend gate and37 contract tests passed. Resume07-06-PROGRESS.md.
 
 Progress: Phases1–6 complete;6/13 phases,54 completed implementation plans.
 
@@ -54,8 +54,8 @@ Progress: Phases1–6 complete;6/13 phases,54 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-18T00:39:25.563627+00:00
-Stopped at:07-06 trading/warranty proof and bounded history verified; HTTP/contracts and UI remain
+Last session: 2026-09-18T01:09:45.908311+00:00
+Stopped at:07-06 proof/referral HTTP reads and writes verified; UI/browser remain
 Resume file: .planning/phases/07-policy-lifecycle-and-history/07-06-PROGRESS.md
 
 ## Autonomous continuation
