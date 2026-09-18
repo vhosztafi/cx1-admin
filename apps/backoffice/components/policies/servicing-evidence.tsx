@@ -76,7 +76,7 @@ export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, 
     finally {sendingRef.current=false;setSending(false);}
   }
   const run: Run = (path, body, upload) => { void execute(path, body, upload); };
-  return <Panel title="Supporting information" note="Saved documents and underwriting review"><div className="quote-rail-body servicing-proof">
+  return <Panel title="Supporting information" note="Saved documents and underwriting review"><div className="quote-rail-body servicing-proof" data-servicing-draft-etag={etag}>
     <p className="client-help">Demo screening checks file type and size. Use fictional documents. Underwriting review separately confirms whether their content satisfies the rated change.</p>
     {dirty && <p role="status">Save and rate your local changes before attaching or reviewing proof.</p>}
     {!editable && <p>Acquire the editing lease to change supporting information.</p>}

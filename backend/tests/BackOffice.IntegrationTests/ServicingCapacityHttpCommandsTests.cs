@@ -68,6 +68,10 @@ public sealed partial class UnderwritingRuntimeTests
         etag=Etag(await db.Set<ServicingDraft>().Where(x=>x.Id==cycle.DraftId).Select(x=>x.RowVersion).SingleAsync());
         var query=await Read(path);Assert.Equal("queried",query.GetProperty("case").GetProperty("state").GetString());
         Assert.Single((await Read(root+"/capacity")).GetProperty("items").EnumerateArray());
+        using(var scoped=await client.GetAsync(root+"/capacity?referralId="+query.GetProperty("case").GetProperty("referralId").GetGuid()))
+            Assert.Equal(HttpStatusCode.OK,scoped.StatusCode);
+        using(var unrelated=await client.GetAsync(root+"/capacity?referralId="+Guid.NewGuid()))
+        {Assert.Equal(HttpStatusCode.OK,unrelated.StatusCode);Assert.Empty(JsonSerializer.Deserialize<JsonElement>(await unrelated.Content.ReadAsStringAsync()).GetProperty("items").EnumerateArray());}
         var queryId=query.GetProperty("case").GetProperty("currentResponseId").GetGuid();
         var reply=await Send(path+"/query-replies",new{cycleId=cycle.Id,caseEtag=await CaseEtag(),responseId=queryId,
             body="Fictional clarification for the carrier query",reason="Resubmit fictional clarified request",evidenceAssociationIds=Array.Empty<Guid>(),scenarioVersionId=setting.Id},HttpStatusCode.Accepted);

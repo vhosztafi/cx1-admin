@@ -29,6 +29,16 @@ test('commands snapshot form and scope and reject foreign cycles and routes', ()
   assert.throws(() => proofCommand({...scope, etag:'W/"AAAAAAAAAAE="'}, '/evidence', body));
 });
 
+test('carrier commands share immutable retry scope and reject foreign or unowned endpoints',()=>{
+ const body={cycleId:scope.cycleId,caseEtag:scope.etag,body:'Fictional carrier request'};
+ for(const path of ['/capacity',...['submissions','query-replies','chases','responses','assignment','actions'].map(kind=>`/capacity/${ids[4]}/${kind}`),`/capacity-conditions/${ids[5]}/resolutions`]) {
+  const input={...body};const command=proofCommand(scope,path,input);input.body='Changed after transmission';
+  assert.ok(Object.isFrozen(command));assert.equal(JSON.parse(command.body).body,body.body);assert.equal(JSON.parse(command.body).cycleId,scope.cycleId);
+  assert.throws(()=>proofCommand(scope,path,{...body,cycleId:ids[5]}));
+ }
+ for(const path of [`/capacity/${ids[4]}/approve`,`/capacity/${ids[4]}/submissions?bypass=true`,`/quotes/${ids[4]}/capacity`])assert.throws(()=>proofCommand(scope,path,body));
+});
+
 test('capacity response proof also requires the exact submission identity',()=>{
   const requirement={code:'capacity-response',riskItemId:null,capacitySubmissionId:ids[4],inputFingerprint:'a'.repeat(64),context:{...scope,ratingId:ids[5]}};
   const association={...requirement.context,...requirement,withdrawn:false};

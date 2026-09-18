@@ -404,3 +404,8 @@ h1, h2, p { margin: 0; }
 .servicing-proof .button, .servicing-proof p, .servicing-proof legend { white-space:normal; overflow-wrap:anywhere; }
 .servicing-proof details { margin:16px 0; }
 .servicing-proof h3 { margin-top:24px; }
+.servicing-capacity > summary { font-weight:600; cursor:pointer; }
+.servicing-capacity .capacity-workspace { margin-top:16px; padding:16px; border:1px solid #e4e6ec; border-radius:10px; background:#fff; }
+.servicing-capacity .capacity-workspace h4 { margin:16px 0 8px; font-weight:600; }
+.servicing-capacity .capacity-message-heading h4 { margin:0; }
+.servicing-capacity .capacity-message { padding:12px 0; border-bottom:1px solid #e4e6ec; }

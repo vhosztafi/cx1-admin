@@ -9,12 +9,13 @@ namespace BackOffice.Infrastructure.Policies;
 
 public sealed partial class ServicingCapacityReadModel(IDbContextFactory<BackOfficeDbContext> factory,TimeProvider time)
 {
-    public async Task<ServicingCapacityList> ListAsync(ActorContext actor,Guid draftId,Guid? beforeId=null,int pageSize=25,CancellationToken token=default)
+    public async Task<ServicingCapacityList> ListAsync(ActorContext actor,Guid draftId,Guid? beforeId=null,int pageSize=25,CancellationToken token=default,Guid? referralId=null)
     {
-        if(beforeId==Guid.Empty || pageSize is <1 or >50) throw new QuoteOperationException(422,"servicing-capacity-page-invalid");
+        if(beforeId==Guid.Empty || referralId==Guid.Empty || pageSize is <1 or >50) throw new QuoteOperationException(422,"servicing-capacity-page-invalid");
         await using var db=await factory.CreateDbContextAsync(token);await using var tx=await db.Database.BeginTransactionAsync(token);
         var draft=await ServicingDraftService.HoldDraft(db,actor,draftId,false,token);
         var query=db.Set<ServicingCapacityCase>().AsNoTracking().Where(x=>x.DraftId==draftId);
+        if(referralId is Guid referral)query=query.Where(x=>x.ReferralId==referral);
         if(beforeId is Guid id)
         {
             var cursor=await query.SingleOrDefaultAsync(x=>x.Id==id,token)??throw new QuoteOperationException(404,"servicing-capacity-cursor-not-found");

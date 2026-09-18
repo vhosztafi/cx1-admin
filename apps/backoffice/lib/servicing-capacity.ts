@@ -1,0 +1,22 @@
+import type { CapacityExtension } from './capacity';
+import type { ConditionDefinition } from './underwriting-api';
+import type { ProofPage } from './servicing-proof';
+
+export type CarrierCase = { id:string; draftId:string; cycleId:string; revisionId:string; ratingId:string; referralId:string; providerId:string;
+  providerLabel:string; ruleCode:string; dimension:string; riskItemId:string|null; state:string; etag:string; reason:string; raisedAt:string;
+  currentSubmissionId:string|null; currentResponseId:string|null; assignedUserId:string|null };
+export type CarrierCases = ProofPage<CarrierCase> & {draftId:string;policyId:string};
+export type CarrierSubmission = { id:string;sequence:number;body:string;reason:string;contextHash:string;workId:string;jobState:string;attempts:number;
+  errorCode:string|null;scenarioVersionId:string;submittedAt:string;responseDueAt:string;evidenceIds:string[] };
+export type CarrierMessage = {id:string;sequence:number;submissionId:string;kind:string;body:string;recordedBy:string;recordedByLabel:string;recordedAt:string};
+export type CarrierResponseDefinition = {outcome:string;validFrom:string|null;validTo:string|null;authorisedLimits:CapacityExtension[];
+  conditions:{definition:ConditionDefinition;effectiveDates:string[]}[]};
+export type CarrierResponse = {id:string;sequence:number;submissionId:string;provenance:string;outcome:string;body:string;providerUnderwriter:string;
+  providerReference:string;applicationState:string;evidenceAssociationId:string|null;evidenceReviewId:string|null;receivedAt:string;recordedAt:string;definition:CarrierResponseDefinition};
+export type CarrierCondition = {id:string;sequence:number;code:string;kind:string;etag:string;wording:string;definition:ConditionDefinition;effectiveDates:string[];satisfied:boolean};
+export type CarrierResolution = {id:string;sequence:number;associationId:string;reviewId:string;outcome:string;reason:string;actorId:string;authorityVersionId:string;grantId:string;recordedAt:string};
+export type CarrierDetail = {case:CarrierCase;policyId:string;draftEtag:string;current:boolean;canWrite:boolean;ready:boolean;blockers:string[];
+  submission:CarrierSubmission|null;response:CarrierResponse|null;conditions:CarrierCondition[];scenarios:{id:string;label:string}[];seniors:{id:string;label:string}[];similarCases:CarrierCase[]};
+export type CarrierRun = (path:string,body:unknown)=>void;
+export const carrierDate=(value:string)=>new Date(value).toLocaleString('en-GB');
+export const carrierLabel=(value:string)=>value.replaceAll('-',' ');

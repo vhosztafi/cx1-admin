@@ -90004,6 +90004,15 @@
               "minLength": 1,
               "maxLength": 2048
             }
+          },
+          {
+            "name": "referralId",
+            "in": "query",
+            "description": "Optional exact referral within this owned draft; included in cursor scope.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         ],
         "responses": {

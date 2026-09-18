@@ -66,6 +66,7 @@ export function addServicingCapacity({schemas:s,ref:r,route,paths}) {
   for(const response of Object.values(op.responses))delete response.headers?.ETag;
   op.parameters=op.parameters.filter(p=>p.in!=='query');
   if(paged)op.parameters.push({name:'pageSize',in:'query',schema:{type:'integer',minimum:1,maximum:50,default:25}},{name:'cursor',in:'query',schema:text(2048)});
+  if(path===cases)op.parameters.push({name:'referralId',in:'query',description:'Optional exact referral within this owned draft; included in cursor scope.',schema:id});
   op.description='Current scoped policy-read access is required. No-store case details and immutable retained history; no file bytes. Signed cursors bind actor, route, page size and parent draft version for 15 minutes. Similar cases are limited to this policy/provider/binder/rule and never grant authority. Ready describes current carrier extent and condition proof only, not overall issue eligibility. Historical responses remain visible after withdrawal, reopening or rerating.';
  }
 }

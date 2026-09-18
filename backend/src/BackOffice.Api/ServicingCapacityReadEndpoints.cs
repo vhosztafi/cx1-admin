@@ -37,13 +37,16 @@ public static partial class ServicingCapacityEndpoints
             QuoteEndpoints.Id(draftId);if(caseId is Guid id)QuoteEndpoints.Id(id);if(conditionId is Guid condition)QuoteEndpoints.Id(condition);
             var actor=LocalIdentityService.Actor(context.User);var token=context.RequestAborted;
             var version=await evidence.HistoryVersionAsync(actor,draftId,token);
-            var page=paging.ReadBound(context,actor,"servicing-capacity-"+kind,version,[]);
+            var page=paging.ReadBound(context,actor,"servicing-capacity-"+kind,version,kind=="cases"?["referralId"]:[]);
             if(page is null || page.Size>50) throw new QuoteHttpException(400,"invalid-query");
+            Guid? referralId=null;
+            if(context.Request.Query.TryGetValue("referralId",out var filter))
+            {if(!Guid.TryParseExact(filter.ToString(),"D",out var parsed)||parsed==Guid.Empty)throw new QuoteHttpException(400,"invalid-query");referralId=parsed;}
             object result;
             switch(kind)
             {
                 case "cases":
-                    var cases=await reads.ListAsync(actor,draftId,page.KeyId,page.Size,token);
+                    var cases=await reads.ListAsync(actor,draftId,page.KeyId,page.Size,token,referralId);
                     if(cases.DraftEtag!=version)throw new QuoteHttpException(409,"stale-cursor");
                     result=new{cases.DraftId,cases.PolicyId,cases.Items,nextCursor=paging.NextGuid(page,cases.NextBeforeId),draftEtag=version};break;
                 case "submissions":

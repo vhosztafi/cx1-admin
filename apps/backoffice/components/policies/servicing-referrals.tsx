@@ -9,6 +9,7 @@ import type { ProofAssociation, ProofPage, ProofRequirement } from '../../lib/se
 import { conditionProof, decisionRequest, type ServicingCondition, type ServicingDecision, type ServicingReferrals as ReferralPage } from '../../lib/servicing-referrals';
 import { PageButtons, useProofRead } from './servicing-proof-read';
 import { referralWorkHash,referralWorkId } from '../../lib/servicing-referral-work';
+import { ServicingCapacity } from './servicingcapacity';
 type Run = (path: string, body: unknown) => void;
 const subscribeWork=(listener:()=>void)=>{window.addEventListener('hashchange',listener);return()=>window.removeEventListener('hashchange',listener);};
 const readWork=()=>referralWorkId(window.location.hash);
@@ -50,6 +51,7 @@ export function ServicingReferrals({ draftId, etag, cycleId, active, paused, req
       {row.conditions.map(condition => <Resolution key={condition.id} condition={condition} current={current} cycleId={cycleId!} requirements={requirements} evidence={evidence} disabled={!enabled} run={run} />)}
       <CurrentAuthority base={base} referralId={row.id} cycleId={cycleId!} etag={etag} paused={paused} initiallyOpen={!!focused} />
       <DecisionHistory base={base} referralId={row.id} etag={etag} paused={paused} initiallyOpen={!!focused} />
+      <ServicingCapacity draftId={draftId} etag={etag} cycleId={cycleId!} referral={row} active={!!enabled} paused={paused} requirements={requirements} evidence={evidence} editor={editor} run={run} />
     </article>)}{!focused&&<PageButtons cursor={cursor} next={referrals.data.nextCursor} disabled={paused} change={value => { setPage({etag, cursor:value}); setSelection({etag, ids:[]}); }} />}</>}
     <fieldset className="quote-reference-fields" disabled={!enabled}><legend>Record a decision · {selected.length} selected</legend>
       <label>Decision outcome<select aria-label="Decision outcome" value={outcome} onChange={event => {setOutcome(event.target.value); setConditions([]);}}><option value="approve">Approve</option><option value="approve-with-conditions">Approve with conditions</option><option value="query">Request information</option><option value="decline">Decline</option><option value="reopen">Reopen</option></select></label>
