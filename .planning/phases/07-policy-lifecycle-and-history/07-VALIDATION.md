@@ -156,3 +156,16 @@ review alone does not resolve conditions, and carrier readiness alone does not
 approve referrals. Reopening retains history and removes applicability. Issued
 snapshots unchanged. Desktop/390px screenshots inspected. Full detail and
 overlapping prior checks are in07-07-SUMMARY.md; atomic issue remains07-10.
+
+## 07-08 measured completion — 2026-09-18
+
+Exact prepared terms, demo delivery and separate acceptance verified in final
+31backend checks (27unit+4SQL, no skips), .local/phase7-08-final, cutoff11:40UTC;
+24 captured current/history HTTP responses pass strict schemas. Signed conditions
+pass both product SQL cases; shared referral/carrier regression passes29unit+3SQL.
+56API/frontend tests and final web lint/production builds pass. Actual both-product
+browser journeys completed11:43:57UTC, including lost-response retry, proof-bound
+acceptance, changed-draft invalidation, fresh-rating reset, history and unchanged
+issued snapshots. Desktop/mobile screenshots inspected. Additive demo migration
+and missing-only terms configuration preserve109existing count/hash records.
+See07-08-SUMMARY.md for exact paths, overlap and remaining issue/renewal boundaries.

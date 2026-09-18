@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1-6 complete;56 implementation plans complete. Phase7 has7/16 plans verified.07-07 capacity lifecycle complete;07-08 terms and acceptance next.
+**Status:** Autonomous progression authorised. Phases1-6 complete;57 implementation plans complete. Phase7 has8/16 plans verified.07-08 terms and acceptance complete;07-09 financial posting next.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
@@ -123,7 +123,7 @@
 **Goal:** Service issued policies without corrupting history.
 **Depends on:** Phase 6
 **Requirements:** POL-01 through POL-09
-**Plans:** 7/16 plans executed
+**Plans:** 8/16 plans executed
 
 **Success criteria:**
 
@@ -142,7 +142,7 @@
 - [x] 07-05 — Servicing rating cycles and cumulative-slice pricing.
 - [x] 07-06 — Servicing evidence and referral decisions.
 - [x] 07-07 — Servicing capacity referral lifecycle.
-- [ ] 07-08 — Servicing terms delivery and exact acceptance.
+- [x] 07-08 — Servicing terms delivery and exact acceptance.
 - [ ] 07-09 — Signed financial components and locked posting periods.
 - [ ] 07-10 — Atomic multi-slice adjustment issue.
 - [ ] 07-11 — Renewal preparation and supplied experience.
@@ -260,7 +260,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 4. Agency onboarding and access | 8/8 | Complete | 2026-09-15 |
 | 5. Motor Trade quote capture | 11/11 | Complete    | 2026-09-16 |
 | 6. Underwriting and first policy issue | 14/14 | Complete | 2026-09-17 |
-| 7. Policy lifecycle and history | 7/16 | In progress | — |
+| 7. Policy lifecycle and history | 8/16 | In Progress|  |
 | 8. Commercial Combined back office | 0/TBD | Not started | — |
 | 9. Tasks, documents, communication and incidents | 0/TBD | Not started | — |
 | 10. Accounting and insurer reporting | 0/TBD | Not started | — |

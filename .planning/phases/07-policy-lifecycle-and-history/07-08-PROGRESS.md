@@ -159,3 +159,11 @@ unused-component warnings (three additional superseded provisional input shapes)
 Initial terms workspace controls are wired and typecheck passes, but browser
 verification and typed signed-statement condition integration remain outstanding.
 No07-08summary, source closure, shared-demo migration or phase completion claimed.
+
+## Completed 2026-09-18
+
+The preceding entries describe intermediate checkpoints.07-08 is now verified
+and committed in18166c6;07-08-SUMMARY.md records final31backend checks,24 strict
+HTTP captures,56API/frontend tests, both product browser journeys, signed-condition
+regression and109existing demo table preservation checks. Shared preview migrated
+additively with missing-only terms configuration. Continue07-09 without pausing.
