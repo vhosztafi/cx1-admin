@@ -61,13 +61,20 @@ public static class CapacityRules
             decision.Outcome is not ("approve" or "approve-with-conditions") || decision.ValidFrom is null || decision.ValidTo is null ||
             decision.ValidFrom > now || now >= decision.ValidTo || decision.ValidFrom > current.StartsAt || decision.ValidTo < current.EndsAt)
             return false;
-        return decision.Extensions.Any(extension => extension.Dimension == current.Dimension &&
-            (MoneyDimensions.Contains(extension.Dimension)
-                ? current.RequestedAmount is >= 0 && extension.MaximumAmount is > 0 && extension.MaximumAmount >= current.RequestedAmount
-                : extension.Dimension == "driver-age"
-                    ? current.MinimumAge is >= 16 && current.MaximumAge is <= 100 && current.MinimumAge <= current.MaximumAge && extension.MinimumAge >= 16 && extension.MaximumAge <= 100 && extension.MinimumAge <= current.MinimumAge && extension.MaximumAge >= current.MaximumAge
-                    : extension.Dimension == "trade-restriction" && extension.Permitted == true && current.QuestionId is not null && extension.QuestionId == current.QuestionId));
+        return decision.Extensions.Any(extension => Covers(extension, current.Dimension, current.RequestedAmount,
+            current.MinimumAge, current.MaximumAge, current.QuestionId));
     }
+
+    // Subject-neutral extent arithmetic shared by quote and servicing graphs.
+    // Each caller must verify its own provenance, current authority and proof.
+    public static bool Covers(CapacityExtension extension, string dimension, decimal? requestedAmount = null,
+        int? minimumAge = null, int? maximumAge = null, string? questionId = null) =>
+        extension.Dimension == dimension &&
+            (MoneyDimensions.Contains(extension.Dimension)
+                ? requestedAmount is >= 0 && extension.MaximumAmount is > 0 && extension.MaximumAmount >= requestedAmount
+                : extension.Dimension == "driver-age"
+                    ? minimumAge is >= 16 && maximumAge is <= 100 && minimumAge <= maximumAge && extension.MinimumAge >= 16 && extension.MaximumAge <= 100 && extension.MinimumAge <= minimumAge && extension.MaximumAge >= maximumAge
+                    : extension.Dimension == "trade-restriction" && extension.Permitted == true && questionId is not null && extension.QuestionId == questionId);
     public static DateTimeOffset ResponseDue(DateTimeOffset submittedAt, int workingDays)
     {
         if (workingDays is < 1 or > 10) throw new ArgumentOutOfRangeException(nameof(workingDays));
