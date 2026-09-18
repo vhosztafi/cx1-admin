@@ -169,3 +169,19 @@ acceptance, changed-draft invalidation, fresh-rating reset, history and unchange
 issued snapshots. Desktop/mobile screenshots inspected. Additive demo migration
 and missing-only terms configuration preserve109existing count/hash records.
 See07-08-SUMMARY.md for exact paths, overlap and remaining issue/renewal boundaries.
+
+## 07-10 measured completion — 2026-09-18
+
+Atomic accepted adjustment issue verified in d02a2b7. Final gate11 (9unit+2SQL),
+no skips, .local/phase7-10-final, cutoff14:00UTC. Both SQL product scenarios prove
+14write-boundary graph rollbacks, different-key duplicate contention, exact concurrent
+replay, current authority before replay, future slice/registration selection and
+immutable original history. Full799unit pass; affected SQL27/28initial plus corrected
+both-product reruns cover28distinct cases. The one failure was a registration fixture
+applied after rating, corrected before save/rating; failed output is retained honestly.
+83contract/frontend/source checks, final lint/typecheck and production builds pass.
+Actual both-product browser issue/retry journeys completed14:11:00UTC; final restart
+readback validates hashes, signed posting, exact issued-version/transaction UI links
+and actual HTTP schemas.113existing demo table hashes preserved by additive migration.
+See07-10-SUMMARY.md. Documents/MID are real pending work; no cash collection or external
+delivery is claimed.07-09 cancellation lineage remains pending13/14. Continue07-11.

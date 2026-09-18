@@ -2129,9 +2129,15 @@
       "handlers": {
         "onClick": "() => this.go('policy')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-10"
+      "owner": "07-10",
+      "evidence": [
+        ".local/browser-evidence/servicing-issue/report.json",
+        ".local/browser-evidence/servicing-issue/restart-readback.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-10-SUMMARY.md"
+      ],
+      "implementation": "Receipt links to the current temporally selected policy and exact issued slices."
     },
     {
       "id": "CTL-3e9bec10fb71",
@@ -2148,9 +2154,15 @@
       "handlers": {
         "onClick": "() => this.go('policy', 'Transactions')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-10"
+      "owner": "07-10",
+      "evidence": [
+        ".local/browser-evidence/servicing-issue/report.json",
+        ".local/browser-evidence/servicing-issue/restart-readback.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-10-SUMMARY.md"
+      ],
+      "implementation": "Receipt opens the exact issued adjustment and its actual Transactions tab; stored signed posting is shown."
     },
     {
       "id": "CTL-902e6ba91260",

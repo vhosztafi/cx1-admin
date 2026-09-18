@@ -3402,7 +3402,7 @@
       "source": "pageHeader: true, title: 'MTA-007 issued', subtitle: 'Smith Motor Traders Ltd · PN/CC/000622 · version 7 effective ' + this.state.mtaEffective,",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10)."
     },
     {
       "id": "SRC07-4343-action-0",
@@ -3414,7 +3414,7 @@
       "source": "{label:'Open policy', style: this.btn('primary'), onClick: () => this.go('policy')},",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10)."
     },
     {
       "id": "SRC07-4344-action-0",
@@ -3426,7 +3426,7 @@
       "source": "{label:'View transactions', style: this.btn('ghost'), onClick: () => this.go('policy', 'Transactions')}",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10)."
     },
     {
       "id": "SRC07-4349-section-0",
@@ -3438,7 +3438,7 @@
       "source": "this.sec({kind:'fields', w:'480px', title:'Transaction result', cols:'1fr 1fr',",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10)."
     },
     {
       "id": "SRC07-4351-field-0",
@@ -3450,7 +3450,7 @@
       "source": "this.f('Transaction', 'TR-000622-07', {mono:true}),",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10)."
     },
     {
       "id": "SRC07-4352-field-0",
@@ -3462,7 +3462,7 @@
       "source": "this.f('Version', 'Version 7 of 7'),",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10)."
     },
     {
       "id": "SRC07-4353-field-0",
@@ -3474,7 +3474,7 @@
       "source": "this.f('Effective', this.state.mtaEffective),",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10)."
     },
     {
       "id": "SRC07-4354-field-0",
@@ -3486,7 +3486,7 @@
       "source": "this.f('Changes applied', '5'),",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10)."
     },
     {
       "id": "SRC07-4355-field-0",
@@ -3498,7 +3498,7 @@
       "source": "this.f('Adjustment premium', '+£186.40', {mono:true}),",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10)."
     },
     {
       "id": "SRC07-4356-field-0",
@@ -3510,7 +3510,7 @@
       "source": "this.f('Total collected', '£233.77', {mono:true, hint:'Including IPT and MTA fee'}),",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10)."
     },
     {
       "id": "SRC07-4357-field-0",
@@ -3522,7 +3522,7 @@
       "source": "this.f('Revised term GWP', '£1,386.65', {mono:true}),",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10)."
     },
     {
       "id": "SRC07-4358-field-0",
@@ -3534,7 +3534,7 @@
       "source": "this.f('Revised balance', '£597.62', {tone:'warn'})",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10)."
     },
     {
       "id": "SRC07-4360-section-0",
@@ -3546,7 +3546,7 @@
       "source": "this.sec({kind:'table', w:'100%', title:'Changes applied',",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10)."
     },
     {
       "id": "SRC07-4361-table-columns-0",
@@ -3558,7 +3558,7 @@
       "source": "columns: this.head(['Section','Change','Result']),",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10)."
     },
     {
       "id": "SRC07-4363-section-0",
@@ -3570,7 +3570,7 @@
       "source": "this.sec({kind:'table', w:'100%', title:'Documents generated',",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10)."
     },
     {
       "id": "SRC07-4364-table-columns-0",
@@ -3582,7 +3582,7 @@
       "source": "columns: this.head(['Document','Version','Sent to','Status']),",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10)."
     },
     {
       "id": "SRC07-4371-section-0",
@@ -3594,7 +3594,7 @@
       "source": "this.sec({kind:'table', w:'100%', title:'Follow-on actions',",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10)."
     },
     {
       "id": "SRC07-4372-table-columns-0",
@@ -3606,7 +3606,7 @@
       "source": "columns: this.head(['Action','Owner','Status']),",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10)."
     },
     {
       "id": "SRC07-4385-section-0",
