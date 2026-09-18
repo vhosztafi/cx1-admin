@@ -38,6 +38,13 @@ export function addServicingTerms({schemas:s,ref:r,route,paths}) {
  if(!s.Job.properties.kind.enum.includes('servicing-delivery'))s.Job.properties.kind.enum.push('servicing-delivery');
  s.ServicingTermsHistoryItem=o({id,cycleId:id,revisionId:id,ratingId:id,termsVersionId:id,deliveryId:n(id),recordedAt:instant,state:{enum:['prepared','queued','delivered','failed','superseded','recorded']},label:t()});
  s.ServicingTermsHistoryPage=o({items:a(r('ServicingTermsHistoryItem')),nextCursor:n(t(2048)),draftEtag:etag});
+ s.ServicingDocumentHistoryItem=o({termsVersionId:id,title:t(300),version:seq,preparedAt:instant,deliveryId:n(id),deliveryState:n({enum:['queued','delivered','failed','superseded']}),sentAt:n(instant),recipients:a(r('ServicingTermsRecipient'),20)});
+ s.ServicingDocumentHistoryPage=o({items:a(r('ServicingDocumentHistoryItem')),nextCursor:n(t(2048)),draftEtag:etag});
+ const documentPath=`${root}/terms/documents`;route('get',documentPath,'listServicingDocuments','policy-read',undefined,'ServicingDocumentHistoryPage');
+ const documents=paths[documentPath].get;documents['x-runtime-status']='phase-7-12-read-implemented';documents.responses=structuredClone(documents.responses);
+ for(const response of Object.values(documents.responses))delete response.headers?.ETag;
+ documents.parameters=documents.parameters.filter(x=>x.in!=='query');documents.parameters.push({name:'pageSize',in:'query',schema:{type:'integer',minimum:1,maximum:50,default:25}},{name:'cursor',in:'query',schema:t(2048)});
+ documents.description='Current policy scope before every retained document read. Version, preparation and exact delivery recipients remain available after issue or lapse, independently of current rating eligibility. No-store, signed actor/route/draft-version bound pagination; never grants mutation authority.';
  for(const [path,name,schema,paged] of [[`${root}/terms/history/{kind}`,'listServicingTermsHistory','ServicingTermsHistoryPage',true],[`${root}/terms/history/terms/{termsId}`,'getRetainedServicingTerms','ServicingTermsSnapshot',false]]) {
   route('get',path,name,'policy-read',undefined,schema);const op=paths[path].get;op['x-runtime-status']='phase-7-08-read-implemented';op.responses=structuredClone(op.responses);
   for(const response of Object.values(op.responses))delete response.headers?.ETag;

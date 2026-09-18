@@ -464,7 +464,8 @@ public sealed partial class QuoteStorageTests
             if (upgrade)
             {
                 await db.GetService<IMigrator>().MigrateAsync("20260915005955_AgencyPermissionProvenance");
-                await DemoDatabase.SeedAsync(db, password);
+                // This historical schema predates accounting periods.
+                await DemoDatabase.SeedAsync(db, password, includeAccounting: false);
                 var before = await db.Set<StaffUser>().AsNoTracking().OrderBy(x => x.Id).Select(x => x.Id).ToListAsync();
                 await db.Database.MigrateAsync();
                 Assert.Equal(before, await db.Set<StaffUser>().AsNoTracking().OrderBy(x => x.Id).Select(x => x.Id).ToListAsync());

@@ -24,10 +24,10 @@ public static class DemoDatabase
         await using var db = new BackOfficeDbContext(new DbContextOptionsBuilder<BackOfficeDbContext>().UseSqlServer(connectionString, sql => sql.UseCompatibilityLevel(160)).Options);
         if (reset) await db.Database.EnsureDeletedAsync(cancellationToken);
         await db.Database.MigrateAsync(cancellationToken);
-        await SeedAsync(db,password,cancellationToken,includeSupportFlags:true,includeMatches:true,includeQuoteCapture:true,includeUnderwriting:true);
+        await SeedAsync(db,password,cancellationToken,includeSupportFlags:true,includeMatches:true,includeQuoteCapture:true,includeUnderwriting:true,includeRenewalLifecycle:true);
     }
 
-    public static async Task SeedAsync(BackOfficeDbContext db,string password,CancellationToken cancellationToken = default,bool includeSupportFlags=false,bool includeMatches=false,bool includeQuoteCapture=false,bool includeUnderwriting=false)
+    public static async Task SeedAsync(BackOfficeDbContext db,string password,CancellationToken cancellationToken = default,bool includeSupportFlags=false,bool includeMatches=false,bool includeQuoteCapture=false,bool includeUnderwriting=false,bool includeRenewalLifecycle=false,bool includeAccounting=true)
     {
         ValidatePassword(password);
         await using var transaction = await db.Database.BeginTransactionAsync(IsolationLevel.Serializable,cancellationToken);
@@ -84,7 +84,7 @@ public static class DemoDatabase
         await db.SaveChangesAsync(cancellationToken);
         await PartyDemoSeed.SeedAsync(db,cancellationToken);
         var processingClock = await db.Set<DemoClock>().SingleAsync(cancellationToken);
-        await Policies.AccountingPeriods.SeedAsync(db,processingClock.FrozenAt ?? DateTimeOffset.UtcNow,cancellationToken);
+        if(includeAccounting)await Policies.AccountingPeriods.SeedAsync(db,processingClock.FrozenAt ?? DateTimeOffset.UtcNow,cancellationToken);
         await db.SaveChangesAsync(cancellationToken);
         await ContactDemoSeed.SeedAsync(db,cancellationToken);
         await AgencyDemoSeed.SeedAsync(db,cancellationToken);
@@ -107,6 +107,7 @@ public static class DemoDatabase
             await Policies.PolicyClientActivitySeed.SeedAsync(db,cancellationToken);
             await Policies.RenewalPreparationSeed.SeedAsync(db,cancellationToken);
         }
+        if(includeRenewalLifecycle)await Policies.RenewalLifecycleSeed.SeedAsync(db,cancellationToken);
         await transaction.CommitAsync(cancellationToken);
     }
 

@@ -7,6 +7,7 @@ import { DataTable, Panel, Status } from '../primitives';
 import { LoadFeedback, useQuoteResource } from '../quotes/shared';
 import { QuoteProposalDetails } from '../quotes/quote-history';
 import { ServicingDrafts } from './servicing-drafts';
+import { RenewalLifecyclePanel } from './renewallifecycle';
 
 const documentNames: Record<string, string> = { 'policy-schedule': 'Policy schedule', 'policy-certificate': 'Certificate of motor insurance', 'policy-statement': 'Statement of fact' };
 const date = (value: string) => new Date(value).toLocaleString('en-GB', { timeZone: 'Europe/London', dateStyle: 'medium', timeStyle: 'short' });
@@ -51,6 +52,7 @@ export function PolicyRecord({ policyId, questionLabels,selection,initialTab }: 
     <section className="quote-saved-banner" aria-label="Issued policy"><div><span className="quote-step-label">{product}</span><h2>{declaredName}</h2><p>Policy issued · {date(policy.issuedAt)} · London</p></div><Status tone={coverage === 'In force' ? 'success' : 'info'}>{coverage}</Status></section>
     {chronology}
     <ServicingDrafts key={`${policy.termId}:${policy.versionId}`} termId={policy.termId} baseVersionId={policy.versionId} />
+    <RenewalLifecyclePanel key={policy.termId} termId={policy.termId} />
     <div className="quote-row-actions quote-record-tabs" role="tablist" aria-label="Policy record tabs">{tabs.map(item => <button key={item} className="button" role="tab" aria-selected={tab === item} onClick={() => setTab(item)}>{item}</button>)}</div>
     <div className="underwriting-workspace"><div className="underwriting-layout"><div className="underwriting-main">
       {tab === 'Overview' ? <><Panel title="Policy issued" note="Accepted cover and opening balance saved"><div className="quote-rail-body"><Status tone="success">Issued</Status><p>The accepted cover is retained as version {policy.versionSequence}. Coverage follows the dates below.</p>{fields([['Inception', date(snapshot.term.startsAt) + ' · London'], ['Expiry', date(snapshot.term.endsAt) + ' · London'], ['Term basis', snapshot.term.kind === 'annual' ? 'Annual' : 'Short period'], ['Collection', snapshot.premium.settlement.collector === 'agency' ? 'Agency collection' : 'Direct MGA collection']])}</div></Panel>{transaction}{documents}</> : tab === 'Transactions' ? transaction : tab === 'Documents' ? documents : <Panel title={tab} note={`Immutable declared details · issued version ${policy.versionSequence}`}><div className="quote-rail-body"><QuoteProposalDetails proposal={snapshot} questionLabels={questionLabels} value={tab === 'Risk details' ? { insured: snapshot.insured, term: snapshot.term, business: snapshot.risk.business, premises: snapshot.risk.premises, previousInsurance: snapshot.risk.previousInsurance, declarations: snapshot.risk.declarations, materialFacts: snapshot.risk.materialFacts } : tab === 'Cover' ? snapshot.cover : tab === 'Drivers' ? { basis: snapshot.risk.driverBasis, drivers: snapshot.risk.drivers } : { vehicles: snapshot.risk.vehicles, specifiedVehicleIds: snapshot.risk.specifiedVehicleIds, tradePlates: snapshot.risk.tradePlates, heldTradePlates: snapshot.risk.heldTradePlates }} /></div></Panel>}

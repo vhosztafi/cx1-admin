@@ -28,7 +28,7 @@ public sealed class SqlTicketStore(IDbContextFactory<BackOfficeDbContext> factor
             throw new InvalidOperationException("Account changed during authentication.");
         var key = WebEncoders.Base64UrlEncode(RandomNumberGenerator.GetBytes(32));
         var now = time.GetUtcNow();
-        db.Add(new UserSession {UserId=userId,TokenHash=Hash(key),ExpiresAt=ticket.Properties.ExpiresUtc ?? now.AddHours(8),
+        db.Add(new UserSession {UserId=userId,TokenHash=Hash(key),CreatedAt=now,UpdatedAt=now,ExpiresAt=ticket.Properties.ExpiresUtc ?? now.AddHours(8),
             LastSeenAt=now,DeviceLabel="Back office browser",SecurityStamp=user.SecurityStamp,
             TicketCiphertext=protector.Protect(TicketSerializer.Default.Serialize(ticket))});
         db.Add(LocalIdentityService.AuthenticationAudit(userId,"authentication.succeeded",now));

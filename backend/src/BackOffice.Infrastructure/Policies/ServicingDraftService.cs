@@ -27,7 +27,7 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
         await using var db = await factory.CreateDbContextAsync(token); await using var tx = await db.Database.BeginTransactionAsync(token);
         var term = await HoldTerm(db, actor, termId, false, token);
         var drafts = await db.Set<ServicingDraft>().AsNoTracking().Where(x => x.BaseTermId == term.Id).OrderByDescending(x => x.CreatedAt)
-            .Select(x => new { x.Id, x.Kind, x.State, x.CurrentRevisionId, x.BaseVersionId, x.UpdatedAt }).ToArrayAsync(token);
+            .Select(x => new { x.Id, x.Kind, State=x.Kind=="renewal" && x.State=="draft" && db.Set<RenewalLapseEvent>().Any(l=>l.TermId==x.BaseTermId)?"lapsed":x.State, x.CurrentRevisionId, x.BaseVersionId, x.UpdatedAt }).ToArrayAsync(token);
         var result = new ServicingDraftRead(JsonSerializer.Serialize(new { termId, policyId = term.PolicyId, items = drafts }, Json), Etag(term.RowVersion));
         await tx.CommitAsync(token); return result;
     }
@@ -45,6 +45,11 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
         var draft = await HoldDraft(db, actor, draftId, false, token);
         var revision = await db.Set<ServicingRevision>().AsNoTracking().SingleAsync(x => x.Id == draft.CurrentRevisionId, token);
         var assessment = await Assess(db, actor, draft, ServicingProposalInput.Parse(revision.ProposalJson, draft.BaseVersionId), token);
+        if(draft.Kind=="renewal" && assessment.Slices.Count==0)
+        {
+            var prepared=await db.Set<RenewalPreparationVersion>().AsNoTracking().Where(x=>x.DraftId==draft.Id).OrderByDescending(x=>x.Sequence).FirstOrDefaultAsync(token);
+            if(prepared is not null)assessment=assessment with{Slices=[new(prepared.StartsAt,assessment.Proposed,[])]};
+        }
         var policy = await db.Set<Policy>().AsNoTracking().SingleAsync(x => x.Id == draft.PolicyId, token);
         var result = new ServicingDraftRead(JsonSerializer.Serialize(new { draftId, revisionId = revision.Id, policy.ClientId,
             captureVersions = new { schemaVersion = "1.0", questionSetVersion = QuoteCatalogueIdentity.Version, referenceDataVersion = QuoteCatalogueIdentity.Version },
@@ -64,6 +69,8 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
             async (db, ct) =>
             {
                 Current(term!.RowVersion, version);
+                if(input.Kind=="renewal" && await db.Set<RenewalLapseEvent>().AnyAsync(x=>x.TermId==termId,ct))
+                    throw new QuoteOperationException(409,"renewal-already-lapsed");
                 if (!await db.Set<PolicyVersion>().AnyAsync(x => x.Id == input.BaseVersionId && x.TermId == termId && x.PolicyId == term.PolicyId, ct))
                     throw new QuoteOperationException(422, "servicing-base-mismatch");
                 if (input.Kind != "cancellation" && await db.Set<ServicingDraft>().AnyAsync(x => x.BaseTermId == termId && x.Kind == input.Kind && x.State == "draft", ct))
@@ -155,8 +162,11 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
         var term = await db.Set<ServicingDraft>().AsNoTracking().Where(x => x.Id == id).Select(x => (Guid?)x.BaseTermId).SingleOrDefaultAsync(ct)
             ?? throw new QuoteOperationException(404, "servicing-draft-not-found");
         await HoldTerm(db, actor, term, write, ct);
-        return write ? await db.Set<ServicingDraft>().FromSqlInterpolated($"SELECT * FROM ServicingDraft WITH(UPDLOCK,HOLDLOCK) WHERE Id={id}").SingleAsync(ct)
+        var draft=write ? await db.Set<ServicingDraft>().FromSqlInterpolated($"SELECT * FROM ServicingDraft WITH(UPDLOCK,HOLDLOCK) WHERE Id={id}").SingleAsync(ct)
             : await db.Set<ServicingDraft>().FromSqlInterpolated($"SELECT * FROM ServicingDraft WITH(HOLDLOCK) WHERE Id={id}").SingleAsync(ct);
+        if(write && draft.Kind=="renewal" && draft.State=="draft" && await db.Set<RenewalLapseEvent>().AnyAsync(x=>x.TermId==draft.BaseTermId,ct))
+            throw new QuoteOperationException(409,"renewal-already-lapsed");
+        return draft;
     }
 
     private static Task<ServicingLease?> Lease(BackOfficeDbContext db, Guid id, CancellationToken ct)
@@ -208,9 +218,10 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
     {
         var revision = await db.Set<ServicingRevision>().AsNoTracking().SingleAsync(x => x.Id == draft.CurrentRevisionId, ct);
         var lease = await db.Set<ServicingLease>().AsNoTracking().SingleOrDefaultAsync(x => x.DraftId == draft.Id, ct);
+        var state=draft.Kind=="renewal" && draft.State=="draft" && await db.Set<RenewalLapseEvent>().AnyAsync(x=>x.TermId==draft.BaseTermId,ct)?"lapsed":draft.State;
         // The fence is never sufficient authority: every command binds it to the
         // authenticated current holder and freshly checked policy permission.
-        return new(JsonSerializer.Serialize(new { draft.Id, draft.PolicyId, draft.BaseTermId, draft.BaseVersionId, revisionId = revision.Id, draft.Kind, draft.State,
+        return new(JsonSerializer.Serialize(new { draft.Id, draft.PolicyId, draft.BaseTermId, draft.BaseVersionId, revisionId = revision.Id, draft.Kind, state,
             proposal = JsonSerializer.Deserialize<JsonElement>(revision.ProposalJson), draft.CreatedAt, draft.UpdatedAt,
             lease = lease is null ? null : new { lease.Id, lease.HolderId, lease.Generation, leaseToken = lease.Token, lease.ExpiresAt, lease.Active } }, Json), Etag(draft.RowVersion));
     }

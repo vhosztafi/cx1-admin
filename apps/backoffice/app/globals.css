@@ -415,3 +415,17 @@ h1, h2, p { margin: 0; }
 .servicing-capacity .capacity-workspace h4 { margin:16px 0 8px; font-weight:600; }
 .servicing-capacity .capacity-message-heading h4 { margin:0; }
 .servicing-capacity .capacity-message { padding:12px 0; border-bottom:1px solid #e4e6ec; }
+.renewal-stage-navigation { margin-bottom: 1rem; }
+.table-scroll[aria-label="Renewal invitation documents"] table { min-width: 850px; table-layout: auto; }
+.table-scroll[aria-label="Renewal invitation documents"] th { white-space: nowrap; }
+.table-scroll[aria-label="Renewal invitation documents"] td:first-child { min-width: 230px; }
+.renewal-stage-navigation nav { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
+.renewal-stage-navigation nav a { display: flex; align-items: center; gap: .5rem; padding: .55rem .75rem; border-radius: .45rem; color: #586174; text-decoration: none; font-size: .8rem; }
+.renewal-stage-navigation nav a[aria-current] { background: #eef1fe; color: #304fdb; font-weight: 600; }
+.renewal-stage-number { display: none; }
+.renewal-stage-navigation nav[data-style="Side rail"] { flex-direction: column; align-items: stretch; }
+.renewal-stage-navigation nav[data-style="Side rail"] a[aria-current] { box-shadow: inset 2px 0 #3f5ef5; }
+.renewal-stage-navigation nav[data-style="Numbered rail"] a { border: 1px solid #e4e7ee; border-radius: 2rem; }
+.renewal-stage-navigation nav[data-style="Segmented bar"] a { flex: 1 1 8rem; border-top: 4px solid #e4e7ee; border-radius: 0; }
+.renewal-stage-navigation nav[data-style="Segmented bar"] a[aria-current] { border-color: #3f5ef5; }
+.renewal-stage-navigation nav[data-style="Breadcrumb"] a + a::before { content: '/'; margin-right: .5rem; color: #9aa0b0; }

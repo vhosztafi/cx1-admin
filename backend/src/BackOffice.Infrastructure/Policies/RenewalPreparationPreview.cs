@@ -39,6 +39,7 @@ public sealed partial class RenewalPreparationService
         var term=await db.Set<PolicyTerm>().FromSqlInterpolated($"SELECT * FROM PolicyTerm WITH(HOLDLOCK) WHERE Id={termId}").SingleOrDefaultAsync(token)
             ??throw new QuoteOperationException(404,"policy-term-not-found");
         if(!await db.Set<Policy>().AnyAsync(x=>x.Id==term.PolicyId && x.SourceQuoteId==source.Quote.Id,token))throw new QuoteOperationException(404,"policy-term-not-found");
+        if(await db.Set<RenewalLapseEvent>().AnyAsync(x=>x.TermId==term.Id,token))throw new QuoteOperationException(409,"renewal-already-lapsed");
         var settings=await db.Set<SettingVersion>().FromSqlInterpolated($"SELECT * FROM SettingVersion WITH(HOLDLOCK) WHERE Scope={RenewalConfiguration.Scope}").AsNoTracking().ToArrayAsync(token);
         var setting=settings.Where(x=>x.EffectiveFrom<=now).OrderByDescending(x=>x.Version).FirstOrDefault();
         var config=setting is null?null:RenewalConfiguration.Parse(setting.Values);

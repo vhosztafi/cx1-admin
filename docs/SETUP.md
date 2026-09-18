@@ -245,3 +245,26 @@ sets, including old revisions, credentials, policy graphs, journals and document
 requests. It rejects SQL errors, NULL/malformed hashes, missing or duplicate rows
 and any changed set. Empty tables hash the explicit empty JSON array. This is
 separate from the API restart readback and does not reset the database.
+
+## Renewal lifecycle preview
+
+After applying current migrations, enable `Cover__RenewalLifecycleWorkerEnabled=true`
+on the Development API for date-driven renewal lapse and persisted fictional
+notification delivery. The worker is disabled by default. Renewal settings hold
+the invitation and lapse offsets (45 days before expiry and 14 London calendar
+days after expiry in the demo). Accepted or issued renewals are excluded. Manual
+lapse records a reason and retains existing cover through its original expiry.
+The notification worker never sends email; the UI shows its stored outcome and
+attempt history. Missing recipients produce a visible failed job.
+
+Fresh `--initialize-demo` includes invitation templates. For an existing migrated
+demo, `--seed-renewal-lifecycle-demo` only adds missing renewal invitation templates;
+there is no need to reset or reseed policy history. Policy document generation
+and MID dispatch remain separate later-phase workers.
+
+`node scripts/verify-renewallifecycle-browser.mjs` requires a built web application,
+local Chrome and `COVER_SQL_TEST_CONNECTION`. It creates and removes only isolated
+test databases and starts owned temporary Next/API processes. Both Motor Trade
+products exercise manual lapse with lost-response retry and the actual hosted
+date worker with a controlled clock. Browser and server clocks are aligned;
+the shared demo clock and policy history are unchanged.

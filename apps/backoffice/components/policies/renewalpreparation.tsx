@@ -6,6 +6,7 @@ import {formatGbp} from '../../lib/underwriting-api';
 import {renewalCommand,sendRenewal,renewalExperienceDisplay,type RenewalCommand,type RenewalWorkspace,type RenewalExperienceView,type RenewalExperienceFacts} from '../../lib/renewal-preparation';
 import type {ServicingRatingHistory} from '../../lib/servicing-rating';
 import type {ServicingEditor} from '../../lib/servicing-api';
+import {RenewalStages} from './renewalstages';
 
 const date=(value:string)=>new Date(value).toLocaleString('en-GB',{timeZone:'Europe/London'});
 const emptyFacts={observationStartsOn:'',observationEndsOn:'',claimCount:Number.NaN,paid:'',outstanding:'',earnedPremium:'',sourceCode:'agency' as const,sourceReference:'',evidenceAssociationId:''};
@@ -77,7 +78,7 @@ export function RenewalPreparation({draftId,policyId,editor,etag,fence,editable,
   const insured=editor?.assessment.base.insured;
   const insuredName=typeof insured?.legalName==='string'?insured.legalName:[insured?.firstName,insured?.surname].filter(value=>typeof value==='string').join(' ');
   return <section className="renewal-preparation" aria-label="Renewal preparation" id="renewal-review-risk">
-    <nav className="quote-row-actions" aria-label="Renewal stages">{[['Review risk','#renewal-review-risk'],['Rate renewal','#renewal-rate'],['Issue invitation','#renewal-invitation'],['Await acceptance','#renewal-acceptance']].map(([label,href],index)=><a className="button" key={href} href={href}>{index+1}. {label}</a>)}</nav>
+    <RenewalStages />
     <Panel title="Renewal summary" note="Issued cover remains unchanged"><div className="quote-rail-body">
       <Status tone={ready?'info':'warning'}>{ready?'In preparation':'Review required'}</Status>
       {workspace.error||experience.error?<p role="alert">{workspace.error||experience.error}</p>:null}

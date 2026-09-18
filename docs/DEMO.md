@@ -23,6 +23,7 @@ In one terminal, start the API and its Development diagnostic worker:
 
 ```powershell
 $env:ASPNETCORE_ENVIRONMENT = 'Development'
+$env:Cover__RenewalLifecycleWorkerEnabled = 'true'
 dotnet backend/src/BackOffice.Api/bin/Debug/net10.0/BackOffice.Api.dll --urls http://127.0.0.1:5087
 ```
 

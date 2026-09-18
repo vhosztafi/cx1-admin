@@ -63,7 +63,7 @@ export function servicingDefinitions(quote) {
   o({id,draftId:id,policyId:id,baseTermId:id,baseVersionId:id,revisionId:id,kind:{const:'cancellation'},cancellationPreviewId:id,cancellationApprovalId:id,effectiveAt:instant,inputHash:hash,createdAt:instant,createdBy:id}),
  ]};
  defs.ServicingDraftCreate=o({kind,baseVersionId:id,commonEffectiveIntent:r('ServicingEffectiveIntent'),reason});
- defs.ServicingDraft=o({id,policyId:id,baseTermId:id,baseVersionId:id,revisionId:id,kind,state:e('draft','rating','referral','quoted','accepted','issued','abandoned'),proposal:r('ServicingProposal'),createdAt:instant,updatedAt:instant});
+ defs.ServicingDraft=o({id,policyId:id,baseTermId:id,baseVersionId:id,revisionId:id,kind,state:e('draft','rating','referral','quoted','accepted','issued','abandoned','lapsed'),proposal:r('ServicingProposal'),createdAt:instant,updatedAt:instant});
  defs.ServicingDraft.properties.lease={anyOf:[o({...defs.ServicingLease.properties,active:{type:'boolean'}}),{type:'null'}]};
  defs.ServicingDraft.required.push('lease');
  const capture=structuredClone(quote); delete capture.$schema; delete capture.$id; delete capture.$defs;
@@ -79,7 +79,7 @@ export function servicingDefinitions(quote) {
   assessment:o({base:r('ServicingEditorCapture'),proposed:r('ServicingEditorCapture'),changes:many(r('ServicingEditorChange'),100000),
    readinessIssues:many(o({code:t(200),path:{type:'string',maxLength:2000},questionId:{anyOf:[t(200),{type:'null'}]}}),100),
    slices:many(o({effectiveAt:instant,proposed:r('ServicingEditorCapture'),changeIds:many(id,100)}),100)})});
- defs.ServicingDraftList=o({termId:id,policyId:id,items:many(o({id,kind,state:e('draft','abandoned'),currentRevisionId:id,baseVersionId:id,updatedAt:instant}),10000)});
+ defs.ServicingDraftList=o({termId:id,policyId:id,items:many(o({id,kind,state:e('draft','abandoned','issued','lapsed'),currentRevisionId:id,baseVersionId:id,updatedAt:instant}),10000)});
  return defs;
 }
 

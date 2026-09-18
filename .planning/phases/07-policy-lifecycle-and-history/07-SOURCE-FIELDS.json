@@ -3030,7 +3030,7 @@
       "source": "S.splice(4, 0, this.sec({kind:'table', w:'100%', title:'Documents issued',",
       "ownerPhase": 7,
       "owner": "07-12",
-      "evidence": "Owner refinement: invitation documents, issue and due/expiry/auto-lapse timeline belong to the approved 07-12 lifecycle task. Still unverified; no completion claimed."
+      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects."
     },
     {
       "id": "SRC07-4251-table-columns-0",
@@ -3042,7 +3042,7 @@
       "source": "columns: this.head(['Document','Version','Issued','Sent to']),",
       "ownerPhase": 7,
       "owner": "07-12",
-      "evidence": "Owner refinement: invitation documents, issue and due/expiry/auto-lapse timeline belong to the approved 07-12 lifecycle task. Still unverified; no completion claimed."
+      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects."
     },
     {
       "id": "SRC07-4258-section-0",
@@ -3078,7 +3078,7 @@
       "source": ": {label:'Issue renewal policy', style: this.btn('primary'), onClick: () => this.toast('Renewal policy issued (mock): PN/CC/000571 version 5, term 01/10/2026 – 30/09/2027.', 'Open policy', () => this.go('policy'))}",
       "ownerPhase": 7,
       "owner": "07-12",
-      "evidence": "Owner refinement: invitation documents, issue and due/expiry/auto-lapse timeline belong to the approved 07-12 lifecycle task. Still unverified; no completion claimed."
+      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects."
     },
     {
       "id": "SRC07-4270-section-0",
@@ -3102,7 +3102,7 @@
       "source": "this.sec({kind:'fields', title:'Timeline', cols:'1fr',",
       "ownerPhase": 7,
       "owner": "07-12",
-      "evidence": "Owner refinement: invitation documents, issue and due/expiry/auto-lapse timeline belong to the approved 07-12 lifecycle task. Still unverified; no completion claimed."
+      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects."
     },
     {
       "id": "SRC07-4279-field-0",
@@ -3114,7 +3114,7 @@
       "source": "this.f('Invitation due', '17/08/2026', {tone:'warn', hint:'45 days before expiry — overdue'}),",
       "ownerPhase": 7,
       "owner": "07-12",
-      "evidence": "Owner refinement: invitation documents, issue and due/expiry/auto-lapse timeline belong to the approved 07-12 lifecycle task. Still unverified; no completion claimed."
+      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects."
     },
     {
       "id": "SRC07-4280-field-0",
@@ -3126,7 +3126,7 @@
       "source": "this.f('Expiry', '30/09/2026'),",
       "ownerPhase": 7,
       "owner": "07-12",
-      "evidence": "Owner refinement: invitation documents, issue and due/expiry/auto-lapse timeline belong to the approved 07-12 lifecycle task. Still unverified; no completion claimed."
+      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects."
     },
     {
       "id": "SRC07-4281-field-0",
@@ -3138,7 +3138,7 @@
       "source": "this.f('Renewal inception', '01/10/2026'),",
       "ownerPhase": 7,
       "owner": "07-12",
-      "evidence": "Owner refinement: invitation documents, issue and due/expiry/auto-lapse timeline belong to the approved 07-12 lifecycle task. Still unverified; no completion claimed."
+      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects."
     },
     {
       "id": "SRC07-4282-field-0",
@@ -3150,7 +3150,7 @@
       "source": "this.f('Auto-lapse', '14/10/2026', {hint:'If not accepted'})",
       "ownerPhase": 7,
       "owner": "07-12",
-      "evidence": "Owner refinement: invitation documents, issue and due/expiry/auto-lapse timeline belong to the approved 07-12 lifecycle task. Still unverified; no completion claimed."
+      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects."
     },
     {
       "id": "SRC07-4291-section-0",
@@ -4792,7 +4792,7 @@
       "id": "BR07-09",
       "behavior": "renewal stages1-4 and separate issue",
       "owner": "07-12",
-      "evidence": "Owning plan tests eligible and blocked states with actual persistence."
+      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects."
     },
     {
       "id": "BR07-10",

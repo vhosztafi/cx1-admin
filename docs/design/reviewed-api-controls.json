@@ -1356,9 +1356,10 @@
     "status": "reviewed",
     "disposition": "command",
     "operationIds": [
-      "sendRenewalInvitation"
+      "prepareServicingTerms",
+      "deliverServicingTerms"
     ],
-    "reason": "Send current rated renewal terms with pinned invitation evidence."
+    "reason": "Prepare exact approved renewal terms, then deliver that immutable invitation with reviewed signed proof and retained recipients."
   },
   {
     "controlId": "CTL-fa18c029e256",

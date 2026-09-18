@@ -77,3 +77,22 @@ date worker and notification with restart/race proof, due/overdue/invited/accept
 issued/lapsed timeline and API/UI, and a browser lapse scenario. Also verify
 conditional referral targeting for an unchanged renewal (empty change slices).
 Continue implementation inline without asking the user for another command.
+
+## Verified lapse and document history completion — 2026-09-18
+
+The remaining implementation is complete. Durable manual/automatic lapse,
+date-driven dispatch, recipient-bound fictional notification, restart/fence
+recovery, closed draft behavior and unchanged-cover proof pass for both products.
+The configured timeline and attempt history are wired into actual UI/API reads.
+Unchanged renewal slices support conditions; document history remains available
+after issue independently of rating eligibility. Final mobile table readability
+was visually corrected and checked.
+
+Measured final gate42 (21unit+21SQL), separate6 document SQL,4 real browser clock
+journeys,8+8 strict HTTP captures,61 API/source and5 UI helper checks pass.
+The broader57-case run had52 passes and5 historical-fixture failures; all5 were
+fixed and rerun in the final21-SQL gate. Full details and exact report paths are
+in07-12-SUMMARY.md.121 existing demo table hashes are unchanged by the additive
+lapse migration. Final both-product document/issue restart browser verification
+completed19:23:48UTC. Preview restored; no full reseed, reset or real delivery.
+07-12 is complete. Continue07-13 inline without a new user command.

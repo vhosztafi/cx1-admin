@@ -13,11 +13,13 @@ namespace BackOffice.IntegrationTests;
 public sealed partial class UnderwritingRuntimeTests
 {
     [Theory]
-    [InlineData("motor-trade-road-risks",false)]
-    [InlineData("motor-trade-combined",false)]
-    [InlineData("motor-trade-road-risks",true)]
-    [InlineData("motor-trade-combined",true)]
-    public async Task RealSqlRenewalLifecycleInvitationsRetainExactTermsAndSeparateAcceptance(string product,bool issue)
+    [InlineData("motor-trade-road-risks",false,false)]
+    [InlineData("motor-trade-combined",false,false)]
+    [InlineData("motor-trade-road-risks",true,false)]
+    [InlineData("motor-trade-combined",true,false)]
+    [InlineData("motor-trade-road-risks",false,true)]
+    [InlineData("motor-trade-combined",false,true)]
+    public async Task RealSqlRenewalLifecycleInvitationsRetainExactTermsAndSeparateAcceptance(string product,bool issue,bool lapseRace)
     {
         await WithDatabase(async(db,password)=>
         {
@@ -36,6 +38,13 @@ public sealed partial class UnderwritingRuntimeTests
             var leased=await drafts.LeaseAsync(f.Underwriter,created.ResourceId,Version(created.Etag!),"acquire",null,null,Key(),Guid.NewGuid());
             var fence=JsonSerializer.Deserialize<JsonElement>(leased.Body).GetProperty("lease").GetProperty("leaseToken").GetGuid();
             var prepared=await preparation.PrepareAsync(f.Underwriter,created.ResourceId,Version(leased.Etag!),fence,12,null,Key(),Guid.NewGuid());
+            using(var editor=JsonDocument.Parse((await drafts.ReadEditorAsync(f.Underwriter,created.ResourceId)).Body))
+            {
+                var slices=editor.RootElement.GetProperty("assessment").GetProperty("slices");
+                Assert.Equal(1,slices.GetArrayLength());
+                Assert.Equal((await db.Set<RenewalPreparationVersion>().AsNoTracking().SingleAsync(x=>x.Id==prepared.ResourceId)).StartsAt,slices[0].GetProperty("effectiveAt").GetDateTimeOffset());
+                Assert.Empty(slices[0].GetProperty("changeIds").EnumerateArray());
+            }
             var uploaded=await preparation.UploadExperienceAsync(f.Underwriter,created.ResourceId,Version(prepared.Etag!),fence,"claims.txt","text/plain",Encoding.UTF8.GetBytes("Fictional supplied nil claims and GBP1000 earned"),Key(),Guid.NewGuid());
             var supplied=await preparation.SaveExperienceAsync(f.Underwriter,created.ResourceId,Version(uploaded.Etag!),fence,new(new(2025,9,16),new(2026,9,16),0,0m,0m,1000m,"agency","Fictional observed nil claims",uploaded.ResourceId),Key(),Guid.NewGuid());
             var reviewed=await preparation.ReviewExperienceAsync(f.Underwriter,created.ResourceId,supplied.ResourceId,Version(supplied.Etag!),fence,"accepted","Verified fictional supplied experience",Key(),Guid.NewGuid());
@@ -65,6 +74,8 @@ public sealed partial class UnderwritingRuntimeTests
             {Assert.Equal("renewal-contract-1",json.RootElement.GetProperty("format").GetString());Assert.Equal(prepared.ResourceId,json.RootElement.GetProperty("ratingInput").GetProperty("renewal").GetProperty("preparationVersionId").GetGuid());}
             var sentEtag=await VerifyServicingDeliveryQueue(db,f,cycle,document,proofFile.ResourceId,fence,invitation.Etag!);
             var delivered=await terms.ReadAsync(f.Underwriter,draft.Id);Assert.Equal("delivered",delivered.Delivery!.State);Assert.Null(delivered.Acceptance);
+            if(lapseRace){await VerifyServicingAcceptance(db,f,cycle,document,proofFile.ResourceId,fence,sentEtag,
+                onAcceptancePrepared:(input,version)=>VerifyRenewalAcceptanceLapseRace(db,f,cycle,input,version,fence));return;}
             if(issue){await VerifyServicingAcceptance(db,f,cycle,document,proofFile.ResourceId,fence,sentEtag,
                 onAccepted:(acceptance,acceptedEtag)=>VerifyRenewalIssue(db,f,cycle,acceptance,fence,acceptedEtag,issued,password));return;}
             await VerifyServicingAcceptance(db,f,cycle,document,proofFile.ResourceId,fence,sentEtag);

@@ -189,3 +189,16 @@ delivery is claimed.07-09 cancellation lineage remains pending13/14. Continue07-
 ## 07-11 measured completion — 2026-09-18
 
 Renewal preparation verified for both products. Final inception/template gate27 (25unit+2SQL), workspace API gate39 (37unit+2SQL),14 strict HTTP responses,32 UI helper and48 final API/source checks. Both Chrome journeys pass at16:56:30UTC with no browser errors; desktop/mobile screenshots inspected.115 existing demo table counts/hashes preserved by three additive migrations. Source invitation documents, issue and timeline retained under07-12. See07-11-SUMMARY.md and progress evidence for overlapping counts and exact paths. POL-07 remains open; continue07-12 inline.
+
+## 07-12 measured completion — 2026-09-18
+
+Both-product invitation/acceptance/new-term issue and manual/automatic lapse are
+verified. Final42-case gate (21unit+21SQL),6 further document-history SQL,4 actual
+clock-driven/manual browser journeys,8+8 strict HTTP response captures,61 API/source
+and5 frontend helper tests pass. Broader storage/job run52/57 exposed5 legacy
+fixture failures; all5 corrections pass in the final21SQL gate. Report overlap
+is explicit in07-12-SUMMARY.md; failed runs are retained, not counted as passes.
+Final document/issue restart browser check completed19:23:48UTC, including mobile
+table readability.121 existing demo table hashes survived the additive lapse
+migration. Document generation/MID dispatch and Finance cash remain later owners.
+Continue07-13 cancellation review/approval and07-14 issue;07-09 lineage is partial.

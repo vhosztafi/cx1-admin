@@ -5,6 +5,7 @@ import {addServicingSubmissions} from './openapi-servicing-submissions.mjs';
 import {addServicingCapacity} from './openapi-servicing-capacity.mjs';
 import {addServicingTerms} from './openapi-servicing-terms.mjs';
 import {addRenewalPreparation} from './openapi-renewal-preparation.mjs';
+import {addRenewalLifecycle} from './openapi-renewal-lifecycle.mjs';
 import {readFileSync} from 'node:fs';
 import {servicingDefinitions} from './servicing-contract-model.mjs';
 
@@ -58,7 +59,7 @@ export function addServicingContracts({schemas,ref,operation,paths}) {
  editor.responses[200].headers={...editor.responses[200].headers,ETag:{description:'Strong draft version for this saved editor projection.',schema:{type:'string'}}};
  route('post',`${root}/issue`,'issuePolicyDraft','policy-issue-within-authority','ServicingIssueWrite','ServicingIssueResult',{status:201});
  paths[`${root}/issue`].post['x-runtime-status']='phase-7-10-implemented';
- paths[`${root}/issue`].post.description='Atomically issue the accepted adjustment and all effective slices, signed posting, document requests and MID intents. Current actor, policy scope and issuing authority are checked before receipt replay. Fresh issue requires current strong ETag, editing lease, rating, delivered terms, reviewed proof and acceptance. Responses are no-store. Renewal and cancellation are not accepted by this endpoint.';
+ paths[`${root}/issue`].post.description='Atomically issue an accepted adjustment with all effective slices, or an accepted renewal as a linked nonoverlapping new term, with signed posting, document requests and MID intents. Current actor, policy scope and issuing authority are checked before receipt replay. Fresh issue requires current strong ETag, editing lease, rating, delivered terms, reviewed proof and acceptance. Renewal issue cannot backfill a started term and leaves current cover intact until inception. Responses are no-store. Cancellation is not yet accepted by this endpoint.';
  route('get',`${root}/cancellation-preview`,'getCancellationPreview','cancellation-review',undefined,'ServicingCancellationPreview');
  const writes=[
   ['evidence','attachDraftEvidence','underwriting-evidence-write','ServicingEvidence'],
@@ -97,4 +98,5 @@ export function addServicingContracts({schemas,ref,operation,paths}) {
  addServicingCapacity({schemas,ref,route,paths});
  addServicingTerms({schemas,ref,route,paths});
  addRenewalPreparation({schemas,ref,route,paths});
+ addRenewalLifecycle({schemas,ref,route,paths});
 }

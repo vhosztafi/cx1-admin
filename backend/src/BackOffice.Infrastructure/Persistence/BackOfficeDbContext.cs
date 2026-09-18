@@ -77,6 +77,7 @@ public sealed partial class BackOfficeDbContext(DbContextOptions<BackOfficeDbCon
         audit.HasOne<StaffUser>().WithMany().HasForeignKey(x => x.ActorId).OnDelete(DeleteBehavior.NoAction);
         audit.HasIndex(x => new {x.SubjectRecordId,x.OccurredAt}); audit.HasIndex(x => new {x.ActorId,x.OccurredAt});
         var work = Record<OutboxWork>(model,"OutboxWork");
+        work.ToTable(t=>t.UseSqlOutputClause(false));
         Text(work,("ErrorCode",100));
         work.HasOne<SettingVersion>().WithMany().HasForeignKey(x => x.ScenarioVersionId).OnDelete(DeleteBehavior.NoAction);
         Check(work,"DiagnosticScenario","[Kind] <> 'diagnostic-probe' OR [ScenarioVersionId] IS NOT NULL");
@@ -151,6 +152,7 @@ public sealed partial class BackOfficeDbContext(DbContextOptions<BackOfficeDbCon
         ConfigureIssueFinancials(model);
         ConfigureServicingIssue(model);
         ConfigureRenewalPreparation(model);
+        ConfigureRenewalLifecycle(model);
         // All instants are UTC; retain London intent separately in domain records.
         foreach (var entity in model.Model.GetEntityTypes())
             foreach (var property in entity.GetProperties().Where(p => p.ClrType == typeof(DateTimeOffset) || p.ClrType == typeof(DateTimeOffset?)))

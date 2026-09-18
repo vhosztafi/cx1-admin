@@ -3,7 +3,7 @@
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
   "scope": "All 137 original controls assigned to the approved 16-plan decomposition or explicit later-phase owners; 393 source occurrences and 10 conditional branches are mapped in 07-SOURCE-FIELDS.json. Mapping is not runtime verification.",
   "controlCount": 137,
-  "apiOperationCount": 29,
+  "apiOperationCount": 32,
   "controls": [
     {
       "id": "CTL-8045da3f31a1",
@@ -1945,9 +1945,16 @@
       "handlers": {
         "onClick": "() => this.toast('Lapse requires a reason and broker notification (mock).', '', null)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-12"
+      "owner": "07-12",
+      "evidence": [
+        ".local/phase7-12-lapse-complete",
+        ".local/phase7-12-lifecycle-browser/sql.trx",
+        ".local/browser-evidence/renewal-issue/restart-readback.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md"
+      ],
+      "implementation": "Actual pinned invitation preparation/delivery, separate acceptance, atomic new-term issue, reasoned manual/date-worker lapse and persisted notification attempts. Four progress styles navigate real sections. Closed drafts retain immutable invitation documents and exact delivered recipients."
     },
     {
       "id": "CTL-879db9a21bfd",
@@ -1965,9 +1972,16 @@
       "handlers": {
         "onStyle": "() => this.setState({progStyle: next})"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-12"
+      "owner": "07-12",
+      "evidence": [
+        ".local/phase7-12-lapse-complete",
+        ".local/phase7-12-lifecycle-browser/sql.trx",
+        ".local/browser-evidence/renewal-issue/restart-readback.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md"
+      ],
+      "implementation": "Actual pinned invitation preparation/delivery, separate acceptance, atomic new-term issue, reasoned manual/date-worker lapse and persisted notification attempts. Four progress styles navigate real sections. Closed drafts retain immutable invitation documents and exact delivered recipients."
     },
     {
       "id": "CTL-9914b0bf4f9f",
@@ -2035,9 +2049,16 @@
       "handlers": {
         "onClick": "() => onJump(n)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-12"
+      "owner": "07-12",
+      "evidence": [
+        ".local/phase7-12-lapse-complete",
+        ".local/phase7-12-lifecycle-browser/sql.trx",
+        ".local/browser-evidence/renewal-issue/restart-readback.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md"
+      ],
+      "implementation": "Actual pinned invitation preparation/delivery, separate acceptance, atomic new-term issue, reasoned manual/date-worker lapse and persisted notification attempts. Four progress styles navigate real sections. Closed drafts retain immutable invitation documents and exact delivered recipients."
     },
     {
       "id": "CTL-5ebc3446d851",
@@ -2055,9 +2076,16 @@
       "handlers": {
         "onClick": "() => onJump(n)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-12"
+      "owner": "07-12",
+      "evidence": [
+        ".local/phase7-12-lapse-complete",
+        ".local/phase7-12-lifecycle-browser/sql.trx",
+        ".local/browser-evidence/renewal-issue/restart-readback.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md"
+      ],
+      "implementation": "Actual pinned invitation preparation/delivery, separate acceptance, atomic new-term issue, reasoned manual/date-worker lapse and persisted notification attempts. Four progress styles navigate real sections. Closed drafts retain immutable invitation documents and exact delivered recipients."
     },
     {
       "id": "CTL-657eee864831",
@@ -2854,9 +2882,16 @@
       "handlers": {
         "onClick": "() => {\n              const msgs = {1:'Renewal rated (mock): £2,608.85, +8.0%. Referral UW-31 open.', 2:'Renewal invitation issued and sent to Vantage Trade Brokers.', 3:'Acceptance recorded. Renewal policy would be issued at inception.'};\n              this.toast(msgs[step], '', null); this.setState({rnStep: step + 1});\n            }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-12"
+      "owner": "07-12",
+      "evidence": [
+        ".local/phase7-12-lapse-complete",
+        ".local/phase7-12-lifecycle-browser/sql.trx",
+        ".local/browser-evidence/renewal-issue/restart-readback.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md"
+      ],
+      "implementation": "Actual pinned invitation preparation/delivery, separate acceptance, atomic new-term issue, reasoned manual/date-worker lapse and persisted notification attempts. Four progress styles navigate real sections. Closed drafts retain immutable invitation documents and exact delivered recipients."
     },
     {
       "id": "CTL-fa18c029e256",
@@ -2895,9 +2930,16 @@
       "handlers": {
         "onClick": "() => {\n              const msgs = {1:'Renewal rated (mock): £2,608.85, +8.0%. Referral UW-31 open.', 2:'Renewal invitation issued and sent to Vantage Trade Brokers.', 3:'Acceptance recorded. Renewal policy would be issued at inception.'};\n              this.toast(msgs[step], '', null); this.setState({rnStep: step + 1});\n            }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-12"
+      "owner": "07-12",
+      "evidence": [
+        ".local/phase7-12-lapse-complete",
+        ".local/phase7-12-lifecycle-browser/sql.trx",
+        ".local/browser-evidence/renewal-issue/restart-readback.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md"
+      ],
+      "implementation": "Actual pinned invitation preparation/delivery, separate acceptance, atomic new-term issue, reasoned manual/date-worker lapse and persisted notification attempts. Four progress styles navigate real sections. Closed drafts retain immutable invitation documents and exact delivered recipients."
     },
     {
       "id": "CTL-d320aa79a17e",
@@ -2913,9 +2955,16 @@
       "handlers": {
         "onClick": "() => this.toast('Renewal policy issued (mock): PN/CC/000571 version 5, term 01/10/2026 – 30/09/2027.', 'Open policy', () => this.go('policy'))"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-12"
+      "owner": "07-12",
+      "evidence": [
+        ".local/phase7-12-lapse-complete",
+        ".local/phase7-12-lifecycle-browser/sql.trx",
+        ".local/browser-evidence/renewal-issue/restart-readback.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md"
+      ],
+      "implementation": "Actual pinned invitation preparation/delivery, separate acceptance, atomic new-term issue, reasoned manual/date-worker lapse and persisted notification attempts. Four progress styles navigate real sections. Closed drafts retain immutable invitation documents and exact delivered recipients."
     }
   ],
   "apiOperations": [
@@ -3034,28 +3083,39 @@
       "path": "/drafts/{draftId}/acceptances",
       "operationId": "recordDraftAcceptance",
       "summary": "record Draft Acceptance",
-      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "evidence": [
+        ".local/phase7-12-lapse-complete",
+        ".local/phase7-12-lifecycle-browser/sql.trx",
+        ".local/browser-evidence/renewal-issue/restart-readback.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md"
+      ]
     },
     {
       "method": "POST",
       "path": "/drafts/{draftId}/issue",
       "operationId": "issuePolicyDraft",
       "summary": "issue Policy Draft",
-      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
-    },
-    {
-      "method": "POST",
-      "path": "/drafts/{draftId}/renewal-invitation",
-      "operationId": "sendRenewalInvitation",
-      "summary": "send Renewal Invitation",
-      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "evidence": [
+        ".local/phase7-12-lapse-complete",
+        ".local/phase7-12-lifecycle-browser/sql.trx",
+        ".local/browser-evidence/renewal-issue/restart-readback.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md"
+      ]
     },
     {
       "method": "POST",
       "path": "/terms/{termId}/lapse",
       "operationId": "lapseRenewal",
       "summary": "lapse Renewal",
-      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "evidence": [
+        ".local/phase7-12-lapse-complete",
+        ".local/phase7-12-lifecycle-browser/sql.trx",
+        ".local/browser-evidence/renewal-issue/restart-readback.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md"
+      ]
     },
     {
       "method": "GET",
@@ -3142,6 +3202,58 @@
       "operationId": "getIssuedPolicyObligation",
       "summary": "get Issued Policy Obligation",
       "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+    },
+    {
+      "method": "POST",
+      "path": "/drafts/{draftId}/terms/prepare",
+      "operationId": "prepareServicingTerms",
+      "summary": "prepare Servicing Terms",
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "evidence": [
+        ".local/phase7-12-lapse-complete",
+        ".local/phase7-12-lifecycle-browser/sql.trx",
+        ".local/browser-evidence/renewal-issue/restart-readback.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/drafts/{draftId}/terms/send",
+      "operationId": "deliverServicingTerms",
+      "summary": "deliver Servicing Terms",
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "evidence": [
+        ".local/phase7-12-lapse-complete",
+        ".local/phase7-12-lifecycle-browser/sql.trx",
+        ".local/browser-evidence/renewal-issue/restart-readback.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/drafts/{draftId}/terms/documents",
+      "operationId": "listServicingDocuments",
+      "summary": "list Servicing Documents",
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "evidence": [
+        ".local/phase7-12-lapse-complete",
+        ".local/phase7-12-lifecycle-browser/sql.trx",
+        ".local/browser-evidence/renewal-issue/restart-readback.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/terms/{termId}/renewal-lifecycle",
+      "operationId": "readRenewalLifecycle",
+      "summary": "read Renewal Lifecycle",
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "evidence": [
+        ".local/phase7-12-lapse-complete",
+        ".local/phase7-12-lifecycle-browser/sql.trx",
+        ".local/browser-evidence/renewal-issue/restart-readback.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md"
+      ]
     }
   ]
 }

@@ -70,11 +70,15 @@ public sealed partial class UnderwritingRuntimeTests
             var setup = await AcceptedIssue(db, password); var f = setup.Source;
             await new QuoteIssueService(f.Factory, f.Clock).IssueAsync(f.Underwriter, f.QuoteId, setup.Version, setup.Input, Guid.NewGuid().ToString(), Guid.NewGuid());
             var issued = await db.Set<PolicyVersion>().AsNoTracking().SingleAsync();
-            // Apply the additive upgrade to an already issued policy, rather than
-            // only testing creation of an empty database at the latest version.
-            var previous = db.Database.GetMigrations().TakeWhile(x => !x.EndsWith("_ServicingDraftStorage", StringComparison.Ordinal)).Last();
+            // Exercise the latest additive upgrade with an issued policy. The
+            // current fixture contains immutable servicing templates and cannot
+            // be downgraded to the pre-servicing-template schema without data loss.
+            var previous = db.Database.GetMigrations().SkipLast(1).Last();
+            var credentials=await db.Set<UserCredential>().AsNoTracking().OrderBy(x=>x.Id).Select(x=>x.PasswordHash).ToArrayAsync();
             await db.GetService<IMigrator>().MigrateAsync(previous);
             await db.Database.MigrateAsync(); db.ChangeTracker.Clear();
+            Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync(x=>x.Id==issued.Id)).SnapshotJson);
+            Assert.Equal(credentials,await db.Set<UserCredential>().AsNoTracking().OrderBy(x=>x.Id).Select(x=>x.PasswordHash).ToArrayAsync());
             var actor = f.Servicing.UserId; var now = f.Clock.GetUtcNow();
             var foreignQuote = await db.Set<Quote>().AsNoTracking().FirstAsync(x => x.Id != f.QuoteId);
             var foreignProductVersion = await db.Set<ProductVersion>().AsNoTracking().FirstAsync(x => x.ProductId == foreignQuote.ProductId);

@@ -153,7 +153,8 @@ op('post','/drafts/{draftId}/submit','submitPolicyDraft','policy-draft-submit',{
 op('post','/drafts/{draftId}/abandon','abandonPolicyDraft','policy-draft-write',{existing:true,lease:true,input:reason,output:ref('PolicyDraft')});
 op('post','/drafts/{draftId}/acceptances','recordDraftAcceptance','policy-acceptance',{existing:true,lease:true,input:ref('AcceptanceWrite'),status:201});
 op('post','/drafts/{draftId}/issue','issuePolicyDraft','policy-issue-within-authority',{existing:true,lease:true,input:ref('IssueWrite'),output:ref('IssueResult'),status:201});
-op('post','/drafts/{draftId}/renewal-invitation','sendRenewalInvitation','renewal-invite',{existing:true,lease:true,input:object({ratingResultId:id,recipientContactIds:array(id),templateVersionId:id}),output:ref('Job'),status:202});
+// Renewal invitations use the implemented exact-terms preparation and delivery
+// operations shared with servicing; there is no second invitation command.
 op('post','/terms/{termId}/lapse','lapseRenewal','renewal-lapse',{existing:true,input:reason});
 op('get','/drafts/{draftId}/cancellation-preview','getCancellationPreview','cancellation-review',{output:ref('CancellationPreview')});
 

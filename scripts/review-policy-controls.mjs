@@ -75,7 +75,7 @@ add('7c4c701f7185 b2e4c6b1cfe9 972baee4e124 833069e59afb','opens-command-form',[
 add('04e2a11eab51','opens-command-form',['createIncidentDraft'],'Open CC incident capture with property risk links; no Motor Trade-only assumptions.');
 add('525d2e108127 5b07d3978b49 853ce7f519a4','command',['decideMatch'],'Link/separate/decline requires recorded reason and permitted thin identity sharing; do not disclose competing agency terms.');
 add('e3d448532811','command',['decideMatch','createThread','createMessageDraft','sendMessage'],'Record queried match state and safe company-number request to the submitting agency.');
-add('dc77305d175b','command',['sendRenewalInvitation'],'Send current rated renewal terms with pinned invitation evidence.');
+add('dc77305d175b','command',['prepareServicingTerms','deliverServicingTerms'],'Prepare exact approved renewal terms, then deliver that immutable invitation with reviewed signed proof and retained recipients.');
 add('fa18c029e256','command',['decideReferral'],'Resolve renewal referral within authority with explicit reason; no fake status-only approval.');
 add('7ef8d04057b2','command',['recordDraftAcceptance'],'Record exact renewal terms/rating acceptance; issuing cover remains a separate command.');
 add('d320aa79a17e','command',['issuePolicyDraft'],'Issue renewal into new non-overlapping term while preserving previous term/history.');

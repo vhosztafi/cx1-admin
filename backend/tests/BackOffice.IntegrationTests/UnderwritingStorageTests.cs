@@ -171,7 +171,7 @@ public sealed partial class UnderwritingStorageTests
         {
             await using var db = new BackOfficeDbContext(options);
             if (upgrade) await db.GetService<IMigrator>().MigrateAsync("20260916142410_QuoteMatchOwnership"); else await db.Database.MigrateAsync();
-            await DemoDatabase.SeedAsync(db, "Demo!" + Convert.ToHexString(RandomNumberGenerator.GetBytes(24)) + "a1");
+            await DemoDatabase.SeedAsync(db, "Demo!" + Convert.ToHexString(RandomNumberGenerator.GetBytes(24)) + "a1", includeAccounting: !upgrade);
             await test(db);
         }
         finally

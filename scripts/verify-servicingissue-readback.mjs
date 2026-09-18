@@ -25,7 +25,17 @@ try {
   const response=await page.request.get(origin+`/api/v1/policies/${journey.policyId}/terms/${receipt.termId}/versions/${receipt.versionId}`);assert.equal(response.status(),200);assert.match(response.headers()['cache-control'],/no-store/);
   const data=await response.json();valid('ServicingPolicyView',data);if(journey.contentHash)assert.equal(data.contentHash,journey.contentHash);assert.equal(data.snapshot.provenance.servicingIssueDecisionId,receipt.decisionId);assert.equal(data.financials.journalId,receipt.journalId);assert.equal(data.financials.amountDue,receipt.netAmount);
   if(renewal){assert.equal(data.transactionSequence,1);assert.ok(data.termNumber>1);assert.equal(data.snapshot.premium.termPremium,journey.premium);}
-  const draft=await page.request.get(origin+`/api/v1/drafts/${journey.draftId}`);assert.equal(draft.status(),200);assert.equal((await draft.json()).state,'issued');
+  const draft=await page.request.get(origin+`/api/v1/drafts/${journey.draftId}`);assert.equal(draft.status(),200);const draftData=await draft.json();assert.equal(draftData.state,'issued');
+  if(renewal){
+   const lifecycle=await page.request.get(origin+`/api/v1/terms/${draftData.baseTermId}/renewal-lifecycle`);assert.equal(lifecycle.status(),200);const saved=await lifecycle.json();valid('RenewalLifecycleView',saved);assert.equal(saved.state,'issued');assert.equal(saved.canLapse,false);
+   const documentsUrl=origin+`/api/v1/drafts/${journey.draftId}/terms/documents?pageSize=10`;
+   const documentsResponse=await page.request.get(documentsUrl);assert.equal(documentsResponse.status(),200);assert.match(documentsResponse.headers()['cache-control'],/no-store/);const documentsData=await documentsResponse.json();valid('ServicingDocumentHistoryPage',documentsData);assert.ok(documentsData.items.length>0);assert.equal(documentsData.items[0].deliveryState,'delivered');
+   assert.equal((await page.request.get(documentsUrl+'&forged=true')).status(),400);
+   const anonymous=await browser.newContext();assert.equal((await anonymous.request.get(documentsUrl)).status(),401);await anonymous.close();
+   await page.goto(origin+`/drafts/${journey.draftId}`);const documents=page.getByRole('region',{name:'Renewal invitation documents',exact:true});await documents.waitFor();assert.equal(await documents.getByText('Not delivered',{exact:true}).count(),0);assert.match(await documents.innerText(),/@/);
+   await documents.getByRole('button').first().click();await page.getByRole('region',{name:'Renewal invitation and acceptance',exact:true}).getByText('Renewal term premium',{exact:true}).waitFor();await documents.scrollIntoViewIfNeeded();await page.screenshot({path:output+'/'+journey.productCode+'-documents.png'});
+   await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await documents.scrollIntoViewIfNeeded();await page.screenshot({path:output+'/'+journey.productCode+'-documents-mobile.png'});await page.setViewportSize({width:1560,height:1000});
+  }
   await page.goto(origin+`/policies/${journey.policyId}?termId=${receipt.termId}&versionId=${receipt.versionId}`);
   await page.getByText('Viewing a specific issued change. Its effective date may be in the future.',{exact:true}).waitFor();
   await page.getByText(receipt.versionId,{exact:true}).waitFor({state:'attached'});

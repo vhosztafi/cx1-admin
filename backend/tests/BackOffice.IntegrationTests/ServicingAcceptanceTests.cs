@@ -9,7 +9,7 @@ namespace BackOffice.IntegrationTests;
 
 public sealed partial class UnderwritingRuntimeTests
 {
-    private static async Task<string> VerifyServicingAcceptance(BackOfficeDbContext db,DecisionFixture f,ServicingCycle cycle,ServicingTermsVersion contract,Guid fileId,Guid fence,string etag,bool posting=false,bool issue=false,string? issuePassword=null,Func<ServicingAcceptance,string,Task>? onAccepted=null)
+    private static async Task<string> VerifyServicingAcceptance(BackOfficeDbContext db,DecisionFixture f,ServicingCycle cycle,ServicingTermsVersion contract,Guid fileId,Guid fence,string etag,bool posting=false,bool issue=false,string? issuePassword=null,Func<ServicingAcceptance,string,Task>? onAccepted=null,Func<ServicingAcceptanceInput,byte[],Task<string>>? onAcceptancePrepared=null)
     {
         static byte[] Version(string value)=>Convert.FromBase64String(value.Trim('"'));
         static string Key()=>Guid.NewGuid().ToString();
@@ -26,6 +26,7 @@ public sealed partial class UnderwritingRuntimeTests
         foreach(var changed in new[]{input with{TermsHash=new string('f',64)},input with{AssuranceHash=new string('a',64)},
             input with{EvidenceAssociationId=Guid.NewGuid()},input with{AcceptedAt=delivery.CompletedAt!.Value.AddTicks(-1)}})
             await Assert.ThrowsAsync<QuoteOperationException>(()=>terms.AcceptAsync(f.Underwriter,cycle.DraftId,version,fence,changed,Key(),Guid.NewGuid()));
+        if(onAcceptancePrepared is not null)return await onAcceptancePrepared(input,version);
         var accepted=await terms.AcceptAsync(f.Underwriter,cycle.DraftId,version,fence,input,key,Guid.NewGuid());Assert.Equal(201,accepted.Status);
         Assert.True((await terms.AcceptAsync(f.Underwriter,cycle.DraftId,version,fence,input,key,Guid.NewGuid())).Replayed);
         var row=await db.Set<ServicingAcceptance>().AsNoTracking().SingleAsync();

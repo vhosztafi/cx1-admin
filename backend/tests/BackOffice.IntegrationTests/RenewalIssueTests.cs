@@ -17,6 +17,10 @@ public sealed partial class UnderwritingRuntimeTests
         var input=new ServicingIssueInput(cycle.Id,cycle.CurrentRatingId!.Value,acceptance.TermsVersionId,acceptance.Id,acceptance.TermsHash,acceptance.AssuranceHash,"Issue the evidenced fictional renewal");
         var version=Convert.FromBase64String(etag.Trim('"'));var key=Guid.NewGuid().ToString();
         var originalTerm=await db.Set<PolicyTerm>().AsNoTracking().SingleAsync(x=>x.Id==basis.TermId);
+        var lifecycle=new RenewalLifecycleService(f.Factory,f.Clock);var acceptedLifecycle=await lifecycle.ReadAsync(f.Underwriter,originalTerm.Id);
+        Assert.Equal("accepted",acceptedLifecycle.State);Assert.False(acceptedLifecycle.CanLapse);
+        Assert.Equal(409,(await Assert.ThrowsAsync<QuoteOperationException>(()=>lifecycle.LapseAsync(f.Underwriter,originalTerm.Id,
+            Convert.FromBase64String(acceptedLifecycle.Etag.Trim('"')),"Do not lapse the accepted fictional renewal",Guid.NewGuid().ToString(),Guid.NewGuid()))).Status);
         await VerifyServicingIssueHttp(db,f,password,cycle.DraftId,version,fence,input);
         static string Key()=>Guid.NewGuid().ToString();
         Assert.Equal(403,(await Assert.ThrowsAsync<QuoteOperationException>(()=>issue.IssueAsync(f.Servicing,cycle.DraftId,version,fence,input,Key(),Guid.NewGuid()))).Status);
@@ -30,6 +34,8 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.Equal("renewal-late-issue-unsupported",(await Assert.ThrowsAsync<QuoteOperationException>(()=>issue.IssueAsync(f.Underwriter,cycle.DraftId,version,fence,input,Key(),Guid.NewGuid()))).Code);
         }
         finally { f.Clock.Current=now; }
+        try { f.Clock.Current=acceptedLifecycle.Timeline.AutoLapseAt;Assert.Null(await lifecycle.LapseDueAsync(originalTerm.Id)); }
+        finally { f.Clock.Current=now; }
         var boundaries=new[]{"ServicingIssueDecision","PolicyTerm","PolicyTransaction","PolicyVersion","IssueFinancialObligation","Journal","JournalLine","PolicyDocumentRequest","PolicyMidIntent","OutboxWork","ClientActivity","AuditEvent","IdempotencyRecord"};
         var counts=new Dictionary<string,int>();
         foreach(var table in boundaries)counts[table]=await IssueGraphCount(db,table);
@@ -41,14 +47,21 @@ public sealed partial class UnderwritingRuntimeTests
             foreach(var graphTable in boundaries)Assert.Equal(counts[graphTable],await IssueGraphCount(db,graphTable));
             Assert.Equal("draft",await db.Set<ServicingDraft>().Where(x=>x.Id==cycle.DraftId).Select(x=>x.State).SingleAsync());
         }
+        var autoLapse=lifecycle.LapseDueAsync(originalTerm.Id);
         var competing=await Task.WhenAll(Enumerable.Range(0,2).Select(async _=>{
             var candidate=Key();
             try{return(Key:candidate,Result:(CommandOutcome?)await issue.IssueAsync(f.Underwriter,cycle.DraftId,version,fence,input,candidate,Guid.NewGuid()),Error:(QuoteOperationException?)null);}
             catch(QuoteOperationException error){return(Key:candidate,Result:(CommandOutcome?)null,Error:(QuoteOperationException?)error);}
         }));
         var winner=Assert.Single(competing,x=>x.Result is not null);key=winner.Key;var issued=winner.Result!;
+        Assert.Null(await autoLapse);Assert.Empty(await db.Set<RenewalLapseEvent>().ToArrayAsync());
         Assert.Equal("servicing-already-issued",Assert.Single(competing,x=>x.Error is not null).Error!.Code);
         Assert.Equal(201,issued.Status);
+        var documents=await new ServicingTermsService(f.Factory,f.Clock).DocumentsAsync(f.Servicing,cycle.DraftId,null,10);
+        var invitation=Assert.Single(documents.Items);Assert.Equal(acceptance.TermsVersionId,invitation.TermsVersionId);Assert.Equal("delivered",invitation.DeliveryState);
+        Assert.NotEmpty(invitation.Recipients);Assert.NotNull(invitation.SentAt);Assert.Contains("renewal",invitation.Title,StringComparison.OrdinalIgnoreCase);
+        Assert.Equal(400,(await Assert.ThrowsAsync<QuoteOperationException>(()=>new ServicingTermsService(f.Factory,f.Clock).DocumentsAsync(f.Servicing,cycle.DraftId,null,51))).Status);
+        Assert.Equal(404,(await Assert.ThrowsAsync<QuoteOperationException>(()=>new ServicingTermsService(f.Factory,f.Clock).DocumentsAsync(f.Servicing,cycle.DraftId,Guid.NewGuid(),10))).Status);
         Assert.True((await issue.IssueAsync(f.Underwriter,cycle.DraftId,version,fence,input,key,Guid.NewGuid())).Replayed);
         Assert.Equal("servicing-already-issued",(await Assert.ThrowsAsync<QuoteOperationException>(()=>issue.IssueAsync(f.Underwriter,cycle.DraftId,version,fence,input,Guid.NewGuid().ToString(),Guid.NewGuid()))).Code);
         using var receipt=JsonDocument.Parse(issued.Body);var nextTermId=receipt.RootElement.GetProperty("termId").GetGuid();var versionId=receipt.RootElement.GetProperty("versionId").GetGuid();

@@ -10,6 +10,7 @@ public static class ServicingTermsEndpoints
     public static void MapServicingTerms(this WebApplication app)
     {
         app.MapGet("/api/v1/drafts/{draftId:guid}/terms",Read).RequireAuthorization("policy-read");
+        app.MapGet("/api/v1/drafts/{draftId:guid}/terms/documents",Documents).RequireAuthorization("policy-read");
         app.MapGet("/api/v1/drafts/{draftId:guid}/terms/history/{kind}",History).RequireAuthorization("policy-read");
         app.MapGet("/api/v1/drafts/{draftId:guid}/terms/history/terms/{termsId:guid}",Retained).RequireAuthorization("policy-read");
         foreach(var kind in new[]{"terms/prepare","terms/send","acceptances"})
@@ -18,6 +19,21 @@ public static class ServicingTermsEndpoints
             app.MapPost("/api/v1/drafts/{draftId:guid}/"+operation,
                 (Guid draftId,HttpContext c,ServicingTermsService s)=>Command(draftId,operation,c,s)).RequireAuthorization("policy-draft-write");
         }
+    }
+
+    private static async Task<IResult> Documents(Guid draftId,HttpContext context,ServicingTermsService service,ServicingEvidenceService evidence,PartyPaging paging)
+    {
+        context.Response.Headers.CacheControl="no-store";
+        try
+        {
+            QuoteEndpoints.Id(draftId);var actor=LocalIdentityService.Actor(context.User);var token=context.RequestAborted;
+            var version=await evidence.HistoryVersionAsync(actor,draftId,token);var page=paging.ReadBound(context,actor,"servicing-documents",version,[]);
+            if(page is null || page.Size>50)throw new QuoteHttpException(400,"invalid-query");
+            var history=await service.DocumentsAsync(actor,draftId,page.KeyId,page.Size,token);
+            if(await evidence.HistoryVersionAsync(actor,draftId,token)!=version)throw new QuoteHttpException(409,"stale-cursor");
+            return Results.Json(new{history.Items,nextCursor=paging.NextGuid(page,history.NextBeforeId),draftEtag=version});
+        }
+        catch(Exception error) when(QuoteEndpoints.Known(error)){return QuoteEndpoints.Failure(context,error);}
     }
 
     private static async Task<IResult> History(Guid draftId,string kind,HttpContext context,ServicingTermsService service,ServicingEvidenceService evidence,PartyPaging paging)
