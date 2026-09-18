@@ -10,6 +10,7 @@ public sealed record ServicingEvidenceSlice(DateTimeOffset EffectiveAt, JsonElem
 public sealed record ServicingProofRequirement(string Code, string Label, string Path, Guid? RiskItemId, IReadOnlyList<DateTimeOffset> EffectiveDates, string InputFingerprint)
 {
     public required ServicingProofContext Context { get; init; }
+    public Guid? CapacitySubmissionId { get; init; }
 }
 public sealed record ServicingReviewedProof(Guid DraftId, Guid CycleId, Guid RevisionId, Guid RatingId, string Code, Guid? RiskItemId,
     string InputFingerprint, string ScreeningState, string ReviewState, bool Withdrawn);

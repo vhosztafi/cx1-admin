@@ -46,3 +46,21 @@ public sealed class ServicingCapacitySubmissionEvidence : StoredRecord
     public Guid AssociationId { get; set; }
     public Guid ReviewId { get; set; }
 }
+
+// Staff correspondence is immutable and independently sequenced per case.
+// Incoming carrier responses have their own authority/proof-bearing records.
+public sealed class ServicingCapacityMessage : StoredRecord
+{
+    public Guid SubmissionId { get; set; }
+    public Guid CaseId { get; set; }
+    public Guid DraftId { get; set; }
+    public Guid RevisionId { get; set; }
+    public Guid CycleId { get; set; }
+    public Guid RatingId { get; set; }
+    public int Sequence { get; set; }
+    public string Kind { get; set; } = "submission";
+    public string Body { get; set; } = "";
+    public byte[] ContentHash { get; set; } = [];
+    public Guid RecordedBy { get; set; }
+    public DateTimeOffset RecordedAt { get; set; }
+}

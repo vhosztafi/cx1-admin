@@ -93,6 +93,7 @@ public sealed partial class ServicingCapacityService
                     SubmittedBy = actor.UserId, SubmittedAt = now, CreatedBy = actor.UserId, CreatedAt = now,
                     ResponseDueAt = dueDays is int days ? CapacityRules.ResponseDue(now, days) : now.AddHours(dueHours!.Value) };
                 db.Add(submission); await db.SaveChangesAsync(ct);
+                await AddCorrespondence(db,capacity,id,"submission",body,actor.UserId,now,ct);
                 foreach (var proof in selected)
                     db.Add(new ServicingCapacitySubmissionEvidence { SubmissionId = id, CaseId = caseId, DraftId = draftId, CycleId = cycleId,
                         RevisionId = held.Cycle.RevisionId, RatingId = held.Rating.Id, AssociationId = proof.Association.Id,

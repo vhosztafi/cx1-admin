@@ -14,6 +14,7 @@ public sealed partial class UnderwritingRuntimeTests
     private static async Task VerifyServicingCapacitySubmissionStorage(BackOfficeDbContext db, DecisionFixture f, ServicingCapacityCase capacity, Guid lease, bool selectedEvidence = false)
     {
         Assert.Equal(0, await db.Database.SqlQueryRaw<int>("SELECT COUNT(*) AS Value FROM ServicingCapacitySubmission").SingleAsync());
+        Assert.Equal(0, await db.Database.SqlQueryRaw<int>("SELECT COUNT(*) AS Value FROM ServicingCapacityMessage").SingleAsync());
         var scenario = await db.Set<SettingVersion>().AsNoTracking().FirstAsync(x => x.Scope == "capacity-escalation/query-proof");
         var now = f.Clock.GetUtcNow();
         ServicingEvidenceAssociation? proof = null;
@@ -78,5 +79,22 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Equal(51422, (await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacityCase SET CurrentSubmissionId=NULL WHERE Id={capacity.Id}"))).Number);
         Assert.Equal(51422, (await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacityCase SET State='approved' WHERE Id={capacity.Id}"))).Number);
         Assert.Equal(2, await db.Database.SqlQueryRaw<int>("SELECT COUNT(*) AS Value FROM ServicingCapacitySubmission").SingleAsync());
+        var messageId = Guid.NewGuid(); const string messageBody = "Fictional capacity progress chase";
+        var messageHash = SHA256.HashData(Encoding.UTF8.GetBytes(messageBody));
+        async Task Message(Guid? draft = null, Guid? submission = null, byte[]? hash = null, int sequence = 1,
+            string kind = "chase", string body = messageBody) =>
+            await db.Database.ExecuteSqlInterpolatedAsync($"INSERT ServicingCapacityMessage (Id,SubmissionId,CaseId,DraftId,CycleId,RevisionId,RatingId,Sequence,Kind,Body,ContentHash,RecordedBy,RecordedAt,CreatedBy,CreatedAt) VALUES ({messageId},{submission ?? second.Id},{capacity.Id},{draft ?? capacity.DraftId},{capacity.CycleId},{capacity.RevisionId},{capacity.RatingId},{sequence},{kind},{body},{hash ?? messageHash},{f.Underwriter.UserId},{now},{f.Underwriter.UserId},{now})");
+        await Assert.ThrowsAsync<SqlException>(() => Message(draft: Guid.NewGuid()));
+        await Assert.ThrowsAsync<SqlException>(() => Message(hash: new byte[32]));
+        await Assert.ThrowsAsync<SqlException>(() => Message(body: new string('x',10001)));
+        Assert.Equal(51450, (await Assert.ThrowsAsync<SqlException>(() => Message(submission: first.Id))).Number);
+        Assert.Equal(51450, (await Assert.ThrowsAsync<SqlException>(() => Message(sequence: 2))).Number);
+        Assert.Equal(51450, (await Assert.ThrowsAsync<SqlException>(() => Message(kind: "query-reply"))).Number);
+        await Message();
+        Assert.Equal(51451, (await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacityMessage SET RecordedAt={now.AddMinutes(1)},CreatedAt={now.AddMinutes(1)} WHERE Id={messageId}"))).Number);
+        Assert.Equal(51451, (await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync($"DELETE ServicingCapacityMessage WHERE Id={messageId}"))).Number);
+        await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacityCase SET State='draft' WHERE Id={capacity.Id}");
+        messageId = Guid.NewGuid();
+        Assert.Equal(51450, (await Assert.ThrowsAsync<SqlException>(() => Message(sequence: 2))).Number);
     }
 }

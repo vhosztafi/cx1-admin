@@ -38,6 +38,8 @@ public sealed partial class UnderwritingRuntimeTests
         var updated = await db.Set<ServicingCapacityCase>().AsNoTracking().SingleAsync(x => x.Id == capacity.Id);
         Assert.Equal(row.Id, updated.CurrentSubmissionId); Assert.Equal("queued", updated.State);
         Assert.Equal(capacity.Id, row.CaseId); Assert.Equal(capacity.RatingId, row.RatingId); Assert.Equal(body, row.Body);
+        var firstMessage = await db.Set<ServicingCapacityMessage>().AsNoTracking().SingleAsync();
+        Assert.Equal(row.Id, firstMessage.SubmissionId); Assert.Equal("submission", firstMessage.Kind); Assert.Equal(body, firstMessage.Body);
         var work = await db.Set<OutboxWork>().AsNoTracking().SingleAsync(x => x.Id == row.WorkId);
         Assert.Equal("servicing-capacity", work.Kind); Assert.Equal(row.Id, work.SubjectRecordId); Assert.Equal("pending", work.State);
         Assert.Equal(row.WorkId, JsonSerializer.Deserialize<JsonElement>(sent.Body).GetProperty("jobId").GetGuid());
@@ -49,21 +51,22 @@ public sealed partial class UnderwritingRuntimeTests
         await Assert.ThrowsAsync<CommandKeyConflictException>(() => Submit(key, etag, message: "Changed fictional provider request"));
         Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => Submit(Key(), sent.Etag!, caseVersion: updated.RowVersion))).Status);
         Assert.Single(await db.Set<AuditEvent>().Where(x => x.EventType == "servicing.capacity-submitted").ToArrayAsync());
+        var actionVersion = await VerifyServicingCapacityChase(db, f, updated, row.Id, lease, sent.Etag!);
         // A new request freezes the reviewed proof identities, not just file IDs.
         Task<CommandOutcome> Act(string command, string version, byte[] caseVersion, string action = "withdraw", ActorContext? actor = null,
             Guid? fence = null, Guid? id = null) => service.ActionAsync(actor ?? f.Underwriter, capacity.DraftId, capacity.CycleId,
                 id ?? capacity.Id, Version(version), caseVersion, fence ?? lease, action, "Withdraw fictional capacity request", command, Guid.NewGuid());
-        Assert.Equal(403, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(Key(), sent.Etag!, updated.RowVersion, actor: f.Servicing))).Status);
-        Assert.Equal(404, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(Key(), sent.Etag!, updated.RowVersion, id: Guid.NewGuid()))).Status);
-        Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(Key(), sent.Etag!, updated.RowVersion, fence: Guid.NewGuid()))).Status);
+        Assert.Equal(403, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(Key(), actionVersion, updated.RowVersion, actor: f.Servicing))).Status);
+        Assert.Equal(404, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(Key(), actionVersion, updated.RowVersion, id: Guid.NewGuid()))).Status);
+        Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(Key(), actionVersion, updated.RowVersion, fence: Guid.NewGuid()))).Status);
         Assert.Equal(412, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(Key(), etag, updated.RowVersion))).Status);
-        Assert.Equal(412, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(Key(), sent.Etag!, new byte[8]))).Status);
-        Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(Key(), sent.Etag!, updated.RowVersion, action: "reopen"))).Status);
-        Assert.Equal(422, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(Key(), sent.Etag!, updated.RowVersion, action: "approve"))).Status);
-        var withdrawKey = Key(); var withdrawal = await Act(withdrawKey, sent.Etag!, updated.RowVersion);
+        Assert.Equal(412, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(Key(), actionVersion, new byte[8]))).Status);
+        Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(Key(), actionVersion, updated.RowVersion, action: "reopen"))).Status);
+        Assert.Equal(422, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(Key(), actionVersion, updated.RowVersion, action: "approve"))).Status);
+        var withdrawKey = Key(); var withdrawal = await Act(withdrawKey, actionVersion, updated.RowVersion);
         Assert.Equal(200, withdrawal.Status);
-        Assert.True((await Act(withdrawKey, sent.Etag!, updated.RowVersion)).Replayed);
-        await Assert.ThrowsAsync<CommandKeyConflictException>(() => Act(withdrawKey, sent.Etag!, updated.RowVersion, action: "reopen"));
+        Assert.True((await Act(withdrawKey, actionVersion, updated.RowVersion)).Replayed);
+        await Assert.ThrowsAsync<CommandKeyConflictException>(() => Act(withdrawKey, actionVersion, updated.RowVersion, action: "reopen"));
         var withdrawn = await db.Set<ServicingCapacityCase>().AsNoTracking().SingleAsync(x => x.Id == capacity.Id);
         Assert.Equal("draft", withdrawn.State); Assert.Equal(row.Id, withdrawn.CurrentSubmissionId);
         Assert.Single(await db.Set<ServicingCapacitySubmission>().ToArrayAsync());
@@ -95,7 +98,7 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Equal("servicing-lease-conflict", (await Assert.ThrowsAsync<QuoteOperationException>(() => Submit(key, etag))).Code); f.Clock.Current = now;
         await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE UserAuthorityGrant SET RevokedAt={DateTimeOffset.UtcNow},RevokedBy={f.Underwriter.UserId},RevocationReason='Withdraw fictional capacity authority' WHERE UserId={f.Underwriter.UserId} AND RevokedAt IS NULL");
         Assert.Equal(403, (await Assert.ThrowsAsync<QuoteOperationException>(() => Submit(key, etag))).Status);
-        Assert.Equal(403, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(withdrawKey, sent.Etag!, updated.RowVersion))).Status);
+        Assert.Equal(403, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(withdrawKey, actionVersion, updated.RowVersion))).Status);
         Assert.Equal(2, await db.Set<ServicingCapacitySubmission>().CountAsync());
     }
 }

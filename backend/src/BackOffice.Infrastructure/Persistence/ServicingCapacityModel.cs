@@ -56,5 +56,19 @@ public sealed partial class BackOfficeDbContext
             .HasForeignKey(x => new { x.ReviewId, x.AssociationId, x.CycleId, x.DraftId, x.RevisionId, x.RatingId })
             .HasPrincipalKey(x => new { x.Id, x.AssociationId, x.CycleId, x.DraftId, x.RevisionId, x.RatingId }).OnDelete(DeleteBehavior.NoAction);
         Check(evidence, "Actor", "[CreatedBy] IS NOT NULL");
+
+        var message = Record<ServicingCapacityMessage>(model, "ServicingCapacityMessage");
+        message.ToTable(t => t.UseSqlOutputClause(false)); Text(message, ("Kind", 20), ("Body", 10000)); Hash(message, "ContentHash");
+        message.HasIndex(x => new { x.CaseId, x.Sequence }).IsUnique();
+        message.HasOne<ServicingCapacitySubmission>().WithMany()
+            .HasForeignKey(x => new { x.SubmissionId, x.CaseId, x.CycleId, x.DraftId, x.RevisionId, x.RatingId })
+            .HasPrincipalKey(x => new { x.Id, x.CaseId, x.CycleId, x.DraftId, x.RevisionId, x.RatingId }).OnDelete(DeleteBehavior.NoAction);
+        message.HasOne<StaffUser>().WithMany().HasForeignKey(x => x.RecordedBy).OnDelete(DeleteBehavior.NoAction);
+        message.HasIndex(x => x.SubmissionId).IsUnique().HasFilter("[Kind]='submission'");
+        Check(message, "Sequence", "[Sequence]>0");
+        Check(message, "Kind", "[Kind] IN ('submission','chase','query-reply')");
+        Check(message, "Body", "LEN(TRIM([Body]))>0 AND DATALENGTH([Body])<=20000");
+        Check(message, "ContentHash", "[ContentHash]=HASHBYTES('SHA2_256',CONVERT(varchar(max),[Body] COLLATE Latin1_General_100_BIN2_UTF8))");
+        Check(message, "Actor", "[CreatedBy] IS NOT NULL AND [CreatedBy]=[RecordedBy] AND [RecordedAt]=[CreatedAt]");
     }
 }
