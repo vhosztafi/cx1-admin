@@ -118,7 +118,7 @@ test('new issued servicing format requires its own immutable provenance and reje
   const value=JSON.parse(await readFile(new URL(`../contracts/examples/issued-${product}.json`,import.meta.url),'utf8'));
   assert.equal(validate(value),false);
   value.snapshotFormat='issued-servicing-1';
-  value.provenance={source:'backoffice',sourceQuoteId:id,servicingIssueDecisionId:other,baseVersionId:id,revisionId:other,transactionId:id,effectiveAt:'2026-09-15T00:00:00Z',processedAt:'2026-09-14T10:00:00Z',sliceOrdinal:0,inputHash:'a'.repeat(64)};
+  value.provenance={source:'backoffice',sourceQuoteId:id,servicingIssueDecisionId:other,baseVersionId:id,revisionId:other,transactionId:id,effectiveAt:'2026-09-15T00:00:00Z',processedAt:'2026-09-14T10:00:00Z',sliceOrdinal:1,inputHash:'a'.repeat(64)};
   assert.ok(validate(value),JSON.stringify(validate.errors));
   value.provenance.quoteRevisionId=id; assert.equal(validate(value),false);
  }

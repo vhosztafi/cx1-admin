@@ -68,7 +68,7 @@ public sealed partial class BackOfficeDbContext
         document.HasOne<PolicyVersion>().WithMany().HasForeignKey(x => new { x.VersionId, x.TransactionId, x.TermId, x.PolicyId }).HasPrincipalKey(x => new { x.Id, x.TransactionId, x.TermId, x.PolicyId }).OnDelete(DeleteBehavior.NoAction);
         document.HasOne<TemplateVersion>().WithMany().HasForeignKey(x => x.TemplateVersionId).OnDelete(DeleteBehavior.NoAction);
         document.HasOne<OutboxWork>().WithMany().HasForeignKey(x => x.WorkId).OnDelete(DeleteBehavior.NoAction);
-        Check(document, "Kind", "[Kind] IN ('policy-schedule','policy-certificate','policy-statement')"); Check(document, "Purpose", "[Purpose]='first-issue'");
+        Check(document, "Kind", "[Kind] IN ('policy-schedule','policy-certificate','policy-statement')"); Check(document, "Purpose", "[Purpose] IN ('first-issue','adjustment')");
         Check(document, "State", "[State]='requested'"); Check(document, "Hash", "[PayloadHash]<>0x0000000000000000000000000000000000000000000000000000000000000000");
     }
 }

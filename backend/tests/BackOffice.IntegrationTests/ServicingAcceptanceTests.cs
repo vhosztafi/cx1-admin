@@ -9,7 +9,7 @@ namespace BackOffice.IntegrationTests;
 
 public sealed partial class UnderwritingRuntimeTests
 {
-    private static async Task<string> VerifyServicingAcceptance(BackOfficeDbContext db,DecisionFixture f,ServicingCycle cycle,ServicingTermsVersion contract,Guid fileId,Guid fence,string etag,bool posting=false)
+    private static async Task<string> VerifyServicingAcceptance(BackOfficeDbContext db,DecisionFixture f,ServicingCycle cycle,ServicingTermsVersion contract,Guid fileId,Guid fence,string etag,bool posting=false,bool issue=false,string? issuePassword=null)
     {
         static byte[] Version(string value)=>Convert.FromBase64String(value.Trim('"'));
         static string Key()=>Guid.NewGuid().ToString();
@@ -33,6 +33,7 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Equal(input.AssuranceHash,row.AssuranceHash);Assert.Equal(input.TermsHash,row.TermsHash);
         Assert.True((await terms.ReadAsync(f.Underwriter,cycle.DraftId)).AcceptanceApplicable);
         if(posting){await VerifyServicingPosting(db,f,cycle,row);return accepted.Etag!;}
+        if(issue){await VerifyServicingIssue(db,f,cycle,row,fence,Version(accepted.Etag!),issuePassword!);return accepted.Etag!;}
         await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingAcceptance SET AccepterLabel='Changed customer' WHERE Id={row.Id}"));
         proof=await db.Set<ServicingEvidenceAssociation>().AsNoTracking().SingleAsync(x=>x.Id==proof.Id);
         var withdrawn=await evidence.WithdrawAsync(f.Underwriter,cycle.DraftId,cycle.Id,proof.Id,Version(accepted.Etag!),fence,proof.RowVersion,"Withdraw fictional acceptance evidence",Key(),Guid.NewGuid());

@@ -36,6 +36,7 @@ public sealed class PolicyTransaction : StoredRecord
     public Guid? ServicingCycleId { get; set; }
     public Guid? ServicingRatingId { get; set; }
     public Guid? ServicingAcceptanceId { get; set; }
+    public Guid? ServicingIssueDecisionId { get; set; }
     public int Sequence { get; set; }
     public string Kind { get; set; } = "new-business";
     public DateTimeOffset EffectiveAt { get; set; }

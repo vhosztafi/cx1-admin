@@ -26,8 +26,9 @@ test('field audit remains tied to exact prototype source bytes',async()=>{
  for(const entry of fields.entries)assert.ok(lines[entry.line-1]?.includes(entry.source.trim()),entry.id);
 });
 test('servicing writes preserve current scope, no-store, CSRF, conditional writes and operation keys',()=>{
- const operations=Object.values(api.paths).flatMap(x=>Object.values(x)).filter(x=>['phase-7-pending','phase-7-03-implemented'].includes(x['x-runtime-status']));
- assert.ok(operations.length>=20);
+ const operations=Object.values(api.paths).flatMap(x=>Object.values(x)).filter(x=>['phase-7-pending','phase-7-03-implemented','phase-7-10-implemented'].includes(x['x-runtime-status']));
+ assert.deepEqual(operations.map(x=>x.operationId).sort(),['listPolicyDrafts','createPolicyDraft','getPolicyDraft','acquireDraftLease','renewDraftLease',
+  'releaseDraftLease','savePolicyDraft','abandonPolicyDraft','issuePolicyDraft','getCancellationPreview','persistCancellationPreview','approveCancellation','recordRenewalExperience'].sort());
  for(const operation of operations) {
   assert.match(operation.description,/before (?:receipt )?replay/);
   for(const response of Object.values(operation.responses))assert.equal(response.headers['Cache-Control'].schema.const,'no-store');

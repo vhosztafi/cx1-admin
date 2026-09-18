@@ -18188,7 +18188,7 @@
       "post": {
         "operationId": "issuePolicyDraft",
         "summary": "issue Policy Draft",
-        "description": "Requires policy-issue-within-authority. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Servicing contract only until the owning plan implements this route. Current identity, capability and policy scope are checked before replay; receipt replay does not grant authority. Fresh mutations recheck the strong ETag, lease generation and full immutable decision inputs. Responses are no-store.",
+        "description": "Atomically issue the accepted adjustment and all effective slices, signed posting, document requests and MID intents. Current actor, policy scope and issuing authority are checked before receipt replay. Fresh issue requires current strong ETag, editing lease, rating, delivered terms, reviewed proof and acceptance. Responses are no-store. Renewal and cancellation are not accepted by this endpoint.",
         "tags": [
           "drafts"
         ],
@@ -18477,7 +18477,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-7-pending"
+        "x-runtime-status": "phase-7-10-implemented"
       }
     },
     "/drafts/{draftId}/renewal-invitation": {
@@ -88043,7 +88043,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FirstPolicyView"
+                  "$ref": "#/components/schemas/IssuedPolicyView"
                 }
               }
             }
@@ -88226,7 +88226,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FirstPolicyView"
+                  "$ref": "#/components/schemas/IssuedPolicyView"
                 }
               }
             }
@@ -88409,7 +88409,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FirstPolicyView"
+                  "$ref": "#/components/schemas/IssuedPolicyView"
                 }
               }
             }
@@ -119043,6 +119043,20 @@
             "type": "string",
             "format": "uuid"
           },
+          "policyReference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40,
+            "pattern": "\\S"
+          },
+          "draftId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "draftEtag": {
+            "type": "string",
+            "pattern": "^\"[A-Za-z0-9+/]{11}=\"$"
+          },
           "termId": {
             "type": "string",
             "format": "uuid"
@@ -119052,6 +119066,10 @@
             "format": "uuid"
           },
           "decisionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "versionId": {
             "type": "string",
             "format": "uuid"
           },
@@ -119073,13 +119091,46 @@
             "type": "string",
             "format": "uuid"
           },
+          "accountingPeriodId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "postingDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "currency": {
+            "const": "GBP"
+          },
+          "amountDue": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
+          "amountCredit": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
+          "netAmount": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
           "documentRequestIds": {
             "type": "array",
             "items": {
               "type": "string",
               "format": "uuid"
             },
-            "minItems": 0,
+            "minItems": 3,
+            "maxItems": 300,
+            "uniqueItems": true
+          },
+          "midIntentIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "minItems": 1,
             "maxItems": 100,
             "uniqueItems": true
           },
@@ -119090,81 +119141,70 @@
         },
         "required": [
           "policyId",
+          "policyReference",
+          "draftId",
+          "draftEtag",
           "termId",
           "transactionId",
           "decisionId",
+          "versionId",
           "versionIds",
           "obligationId",
           "journalId",
+          "accountingPeriodId",
+          "postingDate",
+          "currency",
+          "amountDue",
+          "amountCredit",
+          "netAmount",
           "documentRequestIds",
+          "midIntentIds",
           "processedAt"
         ]
       },
       "ServicingIssueWrite": {
-        "oneOf": [
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "kind": {
-                "type": "string",
-                "enum": [
-                  "adjustment",
-                  "renewal"
-                ]
-              },
-              "cycleId": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "ratingId": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "termsId": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "acceptanceId": {
-                "type": "string",
-                "format": "uuid"
-              }
-            },
-            "required": [
-              "kind",
-              "cycleId",
-              "ratingId",
-              "termsId",
-              "acceptanceId"
-            ]
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "cycleId": {
+            "type": "string",
+            "format": "uuid"
           },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "kind": {
-                "const": "cancellation"
-              },
-              "previewId": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "approvalId": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "previewHash": {
-                "type": "string",
-                "pattern": "^[a-f0-9]{64}$"
-              }
-            },
-            "required": [
-              "kind",
-              "previewId",
-              "approvalId",
-              "previewHash"
-            ]
+          "ratingId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "termsVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "acceptanceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "termsHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "assuranceHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 1000,
+            "pattern": "\\S"
           }
+        },
+        "required": [
+          "cycleId",
+          "ratingId",
+          "termsVersionId",
+          "acceptanceId",
+          "termsHash",
+          "assuranceHash",
+          "reason"
         ]
       },
       "ServicingIssueDecision": {
@@ -124568,6 +124608,291 @@
           "draftEtag"
         ]
       },
+      "ServicingPolicyFinancialView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "obligationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "transactionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "journalId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "currency": {
+            "const": "GBP"
+          },
+          "debtorKind": {
+            "type": "string",
+            "enum": [
+              "agency",
+              "relationship"
+            ]
+          },
+          "debtorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "amountDue": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
+          "premium": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
+          "tax": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
+          "fee": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
+          "brokerCommission": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
+          "brokerFeeShare": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
+          "insurerPayable": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
+          "retainedFeeIncome": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
+          "brokerRemunerationPayable": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "accountCode": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 60,
+                  "pattern": "\\S"
+                },
+                "side": {
+                  "type": "string",
+                  "enum": [
+                    "debit",
+                    "credit"
+                  ]
+                },
+                "amount": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$",
+                  "not": {
+                    "const": "0.00"
+                  }
+                },
+                "componentCode": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 60,
+                  "pattern": "\\S"
+                }
+              },
+              "required": [
+                "accountCode",
+                "side",
+                "amount",
+                "componentCode"
+              ]
+            },
+            "minItems": 0,
+            "maxItems": 3010,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "obligationId",
+          "transactionId",
+          "journalId",
+          "currency",
+          "debtorKind",
+          "debtorId",
+          "amountDue",
+          "premium",
+          "tax",
+          "fee",
+          "brokerCommission",
+          "brokerFeeShare",
+          "insurerPayable",
+          "retainedFeeIncome",
+          "brokerRemunerationPayable",
+          "lines"
+        ]
+      },
+      "ServicingPolicyView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40,
+            "pattern": "\\S"
+          },
+          "sourceQuoteId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "clientId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "relationshipId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "agencyId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "termId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "versionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "transactionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "issuedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "snapshot": {
+            "$ref": "./schemas/issued-servicing.schema.json"
+          },
+          "financials": {
+            "$ref": "#/components/schemas/ServicingPolicyFinancialView"
+          },
+          "documentRequests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FirstPolicyDocumentRequest"
+            },
+            "minItems": 0,
+            "maxItems": 20,
+            "uniqueItems": true
+          },
+          "contentHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "sourceCycleId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ratingId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "acceptanceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "effectiveAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "termNumber": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "versionSequence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "transactionSequence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "effectiveCutoff": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "knownCutoff": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "coverageState": {
+            "type": "string",
+            "enum": [
+              "scheduled",
+              "active",
+              "expired",
+              "cancelled"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "reference",
+          "sourceQuoteId",
+          "clientId",
+          "relationshipId",
+          "agencyId",
+          "termId",
+          "versionId",
+          "transactionId",
+          "issuedAt",
+          "snapshot",
+          "financials",
+          "documentRequests",
+          "contentHash",
+          "sourceCycleId",
+          "ratingId",
+          "acceptanceId",
+          "effectiveAt",
+          "reason",
+          "termNumber",
+          "versionSequence",
+          "transactionSequence",
+          "effectiveCutoff",
+          "knownCutoff",
+          "coverageState"
+        ]
+      },
+      "IssuedPolicyView": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/FirstPolicyView"
+          },
+          {
+            "$ref": "#/components/schemas/ServicingPolicyView"
+          }
+        ]
+      },
       "PolicyNotCovered": {
         "type": "object",
         "additionalProperties": false,
@@ -124599,6 +124924,9 @@
         "oneOf": [
           {
             "$ref": "#/components/schemas/FirstPolicyView"
+          },
+          {
+            "$ref": "#/components/schemas/ServicingPolicyView"
           },
           {
             "$ref": "#/components/schemas/PolicyNotCovered"

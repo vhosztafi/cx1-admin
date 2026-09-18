@@ -195,8 +195,8 @@
         },
         "sliceOrdinal": {
           "type": "integer",
-          "minimum": 0,
-          "maximum": 99
+          "minimum": 1,
+          "maximum": 100
         },
         "inputHash": {
           "type": "string",

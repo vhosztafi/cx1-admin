@@ -4,8 +4,22 @@ export function addPolicyTemporalContracts({schemas:s,ref:r,operation,paths}) {
  const context={effectiveCutoff:instant,knownCutoff:instant};
  Object.assign(s.FirstPolicyView.properties,{...context,coverageState:e('scheduled','active','expired','cancelled')});
  s.FirstPolicyView.required.push(...Object.keys(context),'coverageState');
+ // Retain the original first-issue schema; servicing reads use their own signed
+ // financial shape and immutable snapshot format.
+ s.ServicingPolicyFinancialView=structuredClone(s.FirstPolicyFinancialView);
+ const signed={type:'string',pattern:'^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$'};
+ for(const key of ['amountDue','premium','tax','fee','brokerCommission','brokerFeeShare','insurerPayable','retainedFeeIncome','brokerRemunerationPayable'])
+  s.ServicingPolicyFinancialView.properties[key]=signed;
+ s.ServicingPolicyFinancialView.properties.lines.minItems=0;
+ s.ServicingPolicyFinancialView.properties.lines.maxItems=3010;
+ s.ServicingPolicyView=structuredClone(s.FirstPolicyView);
+ s.ServicingPolicyView.properties.snapshot={$ref:'./schemas/issued-servicing.schema.json'};
+ s.ServicingPolicyView.properties.financials=r('ServicingPolicyFinancialView');
+ s.IssuedPolicyView={oneOf:[r('FirstPolicyView'),r('ServicingPolicyView')]};
  s.PolicyNotCovered=o({id,...context,coverageState:{const:'not-covered'}});
- s.PolicyTemporalView={oneOf:[r('FirstPolicyView'),r('PolicyNotCovered')]};
+ s.PolicyTemporalView={oneOf:[r('FirstPolicyView'),r('ServicingPolicyView'),r('PolicyNotCovered')]};
+ for(const suffix of ['versions/{versionId}','transactions/{transactionId}','obligations/{obligationId}'])
+  paths[`/policies/{policyId}/terms/{termId}/${suffix}`].get.responses['200'].content['application/json'].schema=r('IssuedPolicyView');
  for(const path of ['/policies/{policyId}','/policies/{policyId}/terms/{termId}'])
   paths[path].get.responses['200'].content['application/json'].schema=r('PolicyTemporalView');
  for(const [path,name] of [['/policies/{policyId}/as-at','getPolicyTemporalView'],['/terms/{termId}/as-at','getPolicyAsAt']]) {

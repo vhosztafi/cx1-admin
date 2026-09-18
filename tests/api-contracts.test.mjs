@@ -10,11 +10,12 @@ const ajv=new Ajv2020({strict:true,allErrors:true});addFormats(ajv);ajv.addForma
 const policy=await read('schemas/policy.schema.json'),draft=await read('schemas/policy-draft.schema.json');
 const quoteDraft=await read('schemas/quote-draft.schema.json');
 const issuedPolicy=await read('schemas/issued-policy.schema.json');
-ajv.addSchema(policy);ajv.addSchema(draft);ajv.addSchema(quoteDraft);ajv.addSchema(issuedPolicy);
+const issuedServicing=await read('schemas/issued-servicing.schema.json');
+ajv.addSchema(policy);ajv.addSchema(draft);ajv.addSchema(quoteDraft);ajv.addSchema(issuedPolicy);ajv.addSchema(issuedServicing);
 const rootId='https://contracts.cover-mga.example/api-schemas';
 function relocate(value){
  if(Array.isArray(value))return value.map(relocate);
- if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).map(([key,v])=>[key,key==='$ref'?v.replace('#/components/schemas/',`${rootId}#/$defs/`).replace('./schemas/policy.schema.json',policy.$id).replace('./schemas/policy-draft.schema.json',draft.$id).replace('./schemas/quote-draft.schema.json',quoteDraft.$id).replace('./schemas/issued-policy.schema.json',issuedPolicy.$id):relocate(v)]));
+ if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).map(([key,v])=>[key,key==='$ref'?v.replace('#/components/schemas/',`${rootId}#/$defs/`).replace('./schemas/policy.schema.json',policy.$id).replace('./schemas/policy-draft.schema.json',draft.$id).replace('./schemas/quote-draft.schema.json',quoteDraft.$id).replace('./schemas/issued-policy.schema.json',issuedPolicy.$id).replace('./schemas/issued-servicing.schema.json',issuedServicing.$id):relocate(v)]));
  return value;
 }
 ajv.addSchema({$id:rootId,$defs:relocate(document.components.schemas)});

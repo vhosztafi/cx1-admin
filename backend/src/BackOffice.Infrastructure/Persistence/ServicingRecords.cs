@@ -9,6 +9,7 @@ public sealed class ServicingDraft : MutableRecord
     public string State { get; set; } = "draft";
     public Guid? CurrentRevisionId { get; set; }
     public Guid? CurrentCycleId { get; set; }
+    public Guid? IssuedTransactionId { get; set; }
 }
 
 public sealed class ServicingRevision : StoredRecord

@@ -10,7 +10,7 @@ namespace BackOffice.IntegrationTests;
 
 public sealed partial class UnderwritingRuntimeTests
 {
-    private static async Task VerifyServicingTermsPreparation(BackOfficeDbContext db,DecisionFixture f,ServicingCycle cycle,Guid fence,string etag,string deliveryScenario="success",string? httpPassword=null,bool signatureCondition=false,bool posting=false)
+    private static async Task VerifyServicingTermsPreparation(BackOfficeDbContext db,DecisionFixture f,ServicingCycle cycle,Guid fence,string etag,string deliveryScenario="success",string? httpPassword=null,bool signatureCondition=false,bool posting=false,bool issue=false)
     {
         static byte[] Version(string value)=>Convert.FromBase64String(value.Trim('"'));
         static string Key()=>Guid.NewGuid().ToString();
@@ -49,8 +49,8 @@ public sealed partial class UnderwritingRuntimeTests
         if(deliveryScenario!="success")return;
         var reused=await terms.PrepareAsync(f.Underwriter,cycle.DraftId,cycle.Id,cycle.CurrentRatingId!.Value,template.Id,Version(queuedEtag),fence,Key(),Guid.NewGuid());
         Assert.Equal(stored.Id,reused.ResourceId);Assert.Equal(1,await db.Set<ServicingTermsVersion>().CountAsync());
-        var acceptedEtag=await VerifyServicingAcceptance(db,f,cycle,stored,uploaded.ResourceId,fence,reused.Etag!,posting);
-        if(posting)return;
+        var acceptedEtag=await VerifyServicingAcceptance(db,f,cycle,stored,uploaded.ResourceId,fence,reused.Etag!,posting,issue,httpPassword);
+        if(posting || issue)return;
         if(httpPassword is not null)
         {await VerifyServicingTermsHttp(db,f,httpPassword,cycle,stored,uploaded.ResourceId,fence,acceptedEtag);return;}
         if(signatureCondition){await VerifyServicingSignedCondition(db,f,cycle,stored,fence,acceptedEtag);return;}

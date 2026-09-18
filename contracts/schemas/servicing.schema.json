@@ -4529,6 +4529,20 @@
           "type": "string",
           "format": "uuid"
         },
+        "policyReference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40,
+          "pattern": "\\S"
+        },
+        "draftId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "draftEtag": {
+          "type": "string",
+          "pattern": "^\"[A-Za-z0-9+/]{11}=\"$"
+        },
         "termId": {
           "type": "string",
           "format": "uuid"
@@ -4538,6 +4552,10 @@
           "format": "uuid"
         },
         "decisionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "versionId": {
           "type": "string",
           "format": "uuid"
         },
@@ -4559,13 +4577,46 @@
           "type": "string",
           "format": "uuid"
         },
+        "accountingPeriodId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "postingDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "currency": {
+          "const": "GBP"
+        },
+        "amountDue": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+        },
+        "amountCredit": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+        },
+        "netAmount": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+        },
         "documentRequestIds": {
           "type": "array",
           "items": {
             "type": "string",
             "format": "uuid"
           },
-          "minItems": 0,
+          "minItems": 3,
+          "maxItems": 300,
+          "uniqueItems": true
+        },
+        "midIntentIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "minItems": 1,
           "maxItems": 100,
           "uniqueItems": true
         },
@@ -4576,81 +4627,70 @@
       },
       "required": [
         "policyId",
+        "policyReference",
+        "draftId",
+        "draftEtag",
         "termId",
         "transactionId",
         "decisionId",
+        "versionId",
         "versionIds",
         "obligationId",
         "journalId",
+        "accountingPeriodId",
+        "postingDate",
+        "currency",
+        "amountDue",
+        "amountCredit",
+        "netAmount",
         "documentRequestIds",
+        "midIntentIds",
         "processedAt"
       ]
     },
     "ServicingIssueWrite": {
-      "oneOf": [
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "kind": {
-              "type": "string",
-              "enum": [
-                "adjustment",
-                "renewal"
-              ]
-            },
-            "cycleId": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "ratingId": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "termsId": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "acceptanceId": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          "required": [
-            "kind",
-            "cycleId",
-            "ratingId",
-            "termsId",
-            "acceptanceId"
-          ]
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cycleId": {
+          "type": "string",
+          "format": "uuid"
         },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "kind": {
-              "const": "cancellation"
-            },
-            "previewId": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "approvalId": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "previewHash": {
-              "type": "string",
-              "pattern": "^[a-f0-9]{64}$"
-            }
-          },
-          "required": [
-            "kind",
-            "previewId",
-            "approvalId",
-            "previewHash"
-          ]
+        "ratingId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "termsVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "acceptanceId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "termsHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "assuranceHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 1000,
+          "pattern": "\\S"
         }
+      },
+      "required": [
+        "cycleId",
+        "ratingId",
+        "termsVersionId",
+        "acceptanceId",
+        "termsHash",
+        "assuranceHash",
+        "reason"
       ]
     },
     "ServicingIssueDecision": {

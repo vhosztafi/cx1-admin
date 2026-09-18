@@ -26,9 +26,18 @@ public sealed partial class UnderwritingRuntimeTests
         var rating = await db.Set<ServicingRatingResult>().AsNoTracking().SingleAsync(x => x.Id == cycle.CurrentRatingId);
         var outcome = JsonSerializer.Deserialize<ServicingRatingOutcome>(rating.ResultJson, new JsonSerializerOptions(JsonSerializerDefaults.Web))!;
         var now = f.Clock.GetUtcNow();
+        var grant = await (from g in db.Set<UserAuthorityGrant>() join a in db.Set<AuthorityVersion>() on g.AuthorityVersionId equals a.Id
+            where g.UserId==f.Underwriter.UserId && g.RevokedAt==null && a.ProductVersionId==cycle.ProductVersionId && a.BinderVersionId==cycle.BinderVersionId
+            select g).FirstAsync();
+        var decision = new ServicingIssueDecision { DraftId=cycle.DraftId,PolicyId=policy.Id,BaseTermId=cycle.BaseTermId,BaseVersionId=cycle.BaseVersionId,
+            RevisionId=cycle.RevisionId,CycleId=cycle.Id,RatingId=rating.Id,TermsVersionId=acceptance.TermsVersionId,AcceptanceId=acceptance.Id,
+            ActorId=f.Underwriter.UserId,GrantId=grant.Id,AuthorityVersionId=grant.AuthorityVersionId,InputHash=cycle.InputHash,
+            TermsHash=acceptance.TermsHash,AssuranceHash=acceptance.AssuranceHash,EffectiveAt=outcome.Rating!.Slices[0].EffectiveAt,
+            Reason="Fictional guarded signed posting",CreatedAt=now,CreatedBy=f.Underwriter.UserId };
+        db.Add(decision);await db.SaveChangesAsync();
         var transaction = new PolicyTransaction { PolicyId = policy.Id, TermId = cycle.BaseTermId, SourceQuoteId = policy.SourceQuoteId,
             Kind = "adjustment", Sequence = 2, ServicingDraftId = cycle.DraftId, ServicingRevisionId = cycle.RevisionId, ServicingCycleId = cycle.Id,
-            ServicingRatingId = rating.Id, ServicingAcceptanceId = acceptance.Id, EffectiveAt = outcome.Rating!.Slices[0].EffectiveAt,
+            ServicingRatingId = rating.Id, ServicingAcceptanceId = acceptance.Id, ServicingIssueDecisionId=decision.Id, EffectiveAt = outcome.Rating!.Slices[0].EffectiveAt,
             ProcessedAt = now, CreatedAt = now, CreatedBy = f.Underwriter.UserId, Reason = "Fictional guarded signed posting", OperationKey = "servicing-issue/" + cycle.DraftId.ToString("N") };
         // Neither mixed quote/servicing provenance nor a nullable source can bypass source validation.
         transaction.RatingId = original.RatingId; db.Add(transaction);

@@ -56,6 +56,8 @@ export function addServicingContracts({schemas,ref,operation,paths}) {
  editor.responses=structuredClone(editor.responses);
  editor.responses[200].headers={...editor.responses[200].headers,ETag:{description:'Strong draft version for this saved editor projection.',schema:{type:'string'}}};
  route('post',`${root}/issue`,'issuePolicyDraft','policy-issue-within-authority','ServicingIssueWrite','ServicingIssueResult',{status:201});
+ paths[`${root}/issue`].post['x-runtime-status']='phase-7-10-implemented';
+ paths[`${root}/issue`].post.description='Atomically issue the accepted adjustment and all effective slices, signed posting, document requests and MID intents. Current actor, policy scope and issuing authority are checked before receipt replay. Fresh issue requires current strong ETag, editing lease, rating, delivered terms, reviewed proof and acceptance. Responses are no-store. Renewal and cancellation are not accepted by this endpoint.';
  route('get',`${root}/cancellation-preview`,'getCancellationPreview','cancellation-review',undefined,'ServicingCancellationPreview');
  const writes=[
   ['evidence','attachDraftEvidence','underwriting-evidence-write','ServicingEvidence'],

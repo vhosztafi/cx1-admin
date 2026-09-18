@@ -11,6 +11,6 @@ export async function writeServicingContracts() {
  issued.$id='https://schemas.cover-mga.example/issued-servicing/1.0';
  issued.title='Immutable issued servicing slice retaining validated declarations';
  issued.properties.snapshotFormat={const:'issued-servicing-1'};
- issued.properties.provenance=o({source:e('backoffice','demo-seed'),sourceQuoteId:id,servicingIssueDecisionId:id,baseVersionId:id,revisionId:id,transactionId:id,effectiveAt:instant,processedAt:instant,sliceOrdinal:bounded(0,99),inputHash:hash});
+ issued.properties.provenance=o({source:e('backoffice','demo-seed'),sourceQuoteId:id,servicingIssueDecisionId:id,baseVersionId:id,revisionId:id,transactionId:id,effectiveAt:instant,processedAt:instant,sliceOrdinal:bounded(1,100),inputHash:hash});
  await writeFile(new URL('../contracts/schemas/issued-servicing.schema.json',import.meta.url),JSON.stringify(issued,null,2)+'\n');
 }

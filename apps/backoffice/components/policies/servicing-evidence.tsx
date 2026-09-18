@@ -12,6 +12,7 @@ import type { ServicingRatingHistory } from '../../lib/servicing-rating';
 import { recoverSubmission } from '../../lib/servicing-submission';
 import { ServicingSubmission } from './servicing-submission';
 import { ServicingTerms } from './servicingterms';
+import { ServicingIssue } from './servicingissue';
 
 type Run = (path: string, body?: unknown, file?: File) => void;
 export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, blocked, dirty, canReview, editor, pendingChanged, saved }: {
@@ -24,7 +25,8 @@ export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, 
   const [file, setFile] = useState<File>(), [filePage, setFilePage] = useState({ etag, cursor: '' });
   const [associationPage, setAssociationPage] = useState({ etag, cursor: '' });
   const [cyclePage, setCyclePage] = useState({ etag, cursor: '' }), [historyCycle, setHistoryCycle] = useState('');
-  const paused = pendingState || blocked;
+  const [issuePending,setIssuePending]=useState(false);
+  const paused = pendingState || blocked || issuePending;
   const base = `/api/v1/drafts/${draftId}`;
   const requirements = useProofRead<ProofRequirements>(base + '/evidence/requirements', etag, paused);
   const fileCursor = filePage.etag === etag ? filePage.cursor : '';
@@ -36,7 +38,7 @@ export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, 
   const selectedCycle = historyCycle || cycleId || cycles.data?.items[0]?.id;
   const associations = useProofRead<ProofPage<ProofAssociation>>(selectedCycle ? `${base}/evidence?cycleId=${selectedCycle}&pageSize=20${associationCursor ? '&cursor=' + encodeURIComponent(associationCursor) : ''}` : null, etag, paused);
   const current = requirements.current && requirements.data?.draftId === draftId && requirements.data.requirements.every(x => x.requirement.context.draftId === draftId && x.requirement.context.revisionId === revisionId && x.requirement.context.cycleId === cycleId);
-  const active = !!(current && requirements.data?.applicable && editable && fence && !blocked && !dirty && !pendingState);
+  const active = !!(current && requirements.data?.applicable && editable && fence && !blocked && !dirty && !pendingState && !issuePending);
   async function execute(path?: string, body?: unknown, upload?: File) {
     if (sendingRef.current || (!pending.current && !active)) return;
     sendingRef.current = true; setSending(true); setError(''); setNotice('');
@@ -108,6 +110,7 @@ export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, 
     </>}
     <ServicingReferrals draftId={draftId} etag={etag} cycleId={cycleId ?? null} active={active && canReview} paused={paused} requirements={requirements.data?.requirements.map(x => x.requirement) ?? []} evidence={associations.current && selectedCycle === cycleId ? associations.data?.items ?? [] : []} editor={editor} run={run} />
     <ServicingTerms draftId={draftId} revisionId={revisionId} cycleId={cycleId ?? null} etag={etag} active={active} paused={paused} requirements={requirements.data?.requirements.map(x => x.requirement) ?? []} evidence={associations.current && selectedCycle === cycleId ? associations.data?.items ?? [] : []} run={run} />
+    {cycleId && <ServicingIssue scope={{draftId,revisionId,cycleId,etag,fence:fence ?? ''}} active={active && canReview} paused={paused} pendingChanged={value=>{setIssuePending(value);pendingChanged(value);}} saved={saved}/>}
   </div></Panel>;
 }
 

@@ -16,7 +16,7 @@ public sealed partial class BackOfficeDbContext
         draft.HasIndex(x => x.BaseTermId, "UX_ServicingDraft_LiveAdjustment").IsUnique().HasFilter("[Kind]='adjustment' AND [State]='draft'");
         draft.HasIndex(x => x.BaseTermId, "UX_ServicingDraft_LiveRenewal").IsUnique().HasFilter("[Kind]='renewal' AND [State]='draft'");
         Check(draft, "Kind", "[Kind] IN ('adjustment','renewal','cancellation')");
-        Check(draft, "State", "[State] IN ('draft','abandoned')");
+        Check(draft, "State", "[State] IN ('draft','abandoned','issued')");
         Check(draft, "Creator", "[CreatedBy] IS NOT NULL");
 
         var revision = Record<ServicingRevision>(model, "ServicingRevision");

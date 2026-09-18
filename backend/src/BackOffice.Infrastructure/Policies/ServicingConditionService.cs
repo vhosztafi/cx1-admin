@@ -108,7 +108,7 @@ public sealed partial class ServicingReferralService
             parsed.All(p=>x.EffectiveDates.Contains(p.EffectiveAt)));
     }
 
-    private static async Task<bool> ResolutionAuthority(BackOfficeDbContext db,ServicingDecisionContext held,JsonElement grant,DateTimeOffset now,CancellationToken token)
+    internal static async Task<bool> ResolutionAuthority(BackOfficeDbContext db,ServicingDecisionContext held,JsonElement grant,DateTimeOffset now,CancellationToken token)
     {
         var proposals=ServicingEvidenceProjection.Slices(held);
         var active=await ActiveConditions(db,held.Cycle.Id,token);

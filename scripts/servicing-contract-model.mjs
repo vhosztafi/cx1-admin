@@ -54,8 +54,10 @@ export function servicingDefinitions(quote) {
  defs.ServicingScheduleSlice=o({effectiveAt:instant,ordinal:bounded(0,99),changeIds:many(id,100,1)});
  defs.ServicingMovement=o({originalComponentId:id,coverageStartsOn:date,coverageEndsOn:date,premium:signedMoney,tax:signedMoney,commission:signedMoney,fee:signedMoney,netDue:signedMoney});
  defs.ServicingCancellationPreview=o({draftId:id,revisionId:id,baseVersionId:id,ruleVersion:t(100),previewHash:hash,effectiveAt:instant,movements:many(r('ServicingMovement'),1000),netCredit:money,blockers:many(t(100),100)});
- defs.ServicingIssueResult=o({policyId:id,termId:id,transactionId:id,decisionId:id,versionIds:many(id,100,1),obligationId:id,journalId:id,documentRequestIds:many(id,100),processedAt:instant});
- defs.ServicingIssueWrite={oneOf:[o({kind:e('adjustment','renewal'),cycleId:id,ratingId:id,termsId:id,acceptanceId:id}),o({kind:{const:'cancellation'},previewId:id,approvalId:id,previewHash:hash})]};
+ defs.ServicingIssueResult=o({policyId:id,policyReference:t(40),draftId:id,draftEtag:{type:'string',pattern:'^"[A-Za-z0-9+/]{11}="$'},termId:id,transactionId:id,decisionId:id,
+  versionId:id,versionIds:many(id,100,1),obligationId:id,journalId:id,accountingPeriodId:id,postingDate:date,currency:{const:'GBP'},amountDue:money,amountCredit:money,netAmount:signedMoney,
+  documentRequestIds:many(id,300,3),midIntentIds:many(id,100,1),processedAt:instant});
+ defs.ServicingIssueWrite=o({cycleId:id,ratingId:id,termsVersionId:id,acceptanceId:id,termsHash:hash,assuranceHash:hash,reason:{...t(1000),minLength:10}});
  defs.ServicingIssueDecision={oneOf:[
   o({id,draftId:id,policyId:id,baseTermId:id,baseVersionId:id,revisionId:id,kind:e('adjustment','renewal'),cycleId:id,ratingId:id,termsId:id,acceptanceId:id,effectiveAt:instant,inputHash:hash,createdAt:instant,createdBy:id}),
   o({id,draftId:id,policyId:id,baseTermId:id,baseVersionId:id,revisionId:id,kind:{const:'cancellation'},cancellationPreviewId:id,cancellationApprovalId:id,effectiveAt:instant,inputHash:hash,createdAt:instant,createdBy:id}),

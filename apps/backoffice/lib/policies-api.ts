@@ -19,7 +19,8 @@ export type IssuedPolicySnapshot = Omit<QuoteProposal, 'termIntent'> & {
   term: { kind: string; startsAt: string; endsAt: string; timeZone: string };
   premium: { currency: 'GBP'; annualPremium: string; termPremium: string; tax: string; fee: string; grossPayable: string; brokerCommission: string;
     settlement: { collector: string; mode: string; brokerFeeShare: string; invoiceDue: string; remunerationPayable: string; netEconomicDue: string } };
-  provenance: { source: string; quoteRevisionId: string; authorityVersionId: string };
+  provenance: { source: string; quoteRevisionId: string; authorityVersionId: string } | { source: string; sourceQuoteId: string; servicingIssueDecisionId: string;
+    baseVersionId: string; revisionId: string; transactionId: string; effectiveAt: string; processedAt: string; sliceOrdinal: number; inputHash: string };
 };
 export type PolicyView = {
   coverageState: 'scheduled' | 'active' | 'expired' | 'cancelled'; effectiveCutoff: string; knownCutoff: string;
