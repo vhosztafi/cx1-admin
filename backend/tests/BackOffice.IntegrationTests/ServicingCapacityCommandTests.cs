@@ -11,7 +11,7 @@ namespace BackOffice.IntegrationTests;
 
 public sealed partial class UnderwritingRuntimeTests
 {
-    private static async Task VerifyServicingCapacityCreate(BackOfficeDbContext db, DecisionFixture f, ServicingCycle cycle, string etag, bool submissionStorage = false)
+    private static async Task VerifyServicingCapacityCreate(BackOfficeDbContext db, DecisionFixture f, ServicingCycle cycle, string etag, bool submissionStorage = false, bool selectedEvidence = false, bool submitCommand = false)
     {
         static byte[] Version(string value) => Convert.FromBase64String(value.Trim('"'));
         static string Key() => Guid.NewGuid().ToString();
@@ -44,7 +44,8 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Equal(cycle.CurrentRatingId, row.RatingId); Assert.Equal(binder.ProviderId, row.ProviderId);
         Assert.Equal(referral.Id, row.ReferralId); Assert.Equal(f.Underwriter.UserId, row.RaisedBy); Assert.Equal("draft", row.State);
         var replay = await Create(key, takeover.Etag!); Assert.True(replay.Replayed); Assert.Equal(created.Body, replay.Body);
-        if (submissionStorage) { await VerifyServicingCapacitySubmissionStorage(db, f, row); return; }
+        if (submissionStorage) { await VerifyServicingCapacitySubmissionStorage(db, f, row, lease, selectedEvidence); return; }
+        if (submitCommand) { await VerifyServicingCapacitySubmit(db, f, row, lease, created.Etag!); return; }
         Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => Create(Key(), created.Etag!))).Status);
         await Assert.ThrowsAsync<CommandKeyConflictException>(() => Create(key, takeover.Etag!, why: "Changed request under original key"));
         Assert.Single(await db.Set<AuditEvent>().Where(x => x.EventType == "servicing.capacity-created").ToArrayAsync());

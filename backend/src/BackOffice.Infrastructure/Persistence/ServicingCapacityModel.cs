@@ -45,5 +45,16 @@ public sealed partial class BackOfficeDbContext
         capacity.HasOne<ServicingCapacitySubmission>().WithMany()
             .HasForeignKey(x => new { x.CurrentSubmissionId, x.Id, x.CycleId, x.DraftId, x.RevisionId, x.RatingId })
             .HasPrincipalKey(x => new { x.Id, x.CaseId, x.CycleId, x.DraftId, x.RevisionId, x.RatingId }).OnDelete(DeleteBehavior.NoAction);
+
+        var evidence = Record<ServicingCapacitySubmissionEvidence>(model, "ServicingCapacitySubmissionEvidence");
+        evidence.ToTable(t => t.UseSqlOutputClause(false));
+        evidence.HasIndex(x => new { x.SubmissionId, x.AssociationId }).IsUnique();
+        evidence.HasOne<ServicingCapacitySubmission>().WithMany()
+            .HasForeignKey(x => new { x.SubmissionId, x.CaseId, x.CycleId, x.DraftId, x.RevisionId, x.RatingId })
+            .HasPrincipalKey(x => new { x.Id, x.CaseId, x.CycleId, x.DraftId, x.RevisionId, x.RatingId }).OnDelete(DeleteBehavior.NoAction);
+        evidence.HasOne<ServicingEvidenceEvent>().WithMany()
+            .HasForeignKey(x => new { x.ReviewId, x.AssociationId, x.CycleId, x.DraftId, x.RevisionId, x.RatingId })
+            .HasPrincipalKey(x => new { x.Id, x.AssociationId, x.CycleId, x.DraftId, x.RevisionId, x.RatingId }).OnDelete(DeleteBehavior.NoAction);
+        Check(evidence, "Actor", "[CreatedBy] IS NOT NULL");
     }
 }

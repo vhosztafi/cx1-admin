@@ -34,3 +34,15 @@ public sealed class ServicingCapacitySubmission : StoredRecord
     public DateTimeOffset SubmittedAt { get; set; }
     public DateTimeOffset ResponseDueAt { get; set; }
 }
+
+public sealed class ServicingCapacitySubmissionEvidence : StoredRecord
+{
+    public Guid SubmissionId { get; set; }
+    public Guid CaseId { get; set; }
+    public Guid DraftId { get; set; }
+    public Guid RevisionId { get; set; }
+    public Guid CycleId { get; set; }
+    public Guid RatingId { get; set; }
+    public Guid AssociationId { get; set; }
+    public Guid ReviewId { get; set; }
+}
