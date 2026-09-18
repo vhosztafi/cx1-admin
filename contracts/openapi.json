@@ -16968,7 +16968,7 @@
       "post": {
         "operationId": "ratePolicyDraft",
         "summary": "rate Policy Draft",
-        "description": "Queue an immutable rating of the exact saved adjustment revision and cumulative effective slices. Requires current policy scope, strong draft ETag, holder-bound editing lease and idempotency key. Current grants are checked before replay. One configured adjustment fee is charged. Rating does not grant underwriting, acceptance or issue authority. Responses are no-store.",
+        "description": "Queue an immutable rating of the exact saved adjustment or prepared renewal revision. Adjustments use cumulative effective slices; renewals price the full next term and pin supplied experience and its review. Requires current policy scope, strong draft ETag, holder-bound editing lease and idempotency key. Current grants are checked before replay. One configured transaction fee is charged. Rating does not grant underwriting, acceptance or issue authority. Responses are no-store.",
         "tags": [
           "drafts"
         ],
@@ -97927,6 +97927,176 @@
       }
     },
     "/drafts/{draftId}/renewal/preparation": {
+      "get": {
+        "operationId": "readRenewalPreparation",
+        "summary": "read Renewal Preparation",
+        "description": "Persistent scoped renewal preparation and supplied experience. Current identity, policy permission and review grants are checked before receipt replay. New commands require a strong draft If-Match, holder-bound X-Edit-Lease and Idempotency-Key. Changes invalidate existing rating authority. Unknown experience remains absent; reviews approve exact immutable supplied versions. Responses are no-store.",
+        "tags": [
+          "drafts"
+        ],
+        "x-permission": "policy-read",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "draftId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Strong current term or draft version.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 14,
+                  "maxLength": 14
+                }
+              },
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RenewalPreparationWorkspace"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-7-11-read-implemented"
+      },
       "post": {
         "operationId": "prepareRenewal",
         "summary": "prepare Renewal",
@@ -126346,6 +126516,196 @@
           "fairValueSatisfied",
           "fairValueState",
           "brokerArrearsState"
+        ]
+      },
+      "RenewalPreparationSelection": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "termMonths": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          },
+          "term": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "enum": [
+                  "annual",
+                  "short-period"
+                ]
+              },
+              "startsAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "endsAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "timeZone": {
+                "const": "Europe/London"
+              }
+            },
+            "required": [
+              "kind",
+              "startsAt",
+              "endsAt",
+              "timeZone"
+            ]
+          },
+          "productVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "binderVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "agencyTermsVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ruleSettingVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "fairValueAssessmentId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "preparedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "sequence",
+          "termMonths",
+          "term",
+          "productVersionId",
+          "binderVersionId",
+          "agencyTermsVersionId",
+          "ruleSettingVersionId",
+          "fairValueAssessmentId",
+          "preparedAt"
+        ]
+      },
+      "RenewalPreparationWorkspace": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "draftId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "draftEtag": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 14
+          },
+          "assessedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "preparation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RenewalPreparationSelection"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "eligibility": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RenewalPreparationPreview"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "allowedTermMonths": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "maxItems": 12,
+            "uniqueItems": true
+          },
+          "defaultTermMonths": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 12
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "expiringAnnualPremium": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+          },
+          "expiringStartsAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expiringEndsAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "current": {
+            "type": "boolean"
+          },
+          "blockers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "draftId",
+          "draftEtag",
+          "assessedAt",
+          "preparation",
+          "eligibility",
+          "allowedTermMonths",
+          "defaultTermMonths",
+          "expiringAnnualPremium",
+          "expiringStartsAt",
+          "expiringEndsAt",
+          "current",
+          "blockers"
         ]
       },
       "ServicingPolicyFinancialView": {

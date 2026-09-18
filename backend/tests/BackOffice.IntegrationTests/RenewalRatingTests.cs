@@ -37,9 +37,18 @@ public sealed partial class UnderwritingRuntimeTests
             var prepared=await renewals.PrepareAsync(f.Servicing,created.ResourceId,Version(leased.Etag!),fence,12,null,Guid.NewGuid().ToString(),Guid.NewGuid());
             var draft=await db.Set<ServicingDraft>().AsNoTracking().SingleAsync(x=>x.Id==created.ResourceId);
             var ratings=new ServicingRatingService(f.Factory,f.Clock);var key=Guid.NewGuid().ToString();
-            var requested=await ratings.RateAsync(f.Servicing,draft.Id,draft.CurrentRevisionId!.Value,Version(prepared.Etag!),fence,
+            var originalProposal=(await db.Set<ServicingRevision>().AsNoTracking().SingleAsync(x=>x.Id==draft.CurrentRevisionId)).ProposalJson;
+            var lateProposal=JsonNode.Parse(originalProposal)!;
+            lateProposal["commonEffectiveIntent"]!["localDate"]="2027-10-02";
+            var lateSaved=await drafts.SaveAsync(f.Servicing,draft.Id,Version(prepared.Etag!),fence,lateProposal.ToJsonString(),Guid.NewGuid().ToString(),Guid.NewGuid());
+            var lateDraft=await db.Set<ServicingDraft>().AsNoTracking().SingleAsync(x=>x.Id==draft.Id);
+            Assert.Equal("renewal-effective-inception-required",(await Assert.ThrowsAsync<QuoteOperationException>(()=>ratings.RateAsync(f.Servicing,draft.Id,
+                lateDraft.CurrentRevisionId!.Value,Version(lateSaved.Etag!),fence,"Reject a shifted unchanged renewal",Guid.NewGuid().ToString(),Guid.NewGuid()))).Code);
+            var restored=await drafts.SaveAsync(f.Servicing,draft.Id,Version(lateSaved.Etag!),fence,originalProposal,Guid.NewGuid().ToString(),Guid.NewGuid());
+            draft=await db.Set<ServicingDraft>().AsNoTracking().SingleAsync(x=>x.Id==draft.Id);
+            var requested=await ratings.RateAsync(f.Servicing,draft.Id,draft.CurrentRevisionId!.Value,Version(restored.Etag!),fence,
                 "Rate the full unchanged renewal risk",key,Guid.NewGuid());
-            Assert.True((await ratings.RateAsync(f.Servicing,draft.Id,draft.CurrentRevisionId.Value,Version(prepared.Etag!),fence,
+            Assert.True((await ratings.RateAsync(f.Servicing,draft.Id,draft.CurrentRevisionId.Value,Version(restored.Etag!),fence,
                 "Rate the full unchanged renewal risk",key,Guid.NewGuid())).Replayed);
             var cycle=await db.Set<ServicingCycle>().AsNoTracking().SingleAsync(x=>x.Id==requested.ResourceId);
             var input=ServicingRatingInput.Read(cycle.InputJson,cycle.InputHash);
@@ -106,6 +115,12 @@ public sealed partial class UnderwritingRuntimeTests
             var approvalKey=Guid.NewGuid().ToString();var decisions=new ReferralDecisionInput[]{new(lossRatio.Id,Version(lossRatio.Etag),"approve","Senior approval of reviewed renewal experience",[])};
             await referrals.DecideAsync(senior,draft.Id,next.Id,Version(seniorLease.Etag!),seniorFence,decisions,approvalKey,Guid.NewGuid());
             Assert.True(Assert.Single((await referrals.ReadReferralsAsync(senior,draft.Id)).Items,x=>x.RuleCode=="UW-31").DecisionReady);
+            var adjustmentTemplate=await db.Set<TemplateVersion>().Where(x=>x.ProductId==next.ProductId && x.Kind=="servicing-terms" && x.State=="published").Select(x=>x.Id).FirstAsync();
+            var approvedDraft=await drafts.ReadEditorAsync(senior,draft.Id);
+            var approvedRating=await db.Set<ServicingRatingResult>().AsNoTracking().SingleAsync(x=>x.CycleId==next.Id);
+            Assert.Equal("renewal-invitation-required",(await Assert.ThrowsAsync<QuoteOperationException>(()=>new ServicingTermsService(f.Factory,f.Clock).PrepareAsync(senior,draft.Id,next.Id,
+                approvedRating.Id,adjustmentTemplate,
+                Version(approvedDraft.Etag!),seniorFence,Guid.NewGuid().ToString(),Guid.NewGuid()))).Code);
             await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE UserAuthorityGrant SET RevokedAt={DateTimeOffset.UtcNow},RevokedBy={f.Underwriter.UserId},RevocationReason='Withdraw fictional renewal evidence authority' WHERE UserId={f.Underwriter.UserId} AND RevokedAt IS NULL");
             Assert.False((await new ServicingRatingReadModel(f.Factory,f.Clock).ReadAsync(f.Servicing,draft.Id)).Current!.Applicable);
             Assert.Equal("renewal-experience-review-stale",(await Assert.ThrowsAsync<QuoteOperationException>(()=>referrals.DecideAsync(senior,draft.Id,next.Id,

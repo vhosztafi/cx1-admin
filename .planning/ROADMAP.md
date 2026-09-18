@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1-6 complete;58 implementation plans complete. Phase7 has9/16 plans verified.07-10 atomic adjustment issue complete;07-11 renewal preparation next.07-09 cancellation accounting remains with13/14.
+**Status:** Autonomous progression authorised. Phases1-6 complete;59 implementation plans complete. Phase7 has10/16 plans verified.07-11 renewal preparation complete;07-12 renewal lifecycle in progress.07-09 cancellation accounting remains with13/14.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
@@ -123,7 +123,7 @@
 **Goal:** Service issued policies without corrupting history.
 **Depends on:** Phase 6
 **Requirements:** POL-01 through POL-09
-**Plans:** 9/16 plans executed
+**Plans:** 10/16 plans executed
 
 **Success criteria:**
 
@@ -145,7 +145,7 @@
 - [x] 07-08 — Servicing terms delivery and exact acceptance.
 - [ ] 07-09 — Signed financial components and locked posting periods.
 - [x] 07-10 — Atomic multi-slice adjustment issue.
-- [ ] 07-11 — Renewal preparation and supplied experience.
+- [x] 07-11 — Renewal preparation and supplied experience.
 - [ ] 07-12 — Renewal invitation issue and lapse.
 - [ ] 07-13 — Cancellation proposal preview and approval.
 - [ ] 07-14 — Atomic cancellation and durable consequences.
@@ -260,7 +260,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 4. Agency onboarding and access | 8/8 | Complete | 2026-09-15 |
 | 5. Motor Trade quote capture | 11/11 | Complete    | 2026-09-16 |
 | 6. Underwriting and first policy issue | 14/14 | Complete | 2026-09-17 |
-| 7. Policy lifecycle and history | 9/16 | In Progress|  |
+| 7. Policy lifecycle and history | 10/16 | In Progress|  |
 | 8. Commercial Combined back office | 0/TBD | Not started | — |
 | 9. Tasks, documents, communication and incidents | 0/TBD | Not started | — |
 | 10. Accounting and insurer reporting | 0/TBD | Not started | — |

@@ -4,7 +4,8 @@ import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Panel } from '../primitives';
 import { useQuoteResource, LoadFeedback } from '../quotes/shared';
-import { uncertainQuoteFailure } from '../../lib/quotes';
+import { quoteFetch, uncertainQuoteFailure } from '../../lib/quotes';
+import type { RenewalPreview } from '../../lib/renewal-preparation';
 import { sendServicing, servicingCommand, type ServicingCommand } from '../../lib/servicing-api';
 
 export function ServicingDrafts({ termId, baseVersionId }: { termId: string; baseVersionId: string }) {
@@ -15,8 +16,12 @@ export function ServicingDrafts({ termId, baseVersionId }: { termId: string; bas
   async function create() {
     if (busy || !list.etag) return; setBusy(true); setError('');
     try {
-      pending.current ??= servicingCommand(`/api/v1/terms/${termId}/drafts`, 'POST', list.etag, { kind, baseVersionId,
-        commonEffectiveIntent: { localDate: date, localTime: '00:00', timeZone: 'Europe/London' }, reason });
+      if (!pending.current) {
+        const preview = kind === 'renewal' ? (await quoteFetch<RenewalPreview>(`/api/v1/terms/${termId}/renewal-preview`)).data : null;
+        pending.current = servicingCommand(`/api/v1/terms/${termId}/drafts`, 'POST', preview?.termEtag ?? list.etag, { kind, baseVersionId: preview?.baseVersionId ?? baseVersionId,
+          commonEffectiveIntent: preview ? { localDate: preview.termIntent.localStartDate, localTime: preview.termIntent.localStartTime, timeZone: 'Europe/London', utcOffsetMinutes: preview.termIntent.utcOffsetMinutes }
+            : { localDate: date, localTime: '00:00', timeZone: 'Europe/London' }, reason });
+      }
       const saved = await sendServicing(pending.current); pending.current = null; setRetry(false); router.push(`/drafts/${saved.data.id}`);
     } catch (failure) {
       const uncertain = uncertainQuoteFailure(failure); setRetry(uncertain); if (!uncertain) { pending.current = null; list.refresh(); }
@@ -28,7 +33,7 @@ export function ServicingDrafts({ termId, baseVersionId }: { termId: string; bas
       {list.data.items.length ? <ul>{list.data.items.map(item => <li key={item.id}><Link href={`/drafts/${item.id}`}>Resume {item.kind} · {item.state}</Link>{item.kind === 'adjustment' && item.state === 'draft' && <> · <Link href={`/drafts/${item.id}#servicing-referrals`}>Open referrals</Link></>}</li>)}</ul> : <p>No servicing drafts saved for this term.</p>}
       <form onSubmit={event => { event.preventDefault(); void create(); }}><fieldset disabled={busy || retry}><div className="quote-form-grid">
         <label>Draft type<select aria-label="Draft type" value={kind} onChange={event => setKind(event.target.value)}><option value="adjustment">Policy adjustment</option><option value="renewal">Renewal</option><option value="cancellation">Cancellation</option></select></label>
-        <label>Requested effective date<input type="date" required value={date} onChange={event => setDate(event.target.value)} /></label>
+        {kind === 'renewal' ? <p>The server selects the expiring term’s final known risk and exact expiry for this renewal.</p> : <label>Requested effective date<input type="date" required value={date} onChange={event => setDate(event.target.value)} /></label>}
         <label>Reason for draft<textarea required minLength={10} maxLength={2000} value={reason} onChange={event => setReason(event.target.value)} /></label>
       </div></fieldset><p className="client-help">Dates use London time. Saving a draft does not change cover.</p>
         <button className="button button-primary" disabled={busy || !list.etag} type="submit">{busy ? 'Creating…' : retry ? 'Retry draft creation' : 'Create servicing draft'}</button>

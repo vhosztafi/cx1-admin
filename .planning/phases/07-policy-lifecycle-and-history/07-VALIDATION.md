@@ -185,3 +185,7 @@ readback validates hashes, signed posting, exact issued-version/transaction UI l
 and actual HTTP schemas.113existing demo table hashes preserved by additive migration.
 See07-10-SUMMARY.md. Documents/MID are real pending work; no cash collection or external
 delivery is claimed.07-09 cancellation lineage remains pending13/14. Continue07-11.
+
+## 07-11 measured completion — 2026-09-18
+
+Renewal preparation verified for both products. Final inception/template gate27 (25unit+2SQL), workspace API gate39 (37unit+2SQL),14 strict HTTP responses,32 UI helper and48 final API/source checks. Both Chrome journeys pass at16:56:30UTC with no browser errors; desktop/mobile screenshots inspected.115 existing demo table counts/hashes preserved by three additive migrations. Source invitation documents, issue and timeline retained under07-12. See07-11-SUMMARY.md and progress evidence for overlapping counts and exact paths. POL-07 remains open; continue07-12 inline.

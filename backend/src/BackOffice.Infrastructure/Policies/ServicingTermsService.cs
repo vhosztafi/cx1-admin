@@ -66,6 +66,7 @@ public sealed partial class ServicingTermsService(IDbContextFactory<BackOfficeDb
 
     internal static async Task<TemplateVersion> Template(BackOfficeDbContext db,ServicingDecisionContext held,Guid id,DateTimeOffset now,CancellationToken token)
     {
+        if(held.Scope.Draft.Kind!="adjustment")throw new QuoteOperationException(409,"renewal-invitation-required");
         var row=await db.Set<TemplateVersion>().FromSqlInterpolated($"SELECT * FROM TemplateVersion WITH(HOLDLOCK) WHERE Id={id} AND ProductId={held.Cycle.ProductId}").AsNoTracking().SingleOrDefaultAsync(token);
         if(row is null || row.Kind!="servicing-terms" || row.State!="published" || row.EffectiveFrom>now || row.EffectiveTo<=now)
             throw new QuoteOperationException(409,"servicing-template-unavailable");

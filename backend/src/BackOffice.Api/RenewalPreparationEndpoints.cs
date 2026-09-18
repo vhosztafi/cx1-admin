@@ -14,6 +14,7 @@ public static partial class RenewalPreparationEndpoints
     {
         app.MapGet("/api/v1/terms/{termId:guid}/renewal-preview",Preview).RequireAuthorization("policy-read");
         app.MapGet("/api/v1/drafts/{draftId:guid}/renewal/experience",ReadExperience).RequireAuthorization("policy-read");
+        app.MapGet("/api/v1/drafts/{draftId:guid}/renewal/preparation",ReadPreparation).RequireAuthorization("policy-read");
         app.MapPost("/api/v1/drafts/{draftId:guid}/renewal/preparation",Prepare).RequireAuthorization("quote-rate");
         app.MapPost("/api/v1/drafts/{draftId:guid}/renewal/experience/uploads",Upload).RequireAuthorization("underwriting-evidence-write");
         app.MapPut("/api/v1/drafts/{draftId:guid}/renewal/experience",SaveExperience).RequireAuthorization("underwriting-evidence-write");
@@ -53,6 +54,18 @@ public static partial class RenewalPreparationEndpoints
                     row.EvidenceAssociationId,recordedAt=row.CreatedAt,recordedBy=row.CreatedBy},
                 review=review is null?null:new{review.Id,review.ExperienceVersionId,review.Outcome,review.Reason,review.AuthorityVersionId,review.AuthorityGrantId,
                     recordedAt=review.CreatedAt,recordedBy=review.CreatedBy}});
+        }
+        catch(Exception error) when(QuoteEndpoints.Known(error)){return QuoteEndpoints.Failure(context,error);}
+    }
+
+    private static async Task<IResult> ReadPreparation(Guid draftId,HttpContext context,RenewalPreparationService service)
+    {
+        context.Response.Headers.CacheControl="no-store";
+        try
+        {
+            QuoteEndpoints.Id(draftId);QuoteHttpInput.NoQuery(context.Request);
+            var view=await service.ReadPreparationAsync(LocalIdentityService.Actor(context.User),draftId,context.RequestAborted);
+            context.Response.Headers.ETag=view.DraftEtag;return Results.Json(view);
         }
         catch(Exception error) when(QuoteEndpoints.Known(error)){return QuoteEndpoints.Failure(context,error);}
     }

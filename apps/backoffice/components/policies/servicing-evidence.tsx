@@ -15,8 +15,8 @@ import { ServicingTerms } from './servicingterms';
 import { ServicingIssue } from './servicingissue';
 
 type Run = (path: string, body?: unknown, file?: File) => void;
-export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, blocked, dirty, canReview, editor, pendingChanged, saved }: {
-  draftId: string; revisionId: string; etag: string; fence: string | null; editable: boolean; blocked: boolean; dirty: boolean; canReview: boolean;
+export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, blocked, dirty, canReview, editor, pendingChanged, saved, kind = 'adjustment' }: {
+  kind?: 'adjustment' | 'renewal'; draftId: string; revisionId: string; etag: string; fence: string | null; editable: boolean; blocked: boolean; dirty: boolean; canReview: boolean;
   editor: ServicingEditor | null; pendingChanged: (pending: boolean) => void; saved: () => Promise<void>;
 }) {
   const [pendingState, setPendingState] = useState(false), [sending, setSending] = useState(false), [error, setError] = useState(''), [notice, setNotice] = useState('');
@@ -86,7 +86,7 @@ export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, 
     {error && <p role="alert">{error}</p>}{notice && <p role="status">{notice}</p>}
     {pendingState && <button className="button button-primary" disabled={sending} onClick={() => void execute()}>{submissionPending?'Retry same submission':'Retry same proof action'}</button>}
     {pendingState&&submissionPending&&<button className="button" disabled={sending} onClick={()=>void checkSubmission()}>Check saved submission</button>}
-    <ServicingSubmission draftId={draftId} revisionId={revisionId} cycleId={cycleId??null} etag={etag} active={active&&!!editor&&editor.assessment.readinessIssues.length===0} paused={paused} submit={reason=>run('/submit',{cycleId,revisionId,reason})} />
+    {kind === 'adjustment' && <ServicingSubmission draftId={draftId} revisionId={revisionId} cycleId={cycleId??null} etag={etag} active={active&&!!editor&&editor.assessment.readinessIssues.length===0} paused={paused} submit={reason=>run('/submit',{cycleId,revisionId,reason})} />}
     <fieldset className="quote-reference-fields" disabled={!active}><legend>Upload a document</legend>
       <label>Supporting document<input aria-label="Supporting document" type="file" accept=".pdf,.png,.jpg,.jpeg,.txt" onChange={event => setFile(event.target.files?.[0])} /></label>
       <button className="button" disabled={!file} onClick={() => run('/evidence/uploads', undefined, file)}>Upload document</button>
@@ -109,8 +109,8 @@ export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, 
       <PageButtons cursor={associationCursor} next={associations.data.nextCursor} disabled={pendingState} change={cursor => setAssociationPage({ etag, cursor })} />
     </>}
     <ServicingReferrals draftId={draftId} etag={etag} cycleId={cycleId ?? null} active={active && canReview} paused={paused} requirements={requirements.data?.requirements.map(x => x.requirement) ?? []} evidence={associations.current && selectedCycle === cycleId ? associations.data?.items ?? [] : []} editor={editor} run={run} />
-    <ServicingTerms draftId={draftId} revisionId={revisionId} cycleId={cycleId ?? null} etag={etag} active={active} paused={paused} requirements={requirements.data?.requirements.map(x => x.requirement) ?? []} evidence={associations.current && selectedCycle === cycleId ? associations.data?.items ?? [] : []} run={run} />
-    {cycleId && <ServicingIssue scope={{draftId,revisionId,cycleId,etag,fence:fence ?? ''}} active={active && canReview} paused={paused} pendingChanged={value=>{setIssuePending(value);pendingChanged(value);}} saved={saved}/>}
+    {kind === 'adjustment' && <ServicingTerms draftId={draftId} revisionId={revisionId} cycleId={cycleId ?? null} etag={etag} active={active} paused={paused} requirements={requirements.data?.requirements.map(x => x.requirement) ?? []} evidence={associations.current && selectedCycle === cycleId ? associations.data?.items ?? [] : []} run={run} />}
+    {kind === 'adjustment' && cycleId && <ServicingIssue scope={{draftId,revisionId,cycleId,etag,fence:fence ?? ''}} active={active && canReview} paused={paused} pendingChanged={value=>{setIssuePending(value);pendingChanged(value);}} saved={saved}/>}
   </div></Panel>;
 }
 

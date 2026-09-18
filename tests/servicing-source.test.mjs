@@ -29,11 +29,11 @@ test('servicing writes preserve current scope, no-store, CSRF, conditional write
  const operations=Object.values(api.paths).flatMap(x=>Object.values(x)).filter(x=>['phase-7-pending','phase-7-03-implemented','phase-7-10-implemented','phase-7-11-read-implemented','phase-7-11-command-implemented'].includes(x['x-runtime-status']));
  assert.deepEqual(operations.map(x=>x.operationId).sort(),['listPolicyDrafts','createPolicyDraft','getPolicyDraft','acquireDraftLease','renewDraftLease',
   'releaseDraftLease','savePolicyDraft','abandonPolicyDraft','issuePolicyDraft','getCancellationPreview','persistCancellationPreview','approveCancellation','recordRenewalExperience',
-  'prepareRenewal','uploadRenewalExperienceEvidence','reviewRenewalExperience','previewRenewalPreparation','readRenewalExperience'].sort());
+  'prepareRenewal','uploadRenewalExperienceEvidence','reviewRenewalExperience','previewRenewalPreparation','readRenewalExperience','readRenewalPreparation'].sort());
  for(const operation of operations) {
   assert.match(operation.description,/before (?:receipt )?replay/);
   for(const response of Object.values(operation.responses))assert.equal(response.headers['Cache-Control'].schema.const,'no-store');
-  if(['getCancellationPreview','getPolicyDraft','listPolicyDrafts','previewRenewalPreparation','readRenewalExperience'].includes(operation.operationId))continue;
+  if(['getCancellationPreview','getPolicyDraft','listPolicyDrafts','previewRenewalPreparation','readRenewalExperience','readRenewalPreparation'].includes(operation.operationId))continue;
   for(const name of ['If-Match','Idempotency-Key'])assert.ok(operation.parameters.some(p=>p.name===name&&p.required),`${operation.operationId} ${name}`);
   assert.ok(operation.security.some(x=>'Csrf' in x));
  }

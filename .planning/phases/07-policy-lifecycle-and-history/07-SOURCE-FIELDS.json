@@ -2874,7 +2874,7 @@
       "source": "this.sec({kind:'fields', w:'480px', title:'Renewal summary', cols:'1fr 1fr',",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts."
     },
     {
       "id": "SRC07-4223-field-0",
@@ -2886,7 +2886,7 @@
       "source": "this.f('Policy', 'PN/CC/000571', {mono:true, link:true, go:'policy'}),",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts."
     },
     {
       "id": "SRC07-4224-field-0",
@@ -2898,7 +2898,7 @@
       "source": "this.f('Insured', 'Kestrel Recovery (Doncaster) Ltd'),",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts."
     },
     {
       "id": "SRC07-4225-field-0",
@@ -2910,7 +2910,7 @@
       "source": "this.f('Expiring term', '01/10/2025 – 30/09/2026'),",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts."
     },
     {
       "id": "SRC07-4226-field-0",
@@ -2922,7 +2922,7 @@
       "source": "this.f('Renewal term', '01/10/2026 – 30/09/2027'),",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts."
     },
     {
       "id": "SRC07-4227-field-0",
@@ -2934,7 +2934,7 @@
       "source": "this.f('Expiring premium', '£2,415.60', {mono:true}),",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts."
     },
     {
       "id": "SRC07-4228-field-0",
@@ -2946,7 +2946,7 @@
       "source": "this.f('Renewal premium', step >= 2 ? '£2,608.85' : 'Pending rating', {mono: step >= 2, tone: step >= 2 ? null : 'grey'}),",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts."
     },
     {
       "id": "SRC07-4229-field-0",
@@ -2958,7 +2958,7 @@
       "source": "this.f('Movement', step >= 2 ? '+£193.25 (+8.0%)' : '—', {mono: step >= 2, hint: step >= 2 ? 'Claims experience and premises rating' : ''}),",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts."
     },
     {
       "id": "SRC07-4230-field-0",
@@ -2970,7 +2970,7 @@
       "source": "this.f('Status', step >= 4 ? 'Awaiting acceptance' : (step >= 3 ? 'Invited' : 'In preparation'), {tone: step >= 3 ? 'info' : 'grey'})",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts."
     },
     {
       "id": "SRC07-4232-section-0",
@@ -2982,7 +2982,7 @@
       "source": "this.sec({kind:'table', w:'100%', title:'Changes carried into the renewal', note:'Compared with in-force version 4',",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts."
     },
     {
       "id": "SRC07-4233-table-columns-0",
@@ -2994,7 +2994,7 @@
       "source": "columns: this.head(['Section','Expiring','Renewal','Reason']),",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts."
     },
     {
       "id": "SRC07-4240-section-0",
@@ -3006,7 +3006,7 @@
       "source": "this.sec({kind:'table', w:'100%', title:'Renewal checks',",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts."
     },
     {
       "id": "SRC07-4241-table-columns-0",
@@ -3018,7 +3018,7 @@
       "source": "columns: this.head(['Check','Result','Action']),",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts."
     },
     {
       "id": "SRC07-4250-section-0",
@@ -3029,8 +3029,8 @@
       "label": "Documents issued",
       "source": "S.splice(4, 0, this.sec({kind:'table', w:'100%', title:'Documents issued',",
       "ownerPhase": 7,
-      "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "owner": "07-12",
+      "evidence": "Owner refinement: invitation documents, issue and due/expiry/auto-lapse timeline belong to the approved 07-12 lifecycle task. Still unverified; no completion claimed."
     },
     {
       "id": "SRC07-4251-table-columns-0",
@@ -3041,8 +3041,8 @@
       "label": "'Document','Version','Issued','Sent to'",
       "source": "columns: this.head(['Document','Version','Issued','Sent to']),",
       "ownerPhase": 7,
-      "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "owner": "07-12",
+      "evidence": "Owner refinement: invitation documents, issue and due/expiry/auto-lapse timeline belong to the approved 07-12 lifecycle task. Still unverified; no completion claimed."
     },
     {
       "id": "SRC07-4258-section-0",
@@ -3054,7 +3054,7 @@
       "source": "pageHeader: true, title: 'Renewal — PN/CC/000571', subtitle: 'Kestrel Recovery (Doncaster) Ltd · Vantage Trade Brokers · renewal due 01/10/2026',",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts."
     },
     {
       "id": "SRC07-4260-action-0",
@@ -3066,7 +3066,7 @@
       "source": "{label:'Back to policy', style: this.btn('ghost'), onClick: () => this.go('policy')},",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts."
     },
     {
       "id": "SRC07-4266-action-0",
@@ -3077,8 +3077,8 @@
       "label": "Issue renewal policy",
       "source": ": {label:'Issue renewal policy', style: this.btn('primary'), onClick: () => this.toast('Renewal policy issued (mock): PN/CC/000571 version 5, term 01/10/2026 – 30/09/2027.', 'Open policy', () => this.go('policy'))}",
       "ownerPhase": 7,
-      "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "owner": "07-12",
+      "evidence": "Owner refinement: invitation documents, issue and due/expiry/auto-lapse timeline belong to the approved 07-12 lifecycle task. Still unverified; no completion claimed."
     },
     {
       "id": "SRC07-4270-section-0",
@@ -3090,7 +3090,7 @@
       "source": "this.sec({kind:'actions', title:'Renewal actions',",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts."
     },
     {
       "id": "SRC07-4277-section-0",
@@ -3101,8 +3101,8 @@
       "label": "Timeline",
       "source": "this.sec({kind:'fields', title:'Timeline', cols:'1fr',",
       "ownerPhase": 7,
-      "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "owner": "07-12",
+      "evidence": "Owner refinement: invitation documents, issue and due/expiry/auto-lapse timeline belong to the approved 07-12 lifecycle task. Still unverified; no completion claimed."
     },
     {
       "id": "SRC07-4279-field-0",
@@ -3113,8 +3113,8 @@
       "label": "Invitation due",
       "source": "this.f('Invitation due', '17/08/2026', {tone:'warn', hint:'45 days before expiry — overdue'}),",
       "ownerPhase": 7,
-      "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "owner": "07-12",
+      "evidence": "Owner refinement: invitation documents, issue and due/expiry/auto-lapse timeline belong to the approved 07-12 lifecycle task. Still unverified; no completion claimed."
     },
     {
       "id": "SRC07-4280-field-0",
@@ -3125,8 +3125,8 @@
       "label": "Expiry",
       "source": "this.f('Expiry', '30/09/2026'),",
       "ownerPhase": 7,
-      "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "owner": "07-12",
+      "evidence": "Owner refinement: invitation documents, issue and due/expiry/auto-lapse timeline belong to the approved 07-12 lifecycle task. Still unverified; no completion claimed."
     },
     {
       "id": "SRC07-4281-field-0",
@@ -3137,8 +3137,8 @@
       "label": "Renewal inception",
       "source": "this.f('Renewal inception', '01/10/2026'),",
       "ownerPhase": 7,
-      "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "owner": "07-12",
+      "evidence": "Owner refinement: invitation documents, issue and due/expiry/auto-lapse timeline belong to the approved 07-12 lifecycle task. Still unverified; no completion claimed."
     },
     {
       "id": "SRC07-4282-field-0",
@@ -3149,8 +3149,8 @@
       "label": "Auto-lapse",
       "source": "this.f('Auto-lapse', '14/10/2026', {hint:'If not accepted'})",
       "ownerPhase": 7,
-      "owner": "07-11",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "owner": "07-12",
+      "evidence": "Owner refinement: invitation documents, issue and due/expiry/auto-lapse timeline belong to the approved 07-12 lifecycle task. Still unverified; no completion claimed."
     },
     {
       "id": "SRC07-4291-section-0",

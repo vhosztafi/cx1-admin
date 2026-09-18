@@ -28,10 +28,7 @@ public sealed partial class RenewalPreparationService
         var source=await QuoteScope.ForQuoteAsync(db,actor,hint.SourceQuoteId,QuoteAccess.Read,token);
         await PolicyScope.Hold(db,source.Scope.Actor,hint.Id,token);
         var held=await ResolveEligibility(db,source,termId,months,endOffsetMinutes,time.GetUtcNow(),token);
-        var result=new RenewalPreparationPreview(held.ExpiringTerm.PolicyId,termId,held.Basis.Id,"\""+Convert.ToBase64String(held.ExpiringTerm.RowVersion)+"\"",
-            held.Prepared.Term,held.Prepared.Intent,held.Eligible.Capture.ProductVersion.Id,held.Eligible.BinderVersion.Id,held.Eligible.Capture.Terms.Id,
-            held.Setting.Id,held.Settings.RuleVersion,held.FairValue?.Id,held.FairValue?.EvidenceFileVersionId,held.FairValueSatisfied,
-            held.FairValue?.Outcome??"unavailable","unavailable");
+        var result=Preview(held);
         await tx.CommitAsync(token);return result;
     }
 

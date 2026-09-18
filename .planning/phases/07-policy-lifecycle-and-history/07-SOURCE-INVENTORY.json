@@ -44,9 +44,14 @@
       "handlers": {
         "onClick": "() => this.go('renewal')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-11"
+      "owner": "07-11",
+      "evidence": [
+        ".local/browser-evidence/renewal-preparation/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-11-SUMMARY.md"
+      ],
+      "implementation": "Actual policy-to-renewal navigation, persisted preparation and risk comparison, full-term rating and current senior UW-31 decisions. Stage links navigate only; invitation/acceptance/issue remain 07-12."
     },
     {
       "id": "CTL-9a93665d17ad",
@@ -339,9 +344,14 @@
       "handlers": {
         "onClick": "() => this.go('renewal')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-11"
+      "owner": "07-11",
+      "evidence": [
+        ".local/browser-evidence/renewal-preparation/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-11-SUMMARY.md"
+      ],
+      "implementation": "Actual policy-to-renewal navigation, persisted preparation and risk comparison, full-term rating and current senior UW-31 decisions. Stage links navigate only; invitation/acceptance/issue remain 07-12."
     },
     {
       "id": "CTL-21e20d4ce3cd",
@@ -1835,9 +1845,14 @@
       "handlers": {
         "onClick": "() => this.go('policy')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-11"
+      "owner": "07-11",
+      "evidence": [
+        ".local/browser-evidence/renewal-preparation/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-11-SUMMARY.md"
+      ],
+      "implementation": "Actual policy-to-renewal navigation, persisted preparation and risk comparison, full-term rating and current senior UW-31 decisions. Stage links navigate only; invitation/acceptance/issue remain 07-12."
     },
     {
       "id": "CTL-40d27394607d",
@@ -1855,9 +1870,14 @@
       "handlers": {
         "onClick": "() => {\n              const msgs = {1:'Renewal rated (mock): £2,608.85, +8.0%. Referral UW-31 open.', 2:'Renewal invitation issued and sent to Vantage Trade Brokers.', 3:'Acceptance recorded. Renewal policy would be issued at inception.'};\n              this.toast(msgs[step], '', null); this.setState({rnStep: step + 1});\n            }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-11"
+      "owner": "07-11",
+      "evidence": [
+        ".local/browser-evidence/renewal-preparation/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-11-SUMMARY.md"
+      ],
+      "implementation": "Actual policy-to-renewal navigation, persisted preparation and risk comparison, full-term rating and current senior UW-31 decisions. Stage links navigate only; invitation/acceptance/issue remain 07-12."
     },
     {
       "id": "CTL-76ad64b9c550",
@@ -1875,9 +1895,14 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-11"
+      "owner": "07-11",
+      "evidence": [
+        ".local/browser-evidence/renewal-preparation/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-11-SUMMARY.md"
+      ],
+      "implementation": "Actual policy-to-renewal navigation, persisted preparation and risk comparison, full-term rating and current senior UW-31 decisions. Stage links navigate only; invitation/acceptance/issue remain 07-12."
     },
     {
       "id": "CTL-6feeac107975",
@@ -1895,9 +1920,14 @@
       "handlers": {
         "onClick": "() => this.toast('Renewal terms editor (mock) — would invalidate rating.', '', null)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-11"
+      "owner": "07-11",
+      "evidence": [
+        ".local/browser-evidence/renewal-preparation/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-11-SUMMARY.md"
+      ],
+      "implementation": "Actual policy-to-renewal navigation, persisted preparation and risk comparison, full-term rating and current senior UW-31 decisions. Stage links navigate only; invitation/acceptance/issue remain 07-12."
     },
     {
       "id": "CTL-35c70199197b",
@@ -1955,9 +1985,14 @@
       "handlers": {
         "onClick": "() => onJump(n)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-11"
+      "owner": "07-11",
+      "evidence": [
+        ".local/browser-evidence/renewal-preparation/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-11-SUMMARY.md"
+      ],
+      "implementation": "Actual policy-to-renewal navigation, persisted preparation and risk comparison, full-term rating and current senior UW-31 decisions. Stage links navigate only; invitation/acceptance/issue remain 07-12."
     },
     {
       "id": "CTL-f70a8d0246fc",
@@ -1975,9 +2010,14 @@
       "handlers": {
         "onClick": "() => onJump(n)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-11"
+      "owner": "07-11",
+      "evidence": [
+        ".local/browser-evidence/renewal-preparation/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-11-SUMMARY.md"
+      ],
+      "implementation": "Actual policy-to-renewal navigation, persisted preparation and risk comparison, full-term rating and current senior UW-31 decisions. Stage links navigate only; invitation/acceptance/issue remain 07-12."
     },
     {
       "id": "CTL-07199cfc7aaf",
@@ -2832,9 +2872,14 @@
       "handlers": {
         "onClick": "() => this.toast('Referral UW-31 approved — loss ratio accepted with 8% loading.', '', null)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-11"
+      "owner": "07-11",
+      "evidence": [
+        ".local/browser-evidence/renewal-preparation/report.json",
+        ".planning/phases/07-policy-lifecycle-and-history/07-11-SUMMARY.md"
+      ],
+      "implementation": "Actual policy-to-renewal navigation, persisted preparation and risk comparison, full-term rating and current senior UW-31 decisions. Stage links navigate only; invitation/acceptance/issue remain 07-12."
     },
     {
       "id": "CTL-7ef8d04057b2",

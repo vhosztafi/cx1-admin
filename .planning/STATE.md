@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: 07-11 renewal rating/referral SQL verified; continue renewal workspace and browser proof inline; return to09 cancellation with13/14
-last_updated: "2026-09-18T11:47:08.9281078+00:00"
-last_activity: 2026-09-18 —07-10 complete in d02a2b7; both product issue/retry/restart journeys verified,113existing demo table hashes preserved.
+stopped_at: 07-11 renewal preparation verified; continue 07-12 invitation acceptance issue and lapse inline
+last_updated: "2026-09-18T16:59:17.897Z"
+last_activity: 2026-09-18 — 07-11 both-product browser journeys pass; 115 existing demo table hashes preserved.
 progress:
   total_phases: 13
   completed_phases: 6
   total_plans: 65
-  completed_plans: 58
+  completed_plans: 59
   percent: 46
 ---
 
@@ -21,16 +21,16 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute Phase7;07-01..08 and07-10 complete. Renewal pricing, experience and senior referral backend verified; continue07-11 renewal workspace and browser proof. Finish09 cancellation lineage alongside13/14 before phase completion.
+**Current focus:** Execute Phase7;07-01..08 and07-10..11 complete. Continue07-12 renewal lifecycle inline. Finish09 cancellation lineage alongside13/14.
 
 ## Current Position
 
 Phase: 7 of 13 (Policy lifecycle and history)
-Plan: 9 of16 complete;07-11 in progress;07-09 remains partial
-Status: Executing Phase7;07-11 renewal rating/referral backend verified for both products; UI and browser proof remain
-Last activity: 2026-09-18 —07-10 complete in d02a2b7; both product issue/retry/restart journeys verified,113existing demo table hashes preserved.
+Plan: 10 of16 complete;07-12 in progress;07-09 remains partial
+Status: Executing Phase7;07-11 complete;07-12 invitation/acceptance/issue/lapse in progress
+Last activity: 2026-09-18 — Renewal workspace, claims evidence, full pricing and senior referral browser journeys verified.
 
-Progress: Phases1–6 complete;6/13 phases,58/65 completed implementation plans.
+Progress: Phases1–6 complete;6/13 phases,59/65 completed implementation plans.
 
 ## Accumulated Context
 
@@ -44,7 +44,7 @@ Progress: Phases1–6 complete;6/13 phases,58/65 completed implementation plans.
 
 ### Pending Todos
 
-- Execute07-11..16 and finish07-09 using the approved plans and07-01 contracts.
+- Execute07-12..16 and finish07-09 using the approved plans and07-01 contracts.
 - Keep future endpoints closed until owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -55,8 +55,8 @@ Progress: Phases1–6 complete;6/13 phases,58/65 completed implementation plans.
 ## Session Continuity
 
 Last session: 2026-09-18T11:47:08.9322625+00:00
-Stopped at:07-11 renewal cycle43 checks and61 JS checks pass; continue renewal workspace/API readback/browser proof inline without ending the active turn
-Resume file: .planning/phases/07-policy-lifecycle-and-history/07-11-PLAN.md
+Stopped at:07-11 verified; continue07-12 inline without asking for a new command.
+Resume file: .planning/phases/07-policy-lifecycle-and-history/07-12-PLAN.md
 
 ## Autonomous continuation
 

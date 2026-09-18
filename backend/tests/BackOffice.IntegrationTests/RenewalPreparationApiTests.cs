@@ -34,6 +34,7 @@ public sealed partial class UnderwritingRuntimeTests
             }));
             using var client=host.CreateClient();var previewRoute=$"/api/v1/terms/{issued.TermId:D}/renewal-preview";
             using(var denied=await client.GetAsync(previewRoute))Assert.Equal(HttpStatusCode.Unauthorized,denied.StatusCode);
+            using(var denied=await client.GetAsync($"/api/v1/drafts/{created.ResourceId:D}/renewal/preparation"))Assert.Equal(HttpStatusCode.Unauthorized,denied.StatusCode);
             var csrf=(await client.GetFromJsonAsync<JsonElement>("/api/v1/auth/csrf")).GetProperty("requestToken").GetString()!;
             using(var login=new HttpRequestMessage(HttpMethod.Post,"/api/v1/auth/login"){Content=JsonContent.Create(new{email="underwriter@cover.example",password})})
             {login.Headers.Add("X-CSRF-Token",csrf);using var response=await client.SendAsync(login);response.EnsureSuccessStatusCode();}
@@ -48,6 +49,14 @@ public sealed partial class UnderwritingRuntimeTests
             using(var preview=await client.GetAsync(previewRoute)){preview.EnsureSuccessStatusCode();Assert.True(preview.Headers.CacheControl!.NoStore);await Capture("RenewalPreparationPreview",await preview.Content.ReadFromJsonAsync<JsonElement>());}
             using(var bad=await client.GetAsync(previewRoute+"?premium=1"))Assert.Equal(HttpStatusCode.BadRequest,bad.StatusCode);
             var root=$"/api/v1/drafts/{created.ResourceId:D}/renewal";var etag=leased.Etag!;
+            using(var initial=await client.GetAsync(root+"/preparation"))
+            {
+                initial.EnsureSuccessStatusCode();var state=await initial.Content.ReadFromJsonAsync<JsonElement>();
+                Assert.Equal(JsonValueKind.Null,state.GetProperty("preparation").ValueKind);Assert.False(state.GetProperty("current").GetBoolean());
+                Assert.Contains(state.GetProperty("blockers").EnumerateArray(),x=>x.GetString()=="renewal-preparation-required");
+            }
+            using(var bad=await client.GetAsync(root+"/preparation?current=true"))Assert.Equal(HttpStatusCode.BadRequest,bad.StatusCode);
+            using(var absent=await client.GetAsync($"/api/v1/drafts/{Guid.NewGuid():D}/renewal/preparation"))Assert.Equal(HttpStatusCode.NotFound,absent.StatusCode);
             async Task<HttpResponseMessage> Send(HttpMethod method,string suffix,object body,string? key=null,string? tag=null,bool antiForgery=true)
             {
                 using var request=new HttpRequestMessage(method,root+suffix){Content=JsonContent.Create(body)};
@@ -68,6 +77,17 @@ public sealed partial class UnderwritingRuntimeTests
             var prepareKey=Guid.NewGuid().ToString();var prepareEtag=etag;
             using(var prepared=await Send(HttpMethod.Post,"/preparation",new{termMonths=12},prepareKey)){await Success(prepared);}
             using(var replay=await Send(HttpMethod.Post,"/preparation",new{termMonths=12},prepareKey,prepareEtag))replay.EnsureSuccessStatusCode();
+            using(var readPreparation=await client.GetAsync(root+"/preparation"))
+            {
+                readPreparation.EnsureSuccessStatusCode();Assert.True(readPreparation.Headers.CacheControl!.NoStore);
+                var data=await readPreparation.Content.ReadFromJsonAsync<JsonElement>();
+                Assert.Equal(etag,data.GetProperty("draftEtag").GetString());
+                Assert.Equal(12,data.GetProperty("preparation").GetProperty("termMonths").GetInt32());
+                Assert.True(data.GetProperty("current").GetBoolean());
+                Assert.Empty(data.GetProperty("blockers").EnumerateArray());
+                Assert.Equal("unavailable",data.GetProperty("eligibility").GetProperty("brokerArrearsState").GetString());
+                await Capture("RenewalPreparationWorkspace",data);
+            }
             var bytes=Encoding.UTF8.GetBytes("FICTIONAL HTTP supplied renewal claims evidence.");
             using var form=new MultipartFormDataContent();var file=new ByteArrayContent(bytes);file.Headers.ContentType=new("text/plain");
             form.Add(file,"file","claims.txt");form.Add(new StringContent("claims.txt"),"fileName");form.Add(new StringContent("text/plain"),"contentType");
@@ -89,6 +109,12 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.Equal(bytes,await client.GetByteArrayAsync($"/api/v1/drafts/{created.ResourceId:D}/evidence-files/{fileId:D}/content"));
             await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE UserAuthorityGrant SET RevokedAt={DateTimeOffset.UtcNow},RevokedBy={f.Underwriter.UserId},RevocationReason='Withdraw fictional HTTP authority' WHERE UserId={f.Underwriter.UserId} AND RevokedAt IS NULL");
             using(var denied=await Send(HttpMethod.Post,$"/experience/{experience:D}/reviews",decision,reviewKey,reviewEtag))Assert.Equal(HttpStatusCode.Forbidden,denied.StatusCode);
+            using(var stale=await client.GetAsync(root+"/preparation"))
+            {
+                stale.EnsureSuccessStatusCode();var data=await stale.Content.ReadFromJsonAsync<JsonElement>();
+                Assert.False(data.GetProperty("current").GetBoolean());Assert.NotEqual(JsonValueKind.Null,data.GetProperty("preparation").ValueKind);
+                Assert.Contains(data.GetProperty("blockers").EnumerateArray(),x=>x.GetString()=="renewal-experience-review-stale");
+            }
         });
     }
 }

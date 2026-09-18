@@ -79,6 +79,12 @@ internal static class ServicingRatingScope
             preparation.RuleSettingVersionId != held.Setting.Id || preparation.FairValueAssessmentId != held.FairValue?.Id ||
             preparation.StartsAt != held.Prepared.Term.StartsAt || preparation.EndsAt != held.Prepared.Term.EndsAt)
             throw new QuoteOperationException(409, "renewal-preparation-stale");
+        using var proposal = JsonDocument.Parse(ServicingProposalInput.Parse(revision.ProposalJson, draft.BaseVersionId).Json);
+        var common = proposal.RootElement.GetProperty("commonEffectiveIntent");
+        var effective = QuoteTerm.ResolveLondonTime(common.GetProperty("localDate").GetString(), common.GetProperty("localTime").GetString(),
+            common.TryGetProperty("utcOffsetMinutes", out var offset) ? offset.GetInt32() : null);
+        if (effective.Instant != held.Prepared.Term.StartsAt)
+            throw new QuoteOperationException(422, "renewal-effective-inception-required");
         var experiences = await db.Set<RenewalExperienceVersion>().FromSqlInterpolated($"SELECT * FROM RenewalExperienceVersion WITH(HOLDLOCK) WHERE DraftId={draft.Id}")
             .AsNoTracking().ToArrayAsync(token);
         var experience = experiences.OrderByDescending(x => x.Sequence).FirstOrDefault();

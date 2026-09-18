@@ -20,12 +20,20 @@ export function addRenewalPreparation({schemas,ref,route,paths}) {
   term:object({kind:{enum:['annual','short-period']},startsAt:instant,endsAt:instant,timeZone:{const:'Europe/London'}}),termIntent:ref('RenewalTermIntent'),
   productVersionId:id,binderVersionId:id,agencyTermsVersionId:id,ruleSettingVersionId:id,ruleVersion:text(60),fairValueAssessmentId:nullable(id),
   fairValueEvidenceFileId:nullable(id),fairValueSatisfied:{type:'boolean'},fairValueState:{enum:['pass','refer','fail','unavailable']},brokerArrearsState:{const:'unavailable'}});
+ schemas.RenewalPreparationSelection=object({id,sequence:{type:'integer',minimum:1},termMonths:months,
+  term:structuredClone(schemas.RenewalPreparationPreview.properties.term),productVersionId:id,binderVersionId:id,agencyTermsVersionId:id,
+  ruleSettingVersionId:id,fairValueAssessmentId:nullable(id),preparedAt:instant});
+ schemas.RenewalPreparationWorkspace=object({draftId:id,draftEtag:etag,assessedAt:instant,preparation:nullable(ref('RenewalPreparationSelection')),
+  eligibility:nullable(ref('RenewalPreparationPreview')),allowedTermMonths:{type:'array',items:months,maxItems:12,uniqueItems:true},
+  defaultTermMonths:nullable(months),expiringAnnualPremium:{type:'string',pattern:'^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$'},
+  expiringStartsAt:instant,expiringEndsAt:instant,current:{type:'boolean'},blockers:{type:'array',items:text(100),maxItems:100}});
  const root='/drafts/{draftId}/renewal';
  // Replace the planning-only experience spelling with the implemented owned resource.
  delete paths['/drafts/{draftId}/experience'];
  for(const [method,path,name,permission,input,output,status] of [
   ['get','/terms/{termId}/renewal-preview','previewRenewalPreparation','policy-read',undefined,'RenewalPreparationPreview',200],
   ['get',`${root}/experience`,'readRenewalExperience','policy-read',undefined,'RenewalExperienceView',200],
+  ['get',`${root}/preparation`,'readRenewalPreparation','policy-read',undefined,'RenewalPreparationWorkspace',200],
   ['post',`${root}/preparation`,'prepareRenewal','quote-rate','RenewalPreparationRequest','RenewalPreparationReceipt',201],
   ['post',`${root}/experience/uploads`,'uploadRenewalExperienceEvidence','underwriting-evidence-write',undefined,'RenewalPreparationReceipt',201],
   ['put',`${root}/experience`,'recordRenewalExperience','underwriting-evidence-write','ServicingExperience','RenewalPreparationReceipt',201],

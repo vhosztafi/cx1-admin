@@ -366,6 +366,12 @@ h1, h2, p { margin: 0; }
 .underwriting-workspace .quote-driver-card h4, .underwriting-workspace .quote-driver-card p { overflow-wrap:anywhere; }
 .underwriting-workspace .quote-row-actions { margin-bottom:16px; }
 .underwriting-main,.underwriting-rail { display:grid; gap:16px; min-width:0; }
+.underwriting-main { grid-template-columns:minmax(0,1fr); }
+.underwriting-main > * { min-width:0; }
+.renewal-preparation, .renewal-preparation form, .renewal-preparation fieldset { min-width:0; }
+.renewal-preparation fieldset { border:0; margin:0; padding:0; }
+.renewal-preparation input[type="file"] { display:block; width:100%; min-width:0; margin:8px 0 12px; }
+.renewal-preparation .button { white-space:normal; overflow-wrap:anywhere; }
 .policy-opening-amount { margin:0; font-size:28px; font-weight:600; line-height:1.2; font-variant-numeric:tabular-nums; }
 .underwriting-action-list { display:flex; flex-direction:column; gap:10px; }
 .underwriting-action-list .button { width:100%; white-space:normal; text-align:center; }
