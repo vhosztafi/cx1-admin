@@ -28,7 +28,7 @@ public sealed class ServicingCapacityDispatcher(SqlJobLeases leases, ServicingCa
     }
     public static void Register(WebApplicationBuilder builder)
     {
-        builder.Services.AddScoped<ServicingCapacityService>(); builder.Services.AddSingleton<ServicingCapacityWorker>();
+        builder.Services.AddScoped<ServicingCapacityService>(); builder.Services.AddScoped<ServicingCapacityReadModel>(); builder.Services.AddSingleton<ServicingCapacityWorker>();
 
         if (builder.Environment.IsDevelopment() && builder.Configuration.GetValue("Cover:ServicingCapacityWorkerEnabled", true)) builder.Services.AddHostedService<ServicingCapacityDispatcher>();
     }

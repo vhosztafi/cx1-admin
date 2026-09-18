@@ -34,6 +34,8 @@ public sealed partial class ServicingCapacityService
             async(db,ct)=>
             {
                 held=await HoldEscalationAuthority(db,actor,draftId,cycleId,lease,ct);
+                if(!actor.HasCapability("underwriting-record-capacity") || !held.Scope.Source.Scope.Actor.HasCapability("underwriting-record-capacity"))
+                    throw new QuoteOperationException(403,"servicing-capacity-response-denied");
                 capacity=await db.Set<ServicingCapacityCase>().FromSqlInterpolated($"SELECT * FROM ServicingCapacityCase WITH(UPDLOCK,HOLDLOCK) WHERE Id={caseId} AND DraftId={draftId} AND CycleId={cycleId}").SingleOrDefaultAsync(ct)
                     ??throw new QuoteOperationException(404,"servicing-capacity-case-not-found");
                 submission=await db.Set<ServicingCapacitySubmission>().AsNoTracking().SingleOrDefaultAsync(x=>x.Id==submissionId && x.CaseId==caseId,ct)

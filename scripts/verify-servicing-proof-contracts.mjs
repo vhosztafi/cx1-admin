@@ -5,7 +5,7 @@ import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 
 const [directory,notBefore,mode='reads']=process.argv.slice(2);
-assert.ok(['reads','commands','authority','submissions','referral-work'].includes(mode),'Choose reads, commands, authority, submissions or referral-work.');
+assert.ok(['reads','commands','authority','submissions','referral-work','capacity'].includes(mode),'Choose reads, commands, authority, submissions, referral-work or capacity.');
 assert.ok(directory&&Number.isFinite(Date.parse(notBefore)),'Provide a fresh response directory and earliest UTC timestamp.');
 const read=async path=>JSON.parse(await readFile(path,'utf8'));
 const document=await read(new URL('../contracts/openapi.json',import.meta.url));
@@ -20,7 +20,7 @@ function relocate(value) {
  return value;
 }
 ajv.addSchema({$id:root,$defs:relocate(document.components.schemas)});
-const expected=mode==='commands'?14:mode==='authority'?4:mode==='referral-work'?2:12;
+const expected=mode==='capacity'?38:mode==='commands'?14:mode==='authority'?4:mode==='referral-work'?2:12;
 const files=(await readdir(resolve(directory))).filter(x=>x.endsWith('.json'));assert.equal(files.length,expected,'Expect fresh HTTP responses from both Motor Trade products.');
 const names=new Map();
 for(const file of files) {
@@ -30,7 +30,8 @@ for(const file of files) {
  assert.equal(validate({...data,unrecognisedProperty:true}),false,`${schema} must be closed`);
  names.set(schema,(names.get(schema)??0)+1);
 }
-if(mode==='commands') {assert.equal(names.size,1);assert.equal(names.get('ServicingProofReceipt'),14);}
+if(mode==='capacity') {assert.equal(names.size,8);for(const name of ['ServicingCapacityReceipt','ServicingCapacityQueuedReceipt','ServicingCapacityDetail','ServicingCapacityPage','ServicingCapacitySubmissionsPage','ServicingCapacityMessagesPage','ServicingCapacityResponsesPage','ServicingCapacityResolutionsPage'])assert.ok(names.get(name)>=2,name);}
+else if(mode==='commands') {assert.equal(names.size,1);assert.equal(names.get('ServicingProofReceipt'),14);}
 else if(mode==='authority') {assert.equal(names.size,1);assert.equal(names.get('ServicingCurrentAuthorityPage'),4);}
 else if(mode==='submissions') {assert.equal(names.size,2);assert.equal(names.get('ServicingSubmissionReceipt'),4);assert.equal(names.get('ServicingSubmissionPage'),8);}
 else if(mode==='referral-work') {assert.equal(names.size,1);assert.equal(names.get('ServicingReferralWork'),2);}

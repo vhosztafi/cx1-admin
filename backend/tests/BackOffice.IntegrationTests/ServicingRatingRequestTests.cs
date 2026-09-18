@@ -50,6 +50,8 @@ public sealed partial class UnderwritingRuntimeTests
     [InlineData("motor-trade-road-risks", "capacity-worker-withdrawn")]
     [InlineData("motor-trade-road-risks", "capacity-worker-revoked")]
     [InlineData("motor-trade-combined", "capacity-worker-conditional")]
+    [InlineData("motor-trade-road-risks", "capacity-http")]
+    [InlineData("motor-trade-combined", "capacity-http")]
     [InlineData("motor-trade-road-risks", "capacity-submit")]
     [InlineData("motor-trade-combined", "capacity-submit")]
     [InlineData("motor-trade-road-risks", "submission-command")]
@@ -118,12 +120,12 @@ public sealed partial class UnderwritingRuntimeTests
                 new { changeId = second, riskItemId = issued.PolicyId, kind = "cover", operation = "update", payload = new { },
                     effectiveIntent = new { localDate = "2026-10-15", localTime = "00:00", timeZone = "Europe/London" } }
             });
-            if (scenario is "temporary-cover" or "referral-generation" or "referral-authority" or "referral-work-http" or "capacity-storage" or "capacity-create" or "capacity-submission-storage" or "capacity-selected-evidence" or "capacity-submit" || scenario.StartsWith("capacity-worker",StringComparison.Ordinal))
+            if (scenario is "temporary-cover" or "referral-generation" or "referral-authority" or "referral-work-http" or "capacity-storage" or "capacity-create" or "capacity-submission-storage" or "capacity-selected-evidence" or "capacity-submit" or "capacity-http" || scenario.StartsWith("capacity-worker",StringComparison.Ordinal))
             {
                 var originalSections = snapshot["cover"]!["requestedSections"]!.DeepClone();
                 var temporarySections = originalSections.DeepClone();
                 var tools = temporarySections.AsArray().Single(x => x!["code"]!.GetValue<string>() == "tools-equipment")!;
-                tools["selected"] = true; tools["limit"] = scenario is "referral-generation" or "referral-authority" or "referral-work-http" or "capacity-storage" or "capacity-create" or "capacity-submission-storage" or "capacity-selected-evidence" or "capacity-submit" || scenario.StartsWith("capacity-worker",StringComparison.Ordinal) ? "10000.00" : "1000.00"; tools["excess"] = "100.00";
+                tools["selected"] = true; tools["limit"] = scenario is "referral-generation" or "referral-authority" or "referral-work-http" or "capacity-storage" or "capacity-create" or "capacity-submission-storage" or "capacity-selected-evidence" or "capacity-submit" or "capacity-http" || scenario.StartsWith("capacity-worker",StringComparison.Ordinal) ? "10000.00" : "1000.00"; tools["excess"] = "100.00";
                 if(scenario=="capacity-worker-conditional")
                     temporarySections.AsArray().Single(x=>x!["code"]!.GetValue<string>()=="stock-custody")!["limit"]="150000.00";
                 proposal["changes"] = JsonSerializer.SerializeToNode(new object[] {
@@ -282,9 +284,9 @@ public sealed partial class UnderwritingRuntimeTests
                 await VerifyServicingSubmissionCommand(db,f,applied,cycle,fence,ratedView.DraftEtag);
                 Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);return;
             }
-            if(scenario is "capacity-create" or "capacity-submission-storage" or "capacity-selected-evidence" or "capacity-submit" || scenario.StartsWith("capacity-worker",StringComparison.Ordinal))
+            if(scenario is "capacity-create" or "capacity-submission-storage" or "capacity-selected-evidence" or "capacity-submit" or "capacity-http" || scenario.StartsWith("capacity-worker",StringComparison.Ordinal))
             {
-                await VerifyServicingCapacityCreate(db,f,applied,ratedView.DraftEtag,scenario is "capacity-submission-storage" or "capacity-selected-evidence",scenario=="capacity-selected-evidence",scenario=="capacity-submit",scenario.StartsWith("capacity-worker",StringComparison.Ordinal)?scenario:null);
+                await VerifyServicingCapacityCreate(db,f,applied,ratedView.DraftEtag,scenario is "capacity-submission-storage" or "capacity-selected-evidence",scenario=="capacity-selected-evidence",scenario=="capacity-submit",scenario.StartsWith("capacity-worker",StringComparison.Ordinal)?scenario:null,scenario=="capacity-http"?password:null);
                 Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);return;
             }
             if(scenario=="capacity-storage")

@@ -20,6 +20,25 @@ function relocate(value){
 ajv.addSchema({$id:rootId,$defs:relocate(document.components.schemas)});
 const getOperation=id=>{const result=operations.find(op=>op.operationId===id);assert.ok(result,`Unknown operation ${id}`);return result;};
 
+test('servicing capacity exposes owned commands and bounded retained history',()=>{
+ for(const name of ['createServicingCapacity','submitServicingCapacity','replyServicingCapacity','chaseServicingCapacity','assignServicingCapacity','recordServicingCapacityResponse','recordServicingCapacityAction','resolveServicingCapacityCondition']) {
+  const op=getOperation(name);assert.equal(op['x-runtime-status'],'phase-7-07-command-implemented');
+  for(const header of ['If-Match','X-Edit-Lease','Idempotency-Key'])assert.ok(op.parameters.some(x=>x.name===header&&x.required),`${name}: ${header}`);
+ }
+ assert.equal(getOperation('recordServicingCapacityResponse')['x-permission'],'underwriting-record-capacity');
+ for(const name of ['listServicingCapacity','listServicingCapacitySubmissions','listServicingCapacityMessages','listServicingCapacityResponses','listServicingCarrierResolutions']) {
+  const op=getOperation(name);assert.equal(op['x-runtime-status'],'phase-7-07-read-implemented');
+  assert.equal(op.parameters.find(x=>x.name==='pageSize').schema.maximum,50);assert.equal(op.responses[200].headers.ETag,undefined);
+ }
+ const check=name=>ajv.getSchema(`${rootId}#/$defs/${name}`),id='10000000-0000-4000-8000-000000000001';
+ const submit=check('ServicingCapacitySubmitRequest');const value={cycleId:id,caseEtag:'"AAAAAAAAAAA="',body:'Fictional carrier request',reason:'Review fictional carrier request',evidenceAssociationIds:[],scenarioVersionId:id};
+ assert.ok(submit(value),JSON.stringify(submit.errors));assert.equal(submit({...value,approved:true}),false);
+ assert.equal(submit({...value,evidenceAssociationIds:Array(21).fill(id)}),false);
+ const definition=check('ServicingCarrierResponseDefinition');
+ assert.ok(definition({outcome:'query',validFrom:null,validTo:null,authorisedLimits:[],conditions:[]}));
+ assert.equal(definition({outcome:'approve',validFrom:null,validTo:null,authorisedLimits:[],conditions:[]}),false);
+});
+
 test('implemented servicing proof reads have bounded signed paging and closed response contracts',()=>{
  for(const name of ['listServicingEvidenceFiles','listDraftEvidence','listServicingEvidenceEvents','listServicingReferrals','listServicingReferralDecisions']) {
   const op=getOperation(name);assert.equal(op['x-runtime-status'],'phase-7-06-read-implemented');assert.equal(op['x-permission'],'policy-read');

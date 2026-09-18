@@ -89671,7 +89671,7 @@
       "post": {
         "operationId": "createServicingCapacity",
         "summary": "create Servicing Capacity",
-        "description": "Requires underwriting-escalate. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Servicing contract only until the owning plan implements this route. Current identity, capability and policy scope are checked before replay; receipt replay does not grant authority. Fresh mutations recheck the strong ETag, lease generation and full immutable decision inputs. Responses are no-store.",
+        "description": "Persistent servicing carrier command. Requires current owned cycle, effective authority, provider, editing lease, CSRF, strong parent and child versions and Idempotency-Key. Current authority and proof are rechecked before exact receipt replay. Replies create a new immutable submission; responses bind exact submitted context and accepted response proof. Conditions require separately reviewed current-purpose evidence and explicit resolution. Assignment conveys no authority. Withdraw/reopen retain history while removing applicability. All responses are no-store; no real provider delivery.",
         "tags": [
           "drafts"
         ],
@@ -89725,15 +89725,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Operation succeeded.",
+          "201": {
+            "description": "Resource created.",
             "headers": {
               "ETag": {
-                "description": "Opaque resource version for subsequent conditional writes.",
+                "description": "Strong updated parent draft command version.",
                 "schema": {
                   "type": "string",
-                  "minLength": 1,
-                  "maxLength": 100
+                  "minLength": 14,
+                  "maxLength": 14
+                }
+              },
+              "Location": {
+                "description": "Created resource or durable job URI.",
+                "schema": {
+                  "type": "string",
+                  "format": "uri-reference"
                 }
               },
               "Cache-Control": {
@@ -89747,7 +89754,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CommandResult"
+                  "$ref": "#/components/schemas/ServicingCapacityReceipt"
                 }
               }
             }
@@ -89763,7 +89770,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -89782,7 +89789,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -89801,7 +89808,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -89820,7 +89827,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -89839,7 +89846,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -89858,7 +89865,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -89877,7 +89884,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -89896,7 +89903,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -89915,7 +89922,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -89934,7 +89941,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -89948,19 +89955,200 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ServicingCapacity"
+                "$ref": "#/components/schemas/ServicingCapacityCreateRequest"
               }
             }
           }
         },
-        "x-runtime-status": "phase-7-pending"
+        "x-runtime-status": "phase-7-07-command-implemented"
+      },
+      "get": {
+        "operationId": "listServicingCapacity",
+        "summary": "list Servicing Capacity",
+        "description": "Current scoped policy-read access is required. No-store case details and immutable retained history; no file bytes. Signed cursors bind actor, route, page size and parent draft version for 15 minutes. Similar cases are limited to this policy/provider/binder/rule and never grant authority. Ready describes current carrier extent and condition proof only, not overall issue eligibility. Historical responses remain visible after withdrawal, reopening or rerating.",
+        "tags": [
+          "drafts"
+        ],
+        "x-permission": "policy-read",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "draftId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 25
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicingCapacityPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-7-07-read-implemented"
       }
     },
     "/drafts/{draftId}/capacity/{caseId}/submissions": {
       "post": {
         "operationId": "submitServicingCapacity",
         "summary": "submit Servicing Capacity",
-        "description": "Requires underwriting-escalate. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Servicing contract only until the owning plan implements this route. Current identity, capability and policy scope are checked before replay; receipt replay does not grant authority. Fresh mutations recheck the strong ETag, lease generation and full immutable decision inputs. Responses are no-store.",
+        "description": "Persistent servicing carrier command. Requires current owned cycle, effective authority, provider, editing lease, CSRF, strong parent and child versions and Idempotency-Key. Current authority and proof are rechecked before exact receipt replay. Replies create a new immutable submission; responses bind exact submitted context and accepted response proof. Conditions require separately reviewed current-purpose evidence and explicit resolution. Assignment conveys no authority. Withdraw/reopen retain history while removing applicability. All responses are no-store; no real provider delivery.",
         "tags": [
           "drafts"
         ],
@@ -90023,15 +90211,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Operation succeeded.",
+          "202": {
+            "description": "Durable work accepted; inspect Location for completion.",
             "headers": {
               "ETag": {
-                "description": "Opaque resource version for subsequent conditional writes.",
+                "description": "Strong updated parent draft command version.",
                 "schema": {
                   "type": "string",
-                  "minLength": 1,
-                  "maxLength": 100
+                  "minLength": 14,
+                  "maxLength": 14
                 }
               },
               "Cache-Control": {
@@ -90045,7 +90233,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CommandResult"
+                  "$ref": "#/components/schemas/ServicingCapacityQueuedReceipt"
                 }
               }
             }
@@ -90061,7 +90249,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -90080,7 +90268,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -90099,7 +90287,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -90118,7 +90306,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -90137,7 +90325,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -90156,7 +90344,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -90175,7 +90363,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -90194,7 +90382,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -90213,7 +90401,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -90232,7 +90420,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -90246,23 +90434,213 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ServicingCapacitySubmission"
+                "$ref": "#/components/schemas/ServicingCapacitySubmitRequest"
               }
             }
           }
         },
-        "x-runtime-status": "phase-7-pending"
+        "x-runtime-status": "phase-7-07-command-implemented"
+      },
+      "get": {
+        "operationId": "listServicingCapacitySubmissions",
+        "summary": "list Servicing Capacity Submissions",
+        "description": "Current scoped policy-read access is required. No-store case details and immutable retained history; no file bytes. Signed cursors bind actor, route, page size and parent draft version for 15 minutes. Similar cases are limited to this policy/provider/binder/rule and never grant authority. Ready describes current carrier extent and condition proof only, not overall issue eligibility. Historical responses remain visible after withdrawal, reopening or rerating.",
+        "tags": [
+          "drafts"
+        ],
+        "x-permission": "policy-read",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "draftId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 25
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicingCapacitySubmissionsPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-7-07-read-implemented"
       }
     },
     "/drafts/{draftId}/capacity/{caseId}/responses": {
       "post": {
         "operationId": "recordServicingCapacityResponse",
         "summary": "record Servicing Capacity Response",
-        "description": "Requires underwriting-capacity-response. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Servicing contract only until the owning plan implements this route. Current identity, capability and policy scope are checked before replay; receipt replay does not grant authority. Fresh mutations recheck the strong ETag, lease generation and full immutable decision inputs. Responses are no-store.",
+        "description": "Persistent servicing carrier command. Requires current owned cycle, effective authority, provider, editing lease, CSRF, strong parent and child versions and Idempotency-Key. Current authority and proof are rechecked before exact receipt replay. Replies create a new immutable submission; responses bind exact submitted context and accepted response proof. Conditions require separately reviewed current-purpose evidence and explicit resolution. Assignment conveys no authority. Withdraw/reopen retain history while removing applicability. All responses are no-store; no real provider delivery.",
         "tags": [
           "drafts"
         ],
-        "x-permission": "underwriting-capacity-response",
+        "x-permission": "underwriting-record-capacity",
         "x-idempotency": "required",
         "security": [
           {
@@ -90321,15 +90699,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Operation succeeded.",
+          "201": {
+            "description": "Resource created.",
             "headers": {
               "ETag": {
-                "description": "Opaque resource version for subsequent conditional writes.",
+                "description": "Strong updated parent draft command version.",
                 "schema": {
                   "type": "string",
-                  "minLength": 1,
-                  "maxLength": 100
+                  "minLength": 14,
+                  "maxLength": 14
                 }
               },
               "Cache-Control": {
@@ -90343,7 +90721,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CommandResult"
+                  "$ref": "#/components/schemas/ServicingCapacityReceipt"
                 }
               }
             }
@@ -90359,7 +90737,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -90378,7 +90756,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -90397,7 +90775,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -90416,7 +90794,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -90435,7 +90813,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -90454,7 +90832,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -90473,7 +90851,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -90492,7 +90870,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -90511,7 +90889,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -90530,7 +90908,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -90544,19 +90922,209 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ServicingCapacityResponse"
+                "$ref": "#/components/schemas/ServicingCapacityResponseRequest"
               }
             }
           }
         },
-        "x-runtime-status": "phase-7-pending"
+        "x-runtime-status": "phase-7-07-command-implemented"
+      },
+      "get": {
+        "operationId": "listServicingCapacityResponses",
+        "summary": "list Servicing Capacity Responses",
+        "description": "Current scoped policy-read access is required. No-store case details and immutable retained history; no file bytes. Signed cursors bind actor, route, page size and parent draft version for 15 minutes. Similar cases are limited to this policy/provider/binder/rule and never grant authority. Ready describes current carrier extent and condition proof only, not overall issue eligibility. Historical responses remain visible after withdrawal, reopening or rerating.",
+        "tags": [
+          "drafts"
+        ],
+        "x-permission": "policy-read",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "draftId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 25
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicingCapacityResponsesPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-7-07-read-implemented"
       }
     },
     "/drafts/{draftId}/capacity/{caseId}/actions": {
       "post": {
         "operationId": "recordServicingCapacityAction",
         "summary": "record Servicing Capacity Action",
-        "description": "Requires underwriting-escalate. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Servicing contract only until the owning plan implements this route. Current identity, capability and policy scope are checked before replay; receipt replay does not grant authority. Fresh mutations recheck the strong ETag, lease generation and full immutable decision inputs. Responses are no-store.",
+        "description": "Persistent servicing carrier command. Requires current owned cycle, effective authority, provider, editing lease, CSRF, strong parent and child versions and Idempotency-Key. Current authority and proof are rechecked before exact receipt replay. Replies create a new immutable submission; responses bind exact submitted context and accepted response proof. Conditions require separately reviewed current-purpose evidence and explicit resolution. Assignment conveys no authority. Withdraw/reopen retain history while removing applicability. All responses are no-store; no real provider delivery.",
         "tags": [
           "drafts"
         ],
@@ -90623,11 +91191,11 @@
             "description": "Operation succeeded.",
             "headers": {
               "ETag": {
-                "description": "Opaque resource version for subsequent conditional writes.",
+                "description": "Strong updated parent draft command version.",
                 "schema": {
                   "type": "string",
-                  "minLength": 1,
-                  "maxLength": 100
+                  "minLength": 14,
+                  "maxLength": 14
                 }
               },
               "Cache-Control": {
@@ -90641,7 +91209,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CommandResult"
+                  "$ref": "#/components/schemas/ServicingCapacityReceipt"
                 }
               }
             }
@@ -90657,7 +91225,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -90676,7 +91244,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -90694,249 +91262,6 @@
               }
             },
             "headers": {
-              "Cache-Control": {
-                "description": "Policy data is never cacheable.",
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "description": "Policy data is never cacheable.",
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "description": "Policy data is never cacheable.",
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                }
-              }
-            }
-          },
-          "412": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "description": "Policy data is never cacheable.",
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "description": "Policy data is never cacheable.",
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                }
-              }
-            }
-          },
-          "428": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "description": "Policy data is never cacheable.",
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "description": "Policy data is never cacheable.",
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "description": "Policy data is never cacheable.",
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ServicingCapacityAction"
-              }
-            }
-          }
-        },
-        "x-runtime-status": "phase-7-pending"
-      }
-    },
-    "/drafts/{draftId}/capacity/{caseId}/conditions/{conditionId}/resolve": {
-      "post": {
-        "operationId": "resolveServicingCapacityCondition",
-        "summary": "resolve Servicing Capacity Condition",
-        "description": "Requires underwriting-evidence-review. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Servicing contract only until the owning plan implements this route. Current identity, capability and policy scope are checked before replay; receipt replay does not grant authority. Fresh mutations recheck the strong ETag, lease generation and full immutable decision inputs. Responses are no-store.",
-        "tags": [
-          "drafts"
-        ],
-        "x-permission": "underwriting-evidence-review",
-        "x-idempotency": "required",
-        "security": [
-          {
-            "Session": [],
-            "Csrf": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "draftId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "caseId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "conditionId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "Idempotency-Key",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "minLength": 16,
-              "maxLength": 200
-            }
-          },
-          {
-            "name": "If-Match",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 100
-            }
-          },
-          {
-            "name": "X-Edit-Lease",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 2048
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Operation succeeded.",
-            "headers": {
-              "ETag": {
-                "description": "Opaque resource version for subsequent conditional writes.",
-                "schema": {
-                  "type": "string",
-                  "minLength": 1,
-                  "maxLength": 100
-                }
-              },
               "Cache-Control": {
                 "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
@@ -90944,70 +91269,6 @@
                   "const": "no-store"
                 }
               }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CommandResult"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "description": "Policy data is never cacheable.",
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "description": "Policy data is never cacheable.",
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "description": "Policy data is never cacheable.",
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                }
-              }
             }
           },
           "404": {
@@ -91021,7 +91282,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -91040,7 +91301,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -91059,7 +91320,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -91078,7 +91339,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -91097,7 +91358,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -91116,7 +91377,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -91135,7 +91396,7 @@
             },
             "headers": {
               "Cache-Control": {
-                "description": "Policy data is never cacheable.",
+                "description": "Personal policy and servicing information is never cacheable.",
                 "schema": {
                   "type": "string",
                   "const": "no-store"
@@ -91149,12 +91410,12 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ServicingConditionResolution"
+                "$ref": "#/components/schemas/ServicingCapacityActionRequest"
               }
             }
           }
         },
-        "x-runtime-status": "phase-7-pending"
+        "x-runtime-status": "phase-7-07-command-implemented"
       }
     },
     "/drafts/{draftId}/terms": {
@@ -95014,6 +95275,1764 @@
           }
         },
         "x-runtime-status": "phase-7-06-read-implemented"
+      }
+    },
+    "/drafts/{draftId}/capacity/{caseId}/query-replies": {
+      "post": {
+        "operationId": "replyServicingCapacity",
+        "summary": "reply Servicing Capacity",
+        "description": "Persistent servicing carrier command. Requires current owned cycle, effective authority, provider, editing lease, CSRF, strong parent and child versions and Idempotency-Key. Current authority and proof are rechecked before exact receipt replay. Replies create a new immutable submission; responses bind exact submitted context and accepted response proof. Conditions require separately reviewed current-purpose evidence and explicit resolution. Assignment conveys no authority. Withdraw/reopen retain history while removing applicability. All responses are no-store; no real provider delivery.",
+        "tags": [
+          "drafts"
+        ],
+        "x-permission": "underwriting-escalate",
+        "x-idempotency": "required",
+        "security": [
+          {
+            "Session": [],
+            "Csrf": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "draftId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 200
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          },
+          {
+            "name": "X-Edit-Lease",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Durable work accepted; inspect Location for completion.",
+            "headers": {
+              "ETag": {
+                "description": "Strong updated parent draft command version.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 14,
+                  "maxLength": 14
+                }
+              },
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicingCapacityQueuedReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServicingCapacityReplyRequest"
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-7-07-command-implemented"
+      }
+    },
+    "/drafts/{draftId}/capacity/{caseId}/chases": {
+      "post": {
+        "operationId": "chaseServicingCapacity",
+        "summary": "chase Servicing Capacity",
+        "description": "Persistent servicing carrier command. Requires current owned cycle, effective authority, provider, editing lease, CSRF, strong parent and child versions and Idempotency-Key. Current authority and proof are rechecked before exact receipt replay. Replies create a new immutable submission; responses bind exact submitted context and accepted response proof. Conditions require separately reviewed current-purpose evidence and explicit resolution. Assignment conveys no authority. Withdraw/reopen retain history while removing applicability. All responses are no-store; no real provider delivery.",
+        "tags": [
+          "drafts"
+        ],
+        "x-permission": "underwriting-escalate",
+        "x-idempotency": "required",
+        "security": [
+          {
+            "Session": [],
+            "Csrf": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "draftId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 200
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          },
+          {
+            "name": "X-Edit-Lease",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Resource created.",
+            "headers": {
+              "ETag": {
+                "description": "Strong updated parent draft command version.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 14,
+                  "maxLength": 14
+                }
+              },
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicingCapacityReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServicingCapacityChaseRequest"
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-7-07-command-implemented"
+      }
+    },
+    "/drafts/{draftId}/capacity/{caseId}/assignment": {
+      "post": {
+        "operationId": "assignServicingCapacity",
+        "summary": "assign Servicing Capacity",
+        "description": "Persistent servicing carrier command. Requires current owned cycle, effective authority, provider, editing lease, CSRF, strong parent and child versions and Idempotency-Key. Current authority and proof are rechecked before exact receipt replay. Replies create a new immutable submission; responses bind exact submitted context and accepted response proof. Conditions require separately reviewed current-purpose evidence and explicit resolution. Assignment conveys no authority. Withdraw/reopen retain history while removing applicability. All responses are no-store; no real provider delivery.",
+        "tags": [
+          "drafts"
+        ],
+        "x-permission": "underwriting-escalate",
+        "x-idempotency": "required",
+        "security": [
+          {
+            "Session": [],
+            "Csrf": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "draftId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 200
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          },
+          {
+            "name": "X-Edit-Lease",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Strong updated parent draft command version.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 14,
+                  "maxLength": 14
+                }
+              },
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicingCapacityReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServicingCapacityAssignRequest"
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-7-07-command-implemented"
+      }
+    },
+    "/drafts/{draftId}/capacity-conditions/{conditionId}/resolutions": {
+      "post": {
+        "operationId": "resolveServicingCapacityCondition",
+        "summary": "resolve Servicing Capacity Condition",
+        "description": "Persistent servicing carrier command. Requires current owned cycle, effective authority, provider, editing lease, CSRF, strong parent and child versions and Idempotency-Key. Current authority and proof are rechecked before exact receipt replay. Replies create a new immutable submission; responses bind exact submitted context and accepted response proof. Conditions require separately reviewed current-purpose evidence and explicit resolution. Assignment conveys no authority. Withdraw/reopen retain history while removing applicability. All responses are no-store; no real provider delivery.",
+        "tags": [
+          "drafts"
+        ],
+        "x-permission": "underwriting-decide-within-authority",
+        "x-idempotency": "required",
+        "security": [
+          {
+            "Session": [],
+            "Csrf": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "draftId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "conditionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 200
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          },
+          {
+            "name": "X-Edit-Lease",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Strong updated parent draft command version.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 14,
+                  "maxLength": 14
+                }
+              },
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicingCapacityReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServicingResolveProofRequest"
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-7-07-command-implemented"
+      }
+    },
+    "/drafts/{draftId}/capacity/{caseId}": {
+      "get": {
+        "operationId": "getServicingCapacity",
+        "summary": "get Servicing Capacity",
+        "description": "Current scoped policy-read access is required. No-store case details and immutable retained history; no file bytes. Signed cursors bind actor, route, page size and parent draft version for 15 minutes. Similar cases are limited to this policy/provider/binder/rule and never grant authority. Ready describes current carrier extent and condition proof only, not overall issue eligibility. Historical responses remain visible after withdrawal, reopening or rerating.",
+        "tags": [
+          "drafts"
+        ],
+        "x-permission": "policy-read",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "draftId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicingCapacityDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-7-07-read-implemented"
+      }
+    },
+    "/drafts/{draftId}/capacity/{caseId}/messages": {
+      "get": {
+        "operationId": "listServicingCapacityMessages",
+        "summary": "list Servicing Capacity Messages",
+        "description": "Current scoped policy-read access is required. No-store case details and immutable retained history; no file bytes. Signed cursors bind actor, route, page size and parent draft version for 15 minutes. Similar cases are limited to this policy/provider/binder/rule and never grant authority. Ready describes current carrier extent and condition proof only, not overall issue eligibility. Historical responses remain visible after withdrawal, reopening or rerating.",
+        "tags": [
+          "drafts"
+        ],
+        "x-permission": "policy-read",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "draftId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 25
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicingCapacityMessagesPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-7-07-read-implemented"
+      }
+    },
+    "/drafts/{draftId}/capacity/{caseId}/conditions/{conditionId}/resolutions": {
+      "get": {
+        "operationId": "listServicingCarrierResolutions",
+        "summary": "list Servicing Carrier Resolutions",
+        "description": "Current scoped policy-read access is required. No-store case details and immutable retained history; no file bytes. Signed cursors bind actor, route, page size and parent draft version for 15 minutes. Similar cases are limited to this policy/provider/binder/rule and never grant authority. Ready describes current carrier extent and condition proof only, not overall issue eligibility. Historical responses remain visible after withdrawal, reopening or rerating.",
+        "tags": [
+          "drafts"
+        ],
+        "x-permission": "policy-read",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "draftId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "conditionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 25
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicingCapacityResolutionsPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-7-07-read-implemented"
       }
     },
     "/policies/{policyId}/as-at": {
@@ -119756,6 +121775,1402 @@
           "assessedAt",
           "currentCycleId",
           "current",
+          "items",
+          "nextCursor"
+        ]
+      },
+      "ServicingCapacityCreateRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "cycleId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "referralId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "referralEtag": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 14
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "cycleId",
+          "referralId",
+          "referralEtag",
+          "reason"
+        ]
+      },
+      "ServicingCapacitySubmitRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "cycleId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "caseEtag": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 14
+          },
+          "body": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000,
+            "pattern": "\\S"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "evidenceAssociationIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "minItems": 0,
+            "maxItems": 20,
+            "uniqueItems": true
+          },
+          "scenarioVersionId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "cycleId",
+          "caseEtag",
+          "body",
+          "reason",
+          "evidenceAssociationIds",
+          "scenarioVersionId"
+        ]
+      },
+      "ServicingCapacityReplyRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "cycleId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "caseEtag": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 14
+          },
+          "body": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000,
+            "pattern": "\\S"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "evidenceAssociationIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "minItems": 0,
+            "maxItems": 20,
+            "uniqueItems": true
+          },
+          "scenarioVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "responseId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "cycleId",
+          "caseEtag",
+          "body",
+          "reason",
+          "evidenceAssociationIds",
+          "scenarioVersionId",
+          "responseId"
+        ]
+      },
+      "ServicingCapacityChaseRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "cycleId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "caseEtag": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 14
+          },
+          "submissionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "body": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000,
+            "pattern": "\\S"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "cycleId",
+          "caseEtag",
+          "submissionId",
+          "body",
+          "reason"
+        ]
+      },
+      "ServicingCapacityActionRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "cycleId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "caseEtag": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 14
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "withdraw",
+              "reopen"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "cycleId",
+          "caseEtag",
+          "action",
+          "reason"
+        ]
+      },
+      "ServicingCapacityAssignRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "cycleId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "caseEtag": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 14
+          },
+          "assignedUserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "cycleId",
+          "caseEtag",
+          "assignedUserId",
+          "reason"
+        ]
+      },
+      "ServicingDatedCarrierCondition": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "definition": {
+            "$ref": "#/components/schemas/UnderwritingConditionWrite"
+          },
+          "effectiveDates": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "definition",
+          "effectiveDates"
+        ]
+      },
+      "ServicingCarrierResponseDefinition": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "approve"
+              },
+              "validFrom": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "validTo": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "authorisedLimits": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/UnderwritingCapacityExtension"
+                },
+                "minItems": 1,
+                "maxItems": 20
+              },
+              "conditions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ServicingDatedCarrierCondition"
+                },
+                "minItems": 0,
+                "maxItems": 0
+              }
+            },
+            "required": [
+              "outcome",
+              "validFrom",
+              "validTo",
+              "authorisedLimits",
+              "conditions"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "approve-with-conditions"
+              },
+              "validFrom": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "validTo": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "authorisedLimits": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/UnderwritingCapacityExtension"
+                },
+                "minItems": 1,
+                "maxItems": 20
+              },
+              "conditions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ServicingDatedCarrierCondition"
+                },
+                "minItems": 1,
+                "maxItems": 20
+              }
+            },
+            "required": [
+              "outcome",
+              "validFrom",
+              "validTo",
+              "authorisedLimits",
+              "conditions"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "query"
+              },
+              "validFrom": {
+                "type": "null"
+              },
+              "validTo": {
+                "type": "null"
+              },
+              "authorisedLimits": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/UnderwritingCapacityExtension"
+                },
+                "minItems": 0,
+                "maxItems": 0
+              },
+              "conditions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ServicingDatedCarrierCondition"
+                },
+                "minItems": 0,
+                "maxItems": 0
+              }
+            },
+            "required": [
+              "outcome",
+              "validFrom",
+              "validTo",
+              "authorisedLimits",
+              "conditions"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "decline"
+              },
+              "validFrom": {
+                "type": "null"
+              },
+              "validTo": {
+                "type": "null"
+              },
+              "authorisedLimits": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/UnderwritingCapacityExtension"
+                },
+                "minItems": 0,
+                "maxItems": 0
+              },
+              "conditions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ServicingDatedCarrierCondition"
+                },
+                "minItems": 0,
+                "maxItems": 0
+              }
+            },
+            "required": [
+              "outcome",
+              "validFrom",
+              "validTo",
+              "authorisedLimits",
+              "conditions"
+            ]
+          }
+        ]
+      },
+      "ServicingCapacityResponseRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "cycleId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "caseEtag": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 14
+          },
+          "submissionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "evidenceAssociationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "definition": {
+            "$ref": "#/components/schemas/ServicingCarrierResponseDefinition"
+          },
+          "body": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000,
+            "pattern": "\\S"
+          },
+          "providerUnderwriter": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "providerReference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "receivedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "cycleId",
+          "caseEtag",
+          "submissionId",
+          "evidenceAssociationId",
+          "definition",
+          "body",
+          "providerUnderwriter",
+          "providerReference",
+          "receivedAt",
+          "reason"
+        ]
+      },
+      "ServicingCapacityReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "draftId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revisionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "cycleId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "draftEtag": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 14
+          }
+        },
+        "required": [
+          "id",
+          "draftId",
+          "revisionId",
+          "cycleId",
+          "draftEtag"
+        ]
+      },
+      "ServicingCapacityQueuedReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "draftId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revisionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "cycleId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "draftEtag": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 14
+          },
+          "submissionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "jobId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "state": {
+            "const": "queued"
+          }
+        },
+        "required": [
+          "id",
+          "draftId",
+          "revisionId",
+          "cycleId",
+          "draftEtag",
+          "submissionId",
+          "jobId",
+          "state"
+        ]
+      },
+      "ServicingCapacitySummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "draftId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "cycleId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revisionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ratingId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "referralId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "providerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "providerLabel": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "ruleCode": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "dimension": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "riskItemId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "queued",
+              "sent",
+              "queried",
+              "approved",
+              "conditional",
+              "declined",
+              "failed",
+              "superseded"
+            ]
+          },
+          "etag": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 14
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "raisedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "currentSubmissionId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "currentResponseId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "assignedUserId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "draftId",
+          "cycleId",
+          "revisionId",
+          "ratingId",
+          "referralId",
+          "providerId",
+          "providerLabel",
+          "ruleCode",
+          "dimension",
+          "riskItemId",
+          "state",
+          "etag",
+          "reason",
+          "raisedAt",
+          "currentSubmissionId",
+          "currentResponseId",
+          "assignedUserId"
+        ]
+      },
+      "ServicingCapacityOption": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "id",
+          "label"
+        ]
+      },
+      "ServicingCapacitySubmissionView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "body": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000,
+            "pattern": "\\S"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "contextHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "workId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "jobState": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "attempts": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "errorCode": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "scenarioVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "submittedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "responseDueAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "evidenceIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "minItems": 0,
+            "maxItems": 20
+          }
+        },
+        "required": [
+          "id",
+          "sequence",
+          "body",
+          "reason",
+          "contextHash",
+          "workId",
+          "jobState",
+          "attempts",
+          "errorCode",
+          "scenarioVersionId",
+          "submittedAt",
+          "responseDueAt",
+          "evidenceIds"
+        ]
+      },
+      "ServicingCapacityMessageView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "submissionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "submission",
+              "query-reply",
+              "chase"
+            ]
+          },
+          "body": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000,
+            "pattern": "\\S"
+          },
+          "recordedBy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "recordedByLabel": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "sequence",
+          "submissionId",
+          "kind",
+          "body",
+          "recordedBy",
+          "recordedByLabel",
+          "recordedAt"
+        ]
+      },
+      "ServicingCapacityResponseView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "submissionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "provenance": {
+            "type": "string",
+            "enum": [
+              "supplied-response",
+              "demo-provider"
+            ]
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "approve",
+              "approve-with-conditions",
+              "query",
+              "decline"
+            ]
+          },
+          "body": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000,
+            "pattern": "\\S"
+          },
+          "providerUnderwriter": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "providerReference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "applicationState": {
+            "type": "string",
+            "enum": [
+              "applied",
+              "superseded"
+            ]
+          },
+          "evidenceAssociationId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "evidenceReviewId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "receivedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "definition": {
+            "$ref": "#/components/schemas/ServicingCarrierResponseDefinition"
+          }
+        },
+        "required": [
+          "id",
+          "sequence",
+          "submissionId",
+          "provenance",
+          "outcome",
+          "body",
+          "providerUnderwriter",
+          "providerReference",
+          "applicationState",
+          "evidenceAssociationId",
+          "evidenceReviewId",
+          "receivedAt",
+          "recordedAt",
+          "definition"
+        ]
+      },
+      "ServicingCarrierConditionView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "kind": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "etag": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 14
+          },
+          "wording": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "definition": {
+            "$ref": "#/components/schemas/UnderwritingConditionWrite"
+          },
+          "effectiveDates": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "minItems": 1,
+            "maxItems": 100
+          },
+          "satisfied": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "sequence",
+          "code",
+          "kind",
+          "etag",
+          "wording",
+          "definition",
+          "effectiveDates",
+          "satisfied"
+        ]
+      },
+      "ServicingCarrierResolutionView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "associationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reviewId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "satisfied",
+              "rejected"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "actorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "authorityVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "grantId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "sequence",
+          "associationId",
+          "reviewId",
+          "outcome",
+          "reason",
+          "actorId",
+          "authorityVersionId",
+          "grantId",
+          "recordedAt"
+        ]
+      },
+      "ServicingCapacityDetail": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "case": {
+            "$ref": "#/components/schemas/ServicingCapacitySummary"
+          },
+          "policyId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "draftEtag": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 14
+          },
+          "current": {
+            "type": "boolean"
+          },
+          "canWrite": {
+            "type": "boolean"
+          },
+          "ready": {
+            "type": "boolean"
+          },
+          "blockers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            "minItems": 0,
+            "maxItems": 100
+          },
+          "submission": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ServicingCapacitySubmissionView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "response": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ServicingCapacityResponseView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "conditions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServicingCarrierConditionView"
+            },
+            "minItems": 0,
+            "maxItems": 20
+          },
+          "scenarios": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServicingCapacityOption"
+            },
+            "minItems": 0,
+            "maxItems": 50
+          },
+          "seniors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServicingCapacityOption"
+            },
+            "minItems": 0,
+            "maxItems": 50
+          },
+          "similarCases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServicingCapacitySummary"
+            },
+            "minItems": 0,
+            "maxItems": 10
+          }
+        },
+        "required": [
+          "case",
+          "policyId",
+          "draftEtag",
+          "current",
+          "canWrite",
+          "ready",
+          "blockers",
+          "submission",
+          "response",
+          "conditions",
+          "scenarios",
+          "seniors",
+          "similarCases"
+        ]
+      },
+      "ServicingCapacityPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "draftId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "policyId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "draftEtag": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 14
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServicingCapacitySummary"
+            },
+            "minItems": 0,
+            "maxItems": 50
+          },
+          "nextCursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "draftId",
+          "policyId",
+          "draftEtag",
+          "items",
+          "nextCursor"
+        ]
+      },
+      "ServicingCapacitySubmissionsPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "draftEtag": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 14
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServicingCapacitySubmissionView"
+            },
+            "minItems": 0,
+            "maxItems": 50
+          },
+          "nextCursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "draftEtag",
+          "items",
+          "nextCursor"
+        ]
+      },
+      "ServicingCapacityMessagesPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "draftEtag": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 14
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServicingCapacityMessageView"
+            },
+            "minItems": 0,
+            "maxItems": 50
+          },
+          "nextCursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "draftEtag",
+          "items",
+          "nextCursor"
+        ]
+      },
+      "ServicingCapacityResponsesPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "draftEtag": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 14
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServicingCapacityResponseView"
+            },
+            "minItems": 0,
+            "maxItems": 50
+          },
+          "nextCursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "draftEtag",
+          "items",
+          "nextCursor"
+        ]
+      },
+      "ServicingCapacityResolutionsPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "draftEtag": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 14
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServicingCarrierResolutionView"
+            },
+            "minItems": 0,
+            "maxItems": 50
+          },
+          "nextCursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "draftEtag",
           "items",
           "nextCursor"
         ]

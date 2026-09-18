@@ -11,7 +11,7 @@ namespace BackOffice.IntegrationTests;
 
 public sealed partial class UnderwritingRuntimeTests
 {
-    private static async Task VerifyServicingCapacityCreate(BackOfficeDbContext db, DecisionFixture f, ServicingCycle cycle, string etag, bool submissionStorage = false, bool selectedEvidence = false, bool submitCommand = false,string? workerScenario=null)
+    private static async Task VerifyServicingCapacityCreate(BackOfficeDbContext db, DecisionFixture f, ServicingCycle cycle, string etag, bool submissionStorage = false, bool selectedEvidence = false, bool submitCommand = false,string? workerScenario=null,string? apiPassword=null)
     {
         static byte[] Version(string value) => Convert.FromBase64String(value.Trim('"'));
         static string Key() => Guid.NewGuid().ToString();
@@ -20,6 +20,7 @@ public sealed partial class UnderwritingRuntimeTests
         var lease = JsonSerializer.Deserialize<JsonElement>(takeover.Body).GetProperty("lease").GetProperty("leaseToken").GetGuid();
         var rule=workerScenario=="capacity-worker-conditional"?"cover-stock-custody":"cover-tools-equipment";
         var referral = await db.Set<ServicingReferral>().AsNoTracking().SingleAsync(x => x.CycleId == cycle.Id && x.RuleCode == rule);
+        if(apiPassword is not null) { await VerifyServicingCapacityHttp(db,f,apiPassword,cycle,referral,lease,takeover.Etag!);return; }
         var service = new ServicingCapacityService(f.Factory, f.Clock); var key = Key();
         const string reason = "Request fictional tools capacity exception";
         Task<CommandOutcome> Create(string operation, string version, ActorContext? actor = null, Guid? owner = null,
