@@ -37,6 +37,8 @@ public sealed partial class UnderwritingRuntimeTests
     [InlineData("motor-trade-combined", "warranty-proof")]
     [InlineData("motor-trade-road-risks", "submission-storage")]
     [InlineData("motor-trade-combined", "submission-storage")]
+    [InlineData("motor-trade-road-risks", "submission-command")]
+    [InlineData("motor-trade-combined", "submission-command")]
     [InlineData("motor-trade-road-risks", "trading-proof")]
     [InlineData("motor-trade-combined", "trading-proof")]
     [InlineData("motor-trade-road-risks", "referral-service")]
@@ -244,6 +246,11 @@ public sealed partial class UnderwritingRuntimeTests
             }
             if (scenario is "reject" or "revoke-before-apply") Assert.Empty(await db.Set<ServicingReferral>().Where(x=>x.DraftId==draftId).ToArrayAsync());
             var ratedView = await readModel.ReadAsync(f.Servicing, draftId, pageSize: 1);
+            if(scenario=="submission-command")
+            {
+                await VerifyServicingSubmissionCommand(db,f,applied,cycle,fence,ratedView.DraftEtag);
+                Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);return;
+            }
             if(scenario=="submission-storage")
             {
                 await VerifyServicingSubmissionStorage(db,f,applied,cycle);
