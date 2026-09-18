@@ -65,3 +65,39 @@ Demo DB/preview were not restarted or migrated for this storage prerequisite:
 preview still serves07-06, owned PIDs in.local/phase7-06-preview-pids.json. Verify
 process identity before stopping. No reset/reseed; frontend-code unchanged.
 Human UAT,hostedCI,Docker remain unperformed.
+
+## Capacity creation command verified — 2026-09-18
+
+Production commit f5585cc implements ServicingCapacityService.CreateAsync over
+existing immutable case storage. Provider derives from pinned binder; callers
+cannot choose another provider. Hold current policy/draft/cycle/rating/base,
+current underwriting-escalate role and effective same-product/binder grant,
+current lease and active provider before receipt lookup. A new command additionally
+requires exact draft and referral rowversions, one case per referral and non-declined
+current referral. Atomic case/audit/receipt advances draft ETag. Escalation records
+a draft case only; it never grants excess cover, sends a provider request or issues.
+No HTTP route/DI/UI has been activated by this prerequisite service.
+
+Tests are in ServicingCapacityCommandTests.cs, invoked by the two capacity-create
+scenarios in ServicingRatingRequestTests.cs, using actual rating/referral generation.
+Both products pass: capability/missing parent/cycle/referral, stale parent/child,
+wrong lease, inactive provider, persisted provider/rating ownership, exact replay,
+duplicate new key, changed-key intent, one audit, expired lease, removed current
+role and revoked effective grant before replay. Issued snapshot is unchanged.
+
+Final evidence .local/phase7-07-create-reviewed/sql/sql.trx and unit/unit.trx:
+2 real SQL scenarios +19 focused unit cases,21total,zero skips. Result gate passed
+with cutoff2026-09-18T05:12:00Z. Log.local/phase7-07-create-reviewed.log.
+No full SQL or new browser result is claimed. Earlier772-unit baseline unchanged.
+Initial red .local/phase7-07-create-red.log is missing-service compilation failure,
+not an executable behavior-red pass. First SQL run .local/phase7-07-create-green.log
+failed at the test fixture's incomplete UserAuthorityGrant revocation: mandatory
+RevokedBy/RevocationReason absent. Fixture corrected using the established audited
+revocation pattern; no production guard weakened. Failed run is not counted.
+
+NEXT: submission/message/response graph, current pointers, reviewed supplied
+response evidence and conditions; service/worker and final HTTP/UI/browser work
+remain as listed above. Preserve f5585cc creation behavior when extracting shared
+held-capacity authorization. No plan summary/completion: still6/16,55/65, POL-04open.
+No active tests or browser sessions. Demo database/preview not changed by this
+checkpoint; no reset/reseed or frontend-code edits. git diff --check passed.
