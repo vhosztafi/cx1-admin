@@ -1138,3 +1138,16 @@ inbox/messages remain Phase9, but this plan owns the concrete servicing referral
 work entry. Inspect exact source and current referral decision/history UI and
 implement a reviewable mapping, then finish all07-06 source/field review and
 required verification before creating07-06-SUMMARY. Still5/16 and54/65 complete.
+
+## Final close-out — 2026-09-18
+
+Production f488cad adds exact scoped referral-work API/UI and stale-cycle rejection.
+Final18 tests (12unit/6SQL) passed without skips;132 frontend,40 API contracts and
+17 source checks passed. Both products passed focused referral-work and full proof
+browser regression. Earlier submission journeys remain verified. See07-06-SUMMARY
+for exact evidence and boundaries; summary committed3d8111a. Initial referral fixture
+failed because1000 generated no referral; corrected10000 scenario exercises real
+rating. This was not a successful behavior-red test. Next build initially failed in
+webpack WasmHash; retaining/renaming cache and rebuilding passed, without claiming
+a proven root cause. Previews now API21728/web53292; verify owned PID file first.
+All browser drafts abandoned; demo not reset. Plan06 complete;6/16,55/65. Next07-07.

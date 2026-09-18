@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-06 submission UI/browser verified; referral-work source mapping and final review remain
-last_updated: "2026-09-18T04:11:00Z"
-last_activity: "2026-09-18 —07-06 5be1f37;131 frontend tests and both real submission browser journeys pass."
+stopped_at: Plan07-06 complete; next07-07 capacity referral lifecycle
+last_updated: "2026-09-18T05:00:00Z"
+last_activity: "2026-09-18 —07-06 closed at3d8111a; final SQL/contracts and both product browser journeys verified."
 progress:
   total_phases: 13
   completed_phases: 6
   total_plans: 65
-  completed_plans: 54
+  completed_plans: 55
   percent: 46
 ---
 
@@ -21,16 +21,16 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute Phase7;07-01..05 complete.07-06 submission UI/browser verified; finish referral-work source mapping and final source/field review.
+**Current focus:** Execute Phase7;07-01..06 complete. Next07-07 capacity referral lifecycle.
 
 ## Current Position
 
 Phase: 7 of 13 (Policy lifecycle and history)
-Plan: 5 of16 complete;07-06 in progress
-Status: Executing Phase7;07-06 submission UI/browser verified; referral-work source mapping and final review remain
-Last activity: 2026-09-18 —07-06 5be1f37 verified with131 frontend cases and both submission browser journeys. Resume latest07-06-PROGRESS.md checkpoint.
+Plan: 6 of16 complete;07-07 next
+Status: Executing Phase7;07-07 capacity referral lifecycle next
+Last activity: 2026-09-18 —07-06 closed at3d8111a after final SQL/contracts and browser verification.
 
-Progress: Phases1–6 complete;6/13 phases,54 completed implementation plans.
+Progress: Phases1–6 complete;6/13 phases,55 completed implementation plans.
 
 ## Accumulated Context
 
@@ -44,7 +44,7 @@ Progress: Phases1–6 complete;6/13 phases,54 completed implementation plans.
 
 ### Pending Todos
 
-- Execute07-06..16 using the approved plans and07-01 contracts.
+- Execute07-07..16 using the approved plans and07-01 contracts.
 - Keep future endpoints closed until owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,9 +54,9 @@ Progress: Phases1–6 complete;6/13 phases,54 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-18T04:11:00Z
-Stopped at:07-06 submission UI/browser verified; finish referral-work source mapping and review
-Resume file: .planning/phases/07-policy-lifecycle-and-history/07-06-PROGRESS.md
+Last session: 2026-09-18T05:00:00Z
+Stopped at:07-06 complete; resume07-07 approved plan
+Resume file: .planning/phases/07-policy-lifecycle-and-history/07-07-PLAN.md
 
 ## Autonomous continuation
 
