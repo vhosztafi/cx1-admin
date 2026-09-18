@@ -9,6 +9,9 @@ namespace BackOffice.Application.Policies;
 
 public sealed record ServicingRatingSliceInput(DateTimeOffset EffectiveAt, IReadOnlyList<Guid> ChangeIds, ProjectedUnderwritingInput Input);
 public sealed record EncodedServicingRatingInput(string Json, byte[] ContentHash);
+public sealed record RenewalRatingContext(Guid PreparationVersionId, Guid? ExperienceVersionId, Guid? ExperienceReviewId,
+    Guid? FairValueAssessmentId, RenewalExperienceFacts? Experience, bool EvidenceAccepted, string RuleVersion,
+    int ThresholdBasisPoints, int LoadingBasisPoints);
 public sealed record ServicingRatingRequestInput
 {
     public required string Format { get; init; }
@@ -36,6 +39,8 @@ public sealed record ServicingRatingRequestInput
     public decimal? MinimumPremium { get; init; }
     public required JsonElement RatingDefinition { get; init; }
     public required IReadOnlyList<ServicingRatingSliceInput> Slices { get; init; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public RenewalRatingContext? Renewal { get; init; }
 }
 
 // Persistence/worker contract only. The service must supply held current scope,
@@ -77,7 +82,8 @@ public static class ServicingRatingInput
 
     private static void Validate(ServicingRatingRequestInput input)
     {
-        if (input is null || input.Format != "servicing-rating-input-1" || input.RequestedAt.Offset != TimeSpan.Zero ||
+        if (input is null || input.Format is not ("servicing-rating-input-1" or "servicing-rating-input-2") ||
+            (input.Format == "servicing-rating-input-2") != (input.Renewal is not null) || input.RequestedAt.Offset != TimeSpan.Zero ||
             new[] { input.DraftId, input.RevisionId, input.PolicyId, input.BaseTermId, input.BaseVersionId,
                 input.ProductVersionId, input.AgencyTermsVersionId, input.RatingRuleVersionId, input.BinderVersionId,
                 input.AuthorityVersionId, input.RuntimeVersionId, input.ScenarioVersionId, input.ServicingSettingVersionId, input.RequestedBy }.Any(id => id == Guid.Empty) ||
@@ -96,9 +102,39 @@ public static class ServicingRatingInput
         }
         // Reuse the exact pricing validation, including currency precision,
         // bounded totals and cumulative stable-ID schedule rules.
-        _ = ServicingRatingRules.Rate(input.RatingDefinition, input.Term, input.BaseAnnualPremium,
+        _ = Calculate(input);
+    }
+
+    public static CalculatedServicingRating Calculate(ServicingRatingRequestInput input)
+    {
+        if (input.Format == "servicing-rating-input-1" && input.Renewal is null)
+            return ServicingRatingRules.Rate(input.RatingDefinition, input.Term, input.BaseAnnualPremium,
             input.Slices.Select(x => new ServicingRiskSlice(x.EffectiveAt, x.ChangeIds, x.Input.Rating)).ToArray(),
             input.CommissionBasisPoints, input.Fee, input.MinimumPremium);
+        var renewal = input.Renewal;
+        if (input.Format != "servicing-rating-input-2" || renewal is null || renewal.PreparationVersionId == Guid.Empty ||
+            renewal.ExperienceVersionId == Guid.Empty || renewal.ExperienceReviewId == Guid.Empty || renewal.FairValueAssessmentId == Guid.Empty ||
+            (renewal.ExperienceVersionId is not null) != (renewal.Experience is not null) ||
+            renewal.ExperienceReviewId is not null && renewal.ExperienceVersionId is null ||
+            renewal.EvidenceAccepted && renewal.ExperienceReviewId is null ||
+            string.IsNullOrWhiteSpace(renewal.RuleVersion) || renewal.RuleVersion.Length > 100 ||
+            input.Slices.Count != 1 || input.BaseAnnualPremium <= 0 || input.BaseAnnualPremium > QuoteRatingRules.MaximumMoney ||
+            decimal.Round(input.BaseAnnualPremium, 2) != input.BaseAnnualPremium) throw Invalid();
+        var slice = input.Slices[0];
+        if (slice.EffectiveAt != input.Term.StartsAt || slice.ChangeIds.Count > 100 || slice.ChangeIds.Contains(Guid.Empty) ||
+            slice.ChangeIds.Distinct().Count() != slice.ChangeIds.Count) throw Invalid();
+        var calculated = RenewalRatingRules.Calculate(input.RatingDefinition, slice.Input.Rating, input.Term,
+            input.CommissionBasisPoints, renewal.Experience, renewal.EvidenceAccepted, input.RequestedAt,
+            renewal.ThresholdBasisPoints, renewal.LoadingBasisPoints, input.Fee, input.MinimumPremium).Price;
+        // Renewal preparations use whole London civil days. Preserve the full
+        // term premium while keeping the annual difference only for comparison.
+        if (calculated.CivilDays != decimal.Truncate(calculated.CivilDays) ||
+            calculated.AnnualCivilDays != decimal.Truncate(calculated.AnnualCivilDays)) throw Invalid();
+        var priced = new ServicingRatedSlice(input.Term.StartsAt, input.Term.EndsAt, Array.AsReadOnly(slice.ChangeIds.Order().ToArray()),
+            calculated.AnnualPremium, calculated.AnnualPremium - input.BaseAnnualPremium,
+            (int)calculated.CivilDays, (int)calculated.AnnualCivilDays, calculated.TermPremium, calculated.Tax, calculated.BrokerCommission);
+        return new(input.BaseAnnualPremium, Array.AsReadOnly(new[] { priced }), calculated.TermPremium, calculated.Tax,
+            calculated.BrokerCommission, calculated.Fee, calculated.GrossPayable, calculated.GrossPayable - calculated.BrokerCommission);
     }
 
     private static bool Hash(string value) => value is { Length: 64 } && value.All(c => c is >= '0' and <= '9' or >= 'a' and <= 'f');

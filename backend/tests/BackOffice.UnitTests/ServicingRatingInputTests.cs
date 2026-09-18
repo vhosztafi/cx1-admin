@@ -24,6 +24,100 @@ public sealed class ServicingRatingInputTests
             RatingDefinition = QuoteRatingRulesTests.Definition("rating"), Slices = [new(DateTimeOffset.Parse("2026-10-01T00:00:00Z"), [Guid.NewGuid()], projected)] };
     }
 
+    private static ServicingRatingRequestInput Renewal()
+    {
+        var basis = Input();
+        return basis with { Format = "servicing-rating-input-2", Fee = 35m,
+            Renewal = new(Guid.NewGuid(), null, null, null, null, false, "demo-servicing-1", 5000, 800),
+            Slices = [basis.Slices[0] with { EffectiveAt = basis.Term.StartsAt, ChangeIds = [] }] };
+    }
+
+    [Fact]
+    public void RenewalChargesFullTermAndPreservesUnknownExperienceWithoutInventingChanges()
+    {
+        var input = Renewal(); var encoded = ServicingRatingInput.Encode(input);
+        var restored = ServicingRatingInput.Read(encoded.Json, encoded.ContentHash);
+        var price = ServicingRatingInput.Calculate(restored);
+        Assert.Empty(restored.Slices[0].ChangeIds);
+        Assert.Equal(600m, price.Premium); Assert.Equal(0m, price.Slices[0].AnnualDelta);
+        Assert.Equal(707m, price.GrossPayable); Assert.Equal(647m, price.NetDue);
+        Assert.Null(restored.Renewal!.Experience);
+        Assert.False(restored.Renewal.EvidenceAccepted);
+        Assert.NotEqual(encoded.ContentHash, ServicingRatingInput.Encode(input with {
+            Renewal = input.Renewal! with { PreparationVersionId = Guid.NewGuid() } }).ContentHash);
+    }
+
+    [Fact]
+    public void RenewalReviewedExperienceLoadsFullPremiumAndPinsEachSource()
+    {
+        var input = Renewal();
+        var facts = new RenewalExperienceFacts(new(2025, 1, 1), new(2026, 1, 1), 2, 600m, 0m, 1000m,
+            "agency", "claims statement", Guid.NewGuid());
+        input = input with { Renewal = input.Renewal! with { ExperienceVersionId = Guid.NewGuid(),
+            ExperienceReviewId = Guid.NewGuid(), Experience = facts, EvidenceAccepted = true } };
+        var encoded = ServicingRatingInput.Encode(input); var price = ServicingRatingInput.Calculate(input);
+        Assert.Equal(648m, price.Premium); Assert.Equal(48m, price.Slices[0].AnnualDelta);
+        Assert.Equal(760.76m, price.GrossPayable);
+        foreach (var changed in new[] { input.Renewal! with { ExperienceVersionId = Guid.NewGuid() },
+            input.Renewal! with { ExperienceReviewId = Guid.NewGuid() },
+            input.Renewal! with { FairValueAssessmentId = Guid.NewGuid() },
+            input.Renewal! with { Experience = facts with { Outstanding = 1m } } })
+            Assert.NotEqual(encoded.ContentHash, ServicingRatingInput.Encode(input with { Renewal = changed }).ContentHash);
+    }
+
+    [Fact]
+    public void RenewalRejectsMixedFormatsMissingSourcesAndNonInceptionSchedules()
+    {
+        var input = Renewal();
+        foreach (var changed in new[] { input with { Renewal = null }, input with { Format = "servicing-rating-input-1" },
+            input with { Renewal = input.Renewal! with { PreparationVersionId = Guid.Empty } },
+            input with { Renewal = input.Renewal! with { EvidenceAccepted = true } },
+            input with { Renewal = input.Renewal! with { ExperienceReviewId = Guid.NewGuid() } },
+            input with { Slices = [input.Slices[0] with { EffectiveAt = input.Term.StartsAt.AddDays(1) }] },
+            input with { Slices = [input.Slices[0], input.Slices[0]] },
+            input with { Slices = [input.Slices[0] with { ChangeIds = [Guid.Empty] }] } })
+            Assert.Throws<ArgumentException>(() => ServicingRatingInput.Encode(changed));
+    }
+
+    [Fact]
+    public void ExistingAdjustmentSerializationOmitsRenewalAndRoundTripsByteForByte()
+    {
+        var encoded = ServicingRatingInput.Encode(Input());
+        Assert.DoesNotContain("renewal", encoded.Json, StringComparison.OrdinalIgnoreCase);
+        Assert.Equal(encoded.Json, ServicingRatingInput.Encode(ServicingRatingInput.Read(encoded.Json, encoded.ContentHash)).Json);
+        Assert.Throws<ArgumentException>(() => ServicingRatingInput.Encode(Input() with { Slices = [Input().Slices[0] with { ChangeIds = [] }] }));
+    }
+
+    [Theory]
+    [InlineData("motor-trade-road-risks", 600)]
+    [InlineData("motor-trade-combined", 1200)]
+    public void ShortRenewalChargesCivilDayProportionOfFullRiskForBothProducts(string product, decimal annual)
+    {
+        var input = Renewal(); var term = RenewalPreparationRules.Term(DateTimeOffset.Parse("2027-01-01T00:00:00Z"), 6, [6, 12]).Term;
+        input = input with { Term = term, RatingDefinition = QuoteRatingRulesTests.Definition("rating", product),
+            BaseAnnualPremium = annual, Slices = [input.Slices[0] with { EffectiveAt = term.StartsAt,
+                Input = input.Slices[0].Input with { Term = term, Rating = QuoteRatingRulesTests.Facts(product) } }] };
+        var encoded = ServicingRatingInput.Encode(input);
+        var price = ServicingRatingInput.Calculate(ServicingRatingInput.Read(encoded.Json, encoded.ContentHash));
+        Assert.Equal(decimal.Round(annual * 181 / 365, 2, MidpointRounding.AwayFromZero), price.Premium);
+        Assert.Equal(181, price.Slices[0].RemainingDays); Assert.Equal(365, price.Slices[0].AnnualDays);
+        Assert.Equal(35m, price.Fee); Assert.Equal(0m, price.Slices[0].AnnualDelta);
+    }
+
+    [Fact]
+    public void UnreviewedOrRejectedExperienceNeverAppliesApprovedLoading()
+    {
+        var input = Renewal(); var facts = new RenewalExperienceFacts(new(2025,1,1), new(2026,1,1), 1, 600m, 0m, 1000m,
+            "agency", "unreviewed statement", Guid.NewGuid());
+        foreach (var reviewId in new Guid?[] { null, Guid.NewGuid() })
+        {
+            var pending = input with { Renewal = input.Renewal! with { ExperienceVersionId = Guid.NewGuid(),
+                ExperienceReviewId = reviewId, Experience = facts } };
+            var encoded = ServicingRatingInput.Encode(pending);
+            Assert.Equal(600m, ServicingRatingInput.Calculate(ServicingRatingInput.Read(encoded.Json, encoded.ContentHash)).Premium);
+        }
+    }
+
     [Fact]
     public void ExactInputRoundTripsAndEveryAuthorityPinChangesHash()
     {

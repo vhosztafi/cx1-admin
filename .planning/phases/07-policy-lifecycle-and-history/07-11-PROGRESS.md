@@ -110,6 +110,19 @@ extra properties (`.local/phase7-11-api-response-contracts.log`).
 OpenAPI lint passes with41 warnings (`.local/phase7-11-openapi-lint.log`). These
 focused runs overlap earlier evidence and must not be summed as distinct tests.
 
+Rating envelope follow-up: **37 unit +2 real SQL/hosted API =39 passes**, no
+skips, `.local/phase7-11-rating-input-final`, gate cutoff `2026-09-18T15:00:00Z`.
+Version2 inputs carry exact renewal preparation, experience, review and fair-value
+identities plus the actual experience and configured loading rules. Unchanged
+renewals need no invented change IDs. Full-term premium and annual comparison
+are distinct, including six-month London civil-day pricing for both products.
+Missing/unreviewed/rejected experience remains unresolved and cannot introduce
+the approved loading. Version1 adjustment serialization omits the new optional
+context and round trips unchanged. The shared provider dispatch now uses the
+validated envelope calculator; both existing hosted adjustment journeys pass.
+The request/SQL layer still refuses renewal cycles until their ownership guards
+and current-scope checks are implemented. This is not renewal end-to-end proof.
+
 Still required: retain preparation/experience/assessment pins in rating cycles,
 rating-cycle/worker/referral integration, any additional rating API contracts/tests,
 four-stage UI/browser verification, shared-database migration

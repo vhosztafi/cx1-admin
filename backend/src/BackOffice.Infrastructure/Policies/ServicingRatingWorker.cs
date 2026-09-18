@@ -50,8 +50,7 @@ public sealed class ServicingRatingWorker(IDbContextFactory<BackOfficeDbContext>
         {
             operation.State = "transient-failed"; await db.SaveChangesAsync(token); await tx.CommitAsync(token); throw Failure(JobFailure.ProviderUnavailable);
         }
-        var calculated = scenario == "reject" ? null : ServicingRatingRules.Rate(input.RatingDefinition, input.Term, input.BaseAnnualPremium,
-            input.Slices.Select(x => new ServicingRiskSlice(x.EffectiveAt, x.ChangeIds, x.Input.Rating)).ToArray(), input.CommissionBasisPoints, input.Fee, input.MinimumPremium);
+        var calculated = scenario == "reject" ? null : ServicingRatingInput.Calculate(input);
         var now = time.GetUtcNow();
         var outcome = new ServicingRatingOutcome("servicing-rating-result-1", operation.Id, scenario == "reject" ? "rejected" : "rated", now,
             now.AddDays(input.RatingDefinition.GetProperty("quoteValidityDays").GetInt32()), calculated);
