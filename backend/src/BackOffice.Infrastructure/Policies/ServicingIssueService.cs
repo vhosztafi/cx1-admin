@@ -42,7 +42,9 @@ public sealed class ServicingIssueService(IDbContextFactory<BackOfficeDbContext>
                     // actor before the command boundary may return old bytes.
                     await ReplayAuthority(db,source,draft,now,ct); return;
                 }
-                if (draft.State!="draft" || draft.Kind!="adjustment") throw new QuoteOperationException(409,"servicing-issue-state");
+                if (draft.State!="draft" || draft.Kind is not("adjustment" or "renewal")) throw new QuoteOperationException(409,"servicing-issue-state");
+                if(draft.Kind=="renewal" && !RenewalLifecycleRules.WithinIssueWindow(now,await db.Set<PolicyTerm>().Where(x=>x.Id==draft.BaseTermId).Select(x=>x.EndsAt).SingleAsync(ct)))
+                    throw new QuoteOperationException(409,"renewal-late-issue-unsupported");
                 held = await ServicingDecisionContext.Hold(db,source.Scope.Actor,draftId,"policy-issue-within-authority",now,ct,input.CycleId);
                 var remaining = held.Input.Term with { Kind="short-period",StartsAt=held.Input.Slices[0].EffectiveAt };
                 var grants = await QuoteUnderwritingScope.GrantsAsync(db,held.Scope.Source,held.Cycle.ProductVersionId,held.Scope.Eligible.BinderVersion,
@@ -57,7 +59,7 @@ public sealed class ServicingIssueService(IDbContextFactory<BackOfficeDbContext>
                 var now = time.GetUtcNow(); await held!.Current(db,factory,time,version,lease,ct);
                 var assessment = await new ServicingDraftService(factory,time).Assess(db,held.Scope.Source.Scope.Actor,held.Scope.Draft,
                     ServicingProposalInput.Parse(held.Scope.Revision.ProposalJson,held.Scope.Draft.BaseVersionId),ct);
-                if (assessment.ReadinessIssues.Count!=0 || assessment.Slices.Count!=held.Input.Slices.Count)
+                if (assessment.ReadinessIssues.Count!=0 || (held.Scope.Renewal is not null?1:assessment.Slices.Count)!=held.Input.Slices.Count)
                     throw new QuoteOperationException(409,"servicing-issue-proposal-stale");
                 if (held.Rating.Id!=input.RatingId || held.Cycle.CurrentAcceptanceId!=input.AcceptanceId || held.Cycle.CurrentTermsVersionId!=input.TermsVersionId)
                     throw new QuoteOperationException(412,"servicing-issue-acceptance-stale");

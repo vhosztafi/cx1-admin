@@ -13,9 +13,11 @@ namespace BackOffice.IntegrationTests;
 public sealed partial class UnderwritingRuntimeTests
 {
     [Theory]
-    [InlineData("motor-trade-road-risks")]
-    [InlineData("motor-trade-combined")]
-    public async Task RealSqlRenewalLifecycleInvitationsRetainExactTermsAndSeparateAcceptance(string product)
+    [InlineData("motor-trade-road-risks",false)]
+    [InlineData("motor-trade-combined",false)]
+    [InlineData("motor-trade-road-risks",true)]
+    [InlineData("motor-trade-combined",true)]
+    public async Task RealSqlRenewalLifecycleInvitationsRetainExactTermsAndSeparateAcceptance(string product,bool issue)
     {
         await WithDatabase(async(db,password)=>
         {
@@ -63,6 +65,8 @@ public sealed partial class UnderwritingRuntimeTests
             {Assert.Equal("renewal-contract-1",json.RootElement.GetProperty("format").GetString());Assert.Equal(prepared.ResourceId,json.RootElement.GetProperty("ratingInput").GetProperty("renewal").GetProperty("preparationVersionId").GetGuid());}
             var sentEtag=await VerifyServicingDeliveryQueue(db,f,cycle,document,proofFile.ResourceId,fence,invitation.Etag!);
             var delivered=await terms.ReadAsync(f.Underwriter,draft.Id);Assert.Equal("delivered",delivered.Delivery!.State);Assert.Null(delivered.Acceptance);
+            if(issue){await VerifyServicingAcceptance(db,f,cycle,document,proofFile.ResourceId,fence,sentEtag,
+                onAccepted:(acceptance,acceptedEtag)=>VerifyRenewalIssue(db,f,cycle,acceptance,fence,acceptedEtag,issued,password));return;}
             await VerifyServicingAcceptance(db,f,cycle,document,proofFile.ResourceId,fence,sentEtag);
             Assert.Equal(issued.ContentHash,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).ContentHash);
             Assert.Equal(1,await db.Set<PolicyTerm>().CountAsync());

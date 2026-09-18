@@ -21,7 +21,8 @@ internal static class ServicingIssueSnapshot
         snapshot["snapshotFormat"]="issued-servicing-1"; snapshot.Remove("termIntent"); snapshot["productVersionId"]=held.Cycle.ProductVersionId;
         snapshot["insured"]!["clientId"]=held.Scope.Source.Quote.ClientId;
         snapshot["insured"]!["clientAgencyRelationshipId"]=held.Scope.Source.Quote.RelationshipId;
-        snapshot["term"]=basis["term"]!.DeepClone();
+        var renewal=held.Scope.Draft.Kind=="renewal";
+        snapshot["term"]=renewal?JsonSerializer.SerializeToNode(held.Input.Term,ServicingRatingService.Json):basis["term"]!.DeepClone();
         var risk = snapshot["risk"]!.AsObject(); var input = held.Input.Slices[index].Input;
         if(input.AnyDriverCount==0) risk["driverBasis"]=JsonSerializer.SerializeToNode(new{kind="named",responses=risk["responses"]});
         else
@@ -59,14 +60,14 @@ internal static class ServicingIssueSnapshot
         // Snapshot premium retains cumulative term charges through this slice.
         // The separate immutable obligation is the actual amount due for this
         // issue, so a two-slice transaction never repeats its fee or invoice.
-        decimal Prior(string field)=>decimal.Parse(basis["premium"]![field]!.GetValue<string>(),CultureInfo.InvariantCulture);
+        decimal Prior(string field)=>renewal?0m:decimal.Parse(basis["premium"]![field]!.GetValue<string>(),CultureInfo.InvariantCulture);
         var through=rating.Slices.Take(index+1).ToArray();
         var premium=Prior("termPremium")+through.Sum(x=>x.Premium);var tax=Prior("tax")+through.Sum(x=>x.Tax);
         var fee=Prior("fee")+rating.Fee;var commission=Prior("brokerCommission")+through.Sum(x=>x.BrokerCommission);
         var commercial=contract.GetProperty("commercialTerms");var settlement=commercial.GetProperty("settlement");
         var collector=settlement.GetProperty("premiumCollection").GetString()!;var netted=collector=="agency" && settlement.GetProperty("commissionSettlement").GetString()=="net-remittance";
         var shareBps=commercial.GetProperty("commercialTerms").GetProperty("feeSharing").GetString()=="agreed-split"?commercial.GetProperty("commercialTerms").GetProperty("feeShareBasisPoints").GetInt32():0;
-        var share=decimal.Parse(basis["premium"]!["settlement"]!["brokerFeeShare"]!.GetValue<string>(),CultureInfo.InvariantCulture)+decimal.Round(rating.Fee*shareBps/10000m,2,MidpointRounding.AwayFromZero);
+        var share=(renewal?0m:decimal.Parse(basis["premium"]!["settlement"]!["brokerFeeShare"]!.GetValue<string>(),CultureInfo.InvariantCulture))+decimal.Round(rating.Fee*shareBps/10000m,2,MidpointRounding.AwayFromZero);
         var gross=premium+tax+fee;var net=gross-commission-share;
         string Money(decimal amount)=>PolicyIssueWriter.Money(amount);
         snapshot["premium"]=JsonSerializer.SerializeToNode(new{currency="GBP",annualPremium=Money(rating.Slices[index].AnnualPremium),termPremium=Money(premium),

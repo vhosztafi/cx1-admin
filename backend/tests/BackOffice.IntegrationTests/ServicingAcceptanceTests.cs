@@ -9,7 +9,7 @@ namespace BackOffice.IntegrationTests;
 
 public sealed partial class UnderwritingRuntimeTests
 {
-    private static async Task<string> VerifyServicingAcceptance(BackOfficeDbContext db,DecisionFixture f,ServicingCycle cycle,ServicingTermsVersion contract,Guid fileId,Guid fence,string etag,bool posting=false,bool issue=false,string? issuePassword=null)
+    private static async Task<string> VerifyServicingAcceptance(BackOfficeDbContext db,DecisionFixture f,ServicingCycle cycle,ServicingTermsVersion contract,Guid fileId,Guid fence,string etag,bool posting=false,bool issue=false,string? issuePassword=null,Func<ServicingAcceptance,string,Task>? onAccepted=null)
     {
         static byte[] Version(string value)=>Convert.FromBase64String(value.Trim('"'));
         static string Key()=>Guid.NewGuid().ToString();
@@ -32,6 +32,7 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Equal(proof.Id,row.EvidenceAssociationId);Assert.Equal(contract.Id,row.TermsVersionId);Assert.Equal(delivery.Id,row.DeliveryId);
         Assert.Equal(input.AssuranceHash,row.AssuranceHash);Assert.Equal(input.TermsHash,row.TermsHash);
         Assert.True((await terms.ReadAsync(f.Underwriter,cycle.DraftId)).AcceptanceApplicable);
+        if(onAccepted is not null){await onAccepted(row,accepted.Etag!);return accepted.Etag!;}
         if(posting){await VerifyServicingPosting(db,f,cycle,row);return accepted.Etag!;}
         if(issue){await VerifyServicingIssue(db,f,cycle,row,fence,Version(accepted.Etag!),issuePassword!);return accepted.Etag!;}
         await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingAcceptance SET AccepterLabel='Changed customer' WHERE Id={row.Id}"));

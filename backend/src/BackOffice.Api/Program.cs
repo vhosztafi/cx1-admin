@@ -70,6 +70,16 @@ if(args.Contains("--seed-accounting-periods-demo",StringComparer.Ordinal))
     await BackOffice.Infrastructure.Policies.AccountingPeriods.SeedAsync(db,clock.FrozenAt??DateTimeOffset.UtcNow);await transaction.CommitAsync();
     Console.WriteLine("Missing fictional accounting periods added; existing periods preserved.");return;
 }
+if(args.Contains("--seed-renewal-lifecycle-demo",StringComparer.Ordinal))
+{
+    if(!app.Environment.IsDevelopment())throw new InvalidOperationException("Renewal fixtures require local Development.");
+    var factory=app.Services.GetRequiredService<Microsoft.EntityFrameworkCore.IDbContextFactory<BackOfficeDbContext>>();
+    await using var db=await factory.CreateDbContextAsync();
+    DemoDatabase.ValidateDemoTarget(Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.GetConnectionString(db.Database)!);
+    await using var transaction=await Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.BeginTransactionAsync(db.Database,System.Data.IsolationLevel.Serializable);
+    await BackOffice.Infrastructure.Policies.RenewalLifecycleSeed.SeedAsync(db);await transaction.CommitAsync();
+    Console.WriteLine("Missing fictional renewal invitation templates added; existing records preserved.");return;
+}
 if(args.Contains("--seed-renewal-preparation-demo",StringComparer.Ordinal))
 {
     if(!app.Environment.IsDevelopment())throw new InvalidOperationException("Renewal fixtures require local Development.");

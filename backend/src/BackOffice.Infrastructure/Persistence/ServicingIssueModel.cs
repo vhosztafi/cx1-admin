@@ -28,7 +28,7 @@ public sealed partial class BackOfficeDbContext
             .HasForeignKey(x => new { x.ServicingIssueDecisionId,x.ServicingDraftId,x.PolicyId,x.ServicingCycleId,x.ServicingRevisionId,x.ServicingRatingId,x.ServicingAcceptanceId })
             .HasPrincipalKey(x => new { x.Id,x.DraftId,x.PolicyId,x.CycleId,x.RevisionId,x.RatingId,x.AcceptanceId }).OnDelete(DeleteBehavior.NoAction);
         transaction.HasIndex(x => x.ServicingIssueDecisionId).IsUnique().HasFilter("[ServicingIssueDecisionId] IS NOT NULL");
-        Check(transaction,"IssueDecision","([Kind]='new-business' AND [ServicingIssueDecisionId] IS NULL) OR ([Kind]='adjustment' AND [ServicingIssueDecisionId] IS NOT NULL)");
+        Check(transaction,"IssueDecision","([Kind]='new-business' AND [ServicingIssueDecisionId] IS NULL) OR ([Kind] IN ('adjustment','renewal') AND [ServicingIssueDecisionId] IS NOT NULL)");
         transaction.HasAlternateKey(x => new { x.Id,x.PolicyId });
         var draft = model.Entity<ServicingDraft>();
         draft.HasOne<PolicyTransaction>().WithMany().HasForeignKey(x => new { x.IssuedTransactionId,x.PolicyId }).HasPrincipalKey(x => new { x.Id,x.PolicyId }).OnDelete(DeleteBehavior.NoAction);
@@ -40,6 +40,6 @@ public sealed partial class BackOfficeDbContext
         mid.HasOne<PolicyVersion>().WithMany().HasForeignKey(x => new { x.VersionId,x.TransactionId,x.TermId,x.PolicyId })
             .HasPrincipalKey(x => new { x.Id,x.TransactionId,x.TermId,x.PolicyId }).OnDelete(DeleteBehavior.NoAction);
         mid.HasOne<OutboxWork>().WithMany().HasForeignKey(x => x.WorkId).OnDelete(DeleteBehavior.NoAction);
-        Check(mid,"Purpose","[Purpose]='adjustment'");
+        Check(mid,"Purpose","[Purpose] IN ('adjustment','renewal')");
     }
 }

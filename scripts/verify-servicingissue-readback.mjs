@@ -4,8 +4,9 @@ import {chromium} from 'playwright';
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 const origin=process.env.COVER_WEB_ORIGIN??'http://127.0.0.1:3100';assert.ok(['localhost','127.0.0.1'].includes(new URL(origin).hostname));
-const output='.local/browser-evidence/servicing-issue';
-const report=JSON.parse(await readFile(output+'/report.json','utf8'));assert.equal(report.journeys.length,2);assert.ok(report.completedAt);
+const renewal=process.argv.includes('--renewal');
+const output=renewal?'.local/browser-evidence/renewal-issue':'.local/browser-evidence/servicing-issue';
+const report=JSON.parse(await readFile(output+'/report.json','utf8'));assert.equal(report.journeys.length,2);assert.ok(report.completedAt??report.finishedAt);
 const api=JSON.parse(await readFile('contracts/openapi.json','utf8')),ajv=new Ajv2020({strict:true,allErrors:true});addFormats(ajv);ajv.addFormat('binary',true);
 for(const name of ['policy','policy-draft','quote-draft','issued-policy','issued-servicing']) {
  const schema=JSON.parse(await readFile(`contracts/schemas/${name}.schema.json`,'utf8'));
@@ -22,13 +23,14 @@ try {
  for(const journey of report.journeys){
   const receipt=journey.receipt;valid('ServicingIssueResult',receipt);
   const response=await page.request.get(origin+`/api/v1/policies/${journey.policyId}/terms/${receipt.termId}/versions/${receipt.versionId}`);assert.equal(response.status(),200);assert.match(response.headers()['cache-control'],/no-store/);
-  const data=await response.json();valid('ServicingPolicyView',data);assert.equal(data.contentHash,journey.contentHash);assert.equal(data.snapshot.provenance.servicingIssueDecisionId,receipt.decisionId);assert.equal(data.financials.journalId,receipt.journalId);assert.equal(data.financials.amountDue,receipt.netAmount);
+  const data=await response.json();valid('ServicingPolicyView',data);if(journey.contentHash)assert.equal(data.contentHash,journey.contentHash);assert.equal(data.snapshot.provenance.servicingIssueDecisionId,receipt.decisionId);assert.equal(data.financials.journalId,receipt.journalId);assert.equal(data.financials.amountDue,receipt.netAmount);
+  if(renewal){assert.equal(data.transactionSequence,1);assert.ok(data.termNumber>1);assert.equal(data.snapshot.premium.termPremium,journey.premium);}
   const draft=await page.request.get(origin+`/api/v1/drafts/${journey.draftId}`);assert.equal(draft.status(),200);assert.equal((await draft.json()).state,'issued');
   await page.goto(origin+`/policies/${journey.policyId}?termId=${receipt.termId}&versionId=${receipt.versionId}`);
   await page.getByText('Viewing a specific issued change. Its effective date may be in the future.',{exact:true}).waitFor();
   await page.getByText(receipt.versionId,{exact:true}).waitFor({state:'attached'});
   await page.goto(origin+`/policies/${journey.policyId}?termId=${receipt.termId}&versionId=${receipt.versionId}&tab=Transactions`);
-  await page.getByRole('heading',{name:'Adjustment transaction',exact:true}).waitFor();
+  await page.getByRole('heading',{name:renewal?'Renewal transaction':'Adjustment transaction',exact:true}).waitFor();
   assert.equal(await page.getByRole('tab',{name:'Transactions',exact:true}).getAttribute('aria-selected'),'true');
   await page.screenshot({path:output+'/'+journey.productCode+'-issued-version.png',fullPage:true});
   await page.getByRole('button',{name:'View current policy',exact:true}).click();

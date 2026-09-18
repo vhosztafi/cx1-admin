@@ -29,10 +29,10 @@ public sealed class RenewalLifecycleTests
     }
 
     [Theory]
-    [InlineData(0,14)]
-    [InlineData(367,14)]
-    [InlineData(45,0)]
-    [InlineData(45,367)]
+    [InlineData(-1,14)]
+    [InlineData(366,14)]
+    [InlineData(45,-1)]
+    [InlineData(45,366)]
     public void TimelineRejectsUnboundedConfiguration(int before,int after)=>
         Assert.Throws<ArgumentException>(()=>RenewalLifecycleRules.Timeline(DateTimeOffset.Parse("2027-09-18T08:00:00Z"),before,after));
 
@@ -41,6 +41,16 @@ public sealed class RenewalLifecycleTests
     {
         Assert.Throws<ArgumentException>(()=>RenewalLifecycleRules.Timeline(DateTimeOffset.Parse("2027-09-18T09:00:00+01:00"),45,14));
         Assert.Throws<ArgumentException>(()=>RenewalLifecycleRules.Timeline(DateTimeOffset.Parse("2027-09-18T08:00:01Z"),45,14));
+    }
+
+    [Fact]
+    public void TimelineAcceptsTheSameZeroTo365DayBoundsAsVersionedConfiguration()
+    {
+        var expiry=DateTimeOffset.Parse("2027-09-18T08:00:00Z");
+        var immediate=RenewalLifecycleRules.Timeline(expiry,0,0);
+        Assert.Equal(expiry,immediate.InvitationDueAt);Assert.Equal(expiry,immediate.AutoLapseAt);
+        var maximum=RenewalLifecycleRules.Timeline(expiry,365,365);
+        Assert.True(maximum.InvitationDueAt<expiry);Assert.True(maximum.AutoLapseAt>expiry);
     }
 
     [Theory]

@@ -44,8 +44,8 @@ public sealed partial class BackOfficeDbContext
         transaction.HasOne<ServicingAcceptance>().WithMany().HasForeignKey(x => new { x.ServicingAcceptanceId, x.ServicingCycleId, x.ServicingDraftId, x.ServicingRevisionId, x.ServicingRatingId })
             .HasPrincipalKey(x => new { x.Id, x.CycleId, x.DraftId, x.RevisionId, x.RatingId }).OnDelete(DeleteBehavior.NoAction);
         transaction.HasIndex(x => x.ServicingDraftId).IsUnique().HasFilter("[ServicingDraftId] IS NOT NULL");
-        Check(transaction, "Kind", "[Kind] IN ('new-business','adjustment')"); Check(transaction, "Sequence", "[Sequence]>0");
-        Check(transaction, "DecisionSource", "([Kind]='new-business' AND [CycleId] IS NOT NULL AND [QuoteRevisionId] IS NOT NULL AND [RatingId] IS NOT NULL AND [AcceptanceId] IS NOT NULL AND [ServicingDraftId] IS NULL AND [ServicingRevisionId] IS NULL AND [ServicingCycleId] IS NULL AND [ServicingRatingId] IS NULL AND [ServicingAcceptanceId] IS NULL) OR ([Kind]='adjustment' AND [CycleId] IS NULL AND [QuoteRevisionId] IS NULL AND [RatingId] IS NULL AND [AcceptanceId] IS NULL AND [ServicingDraftId] IS NOT NULL AND [ServicingRevisionId] IS NOT NULL AND [ServicingCycleId] IS NOT NULL AND [ServicingRatingId] IS NOT NULL AND [ServicingAcceptanceId] IS NOT NULL)");
+        Check(transaction, "Kind", "[Kind] IN ('new-business','adjustment','renewal')"); Check(transaction, "Sequence", "[Sequence]>0");
+        Check(transaction, "DecisionSource", "([Kind]='new-business' AND [CycleId] IS NOT NULL AND [QuoteRevisionId] IS NOT NULL AND [RatingId] IS NOT NULL AND [AcceptanceId] IS NOT NULL AND [ServicingDraftId] IS NULL AND [ServicingRevisionId] IS NULL AND [ServicingCycleId] IS NULL AND [ServicingRatingId] IS NULL AND [ServicingAcceptanceId] IS NULL) OR ([Kind] IN ('adjustment','renewal') AND [CycleId] IS NULL AND [QuoteRevisionId] IS NULL AND [RatingId] IS NULL AND [AcceptanceId] IS NULL AND [ServicingDraftId] IS NOT NULL AND [ServicingRevisionId] IS NOT NULL AND [ServicingCycleId] IS NOT NULL AND [ServicingRatingId] IS NOT NULL AND [ServicingAcceptanceId] IS NOT NULL)");
         Check(transaction, "Provenance", "[CreatedBy] IS NOT NULL AND [ProcessedAt]=[CreatedAt] AND LEN(TRIM([Reason]))>0 AND LEN(TRIM([OperationKey]))>0");
 
         var version = Record<PolicyVersion>(model, "PolicyVersion"); version.ToTable(t => t.UseSqlOutputClause(false)); Text(version, ("SchemaVersion", 30)); Hash(version, "ContentHash"); UnderwritingJson(version, "SnapshotJson");
@@ -68,7 +68,7 @@ public sealed partial class BackOfficeDbContext
         document.HasOne<PolicyVersion>().WithMany().HasForeignKey(x => new { x.VersionId, x.TransactionId, x.TermId, x.PolicyId }).HasPrincipalKey(x => new { x.Id, x.TransactionId, x.TermId, x.PolicyId }).OnDelete(DeleteBehavior.NoAction);
         document.HasOne<TemplateVersion>().WithMany().HasForeignKey(x => x.TemplateVersionId).OnDelete(DeleteBehavior.NoAction);
         document.HasOne<OutboxWork>().WithMany().HasForeignKey(x => x.WorkId).OnDelete(DeleteBehavior.NoAction);
-        Check(document, "Kind", "[Kind] IN ('policy-schedule','policy-certificate','policy-statement')"); Check(document, "Purpose", "[Purpose] IN ('first-issue','adjustment')");
+        Check(document, "Kind", "[Kind] IN ('policy-schedule','policy-certificate','policy-statement')"); Check(document, "Purpose", "[Purpose] IN ('first-issue','adjustment','renewal')");
         Check(document, "State", "[State]='requested'"); Check(document, "Hash", "[PayloadHash]<>0x0000000000000000000000000000000000000000000000000000000000000000");
     }
 }

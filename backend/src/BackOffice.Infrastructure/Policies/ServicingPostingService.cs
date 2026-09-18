@@ -18,7 +18,7 @@ public static class ServicingPostingService
     {
         if (db.Database.CurrentTransaction is null) throw new InvalidOperationException("Servicing posting requires one held issue transaction.");
         var transaction = await db.Set<PolicyTransaction>().AsNoTracking().SingleAsync(x => x.Id == transactionId, token);
-        if (transaction.Kind != "adjustment") throw new QuoteOperationException(409, "unsupported-servicing-posting");
+        if (transaction.Kind is not("adjustment" or "renewal")) throw new QuoteOperationException(409, "unsupported-servicing-posting");
         var policy = await db.Set<Policy>().AsNoTracking().SingleAsync(x => x.Id == transaction.PolicyId, token);
         var term = await db.Set<PolicyTerm>().AsNoTracking().SingleAsync(x => x.Id == transaction.TermId, token);
         var cycle = await db.Set<ServicingCycle>().FromSqlInterpolated($"SELECT * FROM ServicingCycle WITH(UPDLOCK,HOLDLOCK) WHERE Id={transaction.ServicingCycleId}").AsNoTracking().SingleAsync(token);

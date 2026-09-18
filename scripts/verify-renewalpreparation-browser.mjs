@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict';
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {chromium} from 'playwright';
+import {issueRenewal} from './renewal-issue-browser-journey.mjs';
 const origin=process.env.COVER_WEB_ORIGIN??'http://127.0.0.1:3100';assert.ok(['localhost','127.0.0.1'].includes(new URL(origin).hostname));
-const output='.local/browser-evidence/renewal-preparation';await mkdir(output,{recursive:true});
+const issueMode=process.env.COVER_RENEWAL_ISSUE_BROWSER==='true';
+const output=issueMode?'.local/browser-evidence/renewal-issue':'.local/browser-evidence/renewal-preparation';await mkdir(output,{recursive:true});
 const fixtures=JSON.parse(await readFile('.local/browser-evidence/underwriting-issue/report.json','utf8')).journeys;
 const password=(await readFile('.local/demo-password.txt','utf8')).trim();
 const browser=await chromium.launch({channel:'chrome',headless:true});
@@ -55,9 +57,11 @@ try{
   referrals=await get(path+'/referrals');assert.equal(referrals.items.find(x=>x.id===referral.id).decisionReady,true);
   await page.locator('#renewal-review-risk').scrollIntoViewIfNeeded();await page.screenshot({path:output+'/'+fixture.productCode+'-desktop.png'});
   await page.setViewportSize({width:390,height:844});await writeFile(output+'/overflow.json',JSON.stringify(await page.evaluate(()=>Array.from(document.querySelectorAll('*')).map(e=>({tag:e.tagName,cls:e.className,w:e.getBoundingClientRect().width,right:e.getBoundingClientRect().right,text:e.textContent?.slice(0,70)})).filter(e=>e.right>innerWidth+1)),null,2));assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await page.locator('#renewal-review-risk').scrollIntoViewIfNeeded();await page.screenshot({path:output+'/'+fixture.productCode+'-mobile.png'});await page.setViewportSize({width:1560,height:1000});
-  const after=await get(`/api/v1/policies/${fixture.policyId}`);const retained=({effectiveCutoff,knownCutoff,...record})=>record;assert.deepEqual(retained(after),retained(before),'Preparation and rating preserve issued policy');
+  const issueResult=issueMode?await issueRenewal({page,origin,path,get,until,renewLease,output,productCode:fixture.productCode}):null;
+  const after=await get(`/api/v1/policies/${fixture.policyId}`);const retained=({effectiveCutoff,knownCutoff,...record})=>record;assert.deepEqual(retained(after),retained(before),'Preparation and early renewal issue preserve current policy');
   report.journeys.push({productCode:fixture.productCode,policyId:fixture.policyId,draftId,termMonths:Number(months),preparationId:preparation.preparation.id,experienceId:experience.experience.id,cycleId:rated.current.id,referralId:referral.id,premium:rated.current.result.premium,checks:['prepared term','missing experience unresolved','real uploaded bytes','saved experience reload','reviewed experience rating','senior UW-31 decision','four stage navigation','responsive layout','issued policy unchanged']});
-  await abandon();await writeFile(output+'/report.json',JSON.stringify(report,null,2));
+  if(issueResult)Object.assign(report.journeys.at(-1),issueResult,{issueChecks:['actual UI invitation delivery','separate evidenced acceptance','new term issued','full term premium','390px receipt','current policy unchanged']});
+  else await abandon();await writeFile(output+'/report.json',JSON.stringify(report,null,2));
   if(index<fixtures.length-1){await context.close();context=await browser.newContext({viewport:{width:1560,height:1000}});page=await context.newPage();watch();await login('underwriter@cover.example');}
  }
  assert.deepEqual(errors,[]);report.finishedAt=new Date().toISOString();await writeFile(output+'/report.json',JSON.stringify(report,null,2));console.log(JSON.stringify({journeys:report.journeys.length,errors}));

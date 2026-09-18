@@ -12,8 +12,8 @@ public static class RenewalLifecycleRules
     public static RenewalTimeline Timeline(DateTimeOffset expiringEnd,int invitationDaysBeforeExpiry,int lapseDaysAfterExpiry,
         int? invitationOffsetMinutes=null,int? lapseOffsetMinutes=null)
     {
-        if(!Utc(expiringEnd) || expiringEnd.Ticks%TimeSpan.TicksPerMinute!=0 || invitationDaysBeforeExpiry is <1 or >366 ||
-            lapseDaysAfterExpiry is <1 or >366 || invitationOffsetMinutes is not(null or 0 or 60) || lapseOffsetMinutes is not(null or 0 or 60))
+        if(!Utc(expiringEnd) || expiringEnd.Ticks%TimeSpan.TicksPerMinute!=0 || invitationDaysBeforeExpiry is <0 or >365 ||
+            lapseDaysAfterExpiry is <0 or >365 || invitationOffsetMinutes is not(null or 0 or 60) || lapseOffsetMinutes is not(null or 0 or 60))
             throw new ArgumentException("Renewal timeline requires exact UTC expiry and bounded calendar-day configuration.");
         var local=TimeZoneInfo.ConvertTime(expiringEnd,London).DateTime;
         DateTimeOffset Shift(int days,int? offset)

@@ -21,13 +21,22 @@ internal static class ServicingIssueWriter
             ActorId=actor,GrantId=grant.Grant.Id,AuthorityVersionId=grant.Version.Id,InputHash=cycle.InputHash,TermsHash=acceptance.TermsHash,
             AssuranceHash=acceptance.AssuranceHash,EffectiveAt=held.Input.Slices[0].EffectiveAt,Reason=reason,CreatedAt=now,CreatedBy=actor};
         db.Add(decision);await db.SaveChangesAsync(token);
-        var sequence=checked(await db.Set<PolicyTransaction>().Where(x=>x.TermId==term.Id).MaxAsync(x=>x.Sequence,token)+1);
-        var transaction=new PolicyTransaction{PolicyId=draft.PolicyId,TermId=term.Id,SourceQuoteId=held.Scope.Source.Quote.Id,Kind="adjustment",Sequence=sequence,
+        if(draft.Kind=="renewal")
+        {
+            var preparation=await db.Set<RenewalPreparationVersion>().AsNoTracking().SingleAsync(x=>x.Id==cycle.RenewalPreparationVersionId,token);
+            term=new PolicyTerm{PolicyId=draft.PolicyId,ProductId=cycle.ProductId,ProductVersionId=cycle.ProductVersionId,
+                Number=checked(await db.Set<PolicyTerm>().Where(x=>x.PolicyId==draft.PolicyId).MaxAsync(x=>x.Number,token)+1),
+                StartsAt=held.Input.Term.StartsAt,EndsAt=held.Input.Term.EndsAt,LocalTermIntentJson=preparation.TermIntentJson,
+                CreatedAt=now,UpdatedAt=now,CreatedBy=actor};
+            db.Add(term);await db.SaveChangesAsync(token);
+        }
+        var sequence=checked((await db.Set<PolicyTransaction>().Where(x=>x.TermId==term.Id).MaxAsync(x=>(int?)x.Sequence,token)??0)+1);
+        var transaction=new PolicyTransaction{PolicyId=draft.PolicyId,TermId=term.Id,SourceQuoteId=held.Scope.Source.Quote.Id,Kind=draft.Kind,Sequence=sequence,
             ServicingDraftId=draft.Id,ServicingRevisionId=cycle.RevisionId,ServicingCycleId=cycle.Id,ServicingRatingId=held.Rating.Id,
             ServicingAcceptanceId=acceptance.Id,ServicingIssueDecisionId=decision.Id,EffectiveAt=decision.EffectiveAt,ProcessedAt=now,Reason=reason,
             OperationKey="servicing-issue/"+draft.Id.ToString("N"),CreatedAt=now,CreatedBy=actor};
         db.Add(transaction);await db.SaveChangesAsync(token);
-        var baseSequence=await db.Set<PolicyVersion>().Where(x=>x.TermId==term.Id).MaxAsync(x=>x.Sequence,token);
+        var baseSequence=await db.Set<PolicyVersion>().Where(x=>x.TermId==term.Id).MaxAsync(x=>(int?)x.Sequence,token)??0;
         var slices=ServicingEvidenceProjection.Slices(held);
         var rating=JsonSerializer.Deserialize<ServicingRatingOutcome>(held.Rating.ResultJson,ServicingRatingService.Json)?.Rating
             ??throw new QuoteOperationException(409,"servicing-rating-input-unavailable");
@@ -54,7 +63,7 @@ internal static class ServicingIssueWriter
             foreach(var template in templates)
             {
                 var document=new PolicyDocumentRequest{PolicyId=policy.Id,TermId=term.Id,TransactionId=transaction.Id,VersionId=version.Id,Kind=template.Kind,
-                    Purpose="adjustment",TemplateVersionId=template.Id,CreatedAt=now,UpdatedAt=now,CreatedBy=actor};
+                    Purpose=draft.Kind,TemplateVersionId=template.Id,CreatedAt=now,UpdatedAt=now,CreatedBy=actor};
                 document.PayloadJson=JsonSerializer.Serialize(new{format="policy-document-1",requestId=document.Id,policyId=policy.Id,policyReference=policy.Reference,
                     termId=term.Id,transactionId=transaction.Id,versionId=version.Id,contentHash=Convert.ToHexStringLower(version.ContentHash),
                     kind=document.Kind,templateVersionId=template.Id,template=JsonSerializer.Deserialize<JsonElement>(template.ContentJson),
@@ -64,7 +73,7 @@ internal static class ServicingIssueWriter
                     Payload=document.PayloadJson,NextAttemptAt=now,CreatedAt=now,CreatedBy=actor,CorrelationId=correlation};
                 db.Add(work);await db.SaveChangesAsync(token);document.WorkId=work.Id;db.Add(document);await db.SaveChangesAsync(token);documents.Add(document.Id);
             }
-            var mid=new PolicyMidIntent{PolicyId=policy.Id,TermId=term.Id,TransactionId=transaction.Id,VersionId=version.Id,CreatedAt=now,CreatedBy=actor};
+            var mid=new PolicyMidIntent{PolicyId=policy.Id,TermId=term.Id,TransactionId=transaction.Id,VersionId=version.Id,Purpose=draft.Kind,CreatedAt=now,CreatedBy=actor};
             mid.PayloadJson=JsonSerializer.Serialize(new{format="policy-mid-intent-1",intentId=mid.Id,policyId=policy.Id,termId=term.Id,versionId=version.Id,
                 contentHash=Convert.ToHexStringLower(version.ContentHash),action="change",effectiveAt=version.EffectiveAt,endsAt=term.EndsAt},ServicingRatingService.Json);
             mid.PayloadHash=Hash(mid.PayloadJson);
@@ -79,8 +88,8 @@ internal static class ServicingIssueWriter
         await db.SaveChangesAsync(token);
         draft.IssuedTransactionId=transaction.Id;draft.State="issued";
         db.Add(new ClientActivity{ClientId=policy.ClientId,RelationshipId=policy.RelationshipId,RecordKind="quote",RecordId=policy.SourceQuoteId,
-            EventType="policy.adjustment-issued",ActorId=actor,CreatedBy=actor,CreatedAt=now,OccurredAt=now});
-        db.Add(new AuditEvent{SubjectRecordId=policy.Id,ActorId=actor,CreatedBy=actor,CreatedAt=now,OccurredAt=now,EventType="policy.adjustment-issued",Reason=reason,
+            EventType="policy."+draft.Kind+"-issued",ActorId=actor,CreatedBy=actor,CreatedAt=now,OccurredAt=now});
+        db.Add(new AuditEvent{SubjectRecordId=policy.Id,ActorId=actor,CreatedBy=actor,CreatedAt=now,OccurredAt=now,EventType="policy."+draft.Kind+"-issued",Reason=reason,
             CorrelationId=correlation,After=JsonSerializer.Serialize(new{draftId=draft.Id,transactionId=transaction.Id,decisionId=decision.Id,versionIds=versions.Select(x=>x.Id).ToArray()})});
         await db.SaveChangesAsync(token);
         var etag="\""+Convert.ToBase64String(draft.RowVersion)+"\"";

@@ -19,10 +19,11 @@ const blocker = (code: string | null) => ({
   'servicing-rating-expired': 'The rating has expired. Rate the saved changes again.',
 }[code ?? ''] ?? 'Review the current rating, proof and underwriting decisions before continuing.');
 
-export function ServicingTerms({ draftId, revisionId, cycleId, etag, active, paused, requirements, evidence, run }: {
-  draftId: string; revisionId: string; cycleId: string | null; etag: string; active: boolean; paused: boolean;
+export function ServicingTerms({ kind = 'adjustment', draftId, revisionId, cycleId, etag, active, paused, requirements, evidence, run }: {
+  kind?: 'adjustment' | 'renewal'; draftId: string; revisionId: string; cycleId: string | null; etag: string; active: boolean; paused: boolean;
   requirements: ProofRequirement[]; evidence: ProofAssociation[]; run: (path: string, body: unknown) => void;
 }) {
+  const renewal = kind === 'renewal';
   const base = `/api/v1/drafts/${draftId}/terms`;
   const read = useProofRead<TermsView>(cycleId ? base : null, etag, paused);
   const view = read.data;
@@ -37,21 +38,21 @@ export function ServicingTerms({ draftId, revisionId, cycleId, etag, active, pau
   const instant = acceptedAt ? new Date(acceptedAt).getTime() : NaN;
   const received = Number.isFinite(instant) && instant <= observedAt && !!view?.delivery?.completedAt && instant >= Date.parse(view.delivery.completedAt);
   const delivered = terms?.applicable && view?.delivery?.termsVersionId === terms.id && view.delivery.state === 'delivered';
-  return <section aria-label="Servicing terms and acceptance" className="servicing-terms" id="servicing-terms">
-    <h3>Terms and acceptance</h3><p>Prepare the agreed change, review the signed statement, then send the terms and record the customer’s acceptance.</p>
+  return <section aria-label={renewal ? "Renewal invitation and acceptance" : "Servicing terms and acceptance"} className="servicing-terms" id={renewal ? "renewal-invitation" : "servicing-terms"}>
+    <h3>{renewal ? "Renewal invitation and acceptance" : "Terms and acceptance"}</h3><p>{renewal ? "Prepare the new term invitation, review the signed statement, then deliver the invitation and record the customer’s acceptance. Acceptance and issue must be completed by renewal inception." : "Prepare the agreed change, review the signed statement, then send the terms and record the customer’s acceptance."}</p>
     {read.error && <p role="status">{read.error}</p>}
     {view && <>
       <fieldset className="quote-reference-fields" disabled={!enabled || !view.canPrepare}><legend>Prepare terms</legend>
         <label>Terms template<select aria-label="Terms template" value={template} onChange={e => setTemplateId(e.target.value)}>{view.templates.map(x => <option key={x.id} value={x.id}>{x.title} · Version {x.version}</option>)}</select></label>
-        <button className="button" disabled={!view.templates.some(x => x.id === template)} onClick={() => run('/terms/prepare', { cycleId, ratingId: view.ratingId, templateVersionId: template })}>Prepare servicing terms</button>
+        <button className="button" disabled={!view.templates.some(x => x.id === template)} onClick={() => run('/terms/prepare', { cycleId, ratingId: view.ratingId, templateVersionId: template })}>{renewal ? "Prepare renewal invitation" : "Prepare servicing terms"}</button>
       </fieldset>
       {view.blockingCode && <p role="status">{blocker(view.blockingCode)}</p>}
-      {terms && <><Status tone={read.current && terms.applicable ? 'success' : 'warning'}>{read.current && terms.applicable ? `Prepared terms · Version ${terms.sequence}` : 'Previous terms — prepare the current change'}</Status><Contract document={terms.document} />
+      {terms && <><Status tone={read.current && terms.applicable ? 'success' : 'warning'}>{read.current && terms.applicable ? `Prepared terms · Version ${terms.sequence}` : 'Previous terms — prepare the current change'}</Status><Contract document={terms.document} renewal={renewal} />
         <p className="client-help">Attach and review the signed-statement proof in Supporting information. It must relate to this exact version.</p>
         <fieldset className="quote-reference-fields" disabled={!enabled || !view.canSend}><legend>Send prepared terms</legend>
           {view.recipientOptions.map(x => <label key={x.id}><input type="checkbox" checked={recipients.includes(x.id)} onChange={e => setRecipients(old => e.target.checked ? [...old, x.id] : old.filter(id => id !== x.id))} /> {x.name} · {x.email}</label>)}
           {!view.recipientOptions.length && <p>No current email contacts are available for this customer relationship.</p>}
-          <button className="button button-primary" disabled={!recipients.length || recipients.length > 20 || recipients.some(id => !view.recipientOptions.some(x => x.id === id))} onClick={() => run('/terms/send', { cycleId, termsVersionId: terms.id, recipientContactIds: recipients })}>Send servicing terms</button>
+          <button className="button button-primary" disabled={!recipients.length || recipients.length > 20 || recipients.some(id => !view.recipientOptions.some(x => x.id === id))} onClick={() => run('/terms/send', { cycleId, termsVersionId: terms.id, recipientContactIds: recipients })}>{renewal ? "Send renewal invitation" : "Send servicing terms"}</button>
           <p className="client-help">Demo delivery records processing and its outcome. No email is sent.</p>
         </fieldset>
         {view.sendBlockingCode && <p role="status">{blocker(view.sendBlockingCode)}</p>}
@@ -62,14 +63,14 @@ export function ServicingTerms({ draftId, revisionId, cycleId, etag, active, pau
         {view.delivery.state === 'queued' && <p role="status">Delivery is processing. Acceptance is available only after delivery succeeds.</p>}
         {['failed', 'superseded'].includes(view.delivery.state) && <p>Review current terms, proof and recipients, then send again. This attempt remains in history.</p>}
       </article>}
-      <fieldset className="quote-reference-fields" disabled={!enabled || !delivered || !view.canSend}><legend>Record customer acceptance</legend>
+      <fieldset className="quote-reference-fields" disabled={!enabled || !delivered || !view.canSend}><legend id={renewal ? "renewal-acceptance" : undefined}>Record customer acceptance</legend>
         <label>Accepted by<input aria-label="Accepted by" value={accepter} maxLength={200} onChange={e => setAccepter(e.target.value)} /></label>
         <label>Acceptance received at<input aria-label="Acceptance received at" type="datetime-local" step="1" value={acceptedAt} onChange={e => {setAcceptedAt(e.target.value);setObservedAt(Date.now());}} /></label>
         <p className="client-help">Enter your local time, after successful delivery. The recorded instant is retained in UTC.</p>
         <label>Acceptance channel<select aria-label="Acceptance channel" value={channel} onChange={e => setChannel(e.target.value)}><option value="email">Email</option><option value="written">Written</option><option value="telephone">Telephone</option></select></label>
         <label>Reviewed acceptance proof<select aria-label="Reviewed acceptance proof" value={proofId} onChange={e => setProofId(e.target.value)}><option value="">Choose accepted proof on this evidence page</option>{proofs.map(x => <option key={x.id} value={x.id}>{x.fileName}</option>)}</select></label>
         {!proofs.length && <p>Attach and review acceptance-proof for this version in Supporting information.</p>}
-        <button className="button button-primary" disabled={!accepter.trim() || !received || !proofs.some(x => x.id === proofId)} onClick={() => run('/acceptances', { cycleId, ratingId: view.ratingId, termsVersionId: terms!.id, deliveryId: view.delivery!.id, termsHash: terms!.termsHash, assuranceHash: view.assuranceHash, accepterLabel: accepter, acceptedAt: new Date(instant).toISOString(), channel, evidenceAssociationId: proofId })}>Record servicing acceptance</button>
+        <button className="button button-primary" disabled={!accepter.trim() || !received || !proofs.some(x => x.id === proofId)} onClick={() => run('/acceptances', { cycleId, ratingId: view.ratingId, termsVersionId: terms!.id, deliveryId: view.delivery!.id, termsHash: terms!.termsHash, assuranceHash: view.assuranceHash, accepterLabel: accepter, acceptedAt: new Date(instant).toISOString(), channel, evidenceAssociationId: proofId })}>{renewal ? "Record renewal acceptance" : "Record servicing acceptance"}</button>
       </fieldset>
       {view.acceptance && <article className="quote-driver-card" aria-label="Recorded acceptance"><h4>Recorded acceptance</h4><Status tone={read.current && view.acceptanceApplicable ? 'success' : 'warning'}>{read.current && view.acceptanceApplicable ? 'Current acceptance' : 'Historical acceptance — fresh confirmation required'}</Status>
         <p>{view.acceptance.accepterLabel} · {view.acceptance.channel} · {date(view.acceptance.acceptedAt)}</p><p>Acceptance is recorded separately from delivery. Final issue checks still apply.</p></article>}
@@ -78,9 +79,9 @@ export function ServicingTerms({ draftId, revisionId, cycleId, etag, active, pau
   </section>;
 }
 
-function Contract({ document }: { document: TermsDocument }) {
+function Contract({ document, renewal = false }: { document: TermsDocument; renewal?: boolean }) {
   return <details className="quote-driver-card" open><summary>{document.template.title}</summary><p>{document.template.notice}</p>
-    <dl className="underwriting-premium">{Object.entries(document.price).filter(([key]) => key !== 'currency').map(([key, value]) => <div key={key} className={key === 'grossPayable' ? 'underwriting-total' : ''}><dt>{({ premium: 'Premium change', tax: 'Insurance premium tax', fee: 'Adjustment fee', brokerCommission: 'Broker commission', grossPayable: 'Total payable', netDue: 'Net due' } as Record<string, string>)[key]}</dt><dd>{money(value)}</dd></div>)}</dl>
+    <dl className="underwriting-premium">{Object.entries(document.price).filter(([key]) => key !== 'currency').map(([key, value]) => <div key={key} className={key === 'grossPayable' ? 'underwriting-total' : ''}><dt>{({ premium: renewal ? 'Renewal term premium' : 'Premium change', tax: 'Insurance premium tax', fee: renewal ? 'Renewal fee' : 'Adjustment fee', brokerCommission: 'Broker commission', grossPayable: 'Total payable', netDue: 'Net due' } as Record<string, string>)[key]}</dt><dd>{money(value)}</dd></div>)}</dl>
     <p>Terms expire {date(document.expiresAt)}</p><h4>Effective changes</h4>{document.effectiveDates.map(value => <p key={value}>From {date(value)}</p>)}
     {document.slices.map(slice => <details key={slice.effectiveAt}><summary>Exact prepared risk from {date(slice.effectiveAt)}</summary><QuoteProposalDetails value={slice.proposal} proposal={slice.proposal} questionLabels={{}} /></details>)}
     {document.conditions.length > 0 && <><h4>Conditions and endorsements</h4>{document.conditions.map(x => <p key={x.id}>{x.code.replaceAll('-', ' ')} · {x.effectiveDates.map(date).join(', ')}</p>)}</>}

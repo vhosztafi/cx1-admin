@@ -30,8 +30,50 @@ The initial red at the former adjustment-only template guard is retained in
 .local/phase7-12-invitation-red.48 API/source checks pass; contract document union
 retains old strict schema and adds separate renewal schema.
 
-Still required: concrete linked new-term issue with original-term read/discovery
-preservation, lapse event/deduplication/notification worker and races, complete
-timeline/UI/API contracts and hosted/browser proofs. No renewal issue/lapse or
-complete07-12/browser result is claimed. Continue implementing rather than asking
-the user for another command.
+## Verified new-term issue and invitation UI — 2026-09-18
+
+Renewal issue now uses the existing atomic servicing boundary and creates a new
+nonoverlapping PolicyTerm, sequence-one renewal transaction, exact new-term
+snapshot, sealed financial posting, three document requests and one MID intent.
+The original term/snapshot remain unchanged; current/as-of reads select the old
+or new term by inception. New database guards retain the prepared term and its
+strict expiring-risk provenance. Original migrations remain untouched.
+
+Real SQL tests cover both products, current authority before receipt replay,
+stale ETag/lease/assurance, one-tick late issue, competing issue commands and
+injected rollback at thirteen write boundaries (including PolicyTerm and the
+command receipt). HTTP checks prove strict DTO/query/header/CSRF handling and
+persisted replay. Shared adjustment issue and migration upgrade/downgrade pass.
+The final gate has **23 unit + 8 SQL = 31 passing cases, no skips**, in
+`.local/phase7-12-issue-final`. Earlier expected red issue-kind rejection is in
+`.local/phase7-12-issue-red`; the timeline configuration bound regression red is
+`.local/phase7-12-timeline-bounds-red.log`. Timeline accepts the same 0..365 bounds
+as versioned settings; unchanged defaults are 45/14 London calendar days.
+
+Renewal workspace now exposes actual invitation preparation, signed proof,
+delivery, evidenced acceptance and new-term issue, with separate renewal labels
+and current-policy navigation. Existing adjustment controls remain available.
+61 API/source contract checks, TypeScript and ESLint checks pass; Release API
+build has zero warnings/errors and the production Next.js build passes.
+
+Chrome completed both real UI journeys: six-month Combined and twelve-month
+Road Risks, including supplied experience/senior UW-31 review, invitation
+delivery, acceptance, issue and 390px containment. Current-policy readback is
+unchanged. Evidence: `.local/browser-evidence/renewal-issue/report.json`, finished
+2026-09-18T17:44:22.855Z; invitation and mobile issue screenshots inspected.
+After API/web restart, both retained issue graphs, version/transaction links and
+actual HTTP response contracts pass: `restart-readback.json` in the same folder,
+plus `.local/phase7-12-issue-responses`. Browser tests have not exercised lapse.
+
+The shared demo received only the two new additive migrations through
+20260918172420_RenewalIssueGraph. Before/after hashes match for the 115 tables in
+the existing preservation check (`.local/phase7-12-before.txt` / `after.txt`).
+Targeted `--seed-renewal-lifecycle-demo` adds only missing fictional invitation
+templates. Browser-created renewal history is intentionally retained. No full
+reseed, reset, real email, payment or provider operation occurred.
+
+07-12 remains **in progress**. Still required: durable lapse event/deduplication,
+date worker and notification with restart/race proof, due/overdue/invited/accepted/
+issued/lapsed timeline and API/UI, and a browser lapse scenario. Also verify
+conditional referral targeting for an unchanged renewal (empty change slices).
+Continue implementation inline without asking the user for another command.

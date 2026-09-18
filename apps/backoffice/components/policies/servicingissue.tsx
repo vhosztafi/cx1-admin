@@ -8,7 +8,8 @@ import type { ProofScope } from '../../lib/servicing-proof';
 import type { TermsView } from '../../lib/servicing-terms';
 import { useProofRead } from './servicing-proof-read';
 
-export function ServicingIssue({scope,active,paused,pendingChanged,saved}:{scope:ProofScope;active:boolean;paused:boolean;pendingChanged:(value:boolean)=>void;saved:()=>Promise<void>}) {
+export function ServicingIssue({kind='adjustment',scope,active,paused,pendingChanged,saved}:{kind?:'adjustment'|'renewal';scope:ProofScope;active:boolean;paused:boolean;pendingChanged:(value:boolean)=>void;saved:()=>Promise<void>}) {
+  const renewal=kind==='renewal';
   const read=useProofRead<TermsView>(`/api/v1/drafts/${scope.draftId}/terms`,scope.etag,paused);
   const [reason,setReason]=useState(''),[confirmed,setConfirmed]=useState(false),[busy,setBusy]=useState(false),[uncertain,setUncertain]=useState(false),[error,setError]=useState('');
   const [receipt,setReceipt]=useState<AdjustmentIssueReceipt|null>(null);
@@ -40,13 +41,13 @@ export function ServicingIssue({scope,active,paused,pendingChanged,saved}:{scope
       setError(retain?'The issue result is unconfirmed. Retry the same action before making further changes.':'Issue was refused. Refresh the draft and review the saved acceptance, editing lease and your current authority.');
     } finally {sending.current=false;setBusy(false);}
   }
-  return <section aria-label="Issue policy adjustment" className="servicing-terms">
-    <h3>Issue adjustment</h3>
-    {receipt && <article aria-label="Adjustment issue receipt" className="quote-driver-card"><Status tone="success">Adjustment issued</Status>
+  return <section aria-label={renewal ? "Issue policy renewal" : "Issue policy adjustment"} className="servicing-terms">
+    <h3>{renewal ? "Issue renewal" : "Issue adjustment"}</h3>
+    {receipt && <article aria-label={renewal ? "Renewal issue receipt" : "Adjustment issue receipt"} className="quote-driver-card"><Status tone="success">{renewal ? "Renewal issued" : "Adjustment issued"}</Status>
       <p>{receipt.policyReference} · Issued {new Date(receipt.processedAt).toLocaleString('en-GB')}</p>
       <p>Amount due £{receipt.amountDue} · Credit £{receipt.amountCredit} · Posting date {receipt.postingDate}</p>
       {issuedView && <><p>Transaction {issuedView.transactionSequence} · Latest issued version {issuedView.versionSequence}</p>
-        <p>Adjustment premium £{issuedView.financials.premium} · Revised term premium £{issuedView.snapshot.premium.termPremium}</p>
+        <p>{renewal ? "Renewal" : "Adjustment"} premium £{issuedView.financials.premium} · {renewal ? "New" : "Revised"} term premium £{issuedView.snapshot.premium.termPremium}</p>
         <p>Payments collected by this action: £0.00. The charge or credit is recorded for settlement.</p></>}
       {view?.terms?.document.effectiveDates.map(value=><p key={value}>Changes effective {new Date(value).toLocaleString('en-GB')}</p>)}
       <p>{receipt.versionIds.length} policy {receipt.versionIds.length===1?'version':'versions'} saved. Document requests and MID updates are queued.</p>
@@ -57,13 +58,13 @@ export function ServicingIssue({scope,active,paused,pendingChanged,saved}:{scope
     {error && <p role="alert">{error}</p>}
     {uncertain && <button className="button button-primary" disabled={busy} onClick={issue}>Retry same issue</button>}
     {!receipt && !uncertain && <fieldset className="quote-reference-fields" disabled={!ready || busy}><legend>Confirm accepted changes</legend>
-      <p>Issuing records all effective changes and their charge or credit. Future changes take effect on their scheduled dates.</p>
+      <p>{renewal ? "Issuing creates the accepted new term and its full charge. Current cover remains in force until its expiry; the renewal starts at that instant." : "Issuing records all effective changes and their charge or credit. Future changes take effect on their scheduled dates."}</p>
       {!ready && <p>Save and rate the change, complete the required proof and decisions, and record current acceptance before issuing.</p>}
       {view?.terms?.document.effectiveDates.map(value=><p key={value}>Effective {new Date(value).toLocaleString('en-GB')}</p>)}
-      {view?.terms && <p>Accepted net movement £{view.terms.document.price.netDue}</p>}
+      {view?.terms && <p>{renewal ? "Accepted renewal net due" : "Accepted net movement"} £{view.terms.document.price.netDue}</p>}
       <label>Issue reason<textarea aria-label="Issue reason" maxLength={1000} value={reason} onChange={event=>setReason(event.target.value)}/></label>
       <label><input type="checkbox" checked={confirmed} onChange={event=>setConfirmed(event.target.checked)}/> I confirm the accepted changes and effective dates.</label>
-      <button className="button button-primary" disabled={!confirmed || reason.trim().length<10} onClick={issue}>{busy?'Issuing…':'Issue accepted adjustment'}</button>
+      <button className="button button-primary" disabled={!confirmed || reason.trim().length<10} onClick={issue}>{busy?'Issuing…':renewal?'Issue accepted renewal':'Issue accepted adjustment'}</button>
     </fieldset>}
   </section>;
 }
