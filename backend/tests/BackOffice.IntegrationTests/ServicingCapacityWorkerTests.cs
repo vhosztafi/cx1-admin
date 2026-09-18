@@ -57,6 +57,7 @@ public sealed partial class UnderwritingRuntimeTests
         }
         Assert.Equal(1,await db.Set<AdapterQuarantine>().CountAsync(x=>x.InboxId==response.InboxId));
         Assert.Equal("succeeded",await db.Set<OutboxWork>().Where(x=>x.Id==submission.WorkId).Select(x=>x.State).SingleAsync());
+        await VerifyServicingCapacityReads(db,f,capacity,scenario);
         if(scenario=="capacity-worker")
         {
             await VerifyServicingCapacityAssignment(db,f,capacity,editLease);
