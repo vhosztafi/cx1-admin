@@ -1,9 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { currentProof, proofCommand, confirmProofReceipt, sendProof } from '../lib/servicing-proof.ts';
+import { currentProof, proofCommand, confirmProofReceipt, sendProof, proofReadState } from '../lib/servicing-proof.ts';
 const ids = Array.from({length: 6}, (_, n) => `10000000-0000-0000-0000-00000000000${n + 1}`);
 const scope = { draftId: ids[0], cycleId: ids[1], revisionId: ids[2], fence: ids[3], etag: '"AAAAAAAAAAE="' };
 const receipt = { id: ids[4], ...scope, draftEtag: '"AAAAAAAAAAI="' };
+test('lease-version refresh retains same-page forms without authorizing stale writes',()=>{
+ const data={items:[{id:ids[4]}]},read={url:'/owned-page',etag:scope.etag,data};
+ assert.deepEqual(proofReadState(read,'/owned-page',receipt.draftEtag,''),{data,current:false});
+ assert.deepEqual(proofReadState(read,'/different-page',scope.etag,''),{data:null,current:false});
+ assert.deepEqual(proofReadState(read,'/owned-page',scope.etag,'unavailable'),{data,current:false});
+ assert.deepEqual(proofReadState(read,'/owned-page',scope.etag,''),{data,current:true});
+});
 test('proof matching binds the exact cycle, revision, rating, purpose, target and fingerprint', () => {
   const requirement = { code:'photocard', riskItemId:ids[4], inputFingerprint:'a'.repeat(64), context:{...scope, ratingId:ids[5]} };
   const association = { ...requirement.context, ...requirement, withdrawn:false };

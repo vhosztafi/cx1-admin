@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Status } from '../primitives';
 import { ConditionForm } from '../underwriting/referral-decisions';
 import { conditionLabels } from '../../lib/underwriting-decisions';
@@ -13,13 +13,15 @@ type Run = (path: string, body: unknown) => void;
 export function ServicingReferrals({ draftId, etag, cycleId, active, paused, requirements, evidence, editor, run }: {
   draftId: string; etag: string; cycleId: string | null; active: boolean; paused: boolean; requirements: ProofRequirement[]; evidence: ProofAssociation[]; editor: ServicingEditor | null; run: Run;
 }) {
+  const heading = useRef<HTMLHeadingElement>(null);
+  useEffect(() => { if (window.location.hash === '#servicing-referrals') heading.current?.focus(); }, []);
   const [page, setPage] = useState({etag, cursor:''}), [selection, setSelection] = useState<{etag:string; ids:string[]}>({etag, ids:[]});
   const [outcome, setOutcome] = useState('approve'), [reason, setReason] = useState(''), [question, setQuestion] = useState(''), [error, setError] = useState('');
   const [conditions, setConditions] = useState<ConditionDefinition[]>([]), [sliceDate, setSliceDate] = useState('');
   const cursor = page.etag === etag ? page.cursor : '', selected = selection.etag === etag ? selection.ids : [];
   const base = `/api/v1/drafts/${draftId}`;
   const referrals = useProofRead<ReferralPage>(cycleId ? `${base}/referrals?pageSize=20${cursor ? '&cursor=' + encodeURIComponent(cursor) : ''}` : null, etag, paused);
-  const current = referrals.data?.draftId === draftId && referrals.data.cycleId === cycleId && referrals.data.applicable;
+  const current = referrals.current && referrals.data?.draftId === draftId && referrals.data.cycleId === cycleId && referrals.data.applicable;
   const enabled = active && current;
   const conditional = outcome === 'approve-with-conditions' || outcome === 'query';
   const slice = editor?.assessment.slices.find(item => item.effectiveAt === sliceDate) ?? editor?.assessment.slices[0];
@@ -29,16 +31,16 @@ export function ServicingReferrals({ draftId, etag, cycleId, active, paused, req
       setError(''); run(request.path, request.body);
     } catch (failure) { setError(failure instanceof Error ? failure.message : 'Check this decision.'); }
   }
-  return <section aria-label="Servicing referrals"><h3>Underwriting referrals</h3>
+  return <section aria-label="Servicing referrals"><h3 id="servicing-referrals" ref={heading} tabIndex={-1}>Underwriting referrals</h3>
     <p className="client-help">Decisions apply to the full saved schedule. Outstanding proof remains a separate requirement. Current authority is checked when saving each decision.</p>
     {referrals.error && <p role="status">{referrals.error}</p>}
     {referrals.error && cursor && <button className="button" disabled={paused} onClick={() => {setPage({etag,cursor:''}); setSelection({etag,ids:[]});}}>Restart referral pages</button>}
     {referrals.data && <>{referrals.data.items.length === 0 && <p>No referrals on this page.</p>}{referrals.data.items.map(row => <article className="quote-driver-card" data-referral-id={row.id} key={row.id}>
       <label className="contact-check"><input type="checkbox" disabled={!enabled} checked={selected.includes(row.id)} onChange={event => setSelection({etag, ids:event.target.checked ? [...selected, row.id] : selected.filter(id => id !== row.id)})} />{row.ruleCode} · {row.dimension.replaceAll('-', ' ')}</label>
-      <p>{row.reason}</p><Status tone={row.state === 'declined' ? 'error' : row.decisionReady ? 'success' : 'warning'}>{row.state}</Status>
-      <p>{row.decisionReady ? 'Referral decision requirements met.' : 'Referral decision requirements remain outstanding.'}</p>
+      <p>{row.reason}</p><Status tone={row.state === 'declined' ? 'error' : current && row.decisionReady ? 'success' : 'warning'}>{row.state}</Status>
+      <p>{!current ? 'Retained decision. Refresh the current rating to assess readiness.' : row.decisionReady ? 'Referral decision requirements met.' : 'Referral decision requirements remain outstanding.'}</p>
       {row.decision && <p>Latest decision: {row.decision.outcome.replaceAll('-', ' ')} · {new Date(row.decision.decidedAt).toLocaleString('en-GB')}<br />{row.decision.reason}{row.decision.question && <><br />Question: {row.decision.question}</>}</p>}
-      {row.conditions.map(condition => <Resolution key={condition.id} condition={condition} cycleId={cycleId!} requirements={requirements} evidence={evidence} disabled={!enabled} run={run} />)}
+      {row.conditions.map(condition => <Resolution key={condition.id} condition={condition} current={current} cycleId={cycleId!} requirements={requirements} evidence={evidence} disabled={!enabled} run={run} />)}
       <CurrentAuthority base={base} referralId={row.id} cycleId={cycleId!} etag={etag} paused={paused} />
       <DecisionHistory base={base} referralId={row.id} etag={etag} paused={paused} />
     </article>)}<PageButtons cursor={cursor} next={referrals.data.nextCursor} disabled={paused} change={value => { setPage({etag, cursor:value}); setSelection({etag, ids:[]}); }} /></>}
@@ -66,7 +68,7 @@ function CurrentAuthority({ base, referralId, cycleId, etag, paused }: { base: s
   const [open, setOpen] = useState(false), [page, setPage] = useState({etag, cursor:''});
   const cursor = page.etag === etag ? page.cursor : '';
   const authority = useProofRead<CurrentAuthorityPage>(open ? `${base}/referrals/${referralId}/authority?pageSize=5${cursor ? '&cursor=' + encodeURIComponent(cursor) : ''}` : null, etag, paused);
-  const data = authority.data?.referralId === referralId && authority.data.cycleId === cycleId ? authority.data : null;
+  const data = authority.current && authority.data?.referralId === referralId && authority.data.cycleId === cycleId ? authority.data : null;
   return <details onToggle={event => setOpen(event.currentTarget.open)}><summary>Your current authority and binder limits</summary>
     <p className="client-help">Each grant is assessed separately. Covering this referral dimension does not establish overall issue readiness.</p>
     {authority.error && <p role="status">{authority.error}</p>}
@@ -83,11 +85,11 @@ function CurrentAuthority({ base, referralId, cycleId, etag, paused }: { base: s
   </details>;
 }
 
-function Resolution({ condition, cycleId, requirements, evidence, disabled, run }: { condition: ServicingCondition; cycleId: string; requirements: ProofRequirement[]; evidence: ProofAssociation[]; disabled: boolean; run: Run }) {
+function Resolution({ condition, current, cycleId, requirements, evidence, disabled, run }: { condition: ServicingCondition; current: boolean; cycleId: string; requirements: ProofRequirement[]; evidence: ProofAssociation[]; disabled: boolean; run: Run }) {
   const [proofId, setProofId] = useState(''), [reason, setReason] = useState(''), [outcome, setOutcome] = useState('satisfied');
   const options = evidence.filter(proof => requirements.some(requirement => conditionProof(condition, requirement, proof, outcome)));
   return <fieldset className="quote-reference-fields" data-condition-id={condition.id} disabled={disabled}><legend>{conditionLabels[condition.code] ?? condition.code}</legend>
-    <Status tone={condition.satisfied ? 'success' : 'warning'}>{condition.satisfied ? 'Condition satisfied' : 'Condition outstanding'}</Status>
+    <Status tone={current && condition.satisfied ? 'success' : 'warning'}>{!current ? 'Retained condition' : condition.satisfied ? 'Condition satisfied' : 'Condition outstanding'}</Status>
     {condition.clauses.map(clause => <p key={clause.effectiveAt}>{new Date(clause.effectiveAt).toLocaleString('en-GB')} · {clause.wording}{clause.endorsementCode && ` · ${clause.endorsementCode}`}</p>)}
     {condition.kind === 'risk-change' || condition.code.startsWith('revise-') ? <p>Save the required risk change and obtain a new rating. Evidence cannot resolve this condition.</p> : <>
       <label>Resolution outcome<select aria-label="Resolution outcome" value={outcome} onChange={event => setOutcome(event.target.value)}><option value="satisfied">Satisfied by reviewed proof</option><option value="rejected">Proof does not satisfy condition</option></select></label>

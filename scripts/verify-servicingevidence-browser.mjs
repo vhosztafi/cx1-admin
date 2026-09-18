@@ -4,11 +4,14 @@ import {chromium} from 'playwright';
 const origin=process.env.COVER_WEB_ORIGIN??'http://127.0.0.1:3100';
 assert.ok(['127.0.0.1','localhost'].includes(new URL(origin).hostname));
 const output='.local/browser-evidence/servicing-evidence';await mkdir(output,{recursive:true});
+const navigationOnly=process.env.COVER_SERVICING_NAVIGATION_ONLY==='1';const reportPath=output+(navigationOnly?'/navigation-report.json':'/report.json');
 const fixtures=JSON.parse(await readFile('.local/browser-evidence/underwriting-issue/report.json','utf8')).journeys;
 const password=(await readFile('.local/demo-password.txt','utf8')).trim();
 const browser=await chromium.launch({channel:'chrome',headless:true});
 const page=await browser.newPage({viewport:{width:1560,height:1000}});page.setDefaultTimeout(45000);
 const errors=[];page.on('pageerror',error=>errors.push(error.message));
+page.on('requestfailed',request=>{if(['POST','PUT','DELETE'].includes(request.method())&&request.url().includes('/api/v1/drafts/'))console.log('Mutation transport failure: '+request.method()+' '+new URL(request.url()).pathname+' '+request.failure()?.errorText);});
+page.on('response',response=>{if(response.status()>=400&&['POST','PUT','DELETE'].includes(response.request().method())&&response.url().includes('/api/v1/drafts/'))console.log('Mutation HTTP failure: '+response.status()+' '+new URL(response.url()).pathname);});
 const report={startedAt:new Date().toISOString(),journeys:[]};
 const button=name=>page.getByRole('button',{name,exact:true}),field=name=>page.getByLabel(name,{exact:true});
 async function get(path){const response=await page.request.get(origin+path);assert.equal(response.status(),200,await response.text());assert.match(response.headers()['cache-control']??'',/no-store/);return response.json();}
@@ -48,6 +51,10 @@ try{
   await command(`/referrals/${referral.id}/decisions`,()=>button('Record decision for 1 selected').click());
   referrals=await get(path+'/referrals');const condition=referrals.items.find(x=>x.id===referral.id).conditions[0];assert.equal(condition.satisfied,false);
   console.log(fixture.productCode+': conditional decision persisted');
+  await page.getByRole('link',{name:'Review referrals',exact:true}).click();assert.ok(page.url().endsWith('#servicing-referrals'));
+  await page.getByRole('link',{name:'Back to policy',exact:true}).click();await page.locator(`a[href="/drafts/${draftId}#servicing-referrals"]`).click();
+  await page.locator('#servicing-referrals').waitFor();await page.waitForFunction(()=>document.activeElement?.id==='servicing-referrals');
+  await row.waitFor();await button('Acquire editing lease').click();await page.getByRole('heading',{name:'You are editing this draft',exact:true}).waitFor();
   await row.getByText('Your current authority and binder limits',{exact:true}).click();await row.getByText(/Current decision authority is available/).waitFor();
   const authority=await get(path+`/referrals/${referral.id}/authority?pageSize=5`);assert.equal(authority.canDecide,true);assert.ok(authority.items.length>0);
   await field('Supporting document').setInputFiles({name:'fictional-servicing-proof.txt',mimeType:'text/plain',buffer:Buffer.from('Fictional supporting evidence for the local servicing demonstration. No real personal data.')});
@@ -58,10 +65,12 @@ try{
   for(const key of ['idempotency-key','if-match','x-edit-lease'])assert.equal(retried.headers()[key],original[key]);
   await page.getByText('Supporting information saved.',{exact:true}).waitFor();const files=await get(path+'/evidence-files');assert.equal(files.items.length,1);const fileId=files.items[0].id;
   console.log(fixture.productCode+': lost upload response retried exactly once');
+  let renewalChecked=false;
   const attach=async requirement=>{
    await lease();
    const group=page.locator(`[data-requirement-code="${requirement.code}"][data-risk-item-id="${requirement.riskItemId??''}"]`);
    await group.getByLabel('Saved document',{exact:true}).selectOption(fileId);await group.getByLabel('Attachment reason',{exact:true}).fill('Fictional proof attached for this exact saved purpose');
+   if(!renewalChecked){const renewal=page.waitForResponse(r=>r.url().endsWith(path+'/lease')&&r.request().method()==='PUT');await button('Renew editing lease').click();assert.equal((await renewal).status(),200);await group.locator('button:not(:disabled)').waitFor();assert.equal(await group.getByLabel('Saved document',{exact:true}).inputValue(),fileId);assert.equal(await group.getByLabel('Attachment reason',{exact:true}).inputValue(),'Fictional proof attached for this exact saved purpose');renewalChecked=true;}
    await command('/evidence',()=>group.getByRole('button',{name:'Attach proof',exact:true}).click(),201);
    return (await get(path+`/evidence?cycleId=${cycleId}`)).items.find(x=>x.code===requirement.code&&x.riskItemId===requirement.riskItemId&&!x.withdrawn);
   };
@@ -77,6 +86,14 @@ try{
   };
   const licence=requirements.requirements.find(x=>x.requirement.code==='photocard-both-sides'&&x.requirement.riskItemId===driver.id).requirement;
   const first=await attach(licence);assert.ok(first);assert.equal((await get(path+'/evidence/requirements')).requirements.find(x=>x.requirement.inputFingerprint===licence.inputFingerprint&&x.requirement.code===licence.code).satisfied,false);
+  if(navigationOnly){
+   assert.equal(first.reason,'Fictional proof attached for this exact saved purpose');await page.reload();await page.locator(`[data-evidence-id="${first.id}"]`).waitFor();
+   assert.ok((await get(path+`/evidence?cycleId=${cycleId}`)).items.some(x=>x.id===first.id));
+   await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await page.locator(`[data-evidence-id="${first.id}"]`).screenshot({path:`${output}/${fixture.productCode}-navigation-proof.png`});
+   await button('Acquire editing lease').click();await page.getByRole('heading',{name:'You are editing this draft',exact:true}).waitFor();await field('Takeover or abandonment reason').fill('Fictional referral navigation verification complete');await field('I confirm this draft should be abandoned.').check();await button('Abandon draft').click();await page.getByText('Abandoned',{exact:true}).waitFor();
+   assert.deepEqual((await get(`/api/v1/policies/${fixture.policyId}`)).snapshot,before.snapshot);
+   report.journeys.push({productCode:fixture.productCode,policyId:fixture.policyId,draftId,cycleId,checks:['policy-to-own-draft referral navigation and focus','draft referral review link','persisted conditional referral','exact lost-upload retry','forced renewal retains file selection and reason while stale writes disabled','attachment persisted after renewal and reload','390px containment','issued snapshot unchanged']});await writeFile(reportPath,JSON.stringify(report,null,2));continue;
+  }
   await review(first,'rejected');await review(first,'accepted');await resolve(first);
   referrals=await get(path+'/referrals');assert.equal(referrals.items.find(x=>x.id===referral.id).conditions[0].satisfied,true);assert.equal(referrals.items.find(x=>x.id===referral.id).decisionReady,false,'Missing trading proof remains independently blocking');
   for(const {requirement} of requirements.requirements.filter(x=>!(x.requirement.code===licence.code&&x.requirement.riskItemId===licence.riskItemId))){const association=await attach(requirement);await review(association,'accepted');}
@@ -96,8 +113,8 @@ try{
   const download=await page.request.get(origin+path+`/evidence-files/${fileId}/content`);assert.equal(download.status(),200);assert.match(await download.text(),/Fictional supporting evidence/);
   await field('Takeover or abandonment reason').fill('Fictional evidence browser verification complete');await field('I confirm this draft should be abandoned.').check();await button('Abandon draft').click();await page.getByText('Abandoned',{exact:true}).waitFor();
   assert.ok((await get(path+`/evidence?cycleId=${cycleId}`)).items.length>0);assert.deepEqual((await get(`/api/v1/policies/${fixture.policyId}`)).snapshot,before.snapshot);
-  report.journeys.push({productCode:fixture.productCode,policyId:fixture.policyId,draftId,cycleId,fileId,referralId:referral.id,checks:['dirty edits block proof','conditional decision with saved driver target','current authority display','lost upload response exact retry and one stored file','driver and applicable premises proofs','rejected then accepted content','independently blocking trading proof','condition resolution','withdrawal removes readiness','replacement restores readiness','reload persistence','historical cycle readonly','scoped download','390px containment','issued snapshot unchanged']});
-  await writeFile(`${output}/report.json`,JSON.stringify(report,null,2));
+  report.journeys.push({productCode:fixture.productCode,policyId:fixture.policyId,draftId,cycleId,fileId,referralId:referral.id,checks:['lease renewal retains proof form without stale write authority','policy-to-own-draft referral navigation and focus','draft review referral link','dirty edits block proof','conditional decision with saved driver target','current authority display','lost upload response exact retry and one stored file','driver and applicable premises proofs','rejected then accepted content','independently blocking trading proof','condition resolution','withdrawal removes readiness','replacement restores readiness','reload persistence','historical cycle readonly','scoped download','390px containment','issued snapshot unchanged']});
+  await writeFile(reportPath,JSON.stringify(report,null,2));
  }
- assert.deepEqual(errors,[]);report.completedAt=new Date().toISOString();await writeFile(`${output}/report.json`,JSON.stringify(report,null,2));console.log('Both Motor Trade servicing evidence browser journeys passed.');
+ assert.deepEqual(errors,[]);report.completedAt=new Date().toISOString();await writeFile(reportPath,JSON.stringify(report,null,2));console.log(navigationOnly?'Both Motor Trade targeted navigation and renewal browser journeys passed.':'Both Motor Trade servicing evidence browser journeys passed.');
 }catch(error){await page.screenshot({path:`${output}/failure.png`,fullPage:true}).catch(()=>{});throw error;}finally{await browser.close();}

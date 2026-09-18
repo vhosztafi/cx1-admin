@@ -25,7 +25,7 @@ export function ServicingDrafts({ termId, baseVersionId }: { termId: string; bas
   }
   return <Panel title="Servicing drafts" note="Saved proposals are separate from issued cover"><div className="quote-rail-body">
     {!list.data ? <LoadFeedback error={list.error} retry={list.refresh} /> : <>
-      {list.data.items.length ? <ul>{list.data.items.map(item => <li key={item.id}><Link href={`/drafts/${item.id}`}>Resume {item.kind} · {item.state}</Link></li>)}</ul> : <p>No servicing drafts saved for this term.</p>}
+      {list.data.items.length ? <ul>{list.data.items.map(item => <li key={item.id}><Link href={`/drafts/${item.id}`}>Resume {item.kind} · {item.state}</Link>{item.kind === 'adjustment' && item.state === 'draft' && <> · <Link href={`/drafts/${item.id}#servicing-referrals`}>Open referrals</Link></>}</li>)}</ul> : <p>No servicing drafts saved for this term.</p>}
       <form onSubmit={event => { event.preventDefault(); void create(); }}><fieldset disabled={busy || retry}><div className="quote-form-grid">
         <label>Draft type<select aria-label="Draft type" value={kind} onChange={event => setKind(event.target.value)}><option value="adjustment">Policy adjustment</option><option value="renewal">Renewal</option><option value="cancellation">Cancellation</option></select></label>
         <label>Requested effective date<input type="date" required value={date} onChange={event => setDate(event.target.value)} /></label>

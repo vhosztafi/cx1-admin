@@ -13,6 +13,12 @@ export type ProofCommand = Readonly<{ scope: ProofScope; url: string; key: strin
 export type ProofReceipt = { id: string; draftId: string; revisionId: string; cycleId: string; draftEtag: string };
 const id = (value: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value) && value !== '00000000-0000-0000-0000-000000000000';
 
+export function proofReadState<T>(read: {url:string; etag:string; data:T} | null, url:string | null, etag:string, error:string) {
+  // Retain same-page forms while refreshing a version (including lease renewal),
+  // but never authorize writes with the retained stale result.
+  return {data:read?.url===url?read.data:null,current:!!read && read.url===url && read.etag===etag && !error};
+}
+
 export function currentProof(association: ProofAssociation, requirement: ProofRequirement): boolean {
   return !association.withdrawn && association.cycleId === requirement.context.cycleId && association.revisionId === requirement.context.revisionId &&
     association.ratingId === requirement.context.ratingId && association.code === requirement.code && association.riskItemId === requirement.riskItemId &&

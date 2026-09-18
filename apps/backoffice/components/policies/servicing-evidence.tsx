@@ -20,17 +20,18 @@ export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, 
   const [file, setFile] = useState<File>(), [filePage, setFilePage] = useState({ etag, cursor: '' });
   const [associationPage, setAssociationPage] = useState({ etag, cursor: '' });
   const [cyclePage, setCyclePage] = useState({ etag, cursor: '' }), [historyCycle, setHistoryCycle] = useState('');
+  const paused = pendingState || blocked;
   const base = `/api/v1/drafts/${draftId}`;
-  const requirements = useProofRead<ProofRequirements>(base + '/evidence/requirements', etag, pendingState);
+  const requirements = useProofRead<ProofRequirements>(base + '/evidence/requirements', etag, paused);
   const fileCursor = filePage.etag === etag ? filePage.cursor : '';
   const associationCursor = associationPage.etag === etag ? associationPage.cursor : '';
-  const files = useProofRead<ProofPage<ProofFile>>(`${base}/evidence-files?pageSize=20${fileCursor ? '&cursor=' + encodeURIComponent(fileCursor) : ''}`, etag, pendingState);
+  const files = useProofRead<ProofPage<ProofFile>>(`${base}/evidence-files?pageSize=20${fileCursor ? '&cursor=' + encodeURIComponent(fileCursor) : ''}`, etag, paused);
   const cycleId = requirements.data?.cycleId;
   const cycleCursor = cyclePage.etag === etag ? cyclePage.cursor : '';
-  const cycles = useProofRead<ServicingRatingHistory>(`${base}/ratings?pageSize=20${cycleCursor ? '&cursor=' + encodeURIComponent(cycleCursor) : ''}`, etag, pendingState);
+  const cycles = useProofRead<ServicingRatingHistory>(`${base}/ratings?pageSize=20${cycleCursor ? '&cursor=' + encodeURIComponent(cycleCursor) : ''}`, etag, paused);
   const selectedCycle = historyCycle || cycleId || cycles.data?.items[0]?.id;
-  const associations = useProofRead<ProofPage<ProofAssociation>>(selectedCycle ? `${base}/evidence?cycleId=${selectedCycle}&pageSize=20${associationCursor ? '&cursor=' + encodeURIComponent(associationCursor) : ''}` : null, etag, pendingState);
-  const current = requirements.data?.draftId === draftId && requirements.data.requirements.every(x => x.requirement.context.draftId === draftId && x.requirement.context.revisionId === revisionId && x.requirement.context.cycleId === cycleId);
+  const associations = useProofRead<ProofPage<ProofAssociation>>(selectedCycle ? `${base}/evidence?cycleId=${selectedCycle}&pageSize=20${associationCursor ? '&cursor=' + encodeURIComponent(associationCursor) : ''}` : null, etag, paused);
+  const current = requirements.current && requirements.data?.draftId === draftId && requirements.data.requirements.every(x => x.requirement.context.draftId === draftId && x.requirement.context.revisionId === revisionId && x.requirement.context.cycleId === cycleId);
   const active = !!(current && requirements.data?.applicable && editable && fence && !blocked && !dirty && !pendingState);
   async function execute(path?: string, body?: unknown, upload?: File) {
     if (sendingRef.current || (!pending.current && !active)) return;
@@ -69,17 +70,17 @@ export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, 
       </> : !files.error && <p role="status">Loading documents…</p>}
     </details>
     <h3>Proof for the rated changes</h3>{requirements.error && <p role="status">{requirements.error}</p>}
-    {requirements.data && !requirements.data.applicable && <p>This rating is no longer current. Retained proof remains available for review.</p>}
-    {requirements.data?.requirements.map(({ requirement, satisfied }) => <AttachProof key={requirement.inputFingerprint + ':' + requirement.code + ':' + requirement.riskItemId} requirement={requirement} satisfied={satisfied} editor={editor} files={files.data?.items ?? []} disabled={!active || !files.data} run={run} />)}
+    {requirements.data && (!requirements.current || !requirements.data.applicable) && <p>This rating is no longer current. Retained proof remains available for review.</p>}
+    {requirements.data?.requirements.map(({ requirement, satisfied }) => <AttachProof key={requirement.inputFingerprint + ':' + requirement.code + ':' + requirement.riskItemId} requirement={requirement} satisfied={requirements.current && satisfied} editor={editor} files={files.data?.items ?? []} disabled={!active || !files.current} run={run} />)}
     <h3>Attached proof</h3>{associations.error && <p role="status">{associations.error}</p>}
     {associations.error && associationCursor && <button className="button" disabled={pendingState} onClick={() => setAssociationPage({etag,cursor:''})}>Restart evidence pages</button>}
     {cycles.data && <><label>Evidence rating cycle<select aria-label="Evidence rating cycle" value={historyCycle} disabled={pendingState} onChange={event => {setHistoryCycle(event.target.value); setAssociationPage({etag,cursor:''});}}><option value="">{cycleId ? 'Current rated change' : 'Most recent saved cycle'}</option>{cycles.data.items.map(cycle => <option key={cycle.id} value={cycle.id}>Cycle {cycle.sequence} · {cycle.state} · {new Date(cycle.requestedAt).toLocaleString('en-GB')}</option>)}</select></label><PageButtons cursor={cycleCursor} next={cycles.data.nextCursor} disabled={pendingState} change={cursor => setCyclePage({etag,cursor})} /></>}
     {cycles.error && <p role="status">{cycles.error}</p>}{cycles.error && cycleCursor && <button className="button" disabled={pendingState} onClick={() => setCyclePage({etag,cursor:''})}>Restart cycle pages</button>}
     {selectedCycle && selectedCycle !== cycleId && <p>Historical cycle: evidence and review events are retained for audit.</p>}
-    {associations.data && <>{associations.data.items.length === 0 && <p>No proof attached on this page.</p>}{associations.data.items.map(item => <ProofCard key={item.id} item={item} base={base} etag={etag} requirements={requirements.data?.requirements.map(x => x.requirement) ?? []} active={active && selectedCycle === cycleId} paused={pendingState} canReview={canReview} run={run} />)}
+    {associations.data && <>{associations.data.items.length === 0 && <p>No proof attached on this page.</p>}{associations.data.items.map(item => <ProofCard key={item.id} item={item} base={base} etag={etag} requirements={requirements.data?.requirements.map(x => x.requirement) ?? []} active={active && associations.current && selectedCycle === cycleId} paused={paused} canReview={canReview} run={run} />)}
       <PageButtons cursor={associationCursor} next={associations.data.nextCursor} disabled={pendingState} change={cursor => setAssociationPage({ etag, cursor })} />
     </>}
-    <ServicingReferrals draftId={draftId} etag={etag} cycleId={cycleId ?? null} active={active && canReview} paused={pendingState} requirements={requirements.data?.requirements.map(x => x.requirement) ?? []} evidence={selectedCycle === cycleId ? associations.data?.items ?? [] : []} editor={editor} run={run} />
+    <ServicingReferrals draftId={draftId} etag={etag} cycleId={cycleId ?? null} active={active && canReview} paused={paused} requirements={requirements.data?.requirements.map(x => x.requirement) ?? []} evidence={associations.current && selectedCycle === cycleId ? associations.data?.items ?? [] : []} editor={editor} run={run} />
   </div></Panel>;
 }
 

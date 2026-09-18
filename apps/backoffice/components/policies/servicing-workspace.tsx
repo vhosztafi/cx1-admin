@@ -114,6 +114,7 @@ export function ServicingWorkspace({ draftId, actorId, canTakeover, catalogue }:
       <button className="button" disabled={busy || retry || proofPending || editing || otherEditor || view.data.state !== 'draft'} onClick={() => void run('acquire')}>Acquire editing lease</button>
       <button className="button" disabled={busy || retry || proofPending || !editing} onClick={() => void run('renew')}>Renew editing lease</button>
       <button className="button" disabled={busy || retry || proofPending || !editing} onClick={() => void run('release')}>Release editing lease</button>
+      {view.data.kind === 'adjustment' && <Link className="button" href="#servicing-referrals">Review referrals</Link>}
       <label className="quote-form-label">Takeover or abandonment reason<textarea aria-label="Takeover or abandonment reason" maxLength={2000} value={reason} onChange={event => setReason(event.target.value)} /></label>
       {canTakeover ? <button className="button" disabled={busy || retry || proofPending || !otherEditor || reason.trim().length < 10} onClick={() => void run('takeover')}>Take over editing</button> : null}
       <label><input type="checkbox" checked={confirmAbandon} onChange={event => setConfirmAbandon(event.target.checked)} /> I confirm this draft should be abandoned.</label>
