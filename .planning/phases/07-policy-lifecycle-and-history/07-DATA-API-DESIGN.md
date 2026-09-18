@@ -210,6 +210,20 @@ UI/browser submission integration verified in5be1f37 for both Motor Trade
 products. The existing demo database is additively migrated through submission
 storage and its preview includes the verified routes and UI.
 
+### 07-06 specific referral-work navigation
+
+SourceCTL-d2bf3015d449 is a specific underwriting-referral row linking to the
+prototype task page. It now opens focused servicing referral work at the same
+draft with a reloadable `#servicing-referral-{id}` link. A dedicated no-store
+`GET /drafts/{draftId}/referrals/{referralId}` returns exactly one current owned
+referral, its real conditions, decision readiness and latest decision. It rejects
+foreign/missing referrals and stale cycles; UI shows current authority and saved
+history and records decisions through the existing scoped commands. Returning
+to the list restores the current rated referrals without silently replacing an
+old work link. This uses actual rule identities rather than hardcoding the
+prototype's fictional UW-14/TSK-2291 values. Generic task inbox, assignment, due
+dates and comments retain their approved Phase9 ownership under D-10.
+
 Review against full source field/control coverage, current API-CONVENTIONS and
 PERMISSIONS. Specify exact schema fields and cancellation rule/approval catalogue,
 renewal missing-experience handling, fair-value provenance, capacity subject

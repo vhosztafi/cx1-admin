@@ -4766,7 +4766,8 @@
       "id": "BR07-05",
       "behavior": "non-driver Supporting evidence association",
       "owner": "07-06",
-      "evidence": "Owning plan tests eligible and blocked states with actual persistence."
+      "evidence": "Both-product persisted proof browser journeys and SQL association/review tests verify non-driver motor-trader, trading-history and applicable premises-security proof; exact purpose/item/date/cycle fingerprints, reviewed content, withdrawal and stale-rating rejection remain enforced. See07-06-SUMMARY and07-06-PROGRESS.",
+      "reviewStatus": "implemented-browser-and-sql-verified"
     },
     {
       "id": "BR07-06",

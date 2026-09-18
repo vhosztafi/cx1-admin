@@ -1778,9 +1778,15 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-06"
+      "owner": "07-06",
+      "evidence": [
+        ".local/browser-evidence/servicing-evidence/referral-work-report.json",
+        ".local/phase7-06-referral-work-final",
+        "07-06-PROGRESS.md"
+      ],
+      "implementation": "The prototype specific referral-to-task entry maps to focused persisted servicing referral work: exact scoped referral read, reloadable link, keyboard focus, current authority, conditions, decision history and real decisions. Superseded links cannot act on replacement referrals. Generic task assignment, due dates, comments and inbox remain Phase9 under D-10."
     },
     {
       "id": "CTL-e39aeff1b11d",
@@ -2940,7 +2946,12 @@
       "path": "/drafts/{draftId}/submit",
       "operationId": "submitPolicyDraft",
       "summary": "submit Policy Draft",
-      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+      "reviewStatus": "implemented-sql-http-verified",
+      "evidence": [
+        ".local/phase7-06-proof-commands-api-reviewed",
+        ".local/phase7-06-submission-http-reviewed",
+        "07-06-PROGRESS.md"
+      ]
     },
     {
       "method": "POST",
@@ -3003,21 +3014,37 @@
       "path": "/drafts/{draftId}/evidence",
       "operationId": "listDraftEvidence",
       "summary": "list Draft Evidence",
-      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+      "reviewStatus": "implemented-sql-http-verified",
+      "evidence": [
+        ".local/phase7-06-proof-commands-api-reviewed",
+        ".local/phase7-06-submission-http-reviewed",
+        "07-06-PROGRESS.md"
+      ]
     },
     {
       "method": "POST",
       "path": "/drafts/{draftId}/evidence",
       "operationId": "attachDraftEvidence",
       "summary": "attach Draft Evidence",
-      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+      "reviewStatus": "implemented-sql-http-verified",
+      "evidence": [
+        ".local/phase7-06-proof-commands-api-reviewed",
+        ".local/phase7-06-submission-http-reviewed",
+        "07-06-PROGRESS.md"
+      ]
     },
     {
       "method": "POST",
-      "path": "/drafts/{draftId}/evidence/{evidenceId}/withdraw",
+      "path": "/drafts/{draftId}/evidence/{associationId}/withdraw",
       "operationId": "withdrawDraftEvidence",
       "summary": "Withdraw evidence association, retaining the document and audit history; verify target ownership and invalidate dependent validation",
-      "reviewStatus": "contract-inventory-only-runtime-not-asserted"
+      "reviewStatus": "implemented-sql-http-verified",
+      "sourcePath": "/drafts/{draftId}/evidence/{evidenceId}/withdraw",
+      "evidence": [
+        ".local/phase7-06-proof-commands-api-reviewed",
+        ".local/phase7-06-submission-http-reviewed",
+        "07-06-PROGRESS.md"
+      ]
     },
     {
       "method": "GET",
