@@ -785,3 +785,33 @@ retained rating inputs; do not label those as the viewer's current grants. No UI
 browser, shared demo migration or human UAT result claimed. Running previews still
 use07-05 Release binaries; stop only verified owned processes before rebuilding.
 Phase7 remains5/16,total54/65; no07-06-SUMMARY until full UI/source coverage passes.
+
+
+## Frontend command and form checkpoint —734c6e0
+
+Added servicing-evidence.tsx, servicing-referrals.tsx and a version-fenced paged
+read hook; integrated with servicing-workspace lease/local-edit/command guards.
+The filename refines the proposed servicingevidence.tsx to match existing local
+component naming. Files, attach, review, withdrawal, selected/single decisions,
+queries, typed dated conditions and explicit satisfied/rejected resolutions
+now invoke the real07-06 routes. Conditions use an actual saved effective slice;
+ConditionForm's existing quote prop is narrowed to its used proposal property,
+without altering existing quote behavior. Full current grant limits are still
+outstanding, and browser acceptance has NOT been run. Historical-cycle browsing
+needs finishing: current cycle proof/history is wired; closed/superseded cycles
+are not yet selectable from this panel.
+
+Immutable proof commands snapshot scope, body, File, key, ETag and lease; receipt
+validation checks exact draft/revision/cycle and strong body/header ETag. Lost
+responses/readback retain the same command and disable other draft actions.
+Cursor pages reset on draft ETag change and do not append stale data.
+7 targeted frontend cases pass, covering exact proof matching, upload retry bytes
+and identity, receipt scope, atomic selected decisions and reviewed rejected
+proof resolution. Referral helper RED was missing module before implementation.
+All126 frontend tests pass (.local/phase7-06-proof-ui-tests.log); TypeScript passes
+from workspace root with --incremental false; changed-file ESLint passes.
+A child-directory sandbox typecheck could not read root contract imports; root
+invocation passed. No SQL rerun needed for this frontend-only checkpoint.
+Backend latest evidence remains34 backend cases/37 contracts/26 live response
+shapes from the previous checkpoint. No shared demo migrations or browser result
+claimed. Phase remains5/16,total54/65.
