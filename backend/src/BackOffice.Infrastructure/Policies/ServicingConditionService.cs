@@ -98,8 +98,8 @@ public sealed partial class ServicingReferralService
         var parsed=ServicingConditionRules.Parse(JsonSerializer.Deserialize<JsonElement>(condition.DefinitionJson),ServicingEvidenceProjection.Slices(held),
             JsonSerializer.Deserialize<DateTimeOffset[]>(condition.EffectiveDatesJson)!);
         var definition=parsed[0].Condition;
-        if(!ReferralRules.CanResolveWithEvidence(definition) || definition.TermsVersionId is not null || definition.TargetIds.Count>1) return null;
-        var target=definition.TargetIds.Count==0?(Guid?)null:definition.TargetIds[0];
+        if(!ReferralRules.CanResolveWithEvidence(definition) || definition.TermsVersionId is not null || definition.Kind!="warranty" && definition.TargetIds.Count>1) return null;
+        var target=definition.Kind=="warranty" || definition.TargetIds.Count==0?(Guid?)null:definition.TargetIds[0];
         return (await ServicingEvidenceProjection.RequirementsAsync(db,held,token)).SingleOrDefault(x=>x.Code==definition.RequirementCode && x.RiskItemId==target &&
             parsed.All(p=>x.EffectiveDates.Contains(p.EffectiveAt)));
     }

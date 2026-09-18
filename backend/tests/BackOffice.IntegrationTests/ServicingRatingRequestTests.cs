@@ -33,6 +33,8 @@ public sealed partial class UnderwritingRuntimeTests
     [InlineData("motor-trade-combined", "referral-storage")]
     [InlineData("motor-trade-road-risks", "referral-generation")]
     [InlineData("motor-trade-combined", "referral-generation")]
+    [InlineData("motor-trade-road-risks", "warranty-proof")]
+    [InlineData("motor-trade-combined", "warranty-proof")]
     [InlineData("motor-trade-road-risks", "trading-proof")]
     [InlineData("motor-trade-combined", "trading-proof")]
     [InlineData("motor-trade-road-risks", "referral-service")]
@@ -240,9 +242,10 @@ public sealed partial class UnderwritingRuntimeTests
             }
             if (scenario is "reject" or "revoke-before-apply") Assert.Empty(await db.Set<ServicingReferral>().Where(x=>x.DraftId==draftId).ToArrayAsync());
             var ratedView = await readModel.ReadAsync(f.Servicing, draftId, pageSize: 1);
-            if (scenario is "referral-service" or "referral-authority" or "trading-proof")
+            if (scenario is "referral-service" or "referral-authority" or "trading-proof" or "warranty-proof")
             {
                 if(scenario=="referral-service") await VerifyServicingReferralService(db,f,applied,ratedView.DraftEtag);
+                else if(scenario=="warranty-proof") await VerifyServicingWarrantyProof(db,f,applied,ratedView.DraftEtag);
                 else if(scenario=="trading-proof") await VerifyServicingTradingProof(db,f,applied,ratedView.DraftEtag);
                 else await VerifyServicingReferralAuthority(db,f,applied,ratedView.DraftEtag);
                 Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);return;

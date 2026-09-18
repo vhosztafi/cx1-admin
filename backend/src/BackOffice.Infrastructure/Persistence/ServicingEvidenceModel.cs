@@ -31,7 +31,7 @@ public sealed partial class BackOfficeDbContext
             .HasPrincipalKey(x=>new{x.Id,x.DraftId}).OnDelete(DeleteBehavior.NoAction);
         Check(association,"Fingerprint","LEN([InputFingerprint])=64 AND [InputFingerprint] NOT LIKE '%[^0-9a-f]%' COLLATE Latin1_General_100_BIN2");
         Check(association,"Reason","LEN(TRIM([Reason]))>=10 AND [CreatedBy] IS NOT NULL");
-        Check(association,"Purpose","([RequirementCode] IN ('motor-trader-proof','no-claims-proof','trading-history') AND [RiskItemId] IS NULL) OR ([RequirementCode] IN ('photocard-both-sides','driving-record','premises-security') AND [RiskItemId] IS NOT NULL AND [RiskItemId]<>'00000000-0000-0000-0000-000000000000')");
+        Check(association,"Purpose","([RequirementCode] IN ('motor-trader-proof','no-claims-proof','trading-history','warranty-acknowledgement') AND [RiskItemId] IS NULL) OR ([RequirementCode] IN ('photocard-both-sides','driving-record','premises-security') AND [RiskItemId] IS NOT NULL AND [RiskItemId]<>'00000000-0000-0000-0000-000000000000')");
 
         var review = Record<ServicingEvidenceEvent>(model,"ServicingEvidenceEvent");review.ToTable(t=>t.UseSqlOutputClause(false));
         Text(review,("Kind",20),("Outcome",20),("Reason",2000),("InputFingerprint",64));

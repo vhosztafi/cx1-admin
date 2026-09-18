@@ -16,16 +16,21 @@ internal static class ServicingEvidenceProjection
         var slices=Slices(held);
         var conditions=await (from c in db.Set<ServicingCondition>().AsNoTracking() join r in db.Set<ServicingReferral>() on c.ReferralId equals r.Id
             where c.DraftId==held.Scope.Draft.Id && c.CycleId==held.Cycle.Id && c.DecisionId==r.LatestDecisionId &&
-                (r.State=="conditional" || r.State=="queried") && c.Code=="provide-trading-history" select c).ToArrayAsync(token);
+                (r.State=="conditional" || r.State=="queried") && (c.Code=="provide-trading-history" || c.Kind=="warranty") select c).Take(101).ToArrayAsync(token);
+        if(conditions.Length>100) throw new QuoteOperationException(409,"servicing-condition-limit");
         var requested=new SortedSet<DateTimeOffset>();
-        foreach(var condition in conditions)
+        foreach(var condition in conditions.Where(x=>x.Code=="provide-trading-history"))
         {
             var parsed=ServicingConditionRules.Parse(JsonSerializer.Deserialize<JsonElement>(condition.DefinitionJson),slices,
                 JsonSerializer.Deserialize<DateTimeOffset[]>(condition.EffectiveDatesJson)!);
             foreach(var row in parsed) requested.Add(row.EffectiveAt);
         }
-        return ServicingEvidenceRules.Requirements(new(held.Scope.Draft.Id,held.Cycle.Id,held.Scope.Revision.Id,held.Rating.Id,Convert.ToHexStringLower(held.Cycle.InputHash),
-            held.Scope.Eligible.Capture.Pins),slices,requested.ToArray());
+        var context=new ServicingProofContext(held.Scope.Draft.Id,held.Cycle.Id,held.Scope.Revision.Id,held.Rating.Id,Convert.ToHexStringLower(held.Cycle.InputHash),held.Scope.Eligible.Capture.Pins);
+        var requirements=ServicingEvidenceRules.Requirements(context,slices,requested.ToArray()).ToList();
+        var warranty=ServicingWarrantyRules.Requirement(context,slices,conditions.Where(x=>x.Kind=="warranty")
+            .Select(x=>new ServicingWarrantyInput(x.Id,JsonSerializer.Deserialize<JsonElement>(x.DefinitionJson),JsonSerializer.Deserialize<DateTimeOffset[]>(x.EffectiveDatesJson)!)).ToArray());
+        if(warranty is not null) requirements.Add(warranty);
+        return requirements;
     }
 
     internal static IReadOnlyList<ServicingEvidenceSlice> Slices(ServicingDecisionContext held)
