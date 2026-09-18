@@ -706,3 +706,30 @@ views, strict DI/HTTP/contracts, role-based UI and actual persisted browser chec
 Signed-statement conditions depend on prepared terms in the later terms plan and
 remain rejected until their owner/version exists. No API/UI or browser acceptance
 claimed for07-06. Phase7 remains5/16; total54/65. Continue sequential inline.
+
+
+## 2026-09-18 bounded evidence and referral history
+
+Implemented265b8b2. ServicingEvidenceService now has FilesAsync (metadata only,
+never content bytes), AssociationsAsync (explicit owned cycle), and ReviewsAsync
+(immutable review/withdrawal events). Files/associations use ordered CreatedAt/Id
+keysets with owned cursor lookup; event/decision histories use sequence keysets.
+All page sizes are1..50, queries fetch at most pageSize+1, current held policy read
+permission is checked before data access, and foreign cursors/children return404.
+Historical reads use HoldDraft, not current rating eligibility, so expiry does not
+hide prior reviews or decisions. ServicingReferralService.DecisionsAsync retains
+reason/question/actor/authority/grant/conditions for every decision. Current
+ReadReferralsAsync additionally returns trigger detail, latest decision, closed
+condition definitions and per-effective-date wording/endorsement/target IDs.
+No readiness or command authority is inferred from a historical record.
+
+RED .local/phase7-06-history-red/sql has2 expected empty stub failures.
+Intermediate .local/phase7-06-history-green/sql passes2. Final
+.local/phase7-06-history-reviewed/{unit,sql} passes30 unit+4 SQL, gate34/no skips,
+cutoff2026-09-18T00:35:00Z. Both products verify same-timestamp file cursor paging,
+review/withdrawal pages, conditional decision history and retained old/new IDs,
+foreign cursor/cycle/child and invalid page denials, reads after rating expiry,
+and current named-driver wording across both effective dates. Existing conditional
+flow still passes. Debug build/diff checks pass; no shared demo migration or browser
+claim. Next is strict DI/HTTP/contracts, role-based UI and persisted browser checks.
+Phase7 remains5/16; total54/65. No07-06 summary/completion yet.
