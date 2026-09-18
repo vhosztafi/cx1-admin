@@ -52,14 +52,14 @@ export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, 
     } finally { sendingRef.current = false; setSending(false); }
   }
   const run: Run = (path, body, upload) => { void execute(path, body, upload); };
-  return <Panel title="Supporting information" note="Saved documents and underwriting review"><div className="quote-rail-body">
+  return <Panel title="Supporting information" note="Saved documents and underwriting review"><div className="quote-rail-body servicing-proof">
     <p className="client-help">Demo screening checks file type and size. Use fictional documents. Underwriting review separately confirms whether their content satisfies the rated change.</p>
     {dirty && <p role="status">Save and rate your local changes before attaching or reviewing proof.</p>}
     {!editable && <p>Acquire the editing lease to change supporting information.</p>}
     {error && <p role="alert">{error}</p>}{notice && <p role="status">{notice}</p>}
     {pendingState && <button className="button button-primary" disabled={sending} onClick={() => void execute()}>Retry same proof action</button>}
     <fieldset className="quote-reference-fields" disabled={!active}><legend>Upload a document</legend>
-      <label>Supporting document<input type="file" accept=".pdf,.png,.jpg,.jpeg,.txt" onChange={event => setFile(event.target.files?.[0])} /></label>
+      <label>Supporting document<input aria-label="Supporting document" type="file" accept=".pdf,.png,.jpg,.jpeg,.txt" onChange={event => setFile(event.target.files?.[0])} /></label>
       <button className="button" disabled={!file} onClick={() => run('/evidence/uploads', undefined, file)}>Upload document</button>
     </fieldset>
     <details open><summary>Saved documents</summary>{files.error && <p role="status">{files.error}</p>}
@@ -73,7 +73,7 @@ export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, 
     {requirements.data?.requirements.map(({ requirement, satisfied }) => <AttachProof key={requirement.inputFingerprint + ':' + requirement.code + ':' + requirement.riskItemId} requirement={requirement} satisfied={satisfied} editor={editor} files={files.data?.items ?? []} disabled={!active || !files.data} run={run} />)}
     <h3>Attached proof</h3>{associations.error && <p role="status">{associations.error}</p>}
     {associations.error && associationCursor && <button className="button" disabled={pendingState} onClick={() => setAssociationPage({etag,cursor:''})}>Restart evidence pages</button>}
-    {cycles.data && <><label>Evidence rating cycle<select value={historyCycle} disabled={pendingState} onChange={event => {setHistoryCycle(event.target.value); setAssociationPage({etag,cursor:''});}}><option value="">{cycleId ? 'Current rated change' : 'Most recent saved cycle'}</option>{cycles.data.items.map(cycle => <option key={cycle.id} value={cycle.id}>Cycle {cycle.sequence} · {cycle.state} · {new Date(cycle.requestedAt).toLocaleString('en-GB')}</option>)}</select></label><PageButtons cursor={cycleCursor} next={cycles.data.nextCursor} disabled={pendingState} change={cursor => setCyclePage({etag,cursor})} /></>}
+    {cycles.data && <><label>Evidence rating cycle<select aria-label="Evidence rating cycle" value={historyCycle} disabled={pendingState} onChange={event => {setHistoryCycle(event.target.value); setAssociationPage({etag,cursor:''});}}><option value="">{cycleId ? 'Current rated change' : 'Most recent saved cycle'}</option>{cycles.data.items.map(cycle => <option key={cycle.id} value={cycle.id}>Cycle {cycle.sequence} · {cycle.state} · {new Date(cycle.requestedAt).toLocaleString('en-GB')}</option>)}</select></label><PageButtons cursor={cycleCursor} next={cycles.data.nextCursor} disabled={pendingState} change={cursor => setCyclePage({etag,cursor})} /></>}
     {cycles.error && <p role="status">{cycles.error}</p>}{cycles.error && cycleCursor && <button className="button" disabled={pendingState} onClick={() => setCyclePage({etag,cursor:''})}>Restart cycle pages</button>}
     {selectedCycle && selectedCycle !== cycleId && <p>Historical cycle: evidence and review events are retained for audit.</p>}
     {associations.data && <>{associations.data.items.length === 0 && <p>No proof attached on this page.</p>}{associations.data.items.map(item => <ProofCard key={item.id} item={item} base={base} etag={etag} requirements={requirements.data?.requirements.map(x => x.requirement) ?? []} active={active && selectedCycle === cycleId} paused={pendingState} canReview={canReview} run={run} />)}
@@ -85,11 +85,11 @@ export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, 
 
 function AttachProof({ requirement, satisfied, editor, files, disabled, run }: { requirement: ProofRequirement; satisfied: boolean; editor: ServicingEditor | null; files: ProofFile[]; disabled: boolean; run: Run }) {
   const [fileId, setFileId] = useState(''), [reason, setReason] = useState('');
-  return <fieldset className="quote-reference-fields" disabled={disabled}><legend>{requirement.label}</legend>
+  return <fieldset className="quote-reference-fields" data-requirement-code={requirement.code} data-risk-item-id={requirement.riskItemId ?? ''} disabled={disabled}><legend>{requirement.label}</legend>
     <Status tone={satisfied ? 'success' : 'warning'}>{satisfied ? 'Reviewed proof received' : 'Proof required'}</Status>
     {requirement.effectiveDates.map(date => { const slice = editor?.assessment.slices.find(item => Date.parse(item.effectiveAt) === Date.parse(date)); return <p key={date}>Applies from {new Date(date).toLocaleString('en-GB')}{requirement.riskItemId && slice ? ` · ${riskTargetLabel(slice.proposed, requirement.riskItemId)}` : ''}</p>; })}
-    <label>Saved document<select value={fileId} onChange={event => setFileId(event.target.value)}><option value="">Select a document on this page</option>{files.filter(item => item.screeningState === 'accepted').map(item => <option value={item.id} key={item.id}>{item.fileName}</option>)}</select></label>
-    <label>Attachment reason<textarea maxLength={2000} value={reason} onChange={event => setReason(event.target.value)} /></label>
+    <label>Saved document<select aria-label="Saved document" value={fileId} onChange={event => setFileId(event.target.value)}><option value="">Select a document on this page</option>{files.filter(item => item.screeningState === 'accepted').map(item => <option value={item.id} key={item.id}>{item.fileName}</option>)}</select></label>
+    <label>Attachment reason<textarea aria-label="Attachment reason" maxLength={2000} value={reason} onChange={event => setReason(event.target.value)} /></label>
     <button className="button" disabled={!files.some(item => item.id === fileId && item.screeningState === 'accepted') || reason.trim().length < 10} onClick={() => run('/evidence', {cycleId: requirement.context.cycleId, fileId, requirementCode: requirement.code, ...(requirement.riskItemId ? {riskItemId: requirement.riskItemId} : {}), inputFingerprint: requirement.inputFingerprint, reason})}>Attach proof</button>
   </fieldset>;
 }
@@ -99,12 +99,12 @@ function ProofCard({ item, base, etag, requirements, active, paused, canReview, 
   const cursor = page.etag === etag ? page.cursor : '';
   const history = useProofRead<ProofPage<ProofEvent>>(historyOpen ? `${base}/evidence/${item.id}/events?pageSize=20${cursor ? '&cursor=' + encodeURIComponent(cursor) : ''}` : null, etag, paused);
   const applicable = requirements.some(requirement => currentProof(item, requirement));
-  return <article className="quote-driver-card"><h4><a href={`${base}/evidence-files/${item.fileId}/content`} download>{item.fileName}</a></h4>
+  return <article className="quote-driver-card" data-evidence-id={item.id}><h4><a href={`${base}/evidence-files/${item.fileId}/content`} download>{item.fileName}</a></h4>
     <p>{item.code.replaceAll('-', ' ')} · Review: {item.reviewOutcome ?? 'Not reviewed'}</p><p>{item.reason}</p>
     {item.withdrawn ? <Status tone="warning">Withdrawn</Status> : !applicable && <p>This proof does not match a current requirement.</p>}
     <fieldset className="quote-reference-fields" disabled={!active || item.withdrawn}><legend>Review or withdraw this proof</legend>
-      <label>Review outcome<select value={outcome} disabled={!canReview || !applicable} onChange={event => setOutcome(event.target.value)}><option value="accepted">Accept content</option><option value="rejected">Reject content</option></select></label>
-      <label>Review or withdrawal reason<textarea maxLength={2000} value={reason} onChange={event => setReason(event.target.value)} /></label>
+      <label>Review outcome<select aria-label="Review outcome" value={outcome} disabled={!canReview || !applicable} onChange={event => setOutcome(event.target.value)}><option value="accepted">Accept content</option><option value="rejected">Reject content</option></select></label>
+      <label>Review or withdrawal reason<textarea aria-label="Review or withdrawal reason" maxLength={2000} value={reason} onChange={event => setReason(event.target.value)} /></label>
       <div className="quote-row-actions"><button className="button" disabled={!canReview || !applicable || reason.trim().length < 10} onClick={() => run(`/evidence/${item.id}/reviews`, {cycleId:item.cycleId, associationEtag:item.etag, outcome, expectedFingerprint:item.inputFingerprint, reason})}>Record review</button>
         <button className="button" disabled={reason.trim().length < 10} onClick={() => run(`/evidence/${item.id}/withdraw`, {cycleId:item.cycleId, associationEtag:item.etag, reason})}>Withdraw proof</button></div>
       {!canReview && <p>An underwriter with current authority must review the content.</p>}
