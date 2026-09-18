@@ -87,7 +87,7 @@ public sealed class ServicingRatingWorker(IDbContextFactory<BackOfficeDbContext>
                 eligible = await ServicingRatingScope.HoldAsync(db, actor, draft.Id, now, token);
                 var latest = await db.Set<PolicyVersion>().Where(x => x.PolicyId == hint.PolicyId && x.TermId == hint.BaseTermId)
                     .OrderByDescending(x => x.EffectiveAt).ThenByDescending(x => x.Sequence).Select(x => x.Id).FirstAsync(token);
-                if (latest != hint.BaseVersionId || !ServicingRatingScope.Matches(eligible, hint, input)) eligible = null;
+                if (eligible.Renewal is null && latest != hint.BaseVersionId || !ServicingRatingScope.Matches(eligible, hint, input)) eligible = null;
             }
             catch (QuoteOperationException) { eligible = null; }
         }
@@ -129,7 +129,19 @@ public sealed class ServicingRatingWorker(IDbContextFactory<BackOfficeDbContext>
                 slices.Add(new(source.EffectiveAt, source.Input.RiskForPremium(priced.AnnualPremium)));
             }
             var needs = ServicingReferralRules.Assess(input.Term, slices, eligible.Eligible.Binder, eligible.Eligible.Authority,
-                input.RatingDefinition.GetProperty("minimumTradingYears").GetInt32());
+                input.RatingDefinition.GetProperty("minimumTradingYears").GetInt32()).ToList();
+            if (input.Renewal is { } renewal)
+            {
+                var experience = RenewalPreparationRules.Experience(renewal.Experience, renewal.EvidenceAccepted, input.RequestedAt,
+                    renewal.ThresholdBasisPoints, renewal.LoadingBasisPoints);
+                var code = !experience.InformationComplete ? "UW-31-information" : experience.RequiresSeniorDecision ? "UW-31" : null;
+                if (code is not null)
+                {
+                    var requirement = new UnderwritingRequirement(code, "renewal-experience", RequestedAmount: experience.LossRatio,
+                        AuthorisedAmount: renewal.ThresholdBasisPoints / 10000m);
+                    needs.Add(new(code, "renewal-experience", null, [new(input.Term.StartsAt, "source", requirement)]));
+                }
+            }
             // Referral provenance guards require the current rated pointer to
             // exist; both saves remain within this worker transaction.
             await db.SaveChangesAsync(token);

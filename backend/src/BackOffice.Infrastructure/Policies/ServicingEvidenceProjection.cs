@@ -65,8 +65,20 @@ internal static class ServicingEvidenceProjection
             throw new QuoteOperationException(409,"servicing-proof-source-stale");
         // Reconstruct at the retained rating instant. Current authority is held
         // separately; time passing must not change the approved risk projection.
-        var assessment=ServicingProposalRules.Assess(scope.Base.SnapshotJson,scope.Revision.ProposalJson,
-            new(scope.Draft.PolicyId,scope.Draft.BaseVersionId,scope.Term.StartsAt,scope.Term.EndsAt,scope.Base.EffectiveAt,input.RequestedAt,true));
+        var context = input.Renewal is null
+            ? new ServicingProposalContext(scope.Draft.PolicyId,scope.Draft.BaseVersionId,scope.Term.StartsAt,scope.Term.EndsAt,scope.Base.EffectiveAt,input.RequestedAt,true)
+            : new ServicingProposalContext(scope.Draft.PolicyId,scope.Draft.BaseVersionId,input.Term.StartsAt,input.Term.EndsAt,input.Term.StartsAt,input.RequestedAt,false,input.Term);
+        var assessment=ServicingProposalRules.Assess(scope.Base.SnapshotJson,scope.Revision.ProposalJson,context);
+        if (input.Renewal is not null)
+        {
+            if (assessment.ReadinessIssues.Count != 0 || input.Slices.Count != 1 || assessment.Slices.Any(x=>x.EffectiveAt!=input.Term.StartsAt))
+                throw new QuoteOperationException(409,"servicing-proof-source-stale");
+            var projection=QuoteUnderwritingInput.Project(assessment.Proposed,input.RatingDefinition);
+            if (!assessment.Slices.SelectMany(x=>x.ChangeIds).Order().SequenceEqual(input.Slices[0].ChangeIds.Order()) ||
+                !JsonNode.DeepEquals(JsonSerializer.SerializeToNode(projection,ServicingRatingService.Json),JsonSerializer.SerializeToNode(input.Slices[0].Input,ServicingRatingService.Json)))
+                throw new QuoteOperationException(409,"servicing-proof-source-stale");
+            return [new(input.Term.StartsAt,assessment.Proposed,projection.TradingYears)];
+        }
         if (assessment.ReadinessIssues.Count!=0 || assessment.Slices.Count!=input.Slices.Count)
             throw new QuoteOperationException(409,"servicing-proof-source-stale");
         var slices=new List<ServicingEvidenceSlice>();

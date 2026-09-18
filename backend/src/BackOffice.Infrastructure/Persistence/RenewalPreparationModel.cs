@@ -52,6 +52,7 @@ public sealed partial class BackOfficeDbContext
 
         var review=Record<RenewalExperienceReview>(model,"RenewalExperienceReview");
         review.ToTable(t=>t.UseSqlOutputClause(false));
+        review.HasAlternateKey(x=>new{x.Id,x.ExperienceVersionId,x.DraftId});
         review.HasIndex(x=>new{x.ExperienceVersionId,x.Sequence}).IsUnique();
         review.HasOne<RenewalExperienceVersion>().WithMany().HasForeignKey(x=>new{x.ExperienceVersionId,x.DraftId})
             .HasPrincipalKey(x=>new{x.Id,x.DraftId}).OnDelete(DeleteBehavior.NoAction);
@@ -60,6 +61,15 @@ public sealed partial class BackOfficeDbContext
         Text(review,("Outcome",20),("Reason",2000));
         Check(review,"Outcome","[Outcome] IN ('accepted','rejected')");
         Check(review,"Provenance","[Sequence]>0 AND [CreatedBy] IS NOT NULL AND LEN(TRIM([Reason])) BETWEEN 10 AND 2000");
+
+        var cycle=model.Entity<ServicingCycle>();
+        cycle.HasOne<RenewalPreparationVersion>().WithMany().HasForeignKey(x=>new{x.RenewalPreparationVersionId,x.DraftId})
+            .HasPrincipalKey(x=>new{x.Id,x.DraftId}).OnDelete(DeleteBehavior.NoAction);
+        cycle.HasOne<RenewalExperienceVersion>().WithMany().HasForeignKey(x=>new{x.RenewalExperienceVersionId,x.DraftId})
+            .HasPrincipalKey(x=>new{x.Id,x.DraftId}).OnDelete(DeleteBehavior.NoAction);
+        cycle.HasOne<RenewalExperienceReview>().WithMany().HasForeignKey(x=>new{x.RenewalExperienceReviewId,x.RenewalExperienceVersionId,x.DraftId})
+            .HasPrincipalKey(x=>new{x.Id,x.ExperienceVersionId,x.DraftId}).OnDelete(DeleteBehavior.NoAction);
+        Check(cycle,"RenewalExperienceOwner","[RenewalExperienceReviewId] IS NULL OR [RenewalExperienceVersionId] IS NOT NULL");
 
         var file=Record<ProductEvidenceFileVersion>(model,"ProductEvidenceFileVersion");
         file.ToTable(t=>t.UseSqlOutputClause(false));

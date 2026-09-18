@@ -55,6 +55,9 @@ public sealed partial class ServicingReferralService
                 if(ready) ready=await ResolutionAuthority(db,held,JsonSerializer.Deserialize<JsonElement>(authority.DefinitionJson),now,token);
                 if(ready) ready=!await ServicingCapacityAuthority.HasBlockingRequest(db,held,row.Id,now,token);
                 if(ready && row.RuleCode=="UW-22") ready=await TradingHistorySatisfied(db,held,token);
+                if(row.RuleCode=="UW-31-information") ready=false;
+                if(ready && row.RuleCode=="UW-31") ready=await (from membership in db.Set<UserRole>() join role in db.Set<Role>() on membership.RoleId equals role.Id
+                    where membership.UserId==decision.ActorId && role.Code=="senior-underwriter" && role.Scope=="internal" select membership.Id).AnyAsync(token);
             }
             else ready=false;
             var latest=row.LatestDecisionId is {} latestId?decisions[latestId]:null;

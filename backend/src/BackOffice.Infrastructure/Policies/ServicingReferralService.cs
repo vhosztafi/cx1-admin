@@ -74,6 +74,10 @@ public sealed partial class ServicingReferralService(IDbContextFactory<BackOffic
                     if(item.Conditions.Where((value,index)=>item.Conditions.Take(index).Any(previous=>JsonElement.DeepEquals(previous,value))).Any())
                         throw new QuoteOperationException(422,"servicing-condition-duplicate");
                     var approval=item.Outcome is "approve" or "approve-with-conditions";
+                    if(approval && row.RuleCode=="UW-31-information")
+                        throw new QuoteOperationException(409,"renewal-reviewed-experience-required");
+                    if(approval && row.RuleCode=="UW-31" && !held.Scope.Source.Scope.Actor.Roles.Contains("senior-underwriter"))
+                        throw new QuoteOperationException(403,"renewal-senior-decision-required");
                     var revise=parsed.Any(x=>x[0].Condition.Kind=="risk-change");
                     if(approval && !revise && await ServicingCapacityAuthority.HasBlockingRequest(db,held,row.Id,now,ct))
                         throw new QuoteOperationException(409,"servicing-capacity-outstanding");

@@ -21,8 +21,10 @@ public sealed partial class UnderwritingRuntimeTests
             var setup = await AcceptedIssue(db, password); var f = setup.Source;
             await new QuoteIssueService(f.Factory, f.Clock).IssueAsync(f.Underwriter, f.QuoteId, setup.Version, setup.Input, Guid.NewGuid().ToString(), Guid.NewGuid());
             var issued = await db.Set<PolicyVersion>().AsNoTracking().SingleAsync();
-            // Verify the additive upgrade against an already issued graph.
-            var previous = db.Database.GetMigrations().TakeWhile(x => !x.EndsWith("_ServicingRatingCycleStorage", StringComparison.Ordinal)).Last();
+            // Verify the latest additive upgrade against an already issued graph.
+            // Current published templates cannot be downgraded to the older
+            // pre-servicing template enum without deleting genuine seed data.
+            var previous = db.Database.GetMigrations().SkipLast(1).Last();
             await db.GetService<IMigrator>().MigrateAsync(previous);
             await db.Database.MigrateAsync(); db.ChangeTracker.Clear();
             var service = new ServicingDraftService(f.Factory, f.Clock);

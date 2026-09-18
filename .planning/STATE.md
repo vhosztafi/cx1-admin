@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: 07-11 preparation API verified; continue renewal rating and UI inline; return to09 cancellation with13/14
+stopped_at: 07-11 renewal rating/referral SQL verified; continue renewal workspace and browser proof inline; return to09 cancellation with13/14
 last_updated: "2026-09-18T11:47:08.9281078+00:00"
 last_activity: 2026-09-18 —07-10 complete in d02a2b7; both product issue/retry/restart journeys verified,113existing demo table hashes preserved.
 progress:
@@ -21,13 +21,13 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute Phase7;07-01..08 and07-10 complete. Atomic issue verified in d02a2b7; continue07-11 renewal preparation. Finish09 cancellation lineage alongside13/14 before phase completion.
+**Current focus:** Execute Phase7;07-01..08 and07-10 complete. Renewal pricing, experience and senior referral backend verified; continue07-11 renewal workspace and browser proof. Finish09 cancellation lineage alongside13/14 before phase completion.
 
 ## Current Position
 
 Phase: 7 of 13 (Policy lifecycle and history)
 Plan: 9 of16 complete;07-11 in progress;07-09 remains partial
-Status: Executing Phase7;07-11 preparation API verified for both products; renewal rating and UI remain
+Status: Executing Phase7;07-11 renewal rating/referral backend verified for both products; UI and browser proof remain
 Last activity: 2026-09-18 —07-10 complete in d02a2b7; both product issue/retry/restart journeys verified,113existing demo table hashes preserved.
 
 Progress: Phases1–6 complete;6/13 phases,58/65 completed implementation plans.
@@ -55,7 +55,7 @@ Progress: Phases1–6 complete;6/13 phases,58/65 completed implementation plans.
 ## Session Continuity
 
 Last session: 2026-09-18T11:47:08.9322625+00:00
-Stopped at:07-11 API62 checks and12 actual response contracts pass; continue renewal rating/UI inline without ending the active turn
+Stopped at:07-11 renewal cycle43 checks and61 JS checks pass; continue renewal workspace/API readback/browser proof inline without ending the active turn
 Resume file: .planning/phases/07-policy-lifecycle-and-history/07-11-PLAN.md
 
 ## Autonomous continuation

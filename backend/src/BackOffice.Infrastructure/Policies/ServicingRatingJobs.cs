@@ -33,7 +33,7 @@ public sealed class ServicingRatingJobs(IDbContextFactory<BackOfficeDbContext> f
                 var latest = await db.Set<PolicyVersion>().Where(x => x.PolicyId == cycle.PolicyId && x.TermId == cycle.BaseTermId)
                     .OrderByDescending(x => x.EffectiveAt).ThenByDescending(x => x.Sequence).Select(x => x.Id).FirstAsync(token);
                 allowed = currentActor.HasCapability("integration-retry") && currentActor.HasCapability("quote-rate") &&
-                    currentActor.HasCapability("policy-draft-write") && currentActor.HasCapability("policy-draft-rate") && latest == cycle.BaseVersionId &&
+                    currentActor.HasCapability("policy-draft-write") && currentActor.HasCapability("policy-draft-rate") && (held.Renewal is not null || latest == cycle.BaseVersionId) &&
                     ServicingRatingScope.Matches(held, cycle, ServicingRatingInput.Read(cycle.InputJson, cycle.InputHash));
             }
             catch (QuoteOperationException) { allowed = false; }
@@ -60,7 +60,7 @@ public sealed class ServicingRatingJobs(IDbContextFactory<BackOfficeDbContext> f
                     .OrderByDescending(x => x.EffectiveAt).ThenByDescending(x => x.Sequence).Select(x => x.Id).FirstAsync(ct);
                 // Both current configuration and exact draft applicability are
                 // authorization preconditions, including for a stored receipt.
-                if (latest != hint.BaseVersionId || !ServicingRatingScope.Matches(held, hint, input))
+                if (held.Renewal is null && latest != hint.BaseVersionId || !ServicingRatingScope.Matches(held, hint, input))
                     throw new QuoteOperationException(409, "servicing-rating-cycle-stale");
             },
             async (db, ct) =>

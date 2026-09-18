@@ -123,8 +123,29 @@ validated envelope calculator; both existing hosted adjustment journeys pass.
 The request/SQL layer still refuses renewal cycles until their ownership guards
 and current-scope checks are implemented. This is not renewal end-to-end proof.
 
-Still required: retain preparation/experience/assessment pins in rating cycles,
-rating-cycle/worker/referral integration, any additional rating API contracts/tests,
+Renewal cycle follow-up: **37 unit +6 real SQL/API =43 passes**, no skips,
+`.local/phase7-11-renewal-cycle-final`, gate cutoff `2026-09-18T15:30:00Z`.
+New additive migration `20260918155123_RenewalRatingSourcePins` retains compound
+draft/preparation/experience/review ownership. SQL also compares the hashed
+envelope with stored facts, settings, full-term dates and current term-end risk.
+The unchanged-risk renewal request, provider worker, read model, evidence
+projection and referral flow now run for both products. Supplied/reviewed
+experience supersedes previous cycles; reviewed losses above the configured
+threshold apply the full-term loading and generate UW-31. Missing experience
+generates non-approvable UW-31-information. Both service and SQL reject ordinary
+underwriter approval of UW-31; actual current senior approval passes. Revoking
+the experience reviewer's grant makes the rating inapplicable and blocks replay
+of its previous approval. Direct SQL rejects rehashed forged preparation,
+accepted-evidence flags, term dates and fees. Existing hosted adjustment APIs
+and latest additive migration downgrade/upgrade preserve the original issued
+snapshot. The older storage test now downgrades only the latest migration:
+today's published servicing templates cannot fit the pre-servicing template enum.
+An initial new-trigger physical table-name error was fixed before the final run.
+**61 JavaScript checks**, infrastructure build (zero warnings/errors), and
+`git diff --check` pass. This migration is still isolated-test-only; the shared
+demo has not been changed. These runs overlap preceding evidence.
+
+Still required: renewal UI preparation/readback contracts and HTTP journey proof,
 four-stage UI/browser verification, shared-database migration
 with preservation evidence, and final plan source/validation updates. No new
 browser journey is claimed. The shared demo database and

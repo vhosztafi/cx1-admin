@@ -48,6 +48,9 @@ public sealed class ServicingCycle : MutableRecord
     public Guid RuntimeVersionId { get; set; }
     public Guid ScenarioVersionId { get; set; }
     public Guid? ServicingSettingVersionId { get; set; }
+    public Guid? RenewalPreparationVersionId { get; set; }
+    public Guid? RenewalExperienceVersionId { get; set; }
+    public Guid? RenewalExperienceReviewId { get; set; }
     public int Sequence { get; set; }
     public Guid WorkId { get; set; }
     public byte[] InputHash { get; set; } = [];

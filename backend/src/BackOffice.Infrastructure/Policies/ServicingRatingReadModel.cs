@@ -55,7 +55,7 @@ public sealed class ServicingRatingReadModel(IDbContextFactory<BackOfficeDbConte
                 var held = await ServicingRatingScope.HoldAsync(db, actor, draftId, now, token, write: false);
                 var latest = await db.Set<PolicyVersion>().Where(x => x.PolicyId == draft.PolicyId && x.TermId == draft.BaseTermId)
                     .OrderByDescending(x => x.EffectiveAt).ThenByDescending(x => x.Sequence).Select(x => x.Id).FirstAsync(token);
-                currentPins = latest == current.BaseVersionId && ServicingRatingScope.Matches(held, current, ServicingRatingInput.Read(current.InputJson, current.InputHash));
+                currentPins = (held.Renewal is not null || latest == current.BaseVersionId) && ServicingRatingScope.Matches(held, current, ServicingRatingInput.Read(current.InputJson, current.InputHash));
                 if (!currentPins) blockers.Add("servicing-rating-cycle-stale");
             }
             catch (QuoteOperationException error) { blockers.Add(error.Code); }

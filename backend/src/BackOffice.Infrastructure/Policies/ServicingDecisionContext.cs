@@ -32,7 +32,7 @@ internal sealed record ServicingDecisionContext(HeldServicingRating Scope,Servic
             throw new QuoteOperationException(409,"servicing-rating-cycle-stale");
         var latest=await db.Set<PolicyVersion>().Where(x=>x.PolicyId==scope.Draft.PolicyId && x.TermId==scope.Draft.BaseTermId)
             .OrderByDescending(x=>x.EffectiveAt).ThenByDescending(x=>x.Sequence).Select(x=>x.Id).FirstAsync(token);
-        if (latest!=cycle.BaseVersionId) throw new QuoteOperationException(409,"servicing-base-stale");
+        if (scope.Renewal is null && latest!=cycle.BaseVersionId) throw new QuoteOperationException(409,"servicing-base-stale");
         var rating=await db.Set<ServicingRatingResult>().AsNoTracking().SingleAsync(x=>x.Id==cycle.CurrentRatingId && x.CycleId==cycle.Id && x.DraftId==draftId && x.RevisionId==cycle.RevisionId,token);
         if (rating.Outcome!="rated") throw new QuoteOperationException(409,"servicing-rating-required");
         return new(scope,cycle,rating,input){AssessedAt=now};

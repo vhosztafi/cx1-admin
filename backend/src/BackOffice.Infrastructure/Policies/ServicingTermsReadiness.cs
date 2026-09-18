@@ -21,6 +21,10 @@ public sealed partial class ServicingReferralService
                 throw new QuoteOperationException(409,"servicing-referral-outstanding");
             var decision=await db.Set<ServicingReferralDecision>().AsNoTracking().SingleAsync(x=>x.Id==referral.LatestDecisionId,token);
             if(decision.Outcome is not("approve" or "approve-with-conditions"))throw new QuoteOperationException(409,"servicing-referral-outstanding");
+            if(referral.RuleCode=="UW-31-information")throw new QuoteOperationException(409,"renewal-reviewed-experience-required");
+            if(referral.RuleCode=="UW-31" && !await (from membership in db.Set<UserRole>() join role in db.Set<Role>() on membership.RoleId equals role.Id
+                where membership.UserId==decision.ActorId && role.Code=="senior-underwriter" && role.Scope=="internal" select membership.Id).AnyAsync(token))
+                throw new QuoteOperationException(409,"renewal-senior-decision-required");
             var authority=await db.Set<AuthorityVersion>().FromSqlInterpolated($"SELECT * FROM AuthorityVersion WITH(HOLDLOCK) WHERE Id={decision.AuthorityVersionId}").AsNoTracking().SingleAsync(token);
             var start=held.Input.Slices[0].EffectiveAt;var end=held.Input.Term.EndsAt;
             if(authority.State!="published" || authority.EffectiveFrom>now || authority.EffectiveTo<=now || authority.EffectiveFrom>start || authority.EffectiveTo<end ||

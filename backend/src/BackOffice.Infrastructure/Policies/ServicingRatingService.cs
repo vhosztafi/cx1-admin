@@ -32,19 +32,19 @@ public sealed class ServicingRatingService(IDbContextFactory<BackOfficeDbContext
             async (db, ct) =>
             {
                 var context = held!; var draft = context.Draft; var now = time.GetUtcNow();
-                if (draft.Kind != "adjustment" || draft.State != "draft") throw new QuoteOperationException(409, "servicing-rating-state");
+                if (draft.Kind is not ("adjustment" or "renewal") || draft.State != "draft") throw new QuoteOperationException(409, "servicing-rating-state");
                 if (draft.CurrentRevisionId != revisionId || !CryptographicOperations.FixedTimeEquals(draft.RowVersion, version))
                     throw new QuoteOperationException(412, "servicing-version-conflict");
                 await drafts.DemandLease(db, draftId, context.Source.Scope.Actor.UserId, leaseToken, ct);
                 var latest = await db.Set<PolicyVersion>().Where(x => x.PolicyId == draft.PolicyId && x.TermId == draft.BaseTermId)
                     .OrderByDescending(x => x.EffectiveAt).ThenByDescending(x => x.Sequence).Select(x => x.Id).FirstAsync(ct);
-                if (latest != draft.BaseVersionId) throw new QuoteOperationException(409, "servicing-base-stale");
+                if (context.Renewal is null && latest != draft.BaseVersionId) throw new QuoteOperationException(409, "servicing-base-stale");
                 var proposal = ServicingProposalInput.Parse(context.Revision.ProposalJson, draft.BaseVersionId);
                 var assessment = await drafts.Assess(db, context.Source.Scope.Actor, draft, proposal, ct);
                 // A later slice may restore original cover after a genuine
                 // temporary change. Materiality belongs to the entire schedule.
-                if (assessment.Slices.Count == 0 || assessment.Slices.All(slice =>
-                    QuoteRevisionDiff.Compare(assessment.Base, slice.Proposed).All(change => change.Kind == "reordered")))
+                if (context.Renewal is null && (assessment.Slices.Count == 0 || assessment.Slices.All(slice =>
+                    QuoteRevisionDiff.Compare(assessment.Base, slice.Proposed).All(change => change.Kind == "reordered"))))
                     throw new QuoteOperationException(422, "servicing-no-material-change");
                 if (assessment.ReadinessIssues.Count != 0) throw new QuoteValidationException(assessment.ReadinessIssues);
                 using var baseJson = JsonDocument.Parse(context.Base.SnapshotJson);
@@ -56,16 +56,23 @@ public sealed class ServicingRatingService(IDbContextFactory<BackOfficeDbContext
                     cumulative.AddRange(slice.ChangeIds);
                     slices.Add(new(slice.EffectiveAt, cumulative.Order().ToArray(), QuoteUnderwritingInput.Project(slice.Proposed, context.Eligible.Rating)));
                 }
+                if (context.Renewal is not null)
+                {
+                    if (assessment.Slices.Any(x => x.EffectiveAt != context.ResolvedTerm.StartsAt))
+                        throw new QuoteOperationException(422, "renewal-change-must-start-at-inception");
+                    slices = [new(context.ResolvedTerm.StartsAt, cumulative.Order().ToArray(), QuoteUnderwritingInput.Project(assessment.Proposed, context.Eligible.Rating))];
+                }
                 var input = new ServicingRatingRequestInput {
-                    Format = "servicing-rating-input-1", DraftId = draft.Id, RevisionId = revisionId, PolicyId = draft.PolicyId,
-                    BaseTermId = draft.BaseTermId, BaseVersionId = draft.BaseVersionId, ProductVersionId = context.Term.ProductVersionId,
+                    Format = context.Renewal is null ? "servicing-rating-input-1" : "servicing-rating-input-2", Renewal = context.Renewal,
+                    DraftId = draft.Id, RevisionId = revisionId, PolicyId = draft.PolicyId,
+                    BaseTermId = draft.BaseTermId, BaseVersionId = draft.BaseVersionId, ProductVersionId = context.Eligible.Capture.ProductVersion.Id,
                     AgencyTermsVersionId = context.Eligible.Capture.Terms.Id, RatingRuleVersionId = context.Eligible.RatingVersion.Id,
                     BinderVersionId = context.Eligible.BinderVersion.Id, AuthorityVersionId = context.Eligible.AuthorityVersion.Id,
                     RuntimeVersionId = context.Eligible.RuntimeVersion.Id, ScenarioVersionId = context.Eligible.ScenarioVersion.Id,
                     ServicingSettingVersionId = context.Setting.Id, RequestedBy = context.Source.Scope.Actor.UserId, RequestedAt = now,
                     BaseContentHash = Convert.ToHexStringLower(context.Base.ContentHash), RevisionContentHash = Convert.ToHexStringLower(context.Revision.ContentHash),
                     Term = context.ResolvedTerm, BaseAnnualPremium = annual, CommissionBasisPoints = context.Eligible.CommissionBasisPoints,
-                    MinimumPremium = context.Eligible.MinimumPremium, Fee = context.Settings.AdjustmentFee, RatingDefinition = context.Eligible.Rating, Slices = slices.AsReadOnly()
+                    MinimumPremium = context.Eligible.MinimumPremium, Fee = context.Fee, RatingDefinition = context.Eligible.Rating, Slices = slices.AsReadOnly()
                 };
                 var encoded = ServicingRatingInput.Encode(input);
                 var cycle = new ServicingCycle {
@@ -73,6 +80,8 @@ public sealed class ServicingRatingService(IDbContextFactory<BackOfficeDbContext
                     ProductId = context.Term.ProductId, ProductVersionId = input.ProductVersionId, AgencyTermsVersionId = input.AgencyTermsVersionId,
                     RatingRuleVersionId = input.RatingRuleVersionId, BinderVersionId = input.BinderVersionId, AuthorityVersionId = input.AuthorityVersionId,
                     RuntimeVersionId = input.RuntimeVersionId, ScenarioVersionId = input.ScenarioVersionId, ServicingSettingVersionId = input.ServicingSettingVersionId,
+                    RenewalPreparationVersionId = input.Renewal?.PreparationVersionId, RenewalExperienceVersionId = input.Renewal?.ExperienceVersionId,
+                    RenewalExperienceReviewId = input.Renewal?.ExperienceReviewId,
                     Sequence = checked((await db.Set<ServicingCycle>().Where(x => x.DraftId == draftId).MaxAsync(x => (int?)x.Sequence, ct) ?? 0) + 1),
                     InputHash = encoded.ContentHash, InputJson = encoded.Json, RequestedBy = input.RequestedBy, CreatedBy = input.RequestedBy, CreatedAt = now, UpdatedAt = now
                 };
