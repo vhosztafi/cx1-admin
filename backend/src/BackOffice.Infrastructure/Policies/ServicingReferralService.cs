@@ -73,8 +73,12 @@ public sealed partial class ServicingReferralService(IDbContextFactory<BackOffic
                         throw new QuoteOperationException(422,"servicing-condition-duplicate");
                     var approval=item.Outcome is "approve" or "approve-with-conditions";
                     var revise=parsed.Any(x=>x[0].Condition.Kind=="risk-change");
-                    var grant=grants.FirstOrDefault(g=>!approval || revise || ServicingReferralRules.AuthorityAllows(held.Input.Term,risks,held.Scope.Eligible.Binder,g.Definition,all,
-                        held.Input.RatingDefinition.GetProperty("minimumTradingYears").GetInt32())) ??throw new QuoteOperationException(403,"servicing-dimension-authority-required");
+                    if(approval && !revise && await ServicingCapacityAuthority.HasBlockingRequest(db,held,row.Id,now,ct))
+                        throw new QuoteOperationException(409,"servicing-capacity-outstanding");
+                    EffectiveUnderwritingGrant? grant=null;
+                    foreach(var candidate in grants)
+                        if(!approval || revise || await ServicingCapacityAuthority.Allows(db,held,candidate.Definition,risks,all,now,ct)) {grant=candidate;break;}
+                    if(grant is null) throw new QuoteOperationException(403,"servicing-dimension-authority-required");
                     // Live proof is checked before receipt replay as well as for
                     // a new approval. A historical receipt cannot restore proof.
                     if(item.Outcome=="approve" && row.RuleCode=="UW-22" && !await TradingHistorySatisfied(db,held,ct))

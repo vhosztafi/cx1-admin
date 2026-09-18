@@ -35,7 +35,7 @@ public sealed partial class ServicingReferralService
                 var decision=await db.Set<ServicingReferralDecision>().AsNoTracking().SingleAsync(x=>x.Id==condition.DecisionId,ct);
                 foreach(var candidate in grants)
                     if((condition.Code!="provide-trading-history" || candidate.Definition.GetProperty("limits").GetProperty("reviewTradingHistory").GetBoolean()) &&
-                        (decision.Outcome=="query" || await ResolutionAuthority(db,held,candidate.Definition,ct))) {grant=candidate;break;}
+                        (decision.Outcome=="query" || await ResolutionAuthority(db,held,candidate.Definition,time.GetUtcNow(),ct))) {grant=candidate;break;}
                 if(grant is null) throw new QuoteOperationException(403,"servicing-resolution-authority-required");
                 if(!await db.Set<ServicingEvidenceAssociation>().AnyAsync(x=>x.Id==associationId && x.DraftId==draftId && x.CycleId==cycleId,ct))
                     throw new QuoteOperationException(404,"servicing-evidence-not-found");
@@ -104,7 +104,7 @@ public sealed partial class ServicingReferralService
             parsed.All(p=>x.EffectiveDates.Contains(p.EffectiveAt)));
     }
 
-    private static async Task<bool> ResolutionAuthority(BackOfficeDbContext db,ServicingDecisionContext held,JsonElement grant,CancellationToken token)
+    private static async Task<bool> ResolutionAuthority(BackOfficeDbContext db,ServicingDecisionContext held,JsonElement grant,DateTimeOffset now,CancellationToken token)
     {
         var proposals=ServicingEvidenceProjection.Slices(held);
         var active=await ActiveConditions(db,held.Cycle.Id,token);
@@ -118,7 +118,6 @@ public sealed partial class ServicingReferralService
             if(x.EffectiveAt!=rating.Slices[i].EffectiveAt || !x.ChangeIds.Order().SequenceEqual(rating.Slices[i].ChangeIds.Order())) throw new QuoteOperationException(409,"servicing-rating-input-unavailable");
             return new ServicingAuthoritySlice(x.EffectiveAt,x.Input.RiskForPremium(rating.Slices[i].AnnualPremium));
         }).ToArray();
-        return ServicingReferralRules.AuthorityAllows(held.Input.Term,risks,held.Scope.Eligible.Binder,grant,conditions,
-            held.Input.RatingDefinition.GetProperty("minimumTradingYears").GetInt32());
+        return await ServicingCapacityAuthority.Allows(db,held,grant,risks,conditions,now,token);
     }
 }

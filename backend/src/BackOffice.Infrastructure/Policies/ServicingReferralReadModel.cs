@@ -52,7 +52,8 @@ public sealed partial class ServicingReferralService
                     grant.EffectiveFrom<=held.Input.Slices[0].EffectiveAt && grant.EffectiveTo>=held.Input.Term.EndsAt &&
                     authority.State=="published" && authority.EffectiveFrom<=now && authority.EffectiveTo>now &&
                     authority.EffectiveFrom<=held.Input.Slices[0].EffectiveAt && authority.EffectiveTo>=held.Input.Term.EndsAt;
-                if(ready) ready=await ResolutionAuthority(db,held,JsonSerializer.Deserialize<JsonElement>(authority.DefinitionJson),token);
+                if(ready) ready=await ResolutionAuthority(db,held,JsonSerializer.Deserialize<JsonElement>(authority.DefinitionJson),now,token);
+                if(ready) ready=!await ServicingCapacityAuthority.HasBlockingRequest(db,held,row.Id,now,token);
                 if(ready && row.RuleCode=="UW-22") ready=await TradingHistorySatisfied(db,held,token);
             }
             else ready=false;

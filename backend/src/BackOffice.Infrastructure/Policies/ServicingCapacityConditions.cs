@@ -79,7 +79,7 @@ public sealed partial class ServicingCapacityService
         await tx.CommitAsync(token);return result;
     }
 
-    private static async Task<bool> CarrierConditionSatisfied(BackOfficeDbContext db,ServicingDecisionContext held,ServicingCapacityCondition condition,CancellationToken token)
+    internal static async Task<bool> CarrierConditionSatisfied(BackOfficeDbContext db,ServicingDecisionContext held,ServicingCapacityCondition condition,CancellationToken token)
     {
         if(!await CarrierConditionActive(db,condition,token) || !await CarrierConditionSourceCurrent(db,condition,token)) return false;
         var resolution=await db.Set<ServicingCapacityConditionResolution>().AsNoTracking().Where(x=>x.ConditionId==condition.Id).OrderByDescending(x=>x.Sequence).FirstOrDefaultAsync(token);

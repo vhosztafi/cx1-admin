@@ -17,6 +17,11 @@ public sealed partial class UnderwritingRuntimeTests
         var service=new ServicingCapacityService(f.Factory,f.Clock);
         var evidence=new ServicingEvidenceService(f.Factory,f.Clock);
         Assert.False(await service.ConditionSatisfiedAsync(f.Underwriter,capacity.DraftId,conditionId));
+        var referrals=new ServicingReferralService(f.Factory,f.Clock);
+        var referral=await db.Set<ServicingReferral>().AsNoTracking().SingleAsync(x=>x.Id==capacity.ReferralId);
+        var approvalKey=Key();
+        Task<BackOffice.Infrastructure.Platform.CommandOutcome> Approve(string etag,string operation)=>referrals.DecideAsync(f.Underwriter,
+            capacity.DraftId,capacity.CycleId,Version(etag),lease,[new(capacity.ReferralId,referral.RowVersion,"approve","Approve exact fictional carrier tools extent",[])],operation,Guid.NewGuid());
         var purpose=Assert.Single((await evidence.RequirementsAsync(f.Underwriter,capacity.DraftId)).Requirements,x=>x.Requirement.Code=="trading-history").Requirement;
         var draftVersion=await db.Set<ServicingDraft>().Where(x=>x.Id==capacity.DraftId).Select(x=>x.RowVersion).SingleAsync();
         var upload=await evidence.UploadAsync(f.Underwriter,capacity.DraftId,draftVersion,lease,"fictional-trading.txt","text/plain",
@@ -32,14 +37,19 @@ public sealed partial class UnderwritingRuntimeTests
         var reviewed=await evidence.ReviewAsync(f.Underwriter,capacity.DraftId,capacity.CycleId,association.Id,Version(attached.Etag!),lease,
             association.RowVersion,"accepted",purpose.InputFingerprint,"Review fictional carrier condition proof",Key(),Guid.NewGuid());
         Assert.False(await service.ConditionSatisfiedAsync(f.Underwriter,capacity.DraftId,conditionId));
+        Assert.Equal("servicing-capacity-outstanding",(await Assert.ThrowsAsync<QuoteOperationException>(()=>Approve(reviewed.Etag!,Key()))).Code);
         Assert.Equal(412,(await Assert.ThrowsAsync<QuoteOperationException>(()=>Resolve("\"AAAAAAAAAAA=\"",attached.ResourceId,Key()))).Status);
         var key=Key();var resolved=await Resolve(reviewed.Etag!,attached.ResourceId,key);
         Assert.Equal(200,resolved.Status);Assert.True((await Resolve(reviewed.Etag!,attached.ResourceId,key)).Replayed);
         Assert.True(await service.ConditionSatisfiedAsync(f.Underwriter,capacity.DraftId,conditionId));
+        var approved=await Approve(resolved.Etag!,approvalKey);
+        Assert.True((await referrals.ReadReferralsAsync(f.Underwriter,capacity.DraftId)).Items.Single(x=>x.Id==capacity.ReferralId).DecisionReady);
         association=await db.Set<ServicingEvidenceAssociation>().AsNoTracking().SingleAsync(x=>x.Id==attached.ResourceId);
-        await evidence.WithdrawAsync(f.Underwriter,capacity.DraftId,capacity.CycleId,association.Id,Version(resolved.Etag!),lease,
+        await evidence.WithdrawAsync(f.Underwriter,capacity.DraftId,capacity.CycleId,association.Id,Version(approved.Etag!),lease,
             association.RowVersion,"Withdraw fictional carrier condition proof",Key(),Guid.NewGuid());
         Assert.False(await service.ConditionSatisfiedAsync(f.Underwriter,capacity.DraftId,conditionId));
+        Assert.False((await referrals.ReadReferralsAsync(f.Underwriter,capacity.DraftId)).Items.Single(x=>x.Id==capacity.ReferralId).DecisionReady);
+        Assert.Equal("servicing-capacity-outstanding",(await Assert.ThrowsAsync<QuoteOperationException>(()=>Approve(resolved.Etag!,approvalKey))).Code);
         Assert.Equal(409,(await Assert.ThrowsAsync<QuoteOperationException>(()=>Resolve(reviewed.Etag!,attached.ResourceId,key))).Status);
     }
 }

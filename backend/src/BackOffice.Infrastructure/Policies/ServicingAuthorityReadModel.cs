@@ -41,7 +41,7 @@ public sealed partial class ServicingReferralService
         var views=new List<ServicingCurrentGrant>();
         foreach(var grant in selected.Take(pageSize))
             views.Add(new(grant.Grant.Id,grant.Version.Id,grant.Version.Version,grant.Grant.EffectiveFrom,grant.Grant.EffectiveTo,
-                await ResolutionAuthority(db,held,grant.Definition,token),Rows(grant.Definition)));
+                await ResolutionAuthority(db,held,grant.Definition,now,token),Rows(grant.Definition)));
         var applicable=held.Rating.ExpiresAt>now;
         var result=new ServicingCurrentAuthorityPage(draftId,held.Cycle.Id,referralId,Etag(held.Scope.Draft.RowVersion),now,applicable,
             applicable && held.Scope.Source.Scope.Actor.HasCapability("underwriting-decide-within-authority") && grants.Count>0,Rows(null),views,
