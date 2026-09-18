@@ -144,6 +144,7 @@ public sealed partial class BackOfficeDbContext(DbContextOptions<BackOfficeDbCon
         ConfigureServicingEvidence(model);
         ConfigureServicingReferrals(model);
         ConfigureServicingConditions(model);
+        ConfigureServicingCapacity(model);
         ConfigureIssueFinancials(model);
         // All instants are UTC; retain London intent separately in domain records.
         foreach (var entity in model.Model.GetEntityTypes())
