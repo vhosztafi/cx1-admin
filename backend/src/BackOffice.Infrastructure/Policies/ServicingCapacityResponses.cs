@@ -75,7 +75,7 @@ public sealed partial class ServicingCapacityService
     }
 
     private static bool ResponseText(string? value,int maximum)=>!string.IsNullOrWhiteSpace(value) && value.Length<=maximum && !value.Any(c=>char.IsControl(c) && c is not ('\r' or '\n' or '\t'));
-    private static string ResponseState(string outcome)=>outcome switch {"approve"=>"approved","approve-with-conditions"=>"conditional","query"=>"queried","decline"=>"declined",_=>throw new ArgumentException("Unknown carrier outcome.")};
+    internal static string ResponseState(string outcome)=>outcome switch {"approve"=>"approved","approve-with-conditions"=>"conditional","query"=>"queried","decline"=>"declined",_=>throw new ArgumentException("Unknown carrier outcome.")};
 
     private static string ResponseDefinitionJson(ServicingCapacityCase capacity,ServicingCapacitySubmission submission,
         ServicingCapacityResponseDefinition definition,ServicingParsedCapacityResponse parsed)=>JsonSerializer.Serialize(new{
@@ -84,14 +84,15 @@ public sealed partial class ServicingCapacityService
             submissionHash=Convert.ToHexStringLower(submission.ContextHash),outcome=definition.Outcome,validFrom=definition.ValidFrom,validTo=definition.ValidTo,
             authorisedLimits=definition.AuthorisedLimits,conditions=parsed.Conditions.Select(x=>new{definition=JsonSerializer.Deserialize<JsonElement>(x.DefinitionJson),effectiveDates=x.EffectiveDates}).ToArray()});
 
-    private static async Task StoreResponseConditions(BackOfficeDbContext db,ServicingCapacityResponseRecord response,ServicingParsedCapacityResponse parsed,CancellationToken token)
+    internal static async Task StoreResponseConditions(BackOfficeDbContext db,ServicingCapacityResponseRecord response,ServicingParsedCapacityResponse parsed,CancellationToken token)
     {
+        using var manifest=JsonDocument.Parse(response.DefinitionJson);
         for(var i=0;i<parsed.Conditions.Count;i++)
         {
             var condition=parsed.Conditions[i];var value=condition.Slices[0].Condition;
             db.Add(new ServicingCapacityCondition{ResponseId=response.Id,SubmissionId=response.SubmissionId,CaseId=response.CaseId,DraftId=response.DraftId,
                 CycleId=response.CycleId,RevisionId=response.RevisionId,RatingId=response.RatingId,Sequence=i+1,Code=value.Code,Kind=value.Kind,
-                DefinitionJson=condition.DefinitionJson,EffectiveDatesJson=JsonSerializer.Serialize(condition.EffectiveDates),
+                DefinitionJson=condition.DefinitionJson,EffectiveDatesJson=manifest.RootElement.GetProperty("conditions")[i].GetProperty("effectiveDates").GetRawText(),
                 CreatedBy=response.RecordedBy,CreatedAt=response.RecordedAt,UpdatedAt=response.RecordedAt});
         }
         await db.SaveChangesAsync(token);
@@ -102,7 +103,7 @@ public sealed partial class ServicingCapacityService
         await db.Set<ServicingEvidenceEvent>().AnyAsync(x=>x.Id==review && x.AssociationId==proof.Id && x.Kind=="review" && x.Outcome=="accepted",token) &&
         await db.Set<ServicingEvidenceFile>().AnyAsync(x=>x.Id==proof.FileId && x.ScreeningState=="accepted",token);
 
-    private static async Task RequireSelectedProof(BackOfficeDbContext db,Guid submissionId,CancellationToken token)
+    internal static async Task RequireSelectedProof(BackOfficeDbContext db,Guid submissionId,CancellationToken token)
     {
         var selected=await db.Set<ServicingCapacitySubmissionEvidence>().AsNoTracking().Where(x=>x.SubmissionId==submissionId).ToListAsync(token);
         foreach(var item in selected)

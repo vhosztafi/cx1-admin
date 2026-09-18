@@ -18,8 +18,18 @@ public sealed partial class ServicingCapacityService
     public Task<CommandOutcome> SubmitAsync(ActorContext actor, Guid draftId, Guid cycleId, Guid caseId,
         byte[] version, byte[] caseVersion, Guid lease, string body, string reason, IReadOnlyList<Guid> evidenceIds,
         Guid scenarioVersionId, string key, Guid correlation, CancellationToken token = default)
+        =>SubmitCoreAsync(actor,draftId,cycleId,caseId,version,caseVersion,lease,body,reason,evidenceIds,scenarioVersionId,null,key,correlation,token);
+
+    public Task<CommandOutcome> ReplyAsync(ActorContext actor,Guid draftId,Guid cycleId,Guid caseId,Guid responseId,
+        byte[] version,byte[] caseVersion,Guid lease,string body,string reason,IReadOnlyList<Guid> evidenceIds,
+        Guid scenarioVersionId,string key,Guid correlation,CancellationToken token=default)
+        =>SubmitCoreAsync(actor,draftId,cycleId,caseId,version,caseVersion,lease,body,reason,evidenceIds,scenarioVersionId,responseId,key,correlation,token);
+
+    private Task<CommandOutcome> SubmitCoreAsync(ActorContext actor, Guid draftId, Guid cycleId, Guid caseId,
+        byte[] version, byte[] caseVersion, Guid lease, string body, string reason, IReadOnlyList<Guid> evidenceIds,
+        Guid scenarioVersionId,Guid? queryResponseId,string key, Guid correlation, CancellationToken token)
     {
-        if (draftId == Guid.Empty || cycleId == Guid.Empty || caseId == Guid.Empty || lease == Guid.Empty || scenarioVersionId == Guid.Empty ||
+        if (draftId == Guid.Empty || cycleId == Guid.Empty || caseId == Guid.Empty || lease == Guid.Empty || scenarioVersionId == Guid.Empty || queryResponseId==Guid.Empty ||
             version is null || version.Length != 8 || caseVersion is null || caseVersion.Length != 8 ||
             string.IsNullOrWhiteSpace(body) || body.Length > 10000 || body.Any(c => char.IsControl(c) && c is not ('\n' or '\r' or '\t')) ||
             string.IsNullOrWhiteSpace(reason) || reason.Trim().Length < 10 || evidenceIds is null || evidenceIds.Count > 20 ||
@@ -30,9 +40,10 @@ public sealed partial class ServicingCapacityService
         ServicingDecisionContext? held = null; ServicingCapacityCase? capacity = null; ServicingReferral? referral = null;
         SettingVersion? scenario = null; int? dueDays = null; int? dueHours = null;
         var selected = new List<(ServicingEvidenceAssociation Association, Guid ReviewId)>();
-        return commands.ExecuteAuthorizedAsync(new(actor.UserId, $"/api/v1/drafts/{draftId:D}/capacity/{caseId:D}/submissions", key, correlation),
+        var route=queryResponseId is null?"submissions":"query-replies";
+        return commands.ExecuteAuthorizedAsync(new(actor.UserId, $"/api/v1/drafts/{draftId:D}/capacity/{caseId:D}/{route}", key, correlation),
             new { draftId, cycleId, caseId, version = Convert.ToBase64String(version), caseVersion = Convert.ToBase64String(caseVersion),
-                lease, body, reason, evidenceIds = selectedIds, scenarioVersionId }, "servicing.capacity-submitted",
+                lease, body, reason, evidenceIds = selectedIds, scenarioVersionId,queryResponseId }, "servicing.capacity-submitted",
             async (db, ct) =>
             {
                 held = await HoldEscalationAuthority(db, actor, draftId, cycleId, lease, ct);
@@ -42,6 +53,9 @@ public sealed partial class ServicingCapacityService
                     throw new QuoteOperationException(409, "servicing-capacity-case-stale");
                 referral = await db.Set<ServicingReferral>().AsNoTracking().SingleAsync(x => x.Id == capacity.ReferralId && x.CycleId == cycleId, ct);
                 if (referral.State is "declined" or "superseded") throw new QuoteOperationException(409, "servicing-referral-reopen-required");
+                if(queryResponseId is Guid response && !await db.Set<ServicingCapacityResponseRecord>().AnyAsync(x=>x.Id==response && x.CaseId==caseId &&
+                    x.DraftId==draftId && x.CycleId==cycleId && x.Outcome=="query" && x.ApplicationState=="applied",ct))
+                    throw new QuoteOperationException(404,"servicing-capacity-query-not-found");
                 scenario = await db.Set<SettingVersion>().FromSqlInterpolated($"SELECT * FROM SettingVersion WITH(HOLDLOCK) WHERE Id={scenarioVersionId}").AsNoTracking().SingleOrDefaultAsync(ct);
                 var setting = scenario is null ? null : CapacitySeed.Parse(scenario);
                 if (setting is null || scenario!.EffectiveFrom > time.GetUtcNow() ||
@@ -65,20 +79,32 @@ public sealed partial class ServicingCapacityService
             {
                 await held!.Current(db, factory, time, version, lease, ct);
                 if (!CryptographicOperations.FixedTimeEquals(capacity!.RowVersion, caseVersion)) throw new QuoteOperationException(412, "servicing-capacity-case-stale");
+                if(queryResponseId is Guid query)
+                {
+                    if(capacity.State!="queried" || capacity.CurrentResponseId!=query || capacity.CurrentSubmissionId is null)
+                        throw new QuoteOperationException(409,"servicing-capacity-query-stale");
+                    await AddCorrespondence(db,capacity,capacity.CurrentSubmissionId.Value,"query-reply",body,actor.UserId,time.GetUtcNow(),ct);
+                    await db.SaveChangesAsync(ct);
+                    // This transition and the next immutable submission commit
+                    // together. No observer sees an unqueued partial reply.
+                    capacity.State="draft";capacity.UpdatedAt=time.GetUtcNow();await db.SaveChangesAsync(ct);
+                }
                 if (capacity.State != "draft") throw new QuoteOperationException(409, "servicing-capacity-submission-state");
                 var now = time.GetUtcNow(); var id = Guid.NewGuid();
                 var sequence = checked((await db.Set<ServicingCapacitySubmission>().Where(x => x.CaseId == caseId).MaxAsync(x => (int?)x.Sequence, ct) ?? 0) + 1);
-                var targets = ServicingEvidenceProjection.Slices(held).SelectMany(x => x.Proposal.GetProperty("cover").GetProperty("requestedSections").EnumerateArray()
+                var targetDates = ServicingEvidenceProjection.Slices(held).SelectMany(x => x.Proposal.GetProperty("cover").GetProperty("requestedSections").EnumerateArray()
                     .Where(section => section.GetProperty("selected").GetBoolean() && section.GetProperty("code").GetString() == "premises")
-                    .SelectMany(section => section.GetProperty("premisesIds").EnumerateArray().Select(p => p.GetGuid()))).Distinct().Order().ToArray();
+                    .SelectMany(section => section.GetProperty("premisesIds").EnumerateArray().Select(p => new {premisesId=p.GetGuid(),x.EffectiveAt})))
+                    .GroupBy(x=>x.premisesId).OrderBy(x=>x.Key).Select(x=>new {premisesId=x.Key,effectiveDates=x.Select(d=>d.EffectiveAt).Distinct().Order().ToArray()}).ToArray();
+                var targets=targetDates.Select(x=>x.premisesId).ToArray();
                 // Explicit minimal carrier projection, never full proposal,
                 // contacts, private notes or evidence bytes not selected by staff.
                 var context = JsonSerializer.Serialize(new { format = "servicing-capacity-submission-1", draftId, cycleId,
                     revisionId = held.Cycle.RevisionId, ratingId = held.Rating.Id, caseId, referralId = referral!.Id,
                     providerId = capacity.ProviderId, binderVersionId = capacity.BinderVersionId, productVersionId = held.Cycle.ProductVersionId,
-                    submissionId = id, sequence, inputHash = Convert.ToHexStringLower(held.Cycle.InputHash),
+                    submissionId = id, sequence,queryResponseId, inputHash = Convert.ToHexStringLower(held.Cycle.InputHash),
                     startsAt = held.Input.Slices[0].EffectiveAt, endsAt = held.Input.Term.EndsAt,
-                    ruleCode = referral.RuleCode, dimension = referral.Dimension, targetId = referral.RiskItemId, conditionTargetIds = targets,
+                    ruleCode = referral.RuleCode, dimension = referral.Dimension, targetId = referral.RiskItemId, conditionTargetIds = targets, conditionTargets=targetDates,
                     requiredAuthority = JsonSerializer.Deserialize<JsonElement>(referral.RequiredAuthorityJson), body, reason, scenarioVersionId,
                     evidence = selected.Select(x => new { associationId = x.Association.Id, reviewId = x.ReviewId }).ToArray() });
                 var bytes = Encoding.UTF8.GetBytes(context);

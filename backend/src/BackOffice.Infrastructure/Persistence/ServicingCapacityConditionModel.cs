@@ -35,4 +35,3 @@ public sealed partial class BackOfficeDbContext
         Check(resolution,"Reason","LEN(TRIM([Reason]))>=10 AND [CreatedBy] IS NOT NULL AND [CreatedBy]=[ActorId] AND [RecordedAt]>=[CreatedAt]");
     }
 }
-

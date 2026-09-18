@@ -11,14 +11,15 @@ namespace BackOffice.IntegrationTests;
 
 public sealed partial class UnderwritingRuntimeTests
 {
-    private static async Task VerifyServicingCapacityCreate(BackOfficeDbContext db, DecisionFixture f, ServicingCycle cycle, string etag, bool submissionStorage = false, bool selectedEvidence = false, bool submitCommand = false)
+    private static async Task VerifyServicingCapacityCreate(BackOfficeDbContext db, DecisionFixture f, ServicingCycle cycle, string etag, bool submissionStorage = false, bool selectedEvidence = false, bool submitCommand = false,string? workerScenario=null)
     {
         static byte[] Version(string value) => Convert.FromBase64String(value.Trim('"'));
         static string Key() => Guid.NewGuid().ToString();
         var takeover = await new ServicingDraftService(f.Factory, f.Clock).LeaseAsync(f.Underwriter, cycle.DraftId,
             Version(etag), "takeover", null, "Review fictional capacity escalation", Key(), Guid.NewGuid());
         var lease = JsonSerializer.Deserialize<JsonElement>(takeover.Body).GetProperty("lease").GetProperty("leaseToken").GetGuid();
-        var referral = await db.Set<ServicingReferral>().AsNoTracking().SingleAsync(x => x.CycleId == cycle.Id && x.RuleCode == "cover-tools-equipment");
+        var rule=workerScenario=="capacity-worker-conditional"?"cover-stock-custody":"cover-tools-equipment";
+        var referral = await db.Set<ServicingReferral>().AsNoTracking().SingleAsync(x => x.CycleId == cycle.Id && x.RuleCode == rule);
         var service = new ServicingCapacityService(f.Factory, f.Clock); var key = Key();
         const string reason = "Request fictional tools capacity exception";
         Task<CommandOutcome> Create(string operation, string version, ActorContext? actor = null, Guid? owner = null,
@@ -45,6 +46,7 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Equal(referral.Id, row.ReferralId); Assert.Equal(f.Underwriter.UserId, row.RaisedBy); Assert.Equal("draft", row.State);
         var replay = await Create(key, takeover.Etag!); Assert.True(replay.Replayed); Assert.Equal(created.Body, replay.Body);
         if (submissionStorage) { await VerifyServicingCapacitySubmissionStorage(db, f, row, lease, selectedEvidence); return; }
+        if (workerScenario is not null) { await VerifyServicingCapacityWorker(db,f,row,lease,created.Etag!,workerScenario); return; }
         if (submitCommand) { await VerifyServicingCapacitySubmit(db, f, row, lease, created.Etag!); return; }
         Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => Create(Key(), created.Etag!))).Status);
         await Assert.ThrowsAsync<CommandKeyConflictException>(() => Create(key, takeover.Etag!, why: "Changed request under original key"));
