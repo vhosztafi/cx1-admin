@@ -30,6 +30,14 @@ internal static class ServicingEvidenceProjection
         var warranty=ServicingWarrantyRules.Requirement(context,slices,conditions.Where(x=>x.Kind=="warranty")
             .Select(x=>new ServicingWarrantyInput(x.Id,JsonSerializer.Deserialize<JsonElement>(x.DefinitionJson),JsonSerializer.Deserialize<DateTimeOffset[]>(x.EffectiveDatesJson)!)).ToArray());
         if(warranty is not null) requirements.Add(warranty);
+        var submissions=await (from k in db.Set<ServicingCapacityCase>().AsNoTracking()
+            join s in db.Set<ServicingCapacitySubmission>().AsNoTracking() on k.CurrentSubmissionId equals s.Id
+            where k.DraftId==held.Scope.Draft.Id && k.CycleId==held.Cycle.Id && k.State!="draft" && k.State!="superseded"
+            select new {s.Id,s.ContextHash}).Take(101).ToArrayAsync(token);
+        if(submissions.Length>100) throw new QuoteOperationException(409,"servicing-capacity-purpose-limit");
+        foreach(var submission in submissions)
+            requirements.Add(ServicingCapacityProofRules.Requirement(context,submission.Id,Convert.ToHexStringLower(submission.ContextHash),
+                slices.Select(x=>x.EffectiveAt).ToArray()));
         return requirements;
     }
 

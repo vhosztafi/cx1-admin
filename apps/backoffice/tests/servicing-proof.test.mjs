@@ -28,6 +28,14 @@ test('commands snapshot form and scope and reject foreign cycles and routes', ()
   assert.throws(() => proofCommand(scope, '/evidence?other=draft', body));
   assert.throws(() => proofCommand({...scope, etag:'W/"AAAAAAAAAAE="'}, '/evidence', body));
 });
+
+test('capacity response proof also requires the exact submission identity',()=>{
+  const requirement={code:'capacity-response',riskItemId:null,capacitySubmissionId:ids[4],inputFingerprint:'a'.repeat(64),context:{...scope,ratingId:ids[5]}};
+  const association={...requirement.context,...requirement,withdrawn:false};
+  assert.equal(currentProof(association,requirement),true);
+  assert.equal(currentProof({...association,capacitySubmissionId:ids[3]},requirement),false);
+  assert.equal(currentProof({...association,capacitySubmissionId:null},requirement),false);
+});
 test('only a receipt for the exact saved scope and strong matching ETag confirms success', () => {
   const command = proofCommand(scope, '/evidence', {cycleId:scope.cycleId});
   assert.equal(confirmProofReceipt(command, receipt, receipt.draftEtag), receipt);

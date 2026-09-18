@@ -478,6 +478,16 @@ test('servicing rating contracts bind saved revision and expose immutable scoped
  assert.equal(schema.properties.nextBeforeSequence,undefined);
 });
 
+test('servicing capacity proof exposes its submission while attachment derives ownership from the fingerprint',()=>{
+ const id='10000000-0000-4000-8000-000000000001';
+ const attach=ajv.getSchema(`${rootId}#/$defs/ServicingAttachProofRequest`);
+ const request={cycleId:id,fileId:id,requirementCode:'capacity-response',inputFingerprint:'a'.repeat(64),reason:'Attach fictional carrier reply'};
+ assert.ok(attach(request),JSON.stringify(attach.errors));
+ assert.equal(attach({...request,capacitySubmissionId:id}),false);
+ for(const name of ['ServicingProofRequirement','ServicingAssociationView'])
+  assert.ok(document.components.schemas[name].properties.capacitySubmissionId,`${name} exact response source`);
+});
+
 test('servicing current authority keeps grants separate and limits paged live reads',()=>{
  const operation=getOperation('getServicingCurrentAuthority');
  assert.equal(operation['x-permission'],'policy-read');

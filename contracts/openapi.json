@@ -118071,7 +118071,8 @@
               "photocard-both-sides",
               "driving-record",
               "premises-security",
-              "warranty-acknowledgement"
+              "warranty-acknowledgement",
+              "capacity-response"
             ]
           },
           "label": {
@@ -118083,6 +118084,17 @@
             "maxLength": 500
           },
           "riskItemId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "capacitySubmissionId": {
             "anyOf": [
               {
                 "type": "string",
@@ -118114,6 +118126,7 @@
           "label",
           "path",
           "riskItemId",
+          "capacitySubmissionId",
           "effectiveDates",
           "inputFingerprint",
           "context"
@@ -118157,7 +118170,7 @@
                 "satisfied"
               ]
             },
-            "maxItems": 5001
+            "maxItems": 5101
           }
         },
         "required": [
@@ -118252,10 +118265,22 @@
               "photocard-both-sides",
               "driving-record",
               "premises-security",
-              "warranty-acknowledgement"
+              "warranty-acknowledgement",
+              "capacity-response"
             ]
           },
           "riskItemId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "capacitySubmissionId": {
             "anyOf": [
               {
                 "type": "string",
@@ -118321,6 +118346,7 @@
           "fileName",
           "code",
           "riskItemId",
+          "capacitySubmissionId",
           "inputFingerprint",
           "reason",
           "etag",
@@ -119204,7 +119230,8 @@
               "photocard-both-sides",
               "driving-record",
               "premises-security",
-              "warranty-acknowledgement"
+              "warranty-acknowledgement",
+              "capacity-response"
             ]
           },
           "riskItemId": {

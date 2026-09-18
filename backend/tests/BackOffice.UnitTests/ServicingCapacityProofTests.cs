@@ -16,6 +16,11 @@ public sealed class ServicingCapacityProofTests
         var original=ServicingCapacityProofRules.Requirement(Context,submission,hash,[Day,Day.AddMonths(1)]);
         Assert.Equal("capacity-response",original.Code);Assert.Null(original.RiskItemId);Assert.Equal(submission,original.CapacitySubmissionId);
         Assert.Matches("^[0-9a-f]{64}$",original.InputFingerprint);
+        var proof=new ServicingReviewedProof(Context.DraftId,Context.CycleId,Context.RevisionId,Context.RatingId,original.Code,null,
+            original.InputFingerprint,"accepted","accepted",false);
+        Assert.False(ServicingEvidenceRules.Satisfied(Context,original,proof));
+        Assert.True(ServicingEvidenceRules.Satisfied(Context,original,proof with {CapacitySubmissionId=submission}));
+        Assert.False(ServicingEvidenceRules.Satisfied(Context,original,proof with {CapacitySubmissionId=Guid.NewGuid()}));
         Assert.NotEqual(original.InputFingerprint,ServicingCapacityProofRules.Requirement(Context,Guid.NewGuid(),hash,[Day,Day.AddMonths(1)]).InputFingerprint);
         Assert.NotEqual(original.InputFingerprint,ServicingCapacityProofRules.Requirement(Context,submission,new string('c',64),[Day,Day.AddMonths(1)]).InputFingerprint);
         foreach(var context in new[]{Context with {DraftId=Guid.NewGuid()},Context with {CycleId=Guid.NewGuid()},Context with {RevisionId=Guid.NewGuid()},

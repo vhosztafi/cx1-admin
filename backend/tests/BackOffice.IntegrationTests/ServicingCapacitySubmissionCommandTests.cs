@@ -90,7 +90,9 @@ public sealed partial class UnderwritingRuntimeTests
         var selection = await db.Set<ServicingCapacitySubmissionEvidence>().AsNoTracking().SingleAsync();
         Assert.Equal(association.Id, selection.AssociationId); Assert.Equal(association.LatestReviewId, selection.ReviewId);
         Assert.True((await Submit(secondKey, reviewed.Etag!, caseVersion: withdrawn.RowVersion, evidence: [association.Id])).Replayed);
-        await proofs.WithdrawAsync(f.Underwriter, capacity.DraftId, capacity.CycleId, association.Id, Version(second.Etag!), lease,
+        var secondSubmission=await db.Set<ServicingCapacitySubmission>().Where(x=>x.CaseId==capacity.Id).OrderByDescending(x=>x.Sequence).FirstAsync();
+        var responseProofVersion=await VerifyServicingCapacityResponseProof(db,f,capacity,secondSubmission.Id,lease,second.Etag!);
+        await proofs.WithdrawAsync(f.Underwriter, capacity.DraftId, capacity.CycleId, association.Id, Version(responseProofVersion), lease,
             association.RowVersion, "Withdraw fictional carrier proof", Key(), Guid.NewGuid());
         Assert.Equal("servicing-capacity-evidence-unavailable", (await Assert.ThrowsAsync<QuoteOperationException>(() =>
             Submit(secondKey, reviewed.Etag!, caseVersion: withdrawn.RowVersion, evidence: [association.Id]))).Code);

@@ -28,6 +28,7 @@ public sealed partial class BackOfficeDbContext
         Text(submission, ("Body", 10000), ("Reason", 2000));
         UnderwritingJson(submission, "ContextJson"); Hash(submission, "ContextHash");
         submission.HasAlternateKey(x => new { x.Id, x.CaseId, x.CycleId, x.DraftId, x.RevisionId, x.RatingId });
+        submission.HasAlternateKey(x => new { x.Id, x.CycleId, x.DraftId, x.RevisionId, x.RatingId });
         submission.HasIndex(x => new { x.CaseId, x.Sequence }).IsUnique();
         submission.HasIndex(x => x.WorkId).IsUnique();
         submission.HasOne<ServicingCapacityCase>().WithMany()

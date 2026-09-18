@@ -26,7 +26,7 @@ public sealed partial class ServicingEvidenceService
             from e in reviews.DefaultIfEmpty()
             where a.DraftId==draftId && a.CycleId==held.Cycle.Id
             select new ServicingReviewedProof(a.DraftId,a.CycleId,a.RevisionId,a.RatingId,a.RequirementCode,a.RiskItemId,
-                a.InputFingerprint,f.ScreeningState,e==null?"unreviewed":e.Outcome!,a.WithdrawnEventId!=null)).ToArrayAsync(token);
+                a.InputFingerprint,f.ScreeningState,e==null?"unreviewed":e.Outcome!,a.WithdrawnEventId!=null,a.CapacitySubmissionId)).ToArrayAsync(token);
         var applicable=held.Rating.ExpiresAt>time.GetUtcNow();
         var result=new ServicingEvidenceView(draftId,held.Cycle.Id,"\""+Convert.ToBase64String(held.Scope.Draft.RowVersion)+"\"",applicable,
             requirements.Select(r=>new ServicingProofView(r,applicable && rows.Any(p=>ServicingEvidenceRules.Satisfied(r.Context,r,p)))).ToArray());
@@ -50,11 +50,11 @@ public sealed partial class ServicingEvidenceService
             async (db,ct)=>
             {
                 await held!.Current(db,factory,time,version,leaseToken,ct);
-                var required=(await ServicingEvidenceProjection.RequirementsAsync(db,held,ct)).SingleOrDefault(x=>x.Code==code && x.RiskItemId==riskItemId)
-                    ?? throw new QuoteOperationException(422,"servicing-evidence-purpose-inapplicable");
-                if (required.InputFingerprint!=fingerprint) throw new QuoteOperationException(412,"servicing-evidence-input-stale");
+                var purposes=(await ServicingEvidenceProjection.RequirementsAsync(db,held,ct)).Where(x=>x.Code==code && x.RiskItemId==riskItemId).ToArray();
+                if(purposes.Length==0) throw new QuoteOperationException(422,"servicing-evidence-purpose-inapplicable");
+                var required=purposes.SingleOrDefault(x=>x.InputFingerprint==fingerprint)??throw new QuoteOperationException(412,"servicing-evidence-input-stale");
                 var now=time.GetUtcNow();var row=new ServicingEvidenceAssociation { DraftId=draftId,CycleId=cycleId,RevisionId=held.Cycle.RevisionId,
-                    RatingId=held.Rating.Id,FileId=fileId,RequirementCode=code,RiskItemId=riskItemId,InputFingerprint=fingerprint,Reason=reason,
+                    RatingId=held.Rating.Id,FileId=fileId,RequirementCode=code,RiskItemId=riskItemId,CapacitySubmissionId=required.CapacitySubmissionId,InputFingerprint=fingerprint,Reason=reason,
                     CreatedBy=held.Scope.Source.Scope.Actor.UserId,CreatedAt=now,UpdatedAt=now };
                 db.Add(row);return await held.Receipt(db,row.Id,201,now,ct);
             },token);
@@ -101,7 +101,7 @@ public sealed partial class ServicingEvidenceService
                 if (association.WithdrawnEventId is not null) throw new QuoteOperationException(409,"servicing-evidence-withdrawn");
                 if (kind=="review")
                 {
-                    var purpose=(await ServicingEvidenceProjection.RequirementsAsync(db,held,ct)).SingleOrDefault(x=>x.Code==association.RequirementCode && x.RiskItemId==association.RiskItemId);
+                    var purpose=(await ServicingEvidenceProjection.RequirementsAsync(db,held,ct)).SingleOrDefault(x=>x.Code==association.RequirementCode && x.RiskItemId==association.RiskItemId && x.CapacitySubmissionId==association.CapacitySubmissionId);
                     if (purpose is null || purpose.InputFingerprint!=association.InputFingerprint || fingerprint!=association.InputFingerprint)
                         throw new QuoteOperationException(412,"servicing-evidence-input-stale");
                 }
