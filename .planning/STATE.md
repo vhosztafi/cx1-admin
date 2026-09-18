@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-06 proof/referral UI wired; current authority and browser acceptance remain
-last_updated: "2026-09-18T01:31:32.296230+00:00"
-last_activity: "2026-09-18 —07-06 UI734c6e0;126 frontend tests/typecheck/lint pass; current limits/history/browser remain."
+stopped_at: Plan07-06 evidence/referral browser journeys passed; explicit submission/navigation remain
+last_updated: "2026-09-18T02:01:35.328832+00:00"
+last_activity: "2026-09-18 —07-06 browser0e81d53 passes both products;126 frontend,18 targeted backend,38 contract cases;3 source controls remain."
 progress:
   total_phases: 13
   completed_phases: 6
@@ -21,14 +21,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute Phase7;07-01..05 complete;07-05 rating API/worker/UI verified;07-06 APIs and frontend forms verified by targeted tests; current limits/history/browser acceptance remain.
+**Current focus:** Execute Phase7;07-01..05 complete.07-06 proof/referral UI/API and both persisted browser journeys pass; explicit underwriting submission and referral-navigation source controls remain.
 
 ## Current Position
 
 Phase: 7 of 13 (Policy lifecycle and history)
 Plan: 5 of16 complete;07-06 in progress
-Status: Executing Phase7;07-06 proof/referral UI wired; current authority and browser acceptance remain
-Last activity: 2026-09-18 —07-06 UI734c6e0;126 frontend tests/typecheck/lint passed. Resume07-06-PROGRESS.md.
+Status: Executing Phase7;07-06 browser acceptance passed; source submission/navigation controls remain
+Last activity: 2026-09-18 —07-06 browser0e81d53 and authority86a9d9a verified. Resume latest07-06-PROGRESS.md checkpoint.
 
 Progress: Phases1–6 complete;6/13 phases,54 completed implementation plans.
 

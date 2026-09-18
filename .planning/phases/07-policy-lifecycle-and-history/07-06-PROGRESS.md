@@ -815,3 +815,86 @@ invocation passed. No SQL rerun needed for this frontend-only checkpoint.
 Backend latest evidence remains34 backend cases/37 contracts/26 live response
 shapes from the previous checkpoint. No shared demo migrations or browser result
 claimed. Phase remains5/16,total54/65.
+
+
+## Current authority and local preview checkpoint —86a9d9a
+
+Added GET /drafts/{draftId}/referrals/{referralId}/authority with held current
+actor scope, distinct effective grants, bounded signed grant cursors (max5),
+per-date referral dimension limits and full-schedule assessment with retained
+conditions. No combined maxima or inferred issue permission. Pinned trading-year
+threshold now reaches the shared authority display (default remains5). UI exposes
+this live read and an evidence rating-cycle picker for retained historical proof.
+
+Current authority RED .local/phase7-06-current-authority-red/sql:2 expected404s.
+First green attempt reached revocation but the fixture's historical clock
+violated RevokedAt>=CreatedAt; corrected to actual audit timestamp. Reviewed
+.local/phase7-06-current-authority-reviewed passes16 targeted units+2 SQL/HTTP
+journeys (gate18,minimumSQL2,cutoff2026-09-18T01:00:00Z). Both products prove
+revocation removes current grants without changing draft ETag.4 fresh authority
+HTTP bodies validate in authority mode;38 API contract cases pass; OpenAPI valid
+with28 existing unused-component warnings. TypeScript and changed-file lint pass.
+
+Local demo migrations and idempotent seeds applied additively, no reset:
+.local/phase7-06-demo-upgrade.log. API Release build passed0 warnings/errors; web
+production build passed. Old owned API52872/web25844 were verified and stopped.
+Current API81768 serves5087. Web has been rebuilt/restarted during browser fixes;
+read .local/phase7-06-preview-pids.json and verify actual process before stopping.
+
+Browser harness scripts/verify-servicingevidence-browser.mjs is now implemented
+but NOT passed. First attempt created combined draft333156b3-5b7e-4adb-acc8-01782ff360ff,
+rated a business start-date change and found UW-22; it timed out finding the
+decision selector via getByLabel. Accessible snapshot confirmed the role/name;
+new form labels are now explicit and scoped field spacing added after inspecting
+.local/browser-evidence/servicing-evidence/failure.png. Harness preflight only
+abandons a previous draft recorded by this harness with exact policy/reason
+checks, preserving its audit. No test success or completed source coverage yet.
+
+The source audit identifies3 controls assigned07-06: Open referrals, Submit to
+underwriting, and the pMta.sections[3].rows[0] navigation. Explicit submission and
+policy-to-referral navigation still require implementation/verification; rating
+automatically creating referrals is not counted as those controls. Prototype
+submitMta() checks rated/no missing capture then shows submission toast. Need a
+persisted implementation, not a toast-only alias. Keep07-06 incomplete,5/16,total54/65.
+
+
+## Browser acceptance checkpoint —0e81d53 (latest)
+
+Both actual Chrome Motor Trade journeys now PASS, completed2026-09-18T01:57:35Z:
+.local/phase7-06-servicing-evidence-browser-labels.log and
+.local/browser-evidence/servicing-evidence/report.json. First attempt's accessible
+label lookup failed; explicit labels and scoped existing-style field layout were
+fixed and the complete journey rerun. Both products verify actual conditional
+decision, current actor authority, same-key/ETag/lease lost-upload retry with one
+stored file, all required driver/business proofs and Combined premises security,
+rejected then accepted content, conditional resolution while missing trading
+proof independently blocks readiness, withdrawal invalidation, replacement proof,
+reload persistence, rerated historical read-only proof, authorized download,390px
+containment and unchanged issued snapshot. Each successful journey abandons only
+its own fictional draft, retaining all history. The previous failed combined
+draft was also abandoned through the UI after exact harness policy/reason checks.
+
+Desktop/mobile full screenshots are retained. Focused retained-proof desktop and
+mobile screenshots were captured from the persisted historical cycle and visually
+inspected; fields, controls and wrapping fit both sizes. No human UAT claimed.
+Final126 frontend cases pass (.local/phase7-06-proof-ui-final-tests.log), changed
+TypeScript/React lint passes and root TypeScript --noEmit --incremental false
+passes. Production web rebuild .local/phase7-06-preview-web-label-build.log passed.
+Backend/contract evidence remains86a9d9a's16unit+2SQL gate18,38 contract cases and
+4 actual authority responses; earlier34-case proof API coverage remains recorded.
+
+Running preview now API81768 (5087) and web86300 (3100); read and verify
+.local/phase7-06-preview-pids.json before stopping. Demo was upgraded additively
+without reset. No outstanding test process. frontend-code untouched.
+
+NEXT: finish the3 source controls before closing07-06. Prototype Open referrals
+is a policy link to its MTA (go:'mta'); add persisted-policy/draft navigation to
+the correct servicing referral section. The MTA review-row link should reach its
+referral details. Submit to underwriting is a distinct explicit action: source
+submitMta() requires rated/capture-complete and shows submission, but current
+implementation only creates referrals during rating. Add a current-scope, version/
+lease fenced, idempotent persisted submission with readback and tests, preserving
+older cycle submissions on rerating. Do not present a navigation/toast alias as
+a saved submission or count automatic rating as that control. Then verify these
+controls, review source fields and record07-06-SUMMARY. Only then advance07-07.
+Phase7 remains5/16 complete,total54/65; no plan completion claimed.
