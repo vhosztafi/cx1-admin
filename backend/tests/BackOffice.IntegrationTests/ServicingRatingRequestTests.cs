@@ -41,6 +41,8 @@ public sealed partial class UnderwritingRuntimeTests
     [InlineData("motor-trade-combined", "submission-command")]
     [InlineData("motor-trade-road-risks", "submission-http")]
     [InlineData("motor-trade-combined", "submission-http")]
+    [InlineData("motor-trade-road-risks", "referral-work-http")]
+    [InlineData("motor-trade-combined", "referral-work-http")]
     [InlineData("motor-trade-road-risks", "trading-proof")]
     [InlineData("motor-trade-combined", "trading-proof")]
     [InlineData("motor-trade-road-risks", "referral-service")]
@@ -101,12 +103,12 @@ public sealed partial class UnderwritingRuntimeTests
                 new { changeId = second, riskItemId = issued.PolicyId, kind = "cover", operation = "update", payload = new { },
                     effectiveIntent = new { localDate = "2026-10-15", localTime = "00:00", timeZone = "Europe/London" } }
             });
-            if (scenario is "temporary-cover" or "referral-generation" or "referral-authority")
+            if (scenario is "temporary-cover" or "referral-generation" or "referral-authority" or "referral-work-http")
             {
                 var originalSections = snapshot["cover"]!["requestedSections"]!.DeepClone();
                 var temporarySections = originalSections.DeepClone();
                 var tools = temporarySections.AsArray().Single(x => x!["code"]!.GetValue<string>() == "tools-equipment")!;
-                tools["selected"] = true; tools["limit"] = scenario is "referral-generation" or "referral-authority" ? "10000.00" : "1000.00"; tools["excess"] = "100.00";
+                tools["selected"] = true; tools["limit"] = scenario is "referral-generation" or "referral-authority" or "referral-work-http" ? "10000.00" : "1000.00"; tools["excess"] = "100.00";
                 proposal["changes"] = JsonSerializer.SerializeToNode(new object[] {
                     new { changeId = first, riskItemId = issued.PolicyId, kind = "cover", operation = "update", payload = new { requestedSections = temporarySections } },
                     new { changeId = second, riskItemId = issued.PolicyId, kind = "cover", operation = "update", payload = new { requestedSections = originalSections },
@@ -248,6 +250,11 @@ public sealed partial class UnderwritingRuntimeTests
             }
             if (scenario is "reject" or "revoke-before-apply") Assert.Empty(await db.Set<ServicingReferral>().Where(x=>x.DraftId==draftId).ToArrayAsync());
             var ratedView = await readModel.ReadAsync(f.Servicing, draftId, pageSize: 1);
+            if(scenario=="referral-work-http")
+            {
+                await VerifyServicingReferralWorkHttp(db,f,password,applied,fence,ratedView.DraftEtag);
+                Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);return;
+            }
             if(scenario=="submission-http")
             {
                 await VerifyServicingSubmissionHttp(db,f,password,applied,cycle,fence,ratedView.DraftEtag);

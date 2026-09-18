@@ -25,12 +25,14 @@ export function addServicingProofReads({schemas,ref,route,paths}) {
  schemas.ServicingFilePage=page('ServicingFileView');schemas.ServicingAssociationPage=page('ServicingAssociationView');schemas.ServicingReviewPage=page('ServicingReviewView');
  schemas.ServicingDecisionPage=object({...page('ServicingDecisionView').properties,referralId:id,cycleId:id});
  schemas.ServicingReferralPage=object({...page('ServicingReferralView').properties,draftId:id,cycleId:id,applicable:flag});
+ schemas.ServicingReferralWork=object({...schemas.ServicingReferralPage.properties,items:{type:'array',minItems:1,maxItems:1,items:ref('ServicingReferralView')},nextCursor:{type:'null'}});
  for(const [suffix,name,schema,paginated] of [
   ['evidence/requirements','getServicingProofRequirements','ServicingProofRequirements',false],
   ['evidence-files','listServicingEvidenceFiles','ServicingFilePage',true],
   ['evidence','listDraftEvidence','ServicingAssociationPage',true],
   ['evidence/{associationId}/events','listServicingEvidenceEvents','ServicingReviewPage',true],
   ['referrals','listServicingReferrals','ServicingReferralPage',true],
+  ['referrals/{referralId}','getServicingReferralWork','ServicingReferralWork',false],
   ['referrals/{referralId}/decisions','listServicingReferralDecisions','ServicingDecisionPage',true],
   ['referrals/{referralId}/authority','getServicingCurrentAuthority','ServicingCurrentAuthorityPage',true],
   ['evidence-files/{fileId}/content','downloadServicingEvidenceFile','ServicingFileView',false],

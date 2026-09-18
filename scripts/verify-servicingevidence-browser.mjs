@@ -4,7 +4,7 @@ import {chromium} from 'playwright';
 const origin=process.env.COVER_WEB_ORIGIN??'http://127.0.0.1:3100';
 assert.ok(['127.0.0.1','localhost'].includes(new URL(origin).hostname));
 const output='.local/browser-evidence/servicing-evidence';await mkdir(output,{recursive:true});
-const navigationOnly=process.env.COVER_SERVICING_NAVIGATION_ONLY==='1',submissionOnly=process.env.COVER_SERVICING_SUBMISSION_ONLY==='1';const reportPath=output+(submissionOnly?'/submission-report.json':navigationOnly?'/navigation-report.json':'/report.json');
+const navigationOnly=process.env.COVER_SERVICING_NAVIGATION_ONLY==='1',submissionOnly=process.env.COVER_SERVICING_SUBMISSION_ONLY==='1',workOnly=process.env.COVER_SERVICING_REFERRAL_WORK_ONLY==='1';const reportPath=output+(workOnly?'/referral-work-report.json':submissionOnly?'/submission-report.json':navigationOnly?'/navigation-report.json':'/report.json');
 const fixtures=JSON.parse(await readFile('.local/browser-evidence/underwriting-issue/report.json','utf8')).journeys;
 const password=(await readFile('.local/demo-password.txt','utf8')).trim();
 const browser=await chromium.launch({channel:'chrome',headless:true});
@@ -76,11 +76,36 @@ try{
    report.journeys.push({productCode:fixture.productCode,policyId:fixture.policyId,draftId,cycleId,checks:['saved scoped submission with missing proof','lost response and immutable exact retry','lost response recovered from persisted handoff','one submission per cycle','referral review navigation','desktop and390px containment','rerating retains prior handoff','reload persisted current submission','abandonment retains both submissions','issued snapshot unchanged']});await writeFile(reportPath,JSON.stringify(report,null,2));continue;
   }
   const editor=await get(path+'/editor');const driver=editor.assessment.slices[0].proposed.risk.drivers[0];assert.ok(driver);
-  const row=page.locator(`[data-referral-id="${referral.id}"]`);await row.getByRole('checkbox').check();
+  const row=page.locator(`[data-referral-id="${referral.id}"]`);
+  if(workOnly){
+   await row.getByRole('link',{name:'Open referral work · '+referral.ruleCode,exact:true}).click();
+   await page.getByRole('heading',{name:'Referral work',exact:true}).waitFor();assert.ok(page.url().endsWith('#servicing-referral-'+referral.id));
+   await page.waitForFunction(id=>document.activeElement?.id==='servicing-referral-'+id,referral.id);
+   const work=await get(path+`/referrals/${referral.id}`);assert.equal(work.items.length,1);assert.equal(work.items[0].id,referral.id);
+   await page.reload();await row.waitFor();assert.equal(await page.locator('[data-referral-id]').count(),1);
+   await button('Acquire editing lease').click();await page.getByRole('heading',{name:'You are editing this draft',exact:true}).waitFor();
+  }
+  await row.getByRole('checkbox').check();
   await field('Decision outcome').selectOption('approve-with-conditions');await field('Condition type').selectOption('provide-driver-proof');await field('Condition risk target').selectOption(driver.id);await field('Driver proof purpose').selectOption('photocard-both-sides');await button('Add condition').click();await field('Decision reason').fill('Fictional licence content must be independently reviewed');
   await command(`/referrals/${referral.id}/decisions`,()=>button('Record decision for 1 selected').click());
   referrals=await get(path+'/referrals');const condition=referrals.items.find(x=>x.id===referral.id).conditions[0];assert.equal(condition.satisfied,false);
   console.log(fixture.productCode+': conditional decision persisted');
+  if(workOnly){
+   const region=page.getByRole('region',{name:'Servicing referrals',exact:true});
+   await row.getByText(/Current decision authority is available/).waitFor();
+   const history=await get(path+`/referrals/${referral.id}/decisions`);assert.equal(history.items.length,1);assert.equal(history.items[0].outcome,'approve-with-conditions');
+   assert.equal((await get(path+`/referrals/${referral.id}`)).items[0].decisionReady,false);
+   await region.screenshot({path:`${output}/${fixture.productCode}-referral-work-desktop.png`});await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await region.screenshot({path:`${output}/${fixture.productCode}-referral-work-mobile.png`});
+   await page.setViewportSize({width:1560,height:1000});await lease();await button('Re-rate saved adjustment').click();await waitForRead(path+'/ratings',value=>value.current?.id!==cycleId&&value.current?.applicable);
+   const stale=await page.request.get(origin+path+`/referrals/${referral.id}`);assert.equal(stale.status(),404);
+   assert.equal(await button('Record decision for 0 selected').isDisabled(),true);
+   await page.getByRole('link',{name:'Back to referral list',exact:true}).click();await page.getByRole('heading',{name:'Underwriting referrals',exact:true}).waitFor();
+   await page.waitForFunction(()=>document.activeElement?.id==='servicing-referrals');
+   const current=await get(path+'/referrals');assert.ok(current.items.every(item=>item.id!==referral.id));
+   await field('Takeover or abandonment reason').fill('Fictional referral work navigation verification complete');await field('I confirm this draft should be abandoned.').check();await button('Abandon draft').click();await page.getByText('Abandoned',{exact:true}).waitFor();
+   assert.deepEqual((await get(`/api/v1/policies/${fixture.policyId}`)).snapshot,before.snapshot);
+   report.journeys.push({productCode:fixture.productCode,policyId:fixture.policyId,draftId,cycleId,referralId:referral.id,checks:['specific persisted referral work navigation','deep link reload and keyboard focus','single-referral conditional decision and history','live authority display','missing proof remains blocking','stale work link cannot target replacement referral','back to current referral list','390px containment','issued snapshot unchanged']});await writeFile(reportPath,JSON.stringify(report,null,2));continue;
+  }
   await page.getByRole('link',{name:'Review referrals',exact:true}).click();assert.ok(page.url().endsWith('#servicing-referrals'));
   await page.getByRole('link',{name:'Back to policy',exact:true}).click();await page.locator(`a[href="/drafts/${draftId}#servicing-referrals"]`).click();
   await page.locator('#servicing-referrals').waitFor();await page.waitForFunction(()=>document.activeElement?.id==='servicing-referrals');
@@ -146,5 +171,5 @@ try{
   report.journeys.push({productCode:fixture.productCode,policyId:fixture.policyId,draftId,cycleId,fileId,referralId:referral.id,checks:['lease renewal retains proof form without stale write authority','policy-to-own-draft referral navigation and focus','draft review referral link','dirty edits block proof','conditional decision with saved driver target','current authority display','lost upload response exact retry and one stored file','driver and applicable premises proofs','rejected then accepted content','independently blocking trading proof','condition resolution','withdrawal removes readiness','replacement restores readiness','reload persistence','historical cycle readonly','scoped download','390px containment','issued snapshot unchanged']});
   await writeFile(reportPath,JSON.stringify(report,null,2));
  }
- assert.deepEqual(errors,[]);report.completedAt=new Date().toISOString();await writeFile(reportPath,JSON.stringify(report,null,2));console.log(submissionOnly?'Both Motor Trade submission browser journeys passed.':navigationOnly?'Both Motor Trade targeted navigation and renewal browser journeys passed.':'Both Motor Trade servicing evidence browser journeys passed.');
+ assert.deepEqual(errors,[]);report.completedAt=new Date().toISOString();await writeFile(reportPath,JSON.stringify(report,null,2));console.log(workOnly?'Both Motor Trade referral work browser journeys passed.':submissionOnly?'Both Motor Trade submission browser journeys passed.':navigationOnly?'Both Motor Trade targeted navigation and renewal browser journeys passed.':'Both Motor Trade servicing evidence browser journeys passed.');
 }catch(error){await page.screenshot({path:`${output}/failure.png`,fullPage:true}).catch(()=>{});throw error;}finally{await browser.close();}

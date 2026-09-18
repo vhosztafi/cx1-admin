@@ -509,3 +509,11 @@ test('servicing handoff requires exact saved scope and exposes bounded immutable
  assert.equal(document.components.schemas.ServicingSubmissionPage.properties.items.maxItems,50);
  assert.ok(document.components.schemas.ServicingSubmissionPage.required.includes('current'));
 });
+
+test('referral work returns exactly one scoped referral with no unbounded collection inputs',()=>{
+ const operation=getOperation('getServicingReferralWork');assert.equal(operation['x-permission'],'policy-read');
+ assert.equal(operation['x-runtime-status'],'phase-7-06-read-implemented');assert.equal(operation.parameters.some(x=>x.in==='query'),false);
+ const schema=document.components.schemas.ServicingReferralWork;assert.equal(schema.properties.items.minItems,1);assert.equal(schema.properties.items.maxItems,1);
+ assert.equal(schema.properties.nextCursor.type,'null');assert.equal(schema.additionalProperties,false);
+ assert.equal(operation.responses[200].headers.ETag,undefined);assert.equal(operation.responses[200].headers['Cache-Control'].schema.const,'no-store');
+});

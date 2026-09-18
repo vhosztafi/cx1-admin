@@ -5,8 +5,20 @@ namespace BackOffice.Api;
 
 public static class ServicingProofReadEndpoints
 {
+    private static async Task<IResult> ReferralWork(Guid draftId,Guid referralId,HttpContext context,ServicingReferralService service)
+    {
+        context.Response.Headers.CacheControl="no-store";
+        try
+        {
+            QuoteEndpoints.Id(draftId);QuoteEndpoints.Id(referralId);QuoteHttpInput.NoQuery(context.Request);
+            var view=await service.ReadReferralsAsync(LocalIdentityService.Actor(context.User),draftId,pageSize:1,token:context.RequestAborted,referralId:referralId);
+            return Results.Json(new {view.DraftId,view.CycleId,view.DraftEtag,view.Applicable,view.Items,nextCursor=(string?)null});
+        }
+        catch(Exception error) when(QuoteEndpoints.Known(error)){return QuoteEndpoints.Failure(context,error);}
+    }
     public static void MapServicingProofReads(this WebApplication app)
     {
+        app.MapGet("/api/v1/drafts/{draftId:guid}/referrals/{referralId:guid}",ReferralWork).RequireAuthorization("policy-read");
         app.MapGet("/api/v1/drafts/{draftId:guid}/evidence/requirements",Requirements).RequireAuthorization("policy-read");
         app.MapGet("/api/v1/drafts/{draftId:guid}/evidence-files/{fileId:guid}/content",Download).RequireAuthorization("policy-read");
         app.MapGet("/api/v1/drafts/{draftId:guid}/evidence-files",(Guid draftId,HttpContext c,ServicingEvidenceService e,ServicingReferralService r,PartyPaging p)=>Page(draftId,"files",null,c,e,r,p)).RequireAuthorization("policy-read");

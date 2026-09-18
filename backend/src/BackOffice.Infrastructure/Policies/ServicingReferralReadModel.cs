@@ -15,13 +15,14 @@ public sealed record ServicingReferralPage(Guid DraftId,Guid CycleId,string Draf
 
 public sealed partial class ServicingReferralService
 {
-    public async Task<ServicingReferralPage> ReadReferralsAsync(ActorContext actor,Guid draftId,int afterSequence=0,int pageSize=50,CancellationToken token=default)
+    public async Task<ServicingReferralPage> ReadReferralsAsync(ActorContext actor,Guid draftId,int afterSequence=0,int pageSize=50,CancellationToken token=default,Guid? referralId=null)
     {
-        if(afterSequence<0 || pageSize is <1 or >50) throw new QuoteOperationException(422,"servicing-referral-page-invalid");
+        if(afterSequence<0 || pageSize is <1 or >50 || referralId==Guid.Empty) throw new QuoteOperationException(422,"servicing-referral-page-invalid");
         await using var db=await factory.CreateDbContextAsync(token);await using var tx=await db.Database.BeginTransactionAsync(token);
         var now=time.GetUtcNow();var held=await ServicingDecisionContext.Hold(db,actor,draftId,"policy-read",now,token);
-        var rows=await db.Set<ServicingReferral>().AsNoTracking().Where(x=>x.DraftId==draftId && x.CycleId==held.Cycle.Id && x.Sequence>afterSequence)
+        var rows=await db.Set<ServicingReferral>().AsNoTracking().Where(x=>x.DraftId==draftId && x.CycleId==held.Cycle.Id && x.Sequence>afterSequence && (referralId==null || x.Id==referralId))
             .OrderBy(x=>x.Sequence).Take(pageSize+1).ToArrayAsync(token);
+        if(referralId is not null && rows.Length==0)throw new QuoteOperationException(404,"servicing-referral-not-found");
         var page=rows.Take(pageSize).ToArray();var decisionIds=page.Where(x=>x.LatestDecisionId is not null).Select(x=>x.LatestDecisionId!.Value).ToArray();
         var decisions=await db.Set<ServicingReferralDecision>().AsNoTracking().Where(x=>x.DraftId==draftId && x.CycleId==held.Cycle.Id && decisionIds.Contains(x.Id)).ToDictionaryAsync(x=>x.Id,token);
         var conditions=await db.Set<ServicingCondition>().AsNoTracking().Where(x=>x.DraftId==draftId && x.CycleId==held.Cycle.Id && decisionIds.Contains(x.DecisionId))
