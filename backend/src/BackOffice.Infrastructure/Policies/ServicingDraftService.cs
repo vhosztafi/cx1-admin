@@ -170,7 +170,7 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
         return lease;
     }
 
-    private async Task Append(BackOfficeDbContext db, ServicingDraft draft, CanonicalServicingProposal proposal, Guid actor, CancellationToken ct)
+    internal async Task Append(BackOfficeDbContext db, ServicingDraft draft, CanonicalServicingProposal proposal, Guid actor, CancellationToken ct)
     {
         var number = (await db.Set<ServicingRevision>().Where(x => x.DraftId == draft.Id).MaxAsync(x => (int?)x.Sequence, ct) ?? 0) + 1;
         var revision = new ServicingRevision { DraftId = draft.Id, Sequence = number, ProposalJson = proposal.Json, ContentHash = proposal.ContentHash, CreatedBy = actor, CreatedAt = time.GetUtcNow() };
@@ -184,6 +184,18 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
         var snapshot = await db.Set<PolicyVersion>().AsNoTracking().Where(x => x.Id == draft.BaseVersionId && x.PolicyId == draft.PolicyId && x.TermId == draft.BaseTermId)
             .Select(x => x.SnapshotJson).SingleAsync(ct);
         var term = await db.Set<PolicyTerm>().SingleAsync(x => x.Id == draft.BaseTermId, ct);
+        if(draft.Kind=="renewal")
+        {
+            var prepared=await db.Set<RenewalPreparationVersion>().AsNoTracking().Where(x=>x.DraftId==draft.Id).OrderByDescending(x=>x.Sequence).FirstOrDefaultAsync(ct);
+            if(prepared is not null)
+            {
+                using var intent=JsonDocument.Parse(prepared.TermIntentJson);
+                var coverage=QuoteTerm.Assess(intent.RootElement).Term??throw new QuoteOperationException(409,"renewal-term-unavailable");
+                if(coverage.StartsAt!=prepared.StartsAt || coverage.EndsAt!=prepared.EndsAt)throw new QuoteOperationException(409,"renewal-term-unavailable");
+                return ServicingProposalRules.Assess(snapshot,proposal.Json,new(draft.PolicyId,draft.BaseVersionId,
+                    prepared.StartsAt,prepared.EndsAt,prepared.StartsAt,time.GetUtcNow(),false,coverage));
+            }
+        }
         var latest = await db.Set<PolicyVersion>().Where(x => x.PolicyId == draft.PolicyId && x.TermId == draft.BaseTermId).MaxAsync(x => x.EffectiveAt, ct);
         return ServicingProposalRules.Assess(snapshot, proposal.Json,
             new(draft.PolicyId, draft.BaseVersionId, term.StartsAt, term.EndsAt, latest, time.GetUtcNow(), actor.AgencyId is null && actor.Roles.Contains("senior-underwriter")));

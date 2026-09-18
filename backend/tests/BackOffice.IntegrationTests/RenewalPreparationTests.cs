@@ -99,6 +99,24 @@ public sealed partial class UnderwritingRuntimeTests
             var leased=await drafts.LeaseAsync(f.Servicing,created.ResourceId,Version(created.Etag!),"acquire",null,null,Guid.NewGuid().ToString(),Guid.NewGuid());
             using var leaseBody=JsonDocument.Parse(leased.Body);var fence=leaseBody.RootElement.GetProperty("lease").GetProperty("leaseToken").GetGuid();
             var service=new RenewalPreparationService(f.Factory,f.Clock);var bytes=Encoding.UTF8.GetBytes("Fictional renewal claims statement.");
+            var preparationKey=Guid.NewGuid().ToString();var preparationVersion=Version(leased.Etag!);
+            var prepared=await service.PrepareAsync(f.Servicing,created.ResourceId,preparationVersion,fence,12,null,preparationKey,Guid.NewGuid());
+            Assert.True((await service.PrepareAsync(f.Servicing,created.ResourceId,preparationVersion,fence,12,null,preparationKey,Guid.NewGuid())).Replayed);
+            var preparation=await db.Set<RenewalPreparationVersion>().AsNoTracking().SingleAsync();
+            Assert.Equal(created.ResourceId,preparation.DraftId);Assert.Equal(12,preparation.TermMonths);
+            Assert.Equal((await db.Set<PolicyTerm>().AsNoTracking().SingleAsync()).EndsAt,preparation.StartsAt);
+            Assert.Equal(prepared.ResourceId,preparation.Id);
+            await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"UPDATE RenewalPreparationVersion SET TermMonths=6 WHERE Id={preparation.Id}"));
+            var shorter=await service.PrepareAsync(f.Servicing,created.ResourceId,Version(prepared.Etag!),fence,6,null,Guid.NewGuid().ToString(),Guid.NewGuid());
+            Assert.Equal(2,await db.Set<RenewalPreparationVersion>().CountAsync());
+            using(var editor=JsonDocument.Parse((await drafts.ReadEditorAsync(f.Servicing,created.ResourceId)).Body))
+            {
+                var assessment=editor.RootElement.GetProperty("assessment");
+                Assert.Equal("short-period",assessment.GetProperty("proposed").GetProperty("termIntent").GetProperty("kind").GetString());
+                Assert.DoesNotContain(assessment.GetProperty("readinessIssues").EnumerateArray(),x=>x.GetProperty("code").GetString()=="effective-outside-term");
+            }
+            Assert.Equal(422,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.PrepareAsync(f.Servicing,created.ResourceId,Version(shorter.Etag!),fence,3,null,Guid.NewGuid().ToString(),Guid.NewGuid()))).Status);
+            leased=shorter;
             var uploadKey=Guid.NewGuid().ToString();
             var uploaded=await service.UploadExperienceAsync(f.Servicing,created.ResourceId,Version(leased.Etag!),fence,"claims.txt","text/plain",bytes,uploadKey,Guid.NewGuid());
             Assert.True((await service.UploadExperienceAsync(f.Servicing,created.ResourceId,Version(leased.Etag!),fence,"claims.txt","text/plain",bytes,uploadKey,Guid.NewGuid())).Replayed);

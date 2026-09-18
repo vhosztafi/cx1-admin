@@ -6,7 +6,7 @@ using BackOffice.Application.Underwriting;
 namespace BackOffice.Application.Policies;
 
 public sealed record ServicingProposalContext(Guid PolicyId, Guid BaseVersionId, DateTimeOffset StartsAt,
-    DateTimeOffset EndsAt, DateTimeOffset LatestIssuedEffectiveAt, DateTimeOffset Now, bool CanBackdate);
+    DateTimeOffset EndsAt, DateTimeOffset LatestIssuedEffectiveAt, DateTimeOffset Now, bool CanBackdate, ResolvedQuoteTerm? CoverageTerm = null);
 public sealed record ServicingProposalSlice(DateTimeOffset EffectiveAt, JsonElement Proposed, IReadOnlyList<Guid> ChangeIds);
 public sealed record ServicingProposalAssessment(JsonElement Base, JsonElement Proposed, IReadOnlyList<QuoteRevisionChange> Changes,
     IReadOnlyList<QuoteFieldIssue> ReadinessIssues, IReadOnlyList<ServicingProposalSlice> Slices);
@@ -21,6 +21,11 @@ public static class ServicingProposalRules
     public static ServicingProposalAssessment Assess(string snapshotJson, string proposalJson, ServicingProposalContext context)
     {
         if (context.PolicyId == Guid.Empty || context.StartsAt >= context.EndsAt) throw new ArgumentException("Trusted policy context is required.");
+        if (context.CoverageTerm is { } coverage)
+        {
+            if(coverage.StartsAt!=context.StartsAt || coverage.EndsAt!=context.EndsAt)throw new ArgumentException("Coverage and projection bounds must agree.");
+            _=QuoteRatingRules.CivilDuration(coverage);
+        }
         var canonical = ServicingProposalInput.Parse(proposalJson, context.BaseVersionId);
         var envelope = JsonNode.Parse(canonical.Json)!.AsObject(); var snapshot = JsonNode.Parse(snapshotJson)!.AsObject();
         var capture = Capture(snapshot, context); var original = Element(capture);
@@ -89,7 +94,7 @@ public static class ServicingProposalRules
         var risk = proposal.GetProperty("risk");
         var modes = risk.TryGetProperty("vehicles", out var vehicles)
             ? vehicles.EnumerateArray().ToDictionary(x => x.GetProperty("id").GetGuid(), _ => "manual") : [];
-        var term = new QuoteTermAssessment(new("annual", context.StartsAt, context.EndsAt, "Europe/London"), []);
+        var term = new QuoteTermAssessment(context.CoverageTerm ?? new("annual", context.StartsAt, context.EndsAt, "Europe/London"), []);
         var capture = QuoteReadiness.Assess(Guid.Empty, Guid.Empty, proposal, term, null, asOf, modes, includeEvidence: false);
         var premises = risk.TryGetProperty("premises", out var rows) ? rows.EnumerateArray().Select(x => x.GetProperty("id").GetGuid()).ToArray() : [];
         return capture.Issues.Select(x => new QuoteFieldIssue(x.Code, x.Path, x.QuestionId))
@@ -104,7 +109,7 @@ public static class ServicingProposalRules
         var cover = snapshot["cover"]!.DeepClone().AsObject(); cover.Remove("sections"); cover.Remove("endorsements"); cover.Remove("warranties");
         var risk = snapshot["risk"]!.DeepClone().AsObject(); risk.Remove("driverBasis");
         var start = TimeZoneInfo.ConvertTime(context.StartsAt, London); var end = TimeZoneInfo.ConvertTime(context.EndsAt, London);
-        var kind = snapshot["term"]!["kind"]!.GetValue<string>();
+        var kind = context.CoverageTerm?.Kind ?? snapshot["term"]!["kind"]!.GetValue<string>();
         var intent = new JsonObject { ["kind"] = kind, ["timeZone"] = "Europe/London", ["localStartDate"] = start.ToString("yyyy-MM-dd"),
             ["localStartTime"] = start.ToString("HH:mm"), ["utcOffsetMinutes"] = (int)start.Offset.TotalMinutes };
         if (kind == "short-period") { intent["localEndDate"] = end.ToString("yyyy-MM-dd"); intent["localEndTime"] = end.ToString("HH:mm"); intent["endUtcOffsetMinutes"] = (int)end.Offset.TotalMinutes; }

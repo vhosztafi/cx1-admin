@@ -1,5 +1,25 @@
 namespace BackOffice.Infrastructure.Persistence;
 
+public sealed class RenewalPreparationVersion : StoredRecord
+{
+    public Guid DraftId { get; set; }
+    public Guid PolicyId { get; set; }
+    public Guid BaseTermId { get; set; }
+    public Guid BaseVersionId { get; set; }
+    public int Sequence { get; set; }
+    public int TermMonths { get; set; }
+    public int? EndUtcOffsetMinutes { get; set; }
+    public DateTimeOffset StartsAt { get; set; }
+    public DateTimeOffset EndsAt { get; set; }
+    public string TermIntentJson { get; set; } = "{}";
+    public Guid ProductId { get; set; }
+    public Guid ProductVersionId { get; set; }
+    public Guid BinderVersionId { get; set; }
+    public Guid AgencyTermsVersionId { get; set; }
+    public Guid RuleSettingVersionId { get; set; }
+    public Guid? FairValueAssessmentId { get; set; }
+}
+
 // Experience is supplied before rating. Its evidence association therefore owns
 // exact immutable facts and file bytes independently of a priced cycle.
 public sealed class RenewalExperienceVersion : StoredRecord

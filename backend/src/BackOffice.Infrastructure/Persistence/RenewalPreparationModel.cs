@@ -6,6 +6,26 @@ public sealed partial class BackOfficeDbContext
 {
     private static void ConfigureRenewalPreparation(ModelBuilder model)
     {
+        var preparation=Record<RenewalPreparationVersion>(model,"RenewalPreparationVersion");
+        preparation.ToTable(t=>t.UseSqlOutputClause(false));
+        preparation.HasAlternateKey(x=>new{x.Id,x.DraftId});
+        preparation.HasIndex(x=>new{x.DraftId,x.Sequence}).IsUnique();
+        preparation.HasOne<ServicingDraft>().WithMany().HasForeignKey(x=>new{x.DraftId,x.PolicyId,x.BaseTermId,x.BaseVersionId})
+            .HasPrincipalKey(x=>new{x.Id,x.PolicyId,x.BaseTermId,x.BaseVersionId}).OnDelete(DeleteBehavior.NoAction);
+        preparation.HasOne<Policy>().WithMany().HasForeignKey(x=>new{x.PolicyId,x.ProductId})
+            .HasPrincipalKey(x=>new{x.Id,x.ProductId}).OnDelete(DeleteBehavior.NoAction);
+        preparation.HasOne<ProductVersion>().WithMany().HasForeignKey(x=>new{x.ProductVersionId,x.ProductId})
+            .HasPrincipalKey(x=>new{x.Id,x.ProductId}).OnDelete(DeleteBehavior.NoAction);
+        preparation.HasOne<BinderVersion>().WithMany().HasForeignKey(x=>new{x.BinderVersionId,x.ProductId})
+            .HasPrincipalKey(x=>new{x.Id,x.ProductId}).OnDelete(DeleteBehavior.NoAction);
+        preparation.HasOne<AgencyTermsVersion>().WithMany().HasForeignKey(x=>x.AgencyTermsVersionId).OnDelete(DeleteBehavior.NoAction);
+        preparation.HasOne<SettingVersion>().WithMany().HasForeignKey(x=>x.RuleSettingVersionId).OnDelete(DeleteBehavior.NoAction);
+        preparation.HasOne<FairValueAssessmentVersion>().WithMany().HasForeignKey(x=>new{x.FairValueAssessmentId,x.ProductId,x.ProductVersionId,x.BinderVersionId})
+            .HasPrincipalKey(x=>new{x.Id,x.ProductId,x.ProductVersionId,x.BinderVersionId}).OnDelete(DeleteBehavior.NoAction);
+        Check(preparation,"Term","[TermMonths] BETWEEN 1 AND 12 AND [StartsAt]<[EndsAt] AND ([EndUtcOffsetMinutes] IS NULL OR [EndUtcOffsetMinutes] IN (0,60))");
+        Check(preparation,"Sequence","[Sequence]>0 AND [CreatedBy] IS NOT NULL");
+        Check(preparation,"Intent","ISJSON([TermIntentJson],OBJECT)=1 AND DATALENGTH([TermIntentJson])<=8192");
+
         var evidence=Record<RenewalExperienceEvidence>(model,"RenewalExperienceEvidence");
         evidence.ToTable(t=>t.UseSqlOutputClause(false));
         evidence.HasAlternateKey(x=>new{x.Id,x.DraftId});

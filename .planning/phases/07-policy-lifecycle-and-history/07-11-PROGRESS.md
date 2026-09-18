@@ -2,6 +2,7 @@
 
 Foundation commit: `dc34b13`. This is not a completion summary. Phase7 remains9/16 plans complete,58/65
 overall. No requirement or source control is marked complete by this foundation.
+Eligibility/configuration follow-up commit: `953c623`.
 
 ## Implemented
 
@@ -33,6 +34,15 @@ overall. No requirement or source control is marked complete by this foundation.
   renewal while current quote capture keeps today's terms. Current distribution
   authority is still independently required. Fair-value checks read actual owned
   assessment/evidence; broker arrears remain explicitly unavailable.
+- `RenewalPreparationVersion` now retains exact draft/base ownership, calendar
+  term choice and product/binder/commercial/rule/fair-value pins. The preparation
+  command holds current permissions, ETag and lease, invalidates old cycles,
+  appends a new proposal revision with server-derived inception and records an
+  immutable preparation version. SQL independently rejects stale/cancelled
+  bases, overlap, foreign pins, invalid calendars and history rewrites.
+- Renewal editor projection reads the retained preparation term. Configured
+  six-month cover projects a short-period intent while retaining risk item IDs;
+  the original issued snapshot and previous preparations remain unchanged.
 
 ## Path/design refinements
 
@@ -71,8 +81,16 @@ the shared optional commercial-inception extension. The first seed test omitted
 underwriting initialization; that fixture was corrected before the passing rerun.
 Intermediate `.local/phase7-11-seed-final` contains30 passes and overlaps this run.
 
-Still required: persist preparation choices/current pins into renewal drafts and
-rating cycles, rating-cycle/worker/referral integration, strict public DTOs/DI/routes and HTTP
+Persisted preparation follow-up: **60 unit +3 pure chronology +8 real SQL =71
+passing cases**, no skips, `.local/phase7-11-preparation-final`, repository gate
+cutoff `2026-09-18T15:00:00Z`. Includes the full existing servicing-proposal unit
+suite plus annual-to-short preparation changes, editor readback, immutable
+preparation and exact retries. Additive migration:
+`20260918151032_RenewalPreparationVersions`. Both new migrations have been used
+only in isolated SQL test databases so far.
+
+Still required: retain preparation/experience/assessment pins in rating cycles,
+rating-cycle/worker/referral integration, strict public DTOs/DI/routes and HTTP
 negative tests, four-stage UI/browser verification, shared-database migration
 with preservation evidence, and final plan source/validation updates. No new
 public endpoint or browser journey is claimed. The shared demo database and
