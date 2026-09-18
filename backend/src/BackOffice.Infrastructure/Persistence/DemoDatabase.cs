@@ -83,6 +83,8 @@ public static class DemoDatabase
         if (!await db.Set<DemoClock>().AnyAsync(cancellationToken)) db.Add(new DemoClock {FrozenAt=new DateTimeOffset(2026,9,13,12,0,0,TimeSpan.Zero)});
         await db.SaveChangesAsync(cancellationToken);
         await PartyDemoSeed.SeedAsync(db,cancellationToken);
+        var processingClock = await db.Set<DemoClock>().SingleAsync(cancellationToken);
+        await Policies.AccountingPeriods.SeedAsync(db,processingClock.FrozenAt ?? DateTimeOffset.UtcNow,cancellationToken);
         await db.SaveChangesAsync(cancellationToken);
         await ContactDemoSeed.SeedAsync(db,cancellationToken);
         await AgencyDemoSeed.SeedAsync(db,cancellationToken);

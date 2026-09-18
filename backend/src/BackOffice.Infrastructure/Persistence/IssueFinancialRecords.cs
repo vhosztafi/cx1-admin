@@ -34,6 +34,8 @@ public sealed class IssueFinancialComponent : StoredRecord
     public Guid ObligationId { get; set; }
     public Guid TransactionId { get; set; }
     public string Code { get; set; } = "";
+    public int Ordinal { get; set; } = 1;
+    public Guid? OriginalComponentId { get; set; }
     public decimal Amount { get; set; }
     public DateTimeOffset CoverageStartsAt { get; set; }
     public DateTimeOffset CoverageEndsAt { get; set; }
@@ -44,6 +46,8 @@ public sealed class Journal : StoredRecord
     public Guid ObligationId { get; set; }
     public string Purpose { get; set; } = "first-issue";
     public string Currency { get; set; } = "GBP";
+    public Guid? AccountingPeriodId { get; set; }
+    public DateOnly? PostingDate { get; set; }
     // Created draft with all component lines, then sealed atomically. SQL checks
     // exact component amounts, settlement accounts and balance on posting.
     public DateTimeOffset? PostedAt { get; set; }

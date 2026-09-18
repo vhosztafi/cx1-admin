@@ -57,6 +57,17 @@ builder.Services.AddScoped<BackOffice.Infrastructure.Underwriting.UnderwritingEv
 builder.Services.AddScoped<BackOffice.Infrastructure.Underwriting.QuoteReferralService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Underwriting.QuoteReferralReadModel>();
 var app = builder.Build();
+if(args.Contains("--seed-accounting-periods-demo",StringComparer.Ordinal))
+{
+    if(!app.Environment.IsDevelopment())throw new InvalidOperationException("Accounting fixtures require local Development.");
+    var factory=app.Services.GetRequiredService<Microsoft.EntityFrameworkCore.IDbContextFactory<BackOfficeDbContext>>();
+    await using var db=await factory.CreateDbContextAsync();
+    DemoDatabase.ValidateDemoTarget(Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.GetConnectionString(db.Database)!);
+    await using var transaction=await Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.BeginTransactionAsync(db.Database,System.Data.IsolationLevel.Serializable);
+    var clock=await Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.SingleAsync(db.Set<DemoClock>());
+    await BackOffice.Infrastructure.Policies.AccountingPeriods.SeedAsync(db,clock.FrozenAt??DateTimeOffset.UtcNow);await transaction.CommitAsync();
+    Console.WriteLine("Missing fictional accounting periods added; existing periods preserved.");return;
+}
 if(args.Contains("--seed-servicing-terms-demo",StringComparer.Ordinal))
 {
     if(!app.Environment.IsDevelopment())throw new InvalidOperationException("Servicing terms fixture requires local Development.");

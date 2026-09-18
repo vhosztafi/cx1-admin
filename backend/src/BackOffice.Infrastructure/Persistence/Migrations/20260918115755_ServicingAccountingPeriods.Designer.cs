@@ -4,6 +4,7 @@ using BackOffice.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackOffice.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(BackOfficeDbContext))]
-    partial class BackOfficeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260918115755_ServicingAccountingPeriods")]
+    partial class ServicingAccountingPeriods
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2710,14 +2713,6 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
                     b.Property<Guid>("ObligationId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
-
-                    b.Property<Guid?>("OriginalComponentId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("TransactionId")
                         .HasColumnType("uniqueidentifier");
 
@@ -2725,19 +2720,15 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.HasIndex("OriginalComponentId");
-
-                    b.HasIndex("ObligationId", "OriginalComponentId")
-                        .IsUnique()
-                        .HasFilter("[OriginalComponentId] IS NOT NULL");
+                    b.HasIndex("ObligationId", "Code")
+                        .IsUnique();
 
                     b.HasIndex("ObligationId", "TransactionId");
 
-                    b.HasIndex("ObligationId", "Code", "Ordinal")
-                        .IsUnique();
-
                     b.ToTable("IssueFinancialComponent", null, t =>
                         {
+                            t.HasCheckConstraint("CK_IssueFinancialComponent_Amount", "[Amount]>=0");
+
                             t.HasCheckConstraint("CK_IssueFinancialComponent_Code", "[Code] IN ('premium','tax','fee','commission','fee-share')");
 
                             t.HasCheckConstraint("CK_IssueFinancialComponent_CoverageEndsAt_Utc", "DATEPART(TZOFFSET,[CoverageEndsAt]) = 0");
@@ -2747,8 +2738,6 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
                             t.HasCheckConstraint("CK_IssueFinancialComponent_CreatedAt_Utc", "DATEPART(TZOFFSET,[CreatedAt]) = 0");
 
                             t.HasCheckConstraint("CK_IssueFinancialComponent_Interval", "[CoverageStartsAt]<[CoverageEndsAt]");
-
-                            t.HasCheckConstraint("CK_IssueFinancialComponent_Ordinal", "[Ordinal] BETWEEN 1 AND 1000");
                         });
 
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
@@ -2876,11 +2865,11 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
 
                     b.ToTable("IssueFinancialObligation", null, t =>
                         {
-                            t.HasCheckConstraint("CK_IssueFinancialObligation_Amounts", "([Purpose]<>'first-issue' OR ([Commission]<=[Premium] AND [FeeShare]<=[Fee])) AND [GrossDue]=[Premium]+[Tax]+[Fee] AND [NetDue]=[GrossDue]-[Commission]-[FeeShare]");
+                            t.HasCheckConstraint("CK_IssueFinancialObligation_Amounts", "[Commission]<=[Premium] AND [FeeShare]<=[Fee] AND [GrossDue]=[Premium]+[Tax]+[Fee] AND [NetDue]=[GrossDue]-[Commission]-[FeeShare]");
 
-                            t.HasCheckConstraint("CK_IssueFinancialObligation_BrokerPayable", "[Purpose]<>'first-issue' OR [BrokerPayable]>=0");
+                            t.HasCheckConstraint("CK_IssueFinancialObligation_BrokerPayable", "[BrokerPayable]>=0");
 
-                            t.HasCheckConstraint("CK_IssueFinancialObligation_Commission", "[Purpose]<>'first-issue' OR [Commission]>=0");
+                            t.HasCheckConstraint("CK_IssueFinancialObligation_Commission", "[Commission]>=0");
 
                             t.HasCheckConstraint("CK_IssueFinancialObligation_CreatedAt_Utc", "DATEPART(TZOFFSET,[CreatedAt]) = 0");
 
@@ -2888,23 +2877,23 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
 
                             t.HasCheckConstraint("CK_IssueFinancialObligation_Debtor", "([DebtorKind]='agency' AND [DebtorAgencyId] IS NOT NULL AND [DebtorAgencyId]=[AgencyId] AND [DebtorRelationshipId] IS NULL) OR ([DebtorKind]='relationship' AND [DebtorRelationshipId] IS NOT NULL AND [DebtorRelationshipId]=[RelationshipId] AND [DebtorAgencyId] IS NULL)");
 
-                            t.HasCheckConstraint("CK_IssueFinancialObligation_Fee", "[Purpose]<>'first-issue' OR [Fee]>=0");
+                            t.HasCheckConstraint("CK_IssueFinancialObligation_Fee", "[Fee]>=0");
 
-                            t.HasCheckConstraint("CK_IssueFinancialObligation_FeeShare", "[Purpose]<>'first-issue' OR [FeeShare]>=0");
+                            t.HasCheckConstraint("CK_IssueFinancialObligation_FeeShare", "[FeeShare]>=0");
 
-                            t.HasCheckConstraint("CK_IssueFinancialObligation_GrossDue", "[Purpose]<>'first-issue' OR [GrossDue]>=0");
+                            t.HasCheckConstraint("CK_IssueFinancialObligation_GrossDue", "[GrossDue]>=0");
 
-                            t.HasCheckConstraint("CK_IssueFinancialObligation_InvoiceDue", "[Purpose]<>'first-issue' OR [InvoiceDue]>=0");
+                            t.HasCheckConstraint("CK_IssueFinancialObligation_InvoiceDue", "[InvoiceDue]>=0");
 
-                            t.HasCheckConstraint("CK_IssueFinancialObligation_NetDue", "[Purpose]<>'first-issue' OR [NetDue]>=0");
+                            t.HasCheckConstraint("CK_IssueFinancialObligation_NetDue", "[NetDue]>=0");
 
-                            t.HasCheckConstraint("CK_IssueFinancialObligation_Premium", "[Purpose]<>'first-issue' OR [Premium]>=0");
+                            t.HasCheckConstraint("CK_IssueFinancialObligation_Premium", "[Premium]>=0");
 
-                            t.HasCheckConstraint("CK_IssueFinancialObligation_Purpose", "[Purpose] IN ('first-issue','adjustment','renewal','cancellation')");
+                            t.HasCheckConstraint("CK_IssueFinancialObligation_Purpose", "[Purpose]='first-issue'");
 
                             t.HasCheckConstraint("CK_IssueFinancialObligation_Settlement", "([Settlement]='net-remittance' AND [DebtorKind]='agency' AND [InvoiceDue]=[NetDue] AND [BrokerPayable]=0) OR ([Settlement]='separate-payment' AND [InvoiceDue]=[GrossDue] AND [BrokerPayable]=[Commission]+[FeeShare])");
 
-                            t.HasCheckConstraint("CK_IssueFinancialObligation_Tax", "[Purpose]<>'first-issue' OR [Tax]>=0");
+                            t.HasCheckConstraint("CK_IssueFinancialObligation_Tax", "[Tax]>=0");
 
                             t.HasCheckConstraint("CK_IssueFinancialObligation_TermsSnapshotJson", "ISJSON([TermsSnapshotJson],OBJECT)=1 AND DATALENGTH(CONVERT(varchar(max),[TermsSnapshotJson] COLLATE Latin1_General_100_BIN2_UTF8))<=1048576");
                         });
@@ -2954,9 +2943,6 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AccountingPeriodId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
@@ -2974,9 +2960,6 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
                     b.Property<DateTimeOffset?>("PostedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<DateOnly?>("PostingDate")
-                        .HasColumnType("date");
-
                     b.Property<string>("Purpose")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -2986,8 +2969,6 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AccountingPeriodId");
 
                     b.HasIndex("CreatedBy");
 
@@ -3002,13 +2983,11 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
 
                             t.HasCheckConstraint("CK_Journal_Currency", "[Currency]='GBP'");
 
-                            t.HasCheckConstraint("CK_Journal_Period", "([Purpose]='first-issue' AND [AccountingPeriodId] IS NULL AND [PostingDate] IS NULL) OR ([AccountingPeriodId] IS NOT NULL AND [PostingDate] IS NOT NULL)");
-
                             t.HasCheckConstraint("CK_Journal_PostedAt", "[PostedAt] IS NULL OR [PostedAt]>=[CreatedAt]");
 
                             t.HasCheckConstraint("CK_Journal_PostedAt_Utc", "DATEPART(TZOFFSET,[PostedAt]) = 0");
 
-                            t.HasCheckConstraint("CK_Journal_Purpose", "[Purpose] IN ('first-issue','adjustment','renewal','cancellation')");
+                            t.HasCheckConstraint("CK_Journal_Purpose", "[Purpose]='first-issue'");
                         });
 
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
@@ -3846,7 +3825,7 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AcceptanceId")
+                    b.Property<Guid>("AcceptanceId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset>("CreatedAt")
@@ -3855,7 +3834,7 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CycleId")
+                    b.Property<Guid>("CycleId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset>("EffectiveAt")
@@ -3878,10 +3857,10 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
                     b.Property<DateTimeOffset>("ProcessedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("QuoteRevisionId")
+                    b.Property<Guid>("QuoteRevisionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("RatingId")
+                    b.Property<Guid>("RatingId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Reason")
@@ -3891,21 +3870,6 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
 
                     b.Property<int>("Sequence")
                         .HasColumnType("int");
-
-                    b.Property<Guid?>("ServicingAcceptanceId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ServicingCycleId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ServicingDraftId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ServicingRatingId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ServicingRevisionId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("SourceQuoteId")
                         .HasColumnType("uniqueidentifier");
@@ -3924,10 +3888,6 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
                         .IsUnique()
                         .HasFilter("[Kind]='new-business'");
 
-                    b.HasIndex("ServicingDraftId")
-                        .IsUnique()
-                        .HasFilter("[ServicingDraftId] IS NOT NULL");
-
                     b.HasIndex("PolicyId", "SourceQuoteId");
 
                     b.HasIndex("QuoteRevisionId", "SourceQuoteId");
@@ -3941,21 +3901,13 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("RatingId", "CycleId", "SourceQuoteId");
 
-                    b.HasIndex("ServicingCycleId", "ServicingDraftId", "PolicyId");
-
-                    b.HasIndex("ServicingRatingId", "ServicingCycleId", "ServicingDraftId", "ServicingRevisionId");
-
-                    b.HasIndex("ServicingAcceptanceId", "ServicingCycleId", "ServicingDraftId", "ServicingRevisionId", "ServicingRatingId");
-
                     b.ToTable("PolicyTransaction", null, t =>
                         {
                             t.HasCheckConstraint("CK_PolicyTransaction_CreatedAt_Utc", "DATEPART(TZOFFSET,[CreatedAt]) = 0");
 
-                            t.HasCheckConstraint("CK_PolicyTransaction_DecisionSource", "([Kind]='new-business' AND [CycleId] IS NOT NULL AND [QuoteRevisionId] IS NOT NULL AND [RatingId] IS NOT NULL AND [AcceptanceId] IS NOT NULL AND [ServicingDraftId] IS NULL AND [ServicingRevisionId] IS NULL AND [ServicingCycleId] IS NULL AND [ServicingRatingId] IS NULL AND [ServicingAcceptanceId] IS NULL) OR ([Kind]='adjustment' AND [CycleId] IS NULL AND [QuoteRevisionId] IS NULL AND [RatingId] IS NULL AND [AcceptanceId] IS NULL AND [ServicingDraftId] IS NOT NULL AND [ServicingRevisionId] IS NOT NULL AND [ServicingCycleId] IS NOT NULL AND [ServicingRatingId] IS NOT NULL AND [ServicingAcceptanceId] IS NOT NULL)");
-
                             t.HasCheckConstraint("CK_PolicyTransaction_EffectiveAt_Utc", "DATEPART(TZOFFSET,[EffectiveAt]) = 0");
 
-                            t.HasCheckConstraint("CK_PolicyTransaction_Kind", "[Kind] IN ('new-business','adjustment')");
+                            t.HasCheckConstraint("CK_PolicyTransaction_Kind", "[Kind]='new-business'");
 
                             t.HasCheckConstraint("CK_PolicyTransaction_ProcessedAt_Utc", "DATEPART(TZOFFSET,[ProcessedAt]) = 0");
 
@@ -9894,11 +9846,6 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("BackOffice.Infrastructure.Persistence.IssueFinancialComponent", null)
-                        .WithMany()
-                        .HasForeignKey("OriginalComponentId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("BackOffice.Infrastructure.Persistence.IssueFinancialObligation", null)
                         .WithMany()
                         .HasForeignKey("ObligationId", "TransactionId")
@@ -9968,11 +9915,6 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("BackOffice.Infrastructure.Persistence.Journal", b =>
                 {
-                    b.HasOne("BackOffice.Infrastructure.Persistence.AccountingPeriod", null)
-                        .WithMany()
-                        .HasForeignKey("AccountingPeriodId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("BackOffice.Infrastructure.Persistence.StaffUser", null)
                         .WithMany()
                         .HasForeignKey("CreatedBy")
@@ -10250,7 +10192,8 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("QuoteRevisionId", "SourceQuoteId")
                         .HasPrincipalKey("Id", "QuoteId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.HasOne("BackOffice.Infrastructure.Persistence.PolicyTerm", null)
                         .WithMany()
@@ -10263,31 +10206,15 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("AcceptanceId", "CycleId", "SourceQuoteId")
                         .HasPrincipalKey("Id", "CycleId", "QuoteId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.HasOne("BackOffice.Infrastructure.Persistence.QuoteRatingResult", null)
                         .WithMany()
                         .HasForeignKey("RatingId", "CycleId", "SourceQuoteId")
                         .HasPrincipalKey("Id", "CycleId", "QuoteId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("BackOffice.Infrastructure.Persistence.ServicingCycle", null)
-                        .WithMany()
-                        .HasForeignKey("ServicingCycleId", "ServicingDraftId", "PolicyId")
-                        .HasPrincipalKey("Id", "DraftId", "PolicyId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("BackOffice.Infrastructure.Persistence.ServicingRatingResult", null)
-                        .WithMany()
-                        .HasForeignKey("ServicingRatingId", "ServicingCycleId", "ServicingDraftId", "ServicingRevisionId")
-                        .HasPrincipalKey("Id", "CycleId", "DraftId", "RevisionId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("BackOffice.Infrastructure.Persistence.ServicingAcceptance", null)
-                        .WithMany()
-                        .HasForeignKey("ServicingAcceptanceId", "ServicingCycleId", "ServicingDraftId", "ServicingRevisionId", "ServicingRatingId")
-                        .HasPrincipalKey("Id", "CycleId", "DraftId", "RevisionId", "RatingId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BackOffice.Infrastructure.Persistence.PolicyVersion", b =>

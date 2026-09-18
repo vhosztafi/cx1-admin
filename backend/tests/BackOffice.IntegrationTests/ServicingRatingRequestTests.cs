@@ -24,6 +24,8 @@ public sealed partial class UnderwritingRuntimeTests
     [InlineData("motor-trade-combined", "terms-http")]
     [InlineData("motor-trade-road-risks", "terms-condition")]
     [InlineData("motor-trade-combined", "terms-condition")]
+    [InlineData("motor-trade-road-risks", "ServicingPostingTests")]
+    [InlineData("motor-trade-combined", "ServicingPostingTests")]
     [InlineData("motor-trade-road-risks", "terms-delivery-withdraw-signature")]
     [InlineData("motor-trade-road-risks", "terms-delivery-timeout-after-success")]
     [InlineData("motor-trade-road-risks", "terms-delivery-transient-once")]
@@ -136,7 +138,7 @@ public sealed partial class UnderwritingRuntimeTests
                 new { changeId = second, riskItemId = issued.PolicyId, kind = "cover", operation = "update", payload = new { },
                     effectiveIntent = new { localDate = "2026-10-15", localTime = "00:00", timeZone = "Europe/London" } }
             });
-            if (scenario is "temporary-cover" or "referral-generation" or "referral-authority" or "referral-work-http" or "capacity-storage" or "capacity-create" or "capacity-submission-storage" or "capacity-selected-evidence" or "capacity-submit" or "capacity-http" || scenario.StartsWith("capacity-worker",StringComparison.Ordinal))
+            if (scenario is "temporary-cover" or "referral-generation" or "referral-authority" or "referral-work-http" or "capacity-storage" or "capacity-create" or "capacity-submission-storage" or "capacity-selected-evidence" or "capacity-submit" or "capacity-http" || scenario.StartsWith("capacity-worker",StringComparison.Ordinal) || scenario=="ServicingPostingTests" && product=="motor-trade-combined")
             {
                 var originalSections = snapshot["cover"]!["requestedSections"]!.DeepClone();
                 var temporarySections = originalSections.DeepClone();
@@ -315,9 +317,9 @@ public sealed partial class UnderwritingRuntimeTests
                 await VerifyServicingCapacityCaseStorage(db,f,applied);
                 Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);return;
             }
-            if(scenario is "terms-prepare" or "terms-http" or "terms-condition" || scenario.StartsWith("terms-delivery-",StringComparison.Ordinal))
+            if(scenario is "terms-prepare" or "terms-http" or "terms-condition" or "ServicingPostingTests" || scenario.StartsWith("terms-delivery-",StringComparison.Ordinal))
             {
-                await VerifyServicingTermsPreparation(db,f,applied,fence,ratedView.DraftEtag,scenario is "terms-prepare" or "terms-http" or "terms-condition"?"success":scenario["terms-delivery-".Length..],scenario=="terms-http"?password:null,scenario=="terms-condition");
+                await VerifyServicingTermsPreparation(db,f,applied,fence,ratedView.DraftEtag,scenario is "terms-prepare" or "terms-http" or "terms-condition" or "ServicingPostingTests"?"success":scenario["terms-delivery-".Length..],scenario=="terms-http"?password:null,scenario=="terms-condition",scenario=="ServicingPostingTests");
                 Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);return;
             }
             if(scenario=="submission-storage")

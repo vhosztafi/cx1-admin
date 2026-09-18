@@ -27,10 +27,15 @@ public sealed class PolicyTransaction : StoredRecord
     public Guid PolicyId { get; set; }
     public Guid TermId { get; set; }
     public Guid SourceQuoteId { get; set; }
-    public Guid CycleId { get; set; }
-    public Guid QuoteRevisionId { get; set; }
-    public Guid RatingId { get; set; }
-    public Guid AcceptanceId { get; set; }
+    public Guid? CycleId { get; set; }
+    public Guid? QuoteRevisionId { get; set; }
+    public Guid? RatingId { get; set; }
+    public Guid? AcceptanceId { get; set; }
+    public Guid? ServicingDraftId { get; set; }
+    public Guid? ServicingRevisionId { get; set; }
+    public Guid? ServicingCycleId { get; set; }
+    public Guid? ServicingRatingId { get; set; }
+    public Guid? ServicingAcceptanceId { get; set; }
     public int Sequence { get; set; }
     public string Kind { get; set; } = "new-business";
     public DateTimeOffset EffectiveAt { get; set; }
