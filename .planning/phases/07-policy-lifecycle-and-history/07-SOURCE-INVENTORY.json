@@ -491,9 +491,15 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-06"
+      "owner": "07-06",
+      "evidence": [
+        ".local/browser-evidence/servicing-evidence/navigation-report.json",
+        ".local/phase7-06-navigation-renewal-reviewed.log",
+        "07-06-PROGRESS.md"
+      ],
+      "implementation": "Policy servicing-draft list links Open referrals to that exact adjustment and focuses its persisted referral section. Both Motor Trade products verified by real browser and SQL-backed readback."
     },
     {
       "id": "CTL-40c2953f1cf1",

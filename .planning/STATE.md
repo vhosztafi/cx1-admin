@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-06 evidence/referral browser journeys passed; explicit submission/navigation remain
-last_updated: "2026-09-18T02:01:35.328832+00:00"
-last_activity: "2026-09-18 —07-06 browser0e81d53 passes both products;126 frontend,18 targeted backend,38 contract cases;3 source controls remain."
+stopped_at: Plan07-06 navigation and renewal retention verified; durable submission and referral-work mapping remain
+last_updated: "2026-09-18T02:38:44.709229+00:00"
+last_activity: "2026-09-18 —07-06 c0172d5;127 UI cases and both targeted navigation/renewal browser journeys pass; submission remains."
 progress:
   total_phases: 13
   completed_phases: 6
@@ -21,14 +21,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute Phase7;07-01..05 complete.07-06 proof/referral UI/API and both persisted browser journeys pass; explicit underwriting submission and referral-navigation source controls remain.
+**Current focus:** Execute Phase7;07-01..05 complete.07-06 evidence/referral flows, live authority and policy navigation verified; implement explicit submission and finish referral-work source mapping.
 
 ## Current Position
 
 Phase: 7 of 13 (Policy lifecycle and history)
 Plan: 5 of16 complete;07-06 in progress
-Status: Executing Phase7;07-06 browser acceptance passed; source submission/navigation controls remain
-Last activity: 2026-09-18 —07-06 browser0e81d53 and authority86a9d9a verified. Resume latest07-06-PROGRESS.md checkpoint.
+Status: Executing Phase7;07-06 navigation/lease renewal verified; submission/referral-work mapping remain
+Last activity: 2026-09-18 —07-06 c0172d5 verified with127 UI cases and both targeted browser journeys. Resume latest07-06-PROGRESS.md checkpoint.
 
 Progress: Phases1–6 complete;6/13 phases,54 completed implementation plans.
 

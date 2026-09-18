@@ -157,6 +157,41 @@ sharing retains its seven-field allowlist and cannot search hidden registrations
 
 ## Remaining design gates
 
+### 07-06 explicit underwriting submission refinement
+
+The implemented rating worker already derives the cycle's referrals. The planned
+`POST /drafts/{draftId}/submit` must persist the explicit handoff without creating
+duplicate referrals or changing issued cover. A rating request or toast alone is
+not submission. This refinement is implementation guidance, not a completed API.
+
+Use an immutable `ServicingUnderwritingSubmission` record with `Id`, `DraftId`,
+`CycleId`, `RevisionId`, `RatingId`, `InputHash`, `Reason`, `SubmittedBy`,
+`SubmittedAt`, and ordinary stored-record provenance. Enforce a unique cycle
+submission and compound ownership to the existing cycle and rating keys. Guard
+immutable rows and require the submission's input hash to equal its cycle's hash.
+Retain older submissions when the proposal is edited, rerated or abandoned;
+current applicability derives from the current owned cycle, revision and rating.
+
+The command requires current `policy-draft-write` access, strong draft If-Match,
+the editing lease, CSRF and an idempotency key. Accept only `cycleId`, `revisionId`
+and a reason. Hold the current policy/draft scope before receipt replay; reject
+foreign or superseded cycles, incomplete capture, expired or unavailable rating,
+changed base and lost lease. Reuse the rated cycle's existing referral workflow;
+outstanding underwriting proof can be submitted for review and must remain
+independently blocking for approval/issue. Do not require an underwriting grant
+merely to submit a servicing case. A different new key cannot create a second
+submission for the same cycle.
+
+Return a durable submission receipt and updated draft ETag. Provide scoped,
+bounded no-store submission history/current status so reload and rerating show
+the actual handoff state. UI retains the exact command through uncertain results,
+shows the saved submission, and links to that draft's referral section. Verify
+both Motor Trade products through SQL and actual browser commands, including
+same-key retry, duplicate submission, stale/foreign scope, CSRF/lease failures,
+post-rerating history and unchanged issued policy JSON. Generic notifications
+and task inbox projections retain their later phase ownership; do not fake an
+external delivery or completed task here.
+
 Review against full source field/control coverage, current API-CONVENTIONS and
 PERMISSIONS. Specify exact schema fields and cancellation rule/approval catalogue,
 renewal missing-experience handling, fair-value provenance, capacity subject

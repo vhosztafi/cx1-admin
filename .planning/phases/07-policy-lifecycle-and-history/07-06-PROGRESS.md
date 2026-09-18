@@ -898,3 +898,56 @@ older cycle submissions on rerating. Do not present a navigation/toast alias as
 a saved submission or count automatic rating as that control. Then verify these
 controls, review source fields and record07-06-SUMMARY. Only then advance07-07.
 Phase7 remains5/16 complete,total54/65; no plan completion claimed.
+
+
+## Navigation and lease-renewal checkpoint —c0172d5 (latest)
+
+Policy Open referrals now links to the exact owned adjustment's referral section;
+the draft has Review referrals and hash navigation focuses the section heading.
+Only CTL-721a19d5dbfa is marked verified. The pMta.sections[3].rows[0] source
+action actually has go:'task' (young-driver referral), so its task/referral-work
+detail mapping remains open; do not count a generic section anchor as that task.
+
+Navigation rerun uncovered form loss on lease ETag refresh: the prior hook removed
+all rows, unmounting partially filled proof forms. Same-page results now remain
+rendered while stale, with separate current/read-error fences disabling writes.
+Page/scope changes cannot retain another page's data. Stale authority is hidden
+and old decision/condition readiness is labelled retained. Background proof
+reads pause during parent draft mutations as well as proof commands.
+
+A new pure case proves stale same-page retention without write authority, error
+fencing and different-page isolation.127 frontend tests pass in
+.local/phase7-06-navigation-renewal-final-ui.log; TypeScript, changed-file ESLint
+and production build pass (.local/phase7-06-write-pause-build.log). No backend
+code changed, so existing SQL evidence is retained rather than rerun.
+
+First navigation full rerun failed while attaching after renewal; subsequent
+runs encountered unconfirmed save/rating reads. Persisted rating inspection
+showed success within1second; Next logged a proxy socket reset. These failed
+runs are not counted as passes. Verified owned API was restarted with warning
+logging (prior per-query log approximately49MB); root transport cause is not
+proven. New proof-read pause and retention guards were then verified by targeted
+browser journeys for BOTH products, completed2026-09-18T02:34:50Z:
+.local/phase7-06-navigation-renewal-reviewed.log and
+.local/browser-evidence/servicing-evidence/navigation-report.json.
+COVER_SERVICING_NAVIGATION_ONLY=1 preserves the earlier full report separately.
+The targeted journeys cover policy/draft navigation and focus, persisted
+conditional referrals, lost upload exact retry, forced lease renewal retaining
+file selection/reason, saved attachment after renewal/reload,390px containment
+and unchanged issued snapshots. Stale-write fencing is also tested directly by
+the new unit case. The earlier full proof/withdrawal/condition journeys remain
+0e81d53 evidence; the later transport-failed full reruns are not replacements.
+Quiet API log includes client-aborted read cancellations, not a successful-write
+failure in the passing targeted journeys. All harness-owned new drafts were
+abandoned with retained audit. No active test process remains.
+
+Current previews: API82720 (5087), web81192 (3100); verify actual processes using
+.local/phase7-06-preview-pids.json before stopping. frontend-code unchanged.
+
+NEXT: implement planned POST /drafts/{draftId}/submit with durable scoped
+submission/history. The07-DATA-API-DESIGN now specifies an immutable submission
+record, unique cycle, compound ownership, current write access/lease/ETag/CSRF,
+exact retry and explicit readback without duplicating rating-generated referrals.
+Then resolve the remaining referral-work/task navigation source mapping and
+complete source/field review before07-06-SUMMARY.5/16 Phase7 plans remain complete,
+54/65 total. No phase or milestone completion claimed.
