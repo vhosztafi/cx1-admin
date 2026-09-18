@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackOffice.Infrastructure.Policies;
 
-public sealed record RenewalExperienceView(Guid DraftId,string Etag,RenewalExperienceVersion? Experience,RenewalExperienceReview? Review);
+public sealed record RenewalExperienceView(Guid DraftId,string Etag,RenewalExperienceVersion? Experience,RenewalExperienceReview? Review,Guid? EvidenceFileId);
 
 public sealed partial class RenewalPreparationService(IDbContextFactory<BackOfficeDbContext> factory,TimeProvider time)
 {
@@ -24,7 +24,8 @@ public sealed partial class RenewalPreparationService(IDbContextFactory<BackOffi
         var experience=await db.Set<RenewalExperienceVersion>().AsNoTracking().Where(x=>x.DraftId==draftId).OrderByDescending(x=>x.Sequence).FirstOrDefaultAsync(token);
         var review=experience is null?null:await db.Set<RenewalExperienceReview>().AsNoTracking().Where(x=>x.ExperienceVersionId==experience.Id && x.DraftId==draftId)
             .OrderByDescending(x=>x.Sequence).FirstOrDefaultAsync(token);
-        await tx.CommitAsync(token);return new(draftId,Etag(draft),experience,review);
+        var fileId=experience is null?null:await db.Set<RenewalExperienceEvidence>().Where(x=>x.Id==experience.EvidenceAssociationId && x.DraftId==draftId).Select(x=>(Guid?)x.FileId).SingleAsync(token);
+        await tx.CommitAsync(token);return new(draftId,Etag(draft),experience,review,fileId);
     }
 
     public Task<CommandOutcome> UploadExperienceAsync(ActorContext actor,Guid draftId,byte[] version,Guid leaseToken,

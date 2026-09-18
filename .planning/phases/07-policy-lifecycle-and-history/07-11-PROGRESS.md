@@ -3,6 +3,7 @@
 Foundation commit: `dc34b13`. This is not a completion summary. Phase7 remains9/16 plans complete,58/65
 overall. No requirement or source control is marked complete by this foundation.
 Eligibility/configuration follow-up commit: `953c623`.
+Persisted preparation follow-up commit: `11c4de9`.
 
 ## Implemented
 
@@ -43,6 +44,11 @@ Eligibility/configuration follow-up commit: `953c623`.
 - Renewal editor projection reads the retained preparation term. Configured
   six-month cover projects a short-period intent while retaining risk item IDs;
   the original issued snapshot and previous preparations remain unchanged.
+- Authenticated HTTP routes now expose preview, preparation, experience upload,
+  save, read and exact-version review, backed by the actual services and DI.
+  Closed input DTOs reject arbitrary pricing, amounts are canonical decimal
+  strings, and responses are no-store with strong current ETags. Existing scoped
+  file download serves the retained experience bytes.
 
 ## Path/design refinements
 
@@ -57,6 +63,10 @@ version; they do not approve future-term underwriting or waive UW-31.
 Product-wide fair-value evidence cannot honestly belong to an invented quote or
 servicing draft. `ProductEvidenceFileVersion` uses the same actual-byte/hash/
 screening storage pattern with explicit product/version/binder ownership.
+The planning-only `/drafts/{draftId}/experience` spelling is replaced by
+`/drafts/{draftId}/renewal/experience`; operation ID `recordRenewalExperience`
+is retained. Generated definitions/routes for existing implemented operations
+were structurally compared against HEAD and remain identical.
 
 ## Evidence and remaining work
 
@@ -89,9 +99,20 @@ preparation and exact retries. Additive migration:
 `20260918151032_RenewalPreparationVersions`. Both new migrations have been used
 only in isolated SQL test databases so far.
 
+HTTP follow-up: **60 unit +2 real SQL/API =62 passes**, no skips,
+`.local/phase7-11-api-final`, gate cutoff `2026-09-18T15:00:00Z`. Both Motor Trade
+products exercise authenticated preview/preparation/upload/save/review/download,
+CSRF and missing-version failures, unknown pricing fields, canonical money,
+exact retry and current grant revocation before review replay. Twelve actual
+responses in `.local/phase7-11-api-responses` pass generated schemas and reject
+extra properties (`.local/phase7-11-api-response-contracts.log`).
+**61 JavaScript contract/source checks** pass (`.local/phase7-11-contract-green.log`).
+OpenAPI lint passes with41 warnings (`.local/phase7-11-openapi-lint.log`). These
+focused runs overlap earlier evidence and must not be summed as distinct tests.
+
 Still required: retain preparation/experience/assessment pins in rating cycles,
-rating-cycle/worker/referral integration, strict public DTOs/DI/routes and HTTP
-negative tests, four-stage UI/browser verification, shared-database migration
+rating-cycle/worker/referral integration, any additional rating API contracts/tests,
+four-stage UI/browser verification, shared-database migration
 with preservation evidence, and final plan source/validation updates. No new
-public endpoint or browser journey is claimed. The shared demo database and
+browser journey is claimed. The shared demo database and
 running07-10 preview have not been migrated or reseeded by this foundation.

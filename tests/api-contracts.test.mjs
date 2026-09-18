@@ -21,6 +21,20 @@ function relocate(value){
 ajv.addSchema({$id:rootId,$defs:relocate(document.components.schemas)});
 const getOperation=id=>{const result=operations.find(op=>op.operationId===id);assert.ok(result,`Unknown operation ${id}`);return result;};
 
+test('renewal preparation exposes closed commands and explicit unknown experience',()=>{
+ for(const name of ['prepareRenewal','uploadRenewalExperienceEvidence','recordRenewalExperience','reviewRenewalExperience']) {
+  const op=getOperation(name);assert.equal(op['x-runtime-status'],'phase-7-11-command-implemented');
+  for(const header of ['If-Match','X-Edit-Lease','Idempotency-Key'])assert.ok(op.parameters.some(x=>x.name===header&&x.required));
+  assert.ok(op.security.some(x=>'Csrf' in x));
+ }
+ for(const name of ['previewRenewalPreparation','readRenewalExperience'])assert.equal(getOperation(name)['x-runtime-status'],'phase-7-11-read-implemented');
+ const check=name=>ajv.getSchema(`${rootId}#/$defs/${name}`),id='10000000-0000-4000-8000-000000000001';
+ const prepare=check('RenewalPreparationRequest');assert.ok(prepare({termMonths:12}));assert.equal(prepare({termMonths:12,premium:'1.00'}),false);
+ assert.equal(prepare({termMonths:13}),false);assert.equal(prepare({termMonths:6,endUtcOffsetMinutes:30}),false);
+ const experience=check('RenewalExperienceView');assert.ok(experience({draftId:id,evidenceFileId:null,experience:null,review:null}));
+ assert.equal(experience({draftId:id,evidenceFileId:null,experience:null,review:null,lossRatio:'0.00'}),false);
+});
+
 test('servicing capacity exposes owned commands and bounded retained history',()=>{
  for(const name of ['createServicingCapacity','submitServicingCapacity','replyServicingCapacity','chaseServicingCapacity','assignServicingCapacity','recordServicingCapacityResponse','recordServicingCapacityAction','resolveServicingCapacityCondition']) {
   const op=getOperation(name);assert.equal(op['x-runtime-status'],'phase-7-07-command-implemented');

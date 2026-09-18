@@ -50,6 +50,7 @@ builder.Services.AddScoped<BackOffice.Infrastructure.Policies.QuoteIssueService>
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.ServicingIssueService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.PolicyReadService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.ServicingDraftService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Policies.RenewalPreparationService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.ServicingEvidenceService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.ServicingSubmissionService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.ServicingReferralService>();
@@ -145,6 +146,7 @@ app.MapQuoteTerms();
 app.MapQuoteIssue();
 app.MapPolicies();
 app.MapServicingDrafts();
+app.MapRenewalPreparation();
 app.MapServicingRatings();
 app.MapServicingProofReads();
 app.MapServicingProofCommands();

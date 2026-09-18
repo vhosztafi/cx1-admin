@@ -5,7 +5,7 @@ import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 
 const [directory,notBefore,mode='reads']=process.argv.slice(2);
-assert.ok(['reads','commands','authority','submissions','referral-work','capacity','terms'].includes(mode),'Choose reads, commands, authority, submissions, referral-work, capacity or terms.');
+assert.ok(['reads','commands','authority','submissions','referral-work','capacity','terms','renewal'].includes(mode),'Choose reads, commands, authority, submissions, referral-work, capacity, terms or renewal.');
 assert.ok(directory&&Number.isFinite(Date.parse(notBefore)),'Provide a fresh response directory and earliest UTC timestamp.');
 const read=async path=>JSON.parse(await readFile(path,'utf8'));
 const document=await read(new URL('../contracts/openapi.json',import.meta.url));
@@ -31,6 +31,7 @@ for(const file of files) {
  names.set(schema,(names.get(schema)??0)+1);
 }
 if(mode==='capacity') {assert.equal(names.size,8);for(const name of ['ServicingCapacityReceipt','ServicingCapacityQueuedReceipt','ServicingCapacityDetail','ServicingCapacityPage','ServicingCapacitySubmissionsPage','ServicingCapacityMessagesPage','ServicingCapacityResponsesPage','ServicingCapacityResolutionsPage'])assert.ok(names.get(name)>=2,name);}
+else if(mode==='renewal') {assert.equal(names.size,3);assert.equal(names.get('RenewalPreparationReceipt'),8);assert.equal(names.get('RenewalPreparationPreview'),2);assert.equal(names.get('RenewalExperienceView'),2);}
 else if(mode==='terms') {assert.equal(names.size,4);assert.equal(names.get('ServicingTermsReceipt'),6);assert.equal(names.get('ServicingTermsView'),6);assert.equal(names.get('ServicingTermsHistoryPage'),10);assert.equal(names.get('ServicingTermsSnapshot'),2);}
 else if(mode==='commands') {assert.equal(names.size,1);assert.equal(names.get('ServicingProofReceipt'),14);}
 else if(mode==='authority') {assert.equal(names.size,1);assert.equal(names.get('ServicingCurrentAuthorityPage'),4);}
