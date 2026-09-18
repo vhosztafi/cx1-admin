@@ -45,6 +45,16 @@ internal static class ServicingEvidenceProjection
         foreach(var submission in submissions)
             requirements.Add(ServicingCapacityProofRules.Requirement(context,submission.Id,Convert.ToHexStringLower(submission.ContextHash),
                 slices.Select(x=>x.EffectiveAt).ToArray()));
+        if(held.Cycle.CurrentTermsVersionId is {} termsId)
+        {
+            ServicingTermsVersion? terms=null;
+            try {terms=await ServicingTermsService.CurrentTerms(db,held,termsId,held.AssessedAt,token);}
+            catch(QuoteOperationException e) when(e.Code is "servicing-terms-stale" or "servicing-template-unavailable") { }
+            if(terms is not null)
+                foreach(var code in new[]{"signed-statement","acceptance-proof"})
+                    requirements.Add(ServicingTermsProofRules.Requirement(context,new(terms.DraftId,terms.CycleId,terms.RevisionId,terms.BaseVersionId,
+                        terms.RatingId,terms.Id,terms.TermsHash),code,slices.Select(x=>x.EffectiveAt).ToArray()));
+        }
         return requirements;
     }
 

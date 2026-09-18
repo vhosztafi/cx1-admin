@@ -46,6 +46,14 @@ test('capacity response proof also requires the exact submission identity',()=>{
   assert.equal(currentProof({...association,capacitySubmissionId:ids[3]},requirement),false);
   assert.equal(currentProof({...association,capacitySubmissionId:null},requirement),false);
 });
+
+test('signature proof cannot be reused for different terms even with the same visible purpose',()=>{
+ const requirement={code:'signed-statement',riskItemId:null,termsVersionId:ids[4],inputFingerprint:'a'.repeat(64),context:{...scope,ratingId:ids[5]}};
+ const association={...requirement.context,...requirement,withdrawn:false};
+ assert.equal(currentProof(association,requirement),true);
+ assert.equal(currentProof({...association,termsVersionId:ids[3]},requirement),false);
+ assert.equal(currentProof({...association,termsVersionId:null},requirement),false);
+});
 test('only a receipt for the exact saved scope and strong matching ETag confirms success', () => {
   const command = proofCommand(scope, '/evidence', {cycleId:scope.cycleId});
   assert.equal(confirmProofReceipt(command, receipt, receipt.draftEtag), receipt);

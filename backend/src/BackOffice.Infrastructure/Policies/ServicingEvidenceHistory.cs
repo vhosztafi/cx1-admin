@@ -8,7 +8,8 @@ namespace BackOffice.Infrastructure.Policies;
 public sealed record ServicingFileView(Guid Id,string FileName,string ContentType,int ByteLength,string ScreeningState,string ScreeningMethod,DateTimeOffset CreatedAt);
 public sealed record ServicingFilePage(IReadOnlyList<ServicingFileView> Items,Guid? NextBeforeId);
 public sealed record ServicingAssociationView(Guid Id,Guid CycleId,Guid RevisionId,Guid RatingId,Guid FileId,string FileName,string Code,Guid? RiskItemId,
-    string InputFingerprint,string Reason,string Etag,Guid? LatestReviewId,string? ReviewOutcome,bool Withdrawn,DateTimeOffset CreatedAt,Guid? CapacitySubmissionId=null);
+    string InputFingerprint,string Reason,string Etag,Guid? LatestReviewId,string? ReviewOutcome,bool Withdrawn,DateTimeOffset CreatedAt,Guid? CapacitySubmissionId=null,
+    [property:System.Text.Json.Serialization.JsonIgnore(Condition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] Guid? TermsVersionId=null);
 public sealed record ServicingAssociationPage(IReadOnlyList<ServicingAssociationView> Items,Guid? NextBeforeId);
 public sealed record ServicingReviewView(Guid Id,int Sequence,string Kind,string? Outcome,string Reason,Guid ActorId,Guid? AuthorityVersionId,DateTimeOffset RecordedAt);
 public sealed record ServicingReviewPage(IReadOnlyList<ServicingReviewView> Items,int? NextAfterSequence);
@@ -58,10 +59,10 @@ public sealed partial class ServicingEvidenceService
         var rows=await (from a in selected join f in db.Set<ServicingEvidenceFile>() on a.FileId equals f.Id
             join e in db.Set<ServicingEvidenceEvent>() on a.LatestReviewId equals e.Id into reviews from e in reviews.DefaultIfEmpty()
             orderby a.CreatedAt descending,a.Id descending
-            select new {a.Id,a.CycleId,a.RevisionId,a.RatingId,a.FileId,f.FileName,a.RequirementCode,a.RiskItemId,a.CapacitySubmissionId,a.InputFingerprint,a.Reason,a.RowVersion,
+            select new {a.Id,a.CycleId,a.RevisionId,a.RatingId,a.FileId,f.FileName,a.RequirementCode,a.RiskItemId,a.CapacitySubmissionId,a.TermsVersionId,a.InputFingerprint,a.Reason,a.RowVersion,
                 a.LatestReviewId,ReviewOutcome=e==null?null:e.Outcome,Withdrawn=a.WithdrawnEventId!=null,a.CreatedAt}).ToArrayAsync(token);
         var items=rows.Take(pageSize).Select(a=>new ServicingAssociationView(a.Id,a.CycleId,a.RevisionId,a.RatingId,a.FileId,a.FileName,a.RequirementCode,a.RiskItemId,
-            a.InputFingerprint,a.Reason,"\""+Convert.ToBase64String(a.RowVersion)+"\"",a.LatestReviewId,a.ReviewOutcome,a.Withdrawn,a.CreatedAt,a.CapacitySubmissionId)).ToArray();
+            a.InputFingerprint,a.Reason,"\""+Convert.ToBase64String(a.RowVersion)+"\"",a.LatestReviewId,a.ReviewOutcome,a.Withdrawn,a.CreatedAt,a.CapacitySubmissionId,a.TermsVersionId)).ToArray();
         await tx.CommitAsync(token);return new(items,rows.Length>pageSize?items[^1].Id:null);
     }
 

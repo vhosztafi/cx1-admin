@@ -25,6 +25,7 @@ public sealed class ServicingEvidenceAssociation : MutableRecord
     public string RequirementCode { get; set; } = "";
     public Guid? RiskItemId { get; set; }
     public Guid? CapacitySubmissionId { get; set; }
+    public Guid? TermsVersionId { get; set; }
     public string InputFingerprint { get; set; } = "";
     public string Reason { get; set; } = "";
     public Guid? LatestReviewId { get; set; }

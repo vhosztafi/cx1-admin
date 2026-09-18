@@ -120100,7 +120100,9 @@
               "driving-record",
               "premises-security",
               "warranty-acknowledgement",
-              "capacity-response"
+              "capacity-response",
+              "signed-statement",
+              "acceptance-proof"
             ]
           },
           "label": {
@@ -120147,6 +120149,10 @@
           },
           "context": {
             "$ref": "#/components/schemas/ServicingProofContext"
+          },
+          "termsVersionId": {
+            "type": "string",
+            "format": "uuid"
           }
         },
         "required": [
@@ -120294,7 +120300,9 @@
               "driving-record",
               "premises-security",
               "warranty-acknowledgement",
-              "capacity-response"
+              "capacity-response",
+              "signed-statement",
+              "acceptance-proof"
             ]
           },
           "riskItemId": {
@@ -120363,6 +120371,10 @@
           "createdAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "termsVersionId": {
+            "type": "string",
+            "format": "uuid"
           }
         },
         "required": [
@@ -121259,7 +121271,9 @@
               "driving-record",
               "premises-security",
               "warranty-acknowledgement",
-              "capacity-response"
+              "capacity-response",
+              "signed-statement",
+              "acceptance-proof"
             ]
           },
           "riskItemId": {

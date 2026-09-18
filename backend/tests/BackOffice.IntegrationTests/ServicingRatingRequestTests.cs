@@ -16,6 +16,10 @@ public sealed partial class UnderwritingRuntimeTests
     [Theory]
     [InlineData("motor-trade-road-risks", "success")]
     [InlineData("motor-trade-combined", "success")]
+    [InlineData("motor-trade-road-risks", "terms-storage")]
+    [InlineData("motor-trade-combined", "terms-storage")]
+    [InlineData("motor-trade-road-risks", "terms-prepare")]
+    [InlineData("motor-trade-combined", "terms-prepare")]
     [InlineData("motor-trade-road-risks", "fail-once")]
     [InlineData("motor-trade-road-risks", "timeout-after-success")]
     [InlineData("motor-trade-road-risks", "reject")]
@@ -289,9 +293,19 @@ public sealed partial class UnderwritingRuntimeTests
                 await VerifyServicingCapacityCreate(db,f,applied,ratedView.DraftEtag,scenario is "capacity-submission-storage" or "capacity-selected-evidence",scenario=="capacity-selected-evidence",scenario=="capacity-submit",scenario.StartsWith("capacity-worker",StringComparison.Ordinal)?scenario:null,scenario=="capacity-http"?password:null);
                 Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);return;
             }
+            if(scenario=="terms-storage")
+            {
+                await VerifyServicingTermsStorage(db,f,applied);
+                Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);return;
+            }
             if(scenario=="capacity-storage")
             {
                 await VerifyServicingCapacityCaseStorage(db,f,applied);
+                Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);return;
+            }
+            if(scenario=="terms-prepare")
+            {
+                await VerifyServicingTermsPreparation(db,f,applied,fence,ratedView.DraftEtag);
                 Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);return;
             }
             if(scenario=="submission-storage")

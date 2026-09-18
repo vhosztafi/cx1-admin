@@ -54,6 +54,7 @@ public sealed class ServicingCycle : MutableRecord
     public Guid RequestedBy { get; set; }
     public string State { get; set; } = "rating-pending";
     public Guid? CurrentRatingId { get; set; }
+    public Guid? CurrentTermsVersionId { get; set; }
     public DateTimeOffset? SupersededAt { get; set; }
     public string? SupersededReason { get; set; }
 }

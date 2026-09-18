@@ -4,6 +4,7 @@ using BackOffice.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackOffice.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(BackOfficeDbContext))]
-    partial class BackOfficeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260918094550_ServicingTermsStorage")]
+    partial class ServicingTermsStorage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -6914,9 +6917,6 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<Guid?>("TermsVersionId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("datetimeoffset");
 
@@ -6935,8 +6935,6 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("CapacitySubmissionId", "CycleId", "DraftId", "RevisionId", "RatingId");
 
-                    b.HasIndex("TermsVersionId", "CycleId", "DraftId", "RevisionId", "RatingId");
-
                     b.HasIndex("LatestReviewId", "Id", "CycleId", "DraftId", "RevisionId", "RatingId");
 
                     b.HasIndex("WithdrawnEventId", "Id", "CycleId", "DraftId", "RevisionId", "RatingId");
@@ -6949,11 +6947,9 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
 
                             t.HasCheckConstraint("CK_ServicingEvidenceAssociation_Fingerprint", "LEN([InputFingerprint])=64 AND [InputFingerprint] NOT LIKE '%[^0-9a-f]%' COLLATE Latin1_General_100_BIN2");
 
-                            t.HasCheckConstraint("CK_ServicingEvidenceAssociation_Purpose", "([RequirementCode] IN ('motor-trader-proof','no-claims-proof','trading-history','warranty-acknowledgement','capacity-response','signed-statement','acceptance-proof') AND [RiskItemId] IS NULL) OR ([RequirementCode] IN ('photocard-both-sides','driving-record','premises-security') AND [RiskItemId] IS NOT NULL AND [RiskItemId]<>'00000000-0000-0000-0000-000000000000')");
+                            t.HasCheckConstraint("CK_ServicingEvidenceAssociation_Purpose", "([RequirementCode] IN ('motor-trader-proof','no-claims-proof','trading-history','warranty-acknowledgement','capacity-response') AND [RiskItemId] IS NULL) OR ([RequirementCode] IN ('photocard-both-sides','driving-record','premises-security') AND [RiskItemId] IS NOT NULL AND [RiskItemId]<>'00000000-0000-0000-0000-000000000000')");
 
                             t.HasCheckConstraint("CK_ServicingEvidenceAssociation_Reason", "LEN(TRIM([Reason]))>=10 AND [CreatedBy] IS NOT NULL");
-
-                            t.HasCheckConstraint("CK_ServicingEvidenceAssociation_TermsPurpose", "([RequirementCode] IN ('signed-statement','acceptance-proof') AND [TermsVersionId] IS NOT NULL AND [RiskItemId] IS NULL) OR ([RequirementCode] NOT IN ('signed-statement','acceptance-proof') AND [TermsVersionId] IS NULL)");
 
                             t.HasCheckConstraint("CK_ServicingEvidenceAssociation_UpdatedAt_Utc", "DATEPART(TZOFFSET,[UpdatedAt]) = 0");
                         });
@@ -10909,12 +10905,6 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
                     b.HasOne("BackOffice.Infrastructure.Persistence.ServicingCapacitySubmission", null)
                         .WithMany()
                         .HasForeignKey("CapacitySubmissionId", "CycleId", "DraftId", "RevisionId", "RatingId")
-                        .HasPrincipalKey("Id", "CycleId", "DraftId", "RevisionId", "RatingId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("BackOffice.Infrastructure.Persistence.ServicingTermsVersion", null)
-                        .WithMany()
-                        .HasForeignKey("TermsVersionId", "CycleId", "DraftId", "RevisionId", "RatingId")
                         .HasPrincipalKey("Id", "CycleId", "DraftId", "RevisionId", "RatingId")
                         .OnDelete(DeleteBehavior.NoAction);
 

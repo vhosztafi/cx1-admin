@@ -12,6 +12,7 @@ namespace BackOffice.Infrastructure.Policies;
 internal sealed record ServicingDecisionContext(HeldServicingRating Scope,ServicingCycle Cycle,ServicingRatingResult Rating,
     ServicingRatingRequestInput Input)
 {
+    internal DateTimeOffset AssessedAt { get; init; }
     internal static async Task<ServicingDecisionContext> Hold(BackOfficeDbContext db,ActorContext actor,Guid draftId,
         string capability,DateTimeOffset now,CancellationToken token,Guid? requestedCycle=null,bool write=true)
     {
@@ -34,7 +35,7 @@ internal sealed record ServicingDecisionContext(HeldServicingRating Scope,Servic
         if (latest!=cycle.BaseVersionId) throw new QuoteOperationException(409,"servicing-base-stale");
         var rating=await db.Set<ServicingRatingResult>().AsNoTracking().SingleAsync(x=>x.Id==cycle.CurrentRatingId && x.CycleId==cycle.Id && x.DraftId==draftId && x.RevisionId==cycle.RevisionId,token);
         if (rating.Outcome!="rated") throw new QuoteOperationException(409,"servicing-rating-required");
-        return new(scope,cycle,rating,input);
+        return new(scope,cycle,rating,input){AssessedAt=now};
     }
 
     internal async Task Current(BackOfficeDbContext db,IDbContextFactory<BackOfficeDbContext> factory,TimeProvider time,

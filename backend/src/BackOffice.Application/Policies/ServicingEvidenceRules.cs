@@ -11,9 +11,11 @@ public sealed record ServicingProofRequirement(string Code, string Label, string
 {
     public required ServicingProofContext Context { get; init; }
     public Guid? CapacitySubmissionId { get; init; }
+    [System.Text.Json.Serialization.JsonIgnore(Condition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public Guid? TermsVersionId { get; init; }
 }
 public sealed record ServicingReviewedProof(Guid DraftId, Guid CycleId, Guid RevisionId, Guid RatingId, string Code, Guid? RiskItemId,
-    string InputFingerprint, string ScreeningState, string ReviewState, bool Withdrawn, Guid? CapacitySubmissionId=null);
+    string InputFingerprint, string ScreeningState, string ReviewState, bool Withdrawn, Guid? CapacitySubmissionId=null, Guid? TermsVersionId=null);
 // Trusted immutable full-risk slices only. SQL ownership, current grants, review
 // identity and file screening are supplied by the servicing command/read boundary.
 // A received flag in captured risk is never evidence of an accepted review.
@@ -97,7 +99,7 @@ public static class ServicingEvidenceRules
 
     public static bool Satisfied(ServicingProofContext context, ServicingProofRequirement requirement, ServicingReviewedProof proof) =>
         requirement.Context == context && proof.DraftId == context.DraftId && proof.CycleId == context.CycleId && proof.RevisionId == context.RevisionId && proof.RatingId == context.RatingId &&
-        proof.Code == requirement.Code && proof.RiskItemId == requirement.RiskItemId && proof.CapacitySubmissionId == requirement.CapacitySubmissionId &&
+        proof.Code == requirement.Code && proof.RiskItemId == requirement.RiskItemId && proof.CapacitySubmissionId == requirement.CapacitySubmissionId && proof.TermsVersionId == requirement.TermsVersionId &&
         ReferralRules.EvidenceSatisfied(proof.ScreeningState,proof.ReviewState,proof.Withdrawn,requirement.InputFingerprint,proof.InputFingerprint);
 
     private static string Hash<T>(T value) => Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(value)));

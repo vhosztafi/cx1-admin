@@ -1,11 +1,13 @@
 import { quoteFetch, validQuoteEtag } from './quotes.ts';
 
 export type ProofRequirement = { code: string; label: string; path: string; riskItemId: string | null; effectiveDates: string[]; inputFingerprint: string;
+  termsVersionId?: string | null;
   capacitySubmissionId?: string | null;
   context: { draftId: string; cycleId: string; revisionId: string; ratingId: string } };
 export type ProofRequirements = { draftId: string; cycleId: string; draftEtag: string; applicable: boolean; requirements: { requirement: ProofRequirement; satisfied: boolean }[] };
 export type ProofFile = { id: string; fileName: string; contentType: string; byteLength: number; screeningState: string; screeningMethod: string; createdAt: string };
 export type ProofAssociation = { id: string; cycleId: string; revisionId: string; ratingId: string; fileId: string; fileName: string; code: string; riskItemId: string | null;
+  termsVersionId?: string | null;
   capacitySubmissionId?: string | null;
   inputFingerprint: string; reason: string; etag: string; latestReviewId: string | null; reviewOutcome: string | null; withdrawn: boolean; createdAt: string };
 export type ProofEvent = { id: string; sequence: number; kind: string; outcome: string | null; reason: string; actorId: string; authorityVersionId: string | null; recordedAt: string };
@@ -24,7 +26,8 @@ export function proofReadState<T>(read: {url:string; etag:string; data:T} | null
 export function currentProof(association: ProofAssociation, requirement: ProofRequirement): boolean {
   return !association.withdrawn && association.cycleId === requirement.context.cycleId && association.revisionId === requirement.context.revisionId &&
     association.ratingId === requirement.context.ratingId && association.code === requirement.code && association.riskItemId === requirement.riskItemId &&
-    association.inputFingerprint === requirement.inputFingerprint && (association.capacitySubmissionId ?? null) === (requirement.capacitySubmissionId ?? null);
+    association.inputFingerprint === requirement.inputFingerprint && (association.capacitySubmissionId ?? null) === (requirement.capacitySubmissionId ?? null) &&
+    (association.termsVersionId ?? null) === (requirement.termsVersionId ?? null);
 }
 
 // Snapshot every retry-sensitive value, including the immutable File. Never rebuild
