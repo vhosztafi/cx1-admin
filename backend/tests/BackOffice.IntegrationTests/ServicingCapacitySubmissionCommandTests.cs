@@ -50,10 +50,27 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => Submit(Key(), sent.Etag!, caseVersion: updated.RowVersion))).Status);
         Assert.Single(await db.Set<AuditEvent>().Where(x => x.EventType == "servicing.capacity-submitted").ToArrayAsync());
         // A new request freezes the reviewed proof identities, not just file IDs.
-        await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacityCase SET State='draft' WHERE Id={capacity.Id}");
+        Task<CommandOutcome> Act(string command, string version, byte[] caseVersion, string action = "withdraw", ActorContext? actor = null,
+            Guid? fence = null, Guid? id = null) => service.ActionAsync(actor ?? f.Underwriter, capacity.DraftId, capacity.CycleId,
+                id ?? capacity.Id, Version(version), caseVersion, fence ?? lease, action, "Withdraw fictional capacity request", command, Guid.NewGuid());
+        Assert.Equal(403, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(Key(), sent.Etag!, updated.RowVersion, actor: f.Servicing))).Status);
+        Assert.Equal(404, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(Key(), sent.Etag!, updated.RowVersion, id: Guid.NewGuid()))).Status);
+        Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(Key(), sent.Etag!, updated.RowVersion, fence: Guid.NewGuid()))).Status);
+        Assert.Equal(412, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(Key(), etag, updated.RowVersion))).Status);
+        Assert.Equal(412, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(Key(), sent.Etag!, new byte[8]))).Status);
+        Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(Key(), sent.Etag!, updated.RowVersion, action: "reopen"))).Status);
+        Assert.Equal(422, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(Key(), sent.Etag!, updated.RowVersion, action: "approve"))).Status);
+        var withdrawKey = Key(); var withdrawal = await Act(withdrawKey, sent.Etag!, updated.RowVersion);
+        Assert.Equal(200, withdrawal.Status);
+        Assert.True((await Act(withdrawKey, sent.Etag!, updated.RowVersion)).Replayed);
+        await Assert.ThrowsAsync<CommandKeyConflictException>(() => Act(withdrawKey, sent.Etag!, updated.RowVersion, action: "reopen"));
         var withdrawn = await db.Set<ServicingCapacityCase>().AsNoTracking().SingleAsync(x => x.Id == capacity.Id);
+        Assert.Equal("draft", withdrawn.State); Assert.Equal(row.Id, withdrawn.CurrentSubmissionId);
+        Assert.Single(await db.Set<ServicingCapacitySubmission>().ToArrayAsync());
+        Assert.Single(await db.Set<AuditEvent>().Where(x => x.EventType == "servicing.capacity-action-detail").ToArrayAsync());
+        Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(Key(), withdrawal.Etag!, withdrawn.RowVersion))).Status);
         var proofs = new ServicingEvidenceService(f.Factory, f.Clock);
-        var uploaded = await proofs.UploadAsync(f.Underwriter, capacity.DraftId, Version(sent.Etag!), lease,
+        var uploaded = await proofs.UploadAsync(f.Underwriter, capacity.DraftId, Version(withdrawal.Etag!), lease,
             "fictional-capacity.txt", "text/plain", Encoding.UTF8.GetBytes("Fictional capacity supporting proof"), Key(), Guid.NewGuid());
         var requirement = (await proofs.RequirementsAsync(f.Underwriter, capacity.DraftId)).Requirements.Single(x => x.Requirement.Code == "motor-trader-proof").Requirement;
         var attached = await proofs.AttachAsync(f.Underwriter, capacity.DraftId, capacity.CycleId, Version(uploaded.Etag!), lease,
@@ -78,6 +95,7 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Equal("servicing-lease-conflict", (await Assert.ThrowsAsync<QuoteOperationException>(() => Submit(key, etag))).Code); f.Clock.Current = now;
         await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE UserAuthorityGrant SET RevokedAt={DateTimeOffset.UtcNow},RevokedBy={f.Underwriter.UserId},RevocationReason='Withdraw fictional capacity authority' WHERE UserId={f.Underwriter.UserId} AND RevokedAt IS NULL");
         Assert.Equal(403, (await Assert.ThrowsAsync<QuoteOperationException>(() => Submit(key, etag))).Status);
+        Assert.Equal(403, (await Assert.ThrowsAsync<QuoteOperationException>(() => Act(withdrawKey, sent.Etag!, updated.RowVersion))).Status);
         Assert.Equal(2, await db.Set<ServicingCapacitySubmission>().CountAsync());
     }
 }
