@@ -1037,3 +1037,51 @@ browser journeys, remaining referral-work navigation/source-field review.
 Do not create07-06-SUMMARY or advance07-07 yet. Still5/16 and54/65 complete.
 No active test processes; preview and demo database unchanged (still warranty
 migration, submission migration only exercised in isolated test databases).
+
+## Submission HTTP checkpoint — 2026-09-18
+
+Commit5301304 wires ServicingSubmissionService into DI and exposes strict
+POST /api/v1/drafts/{draftId}/submit under policy-draft-write and scoped
+GET /api/v1/drafts/{draftId}/submissions under policy-read. POST permits only
+cycleId/revisionId/reason, parses bounded JSON and requires strong draft version,
+holder lease, command key and global CSRF. It returns201 with durable receipt
+and new draft ETag, without a fabricated Location resource. GET uses signed
+actor/route/page-size/draft-version-bound cursors, pages1..50 and returns current
+independently of older pages. Both are no-store; GET exposes no cache ETag.
+
+Tests-first HTTP red: both products failed the missing submissions GET before
+route implementation (.local/phase7-06-submission-http-red). The first green
+attempt exercised successful commands/pages but expected403 after removing all
+roles. IdentitySnapshot rejects an identity with no roles, so the SQL ticket
+store correctly returns401; the assertion was corrected after reading that code.
+The new contract test initially looked for CSRF as a regular parameter; corrected
+to assert the existing required Session+Csrf OpenAPI security scheme.
+
+Final evidence: .local/phase7-06-submission-http-reviewed has12 unit cases and2
+real SQL/HTTP product scenarios; gate passed14/minSQL2/cutoff03:37:00Z, no skips.
+HTTP coverage includes absent CSRF/key/strong version/lease, weak version, forged
+lease, query and body extras, foreign/stale cycle, stale draft version, exact
+receipt retry, duplicate conflict, actual rerating/second submission, signed
+keyset paging with current retained on older pages, stale cursor and role removal.
+Both issued snapshots remain unchanged; exactly2 submission rows per fixture.
+Logs: .local/phase7-06-submission-http-reviewed.log and corresponding-unit.log.
+
+39 API contract tests pass (.local/phase7-06-submission-http-contracts-reviewed.log).
+OpenAPI390 operations valid,29 unused-component warnings; log
+.local/phase7-06-submission-http-openapi.log. The additional unused component is
+the old generic PolicyDraft no longer used by this implemented submission route.
+Runtime validation passed12 captured HTTP bodies (4 receipts,8 history pages)
+under .local/phase7-06-submission-http-reviewed/responses using
+verify-servicing-proof-contracts.mjs mode submissions and cutoff03:37:00Z.
+All closed schemas also reject an injected unknown response property.
+Build/diff checks pass. Browser submission checks are not yet implemented/run.
+
+NEXT: add UI submission command and paged handoff history in the existing draft
+workspace. Preserve exact key/body/lease/version on uncertain retry; resolve
+lost-lease uncertainty through persisted current status, not a fresh duplicate
+command. Keep proof/underwriting approval distinct. Apply the additive migration
+to the existing demo database without reset, rebuild/restart only verified owned
+previews and verify both-product browser submissions/rerating/history. Complete
+the referral-work/task source mapping and all07-06 source/field review before
+summary or advancing07-07. Still5/16 phase plans and54/65 total complete.
+No active tests. Live API82720/web81192 and demo database remain unchanged.

@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan07-06 submission command/history verified; HTTP contracts/UI and referral-work mapping remain
-last_updated: "2026-09-18T03:27:00Z"
-last_activity: "2026-09-18 —07-06 77016f9; submission command/history verified with 12 unit cases and 2 real SQL scenarios."
+stopped_at: Plan07-06 submission HTTP verified; UI/browser and referral-work mapping remain
+last_updated: "2026-09-18T03:47:00Z"
+last_activity: "2026-09-18 —07-06 5301304; submission API verified with 14 backend cases,39 contract cases and12 real response validations."
 progress:
   total_phases: 13
   completed_phases: 6
@@ -21,14 +21,14 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute Phase7;07-01..05 complete.07-06 submission service/history verified; wire and verify HTTP contracts/UI and finish referral-work source mapping.
+**Current focus:** Execute Phase7;07-01..05 complete.07-06 submission API verified; implement UI/browser proof and finish referral-work source mapping.
 
 ## Current Position
 
 Phase: 7 of 13 (Policy lifecycle and history)
 Plan: 5 of16 complete;07-06 in progress
-Status: Executing Phase7;07-06 submission command/history verified; HTTP contracts/UI and referral-work mapping remain
-Last activity: 2026-09-18 —07-06 77016f9 verified with 14 passing cases, including 2 real SQL scenarios. Resume latest07-06-PROGRESS.md checkpoint.
+Status: Executing Phase7;07-06 submission HTTP verified; UI/browser and referral-work mapping remain
+Last activity: 2026-09-18 —07-06 5301304 verified with14 backend,39 contract cases and12 actual HTTP response validations. Resume latest07-06-PROGRESS.md checkpoint.
 
 Progress: Phases1–6 complete;6/13 phases,54 completed implementation plans.
 
@@ -54,8 +54,8 @@ Progress: Phases1–6 complete;6/13 phases,54 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-18T03:27:00Z
-Stopped at:07-06 submission command/history verified; implement submission HTTP contracts and UI next
+Last session: 2026-09-18T03:47:00Z
+Stopped at:07-06 submission HTTP verified; implement submission UI and browser checks next
 Resume file: .planning/phases/07-policy-lifecycle-and-history/07-06-PROGRESS.md
 
 ## Autonomous continuation

@@ -204,8 +204,10 @@ it does not represent proof acceptance, underwriting approval or issue authority
 Historical records remain readable after rerating and abandonment. A changed
 lease can block an exact retry after success, so UI recovery must read persisted
 submission status rather than inventing another command or claiming failure.
-The service read exists at the next checkpoint; this is still a planned HTTP
-contract until its route, generated schema and negative API tests are verified.
+Implemented HTTP contract in5301304: strict POST submit and scoped GET submissions,
+generated schemas, actual SQL/HTTP negative tests and response validation pass.
+UI/browser submission integration remains in progress; the running demo preview
+has not yet been rebuilt or migrated to include submission support.
 
 Review against full source field/control coverage, current API-CONVENTIONS and
 PERMISSIONS. Specify exact schema fields and cancellation rule/approval catalogue,
