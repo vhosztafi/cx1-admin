@@ -25,7 +25,7 @@ public sealed class SqlJobLeases(IDbContextFactory<BackOfficeDbContext> factory,
 
     private async Task<JobLease?> ClaimCoreAsync(string kind,Guid? workId,CancellationToken cancellationToken)
     {
-        if(kind is not (DiagnosticKind or "agency-notification" or "quote-lookup" or "quote-rating" or "servicing-rating" or "servicing-capacity" or "capacity-escalation" or "quote-delivery"))throw new ArgumentException("Unsupported job kind.");
+        if(kind is not (DiagnosticKind or "agency-notification" or "quote-lookup" or "quote-rating" or "servicing-rating" or "servicing-capacity" or "servicing-delivery" or "capacity-escalation" or "quote-delivery"))throw new ArgumentException("Unsupported job kind.");
         await using var db=await factory.CreateDbContextAsync(cancellationToken);
         // REPEATABLE READ permits READPAST even when the database uses read-committed snapshots.
         await using var transaction=await db.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead,cancellationToken);
@@ -93,6 +93,15 @@ public sealed class SqlJobLeases(IDbContextFactory<BackOfficeDbContext> factory,
         {
             var delivery = await db.Set<QuoteTermsDelivery>().SingleOrDefaultAsync(x => x.WorkId == job.Id, cancellationToken);
             if (delivery is { State: "queued" }) { delivery.State = "failed"; delivery.CompletedAt = now; delivery.OutcomeCode = code; }
+        }
+        if(job.Kind=="servicing-delivery")
+        {
+            var delivery=await db.Set<ServicingTermsDelivery>().SingleOrDefaultAsync(x=>x.WorkId==job.Id,cancellationToken);
+            if(delivery is {State:"queued"})
+            {
+                delivery.State="failed";delivery.CompletedAt=now;delivery.OutcomeCode=code;delivery.UpdatedAt=now;
+                delivery.AttemptId=await db.Set<AdapterAttempt>().Where(x=>x.WorkId==job.Id).OrderByDescending(x=>x.AttemptNumber).Select(x=>(Guid?)x.Id).FirstOrDefaultAsync(cancellationToken);
+            }
         }
         if (job.Kind == "capacity-escalation")
         {

@@ -86,7 +86,42 @@ SQL reviewed price guard also rejects fractional pennies rather than rounding
 them; both-product storage regression passed in
 .local/phase7-08-terms-storage-reviewed/sql.
 
-Still incomplete: delivery, acceptance, terms endpoints/contracts/read model,
+## Durable delivery implementation (continuing)
+
+Prerequisites committed inc65f892. Added delivery migration20260918101554,
+owned cycle pointer, immutable recipient/document snapshot and payload digest,
+dedicated outbox/provider operation, worker and development dispatcher. Sending
+requires exact current terms, reviewed signature, held scope and current scoped
+contacts before replay. Completion rechecks all of those, current sender, proof
+assurance and current delivery pointer; late results become superseded. A
+recorded adapter attempt is required for a terminal outcome. New terms clear
+the current delivery pointer, retaining history. Terminal job failure completes
+the delivery atomically. Seed adds only missing servicing templates/scenario;
+no shared-demo seed/migration has been run.
+
+Delivery SQL red failed at missing table; queue/worker reds failed compilation
+at their missing implementations. Fixed SQL operation-key lower-case comparison,
+embedded exact retained JSON bytes, job-kind routing, and a deletion assertion
+that initially expected the append-only error instead of the earlier FK error.
+After template seeding was registered, the storage test rolls back/reapplies
+only the empty delivery migration; it cannot remove template kinds underneath
+retained immutable seeded templates. This is a test-scope correction, not a
+claim that existing populated contract data can be downgraded.
+
+.local/phase7-08-delivery-worker-routed/sql:4passed, both products' storage and
+preparation/signature/queue/provider duplicate/application duplicate/readback.
+.local/phase7-08-delivery-failures/{unit,sql}:46unit+4SQL, zero skips; gatepassed
+with cutoff2026-09-18T10:25:00Z. Actual SQL scenarios cover signature withdrawal,
+provider rejection, transient-once and timeout-after-success. Retry retains one
+provider operation; changed assurance cannot be applied as delivered.
+.local/phase7-08-delivery-current-scope/sql:sender suspension and amended draft
+passed; recipient termination initially failed fixture Ending timestamp before
+the worker (quote fixture uses wall-clock creation). Corrected that timestamp.
+Recipient termination and generic terminal-failure scenarios passed in
+.local/phase7-08-delivery-terminal/{unit,sql}:46unit+2SQL, zero skips. The
+terminal failure records its owned attempt without a fake provider operation.
+
+Still incomplete: acceptance, terms endpoints/contracts/read model,
 typed signed-statement condition integration and browser UI verification.
 The shared demo database has not been migrated for07-08. No completion or
 requirement closure is claimed; continue implementation.

@@ -10,7 +10,7 @@ namespace BackOffice.IntegrationTests;
 
 public sealed partial class UnderwritingRuntimeTests
 {
-    private static async Task VerifyServicingTermsPreparation(BackOfficeDbContext db,DecisionFixture f,ServicingCycle cycle,Guid fence,string etag)
+    private static async Task VerifyServicingTermsPreparation(BackOfficeDbContext db,DecisionFixture f,ServicingCycle cycle,Guid fence,string etag,string deliveryScenario="success")
     {
         static byte[] Version(string value)=>Convert.FromBase64String(value.Trim('"'));
         static string Key()=>Guid.NewGuid().ToString();
@@ -45,9 +45,11 @@ public sealed partial class UnderwritingRuntimeTests
         var purposes=(await evidence.RequirementsAsync(f.Underwriter,cycle.DraftId)).Requirements;
         Assert.Equal(stored.Id,Assert.Single(purposes,x=>x.Requirement.Code=="signed-statement").Requirement.TermsVersionId);
         Assert.Equal(stored.Id,Assert.Single(purposes,x=>x.Requirement.Code=="acceptance-proof").Requirement.TermsVersionId);
-        var reused=await terms.PrepareAsync(f.Underwriter,cycle.DraftId,cycle.Id,cycle.CurrentRatingId!.Value,template.Id,Version(prepared.Etag!),fence,Key(),Guid.NewGuid());
+        var queuedEtag=await VerifyServicingDeliveryQueue(db,f,cycle,stored,uploaded.ResourceId,fence,prepared.Etag!,deliveryScenario);
+        if(deliveryScenario!="success")return;
+        var reused=await terms.PrepareAsync(f.Underwriter,cycle.DraftId,cycle.Id,cycle.CurrentRatingId!.Value,template.Id,Version(queuedEtag),fence,Key(),Guid.NewGuid());
         Assert.Equal(stored.Id,reused.ResourceId);Assert.Equal(1,await db.Set<ServicingTermsVersion>().CountAsync());
-        var proof=await db.Set<ServicingEvidenceAssociation>().AsNoTracking().FirstAsync(x=>x.CycleId==cycle.Id);
+        var proof=await db.Set<ServicingEvidenceAssociation>().AsNoTracking().FirstAsync(x=>x.CycleId==cycle.Id && x.RequirementCode!="signed-statement" && x.RequirementCode!="acceptance-proof");
         await evidence.WithdrawAsync(f.Underwriter,cycle.DraftId,cycle.Id,proof.Id,Version(reused.Etag!),fence,proof.RowVersion,"Withdraw fictional contract evidence",Key(),Guid.NewGuid());
         Assert.Equal("servicing-proof-review-required",(await Assert.ThrowsAsync<QuoteOperationException>(()=>terms.PrepareAsync(f.Underwriter,cycle.DraftId,cycle.Id,cycle.CurrentRatingId!.Value,template.Id,original,fence,key,Guid.NewGuid()))).Code);
     }

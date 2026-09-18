@@ -14,7 +14,10 @@ public sealed partial class UnderwritingRuntimeTests
 {
     private static async Task VerifyServicingTermsStorage(BackOfficeDbContext db,DecisionFixture f,ServicingCycle cycle)
     {
-        var migrator=db.GetService<IMigrator>();await migrator.MigrateAsync("20260918073955_ServicingCarrierResolutions");await migrator.MigrateAsync();
+        // Demo initialization now retains servicing templates. Roll back only
+        // the empty delivery schema; older template kinds cannot be removed
+        // while their immutable seeded documents exist.
+        var migrator=db.GetService<IMigrator>();await migrator.MigrateAsync("20260918095455_ServicingTermsEvidence");await migrator.MigrateAsync();
         Assert.False(db.Database.HasPendingModelChanges());
         Assert.Equal(0,await db.Database.SqlQueryRaw<int>("SELECT COUNT(*) AS Value FROM ServicingTermsVersion").SingleAsync());
         var now=f.Clock.GetUtcNow();var rating=await db.Set<ServicingRatingResult>().AsNoTracking().SingleAsync(x=>x.Id==cycle.CurrentRatingId);
@@ -44,6 +47,7 @@ public sealed partial class UnderwritingRuntimeTests
         var second=Guid.NewGuid();await Insert(second,2,payload);await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCycle SET CurrentTermsVersionId={second} WHERE Id={cycle.Id}");
         Assert.Equal(51502,(await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCycle SET CurrentTermsVersionId={first} WHERE Id={cycle.Id}"))).Number);
         await VerifyTermsProofOwnership(db,f,cycle,first,second,now);
+        await VerifyServicingDeliveryStorage(db,f,cycle,first,second,now);
         now=rating.ExpiresAt;Assert.Equal(51500,(await Assert.ThrowsAsync<SqlException>(()=>Insert(Guid.NewGuid(),3,payload))).Number);
         Assert.Equal(2,await db.Database.SqlQueryRaw<int>("SELECT COUNT(*) AS Value FROM ServicingTermsVersion").SingleAsync());
     }

@@ -44,6 +44,7 @@ QuoteRatingDispatcher.Register(builder);
 ServicingRatingDispatcher.Register(builder);
 CapacityDispatcher.Register(builder);
 ServicingCapacityDispatcher.Register(builder);
+ServicingDeliveryDispatcher.Register(builder);
 QuoteDeliveryDispatcher.Register(builder);
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.QuoteIssueService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.PolicyReadService>();
