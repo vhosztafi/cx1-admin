@@ -22,5 +22,28 @@ public sealed partial class BackOfficeDbContext
         Check(capacity, "Reason", "LEN(TRIM([Reason]))>=10");
         Check(capacity, "State", "[State] IN ('draft','queued','sent','queried','approved','conditional','declined','failed','superseded')");
         Check(capacity, "Time", "[UpdatedAt]>=[CreatedAt]");
+
+        var submission = Record<ServicingCapacitySubmission>(model, "ServicingCapacitySubmission");
+        submission.ToTable(t => t.UseSqlOutputClause(false));
+        Text(submission, ("Body", 10000), ("Reason", 2000));
+        UnderwritingJson(submission, "ContextJson"); Hash(submission, "ContextHash");
+        submission.HasAlternateKey(x => new { x.Id, x.CaseId, x.CycleId, x.DraftId, x.RevisionId, x.RatingId });
+        submission.HasIndex(x => new { x.CaseId, x.Sequence }).IsUnique();
+        submission.HasIndex(x => x.WorkId).IsUnique();
+        submission.HasOne<ServicingCapacityCase>().WithMany()
+            .HasForeignKey(x => new { x.CaseId, x.CycleId, x.DraftId, x.RevisionId, x.RatingId })
+            .HasPrincipalKey(x => new { x.Id, x.CycleId, x.DraftId, x.RevisionId, x.RatingId }).OnDelete(DeleteBehavior.NoAction);
+        submission.HasOne<OutboxWork>().WithMany().HasForeignKey(x => x.WorkId).OnDelete(DeleteBehavior.NoAction);
+        submission.HasOne<SettingVersion>().WithMany().HasForeignKey(x => x.ScenarioVersionId).OnDelete(DeleteBehavior.NoAction);
+        submission.HasOne<StaffUser>().WithMany().HasForeignKey(x => x.SubmittedBy).OnDelete(DeleteBehavior.NoAction);
+        Check(submission, "Identity", "[Id]<>'00000000-0000-0000-0000-000000000000'");
+        Check(submission, "Sequence", "[Sequence]>0");
+        Check(submission, "Actor", "[CreatedBy] IS NOT NULL AND [CreatedBy]=[SubmittedBy]");
+        Check(submission, "Text", "LEN(TRIM([Body]))>0 AND DATALENGTH([Body])<=20000 AND LEN(TRIM([Reason]))>=10");
+        Check(submission, "Time", "[SubmittedAt]=[CreatedAt] AND [ResponseDueAt]>[SubmittedAt]");
+        Check(submission, "ContextHash", "[ContextHash]=HASHBYTES('SHA2_256',CONVERT(varchar(max),[ContextJson] COLLATE Latin1_General_100_BIN2_UTF8))");
+        capacity.HasOne<ServicingCapacitySubmission>().WithMany()
+            .HasForeignKey(x => new { x.CurrentSubmissionId, x.Id, x.CycleId, x.DraftId, x.RevisionId, x.RatingId })
+            .HasPrincipalKey(x => new { x.Id, x.CaseId, x.CycleId, x.DraftId, x.RevisionId, x.RatingId }).OnDelete(DeleteBehavior.NoAction);
     }
 }

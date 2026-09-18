@@ -1,0 +1,52 @@
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
+using BackOffice.Infrastructure.Persistence;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Xunit;
+
+namespace BackOffice.IntegrationTests;
+
+public sealed partial class UnderwritingRuntimeTests
+{
+    private static async Task VerifyServicingCapacitySubmissionStorage(BackOfficeDbContext db, DecisionFixture f, ServicingCapacityCase capacity)
+    {
+        Assert.Equal(0, await db.Database.SqlQueryRaw<int>("SELECT COUNT(*) AS Value FROM ServicingCapacitySubmission").SingleAsync());
+        var scenario = await db.Set<SettingVersion>().AsNoTracking().FirstAsync(x => x.Scope == "capacity-escalation/query-proof");
+        var now = f.Clock.GetUtcNow();
+        async Task<(Guid Id, Guid Work, string Json, byte[] Hash)> Prepare(int sequence)
+        {
+            var id = Guid.NewGuid();
+            var context = JsonSerializer.Serialize(new { format = "servicing-capacity-submission-1", draftId = capacity.DraftId,
+                revisionId = capacity.RevisionId, cycleId = capacity.CycleId, ratingId = capacity.RatingId, caseId = capacity.Id,
+                referralId = capacity.ReferralId, providerId = capacity.ProviderId, binderVersionId = capacity.BinderVersionId,
+                submissionId = id, sequence });
+            var work = new OutboxWork { Kind = "servicing-capacity", SubjectRecordId = id, OperationKey = $"servicing-capacity/{id:N}",
+                ScenarioVersionId = scenario.Id, Payload = "{}", NextAttemptAt = now, CreatedAt = now, UpdatedAt = now, CreatedBy = f.Underwriter.UserId };
+            db.Add(work); await db.SaveChangesAsync();
+            return (id, work.Id, context, SHA256.HashData(Encoding.UTF8.GetBytes(context)));
+        }
+        async Task Insert((Guid Id, Guid Work, string Json, byte[] Hash) item, int sequence, Guid? draft = null, Guid? owner = null, byte[]? hash = null, string body = "Fictional carrier request") =>
+            await db.Database.ExecuteSqlInterpolatedAsync($"INSERT ServicingCapacitySubmission (Id,CaseId,DraftId,RevisionId,CycleId,RatingId,Sequence,Body,Reason,ContextJson,ContextHash,WorkId,ScenarioVersionId,SubmittedBy,SubmittedAt,ResponseDueAt,CreatedAt,CreatedBy) VALUES ({item.Id},{owner ?? capacity.Id},{draft ?? capacity.DraftId},{capacity.RevisionId},{capacity.CycleId},{capacity.RatingId},{sequence},{body},'Review fictional carrier request',{item.Json},{hash ?? item.Hash},{item.Work},{scenario.Id},{f.Underwriter.UserId},{now},{now.AddDays(2)},{now},{f.Underwriter.UserId})");
+        var first = await Prepare(1);
+        await Assert.ThrowsAsync<SqlException>(() => Insert(first, 1, draft: Guid.NewGuid()));
+        await Assert.ThrowsAsync<SqlException>(() => Insert(first, 1, owner: Guid.NewGuid()));
+        await Assert.ThrowsAsync<SqlException>(() => Insert(first, 1, hash: new byte[32]));
+        await Assert.ThrowsAsync<SqlException>(() => Insert(first, 1, body: new string('x', 10001)));
+        Assert.Equal(51430, (await Assert.ThrowsAsync<SqlException>(() => Insert(first, 2))).Number);
+        await Insert(first, 1);
+        await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacityCase SET CurrentSubmissionId={first.Id},State='queued' WHERE Id={capacity.Id}");
+        Assert.Equal(51431, (await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacitySubmission SET Body='Changed request' WHERE Id={first.Id}"))).Number);
+        await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync($"DELETE ServicingCapacitySubmission WHERE Id={first.Id}"));
+        // Withdrawal preserves the pointer, but cannot be undone by a delayed worker.
+        await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacityCase SET State='draft' WHERE Id={capacity.Id}");
+        Assert.Equal(51422, (await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacityCase SET State='queued' WHERE Id={capacity.Id}"))).Number);
+        var second = await Prepare(2); await Insert(second, 2);
+        await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacityCase SET CurrentSubmissionId={second.Id},State='queued' WHERE Id={capacity.Id}");
+        Assert.Equal(51422, (await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacityCase SET CurrentSubmissionId={first.Id} WHERE Id={capacity.Id}"))).Number);
+        Assert.Equal(51422, (await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacityCase SET CurrentSubmissionId=NULL WHERE Id={capacity.Id}"))).Number);
+        Assert.Equal(51422, (await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingCapacityCase SET State='approved' WHERE Id={capacity.Id}"))).Number);
+        Assert.Equal(2, await db.Database.SqlQueryRaw<int>("SELECT COUNT(*) AS Value FROM ServicingCapacitySubmission").SingleAsync());
+    }
+}

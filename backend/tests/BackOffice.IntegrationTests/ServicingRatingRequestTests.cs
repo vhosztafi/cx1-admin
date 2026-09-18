@@ -41,6 +41,8 @@ public sealed partial class UnderwritingRuntimeTests
     [InlineData("motor-trade-combined", "capacity-storage")]
     [InlineData("motor-trade-road-risks", "capacity-create")]
     [InlineData("motor-trade-combined", "capacity-create")]
+    [InlineData("motor-trade-road-risks", "capacity-submission-storage")]
+    [InlineData("motor-trade-combined", "capacity-submission-storage")]
     [InlineData("motor-trade-road-risks", "submission-command")]
     [InlineData("motor-trade-combined", "submission-command")]
     [InlineData("motor-trade-road-risks", "submission-http")]
@@ -107,12 +109,12 @@ public sealed partial class UnderwritingRuntimeTests
                 new { changeId = second, riskItemId = issued.PolicyId, kind = "cover", operation = "update", payload = new { },
                     effectiveIntent = new { localDate = "2026-10-15", localTime = "00:00", timeZone = "Europe/London" } }
             });
-            if (scenario is "temporary-cover" or "referral-generation" or "referral-authority" or "referral-work-http" or "capacity-storage" or "capacity-create")
+            if (scenario is "temporary-cover" or "referral-generation" or "referral-authority" or "referral-work-http" or "capacity-storage" or "capacity-create" or "capacity-submission-storage")
             {
                 var originalSections = snapshot["cover"]!["requestedSections"]!.DeepClone();
                 var temporarySections = originalSections.DeepClone();
                 var tools = temporarySections.AsArray().Single(x => x!["code"]!.GetValue<string>() == "tools-equipment")!;
-                tools["selected"] = true; tools["limit"] = scenario is "referral-generation" or "referral-authority" or "referral-work-http" or "capacity-storage" or "capacity-create" ? "10000.00" : "1000.00"; tools["excess"] = "100.00";
+                tools["selected"] = true; tools["limit"] = scenario is "referral-generation" or "referral-authority" or "referral-work-http" or "capacity-storage" or "capacity-create" or "capacity-submission-storage" ? "10000.00" : "1000.00"; tools["excess"] = "100.00";
                 proposal["changes"] = JsonSerializer.SerializeToNode(new object[] {
                     new { changeId = first, riskItemId = issued.PolicyId, kind = "cover", operation = "update", payload = new { requestedSections = temporarySections } },
                     new { changeId = second, riskItemId = issued.PolicyId, kind = "cover", operation = "update", payload = new { requestedSections = originalSections },
@@ -269,9 +271,9 @@ public sealed partial class UnderwritingRuntimeTests
                 await VerifyServicingSubmissionCommand(db,f,applied,cycle,fence,ratedView.DraftEtag);
                 Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);return;
             }
-            if(scenario=="capacity-create")
+            if(scenario is "capacity-create" or "capacity-submission-storage")
             {
-                await VerifyServicingCapacityCreate(db,f,applied,ratedView.DraftEtag);
+                await VerifyServicingCapacityCreate(db,f,applied,ratedView.DraftEtag,scenario=="capacity-submission-storage");
                 Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);return;
             }
             if(scenario=="capacity-storage")

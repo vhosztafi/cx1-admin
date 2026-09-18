@@ -255,3 +255,22 @@ limit arithmetic; no servicing draft is passed as a fake QuoteId. ExtentApplies
 is only response extent: current grants, provider, evidence, current conditions,
 proof readiness and every dated exposure remain mandatory service/worker checks.
 ActionState retains history/pointers while draft state fences late delivery.
+
+### Servicing capacity submission ownership
+
+ServicingCapacitySubmission pins CaseId,DraftId,RevisionId,CycleId,RatingId,
+monotonic Sequence,Body,Reason,ContextJson,ContextHash,WorkId,ScenarioVersionId,
+SubmittedBy/At and ResponseDueAt. Hash is SHA-256 of the stored UTF-8 context
+bytes; context has its own servicing-capacity-submission-1 format and explicit
+owner identifiers. Unique case/sequence and WorkId; compound case ownership and
+same-case CurrentSubmissionId FK. Outbox kind/subject/operation/scenario must match
+before insert. No quote-owned submission or quote receipt is reused.
+
+Submission insert requires a current unexpired owned rating and active pinned
+provider, and a case eligible for a new submission. A new submission resets prior
+response applicability when the response graph is added; it never rewrites history.
+Case pointers are monotonic. Withdrawal keeps the pointer and moves to draft;
+returning to queued requires a strictly newer submission. Until response storage
+is implemented no approved/conditional/queried/sent states are enabled. Every
+row is append-only and retains exact provider request bytes, caller reason and
+server-derived provenance. Storage is a prerequisite, not an activated endpoint.
