@@ -33,6 +33,8 @@ public sealed partial class UnderwritingRuntimeTests
     [InlineData("motor-trade-combined", "referral-storage")]
     [InlineData("motor-trade-road-risks", "referral-generation")]
     [InlineData("motor-trade-combined", "referral-generation")]
+    [InlineData("motor-trade-road-risks", "trading-proof")]
+    [InlineData("motor-trade-combined", "trading-proof")]
     [InlineData("motor-trade-road-risks", "referral-service")]
     [InlineData("motor-trade-combined", "referral-service")]
     [InlineData("motor-trade-road-risks", "referral-authority")]
@@ -101,6 +103,13 @@ public sealed partial class UnderwritingRuntimeTests
                     new { changeId = first, riskItemId = issued.PolicyId, kind = "cover", operation = "update", payload = new { requestedSections = temporarySections } },
                     new { changeId = second, riskItemId = issued.PolicyId, kind = "cover", operation = "update", payload = new { requestedSections = originalSections },
                         effectiveIntent = new { localDate = "2026-10-15", localTime = "00:00", timeZone = "Europe/London" } }
+                });
+            }
+            if (scenario == "trading-proof")
+            {
+                proposal["changes"]![0] = JsonSerializer.SerializeToNode(new {
+                    changeId = first, riskItemId = issued.PolicyId, kind = "business", operation = "update",
+                    payload = new { startedOn = "2025-01-01" }
                 });
             }
             var saved = await drafts.SaveAsync(f.Servicing, draftId, Version(acquired.Etag!), fence, proposal.ToJsonString(), Key(), Guid.NewGuid());
@@ -231,9 +240,10 @@ public sealed partial class UnderwritingRuntimeTests
             }
             if (scenario is "reject" or "revoke-before-apply") Assert.Empty(await db.Set<ServicingReferral>().Where(x=>x.DraftId==draftId).ToArrayAsync());
             var ratedView = await readModel.ReadAsync(f.Servicing, draftId, pageSize: 1);
-            if (scenario is "referral-service" or "referral-authority")
+            if (scenario is "referral-service" or "referral-authority" or "trading-proof")
             {
                 if(scenario=="referral-service") await VerifyServicingReferralService(db,f,applied,ratedView.DraftEtag);
+                else if(scenario=="trading-proof") await VerifyServicingTradingProof(db,f,applied,ratedView.DraftEtag);
                 else await VerifyServicingReferralAuthority(db,f,applied,ratedView.DraftEtag);
                 Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);return;
             }

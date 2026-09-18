@@ -72,6 +72,10 @@ public sealed partial class ServicingReferralService(IDbContextFactory<BackOffic
                     var revise=parsed.Any(x=>x[0].Condition.Kind=="risk-change");
                     var grant=grants.FirstOrDefault(g=>!approval || revise || ServicingReferralRules.AuthorityAllows(held.Input.Term,risks,held.Scope.Eligible.Binder,g.Definition,all,
                         held.Input.RatingDefinition.GetProperty("minimumTradingYears").GetInt32())) ??throw new QuoteOperationException(403,"servicing-dimension-authority-required");
+                    // Live proof is checked before receipt replay as well as for
+                    // a new approval. A historical receipt cannot restore proof.
+                    if(item.Outcome=="approve" && row.RuleCode=="UW-22" && !await TradingHistorySatisfied(db,held,ct))
+                        throw new QuoteOperationException(409,"servicing-trading-history-review-required");
                     selected.Add(row.Id,(row,grant,parsed));
                 }
             },
@@ -84,10 +88,9 @@ public sealed partial class ServicingReferralService(IDbContextFactory<BackOffic
                     var row=selected[item.ReferralId].Row;
                     if(!CryptographicOperations.FixedTimeEquals(row.RowVersion,item.Version)) throw new QuoteOperationException(412,"servicing-referral-stale");
                     if(row.State=="superseded" || row.State=="declined" && item.Outcome!="reopen") throw new QuoteOperationException(409,"servicing-referral-reopen-required");
-                    // Until condition resolution commands and live proof checks
-                    // are wired, an outstanding condition cannot become approval.
+                    // Keep conditional proof dependencies. Live readiness is
+                    // derived without erasing the original conditions.
                     if(item.Outcome=="approve" && active.Any(x=>x.ReferralId==row.Id)) throw new QuoteOperationException(409,"servicing-condition-outstanding");
-                    if(item.Outcome=="approve" && row.RuleCode=="UW-22") throw new QuoteOperationException(409,"servicing-trading-history-review-required");
                 }
                 Guid first=Guid.Empty;
                 foreach(var item in normalized)

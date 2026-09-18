@@ -43,6 +43,7 @@ public sealed partial class ServicingReferralService
                     authority.State=="published" && authority.EffectiveFrom<=now && authority.EffectiveTo>now &&
                     authority.EffectiveFrom<=held.Input.Slices[0].EffectiveAt && authority.EffectiveTo>=held.Input.Term.EndsAt;
                 if(ready) ready=await ResolutionAuthority(db,held,JsonSerializer.Deserialize<JsonElement>(authority.DefinitionJson),token);
+                if(ready && row.RuleCode=="UW-22") ready=await TradingHistorySatisfied(db,held,token);
             }
             else ready=false;
             items.Add(new(row.Id,row.Sequence,row.RuleCode,row.Dimension,row.RiskItemId,row.State,Etag(row.RowVersion),row.LatestDecisionId,ready,conditionViews));
@@ -52,4 +53,23 @@ public sealed partial class ServicingReferralService
     }
 
     private static string Etag(byte[] version)=>"\""+Convert.ToBase64String(version)+"\"";
+
+    private async Task<bool> TradingHistorySatisfied(BackOfficeDbContext db,ServicingDecisionContext held,CancellationToken token)
+    {
+        if(held.Rating.ExpiresAt<=time.GetUtcNow()) return false;
+        var requirement=(await ServicingEvidenceProjection.RequirementsAsync(db,held,token))
+            .SingleOrDefault(x=>x.Code=="trading-history" && x.RiskItemId is null);
+        if(requirement is null) return false;
+        // Exact current ownership and full-schedule fingerprint; only the
+        // latest accepted review of a screened, non-withdrawn file counts.
+        return await (from association in db.Set<ServicingEvidenceAssociation>().AsNoTracking()
+            join file in db.Set<ServicingEvidenceFile>() on association.FileId equals file.Id
+            join review in db.Set<ServicingEvidenceEvent>() on association.LatestReviewId equals review.Id
+            where association.DraftId==held.Scope.Draft.Id && association.CycleId==held.Cycle.Id &&
+                association.RevisionId==held.Scope.Revision.Id && association.RatingId==held.Rating.Id &&
+                association.RequirementCode==requirement.Code && association.RiskItemId==null &&
+                association.InputFingerprint==requirement.InputFingerprint && association.WithdrawnEventId==null &&
+                file.ScreeningState=="accepted" && review.Kind=="review" && review.Outcome=="accepted"
+            select association.Id).AnyAsync(token);
+    }
 }
