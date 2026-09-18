@@ -140,6 +140,7 @@ public sealed partial class BackOfficeDbContext(DbContextOptions<BackOfficeDbCon
         ConfigureQuoteTerms(model);
         ConfigurePolicies(model);
         ConfigureServicing(model);
+        ConfigureServicingSubmissions(model);
         ConfigureServicingEvidence(model);
         ConfigureServicingReferrals(model);
         ConfigureServicingConditions(model);
