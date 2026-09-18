@@ -1,4 +1,5 @@
 using BackOffice.Application;
+using BackOffice.Application.Policies;
 using System.Text.Json;
 using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Quotes;
@@ -6,9 +7,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackOffice.Infrastructure.Policies;
 
-public sealed record ServicingConditionView(Guid Id,string Code,string Kind,bool Satisfied,string Etag);
+public sealed record ServicingConditionClause(DateTimeOffset EffectiveAt,string Wording,string? EndorsementCode,IReadOnlyList<Guid> TargetIds);
+public sealed record ServicingConditionView(Guid Id,string Code,string Kind,bool Satisfied,string Etag,JsonElement Definition,IReadOnlyList<ServicingConditionClause> Clauses);
 public sealed record ServicingReferralView(Guid Id,int Sequence,string RuleCode,string Dimension,Guid? RiskItemId,string State,
-    string Etag,Guid? DecisionId,bool DecisionReady,IReadOnlyList<ServicingConditionView> Conditions);
+    string Etag,Guid? DecisionId,bool DecisionReady,IReadOnlyList<ServicingConditionView> Conditions,string Reason,JsonElement RequiredAuthority,ServicingDecisionView? Decision);
 public sealed record ServicingReferralPage(Guid DraftId,Guid CycleId,string DraftEtag,bool Applicable,IReadOnlyList<ServicingReferralView> Items,int? NextAfterSequence);
 
 public sealed partial class ServicingReferralService
@@ -21,21 +23,28 @@ public sealed partial class ServicingReferralService
         var rows=await db.Set<ServicingReferral>().AsNoTracking().Where(x=>x.DraftId==draftId && x.CycleId==held.Cycle.Id && x.Sequence>afterSequence)
             .OrderBy(x=>x.Sequence).Take(pageSize+1).ToArrayAsync(token);
         var page=rows.Take(pageSize).ToArray();var decisionIds=page.Where(x=>x.LatestDecisionId is not null).Select(x=>x.LatestDecisionId!.Value).ToArray();
+        var decisions=await db.Set<ServicingReferralDecision>().AsNoTracking().Where(x=>x.DraftId==draftId && x.CycleId==held.Cycle.Id && decisionIds.Contains(x.Id)).ToDictionaryAsync(x=>x.Id,token);
         var conditions=await db.Set<ServicingCondition>().AsNoTracking().Where(x=>x.DraftId==draftId && x.CycleId==held.Cycle.Id && decisionIds.Contains(x.DecisionId))
             .OrderBy(x=>x.Sequence).Take(101).ToArrayAsync(token);
         if(conditions.Length>100) throw new QuoteOperationException(409,"servicing-condition-limit");
+        var slices=ServicingEvidenceProjection.Slices(held);
         var applicable=held.Rating.ExpiresAt>now;var items=new List<ServicingReferralView>();
         foreach(var row in page)
         {
             var conditionViews=new List<ServicingConditionView>();
             foreach(var condition in conditions.Where(x=>x.DecisionId==row.LatestDecisionId))
-                conditionViews.Add(new(condition.Id,condition.Code,condition.Kind,applicable && await ConditionSatisfied(db,held,condition,token),Etag(condition.RowVersion)));
+            {
+                var definition=JsonSerializer.Deserialize<JsonElement>(condition.DefinitionJson);
+                var clauses=ServicingConditionRules.Parse(definition,slices,JsonSerializer.Deserialize<DateTimeOffset[]>(condition.EffectiveDatesJson)!)
+                    .Select(x=>new ServicingConditionClause(x.EffectiveAt,x.Condition.Wording,x.Condition.EndorsementCode,x.Condition.TargetIds)).ToArray();
+                conditionViews.Add(new(condition.Id,condition.Code,condition.Kind,applicable && await ConditionSatisfied(db,held,condition,token),Etag(condition.RowVersion),definition,clauses));
+            }
             // This is referral-decision readiness only, not overall issue
             // readiness. Base proof, capacity, terms and acceptance are separate.
             var ready=applicable && (row.State=="approved" || row.State=="conditional" && conditionViews.Count>0 && conditionViews.All(x=>x.Satisfied));
             if(ready && row.LatestDecisionId is {} decisionId)
             {
-                var decision=await db.Set<ServicingReferralDecision>().AsNoTracking().SingleAsync(x=>x.Id==decisionId,token);
+                var decision=decisions[decisionId];
                 var grant=await db.Set<UserAuthorityGrant>().AsNoTracking().SingleAsync(x=>x.Id==decision.GrantId,token);
                 var authority=await db.Set<AuthorityVersion>().AsNoTracking().SingleAsync(x=>x.Id==decision.AuthorityVersionId,token);
                 ready=grant.RevokedAt is null && grant.EffectiveFrom<=now && grant.EffectiveTo>now &&
@@ -46,7 +55,10 @@ public sealed partial class ServicingReferralService
                 if(ready && row.RuleCode=="UW-22") ready=await TradingHistorySatisfied(db,held,token);
             }
             else ready=false;
-            items.Add(new(row.Id,row.Sequence,row.RuleCode,row.Dimension,row.RiskItemId,row.State,Etag(row.RowVersion),row.LatestDecisionId,ready,conditionViews));
+            var latest=row.LatestDecisionId is {} latestId?decisions[latestId]:null;
+            var decisionView=latest is null?null:DecisionView(latest);
+            items.Add(new(row.Id,row.Sequence,row.RuleCode,row.Dimension,row.RiskItemId,row.State,Etag(row.RowVersion),row.LatestDecisionId,ready,conditionViews,
+                row.Reason,JsonSerializer.Deserialize<JsonElement>(row.RequiredAuthorityJson),decisionView));
         }
         var result=new ServicingReferralPage(draftId,held.Cycle.Id,Etag(held.Scope.Draft.RowVersion),applicable,items,rows.Length>pageSize?page[^1].Sequence:null);
         await tx.CommitAsync(token);return result;
