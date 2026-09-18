@@ -99,7 +99,7 @@ public sealed partial class ServicingCapacityService
                         RevisionId = held.Cycle.RevisionId, RatingId = held.Rating.Id, AssociationId = proof.Association.Id,
                         ReviewId = proof.ReviewId, CreatedBy = actor.UserId, CreatedAt = now });
                 await db.SaveChangesAsync(ct);
-                capacity.CurrentSubmissionId = id; capacity.State = "queued"; capacity.UpdatedAt = now;
+                capacity.CurrentSubmissionId = id; capacity.CurrentResponseId = null; capacity.State = "queued"; capacity.UpdatedAt = now;
                 var receipt = await held.Receipt(db, caseId, 202, now, ct);
                 return receipt with { Body = JsonSerializer.Serialize(new { id = caseId, draftId, cycleId, revisionId = held.Cycle.RevisionId,
                     submissionId = id, jobId = work.Id, state = "queued", draftEtag = receipt.Etag }) };

@@ -14,6 +14,7 @@ public sealed class ServicingCapacityCase : MutableRecord
     public string Reason { get; set; } = "";
     public string State { get; set; } = "draft";
     public Guid? CurrentSubmissionId { get; set; }
+    public Guid? CurrentResponseId { get; set; }
 }
 
 public sealed class ServicingCapacitySubmission : StoredRecord
@@ -63,4 +64,32 @@ public sealed class ServicingCapacityMessage : StoredRecord
     public byte[] ContentHash { get; set; } = [];
     public Guid RecordedBy { get; set; }
     public DateTimeOffset RecordedAt { get; set; }
+}
+
+public sealed class ServicingCapacityResponseRecord : StoredRecord
+{
+    public Guid SubmissionId { get; set; }
+    public Guid CaseId { get; set; }
+    public Guid DraftId { get; set; }
+    public Guid RevisionId { get; set; }
+    public Guid CycleId { get; set; }
+    public Guid RatingId { get; set; }
+    public Guid ProviderId { get; set; }
+    public int Sequence { get; set; }
+    public string Provenance { get; set; } = "supplied-response";
+    public string Outcome { get; set; } = "query";
+    public string Body { get; set; } = "";
+    public string DefinitionJson { get; set; } = "{}";
+    public byte[] ContentHash { get; set; } = [];
+    public string ProviderUnderwriter { get; set; } = "";
+    public string ProviderReference { get; set; } = "";
+    public string? ProviderEventId { get; set; }
+    public Guid? ProviderOperationId { get; set; }
+    public Guid? InboxId { get; set; }
+    public Guid? EvidenceAssociationId { get; set; }
+    public Guid? EvidenceReviewId { get; set; }
+    public string ApplicationState { get; set; } = "applied";
+    public DateTimeOffset ReceivedAt { get; set; }
+    public DateTimeOffset RecordedAt { get; set; }
+    public Guid RecordedBy { get; set; }
 }

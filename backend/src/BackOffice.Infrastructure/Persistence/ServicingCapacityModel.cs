@@ -71,5 +71,6 @@ public sealed partial class BackOfficeDbContext
         Check(message, "Body", "LEN(TRIM([Body]))>0 AND DATALENGTH([Body])<=20000");
         Check(message, "ContentHash", "[ContentHash]=HASHBYTES('SHA2_256',CONVERT(varchar(max),[Body] COLLATE Latin1_General_100_BIN2_UTF8))");
         Check(message, "Actor", "[CreatedBy] IS NOT NULL AND [CreatedBy]=[RecordedBy] AND [RecordedAt]=[CreatedAt]");
+        ConfigureServicingCapacityResponses(model);
     }
 }

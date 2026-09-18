@@ -39,6 +39,8 @@ public sealed partial class UnderwritingRuntimeTests
             association.RowVersion,"accepted",purpose.InputFingerprint,"Review exact fictional carrier reply",Key(),Guid.NewGuid());
         Assert.True((await service.RequirementsAsync(f.Underwriter,capacity.DraftId)).Requirements.Single(x=>x.Requirement.InputFingerprint==purpose.InputFingerprint).Satisfied);
         Assert.Equal("queued",await db.Set<ServicingCapacityCase>().Where(x=>x.Id==capacity.Id).Select(x=>x.State).SingleAsync());
+        association=await db.Set<ServicingEvidenceAssociation>().AsNoTracking().SingleAsync(x=>x.Id==association.Id);
+        await VerifyServicingCapacityResponseStorage(db,f,capacity,submission,association);
         return reviewed.Etag!;
     }
 }
