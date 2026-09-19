@@ -275,6 +275,9 @@ cases, compile the backend first, and build both the normal Next output and the
 isolated `.local/next-policy-history` output. Do not run multiple browser suites
 against shared demo fixtures at once. Each aggregate run gets a new report directory
 under `.local/servicing-suite`; a partial or failed report is not acceptance.
+Each run first issues two fresh fictional policies through the normal quote,
+proof, terms and acceptance APIs. Its `policy-bases/fixtures.json` is passed to
+the servicing stages, so an already issued renewal never needs to be replaced.
 
 After issuing both product examples, the API's local Development command
 `--seed-servicing-drafts-demo` adds editable and leased cancellation drafts to
@@ -287,6 +290,29 @@ lease before it expires. The command serializes concurrent seeders, reuses its
 original drafts, and never renews expired leases or reopens records changed by a
 business user. It creates drafts through normal services and does not issue or
 cancel cover. Richer servicing scenarios are separate from this draft seed.
+
+Additional local examples use these sequential scripts after the prerequisite
+underwriting and renewal journeys:
+
+- `node scripts/seed-servicing-policy-bases.mjs`, followed by
+  `node scripts/seed-servicing-cancellation-demo.mjs`, issues two dedicated
+  fictional policies and their approved cancellation credits. Posted journals
+  are checked for balance; no cash is paid.
+- `node scripts/seed-servicing-lapse-demo.mjs` records manual non-renewal of the
+  retained future terms, effective at their original expiry. Current cover is
+  preserved and the deterministic notification outcome is stored.
+- `node scripts/seed-servicing-underwriting-demo.mjs` retains missing trading
+  proof, unresolved internal referrals, carrier query history and conditional
+  carrier permission on an adjustment for each product. Issued cover is unchanged.
+
+Reports and desktop/mobile captures are in `.local/servicing-*-demo-v1`.
+Keep each directory and its command journal with the database: the journal
+reuses exact idempotency keys and requests after an interrupted response.
+Scripts stop on validation or concurrency conflicts; they do not bypass leases
+or reset records. A stale `running.lock` requires checking its recorded process
+has ended before removing it. Do not run seeds while business users edit their
+example records. These scripts use normal authenticated APIs and fictional
+documents, with no real carrier or customer delivery.
 
 Use one explicit, persistent encryption-key directory for the API and every demo
 CLI process. From the repository root in PowerShell, set
