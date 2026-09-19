@@ -7,6 +7,17 @@ const fixtures = JSON.parse(await readFile('.local/browser-evidence/underwriting
 const password = (await readFile('.local/demo-password.txt', 'utf8')).trim(), browser = await chromium.launch({ channel: 'chrome', headless: true });
 const contexts = [], errors = [], report = { journeys: [] };
 async function get(page, path) { const r = await page.request.get(origin + path); assert.equal(r.status(), 200, `${path}: ${await r.text()}`); return { data: await r.json(), etag: r.headers().etag }; }
+async function findPaged(page, path, predicate) {
+  const url = new URL(path, origin); url.searchParams.set('pageSize', '100');
+  const cursors = new Set(); let pages = 0;
+  while (true) {
+    const { data } = await get(page, url.pathname + url.search); pages++;
+    const item = data.items.find(predicate); if (item) return { item, pages };
+    assert.ok(data.nextCursor, 'Expected retained record was absent from every page: ' + path);
+    assert.ok(!cursors.has(data.nextCursor), 'Pagination repeated a cursor.');
+    cursors.add(data.nextCursor); url.searchParams.set('cursor', data.nextCursor);
+  }
+}
 async function post(page, path, data, etag) { const token = (await get(page, '/api/v1/auth/csrf')).data.requestToken; const r = await page.request.post(origin + path, { headers: { 'X-CSRF-Token': token, 'Idempotency-Key': crypto.randomUUID(), ...(etag ? { 'If-Match': etag } : {}) }, data }); assert.ok(r.ok(), `${path}: ${r.status()}: ${await r.text()}`); return r.json(); }
 async function login(role) { const context = await browser.newContext({ viewport: { width: 1560, height: 1000 } }); contexts.push(context); const page = await context.newPage(); page.setDefaultTimeout(30000); page.on('pageerror', e => errors.push(e.message)); await page.goto(origin + '/login'); await page.getByLabel('Email address').fill(role + '@cover.example'); await page.getByLabel('Password', { exact: true }).fill(password); await page.getByRole('button', { name: 'Sign in', exact: true }).click(); await page.waitForURL(origin + '/'); return page; }
 let page;
@@ -25,9 +36,9 @@ try {
     await page.getByRole('link', { name: policy.reference, exact: true }).click(); await page.getByRole('heading', { name: policy.reference, exact: true }).waitFor();
     await page.getByRole('link', { name: 'Open client record', exact: true }).click(); await page.getByRole('link', { name: 'Policies', exact: true }).last().click();
     await page.getByRole('link', { name: policy.reference, exact: true }).click(); await page.getByRole('heading', { name: policy.reference, exact: true }).waitFor();
-    const records = (await get(page, `/api/v1/clients/${policy.clientId}/records?kind=policy`)).data; assert.ok(records.items.some(x => x.id === policy.id && x.kind === 'policy'));
-    const activity = (await get(page, `/api/v1/clients/${policy.clientId}/activity?pageSize=100`)).data; assert.ok(activity.items.some(x => x.eventType === 'policy.issued' && x.recordId === fixture.quoteId));
-    const quotes = (await get(page, `/api/v1/quotes?status=bound&clientId=${policy.clientId}`)).data; assert.ok(quotes.items.some(x => x.id === fixture.quoteId));
+    await findPaged(page, `/api/v1/clients/${policy.clientId}/records?kind=policy`, x => x.id === policy.id && x.kind === 'policy');
+    const activity = await findPaged(page, `/api/v1/clients/${policy.clientId}/activity`, x => x.eventType === 'policy.issued' && x.recordId === fixture.quoteId);
+    await findPaged(page, `/api/v1/quotes?status=bound&clientId=${policy.clientId}`, x => x.id === fixture.quoteId);
     await page.goto(origin + `/agents/${policy.agencyId}/sharing`); await page.getByLabel('Search shared policy summaries', { exact: true }).fill(policy.reference); await page.locator('form').filter({ has: page.getByLabel('Search shared policy summaries', { exact: true }) }).getByRole('button', { name: 'Search', exact: true }).click();
     await page.getByRole('button', { name: policy.reference, exact: true }).click(); await page.getByRole('link', { name: 'Open internal policy record', exact: true }).waitFor();
     await page.getByLabel('Search shared policy summaries', { exact: true }).fill(registration); await page.locator('form').filter({ has: page.getByLabel('Search shared policy summaries', { exact: true }) }).getByRole('button', { name: 'Search', exact: true }).click(); await page.getByText('No shared policies match', { exact: true }).waitFor();
@@ -42,7 +53,7 @@ try {
     assert.equal((await get(broker, '/api/v1/agency-context/policies?q=' + encodeURIComponent(registration))).data.totalCount, 0);
     assert.equal((await broker.request.get(origin + '/api/v1/policies/' + policy.id)).status(), 403);
     assert.equal((await broker.request.get(origin + '/api/v1/agency-context/policies/' + crypto.randomUUID())).status(), 404);
-    report.journeys.push({ productCode: fixture.productCode, policyId: policy.id, reference: policy.reference, invitationId: invitation.invitationId, checks: ['issued registration search', 'product/status/sort', 'policy-client-policy roundtrip', 'client records/activity', 'bound quote discovery', 'safe internal preview and hidden registration denial', 'accepted agency cookie own allowlist and internal/foreign denial'] });
+    report.journeys.push({ productCode: fixture.productCode, policyId: policy.id, reference: policy.reference, invitationId: invitation.invitationId, activityPages: activity.pages, checks: ['issued registration search', 'product/status/sort', 'policy-client-policy roundtrip', 'client records/activity', 'bound quote discovery', 'safe internal preview and hidden registration denial', 'accepted agency cookie own allowlist and internal/foreign denial'] });
     await writeFile(output + '/report.json', JSON.stringify(report, null, 2));
   }
   await page.goto(origin + '/policies'); await page.getByRole('table', { name: 'Issued policies', exact: true }).waitFor(); await page.screenshot({ path: output + '/desktop.png', fullPage: true });
