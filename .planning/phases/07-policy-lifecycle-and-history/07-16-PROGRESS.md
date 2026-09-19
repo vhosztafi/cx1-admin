@@ -1,0 +1,21 @@
+# 07-16 execution progress
+
+07-15 is committed as ef1ceab. This plan remains executing; no completion claim.
+
+- Full backend run: `.local/phase7-16-full-c29bc4f2ab9047e2a55899b93aac0637`, active exec session 49652. Independent discovery: 883 unit and 337 integration cases, including 301 SQL/restart cases. Unit tests passed; integration run remains in progress and has exposed old migration downgrade assumptions in warranty/capacity fixtures. Source fixes now explicitly assert immutable-template downgrade rejection and exact template preservation before re-upgrade. These fixes are not compiled or verified yet; do not rebuild Debug while this run is active. A fresh full passing run is required after fixes.
+- Browser suite v2 passed carrier conditions through issue and both-product policy readback, then failed discovery because its hardcoded scheduled state became active on 18 September. Updated harness checks current policy coverage state and matching filtered API readback. Targeted rerun session 28762, log `.local/phase7-16-discovery-v3.log`.
+- Fixed local demo build routing: old build targeted API 5080; new isolated `.local/next-phase7-acceptance` targets 5087. Actual web login/API read passed (`.local/phase7-16-web-signin.json`). Current owned processes recorded in `.local/phase7-16-preview-pids.json`: API 83488, web 91280. Verify process identities before stopping. Prior 07-15 PID file is stale.
+- Browser error reporting now preserves the original failure when the main element is unavailable.
+- Pending: additive servicing demonstration scenarios, aggregate servicing harness, full retained 37 journeys, fresh full checks, initialization twice/restart fingerprint preservation, source/security/UI review, Phase 8 handoff and verification.
+- Use existing `.github/workflows/foundation.yml` and `docs/SETUP.md` / `docs/DEMO.md` rather than creating duplicate CI/setup files suggested by the plan. SQL CI jobs need browser dependencies and both required Next builds before backend browser integration tests.
+
+Do not reset/reseed destructively, modify the sales funnel, overwrite issued history, or report failed/stale runs as acceptance evidence.
+
+## Acceptance refinements
+
+- Migration fixes also cover submission storage. Built separately with `--artifacts-path .local/phase7-16-isolated-build`, leaving the active full-run binaries untouched. `.local/phase7-16-migration-fixes/sql.trx`: **8 passed, 0 failed/skipped**, including the six previously failing scenarios and two matching capacity submission cases. No production migration guard was weakened.
+- `.local/phase7-16-web-tests.log`:148 passed; `.local/phase7-16-contract-tests.log`:361 passed. Lint/typecheck passed. The correct-origin isolated production build is recorded earlier.
+- Discovery targeted rerun passed both products. Full underwriting v3 passed 17 quote journeys but operations could not access Windows SQL from the restricted process. V4 reran with SQL access, passed operations, then hit a client-page request timeout. The unchanged client journey passed independently (`.local/phase7-16-clients-recheck.log`). Full agency recheck session35629, `.local/phase7-16-agency-suite-v5.log`. No complete retained-suite pass yet.
+- Added sequential16-stage `verify-servicing-suite.mjs`, exact API graph capture/compare `verify-servicing-restart.mjs`, and all-table SQL/PowerShell preservation scripts. The SQL query uses ordered STRING_AGG: variable concatenation experimentally returned one row. The strict gate rejected this and the corrected query returned133 table fingerprints (including migration history). Previous07-15 evidence files were independently checked and contain132 records each.
+- Restart harness repeat-read probe `.local/phase7-16-restart-probe-v2`:2 products,8 exact versions. It removes only two request-time cutoff fields from explicit-version responses; history uses fixed query cutoffs. This is harness verification, not evidence of an actual restart. Actual stop/start and twice-initialize checks remain pending.
+- Updated existing foundation CI with browser dependencies, both Next builds and independently discovered minimums: Windows1220/301; Linux exclusions1218/299. Hosted CI has not been run.

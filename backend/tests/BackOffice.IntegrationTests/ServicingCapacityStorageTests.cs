@@ -12,9 +12,7 @@ public sealed partial class UnderwritingRuntimeTests
     private static async Task VerifyServicingCapacityCaseStorage(BackOfficeDbContext db, DecisionFixture f, ServicingCycle cycle)
     {
         // Run against an existing issued/rated graph, never the shared demo DB.
-        var migrator = db.GetService<IMigrator>();
-        await migrator.MigrateAsync("20260918025724_ServicingUnderwritingSubmission");
-        await migrator.MigrateAsync();
+        await VerifyRetainedTemplateDowngradeProtection(db, "20260918025724_ServicingUnderwritingSubmission");
         Assert.False(db.Database.HasPendingModelChanges());
         Assert.Equal(0, await db.Database.SqlQueryRaw<int>("SELECT COUNT(*) AS Value FROM ServicingCapacityCase").SingleAsync());
         var referral = await db.Set<ServicingReferral>().AsNoTracking().FirstAsync(x => x.CycleId == cycle.Id);

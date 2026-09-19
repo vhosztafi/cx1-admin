@@ -16,7 +16,11 @@ try {
     const policy = (await get(page, '/api/v1/policies/' + fixture.policyId)).data, registration = policy.snapshot.risk.vehicles[0].registration;
     await page.goto(origin + '/policies'); await page.getByLabel('Search policies', { exact: true }).fill(registration); await page.getByRole('button', { name: 'Search', exact: true }).click();
     await page.getByRole('link', { name: policy.reference, exact: true }).waitFor();
-    await page.getByLabel('Product', { exact: true }).selectOption(fixture.productCode); await page.getByLabel('Status', { exact: true }).selectOption('scheduled');
+    // Retained policies move through inception as the demo clock advances.
+    assert.ok(['scheduled', 'active', 'expired', 'cancelled'].includes(policy.coverageState));
+    const filtered = (await get(page, `/api/v1/policies?q=${encodeURIComponent(policy.reference)}&productCode=${fixture.productCode}&state=${policy.coverageState}`)).data;
+    assert.equal(filtered.items.find(x => x.id === policy.id)?.state, policy.coverageState);
+    await page.getByLabel('Product', { exact: true }).selectOption(fixture.productCode); await page.getByLabel('Status', { exact: true }).selectOption(policy.coverageState);
     await page.getByLabel('Sort by', { exact: true }).selectOption('inception'); await page.getByLabel('Order', { exact: true }).selectOption('desc');
     await page.getByRole('link', { name: policy.reference, exact: true }).click(); await page.getByRole('heading', { name: policy.reference, exact: true }).waitFor();
     await page.getByRole('link', { name: 'Open client record', exact: true }).click(); await page.getByRole('link', { name: 'Policies', exact: true }).last().click();

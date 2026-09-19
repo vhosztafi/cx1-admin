@@ -11,8 +11,8 @@ public sealed partial class UnderwritingRuntimeTests
 {
     private static async Task VerifyServicingSubmissionStorage(BackOfficeDbContext db,DecisionFixture f,ServicingCycle cycle,ServicingCycle older)
     {
-        // Exercise additive down/up against a pre-existing issued/rated graph.
-        var migrator=db.GetService<IMigrator>();await migrator.MigrateAsync("20260918002325_ServicingWarrantyEvidence");await migrator.MigrateAsync();
+        // Preserve newer immutable templates when probing older schema boundaries.
+        await VerifyRetainedTemplateDowngradeProtection(db, "20260918002325_ServicingWarrantyEvidence");
         var now=f.Clock.GetUtcNow();var id=Guid.NewGuid();
         var olderRating=await db.Set<ServicingRatingResult>().AsNoTracking().SingleAsync(x=>x.CycleId==older.Id);
         var currentRating=await db.Set<ServicingRatingResult>().AsNoTracking().SingleAsync(x=>x.Id==cycle.CurrentRatingId);

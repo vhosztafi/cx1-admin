@@ -18,9 +18,7 @@ public sealed partial class UnderwritingRuntimeTests
         static string Key()=>Guid.NewGuid().ToString();
         var service=new ServicingReferralService(f.Factory,f.Clock);var evidence=new ServicingEvidenceService(f.Factory,f.Clock);
         var drafts=new ServicingDraftService(f.Factory,f.Clock);
-        // Reapply the additive migration over an existing issued/rated graph.
-        await db.GetService<IMigrator>().MigrateAsync("20260917220333_ServicingConditionResolutions");
-        await db.Database.MigrateAsync();db.ChangeTracker.Clear();
+        await VerifyRetainedTemplateDowngradeProtection(db, "20260917220333_ServicingConditionResolutions");
         using var input=JsonDocument.Parse(cycle.InputJson);var slice=input.RootElement.GetProperty("slices")[0];
         var target=slice.GetProperty("input").GetProperty("drivers")[0].GetProperty("id").GetGuid();
         var sequence=await db.Set<ServicingReferral>().Where(x=>x.CycleId==cycle.Id).Select(x=>(int?)x.Sequence).MaxAsync()??0;
