@@ -2139,9 +2139,15 @@
       "handlers": {
         "onClick": "() => this.toast('Cancellation issued (mock): policy PN/CC/000622 cancelled, version 7, refund RF-0221 raised.', 'Open policy', () => this.go('policy'))"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-14"
+      "owner": "07-14",
+      "evidence": [
+        ".local/phase7-14-guards/sql.trx",
+        ".local/phase7-14-browser-command/sql.trx",
+        ".local/phase7-14-browser-responses"
+      ],
+      "implementation": "Actual approved issue with immutable cancellation snapshot, signed posted debtor movement and four durable consequences. Frozen retry, reload and transaction navigation verified for both Motor Trade products. Demo notice is applied; certificate withdrawal, MID removal and task closure remain pending for Phase9. No cash refund is represented as paid."
     },
     {
       "id": "CTL-be7dce14a48f",
@@ -2158,9 +2164,15 @@
       "handlers": {
         "onClick": "() => this.toast('Cancellation issued (mock): version 7, refund RF-0221 raised.', 'Open policy', () => this.go('policy'))"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-14"
+      "owner": "07-14",
+      "evidence": [
+        ".local/phase7-14-guards/sql.trx",
+        ".local/phase7-14-browser-command/sql.trx",
+        ".local/phase7-14-browser-responses"
+      ],
+      "implementation": "Actual approved issue with immutable cancellation snapshot, signed posted debtor movement and four durable consequences. Frozen retry, reload and transaction navigation verified for both Motor Trade products. Demo notice is applied; certificate withdrawal, MID removal and task closure remain pending for Phase9. No cash refund is represented as paid."
     },
     {
       "id": "CTL-bfe2f6136895",

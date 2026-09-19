@@ -4,6 +4,7 @@ using BackOffice.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackOffice.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(BackOfficeDbContext))]
-    partial class BackOfficeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260919061452_CancellationPostingCalculation")]
+    partial class CancellationPostingCalculation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1988,6 +1991,8 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasAlternateKey("Id", "DraftId", "PolicyId", "RevisionId");
+
                     b.HasIndex("CreatedBy");
 
                     b.HasIndex("DraftId")
@@ -3251,9 +3256,7 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.HasIndex("OriginalComponentId")
-                        .IsUnique()
-                        .HasFilter("[OriginalComponentId] IS NOT NULL");
+                    b.HasIndex("OriginalComponentId");
 
                     b.HasIndex("ObligationId", "OriginalComponentId")
                         .IsUnique()
@@ -4442,9 +4445,6 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
                     b.Property<Guid?>("AcceptanceId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CancellationIssueDecisionId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
@@ -4514,10 +4514,6 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CancellationIssueDecisionId")
-                        .IsUnique()
-                        .HasFilter("[CancellationIssueDecisionId] IS NOT NULL");
-
                     b.HasIndex("CreatedBy");
 
                     b.HasIndex("OperationKey")
@@ -4535,10 +4531,6 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
                         .IsUnique()
                         .HasFilter("[ServicingIssueDecisionId] IS NOT NULL");
 
-                    b.HasIndex("TermId")
-                        .IsUnique()
-                        .HasFilter("[Kind]='cancellation'");
-
                     b.HasIndex("PolicyId", "SourceQuoteId");
 
                     b.HasIndex("QuoteRevisionId", "SourceQuoteId");
@@ -4554,8 +4546,6 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("ServicingCycleId", "ServicingDraftId", "PolicyId");
 
-                    b.HasIndex("CancellationIssueDecisionId", "ServicingDraftId", "PolicyId", "ServicingRevisionId");
-
                     b.HasIndex("ServicingRatingId", "ServicingCycleId", "ServicingDraftId", "ServicingRevisionId");
 
                     b.HasIndex("ServicingAcceptanceId", "ServicingCycleId", "ServicingDraftId", "ServicingRevisionId", "ServicingRatingId");
@@ -4564,17 +4554,15 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
 
                     b.ToTable("PolicyTransaction", null, t =>
                         {
-                            t.HasCheckConstraint("CK_PolicyTransaction_CancellationDecision", "([Kind]='cancellation' AND [CancellationIssueDecisionId] IS NOT NULL) OR ([Kind]<>'cancellation' AND [CancellationIssueDecisionId] IS NULL)");
-
                             t.HasCheckConstraint("CK_PolicyTransaction_CreatedAt_Utc", "DATEPART(TZOFFSET,[CreatedAt]) = 0");
 
-                            t.HasCheckConstraint("CK_PolicyTransaction_DecisionSource", "([Kind]='new-business' AND [CycleId] IS NOT NULL AND [QuoteRevisionId] IS NOT NULL AND [RatingId] IS NOT NULL AND [AcceptanceId] IS NOT NULL AND [ServicingDraftId] IS NULL AND [ServicingRevisionId] IS NULL AND [ServicingCycleId] IS NULL AND [ServicingRatingId] IS NULL AND [ServicingAcceptanceId] IS NULL) OR ([Kind] IN ('adjustment','renewal') AND [CycleId] IS NULL AND [QuoteRevisionId] IS NULL AND [RatingId] IS NULL AND [AcceptanceId] IS NULL AND [ServicingDraftId] IS NOT NULL AND [ServicingRevisionId] IS NOT NULL AND [ServicingCycleId] IS NOT NULL AND [ServicingRatingId] IS NOT NULL AND [ServicingAcceptanceId] IS NOT NULL) OR ([Kind]='cancellation' AND [CycleId] IS NULL AND [QuoteRevisionId] IS NULL AND [RatingId] IS NULL AND [AcceptanceId] IS NULL AND [ServicingDraftId] IS NOT NULL AND [ServicingRevisionId] IS NOT NULL AND [ServicingCycleId] IS NULL AND [ServicingRatingId] IS NULL AND [ServicingAcceptanceId] IS NULL)");
+                            t.HasCheckConstraint("CK_PolicyTransaction_DecisionSource", "([Kind]='new-business' AND [CycleId] IS NOT NULL AND [QuoteRevisionId] IS NOT NULL AND [RatingId] IS NOT NULL AND [AcceptanceId] IS NOT NULL AND [ServicingDraftId] IS NULL AND [ServicingRevisionId] IS NULL AND [ServicingCycleId] IS NULL AND [ServicingRatingId] IS NULL AND [ServicingAcceptanceId] IS NULL) OR ([Kind] IN ('adjustment','renewal') AND [CycleId] IS NULL AND [QuoteRevisionId] IS NULL AND [RatingId] IS NULL AND [AcceptanceId] IS NULL AND [ServicingDraftId] IS NOT NULL AND [ServicingRevisionId] IS NOT NULL AND [ServicingCycleId] IS NOT NULL AND [ServicingRatingId] IS NOT NULL AND [ServicingAcceptanceId] IS NOT NULL)");
 
                             t.HasCheckConstraint("CK_PolicyTransaction_EffectiveAt_Utc", "DATEPART(TZOFFSET,[EffectiveAt]) = 0");
 
-                            t.HasCheckConstraint("CK_PolicyTransaction_IssueDecision", "([Kind] IN ('new-business','cancellation') AND [ServicingIssueDecisionId] IS NULL) OR ([Kind] IN ('adjustment','renewal') AND [ServicingIssueDecisionId] IS NOT NULL)");
+                            t.HasCheckConstraint("CK_PolicyTransaction_IssueDecision", "([Kind]='new-business' AND [ServicingIssueDecisionId] IS NULL) OR ([Kind] IN ('adjustment','renewal') AND [ServicingIssueDecisionId] IS NOT NULL)");
 
-                            t.HasCheckConstraint("CK_PolicyTransaction_Kind", "[Kind] IN ('new-business','adjustment','renewal','cancellation')");
+                            t.HasCheckConstraint("CK_PolicyTransaction_Kind", "[Kind] IN ('new-business','adjustment','renewal')");
 
                             t.HasCheckConstraint("CK_PolicyTransaction_ProcessedAt_Utc", "DATEPART(TZOFFSET,[ProcessedAt]) = 0");
 
@@ -11707,12 +11695,6 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("ServicingCycleId", "ServicingDraftId", "PolicyId")
                         .HasPrincipalKey("Id", "DraftId", "PolicyId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("BackOffice.Infrastructure.Persistence.CancellationIssueDecision", null)
-                        .WithMany()
-                        .HasForeignKey("CancellationIssueDecisionId", "ServicingDraftId", "PolicyId", "ServicingRevisionId")
-                        .HasPrincipalKey("Id", "DraftId", "PolicyId", "RevisionId")
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("BackOffice.Infrastructure.Persistence.ServicingRatingResult", null)

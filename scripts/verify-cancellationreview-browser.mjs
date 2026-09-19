@@ -21,7 +21,7 @@ if(!process.argv.includes('--worker')) {
  async function login(email){await page.goto(f.webOrigin+'/login');await page.getByLabel('Email address',{exact:true}).fill(email);await page.getByLabel('Password',{exact:true}).fill(process.env.COVER_CANCELLATION_BROWSER_PASSWORD);await button('Sign in').click();await page.waitForURL(f.webOrigin+'/');}
  let draftId;
  async function read(){const response=await page.request.get(f.apiOrigin+`/api/v1/drafts/${draftId}/cancellation-preview`);assert.equal(response.status(),200,await response.text());assert.equal(response.headers()['cache-control'],'no-store');return response.json();}
- async function capture(name,schema,data){const content=JSON.stringify({schema,data},null,2);await writeFile(f.output+'/'+name+'.json',content);const dir='.local/phase7-13-browser-responses';await mkdir(dir,{recursive:true});await writeFile(`${dir}/${f.product}-${name}.json`,content);}
+ async function capture(name,schema,data){const content=JSON.stringify({schema,data},null,2);await writeFile(f.output+'/'+name+'.json',content);const dir=f.issue?'.local/phase7-14-browser-responses':'.local/phase7-13-browser-responses';await mkdir(dir,{recursive:true});await writeFile(`${dir}/${f.product}-${name}.json`,content);}
  async function save(){const response=page.waitForResponse(r=>r.url().endsWith(`/drafts/${draftId}/proposal`)&&r.request().method()==='PUT');await button('Save draft').click();assert.equal((await response).status(),200);}
  try {
   await login('underwriter@cover.example');await page.goto(f.webOrigin+`/policies/${f.policyId}`);
@@ -65,12 +65,47 @@ if(!process.argv.includes('--worker')) {
   await page.reload();await page.getByText('Cancellation approved',{exact:true}).waitFor();assert.equal((await read()).approvalId,approved.approvalId);
   assert.match(await page.locator('body').innerText(),/Cash paid: £0.00/);
   await page.setViewportSize({width:1480,height:980});await button('Acquire editing lease').click();
+  if(f.issue){
+   await page.getByLabel('Cancellation issue reason',{exact:true}).fill('Issue the independently approved fictional cancellation');
+   await page.getByLabel('I confirm the cancellation effective time and reviewed financial movement.',{exact:true}).check();
+   let originalHeaders,originalBody,receipt;
+   const issueUrl=`/api/v1/drafts/${draftId}/cancellation-issue`;
+   await page.route('**'+issueUrl,async route=>{
+    if(route.request().method()!=='POST'){await route.fallback();return;}
+    originalHeaders=route.request().headers();originalBody=route.request().postData();
+    const response=await route.fetch({url:f.apiOrigin+issueUrl});assert.equal(response.status(),201,await response.text());
+    receipt=await response.json();await capture('issue-receipt','CancellationIssueReceipt',receipt);
+    await route.abort('failed');await page.unroute('**'+issueUrl);
+   });
+   await button('Issue approved cancellation').click();await button('Retry same cancellation action').waitFor();
+   const retried=page.waitForRequest(r=>r.url().endsWith(issueUrl)&&r.method()==='POST');
+   await button('Retry same cancellation action').click();const retryRequest=await retried;
+   for(const key of ['idempotency-key','if-match','x-edit-lease'])assert.equal(retryRequest.headers()[key],originalHeaders[key]);
+   assert.equal(retryRequest.postData(),originalBody);
+   await page.getByRole('heading',{name:'Issued cancellation',exact:true}).waitFor();
+   await page.getByText('Demo delivery recorded',{exact:true}).waitFor();
+   const response=await page.request.get(f.apiOrigin+issueUrl);assert.equal(response.status(),200);assert.equal(response.headers()['cache-control'],'no-store');
+   const issued=await response.json();assert.equal(issued.transactionId,receipt.transactionId);assert.equal(issued.netAmount,approved.amounts.posting.invoiceDue);
+   assert.equal(issued.consequences.filter(x=>x.state==='pending').length,3);await capture('issued','CancellationIssuedView',issued);
+   await page.reload();await page.getByText('Demo delivery recorded',{exact:true}).waitFor();
+   const receiptPanel=page.locator('section.panel').filter({has:page.getByRole('heading',{name:'Issued cancellation',exact:true})});
+   await receiptPanel.screenshot({path:f.output+'/issued-desktop.png'});await page.setViewportSize({width:390,height:844});
+   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await receiptPanel.screenshot({path:f.output+'/issued-mobile.png'});
+   await page.getByRole('link',{name:'View cancellation transaction',exact:true}).click();
+   await page.getByRole('heading',{name:'Cancellation transaction',exact:true}).waitFor();
+   const policy=await page.request.get(f.apiOrigin+`/api/v1/policies/${f.policyId}/terms/${issued.termId}/versions/${issued.versionId}`);
+   assert.equal(policy.status(),200);const savedPolicy=await policy.json();await capture('policy','CancellationPolicyView',savedPolicy);
+   assert.equal(savedPolicy.cancellationApprovalId,approved.approvalId);assert.equal(savedPolicy.ratingId,undefined);
+   assert.deepEqual(errors,[]);await writeFile(f.output+'/report.json',JSON.stringify({product:f.product,draftId,transactionId:issued.transactionId,
+    checks:['actual cancellation issue','lost response exact retry','saved financial readback','registered demo notice dispatcher','three durable pending consequences','reload retains issue and notice','cancellation transaction navigation','390px containment']},null,2));
+  } else {
   await page.getByLabel('Takeover or abandonment reason',{exact:true}).fill('Fictional cancellation withdrawn after approval for browser verification');
   await page.getByLabel('I confirm this draft should be abandoned.',{exact:true}).check();await button('Abandon draft').click();await page.getByText('Abandoned',{exact:true}).waitFor();
   assert.ok((await read()).blockers.includes('servicing-draft-closed'));await page.getByRole('link',{name:'Back to policy',exact:true}).click();await page.waitForURL(f.webOrigin+`/policies/${f.policyId}`);
   const policy=await page.request.get(f.apiOrigin+`/api/v1/policies/${f.policyId}`);assert.equal(policy.status(),200);assert.equal((await policy.json()).versionId,f.originalVersionId);
   assert.deepEqual(errors,[]);await writeFile(f.output+'/report.json',JSON.stringify({completedAt:new Date().toISOString(),product:f.product,draftId,approved,
    checks:['actual Next.js and SQL API','policy cancellation action and amend navigation','editable reason and date change calculated preview','reviewed delivered notice','lost response exact retry','distinct senior approval','reload preserves approval','abandonment retains review history and policy navigation','cover unchanged and no cash paid','390px containment and signed amounts']},null,2));
+  }
  } catch(error){await page.screenshot({path:f.output+'/failure.png'}).catch(()=>{});await writeFile(f.output+'/failure.txt',String(error)+'\n'+await page.locator('body').innerText().catch(()=>''));throw error;}
  finally{await browser.close();}
 }

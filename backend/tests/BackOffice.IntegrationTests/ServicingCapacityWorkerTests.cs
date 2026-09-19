@@ -37,6 +37,11 @@ public sealed partial class UnderwritingRuntimeTests
         }
         if(scenario=="capacity-worker-revoked")
             await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE UserAuthorityGrant SET RevokedAt={DateTimeOffset.UtcNow},RevokedBy={f.Underwriter.UserId},RevocationReason='Revoke before fictional provider reply' WHERE UserId={f.Underwriter.UserId} AND RevokedAt IS NULL");
+        if(scenario=="capacity-worker-cancelled")
+        {
+            var basis=await db.Set<ServicingCycle>().Where(x=>x.Id==capacity.CycleId).Select(x=>x.BaseVersionId).SingleAsync();
+            await VerifyCancellationOfAdjustedLedger(db,f,basis,false);
+        }
         Assert.True(await worker.ApplyAsync(lease,result));
         Assert.False(await worker.ApplyAsync(lease,result));
         Assert.False(await worker.ApplyAsync(lease,result with {Body="Conflicting fictional response body"}));

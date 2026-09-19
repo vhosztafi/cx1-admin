@@ -20,13 +20,17 @@ export type IssuedPolicySnapshot = Omit<QuoteProposal, 'termIntent'> & {
   premium: { currency: 'GBP'; annualPremium: string; termPremium: string; tax: string; fee: string; grossPayable: string; brokerCommission: string;
     settlement: { collector: string; mode: string; brokerFeeShare: string; invoiceDue: string; remunerationPayable: string; netEconomicDue: string } };
   provenance: { source: string; quoteRevisionId: string; authorityVersionId: string } | { source: string; sourceQuoteId: string; servicingIssueDecisionId: string;
-    baseVersionId: string; revisionId: string; transactionId: string; effectiveAt: string; processedAt: string; sliceOrdinal: number; inputHash: string };
+    baseVersionId: string; revisionId: string; transactionId: string; effectiveAt: string; processedAt: string; sliceOrdinal: number; inputHash: string }
+    | {source:string;sourceQuoteId:string;cancellationIssueDecisionId:string;cancellationApprovalId:string;cancellationPreviewId:string;
+      baseVersionId:string;revisionId:string;transactionId:string;effectiveAt:string;processedAt:string;sliceOrdinal:number;inputHash:string};
+  cancellation?:{outcome:'cancelled';reasonCode:string;effectiveAt:string;ruleVersion:string};
 };
 export type PolicyView = {
   coverageState: 'scheduled' | 'active' | 'expired' | 'cancelled'; effectiveCutoff: string; knownCutoff: string;
   id: string; reference: string; sourceQuoteId: string; clientId: string; relationshipId: string; agencyId: string;
   termId: string; versionId: string; transactionId: string; issuedAt: string; effectiveAt: string; reason: string;
-  termNumber: number; versionSequence: number; transactionSequence: number; contentHash: string; sourceCycleId: string; ratingId: string; acceptanceId: string;
+  termNumber: number; versionSequence: number; transactionSequence: number; contentHash: string; sourceCycleId?: string; ratingId?: string; acceptanceId?: string;
+  cancellationDecisionId?:string;cancellationApprovalId?:string;cancellationPreviewId?:string;
   snapshot: IssuedPolicySnapshot;
   financials: { obligationId: string; transactionId: string; journalId: string; currency: 'GBP'; debtorKind: string; debtorId: string; amountDue: string;
     premium: string; tax: string; fee: string; brokerCommission: string; brokerFeeShare: string; insurerPayable: string; retainedFeeIncome: string; brokerRemunerationPayable: string;

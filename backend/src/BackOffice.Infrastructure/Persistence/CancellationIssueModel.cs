@@ -19,6 +19,13 @@ public sealed partial class BackOfficeDbContext
             .HasPrincipalKey(x=>new{x.Id,x.UserId,x.AuthorityVersionId}).OnDelete(DeleteBehavior.NoAction);
         Check(decision,"Actor","[CreatedBy] IS NOT NULL AND [CreatedBy]=[ActorId] AND LEN(TRIM([Reason])) BETWEEN 10 AND 2000");
         Check(decision,"Effective","DATEPART(TZOFFSET,[EffectiveAt])=0");
+        var transaction=model.Entity<PolicyTransaction>();
+        transaction.HasOne<CancellationIssueDecision>().WithMany().HasForeignKey(x=>new{x.CancellationIssueDecisionId,x.ServicingDraftId,x.PolicyId,x.ServicingRevisionId})
+            .HasPrincipalKey(x=>new{x.Id,x.DraftId,x.PolicyId,x.RevisionId}).OnDelete(DeleteBehavior.NoAction);
+        transaction.HasIndex(x=>x.CancellationIssueDecisionId).IsUnique().HasFilter("[CancellationIssueDecisionId] IS NOT NULL");
+        transaction.HasIndex(x=>x.TermId).IsUnique().HasFilter("[Kind]='cancellation'");
+        Check(transaction,"CancellationDecision","([Kind]='cancellation' AND [CancellationIssueDecisionId] IS NOT NULL) OR ([Kind]<>'cancellation' AND [CancellationIssueDecisionId] IS NULL)");
+        model.Entity<IssueFinancialComponent>().HasIndex(x=>x.OriginalComponentId).IsUnique().HasFilter("[OriginalComponentId] IS NOT NULL");
 
         var intent=Record<CancellationConsequence>(model,"CancellationConsequence");intent.ToTable(t=>t.UseSqlOutputClause(false));
         Text(intent,("Kind",30));Hash(intent,"PayloadHash");UnderwritingJson(intent,"PayloadJson");

@@ -15,6 +15,7 @@ export function CancellationReview({draftId,etag,fence,editable,blocked,dirty,ca
   const [error,setError]=useState(''),[notice,setNotice]=useState(''),[sending,setSending]=useState(false),[uncertain,setUncertain]=useState(false);
   const [file,setFile]=useState<File>(),[purpose,setPurpose]=useState('cancellation-request'),[delivered,setDelivered]=useState('');
   const [evidenceId,setEvidenceId]=useState(''),[reviewOutcome,setReviewOutcome]=useState('accepted'),[reviewReason,setReviewReason]=useState(''),[approvalReason,setApprovalReason]=useState('');
+  const [issueReason,setIssueReason]=useState(''),[confirmedHash,setConfirmedHash]=useState<string|null>(null);
   const pending=useRef<CancellationCommand|null>(null),sendingRef=useRef(false),lastHash=useRef<string|null>(null);
   const root=`/api/v1/drafts/${draftId}`;
   useEffect(()=>{
@@ -37,7 +38,7 @@ export function CancellationReview({draftId,etag,fence,editable,blocked,dirty,ca
     if(sendingRef.current||(!pending.current&&!active))return;sendingRef.current=true;setSending(true);setError('');setNotice('');
     try{
       if(!pending.current){pending.current=cancellationCommand(draftId,etag,fence!,path!,body,upload);pendingChanged(true);}
-      await sendCancellation(pending.current);await saved();pending.current=null;setUncertain(false);pendingChanged(false);setNotice('Cancellation review action saved.');
+      await sendCancellation(pending.current);await saved();pending.current=null;setUncertain(false);pendingChanged(false);setConfirmedHash(null);setNotice('Cancellation action saved.');
     }catch(failure){
       if(!uncertainQuoteFailure(failure)){pending.current=null;pendingChanged(false);setUncertain(false);setRead(null);}
       else setUncertain(true);
@@ -71,6 +72,14 @@ export function CancellationReview({draftId,etag,fence,editable,blocked,dirty,ca
         <button className="button button-primary" disabled={!active||!view?.previewId||!view.canApprove||!!view.approvalId||approvalReason.trim().length<10} onClick={()=>void execute('cancellation-approvals',{previewId:view!.previewId,previewHash:view!.previewHash,reason:approvalReason})}>Approve cancellation</button></>:null}
       <p className="client-help">Non-payment, non-disclosure and insurer instruction require a current senior approver different from the draft requester. The approver must acquire the editing lease.</p></div>
     </Panel>
+    {canReview?<Panel title="Issue cancellation" note="Final confirmation"><div className="quote-rail-body">
+      <p>Issuing ends cover at the approved effective time and records the reviewed charge or credit. Cash paid by this action: £0.00.</p>
+      {view&&posting?<p>Effective {date(view.effectiveAt)} · Debtor movement {formatGbp(posting.invoiceDue)}</p>:null}
+      <fieldset disabled={!active||!view?.approvalId||view.blockers.length>0}>
+        <label>Cancellation issue reason<textarea aria-label="Cancellation issue reason" minLength={10} maxLength={2000} value={issueReason} onChange={e=>setIssueReason(e.target.value)}/></label>
+        <label><input type="checkbox" checked={!!view&&confirmedHash===view.previewHash} onChange={e=>setConfirmedHash(e.target.checked?view!.previewHash:null)}/> I confirm the cancellation effective time and reviewed financial movement.</label>
+        <button className="button button-primary" disabled={!view||confirmedHash!==view.previewHash||issueReason.trim().length<10} onClick={()=>void execute('cancellation-issue',{previewId:view!.previewId,approvalId:view!.approvalId,previewHash:view!.previewHash,reason:issueReason})}>Issue approved cancellation</button>
+      </fieldset></div></Panel>:null}
     <Panel title="Cancellation evidence" note="Applies to this saved revision">
       <div className="quote-rail-body"><fieldset disabled={!active} className="quote-form-grid">
         <label>Evidence purpose<select aria-label="Cancellation evidence purpose" value={purpose} onChange={e=>setPurpose(e.target.value)}>{purposes.map(([code,label])=><option value={code} key={code}>{label}</option>)}</select></label>

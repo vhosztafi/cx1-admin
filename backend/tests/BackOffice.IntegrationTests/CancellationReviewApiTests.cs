@@ -20,6 +20,11 @@ public sealed partial class UnderwritingRuntimeTests
         {login.Headers.Add("X-CSRF-Token",csrf);using var response=await client.SendAsync(login);response.EnsureSuccessStatusCode();}
         csrf=(await client.GetFromJsonAsync<JsonElement>("/api/v1/auth/csrf")).GetProperty("requestToken").GetString()!;
         var root=$"/api/v1/drafts/{draftId:D}";
+        using(var notIssued=await client.GetAsync(root+"/cancellation-issue"))
+        {Assert.Equal(HttpStatusCode.Conflict,notIssued.StatusCode);Assert.True(notIssued.Headers.CacheControl!.NoStore);}
+        using(var query=await client.GetAsync(root+"/cancellation-issue?forged=true"))Assert.Equal(HttpStatusCode.BadRequest,query.StatusCode);
+        using(var anonymous=host.CreateClient())
+        using(var denied=await anonymous.GetAsync(root+"/cancellation-issue"))Assert.Equal(HttpStatusCode.Unauthorized,denied.StatusCode);
         foreach(var suffix in new[]{"cancellation-preview","cancellation-evidence"})
         {
             using var read=await client.GetAsync(root+"/"+suffix);Assert.Equal(HttpStatusCode.OK,read.StatusCode);Assert.True(read.Headers.CacheControl!.NoStore);Assert.Equal(etag,read.Headers.ETag!.ToString());
@@ -39,6 +44,7 @@ public sealed partial class UnderwritingRuntimeTests
             return await client.SendAsync(request);
         }
         foreach(var (suffix,body) in new (string,object)[]{("cancellation-preview",new{previewHash=hash}),
+            ("cancellation-issue",new{previewId=Guid.NewGuid(),approvalId=Guid.NewGuid(),previewHash=hash,reason="Fictional complete issue reason"}),
             ("cancellation-approvals",new{previewId=Guid.NewGuid(),previewHash=hash,reason="Fictional complete approval reason"}),
             ($"cancellation-evidence/{Guid.NewGuid():D}/reviews",new{outcome="accepted",reason="Fictional complete evidence reason"})})
         {

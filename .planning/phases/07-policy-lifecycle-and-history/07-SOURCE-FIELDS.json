@@ -3198,7 +3198,13 @@
       "source": "{label:'Issue cancellation', style: this.btn('primary'), onClick: () => this.toast('Cancellation issued (mock): policy PN/CC/000622 cancelled, version 7, refund RF-0221 raised.', 'Open policy', () => this.go('policy'))}",
       "ownerPhase": 7,
       "owner": "07-14",
-      "evidence": "Atomic issue and actual durable consequences belong to approved plan07-14; review cannot claim issue outcomes."
+      "evidence": [
+        ".local/phase7-14-guards/sql.trx",
+        ".local/phase7-14-browser-command/sql.trx",
+        ".local/phase7-14-browser-responses"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Actual approved issue with immutable cancellation snapshot, signed posted debtor movement and four durable consequences. Frozen retry, reload and transaction navigation verified for both Motor Trade products. Demo notice is applied; certificate withdrawal, MID removal and task closure remain pending for Phase9. No cash refund is represented as paid."
     },
     {
       "id": "SRC07-4299-section-0",
@@ -3462,7 +3468,13 @@
       "source": "this.sec({kind:'table', w:'100%', title:'Consequences on issue',",
       "ownerPhase": 7,
       "owner": "07-14",
-      "evidence": "Atomic issue and actual durable consequences belong to approved plan07-14; review cannot claim issue outcomes."
+      "evidence": [
+        ".local/phase7-14-guards/sql.trx",
+        ".local/phase7-14-browser-command/sql.trx",
+        ".local/phase7-14-browser-responses"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Actual approved issue with immutable cancellation snapshot, signed posted debtor movement and four durable consequences. Frozen retry, reload and transaction navigation verified for both Motor Trade products. Demo notice is applied; certificate withdrawal, MID removal and task closure remain pending for Phase9. No cash refund is represented as paid."
     },
     {
       "id": "SRC07-4318-table-columns-0",
@@ -3474,7 +3486,13 @@
       "source": "columns: this.head(['Area','Effect']),",
       "ownerPhase": 7,
       "owner": "07-14",
-      "evidence": "Atomic issue and actual durable consequences belong to approved plan07-14; review cannot claim issue outcomes."
+      "evidence": [
+        ".local/phase7-14-guards/sql.trx",
+        ".local/phase7-14-browser-command/sql.trx",
+        ".local/phase7-14-browser-responses"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Actual approved issue with immutable cancellation snapshot, signed posted debtor movement and four durable consequences. Frozen retry, reload and transaction navigation verified for both Motor Trade products. Demo notice is applied; certificate withdrawal, MID removal and task closure remain pending for Phase9. No cash refund is represented as paid."
     },
     {
       "id": "SRC07-4329-section-0",

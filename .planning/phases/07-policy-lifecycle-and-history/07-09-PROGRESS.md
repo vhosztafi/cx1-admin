@@ -67,3 +67,7 @@ validate a real servicing ledger against a fake original quote rating. Plan10
 still owns current issue authority/evidence/base/lease checks, atomic versions,
 registration/document/MID intents, receipt/replay, API and actual browser issue.
 Do not mark POL-04/POL-09 or09 complete based on this foundation commit.
+
+## Closed 2026-09-19
+
+This file preserves the earlier partial state.07-09-SUMMARY.md supersedes it: actual cancellation returns and SQL lineage/rollback tests now pass with07-14.

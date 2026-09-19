@@ -68,10 +68,8 @@ public sealed class PolicyReadService(IDbContextFactory<BackOfficeDbContext> fac
             ["clientId"] = policy.ClientId, ["relationshipId"] = policy.RelationshipId, ["agencyId"] = policy.AgencyId, ["termId"] = term.Id, ["versionId"] = version.Id,
             ["transactionId"] = issued.Id, ["issuedAt"] = issued.ProcessedAt, ["snapshot"] = JsonSerializer.Deserialize<JsonElement>(version.SnapshotJson),
             ["effectiveCutoff"] = effective, ["knownCutoff"] = known,
-            ["coverageState"] = selection?.State ?? (effective < term.StartsAt ? "scheduled" : issued.Kind == "cancellation" && effective >= version.EffectiveAt ? "cancelled" : effective >= term.EndsAt ? "expired" : "active"),
-            ["contentHash"] = Convert.ToHexStringLower(version.ContentHash), ["sourceCycleId"] = issued.CycleId ?? issued.ServicingCycleId ?? throw new InvalidOperationException("Missing policy decision source."),
-            ["ratingId"] = issued.RatingId ?? issued.ServicingRatingId ?? throw new InvalidOperationException("Missing policy rating source."),
-            ["acceptanceId"] = issued.AcceptanceId ?? issued.ServicingAcceptanceId ?? throw new InvalidOperationException("Missing policy acceptance source."), ["effectiveAt"] = issued.EffectiveAt, ["reason"] = issued.Reason,
+            ["coverageState"] = selection?.State ?? (effective < term.StartsAt ? "scheduled" : issued.Kind == "cancellation" ? effective >= version.EffectiveAt ? "cancelled" : "scheduled" : effective >= term.EndsAt ? "expired" : "active"),
+            ["contentHash"] = Convert.ToHexStringLower(version.ContentHash), ["effectiveAt"] = issued.EffectiveAt, ["reason"] = issued.Reason,
             ["termNumber"] = term.Number, ["versionSequence"] = version.Sequence, ["transactionSequence"] = issued.Sequence,
             ["financials"] = new { obligationId = obligation.Id, transactionId = issued.Id, journalId = journal.Id, currency = "GBP", debtorKind = obligation.DebtorKind,
                 debtorId = obligation.DebtorAgencyId ?? obligation.DebtorRelationshipId!.Value, amountDue = Money(obligation.InvoiceDue), premium = Money(obligation.Premium), tax = Money(obligation.Tax),
@@ -79,6 +77,17 @@ public sealed class PolicyReadService(IDbContextFactory<BackOfficeDbContext> fac
                 retainedFeeIncome = Money(obligation.Fee - obligation.FeeShare), brokerRemunerationPayable = Money(obligation.BrokerPayable),
                 lines = lines.Select(x => new { accountCode = x.AccountCode, side = x.Debit > 0 ? "debit" : "credit", amount = Money(x.Debit + x.Credit), componentCode = x.ComponentCode }).ToArray() },
             ["documentRequests"] = documents.Select(x => new { id = x.Id, versionId = x.VersionId, templateVersionId = x.TemplateVersionId, kind = x.Kind, state = x.State }).ToArray() };
+        if(issued.Kind=="cancellation")
+        {
+            var decision=await db.Set<CancellationIssueDecision>().AsNoTracking().SingleAsync(x=>x.Id==issued.CancellationIssueDecisionId && x.PolicyId==policy.Id,token);
+            result["cancellationDecisionId"]=decision.Id;result["cancellationApprovalId"]=decision.ApprovalId;result["cancellationPreviewId"]=decision.PreviewId;
+        }
+        else
+        {
+            result["sourceCycleId"]=issued.CycleId??issued.ServicingCycleId??throw new InvalidOperationException("Missing policy decision source.");
+            result["ratingId"]=issued.RatingId??issued.ServicingRatingId??throw new InvalidOperationException("Missing policy rating source.");
+            result["acceptanceId"]=issued.AcceptanceId??issued.ServicingAcceptanceId??throw new InvalidOperationException("Missing policy acceptance source.");
+        }
         await tx.CommitAsync(token); return result;
     }
 }

@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { type PolicyTemporalView, policyCoverageLabel } from '../../lib/policies-api';
-import { formatGbp } from '../../lib/underwriting-api';
+import { formatCancellationMoney as formatGbp } from '../../lib/cancellation-review';
 import { DataTable, Panel, Status } from '../primitives';
 import { LoadFeedback, useQuoteResource } from '../quotes/shared';
 import { QuoteProposalDetails } from '../quotes/quote-history';
@@ -32,25 +32,26 @@ export function PolicyRecord({ policyId, questionLabels,selection,initialTab }: 
   if (!record.data) return <>{chronology}<Panel title="Policy record"><LoadFeedback error={record.error} retry={record.refresh} /></Panel></>;
   if (!('snapshot' in record.data)) return <>{chronology}<Panel title="No cover recorded at these dates"><div className="quote-rail-body"><p>No issued policy version was known and applicable to this selection. Choose different dates or return to the current policy.</p></div></Panel></>;
   const policy = record.data, snapshot = policy.snapshot, financial = policy.financials;
-  const adjusted = 'servicingIssueDecisionId' in snapshot.provenance;
+  const cancelled = !!snapshot.cancellation;
+  const adjusted = cancelled || 'servicingIssueDecisionId' in snapshot.provenance;
   // Each renewal creates sequence one in a new term; subsequent servicing
   // transactions retain their own movement in that term.
   const renewal = adjusted && policy.termNumber > 1 && policy.transactionSequence === 1;
   const product = snapshot.productCode === 'motor-trade-road-risks' ? 'Motor Trade Road Risks' : 'Motor Trade Combined';
   const declaredName = typeof snapshot.insured.legalName === 'string' ? snapshot.insured.legalName : [snapshot.insured.firstName, snapshot.insured.surname].filter(x => typeof x === 'string').join(' ') || 'Declared insured';
-  const coverage = policy.coverageState === 'cancelled' ? 'Cancelled' : policyCoverageLabel(snapshot.term.startsAt, snapshot.term.endsAt, Date.parse(policy.effectiveCutoff));
+  const coverage = policy.coverageState === 'cancelled' ? 'Cancelled' : cancelled ? 'Cancellation scheduled' : policyCoverageLabel(snapshot.term.startsAt, snapshot.term.endsAt, Date.parse(policy.effectiveCutoff));
   const fields = (items: [string, string][]) => <dl className="underwriting-provenance">{items.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>;
   const documents = <Panel title="Policy documents" note="Requests retained with the issued version"><DataTable caption="Policy document requests" columns={['Document', 'Version', 'Status']}>
     {policy.documentRequests.map(item => <tr key={item.id}><th scope="row">{documentNames[item.kind] ?? item.kind}</th><td>v{policy.versionSequence}</td><td><Status tone="info">{item.state === 'requested' ? 'Generation requested' : item.state}</Status></td></tr>)}
   </DataTable><div className="quote-rail-body"><p>Generation is pending. No documents have been generated or sent by this issue action.</p></div></Panel>;
-  const transaction = <Panel title={renewal ? 'Renewal transaction' : adjusted ? 'Adjustment transaction' : 'New-business transaction'} note={`Transaction ${policy.transactionSequence} · Version ${policy.versionSequence}`}><div className="quote-rail-body">
+  const transaction = <Panel title={cancelled ? 'Cancellation transaction' : renewal ? 'Renewal transaction' : adjusted ? 'Adjustment transaction' : 'New-business transaction'} note={`Transaction ${policy.transactionSequence} · Version ${policy.versionSequence}`}><div className="quote-rail-body">
     {fields([['Policy', policy.reference], ['Issued', date(policy.issuedAt) + ' · London'], ['Effective', date(policy.effectiveAt) + ' · London'], ['Reason', policy.reason], [adjusted && !renewal ? 'Premium movement' : 'Term premium', formatGbp(financial.premium)], ['Insurance premium tax', formatGbp(financial.tax)], ['Policy fee', formatGbp(financial.fee)], [adjusted ? 'Amount due / credit' : 'Opening amount due', formatGbp(financial.amountDue)]])}
-    <p>{renewal ? 'This renewal term and its balanced opening charge are recorded.' : adjusted ? 'This adjustment and its balanced charge or credit are recorded.' : 'One new-business transaction and a balanced opening posting are recorded.'} Payment collection is not part of policy issue.</p>
-    <details><summary>Posting and source provenance</summary>{fields([['Transaction ID', policy.transactionId], ['Policy version ID', policy.versionId], ['Journal ID', financial.journalId], ['Obligation ID', financial.obligationId], ['Source revision', 'quoteRevisionId' in snapshot.provenance ? snapshot.provenance.quoteRevisionId : snapshot.provenance.revisionId], ['Recorded acceptance', policy.acceptanceId], ['Rating result', policy.ratingId], ['Issued snapshot hash', policy.contentHash]])}
+    <p>{cancelled ? 'This cancellation and its balanced charge or credit are recorded.' : renewal ? 'This renewal term and its balanced opening charge are recorded.' : adjusted ? 'This adjustment and its balanced charge or credit are recorded.' : 'One new-business transaction and a balanced opening posting are recorded.'} Payment collection is not part of policy issue.</p>
+    <details><summary>Posting and source provenance</summary>{fields([['Transaction ID', policy.transactionId], ['Policy version ID', policy.versionId], ['Journal ID', financial.journalId], ['Obligation ID', financial.obligationId], ['Source revision', 'quoteRevisionId' in snapshot.provenance ? snapshot.provenance.quoteRevisionId : snapshot.provenance.revisionId], ...(cancelled ? [['Cancellation decision', policy.cancellationDecisionId!], ['Cancellation approval', policy.cancellationApprovalId!], ['Cancellation preview', policy.cancellationPreviewId!]] as [string,string][] : [['Recorded acceptance', policy.acceptanceId!], ['Rating result', policy.ratingId!]] as [string,string][]), ['Issued snapshot hash', policy.contentHash]])}
       <DataTable caption={renewal ? 'Renewal journal lines' : adjusted ? 'Adjustment journal lines' : 'Opening journal lines'} columns={['Component', 'Account', 'Debit', 'Credit']}>{financial.lines.map((line, index) => <tr key={index}><th scope="row">{line.componentCode}</th><td>{line.accountCode}</td><td>{line.side === 'debit' ? formatGbp(line.amount) : '—'}</td><td>{line.side === 'credit' ? formatGbp(line.amount) : '—'}</td></tr>)}</DataTable>
     </details>
   </div></Panel>;
-  return <><div className="page-heading"><div><h1>{policy.reference}</h1><p>{renewal ? 'Renewed policy' : adjusted ? 'Adjusted policy' : 'New-business policy'} · Term {policy.termNumber} · Version {policy.versionSequence}</p></div><Link className="button" href={`/quotes/${policy.sourceQuoteId}`}>Open source quote</Link><button className="button" onClick={cancelDraft}>Cancel policy</button></div>
+  return <><div className="page-heading"><div><h1>{policy.reference}</h1><p>{cancelled ? 'Cancelled policy version' : renewal ? 'Renewed policy' : adjusted ? 'Adjusted policy' : 'New-business policy'} · Term {policy.termNumber} · Version {policy.versionSequence}</p></div><Link className="button" href={`/quotes/${policy.sourceQuoteId}`}>Open source quote</Link><button className="button" onClick={cancelDraft}>Cancel policy</button></div>
     <section className="quote-saved-banner" aria-label="Issued policy"><div><span className="quote-step-label">{product}</span><h2>{declaredName}</h2><p>Policy issued · {date(policy.issuedAt)} · London</p></div><Status tone={coverage === 'In force' ? 'success' : 'info'}>{coverage}</Status></section>
     {chronology}
     <div id="servicing-drafts"><ServicingDrafts key={`${policy.termId}:${policy.versionId}:${draftKind}`} termId={policy.termId} baseVersionId={policy.versionId} initialKind={draftKind} /></div>

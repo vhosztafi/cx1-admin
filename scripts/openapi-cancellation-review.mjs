@@ -17,7 +17,17 @@ export function addCancellationReview({schemas,ref,route,paths}) {
  schemas.CancellationReviewReceipt=object({draftId:id,resourceId:id,draftEtag:etag});
  schemas.CancellationPrepare=object({previewHash:hash});
  schemas.CancellationApprove=object({previewId:id,previewHash:hash,reason});
+ schemas.CancellationIssue=object({previewId:id,approvalId:id,previewHash:hash,reason});
+ schemas.CancellationIssueReceipt=object({policyId:id,policyReference:text(40),draftId:id,draftEtag:etag,termId:id,transactionId:id,versionId:id,
+  decisionId:id,approvalId:id,previewId:id,obligationId:id,journalId:id,accountingPeriodId:id,postingDate:{type:'string',format:'date'},
+  currency:{const:'GBP'},amountDue:money,amountCredit:money,netAmount:money,cashPaid:{const:'0.00'},
+  consequenceIds:{type:'array',minItems:4,maxItems:4,uniqueItems:true,items:id},effectiveAt:instant,processedAt:instant,coverageState:{enum:['cancellation-scheduled','cancelled']}});
  schemas.CancellationEvidenceReview=object({outcome:{enum:['accepted','rejected']},reason});
+ schemas.CancellationIssuedView=object({draftId:id,draftEtag:etag,policyId:id,policyReference:text(40),termId:id,transactionId:id,versionId:id,
+  decisionId:id,approvalId:id,previewId:id,effectiveAt:instant,processedAt:instant,coverageState:{enum:['cancellation-scheduled','cancelled']},
+  netAmount:money,cashPaid:{const:'0.00'},consequences:{type:'array',minItems:4,maxItems:4,items:object({id,
+   kind:{enum:['cancellation-notice','cancellation-certificate-withdrawal','cancellation-mid-removal','cancellation-task-close']},
+   state:{enum:['pending','leased','succeeded','failed']},noticeOutcome:nullable({enum:['demo-delivered','demo-no-recipient']})})}});
  schemas.CancellationEvidencePage=object({draftId:id,draftEtag:etag,items:{type:'array',maxItems:100,items:object({id,revisionId:id,fileId:id,fileName:text(200),
   purpose:{enum:['cancellation-request','cancellation-notice','cancellation-reason','insurer-instruction']},noticeDeliveredAt:nullable(instant),reviewId:nullable(id),
   reviewState:{enum:['unreviewed','accepted','rejected','authority-expired']},reviewReason:nullable(reason)})}});
@@ -37,4 +47,9 @@ export function addCancellationReview({schemas,ref,route,paths}) {
  paths[`${root}/cancellation-evidence/uploads`].post.requestBody={required:true,content:{'multipart/form-data':{schema:{type:'object',additionalProperties:false,
   required:['file','fileName','contentType','purpose'],properties:{file:{type:'string',format:'binary',maxLength:10485760},fileName:{type:'string',minLength:1,maxLength:200},
    contentType:{enum:['application/pdf','image/png','image/jpeg','text/plain']},purpose:schemas.CancellationEvidencePage.properties.items.items.properties.purpose,noticeDeliveredAt:instant}}}}};
+ route('post',`${root}/cancellation-issue`,'issueCancellation','policy-issue-within-authority','CancellationIssue','CancellationIssueReceipt',{status:201,lease:true});
+ route('get',`${root}/cancellation-issue`,'readIssuedCancellation','policy-read',undefined,'CancellationIssuedView',{status:200});
+ paths[`${root}/cancellation-issue`].get['x-runtime-status']='phase-7-14-implemented';
+ const issue=paths[`${root}/cancellation-issue`].post;issue['x-runtime-status']='phase-7-14-implemented';
+ issue.description='Issue the exact current approved cancellation atomically with a preserved risk snapshot, signed posted credit and durable notice, certificate withdrawal, MID and task-close intents. Current actor, policy scope and issuing grant are checked before receipt replay. Strong If-Match, X-Edit-Lease and an idempotency key are required. No cash payment is made. Responses are no-store.';
 }

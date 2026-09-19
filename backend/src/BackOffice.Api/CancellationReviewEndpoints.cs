@@ -17,6 +17,8 @@ public static class CancellationReviewEndpoints
         app.MapGet("/api/v1/drafts/{draftId:guid}/cancellation-preview", Read).RequireAuthorization("policy-read");
         app.MapPost("/api/v1/drafts/{draftId:guid}/cancellation-preview", Prepare).RequireAuthorization("policy-draft-write");
         app.MapPost("/api/v1/drafts/{draftId:guid}/cancellation-approvals", Approve).RequireAuthorization("underwriting-decide-within-authority");
+        app.MapPost("/api/v1/drafts/{draftId:guid}/cancellation-issue", Issue).RequireAuthorization("policy-issue-within-authority");
+        app.MapGet("/api/v1/drafts/{draftId:guid}/cancellation-issue", Issued).RequireAuthorization("policy-read");
         app.MapGet("/api/v1/drafts/{draftId:guid}/cancellation-evidence", Evidence).RequireAuthorization("policy-read");
         app.MapPost("/api/v1/drafts/{draftId:guid}/cancellation-evidence/uploads", Upload).RequireAuthorization("underwriting-evidence-write");
         app.MapPost("/api/v1/drafts/{draftId:guid}/cancellation-evidence/{evidenceId:guid}/reviews", Review).RequireAuthorization("underwriting-evidence-review");
@@ -71,6 +73,32 @@ public static class CancellationReviewEndpoints
                 QuoteReferralEndpoints.Text(doc.RootElement, "reason", 2000), command.Key, Guid.NewGuid(), context.RequestAborted));
         }
         catch (Exception e) when (QuoteEndpoints.Known(e)) { return QuoteEndpoints.Failure(context, e); }
+    }
+
+    private static async Task<IResult> Issued(Guid draftId,HttpContext context,CancellationReviewService service)
+    {
+        context.Response.Headers.CacheControl="no-store";
+        try
+        {
+            QuoteEndpoints.Id(draftId);QuoteHttpInput.NoQuery(context.Request);
+            var result=await service.ReadIssueAsync(LocalIdentityService.Actor(context.User),draftId,context.RequestAborted);
+            context.Response.Headers.ETag=result.DraftEtag;return Results.Json(result);
+        }
+        catch(Exception e) when(QuoteEndpoints.Known(e)){return QuoteEndpoints.Failure(context,e);}
+    }
+
+    private static async Task<IResult> Issue(Guid draftId,HttpContext context,CancellationReviewService service)
+    {
+        context.Response.Headers.CacheControl="no-store";
+        try
+        {
+            var command=Command(draftId,context);using var doc=await QuoteHttpInput.Read(context.Request,context.RequestAborted,8192);
+            QuoteHttpInput.Keys(doc.RootElement,"previewId","approvalId","previewHash","reason");
+            var input=new CancellationIssueInput(QuoteHttpInput.Id(doc.RootElement,"previewId"),QuoteHttpInput.Id(doc.RootElement,"approvalId"),
+                QuoteReferralEndpoints.Text(doc.RootElement,"previewHash",64),QuoteReferralEndpoints.Text(doc.RootElement,"reason",2000));
+            return Outcome(context,await service.IssueAsync(LocalIdentityService.Actor(context.User),draftId,command.Version,command.Lease,input,command.Key,Guid.NewGuid(),context.RequestAborted));
+        }
+        catch(Exception e) when(QuoteEndpoints.Known(e)){return QuoteEndpoints.Failure(context,e);}
     }
 
     private static async Task<IResult> Review(Guid draftId, Guid evidenceId, HttpContext context, CancellationReviewService service)

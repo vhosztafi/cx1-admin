@@ -212,3 +212,7 @@ lost-response retry and reload/abandon are verified. Actual adjustment and renew
 issue invalidate preview hashes.123 existing demo table/setting hashes preserved;
 API/web restored. See07-13-SUMMARY.md for failures corrected and overlapping runs.
 Issue and consequence source fields belong07-14; POL-09 and07-09 remain partial.
+
+## 07-09/14 measured completion — 2026-09-19
+
+Clean gate18 cases (4unit+14SQL), no skips: atomic cancellation/SQL mutations, actual adjusted-ledger returns, competing issue races, late rating/capacity/terms fencing, notice restart and2 actual browser issue journeys. Twelve fresh HTTP captures pass closed schemas;17 source/contract checks, lint/typecheck/Next/Release builds pass.127 existing demo hashes preserved. See07-14-SUMMARY.md; reports overlap with07-09 closure and are counted once. Continue07-15/16.

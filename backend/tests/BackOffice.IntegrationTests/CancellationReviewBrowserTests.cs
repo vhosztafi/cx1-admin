@@ -18,7 +18,14 @@ public sealed partial class UnderwritingRuntimeTests
     [Theory]
     [InlineData("motor-trade-road-risks")]
     [InlineData("motor-trade-combined")]
-    public async Task RealSqlCancellationReviewBrowser(string product)
+    public Task RealSqlCancellationReviewBrowser(string product)=>RunCancellationBrowser(product,false);
+
+    [Theory]
+    [InlineData("motor-trade-road-risks")]
+    [InlineData("motor-trade-combined")]
+    public Task RealSqlCancellationIssueBrowser(string product)=>RunCancellationBrowser(product,true);
+
+    private async Task RunCancellationBrowser(string product,bool issue)
     {
         await WithDatabase(async(db,password)=>
         {
@@ -29,12 +36,12 @@ public sealed partial class UnderwritingRuntimeTests
             await new QuoteIssueService(f.Factory,f.Clock).IssueAsync(f.Underwriter,f.QuoteId,setup.Version,setup.Input,Guid.NewGuid().ToString(),Guid.NewGuid());
             var term=await db.Set<PolicyTerm>().AsNoTracking().SingleAsync();var basis=await db.Set<PolicyVersion>().AsNoTracking().SingleAsync();
             using var host=ServicingRatingApiHost(db,f.Clock,false).WithWebHostBuilder(builder=>builder
-                .UseSetting("Cover:RenewalLifecycleWorkerEnabled","false").UseSetting("Cover:ServicingDeliveryWorkerEnabled","false")
+                .UseSetting("Cover:CancellationNoticeWorkerEnabled",issue?"true":"false").UseSetting("Cover:RenewalLifecycleWorkerEnabled","false").UseSetting("Cover:ServicingDeliveryWorkerEnabled","false")
                 .ConfigureServices(services=>services.AddSingleton<TimeProvider>(f.Clock)));
             host.UseKestrel(0);using var client=host.CreateClient();
             var api=host.Services.GetRequiredService<IServer>().Features.Get<IServerAddressesFeature>()!.Addresses.Single();Assert.True(new Uri(api).IsLoopback);
             var listener=new TcpListener(IPAddress.Loopback,0);listener.Start();var port=((IPEndPoint)listener.LocalEndpoint).Port;listener.Stop();
-            var webOrigin=$"http://127.0.0.1:{port}";var output=Path.Combine(root.FullName,".local/browser-evidence/cancellation-review",db.Database.GetDbConnection().Database);
+            var webOrigin=$"http://127.0.0.1:{port}";var output=Path.Combine(root.FullName,issue?".local/browser-evidence/cancellation-issue":".local/browser-evidence/cancellation-review",db.Database.GetDbConnection().Database);
             Directory.CreateDirectory(output);
             Process StartNode(IEnumerable<string> args,Dictionary<string,string> environment)
             {
@@ -50,17 +57,17 @@ public sealed partial class UnderwritingRuntimeTests
                 for(var attempt=0;attempt<60 && !web.HasExited;attempt++)
                 {try{using var response=await probe.GetAsync(webOrigin+"/login");if(response.IsSuccessStatusCode){serving=true;break;}}catch(HttpRequestException){}await Task.Delay(250);}
                 Assert.True(serving,"Isolated web preview did not start.");
-                var fixture=JsonSerializer.Serialize(new{apiOrigin=api,webOrigin,policyId=term.PolicyId,termId=term.Id,product,output,originalVersionId=basis.Id,clockNow=f.Clock.GetUtcNow()});
+                var fixture=JsonSerializer.Serialize(new{issue,apiOrigin=api,webOrigin,policyId=term.PolicyId,termId=term.Id,product,output,originalVersionId=basis.Id,clockNow=f.Clock.GetUtcNow()});
                 browser=StartNode(["scripts/verify-cancellationreview-browser.mjs","--worker"],new(){["COVER_CANCELLATION_BROWSER_FIXTURE"]=fixture,["COVER_CANCELLATION_BROWSER_PASSWORD"]=password});
                 var browserOut=browser.StandardOutput.ReadToEndAsync();var browserErr=browser.StandardError.ReadToEndAsync();
                 await browser.WaitForExitAsync().WaitAsync(TimeSpan.FromMinutes(5));
                 var browserText=await browserOut;var browserError=await browserErr;await File.WriteAllTextAsync(Path.Combine(output,"browser.log"),browserText+browserError);
                 Assert.True(browser.ExitCode==0,browserError);
                 var approval=await db.Set<CancellationApproval>().AsNoTracking().SingleAsync();var draft=await db.Set<ServicingDraft>().AsNoTracking().SingleAsync();
-                Assert.NotEqual(draft.CreatedBy,approval.CreatedBy);Assert.Equal("abandoned",draft.State);
+                Assert.NotEqual(draft.CreatedBy,approval.CreatedBy);Assert.Equal(issue?"issued":"abandoned",draft.State);
                 Assert.Equal(1,await db.Set<CancellationPreview>().CountAsync());Assert.Equal(1,await db.Set<PolicyTerm>().CountAsync());
-                Assert.Equal(1,await db.Set<PolicyTransaction>().CountAsync());Assert.Equal(1,await db.Set<Journal>().CountAsync());Assert.Empty(await db.Set<ServicingCycle>().ToArrayAsync());
-                Assert.Equal(basis.ContentHash,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).ContentHash);
+                Assert.Equal(issue?2:1,await db.Set<PolicyTransaction>().CountAsync());Assert.Equal(issue?2:1,await db.Set<Journal>().CountAsync());Assert.Empty(await db.Set<ServicingCycle>().ToArrayAsync());
+                Assert.Equal(basis.ContentHash,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync(x=>x.Id==basis.Id)).ContentHash);
             }
             finally
             {

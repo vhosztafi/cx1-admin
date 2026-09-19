@@ -91,6 +91,7 @@ public sealed partial class UnderwritingRuntimeTests
         await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ServicingIssueDecision SET Reason='Mutated issued reason' WHERE DraftId={cycle.DraftId}"));
         await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM PolicyMidIntent WHERE VersionId={ids[0]}"));
         await VerifyServicingIssueHttp(db,f,password,cycle.DraftId,version,lease,input,key,result.Body);
+        await VerifyCancellationOfAdjustedLedger(db,f,ids[^1]);
         f.Clock.Current=f.Clock.GetUtcNow().AddDays(2);
         Assert.True((await service.IssueAsync(f.Underwriter,cycle.DraftId,version,lease,input,key,Guid.NewGuid())).Replayed);
         var decision = await db.Set<ServicingIssueDecision>().AsNoTracking().SingleAsync(x => x.DraftId==cycle.DraftId);

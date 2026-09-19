@@ -28,6 +28,8 @@ public sealed partial class UnderwritingRuntimeTests
     [InlineData("motor-trade-combined", "ServicingPostingTests")]
     [InlineData("motor-trade-road-risks", "ServicingIssueTests")]
     [InlineData("motor-trade-combined", "ServicingIssueTests")]
+    [InlineData("motor-trade-road-risks", "CancellationIssueRaceTests")]
+    [InlineData("motor-trade-combined", "CancellationIssueRaceTests")]
     [InlineData("motor-trade-road-risks", "terms-delivery-withdraw-signature")]
     [InlineData("motor-trade-road-risks", "terms-delivery-timeout-after-success")]
     [InlineData("motor-trade-road-risks", "terms-delivery-transient-once")]
@@ -35,6 +37,7 @@ public sealed partial class UnderwritingRuntimeTests
     [InlineData("motor-trade-road-risks", "terms-delivery-sender-revoked")]
     [InlineData("motor-trade-road-risks", "terms-delivery-recipient-ended")]
     [InlineData("motor-trade-road-risks", "terms-delivery-amended")]
+    [InlineData("motor-trade-road-risks", "terms-delivery-cancelled")]
     [InlineData("motor-trade-road-risks", "terms-delivery-terminal-failure")]
     [InlineData("motor-trade-road-risks", "fail-once")]
     [InlineData("motor-trade-road-risks", "timeout-after-success")]
@@ -68,6 +71,7 @@ public sealed partial class UnderwritingRuntimeTests
     [InlineData("motor-trade-road-risks", "capacity-worker")]
     [InlineData("motor-trade-combined", "capacity-worker")]
     [InlineData("motor-trade-road-risks", "capacity-worker-withdrawn")]
+    [InlineData("motor-trade-road-risks", "capacity-worker-cancelled")]
     [InlineData("motor-trade-road-risks", "capacity-worker-revoked")]
     [InlineData("motor-trade-combined", "capacity-worker-conditional")]
     [InlineData("motor-trade-road-risks", "capacity-http")]
@@ -310,7 +314,7 @@ public sealed partial class UnderwritingRuntimeTests
             if(scenario is "capacity-create" or "capacity-submission-storage" or "capacity-selected-evidence" or "capacity-submit" or "capacity-http" || scenario.StartsWith("capacity-worker",StringComparison.Ordinal))
             {
                 await VerifyServicingCapacityCreate(db,f,applied,ratedView.DraftEtag,scenario is "capacity-submission-storage" or "capacity-selected-evidence",scenario=="capacity-selected-evidence",scenario=="capacity-submit",scenario.StartsWith("capacity-worker",StringComparison.Ordinal)?scenario:null,scenario=="capacity-http"?password:null);
-                Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);return;
+                Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync(x=>x.Id==issued.Id)).SnapshotJson);return;
             }
             if(scenario=="terms-storage")
             {
@@ -321,6 +325,11 @@ public sealed partial class UnderwritingRuntimeTests
             {
                 await VerifyServicingCapacityCaseStorage(db,f,applied);
                 Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync()).SnapshotJson);return;
+            }
+            if(scenario=="CancellationIssueRaceTests")
+            {
+                await VerifyServicingTermsPreparation(db,f,applied,fence,ratedView.DraftEtag,onAccepted:(acceptance,etag)=>VerifyCancellationIssueRace(db,f,applied,acceptance,fence,etag));
+                return;
             }
             if(scenario is "terms-prepare" or "terms-http" or "terms-condition" or "ServicingPostingTests" or "ServicingIssueTests" || scenario.StartsWith("terms-delivery-",StringComparison.Ordinal))
             {

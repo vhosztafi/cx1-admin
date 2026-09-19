@@ -77,9 +77,10 @@ public sealed partial class UnderwritingRuntimeTests
         }
         var delivered=await worker.ExecuteProviderAsync(claim);
         Assert.Equal(delivered,await worker.ExecuteProviderAsync(claim));
+        if(scenario=="cancelled")await VerifyCancellationOfAdjustedLedger(db,f,cycle.BaseVersionId,false);
         Assert.True(await worker.ApplyAsync(claim,delivered));Assert.False(await worker.ApplyAsync(claim,delivered));
         delivery=await db.Set<ServicingTermsDelivery>().AsNoTracking().SingleAsync(x=>x.Id==sent.ResourceId);
-        Assert.Equal(scenario is "withdraw-signature" or "sender-revoked" or "recipient-ended" or "amended"?"superseded":scenario=="reject"?"failed":"delivered",delivery.State);
+        Assert.Equal(scenario is "withdraw-signature" or "sender-revoked" or "recipient-ended" or "amended" or "cancelled"?"superseded":scenario=="reject"?"failed":"delivered",delivery.State);
         Assert.NotNull(delivery.CompletedAt);Assert.Equal(delivered.OperationId,delivery.ProviderOperationId);
         Assert.Equal(1,await db.Set<DemoProviderOperation>().CountAsync(x=>x.Kind==ServicingTermsService.WorkKind));
         return "\""+Convert.ToBase64String((await db.Set<ServicingDraft>().AsNoTracking().SingleAsync(x=>x.Id==cycle.DraftId)).RowVersion)+"\"";

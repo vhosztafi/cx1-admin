@@ -27,7 +27,7 @@ const validId=(value:string)=>/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-
 export function cancellationCommand(draftId:string, etag:string, fence:string, path:string, body?:unknown,
   upload?:{file:File;purpose:string;delivered?:string}):CancellationCommand {
   if(!validQuoteEtag(etag)||!validId(fence)||!validId(draftId))throw new Error('Acquire the current editing lease before continuing.');
-  if(!['cancellation-preview','cancellation-approvals','cancellation-evidence/uploads'].includes(path)&&!/^cancellation-evidence\/[0-9a-f-]{36}\/reviews$/i.test(path))throw new Error('Unsupported cancellation action.');
+  if(!['cancellation-preview','cancellation-approvals','cancellation-issue','cancellation-evidence/uploads'].includes(path)&&!/^cancellation-evidence\/[0-9a-f-]{36}\/reviews$/i.test(path))throw new Error('Unsupported cancellation action.');
   if(upload&&(!upload.file.size||upload.file.size>10*1024*1024||!['application/pdf','image/png','image/jpeg','text/plain'].includes(upload.file.type)))throw new Error('Choose a PDF, PNG, JPEG or text file up to 10 MiB.');
   return Object.freeze({draftId,url:`/api/v1/drafts/${draftId}/${path}`,etag,fence,key:crypto.randomUUID(),body:body===undefined?undefined:JSON.stringify(body),
     file:upload?.file,purpose:upload?.purpose,delivered:upload?.delivered});
@@ -37,10 +37,11 @@ export async function sendCancellation(command:CancellationCommand) {
   let body:string|FormData|undefined=command.body;
   if(command.file){const form=new FormData();form.set('file',command.file);form.set('fileName',command.file.name);form.set('contentType',command.file.type);
     form.set('purpose',command.purpose!);if(command.delivered)form.set('noticeDeliveredAt',command.delivered);body=form;}
-  const result=await quoteFetch<{draftId:string;resourceId:string;draftEtag:string}>(command.url,{method:'POST',body,
+  const result=await quoteFetch<{draftId:string;resourceId?:string;transactionId?:string;draftEtag:string}>(command.url,{method:'POST',body,
     headers:{...(!command.file?{'Content-Type':'application/json'}:{}),'X-CSRF-Token':csrf.requestToken,'Idempotency-Key':command.key,
       'If-Match':command.etag,'X-Edit-Lease':command.fence}});
-  if(!validQuoteEtag(result.etag)||result.data.draftEtag!==result.etag||result.data.draftId!==command.draftId||!validId(result.data.resourceId))throw new Error('Saved cancellation readback is unconfirmed.');
+  const resultId=command.url.endsWith('/cancellation-issue')?result.data.transactionId:result.data.resourceId;
+  if(!validQuoteEtag(result.etag)||result.data.draftEtag!==result.etag||result.data.draftId!==command.draftId||!resultId||!validId(resultId))throw new Error('Saved cancellation readback is unconfirmed.');
   return result;
 }
 export function cancellationBlocker(code:string):string {
