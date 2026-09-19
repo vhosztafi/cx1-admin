@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: 07-09 and07-14 verified; continue07-15 policy history and cloning inline
-last_updated: "2026-09-19T07:29:34.594Z"
+stopped_at: 07-15 history APIs and browser journeys verified; source fidelity and demo migration remain
+last_updated: "2026-09-19T08:46:28Z"
 last_activity: 2026-09-19 — Atomic cancellation and accounting closure verified;18-case clean gate and127 preserved demo hashes.
 progress:
   total_phases: 13
@@ -26,9 +26,9 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 ## Current Position
 
 Phase: 7 of 13 (Policy lifecycle and history)
-Plan: 14 of16 complete;07-15 next
-Status: Executing Phase7;07-09 and07-14 complete;07-15 next
-Last activity: 2026-09-19 — Atomic cancellation, races, late workers, adjusted ledger and both-product browser issue verified.
+Plan: 14 of16 complete;07-15 executing
+Status: Executing Phase7;07-15 core history implemented and browser verified; source closure remains
+Last activity: 2026-09-19 — Policy history, comparison, reconstruction and clone recovery passed10-case targeted gate; source closure and demo migration remain.
 
 Progress: Phases1–6 complete;6/13 phases,63/65 completed implementation plans.
 
@@ -55,7 +55,7 @@ Progress: Phases1–6 complete;6/13 phases,63/65 completed implementation plans.
 ## Session Continuity
 
 Last session: 2026-09-19T07:29:34.596Z
-Stopped at:07-09 and07-14 verified; continue07-15 inline without a new command.
+Stopped at:07-15 core history implemented and browser verified; continue source closure and preservation inline without a new command.
 Resume file: .planning/phases/07-policy-lifecycle-and-history/07-15-PLAN.md
 
 ## Autonomous continuation

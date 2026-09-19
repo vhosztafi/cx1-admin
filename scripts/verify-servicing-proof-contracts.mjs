@@ -5,7 +5,7 @@ import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 
 const [directory,notBefore,mode='reads']=process.argv.slice(2);
-assert.ok(['reads','commands','authority','submissions','referral-work','capacity','terms','renewal','renewal-lifecycle','cancellation','cancellation-issue'].includes(mode),'Choose reads, commands, authority, submissions, referral-work, capacity, terms, renewal or renewal-lifecycle.');
+assert.ok(['reads','commands','authority','submissions','referral-work','capacity','terms','renewal','renewal-lifecycle','cancellation','cancellation-issue','policy-history'].includes(mode),'Choose reads, commands, authority, submissions, referral-work, capacity, terms, renewal or renewal-lifecycle.');
 assert.ok(directory&&Number.isFinite(Date.parse(notBefore)),'Provide a fresh response directory and earliest UTC timestamp.');
 const read=async path=>JSON.parse(await readFile(path,'utf8'));
 const document=await read(new URL('../contracts/openapi.json',import.meta.url));

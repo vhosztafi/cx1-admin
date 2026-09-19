@@ -301,6 +301,12 @@ h1, h2, p { margin: 0; }
 .quote-create-rail .agency-steps { margin-bottom:18px; }
 @media(max-width:600px) { .quote-form-grid { grid-template-columns:minmax(0,1fr); } }
 .quote-form-grid .quote-term-help { color:var(--muted); }
+.policy-history-actions fieldset { border:0; padding:0; margin:0; min-width:0; }
+.policy-history-actions section { margin-top:20px; padding:18px; border:1px solid var(--border); border-radius:8px; }
+.table-scroll[aria-label='Policy transactions and versions'] table { min-width:760px; }
+.table-scroll[aria-label='Policy transactions and versions'] td { vertical-align:top; }
+.table-scroll[aria-label='Policy transactions and versions'] td:last-child { min-width:160px; }
+.table-scroll[aria-label='Saved policy reconstruction requests'] th { width:65%; }
 .quote-reference-fields { margin:24px 0 0; padding:18px 0 0; border:0; border-top:1px solid #e4e6ec; min-width:0; }
 .quote-reference-fields > legend { font-weight:600; padding-top:18px; }
 .quote-reference-checks { border:1px solid #e4e6ec; border-radius:8px; padding:14px; margin:18px 0; min-width:0; }

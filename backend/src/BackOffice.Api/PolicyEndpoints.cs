@@ -8,6 +8,7 @@ public static partial class PolicyEndpoints
     public static void MapPolicies(this WebApplication app)
     {
         MapTemporalPolicies(app);
+        MapPolicyHistory(app);
         app.MapGet("/api/v1/policies", (HttpContext context, Microsoft.EntityFrameworkCore.IDbContextFactory<BackOffice.Infrastructure.Persistence.BackOfficeDbContext> factory, PartyPaging paging, PolicyDiscoveryService service, TimeProvider time) => List(context, factory, paging, service, time)).RequireAuthorization("policy-discovery-read");
         app.MapGet("/api/v1/policies/{policyId:guid}", Read).RequireAuthorization("policy-read");
         app.MapGet("/api/v1/policies/{policyId:guid}/terms/{termId:guid}", Read).RequireAuthorization("policy-read");

@@ -51,6 +51,7 @@ QuoteDeliveryDispatcher.Register(builder);
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.QuoteIssueService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.ServicingIssueService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.PolicyReadService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Policies.PolicyHistoryService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.ServicingDraftService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.RenewalPreparationService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.CancellationReviewService>();
