@@ -1,0 +1,52 @@
+{
+  "format": "commercial-demo-rating-examples-1",
+  "purpose": "Fictional independent expectations for Phase8 implementation; not an insurer quotation or tax advice.",
+  "configuration": {
+    "version": "commercial-demo-rate-1",
+    "currency": "GBP",
+    "basePremium": "250.00",
+    "buildingsRateBps": 5,
+    "contentsRateBps": 12,
+    "stockRateBps": 20,
+    "businessInterruptionRateBps": 10,
+    "manualEmployeeRateBps": 25,
+    "manualLabourOnlyRateBps": 35,
+    "clericalEmployeeRateBps": 5,
+    "clericalLabourOnlyRateBps": 10,
+    "bonaFideRateBps": 0,
+    "publicLiabilityTurnoverRateBps": 4,
+    "productsLiabilityTurnoverRateBps": 3,
+    "contractWorksRateBps": 15,
+    "goodsInTransitRateBps": 100,
+    "moneyRateBps": 200,
+    "glassPremium": "35.00",
+    "minimumPremium": "500.00",
+    "maximumAnnualPremium": "100000.00",
+    "taxRateBps": 1200,
+    "commissionRateBps": 1500,
+    "newBusinessFee": "75.00",
+    "adjustmentFee": "25.00",
+    "renewalFee": "75.00",
+    "indemnityMonthsFactorsBps": {"12":10000,"18":13500,"24":17000,"36":23000},
+    "liabilityLimitFactorsBps": {"1000000.00":7000,"2000000.00":8000,"5000000.00":10000,"10000000.00":12500},
+    "employersLimitBasis": "10000000.00",
+    "employersLimitFactorBps": 10000,
+    "referredConstructionLoadingBps": 1500,
+    "referredFloodLoadingBps": 2000,
+    "lossHistoryLoadingBps": 1000
+  },
+  "annualExample": {
+    "buildings": "1500000.00", "contents": "350000.00", "stock": "150000.00",
+    "businessInterruption": "500000.00", "indemnityMonths": 12,
+    "manualEmployees": "300000.00", "manualLabourOnly": "50000.00", "bonaFide": "100000.00",
+    "turnover": "1500000.00", "employersLimit": "10000000.00", "publicLimit": "5000000.00", "productsLimit": "5000000.00",
+    "factors": {"base":"250.00","buildings":"750.00","contents":"420.00","stock":"300.00","businessInterruption":"500.00","employees":"750.00","labourOnly":"175.00","bonaFide":"0.00","publicLiability":"600.00","productsLiability":"450.00"},
+    "expected": {"annualPremium":"4195.00","termPremium":"4195.00","tax":"503.40","fee":"75.00","commission":"629.25","gross":"4773.40","netAgencyDue":"4144.15"},
+    "withoutElAndBi": {"annualPremium":"2770.00","tax":"332.40","fee":"75.00","commission":"415.50","gross":"3177.40","netAgencyDue":"2761.90"}
+  },
+  "halfTermMovements": [
+    {"annualDelta":"200.00","termFractionNumerator":1,"termFractionDenominator":2,"premium":"100.00","tax":"12.00","fee":"25.00","commission":"15.00","gross":"137.00","netAgencyDue":"122.00"},
+    {"annualDelta":"0.00","termFractionNumerator":1,"termFractionDenominator":2,"premium":"0.00","tax":"0.00","fee":"25.00","commission":"0.00","gross":"25.00","netAgencyDue":"25.00"},
+    {"annualDelta":"-200.00","termFractionNumerator":1,"termFractionDenominator":2,"premium":"-100.00","tax":"-12.00","fee":"25.00","commission":"-15.00","gross":"-87.00","netAgencyDue":"-72.00"}
+  ]
+}

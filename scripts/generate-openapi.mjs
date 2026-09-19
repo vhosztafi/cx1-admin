@@ -1,6 +1,7 @@
 import {addQuoteContracts} from './openapi-quotes.mjs';
 import {addUnderwritingContracts} from './openapi-underwriting.mjs';
 import {addServicingContracts} from './openapi-servicing.mjs';
+import {addCommercialContracts} from './openapi-commercial-combined.mjs';
 import {addPolicyTemporalContracts} from './openapi-policy-temporal.mjs';
 import {addPolicyHistoryContracts} from './openapi-policy-history.mjs';
 import {mkdir,writeFile} from 'node:fs/promises';
@@ -169,6 +170,7 @@ addAgencyContracts({schemas,ref,text,enumeration,object,array,id,instant,date,bo
 addQuoteContracts({schemas,ref,text,enumeration,object,array,id,instant,date,boolean,integer,decimal,operation,list,paths});
 addUnderwritingContracts({schemas,ref,operation,paths});
 addServicingContracts({schemas,ref,operation,paths});
+addCommercialContracts({schemas,ref,operation,paths});
 addPolicyTemporalContracts({schemas,ref,operation,paths});
 addPolicyHistoryContracts({schemas,ref,operation,paths});
 const tags=[...new Set(Object.keys(paths).map(p=>p.split('/')[1]))].sort().map(name=>({name,description:`Scoped ${name} operations.`}));

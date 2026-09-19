@@ -1,0 +1,139 @@
+{
+  "format": "commercial-combined-capture-1",
+  "productCode": "commercial-combined",
+  "insured": {
+    "entityType": "limited-company",
+    "legalName": "Fenwick Demo Engineering Ltd",
+    "proposerNames": [
+      "Alison Fenwick"
+    ],
+    "address": {
+      "line1": "12 Demonstration Works",
+      "town": "Sheffield",
+      "postcode": "S9 2QT",
+      "country": "GB"
+    },
+    "contact": {
+      "email": "alison@fenwick.example"
+    }
+  },
+  "termIntent": {
+    "kind": "annual",
+    "localStartDate": "2026-04-01",
+    "localStartTime": "00:00",
+    "timeZone": "Europe/London",
+    "utcOffsetMinutes": 60
+  },
+  "risk": {
+    "business": {
+      "description": "Fictional light engineering and wholesale parts",
+      "turnover": "1500000.00",
+      "activities": [
+        {
+          "id": "00000000-0000-4000-8000-000000000001",
+          "code": "light-engineering",
+          "description": "Light engineering",
+          "percentageBasisPoints": 10000
+        }
+      ],
+      "responses": {
+        "questionSetVersion": "commercial-questions-1",
+        "answers": []
+      }
+    },
+    "locations": [
+      {
+        "id": "00000000-0000-4000-8000-000000000010",
+        "reference": "LOC-01",
+        "address": {
+          "line1": "12 Demonstration Works",
+          "town": "Sheffield",
+          "postcode": "S9 2QT",
+          "country": "GB"
+        },
+        "occupancy": "Fabrication",
+        "buildings": "1000000.00",
+        "contents": "250000.00",
+        "stock": "100000.00",
+        "maximumEstimatedLoss": "1100000.00",
+        "responses": {
+          "questionSetVersion": "commercial-questions-1",
+          "answers": []
+        }
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000011",
+        "reference": "LOC-02",
+        "address": {
+          "line1": "7 Example Warehouse",
+          "town": "Sheffield",
+          "postcode": "S4 7AA",
+          "country": "GB"
+        },
+        "occupancy": "Warehouse and storage",
+        "buildings": "500000.00",
+        "contents": "100000.00",
+        "stock": "50000.00",
+        "responses": {
+          "questionSetVersion": "commercial-questions-1",
+          "answers": []
+        }
+      }
+    ],
+    "wages": [
+      {
+        "id": "00000000-0000-4000-8000-000000000020",
+        "category": {
+          "collection": "cc-wage",
+          "value": "manual-on-premises",
+          "label": "Other manual work on own premises",
+          "version": "commercial-reference-1"
+        },
+        "employees": "300000.00",
+        "labourOnlySubcontractors": "50000.00",
+        "bonaFideSubcontractors": "100000.00",
+        "responses": {
+          "questionSetVersion": "commercial-questions-1",
+          "answers": []
+        }
+      }
+    ],
+    "liability": {
+      "employersLimit": "10000000.00",
+      "publicLimit": "5000000.00",
+      "productsLimit": "5000000.00",
+      "maximumHeightMetres": 2,
+      "employersReferenceNumber": "DEMO-ERN"
+    },
+    "businessInterruption": {
+      "basis": "gross-profit",
+      "sumInsured": "500000.00",
+      "indemnityMonths": 12
+    },
+    "losses": [],
+    "declarations": {
+      "questionSetVersion": "commercial-questions-1",
+      "answers": [
+        {
+          "questionId": "prototype.quote.36ef01068295",
+          "kind": "boolean",
+          "value": true
+        }
+      ]
+    },
+    "materialFacts": "Fictional contract fixture; incomplete underwriting answers are intentional."
+  },
+  "cover": {
+    "responses": {
+      "questionSetVersion": "commercial-questions-1",
+      "answers": [
+        {
+          "questionId": "prototype.quote.7660fc5eb42e",
+          "kind": "boolean",
+          "value": true
+        }
+      ]
+    }
+  },
+  "schemaVersion": "1.0"
+}

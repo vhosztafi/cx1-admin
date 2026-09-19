@@ -2,6 +2,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import {writeQuoteSchemas} from './generate-quote-contracts.mjs';
 import {writeQuoteConfigurationSchemas} from './quote-configuration-contracts.mjs';
 import {writeServicingContracts} from './generate-servicing-contracts.mjs';
+import {writeCommercialContracts} from './generate-commercial-contracts.mjs';
 
 const object=(properties,required=Object.keys(properties))=>({type:'object',additionalProperties:false,properties,required});
 const array=(items,minItems=0)=>({type:'array',items,minItems,maxItems:1000});
@@ -156,3 +157,4 @@ const examples=new URL('../contracts/examples/',import.meta.url);await mkdir(exa
 for(const p of [policy,mtc,cc])await writeFile(new URL(`${p.productCode}.json`,examples),JSON.stringify(p,null,2)+'\n');
 console.log('Generated policy schema and three fictional product fixtures.');
 await writeServicingContracts();
+await writeCommercialContracts();
