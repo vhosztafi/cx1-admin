@@ -3064,8 +3064,9 @@
       "source": "type: 'Policy adjustment — draft', title: 'MTA-007 · Smith Motor Traders Ltd',",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1542-action-0",
@@ -3077,8 +3078,9 @@
       "source": "{label:'Policy', value:'PN/CC/000622', mono:true, go:'policy'},",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1543-action-0",
@@ -3090,8 +3092,9 @@
       "source": "{label:'In force', value:'Version 6'},",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1544-action-0",
@@ -3103,8 +3106,9 @@
       "source": "{label:'Effective date', value: st.mtaEffective},",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1545-action-0",
@@ -3116,8 +3120,9 @@
       "source": "{label:'Changes', value: changes.length + ' proposed'},",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1546-action-0",
@@ -3129,8 +3134,9 @@
       "source": "{label:'Requested by', value:'Brightside · 07/09/2026'},",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1547-action-0",
@@ -3142,8 +3148,9 @@
       "source": "{label:'Prepared by', value:'Amy Jones'}",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1549-action-0",
@@ -3155,8 +3162,9 @@
       "source": "actions: (st.lockHeld ? [] : [{label:'Save draft', kind:'onblue2', onClick: () => this.toast('Draft MTA-007 saved. You can resume it from the policy.', '', null)}]).concat([",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1551-action-0",
@@ -3168,8 +3176,9 @@
       "source": "? {label:'Take over draft', kind:'onblue', onClick: () => { this.setState({lockHeld: false}); this.toast('You now hold the draft. Amy Jones has been notified and put into read-only.', '', null); }}",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1557-section-0",
@@ -3181,8 +3190,9 @@
       "source": "const summary = this.sec({kind:'fields', title:'Transaction summary', note: rated ? 'Rated 09/09/2026 08:12 — mock rating' : 'Not yet rated', cols:'1fr',",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1559-field-0",
@@ -3194,8 +3204,9 @@
       "source": "this.f('Changes in this transaction', String(changes.length)),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1560-field-0",
@@ -3207,8 +3218,9 @@
       "source": "this.f('Validation issues', issues === 0 ? 'None' : (issues === 1 ? '1 change needs information' : issues + ' changes need information'), {tone: issues ? 'warn' : 'ok'}),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1561-field-0",
@@ -3220,8 +3232,9 @@
       "source": "this.f('Referrals triggered', refs === 0 ? 'None' : String(refs), {tone: refs ? 'warn' : 'ok', hint: refs ? 'Young driver rule and stock authority limit' : ''}),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1562-field-0",
@@ -3233,8 +3246,9 @@
       "source": "this.f('Premium impact', rated ? '+£186.40 GWP' : 'Pending rating', {mono: rated, tone: rated ? null : 'grey', hint: rated ? 'Pro-rata to 31/12/2027' : 'Rate the combined risk to calculate'}),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1563-field-0",
@@ -3246,8 +3260,9 @@
       "source": "this.f('Authority status', rated ? 'Outside binder — insurer approval required' : 'Assessed at rating', {tone: rated ? 'warn' : 'grey'}),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1564-field-0",
@@ -3259,8 +3274,9 @@
       "source": "this.f('Next step', issues ? 'Obtain licence details for L Doherty' : (rated ? 'Send for insurer approval' : 'Review & rate the combined risk'))",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1567-section-0",
@@ -3272,8 +3288,9 @@
       "source": "const actions = this.sec({kind:'actions', title:'Transaction actions', note: st.lockHeld ? 'Read-only — draft held by Amy Jones' : '',",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1576-section-0",
@@ -3285,8 +3302,9 @@
       "source": ": {kind:'off', title:'Rate the transaction first so they see the premium effect', hint:'After rating'}),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1579-section-0",
@@ -3298,8 +3316,9 @@
       "source": ": this.act('Issue adjustment', {kind:'off', title:'Blocked: rating, referral approval and broker acceptance are required first', hint:'Blocked'}),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1587-action-0",
@@ -3311,8 +3330,9 @@
       "source": "actionLabel:'Take over draft', actionKind:'primary', onAction: () => { this.setState({lockHeld: false}); this.toast('You now hold the draft. Amy Jones has been notified and put into read-only.', '', null); }})",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1590-action-0",
@@ -3324,8 +3344,9 @@
       "source": "actionLabel:'Release lock', actionKind:'ghost', onAction: () => { this.setState({lockHeld: true}); this.toast('Lock released — the draft is editable by the team again.', '', null); }});",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1591-section-0",
@@ -3337,8 +3358,9 @@
       "source": "const dateSec = this.sec({kind:'table', w:'100%', title:'Effective date rules', note:'Checked against the ledger every time the date changes',",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1592-table-columns-0",
@@ -3350,8 +3372,9 @@
       "source": "columns: this.head(['Rule','This transaction','Result']),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1607-section-0",
@@ -3363,8 +3386,9 @@
       "source": "? this.sec({kind:'fields', w:'100%', title:'Transaction details', note:'Read-only while Amy Jones holds the draft', cols:'repeat(3,1fr)',",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1609-field-0",
@@ -3376,8 +3400,9 @@
       "source": "this.f('Effective date (all changes)', st.mtaEffective, {hint:'Applies to every change unless overridden'}),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1610-field-0",
@@ -3389,8 +3414,9 @@
       "source": "this.f('Date basis', this.fv('mtaBasis','One shared effective date')),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1611-field-0",
@@ -3402,8 +3428,9 @@
       "source": "this.f('Requested by', this.fv('mtaReq','Billy Leader (Brightside)'))",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1613-section-0",
@@ -3415,8 +3442,9 @@
       "source": ": this.sec({kind:'form', w:'100%', title:'Transaction details', cols:'repeat(3,1fr)',",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1615-input-0",
@@ -3428,8 +3456,9 @@
       "source": "this.input('Effective date (all changes)', 'mtaEff', st.mtaEffective, {options:['15/09/2026','01/10/2026','05/09/2026','01/06/2026'], set: (v) => { this.setState({mtaEffective: v, mtaRated: false, mtaApproved: false}); const r = ['01/06/2026'].indexOf(v) > -1; this.toast(r ? 'Blocked: 01/06/2026 precedes the last issued transaction (01/07/2026).' : (['05/09/2026'].indexOf(v) > -1 ? 'Backdated date set — senior approval needed and driver changes cannot be backdated.' : 'Effective date set. Re-rate the transaction.'), '', null); }, hint:'Applies to every change unless overridden'}),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1616-input-0",
@@ -3441,8 +3470,9 @@
       "source": "this.input('Date basis', 'mtaBasis', this.fv('mtaBasis','One shared effective date'), {options:['One shared effective date','Per-change effective dates'], hint:'Per-change dates are only permitted on cover changes'}),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1617-input-0",
@@ -3454,8 +3484,9 @@
       "source": "this.input('Requested by', 'mtaReq', this.fv('mtaReq','Billy Leader (Brightside)'), {options:['Billy Leader (Brightside)','David Smith (insured)','Cover MGA — internal correction']})",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1619-section-0",
@@ -3467,8 +3498,9 @@
       "source": "this.sec({kind:'changes', w:'100%', title:'Proposed changes', note: st.lockHeld ? 'Read-only — Amy Jones holds this draft' : 'Grouped by policy section · current vs proposed',",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1642-action-0",
@@ -3480,8 +3512,9 @@
       "source": "actionLabel:'Review & rate now', actionKind:'primary', onAction: () => this.rateMta()}),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1643-section-0",
@@ -3493,8 +3526,9 @@
       "source": "this.sec({kind:'table', w:'100%', title:'Consolidated changes', note:'Effective ' + st.mtaEffective + ' · grouped by affected section',",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1644-table-columns-0",
@@ -3506,8 +3540,9 @@
       "source": "columns: this.head(['Section','Change','In force (v6)','Proposed','Status']),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1648-section-0",
@@ -3519,8 +3554,9 @@
       "source": "this.sec({kind:'fields', w:'520px', title:'Premium adjustment', note: rated ? 'Mock rating for the combined risk, pro-rata to 31/12/2027' : 'Available after rating', cols:'1fr 1fr',",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1650-field-0",
@@ -3532,8 +3568,9 @@
       "source": "this.f('Premium before this transaction', '£1,200.25', {mono:true, hint:'Term GWP at version 6'}),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1651-field-0",
@@ -3545,8 +3582,9 @@
       "source": "this.f('Revised term premium', '£1,386.65', {mono:true}),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1652-field-0",
@@ -3558,8 +3596,9 @@
       "source": "this.f('Adjustment premium (GWP)', '+£186.40', {mono:true, strong:true, hint:'Pro-rata 15/09/2026 to 31/12/2027'}),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1653-field-0",
@@ -3571,8 +3610,9 @@
       "source": "this.f('IPT at 12%', '+£22.37', {mono:true}),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1654-field-0",
@@ -3584,8 +3624,9 @@
       "source": "this.f('Adjustment fee', '£25.00', {mono:true, hint:'MTA fee'}),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1655-field-0",
@@ -3597,8 +3638,9 @@
       "source": "this.f('Total payable now', '£233.77', {mono:true, strong:true}),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1656-field-0",
@@ -3610,8 +3652,9 @@
       "source": "this.f('Commission', '+£18.64', {mono:true, hint:'10.00% of adjustment GWP'}),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1657-field-0",
@@ -3636,8 +3679,9 @@
       "source": "this.f('Adjustment premium (GWP)', 'Pending', {tone:'grey'}),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1660-field-0",
@@ -3649,8 +3693,9 @@
       "source": "this.f('IPT', 'Pending', {tone:'grey'}),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1661-field-0",
@@ -3662,8 +3707,9 @@
       "source": "this.f('Adjustment fee', 'Pending', {tone:'grey'}),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1662-field-0",
@@ -3675,8 +3721,9 @@
       "source": "this.f('Total payable now', 'Pending', {tone:'grey'})",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1664-section-0",
@@ -3688,8 +3735,9 @@
       "source": "this.sec({kind:'table', w:'100%', title:'Referrals & authority',",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1665-table-columns-0",
@@ -3701,8 +3749,9 @@
       "source": "columns: this.head(['Rule','Trigger','Severity','Assigned','Status']),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1670-section-0",
@@ -3714,8 +3763,9 @@
       "source": "this.sec({kind:'table', w:'560px', title:'Outstanding requirements',",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1671-table-columns-0",
@@ -3727,8 +3777,9 @@
       "source": "columns: this.head(['Requirement','Owner','Status']),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1678-section-0",
@@ -3740,8 +3791,9 @@
       "source": "this.sec({kind:'table', w:'480px', title:'Documents to be generated on issue',",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1679-table-columns-0",
@@ -3753,8 +3805,9 @@
       "source": "columns: this.head(['Document','Trigger']),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1691-section-0",
@@ -3766,8 +3819,9 @@
       "source": "this.sec({kind:'table', w:'100%', title:'Supporting evidence',",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-1692-table-columns-0",
@@ -3779,8 +3833,9 @@
       "source": "columns: this.head(['File','Supplied by','Received','Relates to']),",
       "ownerPhase": 7,
       "owner": "07-05",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4221-section-0",
@@ -3792,8 +3847,9 @@
       "source": "this.sec({kind:'fields', w:'480px', title:'Renewal summary', cols:'1fr 1fr',",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4223-field-0",
@@ -3805,8 +3861,9 @@
       "source": "this.f('Policy', 'PN/CC/000571', {mono:true, link:true, go:'policy'}),",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4224-field-0",
@@ -3818,8 +3875,9 @@
       "source": "this.f('Insured', 'Kestrel Recovery (Doncaster) Ltd'),",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4225-field-0",
@@ -3831,8 +3889,9 @@
       "source": "this.f('Expiring term', '01/10/2025 – 30/09/2026'),",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4226-field-0",
@@ -3844,8 +3903,9 @@
       "source": "this.f('Renewal term', '01/10/2026 – 30/09/2027'),",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4227-field-0",
@@ -3857,8 +3917,9 @@
       "source": "this.f('Expiring premium', '£2,415.60', {mono:true}),",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4228-field-0",
@@ -3870,8 +3931,9 @@
       "source": "this.f('Renewal premium', step >= 2 ? '£2,608.85' : 'Pending rating', {mono: step >= 2, tone: step >= 2 ? null : 'grey'}),",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4229-field-0",
@@ -3883,8 +3945,9 @@
       "source": "this.f('Movement', step >= 2 ? '+£193.25 (+8.0%)' : '—', {mono: step >= 2, hint: step >= 2 ? 'Claims experience and premises rating' : ''}),",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4230-field-0",
@@ -3896,8 +3959,9 @@
       "source": "this.f('Status', step >= 4 ? 'Awaiting acceptance' : (step >= 3 ? 'Invited' : 'In preparation'), {tone: step >= 3 ? 'info' : 'grey'})",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4232-section-0",
@@ -3909,8 +3973,9 @@
       "source": "this.sec({kind:'table', w:'100%', title:'Changes carried into the renewal', note:'Compared with in-force version 4',",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4233-table-columns-0",
@@ -3922,8 +3987,9 @@
       "source": "columns: this.head(['Section','Expiring','Renewal','Reason']),",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4240-section-0",
@@ -3935,8 +4001,9 @@
       "source": "this.sec({kind:'table', w:'100%', title:'Renewal checks',",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4241-table-columns-0",
@@ -3948,8 +4015,9 @@
       "source": "columns: this.head(['Check','Result','Action']),",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4250-section-0",
@@ -3961,8 +4029,9 @@
       "source": "S.splice(4, 0, this.sec({kind:'table', w:'100%', title:'Documents issued',",
       "ownerPhase": 7,
       "owner": "07-12",
-      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4251-table-columns-0",
@@ -3974,8 +4043,9 @@
       "source": "columns: this.head(['Document','Version','Issued','Sent to']),",
       "ownerPhase": 7,
       "owner": "07-12",
-      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4258-section-0",
@@ -3987,8 +4057,9 @@
       "source": "pageHeader: true, title: 'Renewal — PN/CC/000571', subtitle: 'Kestrel Recovery (Doncaster) Ltd · Vantage Trade Brokers · renewal due 01/10/2026',",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4260-action-0",
@@ -4000,8 +4071,9 @@
       "source": "{label:'Back to policy', style: this.btn('ghost'), onClick: () => this.go('policy')},",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4266-action-0",
@@ -4013,8 +4085,9 @@
       "source": ": {label:'Issue renewal policy', style: this.btn('primary'), onClick: () => this.toast('Renewal policy issued (mock): PN/CC/000571 version 5, term 01/10/2026 – 30/09/2027.', 'Open policy', () => this.go('policy'))}",
       "ownerPhase": 7,
       "owner": "07-12",
-      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4270-section-0",
@@ -4026,8 +4099,9 @@
       "source": "this.sec({kind:'actions', title:'Renewal actions',",
       "ownerPhase": 7,
       "owner": "07-11",
-      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-11 verified: .local/browser-evidence/renewal-preparation/report.json and 07-11-SUMMARY.md. Saved issued/proposed risk comparison, actual experience, term dates, premium amounts, source assessment and policy link; no prototype sample facts. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4277-section-0",
@@ -4039,8 +4113,9 @@
       "source": "this.sec({kind:'fields', title:'Timeline', cols:'1fr',",
       "ownerPhase": 7,
       "owner": "07-12",
-      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4279-field-0",
@@ -4052,8 +4127,9 @@
       "source": "this.f('Invitation due', '17/08/2026', {tone:'warn', hint:'45 days before expiry — overdue'}),",
       "ownerPhase": 7,
       "owner": "07-12",
-      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4280-field-0",
@@ -4065,8 +4141,9 @@
       "source": "this.f('Expiry', '30/09/2026'),",
       "ownerPhase": 7,
       "owner": "07-12",
-      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4281-field-0",
@@ -4078,8 +4155,9 @@
       "source": "this.f('Renewal inception', '01/10/2026'),",
       "ownerPhase": 7,
       "owner": "07-12",
-      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4282-field-0",
@@ -4091,8 +4169,9 @@
       "source": "this.f('Auto-lapse', '14/10/2026', {hint:'If not accepted'})",
       "ownerPhase": 7,
       "owner": "07-12",
-      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4291-section-0",
@@ -4464,8 +4543,9 @@
       "source": "pageHeader: true, title: 'MTA-007 issued', subtitle: 'Smith Motor Traders Ltd · PN/CC/000622 · version 7 effective ' + this.state.mtaEffective,",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4343-action-0",
@@ -4477,8 +4557,9 @@
       "source": "{label:'Open policy', style: this.btn('primary'), onClick: () => this.go('policy')},",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4344-action-0",
@@ -4490,8 +4571,9 @@
       "source": "{label:'View transactions', style: this.btn('ghost'), onClick: () => this.go('policy', 'Transactions')}",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4349-section-0",
@@ -4503,8 +4585,9 @@
       "source": "this.sec({kind:'fields', w:'480px', title:'Transaction result', cols:'1fr 1fr',",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4351-field-0",
@@ -4516,8 +4599,9 @@
       "source": "this.f('Transaction', 'TR-000622-07', {mono:true}),",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4352-field-0",
@@ -4529,8 +4613,9 @@
       "source": "this.f('Version', 'Version 7 of 7'),",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4353-field-0",
@@ -4542,8 +4627,9 @@
       "source": "this.f('Effective', this.state.mtaEffective),",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4354-field-0",
@@ -4555,8 +4641,9 @@
       "source": "this.f('Changes applied', '5'),",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4355-field-0",
@@ -4568,8 +4655,9 @@
       "source": "this.f('Adjustment premium', '+£186.40', {mono:true}),",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4356-field-0",
@@ -4581,8 +4669,9 @@
       "source": "this.f('Total collected', '£233.77', {mono:true, hint:'Including IPT and MTA fee'}),",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4357-field-0",
@@ -4594,8 +4683,9 @@
       "source": "this.f('Revised term GWP', '£1,386.65', {mono:true}),",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4358-field-0",
@@ -4620,8 +4710,9 @@
       "source": "this.sec({kind:'table', w:'100%', title:'Changes applied',",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4361-table-columns-0",
@@ -4633,8 +4724,9 @@
       "source": "columns: this.head(['Section','Change','Result']),",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4363-section-0",
@@ -4646,8 +4738,9 @@
       "source": "this.sec({kind:'table', w:'100%', title:'Documents generated',",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4364-table-columns-0",
@@ -4659,8 +4752,9 @@
       "source": "columns: this.head(['Document','Version','Sent to','Status']),",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4371-section-0",
@@ -4672,8 +4766,9 @@
       "source": "this.sec({kind:'table', w:'100%', title:'Follow-on actions',",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4372-table-columns-0",
@@ -4685,8 +4780,9 @@
       "source": "columns: this.head(['Action','Owner','Status']),",
       "ownerPhase": 7,
       "owner": "07-10",
-      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-10-SUMMARY.md; actual both-product issue and restart-readback reports. Identifiers, effective dates, saved changes, signed charge/credit and revised term premium are persisted facts. Document/MID generation and delivery remain genuinely queued for Phase9; issuing collects no payment and does not invent settled cash or a paid balance (Phase10). See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-4385-section-0",
@@ -6163,8 +6259,9 @@
       "source": "wrapStyle: wrap, title: 'Add a change to MTA-007', desc: 'Several changes of the same type can be added to one transaction. Nothing is applied until the transaction is issued.',",
       "ownerPhase": 7,
       "owner": "07-04",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-5860-action-0",
@@ -6176,8 +6273,9 @@
       "source": "confirmLabel: 'Done', confirmStyle: this.btn('primary'), onConfirm: this.closeModal",
       "ownerPhase": 7,
       "owner": "07-04",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-6321-section-0",
@@ -6189,8 +6287,9 @@
       "source": "if (!ch) return {wrapStyle: wrap, title:'', desc:'', foot:'', confirmLabel:'Close', confirmStyle: this.btn('primary'), onConfirm: this.closeModal};",
       "ownerPhase": 7,
       "owner": "07-04",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-6321-action-0",
@@ -6202,8 +6301,9 @@
       "source": "if (!ch) return {wrapStyle: wrap, title:'', desc:'', foot:'', confirmLabel:'Close', confirmStyle: this.btn('primary'), onConfirm: this.closeModal};",
       "ownerPhase": 7,
       "owner": "07-04",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-6327-input-0",
@@ -6215,8 +6315,9 @@
       "source": "this.input('Full name', 'edName', this.fv('edName','Liam Doherty')),",
       "ownerPhase": 7,
       "owner": "07-04",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-6328-input-0",
@@ -6228,8 +6329,9 @@
       "source": "this.input('Date of birth', 'edDob', this.fv('edDob','02/11/2003')),",
       "ownerPhase": 7,
       "owner": "07-04",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-6329-input-0",
@@ -6241,8 +6343,9 @@
       "source": "this.input('Licence type', 'edLic', this.fv('edLic','Full UK'), {options:['Full UK','Provisional','EU exchange']}),",
       "ownerPhase": 7,
       "owner": "07-04",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-6330-input-0",
@@ -6254,8 +6357,9 @@
       "source": "this.input('Licence number', 'edLicNo', this.fv('edLicNo',''), {placeholder:'16 characters', hint:'Required — currently missing'}),",
       "ownerPhase": 7,
       "owner": "07-04",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-6331-input-0",
@@ -6267,8 +6371,9 @@
       "source": "this.input('Date of test', 'edTest', this.fv('edTest',''), {placeholder:'DD/MM/YYYY', hint:'Required — currently missing'}),",
       "ownerPhase": 7,
       "owner": "07-04",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-6332-input-0",
@@ -6280,8 +6385,9 @@
       "source": "this.input('Claims in last 3 years', 'edClaims', this.fv('edClaims','1 fault claim'), {options:['None','1 fault claim','1 non-fault claim','2 or more']})",
       "ownerPhase": 7,
       "owner": "07-04",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-6334-input-0",
@@ -6293,8 +6399,9 @@
       "source": "this.input('Description', 'edDesc', this.fv('edDesc', ch.after)),",
       "ownerPhase": 7,
       "owner": "07-04",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-6335-input-0",
@@ -6306,8 +6413,9 @@
       "source": "this.input('Effective date', 'edEff', this.state.mtaEffective, {hint:'Inherited from the transaction'}),",
       "ownerPhase": 7,
       "owner": "07-04",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-6336-input-0",
@@ -6319,8 +6427,9 @@
       "source": "this.input('Supporting evidence', 'edEv', this.fv('edEv','Received'), {options:['Received','Outstanding','Not required']})",
       "ownerPhase": 7,
       "owner": "07-04",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "SRC07-6340-action-0",
@@ -6332,8 +6441,9 @@
       "source": "confirmLabel: 'Save change',",
       "ownerPhase": 7,
       "owner": "07-04",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and remaining final aggregate gate.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth. See 07-16-FIELD-DISPOSITIONS.md for implementation, measured owning-plan evidence and completed servicing aggregate.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     }
   ],
   "conditionalBranches": [
@@ -6341,29 +6451,33 @@
       "id": "BR07-01",
       "behavior": "Issue adjustment",
       "owner": "07-10",
-      "evidence": "Owning plan tests eligible and blocked states with actual persistence. See 07-16-FIELD-DISPOSITIONS.md and owning-plan SUMMARY; final aggregate remains pending.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Owning plan tests eligible and blocked states with actual persistence. See 07-16-FIELD-DISPOSITIONS.md and owning-plan SUMMARY; full servicing aggregate passed.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "BR07-02",
       "behavior": "per-cover later date",
       "owner": "07-04",
-      "evidence": "Owning plan tests eligible and blocked states with actual persistence. See 07-16-FIELD-DISPOSITIONS.md and owning-plan SUMMARY; final aggregate remains pending.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Owning plan tests eligible and blocked states with actual persistence. See 07-16-FIELD-DISPOSITIONS.md and owning-plan SUMMARY; full servicing aggregate passed.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "BR07-03",
       "behavior": "non-driver Description replaced by typed editor",
       "owner": "07-04",
-      "evidence": "Owning plan tests eligible and blocked states with actual persistence. See 07-16-FIELD-DISPOSITIONS.md and owning-plan SUMMARY; final aggregate remains pending.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Owning plan tests eligible and blocked states with actual persistence. See 07-16-FIELD-DISPOSITIONS.md and owning-plan SUMMARY; full servicing aggregate passed.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "BR07-04",
       "behavior": "non-driver Effective date",
       "owner": "07-04",
-      "evidence": "Owning plan tests eligible and blocked states with actual persistence. See 07-16-FIELD-DISPOSITIONS.md and owning-plan SUMMARY; final aggregate remains pending.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Owning plan tests eligible and blocked states with actual persistence. See 07-16-FIELD-DISPOSITIONS.md and owning-plan SUMMARY; full servicing aggregate passed.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "BR07-05",
@@ -6376,15 +6490,17 @@
       "id": "BR07-06",
       "behavior": "lease held/expired/taken over",
       "owner": "07-03",
-      "evidence": "Owning plan tests eligible and blocked states with actual persistence. See 07-16-FIELD-DISPOSITIONS.md and owning-plan SUMMARY; final aggregate remains pending.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Owning plan tests eligible and blocked states with actual persistence. See 07-16-FIELD-DISPOSITIONS.md and owning-plan SUMMARY; full servicing aggregate passed.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "BR07-07",
       "behavior": "rating pending/failed/expired/superseded",
       "owner": "07-05",
-      "evidence": "Owning plan tests eligible and blocked states with actual persistence. See 07-16-FIELD-DISPOSITIONS.md and owning-plan SUMMARY; final aggregate remains pending.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "Owning plan tests eligible and blocked states with actual persistence. See 07-16-FIELD-DISPOSITIONS.md and owning-plan SUMMARY; full servicing aggregate passed.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "BR07-08",
@@ -6397,8 +6513,9 @@
       "id": "BR07-09",
       "behavior": "renewal stages1-4 and separate issue",
       "owner": "07-12",
-      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects. See 07-16-FIELD-DISPOSITIONS.md and owning-plan SUMMARY; final aggregate remains pending.",
-      "reviewStatus": "source-reviewed-final-acceptance-pending"
+      "evidence": "07-12 verified: .local/phase7-12-lapse-complete; .local/phase7-12-lifecycle-browser/sql.trx; .local/browser-evidence/renewal-issue/restart-readback.json; .planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md. Actual saved document versions/delivery recipients, invitation/acceptance/issue, configured London timeline, manual and clock-driven lapse. No prototype sample facts or invented cash/provider effects. See 07-16-FIELD-DISPOSITIONS.md and owning-plan SUMMARY; full servicing aggregate passed.",
+      "reviewStatus": "implemented-source-and-readback-reviewed",
+      "finalAcceptance": ".local/servicing-suite/2026-09-19T19-33-35-262Z-6d5132e1-90ba-406b-8010-12bd8bc85865/report.json; source-review distinctions remain in 07-16-FIELD-DISPOSITIONS.md. Whole-phase backend gate is separate and still pending."
     },
     {
       "id": "BR07-10",

@@ -1,6 +1,7 @@
 # Final servicing field review
 
-Source review during 07-16; final aggregate acceptance remains pending. The
+Source review during 07-16; full servicing browser acceptance passed. The final
+whole-phase backend gate remains pending. The
 original 137 controls, 393 field occurrences and 10 branches remain intact.
 Owning-plan SQL/browser evidence and final acceptance are distinct: this review
 does not manufacture a runtime result for an unexecuted scenario.
@@ -10,7 +11,7 @@ does not manufacture a runtime result for an unexecuted scenario.
 | Group | Implementation and data | Evidence and boundary |
 |---|---|---|
 | 07-04 change picker and edit modal, 14 occurrences | Typed driver/vehicle/premises/business/policyholder/cover editors, stable additions/removals, explicit field clearing, London effective dates, and saved before/after review. Description-only capture is replaced by typed risk. Supporting evidence is an actual reviewed association in the evidence panel. | All16 current typed editor journeys passed in `.local/phase7-16-editors-recheck.log`; retained report hashes under `.local/browser-evidence/servicing-editors`. 07-04 SQL and 07-06 proof evidence remain in their summaries. Full aggregate is separate. |
-| 07-05 draft header and transaction context | Policy reference and original preparer resolve from the authorised policy/user records. Insured comes from the exact issued base capture, not unsaved name edits. Created timestamp, requester, reason, effective intent and proposal count come from the saved draft. The policy link opens actual current coverage; the draft banner explicitly states that a saved proposal does not change cover. | New context SQL assertion failed before implementation, then passed including takeover preservation. Both-product header contract/API/browser check passed in `.local/servicing-context/2026-09-19T18-58-39-991Z`. Final premium extension requires its own updated browser check. |
+| 07-05 draft header and transaction context | Policy reference and original preparer resolve from the authorised policy/user records. Insured comes from the exact issued base capture, not unsaved name edits. Created timestamp, requester, reason, effective intent and proposal count come from the saved draft. The policy link opens actual current coverage; the draft banner explicitly states that a saved proposal does not change cover. | New context SQL assertion failed before implementation, then passed including takeover preservation. Both-product header contract/API/browser check passed in `.local/servicing-context/2026-09-19T18-58-39-991Z`. Updated premium extension and mobile capture passed in `.local/servicing-context/2026-09-19T19-38-38-108Z`. |
 | 07-05 premium and dated slices | Rating result supplies annual base, signed premium movement, tax, single fee, commission, gross payable/credit and net movement. Exact issued-base term premium plus signed premium movement supplies proposed revised term premium; fees and tax are excluded from that figure. Every cumulative dated slice retains annual premium, annual delta and proration. | Existing rating SQL/browser evidence in 07-05; new exact-penny unit checks and actual base-premium SQL assertion passed. No rating result grants authority or records cash. A reviewed result may be historical; its status remains explicit. |
 | 07-05 readiness, referrals and supporting information | Saved comparison/readiness messages, current rating state, scoped proof requirements, internal referral decisions, carrier requests/conditions, delivered terms and acceptance are separate persisted sources. Actions gate on current versions/leases and applicability. | 07-03/04/05/06/07/08 evidence, with full servicing acceptance required by07-16. The new retained missing-proof and conditional-carrier examples demonstrate incomplete authority without issuing cover. |
 | 07-05 document consequences | Prepared terms are actual stored versions; issue queues version-bound document/MID requests. The request state is shown without claiming a rendered PDF or a sent message. | 07-08/10 readback. Rendering, generic correspondence and MID delivery stay Phase9. |
@@ -48,6 +49,16 @@ receipt store. Process locks prevent concurrent execution of the same seed.
 There are no real providers, messages, cash payments, reset commands or changes
 to the sales-funnel snapshot in this work.
 
-Final full backend/browser results, final restart/preservation and closure must
-be recorded in07-16-SUMMARY and07-VERIFICATION before the phase is complete.
+The full17-stage servicing aggregate passed at19:56:40Z on2026-09-19, including
+both products' saved editors, terms, MTA, renewal, lapse, cancellation and history.
+The retained underwriting aggregate also passed all37 quote/agency/client journeys.
+Final two-initialization preservation retains133 table fingerprints; actual restart
+readback retains6 policy graphs/18 issued versions. Evidence paths are recorded in
+07-16-PROGRESS. Updated draft/premium desktop/mobile capture passed in
+`.local/servicing-context/2026-09-19T19-38-38-108Z`.
+
+The110 remaining field occurrences and7 conditional branches now have measured
+source/readback review dispositions. They are not claimed as110 individual browser
+assertions. Final full backend results and closure must be recorded in07-16-SUMMARY
+and07-VERIFICATION before the phase is complete.
 Human business/assistive-technology UAT, hosted CI and Docker remain unperformed.
