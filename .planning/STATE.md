@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: 07-15 history APIs and browser journeys verified; source fidelity and demo migration remain
-last_updated: "2026-09-19T08:46:28Z"
+stopped_at: 07-15 controls verified and demo refreshed; finish167 source-field dispositions before07-16
+last_updated: "2026-09-19T09:39:53.414Z"
 last_activity: 2026-09-19 — Atomic cancellation and accounting closure verified;18-case clean gate and127 preserved demo hashes.
 progress:
   total_phases: 13
@@ -28,7 +28,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 Phase: 7 of 13 (Policy lifecycle and history)
 Plan: 14 of16 complete;07-15 executing
 Status: Executing Phase7;07-15 core history implemented and browser verified; source closure remains
-Last activity: 2026-09-19 — Policy history, comparison, reconstruction and clone recovery passed10-case targeted gate; source closure and demo migration remain.
+Last activity: 2026-09-19 — 15-case history gate passed;22 controls reviewed;132 demo fingerprints preserved. Remaining167 field dispositions block15 completion.
 
 Progress: Phases1–6 complete;6/13 phases,63/65 completed implementation plans.
 
@@ -62,4 +62,4 @@ Resume file: .planning/phases/07-policy-lifecycle-and-history/07-15-PLAN.md
 
 User approved requirements/roadmap and autonomous choices/progression on2026-09-13. Routine confirmation is not required. Keep research, design, checks and verification enabled; fix gaps instead of silently deferring them. Current request execute-phase7 --auto authorises sequential automatic continuation.
 
-Thread heartbeat: continue-cover-mga-back-office-mvp, every10minutes. Continue in this task; notify meaningful progress/blockers only. Current owned previews are recorded in.local/phase7-14-preview-pids.json; stop only verified owned processes.
+Thread heartbeat: continue-cover-mga-back-office-mvp, every10minutes. Continue in this task; notify meaningful progress/blockers only. Current owned previews are recorded in.local/phase7-15-preview-pids.json; stop only verified owned processes.

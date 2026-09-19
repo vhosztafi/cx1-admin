@@ -6,6 +6,14 @@ namespace BackOffice.Application.Policies;
 
 public static class PolicyHistoryRules
 {
+    public static int? CompletedYears(string? from, DateOnly at)
+    {
+        if (!DateOnly.TryParseExact(from, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.None, out var start) || start > at) return null;
+        var years = at.Year - start.Year;
+        return years - (start.AddYears(years) > at ? 1 : 0);
+    }
+
     // Callers must authorize both version identities before comparing. Only
     // validated, issued public declarations reach the stable-ID diff engine.
     public static IReadOnlyList<QuoteRevisionChange> Compare(JsonElement before,JsonElement after)

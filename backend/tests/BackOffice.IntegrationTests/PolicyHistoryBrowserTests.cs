@@ -57,7 +57,8 @@ public sealed partial class UnderwritingRuntimeTests
                 browser = StartNode(["scripts/verify-policyhistory-browser.mjs", "--worker"], new() { ["COVER_HISTORY_BROWSER_FIXTURE"] = fixture, ["COVER_HISTORY_BROWSER_PASSWORD"] = password });
                 var browserOut = browser.StandardOutput.ReadToEndAsync(); var browserErr = browser.StandardError.ReadToEndAsync();
                 await browser.WaitForExitAsync().WaitAsync(TimeSpan.FromMinutes(5));
-                var error = await browserErr; await File.WriteAllTextAsync(Path.Combine(output, "browser.log"), await browserOut + error);
+                var error = System.Text.RegularExpressions.Regex.Replace(await browserErr, @"(?im)^.*cookie:.*$", "    [test session cookie redacted]");
+                await File.WriteAllTextAsync(Path.Combine(output, "browser.log"), await browserOut + error);
                 Assert.True(browser.ExitCode == 0, error);
                 Assert.Single(await db.Set<PolicyQuoteClone>().ToArrayAsync());
                 Assert.Equal(2, await db.Set<PolicyReconstructionRequest>().CountAsync());

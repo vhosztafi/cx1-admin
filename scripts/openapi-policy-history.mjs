@@ -9,14 +9,15 @@ export function addPolicyHistoryContracts({schemas:s,ref:r,operation,paths}) {
  s.PolicyHistoryVersion=o({id,termId:id,transactionId:id,termNumber:integer,versionSequence:integer,transactionSequence:integer,sliceOrdinal:integer,
   kind:e('new-business','adjustment','renewal','cancellation'),effectiveAt:instant,processedAt:instant,contentHash:hash,reason:t(2000),actorId:nullable(id),
   applicability:e('not-yet-known','selected','not-yet-effective','different-term','superseded'),actorLabel:t(200),obligationId:id,
-  amountDue:{type:'string',pattern:'^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$'},documentRequests:array(o({id,kind:t(100),state:t(30)}))});
+  amountDue:{type:'string',pattern:'^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$'},documentRequests:array(o({id,kind:t(100),state:t(30)})),providerName:t(200),sourceDraftId:nullable(id),decisionBinder:t(100),decisionAuthority:t(100)});
  s.PolicyHistoryView=o({policyId:id,reference:t(100),effectiveAt:instant,knownAt:instant,selectedVersionId:nullable(id),coverageState:coverage,
-  versions:array(r('PolicyHistoryVersion')),policyEtag:etag});
+  versions:array(r('PolicyHistoryVersion')),policyEtag:etag,agencyName:t(200)});
  s.PolicyVersionComparison=o({policyId:id,beforeVersionId:id,afterVersionId:id,beforeHash:hash,afterHash:hash,changes:array(r('QuoteRevisionChange'))});
  s.PolicyCloneTerms=o({policyId:id,versionId:id,relationshipId:id,termsId:id,termsVersion:integer,policyEtag:etag});
  s.PolicyCloneInput=o({versionId:id,relationshipId:id,confirmedTermsId:id,reason:t(2000)});
  s.PolicyCloneResult=o({quoteId:id,revisionId:id,lineageId:id,sourcePolicyId:id,sourceVersionId:id,quoteEtag:etag});
- const riskEntry=item=>o({versionId:id,termId:id,versionSequence:integer,effectiveAt:instant,processedAt:instant,contentHash:hash,item:nullable(item)});
+ const riskEntry=item=>o({versionId:id,termId:id,versionSequence:integer,effectiveAt:instant,processedAt:instant,contentHash:hash,item:nullable(item),
+  transactionId:id,kind:e('new-business','adjustment','renewal','cancellation'),reason:t(2000),actorLabel:t(200),ageAtEffectiveDate:nullable(integer),licenceYearsAtEffectiveDate:nullable(integer)});
  s.PolicyRiskHistory={oneOf:['drivers','vehicles'].map(kind=>o({policyId:id,kind:{const:kind},itemId:id,
   versions:array(riskEntry({$ref:`./schemas/issued-policy.schema.json#/$defs/${kind==='drivers'?'Driver':'Vehicle'}`}))}))};
  s.PolicyReconstructionInput={oneOf:[o({effectiveAt:instant,knownAt:instant,versionId:id,contentHash:hash,reason:t(2000)}),

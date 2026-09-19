@@ -22,6 +22,10 @@ public sealed partial class UnderwritingRuntimeTests
             await new QuoteIssueService(second.Source.Factory,second.Source.Clock).IssueAsync(second.Source.Underwriter,second.Source.QuoteId,second.Version,second.Input,Guid.NewGuid().ToString(),Guid.NewGuid());
             var foreign=await db.Set<PolicyVersion>().AsNoTracking().SingleAsync(x=>x.PolicyId!=version.PolicyId);
             var history=new PolicyHistoryService(f.Factory,f.Clock);
+            var drafts=new ServicingDraftService(f.Factory,f.Clock);
+            var draftList=await drafts.ListAsync(f.Underwriter,version.TermId);
+            await drafts.CreateAsync(f.Underwriter,version.TermId,Convert.FromBase64String(draftList.Etag.Trim('"')),
+                new("adjustment",version.Id,System.Text.Json.JsonSerializer.SerializeToElement(new{localDate="2026-10-01",localTime="00:00",timeZone="Europe/London"}),"Draft excluded from issued policy history"),Guid.NewGuid().ToString(),Guid.NewGuid());
             var same=await history.CompareAsync(f.Underwriter,version.PolicyId,version.Id,version.Id);
             Assert.Empty(same.Changes);Assert.Equal(Convert.ToHexStringLower(version.ContentHash),same.BeforeHash);
             Assert.Equal(404,(await Assert.ThrowsAsync<QuoteOperationException>(()=>history.CompareAsync(f.Underwriter,version.PolicyId,version.Id,foreign.Id))).Status);
@@ -47,6 +51,7 @@ public sealed partial class UnderwritingRuntimeTests
             var cloneInput=new PolicyCloneInput(version.Id,policy.RelationshipId,sourceRevision.AgencyTermsVersionId,"Clone policy into fresh incomplete quotation");
             Assert.Equal(409,(await Assert.ThrowsAsync<QuoteOperationException>(()=>history.CloneAsync(f.Underwriter,policy.Id,expected,cloneInput with{ConfirmedTermsId=Guid.NewGuid()},Guid.NewGuid().ToString(),Guid.NewGuid()))).Status);
             var foreignRelationship=await db.Set<Policy>().Where(x=>x.Id==foreign.PolicyId).Select(x=>x.RelationshipId).SingleAsync();
+            Assert.NotEqual(policy.AgencyId,await db.Set<Policy>().Where(x=>x.Id==foreign.PolicyId).Select(x=>x.AgencyId).SingleAsync());
             Assert.Equal(404,(await Assert.ThrowsAsync<QuoteOperationException>(()=>history.CloneAsync(f.Underwriter,policy.Id,expected,cloneInput with{RelationshipId=foreignRelationship},Guid.NewGuid().ToString(),Guid.NewGuid()))).Status);
             var cloneKey=Guid.NewGuid().ToString();var cloned=await history.CloneAsync(f.Underwriter,policy.Id,expected,cloneInput,cloneKey,Guid.NewGuid());
             Assert.Equal(201,cloned.Status);Assert.Equal(cloned.Body,(await history.CloneAsync(f.Underwriter,policy.Id,expected,cloneInput,cloneKey,Guid.NewGuid())).Body);

@@ -50,3 +50,7 @@ Latest reviewed evidence:
 History queries project metadata without loading every snapshot; actor names, transaction invoice amounts and document-request counts come from owned stored records. Existing adjustment/renewal actions now select the corresponding persisted draft flow; agency navigation uses the real record. No source control/field has yet been marked verified for15. This is an implementation checkpoint, not plan completion.
 
 Current verified demo remains07-14 API19460/web46256,5087/3100; .local/phase7-14-preview-pids.json. Preserve existing data and sales-funnel files. Remaining work: complete source fidelity (215 fields and23 controls assigned15, including explicit dependent-module dispositions), contextual document/obligation links and any source-display gaps, migrate/demo-preserve15 after review, close15, then execute16. Plans15/16 remain incomplete; no SUMMARY or phase completion claim yet.
+
+## Fidelity checkpoint — 2026-09-19T09:40Z
+
+Supersedes earlier demo/process details: history migration applied preserving130 prior fingerprints; refreshed fidelity builds preserve132 including new tables. Current API25936/web82308, ports5087/3100. Clean gate15 unique cases (9unit/4SQL/2browser), no skips.148 frontend and48 API/source checks pass;12 fresh HTTP responses validate. All22 controls assigned15 are verified;24/191 field occurrences reviewed,167 still require disposition. See07-15-SOURCE-REVIEW.md for exact evidence and outstanding IDs. No15SUMMARY yet;16 has not started.

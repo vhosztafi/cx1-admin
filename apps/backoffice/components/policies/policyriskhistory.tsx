@@ -1,12 +1,13 @@
 'use client';
 import {useState} from 'react';
+import Link from 'next/link';
 import {Panel} from '../primitives';
 import {LoadFeedback,useQuoteResource} from '../quotes/shared';
 import {QuoteProposalDetails} from '../quotes/quote-history';
 import type {PolicyView} from '../../lib/policies-api';
 import type {QuoteObject} from '../../lib/quotes';
 
-type ItemHistory={policyId:string;kind:string;itemId:string;versions:{versionId:string;termId:string;versionSequence:number;effectiveAt:string;processedAt:string;contentHash:string;item:QuoteObject|null}[]};
+type ItemHistory={policyId:string;kind:string;itemId:string;versions:{versionId:string;termId:string;versionSequence:number;effectiveAt:string;processedAt:string;contentHash:string;item:QuoteObject|null;transactionId:string;kind:string;reason:string;actorLabel:string;ageAtEffectiveDate:number|null;licenceYearsAtEffectiveDate:number|null}[]};
 export function PolicyRiskHistory({policy,kind,questionLabels}:{policy:PolicyView;kind:'drivers'|'vehicles';questionLabels:Record<string,string>}) {
  const [selected,setSelected]=useState('');
  const list=policy.snapshot.risk[kind];
@@ -18,7 +19,9 @@ export function PolicyRiskHistory({policy,kind,questionLabels}:{policy:PolicyVie
   </button>:null)}</div>:<p>No {kind} recorded in this version.</p>}
   {selected?<section aria-label="Risk item history"><h3>{kind==='drivers'?'Driver':'Vehicle'} history</h3>{!history.data?<LoadFeedback error={history.error} retry={history.refresh}/>:history.data.versions.map(item=><details key={item.versionId} open={item.versionId===policy.versionId}><summary>Version {item.versionSequence} · Effective {new Date(item.effectiveAt).toLocaleString('en-GB',{timeZone:'Europe/London'})} · London{item.item?'':' · Not present'}</summary>
    <p>Recorded {new Date(item.processedAt).toLocaleString('en-GB',{timeZone:'Europe/London'})} · London</p>
-   {item.item?<QuoteProposalDetails value={item.item} proposal={policy.snapshot} questionLabels={questionLabels}/>:<p>This item is not present in this issued version.</p>}
+   <p>{item.actorLabel} · {item.kind} · {item.reason}</p><Link href={`/policies/${policy.id}?termId=${item.termId}&versionId=${item.versionId}&tab=Transactions`}>Open originating transaction</Link>
+   {kind==='drivers'&&item.item?<dl className="underwriting-provenance"><div><dt>Age at version effective date</dt><dd>{item.ageAtEffectiveDate??'Not recorded'}</dd></div><div><dt>Licence held at version effective date</dt><dd>{item.licenceYearsAtEffectiveDate===null?'Not recorded':`${item.licenceYearsAtEffectiveDate} complete years`}</dd></div></dl>:null}
+   {item.item?<><QuoteProposalDetails value={item.item} proposal={policy.snapshot} questionLabels={questionLabels}/>{kind==='vehicles'?<dl className="underwriting-provenance"><div><dt>VIN</dt><dd>Not recorded in this issued version</dd></div></dl>:null}</>:<p>This item is not present in this issued version.</p>}
   </details>)}</section>:null}
  </div></Panel>;
 }

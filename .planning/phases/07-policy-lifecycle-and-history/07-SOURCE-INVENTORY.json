@@ -144,9 +144,15 @@
       "handlers": {
         "onClick": "() => this.toast('Cloned to draft quote QT/MT/004190 (mock).', 'Open', () => this.go('quote'))"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-15"
+      "owner": "07-15",
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "implementation": "Current selected version and agency terms create one fresh incomplete quote. Browser reload and lost-response retry plus SQL verify lineage, fresh identities and absence of carried underwriting state."
     },
     {
       "id": "CTL-6f298b5183b0",
@@ -163,9 +169,15 @@
       "handlers": {
         "onClick": "() => this.setTab('Transactions')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-15"
+      "owner": "07-15",
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "implementation": "Functional policy record navigation uses actual version/stable risk identities. Both-product browser opens selected-version documents, transaction history and driver/vehicle records; prototype fixture links are not retained."
     },
     {
       "id": "CTL-a90cc5e42de1",
@@ -231,9 +243,15 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-15"
+      "owner": "07-15",
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "implementation": "Functional policy record navigation uses actual version/stable risk identities. Both-product browser opens selected-version documents, transaction history and driver/vehicle records; prototype fixture links are not retained."
     },
     {
       "id": "CTL-5b50e8eb46fa",
@@ -250,9 +268,15 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-15"
+      "owner": "07-15",
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "implementation": "The policy history links to the actual owned agency record; both-product browser follows that exact agency ID and returns to the policy."
     },
     {
       "id": "CTL-29c128398a46",
@@ -269,9 +293,15 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-15"
+      "owner": "07-15",
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "implementation": "Functional policy record navigation uses actual version/stable risk identities. Both-product browser opens selected-version documents, transaction history and driver/vehicle records; prototype fixture links are not retained."
     },
     {
       "id": "CTL-a599ed5f7746",
@@ -450,9 +480,15 @@
       "handlers": {
         "onClick": "() => this.toast('Cloned to draft quote QT/MT/004190 (mock).', 'Open', () => this.go('quote'))"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-15"
+      "owner": "07-15",
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "implementation": "Current selected version and agency terms create one fresh incomplete quote. Browser reload and lost-response retry plus SQL verify lineage, fresh identities and absence of carried underwriting state."
     },
     {
       "id": "CTL-e230948b7fd9",
@@ -469,9 +505,15 @@
       "handlers": {
         "onClick": "() => this.setTab('Transactions')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-15"
+      "owner": "07-15",
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "implementation": "Functional policy record navigation uses actual version/stable risk identities. Both-product browser opens selected-version documents, transaction history and driver/vehicle records; prototype fixture links are not retained."
     },
     {
       "id": "CTL-e0b763ff7753",
@@ -539,8 +581,9 @@
         "onAction": "() => this.setTab('Tasks')"
       },
       "reviewStatus": "owner-assigned-not-implemented",
-      "ownerPhase": 7,
-      "owner": "07-15"
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules",
+      "ownerRationale": "This All action opens the generic policy Tasks tab. Reconciled with the existing Phase9 owner for Create Task and the approved07-15 boundary; no task behavior is claimed implemented."
     },
     {
       "id": "CTL-44e9e414e2c2",
@@ -658,9 +701,15 @@
       "handlers": {
         "onAction": "() => this.go('asat')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-15"
+      "owner": "07-15",
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "implementation": "Functional policy record navigation uses actual version/stable risk identities. Both-product browser opens selected-version documents, transaction history and driver/vehicle records; prototype fixture links are not retained."
     },
     {
       "id": "CTL-c2f7efead94c",
@@ -677,9 +726,15 @@
       "handlers": {
         "onClick": "() => this.toast('Before/after comparison for ' + t[0] + ' (mock).', '', null)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-15"
+      "owner": "07-15",
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "implementation": "The six fixture-only comparison rows are replaced by a shared selection of two real same-policy issued versions. Both-product browser compares actual new-business and cancellation versions; SQL rejects foreign version IDs."
     },
     {
       "id": "CTL-64a95d6b56a5",
@@ -696,9 +751,15 @@
       "handlers": {
         "onClick": "() => this.toast('Before/after comparison for ' + t[0] + ' (mock).', '', null)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-15"
+      "owner": "07-15",
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "implementation": "The six fixture-only comparison rows are replaced by a shared selection of two real same-policy issued versions. Both-product browser compares actual new-business and cancellation versions; SQL rejects foreign version IDs."
     },
     {
       "id": "CTL-13581e1a3c26",
@@ -715,9 +776,15 @@
       "handlers": {
         "onClick": "() => this.toast('Before/after comparison for ' + t[0] + ' (mock).', '', null)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-15"
+      "owner": "07-15",
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "implementation": "The six fixture-only comparison rows are replaced by a shared selection of two real same-policy issued versions. Both-product browser compares actual new-business and cancellation versions; SQL rejects foreign version IDs."
     },
     {
       "id": "CTL-a32dc8670b0a",
@@ -734,9 +801,15 @@
       "handlers": {
         "onClick": "() => this.toast('Before/after comparison for ' + t[0] + ' (mock).', '', null)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-15"
+      "owner": "07-15",
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "implementation": "The six fixture-only comparison rows are replaced by a shared selection of two real same-policy issued versions. Both-product browser compares actual new-business and cancellation versions; SQL rejects foreign version IDs."
     },
     {
       "id": "CTL-600cfa71899e",
@@ -753,9 +826,15 @@
       "handlers": {
         "onClick": "() => this.toast('Before/after comparison for ' + t[0] + ' (mock).', '', null)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-15"
+      "owner": "07-15",
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "implementation": "The six fixture-only comparison rows are replaced by a shared selection of two real same-policy issued versions. Both-product browser compares actual new-business and cancellation versions; SQL rejects foreign version IDs."
     },
     {
       "id": "CTL-a5137896520d",
@@ -772,9 +851,15 @@
       "handlers": {
         "onClick": "() => this.toast('Before/after comparison for ' + t[0] + ' (mock).', '', null)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-15"
+      "owner": "07-15",
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "implementation": "The six fixture-only comparison rows are replaced by a shared selection of two real same-policy issued versions. Both-product browser compares actual new-business and cancellation versions; SQL rejects foreign version IDs."
     },
     {
       "id": "CTL-f7e2892adf6c",
@@ -1106,9 +1191,15 @@
       "handlers": {
         "onClick": "() => this.go(o.go, o.tab)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-15"
+      "owner": "07-15",
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "implementation": "Functional policy record navigation uses actual version/stable risk identities. Both-product browser opens selected-version documents, transaction history and driver/vehicle records; prototype fixture links are not retained."
     },
     {
       "id": "CTL-833c66cac316",
@@ -1125,9 +1216,15 @@
       "handlers": {
         "onAction": "() => this.go('driver')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-15"
+      "owner": "07-15",
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "implementation": "Functional policy record navigation uses actual version/stable risk identities. Both-product browser opens selected-version documents, transaction history and driver/vehicle records; prototype fixture links are not retained."
     },
     {
       "id": "CTL-1583baae154f",
@@ -2365,9 +2462,15 @@
       "handlers": {
         "onClick": "() => this.go('policy', 'Transactions')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-15"
+      "owner": "07-15",
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "implementation": "Arbitrary effective/known UTC inputs select actual issued cover or explicit no-cover. Draft proposals are separately listed and excluded from reconstruction. Both-product browser retains selected/no-cover manifests, reloads cutoffs, returns to Transactions and checks persisted requests. SQL includes an active draft exclusion assertion."
     },
     {
       "id": "CTL-c7575e4e2213",
@@ -2384,9 +2487,15 @@
       "handlers": {
         "onClick": "() => this.toast('Reconstruction exported as a PDF for the claims file (mock).', '', null)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-15"
+      "owner": "07-15",
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "implementation": "Arbitrary effective/known UTC inputs select actual issued cover or explicit no-cover. Draft proposals are separately listed and excluded from reconstruction. Both-product browser retains selected/no-cover manifests, reloads cutoffs, returns to Transactions and checks persisted requests. SQL includes an active draft exclusion assertion."
     },
     {
       "id": "CTL-6e2b2ebf7bc6",
@@ -2403,9 +2512,15 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-15"
+      "owner": "07-15",
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "implementation": "Arbitrary effective/known UTC inputs select actual issued cover or explicit no-cover. Draft proposals are separately listed and excluded from reconstruction. Both-product browser retains selected/no-cover manifests, reloads cutoffs, returns to Transactions and checks persisted requests. SQL includes an active draft exclusion assertion."
     },
     {
       "id": "CTL-ff9e226baf10",
@@ -2422,9 +2537,15 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-15"
+      "owner": "07-15",
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "implementation": "Arbitrary effective/known UTC inputs select actual issued cover or explicit no-cover. Draft proposals are separately listed and excluded from reconstruction. Both-product browser retains selected/no-cover manifests, reloads cutoffs, returns to Transactions and checks persisted requests. SQL includes an active draft exclusion assertion."
     },
     {
       "id": "CTL-d27b77003a60",
@@ -2441,9 +2562,15 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-15"
+      "owner": "07-15",
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "implementation": "Arbitrary effective/known UTC inputs select actual issued cover or explicit no-cover. Draft proposals are separately listed and excluded from reconstruction. Both-product browser retains selected/no-cover manifests, reloads cutoffs, returns to Transactions and checks persisted requests. SQL includes an active draft exclusion assertion."
     },
     {
       "id": "CTL-f3387357521c",
@@ -2460,9 +2587,15 @@
       "handlers": {
         "onClick": "() => this.toast('Opening the ' + v.v + ' schedule as issued (mock).', '', null)"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-15"
+      "owner": "07-15",
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "implementation": "The selected version opens its three retained document requests. Actual rendering/download remains the approved Phase9 dependency; no PDF or delivery success is claimed."
     },
     {
       "id": "CTL-cb7e499f5ef9",

@@ -52,9 +52,9 @@
       "kind": "action",
       "label": "Send Documents",
       "source": "{label:'Send Documents', onClick: () => this.toast('Document pack queued for brightside@ (mock send).', '', null)},",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules",
+      "evidence": "Ownership reconciliation with ROADMAP and07-15 explicit module boundary; not implemented or runtime verified by07-15."
     },
     {
       "id": "SRC07-1143-action-0",
@@ -64,9 +64,9 @@
       "kind": "action",
       "label": "Create Task",
       "source": "{label:'Create Task', onClick: () => this.setState({modal:{kind:'task'}})},",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules",
+      "evidence": "Ownership reconciliation with ROADMAP and07-15 explicit module boundary; not implemented or runtime verified by07-15."
     },
     {
       "id": "SRC07-1144-action-0",
@@ -76,9 +76,9 @@
       "kind": "action",
       "label": "Add Note",
       "source": "{label:'Add Note', onClick: () => this.setTab('Notes')},",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules",
+      "evidence": "Ownership reconciliation with ROADMAP and07-15 explicit module boundary; not implemented or runtime verified by07-15."
     },
     {
       "id": "SRC07-1145-action-0",
@@ -88,9 +88,9 @@
       "kind": "action",
       "label": "Log an Incident",
       "source": "{label:'Log an Incident', hint:'Claims handoff', onClick: () => this.go('logclaim')},",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules",
+      "evidence": "Ownership reconciliation with ROADMAP and07-15 explicit module boundary; not implemented or runtime verified by07-15."
     },
     {
       "id": "SRC07-1146-action-0",
@@ -102,7 +102,13 @@
       "source": "{label:'Clone to New Quote', onClick: () => this.toast('Cloned to draft quote QT/MT/004190 (mock).', 'Open', () => this.go('quote'))},",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-1147-action-0",
@@ -114,7 +120,13 @@
       "source": "{label:'View transactions & versions', onClick: () => this.setTab('Transactions')},",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-1148-action-0",
@@ -174,7 +186,13 @@
       "source": "{label:'Agency', value:'Brightside Insurance Services Ltd', go:'agency', key:1},",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-1163-action-0",
@@ -186,7 +204,13 @@
       "source": "{label:'Insurer', value:'Capacity Provider A'},",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-1164-action-0",
@@ -318,7 +342,13 @@
       "source": "this.f('Servicing owner', 'Amy Jones'),",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-1185-field-0",
@@ -330,7 +360,13 @@
       "source": "this.f('Assigned underwriter', 'James Smith'),",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-1186-field-0",
@@ -342,7 +378,13 @@
       "source": "this.f('Agency', 'Brightside Insurance Services Ltd', {link:true, go:'agency'}),",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-1187-field-0",
@@ -354,7 +396,13 @@
       "source": "this.f('Broker user', 'billy.leader@brightside-ins.co.uk', {hint:'01708 632000'})",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-1189-section-0",
@@ -508,9 +556,9 @@
       "kind": "field",
       "label": "Received to date",
       "source": "this.f('Received to date', '£1,015.43', {mono:true}),",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 10,
+      "owner": "Phase10 finance workflows",
+      "evidence": "Ownership reconciliation with ROADMAP and07-15 explicit module boundary; not implemented or runtime verified by07-15."
     },
     {
       "id": "SRC07-1205-field-0",
@@ -520,9 +568,9 @@
       "kind": "field",
       "label": "Outstanding balance",
       "source": "this.f('Outstanding balance', '£363.85', {tone:'warn', hint:'Next instalment 01/10/2026'}),",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 10,
+      "owner": "Phase10 finance workflows",
+      "evidence": "Ownership reconciliation with ROADMAP and07-15 explicit module boundary; not implemented or runtime verified by07-15."
     },
     {
       "id": "SRC07-1206-field-0",
@@ -544,9 +592,9 @@
       "kind": "field",
       "label": "Payment plan",
       "source": "this.f('Payment plan', 'Monthly direct debit', {hint:'Collected by agency'})",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 10,
+      "owner": "Phase10 finance workflows",
+      "evidence": "Ownership reconciliation with ROADMAP and07-15 explicit module boundary; not implemented or runtime verified by07-15."
     },
     {
       "id": "SRC07-1209-section-0",
@@ -556,9 +604,9 @@
       "kind": "section",
       "label": "Latest notes",
       "source": "this.sec({kind:'timeline', w:'480px', title:'Latest notes', actionLabel:'All notes', onAction: () => this.setTab('Notes'), items: this.state.notes.map((n) => this.tl(n.title, n.meta, n.body))}),",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules",
+      "evidence": "Ownership reconciliation with ROADMAP and07-15 explicit module boundary; not implemented or runtime verified by07-15."
     },
     {
       "id": "SRC07-1209-action-0",
@@ -568,9 +616,9 @@
       "kind": "action",
       "label": "All notes",
       "source": "this.sec({kind:'timeline', w:'480px', title:'Latest notes', actionLabel:'All notes', onAction: () => this.setTab('Notes'), items: this.state.notes.map((n) => this.tl(n.title, n.meta, n.body))}),",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules",
+      "evidence": "Ownership reconciliation with ROADMAP and07-15 explicit module boundary; not implemented or runtime verified by07-15."
     },
     {
       "id": "SRC07-1210-section-0",
@@ -688,9 +736,9 @@
       "kind": "section",
       "label": "Open tasks",
       "source": "this.sec({kind:'table', title:'Open tasks', actionLabel:'All', onAction: () => this.setTab('Tasks'),",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules",
+      "evidence": "Ownership reconciliation with ROADMAP and07-15 explicit module boundary; not implemented or runtime verified by07-15."
     },
     {
       "id": "SRC07-1232-action-0",
@@ -700,9 +748,9 @@
       "kind": "action",
       "label": "All",
       "source": "this.sec({kind:'table', title:'Open tasks', actionLabel:'All', onAction: () => this.setTab('Tasks'),",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules",
+      "evidence": "Ownership reconciliation with ROADMAP and07-15 explicit module boundary; not implemented or runtime verified by07-15."
     },
     {
       "id": "SRC07-1247-action-0",
@@ -1290,7 +1338,13 @@
       "source": "this.f('Capacity provider', 'Capacity Provider A', {hint:'Fictional placeholder'}),",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-1347-field-0",
@@ -1302,7 +1356,13 @@
       "source": "this.f('Binder', 'Motor Trade Combined 2026'),",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-1348-field-0",
@@ -1326,7 +1386,13 @@
       "source": "this.f('Territorial limits', 'Great Britain, Northern Ireland, Isle of Man'),",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-1350-field-0",
@@ -1338,7 +1404,13 @@
       "source": "this.f('Law & jurisdiction', 'England & Wales')",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-1355-action-0",
@@ -1348,9 +1420,9 @@
       "kind": "action",
       "label": "Open exception task",
       "source": "actionLabel:'Open exception task', actionKind:'ghost', onAction: () => this.go('tasks')}));",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules",
+      "evidence": "Existing approved Phase9 task/MID reporting boundary (07-SOURCE-AUDIT.md and ROADMAP.md); provider submission, acknowledgements and exceptions are not implemented by policy history. Not runtime verified."
     },
     {
       "id": "SRC07-1356-section-0",
@@ -1492,9 +1564,9 @@
       "kind": "section",
       "label": "Motor insurance data reporting",
       "source": "S.push(this.sec({kind:'fields', w:'420px', title:'Motor insurance data reporting', note:'Handled by external data service', cols:'1fr 1fr',",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules",
+      "evidence": "Existing approved Phase9 task/MID reporting boundary (07-SOURCE-AUDIT.md and ROADMAP.md); provider submission, acknowledgements and exceptions are not implemented by policy history. Not runtime verified."
     },
     {
       "id": "SRC07-1379-field-0",
@@ -1504,9 +1576,9 @@
       "kind": "field",
       "label": "Last submission",
       "source": "this.f('Last submission', '08/09/2026 02:10'), this.f('Records submitted', '18', {mono:true}),",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules",
+      "evidence": "Existing approved Phase9 task/MID reporting boundary (07-SOURCE-AUDIT.md and ROADMAP.md); provider submission, acknowledgements and exceptions are not implemented by policy history. Not runtime verified."
     },
     {
       "id": "SRC07-1379-field-1",
@@ -1516,9 +1588,9 @@
       "kind": "field",
       "label": "Records submitted",
       "source": "this.f('Last submission', '08/09/2026 02:10'), this.f('Records submitted', '18', {mono:true}),",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules",
+      "evidence": "Existing approved Phase9 task/MID reporting boundary (07-SOURCE-AUDIT.md and ROADMAP.md); provider submission, acknowledgements and exceptions are not implemented by policy history. Not runtime verified."
     },
     {
       "id": "SRC07-1380-field-0",
@@ -1528,9 +1600,9 @@
       "kind": "field",
       "label": "Confirmed",
       "source": "this.f('Confirmed', '15', {mono:true}), this.f('Pending', '2', {mono:true}),",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules",
+      "evidence": "Existing approved Phase9 task/MID reporting boundary (07-SOURCE-AUDIT.md and ROADMAP.md); provider submission, acknowledgements and exceptions are not implemented by policy history. Not runtime verified."
     },
     {
       "id": "SRC07-1380-field-1",
@@ -1540,9 +1612,9 @@
       "kind": "field",
       "label": "Pending",
       "source": "this.f('Confirmed', '15', {mono:true}), this.f('Pending', '2', {mono:true}),",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules",
+      "evidence": "Existing approved Phase9 task/MID reporting boundary (07-SOURCE-AUDIT.md and ROADMAP.md); provider submission, acknowledgements and exceptions are not implemented by policy history. Not runtime verified."
     },
     {
       "id": "SRC07-1381-field-0",
@@ -1552,9 +1624,9 @@
       "kind": "field",
       "label": "Rejected",
       "source": "this.f('Rejected', '1', {tone:'crit'}), this.f('Method', 'Nightly batch via integration')",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules",
+      "evidence": "Existing approved Phase9 task/MID reporting boundary (07-SOURCE-AUDIT.md and ROADMAP.md); provider submission, acknowledgements and exceptions are not implemented by policy history. Not runtime verified."
     },
     {
       "id": "SRC07-1381-field-1",
@@ -1564,9 +1636,9 @@
       "kind": "field",
       "label": "Method",
       "source": "this.f('Rejected', '1', {tone:'crit'}), this.f('Method', 'Nightly batch via integration')",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules",
+      "evidence": "Existing approved Phase9 task/MID reporting boundary (07-SOURCE-AUDIT.md and ROADMAP.md); provider submission, acknowledgements and exceptions are not implemented by policy history. Not runtime verified."
     },
     {
       "id": "SRC07-1386-action-0",
@@ -1578,7 +1650,13 @@
       "source": "actionLabel:'Open driver record', actionKind:'ghost', onAction: () => this.go('driver')}));",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-1389-action-0",
@@ -3796,9 +3874,9 @@
       "kind": "action",
       "label": "Data reporting",
       "source": "{label:'Data reporting', value:'Rejected'}",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules",
+      "evidence": "Ownership reconciliation with ROADMAP and07-15 explicit module boundary; not implemented or runtime verified by07-15."
     },
     {
       "id": "SRC07-4394-action-0",
@@ -3808,9 +3886,9 @@
       "kind": "action",
       "label": "Retry data submission",
       "source": "actions: [{label:'Retry data submission', kind:'onblue', onClick: () => this.toast('Submission retried (mock): awaiting response.', '', null)}]",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules",
+      "evidence": "Ownership reconciliation with ROADMAP and07-15 explicit module boundary; not implemented or runtime verified by07-15."
     },
     {
       "id": "SRC07-4400-action-0",
@@ -3820,9 +3898,9 @@
       "kind": "action",
       "label": "Open exception task",
       "source": "actionLabel:'Open exception task', actionKind:'ghost', onAction: () => this.go('tasks')}),",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules",
+      "evidence": "Ownership reconciliation with ROADMAP and07-15 explicit module boundary; not implemented or runtime verified by07-15."
     },
     {
       "id": "SRC07-4401-section-0",
@@ -3894,7 +3972,13 @@
       "source": "this.f('VIN', 'WF0YXXTTGYKR12345', {mono:true}), this.f('Body type', 'Panel van'),",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-4405-field-1",
@@ -4074,7 +4158,13 @@
       "source": "{label:'Age', value:'22'},",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-4436-action-0",
@@ -4096,9 +4186,9 @@
       "kind": "action",
       "label": "Open referral task",
       "source": "actions: [{label:'Open referral task', kind:'onblue', onClick: () => this.go('task')}]",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules",
+      "evidence": "Ownership reconciliation with ROADMAP and07-15 explicit module boundary; not implemented or runtime verified by07-15."
     },
     {
       "id": "SRC07-4444-action-0",
@@ -4108,9 +4198,9 @@
       "kind": "action",
       "label": "Chase agency",
       "source": "actionLabel:'Chase agency', actionKind:'ghost', onAction: () => this.go('policy', 'Messages')}),",
-      "ownerPhase": 7,
-      "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "ownerPhase": 9,
+      "owner": "Phase9 operational modules",
+      "evidence": "Ownership reconciliation with ROADMAP and07-15 explicit module boundary; not implemented or runtime verified by07-15."
     },
     {
       "id": "SRC07-4445-section-0",
@@ -4182,7 +4272,13 @@
       "source": "this.f('Years held', '2 years'), this.f('Date of test', 'Not supplied', {tone:'warn'}),",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-4449-field-1",
@@ -4314,7 +4410,13 @@
       "source": "pageHeader: true, title: 'Policy as at a date', subtitle: 'PN/CC/000622 · Smith Motor Traders Ltd · reconstructed from the transaction ledger',",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-5116-action-0",
@@ -4326,7 +4428,13 @@
       "source": "{label:'Back to transactions', style: this.btn('ghost'), onClick: () => this.go('policy', 'Transactions')},",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-5117-action-0",
@@ -4338,7 +4446,13 @@
       "source": "{label:'Export this view', style: this.btn('ghost'), onClick: () => this.toast('Reconstruction exported as a PDF for the claims file (mock).', '', null)}",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-5122-section-0",
@@ -4350,7 +4464,13 @@
       "source": "this.sec({kind:'form', w:'100%', title:'Date', cols:'repeat(3,1fr)',",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-5124-input-0",
@@ -4362,7 +4482,13 @@
       "source": "this.input('Show the policy as at', 'asAtSel', sel, {options: all.map((x) => x.date), set: (val) => this.setState({asAt: val}), hint:'Dates on which cover changed'}),",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-5125-input-0",
@@ -4374,7 +4500,13 @@
       "source": "this.input('Include draft transactions', 'asAtDraft', this.fv('asAtDraft','No'), {options:['No'], hint:'Drafts have no legal effect and cannot be included'}),",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-5126-input-0",
@@ -4386,7 +4518,13 @@
       "source": "this.input('Basis', 'asAtBasis', this.fv('asAtBasis','Effective date'), {options:['Effective date','Transaction date'], hint:'Effective date is what the contract says; transaction date is when we processed it'})",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-5128-section-0",
@@ -4518,7 +4656,13 @@
       "source": "columns: this.head(['Effective','Version','Transaction','Counted in this view']),",
       "ownerPhase": 7,
       "owner": "07-15",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "See 07-15-SOURCE-REVIEW.md for persisted values, explicit unavailable fields and approved functional adaptations; no prototype sample value is business truth."
     },
     {
       "id": "SRC07-5147-section-0",
@@ -4972,7 +5116,12 @@
       "id": "BR07-10",
       "behavior": "as-at E/K, excluded drafts and missing cover",
       "owner": "07-15",
-      "evidence": "Owning plan tests eligible and blocked states with actual persistence."
+      "evidence": [
+        ".local/phase7-15-fidelity-gate",
+        ".local/phase7-15-fidelity-responses-v2",
+        "scripts/verify-policyhistory-browser.mjs"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified"
     }
   ]
 }

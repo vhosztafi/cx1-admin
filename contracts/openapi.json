@@ -130720,6 +130720,35 @@
                 "state"
               ]
             }
+          },
+          "providerName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "\\S"
+          },
+          "sourceDraftId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "decisionBinder": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "pattern": "\\S"
+          },
+          "decisionAuthority": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "pattern": "\\S"
           }
         },
         "required": [
@@ -130740,7 +130769,11 @@
           "actorLabel",
           "obligationId",
           "amountDue",
-          "documentRequests"
+          "documentRequests",
+          "providerName",
+          "sourceDraftId",
+          "decisionBinder",
+          "decisionAuthority"
         ]
       },
       "PolicyHistoryView": {
@@ -130795,6 +130828,12 @@
           "policyEtag": {
             "type": "string",
             "pattern": "^\"[A-Za-z0-9+/]{11}=\"$"
+          },
+          "agencyName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "\\S"
           }
         },
         "required": [
@@ -130805,7 +130844,8 @@
           "selectedVersionId",
           "coverageState",
           "versions",
-          "policyEtag"
+          "policyEtag",
+          "agencyName"
         ]
       },
       "PolicyVersionComparison": {
@@ -131010,6 +131050,53 @@
                           "type": "null"
                         }
                       ]
+                    },
+                    "transactionId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "new-business",
+                        "adjustment",
+                        "renewal",
+                        "cancellation"
+                      ]
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2000,
+                      "pattern": "\\S"
+                    },
+                    "actorLabel": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200,
+                      "pattern": "\\S"
+                    },
+                    "ageAtEffectiveDate": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "licenceYearsAtEffectiveDate": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
                     }
                   },
                   "required": [
@@ -131019,7 +131106,13 @@
                     "effectiveAt",
                     "processedAt",
                     "contentHash",
-                    "item"
+                    "item",
+                    "transactionId",
+                    "kind",
+                    "reason",
+                    "actorLabel",
+                    "ageAtEffectiveDate",
+                    "licenceYearsAtEffectiveDate"
                   ]
                 }
               }
@@ -131085,6 +131178,53 @@
                           "type": "null"
                         }
                       ]
+                    },
+                    "transactionId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "new-business",
+                        "adjustment",
+                        "renewal",
+                        "cancellation"
+                      ]
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2000,
+                      "pattern": "\\S"
+                    },
+                    "actorLabel": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200,
+                      "pattern": "\\S"
+                    },
+                    "ageAtEffectiveDate": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "licenceYearsAtEffectiveDate": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
                     }
                   },
                   "required": [
@@ -131094,7 +131234,13 @@
                     "effectiveAt",
                     "processedAt",
                     "contentHash",
-                    "item"
+                    "item",
+                    "transactionId",
+                    "kind",
+                    "reason",
+                    "actorLabel",
+                    "ageAtEffectiveDate",
+                    "licenceYearsAtEffectiveDate"
                   ]
                 }
               }

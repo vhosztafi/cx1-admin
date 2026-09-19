@@ -8,6 +8,15 @@ namespace BackOffice.UnitTests;
 
 public sealed class PolicyHistoryTests
 {
+    [Theory]
+    [InlineData("2000-02-29", "2021-02-28", 21)]
+    [InlineData("2000-02-29", "2021-02-27", 20)]
+    [InlineData("2000-01-01", "2026-01-01", 26)]
+    [InlineData("2027-01-01", "2026-01-01", null)]
+    [InlineData("2026-02-30", "2026-03-01", null)]
+    public void CompletedYearsUsesTheVersionDateAndLeapAnniversary(string from, string at, int? expected)
+        => Assert.Equal(expected, PolicyHistoryRules.CompletedYears(from, DateOnly.ParseExact(at, "yyyy-MM-dd")));
+
     private static JsonObject Example(string product)
     {
         using var stream=typeof(PolicyHistoryTests).Assembly.GetManifestResourceStream("PolicyExamples.issued-"+product+".json")!;

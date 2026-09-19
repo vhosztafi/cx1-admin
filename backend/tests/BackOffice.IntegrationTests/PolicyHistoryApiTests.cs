@@ -31,6 +31,11 @@ public sealed partial class UnderwritingRuntimeTests
             await File.WriteAllTextAsync(Path.Combine(directory, $"{policy.Id:D}-{schema}.json"), JsonSerializer.Serialize(new { schema, data = await ReadJson(response) }));
         }
         await Capture("PolicyHistoryView", read);
+        var historyData = await ReadJson(read);
+        Assert.Equal(await db.Set<Agency>().Where(x=>x.Id==policy.AgencyId).Select(x=>x.LegalName).SingleAsync(), historyData.GetProperty("agencyName").GetString());
+        var ownedProvider = await db.Set<IssueFinancialObligation>().Where(x=>x.TransactionId==version.TransactionId).Select(x=>x.ProviderId).SingleAsync();
+        Assert.Equal(await db.Set<CapacityProvider>().Where(x=>x.Id==ownedProvider).Select(x=>x.Name).SingleAsync(), historyData.GetProperty("versions")[0].GetProperty("providerName").GetString());
+        Assert.Equal(3, historyData.GetProperty("versions")[0].GetProperty("documentRequests").GetArrayLength());
         using var snapshot = JsonDocument.Parse(version.SnapshotJson);
         foreach (var kind in new[] { "drivers", "vehicles" })
         {
@@ -40,6 +45,8 @@ public sealed partial class UnderwritingRuntimeTests
             detail.EnsureSuccessStatusCode(); Assert.True(detail.Headers.CacheControl!.NoStore);
             var data = await ReadJson(detail); Assert.Equal(itemId, data.GetProperty("itemId").GetGuid());
             Assert.Equal(itemId, data.GetProperty("versions")[0].GetProperty("item").GetProperty("id").GetGuid());
+            Assert.Equal(version.TransactionId, data.GetProperty("versions")[0].GetProperty("transactionId").GetGuid());
+            Assert.False(string.IsNullOrWhiteSpace(data.GetProperty("versions")[0].GetProperty("actorLabel").GetString()));
             using var foreign = await client.GetAsync(root + $"/risk/{kind}/{Guid.NewGuid():D}/history");
             Assert.Equal(HttpStatusCode.NotFound, foreign.StatusCode);
         }
