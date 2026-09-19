@@ -13,4 +13,14 @@ export async function writeServicingContracts() {
  issued.properties.snapshotFormat={const:'issued-servicing-1'};
  issued.properties.provenance=o({source:e('backoffice','demo-seed'),sourceQuoteId:id,servicingIssueDecisionId:id,baseVersionId:id,revisionId:id,transactionId:id,effectiveAt:instant,processedAt:instant,sliceOrdinal:bounded(1,100),inputHash:hash});
  await writeFile(new URL('../contracts/schemas/issued-servicing.schema.json',import.meta.url),JSON.stringify(issued,null,2)+'\n');
+ const cancellation=structuredClone(issued);
+ cancellation.$id='https://schemas.cover-mga.example/issued-cancellation/1.0';
+ cancellation.title='Immutable cancellation outcome retaining historical insured risk';
+ cancellation.properties.snapshotFormat={const:'issued-cancellation-1'};
+ cancellation.properties.provenance=o({source:e('backoffice'),sourceQuoteId:id,cancellationIssueDecisionId:id,cancellationApprovalId:id,cancellationPreviewId:id,
+  baseVersionId:id,revisionId:id,transactionId:id,effectiveAt:instant,processedAt:instant,sliceOrdinal:{const:1},inputHash:hash});
+ cancellation.properties.cancellation=o({outcome:{const:'cancelled'},reasonCode:e('insured-request','trade-ceased','non-payment','non-disclosure','insurer-instruction'),
+  effectiveAt:instant,ruleVersion:{const:'demo-servicing-1'}});
+ cancellation.required.push('cancellation');
+ await writeFile(new URL('../contracts/schemas/issued-cancellation.schema.json',import.meta.url),JSON.stringify(cancellation,null,2)+'\n');
 }

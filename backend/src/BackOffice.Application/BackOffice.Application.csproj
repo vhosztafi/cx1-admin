@@ -5,6 +5,7 @@
     <EmbeddedResource Include="../../../contracts/schemas/servicing.schema.json" LogicalName="Servicing.ProposalSchema" />
     <EmbeddedResource Include="../../../contracts/schemas/issued-policy.schema.json" LogicalName="Policy.SnapshotSchema" />
     <EmbeddedResource Include="../../../contracts/schemas/issued-servicing.schema.json" LogicalName="Servicing.SnapshotSchema" />
+    <EmbeddedResource Include="../../../contracts/schemas/issued-cancellation.schema.json" LogicalName="Cancellation.SnapshotSchema" />
     <EmbeddedResource Include="../../../contracts/schemas/underwriting-config.schema.json" LogicalName="Underwriting.ConfigSchema" />
     <EmbeddedResource Include="../../../contracts/reference-data/underwriting-meanings.json" LogicalName="Underwriting.SourceMeanings" />
     <EmbeddedResource Include="../../../contracts/schemas/quote-draft.schema.json" LogicalName="QuoteCapture.DraftSchema" />

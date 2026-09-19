@@ -4929,7 +4929,8 @@
             "quoted",
             "accepted",
             "issued",
-            "abandoned"
+            "abandoned",
+            "lapsed"
           ]
         },
         "proposal": {
@@ -5533,7 +5534,9 @@
                 "type": "string",
                 "enum": [
                   "draft",
-                  "abandoned"
+                  "abandoned",
+                  "issued",
+                  "lapsed"
                 ]
               },
               "currentRevisionId": {

@@ -8,13 +8,14 @@ public static class PolicySnapshotShape
 {
     private static readonly Lazy<JsonSchema> Schema = new(() => QuoteCaptureShape.BuildBundled("Policy.SnapshotSchema"));
     private static readonly Lazy<JsonSchema> ServicingSchema = new(() => QuoteCaptureShape.BuildBundled("Servicing.SnapshotSchema"));
+    private static readonly Lazy<JsonSchema> CancellationSchema = new(() => QuoteCaptureShape.BuildBundled("Cancellation.SnapshotSchema"));
     public static bool Valid(JsonElement snapshot) => Errors(snapshot).Count == 0;
     public static IReadOnlyList<string> Errors(JsonElement snapshot)
     {
         if (snapshot.ValueKind != JsonValueKind.Object) return ["snapshot-object-required"];
         var format = snapshot.TryGetProperty("snapshotFormat",out var value) && value.ValueKind == JsonValueKind.String ? value.GetString() : null;
-        if (format is not ("issued-quote-1" or "issued-servicing-1")) return ["unsupported-snapshot-format"];
-        var schema = format == "issued-servicing-1" ? ServicingSchema.Value : Schema.Value;
+        if (format is not ("issued-quote-1" or "issued-servicing-1" or "issued-cancellation-1")) return ["unsupported-snapshot-format"];
+        var schema = format switch { "issued-servicing-1" => ServicingSchema.Value, "issued-cancellation-1" => CancellationSchema.Value, _ => Schema.Value };
         var result = schema.Evaluate(snapshot, new EvaluationOptions { RequireFormatValidation = true, OutputFormat = OutputFormat.Hierarchical });
         if (result.IsValid) return [];
         var errors = new List<string>();
