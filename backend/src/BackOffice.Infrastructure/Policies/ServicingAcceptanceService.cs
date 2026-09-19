@@ -40,6 +40,11 @@ public sealed partial class ServicingTermsService
             async(db,ct)=>
             {
                 await held!.Current(db,factory,time,version,lease,ct);var now=time.GetUtcNow();
+                // System time can move backwards after authorisation (for example
+                // Windows time synchronisation). Refuse an impossible chronology
+                // before SQL, rather than violating immutable provenance checks.
+                if(now<held.AssessedAt || now<input.AcceptedAt || now>=held.Rating.ExpiresAt)
+                    throw new QuoteOperationException(409,"servicing-acceptance-stale");
                 var row=new ServicingAcceptance{DraftId=draftId,CycleId=held.Cycle.Id,RevisionId=held.Cycle.RevisionId,RatingId=held.Rating.Id,
                     TermsVersionId=input.TermsVersionId,DeliveryId=input.DeliveryId,TermsHash=input.TermsHash,AssuranceHash=input.AssuranceHash,
                     AccepterLabel=input.AccepterLabel,AcceptedAt=input.AcceptedAt,Channel=input.Channel,EvidenceAssociationId=input.EvidenceAssociationId,

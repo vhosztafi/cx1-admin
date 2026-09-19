@@ -13,7 +13,13 @@ async function until(route,predicate){for(let i=0;i<120;i++){const data=await ge
 async function lease(){const draft=await get(path);if(Date.parse(draft.lease?.expiresAt??'')<Date.now()+60000){const response=page.waitForResponse(r=>r.url().endsWith(path+'/lease')&&r.request().method()==='PUT');await button('Renew editing lease').click();assert.equal((await response).status(),200);}}
 async function command(suffix,click,status=200){await lease();const saved=await page.request.get(origin+path);const etag=saved.headers().etag;
  await page.waitForFunction(version=>document.querySelector('[data-servicing-draft-etag]')?.getAttribute('data-servicing-draft-etag')===version,etag);
- const response=page.waitForResponse(r=>r.url().endsWith(path+suffix)&&r.request().method()==='POST');await click();const result=await response;assert.equal(result.status(),status,await result.text());await page.getByText('Supporting information saved.',{exact:true}).waitFor();return result.json();}
+ // Capture the actual response before Chrome can discard its network body.
+ // Forward the same status/headers/body to the UI; commands still originate there.
+ const pattern='**'+path+suffix;let body;
+ const capture=async route=>{if(route.request().method()!=='POST')return route.continue();const response=await route.fetch();body=await response.json();await route.fulfill({response,json:body});};
+ await page.route(pattern,capture);
+ try{const response=page.waitForResponse(r=>r.url().endsWith(path+suffix)&&r.request().method()==='POST');await click();const result=await response;assert.equal(result.status(),status,JSON.stringify(body));assert.ok(body);await page.getByText('Supporting information saved.',{exact:true}).waitFor();return body;}
+ finally{await page.unroute(pattern,capture);}}
 async function abandon(){await field('Takeover or abandonment reason').fill('Fictional terms browser verification complete; retain its immutable history');await field('I confirm this draft should be abandoned.').check();await button('Abandon draft').click();await page.getByText('Abandoned',{exact:true}).waitFor();}
 async function correct(name){await button('Correct policyholder details').click();await field('Trading name').fill(name);await button('Apply to draft').click();await button('Save draft').click();await page.getByText('Draft action saved.',{exact:true}).waitFor();}
 const local=value=>{const d=new Date(value);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,19);};

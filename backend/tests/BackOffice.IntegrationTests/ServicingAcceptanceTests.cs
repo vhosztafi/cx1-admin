@@ -9,6 +9,11 @@ namespace BackOffice.IntegrationTests;
 
 public sealed partial class UnderwritingRuntimeTests
 {
+    private sealed class ReversingAcceptanceClock(DateTimeOffset instant) : TimeProvider
+    {
+        private int calls;
+        public override DateTimeOffset GetUtcNow() => Interlocked.Increment(ref calls) == 1 ? instant : instant.AddSeconds(-1);
+    }
     private static async Task<string> VerifyServicingAcceptance(BackOfficeDbContext db,DecisionFixture f,ServicingCycle cycle,ServicingTermsVersion contract,Guid fileId,Guid fence,string etag,bool posting=false,bool issue=false,string? issuePassword=null,Func<ServicingAcceptance,string,Task>? onAccepted=null,Func<ServicingAcceptanceInput,byte[],Task<string>>? onAcceptancePrepared=null)
     {
         static byte[] Version(string value)=>Convert.FromBase64String(value.Trim('"'));
@@ -27,6 +32,13 @@ public sealed partial class UnderwritingRuntimeTests
             input with{EvidenceAssociationId=Guid.NewGuid()},input with{AcceptedAt=delivery.CompletedAt!.Value.AddTicks(-1)}})
             await Assert.ThrowsAsync<QuoteOperationException>(()=>terms.AcceptAsync(f.Underwriter,cycle.DraftId,version,fence,changed,Key(),Guid.NewGuid()));
         if(onAcceptancePrepared is not null)return await onAcceptancePrepared(input,version);
+        if(!posting && !issue && onAccepted is null)
+        {
+            var reversing = new ServicingTermsService(f.Factory,new ReversingAcceptanceClock(f.Clock.GetUtcNow()));
+            var denied = await Assert.ThrowsAsync<QuoteOperationException>(()=>reversing.AcceptAsync(f.Underwriter,cycle.DraftId,version,fence,input,Key(),Guid.NewGuid()));
+            Assert.Equal(409,denied.Status);
+            Assert.Equal(0,await db.Set<ServicingAcceptance>().CountAsync(x=>x.DraftId==cycle.DraftId));
+        }
         var accepted=await terms.AcceptAsync(f.Underwriter,cycle.DraftId,version,fence,input,key,Guid.NewGuid());Assert.Equal(201,accepted.Status);
         Assert.True((await terms.AcceptAsync(f.Underwriter,cycle.DraftId,version,fence,input,key,Guid.NewGuid())).Replayed);
         var row=await db.Set<ServicingAcceptance>().AsNoTracking().SingleAsync();
