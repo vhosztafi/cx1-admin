@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1–7 complete;65 implementation plans verified. Phase7 final acceptance passed; continue Phase8 Commercial Combined planning.
+**Status:** Autonomous progression authorised. Phases1–7 complete;65 implementation plans verified. Phase8 research/UI and16 sequential plans checked; continue execution automatically.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
@@ -159,7 +159,17 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 **Goal:** Demonstrate shared workflows with a different risk structure.
 **Depends on:** Phase 7
 **Requirements:** CC-01 through CC-05
-**Plans:** Not yet planned.
+**Plans:**16 checked sequential plans (08-01 through08-16).
+
+**Waves1–4:** contracts/source reconciliation → persistent capture boundary → proposer/loss wizard → property/BI/liability/questions. Each wave depends on its predecessor.
+
+**Waves5–8, blocked on Wave4:** rating → referrals/evidence → carrier/terms/acceptance → dated exposure projection. Each wave depends on its predecessor.
+
+**Waves9–12, blocked on Wave8:** atomic first issue → CC policy/exposure/history → typed adjustment editors → adjustment underwriting/issue. Each wave depends on its predecessor.
+
+**Waves13–16, blocked on Wave12:** renewal → cancellation → operational payloads/additive demo → full acceptance/restart. Each wave depends on its predecessor.
+
+**Cross-cutting constraints:** current scope before receipt replay; closed CC product contracts and stable subjects; exact money and immutable history; whole-book effective-time aggregation with lock-before-scope atomic writes; all166 capture controls/109 question definitions/60 CC policy-control records reconciled; existing MT behavior/data and frontend-code preserved. CC-05 remains partial through Phase9.
 
 **Success criteria:**
 
@@ -261,7 +271,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 5. Motor Trade quote capture | 11/11 | Complete    | 2026-09-16 |
 | 6. Underwriting and first policy issue | 14/14 | Complete | 2026-09-17 |
 | 7. Policy lifecycle and history | 16/16 | Complete    | 2026-09-19 |
-| 8. Commercial Combined back office | 0/TBD | Not started | — |
+| 8. Commercial Combined back office | 0/16 | Ready to execute | — |
 | 9. Tasks, documents, communication and incidents | 0/TBD | Not started | — |
 | 10. Accounting and insurer reporting | 0/TBD | Not started | — |
 | 11. Configuration and account administration | 0/TBD | Not started | — |

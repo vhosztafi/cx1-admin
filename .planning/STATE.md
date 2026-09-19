@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
-status: ready_to_plan
-stopped_at: Phase7 complete; auto-advance to Phase8 planning
-last_updated: "2026-09-19T21:36:00Z"
-last_activity: 2026-09-19 — Phase7 verified; all16 plans and final acceptance gates complete.
+status: ready_to_execute
+stopped_at: Phase8 planning verified; auto-execute08-01 next.
+last_updated: "2026-09-19T22:08:18.457Z"
+last_activity: "2026-09-19 — Phase8 research/UI and16 plans checked;17/17 requirement/decision coverage; auto-execute08-01."
 progress:
   total_phases: 13
   completed_phases: 7
-  total_plans: 65
+  total_plans: 81
   completed_plans: 65
   percent: 54
 ---
@@ -21,16 +21,16 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Plan Phase8 Commercial Combined using the completed Phase7 lifecycle and explicit product-specific risk design.
+**Current focus:** Execute Phase8 Commercial Combined from16 checked sequential plans, starting with source/data/API contracts.
 
 ## Current Position
 
 Phase: 8 of 13 (Commercial Combined back office)
-Plan: Not started
-Status: Ready to plan
-Last activity: 2026-09-19 — Phase7 complete:1222 backend/303SQL,17 servicing stages,37 retained journeys,133 preserved tables and6 policy/18 version restart graphs.
+Plan: 0 of16 complete;08-01 next
+Status: Ready to execute
+Last activity: 2026-09-19 — Phase8 research/UI and16 plans checked;17/17 requirement/decision coverage; auto-execute08-01. Phase7 retained acceptance:1222 backend/303SQL,17 servicing stages,37 journeys,133 preserved tables and6 policy/18 version restart graphs.
 
-Progress: Phases1–7 complete;7/13 phases,65/65 currently defined implementation plans. Later phases await detailed planning.
+Progress: Phases1–7 complete;7/13 phases,65/81 currently defined implementation plans. Phase8 research/UI/plans checked; later phases await detailed planning.
 
 ## Accumulated Context
 
@@ -44,7 +44,7 @@ Progress: Phases1–7 complete;7/13 phases,65/65 currently defined implementatio
 
 ### Pending Todos
 
-- Plan Phase8 from07-PHASE08-HANDOFF, approved roadmap, prototype and domain/data/API references.
+- Execute08-01;16 plans coverCC-01..05 andD-01..12. KeepCC-05 partial until Phase9 operational workflows exist.
 - Keep future endpoints closed until owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,9 +54,9 @@ Progress: Phases1–7 complete;7/13 phases,65/65 currently defined implementatio
 
 ## Session Continuity
 
-Last session: 2026-09-19T21:36:00Z
-Stopped at: Phase7 complete; continue Phase8 planning automatically.
-Resume file: .planning/phases/07-policy-lifecycle-and-history/07-PHASE08-HANDOFF.md
+Last session: 2026-09-19T22:08:18Z
+Stopped at: Phase8 planning verified; auto-execute08-01 next.
+Resume file: .planning/phases/08-commercial-combined-back-office/08-01-PLAN.md
 
 ## Autonomous continuation
 
