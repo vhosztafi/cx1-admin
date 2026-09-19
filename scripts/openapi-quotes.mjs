@@ -2,10 +2,10 @@ import {addQuoteSupportContracts} from './openapi-quote-support.mjs';
 // Phase 5 capture contracts. Future workflow operations remain separate; this
 // document is not evidence that the runtime quote routes have been implemented.
 export function addQuoteContracts({schemas:s,ref:r,text:t,enumeration:e,object:o,array:a,id,instant,boolean:b,integer,operation:op,list,paths}) {
-  const product=e('motor-trade-road-risks','motor-trade-combined');
+  const product=e('motor-trade-road-risks','motor-trade-combined','commercial-combined');
   const state=e('draft','withdrawn');
   const hash={type:'string',pattern:'^[a-f0-9]{64}$'};
-  s.QuoteCaptureProposal={$ref:'./schemas/quote-draft.schema.json'};
+  s.QuoteCaptureProposal={oneOf:[{$ref:'./schemas/quote-draft.schema.json'},r('CommercialCaptureDraft')]};
   s.QuoteIdentityResult=o({id});
   s.QuoteCreateRequest=o({relationshipId:id,productVersionId:id,matchSubmissionId:id,proposal:r('QuoteCaptureProposal')},['relationshipId','productVersionId']);
   s.QuoteSaveRequest=o({proposal:r('QuoteCaptureProposal'),reason:t(1000)},['proposal']);
@@ -55,7 +55,7 @@ export function addQuoteContracts({schemas:s,ref:r,text:t,enumeration:e,object:o
       operation['x-runtime-status']='planned-phase-05';
       if(operation.operationId==='listQuoteProducts') {
         operation['x-runtime-status']='implemented-capture-selection';
-        operation.description+=' Offers are the current explicit Motor Trade capture catalogue. Valid empty capture settings revoke all offers; missing, malformed or dangling configuration returns 503. Eligibility is calculated for the selected relationship and does not imply rating or progression readiness.';
+        operation.description+=' Offers are the current explicit Motor Trade and Commercial Combined capture catalogue. Valid empty capture settings revoke all offers; missing, malformed or dangling configuration returns 503. Eligibility is calculated for the selected relationship and does not imply rating or progression readiness.';
       }
       if(['createQuote','saveQuoteProposal','getQuote','validateQuote'].includes(operation.operationId)) {
         operation['x-runtime-status']='implemented-capture-only';

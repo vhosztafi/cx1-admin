@@ -1,7 +1,7 @@
 {
   "format": "commercial-source-ledger-1",
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
-  "status": "design-mapped-runtime-pending",
+  "status": "capture-backend-verified-ui-and-underwriting-pending",
   "denominators": {
     "captureControls": 166,
     "questions": 109,
@@ -24,8 +24,10 @@
       "disposition": "product-selection",
       "targetPaths": [],
       "questionId": null,
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "api-persisted-ui-pending",
+      "verification": [
+        "08-02: RealSqlCommercialCaptureHttpUsesClosedProposalCurrentScopeAndExactReceipts and RealSqlCommercialCapturePersistsRevisionsRetriesStaleWritesAndRevocation; API create/save/readback, no browser claim."
+      ]
     },
     {
       "controlId": "CTL-d46524a6c7e6",
@@ -875,8 +877,10 @@
       "disposition": "product-selection",
       "targetPaths": [],
       "questionId": null,
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "api-persisted-ui-pending",
+      "verification": [
+        "08-02: RealSqlCommercialCaptureHttpUsesClosedProposalCurrentScopeAndExactReceipts and RealSqlCommercialCapturePersistsRevisionsRetriesStaleWritesAndRevocation; API create/save/readback, no browser claim."
+      ]
     },
     {
       "controlId": "CTL-7b091112a28e",
@@ -3609,8 +3613,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-03",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.d1edba1174f6",
@@ -3675,8 +3681,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-03",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.0837e6f73be3",
@@ -3741,8 +3749,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-03",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.2d40a8dab2ab",
@@ -3768,8 +3778,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-03",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.cfb8d4a5494b",
@@ -3795,8 +3807,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-03",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.eb57b4a6cc8b",
@@ -3822,8 +3836,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-03",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.96730bd9301a",
@@ -3849,8 +3865,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-03",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.4e601dd4932b",
@@ -3876,8 +3894,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-03",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.f92e963f393c",
@@ -3903,8 +3923,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-03",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.8581de6c0b2a",
@@ -3930,8 +3952,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-03",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.0b0b63fca324",
@@ -3957,8 +3981,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-03",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.385743089b72",
@@ -3984,8 +4010,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-03",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.ec38529cf3bd",
@@ -4011,8 +4039,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.b01896689f29",
@@ -4052,8 +4082,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.755d136885fb",
@@ -4079,8 +4111,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.cae14bccab65",
@@ -4106,8 +4140,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.c70fcdf94e4e",
@@ -4133,8 +4169,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.1eb02b0beba5",
@@ -4184,8 +4222,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.2205e438b495",
@@ -4235,8 +4275,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.5d2c84a6ef5d",
@@ -4286,8 +4328,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.b2bce40c1c39",
@@ -4332,8 +4376,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.e62d19571aec",
@@ -4378,8 +4424,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.ffef496a4941",
@@ -4429,8 +4477,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.97735e54bc94",
@@ -4480,8 +4530,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.cf8731449193",
@@ -4531,8 +4583,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.3940cae87dfb",
@@ -4567,8 +4621,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.9608e47f7b80",
@@ -4608,8 +4664,10 @@
       "subjectScope": "proposal",
       "applicability": "Electrical inspection confirmed; unknown is not rectified",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.eb37b8814a01",
@@ -4635,8 +4693,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.575bf422116e",
@@ -4662,8 +4722,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.baae85efce04",
@@ -4689,8 +4751,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.48f5d2ed7ce2",
@@ -4730,8 +4794,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.ade0f3f0df5e",
@@ -4771,8 +4837,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.c08c9ebaf825",
@@ -4798,8 +4866,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.a6ff9fdbe769",
@@ -4825,8 +4895,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.04b74c2e0a69",
@@ -4876,8 +4948,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.9922d03ca861",
@@ -4917,8 +4991,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.be47c08f530f",
@@ -4944,8 +5020,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.aaccb5c97c33",
@@ -4971,8 +5049,10 @@
       "subjectScope": "proposal",
       "applicability": "Subsidence cover requested",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.8293bc041f81",
@@ -4998,8 +5078,10 @@
       "subjectScope": "proposal",
       "applicability": "Subsidence cover requested",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.02d9c6be528a",
@@ -5025,8 +5107,10 @@
       "subjectScope": "proposal",
       "applicability": "Subsidence cover requested",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.a6a4579c177e",
@@ -5052,8 +5136,10 @@
       "subjectScope": "proposal",
       "applicability": "Subsidence cover requested",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.7a732bc99a5f",
@@ -5079,8 +5165,10 @@
       "subjectScope": "proposal",
       "applicability": "Subsidence cover requested",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.fcc7e22c33ea",
@@ -5106,8 +5194,10 @@
       "subjectScope": "proposal",
       "applicability": "Subsidence cover requested",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.923e600eb3a4",
@@ -5133,8 +5223,10 @@
       "subjectScope": "proposal",
       "applicability": "Subsidence cover requested",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.4aa3e214f046",
@@ -5174,8 +5266,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.50189a73c61c",
@@ -5215,8 +5309,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.0ea28064aade",
@@ -5242,8 +5338,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.480819d83a08",
@@ -5288,8 +5386,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.c8c59a389166",
@@ -5334,8 +5434,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.1638a58efb48",
@@ -5375,8 +5477,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.d9c260f19d59",
@@ -5416,8 +5520,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.7660fc5eb42e",
@@ -5443,8 +5549,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.7bd824326d4c",
@@ -5489,8 +5597,10 @@
       "subjectScope": "proposal",
       "applicability": "Business interruption selected",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.9b4688f28580",
@@ -5535,8 +5645,10 @@
       "subjectScope": "proposal",
       "applicability": "Business interruption selected",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.72cb884b6df1",
@@ -5562,8 +5674,10 @@
       "subjectScope": "proposal",
       "applicability": "Business interruption selected",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.a2f1dd35162a",
@@ -5598,8 +5712,10 @@
       "subjectScope": "proposal",
       "applicability": "Business interruption selected",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.ab908171e40b",
@@ -5634,8 +5750,10 @@
       "subjectScope": "proposal",
       "applicability": "Business interruption selected",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.901a02ca4441",
@@ -5661,8 +5779,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.8cc83c3a006f",
@@ -5688,8 +5808,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.185df2844c76",
@@ -5715,8 +5837,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.ed8870d17328",
@@ -5742,8 +5866,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.c329b4c60f47",
@@ -5769,8 +5895,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.831e903a8f35",
@@ -5796,8 +5924,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.f538427148cf",
@@ -5823,8 +5953,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.102cb08b7d6d",
@@ -5850,8 +5982,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.3d43cf2d782f",
@@ -5877,8 +6011,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.66437482d634",
@@ -5904,8 +6040,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.00fa2758dd8c",
@@ -5945,8 +6083,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.6d9a54d9e464",
@@ -5986,8 +6126,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.a5994aa6ce31",
@@ -6013,8 +6155,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.956ebc71fded",
@@ -6054,8 +6198,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.796bcb8ff723",
@@ -6081,8 +6227,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.992fa2724da2",
@@ -6122,8 +6270,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.ca115cf242f7",
@@ -6163,8 +6313,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.978fde66afb5",
@@ -6204,8 +6356,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.17b8e4af6aef",
@@ -6255,8 +6409,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.6517b7cd5c04",
@@ -6296,8 +6452,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote.4a288359be03",
@@ -6342,8 +6500,10 @@
       "subjectScope": "proposal",
       "applicability": "Subsidence cover requested",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.addloc.sole-occupier",
@@ -6366,8 +6526,10 @@
       "subjectScope": "location",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.addloc.detached",
@@ -6390,8 +6552,10 @@
       "subjectScope": "location",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.addloc.year-built",
@@ -6411,8 +6575,10 @@
       "subjectScope": "location",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.addloc.storeys",
@@ -6437,8 +6603,10 @@
       "subjectScope": "location",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.addloc.wall-construction",
@@ -6466,8 +6634,10 @@
       "subjectScope": "location",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.addloc.roof-construction",
@@ -6495,8 +6665,10 @@
       "subjectScope": "location",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.addloc.flat-roof",
@@ -6521,8 +6693,10 @@
       "subjectScope": "location",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.addloc.composite-panels",
@@ -6546,8 +6720,10 @@
       "subjectScope": "location",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.addloc.timber-frame",
@@ -6570,8 +6746,10 @@
       "subjectScope": "location",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.addloc.heritage-listed",
@@ -6596,8 +6774,10 @@
       "subjectScope": "location",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.addloc.heating",
@@ -6624,8 +6804,10 @@
       "subjectScope": "location",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.addloc.basement",
@@ -6649,8 +6831,10 @@
       "subjectScope": "location",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.addloc.intruder-alarm",
@@ -6677,8 +6861,10 @@
       "subjectScope": "location",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.addloc.police-response",
@@ -6701,8 +6887,10 @@
       "subjectScope": "location",
       "applicability": "Location intruder alarm selected",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.addloc.fire-alarm",
@@ -6728,8 +6916,10 @@
       "subjectScope": "location",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.addwage.headcount",
@@ -6749,8 +6939,10 @@
       "subjectScope": "wage",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.addloss.insured",
@@ -6773,8 +6965,10 @@
       "subjectScope": "loss",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-03",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote-value.0b9bf2ac4b8f",
@@ -6796,8 +6990,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-03",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote-value.c2b0372b4040",
@@ -6819,8 +7015,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-03",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote-value.b99b3a5b3004",
@@ -6842,8 +7040,10 @@
       "subjectScope": "proposal",
       "applicability": "At least one adverse proposer/history answer is Yes",
       "ownerPlan": "08-03",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote-value.7adfff3ade76",
@@ -6865,8 +7065,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-03",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote-value.59c91e8db152",
@@ -6888,8 +7090,10 @@
       "subjectScope": "proposal",
       "applicability": "At least one location is not sole occupier; identify the relevant location in details",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote-value.acace76b1053",
@@ -6911,8 +7115,10 @@
       "subjectScope": "proposal",
       "applicability": "At least one location is detached; identify the relevant location in details",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote-value.5fcb5378a1fd",
@@ -6934,8 +7140,10 @@
       "subjectScope": "proposal",
       "applicability": "Mortgage or charge to be noted",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote-value.4799b8daa1ca",
@@ -6957,8 +7165,10 @@
       "subjectScope": "proposal",
       "applicability": "At least one adverse flood/subsidence answer is Yes",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote-value.5743fa7db272",
@@ -6980,8 +7190,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote-value.fa63248f9ae1",
@@ -7003,8 +7215,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote-value.92094fbe9a4b",
@@ -7026,8 +7240,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote-value.433ec08d2c67",
@@ -7049,8 +7265,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote-value.4479e664ad2f",
@@ -7072,8 +7290,10 @@
       "subjectScope": "proposal",
       "applicability": "When the owning source section or item is applicable; missing remains unanswered",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     },
     {
       "questionId": "prototype.quote-value.a0e5d1b910f8",
@@ -7095,8 +7315,10 @@
       "subjectScope": "proposal",
       "applicability": "At least one health/safety answer is No or outstanding",
       "ownerPlan": "08-04",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
     }
   ],
   "supplementalFields": [
@@ -8494,8 +8716,8 @@
       "id": "CC-READY",
       "condition": "Proposer/trade description/turnover, at least1 positive-SI location, applicable ERN/wages, electrical confirmation and consistent loss declaration",
       "ownerPlan": "08-02",
-      "verification": "Independent positive/negative temporal or product-boundary tests; pending",
-      "runtimeStatus": "pending"
+      "verification": "08-02: CommercialCaptureRulesTests exercises explicit complete facts, missing scoped questions, EL/BI retained details, positive SI and activity totals; rating/referrals/evidence remain08-05/06.",
+      "runtimeStatus": "capture-backend-verified-ui-and-underwriting-pending"
     },
     {
       "id": "CC-DISTRICT-CAPACITY",

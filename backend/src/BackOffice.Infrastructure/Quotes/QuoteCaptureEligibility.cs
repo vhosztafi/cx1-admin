@@ -29,8 +29,11 @@ public static class QuoteCaptureEligibility
             .AsNoTracking().SingleAsync(token);
         var provider = await db.Set<CapacityProvider>().FromSqlInterpolated($"SELECT * FROM CapacityProvider WITH(HOLDLOCK) WHERE Id={version.ProviderId}")
             .AsNoTracking().SingleAsync(token);
-        if (product.Code is not ("motor-trade-road-risks" or "motor-trade-combined") || version.State == "retired" ||
+        if (product.Code is not ("motor-trade-road-risks" or "motor-trade-combined" or "commercial-combined") || version.State == "retired" ||
             version.JsonSchemaVersion != pin.SchemaVersion || version.EffectiveFrom > now || version.EffectiveTo <= now || provider.State != "active") throw Unavailable();
+        var commercial = product.Code == CommercialCaptureRules.ProductCode;
+        if (commercial != CommercialCaptureRules.Accepts(pin.SchemaVersion, pin.QuestionSetVersion, pin.ReferenceVersion)) throw Unavailable();
+        if (commercial && (version.State != "published" || version.QuestionSetVersion != pin.QuestionSetVersion)) throw Unavailable();
         var today = DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(now, TimeZoneInfo.FindSystemTimeZoneById("Europe/London")).DateTime);
         var commercialDay = commercialOn ?? today;
         if (commercialDay < today) throw Unavailable();

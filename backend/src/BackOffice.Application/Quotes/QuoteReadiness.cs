@@ -22,6 +22,11 @@ public static class QuoteReadiness
         if (captureUnavailableCode is not null)
             issues.Add(new("/", captureUnavailableCode, "Capture is unavailable for this quote. Review its current status and product access.", "eligibility", "error"));
         issues.AddRange(term.Issues.Select(x => new QuoteReadinessIssue(x.Path, x.Code, "Complete or correct the policy term.", "capture", "error")));
+        if (proposal.TryGetProperty("productCode", out var product) && product.GetString() == CommercialCaptureRules.ProductCode)
+        {
+            issues.AddRange(CommercialCaptureReadiness.Assess(proposal, asOf));
+            return new(quoteId, revisionId, !issues.Any(x => x.Severity == "error"), issues.Distinct().Take(100).ToArray());
+        }
         issues.AddRange(QuoteBusinessRules.Assess(proposal).Select(x => new QuoteReadinessIssue(
             x.Path, x.Code, "Complete or correct the business details.", "capture", "error", x.QuestionId)));
         issues.AddRange(QuoteDriverRules.Assess(proposal, asOf).Select(x => new QuoteReadinessIssue(

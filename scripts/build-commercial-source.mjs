@@ -85,5 +85,20 @@ const policyDisplayItems=render.items.filter(x=>x.method==='pCcPolicy').map((x,i
 });
 const result={format:'commercial-source-ledger-1',sourceSha256:inventory.sourceSha256,status:'design-mapped-runtime-pending',
  denominators:{captureControls:166,questions:109,policyControls:60,policyDisplayItems:policyDisplayItems.length,supplementalFields:supplementalFields.length},captureControls,questions,supplementalFields,policyControls,branches,policyDisplayItems};
+// Runtime evidence is authored only after checks pass. Keep it separate from
+// source extraction so regeneration cannot erase verification or invent it.
+let runtimeEvidence;
+try { runtimeEvidence=await read('../.planning/phases/08-commercial-combined-back-office/08-SOURCE-EVIDENCE.json'); }
+catch(error){if(error.code!=='ENOENT')throw error;}
+if(runtimeEvidence){
+ if(runtimeEvidence.sourceSha256!==result.sourceSha256)throw Error('Commercial source evidence belongs to a different prototype revision.');
+ result.status=runtimeEvidence.status;
+ for(const [group,key] of [['captureControls','controlId'],['questions','questionId'],['branches','id']]){
+  for(const [identity,proof] of Object.entries(runtimeEvidence[group]??{})){
+   const row=result[group].find(x=>x[key]===identity);if(!row)throw Error(`Unknown commercial source evidence identity: ${identity}`);
+   row.runtimeStatus=proof.runtimeStatus;row.verification=proof.verification;
+  }
+ }
+}
 await writeFile(new URL('../.planning/phases/08-commercial-combined-back-office/08-SOURCE-INVENTORY.json',import.meta.url),JSON.stringify(result,null,2)+'\n');
 console.log(JSON.stringify(result.denominators));

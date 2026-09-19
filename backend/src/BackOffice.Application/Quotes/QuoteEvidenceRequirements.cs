@@ -11,6 +11,9 @@ public static class QuoteEvidenceRequirements
 {
     public static IReadOnlyList<QuoteEvidenceRequirement> ForProposal(JsonElement proposal)
     {
+        // Commercial proof subjects are introduced with the CC evidence workflow.
+        // A commercial proposal can never acquire Motor Trade proof requirements.
+        if (Text(At(proposal, "productCode")) == CommercialCaptureRules.ProductCode) return [];
         var result = new List<QuoteEvidenceRequirement>
         {
             new("motor-trader-proof", "/risk/business", null, "Documentary evidence that the proposer is a motor trader")

@@ -11,6 +11,9 @@ public static class QuoteCaptureShape
     public const int MaximumIssues = 100;
     private static readonly Lazy<JsonSchema> Draft = new(() => BuildBundled("QuoteCapture.DraftSchema"));
     private static readonly Lazy<JsonSchema> Ready = new(() => BuildBundled("QuoteCapture.ReadySchema"));
+    private static readonly Lazy<JsonSchema> CommercialDraft = new(() => BuildBundled("CommercialCapture.DraftSchema"));
+
+    internal static IReadOnlyList<QuoteFieldIssue> ValidateCommercial(JsonElement proposal) => Evaluate(CommercialDraft.Value, proposal);
 
     public static IReadOnlyList<QuoteFieldIssue> Validate(JsonElement proposal) => Evaluate(Draft.Value, proposal);
     public static IReadOnlyList<QuoteFieldIssue> ValidateCompleteness(JsonElement proposal) => Evaluate(Ready.Value, proposal);

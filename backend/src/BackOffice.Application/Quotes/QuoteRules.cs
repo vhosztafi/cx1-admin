@@ -14,6 +14,8 @@ public static class QuoteRules
 {
     public static PreparedQuoteCapture Prepare(string? proposal, string trustedProductCode, QuoteVersionPins pins)
     {
+        if (trustedProductCode == CommercialCaptureRules.ProductCode)
+            return CommercialCaptureRules.Prepare(proposal, pins);
         if (trustedProductCode is not ("motor-trade-road-risks" or "motor-trade-combined") || pins.ProductVersionId == Guid.Empty || pins.AgencyTermsVersionId == Guid.Empty)
             throw new InvalidOperationException("Trusted capture identity is unavailable.");
         proposal ??= JsonSerializer.Serialize(new { schemaVersion = pins.SchemaVersion, productCode = trustedProductCode });

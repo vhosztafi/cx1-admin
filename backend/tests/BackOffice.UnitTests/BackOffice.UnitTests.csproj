@@ -11,5 +11,6 @@
     <EmbeddedResource Include="../../../contracts/examples/quote-capture-*.json" LogicalName="QuoteExamples.%(Filename)%(Extension)" />
     <EmbeddedResource Include="../../../contracts/examples/underwriting-demo.json" LogicalName="UnderwritingExamples.Demo" />
     <EmbeddedResource Include="../../../contracts/examples/issued-*.json" LogicalName="PolicyExamples.%(Filename)%(Extension)" />
+    <EmbeddedResource Include="../../../contracts/examples/commercial-combined-capture.json" LogicalName="CommercialExamples.Capture" />
   </ItemGroup>
 </Project>

@@ -23,6 +23,16 @@ function relocate(value){
 ajv.addSchema({$id:rootId,$defs:relocate(document.components.schemas)});
 const getOperation=id=>{const result=operations.find(op=>op.operationId===id);assert.ok(result,`Unknown operation ${id}`);return result;};
 
+test('shared capture API accepts the distinct commercial draft without weakening Motor Trade',async()=>{
+ const validate=ajv.compile({$ref:`${rootId}#/$defs/QuoteCaptureProposal`});
+ const commercial=await read('examples/commercial-combined-capture.json');
+ assert.ok(validate(commercial),JSON.stringify(validate.errors));
+ assert.ok(validate({schemaVersion:'1.0',productCode:'motor-trade-road-risks'}));
+ const mixed=structuredClone(commercial);mixed.risk.vehicles=[];assert.equal(validate(mixed),false);
+ const wrong=structuredClone(commercial);wrong.productCode='motor-trade-combined';assert.equal(validate(wrong),false);
+ assert.ok(document.components.schemas.QuoteCaptureProduct.properties.productCode.enum.includes('commercial-combined'));
+});
+
 test('renewal preparation exposes closed commands and explicit unknown experience',()=>{
  for(const name of ['prepareRenewal','uploadRenewalExperienceEvidence','recordRenewalExperience','reviewRenewalExperience']) {
   const op=getOperation(name);assert.equal(op['x-runtime-status'],'phase-7-11-command-implemented');

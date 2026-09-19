@@ -38,7 +38,7 @@ public sealed class QuoteProducts(IDbContextFactory<BackOfficeDbContext> factory
             var product = eligible?.Product ?? await db.Set<Product>()
                 .FromSqlInterpolated($"SELECT * FROM Product WITH(HOLDLOCK) WHERE Id={version.ProductId}")
                 .AsNoTracking().SingleAsync(token);
-            if (product.Code is not ("motor-trade-road-risks" or "motor-trade-combined") || string.IsNullOrWhiteSpace(product.Name))
+            if (product.Code is not ("motor-trade-road-risks" or "motor-trade-combined" or "commercial-combined") || string.IsNullOrWhiteSpace(product.Name))
                 throw ConfigurationUnavailable();
             result.Add(new(version.Id, product.Code, product.Name, "v" + version.Version.ToString(CultureInfo.InvariantCulture),
                 pin.QuestionSetVersion, pin.ReferenceVersion, eligible is not null, unavailable));

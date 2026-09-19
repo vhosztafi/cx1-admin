@@ -13,6 +13,8 @@ public static class QuoteCaptureBoundary
     {
         ArgumentNullException.ThrowIfNull(text);
         ArgumentNullException.ThrowIfNull(pins);
+        if (CommercialCaptureRules.Accepts(pins.SchemaVersion, pins.QuestionSetVersion, pins.ReferenceVersion))
+            return CommercialCaptureRules.Validate(text, pins);
         if (pins.SchemaVersion != "1.0" || pins.QuestionSetVersion != QuoteCatalogueIdentity.Version || pins.ReferenceVersion != QuoteCatalogueIdentity.Version)
             throw new InvalidOperationException("Pinned quote capture configuration is unavailable.");
         CanonicalQuoteInput canonical;

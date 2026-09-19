@@ -32,7 +32,9 @@ public static class QuoteCaptureConfiguration
                 var schema = product.GetProperty("schemaVersion").GetString()!;
                 var questions = product.GetProperty("questionSetVersion").GetString()!;
                 var references = product.GetProperty("referenceVersion").GetString()!;
-                if (schema != "1.0" || questions != QuoteCatalogueIdentity.Version || references != QuoteCatalogueIdentity.Version ||
+                var supported = (schema == "1.0" && questions == QuoteCatalogueIdentity.Version && references == QuoteCatalogueIdentity.Version)
+                    || CommercialCaptureRules.Accepts(schema, questions, references);
+                if (!supported ||
                     !result.TryAdd(id, new(id, schema, questions, references))) return null;
             }
             return result.ToFrozenDictionary();

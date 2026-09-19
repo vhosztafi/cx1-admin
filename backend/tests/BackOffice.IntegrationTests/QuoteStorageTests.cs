@@ -412,12 +412,12 @@ public sealed partial class QuoteStorageTests
 
     private sealed record Fixture(Guid Agency, Guid Client, Guid Relationship, Guid Product, Guid ProductVersion, Guid Terms, Guid Actor);
 
-    private static async Task<Fixture> CreateFixture(BackOfficeDbContext db, string suffix = "")
+    private static async Task<Fixture> CreateFixture(BackOfficeDbContext db, string suffix = "", string productCode = "motor-trade-road-risks", int productVersion = 1)
     {
         var requester = await db.Set<StaffUser>().SingleAsync(x => x.Email == "agency-admin@cover.example");
         var actor = await db.Set<StaffUser>().SingleAsync(x => x.Email == "system-admin@cover.example");
-        var product = await db.Set<Product>().SingleAsync(x => x.Code == "motor-trade-road-risks");
-        var version = await db.Set<ProductVersion>().FirstAsync(x => x.ProductId == product.Id);
+        var product = await db.Set<Product>().SingleAsync(x => x.Code == productCode);
+        var version = await db.Set<ProductVersion>().SingleAsync(x => x.ProductId == product.Id && x.Version == productVersion);
         var agency = new Agency { Reference = "AG-QUOTE-STORAGE" + suffix, LegalName = "Fictional quote storage" };
         var client = new ClientAccount { Reference = "CL-QUOTE-STORAGE" + suffix, LegalName = "Fictional quote client", NormalizedName = "FICTIONAL QUOTE CLIENT" };
         db.AddRange(agency, client); await db.SaveChangesAsync();

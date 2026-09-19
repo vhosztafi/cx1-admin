@@ -1,6 +1,6 @@
 import {readFileSync} from 'node:fs';
-// Planned CC contracts do not broaden the currently operational MT proposal
-// routes. Their product union is activated with the implemented Phase08-02 API.
+// CC capture joins the shared quote routes through an explicit closed union.
+// Issued policy and exposure contracts remain pending their owning runtime plans.
 export function addCommercialContracts({schemas,ref,operation,paths}){
  const draft=JSON.parse(readFileSync(new URL('../contracts/schemas/commercial-combined.schema.json',import.meta.url),'utf8'));
  const issued=JSON.parse(readFileSync(new URL('../contracts/schemas/commercial-combined-issued.schema.json',import.meta.url),'utf8'));

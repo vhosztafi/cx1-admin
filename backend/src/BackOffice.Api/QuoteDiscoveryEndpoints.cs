@@ -25,7 +25,7 @@ public static class QuoteDiscoveryEndpoints
             id = value; return true;
         }
         if (search.Length > 200 || search.Any(char.IsControl) || search.Length > 0 && string.IsNullOrWhiteSpace(search) ||
-            product.Length > 0 && product is not ("motor-trade-road-risks" or "motor-trade-combined") ||
+            product.Length > 0 && product is not ("motor-trade-road-risks" or "motor-trade-combined" or "commercial-combined") ||
             state.Length > 0 && state is not ("draft" or "rating-pending" or "rated" or "referred" or "approved" or "sent" or "accepted" or "declined" or "bound" or "withdrawn") || sort is not ("reference" or "updated" or "start") ||
             direction is not ("asc" or "desc") || !Identifier("clientId", out clientId) || !Identifier("agencyId", out agencyId)) return BadQuery(context);
         try

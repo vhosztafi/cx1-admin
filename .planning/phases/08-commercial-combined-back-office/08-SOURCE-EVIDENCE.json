@@ -1,0 +1,681 @@
+{
+  "format": "commercial-source-evidence-1",
+  "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
+  "status": "capture-backend-verified-ui-and-underwriting-pending",
+  "captureControls": {
+    "CTL-edd4bf8b620d": {
+      "runtimeStatus": "api-persisted-ui-pending",
+      "verification": [
+        "08-02: RealSqlCommercialCaptureHttpUsesClosedProposalCurrentScopeAndExactReceipts and RealSqlCommercialCapturePersistsRevisionsRetriesStaleWritesAndRevocation; API create/save/readback, no browser claim."
+      ]
+    },
+    "CTL-2dd04027e52d": {
+      "runtimeStatus": "api-persisted-ui-pending",
+      "verification": [
+        "08-02: RealSqlCommercialCaptureHttpUsesClosedProposalCurrentScopeAndExactReceipts and RealSqlCommercialCapturePersistsRevisionsRetriesStaleWritesAndRevocation; API create/save/readback, no browser claim."
+      ]
+    }
+  },
+  "questions": {
+    "prototype.quote.36ef01068295": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.d1edba1174f6": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.0837e6f73be3": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.2d40a8dab2ab": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.cfb8d4a5494b": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.eb57b4a6cc8b": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.96730bd9301a": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.4e601dd4932b": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.f92e963f393c": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.8581de6c0b2a": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.0b0b63fca324": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.385743089b72": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.ec38529cf3bd": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.b01896689f29": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.755d136885fb": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.cae14bccab65": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.c70fcdf94e4e": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.1eb02b0beba5": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.2205e438b495": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.5d2c84a6ef5d": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.b2bce40c1c39": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.e62d19571aec": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.ffef496a4941": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.97735e54bc94": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.cf8731449193": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.3940cae87dfb": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.9608e47f7b80": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.eb37b8814a01": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.575bf422116e": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.baae85efce04": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.48f5d2ed7ce2": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.ade0f3f0df5e": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.c08c9ebaf825": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.a6ff9fdbe769": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.04b74c2e0a69": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.9922d03ca861": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.be47c08f530f": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.aaccb5c97c33": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.8293bc041f81": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.02d9c6be528a": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.a6a4579c177e": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.7a732bc99a5f": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.fcc7e22c33ea": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.923e600eb3a4": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.4aa3e214f046": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.50189a73c61c": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.0ea28064aade": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.480819d83a08": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.c8c59a389166": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.1638a58efb48": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.d9c260f19d59": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.7660fc5eb42e": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.7bd824326d4c": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.9b4688f28580": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.72cb884b6df1": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.a2f1dd35162a": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.ab908171e40b": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.901a02ca4441": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.8cc83c3a006f": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.185df2844c76": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.ed8870d17328": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.c329b4c60f47": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.831e903a8f35": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.f538427148cf": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.102cb08b7d6d": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.3d43cf2d782f": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.66437482d634": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.00fa2758dd8c": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.6d9a54d9e464": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.a5994aa6ce31": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.956ebc71fded": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.796bcb8ff723": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.992fa2724da2": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.ca115cf242f7": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.978fde66afb5": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.17b8e4af6aef": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.6517b7cd5c04": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote.4a288359be03": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.addloc.sole-occupier": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.addloc.detached": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.addloc.year-built": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.addloc.storeys": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.addloc.wall-construction": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.addloc.roof-construction": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.addloc.flat-roof": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.addloc.composite-panels": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.addloc.timber-frame": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.addloc.heritage-listed": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.addloc.heating": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.addloc.basement": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.addloc.intruder-alarm": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.addloc.police-response": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.addloc.fire-alarm": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.addwage.headcount": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.addloss.insured": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote-value.0b9bf2ac4b8f": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote-value.c2b0372b4040": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote-value.b99b3a5b3004": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote-value.7adfff3ade76": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote-value.59c91e8db152": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote-value.acace76b1053": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote-value.5fcb5378a1fd": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote-value.4799b8daa1ca": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote-value.5743fa7db272": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote-value.fa63248f9ae1": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote-value.92094fbe9a4b": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote-value.433ec08d2c67": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote-value.4479e664ad2f": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    },
+    "prototype.quote-value.a0e5d1b910f8": {
+      "runtimeStatus": "backend-validated-ui-pending",
+      "verification": [
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+      ]
+    }
+  },
+  "branches": {
+    "CC-READY": {
+      "runtimeStatus": "capture-backend-verified-ui-and-underwriting-pending",
+      "verification": "08-02: CommercialCaptureRulesTests exercises explicit complete facts, missing scoped questions, EL/BI retained details, positive SI and activity totals; rating/referrals/evidence remain08-05/06."
+    }
+  }
+}

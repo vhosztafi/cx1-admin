@@ -9906,7 +9906,8 @@
               "type": "string",
               "enum": [
                 "motor-trade-road-risks",
-                "motor-trade-combined"
+                "motor-trade-combined",
+                "commercial-combined"
               ]
             }
           },
@@ -81697,7 +81698,7 @@
       "get": {
         "operationId": "listQuoteProducts",
         "summary": "list Quote Products",
-        "description": "Requires quote-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Offers are the current explicit Motor Trade capture catalogue. Valid empty capture settings revoke all offers; missing, malformed or dangling configuration returns 503. Eligibility is calculated for the selected relationship and does not imply rating or progression readiness. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
+        "description": "Requires quote-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Offers are the current explicit Motor Trade and Commercial Combined capture catalogue. Valid empty capture settings revoke all offers; missing, malformed or dangling configuration returns 503. Eligibility is calculated for the selected relationship and does not imply rating or progression readiness. Current stored authority and relationship eligibility precede replay lookup. Proposal bytes are limited to 1 MiB UTF-8; strict JSON and semantic validation apply. Reads never use command receipts to cache confidential snapshots. Capture eligibility is separate from rating readiness.",
         "tags": [
           "quote-products"
         ],
@@ -112667,7 +112668,14 @@
         ]
       },
       "QuoteCaptureProposal": {
-        "$ref": "./schemas/quote-draft.schema.json"
+        "oneOf": [
+          {
+            "$ref": "./schemas/quote-draft.schema.json"
+          },
+          {
+            "$ref": "#/components/schemas/CommercialCaptureDraft"
+          }
+        ]
       },
       "QuoteIdentityResult": {
         "type": "object",
@@ -112829,7 +112837,8 @@
             "type": "string",
             "enum": [
               "motor-trade-road-risks",
-              "motor-trade-combined"
+              "motor-trade-combined",
+              "commercial-combined"
             ]
           },
           "state": {
@@ -112914,7 +112923,8 @@
             "type": "string",
             "enum": [
               "motor-trade-road-risks",
-              "motor-trade-combined"
+              "motor-trade-combined",
+              "commercial-combined"
             ]
           },
           "state": {
@@ -113205,7 +113215,8 @@
             "type": "string",
             "enum": [
               "motor-trade-road-risks",
-              "motor-trade-combined"
+              "motor-trade-combined",
+              "commercial-combined"
             ]
           },
           "state": {
@@ -113357,7 +113368,8 @@
             "type": "string",
             "enum": [
               "motor-trade-road-risks",
-              "motor-trade-combined"
+              "motor-trade-combined",
+              "commercial-combined"
             ]
           },
           "displayName": {
