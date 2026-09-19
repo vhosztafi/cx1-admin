@@ -129,6 +129,7 @@ public sealed partial class UnderwritingRuntimeTests
 
     private static WebApplicationFactory<Program> ServicingRatingApiHost(BackOfficeDbContext db, TimeProvider clock, bool worker)
         => new WebApplicationFactory<Program>().WithWebHostBuilder(builder => builder.UseEnvironment("Development")
+            .UseUrls("http://127.0.0.1:0")
             .UseSetting("Cover:SqlConnection", db.Database.GetConnectionString()).UseSetting("Cover:ServicingRatingWorkerEnabled", worker.ToString())
             .UseSetting("Cover:QuoteRatingWorkerEnabled", "false").UseSetting("Cover:CapacityWorkerEnabled", "false")
             .UseSetting("Cover:QuoteDeliveryWorkerEnabled", "false").UseSetting("Cover:AgencyNotificationWorkerEnabled", "false")

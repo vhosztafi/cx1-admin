@@ -40,6 +40,7 @@ public sealed partial class UnderwritingRuntimeTests
                 .ConfigureServices(services=>services.AddSingleton<TimeProvider>(f.Clock)));
             host.UseKestrel(0);using var client=host.CreateClient();
             var api=host.Services.GetRequiredService<IServer>().Features.Get<IServerAddressesFeature>()!.Addresses.Single();Assert.True(new Uri(api).IsLoopback);
+            Assert.NotEqual(5000,new Uri(api).Port);
             var listener=new TcpListener(IPAddress.Loopback,0);listener.Start();var port=((IPEndPoint)listener.LocalEndpoint).Port;listener.Stop();
             var webOrigin=$"http://127.0.0.1:{port}";var output=Path.Combine(root.FullName,issue?".local/browser-evidence/cancellation-issue":".local/browser-evidence/cancellation-review",db.Database.GetDbConnection().Database);
             Directory.CreateDirectory(output);
