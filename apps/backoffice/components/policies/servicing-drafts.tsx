@@ -8,9 +8,9 @@ import { quoteFetch, uncertainQuoteFailure } from '../../lib/quotes';
 import type { RenewalPreview } from '../../lib/renewal-preparation';
 import { sendServicing, servicingCommand, type ServicingCommand } from '../../lib/servicing-api';
 
-export function ServicingDrafts({ termId, baseVersionId }: { termId: string; baseVersionId: string }) {
+export function ServicingDrafts({ termId, baseVersionId, initialKind = 'adjustment' }: { termId: string; baseVersionId: string; initialKind?: string }) {
   const list = useQuoteResource<{ items: { id: string; kind: string; state: string }[] }>(`/api/v1/terms/${termId}/drafts`);
-  const [kind, setKind] = useState('adjustment'), [date, setDate] = useState(''), [reason, setReason] = useState('');
+  const [kind, setKind] = useState(initialKind), [date, setDate] = useState(''), [reason, setReason] = useState('');
   const [busy, setBusy] = useState(false), [error, setError] = useState(''), [retry, setRetry] = useState(false);
   const pending = useRef<ServicingCommand | null>(null), router = useRouter();
   async function create() {

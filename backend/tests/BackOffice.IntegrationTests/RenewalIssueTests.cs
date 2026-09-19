@@ -17,6 +17,7 @@ public sealed partial class UnderwritingRuntimeTests
         var input=new ServicingIssueInput(cycle.Id,cycle.CurrentRatingId!.Value,acceptance.TermsVersionId,acceptance.Id,acceptance.TermsHash,acceptance.AssuranceHash,"Issue the evidenced fictional renewal");
         var version=Convert.FromBase64String(etag.Trim('"'));var key=Guid.NewGuid().ToString();
         var originalTerm=await db.Set<PolicyTerm>().AsNoTracking().SingleAsync(x=>x.Id==basis.TermId);
+        var cancellationProbe=await CaptureCancellationLedger(f, originalTerm.Id, basis.Id);
         var lifecycle=new RenewalLifecycleService(f.Factory,f.Clock);var acceptedLifecycle=await lifecycle.ReadAsync(f.Underwriter,originalTerm.Id);
         Assert.Equal("accepted",acceptedLifecycle.State);Assert.False(acceptedLifecycle.CanLapse);
         Assert.Equal(409,(await Assert.ThrowsAsync<QuoteOperationException>(()=>lifecycle.LapseAsync(f.Underwriter,originalTerm.Id,
@@ -57,6 +58,7 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Null(await autoLapse);Assert.Empty(await db.Set<RenewalLapseEvent>().ToArrayAsync());
         Assert.Equal("servicing-already-issued",Assert.Single(competing,x=>x.Error is not null).Error!.Code);
         Assert.Equal(201,issued.Status);
+        await VerifyCancellationLedgerChanged(f,cancellationProbe,"later-term-issued");
         var documents=await new ServicingTermsService(f.Factory,f.Clock).DocumentsAsync(f.Servicing,cycle.DraftId,null,10);
         var invitation=Assert.Single(documents.Items);Assert.Equal(acceptance.TermsVersionId,invitation.TermsVersionId);Assert.Equal("delivered",invitation.DeliveryState);
         Assert.NotEmpty(invitation.Recipients);Assert.NotNull(invitation.SentAt);Assert.Contains("renewal",invitation.Title,StringComparison.OrdinalIgnoreCase);

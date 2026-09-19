@@ -3162,7 +3162,13 @@
       "source": "pageHeader: true, title: 'Cancellation review — PN/CC/000622', subtitle: 'Smith Motor Traders Ltd · effective ' + this.fv('cxDate','15/09/2026') + ' · not yet issued',",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-4293-action-0",
@@ -3174,7 +3180,13 @@
       "source": "{label:'Back to policy', style: this.btn('ghost'), onClick: () => this.go('policy')},",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-4294-action-0",
@@ -3185,8 +3197,8 @@
       "label": "Issue cancellation",
       "source": "{label:'Issue cancellation', style: this.btn('primary'), onClick: () => this.toast('Cancellation issued (mock): policy PN/CC/000622 cancelled, version 7, refund RF-0221 raised.', 'Open policy', () => this.go('policy'))}",
       "ownerPhase": 7,
-      "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "owner": "07-14",
+      "evidence": "Atomic issue and actual durable consequences belong to approved plan07-14; review cannot claim issue outcomes."
     },
     {
       "id": "SRC07-4299-section-0",
@@ -3198,7 +3210,13 @@
       "source": "this.sec({kind:'fields', w:'480px', title:'Cancellation detail', cols:'1fr 1fr',",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-4301-field-0",
@@ -3210,7 +3228,13 @@
       "source": "this.f('Reason', reason),",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-4302-field-0",
@@ -3222,7 +3246,13 @@
       "source": "this.f('Effective date', this.fv('cxDate','15/09/2026')),",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-4303-field-0",
@@ -3234,7 +3264,13 @@
       "source": "this.f('Requested by', 'Brightside Insurance Services Ltd'),",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-4304-field-0",
@@ -3246,7 +3282,13 @@
       "source": "this.f('Days on cover', '257 of 365'),",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-4305-field-0",
@@ -3258,7 +3300,13 @@
       "source": "this.f('Basis', 'Pro-rata', {hint:'Non-payment cancellations are charged on a time-on-risk basis'}),",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-4306-field-0",
@@ -3270,7 +3318,13 @@
       "source": "this.f('Notice', '7 days given', {tone:'ok'})",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-4308-section-0",
@@ -3282,7 +3336,13 @@
       "source": "this.sec({kind:'fields', w:'440px', title:'Financial effect', note:'Mock calculation', cols:'1fr 1fr',",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-4310-field-0",
@@ -3294,7 +3354,13 @@
       "source": "this.f('Premium charged to date', '£1,200.25', {mono:true}),",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-4311-field-0",
@@ -3306,7 +3372,13 @@
       "source": "this.f('Return premium', '£412.09', {mono:true}),",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-4312-field-0",
@@ -3318,7 +3390,13 @@
       "source": "this.f('IPT adjustment', '-£49.45', {mono:true}),",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-4313-field-0",
@@ -3330,7 +3408,13 @@
       "source": "this.f('Policy fee retained', '£35.00', {mono:true}),",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-4314-field-0",
@@ -3342,7 +3426,13 @@
       "source": "this.f('Commission clawback', '-£41.21', {mono:true}),",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-4315-field-0",
@@ -3354,7 +3444,13 @@
       "source": "this.f('Net refund to broker', '£362.64', {mono:true, strong:true})",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-4317-section-0",
@@ -3365,8 +3461,8 @@
       "label": "Consequences on issue",
       "source": "this.sec({kind:'table', w:'100%', title:'Consequences on issue',",
       "ownerPhase": 7,
-      "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "owner": "07-14",
+      "evidence": "Atomic issue and actual durable consequences belong to approved plan07-14; review cannot claim issue outcomes."
     },
     {
       "id": "SRC07-4318-table-columns-0",
@@ -3377,8 +3473,8 @@
       "label": "'Area','Effect'",
       "source": "columns: this.head(['Area','Effect']),",
       "ownerPhase": 7,
-      "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "owner": "07-14",
+      "evidence": "Atomic issue and actual durable consequences belong to approved plan07-14; review cannot claim issue outcomes."
     },
     {
       "id": "SRC07-4329-section-0",
@@ -3390,7 +3486,13 @@
       "source": "this.sec({kind:'actions', title:'Actions',",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-4341-section-0",
@@ -4470,7 +4572,13 @@
       "source": "wrapStyle: wrap, title: 'Cancel policy PN/CC/000622', desc: 'Cancellation ends cover for Smith Motor Traders Ltd. A reason, effective date and financial review are required before confirmation.',",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-5803-input-0",
@@ -4482,7 +4590,13 @@
       "source": "this.input('Cancellation reason', 'cxReason', reason, {options:['Select a reason','Insured request','Non-payment of premium','Non-disclosure','Trade ceased','Insurer instruction']}),",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-5804-input-0",
@@ -4494,7 +4608,13 @@
       "source": "this.input('Effective date', 'cxDate', this.fv('cxDate','15/09/2026'), {hint:'Cannot precede the last transaction date (01/07/2026)'}),",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-5805-input-0",
@@ -4506,7 +4626,13 @@
       "source": "this.input('Notes for audit trail', 'cxNote', this.fv('cxNote',''), {placeholder:'Recorded against the transaction'})",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-5809-action-0",
@@ -4518,7 +4644,13 @@
       "source": "{label:'Pro-rata return premium', value:'£412.09'},",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-5810-action-0",
@@ -4530,7 +4662,13 @@
       "source": "{label:'IPT adjustment', value:'-£49.45'},",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-5811-action-0",
@@ -4542,7 +4680,13 @@
       "source": "{label:'Policy fee (non-refundable)', value:'£0.00'},",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-5812-action-0",
@@ -4554,7 +4698,13 @@
       "source": "{label:'Net to broker account', value:'£362.64'}",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-5816-action-0",
@@ -4566,7 +4716,13 @@
       "source": "confirmLabel: 'Review cancellation',",
       "ownerPhase": 7,
       "owner": "07-13",
-      "evidence": "Actual persisted value/action in owning-plan browser/readback; literal source fixture is not business truth."
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "reviewStatus": "implemented-browser-and-sql-verified",
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "SRC07-5850-section-0",

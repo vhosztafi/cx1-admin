@@ -202,3 +202,13 @@ Final document/issue restart browser check completed19:23:48UTC, including mobil
 table readability.121 existing demo table hashes survived the additive lapse
 migration. Document generation/MID dispatch and Finance cash remain later owners.
 Continue07-13 cancellation review/approval and07-14 issue;07-09 lineage is partial.
+
+## 07-13 measured completion — 2026-09-19
+
+Clean gate27 cases (16unit+11SQL),3 additional HTTP/SQL cases and both actual
+browser journeys pass without skips. Six browser response captures validate
+against closed contracts. Signed credits, notice delivery, distinct approval,
+lost-response retry and reload/abandon are verified. Actual adjustment and renewal
+issue invalidate preview hashes.123 existing demo table/setting hashes preserved;
+API/web restored. See07-13-SUMMARY.md for failures corrected and overlapping runs.
+Issue and consequence source fields belong07-14; POL-09 and07-09 remain partial.

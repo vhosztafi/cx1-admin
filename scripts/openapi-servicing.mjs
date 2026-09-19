@@ -6,6 +6,7 @@ import {addServicingCapacity} from './openapi-servicing-capacity.mjs';
 import {addServicingTerms} from './openapi-servicing-terms.mjs';
 import {addRenewalPreparation} from './openapi-renewal-preparation.mjs';
 import {addRenewalLifecycle} from './openapi-renewal-lifecycle.mjs';
+import {addCancellationReview} from './openapi-cancellation-review.mjs';
 import {readFileSync} from 'node:fs';
 import {servicingDefinitions} from './servicing-contract-model.mjs';
 
@@ -99,4 +100,5 @@ export function addServicingContracts({schemas,ref,operation,paths}) {
  addServicingTerms({schemas,ref,route,paths});
  addRenewalPreparation({schemas,ref,route,paths});
  addRenewalLifecycle({schemas,ref,route,paths});
+ addCancellationReview({schemas,ref,route,paths});
 }

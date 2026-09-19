@@ -52,6 +52,7 @@ builder.Services.AddScoped<BackOffice.Infrastructure.Policies.ServicingIssueServ
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.PolicyReadService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.ServicingDraftService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.RenewalPreparationService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Policies.CancellationReviewService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.ServicingEvidenceService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.ServicingSubmissionService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.ServicingReferralService>();
@@ -169,6 +170,7 @@ app.MapPolicies();
 app.MapServicingDrafts();
 app.MapRenewalPreparation();
 app.MapRenewalLifecycle();
+app.MapCancellationReview();
 app.MapServicingRatings();
 app.MapServicingProofReads();
 app.MapServicingProofCommands();

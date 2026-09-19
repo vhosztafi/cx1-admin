@@ -6,7 +6,8 @@ export type ServicingChange = { changeId: string; riskItemId: string; kind: 'dri
   operation: 'add' | 'update' | 'remove'; payload?: QuoteObject; payloadMode?: 'replace'; effectiveIntent?: ServicingEffectiveIntent;
   specifiedVehicle?: { selected: boolean; required: boolean } };
 export type ServicingProposal = { schemaVersion: '1.0'; baseVersionId: string; reason: string; requestedBy: { kind: 'internal' | 'insured' | 'broker'; name?: string };
-  commonEffectiveIntent: ServicingEffectiveIntent; dateBasis?: 'shared' | 'per-cover-change'; changes: ServicingChange[] };
+  commonEffectiveIntent: ServicingEffectiveIntent; dateBasis?: 'shared' | 'per-cover-change'; changes: ServicingChange[];
+  cancellationReasonCode?: 'insured-request' | 'non-payment' | 'non-disclosure' | 'trade-ceased' | 'insurer-instruction' };
 export type ServicingDifference = { kind: 'added' | 'removed' | 'changed'; path: string; itemId?: string; before?: { path: string; json: string }; after?: { path: string; json: string } };
 export type ServicingEditor = { draftId: string; revisionId: string; clientId: string; captureVersions: QuoteView['captureVersions'];
   assessment: { base: QuoteProposal; proposed: QuoteProposal; changes: ServicingDifference[]; readinessIssues: { code: string; path: string; questionId: string | null }[];

@@ -21,6 +21,7 @@ public sealed partial class UnderwritingRuntimeTests
         var input = new ServicingIssueInput(cycle.Id, acceptance.RatingId, acceptance.TermsVersionId, acceptance.Id,
             acceptance.TermsHash, acceptance.AssuranceHash, "Issue the accepted fictional policy adjustment");
         var service = new ServicingIssueService(f.Factory, f.Clock);
+        var cancellationProbe = await CaptureCancellationLedger(f, cycle.BaseTermId, cycle.BaseVersionId);
         await VerifyServicingIssueHttp(db,f,password,cycle.DraftId,version,lease,input);
         static string Key() => Guid.NewGuid().ToString();
         Assert.Equal(403, (await Assert.ThrowsAsync<QuoteOperationException>(() => service.IssueAsync(f.Servicing, cycle.DraftId, version, lease, input, Key(), Guid.NewGuid()))).Status);
@@ -55,6 +56,7 @@ public sealed partial class UnderwritingRuntimeTests
         var replays=await Task.WhenAll(Enumerable.Range(0,2).Select(_=>service.IssueAsync(f.Underwriter,cycle.DraftId,version,lease,input,key,Guid.NewGuid())));
         Assert.All(replays,x=>{Assert.True(x.Replayed);Assert.Equal(result.Body,x.Body);});
         Assert.Equal(201, result.Status);
+        await VerifyCancellationLedgerChanged(f, cancellationProbe, "servicing-base-stale");
         var receipt = JsonSerializer.Deserialize<JsonElement>(result.Body);
         var ids = receipt.GetProperty("versionIds").EnumerateArray().Select(x => x.GetGuid()).ToArray();
         Assert.Equal(2, ids.Length); Assert.Equal(ids[0], receipt.GetProperty("versionId").GetGuid());

@@ -182,9 +182,15 @@
       "handlers": {
         "onClick": "() => this.setState({modal:{kind:'cancel'}})"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-13"
+      "owner": "07-13",
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "CTL-44449472c9d0",
@@ -482,9 +488,15 @@
       "handlers": {
         "onClick": "() => this.setState({modal:{kind:'cancel'}})"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-13"
+      "owner": "07-13",
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "CTL-721a19d5dbfa",
@@ -2102,9 +2114,15 @@
       "handlers": {
         "onClick": "() => this.go('policy')"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-13"
+      "owner": "07-13",
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "CTL-c85ad01a33e0",
@@ -2159,9 +2177,15 @@
       "handlers": {
         "onClick": "() => this.setState({modal:{kind:'cancel'}})"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-13"
+      "owner": "07-13",
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "CTL-2e6fe589364b",
@@ -2178,9 +2202,15 @@
       "handlers": {
         "onClick": "() => { this.toast('Cancellation abandoned — policy unchanged.', '', null); this.go('policy'); }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-13"
+      "owner": "07-13",
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "CTL-386b48061d53",
@@ -2434,9 +2464,15 @@
         "default"
       ],
       "handlers": {},
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-13"
+      "owner": "07-13",
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "CTL-bdb6e9ab15e0",
@@ -2452,9 +2488,15 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-13"
+      "owner": "07-13",
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "CTL-c6ed3365f90b",
@@ -2470,9 +2512,15 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-13"
+      "owner": "07-13",
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "CTL-9c276d4c11eb",
@@ -2488,9 +2536,15 @@
       "handlers": {
         "onChange": "(e) => {\n        const v = e.target.value;\n        if (o.set) o.set(v);\n        else this.setState((s) => ({form: Object.assign({}, s.form, {[key]: v})})); \n      }"
       },
-      "reviewStatus": "owner-assigned-not-implemented",
+      "reviewStatus": "implemented-browser-and-sql-verified",
       "ownerPhase": 7,
-      "owner": "07-13"
+      "owner": "07-13",
+      "evidence": [
+        ".local/phase7-13-browser/sql.trx",
+        ".local/phase7-13-browser-responses",
+        ".local/phase7-13-corrected"
+      ],
+      "implementation": "Persistent cancellation proposal/review with exact computed signed components, notice evidence, retained preview and current separate approval. Policy Cancel buttons open typed draft creation; amend, abandon and policy return use actual saved identities. No cash payment is claimed."
     },
     {
       "id": "CTL-69897d577944",
