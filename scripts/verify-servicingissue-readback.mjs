@@ -45,9 +45,9 @@ try {
   await page.screenshot({path:output+'/'+journey.productCode+'-issued-version.png',fullPage:true});
   await page.getByRole('button',{name:'View current policy',exact:true}).click();
   await page.getByText('Viewing a specific issued change. Its effective date may be in the future.',{exact:true}).waitFor({state:'detached'});
-  results.push({policyId:journey.policyId,versionId:receipt.versionId,contentHash:data.contentHash,checks:['post-restart exact snapshot hash','signed financial and issue response schemas','issued version UI link','current-policy navigation']});
+  results.push({policyId:journey.policyId,versionId:receipt.versionId,contentHash:data.contentHash,checks:['exact persisted snapshot hash','signed financial and issue response schemas','issued version UI link','current-policy navigation']});
  }
  const responses=process.env.COVER_ISSUE_RESPONSES_DIRECTORY;
  if(responses){const files=(await readdir(responses)).filter(x=>x.endsWith('.json'));assert.ok(files.length>=2);for(const file of files){const item=JSON.parse(await readFile(responses+'/'+file,'utf8'));valid(item.schema,item.data);}}
- assert.deepEqual(errors,[]);await writeFile(output+'/restart-readback.json',JSON.stringify({completedAt:new Date().toISOString(),results},null,2));console.log('Both product issue graphs and UI links survived restart; response contracts pass.');
+ assert.deepEqual(errors,[]);await writeFile(output+'/restart-readback.json',JSON.stringify({completedAt:new Date().toISOString(),note:'Legacy evidence filename retained; this script verifies persisted readback but does not restart a process.',results},null,2));console.log('Both product persisted issue graphs, UI links and response contracts pass. Actual process restart is verified separately.');
 }finally{await browser.close();}
