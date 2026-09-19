@@ -66,6 +66,9 @@ export function servicingDefinitions(quote) {
  defs.ServicingDraft=o({id,policyId:id,baseTermId:id,baseVersionId:id,revisionId:id,kind,state:e('draft','rating','referral','quoted','accepted','issued','abandoned','lapsed'),proposal:r('ServicingProposal'),createdAt:instant,updatedAt:instant});
  defs.ServicingDraft.properties.lease={anyOf:[o({...defs.ServicingLease.properties,active:{type:'boolean'}}),{type:'null'}]};
  defs.ServicingDraft.required.push('lease');
+ // Optional for retained pre-upgrade command receipts; current reads include it.
+ defs.ServicingDraft.properties.context=o({policyReference:t(40),preparedBy:o({id,label:t(200)})});
+ defs.ServicingDraft.properties.context.properties.baseTermPremium=money;
  const capture=structuredClone(quote); delete capture.$schema; delete capture.$id; delete capture.$defs;
  defs.ServicingEditorCapture=capture;
  const side=o({path:{type:'string',maxLength:2000},json:{type:'string',maxLength:2097152}});

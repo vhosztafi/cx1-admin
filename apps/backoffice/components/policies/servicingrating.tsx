@@ -3,14 +3,16 @@ import { useEffect, useRef, useState } from 'react';
 import { DataTable, Panel, Status } from '../primitives';
 import { quoteFetch } from '../../lib/quotes';
 import { formatGbp } from '../../lib/underwriting-api';
-import { servicingRatingDisplayState, type ServicingRatingCycle, type ServicingRatingHistory } from '../../lib/servicing-rating';
+import { revisedTermPremium, servicingRatingDisplayState, type ServicingRatingCycle, type ServicingRatingHistory } from '../../lib/servicing-rating';
 const date = (value: string) => new Date(value).toLocaleString('en-GB', { timeZone: 'Europe/London' });
 const labels: Record<string, string> = { unrated: 'Not rated', 'rating-pending': 'Rating requested', rated: 'Rated', failed: 'Rating failed', expired: 'Rating expired', stale: 'Re-rate required', superseded: 'Historical rating' };
-function RatingDetails({ cycle, kind }: { cycle: ServicingRatingCycle; kind: 'adjustment' | 'renewal' }) {
+function RatingDetails({ cycle, kind, baseTermPremium }: { cycle: ServicingRatingCycle; kind: 'adjustment' | 'renewal'; baseTermPremium?: string }) {
   const result = cycle.result;
+  const revised = result ? revisedTermPremium(baseTermPremium, result.premium) : null;
   return <><p>Requested {date(cycle.requestedAt)} · London. Attempt {cycle.attempts} of {cycle.attemptLimit}.</p>
     {cycle.nextAttemptAt && cycle.jobState === 'pending' ? <p>Next attempt {date(cycle.nextAttemptAt)} · London.</p> : null}
     {result?.detailsAvailable && result.outcome === 'rated' ? <>
+      {kind === 'adjustment' && <dl className="underwriting-provenance"><div><dt>Issued term premium before adjustment</dt><dd>{baseTermPremium ? formatGbp(baseTermPremium) : 'Unavailable'}</dd></div><div><dt>Proposed revised term premium</dt><dd>{revised === null ? 'Unavailable' : formatGbp(revised)}</dd></div></dl>}
       <dl className="underwriting-provenance">{[['Base annual premium', result.baseAnnualPremium], [kind === 'renewal' ? 'Renewal term premium' : 'Premium movement', result.premium], ['Insurance premium tax', result.tax], [kind === 'renewal' ? 'One renewal fee' : 'One adjustment fee', result.fee], ['Broker commission', result.brokerCommission], ['Gross payable / credit', result.grossPayable], ['Net due / credit', result.netDue]].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{formatGbp(value)}</dd></div>)}</dl>
       <p>Expires {date(result.expiresAt)} · London. These amounts do not record a payment or change issued cover.</p>
       <DataTable caption="Dated rating slices" columns={['Effective · London', 'Annual premium', 'Annual movement', 'Days / year', 'Premium', 'Tax', 'Commission']}>
@@ -20,7 +22,7 @@ function RatingDetails({ cycle, kind }: { cycle: ServicingRatingCycle; kind: 'ad
     <details><summary>Rating provenance</summary><p>Rating cycle: {cycle.id}</p><p>Saved revision: {cycle.revisionId}</p><p>Issued base: {cycle.baseVersionId}</p><p>Rating rule: {cycle.ruleVersionId}</p><p>Agency terms: {cycle.agencyTermsVersionId}</p><p>Input hash: {cycle.inputHash}</p><p>Job: {cycle.workId} · {cycle.jobState}</p>{result ? <p>Result hash: {result.resultHash}</p> : null}</details>
   </>;
 }
-export function ServicingRating({ draftId, draftEtag, canRate, dirty, busy, rate, kind = 'adjustment' }: { kind?: 'adjustment' | 'renewal'; draftId: string; draftEtag: string; canRate: boolean; dirty: boolean; busy: boolean; rate: () => void }) {
+export function ServicingRating({ draftId, draftEtag, canRate, dirty, busy, rate, kind = 'adjustment', baseTermPremium }: { kind?: 'adjustment' | 'renewal'; baseTermPremium?: string; draftId: string; draftEtag: string; canRate: boolean; dirty: boolean; busy: boolean; rate: () => void }) {
   const [history, setHistory] = useState<ServicingRatingHistory | null>(null), [error, setError] = useState('');
   const [older, setOlder] = useState<ServicingRatingCycle[]>([]), [cursor, setCursor] = useState<string | null>(null), [loading, setLoading] = useState(false);
   const [now, setNow] = useState(0); const paging = useRef(false), generation = useRef(0);
@@ -62,8 +64,8 @@ export function ServicingRating({ draftId, draftEtag, canRate, dirty, busy, rate
     {state === 'stale' ? <p>The saved draft or rating configuration has changed. Re-rate the current proposal.</p> : null}
     {state === 'failed' ? <p>The rating could not be completed. Review the proposal and re-rate, or ask an authorised operator to review its job.</p> : null}
     <p>Rating does not grant underwriting approval or acceptance.</p>
-    {history?.current ? <RatingDetails cycle={history.current} kind={kind} /> : <p>No saved rating results.</p>}
-    <h3>Rating history</h3>{items.length ? items.map(cycle => <details key={cycle.id}><summary>Rating {cycle.sequence} · {labels[cycle.state] ?? cycle.state} · {date(cycle.requestedAt)}</summary><RatingDetails cycle={cycle} kind={kind}/></details>) : <p>No earlier ratings.</p>}
+    {history?.current ? <RatingDetails cycle={history.current} kind={kind} baseTermPremium={baseTermPremium} /> : <p>No saved rating results.</p>}
+    <h3>Rating history</h3>{items.length ? items.map(cycle => <details key={cycle.id}><summary>Rating {cycle.sequence} · {labels[cycle.state] ?? cycle.state} · {date(cycle.requestedAt)}</summary><RatingDetails cycle={cycle} kind={kind} baseTermPremium={baseTermPremium}/></details>) : <p>No earlier ratings.</p>}
     {(older.length ? cursor : history?.nextCursor) ? <button className="button" type="button" disabled={loading} onClick={() => void more()}>{loading ? 'Loading…' : 'Load earlier ratings'}</button> : null}
   </div></Panel>;
 }

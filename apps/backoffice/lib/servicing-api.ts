@@ -14,6 +14,7 @@ export type ServicingEditor = { draftId: string; revisionId: string; clientId: s
     slices: { effectiveAt: string; proposed: QuoteProposal; changeIds: string[] }[] } };
 export type ServicingDraft = { id: string; policyId: string; baseTermId: string; baseVersionId: string; revisionId: string; kind: string; state: string;
   proposal: ServicingProposal; createdAt: string; updatedAt: string;
+  context?: { policyReference: string; baseTermPremium?: string; preparedBy: { id: string; label: string } };
   lease: null | { id: string; holderId: string; generation: number; leaseToken: string; expiresAt: string; active: boolean } };
 export type ServicingCommand = Readonly<{ url: string; method: 'POST' | 'PUT' | 'DELETE'; body?: string; etag: string; key: string; fence?: string }>;
 export function servicingCommand(url: string, method: ServicingCommand['method'], etag: string, body?: unknown, fence?: string): ServicingCommand {

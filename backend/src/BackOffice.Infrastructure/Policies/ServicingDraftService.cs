@@ -218,11 +218,17 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
     {
         var revision = await db.Set<ServicingRevision>().AsNoTracking().SingleAsync(x => x.Id == draft.CurrentRevisionId, ct);
         var lease = await db.Set<ServicingLease>().AsNoTracking().SingleOrDefaultAsync(x => x.DraftId == draft.Id, ct);
+        var policyReference = await db.Set<Policy>().Where(x => x.Id == draft.PolicyId).Select(x => x.Reference).SingleAsync(ct);
+        var preparedByLabel = await db.Set<StaffUser>().Where(x => x.Id == draft.CreatedBy).Select(x => x.DisplayName).SingleAsync(ct);
+        var snapshotJson = await db.Set<PolicyVersion>().Where(x => x.Id == draft.BaseVersionId && x.PolicyId == draft.PolicyId).Select(x => x.SnapshotJson).SingleAsync(ct);
+        using var snapshot = JsonDocument.Parse(snapshotJson);
+        var baseTermPremium = snapshot.RootElement.GetProperty("premium").GetProperty("termPremium").GetString();
         var state=draft.Kind=="renewal" && draft.State=="draft" && await db.Set<RenewalLapseEvent>().AnyAsync(x=>x.TermId==draft.BaseTermId,ct)?"lapsed":draft.State;
         // The fence is never sufficient authority: every command binds it to the
         // authenticated current holder and freshly checked policy permission.
         return new(JsonSerializer.Serialize(new { draft.Id, draft.PolicyId, draft.BaseTermId, draft.BaseVersionId, revisionId = revision.Id, draft.Kind, state,
             proposal = JsonSerializer.Deserialize<JsonElement>(revision.ProposalJson), draft.CreatedAt, draft.UpdatedAt,
+            context = new { policyReference, baseTermPremium, preparedBy = new { id = draft.CreatedBy, label = preparedByLabel } },
             lease = lease is null ? null : new { lease.Id, lease.HolderId, lease.Generation, leaseToken = lease.Token, lease.ExpiresAt, lease.Active } }, Json), Etag(draft.RowVersion));
     }
 

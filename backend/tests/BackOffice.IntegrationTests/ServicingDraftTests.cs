@@ -30,6 +30,11 @@ public sealed partial class UnderwritingRuntimeTests
             var created = await service.CreateAsync(f.Servicing, issued.TermId, Version(listed.Etag),
                 new("adjustment", issued.Id, JsonSerializer.SerializeToElement(new { localDate = "2026-10-01", localTime = "00:00", timeZone = "Europe/London" }), "Fictional draft for lease tests"), Key(), Guid.NewGuid());
             var id = created.ResourceId;
+            var context = Body(created.Body).GetProperty("context");
+            Assert.Equal(Body(issued.SnapshotJson).GetProperty("premium").GetProperty("termPremium").GetString(), context.GetProperty("baseTermPremium").GetString());
+            Assert.Equal((await db.Set<Policy>().SingleAsync(x => x.Id == issued.PolicyId)).Reference, context.GetProperty("policyReference").GetString());
+            Assert.Equal(f.Servicing.UserId, context.GetProperty("preparedBy").GetProperty("id").GetGuid());
+            Assert.Equal((await db.Set<StaffUser>().SingleAsync(x => x.Id == f.Servicing.UserId)).DisplayName, context.GetProperty("preparedBy").GetProperty("label").GetString());
             var acquired = await service.LeaseAsync(f.Servicing, id, Version(created.Etag!), "acquire", null, null, Key(), Guid.NewGuid());
             var firstFence = Body(acquired.Body).GetProperty("lease").GetProperty("leaseToken").GetGuid();
             var proposal = Body(acquired.Body).GetProperty("proposal").GetRawText();
@@ -45,6 +50,7 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => service.LeaseAsync(f.Underwriter, id, Version(saved.Etag!), "acquire", null, null, Key(), Guid.NewGuid()))).Status);
             Assert.Equal(403, (await Assert.ThrowsAsync<QuoteOperationException>(() => service.LeaseAsync(f.Servicing, id, Version(saved.Etag!), "takeover", null, "Fictional reason for takeover", Key(), Guid.NewGuid()))).Status);
             var takeover = await service.LeaseAsync(f.Underwriter, id, Version(saved.Etag!), "takeover", null, "Fictional authorised takeover", Key(), Guid.NewGuid());
+            Assert.Equal(f.Servicing.UserId, Body(takeover.Body).GetProperty("context").GetProperty("preparedBy").GetProperty("id").GetGuid());
             var secondFence = Body(takeover.Body).GetProperty("lease").GetProperty("leaseToken").GetGuid(); Assert.NotEqual(firstFence, secondFence);
             foreach (var action in new[] { "renew", "release" })
                 Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => service.LeaseAsync(f.Servicing, id, Version(takeover.Etag!), action, firstFence, null, Key(), Guid.NewGuid()))).Status);
