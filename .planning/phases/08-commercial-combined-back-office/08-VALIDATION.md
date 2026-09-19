@@ -34,7 +34,7 @@ Detailed task IDs and commands appear below. Every plan has automated verificati
 | Plan | Requirements | Required evidence family | State |
 |---|---|---|---|
 |08-01|CC-01..05|Closed unions, unknown keys, old snapshots, source ledger, golden examples|pending|
-|08-02|CC-01..02|Save/resume/revision, scope/product/item negatives, additive config|pending|
+|08-02|CC-01..02|Save/resume/revision, scope/product/item negatives, additive config|passed:906unit+9SQL/API;08-02-SUMMARY.md|
 |08-03..04|CC-01..02|All capture branches and item CRUD, browser/API readback|pending|
 |08-05|CC-03|Independent exact-money factors, job retry, pinned configuration|pending|
 |08-06..07|CC-03..04|Referral/evidence/carrier/terms independent gates and stale denial|pending|
@@ -74,7 +74,7 @@ All commands below are planned checks, not claimed results. For task02, inspect 
 | Task IDs | Wave | Threat | Automated command | Test creation owner | State |
 |---|---|---|---|---|---|
 |08-01-01 / 08-01-02|1|T08-01|`node --test tests/commercial-combined-contracts.test.mjs tests/commercial-combined-source.test.mjs; node scripts/validate-contracts.mjs; node scripts/lint-openapi.mjs`|08-01-01 creates new named tests; existing suites retained|pending|
-|08-02-01 / 08-02-02|2|T08-02|`dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~CommercialCapture; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~CommercialCapture`|08-02-01 creates new named tests; existing suites retained|pending|
+|08-02-01 / 08-02-02|2|T08-02|`dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~CommercialCapture; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~CommercialCapture`|08-02-01 creates new named tests; existing suites retained|passed:906unit+9SQL/API;08-02-SUMMARY.md|
 |08-03-01 / 08-03-02|3|T08-03|`pnpm web:test; pnpm web:typecheck; node scripts/verify-commercial-capture-browser.mjs --stage business-loss`|08-03-01 creates new named tests; existing suites retained|pending|
 |08-04-01 / 08-04-02|4|T08-04|`pnpm web:test; pnpm web:typecheck; node scripts/verify-commercial-capture-browser.mjs; dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~CommercialCapture`|08-04-01 creates new named tests; existing suites retained|pending|
 |08-05-01 / 08-05-02|5|T08-05|`dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~CommercialRating; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~CommercialRating; pnpm web:test`|08-05-01 creates new named tests; existing suites retained|pending|
