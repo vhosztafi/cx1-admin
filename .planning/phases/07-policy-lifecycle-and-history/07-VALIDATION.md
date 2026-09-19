@@ -1,18 +1,17 @@
 ---
 phase: 07
 slug: policy-lifecycle-and-history
-status: approved
+status: complete
 nyquist_compliant: true
-wave_0_complete: false
+wave_0_complete: true
 created: 2026-09-17
 ---
 
 # Phase 7 validation strategy
 
 All16 plans and32 tasks have explicit automated checks. GSD structural and
-decision coverage checks and inline semantic review pass; runtime tests remain
-pending. wave_0_complete=false reflects that new tests/harnesses are created by
-their owning implementation plans, not already run during planning.
+decision coverage checks and inline semantic review pass. All owning runtime
+gates and final full acceptance now pass; see07-16-SUMMARY and07-VERIFICATION.
 
 ## Infrastructure and cadence
 
@@ -72,8 +71,8 @@ task01 runs and adds diff/source review; do not repeat expensive checks blindly.
 | 07-14-02 | POL-09, POL-05, POL-06 | T07-14 | `git diff --check; dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~CancellationIssueTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~CancellationIssueTests; node scripts/verify-cancellationissue-browser.mjs; pnpm web:typecheck` | Passed owning-plan checks; see 07-14-SUMMARY.md. Final aggregate acceptance remains 07-16. |
 | 07-15-01 | POL-01, POL-02, POL-05 | T07-15 | `dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~PolicyHistoryTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~PolicyHistoryTests; node scripts/verify-policyhistory-browser.mjs; pnpm web:typecheck` | Passed:15 unique cases including6SQL;2 overlapping expanded browser checks;148frontend/48API-source;132 preserved fingerprints;see07-15-SUMMARY |
 | 07-15-02 | POL-01, POL-02, POL-05 | T07-15 | `git diff --check; dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~PolicyHistoryTests; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~PolicyHistoryTests; node scripts/verify-policyhistory-browser.mjs; pnpm web:typecheck` | Passed:15 unique cases including6SQL;2 overlapping expanded browser checks;148frontend/48API-source;132 preserved fingerprints;see07-15-SUMMARY |
-| 07-16-01 | POL-01, POL-02, POL-03, POL-04, POL-05, POL-06, POL-07, POL-08, POL-09 | T07-16 | `Run the unique-directory backend and assert-test-results procedure in07-VALIDATION.md; pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; pnpm test; node scripts/verify-underwriting-suite.mjs; node scripts/verify-servicing-suite.mjs` | Pending implementation |
-| 07-16-02 | POL-01, POL-02, POL-03, POL-04, POL-05, POL-06, POL-07, POL-08, POL-09 | T07-16 | `git diff --check; Run the unique-directory backend and assert-test-results procedure in07-VALIDATION.md; pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; pnpm test; node scripts/verify-underwriting-suite.mjs; node scripts/verify-servicing-suite.mjs` | Pending implementation |
+| 07-16-01 | POL-01, POL-02, POL-03, POL-04, POL-05, POL-06, POL-07, POL-08, POL-09 | T07-16 | `Run the unique-directory backend and assert-test-results procedure in07-VALIDATION.md; pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; pnpm test; node scripts/verify-underwriting-suite.mjs; node scripts/verify-servicing-suite.mjs` | Passed — 07-16-SUMMARY and final gate |
+| 07-16-02 | POL-01, POL-02, POL-03, POL-04, POL-05, POL-06, POL-07, POL-08, POL-09 | T07-16 | `git diff --check; Run the unique-directory backend and assert-test-results procedure in07-VALIDATION.md; pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; pnpm test; node scripts/verify-underwriting-suite.mjs; node scripts/verify-servicing-suite.mjs` | Passed — 07-16-SUMMARY and final gate |
 
 ## Mandatory final scenarios
 
@@ -220,3 +219,8 @@ Clean gate18 cases (4unit+14SQL), no skips: atomic cancellation/SQL mutations, a
 ## 07-15 measured completion — 2026-09-19
 
 15 unique passing cases (9unit+6SQL/API/browser), no skips;2 supplemental overlapping browser cases verify final field displays.148 frontend and48 API/source checks, lint/typecheck/Next/Release builds pass.132 demo fingerprints preserved. All22 owned controls and191 field occurrences have explicit dispositions; optional fixture omissions/source review are distinguished from direct browser assertions. Continue07-16 full acceptance.
+
+
+## 07-16 final measured completion — 2026-09-19
+
+Full current backend gate passed1222 unique cases (883unit+339integration), including303realSQL, no skips, after21:33:22Z: .local/phase7-16-current-full-5b1b949943ca497188ceb2fa6cb7b121. Full17-stage servicing and retained underwriting37journeys passed. Root363, frontend149, lint/typecheck/production builds passed. Final two initializations preserved133 table hashes; actual restart retained6 policy graphs/18 issued versions. All16 plans complete. See07-16-SUMMARY for exact paths, corrected failures and overlapping targeted runs. Human UAT/hostedCI/Docker remain unperformed. POL-02..09 complete; POL-01 remains partial with Phase9/10 ownership.

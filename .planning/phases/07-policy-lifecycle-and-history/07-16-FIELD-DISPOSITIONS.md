@@ -1,7 +1,7 @@
 # Final servicing field review
 
 Source review during 07-16; full servicing browser acceptance passed. The final
-whole-phase backend gate remains pending. The
+whole-phase backend gate passed1222 cases/303SQL with no skips. The
 original 137 controls, 393 field occurrences and 10 branches remain intact.
 Owning-plan SQL/browser evidence and final acceptance are distinct: this review
 does not manufacture a runtime result for an unexecuted scenario.
@@ -59,6 +59,6 @@ readback retains6 policy graphs/18 issued versions. Evidence paths are recorded 
 
 The110 remaining field occurrences and7 conditional branches now have measured
 source/readback review dispositions. They are not claimed as110 individual browser
-assertions. Final full backend results and closure must be recorded in07-16-SUMMARY
-and07-VERIFICATION before the phase is complete.
+assertions. Final full backend results and closure are recorded in07-16-SUMMARY
+and07-VERIFICATION; the phase is complete.
 Human business/assistive-technology UAT, hosted CI and Docker remain unperformed.

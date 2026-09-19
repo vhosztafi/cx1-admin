@@ -18,12 +18,12 @@ Staff can complete a quote-to-policy-to-servicing journey and trust that its pol
 
 ### Validated
 
-Phases1–6 are verified locally. Both Motor Trade products now support capture,
-deterministic rating, evidence/referrals/capacity, exact terms acceptance and
-atomic first issue with immutable policy JSON, balanced postings and durable
-requests. CLI-01,QUO-01/03/06 and UWR-01..07 are complete. AGY-03 finance and AGY-04
-generic tasks retain later owners. See REQUIREMENTS.md and06-VERIFICATION. The
-prototype and untouched sales funnel remain references; the full MVP is in progress.
+Phases1–7 are verified locally. Both Motor Trade products support capture, rating,
+proof/referrals/carrier decisions, exact terms acceptance, first issue and full
+adjustment/renewal/lapse/cancellation with immutable JSON and balanced obligations.
+POL-02..09 are complete. POL-01 and other compound later-module requirements retain
+explicit Phase9/10 owners. The prototype and untouched sales funnel remain references;
+the full MVP is in progress. See REQUIREMENTS.md and07-VERIFICATION.
 
 ### Active
 
@@ -85,12 +85,13 @@ Keep research, plan checks, unit tests, integration checks and verification enab
 
 Commit reviewed local work in manageable units. No production deployment, real payment/delivery or separate customer-facing funnel is authorised. Continue in this task; no additional user-owned tasks are needed.
 
-Last updated: 2026-09-17 — Phase6 verified; autonomous Phase7 transition.
+Last updated: 2026-09-19 — Phase7 verified; autonomous Phase8 transition.
 
 
 ## Current State
 
-Phase6 complete:14/14plans,838backend/169realSQL,104frontend,334contract/source/gate
-checks,all37retained journeys,actual carrier issue,restart and44-set preservation
-pass. Phase7 owns policy lifecycle/history; consume06-PHASE07-HANDOFF. Human
-business/assistive-technology UAT,hostedCI andDocker remain unperformed.
+Phase7 complete:16/16 plans,1222backend/303realSQL,149frontend,363source/contract
+checks,all17servicing stages and37retained journeys. Two additive initializations
+preserve133table hashes; actual restart preserves6policy/18version graphs. Phase8
+adds distinct Commercial Combined risks using07-PHASE08-HANDOFF. Human business/
+assistive-technology UAT,hostedCI andDocker remain unperformed.

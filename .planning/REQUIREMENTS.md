@@ -63,14 +63,14 @@ Core value: complete persistent insurance and servicing journeys with consistent
 ### Policy servicing
 
 - [ ] **POL-01**: Staff can inspect policy summary, product sections, drivers/vehicles, documents, transactions, finance, tasks, notes, messages and claims using linked persisted records.
-- [ ] **POL-02**: Staff can create an adjustment draft, compare proposed changes by stable item identity, edit effective date and resume the draft without changing in-force cover.
-- [ ] **POL-03**: Staff can acquire/release an expiring editing lease, take over with permission and reason, and receive a clear conflict when saving a stale revision.
-- [ ] **POL-04**: Staff can rate, refer, obtain acceptance, issue or abandon an adjustment with recalculated premium and all issue prerequisites enforced.
-- [ ] **POL-05**: Staff can inspect issued versions and before/after differences and query policy history by effective date or processing date; drafts never alter issued history.
-- [ ] **POL-06**: Staff receive explicit blocks for out-of-term, unsupported out-of-sequence or conflicting changes, and authority checks for permitted backdating.
-- [ ] **POL-07**: Staff can prepare renewal terms from the correct expiring snapshot, rate, resolve referrals, invite, record acceptance and issue a linked new term.
-- [ ] **POL-08**: Staff can lapse an unaccepted renewal with reason and notification; date-driven due/overdue states use the configured clock.
-- [ ] **POL-09**: Staff can review cancellation dates, reasons and premium return, obtain required approval and issue cancellation with a refund obligation and notification.
+- [x] **POL-02**: Staff can create an adjustment draft, compare proposed changes by stable item identity, edit effective date and resume the draft without changing in-force cover.
+- [x] **POL-03**: Staff can acquire/release an expiring editing lease, take over with permission and reason, and receive a clear conflict when saving a stale revision.
+- [x] **POL-04**: Staff can rate, refer, obtain acceptance, issue or abandon an adjustment with recalculated premium and all issue prerequisites enforced.
+- [x] **POL-05**: Staff can inspect issued versions and before/after differences and query policy history by effective date or processing date; drafts never alter issued history.
+- [x] **POL-06**: Staff receive explicit blocks for out-of-term, unsupported out-of-sequence or conflicting changes, and authority checks for permitted backdating.
+- [x] **POL-07**: Staff can prepare renewal terms from the correct expiring snapshot, rate, resolve referrals, invite, record acceptance and issue a linked new term.
+- [x] **POL-08**: Staff can lapse an unaccepted renewal with reason and notification; date-driven due/overdue states use the configured clock.
+- [x] **POL-09**: Staff can review cancellation dates, reasons and premium return, obtain required approval and issue cancellation with a refund obligation and notification.
 
 ### Commercial Combined
 
@@ -186,15 +186,15 @@ Every v1 requirement has one owning delivery phase; later phases may consume its
 | UWR-05 | 6 | Complete — Phase6 verified2026-09-17 |
 | UWR-06 | 6 | Complete — Phase6 verified2026-09-17 |
 | UWR-07 | 6 | Complete — Phase6 verified2026-09-17 |
-| POL-01 | 7 | Pending |
-| POL-02 | 7 | Pending |
-| POL-03 | 7 | Pending |
-| POL-04 | 7 | Pending |
-| POL-05 | 7 | Pending |
-| POL-06 | 7 | Pending |
-| POL-07 | 7 | Pending |
-| POL-08 | 7 | Pending |
-| POL-09 | 7 | Pending |
+| POL-01 | 7, 9, 10 | Partial — Phase7 policy/risk/history/transactions verified; later document/task/incident and reconciled finance views remain |
+| POL-02 | 7 | Complete |
+| POL-03 | 7 | Complete |
+| POL-04 | 7 | Complete |
+| POL-05 | 7 | Complete |
+| POL-06 | 7 | Complete |
+| POL-07 | 7 | Complete |
+| POL-08 | 7 | Complete |
+| POL-09 | 7 | Complete |
 | CC-01 | 8 | Pending |
 | CC-02 | 8 | Pending |
 | CC-03 | 8 | Pending |

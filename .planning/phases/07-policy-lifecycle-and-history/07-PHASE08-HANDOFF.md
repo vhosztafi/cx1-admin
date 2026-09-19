@@ -1,8 +1,7 @@
 # Phase 8 implementation handoff
 
-Prepared during 07-16 acceptance. Phase 7 is not closed until its final summary
-and verification record all required gates passing. This file does not waive
-that dependency. Commercial Combined assumptions are authorised by the user;
+Phase7 completed on2026-09-19. Its final summary and verification record all
+required local gates passing. Commercial Combined assumptions are authorised by the user;
 the Motor Trade sales funnel remains a read-only reference.
 
 ## Reuse the persisted lifecycle
@@ -89,6 +88,6 @@ body and version after uncertain responses; keep them with the demo database.
 Whole-database fingerprints and explicit-version API readback verify additive
 initialisation and actual process restart separately from intentional seed writes.
 
-Final acceptance evidence belongs in 07-16-SUMMARY and 07-VERIFICATION once it
-passes. Human business/assistive-technology UAT, hosted CI and Docker execution
+Final acceptance evidence is recorded in07-16-SUMMARY and07-VERIFICATION; it
+passed. Human business/assistive-technology UAT, hosted CI and Docker execution
 remain unperformed unless a later record explicitly supplies that evidence.

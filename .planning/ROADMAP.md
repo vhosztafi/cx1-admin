@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1-6 complete;64 implementation plans complete. Phase7 has15/16 plans verified.07-15 history/cloning/source review complete; continue07-16 acceptance.
+**Status:** Autonomous progression authorised. Phases1–7 complete;65 implementation plans verified. Phase7 final acceptance passed; continue Phase8 Commercial Combined planning.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
@@ -16,7 +16,7 @@
 - [x] **Phase 4: Agency onboarding and access** — Onboard agencies and enforce their sharing boundaries.
 - [x] **Phase 5: Motor Trade quote capture** — Capture complete persistent Motor Trade risks in the back office. (completed 2026-09-16)
 - [x] **Phase 6: Underwriting and first policy issue** — Complete the first quote-to-issued-policy journey.
-- [ ] **Phase 7: Policy lifecycle and history** — Service issued policies without corrupting history.
+- [x] **Phase 7: Policy lifecycle and history** — Service issued policies without corrupting history. (completed 2026-09-19)
 - [ ] **Phase 8: Commercial Combined back office** — Demonstrate shared workflows with a different risk structure.
 - [ ] **Phase 9: Tasks, documents, communication and incidents** — Make servicing activities and demo handoffs operational.
 - [ ] **Phase 10: Accounting and insurer reporting** — Reconcile policy movements through finance workflows.
@@ -123,7 +123,7 @@
 **Goal:** Service issued policies without corrupting history.
 **Depends on:** Phase 6
 **Requirements:** POL-01 through POL-09
-**Plans:** 15/16 plans executed
+**Plans:** 16/16 plans complete
 
 **Success criteria:**
 
@@ -150,7 +150,7 @@
 - [x] 07-13 — Cancellation proposal preview and approval.
 - [x] 07-14 — Atomic cancellation and durable consequences.
 - [x] 07-15 — Complete policy record history reconstruction and cloning.
-- [ ] 07-16 — Servicing end-to-end acceptance and Phase8 handoff.
+- [x] 07-16 — Servicing end-to-end acceptance and Phase8 handoff.
 
 Cross-cutting constraints: current scope before replay; same-policy immutable provenance; effective/processing chronology; atomic signed posting; exact evidence/acceptance; preserve first-issue hashes and later-module boundaries.
 
@@ -260,7 +260,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 4. Agency onboarding and access | 8/8 | Complete | 2026-09-15 |
 | 5. Motor Trade quote capture | 11/11 | Complete    | 2026-09-16 |
 | 6. Underwriting and first policy issue | 14/14 | Complete | 2026-09-17 |
-| 7. Policy lifecycle and history | 15/16 | In Progress|  |
+| 7. Policy lifecycle and history | 16/16 | Complete    | 2026-09-19 |
 | 8. Commercial Combined back office | 0/TBD | Not started | — |
 | 9. Tasks, documents, communication and incidents | 0/TBD | Not started | — |
 | 10. Accounting and insurer reporting | 0/TBD | Not started | — |

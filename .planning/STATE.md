@@ -2,35 +2,35 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
-status: executing
-stopped_at: 07-15 complete; executing07-16 acceptance and demo scenarios
-last_updated: "2026-09-19T20:17:00.000Z"
-last_activity: 2026-09-19 — Full servicing and retained underwriting browsers passed; preservation/restart passed; final current-source backend run active.
+status: ready_to_plan
+stopped_at: Phase7 complete; auto-advance to Phase8 planning
+last_updated: "2026-09-19T21:36:00Z"
+last_activity: 2026-09-19 — Phase7 verified; all16 plans and final acceptance gates complete.
 progress:
   total_phases: 13
-  completed_phases: 6
+  completed_phases: 7
   total_plans: 65
-  completed_plans: 64
-  percent: 46
+  completed_plans: 65
+  percent: 54
 ---
 
 # Project State
 
 ## Project Reference
 
-See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
+See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute Phase7;07-01..15 complete. Execute07-16 acceptance and additive demonstration scenarios.
+**Current focus:** Plan Phase8 Commercial Combined using the completed Phase7 lifecycle and explicit product-specific risk design.
 
 ## Current Position
 
-Phase: 7 of 13 (Policy lifecycle and history)
-Plan: 15 of16 complete;07-16 executing
-Status: Executing Phase7;07-15 complete and07-16 acceptance remains
-Last activity: 2026-09-19 — All17 servicing stages and37 retained journeys passed;133 tables and6 policy/18 version graphs preserved. Final backend gate and measured phase closure remain.
+Phase: 8 of 13 (Commercial Combined back office)
+Plan: Not started
+Status: Ready to plan
+Last activity: 2026-09-19 — Phase7 complete:1222 backend/303SQL,17 servicing stages,37 retained journeys,133 preserved tables and6 policy/18 version restart graphs.
 
-Progress: Phases1–6 complete;6/13 phases,64/65 completed implementation plans.
+Progress: Phases1–7 complete;7/13 phases,65/65 currently defined implementation plans. Later phases await detailed planning.
 
 ## Accumulated Context
 
@@ -38,13 +38,13 @@ Progress: Phases1–6 complete;6/13 phases,64/65 completed implementation plans.
 
 - Both Motor Trade products and Commercial Combined in back office; CC assumptions authorised.
 - External services use persistent deterministic demo adapters; sales funnel remains read-only.
-- Capture readiness is current server assessment, not rating/issue authority.
-- Actual applied endorsements, policy discovery and rating/acceptance invalidation remainPhase6; consume05-PHASE06-HANDOFF and ACCEPTANCE-BACKLOG.
+- Current identity/scope and exact immutable provenance precede command replay; drafts never change issued cover.
+- POL-02..09 complete. POL-01 remains compound across approved Phase9/10 document, task/incident and finance modules.
 - Simple local identity remains; separate broker portal excluded by prototype boundary.
 
 ### Pending Todos
 
-- Execute07-16 using the approved plans and07-01 contracts.
+- Plan Phase8 from07-PHASE08-HANDOFF, approved roadmap, prototype and domain/data/API references.
 - Keep future endpoints closed until owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,12 +54,12 @@ Progress: Phases1–6 complete;6/13 phases,64/65 completed implementation plans.
 
 ## Session Continuity
 
-Last session: 2026-09-19T07:29:34.596Z
-Stopped at:07-15 complete; continue07-16 inline without a new command.
-Resume file: .planning/phases/07-policy-lifecycle-and-history/07-16-PROGRESS.md
+Last session: 2026-09-19T21:36:00Z
+Stopped at: Phase7 complete; continue Phase8 planning automatically.
+Resume file: .planning/phases/07-policy-lifecycle-and-history/07-PHASE08-HANDOFF.md
 
 ## Autonomous continuation
 
-User approved requirements/roadmap and autonomous choices/progression on2026-09-13. Routine confirmation is not required. Keep research, design, checks and verification enabled; fix gaps instead of silently deferring them. Current request execute-phase7 --auto authorises sequential automatic continuation.
+User approved requirements/roadmap and autonomous choices/progression on2026-09-13. Routine confirmation is not required. Keep research, design, checks and verification enabled; fix gaps instead of silently deferring them. Current execute-phase7 --auto and configured auto_advance authorise transition to Phase8 planning.
 
-Thread heartbeat: continue-cover-mga-back-office-mvp, every10minutes. Continue in this task; notify meaningful progress/blockers only. Current owned previews are recorded in.local/phase7-16-preview-pids.json; stop only verified owned processes.
+Thread heartbeat: continue-cover-mga-back-office-mvp, every10minutes. Continue in this task; notify meaningful progress/blockers only. Current owned previews are recorded in.local/phase7-16-preview-pids.json; API38760/web79728, ports5087/3100, canonical persistent keys. Stop only verified owned processes.
