@@ -14464,7 +14464,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-7-15-in-progress"
+        "x-runtime-status": "phase-7-15-implemented"
       }
     },
     "/terms/{termId}/as-at": {
@@ -60319,7 +60319,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-7-15-in-progress"
+        "x-runtime-status": "phase-7-15-implemented"
       }
     },
     "/agencies/{agencyId}/state-requests": {
@@ -100246,7 +100246,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-7-15-in-progress"
+        "x-runtime-status": "phase-7-15-implemented"
       }
     },
     "/policies/{policyId}/risk/{kind}/{itemId}/history": {
@@ -100439,7 +100439,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-7-15-in-progress"
+        "x-runtime-status": "phase-7-15-implemented"
       }
     },
     "/policies/{policyId}/compare": {
@@ -100629,7 +100629,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-7-15-in-progress"
+        "x-runtime-status": "phase-7-15-implemented"
       }
     },
     "/policies/{policyId}/clone-terms": {
@@ -100819,7 +100819,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-7-15-in-progress"
+        "x-runtime-status": "phase-7-15-implemented"
       }
     },
     "/policies/{policyId}/reconstructions": {
@@ -100991,7 +100991,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-7-15-in-progress"
+        "x-runtime-status": "phase-7-15-implemented"
       }
     },
     "/policies/{policyId}/clone": {
@@ -101277,7 +101277,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-7-15-in-progress"
+        "x-runtime-status": "phase-7-15-implemented"
       }
     }
   },
@@ -131097,6 +131097,19 @@
                           "type": "null"
                         }
                       ]
+                    },
+                    "cover": {
+                      "$ref": "./schemas/issued-policy.schema.json#/$defs/Cover"
+                    },
+                    "driverBasis": {
+                      "anyOf": [
+                        {
+                          "$ref": "./schemas/issued-policy.schema.json#/$defs/DriverBasis"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
                     }
                   },
                   "required": [
@@ -131112,7 +131125,9 @@
                     "reason",
                     "actorLabel",
                     "ageAtEffectiveDate",
-                    "licenceYearsAtEffectiveDate"
+                    "licenceYearsAtEffectiveDate",
+                    "cover",
+                    "driverBasis"
                   ]
                 }
               }
@@ -131225,6 +131240,19 @@
                           "type": "null"
                         }
                       ]
+                    },
+                    "cover": {
+                      "$ref": "./schemas/issued-policy.schema.json#/$defs/Cover"
+                    },
+                    "driverBasis": {
+                      "anyOf": [
+                        {
+                          "$ref": "./schemas/issued-policy.schema.json#/$defs/DriverBasis"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
                     }
                   },
                   "required": [
@@ -131240,7 +131268,9 @@
                     "reason",
                     "actorLabel",
                     "ageAtEffectiveDate",
-                    "licenceYearsAtEffectiveDate"
+                    "licenceYearsAtEffectiveDate",
+                    "cover",
+                    "driverBasis"
                   ]
                 }
               }

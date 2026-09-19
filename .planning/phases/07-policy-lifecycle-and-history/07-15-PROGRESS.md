@@ -54,3 +54,7 @@ Current verified demo remains07-14 API19460/web46256,5087/3100; .local/phase7-14
 ## Fidelity checkpoint — 2026-09-19T09:40Z
 
 Supersedes earlier demo/process details: history migration applied preserving130 prior fingerprints; refreshed fidelity builds preserve132 including new tables. Current API25936/web82308, ports5087/3100. Clean gate15 unique cases (9unit/4SQL/2browser), no skips.148 frontend and48 API/source checks pass;12 fresh HTTP responses validate. All22 controls assigned15 are verified;24/191 field occurrences reviewed,167 still require disposition. See07-15-SOURCE-REVIEW.md for exact evidence and outstanding IDs. No15SUMMARY yet;16 has not started.
+
+## Completed — 2026-09-19
+
+07-15-SUMMARY.md supersedes earlier incomplete checkpoints. All22 controls/191 field occurrences reviewed with explicit evidence limits. Final15-case gate and2 overlapping expanded browser passes succeed;132 demo fingerprints preserved. API83488/web75048. Continue07-16 automatically.

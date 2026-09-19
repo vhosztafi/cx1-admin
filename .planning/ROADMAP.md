@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1-6 complete;63 implementation plans complete. Phase7 has14/16 plans verified.07-09 accounting and07-14 atomic cancellation complete; continue07-15 history/cloning and07-16 acceptance.
+**Status:** Autonomous progression authorised. Phases1-6 complete;64 implementation plans complete. Phase7 has15/16 plans verified.07-15 history/cloning/source review complete; continue07-16 acceptance.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
@@ -123,7 +123,7 @@
 **Goal:** Service issued policies without corrupting history.
 **Depends on:** Phase 6
 **Requirements:** POL-01 through POL-09
-**Plans:** 14/16 plans executed
+**Plans:** 15/16 plans executed
 
 **Success criteria:**
 
@@ -149,7 +149,7 @@
 - [x] 07-12 — Renewal invitation issue and lapse.
 - [x] 07-13 — Cancellation proposal preview and approval.
 - [x] 07-14 — Atomic cancellation and durable consequences.
-- [ ] 07-15 — Complete policy record history reconstruction and cloning.
+- [x] 07-15 — Complete policy record history reconstruction and cloning.
 - [ ] 07-16 — Servicing end-to-end acceptance and Phase8 handoff.
 
 Cross-cutting constraints: current scope before replay; same-policy immutable provenance; effective/processing chronology; atomic signed posting; exact evidence/acceptance; preserve first-issue hashes and later-module boundaries.
@@ -260,7 +260,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 4. Agency onboarding and access | 8/8 | Complete | 2026-09-15 |
 | 5. Motor Trade quote capture | 11/11 | Complete    | 2026-09-16 |
 | 6. Underwriting and first policy issue | 14/14 | Complete | 2026-09-17 |
-| 7. Policy lifecycle and history | 14/16 | In Progress|  |
+| 7. Policy lifecycle and history | 15/16 | In Progress|  |
 | 8. Commercial Combined back office | 0/TBD | Not started | — |
 | 9. Tasks, documents, communication and incidents | 0/TBD | Not started | — |
 | 10. Accounting and insurer reporting | 0/TBD | Not started | — |

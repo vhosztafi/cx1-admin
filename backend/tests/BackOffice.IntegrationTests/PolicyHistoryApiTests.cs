@@ -45,8 +45,11 @@ public sealed partial class UnderwritingRuntimeTests
             detail.EnsureSuccessStatusCode(); Assert.True(detail.Headers.CacheControl!.NoStore);
             var data = await ReadJson(detail); Assert.Equal(itemId, data.GetProperty("itemId").GetGuid());
             Assert.Equal(itemId, data.GetProperty("versions")[0].GetProperty("item").GetProperty("id").GetGuid());
+            Assert.True(JsonElement.DeepEquals(item, data.GetProperty("versions")[0].GetProperty("item")));
             Assert.Equal(version.TransactionId, data.GetProperty("versions")[0].GetProperty("transactionId").GetGuid());
             Assert.False(string.IsNullOrWhiteSpace(data.GetProperty("versions")[0].GetProperty("actorLabel").GetString()));
+            Assert.True(JsonElement.DeepEquals(snapshot.RootElement.GetProperty("cover"), data.GetProperty("versions")[0].GetProperty("cover")));
+            Assert.True(JsonElement.DeepEquals(snapshot.RootElement.GetProperty("risk").GetProperty("driverBasis"), data.GetProperty("versions")[0].GetProperty("driverBasis")));
             using var foreign = await client.GetAsync(root + $"/risk/{kind}/{Guid.NewGuid():D}/history");
             Assert.Equal(HttpStatusCode.NotFound, foreign.StatusCode);
         }

@@ -17,7 +17,8 @@ export function addPolicyHistoryContracts({schemas:s,ref:r,operation,paths}) {
  s.PolicyCloneInput=o({versionId:id,relationshipId:id,confirmedTermsId:id,reason:t(2000)});
  s.PolicyCloneResult=o({quoteId:id,revisionId:id,lineageId:id,sourcePolicyId:id,sourceVersionId:id,quoteEtag:etag});
  const riskEntry=item=>o({versionId:id,termId:id,versionSequence:integer,effectiveAt:instant,processedAt:instant,contentHash:hash,item:nullable(item),
-  transactionId:id,kind:e('new-business','adjustment','renewal','cancellation'),reason:t(2000),actorLabel:t(200),ageAtEffectiveDate:nullable(integer),licenceYearsAtEffectiveDate:nullable(integer)});
+  transactionId:id,kind:e('new-business','adjustment','renewal','cancellation'),reason:t(2000),actorLabel:t(200),ageAtEffectiveDate:nullable(integer),licenceYearsAtEffectiveDate:nullable(integer),
+  cover:{$ref:'./schemas/issued-policy.schema.json#/$defs/Cover'},driverBasis:nullable({$ref:'./schemas/issued-policy.schema.json#/$defs/DriverBasis'})});
  s.PolicyRiskHistory={oneOf:['drivers','vehicles'].map(kind=>o({policyId:id,kind:{const:kind},itemId:id,
   versions:array(riskEntry({$ref:`./schemas/issued-policy.schema.json#/$defs/${kind==='drivers'?'Driver':'Vehicle'}`}))}))};
  s.PolicyReconstructionInput={oneOf:[o({effectiveAt:instant,knownAt:instant,versionId:id,contentHash:hash,reason:t(2000)}),
@@ -30,7 +31,7 @@ export function addPolicyHistoryContracts({schemas:s,ref:r,operation,paths}) {
  const route=(method,path,name,permission,output,options={})=>{
   delete paths[path]?.[method];
   operation(method,path,name,permission,{output:r(output),existing:method!=='get',...options});
-  const entry=paths[path][method];entry['x-runtime-status']='phase-7-15-in-progress';
+  const entry=paths[path][method];entry['x-runtime-status']='phase-7-15-implemented';
   entry.description+=' Current identity and policy ownership are checked before reading or replaying a command. Mutations require a strong policy ETag and idempotency key. No edit lease is needed for immutable policy selections. Responses are no-store.';
   for(const response of Object.values(entry.responses))response.headers={...response.headers,'Cache-Control':{schema:{type:'string',const:'no-store'},description:'Policy data is not cacheable.'}};
   return entry;

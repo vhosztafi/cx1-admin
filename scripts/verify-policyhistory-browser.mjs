@@ -28,6 +28,21 @@ if(!process.argv.includes('--worker')) {
   await page.getByRole('heading',{name:'Servicing assignments',exact:true}).waitFor();
   await page.getByRole('heading',{name:'Premium at selected version',exact:true}).waitFor();
   const openingPolicy=await read(root);
+  const overview=page.locator('section.panel').filter({has:page.getByRole('heading',{name:'Motor trade risk snapshot',exact:true})});
+  await overview.waitFor();
+  for(const [label,count] of [['Named Drivers',openingPolicy.snapshot.risk.drivers?.length??'Not recorded'],['Trading Premises',openingPolicy.snapshot.risk.premises?.length??'Not recorded'],['Vehicle Register',openingPolicy.snapshot.risk.vehicles?.length??'Not recorded']]){
+   const value=overview.locator('dl > div').filter({has:page.locator('dt').getByText(label,{exact:true})}).locator('dd');
+   assert.equal((await value.innerText()).trim(),String(count));
+  }
+  const premiumPanel=page.locator('section.panel').filter({has:page.getByRole('heading',{name:'Premium at selected version',exact:true})});
+  for(const field of ['termPremium','tax','fee','grossPayable','brokerCommission'])await premiumPanel.getByText(new Intl.NumberFormat('en-GB',{style:'currency',currency:'GBP'}).format(Number(openingPolicy.snapshot.premium[field])),{exact:true}).first().waitFor();
+  await page.getByRole('tab',{name:'Risk details',exact:true}).click();
+  const riskPanel=page.locator('section.panel').filter({has:page.getByRole('heading',{name:'Risk details',exact:true})});
+  const declared=openingPolicy.snapshot;
+  for(const value of [declared.insured.legalName,declared.insured.tradingName,declared.insured.companyNumber,declared.risk.business?.description,declared.risk.business?.startedOn,declared.risk.previousInsurance?.insurer].filter(x=>typeof x==='string'&&x.length))await riskPanel.getByText(value,{exact:true}).first().waitFor();
+  await page.getByRole('tab',{name:'Cover',exact:true}).click();
+  const coverPanel=page.locator('section.panel').filter({has:page.getByRole('heading',{name:'Cover',exact:true})});
+  for(const section of declared.cover.sections)for(const value of [section.code,section.coverLevel,section.limit,section.excess].filter(x=>typeof x==='string'))await coverPanel.getByText(value,{exact:true}).first().waitFor();
   await page.locator(`a[href="/agencies/${openingPolicy.agencyId}"]`).first().click();
   await page.waitForURL(f.webOrigin+`/agencies/${openingPolicy.agencyId}`);
   await page.getByRole('heading').first().waitFor();
@@ -53,8 +68,15 @@ if(!process.argv.includes('--worker')) {
    await page.getByRole('button',{name:new RegExp(kind==='Drivers'?'^Open driver record:':'^Open vehicle record:')}).first().click();
    const history=page.getByRole('region',{name:'Risk item history'});await history.locator('details').first().waitFor();assert.equal(await history.locator('details').count(),2);
    const item=basePolicy.snapshot.risk[kind.toLowerCase()][0];
-   const values=kind==='Drivers'?[item.fullName,item.firstName,item.surname,item.licence?.number]:[item.registration,item.make,item.model];
-   for(const value of values.filter(x=>typeof x==='string'&&x.length))await history.locator('details[open]').getByText(value,{exact:true}).first().waitFor();
+   const riskHistory=await read(root+`/risk/${kind.toLowerCase()}/${item.id}/history`);
+   for(const entry of riskHistory.versions){
+    const historical=await read(root+`/terms/${entry.termId}/versions/${entry.versionId}`);
+    assert.deepEqual(entry.cover,historical.snapshot.cover);
+    assert.deepEqual(entry.driverBasis,historical.snapshot.risk.driverBasis??null);
+   }
+   await history.locator('details[open]').getByRole('region',{name:'Cover context at this version',exact:true}).waitFor();
+   const values=kind==='Drivers'?[item.fullName,item.firstName,item.surname,item.dateOfBirth,item.licence?.number,item.licence?.type?.label,item.licence?.testDate,item.relationship?.label]:[item.registration,item.make,item.model,item.registeredOn,item.registrationYear,item.engineCc,item.body?.label,item.value];
+   for(const value of values.filter(x=>typeof x==='number'||typeof x==='string'&&x.length))await history.locator('details[open]').getByText(String(value),{exact:true}).first().waitFor();
    if(kind==='Vehicles')await history.locator('details[open]').getByText('VIN',{exact:true}).waitFor();
    await history.locator('details[open]').getByRole('link',{name:'Open originating transaction',exact:true}).waitFor();
   }

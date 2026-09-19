@@ -9,7 +9,7 @@ namespace BackOffice.Infrastructure.Policies;
 
 public sealed record PolicyRiskHistoryEntry(Guid VersionId, Guid TermId, int VersionSequence, DateTimeOffset EffectiveAt,
     DateTimeOffset ProcessedAt, string ContentHash, JsonElement? Item, Guid TransactionId, string Kind, string Reason, string ActorLabel,
-    int? AgeAtEffectiveDate, int? LicenceYearsAtEffectiveDate);
+    int? AgeAtEffectiveDate, int? LicenceYearsAtEffectiveDate, JsonElement Cover, JsonElement? DriverBasis);
 public sealed record PolicyRiskHistory(Guid PolicyId, string Kind, Guid ItemId, IReadOnlyList<PolicyRiskHistoryEntry> Versions);
 
 public sealed partial class PolicyHistoryService
@@ -43,7 +43,9 @@ public sealed partial class PolicyHistoryService
                 ? PolicyHistoryRules.CompletedYears(issuedOn.GetString(), effectiveDate) : null;
             entries.Add(new(version.Id, version.TermId, version.Sequence, version.EffectiveAt, version.ProcessedAt,
                 Convert.ToHexStringLower(version.ContentHash), item, version.TransactionId, transactions[version.TransactionId].Kind,
-                transactions[version.TransactionId].Reason, transactions[version.TransactionId].ActorLabel, age, held));
+                transactions[version.TransactionId].Reason, transactions[version.TransactionId].ActorLabel, age, held,
+                declarations.GetProperty("cover").Clone(),
+                declarations.GetProperty("risk").TryGetProperty("driverBasis", out var driverBasis) ? driverBasis.Clone() : null));
         }
         if (!found) throw new QuoteOperationException(404, "policy-risk-item-not-found");
         await tx.CommitAsync(token); return new(policyId, kind, itemId, entries);
