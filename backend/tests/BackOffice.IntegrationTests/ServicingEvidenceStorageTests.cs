@@ -23,9 +23,9 @@ public sealed partial class UnderwritingRuntimeTests
             var setup=await AcceptedIssue(db,password,product);var f=setup.Source;
             await new QuoteIssueService(f.Factory,f.Clock).IssueAsync(f.Underwriter,f.QuoteId,setup.Version,setup.Input,Guid.NewGuid().ToString(),Guid.NewGuid());
             var issued=await db.Set<PolicyVersion>().AsNoTracking().SingleAsync();
-            // Test the additive migration over an issued graph in this isolated database.
+            // Retain immutable templates while probing the older proof schema.
             var previous=db.Database.GetMigrations().TakeWhile(x=>!x.EndsWith("_ServicingEvidenceFiles",StringComparison.Ordinal)).Last();
-            await db.GetService<IMigrator>().MigrateAsync(previous);await db.Database.MigrateAsync();db.ChangeTracker.Clear();
+            await VerifyRetainedTemplateDowngradeProtection(db, previous);
             var drafts=new ServicingDraftService(f.Factory,f.Clock);
             var created=await drafts.CreateAsync(f.Servicing,issued.TermId,Convert.FromBase64String((await drafts.ListAsync(f.Servicing,issued.TermId)).Etag.Trim('"')),
                 new("adjustment",issued.Id,JsonSerializer.SerializeToElement(new{localDate="2026-10-01",localTime="00:00",timeZone="Europe/London"}),"Fictional servicing proof storage"),Guid.NewGuid().ToString(),Guid.NewGuid());

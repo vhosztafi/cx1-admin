@@ -112,6 +112,24 @@ if(args.Contains("--seed-quote-demo",StringComparer.Ordinal))
     var result=await new BackOffice.Infrastructure.Quotes.QuoteDemo(factory,TimeProvider.System).SeedAsync();
     Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result));return;
 }
+if(args.Contains("--seed-servicing-drafts-demo",StringComparer.Ordinal))
+{
+    if(!app.Environment.IsDevelopment())throw new InvalidOperationException("Servicing draft fixtures require local Development.");
+    var factory=app.Services.GetRequiredService<Microsoft.EntityFrameworkCore.IDbContextFactory<BackOfficeDbContext>>();
+    await using var db=await factory.CreateDbContextAsync();
+    DemoDatabase.ValidateDemoTarget(Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.GetConnectionString(db.Database)!);
+    var user=await Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.SingleAsync(db.Set<StaffUser>(),x=>x.Email=="underwriter@cover.example" && x.State=="active");
+    var roles=await Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToArrayAsync(from link in db.Set<UserRole>() join role in db.Set<Role>() on link.RoleId equals role.Id where link.UserId==user.Id select role.Code);
+    var actor=new BackOffice.Application.ActorContext(user.Id,user.TeamId,user.AgencyId,roles.ToHashSet(StringComparer.Ordinal));
+    var policies=await Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToArrayAsync(from policy in db.Set<Policy>() join product in db.Set<Product>() on policy.ProductId equals product.Id
+        where product.Code=="motor-trade-combined" || product.Code=="motor-trade-road-risks" orderby policy.Number select new{policy.Id,product.Code});
+    var selected=policies.GroupBy(x=>x.Code).Select(x=>x.First()).ToArray();
+    if(selected.Length!=2)throw new InvalidOperationException("Issue both fictional Motor Trade product examples before seeding servicing drafts.");
+    var seed=new BackOffice.Infrastructure.Policies.ServicingDemoSeed(factory,app.Services.GetRequiredService<TimeProvider>());
+    var results=new List<BackOffice.Infrastructure.Policies.ServicingDemoDraft>();
+    foreach(var policy in selected)results.AddRange(await seed.SeedDraftsAsync(actor,policy.Id));
+    Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(results));return;
+}
 if(args.Contains("--seed-agency-invitation-demo",StringComparer.Ordinal))
 {
     if(!app.Environment.IsDevelopment())throw new InvalidOperationException("Invitation fixture requires local Development.");

@@ -266,3 +266,47 @@ and `.local/browser-evidence`. UI failure fixtures are explicitly labelled and d
 not count as persisted business outcomes. Restart capture/verify is a separate
 operator step documented in SETUP. Human business/assistive-technology UAT remains
 unperformed.
+
+For Phase 7 servicing acceptance, run `node scripts/verify-servicing-suite.mjs`
+after the underwriting suite. It runs all servicing stages sequentially, including
+both products' editor, evidence, capacity, signed adjustment, renewal, cancellation
+and history journeys. Set `COVER_SQL_TEST_CONNECTION` for the isolated SQL browser
+cases, compile the backend first, and build both the normal Next output and the
+isolated `.local/next-policy-history` output. Do not run multiple browser suites
+against shared demo fixtures at once. Each aggregate run gets a new report directory
+under `.local/servicing-suite`; a partial or failed report is not acceptance.
+
+After issuing both product examples, the API's local Development command
+`--seed-servicing-drafts-demo` adds editable and leased cancellation drafts to
+the earliest issued policy for each product. Where that term already has multiple
+issued versions, it also adds a historical-base draft that demonstrates the
+stale-base blocker. The JSON output contains scenario and draft IDs. Preserve it
+as `.local/servicing-demo-drafts.json` and run
+`node scripts/verify-servicing-demo-drafts.mjs` promptly to verify the initial
+lease before it expires. The command serializes concurrent seeders, reuses its
+original drafts, and never renews expired leases or reopens records changed by a
+business user. It creates drafts through normal services and does not issue or
+cancel cover. Richer servicing scenarios are separate from this draft seed.
+
+Use one explicit, persistent encryption-key directory for the API and every demo
+CLI process. From the repository root in PowerShell, set
+`$env:Cover__DataProtectionPath = Join-Path (Get-Location) '.local/data-protection'`
+before starting either. Different working directories otherwise select different
+default key directories and can make retained invitation payloads unreadable.
+Preserve existing keys; never replace or delete them to repair a demo. Also set
+`BACKOFFICE_API_ORIGIN` before building Next, since its API rewrite is compiled
+into the build. Changing only the web server's runtime environment is insufficient.
+
+The servicing preservation check covers all database tables, including migration
+history, with ordered row-count/SHA256 fingerprints. Capture policy API readback
+with `node scripts/verify-servicing-restart.mjs capture .local/UNIQUE-RESTART-RUN`,
+stop only verified owned demo API/web processes, then run
+`./scripts/verify-servicing-preservation.ps1 -EvidenceDirectory .local/UNIQUE-SQL-RUN`.
+Pass `-SqlCommand` with the absolute SQLCMD executable path if needed. This runs
+initialization twice without reset and rejects any retained table change. Restart
+with the same database/key configuration, then run
+`node scripts/verify-servicing-restart.mjs compare .local/UNIQUE-RESTART-RUN`.
+The API comparison retains every version, financial and history field except the
+two request-time cutoffs on explicit-version reads; history cutoffs are pinned.
+Record the verified old/new process identities alongside these reports. A repeat
+read without a process restart only verifies the comparison harness.

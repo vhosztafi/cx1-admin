@@ -32,7 +32,7 @@ jobs:
 
   sql-container:
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 180
     services:
       sql:
         image: mcr.microsoft.com/mssql/server:2022-latest
@@ -55,6 +55,20 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           global-json-file: global.json
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.19.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: node node_modules/playwright/cli.js install --with-deps chrome
+      - run: pnpm web:build
+      - name: Build isolated policy history preview
+        run: pnpm web:build
+        env:
+          COVER_NEXT_DIST_DIR: .local/next-policy-history
       - run: dotnet restore backend/BackOffice.slnx --configfile NuGet.Config --packages .local/nuget --locked-mode
       # Production cookie/key tests exercise Windows DPAPI and run in full below.
       # This job still runs real SQL migration, scope, batch, lease, inbox and OS restart tests.
@@ -66,11 +80,11 @@ jobs:
       - run: dotnet test backend/BackOffice.slnx --no-restore --logger trx --results-directory .local/test-results --filter 'FullyQualifiedName!~AuthenticationTests&FullyQualifiedName!~OperationalJobTests'
       - name: Reject missing, skipped or failed tests
         shell: pwsh
-        run: ./scripts/assert-test-results.ps1 -ResultsDirectory .local/test-results -MinimumTests 836 -MinimumSqlTests 167 -NotBeforeUtc (Get-Content .local/test-start.txt)
+        run: ./scripts/assert-test-results.ps1 -ResultsDirectory .local/test-results -MinimumTests 1220 -MinimumSqlTests 301 -NotBeforeUtc (Get-Content .local/test-start.txt)
 
   windows-sql-and-identity:
     runs-on: windows-2025
-    timeout-minutes: 60
+    timeout-minutes: 180
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: '1'
       COVER_SQL_TEST_CONNECTION: Server=(localdb)\CoverMGA_CI;Database=CoverMGA_Demo;Integrated Security=true;Encrypt=true;TrustServerCertificate=true
@@ -81,6 +95,20 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           global-json-file: global.json
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.19.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: node node_modules/playwright/cli.js install --with-deps chrome
+      - run: pnpm web:build
+      - name: Build isolated policy history preview
+        run: pnpm web:build
+        env:
+          COVER_NEXT_DIST_DIR: .local/next-policy-history
       - name: Start owned SQL LocalDB instance
         shell: pwsh
         run: |
@@ -103,7 +131,7 @@ jobs:
         run: ./scripts/test-result-gate.ps1
       - name: Reject missing, skipped or failed tests
         shell: pwsh
-        run: ./scripts/assert-test-results.ps1 -ResultsDirectory .local/test-results -MinimumTests 838 -MinimumSqlTests 169 -NotBeforeUtc (Get-Content .local/test-start.txt)
+        run: ./scripts/assert-test-results.ps1 -ResultsDirectory .local/test-results -MinimumTests 1222 -MinimumSqlTests 303 -NotBeforeUtc (Get-Content .local/test-start.txt)
       - name: Stop owned CI instance
         if: always()
         shell: pwsh

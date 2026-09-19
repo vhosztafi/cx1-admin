@@ -56,10 +56,10 @@ Progress: Phases1–6 complete;6/13 phases,64/65 completed implementation plans.
 
 Last session: 2026-09-19T07:29:34.596Z
 Stopped at:07-15 complete; continue07-16 inline without a new command.
-Resume file: .planning/phases/07-policy-lifecycle-and-history/07-15-PLAN.md
+Resume file: .planning/phases/07-policy-lifecycle-and-history/07-16-PROGRESS.md
 
 ## Autonomous continuation
 
 User approved requirements/roadmap and autonomous choices/progression on2026-09-13. Routine confirmation is not required. Keep research, design, checks and verification enabled; fix gaps instead of silently deferring them. Current request execute-phase7 --auto authorises sequential automatic continuation.
 
-Thread heartbeat: continue-cover-mga-back-office-mvp, every10minutes. Continue in this task; notify meaningful progress/blockers only. Current owned previews are recorded in.local/phase7-15-preview-pids.json; stop only verified owned processes.
+Thread heartbeat: continue-cover-mga-back-office-mvp, every10minutes. Continue in this task; notify meaningful progress/blockers only. Current owned previews are recorded in.local/phase7-16-preview-pids.json; stop only verified owned processes.

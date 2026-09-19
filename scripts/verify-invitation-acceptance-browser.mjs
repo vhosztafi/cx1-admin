@@ -12,7 +12,7 @@ const browser=await chromium.launch({channel:'chrome',headless:true});const admi
 let stage='login';
 try{
  const login=await admin.newPage();await login.goto(origin+'/login');await login.getByLabel('Email address',{exact:true}).fill('agency-admin@cover.example');await login.getByLabel('Password',{exact:true}).fill(password);await login.getByRole('button',{name:'Sign in',exact:true}).click();await login.waitForURL(origin+'/');
- async function reveal(){const id=await fixture();const csrf=await(await admin.request.get(origin+'/api/v1/auth/csrf')).json();const response=await admin.request.post(`${origin}/api/v1/invitations/${id}/demo-link`,{headers:{'X-CSRF-Token':csrf.requestToken},data:{}});assert.equal(response.status(),200);return(await response.json()).invitationToken;}
+ async function reveal(){stage='seed invitation';const id=await fixture();stage='load csrf';const csrf=await(await admin.request.get(origin+'/api/v1/auth/csrf')).json();const response=await admin.request.post(`${origin}/api/v1/invitations/${id}/demo-link`,{headers:{'X-CSRF-Token':csrf.requestToken},data:{}});stage=`reveal token (HTTP ${response.status()})`;assert.equal(response.status(),200);const token=(await response.json()).invitationToken;stage='prepare acceptance screen';return token;}
  stage='reveal and prepare'; const raw=await reveal();await page.goto(origin+'/invitations/accept#'+raw);await page.getByLabel('New password',{exact:true}).waitFor();assert.ok(!new URL(page.url()).hash);
  assert.ok(!((await page.content()).includes(raw)));assert.equal(await page.locator('meta[name="referrer"]').getAttribute('content'),'no-referrer');
  assert.ok(await page.evaluate(value=>!JSON.stringify({...localStorage,...sessionStorage}).includes(value),raw));
