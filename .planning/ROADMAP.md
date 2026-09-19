@@ -271,7 +271,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 5. Motor Trade quote capture | 11/11 | Complete    | 2026-09-16 |
 | 6. Underwriting and first policy issue | 14/14 | Complete | 2026-09-17 |
 | 7. Policy lifecycle and history | 16/16 | Complete    | 2026-09-19 |
-| 8. Commercial Combined back office | 0/16 | Ready to execute | — |
+| 8. Commercial Combined back office | 1/16 | Executing08-02 | — |
 | 9. Tasks, documents, communication and incidents | 0/TBD | Not started | — |
 | 10. Accounting and insurer reporting | 0/TBD | Not started | — |
 | 11. Configuration and account administration | 0/TBD | Not started | — |

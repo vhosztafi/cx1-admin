@@ -27,7 +27,7 @@ CC now has separate closed draft/issued schemas, scoped question/reference defin
 - Data/API design fixes stable book and published limit versions, immutable zero/cancellation headers, E/K metadata, lock-before-scope protocol, new-effect-only capacity checks and exact source/template payloads.
 - Fictional annual and positive/zero/negative half-term examples independently prove exact pennies, tax/commission and one MTA fee.
 
-## Verification
+## Acceptance evidence
 
 | Check | Result |
 |---|---|

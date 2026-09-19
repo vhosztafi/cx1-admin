@@ -3,7 +3,7 @@ phase: 08
 slug: commercial-combined-back-office
 status: approved
 nyquist_compliant: true
-wave_0_complete: false
+wave_0_complete: true
 created: 2026-09-19
 ---
 
@@ -65,7 +65,7 @@ Business acceptance of fictional underwriting assumptions and assistive-technolo
 - [x] Actual feedback runtime recorded; no false sub-minute SQL promise.
 - [x] nyquist_compliant updated after the planning check.
 
-Approved by inline planning check2026-09-19. This signs off planned validation coverage, not execution results. Wave0 remains incomplete until its test artifacts exist.
+Approved by inline planning check2026-09-19. This signs off planned validation coverage, not execution results. Wave0 contract/source fixtures now exist and12 CC checks pass; later runtime tests remain pending in their owning plans.
 
 ## Detailed automated task map
 
