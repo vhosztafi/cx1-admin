@@ -41,9 +41,11 @@ try {
   const total = page.locator('dl.underwriting-provenance > div').filter({ has: page.getByText('Proposed revised term premium', { exact: true }) });
   await total.getByText(new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(Number(revised)), { exact: true }).waitFor();
   await panel.screenshot({ path: `${output}/${fixture.productCode}-desktop.png` });
+  await total.screenshot({ path: `${output}/${fixture.productCode}-premium-desktop.png` });
   await page.setViewportSize({ width: 390, height: 844 });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   await panel.screenshot({ path: `${output}/${fixture.productCode}-mobile.png` });
+  await total.screenshot({ path: `${output}/${fixture.productCode}-premium-mobile.png` });
   await page.setViewportSize({ width: 1560, height: 1000 });
   const after = await get('/api/v1/drafts/' + fixture.draftId); assert.equal(after.revisionId, draft.revisionId);
   results.push({ productCode: fixture.productCode, draftId: draft.id, policyReference: policy.reference, originalPreparer: draft.context.preparedBy.id, revisedTermPremium: revised });
