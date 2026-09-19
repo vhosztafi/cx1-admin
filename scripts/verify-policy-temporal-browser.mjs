@@ -4,7 +4,7 @@ import {chromium} from 'playwright';
 const origin=process.env.COVER_WEB_ORIGIN??'http://127.0.0.1:3100';
 assert.ok(['127.0.0.1','localhost'].includes(new URL(origin).hostname));
 const output='.local/browser-evidence/policy-temporal';await mkdir(output,{recursive:true});
-const fixtures=JSON.parse(await readFile('.local/browser-evidence/underwriting-issue/report.json','utf8')).journeys;
+const fixtures=JSON.parse(await readFile(process.env.COVER_POLICY_FIXTURES??'.local/browser-evidence/underwriting-issue/report.json','utf8')).journeys;
 const password=(await readFile('.local/demo-password.txt','utf8')).trim();
 const browser=await chromium.launch({channel:'chrome',headless:true});
 const context=await browser.newContext({viewport:{width:1560,height:1000}});
@@ -19,7 +19,9 @@ try {
  for(const fixture of fixtures){
   const current=await get(`/api/v1/policies/${fixture.policyId}`);
   assert.equal(current.versionId,fixture.versionId);
-  const effective=new Date(current.snapshot.term.startsAt).toISOString(),known=new Date().toISOString();
+  // The UI accepts minute precision. Round knowledge forward so a policy
+  // issued seconds ago is included by the same API and UI cutoff.
+  const effective=new Date(current.snapshot.term.startsAt).toISOString(),known=new Date(Math.ceil(Date.now()/60000)*60000).toISOString();
   const params=new URLSearchParams({effectiveAt:effective,knownAt:known});
   const at=await get(`/api/v1/policies/${fixture.policyId}/as-at?${params}`);
   assert.equal(at.contentHash,current.contentHash);assert.deepEqual(at.snapshot,current.snapshot);assert.equal(at.coverageState,'active');

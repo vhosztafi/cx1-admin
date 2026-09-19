@@ -4,19 +4,20 @@ import { chromium } from 'playwright';
 const origin=process.env.COVER_WEB_ORIGIN??'http://127.0.0.1:3100';
 assert.ok(['127.0.0.1','localhost'].includes(new URL(origin).hostname));
 const output='.local/browser-evidence/servicing-date-review'; await mkdir(output,{recursive:true});
-const fixtures=JSON.parse(await readFile('.local/browser-evidence/underwriting-issue/report.json','utf8')).journeys;
+const fixtures=JSON.parse(await readFile(process.env.COVER_POLICY_FIXTURES??'.local/browser-evidence/underwriting-issue/report.json','utf8')).journeys;
 const password=(await readFile('.local/demo-password.txt','utf8')).trim();
 const browser=await chromium.launch({channel:'chrome',headless:true});
 const page=await browser.newPage({viewport:{width:1560,height:1100}}); page.setDefaultTimeout(30000);
 const errors=[];page.on('pageerror',error=>errors.push(error.message));const report={journeys:[]};
 async function get(path){const response=await page.request.get(origin+path);assert.equal(response.status(),200,await response.text());return {data:await response.json(),etag:response.headers().etag};}
+async function save(path){const pending=page.waitForResponse(r=>new URL(r.url()).pathname===path+'/proposal'&&r.request().method()==='PUT');await page.getByRole('button',{name:'Save draft',exact:true}).click();const response=await pending;assert.equal(response.status(),200,await response.text());await page.getByText('Draft action saved.',{exact:true}).waitFor();}
 try {
  await page.goto(origin+'/login');await page.getByLabel('Email address').fill('servicing@cover.example');await page.getByLabel('Password',{exact:true}).fill(password);await page.getByRole('button',{name:'Sign in',exact:true}).click();await page.waitForURL(origin+'/');
  for(const fixture of fixtures){
   await page.setViewportSize({width:1560,height:1100});
   const before=(await get(`/api/v1/policies/${fixture.policyId}`)).data;
   await page.goto(origin+`/policies/${fixture.policyId}`);
-  await page.getByLabel('Draft type',{exact:true}).selectOption('cancellation');
+  await page.getByLabel('Draft type',{exact:true}).selectOption('adjustment');
   await page.getByLabel('Requested effective date',{exact:true}).fill('2026-10-25');
   await page.getByLabel('Reason for draft',{exact:true}).fill('Fictional date and comparison browser scenario');
   await page.getByRole('button',{name:'Create servicing draft',exact:true}).click();await page.waitForURL(/\/drafts\//);
@@ -27,7 +28,7 @@ try {
   await page.getByText('Enter a valid London date and time. The clocks skip some times in spring.',{exact:true}).waitFor();
   await page.getByLabel('Effective date (London)',{exact:true}).fill('2026-10-25');await page.getByText('This time occurs twice. Choose GMT or British Summer Time.',{exact:true}).waitFor();
   await page.getByLabel('Effective clock offset',{exact:true}).selectOption('60');
-  await page.getByRole('button',{name:'Save draft',exact:true}).click();await page.getByText('Draft action saved.',{exact:true}).waitFor();
+  await save(path);
   const saved=await get(path);assert.equal(saved.data.proposal.commonEffectiveIntent.utcOffsetMinutes,60);assert.deepEqual(saved.data.proposal.requestedBy,{kind:'insured',name:'Fictional insured requester'});
   // Prepare via the real API solely to test comparison polling and removal;
   // the separate category journeys exercise actual typed editors.
@@ -47,7 +48,7 @@ try {
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
   await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:`${output}/${fixture.product??fixture.policyId}-mobile.png`,fullPage:true});
   await page.getByRole('button',{name:'Remove proposed change 1',exact:true}).click();
-  await page.getByRole('button',{name:'Save draft',exact:true}).click();await page.getByText('Draft action saved.',{exact:true}).waitFor();
+  await save(path);
   assert.equal((await get(path)).data.proposal.changes.length,0);
   await page.getByText('No material risk differences in the saved proposal.',{exact:true}).waitFor();
   await page.getByLabel('Takeover or abandonment reason',{exact:true}).fill('Fictional date review scenario completed');

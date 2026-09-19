@@ -4,7 +4,7 @@ import { spawn } from 'node:child_process';
 import { mkdir,readFile,stat,writeFile } from 'node:fs/promises';
 const cases=[['driver','servicing-driver'],['vehicle','servicing-vehicle'],['premises','servicing-premises'],['business','servicing-business'],['policyholder','servicing-policyholder'],['cover','servicing-cover'],['date-review','servicing-date-review'],['editor-audit','servicing-editor-audit']];
 const output='.local/browser-evidence/servicing-editors';await mkdir(output,{recursive:true});
-const expected=JSON.parse(await readFile('.local/browser-evidence/underwriting-issue/report.json','utf8')).journeys.map(x=>x.policyId).sort();assert.equal(new Set(expected).size,2);
+const expected=JSON.parse(await readFile(process.env.COVER_POLICY_FIXTURES??'.local/browser-evidence/underwriting-issue/report.json','utf8')).journeys.map(x=>x.policyId).sort();assert.equal(new Set(expected).size,2);
 const report=process.argv.includes('--resume')?JSON.parse(await readFile(`${output}/progress.json`,'utf8')):{startedAt:new Date().toISOString(),runs:[]};
 for(const [name,directory] of cases){
  const previous=report.runs.find(run=>run.name===name);

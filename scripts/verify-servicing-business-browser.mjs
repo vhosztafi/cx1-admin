@@ -3,19 +3,19 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { chromium } from 'playwright';
 const origin=process.env.COVER_WEB_ORIGIN??'http://127.0.0.1:3100';assert.ok(['127.0.0.1','localhost'].includes(new URL(origin).hostname));
 const output='.local/browser-evidence/servicing-business';await mkdir(output,{recursive:true});
-const fixtures=JSON.parse(await readFile('.local/browser-evidence/underwriting-issue/report.json','utf8')).journeys;
+const fixtures=JSON.parse(await readFile(process.env.COVER_POLICY_FIXTURES??'.local/browser-evidence/underwriting-issue/report.json','utf8')).journeys;
 const password=(await readFile('.local/demo-password.txt','utf8')).trim(),browser=await chromium.launch({channel:'chrome',headless:true});
 const page=await browser.newPage({viewport:{width:1560,height:1000}});page.setDefaultTimeout(30000);const errors=[];page.on('pageerror',error=>errors.push(error.message));const report={journeys:[]};
 const other=await browser.newPage({viewport:{width:1560,height:1000}});other.setDefaultTimeout(30000);other.on('pageerror',error=>errors.push(error.message));
 const button=name=>page.getByRole('button',{name,exact:true}),field=name=>page.getByLabel(name,{exact:true});
 async function get(path){const r=await page.request.get(origin+path);assert.equal(r.status(),200,await r.text());return r.json();}
-async function save(){await button('Save draft').click();await page.getByText('Draft action saved.',{exact:true}).waitFor();}
+async function save(){const pending=page.waitForResponse(r=>new URL(r.url()).pathname===new URL(page.url()).pathname.replace('/drafts/','/api/v1/drafts/')+'/proposal'&&r.request().method()==='PUT');await button('Save draft').click();const response=await pending;assert.equal(response.status(),200,await response.text());await page.getByText('Draft action saved.',{exact:true}).waitFor();}
 try{
  await page.goto(origin+'/login');await field('Email address').fill('servicing@cover.example');await field('Password').fill(password);await button('Sign in').click();await page.waitForURL(origin+'/');
  await other.goto(origin+'/login');await other.getByLabel('Email address').fill('underwriter@cover.example');await other.getByLabel('Password',{exact:true}).fill(password);await other.getByRole('button',{name:'Sign in',exact:true}).click();await other.waitForURL(origin+'/');
  for(const fixture of fixtures){
   await page.setViewportSize({width:1560,height:1000});const before=await get(`/api/v1/policies/${fixture.policyId}`);
-  await page.goto(origin+`/policies/${fixture.policyId}`);await field('Draft type').selectOption('cancellation');await field('Requested effective date').fill('2026-10-25');await field('Reason for draft').fill('Fictional trade activity browser scenario');await button('Create servicing draft').click();await page.waitForURL(/\/drafts\//);
+  await page.goto(origin+`/policies/${fixture.policyId}`);await field('Draft type').selectOption('adjustment');await field('Requested effective date').fill('2026-10-25');await field('Reason for draft').fill('Fictional trade activity browser scenario');await button('Create servicing draft').click();await page.waitForURL(/\/drafts\//);
   const draftId=page.url().split('/').at(-1),path=`/api/v1/drafts/${draftId}`;
   await button('Acquire editing lease').click();await page.getByRole('heading',{name:'You are editing this draft',exact:true}).waitFor();await button('Amend trade activities').click();
   await field('Annual turnover (GBP)').fill('123456.78');await field('Business description').fill('Fictional servicing business correction');await field('Business start date').fill('2015-01-01');

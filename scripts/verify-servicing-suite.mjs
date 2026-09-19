@@ -13,6 +13,7 @@ const startedAt = new Date().toISOString();
 const directory = `.local/servicing-suite/${startedAt.replaceAll(/[:.]/g, '-')}-${randomUUID()}`;
 await mkdir(directory, { recursive: true });
 const stages = [
+  ['fresh-persisted-policy-bases', 'seed-servicing-policy-bases'],
   ['temporal-policy-read', 'verify-policy-temporal-browser'],
   ['draft-leases-and-recovery', 'verify-servicing-draft-browser'],
   ['both-product-risk-editors', 'verify-servicing-editors-browser'],
@@ -39,7 +40,9 @@ for (const stage of stages) {
   console.log(`Servicing acceptance: ${stage.name}`);
   const logPath = `${directory}/${stage.name}.log`; let log = '';
   const result = await new Promise(resolve => {
-    const child = spawn(process.execPath, [stage.script, ...stage.args], { stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true });
+    const child = spawn(process.execPath, [stage.script, ...stage.args], { stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true,
+      env: { ...process.env, COVER_SERVICING_BASE_DIRECTORY: `${directory}/policy-bases`, COVER_SERVICING_BASE_PURPOSE: 'acceptance',
+        COVER_POLICY_FIXTURES: `${directory}/policy-bases/fixtures.json` } });
     child.stdout.on('data', chunk => { log += chunk; process.stdout.write(chunk); });
     child.stderr.on('data', chunk => { log += chunk; process.stderr.write(chunk); });
     child.once('error', error => resolve({ exitCode: null, error: error.message }));

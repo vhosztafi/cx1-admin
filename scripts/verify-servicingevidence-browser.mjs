@@ -5,7 +5,7 @@ const origin=process.env.COVER_WEB_ORIGIN??'http://127.0.0.1:3100';
 assert.ok(['127.0.0.1','localhost'].includes(new URL(origin).hostname));
 const output='.local/browser-evidence/servicing-evidence';await mkdir(output,{recursive:true});
 const navigationOnly=process.env.COVER_SERVICING_NAVIGATION_ONLY==='1',submissionOnly=process.env.COVER_SERVICING_SUBMISSION_ONLY==='1',workOnly=process.env.COVER_SERVICING_REFERRAL_WORK_ONLY==='1';const reportPath=output+(workOnly?'/referral-work-report.json':submissionOnly?'/submission-report.json':navigationOnly?'/navigation-report.json':'/report.json');
-const fixtures=JSON.parse(await readFile('.local/browser-evidence/underwriting-issue/report.json','utf8')).journeys;
+const fixtures=JSON.parse(await readFile(process.env.COVER_POLICY_FIXTURES??'.local/browser-evidence/underwriting-issue/report.json','utf8')).journeys;
 const password=(await readFile('.local/demo-password.txt','utf8')).trim();
 const browser=await chromium.launch({channel:'chrome',headless:true});
 const page=await browser.newPage({viewport:{width:1560,height:1000}});page.setDefaultTimeout(45000);

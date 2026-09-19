@@ -5,7 +5,7 @@ import {issueRenewal} from './renewal-issue-browser-journey.mjs';
 const origin=process.env.COVER_WEB_ORIGIN??'http://127.0.0.1:3100';assert.ok(['localhost','127.0.0.1'].includes(new URL(origin).hostname));
 const issueMode=process.env.COVER_RENEWAL_ISSUE_BROWSER==='true';
 const output=issueMode?'.local/browser-evidence/renewal-issue':'.local/browser-evidence/renewal-preparation';await mkdir(output,{recursive:true});
-const fixtures=JSON.parse(await readFile('.local/browser-evidence/underwriting-issue/report.json','utf8')).journeys;
+const fixtures=JSON.parse(await readFile(process.env.COVER_POLICY_FIXTURES??'.local/browser-evidence/underwriting-issue/report.json','utf8')).journeys;
 const password=(await readFile('.local/demo-password.txt','utf8')).trim();
 const browser=await chromium.launch({channel:'chrome',headless:true});
 let context=await browser.newContext({viewport:{width:1560,height:1000}}),page=await context.newPage(),path;
@@ -27,7 +27,9 @@ try{
  }
  for(const [index,fixture] of fixtures.entries()){
   const before=await get(`/api/v1/policies/${fixture.policyId}`);
-  await page.goto(origin+`/policies/${fixture.policyId}`);await field('Draft type').selectOption('renewal');assert.equal(await field('Requested effective date').count(),0);
+  const history=await get(`/api/v1/policies/${fixture.policyId}/history`);
+  const basis=history.versions.find(x=>x.termId===before.termId);assert.ok(basis);
+  await page.goto(origin+`/policies/${fixture.policyId}?termId=${before.termId}&versionId=${basis.id}`);await field('Draft type').selectOption('renewal');assert.equal(await field('Requested effective date').count(),0);
   await field('Reason for draft').fill('Fictional renewal preparation browser journey');await button('Create servicing draft').click();await page.waitForURL(/\/drafts\//);
   const draftId=page.url().split('/').at(-1);path=`/api/v1/drafts/${draftId}`;await writeFile(output+'/active.json',JSON.stringify({draftId,policyId:fixture.policyId,createdBy:'renewal preparation browser verification'}));
   await button('Acquire editing lease').click();await page.getByRole('heading',{name:'You are editing this draft',exact:true}).waitFor();

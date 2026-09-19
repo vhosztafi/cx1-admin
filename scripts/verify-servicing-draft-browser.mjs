@@ -4,7 +4,7 @@ import {chromium} from 'playwright';
 const origin=process.env.COVER_WEB_ORIGIN??'http://127.0.0.1:3100';
 assert.ok(['127.0.0.1','localhost'].includes(new URL(origin).hostname));
 const output='.local/browser-evidence/servicing-draft';await mkdir(output,{recursive:true});
-const fixtures=JSON.parse(await readFile('.local/browser-evidence/underwriting-issue/report.json','utf8')).journeys;
+const fixtures=JSON.parse(await readFile(process.env.COVER_POLICY_FIXTURES??'.local/browser-evidence/underwriting-issue/report.json','utf8')).journeys;
 const password=(await readFile('.local/demo-password.txt','utf8')).trim();
 const browser=await chromium.launch({channel:'chrome',headless:true});
 const a=await browser.newContext({viewport:{width:1560,height:1000}}),b=await browser.newContext({viewport:{width:1560,height:1000}});
@@ -12,6 +12,12 @@ const first=await a.newPage(),second=await b.newPage();const errors=[];
 for(const page of [first,second]){page.setDefaultTimeout(30000);page.on('pageerror',error=>errors.push(error.message));}
 async function login(page,email){await page.goto(origin+'/login');await page.getByLabel('Email address').fill(email);await page.getByLabel('Password',{exact:true}).fill(password);await page.getByRole('button',{name:'Sign in',exact:true}).click();await page.waitForURL(origin+'/');}
 async function get(page,path){const r=await page.request.get(origin+path);assert.equal(r.status(),200,await r.text());assert.match(r.headers()['cache-control']??'',/no-store/);return r.json();}
+async function save(page,path){
+ const pending=page.waitForResponse(response=>new URL(response.url()).pathname===path+'/proposal'&&response.request().method()==='PUT');
+ await page.getByRole('button',{name:'Save draft',exact:true}).click();
+ const response=await pending;assert.equal(response.status(),200,await response.text());
+ await page.getByText('Draft action saved.',{exact:true}).waitFor();
+}
 const report={journeys:[]};
 try{
  await login(first,'servicing@cover.example');await login(second,'underwriter@cover.example');
@@ -26,8 +32,10 @@ try{
   await first.getByRole('button',{name:'Create servicing draft',exact:true}).click();await first.waitForURL(/\/drafts\/[a-f0-9-]+$/);
   const draftId=first.url().split('/').at(-1),path=`/api/v1/drafts/${draftId}`;
   await first.getByRole('button',{name:'Acquire editing lease',exact:true}).click();await first.getByRole('heading',{name:'You are editing this draft',exact:true}).waitFor();
+  await first.getByLabel('Cancellation reason',{exact:true}).selectOption('insured-request');
+  await first.getByLabel('Effective time (London)',{exact:true}).fill('12:00');
   await first.getByLabel('Reason for change',{exact:true}).fill('Fictional saved browser proposal');
-  await first.getByRole('button',{name:'Save draft',exact:true}).click();await first.getByText('Draft action saved.',{exact:true}).waitFor();
+  await save(first,path);
   assert.equal((await get(first,path)).proposal.reason,'Fictional saved browser proposal');
   await first.reload();await first.getByLabel('Reason for change',{exact:true}).waitFor();assert.equal(await first.getByLabel('Reason for change',{exact:true}).inputValue(),'Fictional saved browser proposal');
   await first.getByRole('button',{name:'Acquire editing lease',exact:true}).click();await first.getByRole('heading',{name:'You are editing this draft',exact:true}).waitFor();
@@ -48,7 +56,7 @@ try{
   await second.getByRole('button',{name:'Release editing lease',exact:true}).click();await second.getByRole('heading',{name:'Read-only draft',exact:true}).waitFor();
   await first.getByRole('button',{name:'Acquire editing lease',exact:true}).click();await first.getByRole('heading',{name:'You are editing this draft',exact:true}).waitFor();
   assert.equal(await first.getByLabel('Reason for change',{exact:true}).inputValue(),'Unsaved first editor text must survive takeover');
-  await first.getByRole('button',{name:'Save draft',exact:true}).click();await first.getByText('Draft action saved.',{exact:true}).waitFor();
+  await save(first,path);
   assert.equal((await get(first,path)).proposal.reason,'Unsaved first editor text must survive takeover');
   await first.getByLabel('Takeover or abandonment reason',{exact:true}).fill('Fictional browser journey is complete');
   await first.getByLabel('I confirm this draft should be abandoned.').check();await first.getByRole('button',{name:'Abandon draft',exact:true}).click();await first.getByText('Abandoned',{exact:true}).waitFor();

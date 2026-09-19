@@ -4,8 +4,8 @@ milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
 stopped_at: 07-15 complete; executing07-16 acceptance and demo scenarios
-last_updated: "2026-09-19T16:54:20.680Z"
-last_activity: 2026-09-19 — Policy history/source closure complete;15-case gate and132 preserved fingerprints.
+last_updated: "2026-09-19T19:10:00.000Z"
+last_activity: 2026-09-19 — Servicing demo scenarios retained; full backend and browser acceptance running; source context gaps corrected.
 progress:
   total_phases: 13
   completed_phases: 6
@@ -28,7 +28,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md, updated2026-09-16.
 Phase: 7 of 13 (Policy lifecycle and history)
 Plan: 15 of16 complete;07-16 executing
 Status: Executing Phase7;07-15 complete and07-16 acceptance remains
-Last activity: 2026-09-19 — History source review and15-case gate complete;132 demo fingerprints preserved.
+Last activity: 2026-09-19 — Additive servicing scenarios committed; full acceptance and final source review in progress.
 
 Progress: Phases1–6 complete;6/13 phases,64/65 completed implementation plans.
 

@@ -13,7 +13,7 @@ const prior = mode === 'compare' ? JSON.parse(await readFile(baselineFile, 'utf8
 if (mode === 'capture') await mkdir(directory, { recursive: false });
 if (prior) assert.equal(prior.origin, origin);
 const cutoff = prior?.cutoff ?? new Date().toISOString();
-const fixtures = prior?.policies ?? JSON.parse(await readFile('.local/browser-evidence/underwriting-issue/report.json', 'utf8')).journeys;
+const fixtures = prior?.policies ?? JSON.parse(await readFile(process.env.COVER_POLICY_FIXTURES??'.local/browser-evidence/underwriting-issue/report.json', 'utf8')).journeys;
 assert.equal(new Set(fixtures.map(x => x.productCode)).size, 2);
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 try {
