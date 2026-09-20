@@ -115436,6 +115436,10 @@
             "type": "integer",
             "minimum": 0
           },
+          "multiplierBasisPoints": {
+            "type": "integer",
+            "minimum": 0
+          },
           "targetId": {
             "type": "string",
             "format": "uuid"
@@ -115524,7 +115528,7 @@
               "$ref": "#/components/schemas/UnderwritingRatingFactor"
             },
             "minItems": 0,
-            "maxItems": 200,
+            "maxItems": 700,
             "uniqueItems": true
           },
           "input": {

@@ -65,7 +65,7 @@ public sealed class QuoteTermsReadModel(IDbContextFactory<BackOfficeDbContext> f
     {
         using var payload = JsonDocument.Parse(row.TermsJson); var document = payload.RootElement;
         var cycle = await db.Set<UnderwritingCycle>().AsNoTracking().SingleAsync(x => x.Id == row.CycleId, token);
-        var input = JsonSerializer.Deserialize<StoredRatingInput>(cycle.InputJson, QuoteRatingService.Json)!;
+        var input = StoredRatingInput.ReadMotorTrade(cycle);
         var rating = await db.Set<QuoteRatingResult>().AsNoTracking().SingleAsync(x => x.Id == row.RatingId, token);
         var outcome = JsonSerializer.Deserialize<QuoteRatingOutcome>(rating.ResultJson, QuoteRatingService.Json)!;
         var revision = await db.Set<QuoteRevision>().AsNoTracking().SingleAsync(x => x.Id == cycle.QuoteRevisionId, token);

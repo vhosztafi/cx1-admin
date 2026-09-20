@@ -108,9 +108,14 @@ public sealed partial class BackOfficeDbContext
         entity.ToTable(t => t.UseSqlOutputClause(false)); Text(entity, ("Version", 60), ("State", 20)); UnderwritingJson(entity, "DefinitionJson");
         Check(entity, "Interval", "[EffectiveFrom]<[EffectiveTo]");
         Check(entity, "State", "[State] IN ('published','retired')");
-        Check(entity, "Definition", $"COALESCE(JSON_VALUE([DefinitionJson],'$.schemaVersion'),'')='1' AND COALESCE(JSON_VALUE([DefinitionJson],'$.kind'),'')='{kind}' AND COALESCE(JSON_VALUE([DefinitionJson],'$.version'),'')=[Version] AND LEN(TRIM([Version]))>0 AND TRY_CONVERT(datetimeoffset,JSON_VALUE([DefinitionJson],'$.effectiveFrom')) IS NOT NULL AND TRY_CONVERT(datetimeoffset,JSON_VALUE([DefinitionJson],'$.effectiveFrom'))=[EffectiveFrom] AND TRY_CONVERT(datetimeoffset,JSON_VALUE([DefinitionJson],'$.effectiveTo')) IS NOT NULL AND TRY_CONVERT(datetimeoffset,JSON_VALUE([DefinitionJson],'$.effectiveTo'))=[EffectiveTo]");
+        const string commercial = "(COALESCE(JSON_VALUE([DefinitionJson],'$.schemaVersion'),'')='commercial-underwriting-1' AND COALESCE(JSON_VALUE([DefinitionJson],'$.productCode'),'')='commercial-combined')";
+        Check(entity, "Definition", $"(COALESCE(JSON_VALUE([DefinitionJson],'$.schemaVersion'),'')='1' OR {commercial}) AND COALESCE(JSON_VALUE([DefinitionJson],'$.kind'),'')='{kind}' AND COALESCE(JSON_VALUE([DefinitionJson],'$.version'),'')=[Version] AND LEN(TRIM([Version]))>0 AND TRY_CONVERT(datetimeoffset,JSON_VALUE([DefinitionJson],'$.effectiveFrom')) IS NOT NULL AND TRY_CONVERT(datetimeoffset,JSON_VALUE([DefinitionJson],'$.effectiveFrom'))=[EffectiveFrom] AND TRY_CONVERT(datetimeoffset,JSON_VALUE([DefinitionJson],'$.effectiveTo')) IS NOT NULL AND TRY_CONVERT(datetimeoffset,JSON_VALUE([DefinitionJson],'$.effectiveTo'))=[EffectiveTo]");
         if (kind is "binder" or "authority")
+        {
             foreach (var name in new[] { "annualPremiumLimit", "stockLimit", "vehicleLimit" })
-                Check(entity, name, $"TRY_CONVERT(decimal(19,2),JSON_VALUE([DefinitionJson],'$.limits.{name}')) IS NOT NULL AND TRY_CONVERT(decimal(19,2),JSON_VALUE([DefinitionJson],'$.limits.{name}'))>=0");
+                Check(entity, name, $"{commercial} OR (TRY_CONVERT(decimal(19,2),JSON_VALUE([DefinitionJson],'$.limits.{name}')) IS NOT NULL AND TRY_CONVERT(decimal(19,2),JSON_VALUE([DefinitionJson],'$.limits.{name}'))>=0)");
+            foreach (var name in new[] { "annualPremium", "singleLocation", "maximumEstimatedLoss", "districtProperty", "employersLiability", "publicLiability", "productsLiability", "businessInterruption", "contractWorks" })
+                Check(entity, "Commercial_" + name, $"NOT {commercial} OR (TRY_CONVERT(decimal(19,2),JSON_VALUE([DefinitionJson],'$.limits.{name}')) IS NOT NULL AND TRY_CONVERT(decimal(19,2),JSON_VALUE([DefinitionJson],'$.limits.{name}'))>0)");
+        }
     }
 }

@@ -23,7 +23,7 @@ public sealed partial class CapacityReadModel(IDbContextFactory<BackOfficeDbCont
         var cycle = await db.Set<UnderwritingCycle>().AsNoTracking().SingleAsync(x => x.Id == row.CycleId, token);
         var referral = await db.Set<QuoteReferral>().AsNoTracking().SingleAsync(x => x.Id == row.ReferralId, token);
         var rating = await db.Set<QuoteRatingResult>().AsNoTracking().SingleAsync(x => x.Id == cycle.CurrentRatingId, token);
-        var input = JsonSerializer.Deserialize<StoredRatingInput>(cycle.InputJson, QuoteRatingService.Json)!;
+        var input = StoredRatingInput.ReadMotorTrade(cycle);
         var binder = await db.Set<BinderVersion>().AsNoTracking().SingleAsync(x => x.Id == cycle.BinderVersionId, token);
         using var binderDefinition = JsonDocument.Parse(binder.DefinitionJson);
         var binderContext = BackOffice.Application.Underwriting.UnderwritingAuthorityView.Rows(input.Input.RiskForPremium(rating.AnnualPremium), binderDefinition.RootElement, null)

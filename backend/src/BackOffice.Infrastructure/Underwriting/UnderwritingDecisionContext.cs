@@ -21,7 +21,7 @@ internal sealed record UnderwritingDecisionContext(OwnedQuoteScope Owned, Underw
         var cycle = await db.Set<UnderwritingCycle>().FromSqlInterpolated($"SELECT * FROM UnderwritingCycle WITH(HOLDLOCK) WHERE Id={id} AND QuoteId={quoteId}").AsNoTracking().SingleOrDefaultAsync(token)
             ?? throw new QuoteOperationException(404, "underwriting-cycle-not-found");
         var revision = await db.Set<QuoteRevision>().AsNoTracking().SingleAsync(x => x.Id == cycle.QuoteRevisionId && x.QuoteId == quoteId, token);
-        var input = JsonSerializer.Deserialize<StoredRatingInput>(cycle.InputJson, QuoteRatingService.Json) ?? throw new QuoteOperationException(409, "underwriting-cycle-invalid");
+        var input = StoredRatingInput.ReadMotorTrade(cycle);
         var eligible = await QuoteRatingEligibility.ResolveAsync(db, owned, cycle.ProductVersionId, cycle.AgencyTermsVersionId, input.Input.Term, now, token);
         if (eligible.RatingVersion.Id != cycle.RatingRuleVersionId || eligible.BinderVersion.Id != cycle.BinderVersionId || eligible.AuthorityVersion.Id != cycle.AuthorityVersionId)
             throw new QuoteOperationException(409, "underwriting-cycle-stale");

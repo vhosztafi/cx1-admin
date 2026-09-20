@@ -72,7 +72,7 @@ public sealed class QuoteUnderwritingLifecycle(IDbContextFactory<BackOfficeDbCon
                 owned = await QuoteUnderwritingScope.HoldAsync(db, actor, quoteId, "quote-submit", ct);
                 cycle = await db.Set<UnderwritingCycle>().FromSqlInterpolated($"SELECT * FROM UnderwritingCycle WITH(HOLDLOCK) WHERE Id={cycleId} AND QuoteId={quoteId}").AsNoTracking().SingleOrDefaultAsync(ct)
                     ?? throw new QuoteOperationException(404, "underwriting-cycle-not-found");
-                var input = JsonSerializer.Deserialize<StoredRatingInput>(cycle.InputJson, QuoteRatingService.Json)!;
+                var input = StoredRatingInput.ReadMotorTrade(cycle);
                 eligible = await QuoteRatingEligibility.ResolveAsync(db, owned, cycle.ProductVersionId, cycle.AgencyTermsVersionId, input.Input.Term, time.GetUtcNow(), ct);
                 if (eligible.RatingVersion.Id != cycle.RatingRuleVersionId || eligible.BinderVersion.Id != cycle.BinderVersionId || eligible.AuthorityVersion.Id != cycle.AuthorityVersionId)
                     throw new QuoteOperationException(409, "underwriting-cycle-stale");

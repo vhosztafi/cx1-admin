@@ -15,7 +15,7 @@
     "web:typecheck": "pnpm --filter @cover/backoffice typecheck",
     "test": "node --test tests/*.test.mjs",
     "design:extract": "node scripts/extract-prototype.mjs && node scripts/inspect-prototype.mjs && node scripts/build-design-inventory.mjs",
-    "contracts:generate": "node scripts/generate-policy-contracts.mjs && node scripts/generate-underwriting-contracts.mjs && node scripts/generate-openapi.mjs && node scripts/generate-adapter-contracts.mjs",
+    "contracts:generate": "node scripts/generate-policy-contracts.mjs && node scripts/generate-underwriting-contracts.mjs && node scripts/generate-commercial-underwriting.mjs && node scripts/generate-openapi.mjs && node scripts/generate-adapter-contracts.mjs",
     "contracts:validate": "node scripts/lint-openapi.mjs && node --test tests/policy-contracts.test.mjs tests/api-contracts.test.mjs tests/adapter-contracts.test.mjs",
     "web:lint": "pnpm --filter @cover/backoffice lint",
     "web:test": "pnpm --filter @cover/backoffice test",

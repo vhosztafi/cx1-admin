@@ -23,7 +23,7 @@ public sealed class QuoteDeliveryJobs(IDbContextFactory<BackOfficeDbContext> fac
             {
                 var cycle = await db.Set<UnderwritingCycle>().AsNoTracking().SingleAsync(x => x.Id == delivery.CycleId, token);
                 var revision = await db.Set<QuoteRevision>().AsNoTracking().SingleAsync(x => x.Id == cycle.QuoteRevisionId, token);
-                var input = JsonSerializer.Deserialize<StoredRatingInput>(cycle.InputJson, QuoteRatingService.Json)!;
+                var input = StoredRatingInput.ReadMotorTrade(cycle);
                 var eligible = await QuoteRatingEligibility.ResolveAsync(db, owned, cycle.ProductVersionId, cycle.AgencyTermsVersionId, input.Input.Term, time.GetUtcNow(), token);
                 var rating = await db.Set<QuoteRatingResult>().AsNoTracking().SingleOrDefaultAsync(x => x.Id == cycle.CurrentRatingId, token);
                 var held = new UnderwritingDecisionContext(owned, cycle, revision, rating, input, eligible, []);

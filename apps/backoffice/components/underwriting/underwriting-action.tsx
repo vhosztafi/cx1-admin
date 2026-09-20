@@ -6,7 +6,7 @@ import { underwritingCommand, sendUnderwritingCommand, type UnderwritingAction, 
 
 export const actionLabels: Record<UnderwritingAction, string> = { rate: 'Rate quote', submit: 'Submit for underwriting', 'return-to-draft': 'Return to draft', 'underwriting/refresh': 'Refresh published versions' };
 export function UnderwritingActionDialog({ action, quote, assessment, actorId, close, completed }: {
-  action: UnderwritingAction; quote: QuoteView; assessment: UnderwritingAssessment; actorId: string; close: () => void; completed: () => void;
+  action: UnderwritingAction; quote: Pick<QuoteView, 'id' | 'revisionId' | 'reference' | 'clientName' | 'revisionNumber'>; assessment: UnderwritingAssessment; actorId: string; close: () => void; completed: () => void;
 }) {
   const dialog = useRef<HTMLDialogElement>(null), pending = useRef<PendingQuoteCommand | null>(null), guard = useRef({ busy: false, uncertain: false });
   const closeRef = useRef(close);

@@ -412,7 +412,7 @@ public sealed partial class QuoteStorageTests
 
     private sealed record Fixture(Guid Agency, Guid Client, Guid Relationship, Guid Product, Guid ProductVersion, Guid Terms, Guid Actor);
 
-    private static async Task<Fixture> CreateFixture(BackOfficeDbContext db, string suffix = "", string productCode = "motor-trade-road-risks", int productVersion = 1)
+    private static async Task<Fixture> CreateFixture(BackOfficeDbContext db, string suffix = "", string productCode = "motor-trade-road-risks", int productVersion = 1, bool fullTerms = false)
     {
         var requester = await db.Set<StaffUser>().SingleAsync(x => x.Email == "agency-admin@cover.example");
         var actor = await db.Set<StaffUser>().SingleAsync(x => x.Email == "system-admin@cover.example");
@@ -428,6 +428,10 @@ public sealed partial class QuoteStorageTests
         await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE AgencyStateRequest SET State=N'applied',DecisionBy={actor.Id},DecisionReason=N'Fictional approval',DecidedAt={DateTimeOffset.UtcNow} WHERE Id={request.Id}");
         var snapshot = JsonSerializer.Serialize(new { effectiveFrom = "2026-09-15", commercialTerms = new { commissionBasis = "per-product" }, creditLimit = "0.00",
             products = new[] { new { productVersionId = version.Id, effectiveFrom = "2026-09-15", brokerCommissionBasisPoints = 1250 } } });
+        if (fullTerms) snapshot = JsonSerializer.Serialize(new { effectiveFrom = "2026-09-15", commercialTerms = new { effectiveFrom = "2026-09-15", commissionBasis = "per-product",
+            feeSharing = "none", volumeCommitmentMode = "none", minimumPremiumOverrideMode = "none", referralRouting = "standard-internal-underwriting" },
+            settlement = new { statementCycle = "monthly", method = "bank-transfer", premiumCollection = "agency", commissionSettlement = "net-remittance" },
+            paymentTermsDays = 30, creditLimit = "0.00", products = new[] { new { productVersionId = version.Id, effectiveFrom = "2026-09-15", brokerCommissionBasisPoints = 1250 } } });
         var terms = new AgencyTermsVersion { AgencyId = agency.Id, Version = 1, EffectiveFrom = new(2026, 9, 15),
             ApprovedStateRequestId = request.Id, CreatedBy = actor.Id, Snapshot = snapshot };
         db.Add(terms); await db.SaveChangesAsync();

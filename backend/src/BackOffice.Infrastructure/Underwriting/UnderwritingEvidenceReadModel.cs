@@ -21,7 +21,7 @@ public sealed partial class UnderwritingEvidenceService
         if (owned.Quote.CurrentUnderwritingCycleId is not Guid id) { await tx.CommitAsync(token); return []; }
         var cycle = await db.Set<UnderwritingCycle>().AsNoTracking().SingleAsync(x => x.Id == id && x.QuoteId == quoteId, token);
         var revision = await db.Set<QuoteRevision>().AsNoTracking().SingleAsync(x => x.Id == cycle.QuoteRevisionId && x.QuoteId == quoteId, token);
-        var input = JsonSerializer.Deserialize<StoredRatingInput>(cycle.InputJson, QuoteRatingService.Json)!;
+        var input = StoredRatingInput.ReadMotorTrade(cycle);
         var result = await Requirements(db, cycle, revision, input, token); await tx.CommitAsync(token); return result;
     }
 

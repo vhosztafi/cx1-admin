@@ -13,12 +13,12 @@ export type UnderwritingAssessment = {
   assuranceHash?: string; termsVersionId?: string; termsHash?: string; acceptanceId?: string;
   capabilities: { canRate: boolean; canSubmit: boolean; canRevise: boolean; canReviewEvidence: boolean; canDecide: boolean; canEscalate: boolean; canPrepareTerms: boolean; canSend: boolean; canAccept: boolean; canIssue: boolean };
 };
-export type UnderwritingRating = {
+export type UnderwritingRating<TProposal = QuoteProposal> = {
   id: string; quoteId: string; cycleId: string; revisionId: string; pricingInputHash: string; ruleVersionId: string;
   completedAt: string; expiresAt: string; applicable: boolean; currency: 'GBP'; annualPremium: string; termPremium: string;
   tax: string; fee: string; grossPayable: string; brokerCommission: string; agencyTermsVersionId: string;
-  factors: { code: string; label: string; amount: string; direction: 'charge' | 'discount'; basisAmount?: string; basisPoints?: number; targetId?: string }[];
-  input: QuoteProposal; blockers: UnderwritingBlocker[];
+  factors: { code: string; label: string; amount: string; direction: 'charge' | 'discount'; basisAmount?: string; basisPoints?: number; multiplierBasisPoints?: number; targetId?: string }[];
+  input: TProposal; blockers: UnderwritingBlocker[];
 };
 export type UnderwritingRefreshOption = { productVersionId: string; displayName: string; versionLabel: string; agencyTermsVersionId: string; termsVersion: number; effectiveFrom: string };
 export type RatingHistoryItem = { id: string; cycleId: string; revisionId: string; revisionNumber: number; completedAt: string; expiresAt: string; outcome: string; grossPayable: string };

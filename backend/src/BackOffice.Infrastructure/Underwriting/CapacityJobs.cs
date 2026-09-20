@@ -24,7 +24,7 @@ public sealed class CapacityJobs(IDbContextFactory<BackOfficeDbContext> factory,
             {
                 var now = time.GetUtcNow();
                 var cycle = await db.Set<UnderwritingCycle>().AsNoTracking().SingleAsync(x => x.Id == submission.CycleId, token);
-                var input = JsonSerializer.Deserialize<StoredRatingInput>(cycle.InputJson, QuoteRatingService.Json)!;
+                var input = StoredRatingInput.ReadMotorTrade(cycle);
                 var eligible = await QuoteRatingEligibility.ResolveAsync(db, owned, cycle.ProductVersionId, cycle.AgencyTermsVersionId, input.Input.Term, now, token);
                 var grants = await QuoteUnderwritingScope.GrantsAsync(db, owned, cycle.ProductVersionId, eligible.BinderVersion, eligible.Capture.Product.Code, input.Input.Term, now, token);
                 var escalation = await db.Set<CapacityEscalation>().AsNoTracking().SingleAsync(x => x.Id == submission.EscalationId, token);

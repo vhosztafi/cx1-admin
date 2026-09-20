@@ -36,7 +36,7 @@ public sealed partial class QuoteUnderwritingReadModel(IDbContextFactory<BackOff
                 !((List<object>)assessment["blockers"]).OfType<UnderwritingReadBlocker>().Any(x => x.Code is "underwriting-cycle-stale" or "quote-rating-expired" or "underwriting-product-unavailable" or "underwriting-configuration-unavailable" or "quote-terms-refresh-required"),
             ["currency"] = "GBP", ["annualPremium"] = Money(rating.AnnualPremium), ["termPremium"] = Money(rating.TermPremium), ["tax"] = Money(rating.Tax),
             ["fee"] = Money(rating.Fee), ["grossPayable"] = Money(rating.GrossPayable), ["brokerCommission"] = Money(rating.BrokerCommission), ["agencyTermsVersionId"] = cycle.AgencyTermsVersionId,
-            ["factors"] = outcome.Rating?.Factors.Select(x => (object)new { x.Code, label = x.Code.Replace('-', ' '), amount = Money(x.Amount), x.Direction, basisAmount = Money(x.BasisAmount), x.BasisPoints }).ToArray() ?? [],
+            ["factors"] = outcome.Rating?.Factors.Select(x => (object)new { x.Code, label = x.Code.Replace('-', ' '), amount = Money(x.Amount), x.Direction, basisAmount = Money(x.BasisAmount), x.BasisPoints, x.MultiplierBasisPoints }).ToArray() ?? [],
             ["input"] = proposal.RootElement.Clone(), ["blockers"] = assessment["blockers"] };
         await tx.CommitAsync(token); return result;
     }
@@ -48,6 +48,8 @@ public sealed partial class QuoteUnderwritingReadModel(IDbContextFactory<BackOff
         var revision = await QuoteService.CurrentRevision(db, quote, token); var now = time.GetUtcNow();
         var cycle = quote.CurrentUnderwritingCycleId is Guid id ? await db.Set<UnderwritingCycle>().AsNoTracking().SingleAsync(x => x.Id == id && x.QuoteId == quoteId, token) : null;
         var rating = cycle?.CurrentRatingId is Guid ratingId ? await db.Set<QuoteRatingResult>().AsNoTracking().SingleAsync(x => x.Id == ratingId && x.CycleId == cycle.Id, token) : null;
+        if (await db.Set<Product>().AnyAsync(x => x.Id == quote.ProductId && x.Code == CommercialCaptureRules.ProductCode, token))
+            return await AssessCommercial(db, owned, revision, cycle, rating, now, token);
         var blockers = new List<object>(); EligibleQuoteRating? eligible = null; var readyToRate = false;
         using var proposal = JsonDocument.Parse(revision.ProposalJson); using var intent = JsonDocument.Parse(revision.TermIntentJson);
         var term = QuoteTerm.Assess(intent.RootElement);

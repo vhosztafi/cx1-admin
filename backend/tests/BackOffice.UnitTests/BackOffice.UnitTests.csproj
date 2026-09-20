@@ -12,5 +12,7 @@
     <EmbeddedResource Include="../../../contracts/examples/underwriting-demo.json" LogicalName="UnderwritingExamples.Demo" />
     <EmbeddedResource Include="../../../contracts/examples/issued-*.json" LogicalName="PolicyExamples.%(Filename)%(Extension)" />
     <EmbeddedResource Include="../../../contracts/examples/commercial-combined-capture.json" LogicalName="CommercialExamples.Capture" />
+    <EmbeddedResource Include="../../../contracts/examples/commercial-underwriting-demo.json" LogicalName="CommercialExamples.Underwriting" />
+    <EmbeddedResource Include="../../../contracts/examples/commercial-combined-ready.json" LogicalName="CommercialExamples.Ready" />
   </ItemGroup>
 </Project>

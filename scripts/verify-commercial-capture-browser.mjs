@@ -3,21 +3,23 @@ import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import {spawn} from 'node:child_process';
 import {randomUUID} from 'node:crypto';
 import {chromium} from 'playwright';
+import {underwritingResponseValidator} from './validate-underwriting-response.mjs';
 
 const stage = process.argv.includes('--stage') ? process.argv[process.argv.indexOf('--stage') + 1] : 'full';
-assert.ok(['business-loss','full'].includes(stage), 'Choose an implemented acceptance stage.');
+assert.ok(['business-loss','full','rating'].includes(stage), 'Choose an implemented acceptance stage.');
+const plan = stage==='rating'?'05':stage==='full'?'04':'03';
 if (!process.argv.includes('--worker')) {
-  const output = `.local/phase8-${stage==='full'?'04':'03'}-browser-${randomUUID()}`;
+  const output = `.local/phase8-${plan}-browser-${randomUUID()}`;
   await mkdir(output, {recursive: true});
   const child = spawn('dotnet', ['test', 'backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj', '--no-restore',
-    ...(process.argv.includes('--no-build') ? ['--no-build'] : []), '--filter', `FullyQualifiedName~RealSqlCommercialCapture${stage==='full'?'Full':'BusinessLoss'}Browser`,
+    ...(process.argv.includes('--no-build') ? ['--no-build'] : []), '--filter', `FullyQualifiedName~${stage==='rating'?'RealSqlCommercialRatingBrowser':`RealSqlCommercialCapture${stage==='full'?'Full':'BusinessLoss'}Browser`}`,
     '--logger', 'trx;LogFileName=sql.trx', '--results-directory', output], {stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true});
   let log = ''; child.stdout.on('data', x => log += x); child.stderr.on('data', x => log += x);
   const code = await new Promise((resolve, reject) => {child.on('error', reject); child.on('close', resolve);});
   await writeFile(output + '/test.log', log); console.log(log.slice(-6500));
   assert.equal(code, 0, `Commercial capture browser failed: ${output}`);
   assert.match(await readFile(output + '/sql.trx', 'utf8'), /<Counters\b[^>]*total="1"[^>]*executed="1"[^>]*passed="1"[^>]*failed="0"/);
-  await writeFile(`.local/phase8-${stage==='full'?'04':'03'}-browser-current.txt`, output);
+  await writeFile(`.local/phase8-${plan}-browser-current.txt`, output);
 } else {
   const f = JSON.parse(process.env.COVER_COMMERCIAL_BROWSER_FIXTURE);
   for (const origin of [f.apiOrigin, f.webOrigin]) assert.ok(['localhost', '127.0.0.1', '[::1]'].includes(new URL(origin).hostname));
@@ -254,7 +256,39 @@ if (!process.argv.includes('--worker')) {
     assert.equal(attempts.length, 3); assert.deepEqual(attempts[0], attempts[1]); assert.deepEqual(attempts[0], attempts[2]); await page.unroute('**' + savePath);
     assert.equal((await read()).view.proposal.insured.tradingName, 'Confirmed exact retry');
     checks.push('stale save retains input, read-only comparison and explicit discard; committed lost response and intervening denial retain identical body/key/ETag and require current access recovery');
-    if(stage==='full') await fullCapture();
+    if(stage==='full'||stage==='rating') await fullCapture();
+    if(stage==='rating') {
+      await page.goto(f.webOrigin+`/quotes/${quoteId}`);
+      const panel = page.locator('.panel').filter({has:page.getByRole('heading',{name:'Commercial Combined rating',exact:true})});
+      await panel.getByRole('button',{name:'Rate quote',exact:true}).click();
+      await field('Underwriting action reason').fill('Fictional browser rating acceptance');
+      const response = page.waitForResponse(r=>r.url().endsWith(`/quotes/${quoteId}/rate`)&&r.request().method()==='POST');
+      await page.getByRole('dialog').getByRole('button',{name:'Rate quote',exact:true}).click();
+      const requested = await response; assert.equal(requested.status(),202,await requested.text());
+      let assessed;
+      for(let attempt=0;attempt<200;attempt++) {
+        const result=await page.request.get(f.apiOrigin+`/api/v1/quotes/${quoteId}/underwriting`);assert.equal(result.status(),200,await result.text());assessed=await result.json();
+        if(assessed.ratingId)break;
+        assert.ok(!assessed.blockers.some(x=>x.code==='quote-rating-failed'),JSON.stringify(assessed));
+        await new Promise(resolve=>setTimeout(resolve,250));
+      }
+      assert.ok(assessed.ratingId,JSON.stringify(assessed));assert.equal(assessed.capabilities.canIssue,false);assert.equal(assessed.capabilities.canSubmit,false);
+      const saved=await page.request.get(f.apiOrigin+`/api/v1/ratings/${assessed.ratingId}`);assert.equal(saved.status(),200,await saved.text());const price=await saved.json();
+      for(const [name,value] of [['UnderwritingAssessment',assessed],['UnderwritingRatingView',price]]) {const valid=await underwritingResponseValidator(name);assert.equal(valid(value),true,JSON.stringify(valid.errors));}
+      assert.equal(price.input.productCode,'commercial-combined');assert.equal(price.applicable,true);assert.equal(price.fee,'75.00');assert.ok(price.factors.some(x=>x.multiplierBasisPoints===17000));
+      await panel.getByRole('button',{name:'Re-rate quote',exact:true}).and(page.locator(':enabled')).waitFor();
+      await page.reload();
+      const gross=new Intl.NumberFormat('en-GB',{style:'currency',currency:'GBP'}).format(Number(price.grossPayable));
+      await panel.getByText(gross,{exact:true}).waitFor();
+      await panel.locator('summary').filter({hasText:'Saved rating factors'}).click();
+      await panel.getByRole('region',{name:'Commercial rating factors'}).waitFor();
+      await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:f.output+'/rating-desktop.png',fullPage:true});
+      await page.setViewportSize({width:390,height:844});await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:f.output+'/rating-mobile.png',fullPage:true});
+      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1),true);
+      await page.setViewportSize({width:1480,height:980});
+      await writeFile(f.output+'/rating.json',JSON.stringify(price,null,2));await writeFile(f.output+'/rating-assessment.json',JSON.stringify(assessed,null,2));
+      checks.push('CC durable rating requested from actual UI, actual API schemas validated, saved premium/factors/multiplier read back and displayed after reload at desktop/390px, no terms/issue authority fabricated');
+    }
     const mtId = await create('MT-BROWSER', /Road Risks/); assert.notEqual(mtId, quoteId);
     const mt = await page.request.get(f.apiOrigin + `/api/v1/quotes/${mtId}`); assert.equal((await mt.json()).productCode, 'motor-trade-road-risks');
     await page.getByRole('heading', {name: /Edit QT-/}).waitFor(); assert.equal(await field('Entity type').count(), 0);

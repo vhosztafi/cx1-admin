@@ -1,0 +1,946 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cover.example/schemas/commercial-underwriting.schema.json",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "demo": {
+          "const": true
+        },
+        "kind": {
+          "const": "rating"
+        },
+        "schemaVersion": {
+          "const": "commercial-underwriting-1"
+        },
+        "productCode": {
+          "const": "commercial-combined"
+        },
+        "referenceVersion": {
+          "const": "commercial-reference-1"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "effectiveFrom": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "effectiveTo": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "quoteValidityDays": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 90
+        },
+        "basePremium": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+        },
+        "glassPremium": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+        },
+        "minimumPremium": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+        },
+        "maximumAnnualPremium": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+        },
+        "newBusinessFee": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+        },
+        "adjustmentFee": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+        },
+        "renewalFee": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+        },
+        "buildingsRateBps": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "contentsRateBps": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "stockRateBps": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "businessInterruptionRateBps": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "bonaFideRateBps": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "publicLiabilityTurnoverRateBps": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "productsLiabilityTurnoverRateBps": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "contractWorksRateBps": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "goodsInTransitRateBps": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "moneyRateBps": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "taxRateBps": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "referredConstructionLoadingBps": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "referredFloodLoadingBps": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "lossHistoryLoadingBps": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "wageRates": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "clerical": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "employees": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                },
+                "labourOnly": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                }
+              },
+              "required": [
+                "employees",
+                "labourOnly"
+              ]
+            },
+            "warehouse": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "employees": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                },
+                "labourOnly": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                }
+              },
+              "required": [
+                "employees",
+                "labourOnly"
+              ]
+            },
+            "drivers": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "employees": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                },
+                "labourOnly": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                }
+              },
+              "required": [
+                "employees",
+                "labourOnly"
+              ]
+            },
+            "woodworking": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "employees": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                },
+                "labourOnly": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                }
+              },
+              "required": [
+                "employees",
+                "labourOnly"
+              ]
+            },
+            "height": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "employees": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                },
+                "labourOnly": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                }
+              },
+              "required": [
+                "employees",
+                "labourOnly"
+              ]
+            },
+            "heat-away": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "employees": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                },
+                "labourOnly": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                }
+              },
+              "required": [
+                "employees",
+                "labourOnly"
+              ]
+            },
+            "manual-on-premises": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "employees": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                },
+                "labourOnly": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                }
+              },
+              "required": [
+                "employees",
+                "labourOnly"
+              ]
+            },
+            "manual-away": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "employees": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                },
+                "labourOnly": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                }
+              },
+              "required": [
+                "employees",
+                "labourOnly"
+              ]
+            }
+          },
+          "required": [
+            "clerical",
+            "warehouse",
+            "drivers",
+            "woodworking",
+            "height",
+            "heat-away",
+            "manual-on-premises",
+            "manual-away"
+          ]
+        },
+        "indemnityMonthsFactorsBps": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "12": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50000
+            },
+            "18": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50000
+            },
+            "24": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50000
+            },
+            "36": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50000
+            }
+          },
+          "required": [
+            "12",
+            "18",
+            "24",
+            "36"
+          ]
+        },
+        "liabilityLimitFactorsBps": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "1000000.00": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50000
+            },
+            "2000000.00": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50000
+            },
+            "5000000.00": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50000
+            },
+            "10000000.00": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50000
+            }
+          },
+          "required": [
+            "1000000.00",
+            "2000000.00",
+            "5000000.00",
+            "10000000.00"
+          ]
+        },
+        "employersLimitFactorsBps": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "5000000.00": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "10000000.00": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            }
+          },
+          "required": [
+            "5000000.00",
+            "10000000.00"
+          ]
+        },
+        "extensions": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "unspecified-suppliers": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "limit": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+                },
+                "rateBps": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                }
+              },
+              "required": [
+                "limit",
+                "rateBps"
+              ]
+            },
+            "named-suppliers": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "limit": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+                },
+                "rateBps": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                }
+              },
+              "required": [
+                "limit",
+                "rateBps"
+              ]
+            },
+            "named-customers": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "limit": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+                },
+                "rateBps": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                }
+              },
+              "required": [
+                "limit",
+                "rateBps"
+              ]
+            },
+            "denial-of-access": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "limit": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+                },
+                "rateBps": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                }
+              },
+              "required": [
+                "limit",
+                "rateBps"
+              ]
+            },
+            "loss-of-attraction": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "limit": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+                },
+                "rateBps": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                }
+              },
+              "required": [
+                "limit",
+                "rateBps"
+              ]
+            }
+          },
+          "required": [
+            "unspecified-suppliers",
+            "named-suppliers",
+            "named-customers",
+            "denial-of-access",
+            "loss-of-attraction"
+          ]
+        },
+        "selectionLimits": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "goodsInTransit": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "1": {
+                  "const": "0.00"
+                },
+                "2": {
+                  "const": "5000.00"
+                },
+                "3": {
+                  "const": "10000.00"
+                },
+                "4": {
+                  "const": "25000.00"
+                }
+              },
+              "required": [
+                "1",
+                "2",
+                "3",
+                "4"
+              ]
+            },
+            "money": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "1": {
+                  "const": "0.00"
+                },
+                "2": {
+                  "const": "1000.00"
+                },
+                "3": {
+                  "const": "2500.00"
+                },
+                "4": {
+                  "const": "5000.00"
+                }
+              },
+              "required": [
+                "1",
+                "2",
+                "3",
+                "4"
+              ]
+            }
+          },
+          "required": [
+            "goodsInTransit",
+            "money"
+          ]
+        },
+        "glassIncluded": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "1": {
+              "const": true
+            },
+            "2": {
+              "const": false
+            },
+            "3": {
+              "const": true
+            }
+          },
+          "required": [
+            "1",
+            "2",
+            "3"
+          ]
+        },
+        "sourceDispositions": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "prototype.quote.4aa3e214f046": {
+              "const": "included-in-section-rate-no-additional-charge"
+            },
+            "prototype.quote.50189a73c61c": {
+              "const": "included-in-section-rate-no-additional-charge"
+            },
+            "prototype.quote.0ea28064aade": {
+              "const": "included-in-section-rate-no-additional-charge"
+            },
+            "prototype.quote.480819d83a08": {
+              "const": "explicit-selected-cover-rule"
+            },
+            "prototype.quote.c8c59a389166": {
+              "const": "explicit-selected-cover-rule"
+            },
+            "prototype.quote.1638a58efb48": {
+              "const": "explicit-selected-cover-rule"
+            },
+            "prototype.quote.d9c260f19d59": {
+              "const": "included-in-section-rate-no-additional-charge"
+            },
+            "prototype.quote.7660fc5eb42e": {
+              "const": "explicit-selected-cover-rule"
+            },
+            "prototype.quote.7bd824326d4c": {
+              "const": "included-in-section-rate-no-additional-charge"
+            },
+            "prototype.quote.9b4688f28580": {
+              "const": "explicit-selected-cover-rule"
+            },
+            "prototype.quote.72cb884b6df1": {
+              "const": "included-in-section-rate-no-additional-charge"
+            },
+            "prototype.quote.a2f1dd35162a": {
+              "const": "explicit-selected-cover-rule"
+            },
+            "prototype.quote.ab908171e40b": {
+              "const": "explicit-selected-cover-rule"
+            },
+            "prototype.quote.17b8e4af6aef": {
+              "const": "included-in-section-rate-no-additional-charge"
+            },
+            "prototype.quote.6517b7cd5c04": {
+              "const": "included-in-section-rate-no-additional-charge"
+            },
+            "prototype.quote.4a288359be03": {
+              "const": "included-in-section-rate-no-additional-charge"
+            }
+          },
+          "required": [
+            "prototype.quote.4aa3e214f046",
+            "prototype.quote.50189a73c61c",
+            "prototype.quote.0ea28064aade",
+            "prototype.quote.480819d83a08",
+            "prototype.quote.c8c59a389166",
+            "prototype.quote.1638a58efb48",
+            "prototype.quote.d9c260f19d59",
+            "prototype.quote.7660fc5eb42e",
+            "prototype.quote.7bd824326d4c",
+            "prototype.quote.9b4688f28580",
+            "prototype.quote.72cb884b6df1",
+            "prototype.quote.a2f1dd35162a",
+            "prototype.quote.ab908171e40b",
+            "prototype.quote.17b8e4af6aef",
+            "prototype.quote.6517b7cd5c04",
+            "prototype.quote.4a288359be03"
+          ]
+        }
+      },
+      "required": [
+        "demo",
+        "kind",
+        "schemaVersion",
+        "productCode",
+        "referenceVersion",
+        "version",
+        "effectiveFrom",
+        "effectiveTo",
+        "quoteValidityDays",
+        "basePremium",
+        "glassPremium",
+        "minimumPremium",
+        "maximumAnnualPremium",
+        "newBusinessFee",
+        "adjustmentFee",
+        "renewalFee",
+        "buildingsRateBps",
+        "contentsRateBps",
+        "stockRateBps",
+        "businessInterruptionRateBps",
+        "bonaFideRateBps",
+        "publicLiabilityTurnoverRateBps",
+        "productsLiabilityTurnoverRateBps",
+        "contractWorksRateBps",
+        "goodsInTransitRateBps",
+        "moneyRateBps",
+        "taxRateBps",
+        "referredConstructionLoadingBps",
+        "referredFloodLoadingBps",
+        "lossHistoryLoadingBps",
+        "wageRates",
+        "indemnityMonthsFactorsBps",
+        "liabilityLimitFactorsBps",
+        "employersLimitFactorsBps",
+        "extensions",
+        "selectionLimits",
+        "glassIncluded",
+        "sourceDispositions"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "demo": {
+          "const": true
+        },
+        "schemaVersion": {
+          "const": "commercial-underwriting-1"
+        },
+        "productCode": {
+          "const": "commercial-combined"
+        },
+        "referenceVersion": {
+          "const": "commercial-reference-1"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "effectiveFrom": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "effectiveTo": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "kind": {
+          "const": "binder"
+        },
+        "providerId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "annualPremium": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            "singleLocation": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            "maximumEstimatedLoss": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            "districtProperty": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            "employersLiability": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            "publicLiability": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            "productsLiability": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            "businessInterruption": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            "contractWorks": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            }
+          },
+          "required": [
+            "annualPremium",
+            "singleLocation",
+            "maximumEstimatedLoss",
+            "districtProperty",
+            "employersLiability",
+            "publicLiability",
+            "productsLiability",
+            "businessInterruption",
+            "contractWorks"
+          ]
+        },
+        "reviewCodes": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "construction",
+              "flood",
+              "subsidence",
+              "unoccupancy",
+              "waste-recycling",
+              "heat-height",
+              "hazardous-work",
+              "territory-products",
+              "health-safety",
+              "business-history",
+              "loss-history"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 11,
+          "maxItems": 11
+        }
+      },
+      "required": [
+        "demo",
+        "schemaVersion",
+        "productCode",
+        "referenceVersion",
+        "version",
+        "effectiveFrom",
+        "effectiveTo",
+        "kind",
+        "providerId",
+        "limits",
+        "reviewCodes"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "demo": {
+          "const": true
+        },
+        "schemaVersion": {
+          "const": "commercial-underwriting-1"
+        },
+        "productCode": {
+          "const": "commercial-combined"
+        },
+        "referenceVersion": {
+          "const": "commercial-reference-1"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "effectiveFrom": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "effectiveTo": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "kind": {
+          "const": "authority"
+        },
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "annualPremium": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            "singleLocation": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            "maximumEstimatedLoss": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            "districtProperty": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            "employersLiability": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            "publicLiability": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            "productsLiability": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            "businessInterruption": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            "contractWorks": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            }
+          },
+          "required": [
+            "annualPremium",
+            "singleLocation",
+            "maximumEstimatedLoss",
+            "districtProperty",
+            "employersLiability",
+            "publicLiability",
+            "productsLiability",
+            "businessInterruption",
+            "contractWorks"
+          ]
+        },
+        "reviewCodes": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "construction",
+              "flood",
+              "subsidence",
+              "unoccupancy",
+              "waste-recycling",
+              "heat-height",
+              "hazardous-work",
+              "territory-products",
+              "health-safety",
+              "business-history",
+              "loss-history"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 11,
+          "maxItems": 11
+        }
+      },
+      "required": [
+        "demo",
+        "schemaVersion",
+        "productCode",
+        "referenceVersion",
+        "version",
+        "effectiveFrom",
+        "effectiveTo",
+        "kind",
+        "limits",
+        "reviewCodes"
+      ]
+    }
+  ]
+}

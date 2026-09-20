@@ -24,12 +24,14 @@ public static class DemoDatabase
         await using var db = new BackOfficeDbContext(new DbContextOptionsBuilder<BackOfficeDbContext>().UseSqlServer(connectionString, sql => sql.UseCompatibilityLevel(160)).Options);
         if (reset) await db.Database.EnsureDeletedAsync(cancellationToken);
         await db.Database.MigrateAsync(cancellationToken);
-        await SeedAsync(db,password,cancellationToken,includeSupportFlags:true,includeMatches:true,includeQuoteCapture:true,includeUnderwriting:true,includeRenewalLifecycle:true,includeCommercialCapture:true);
+        await SeedAsync(db,password,cancellationToken,includeSupportFlags:true,includeMatches:true,includeQuoteCapture:true,includeUnderwriting:true,includeRenewalLifecycle:true,includeCommercialCapture:true,includeCommercialUnderwriting:true);
     }
 
-    public static async Task SeedAsync(BackOfficeDbContext db,string password,CancellationToken cancellationToken = default,bool includeSupportFlags=false,bool includeMatches=false,bool includeQuoteCapture=false,bool includeUnderwriting=false,bool includeRenewalLifecycle=false,bool includeAccounting=true,bool includeCommercialCapture=false)
+    public static async Task SeedAsync(BackOfficeDbContext db,string password,CancellationToken cancellationToken = default,bool includeSupportFlags=false,bool includeMatches=false,bool includeQuoteCapture=false,bool includeUnderwriting=false,bool includeRenewalLifecycle=false,bool includeAccounting=true,bool includeCommercialCapture=false,bool includeCommercialUnderwriting=false)
     {
         ValidatePassword(password);
+        if (includeCommercialUnderwriting && (!includeUnderwriting || !includeCommercialCapture || !includeQuoteCapture))
+            throw new ArgumentException("Commercial underwriting initialization requires its capture and shared underwriting dependencies.");
         await using var transaction = await db.Database.BeginTransactionAsync(IsolationLevel.Serializable,cancellationToken);
         // Serialize repeat startup seeds; failure aborts rather than partially applying.
         await db.Database.ExecuteSqlRawAsync("DECLARE @result int; EXEC @result = sys.sp_getapplock @Resource = N'CoverMGA.FoundationSeed', @LockMode = 'Exclusive', @LockOwner = 'Transaction', @LockTimeout = 10000; IF @result < 0 THROW 51000, 'Foundation seed lock unavailable.', 1;",cancellationToken);
@@ -109,6 +111,7 @@ public static class DemoDatabase
         }
         if(includeRenewalLifecycle)await Policies.RenewalLifecycleSeed.SeedAsync(db,cancellationToken);
         if(includeCommercialCapture)await Quotes.CommercialCaptureSeed.SeedAsync(db,cancellationToken);
+        if(includeCommercialUnderwriting)await Underwriting.CommercialUnderwritingSeed.SeedAsync(db,cancellationToken);
         await transaction.CommitAsync(cancellationToken);
     }
 

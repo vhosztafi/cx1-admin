@@ -26,7 +26,7 @@ public sealed class QuoteRatingJobs(IDbContextFactory<BackOfficeDbContext> facto
             try
             {
                 var input = JsonSerializer.Deserialize<StoredRatingInput>(cycle.InputJson, QuoteRatingService.Json)!;
-                var eligible = await QuoteRatingEligibility.ResolveAsync(db, owned, cycle.ProductVersionId, cycle.AgencyTermsVersionId, input.Input.Term, time.GetUtcNow(), token);
+                var eligible = await QuoteRatingEligibility.ResolveAsync(db, owned, cycle.ProductVersionId, cycle.AgencyTermsVersionId, input.Term, time.GetUtcNow(), token);
                 canRetry = eligible.RatingVersion.Id == cycle.RatingRuleVersionId && eligible.BinderVersion.Id == cycle.BinderVersionId && eligible.AuthorityVersion.Id == cycle.AuthorityVersionId &&
                     eligible.RuntimeVersion.Id == input.RuntimeVersionId && eligible.ScenarioVersion.Id == input.ScenarioVersionId &&
                     (await QuoteMatching.AssessAsync(db, owned.Quote, time.GetUtcNow(), token)).Code is null;
@@ -51,7 +51,7 @@ public sealed class QuoteRatingJobs(IDbContextFactory<BackOfficeDbContext> facto
                 if (owned.Quote.CurrentUnderwritingCycleId != cycle.Id || owned.Quote.CurrentRevisionId != cycle.QuoteRevisionId || owned.Quote.State != "rating-pending")
                     throw new QuoteOperationException(409, "underwriting-cycle-stale");
                 var input = JsonSerializer.Deserialize<StoredRatingInput>(cycle.InputJson, QuoteRatingService.Json)!;
-                var eligible = await QuoteRatingEligibility.ResolveAsync(db, owned, cycle.ProductVersionId, cycle.AgencyTermsVersionId, input.Input.Term, time.GetUtcNow(), ct);
+                var eligible = await QuoteRatingEligibility.ResolveAsync(db, owned, cycle.ProductVersionId, cycle.AgencyTermsVersionId, input.Term, time.GetUtcNow(), ct);
                 if (eligible.RatingVersion.Id != cycle.RatingRuleVersionId || eligible.BinderVersion.Id != cycle.BinderVersionId || eligible.AuthorityVersion.Id != cycle.AuthorityVersionId ||
                     eligible.RuntimeVersion.Id != input.RuntimeVersionId || eligible.ScenarioVersion.Id != input.ScenarioVersionId ||
                     (await QuoteMatching.AssessAsync(db, owned.Quote, time.GetUtcNow(), ct)).Code is not null) throw new QuoteOperationException(409, "underwriting-cycle-stale");

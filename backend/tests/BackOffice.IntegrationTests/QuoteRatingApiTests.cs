@@ -14,7 +14,7 @@ namespace BackOffice.IntegrationTests;
 
 public sealed partial class UnderwritingRuntimeTests
 {
-    private static async Task CheckUnderwritingApi(BackOfficeDbContext db, string password, Guid quoteId, Guid revisionId, Guid ratingId, byte[] version)
+    private static async Task CheckUnderwritingApi(BackOfficeDbContext db, string password, Guid quoteId, Guid revisionId, Guid ratingId, byte[] version, bool commercial = false, string expectedPremium = "600.00")
     {
         using var host = new WebApplicationFactory<Program>().WithWebHostBuilder(builder => builder.UseEnvironment("Development")
             .UseSetting("Cover:SqlConnection", db.Database.GetConnectionString()).UseSetting("Cover:QuoteRatingWorkerEnabled", "false")
@@ -38,14 +38,14 @@ public sealed partial class UnderwritingRuntimeTests
         var signedIn = await SignIn("servicing@cover.example"); using var client = signedIn.Client;
         using var read = await client.GetAsync(route + "/underwriting"); read.EnsureSuccessStatusCode(); Assert.True(read.Headers.CacheControl!.NoStore);
         var assessment = await read.Content.ReadFromJsonAsync<JsonElement>();
-        Assert.Equal("rated", assessment.GetProperty("state").GetString()); Assert.True(assessment.GetProperty("capabilities").GetProperty("canSubmit").GetBoolean());
+        Assert.Equal("rated", assessment.GetProperty("state").GetString()); Assert.Equal(!commercial, assessment.GetProperty("capabilities").GetProperty("canSubmit").GetBoolean());
         Assert.False(assessment.GetProperty("capabilities").GetProperty("canIssue").GetBoolean());
-        Assert.Equal("v2", assessment.GetProperty("productVersionLabel").GetString());
+        Assert.Equal(commercial ? "v3" : "v2", assessment.GetProperty("productVersionLabel").GetString());
         Assert.False(string.IsNullOrWhiteSpace(assessment.GetProperty("providerLabel").GetString()));
         Assert.True(assessment.GetProperty("createdAt").GetDateTimeOffset() > DateTimeOffset.MinValue);
-        Assert.Contains(assessment.GetProperty("blockers").EnumerateArray(), x => x.GetProperty("code").GetString()!.StartsWith("evidence-review-required-", StringComparison.Ordinal));
+        Assert.Contains(assessment.GetProperty("blockers").EnumerateArray(), x => commercial ? x.GetProperty("code").GetString() == "commercial-underwriting-review-pending" : x.GetProperty("code").GetString()!.StartsWith("evidence-review-required-", StringComparison.Ordinal));
         using var price = await client.GetAsync($"/api/v1/ratings/{ratingId:D}"); price.EnsureSuccessStatusCode(); Assert.True(price.Headers.CacheControl!.NoStore);
-        var result = await price.Content.ReadFromJsonAsync<JsonElement>(); Assert.Equal("600.00", result.GetProperty("annualPremium").GetString()); Assert.True(result.GetProperty("applicable").GetBoolean());
+        var result = await price.Content.ReadFromJsonAsync<JsonElement>(); Assert.Equal(expectedPremium, result.GetProperty("annualPremium").GetString()); Assert.True(result.GetProperty("applicable").GetBoolean());
         Assert.Equal(revisionId, result.GetProperty("revisionId").GetGuid()); Assert.Equal(quoteId, result.GetProperty("quoteId").GetGuid());
         var workId = await db.Set<UnderwritingCycle>().Where(x => x.QuoteId == quoteId).Select(x => x.WorkId).SingleAsync();
         Assert.Equal(workId, assessment.GetProperty("jobId").GetGuid());

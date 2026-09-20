@@ -51,7 +51,9 @@ public sealed class QuoteRatingWorker(IDbContextFactory<BackOfficeDbContext> fac
             operation.State = "transient-failed"; await db.SaveChangesAsync(token); await tx.CommitAsync(token); throw Failure(JobFailure.ProviderUnavailable);
         }
         using var definition = JsonDocument.Parse(rules.DefinitionJson);
-        var calculated = scenario == "reject" ? null : QuoteRatingRules.Calculate(definition.RootElement, input.Input.Rating, input.Input.Term, input.CommissionBasisPoints, input.MinimumPremium);
+        var calculated = scenario == "reject" ? null : input.IsCommercial
+            ? CommercialRatingRules.Calculate(definition.RootElement, input.Commercial!.Rating, input.Term, input.CommissionBasisPoints, input.MinimumPremium)
+            : QuoteRatingRules.Calculate(definition.RootElement, input.Input.Rating, input.Term, input.CommissionBasisPoints, input.MinimumPremium);
         var now = time.GetUtcNow();
         var outcome = new QuoteRatingOutcome(operation.Id, scenario == "reject" ? "rejected" : "rated", now, now.AddDays(definition.RootElement.GetProperty("quoteValidityDays").GetInt32()), calculated);
         operation.State = outcome.Outcome == "rated" ? "succeeded" : "rejected"; operation.CompletedAt = now; operation.Result = JsonSerializer.Serialize(outcome, Json);
@@ -90,7 +92,7 @@ public sealed class QuoteRatingWorker(IDbContextFactory<BackOfficeDbContext> fac
                 if (actor.HasCapability("quote-rate"))
                 {
                     var owned = await QuoteUnderwritingScope.HoldAsync(db, actor, quote.Id, "quote-rate", token);
-                    eligible = await QuoteRatingEligibility.ResolveAsync(db, owned, cycle.ProductVersionId, cycle.AgencyTermsVersionId, input.Input.Term, now, token);
+                    eligible = await QuoteRatingEligibility.ResolveAsync(db, owned, cycle.ProductVersionId, cycle.AgencyTermsVersionId, input.Term, now, token);
                     if (eligible.RatingVersion.Id != cycle.RatingRuleVersionId || eligible.BinderVersion.Id != cycle.BinderVersionId || eligible.AuthorityVersion.Id != cycle.AuthorityVersionId ||
                         eligible.RuntimeVersion.Id != input.RuntimeVersionId || eligible.ScenarioVersion.Id != input.ScenarioVersionId ||
                         eligible.CommissionBasisPoints != input.CommissionBasisPoints || eligible.MinimumPremium != input.MinimumPremium ||
@@ -108,7 +110,7 @@ public sealed class QuoteRatingWorker(IDbContextFactory<BackOfficeDbContext> fac
         if (eligible is not null)
         {
             cycle.CurrentRatingId = rating is null ? null : result.Id; cycle.State = rating is null ? "failed" : "rated"; cycle.UpdatedAt = now;
-            if (rating is not null)
+            if (rating is not null && !input.IsCommercial)
             {
                 var risk = input.Input.RiskForPremium(rating.AnnualPremium);
                 var requirements = UnderwritingRules.AssessAuthority(eligible.Binder, risk).Concat(UnderwritingRules.AssessAuthority(eligible.Authority, risk))
@@ -124,6 +126,7 @@ public sealed class QuoteRatingWorker(IDbContextFactory<BackOfficeDbContext> fac
                 }
                 quote.State = requirements.Length == 0 ? "rated" : "referred";
             }
+            else if (rating is not null) quote.State = "rated"; // A price is not a CC authority decision; later actions remain explicitly closed.
             // Provider rejection is a rating failure, never an underwriting
             // decline decision made on behalf of a human underwriter.
             quote.UpdatedAt = now;
@@ -142,7 +145,7 @@ public sealed class QuoteRatingWorker(IDbContextFactory<BackOfficeDbContext> fac
         try
         {
             var input = JsonSerializer.Deserialize<StoredRatingInput>(cycle.InputJson, Json);
-            if (input is null || input.Format != "underwriting-input-1" || input.Input is null || input.ScenarioVersionId == Guid.Empty || input.RuntimeVersionId == Guid.Empty) throw Failure(JobFailure.InvalidPayload);
+            if (input is null || (!input.IsCommercial && (input.Format != "underwriting-input-1" || input.Input is null || input.Commercial is not null)) || input.ScenarioVersionId == Guid.Empty || input.RuntimeVersionId == Guid.Empty) throw Failure(JobFailure.InvalidPayload);
             return input;
         }
         catch (JsonException) { throw Failure(JobFailure.InvalidPayload); }

@@ -5,6 +5,7 @@ using System.Text.Json;
 using BackOffice.Application.Quotes;
 using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Quotes;
+using BackOffice.Infrastructure.Underwriting;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
@@ -23,6 +24,9 @@ public sealed partial class QuoteStorageTests
     [Fact]
     public Task RealSqlCommercialCaptureFullBrowser() => RunCommercialCaptureBrowser("full");
 
+    [Fact]
+    public Task RealSqlCommercialRatingBrowser() => RunCommercialCaptureBrowser("rating");
+
     private async Task RunCommercialCaptureBrowser(string stage)
     {
         await WithDatabase(async (db, password) =>
@@ -31,8 +35,13 @@ public sealed partial class QuoteStorageTests
             while (root is not null && !File.Exists(Path.Combine(root.FullName, "package.json"))) root = root.Parent;
             Assert.NotNull(root);
             Assert.True(File.Exists(Path.Combine(root.FullName, "apps/backoffice/.next/BUILD_ID")));
-            await DemoDatabase.SeedAsync(db, password, includeQuoteCapture: true, includeCommercialCapture: true);
-            var cc = await CreateFixture(db, "-CC-BROWSER", CommercialCaptureRules.ProductCode, 2);
+            await DemoDatabase.SeedAsync(db, password, includeQuoteCapture: true, includeCommercialCapture: true, includeUnderwriting: stage == "rating");
+            if (stage == "rating")
+            {
+                await using var transaction = await db.Database.BeginTransactionAsync();
+                await CommercialUnderwritingSeed.SeedAsync(db); await transaction.CommitAsync();
+            }
+            var cc = await CreateFixture(db, "-CC-BROWSER", CommercialCaptureRules.ProductCode, stage == "rating" ? 3 : 2, fullTerms: stage == "rating");
             var mt = await CreateFixture(db, "-MT-BROWSER");
             await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Agency SET State=N'active' WHERE Id={cc.Agency} OR Id={mt.Agency}");
             var fixtureCreatedAt = new QuoteTime().GetUtcNow().AddDays(-1);
@@ -105,7 +114,7 @@ public sealed partial class QuoteStorageTests
                 Assert.False(declarations.Single(x => x.GetProperty("questionId").GetString() == "prototype.quote.385743089b72").GetProperty("value").GetBoolean());
                 foreach (var question in report.RootElement.GetProperty("verifiedQuestionIds").EnumerateArray())
                     Assert.Contains(revisions, revision => revision.ProposalJson.Contains(question.GetString()!, StringComparison.Ordinal));
-                if (stage == "full")
+                if (stage is "full" or "rating")
                 {
                     Assert.Equal(109, report.RootElement.GetProperty("verifiedQuestionIds").GetArrayLength());
                     Assert.Equal(2, final.RootElement.GetProperty("risk").GetProperty("locations").GetArrayLength());

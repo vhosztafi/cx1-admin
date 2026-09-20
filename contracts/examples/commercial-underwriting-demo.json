@@ -1,0 +1,212 @@
+{
+  "rating": {
+    "demo": true,
+    "kind": "rating",
+    "schemaVersion": "commercial-underwriting-1",
+    "productCode": "commercial-combined",
+    "referenceVersion": "commercial-reference-1",
+    "version": "commercial-demo-rate-1",
+    "effectiveFrom": "2026-09-01T00:00:00Z",
+    "effectiveTo": "2030-01-01T00:00:00Z",
+    "quoteValidityDays": 30,
+    "basePremium": "250.00",
+    "glassPremium": "35.00",
+    "minimumPremium": "500.00",
+    "maximumAnnualPremium": "100000.00",
+    "newBusinessFee": "75.00",
+    "adjustmentFee": "25.00",
+    "renewalFee": "75.00",
+    "buildingsRateBps": 5,
+    "contentsRateBps": 12,
+    "stockRateBps": 20,
+    "businessInterruptionRateBps": 10,
+    "bonaFideRateBps": 0,
+    "publicLiabilityTurnoverRateBps": 4,
+    "productsLiabilityTurnoverRateBps": 3,
+    "contractWorksRateBps": 15,
+    "goodsInTransitRateBps": 100,
+    "moneyRateBps": 200,
+    "taxRateBps": 1200,
+    "referredConstructionLoadingBps": 1500,
+    "referredFloodLoadingBps": 2000,
+    "lossHistoryLoadingBps": 1000,
+    "wageRates": {
+      "clerical": {
+        "employees": 5,
+        "labourOnly": 10
+      },
+      "warehouse": {
+        "employees": 15,
+        "labourOnly": 20
+      },
+      "drivers": {
+        "employees": 20,
+        "labourOnly": 25
+      },
+      "woodworking": {
+        "employees": 30,
+        "labourOnly": 40
+      },
+      "height": {
+        "employees": 45,
+        "labourOnly": 55
+      },
+      "heat-away": {
+        "employees": 50,
+        "labourOnly": 60
+      },
+      "manual-on-premises": {
+        "employees": 25,
+        "labourOnly": 35
+      },
+      "manual-away": {
+        "employees": 35,
+        "labourOnly": 45
+      }
+    },
+    "indemnityMonthsFactorsBps": {
+      "12": 10000,
+      "18": 13500,
+      "24": 17000,
+      "36": 23000
+    },
+    "liabilityLimitFactorsBps": {
+      "1000000.00": 7000,
+      "2000000.00": 8000,
+      "5000000.00": 10000,
+      "10000000.00": 12500
+    },
+    "employersLimitFactorsBps": {
+      "5000000.00": 9000,
+      "10000000.00": 10000
+    },
+    "extensions": {
+      "unspecified-suppliers": {
+        "limit": "100000.00",
+        "rateBps": 15
+      },
+      "named-suppliers": {
+        "limit": "250000.00",
+        "rateBps": 12
+      },
+      "named-customers": {
+        "limit": "250000.00",
+        "rateBps": 12
+      },
+      "denial-of-access": {
+        "limit": "100000.00",
+        "rateBps": 10
+      },
+      "loss-of-attraction": {
+        "limit": "50000.00",
+        "rateBps": 10
+      }
+    },
+    "selectionLimits": {
+      "goodsInTransit": {
+        "1": "0.00",
+        "2": "5000.00",
+        "3": "10000.00",
+        "4": "25000.00"
+      },
+      "money": {
+        "1": "0.00",
+        "2": "1000.00",
+        "3": "2500.00",
+        "4": "5000.00"
+      }
+    },
+    "glassIncluded": {
+      "1": true,
+      "2": false,
+      "3": true
+    },
+    "sourceDispositions": {
+      "prototype.quote.4aa3e214f046": "included-in-section-rate-no-additional-charge",
+      "prototype.quote.50189a73c61c": "included-in-section-rate-no-additional-charge",
+      "prototype.quote.0ea28064aade": "included-in-section-rate-no-additional-charge",
+      "prototype.quote.480819d83a08": "explicit-selected-cover-rule",
+      "prototype.quote.c8c59a389166": "explicit-selected-cover-rule",
+      "prototype.quote.1638a58efb48": "explicit-selected-cover-rule",
+      "prototype.quote.d9c260f19d59": "included-in-section-rate-no-additional-charge",
+      "prototype.quote.7660fc5eb42e": "explicit-selected-cover-rule",
+      "prototype.quote.7bd824326d4c": "included-in-section-rate-no-additional-charge",
+      "prototype.quote.9b4688f28580": "explicit-selected-cover-rule",
+      "prototype.quote.72cb884b6df1": "included-in-section-rate-no-additional-charge",
+      "prototype.quote.a2f1dd35162a": "explicit-selected-cover-rule",
+      "prototype.quote.ab908171e40b": "explicit-selected-cover-rule",
+      "prototype.quote.17b8e4af6aef": "included-in-section-rate-no-additional-charge",
+      "prototype.quote.6517b7cd5c04": "included-in-section-rate-no-additional-charge",
+      "prototype.quote.4a288359be03": "included-in-section-rate-no-additional-charge"
+    }
+  },
+  "binder": {
+    "demo": true,
+    "schemaVersion": "commercial-underwriting-1",
+    "productCode": "commercial-combined",
+    "referenceVersion": "commercial-reference-1",
+    "effectiveFrom": "2026-09-01T00:00:00Z",
+    "effectiveTo": "2030-01-01T00:00:00Z",
+    "kind": "binder",
+    "version": "commercial-demo-binder-1",
+    "providerId": "00000000-0000-0000-0000-000000000001",
+    "limits": {
+      "annualPremium": "100000.00",
+      "singleLocation": "2500000.00",
+      "maximumEstimatedLoss": "2000000.00",
+      "districtProperty": "40000000.00",
+      "employersLiability": "10000000.00",
+      "publicLiability": "5000000.00",
+      "productsLiability": "5000000.00",
+      "businessInterruption": "5000000.00",
+      "contractWorks": "1000000.00"
+    },
+    "reviewCodes": [
+      "construction",
+      "flood",
+      "subsidence",
+      "unoccupancy",
+      "waste-recycling",
+      "heat-height",
+      "hazardous-work",
+      "territory-products",
+      "health-safety",
+      "business-history",
+      "loss-history"
+    ]
+  },
+  "authority": {
+    "demo": true,
+    "schemaVersion": "commercial-underwriting-1",
+    "productCode": "commercial-combined",
+    "referenceVersion": "commercial-reference-1",
+    "effectiveFrom": "2026-09-01T00:00:00Z",
+    "effectiveTo": "2030-01-01T00:00:00Z",
+    "kind": "authority",
+    "version": "commercial-demo-senior-1",
+    "limits": {
+      "annualPremium": "100000.00",
+      "singleLocation": "2500000.00",
+      "maximumEstimatedLoss": "2000000.00",
+      "districtProperty": "40000000.00",
+      "employersLiability": "10000000.00",
+      "publicLiability": "5000000.00",
+      "productsLiability": "5000000.00",
+      "businessInterruption": "5000000.00",
+      "contractWorks": "1000000.00"
+    },
+    "reviewCodes": [
+      "construction",
+      "flood",
+      "subsidence",
+      "unoccupancy",
+      "waste-recycling",
+      "heat-height",
+      "hazardous-work",
+      "territory-products",
+      "health-safety",
+      "business-history",
+      "loss-history"
+    ]
+  }
+}

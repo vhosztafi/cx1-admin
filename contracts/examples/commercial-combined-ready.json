@@ -1,0 +1,1086 @@
+{
+  "cover": {
+    "contractWorks": {
+      "excess": "250.00",
+      "selected": true,
+      "sumInsured": "10000.01"
+    },
+    "responses": {
+      "answers": [
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.4aa3e214f046",
+          "value": {
+            "collection": "prototype.quote.4aa3e214f046",
+            "label": "Reinstatement",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.50189a73c61c",
+          "value": {
+            "collection": "prototype.quote.50189a73c61c",
+            "label": "Declared value",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.0ea28064aade",
+          "value": false
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.480819d83a08",
+          "value": {
+            "collection": "prototype.quote.480819d83a08",
+            "label": "Not required",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.c8c59a389166",
+          "value": {
+            "collection": "prototype.quote.c8c59a389166",
+            "label": "Not required",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.1638a58efb48",
+          "value": {
+            "collection": "prototype.quote.1638a58efb48",
+            "label": "Included",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.d9c260f19d59",
+          "value": {
+            "collection": "prototype.quote.d9c260f19d59",
+            "label": "Forcible and violent entry",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "currency": "GBP",
+          "kind": "money",
+          "questionId": "prototype.quote-value.5743fa7db272",
+          "value": "0.00"
+        },
+        {
+          "currency": "GBP",
+          "kind": "money",
+          "questionId": "prototype.quote-value.fa63248f9ae1",
+          "value": "0.00"
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.7660fc5eb42e",
+          "value": true
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.7bd824326d4c",
+          "value": {
+            "collection": "prototype.quote.7bd824326d4c",
+            "label": "None",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.72cb884b6df1",
+          "value": false
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.a2f1dd35162a",
+          "value": {
+            "collection": "prototype.quote.a2f1dd35162a",
+            "label": "Not required",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.ab908171e40b",
+          "value": {
+            "collection": "prototype.quote.ab908171e40b",
+            "label": "Not required",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.9b4688f28580",
+          "value": {
+            "collection": "prototype.quote.9b4688f28580",
+            "label": "Named suppliers",
+            "value": 3,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.17b8e4af6aef",
+          "value": {
+            "collection": "prototype.quote.17b8e4af6aef",
+            "label": "£250",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.6517b7cd5c04",
+          "value": {
+            "collection": "prototype.quote.6517b7cd5c04",
+            "label": "£1,000",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.4a288359be03",
+          "value": {
+            "collection": "prototype.quote.4a288359be03",
+            "label": "£1,000",
+            "value": 2,
+            "version": "commercial-reference-1"
+          }
+        }
+      ],
+      "questionSetVersion": "commercial-questions-1"
+    }
+  },
+  "format": "commercial-combined-capture-1",
+  "insured": {
+    "address": {
+      "country": "GB",
+      "line1": "1 Fictional Street",
+      "line2": "Fictional Suite",
+      "postcode": "SW1A 1AA",
+      "town": "London"
+    },
+    "companyNumber": "FICTIONAL01",
+    "contact": {
+      "email": "fictional@example.test",
+      "telephone": "02079460000"
+    },
+    "entityType": "charity-or-trust",
+    "legalName": "Fictional Commercial Rating Example",
+    "proposerNames": [
+      "Fictional Proposer One",
+      "Fictional Proposer Two"
+    ],
+    "tradingName": "Confirmed exact retry"
+  },
+  "productCode": "commercial-combined",
+  "risk": {
+    "business": {
+      "activities": [
+        {
+          "code": "WAREHOUSE",
+          "description": "Fictional warehouse",
+          "id": "24698cf8-0bc2-4d53-a676-80af09a0dca1",
+          "percentageBasisPoints": 10000
+        }
+      ],
+      "description": "Fictional warehouse and retail activity",
+      "responses": {
+        "answers": [
+          {
+            "kind": "percentage",
+            "questionId": "prototype.quote-value.0b9bf2ac4b8f",
+            "unit": "basis-points",
+            "value": 0
+          },
+          {
+            "kind": "percentage",
+            "questionId": "prototype.quote-value.c2b0372b4040",
+            "unit": "basis-points",
+            "value": 0
+          },
+          {
+            "kind": "count",
+            "questionId": "prototype.quote-value.92094fbe9a4b",
+            "value": 2
+          },
+          {
+            "kind": "text",
+            "questionId": "prototype.quote-value.433ec08d2c67",
+            "value": "Fictional declared details"
+          },
+          {
+            "kind": "text",
+            "questionId": "prototype.quote-value.4479e664ad2f",
+            "value": "Fictional declared details"
+          }
+        ],
+        "questionSetVersion": "commercial-questions-1"
+      },
+      "startedOn": "2024-01-01",
+      "turnover": "125000.01",
+      "vatRegistered": false
+    },
+    "businessInterruption": {
+      "basis": "estimated-gross-profit",
+      "declarationLinked": false,
+      "dependencies": [
+        {
+          "id": "29d6fd33-d748-4073-8c2c-e85235fd2994",
+          "kind": "supplier",
+          "limit": "10000.01",
+          "name": "Fictional supplier"
+        }
+      ],
+      "indemnityMonths": 24,
+      "sumInsured": "500000.01"
+    },
+    "declarations": {
+      "answers": [
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.d1edba1174f6",
+          "value": {
+            "collection": "prototype.quote.d1edba1174f6",
+            "label": "Under 1",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.0837e6f73be3",
+          "value": {
+            "collection": "prototype.quote.0837e6f73be3",
+            "label": "0",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.2d40a8dab2ab",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.cfb8d4a5494b",
+          "value": true
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.eb57b4a6cc8b",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.96730bd9301a",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.4e601dd4932b",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.f92e963f393c",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.8581de6c0b2a",
+          "value": false
+        },
+        {
+          "kind": "text",
+          "questionId": "prototype.quote-value.b99b3a5b3004",
+          "value": "Fictional captured history"
+        },
+        {
+          "kind": "text",
+          "questionId": "prototype.quote-value.7adfff3ade76",
+          "value": "Fictional captured history"
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.385743089b72",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.ec38529cf3bd",
+          "value": false
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.b01896689f29",
+          "value": {
+            "collection": "prototype.quote.b01896689f29",
+            "label": "No",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.755d136885fb",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.cae14bccab65",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.c70fcdf94e4e",
+          "value": true
+        },
+        {
+          "kind": "text",
+          "questionId": "prototype.quote-value.59c91e8db152",
+          "value": "Fictional declared details"
+        },
+        {
+          "kind": "text",
+          "questionId": "prototype.quote-value.acace76b1053",
+          "value": "Fictional declared details"
+        },
+        {
+          "kind": "text",
+          "questionId": "prototype.quote-value.5fcb5378a1fd",
+          "value": "Fictional declared details"
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.0b0b63fca324",
+          "value": false
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.1eb02b0beba5",
+          "value": {
+            "collection": "prototype.quote.1eb02b0beba5",
+            "label": "Five lever mortice deadlocks",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.2205e438b495",
+          "value": {
+            "collection": "prototype.quote.2205e438b495",
+            "label": "Key operated locks",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.5d2c84a6ef5d",
+          "value": {
+            "collection": "prototype.quote.5d2c84a6ef5d",
+            "label": "Key operated locks",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.b2bce40c1c39",
+          "value": {
+            "collection": "prototype.quote.b2bce40c1c39",
+            "label": "Bars or grilles",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.e62d19571aec",
+          "value": {
+            "collection": "prototype.quote.e62d19571aec",
+            "label": "Padlocked and barred",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.ffef496a4941",
+          "value": {
+            "collection": "prototype.quote.ffef496a4941",
+            "label": "None",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.97735e54bc94",
+          "value": {
+            "collection": "prototype.quote.97735e54bc94",
+            "label": "None",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.cf8731449193",
+          "value": {
+            "collection": "prototype.quote.cf8731449193",
+            "label": "Extinguishers only",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.3940cae87dfb",
+          "value": {
+            "collection": "prototype.quote.3940cae87dfb",
+            "label": "Not confirmed",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.9608e47f7b80",
+          "value": {
+            "collection": "prototype.quote.9608e47f7b80",
+            "label": "Yes",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.eb37b8814a01",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.575bf422116e",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.baae85efce04",
+          "value": false
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.48f5d2ed7ce2",
+          "value": {
+            "collection": "prototype.quote.48f5d2ed7ce2",
+            "label": "No",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.ade0f3f0df5e",
+          "value": {
+            "collection": "prototype.quote.ade0f3f0df5e",
+            "label": "Yes — at the location",
+            "value": 2,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.c08c9ebaf825",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.a6ff9fdbe769",
+          "value": false
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.04b74c2e0a69",
+          "value": {
+            "collection": "prototype.quote.04b74c2e0a69",
+            "label": "None",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.9922d03ca861",
+          "value": {
+            "collection": "prototype.quote.9922d03ca861",
+            "label": "No",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.aaccb5c97c33",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.8293bc041f81",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.02d9c6be528a",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.a6a4579c177e",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.7a732bc99a5f",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.fcc7e22c33ea",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.923e600eb3a4",
+          "value": false
+        },
+        {
+          "kind": "text",
+          "questionId": "prototype.quote-value.4799b8daa1ca",
+          "value": "Fictional declared details"
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.be47c08f530f",
+          "value": true
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.901a02ca4441",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.8cc83c3a006f",
+          "value": true
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.185df2844c76",
+          "value": true
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.ed8870d17328",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.c329b4c60f47",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.36ef01068295",
+          "value": true
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.831e903a8f35",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.f538427148cf",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.102cb08b7d6d",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.3d43cf2d782f",
+          "value": false
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.66437482d634",
+          "value": false
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.00fa2758dd8c",
+          "value": {
+            "collection": "prototype.quote.00fa2758dd8c",
+            "label": "Yes",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.6d9a54d9e464",
+          "value": {
+            "collection": "prototype.quote.6d9a54d9e464",
+            "label": "Yes",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.a5994aa6ce31",
+          "value": false
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.956ebc71fded",
+          "value": {
+            "collection": "prototype.quote.956ebc71fded",
+            "label": "Yes",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "boolean",
+          "questionId": "prototype.quote.796bcb8ff723",
+          "value": false
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.992fa2724da2",
+          "value": {
+            "collection": "prototype.quote.992fa2724da2",
+            "label": "Yes",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.ca115cf242f7",
+          "value": {
+            "collection": "prototype.quote.ca115cf242f7",
+            "label": "Yes",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "reference",
+          "questionId": "prototype.quote.978fde66afb5",
+          "value": {
+            "collection": "prototype.quote.978fde66afb5",
+            "label": "No",
+            "value": 1,
+            "version": "commercial-reference-1"
+          }
+        },
+        {
+          "kind": "text",
+          "questionId": "prototype.quote-value.a0e5d1b910f8",
+          "value": "Fictional declared details"
+        }
+      ],
+      "questionSetVersion": "commercial-questions-1"
+    },
+    "liability": {
+      "employersLimit": "10000000.00",
+      "employersReferenceNumber": "FICTIONAL/ERN",
+      "hotWorksProcedures": "Fictional permit and fire-watch procedure",
+      "maximumHeightMetres": 2.05,
+      "productsLimit": "0.00",
+      "publicLimit": "5000000.00"
+    },
+    "locations": [
+      {
+        "address": {
+          "country": "GB",
+          "county": "South Yorkshire",
+          "line1": "1 Fictional Works",
+          "line2": "Fictional unit",
+          "postcode": "S9 2QT",
+          "town": "Sheffield"
+        },
+        "buildings": "100000.01",
+        "contents": "25000.12",
+        "floodZone": "1",
+        "id": "cfbfdac3-389d-4468-918d-628b1b775939",
+        "maximumEstimatedLoss": "120000.00",
+        "occupancy": "Warehouse and storage",
+        "reference": "LOC-1",
+        "responses": {
+          "answers": [
+            {
+              "kind": "boolean",
+              "questionId": "prototype.addloc.sole-occupier",
+              "value": false
+            },
+            {
+              "kind": "boolean",
+              "questionId": "prototype.addloc.detached",
+              "value": true
+            },
+            {
+              "kind": "count",
+              "questionId": "prototype.addloc.year-built",
+              "value": 2000
+            },
+            {
+              "kind": "reference",
+              "questionId": "prototype.addloc.storeys",
+              "value": {
+                "collection": "prototype.addloc.storeys",
+                "label": "1",
+                "value": 1,
+                "version": "commercial-reference-1"
+              }
+            },
+            {
+              "kind": "reference",
+              "questionId": "prototype.addloc.wall-construction",
+              "value": {
+                "collection": "prototype.addloc.wall-construction",
+                "label": "Brick",
+                "value": 1,
+                "version": "commercial-reference-1"
+              }
+            },
+            {
+              "kind": "reference",
+              "questionId": "prototype.addloc.roof-construction",
+              "value": {
+                "collection": "prototype.addloc.roof-construction",
+                "label": "Profile steel sheet",
+                "value": 1,
+                "version": "commercial-reference-1"
+              }
+            },
+            {
+              "kind": "reference",
+              "questionId": "prototype.addloc.flat-roof",
+              "value": {
+                "collection": "prototype.addloc.flat-roof",
+                "label": "None",
+                "value": 1,
+                "version": "commercial-reference-1"
+              }
+            },
+            {
+              "kind": "reference",
+              "questionId": "prototype.addloc.composite-panels",
+              "value": {
+                "collection": "prototype.addloc.composite-panels",
+                "label": "No",
+                "value": 1,
+                "version": "commercial-reference-1"
+              }
+            },
+            {
+              "kind": "boolean",
+              "questionId": "prototype.addloc.timber-frame",
+              "value": false
+            },
+            {
+              "kind": "reference",
+              "questionId": "prototype.addloc.heritage-listed",
+              "value": {
+                "collection": "prototype.addloc.heritage-listed",
+                "label": "No",
+                "value": 1,
+                "version": "commercial-reference-1"
+              }
+            },
+            {
+              "kind": "reference",
+              "questionId": "prototype.addloc.heating",
+              "value": {
+                "collection": "prototype.addloc.heating",
+                "label": "Gas warm air",
+                "value": 1,
+                "version": "commercial-reference-1"
+              }
+            },
+            {
+              "kind": "reference",
+              "questionId": "prototype.addloc.basement",
+              "value": {
+                "collection": "prototype.addloc.basement",
+                "label": "No",
+                "value": 1,
+                "version": "commercial-reference-1"
+              }
+            },
+            {
+              "kind": "reference",
+              "questionId": "prototype.addloc.intruder-alarm",
+              "value": {
+                "collection": "prototype.addloc.intruder-alarm",
+                "label": "None",
+                "value": 1,
+                "version": "commercial-reference-1"
+              }
+            },
+            {
+              "kind": "boolean",
+              "questionId": "prototype.addloc.police-response",
+              "value": false
+            },
+            {
+              "kind": "reference",
+              "questionId": "prototype.addloc.fire-alarm",
+              "value": {
+                "collection": "prototype.addloc.fire-alarm",
+                "label": "None",
+                "value": 1,
+                "version": "commercial-reference-1"
+              }
+            }
+          ],
+          "questionSetVersion": "commercial-questions-1"
+        },
+        "sprinklers": false,
+        "stock": "5000.03"
+      },
+      {
+        "address": {
+          "country": "GB",
+          "county": "South Yorkshire",
+          "line1": "2 Fictional Works",
+          "line2": "Fictional unit",
+          "postcode": "S4 7AA",
+          "town": "Sheffield"
+        },
+        "buildings": "200000.00",
+        "contents": "25000.02",
+        "floodZone": "1",
+        "id": "cfad3a28-99cc-4262-a32f-c1212ace5a4e",
+        "maximumEstimatedLoss": "120000.00",
+        "occupancy": "Warehouse and storage",
+        "reference": "LOC-2",
+        "responses": {
+          "answers": [
+            {
+              "kind": "boolean",
+              "questionId": "prototype.addloc.sole-occupier",
+              "value": false
+            },
+            {
+              "kind": "boolean",
+              "questionId": "prototype.addloc.detached",
+              "value": true
+            },
+            {
+              "kind": "count",
+              "questionId": "prototype.addloc.year-built",
+              "value": 2000
+            },
+            {
+              "kind": "reference",
+              "questionId": "prototype.addloc.storeys",
+              "value": {
+                "collection": "prototype.addloc.storeys",
+                "label": "1",
+                "value": 1,
+                "version": "commercial-reference-1"
+              }
+            },
+            {
+              "kind": "reference",
+              "questionId": "prototype.addloc.wall-construction",
+              "value": {
+                "collection": "prototype.addloc.wall-construction",
+                "label": "Brick",
+                "value": 1,
+                "version": "commercial-reference-1"
+              }
+            },
+            {
+              "kind": "reference",
+              "questionId": "prototype.addloc.roof-construction",
+              "value": {
+                "collection": "prototype.addloc.roof-construction",
+                "label": "Profile steel sheet",
+                "value": 1,
+                "version": "commercial-reference-1"
+              }
+            },
+            {
+              "kind": "reference",
+              "questionId": "prototype.addloc.flat-roof",
+              "value": {
+                "collection": "prototype.addloc.flat-roof",
+                "label": "None",
+                "value": 1,
+                "version": "commercial-reference-1"
+              }
+            },
+            {
+              "kind": "reference",
+              "questionId": "prototype.addloc.composite-panels",
+              "value": {
+                "collection": "prototype.addloc.composite-panels",
+                "label": "No",
+                "value": 1,
+                "version": "commercial-reference-1"
+              }
+            },
+            {
+              "kind": "boolean",
+              "questionId": "prototype.addloc.timber-frame",
+              "value": false
+            },
+            {
+              "kind": "reference",
+              "questionId": "prototype.addloc.heritage-listed",
+              "value": {
+                "collection": "prototype.addloc.heritage-listed",
+                "label": "No",
+                "value": 1,
+                "version": "commercial-reference-1"
+              }
+            },
+            {
+              "kind": "reference",
+              "questionId": "prototype.addloc.heating",
+              "value": {
+                "collection": "prototype.addloc.heating",
+                "label": "Gas warm air",
+                "value": 1,
+                "version": "commercial-reference-1"
+              }
+            },
+            {
+              "kind": "reference",
+              "questionId": "prototype.addloc.basement",
+              "value": {
+                "collection": "prototype.addloc.basement",
+                "label": "No",
+                "value": 1,
+                "version": "commercial-reference-1"
+              }
+            },
+            {
+              "kind": "reference",
+              "questionId": "prototype.addloc.intruder-alarm",
+              "value": {
+                "collection": "prototype.addloc.intruder-alarm",
+                "label": "None",
+                "value": 1,
+                "version": "commercial-reference-1"
+              }
+            },
+            {
+              "kind": "boolean",
+              "questionId": "prototype.addloc.police-response",
+              "value": false
+            },
+            {
+              "kind": "reference",
+              "questionId": "prototype.addloc.fire-alarm",
+              "value": {
+                "collection": "prototype.addloc.fire-alarm",
+                "label": "None",
+                "value": 1,
+                "version": "commercial-reference-1"
+              }
+            }
+          ],
+          "questionSetVersion": "commercial-questions-1"
+        },
+        "sprinklers": false,
+        "stock": "5000.03"
+      }
+    ],
+    "losses": [],
+    "materialFacts": "Fictional fully captured commercial proposal for browser verification.",
+    "wages": [
+      {
+        "bonaFideSubcontractors": "0.00",
+        "category": {
+          "collection": "cc-wage",
+          "label": "Other manual work on own premises",
+          "value": "manual-on-premises",
+          "version": "commercial-reference-1"
+        },
+        "employees": "50000.01",
+        "id": "5718045b-d34a-4c55-8b89-6a9615322e97",
+        "labourOnlySubcontractors": "10000.00",
+        "notes": "Fictional annual wages",
+        "responses": {
+          "answers": [
+            {
+              "kind": "count",
+              "questionId": "prototype.addwage.headcount",
+              "value": 2
+            }
+          ],
+          "questionSetVersion": "commercial-questions-1"
+        }
+      },
+      {
+        "bonaFideSubcontractors": "0.00",
+        "category": {
+          "collection": "cc-wage",
+          "label": "Clerical",
+          "value": "clerical",
+          "version": "commercial-reference-1"
+        },
+        "employees": "25000.02",
+        "id": "f23782a5-03a8-4fff-a531-1245472d467b",
+        "labourOnlySubcontractors": "10000.00",
+        "notes": "Fictional annual wages",
+        "responses": {
+          "answers": [
+            {
+              "kind": "count",
+              "questionId": "prototype.addwage.headcount",
+              "value": 2
+            }
+          ],
+          "questionSetVersion": "commercial-questions-1"
+        }
+      }
+    ]
+  },
+  "schemaVersion": "1.0",
+  "termIntent": {
+    "kind": "annual",
+    "localStartDate": "2026-09-16",
+    "localStartTime": "00:00",
+    "timeZone": "Europe/London"
+  }
+}

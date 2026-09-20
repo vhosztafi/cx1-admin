@@ -7,7 +7,8 @@ namespace BackOffice.Application.Underwriting;
 // projection. They are never accepted as an HTTP request or provider override.
 public sealed record RatingFacts(string ProductCode, int DriverCount, int VehicleCount, decimal StockLimit,
     bool PremisesSelected, bool ToolsSelected, bool HasClaims, bool HasValeting, int YoungestDriverAge, int NoClaimsYears);
-public sealed record RatingFactor(string Code, decimal Amount, string Direction, decimal BasisAmount, int? BasisPoints = null);
+public sealed record RatingFactor(string Code, decimal Amount, string Direction, decimal BasisAmount, int? BasisPoints = null,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] int? MultiplierBasisPoints = null);
 public sealed record CalculatedQuoteRating(decimal AnnualPremium, decimal TermPremium, decimal Tax, decimal Fee,
     decimal GrossPayable, decimal BrokerCommission, decimal CivilDays, decimal AnnualCivilDays, IReadOnlyList<RatingFactor> Factors);
 

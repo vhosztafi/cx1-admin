@@ -11,7 +11,25 @@ using Microsoft.EntityFrameworkCore;
 namespace BackOffice.Infrastructure.Underwriting;
 
 public sealed record StoredRatingInput(string Format, ProjectedUnderwritingInput Input, int CommissionBasisPoints,
-    decimal? MinimumPremium, Guid RuntimeVersionId, Guid ScenarioVersionId);
+    decimal? MinimumPremium, Guid RuntimeVersionId, Guid ScenarioVersionId)
+{
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public ProjectedCommercialUnderwritingInput? Commercial { get; init; }
+    [System.Text.Json.Serialization.JsonIgnore]
+    public ResolvedQuoteTerm Term => Commercial?.Term ?? Input.Term;
+    [System.Text.Json.Serialization.JsonIgnore]
+    public bool IsCommercial => Format == "commercial-underwriting-input-1" && Commercial is not null && Input is null;
+
+    // Product-specific downstream consumers are enabled in their owning slice.
+    // They must reject the new format before reading Motor Trade-only facts.
+    public static StoredRatingInput ReadMotorTrade(UnderwritingCycle cycle)
+    {
+        var value = JsonSerializer.Deserialize<StoredRatingInput>(cycle.InputJson, QuoteRatingService.Json);
+        if (value is null || value.Format != "underwriting-input-1" || value.Input is null || value.Commercial is not null)
+            throw new QuoteOperationException(409, "commercial-underwriting-progression-unavailable");
+        return value;
+    }
+}
 
 public sealed class QuoteRatingService(IDbContextFactory<BackOfficeDbContext> factory, TimeProvider time)
 {
@@ -50,19 +68,22 @@ public sealed class QuoteRatingService(IDbContextFactory<BackOfficeDbContext> fa
                 using var proposal = JsonDocument.Parse(revision.ProposalJson);
                 var matching = await QuoteMatching.AssessAsync(db, quote, now, ct);
                 var modes = await QuoteLookupProvenance.VehicleModesAsync(db, revision, ct);
-                var input = QuoteUnderwritingInput.Project(proposal.RootElement, eligible!.Rating);
                 var day = DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(now, TimeZoneInfo.FindSystemTimeZoneById("Europe/London")).DateTime);
-                var readiness = QuoteReadiness.Assess(quoteId, revisionId, proposal.RootElement, new(input.Term, []), null, day,
+                var commercial = eligible!.Capture.Product.Code == CommercialCaptureRules.ProductCode
+                    ? CommercialUnderwritingInput.Project(proposal.RootElement, eligible.Capture.Pins, eligible.Rating, day) : null;
+                var input = commercial is null ? QuoteUnderwritingInput.Project(proposal.RootElement, eligible.Rating) : null;
+                var term = commercial?.Term ?? input!.Term;
+                var readiness = QuoteReadiness.Assess(quoteId, revisionId, proposal.RootElement, new(term, []), null, day,
                     modes, matchingCode: matching.Code, includeEvidence: false);
                 if (!readiness.Ready) throw new QuoteValidationException(readiness.Issues.Where(x => x.Severity == "error").Select(x => new QuoteFieldIssue(x.Code, x.Path)).ToArray());
                 var hash = UnderwritingHashes.Pricing(new(quoteId, revisionId, quote.AgencyId, quote.ClientId, quote.RelationshipId,
-                    eligible.RatingVersion.Id, eligible.BinderVersion.Id, eligible.AuthorityVersion.Id), eligible.Capture.Pins, input.Pricing);
+                    eligible.RatingVersion.Id, eligible.BinderVersion.Id, eligible.AuthorityVersion.Id), eligible.Capture.Pins, commercial?.Pricing ?? input!.Pricing);
                 var cycle = new UnderwritingCycle { QuoteId = quoteId, QuoteRevisionId = revisionId, AgencyId = quote.AgencyId, ClientId = quote.ClientId,
                     RelationshipId = quote.RelationshipId, ProductId = quote.ProductId, ProductVersionId = revision.ProductVersionId, AgencyTermsVersionId = revision.AgencyTermsVersionId,
                     RatingRuleVersionId = eligible.RatingVersion.Id, BinderVersionId = eligible.BinderVersion.Id, AuthorityVersionId = eligible.AuthorityVersion.Id,
                     Sequence = checked((await db.Set<UnderwritingCycle>().Where(x => x.QuoteId == quoteId).MaxAsync(x => (int?)x.Sequence, ct) ?? 0) + 1),
-                    PricingInputHash = Convert.FromHexString(hash.ContentHash), StartsAt = input.Term.StartsAt, EndsAt = input.Term.EndsAt,
-                    InputJson = JsonSerializer.Serialize(new StoredRatingInput("underwriting-input-1", input, eligible.CommissionBasisPoints, eligible.MinimumPremium, eligible.RuntimeVersion.Id, eligible.ScenarioVersion.Id), Json),
+                    PricingInputHash = Convert.FromHexString(hash.ContentHash), StartsAt = term.StartsAt, EndsAt = term.EndsAt,
+                    InputJson = JsonSerializer.Serialize(new StoredRatingInput(commercial is null ? "underwriting-input-1" : "commercial-underwriting-input-1", input!, eligible.CommissionBasisPoints, eligible.MinimumPremium, eligible.RuntimeVersion.Id, eligible.ScenarioVersion.Id) { Commercial = commercial }, Json),
                     RequestedBy = actor.UserId, CreatedBy = actor.UserId, CreatedAt = now, UpdatedAt = now };
                 var work = new OutboxWork { Kind = WorkKind, SubjectRecordId = cycle.Id, OperationKey = $"quote-rating/{cycle.Id:N}", ScenarioVersionId = eligible.ScenarioVersion.Id,
                     Payload = JsonSerializer.Serialize(new { cycleId = cycle.Id, quoteId }), NextAttemptAt = now, CorrelationId = correlationId, CreatedBy = actor.UserId, CreatedAt = now, UpdatedAt = now };

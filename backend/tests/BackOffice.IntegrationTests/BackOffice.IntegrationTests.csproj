@@ -6,5 +6,6 @@
     <PackageReference Include="xunit.runner.visualstudio" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
     <ProjectReference Include="../../src/BackOffice.Api/BackOffice.Api.csproj" />
+    <EmbeddedResource Include="../../../contracts/examples/commercial-combined-ready.json" LogicalName="CommercialExamples.Ready" />
   </ItemGroup>
 </Project>

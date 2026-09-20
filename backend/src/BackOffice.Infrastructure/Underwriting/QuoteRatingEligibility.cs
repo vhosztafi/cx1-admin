@@ -61,7 +61,10 @@ public static class QuoteRatingEligibility
         var ratingJson = Definition(rating.DefinitionJson, "rating", capture.Product.Code, now, term);
         var binderJson = Definition(binder.DefinitionJson, "binder", capture.Product.Code, now, term);
         var authorityJson = Definition(authority.DefinitionJson, "authority", capture.Product.Code, now, term);
-        if (binderJson.GetProperty("providerId").GetGuid() != binder.ProviderId || !UnderwritingConfiguration.WithinBinder(authorityJson, binderJson)) throw Unavailable();
+        var withinBinder = capture.Product.Code == CommercialCaptureRules.ProductCode
+            ? CommercialUnderwritingConfiguration.WithinBinder(authorityJson, binderJson)
+            : UnderwritingConfiguration.WithinBinder(authorityJson, binderJson);
+        if (binderJson.GetProperty("providerId").GetGuid() != binder.ProviderId || !withinBinder) throw Unavailable();
         return new(capture, setting!, runtime, scenario, scenarioName, rating, binder, authority, ratingJson, binderJson, authorityJson, commercial.Commission, commercial.Minimum);
     }
 
@@ -90,7 +93,10 @@ public static class QuoteRatingEligibility
         try
         {
             using var doc = JsonDocument.Parse(json);
-            if (!UnderwritingConfiguration.Current(doc.RootElement, kind, product, now, term)) throw Unavailable();
+            var current = product == CommercialCaptureRules.ProductCode
+                ? CommercialUnderwritingConfiguration.Current(doc.RootElement, kind, now, term)
+                : UnderwritingConfiguration.Current(doc.RootElement, kind, product, now, term);
+            if (!current) throw Unavailable();
             return doc.RootElement.Clone();
         }
         catch (JsonException) { throw Unavailable(); }
@@ -102,6 +108,16 @@ public static class QuoteRatingEligibility
         {
             using var doc = JsonDocument.Parse(json); var root = doc.RootElement;
             if (root.ValueKind != JsonValueKind.Object) return false;
+            if (code == CommercialCaptureRules.ProductCode)
+            {
+                var keys = new HashSet<string>(["demo", "kind", "schemaVersion", "productCode", "captureFormat", "questionSetVersion", "referenceVersion", "captureAvailable", "ratingAvailable"], StringComparer.Ordinal);
+                foreach (var property in root.EnumerateObject()) if (!keys.Remove(property.Name)) return false;
+                return keys.Count == 0 && root.GetProperty("demo").ValueKind == JsonValueKind.True &&
+                    root.GetProperty("kind").GetString() == "commercial-combined-underwriting" && root.GetProperty("schemaVersion").GetString() == "1.0" &&
+                    root.GetProperty("productCode").GetString() == code && root.GetProperty("captureFormat").GetString() == CommercialCaptureRules.Format &&
+                    root.GetProperty("questionSetVersion").GetString() == CommercialCaptureRules.QuestionVersion && root.GetProperty("referenceVersion").GetString() == CommercialCaptureRules.ReferenceVersion &&
+                    root.GetProperty("captureAvailable").ValueKind == JsonValueKind.True && root.GetProperty("ratingAvailable").ValueKind == JsonValueKind.True;
+            }
             var expected = new HashSet<string>(["demo", "kind", "schemaVersion", "productCode", "referenceVersion", "requestedSectionsRequired", "ratingAvailable"], StringComparer.Ordinal);
             foreach (var property in root.EnumerateObject()) if (!expected.Remove(property.Name)) return false;
             return expected.Count == 0 && root.GetProperty("demo").ValueKind == JsonValueKind.True &&

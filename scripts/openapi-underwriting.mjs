@@ -24,10 +24,10 @@ export function addUnderwritingContracts({schemas:s,ref:r,operation:op,paths}){
   s.UnderwritingRateRequest=o({revisionId:id,reason:t(1000)});
   s.UnderwritingCycleRequest=o({...commandContext,reason});
   s.UnderwritingRefreshRequest=o({revisionId:id,productVersionId:id,confirmedTermsVersionId:id,reason:t(1000)});
-  s.UnderwritingRatingFactor=o({code:t(60),label:t(),amount:money,direction:e('charge','discount'),basisAmount:money,basisPoints:count,targetId:id},['code','label','amount','direction']);
+  s.UnderwritingRatingFactor=o({code:t(60),label:t(),amount:money,direction:e('charge','discount'),basisAmount:money,basisPoints:count,multiplierBasisPoints:count,targetId:id},['code','label','amount','direction']);
   s.UnderwritingRatingView=o({id,...context,ruleVersionId:id,completedAt:instant,expiresAt:instant,applicable:bool,
     currency:{const:'GBP'},annualPremium:money,termPremium:money,tax:money,fee:money,grossPayable:money,brokerCommission:money,
-    agencyTermsVersionId:id,factors:many(r('UnderwritingRatingFactor'),200),input:r('QuoteCaptureProposal'),blockers:many(r('UnderwritingBlocker'),200)});
+    agencyTermsVersionId:id,factors:many(r('UnderwritingRatingFactor'),700),input:r('QuoteCaptureProposal'),blockers:many(r('UnderwritingBlocker'),200)});
   s.UnderwritingRatingHistoryItem=o({id,cycleId:id,revisionId:id,revisionNumber:{type:'integer',minimum:1},completedAt:instant,expiresAt:instant,outcome:e('rated','rejected'),grossPayable:money});
   s.UnderwritingDecisionItem={oneOf:['approve','approve-with-conditions','query','decline','reopen'].map(outcome=>o({
     referralId:id,etag,outcome:{const:outcome},reason,
