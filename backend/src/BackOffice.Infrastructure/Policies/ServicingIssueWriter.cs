@@ -79,6 +79,7 @@ internal static class ServicingIssueWriter
                     termId=term.Id,transactionId=transaction.Id,versionId=version.Id,contentHash=Convert.ToHexStringLower(version.ContentHash),
                     kind=document.Kind,templateVersionId=template.Id,template=JsonSerializer.Deserialize<JsonElement>(template.ContentJson),
                     snapshot=JsonSerializer.Deserialize<JsonElement>(version.SnapshotJson)},ServicingRatingService.Json);
+                document.PayloadJson=CommercialDocumentRequestPayload.Complete(document.PayloadJson,version,term.EndsAt,document.Kind);
                 document.PayloadHash=Hash(document.PayloadJson);
                 var work=new OutboxWork{Kind="policy-document",OperationKey="policy-document/"+document.Id.ToString("N"),SubjectRecordId=document.Id,
                     Payload=document.PayloadJson,NextAttemptAt=now,CreatedAt=now,CreatedBy=actor,CorrelationId=correlation};

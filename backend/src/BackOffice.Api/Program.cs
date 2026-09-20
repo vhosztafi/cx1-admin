@@ -12,7 +12,7 @@ if (args.Contains("--initialize-demo", StringComparer.Ordinal))
 }
 if (args.Contains("--reset-demo",StringComparer.Ordinal)) throw new InvalidOperationException("Reset requires --initialize-demo --reset-demo.");
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args.Where(x=>x!="--seed-commercial-proposals-demo").ToArray());
 builder.Services.AddProblemDetails();
 builder.Services.AddHealthChecks();
 builder.AddLocalIdentity();
@@ -111,6 +111,25 @@ if(args.Contains("--seed-quote-demo",StringComparer.Ordinal))
     var factory=app.Services.GetRequiredService<Microsoft.EntityFrameworkCore.IDbContextFactory<BackOfficeDbContext>>();
     await using(var db=await factory.CreateDbContextAsync()) DemoDatabase.ValidateDemoTarget(Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.GetConnectionString(db.Database)!);
     var result=await new BackOffice.Infrastructure.Quotes.QuoteDemo(factory,TimeProvider.System).SeedAsync();
+    Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result));return;
+}
+if(args.Contains("--seed-commercial-proposals-demo",StringComparer.Ordinal))
+{
+    if(!app.Environment.IsDevelopment())throw new InvalidOperationException("Commercial fixtures require local Development.");
+    var factory=app.Services.GetRequiredService<Microsoft.EntityFrameworkCore.IDbContextFactory<BackOfficeDbContext>>();
+    await using var db=await factory.CreateDbContextAsync();
+    DemoDatabase.ValidateDemoTarget(Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.GetConnectionString(db.Database)!);
+    Guid RequiredId(string name)
+    {
+        var index=Array.IndexOf(args,name);
+        if(index<0||index+1>=args.Length||!Guid.TryParse(args[index+1],out var id)||id==Guid.Empty)throw new InvalidOperationException($"{name} requires an existing fictional identifier.");
+        return id;
+    }
+    var user=await Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.SingleAsync(db.Set<StaffUser>(),x=>x.Email=="senior-underwriter@cover.example"&&x.State=="active");
+    var roles=await Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToArrayAsync(from link in db.Set<UserRole>() join role in db.Set<Role>() on link.RoleId equals role.Id where link.UserId==user.Id select role.Code);
+    var actor=new BackOffice.Application.ActorContext(user.Id,user.TeamId,user.AgencyId,roles.ToHashSet(StringComparer.Ordinal));
+    var result=await new BackOffice.Infrastructure.Policies.CommercialDemoSeed(factory,app.Services.GetRequiredService<TimeProvider>())
+        .SeedAsync(actor,RequiredId("--relationship-id"),RequiredId("--product-version-id"));
     Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result));return;
 }
 if(args.Contains("--seed-servicing-drafts-demo",StringComparer.Ordinal))

@@ -1,0 +1,23 @@
+# 08-15 preflight
+
+Read-only preparation while08-14 awaits its final SQL gate. No15 implementation is claimed.
+
+The approved plan owns pure closed commercial incident/document payloads, their actual persisted document-request integration, reproducible normal-service demonstration scenarios and the concrete Phase9 handoff. It must preserve CC-05 as partial while generic incident logging/rendering/delivery remains Phase9.
+
+Existing IncidentSubject/IncidentPayload definitions are generated in scripts/generate-commercial-contracts.mjs: property location/damage or liability section plus optional location/employee occupation/third-party description; commercial-incident-1 pins policyId,versionId,sourceContentHash,occurredAt. Validate exact immutable commercial source, occurrence-time applicability and selected subject; do not substitute current risk for historical risk.
+
+PolicyIssueWriter currently retains policy-document-1 with the complete issued snapshot, template and exact version/hash metadata in PolicyDocumentRequest.PayloadJson and matching durable work. CommercialDocumentPayload should complete exact-version schedule/statement/selected-EL content at this existing boundary (and servicing equivalents), while keeping queued state honest. Discover actual downstream SQL/outbox shape guards before changing the payload. Cancellation notice and certificate-withdrawal consequences have their own exact source records from14.
+
+ServicingDemoSeed is an existing scoped normal-service helper: it checks policy-read even on replay, serializes per-policy seeders with a session application lock, and finds owned scenarios by their initial immutable revision reason before creating through command services. Existing scripts/seed-servicing-* and docs/DEMO.md are concrete production-service demo analogs. Do not repurpose integration-test helpers as a runtime interface. New CommercialDemoSeed and reproducible CLI/API orchestration must preserve edited scenario state and all published config/grants, versions, keys and existing live records.
+
+Required runtime evidence remains: two-location commercial issue, adjustment, renewal, cancellation, refer/decline/conditional and dated district-capacity behavior; initialization twice with unchanged retained identities and no duplicate effects. Use isolated SQL for acceptance before updating the live demonstration. Keep source ownership and Phase9 handoff explicit.
+
+Further source inspection: first-issue and ServicingIssueWriter document payloads both already include snapshot and template. CommercialDocumentPayload should validate and expose applicable per-kind content without losing that immutable envelope. TR_PolicyDocumentRequest_Source currently checks row template/product, payload hash and matching outbox bytes; inspect all additive guards for exact embedded snapshot/version equality before designing the15 guard. Existing demo-command-journal.mjs persists original request/key before send and completed results after acknowledgement, enabling exact replay across interruptions; normal-service scenario scripts should reuse it.
+
+## Payload design constraints to resolve during implementation
+
+Incident requests must be validated against the exact temporally selected commercial version, its raw immutable content hash and applicability interval, including replacement/cancellation boundaries. The Phase9 caller must first authorize the policy and resolve the occurrence-time winner; a pure builder must not be described as an authorization boundary. Avoid a second conflicting temporal selector. Property subjects require an owned location with applicable selected property cover. Liability subjects require the selected issued section; employee occupation is applicable to EL and must match declared wage-category identity/label, not arbitrary current employees. Reject foreign, removed, future/not-yet-effective, expired or cancelled sources and unknown motor fields.
+
+Document requests already contain the whole snapshot, so the new builder should add/validate explicit per-kind commercial content and selected conditions while retaining the existing exact source envelope. EL certificates require selected EL, not a retained positive limit alone. Rendering and delivery remain separate queued work. Do not treat a successful payload build as generated or sent output.
+
+Phase9 handoff must preserve cancellation consequence effectiveAt. A queued certificate/task request does not prove the certificate has been withdrawn or a task closed, especially for a future cancellation. Demo notice delivery can occur earlier; actual cover/exposure remains governed by the issued temporal source.

@@ -7,7 +7,7 @@ namespace BackOffice.UnitTests;
 
 public sealed class CommercialIssueSnapshotShapeTests
 {
-    private static JsonObject Snapshot()
+    internal static JsonObject Snapshot()
     {
         using var ready = typeof(CommercialIssueSnapshotShapeTests).Assembly.GetManifestResourceStream("CommercialExamples.Ready")!;
         using var issued = typeof(CommercialIssueSnapshotShapeTests).Assembly.GetManifestResourceStream("PolicyExamples.issued-motor-trade-road-risks.json")!;

@@ -4,6 +4,7 @@
     <EmbeddedResource Include="../../../contracts/examples/quote-capture-*.json" LogicalName="QuoteDemo.%(Filename)%(Extension)" />
     <EmbeddedResource Include="../../../contracts/examples/underwriting-demo.json" LogicalName="UnderwritingDemo.Definitions" />
     <EmbeddedResource Include="../../../contracts/examples/commercial-underwriting-demo.json" LogicalName="CommercialUnderwriting.Definitions" />
+    <EmbeddedResource Include="../../../contracts/examples/commercial-combined-ready.json" LogicalName="CommercialDemo.Ready" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />

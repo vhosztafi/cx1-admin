@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.cover-mga.example/commercial-incident/1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "format": {
+      "const": "commercial-incident-1"
+    },
+    "policyId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "versionId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "sourceContentHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "subject": {
+      "$ref": "#/$defs/IncidentSubject"
+    }
+  },
+  "required": [
+    "format",
+    "policyId",
+    "versionId",
+    "sourceContentHash",
+    "occurredAt",
+    "subject"
+  ],
+  "$defs": {
+    "IncidentSubject": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "property"
+            },
+            "locationId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "damageDescription": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            }
+          },
+          "required": [
+            "kind",
+            "locationId",
+            "damageDescription"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "liability"
+            },
+            "section": {
+              "type": "string",
+              "enum": [
+                "employers-liability",
+                "public-liability",
+                "products-liability"
+              ]
+            },
+            "locationId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "employeeOccupation": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "thirdPartyDescription": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            }
+          },
+          "required": [
+            "kind",
+            "section"
+          ]
+        }
+      ]
+    }
+  }
+}

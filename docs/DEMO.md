@@ -336,3 +336,18 @@ The API comparison retains every version, financial and history field except the
 two request-time cutoffs on explicit-version reads; history cutoffs are pinned.
 Record the verified old/new process identities alongside these reports. A repeat
 read without a process restart only verifies the comparison harness.
+
+## Commercial proposal preparation
+
+The additive commercial proposal command requires an existing fictional client–agency relationship with approved access to the commercial product version. Obtain both IDs from its normal quote/product readback. Run with the same local SQL configuration and persistent keys as the demo:
+
+```powershell
+$env:ASPNETCORE_ENVIRONMENT = 'Development'
+dotnet run --project backend/src/BackOffice.Api --no-launch-profile -- --seed-commercial-proposals-demo --relationship-id <relationship-guid> --product-version-id <commercial-product-version-guid>
+```
+
+The command is restricted to `CoverMGA_Demo`. It returns five scenario names, quote IDs and references. All proposals start on1November2026 and contain two fictional premises. They cover a normal two-location proposal, flood referral, outside-appetite activity, conditional capacity and a second capacity contender. The last two require actual carrier review; neither is labelled approved by initialization. The current senior underwriter must still have the authority required for subsequent decisions.
+
+Rerunning discovers the original scenarios and preserves business edits, existing quotes, configuration, grants and issue history. It does not renew a lease, rerate an edited proposal or create a replacement for a withdrawn record. Access withdrawal is authoritative even on a repeat run.
+
+Open the returned quote reference in the back office and use the normal rating, evidence, referral, capacity, terms, acceptance and issue controls. Issued commercial documents currently show requested work. Their stored content is pinned to the exact version; generation and delivery belong to Phase9. The proposal command alone does not complete the lifecycle demonstration. Full lifecycle orchestration and retained demo reference publication remain part of the ongoing08-15 acceptance work.

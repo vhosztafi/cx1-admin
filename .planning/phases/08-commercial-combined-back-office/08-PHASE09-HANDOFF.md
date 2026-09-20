@@ -1,0 +1,13 @@
+# Commercial Combined operational handoff to Phase9
+
+CC-05 is partial. Phase8 supplies immutable incident/document payload builders and actual queued commercial document content. Phase9 owns persisted incident logging, document rendering/version history/delivery, task completion and operational consequence execution.
+
+Read `docs/design/COMMERCIAL-COMBINED-CONTRACTS.md` for exact signatures and generated closed contracts. Do not accept source IDs/hash/JSON from an untrusted caller as an ownership assertion. Authorize the current actor and policy scope before resolving/replaying any operation. Resolve the occurrence-time policy version and clip applicability at subsequent version/cancellation boundaries using the existing temporal selector; do not replace historical risk with today's risk.
+
+Incident commands must use `CommercialIncidentPayload` against that selected immutable source. Property locations require selected property cover; liability sections require selected cover and EL occupations must belong to the issued wage declarations. The builder rejects future/not-yet-effective/expired or cancelled source applicability and duplicate/motor fields. Phase9 adds the actual persistent incident record, idempotency, audit and negative scope/retry tests.
+
+Document requests from commercial new business, adjustment and renewal contain `policy-document-1` with the exact snapshot/template and a `commercial-document-1` projection. Rendering should validate the projection against the retained version and selected kind before consuming it. Selected endorsements and warranties are already pinned. An EL certificate is applicable only when EL is selected. Do not interpret requested/queued as generated or sent. Retained requests created before the additive15 migration keep their earlier envelope; Phase9 must derive any needed commercial projection from that exact stored source, without rewriting historical request bytes.
+
+Commercial cancellation emits durable notice and task-close consequences, plus certificate-withdrawal only if EL was selected. It emits no MID consequence. Consequences retain the cancellation's effectiveAt. Notice delivery may precede that instant; certificate withdrawal and task closure must not be presented as completed simply because work exists. Future cancellation preserves active cover and original exposure until the effective boundary. The cancellation credit is a posted obligation, not proof of a cash refund.
+
+Outstanding plan15 acceptance work is tracked in its checkpoint until full demo orchestration and SQL verification are complete. This handoff is not a Phase8 completion claim or human UAT record.

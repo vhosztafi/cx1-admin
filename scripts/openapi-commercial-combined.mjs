@@ -15,6 +15,8 @@ export function addCommercialContracts({schemas,ref,operation,paths}){
  }
  install(draft,'CommercialCapture','CommercialCaptureDraft');
  install(issued,'CommercialIssued','CommercialIssuedPolicy');
+ install(JSON.parse(readFileSync(new URL('../contracts/schemas/commercial-incident.schema.json',import.meta.url),'utf8')),'CommercialIncident','CommercialIncidentPayload');
+ install(JSON.parse(readFileSync(new URL('../contracts/schemas/commercial-document.schema.json',import.meta.url),'utf8')),'CommercialDocument','CommercialDocumentPayload');
  install(JSON.parse(readFileSync(new URL('../contracts/schemas/commercial-combined-servicing-issued.schema.json',import.meta.url),'utf8')),'CommercialServicingIssued','CommercialServicingIssuedPolicy');
  install(JSON.parse(readFileSync(new URL('../contracts/schemas/commercial-combined-cancellation-issued.schema.json',import.meta.url),'utf8')),'CommercialCancellationIssued','CommercialCancellationIssuedPolicy');
  schemas.UnderwritingIssueResult.properties.commercialExposureDecisionId=id;

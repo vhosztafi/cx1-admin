@@ -92,6 +92,7 @@ internal static class PolicyIssueWriter
             request.PayloadJson = JsonSerializer.Serialize(new { format = "policy-document-1", requestId = request.Id, policyId = policy.Id, policyReference = policy.Reference,
                 termId = term.Id, transactionId = transaction.Id, versionId = version.Id, contentHash = Convert.ToHexStringLower(version.ContentHash),
                 kind = request.Kind, templateVersionId = template.Id, template = JsonSerializer.Deserialize<JsonElement>(template.ContentJson), snapshot = risk.RootElement }, QuoteRatingService.Json);
+            request.PayloadJson = CommercialDocumentRequestPayload.Complete(request.PayloadJson, version, term.EndsAt, request.Kind);
             request.PayloadHash = Hash(request.PayloadJson);
             var work = new OutboxWork { Kind = "policy-document", OperationKey = "policy-document/" + request.Id.ToString("N"), SubjectRecordId = request.Id,
                 Payload = request.PayloadJson, CreatedAt = now, NextAttemptAt = now, CorrelationId = correlationId };

@@ -165,3 +165,46 @@ Commercial adjustments use the existing `/drafts/{id}` lease/revision, rating, e
 Proof purposes and numerical carrier extents retain commercial subject identities across every applicable slice. A carrier response does not replace internal approval, current proof, delivery or acceptance. Commercial templates are published independently and fictional delivery retains its own result. Live proof reviews, grants, carrier conditions and acceptance are reassessed before issue; only immutable proposal projections and parsed immutable carrier responses are cached inside one held decision context. Current response selection, expiry and condition proof are checked again on every evaluation.
 
 Issued adjustments use the closed `issued-commercial-servicing-1` snapshot schema with servicing decision/revision/input provenance. Earlier snapshots are immutable. Each dated version receives its own exposure header and decision, schedule and statement; an employers liability certificate is requested only for a slice where that cover is selected. No commercial MID intent is created. The UI freezes the product identity with its issue retry and validates the corresponding document/MID receipt shape.
+
+## 08-15 — Commercial operational payload contracts
+
+Phase8 plan15 introduces `commercial-incident-1` and `commercial-document-1`. The generated standalone schemas are `contracts/schemas/commercial-incident.schema.json` and `contracts/schemas/commercial-document.schema.json`; OpenAPI installs `CommercialIncidentPayload` and `CommercialDocumentPayload` as components. They do not introduce an incident submission or rendering endpoint. CC-05 remains partial until Phase9 implements those operations.
+
+### Source boundary
+
+`CommercialPayloadSource(Guid PolicyId, Guid VersionId, string SourceContentHash, string SnapshotJson, DateTimeOffset EffectiveFrom, DateTimeOffset EffectiveUntil)` receives an immutable, already authorized version. The caller must obtain all fields from the same scoped repository result, not request metadata or today's quote. `SourceContentHash` is lower-case SHA256 of the exact UTF8 snapshot bytes. The builder checks that hash, the closed commercial issued schema, duplicate JSON properties, the issue/servicing effective instant and an interval contained within the policy term.
+
+For incidents, the Phase9 caller selects the occurrence-time winner using the existing policy temporal selection rules, including replacement and cancellation boundaries, then supplies the winning applicability interval. An identifier supplied alongside arbitrary JSON does not establish ownership. The pure builder is not an authorization or database lookup boundary. Current actor/agency/client/product access must be checked before disclosing a retained receipt.
+
+### Incident payload
+
+`CommercialIncidentPayload.Create(source, occurredAt, knownAt, subject)` returns a detached `JsonElement`; invalid sources/subjects throw `ArgumentException`. `Valid(payload, source, knownAt)` returns false for malformed, additional, duplicated or substituted content.
+
+The closed envelope has `format`, `policyId`, `versionId`, `sourceContentHash`, `occurredAt`, and `subject`.
+
+- Property subject: `kind: property`, an owned `locationId` targeted by a selected property section, and non-empty `damageDescription` (up to4000 characters).
+- Liability subject: `kind: liability`, selected `section` (`employers-liability`, `public-liability` or `products-liability`), optional owned `locationId`, optional `employeeOccupation` and `thirdPartyDescription` (up to2000 characters). Occupation is permitted only for EL and must exactly match a wage-category label declared in this version. It identifies the declared occupation, not an individual employee.
+
+Occurrence must be at or after the version's effective instant, strictly before its applicability end and no later than knownAt. A servicing version processed after knownAt cannot be substituted. Cancellation versions do not authorize incident cover. The caller must select an earlier applicable version for an earlier occurrence. Motor fields and arbitrary current-risk objects are rejected.
+
+### Document content and persistence
+
+`CommercialDocumentPayload.Create(source, kind)` and `Valid(payload, source, kind)` construct/validate exact-version content. All variants include `format: commercial-document-1`, `policyId`, `versionId`, `sourceContentHash`, `kind`, `effectiveAt`, `insured`, `term`, `endorsements` and `warranties`.
+
+| Kind | Additional exact issued content |
+| --- | --- |
+| policy-schedule | sections, locations, business, wages, liability, premium; businessInterruption when present |
+| policy-statement | declarations (the complete issued risk), cover |
+| policy-certificate | the single selected employers-liability section; employersReferenceNumber when present |
+
+An unselected retained EL limit does not permit a certificate. Cancellation certificate withdrawal is a separate consequence; this builder does not issue cancellation certificates. The original complete issued snapshot and template remain in the `policy-document-1` outer envelope. `CommercialDocumentRequestPayload.Complete` adds the `commercial` member in both `PolicyIssueWriter` and `ServicingIssueWriter`, before hashing the request and enqueueing identical durable work. Motor Trade envelopes retain their existing form.
+
+Migration `20260920182749_CommercialOperationalPayloads` adds an insert-only guard for commercial source IDs, content hash, exact embedded snapshot and per-kind projected content. Existing historical requests are retained. Downgrade is refused once a new commercial operational payload is stored. Existing one-megabyte request limits remain in force; an oversized request rolls back the issue transaction rather than silently truncating declarations.
+
+Requested document work is not a generated, delivered or externally submitted document. Phase9 must preserve the source/version/template pins, validate these contracts before rendering, persist render/delivery results and expose honest durable status.
+
+### Additive proposal demonstration
+
+`CommercialDemoSeed.SeedAsync(actor, relationshipId, productVersionId)` prepares five fictional commercial proposals in an existing approved relationship using `QuoteService.CreateAsync`. It checks current capture eligibility before discovery, serializes initialization per relationship, locates retained scenarios by their immutable first revision marker, and never overwrites later user edits. The stable date is1November2026, within the published fictional product period. Returned `CommercialDemoQuote` values contain `Scenario`, `QuoteId`, and `Reference`.
+
+This helper does not grant authority, approve an agency, write issue history, publish replacement configuration or manufacture worker outcomes. Rating, referral decisions, conditional capacity, acceptance and lifecycle issue must use their existing command services. Preparation alone is not a completed lifecycle demonstration.

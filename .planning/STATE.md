@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Phase8 plan14 complete; plan15 commercial operational payloads and demo executing.
+stopped_at: Phase8 plan15 payload gate passes1102/11 SQL; normal API demo orchestration executing.
 last_updated: "2026-09-20T18:10:23.205Z"
-last_activity: "2026-09-20 —08-14 complete:1081 backend/10 SQL and browser pass;08-15 begins."
+last_activity: "2026-09-20 —08-15 operational payload/proposal preservation gate1102/11 SQL passes; lifecycle demo remains in progress."
 progress:
   total_phases: 13
   completed_phases: 7
@@ -28,7 +28,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 8 of 13 (Commercial Combined back office)
 Plan: 14 of16 complete;08-15 executing
 Status: Executing
-Last activity: 2026-09-20 —08-14 complete; implementationa2e372c and summaryd815f0a committed.08-15 starts from its approved plan and retained preflight.
+Last activity: 2026-09-20 —08-15 exact incident/document payloads, SQL source guards and missing-only proposal preparation verified. Full lifecycle demo remains in progress; no completion count changed.
 
 Progress: Phases1–7 complete;7/13 phases,79/81 currently defined implementation plans. Phase8 research/UI/plans checked and08-01/02/03/04/05/06/07/08/09/10/11/12/13/14 complete; later phases await detailed planning.
 
@@ -55,7 +55,7 @@ Progress: Phases1–7 complete;7/13 phases,79/81 currently defined implementatio
 ## Session Continuity
 
 Last session: 2026-09-20T18:10:23.206Z
-Stopped at:08-15 begins; no running checks.14 strict1081/10 SQL passes, current browser2 and receipt review accepted. Source4 and all frontend/root/contract checks pass.15 preflight exists; no15 implementation yet.
+Stopped at:08-15 payload gate1102/11 SQL passes; root390/contracts71 and API build pass. Follow08-15-CHECKPOINT.md for current normal-API demo harness and remaining lifecycle work. Live demo remains untouched.
 Resume file: .planning/phases/08-commercial-combined-back-office/08-15-PLAN.md
 
 ## Autonomous continuation

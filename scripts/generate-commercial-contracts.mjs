@@ -1,5 +1,6 @@
 import {readFile,writeFile} from 'node:fs/promises';
 import {pathToFileURL} from 'node:url';
+import {writeCommercialOperationalContracts} from './generate-commercial-operational-contracts.mjs';
 const obj=(properties,required=Object.keys(properties))=>({type:'object',additionalProperties:false,properties,required});
 const str=(maxLength=200)=>({type:'string',minLength:1,maxLength});
 const arr=(items,maxItems=100)=>({type:'array',items,maxItems});
@@ -120,6 +121,7 @@ export async function writeCommercialContracts(){
  cancellationIssued.properties.cancellation=cancellation.properties.cancellation;
  cancellationIssued.required.push('cancellation');
  await writeFile(new URL('../contracts/schemas/commercial-combined-cancellation-issued.schema.json',import.meta.url),JSON.stringify(cancellationIssued,null,2)+'\n');
- console.log('Generated closed CC capture, exposure and incident definitions; fixture remains an incomplete underwriting draft.');
+ await writeCommercialOperationalContracts();
+ console.log('Generated closed CC capture, exposure and operational contracts; fixture remains an incomplete underwriting draft.');
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href)await writeCommercialContracts();

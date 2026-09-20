@@ -4,6 +4,21 @@ import {readFile} from 'node:fs/promises';
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 const read=async p=>JSON.parse(await readFile(p,'utf8'));
+test('commercial operational contracts are closed and certificates require the EL section',async()=>{
+ const ajv=new Ajv2020({strict:true,allErrors:true});addFormats(ajv);
+ const incident=ajv.compile(await read('contracts/schemas/commercial-incident.schema.json'));
+ const document=ajv.compile(await read('contracts/schemas/commercial-document.schema.json'));
+ const id='00000000-0000-4000-8000-000000000001';
+ const payload={format:'commercial-incident-1',policyId:id,versionId:id,sourceContentHash:'a'.repeat(64),occurredAt:'2026-10-01T12:00:00Z',subject:{kind:'property',locationId:id,damageDescription:'Storm damage'}};
+ assert.ok(incident(payload),JSON.stringify(incident.errors));payload.subject.registration='DEMO123';assert.equal(incident(payload),false);
+ delete payload.subject.registration;payload.currentRisk={};assert.equal(incident(payload),false);
+ const issued=await read('contracts/schemas/commercial-combined-issued.schema.json');
+ const certificate=(await read('contracts/schemas/commercial-document.schema.json')).oneOf[2];
+ const section=ajv.compile({$defs:issued.$defs,...certificate.properties.section});
+ assert.ok(section({id,code:'employers-liability',limit:'10000000.00',targetIds:[]}));
+ assert.equal(section({id,code:'public-liability',limit:'10000000.00',targetIds:[]}),false);
+ assert.equal(document({format:'commercial-document-1'}),false);
+});
 async function fixture(){const schema=await read('contracts/schemas/commercial-combined.schema.json');const ajv=new Ajv2020({allErrors:true,strict:true});addFormats(ajv);return {schema,validate:ajv.compile(schema),value:await read('contracts/examples/commercial-combined-capture.json')};}
 test('CC closed draft accepts missing facts and a complete two-location capture fixture',async()=>{
  const {validate,value}=await fixture();assert.ok(validate(value),JSON.stringify(validate.errors));
