@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { createContext, useContext, useState } from 'react';
 import type { Page } from '../../lib/clients';
 import type { QuoteProposal, QuoteView } from '../../lib/quotes';
+import type {CommercialProposal} from '../../lib/commercial-capture';
 import { Panel } from '../primitives';
 import { LoadFeedback, Paging, useQuoteResource } from './shared';
 
@@ -14,7 +15,7 @@ const QuestionLabels = createContext<Record<string, string>>({});
 const label = (path: string) => path === '/clientId' ? 'Client account' : path === '/relationshipId' ? 'Agency relationship' : path.split('/').filter(Boolean).filter(value => value !== 'risk').map(value => /^\d+$/.test(value) ? String(Number(value) + 1) :
   value.replaceAll('~1', '/').replaceAll('~0', '~').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, first => first.toUpperCase())).join(' · ') || 'Proposal';
 
-export function QuoteHistory({ quote, selected, select, questionLabels }: { quote: QuoteView; selected: string; select: (id: string) => void; questionLabels: Record<string, string> }) {
+export function QuoteHistory({ quote, selected, select, questionLabels }: { quote: Pick<QuoteView, 'id' | 'revisionId'>; selected: string; select: (id: string) => void; questionLabels: Record<string, string> }) {
   const [pages, setPages] = useState(['']); const [left, setLeft] = useState(''); const [right, setRight] = useState(quote.revisionId);
   const cursor = pages.at(-1)!;
   const history = useQuoteResource<Page<Revision>>(`/api/v1/quotes/${quote.id}/revisions?pageSize=10${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`);
@@ -57,7 +58,7 @@ function ChangeValue({ path, side }: { path: string; side: Side }) {
   if (path === '/relationshipId') return <span>Agency relationship for the recorded client account</span>;
   return <Value value={value} />;
 }
-export function QuoteProposalDetails({ value, proposal, questionLabels }: { value: unknown; proposal: QuoteProposal; questionLabels: Record<string, string> }) {
+export function QuoteProposalDetails({ value, proposal, questionLabels }: { value: unknown; proposal: QuoteProposal | CommercialProposal; questionLabels: Record<string, string> }) {
   const names = new Map<string, string>();
   function collect(item: unknown, context = 'Risk item') {
     if (Array.isArray(item)) { item.forEach((child, index) => collect(child, `${context} ${index + 1}`)); return; }

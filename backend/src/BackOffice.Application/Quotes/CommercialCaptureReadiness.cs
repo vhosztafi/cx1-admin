@@ -84,8 +84,8 @@ public static class CommercialCaptureReadiness
         if (lossDeclared == false && losses.Length > 0) issues.Add(Issue("/risk/losses", "commercial-loss-declaration-conflict", "Recorded losses conflict with the No answer."));
         for (var i = 0; i < losses.Length; i++)
         {
-            var path = $"/risk/losses/{i}"; Required(losses[i], path, "date", "type", "amount", "paid", "reserve", "status", "description");
-            if (Date(Text(At(losses[i], "date")), out var date) && date > asOf) issues.Add(Issue(path + "/date", "loss-date-after-assessment", "The loss date is in the future."));
+            var path = $"/risk/losses/{i}"; Required(losses[i], path, "occurredOn", "type", "amount", "paid", "reserve", "status", "description");
+            if (Date(Text(At(losses[i], "occurredOn")), out var date) && date > asOf) issues.Add(Issue(path + "/occurredOn", "loss-date-after-assessment", "The loss date is in the future."));
         }
         foreach (var q in Questions.Value)
         {

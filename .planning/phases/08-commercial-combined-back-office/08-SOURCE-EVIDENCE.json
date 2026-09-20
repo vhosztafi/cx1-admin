@@ -1,92 +1,346 @@
 {
   "format": "commercial-source-evidence-1",
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
-  "status": "capture-backend-verified-ui-and-underwriting-pending",
+  "status": "business-loss-browser-verified-other-capture-and-underwriting-pending",
   "captureControls": {
     "CTL-edd4bf8b620d": {
-      "runtimeStatus": "api-persisted-ui-pending",
+      "runtimeStatus": "browser-saved-sql-verified",
       "verification": [
-        "08-02: RealSqlCommercialCaptureHttpUsesClosedProposalCurrentScopeAndExactReceipts and RealSqlCommercialCapturePersistsRevisionsRetriesStaleWritesAndRevocation; API create/save/readback, no browser claim."
+        "08-02: RealSqlCommercialCaptureHttpUsesClosedProposalCurrentScopeAndExactReceipts and RealSqlCommercialCapturePersistsRevisionsRetriesStaleWritesAndRevocation; API create/save/readback, no browser claim.",
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
       ]
     },
     "CTL-2dd04027e52d": {
-      "runtimeStatus": "api-persisted-ui-pending",
+      "runtimeStatus": "browser-saved-sql-verified",
       "verification": [
-        "08-02: RealSqlCommercialCaptureHttpUsesClosedProposalCurrentScopeAndExactReceipts and RealSqlCommercialCapturePersistsRevisionsRetriesStaleWritesAndRevocation; API create/save/readback, no browser claim."
+        "08-02: RealSqlCommercialCaptureHttpUsesClosedProposalCurrentScopeAndExactReceipts and RealSqlCommercialCapturePersistsRevisionsRetriesStaleWritesAndRevocation; API create/save/readback, no browser claim.",
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-afe94e31caf7": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-f62b6bccaacf": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-b71d30114229": {
+      "runtimeStatus": "rendered-negative-link-verified",
+      "verification": [
+        "08-03: no-location choice rendered; API rejects foreign subject and immutable helper requires owned ID. Positive UI location selection awaits08-04 location capture."
+      ]
+    },
+    "CTL-9df66ff8a4fb": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-08587a457fdc": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-fc3f6612208c": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-f1dd97e86a16": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-7b091112a28e": {
+      "runtimeStatus": "navigation-rendered",
+      "verification": [
+        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/"
+      ]
+    },
+    "CTL-0b7d4a4f3bd3": {
+      "runtimeStatus": "navigation-rendered",
+      "verification": [
+        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/"
+      ]
+    },
+    "CTL-33bfe3df1db5": {
+      "runtimeStatus": "navigation-rendered",
+      "verification": [
+        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/"
+      ]
+    },
+    "CTL-677f9821a5f0": {
+      "runtimeStatus": "navigation-rendered",
+      "verification": [
+        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/"
+      ]
+    },
+    "CTL-c733f58674ce": {
+      "runtimeStatus": "navigation-rendered",
+      "verification": [
+        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/"
+      ]
+    },
+    "CTL-24a6e1dda676": {
+      "runtimeStatus": "navigation-rendered",
+      "verification": [
+        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/"
+      ]
+    },
+    "CTL-2b3f5c1f7dba": {
+      "runtimeStatus": "navigation-rendered",
+      "verification": [
+        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/"
+      ]
+    },
+    "CTL-38847462c9ce": {
+      "runtimeStatus": "navigation-rendered",
+      "verification": [
+        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/"
+      ]
+    },
+    "CTL-c7e79a944bfa": {
+      "runtimeStatus": "navigation-rendered",
+      "verification": [
+        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/"
+      ]
+    },
+    "CTL-2a7c03bd9994": {
+      "runtimeStatus": "navigation-rendered",
+      "verification": [
+        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/"
+      ]
+    },
+    "CTL-0fabfac70c54": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-485a887e9c09": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-013d2d83308a": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-244d1e602d04": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-36ef01068295": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-58ce136bec6e": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-82ebf22fee24": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-d1edba1174f6": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-0837e6f73be3": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-2d40a8dab2ab": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-d5d492a9e1b4": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-0b9bf2ac4b8f": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-c2b0372b4040": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-cfb8d4a5494b": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-eb57b4a6cc8b": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-96730bd9301a": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-4e601dd4932b": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-f92e963f393c": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-8581de6c0b2a": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-b99b3a5b3004": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-7adfff3ade76": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-0b0b63fca324": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
+      ]
+    },
+    "CTL-385743089b72": {
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
       ]
     }
   },
   "questions": {
     "prototype.quote.36ef01068295": {
-      "runtimeStatus": "backend-validated-ui-pending",
+      "runtimeStatus": "browser-saved-sql-verified",
       "verification": [
-        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04.",
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
       ]
     },
     "prototype.quote.d1edba1174f6": {
-      "runtimeStatus": "backend-validated-ui-pending",
+      "runtimeStatus": "browser-saved-sql-verified",
       "verification": [
-        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04.",
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
       ]
     },
     "prototype.quote.0837e6f73be3": {
-      "runtimeStatus": "backend-validated-ui-pending",
+      "runtimeStatus": "browser-saved-sql-verified",
       "verification": [
-        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04.",
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
       ]
     },
     "prototype.quote.2d40a8dab2ab": {
-      "runtimeStatus": "backend-validated-ui-pending",
+      "runtimeStatus": "browser-saved-sql-verified",
       "verification": [
-        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04.",
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
       ]
     },
     "prototype.quote.cfb8d4a5494b": {
-      "runtimeStatus": "backend-validated-ui-pending",
+      "runtimeStatus": "browser-saved-sql-verified",
       "verification": [
-        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04.",
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
       ]
     },
     "prototype.quote.eb57b4a6cc8b": {
-      "runtimeStatus": "backend-validated-ui-pending",
+      "runtimeStatus": "browser-saved-sql-verified",
       "verification": [
-        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04.",
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
       ]
     },
     "prototype.quote.96730bd9301a": {
-      "runtimeStatus": "backend-validated-ui-pending",
+      "runtimeStatus": "browser-saved-sql-verified",
       "verification": [
-        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04.",
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
       ]
     },
     "prototype.quote.4e601dd4932b": {
-      "runtimeStatus": "backend-validated-ui-pending",
+      "runtimeStatus": "browser-saved-sql-verified",
       "verification": [
-        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04.",
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
       ]
     },
     "prototype.quote.f92e963f393c": {
-      "runtimeStatus": "backend-validated-ui-pending",
+      "runtimeStatus": "browser-saved-sql-verified",
       "verification": [
-        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04.",
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
       ]
     },
     "prototype.quote.8581de6c0b2a": {
-      "runtimeStatus": "backend-validated-ui-pending",
+      "runtimeStatus": "browser-saved-sql-verified",
       "verification": [
-        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04.",
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
       ]
     },
     "prototype.quote.0b0b63fca324": {
-      "runtimeStatus": "backend-validated-ui-pending",
+      "runtimeStatus": "browser-saved-sql-verified",
       "verification": [
-        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04.",
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
       ]
     },
     "prototype.quote.385743089b72": {
-      "runtimeStatus": "backend-validated-ui-pending",
+      "runtimeStatus": "browser-saved-sql-verified",
       "verification": [
-        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04.",
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
       ]
     },
     "prototype.quote.ec38529cf3bd": {
@@ -582,33 +836,38 @@
       ]
     },
     "prototype.addloss.insured": {
-      "runtimeStatus": "backend-validated-ui-pending",
+      "runtimeStatus": "browser-saved-sql-verified",
       "verification": [
-        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04.",
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
       ]
     },
     "prototype.quote-value.0b9bf2ac4b8f": {
-      "runtimeStatus": "backend-validated-ui-pending",
+      "runtimeStatus": "browser-saved-sql-verified",
       "verification": [
-        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04.",
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
       ]
     },
     "prototype.quote-value.c2b0372b4040": {
-      "runtimeStatus": "backend-validated-ui-pending",
+      "runtimeStatus": "browser-saved-sql-verified",
       "verification": [
-        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04.",
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
       ]
     },
     "prototype.quote-value.b99b3a5b3004": {
-      "runtimeStatus": "backend-validated-ui-pending",
+      "runtimeStatus": "browser-saved-sql-verified",
       "verification": [
-        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04.",
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
       ]
     },
     "prototype.quote-value.7adfff3ade76": {
-      "runtimeStatus": "backend-validated-ui-pending",
+      "runtimeStatus": "browser-saved-sql-verified",
       "verification": [
-        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04."
+        "08-02: CommercialCaptureRulesTests.ExplicitCompleteCommercialFactsCanPassCaptureReadiness supplies every scoped source question through the closed validator; per-location missing-answer subjects and adverse health dropdowns have separate negative tests. Rendering/readback for this individual control remains08-03/04.",
+        "08-03: RealSqlCommercialCaptureBusinessLossBrowser; .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/report.json; actual Chrome capture/save/API readback plus immutable SQL revisions. Remaining location/cover subjects and conditional interactions are08-04."
       ]
     },
     "prototype.quote-value.59c91e8db152": {

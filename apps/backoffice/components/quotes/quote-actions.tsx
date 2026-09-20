@@ -8,7 +8,7 @@ import { ClientChoice, RelationshipChoice } from './quote-create';
 import { LoadFeedback, useQuoteResource } from './shared';
 
 type Terms = { agencyTermsVersionId: string; version: number; effectiveFrom: string; confirmationRequired: boolean };
-export function QuoteActions({ actorId, quote, etag, sourceRevisionId, refresh }: { actorId: string; quote: QuoteView; etag: string; sourceRevisionId: string; refresh: () => void }) {
+export function QuoteActions({ actorId, quote, etag, sourceRevisionId, refresh }: { actorId: string; quote: Omit<QuoteView, 'productCode' | 'proposal'>; etag: string; sourceRevisionId: string; refresh: () => void }) {
   const [action, setAction] = useState<'clone' | 'withdraw'>();
   return <><div className="quote-row-actions">
     <button className="button" disabled={!quote.capabilities.canClone} onClick={() => setAction('clone')}>Clone selected revision</button>
@@ -16,7 +16,7 @@ export function QuoteActions({ actorId, quote, etag, sourceRevisionId, refresh }
   </div>{action && <ActionDialog actorId={actorId} quote={quote} etag={etag} sourceRevisionId={sourceRevisionId} action={action} close={() => setAction(undefined)} refresh={refresh} />}</>;
 }
 
-function ActionDialog({ actorId, quote, etag, sourceRevisionId, action, close, refresh }: { actorId: string; quote: QuoteView; etag: string; sourceRevisionId: string; action: 'clone' | 'withdraw'; close: () => void; refresh: () => void }) {
+function ActionDialog({ actorId, quote, etag, sourceRevisionId, action, close, refresh }: { actorId: string; quote: Omit<QuoteView, 'productCode' | 'proposal'>; etag: string; sourceRevisionId: string; action: 'clone' | 'withdraw'; close: () => void; refresh: () => void }) {
   const router = useRouter(); const dialog = useRef<HTMLDialogElement>(null);
   const [client, setClient] = useState({ id: quote.clientId, name: quote.clientName });
   const [relationship, setRelationship] = useState({ id: quote.relationshipId, agencyId: quote.agencyId, name: quote.agencyName });

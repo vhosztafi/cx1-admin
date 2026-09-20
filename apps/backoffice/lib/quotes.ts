@@ -1,3 +1,4 @@
+import type { CommercialProposal } from './commercial-capture';
 export type QuoteProductCode = 'motor-trade-road-risks' | 'motor-trade-combined';
 export type QuoteValue = string | number | boolean | QuoteObject | QuoteValue[];
 export type QuoteObject = { [key: string]: QuoteValue };
@@ -13,14 +14,14 @@ export type QuoteProposal = {
 export type QuoteIssue = { path: string; code: string; message: string; category: string; severity: 'error' | 'warning'; questionId?: string; relatedPath?: string };
 export type QuoteReadiness = { quoteId: string; revisionId: string; ready: boolean; issues: QuoteIssue[] };
 export type QuoteProduct = {
-  productVersionId: string; productCode: QuoteProductCode; displayName: string; versionLabel: string;
+  productVersionId: string; productCode: QuoteProductCode | 'commercial-combined'; displayName: string; versionLabel: string;
   questionSetVersion: string; referenceDataVersion: string; captureEligible: boolean; unavailableReason?: string;
 };
-export type QuoteView = {
+export type QuoteView<TProposal extends {productCode: string} = QuoteProposal> = {
   id: string; reference: string; relationshipId: string; clientId: string; agencyId: string;
-  clientName: string; agencyName: string; productCode: QuoteProductCode; state: string;
+  clientName: string; agencyName: string; productCode: TProposal['productCode']; state: string;
   revisionId: string; revisionNumber: number; updatedAt: string; productVersionId: string;
-  proposal: QuoteProposal; captureClosed: boolean;
+  proposal: TProposal; captureClosed: boolean;
   boundPolicyId?: string | null;
   captureClosedAt: string | null; captureClosedReason: string | null; matchReviewId?: string | null;
   captureVersions: { schemaVersion: string; questionSetVersion: string; referenceDataVersion: string };
@@ -69,12 +70,12 @@ function commandKey(key: string) {
   if (key.length < 16 || key.length > 200 || key.trim() !== key || /[\u0000-\u001f\u007f-\u009f]/.test(key)) throw new Error('The save command identity is invalid.');
   return key;
 }
-export function createQuoteCommand(relationshipId: string, productVersionId: string, proposal: QuoteProposal, key: string = crypto.randomUUID(), matchSubmissionId?: string): PendingQuoteCommand {
+export function createQuoteCommand(relationshipId: string, productVersionId: string, proposal: QuoteProposal | CommercialProposal, key: string = crypto.randomUUID(), matchSubmissionId?: string): PendingQuoteCommand {
   if (!validId(relationshipId) || !validId(productVersionId)) throw new Error('Select a saved relationship and product.');
   if (matchSubmissionId !== undefined && !validId(matchSubmissionId)) throw new Error('Select a saved matching intake.');
   return Object.freeze({ method: 'POST', url: '/api/v1/quotes', body: JSON.stringify({ relationshipId, productVersionId, proposal, ...(matchSubmissionId ? { matchSubmissionId } : {}) }), key: commandKey(key) });
 }
-export function saveQuoteCommand(id: string, etag: string, proposal: QuoteProposal, reason?: string, key: string = crypto.randomUUID()): PendingQuoteCommand {
+export function saveQuoteCommand(id: string, etag: string, proposal: QuoteProposal | CommercialProposal, reason?: string, key: string = crypto.randomUUID()): PendingQuoteCommand {
   if (!validId(id) || !validQuoteEtag(etag)) throw new Error('Reload the saved quote version before saving.');
   if (reason !== undefined && (!reason.trim() || reason.length > 1000)) throw new Error('Enter a reason of up to 1,000 characters.');
   return Object.freeze({ method: 'PUT', url: `/api/v1/quotes/${id}/proposal`, body: JSON.stringify({ proposal, ...(reason === undefined ? {} : { reason }) }),

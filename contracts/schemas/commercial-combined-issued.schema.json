@@ -7948,7 +7948,8 @@
             "sole-trader",
             "partnership",
             "limited-company",
-            "llp"
+            "llp",
+            "charity-or-trust"
           ]
         },
         "legalName": {

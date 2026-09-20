@@ -7,7 +7,7 @@ import { clientDate, type Agency, type Page } from '../../lib/clients';
 import { LoadFeedback, Paging, useQuoteResource } from './shared';
 
 type QuoteRow = { id: string; reference: string; clientId: string; clientName: string; clientReference: string; agencyId: string; agencyName: string; productCode: string; state: string; revisionNumber: number; updatedAt: string; startDate: string | null };
-const products: Record<string, string> = { 'motor-trade-road-risks': 'Motor Trade Road Risks', 'motor-trade-combined': 'Motor Trade Combined' };
+const products: Record<string, string> = { 'motor-trade-road-risks': 'Motor Trade Road Risks', 'motor-trade-combined': 'Motor Trade Combined', 'commercial-combined': 'Commercial Combined' };
 
 export function QuoteList({ clientId, agencyId: initialAgency, embedded = false }: { clientId?: string; agencyId?: string; embedded?: boolean }) {
   const [search, setSearch] = useState(''); const [query, setQuery] = useState(''); const [product, setProduct] = useState('');

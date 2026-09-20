@@ -10,13 +10,19 @@ import { QuoteActions } from './quote-actions';
 import { QuoteHistory, QuoteProposalDetails } from './quote-history';
 import { Panel, Status } from '../primitives';
 import { LoadFeedback, useQuoteResource } from './shared';
+import type {CommercialCatalogue, CommercialQuoteView} from '../../lib/commercial-capture';
+import dynamic from 'next/dynamic';
+const CommercialReceipt = dynamic(() => import('./commercial-receipt').then(module => module.CommercialReceipt));
 
-export function QuoteReceipt({ quoteId, actorId, questionLabels }: { quoteId: string; actorId: string; questionLabels: Record<string, string> }) {
-  const record = useQuoteResource<QuoteView>(`/api/v1/quotes/${quoteId}`);
+export function QuoteReceipt({ quoteId, actorId, questionLabels, commercialCatalogue }: { quoteId: string; actorId: string; questionLabels: Record<string, string>; commercialCatalogue: CommercialCatalogue }) {
+  const record = useQuoteResource<QuoteView | CommercialQuoteView>(`/api/v1/quotes/${quoteId}`);
   const [generation, setGeneration] = useState(0);
   const refresh = () => { setGeneration(value => value + 1); record.refresh(); };
   const [tab, setTab] = useState<'details' | 'risk' | 'cover' | 'drivers' | 'vehicles' | 'history' | 'underwriting' | 'quotation'>('details'); const [selected, setSelected] = useState('');
   if (!record.data) return <Panel title="Saved quote"><LoadFeedback error={record.error} retry={record.refresh} /></Panel>;
+  if (record.data.productCode === 'commercial-combined') return validQuoteEtag(record.etag)
+    ? <CommercialReceipt actorId={actorId} quote={record.data} etag={record.etag} catalogue={commercialCatalogue} refresh={refresh} />
+    : <Panel title="Saved commercial quote"><LoadFeedback error="The saved version could not be confirmed." retry={record.refresh} /></Panel>;
   const quote = record.data;
   return <><div className="page-heading"><div><h1>{quote.reference}</h1><p>Saved quote · Revision {quote.revisionNumber}</p></div><Link className="button" href="/quotes/new">New quote</Link></div>
     <section className="quote-saved-banner" aria-label="Quote identity"><div><span className="quote-step-label">{quote.productCode === 'motor-trade-road-risks' ? 'Motor Trade Road Risks' : 'Motor Trade Combined'}</span><h2>{quote.clientName}</h2><p>{quote.agencyName}</p></div><Status tone="warning">{quoteStateLabel(quote.state)}</Status></section>

@@ -1,0 +1,27 @@
+'use client';
+import Link from 'next/link';
+import {useState} from 'react';
+import type {CommercialCatalogue, CommercialQuoteView} from '../../lib/commercial-capture';
+import {quoteStateLabel} from '../../lib/underwriting-api';
+import {Panel, Status} from '../primitives';
+import {QuoteActions} from './quote-actions';
+import {QuoteHistory, QuoteProposalDetails} from './quote-history';
+import {LoadFeedback, useQuoteResource} from './shared';
+
+export function CommercialReceipt({actorId, quote, etag, catalogue, refresh}: {actorId: string; quote: CommercialQuoteView; etag: string; catalogue: CommercialCatalogue; refresh: () => void}) {
+  const [tab, setTab] = useState<'overview' | 'risk' | 'losses' | 'history'>('overview'); const [selected, setSelected] = useState('');
+  const underwriting = useQuoteResource<{capabilities: {canRate: boolean}; blockers: {code: string; message: string}[]}>(`/api/v1/quotes/${quote.id}/underwriting`);
+  const labels = Object.fromEntries(catalogue.questions.map(x => [x.id, x.label]));
+  return <><div className="page-heading"><div><h1>{quote.reference}</h1><p>Saved quote · Revision {quote.revisionNumber}</p></div><Link className="button" href="/quotes/new">New quote</Link></div>
+    <section className="quote-saved-banner" aria-label="Quote identity"><div><span className="quote-step-label">Commercial Combined</span><h2>{quote.clientName}</h2><p>{quote.agencyName}</p></div><Status tone="warning">{quoteStateLabel(quote.state)}</Status></section>
+    <div className="quote-row-actions"><Link className="button" href={`/clients/${quote.clientId}`}>Open client account</Link>{quote.capabilities.canSave && <Link className="button button-primary" href={`/quotes/${quote.id}/edit`}>Edit quote draft</Link>}{quote.matchReviewId && <Link className="button" href={`/matches/${quote.matchReviewId}`}>Open account matching review</Link>}</div>
+    <div className="quote-row-actions quote-record-tabs" role="tablist" aria-label="Commercial Combined quote tabs">{(['overview', 'risk', 'losses', 'history'] as const).map(x => <button key={x} className="button" role="tab" aria-selected={x === tab} onClick={() => setTab(x)}>{x === 'overview' ? 'Overview' : x === 'risk' ? 'Business details' : x === 'losses' ? 'Claims and losses' : 'History and comparison'}</button>)}</div>
+    <QuoteActions quote={quote} etag={etag} actorId={actorId} sourceRevisionId={selected || quote.revisionId} refresh={refresh} />
+    {tab === 'history' ? <QuoteHistory quote={quote} selected={selected || quote.revisionId} select={setSelected} questionLabels={labels} /> : tab === 'overview' ?
+      <div className="agency-layout"><div><Panel title="Saved commercial proposal" note={`Read-only details from revision ${quote.revisionNumber}`}><div className="quote-rail-body"><QuoteProposalDetails proposal={quote.proposal} value={{insured: quote.proposal.insured, business: quote.proposal.risk?.business, termIntent: quote.proposal.termIntent}} questionLabels={labels} /></div></Panel>
+        <Panel title="Capture readiness"><div className="quote-rail-body"><p>{quote.readiness.ready ? 'Captured details are ready for the next underwriting checks.' : 'Complete the outstanding captured details before requesting a rating.'}</p><ul className="quote-readiness-list">{quote.readiness.issues.map((issue, index) => <li key={`${issue.code}:${index}`}>{issue.message}</li>)}</ul></div></Panel></div>
+        <aside className="quote-create-rail"><Panel title="Next action"><div className="quote-rail-body">{quote.capabilities.canSave && <Link className="button button-primary" href={`/quotes/${quote.id}/edit`}>Continue quote capture</Link>}
+          {!underwriting.data ? <LoadFeedback error={underwriting.error} retry={underwriting.refresh} /> : <><p>{underwriting.data.capabilities.canRate ? 'Underwriting checks are available.' : 'Rating is currently unavailable.'}</p><ul className="quote-readiness-list">{underwriting.data.blockers.map((blocker, index) => <li key={`${blocker.code}:${index}`}>{blocker.message}</li>)}</ul></>}
+        </div></Panel></aside></div> : <Panel title={tab === 'losses' ? 'Saved loss history' : 'Saved business details'}><div className="quote-rail-body"><QuoteProposalDetails proposal={quote.proposal} value={tab === 'losses' ? quote.proposal.risk?.losses : {insured: quote.proposal.insured, business: quote.proposal.risk?.business, declarations: quote.proposal.risk?.declarations}} questionLabels={labels} /></div></Panel>}
+  </>;
+}

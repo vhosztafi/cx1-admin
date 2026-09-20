@@ -1,0 +1,113 @@
+using System.Diagnostics;
+using System.Net;
+using System.Net.Sockets;
+using System.Text.Json;
+using BackOffice.Application.Quotes;
+using BackOffice.Infrastructure.Persistence;
+using BackOffice.Infrastructure.Quotes;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Hosting.Server.Features;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Xunit;
+
+namespace BackOffice.IntegrationTests;
+
+public sealed partial class QuoteStorageTests
+{
+    [Fact]
+    public async Task RealSqlCommercialCaptureBusinessLossBrowser()
+    {
+        await WithDatabase(async (db, password) =>
+        {
+            var root = new DirectoryInfo(AppContext.BaseDirectory);
+            while (root is not null && !File.Exists(Path.Combine(root.FullName, "package.json"))) root = root.Parent;
+            Assert.NotNull(root);
+            Assert.True(File.Exists(Path.Combine(root.FullName, "apps/backoffice/.next/BUILD_ID")));
+            await DemoDatabase.SeedAsync(db, password, includeQuoteCapture: true, includeCommercialCapture: true);
+            var cc = await CreateFixture(db, "-CC-BROWSER", CommercialCaptureRules.ProductCode, 2);
+            var mt = await CreateFixture(db, "-MT-BROWSER");
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Agency SET State=N'active' WHERE Id={cc.Agency} OR Id={mt.Agency}");
+            var fixtureCreatedAt = new QuoteTime().GetUtcNow().AddDays(-1);
+            var address = """{"line1":"1 Fictional Street","town":"London","postcode":"SW1A 1AA","country":"GB"}""";
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ClientAccount SET CreatedAt={fixtureCreatedAt},Address={address} WHERE Id={cc.Client} OR Id={mt.Client}");
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ClientAccount SET LegalName=N'Fictional quote client CC browser',NormalizedName=N'FICTIONAL QUOTE CLIENT CC BROWSER' WHERE Id={cc.Client}");
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ClientAccount SET LegalName=N'Fictional quote client MT browser',NormalizedName=N'FICTIONAL QUOTE CLIENT MT BROWSER' WHERE Id={mt.Client}");
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ClientAgencyRelationship SET CreatedAt={fixtureCreatedAt} WHERE Id={cc.Relationship} OR Id={mt.Relationship}");
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Agency SET CreatedAt={fixtureCreatedAt} WHERE Id={cc.Agency} OR Id={mt.Agency}");
+            using var host = new WebApplicationFactory<Program>().WithWebHostBuilder(builder => builder
+                .UseEnvironment("Development").UseUrls("http://127.0.0.1:0")
+                .UseSetting("Cover:SqlConnection", db.Database.GetConnectionString())
+                .UseSetting("Cover:DataProtectionPath", Path.Combine(root.FullName, ".local/commercial-browser-keys", db.Database.GetDbConnection().Database))
+                .UseSetting("Cover:CancellationNoticeWorkerEnabled", "false")
+                .UseSetting("Cover:RenewalLifecycleWorkerEnabled", "false")
+                .UseSetting("Cover:ServicingDeliveryWorkerEnabled", "false")
+                .ConfigureServices(services => {
+                    services.AddSingleton<TimeProvider>(new QuoteTime());
+                    services.AddScoped(provider => new QuoteService(provider.GetRequiredService<IDbContextFactory<BackOfficeDbContext>>(), new QuoteTime()));
+                }));
+            host.UseKestrel(0); using var client = host.CreateClient();
+            await using (var configured = await host.Services.GetRequiredService<IDbContextFactory<BackOfficeDbContext>>().CreateDbContextAsync())
+            {
+                Assert.Equal(db.Database.GetDbConnection().Database, configured.Database.GetDbConnection().Database);
+                var storedClient = await configured.Set<ClientAccount>().AsNoTracking().SingleAsync(x => x.Id == cc.Client);
+                Assert.Equal("CL-QUOTE-STORAGE-CC-BROWSER", storedClient.Reference);
+                Assert.True(storedClient.CreatedAt <= host.Services.GetRequiredService<TimeProvider>().GetUtcNow());
+            }
+            var api = host.Services.GetRequiredService<IServer>().Features.Get<IServerAddressesFeature>()!.Addresses.Single();
+            Assert.True(new Uri(api).IsLoopback); Assert.NotEqual(5000, new Uri(api).Port);
+            var listener = new TcpListener(IPAddress.Loopback, 0); listener.Start();
+            var port = ((IPEndPoint)listener.LocalEndpoint).Port; listener.Stop();
+            var output = Path.Combine(root.FullName, ".local/browser-evidence/commercial-capture", db.Database.GetDbConnection().Database);
+            Directory.CreateDirectory(output);
+            Process StartNode(string[] args, Dictionary<string, string> environment)
+            {
+                var info = new ProcessStartInfo("node") { WorkingDirectory = root.FullName, UseShellExecute = false, CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden, RedirectStandardOutput = true, RedirectStandardError = true };
+                foreach (var arg in args) info.ArgumentList.Add(arg);
+                foreach (var (key, value) in environment) info.Environment[key] = value;
+                return Process.Start(info) ?? throw new InvalidOperationException("Commercial browser child could not start.");
+            }
+            using var web = StartNode(["apps/backoffice/node_modules/next/dist/bin/next", "start", "apps/backoffice", "--hostname", "127.0.0.1", "--port", port.ToString()], new() { ["BACKOFFICE_API_ORIGIN"] = api });
+            var webOut = web.StandardOutput.ReadToEndAsync(); var webErr = web.StandardError.ReadToEndAsync(); Process? browser = null;
+            try
+            {
+                using var probe = new HttpClient(); var serving = false;
+                for (var attempt = 0; attempt < 100 && !web.HasExited; attempt++)
+                {
+                    try { using var response = await probe.GetAsync($"http://127.0.0.1:{port}/login"); if (response.IsSuccessStatusCode) { serving = true; break; } }
+                    catch (HttpRequestException) { }
+                    await Task.Delay(250);
+                }
+                Assert.True(serving, "Isolated commercial preview did not start.");
+                var fixture = JsonSerializer.Serialize(new { apiOrigin = api, webOrigin = $"http://127.0.0.1:{port}", output, clockNow = new QuoteTime().GetUtcNow(), ccRelationship = cc.Relationship, mtRelationship = mt.Relationship });
+                browser = StartNode(["scripts/verify-commercial-capture-browser.mjs", "--worker", "--stage", "business-loss"], new() {
+                    ["COVER_COMMERCIAL_BROWSER_FIXTURE"] = fixture, ["COVER_COMMERCIAL_BROWSER_PASSWORD"] = password });
+                var stdout = browser.StandardOutput.ReadToEndAsync(); var stderr = browser.StandardError.ReadToEndAsync();
+                await browser.WaitForExitAsync().WaitAsync(TimeSpan.FromMinutes(8));
+                var text = await stdout + await stderr; await File.WriteAllTextAsync(Path.Combine(output, "browser.log"), text);
+                Assert.True(browser.ExitCode == 0, text);
+                using var report = JsonDocument.Parse(await File.ReadAllTextAsync(Path.Combine(output, "report.json")));
+                var quoteId = report.RootElement.GetProperty("quoteId").GetGuid();
+                var revisions = await db.Set<QuoteRevision>().AsNoTracking().Where(x => x.QuoteId == quoteId).OrderBy(x => x.Number).ToArrayAsync();
+                Assert.True(revisions.Length >= 7);
+                using var final = JsonDocument.Parse(revisions.Last().ProposalJson);
+                Assert.Equal("Concurrent saved business", final.RootElement.GetProperty("insured").GetProperty("legalName").GetString());
+                Assert.Empty(final.RootElement.GetProperty("risk").GetProperty("losses").EnumerateArray());
+                var declarations = final.RootElement.GetProperty("risk").GetProperty("declarations").GetProperty("answers").EnumerateArray();
+                Assert.False(declarations.Single(x => x.GetProperty("questionId").GetString() == "prototype.quote.385743089b72").GetProperty("value").GetBoolean());
+                foreach (var question in report.RootElement.GetProperty("verifiedQuestionIds").EnumerateArray())
+                    Assert.Contains(revisions, revision => revision.ProposalJson.Contains(question.GetString()!, StringComparison.Ordinal));
+                Assert.Equal(2, await db.Set<Quote>().CountAsync());
+            }
+            finally
+            {
+                if (browser is not null) { if (!browser.HasExited) browser.Kill(entireProcessTree: true); browser.Dispose(); }
+                if (!web.HasExited) web.Kill(entireProcessTree: true);
+                await web.WaitForExitAsync(); await File.WriteAllTextAsync(Path.Combine(output, "web.log"), await webOut + await webErr);
+            }
+        });
+    }
+}

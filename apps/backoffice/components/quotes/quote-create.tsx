@@ -7,6 +7,7 @@ import type { Client, ClientSummary, Page, Relationship } from '../../lib/client
 import { createQuoteCommand, quoteFetch, QuoteError, sendQuoteCommand, uncertainQuoteFailure, type PendingQuoteCommand, type QuoteProduct } from '../../lib/quotes';
 import { EmptyState, Panel } from '../primitives';
 import { LoadFeedback, Paging, useQuoteResource } from './shared';
+import { emptyCommercialProposal } from '../../lib/commercial-capture';
 
 export function QuoteCreate({ actorId, initialClient, initialRelationship, matchSubmissionId }: { actorId: string; initialClient?: Client; initialRelationship?: Relationship; matchSubmissionId?: string }) {
   const router = useRouter();
@@ -44,7 +45,8 @@ export function QuoteCreate({ actorId, initialClient, initialRelationship, match
     const recovering = recovery.current;
     if (!recovering) {
       if (!client || !relationship || relationship.state !== 'active' || !product?.captureEligible) return;
-      receipt.current = createQuoteCommand(relationship.id, product.productVersionId, { schemaVersion: '1.0', productCode: product.productCode }, undefined, matchSubmissionId);
+      receipt.current = createQuoteCommand(relationship.id, product.productVersionId,
+        product.productCode === 'commercial-combined' ? emptyCommercialProposal() : { schemaVersion: '1.0', productCode: product.productCode }, undefined, matchSubmissionId);
     }
     if (!receipt.current) return;
     lock.current = true; setBusy(true); setError(''); let attempted = false;

@@ -24,10 +24,14 @@ import { QuoteProposerReferences } from './quote-proposer-references';
 import type { QuoteFormCatalogue } from '../../lib/quote-catalogue';
 import { Panel } from '../primitives';
 import { LoadFeedback, useQuoteResource } from './shared';
+import type {CommercialCatalogue, CommercialQuoteView} from '../../lib/commercial-capture';
+import dynamic from 'next/dynamic';
+const CommercialWizard = dynamic(() => import('./commercial-wizard').then(module => module.CommercialWizard));
 
-export function QuoteWizard({ actorId, quoteId, catalogue }: { actorId: string; quoteId: string; catalogue: QuoteFormCatalogue }) {
-  const record = useQuoteResource<QuoteView>(`/api/v1/quotes/${quoteId}`);
+export function QuoteWizard({ actorId, quoteId, catalogue, commercialCatalogue }: { actorId: string; quoteId: string; catalogue: QuoteFormCatalogue; commercialCatalogue: CommercialCatalogue }) {
+  const record = useQuoteResource<QuoteView | CommercialQuoteView>(`/api/v1/quotes/${quoteId}`);
   if (!record.data || !validQuoteEtag(record.etag)) return <Panel title="Edit quote"><LoadFeedback error={record.error ?? (record.data ? 'The saved version could not be confirmed.' : undefined)} retry={record.refresh} /></Panel>;
+  if (record.data.productCode === 'commercial-combined') return <CommercialWizard actorId={actorId} initial={record.data} initialEtag={record.etag} catalogue={commercialCatalogue} />;
   return <Editor actorId={actorId} initial={record.data} initialEtag={record.etag} catalogue={catalogue} />;
 }
 

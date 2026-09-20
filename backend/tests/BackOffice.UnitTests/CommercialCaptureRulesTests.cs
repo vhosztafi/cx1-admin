@@ -91,6 +91,24 @@ public sealed class CommercialCaptureRulesTests
     }
 
     [Fact]
+    public void CommercialLossReadinessUsesThePersistedOccurredOnField()
+    {
+        var p = Example();
+        p["risk"]!["losses"] = new JsonArray(new JsonObject { ["id"] = "00000000-0000-4000-8000-000000000099", ["occurredOn"] = "2027-01-01" });
+        using var doc = JsonDocument.Parse(Prepare(p).Input.Json);
+        var issues = CommercialCaptureReadiness.Assess(doc.RootElement, new DateOnly(2026, 9, 20));
+        Assert.Contains(issues, x => x.Code == "loss-date-after-assessment" && x.Path == "/risk/losses/0/occurredOn");
+        Assert.DoesNotContain(issues, x => x.Path == "/risk/losses/0/date");
+    }
+
+    [Fact]
+    public void SourceCommercialCharityOrTrustOptionHasADistinctCaptureValue()
+    {
+        var p = Example(); p["insured"]!["entityType"] = "charity-or-trust";
+        Assert.NotNull(Prepare(p));
+    }
+
+    [Fact]
     public void HealthAndSafetyDetailsAreNotRequiredForNoInspectorRecommendations()
     {
         var p = Example(); var answers = p["risk"]!["declarations"]!["answers"]!.AsArray();
