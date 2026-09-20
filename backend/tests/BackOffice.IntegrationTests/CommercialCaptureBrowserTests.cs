@@ -54,7 +54,25 @@ public sealed partial class QuoteStorageTests
     [Fact]
     public Task RealSqlCommercialCancellationBrowser()=>RunCommercialCaptureBrowser("issue",cancellation:true);
 
-    private async Task RunCommercialCaptureBrowser(string stage, bool servicing = false, bool servicingIssue = false, bool renewal = false,bool cancellation=false)
+    [Fact]
+    public Task RealSqlCommercialDemoNormalApiIssueAndRepeat()=>RunCommercialCaptureBrowser("issue",demo:true);
+
+    [Fact]
+    public Task RealSqlCommercialDemoNormalApiAdjustmentAndRepeat()=>RunCommercialCaptureBrowser("issue",demo:true,servicingIssue:true);
+
+    [Fact]
+    public Task RealSqlCommercialDemoNormalApiRenewalAndRepeat()=>RunCommercialCaptureBrowser("issue",demo:true,servicingIssue:true,renewal:true);
+
+    [Fact]
+    public Task RealSqlCommercialDemoNormalApiCancellationAndRepeat()=>RunCommercialCaptureBrowser("issue",demo:true,servicingIssue:true,renewal:true,cancellation:true);
+
+    [Fact]
+    public Task RealSqlCommercialDemoNormalApiReferralCapacityAndRepeat()=>RunCommercialCaptureBrowser("issue",demo:true,demoReferrals:true);
+
+    [Fact]
+    public Task RealSqlCommercialDemoNormalApiFullLifecycleAndRepeat()=>RunCommercialCaptureBrowser("issue",demo:true,servicingIssue:true,renewal:true,cancellation:true,demoReferrals:true);
+
+    private async Task RunCommercialCaptureBrowser(string stage, bool servicing = false, bool servicingIssue = false, bool renewal = false,bool cancellation=false,bool demo=false,bool demoReferrals=false)
     {
         await WithDatabase(async (db, password) =>
         {
@@ -102,7 +120,7 @@ public sealed partial class QuoteStorageTests
             await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ClientAgencyRelationship SET CreatedAt={fixtureCreatedAt} WHERE Id={cc.Relationship} OR Id={mt.Relationship}");
             await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Agency SET CreatedAt={fixtureCreatedAt} WHERE Id={cc.Agency} OR Id={mt.Agency}");
             Guid? cancellationPolicyId=null;
-            if(cancellation)cancellationPolicyId=await new UnderwritingRuntimeTests().SeedCommercialCancellationBrowserPolicy(db);
+            if(cancellation&&!demo)cancellationPolicyId=await new UnderwritingRuntimeTests().SeedCommercialCancellationBrowserPolicy(db);
             TimeProvider browserClock=cancellation?new CommercialCancellationBrowserClock():new QuoteTime();
             using var host = new WebApplicationFactory<Program>().WithWebHostBuilder(builder => builder
                 .UseEnvironment("Development").UseUrls("http://127.0.0.1:0")
@@ -149,6 +167,39 @@ public sealed partial class QuoteStorageTests
                     await Task.Delay(250);
                 }
                 Assert.True(serving, "Isolated commercial preview did not start.");
+                if(demo)
+                {
+                    var senior=await db.Set<StaffUser>().SingleAsync(x=>x.Email=="senior-underwriter@cover.example");
+                    var admin=await db.Set<StaffUser>().SingleAsync(x=>x.Email=="system-admin@cover.example");
+                    var authority=await db.Set<AuthorityVersion>().SingleAsync(x=>x.ProductVersionId==cc.ProductVersion);
+                    db.Add(new UserAuthorityGrant{UserId=senior.Id,AuthorityVersionId=authority.Id,GrantedBy=admin.Id,CreatedBy=admin.Id,
+                        EffectiveFrom=authority.EffectiveFrom,EffectiveTo=authority.EffectiveTo,CreatedAt=browserClock.GetUtcNow(),Reason="Explicit isolated normal-API commercial demo grant"});
+                    await db.SaveChangesAsync();
+                    var actor=new BackOffice.Application.ActorContext(senior.Id,senior.TeamId,null,new HashSet<string>{"senior-underwriter"});
+                    var seed=new BackOffice.Infrastructure.Policies.CommercialDemoSeed(host.Services.GetRequiredService<IDbContextFactory<BackOfficeDbContext>>(),browserClock);
+                    var quotes=await seed.SeedAsync(actor,cc.Relationship,cc.ProductVersion);
+                    var quoteFile=Path.Combine(output,"demo-quotes.json");await File.WriteAllTextAsync(quoteFile,JsonSerializer.Serialize(quotes));
+                    var environment=new Dictionary<string,string>{["COVER_WEB_ORIGIN"]=$"http://127.0.0.1:{port}",["COVER_COMMERCIAL_DEMO_API_ORIGIN"]=api,
+                        ["COVER_COMMERCIAL_DEMO_DIRECTORY"]=output,["COVER_COMMERCIAL_DEMO_PASSWORD"]=password,["COVER_COMMERCIAL_DEMO_KNOWN_AT"]=browserClock.GetUtcNow().ToString("O")};
+                    async Task RunDemo(int number)
+                    {
+                        using var process=StartNode(["scripts/seed-commercial-lifecycle-demo.mjs",quoteFile,demoReferrals?(cancellation?"full":"scenarios"):cancellation?"cancellation":renewal?"renewal":servicingIssue?"adjustment":"issue"],environment);
+                        var standard=process.StandardOutput.ReadToEndAsync();var errors=process.StandardError.ReadToEndAsync();
+                        try{await process.WaitForExitAsync().WaitAsync(TimeSpan.FromMinutes(demoReferrals?20:10));}
+                        finally{if(!process.HasExited)process.Kill(entireProcessTree:true);}
+                        var log=await standard+await errors;await File.WriteAllTextAsync(Path.Combine(output,$"demo-{number}.log"),log);
+                        Assert.True(process.ExitCode==0,$"Commercial demo failed; inspect sanitized demo-{number}.log in {output}.");
+                    }
+                    await RunDemo(1);
+                    var expectedJournals=cancellation?4:renewal?3:servicingIssue?2:1;
+                    Assert.Single(await db.Set<Policy>().ToArrayAsync());Assert.Equal(expectedJournals,await db.Set<Journal>().CountAsync());
+                    var payloads=await db.Set<PolicyDocumentRequest>().AsNoTracking().OrderBy(x=>x.Id).Select(x=>x.PayloadJson).ToArrayAsync();Assert.Equal((cancellation?3:expectedJournals)*3,payloads.Length);
+                    var workCount=await db.Set<OutboxWork>().CountAsync();var demoRevisionCount=await db.Set<QuoteRevision>().CountAsync();
+                    await RunDemo(2);Assert.Equal(quotes,await seed.SeedAsync(actor,cc.Relationship,cc.ProductVersion));
+                    Assert.Equal(workCount,await db.Set<OutboxWork>().CountAsync());Assert.Equal(demoRevisionCount,await db.Set<QuoteRevision>().CountAsync());
+                    Assert.Equal(payloads,await db.Set<PolicyDocumentRequest>().AsNoTracking().OrderBy(x=>x.Id).Select(x=>x.PayloadJson).ToArrayAsync());
+                    Assert.Equal(expectedJournals,await db.Set<Journal>().CountAsync());return;
+                }
                 var fixture = JsonSerializer.Serialize(new { stage, servicing, servicingIssue, renewal, cancellation,cancellationPolicyId, apiOrigin = api, webOrigin = $"http://127.0.0.1:{port}", output, clockNow = browserClock.GetUtcNow(), ccRelationship = cc.Relationship, mtRelationship = mt.Relationship });
                 browser = StartNode([cancellation?"scripts/verify-commercial-cancellation-browser.mjs":"scripts/verify-commercial-capture-browser.mjs", "--worker", "--stage", stage], new() {
                     ["COVER_COMMERCIAL_BROWSER_FIXTURE"] = fixture, ["COVER_COMMERCIAL_BROWSER_PASSWORD"] = password });

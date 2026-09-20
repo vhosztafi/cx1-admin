@@ -350,4 +350,40 @@ The command is restricted to `CoverMGA_Demo`. It returns five scenario names, qu
 
 Rerunning discovers the original scenarios and preserves business edits, existing quotes, configuration, grants and issue history. It does not renew a lease, rerate an edited proposal or create a replacement for a withdrawn record. Access withdrawal is authoritative even on a repeat run.
 
-Open the returned quote reference in the back office and use the normal rating, evidence, referral, capacity, terms, acceptance and issue controls. Issued commercial documents currently show requested work. Their stored content is pinned to the exact version; generation and delivery belong to Phase9. The proposal command alone does not complete the lifecycle demonstration. Full lifecycle orchestration and retained demo reference publication remain part of the ongoing08-15 acceptance work.
+Open the returned quote reference in the back office and use the normal rating, evidence, referral, capacity, terms, acceptance and issue controls. Issued commercial documents currently show requested work. Their stored content is pinned to the exact version; generation and delivery belong to Phase9.
+
+### Commercial lifecycle orchestration
+
+Save the proposal command's JSON array to `.local/commercial-proposals.json`. With the local API/web running, use:
+
+```powershell
+$env:COVER_WEB_ORIGIN = 'http://127.0.0.1:3100'
+$env:COVER_COMMERCIAL_DEMO_DIRECTORY = '.local/commercial-lifecycle-demo-v1'
+node scripts/seed-commercial-lifecycle-demo.mjs .local/commercial-proposals.json full
+```
+
+The script signs in as the existing senior underwriter using `.local/demo-password.txt`. It requires current commercial authority, an eligible contact and the normal demo rating, capacity, terms and cancellation workers. It never grants itself authority. For separate local API/web origins, set `COVER_COMMERCIAL_DEMO_API_ORIGIN` to the API origin. Both origins must be loopback; API port5000 is rejected. Keep the journal directory with its database and rerun the same command after an interrupted response. Stop business edits while preparing these fictional examples; validation and concurrency conflicts require review, not replacement of retained records.
+
+For the initial local demonstration only, `dotnet run --project backend/src/BackOffice.Api --no-launch-profile -- --seed-commercial-authority-demo` explicitly creates a missing grant from the existing active system administrator to the active senior underwriter for published commercial v3. It is restricted to Development and `CoverMGA_Demo`, and checks both current roles and current published authority before discovering a retained grant. An existing revoked or expired grant stays unchanged. This command is never part of application startup, repeat initialization or proposal/lifecycle preparation. Agency adoption of commercial v3 still uses its normal approved terms workflow.
+
+The supported stages are `issue`, `adjustment`, `renewal`, `cancellation`, `scenarios` (issue plus the separate referral/capacity examples), and `full`. The full sequence creates one issued two-location policy, increases its first location's stock by£111.11 effective14days after inception, renews from that final expiring version with explicitly reviewed fictional experience, and cancels the renewal30days after its inception. Cancellation posts a credit with cash paid£0.00 and releases exposure at its effective date. The original policy and adjustment remain in history.
+
+Other proposals remain available as a flood referral, an actual declined risk, a conditional demo-carrier response with outstanding proof, and a district-capacity contender. The contender has£39,900,000.01 buildings at the first premises: its proposed district exposure is within£40m by itself, but the issued base consumes enough shared headroom to produce a real book-capacity warning. It is not issued or presented as a capacity reservation. Existing or edited scenarios are preserved; an older contender recipe requires explicit review rather than automatic overwriting.
+
+Actual IDs and references are written after scoped API readback to `issued-base.json`, `adjustment.json`, `renewal.json`, `cancellation.json`, and `referrals-and-capacity.json` in the journal directory. These reports distinguish queued document work, actual persisted demo correspondence and posted finance. No real customer/carrier transmission, generated Phase9 document or cash refund is claimed.
+
+The complete normal-API lifecycle and all scenarios passed twice in the08-15 acceptance test and twice in the retained local demo. The database upgrade preserved all56,867 preexisting rows, both encryption keys and the Motor Trade policy graphs after actual restart. The explicit commercial staff grant was applied after the user approved that exact local privilege change.
+
+For a fully approved fictional agency, `node scripts/prepare-commercial-demo-context.mjs <agency-id> <commercial-v3-id>` prepares the context through normal APIs: one operator proposes the added commercial product, a different operator approves it, and a dedicated client, relationship and contact are created. Prior terms snapshots remain unchanged. The command pins its selection and exact requests in the same persistent demo directory; a repeat retains the existing records. It neither activates an agency nor creates a staff grant.
+
+The retained example uses agencyAG-0000154, clientCN-0000197 and commercial policy [PL-CC-0000000025](http://127.0.0.1:3100/policies/91964a43-2afe-45ee-b01e-06cfcd717795). The original policy starts1November2026; its adjustment takes effect15November2026, renewal starts1November2027, and cancellation takes effect1December2027 at09:00UTC. Cancellation posted a£1,695.88 credit with cash paid£0.00.
+
+| Example | Retained quote |
+| --- | --- |
+| Issued two-location policy | [QT-MT-0000000691](http://127.0.0.1:3100/quotes/bd91bf9e-60fc-4797-ae91-bf7b64bc4647) |
+| Flood referral | [QT-MT-0000000692](http://127.0.0.1:3100/quotes/1c72cb31-9e24-432b-af71-236399e8cf5b) |
+| Declined outside appetite | [QT-MT-0000000693](http://127.0.0.1:3100/quotes/6f3ff65e-760f-474b-8780-6263478e323f) |
+| Conditional demo capacity | [QT-MT-0000000694](http://127.0.0.1:3100/quotes/bb215589-d27d-43d6-b077-de98e3a1cc69) |
+| District capacity contention | [QT-MT-0000000695](http://127.0.0.1:3100/quotes/1b695b03-5cbf-443c-b48a-972b61535eb8) |
+
+These are Commercial Combined quotes; their opaque references retain the existing shared `QT-MT` numbering format. The exact IDs, versions, consequences and current scenario readbacks are in `.local/commercial-lifecycle-demo-v1/references.json` and its Markdown companion. Keep that directory with the database.

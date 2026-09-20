@@ -8444,7 +8444,19 @@
       "disposition": "shared-operations-later-phase",
       "contract": "Phase8 supplies exact-version CC payloads; Phase9 owns real document/incident action.",
       "runtimeStatus": "pending",
-      "verification": []
+      "verification": [],
+      "payloadContract": {
+        "ownerPlan": "08-15",
+        "symbol": "CommercialDocumentPayload",
+        "status": "exact-version-request-payload-verified",
+        "verification": [
+          "08-15-SUMMARY.md",
+          ".local/phase8-15-unit-final/unit.trx",
+          ".local/phase8-15-envelope-sql/sql.trx",
+          ".local/phase8-15-servicing-final-sql/sql.trx"
+        ],
+        "boundary": "The Phase9 document/incident user action remains pending; payload verification does not complete that action."
+      }
     },
     {
       "controlId": "CTL-04e2a11eab51",
@@ -8463,7 +8475,19 @@
       "disposition": "shared-operations-later-phase",
       "contract": "Phase8 supplies exact-version CC payloads; Phase9 owns real document/incident action.",
       "runtimeStatus": "pending",
-      "verification": []
+      "verification": [],
+      "payloadContract": {
+        "ownerPlan": "08-15",
+        "symbol": "CommercialIncidentPayload",
+        "status": "exact-version-occurrence-contract-verified",
+        "verification": [
+          "08-15-SUMMARY.md",
+          ".local/phase8-15-unit-final/unit.trx",
+          ".local/phase8-15-envelope-sql/sql.trx",
+          ".local/phase8-15-servicing-final-sql/sql.trx"
+        ],
+        "boundary": "The Phase9 document/incident user action remains pending; payload verification does not complete that action."
+      }
     },
     {
       "controlId": "CTL-56d3a14f67cc",

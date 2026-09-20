@@ -16,6 +16,52 @@ namespace BackOffice.IntegrationTests;
 
 public sealed partial class UnderwritingRuntimeTests
 {
+    [Fact]
+    public Task RealSqlCommercialDemoFullInitializationPreservesEveryTableAfterIssue() => CommercialTermsScenario(async (db, cycle, acceptance, actorId, now) =>
+    {
+        var source = await CommercialIssueCommand(db, cycle, acceptance, actorId);
+        await source.Service.IssueAsync(source.Actor, source.Quote.Id, source.Quote.RowVersion, source.Input, Guid.NewGuid().ToString(), Guid.NewGuid());
+    }, stopAfterAccepted: true, inspectAccepted: async (db, password) =>
+    {
+        var versions = await db.Set<PolicyVersion>().AsNoTracking().OrderBy(x => x.Id).Select(x => x.SnapshotJson).ToArrayAsync();
+        var documents = await db.Set<PolicyDocumentRequest>().AsNoTracking().OrderBy(x => x.Id).Select(x => x.PayloadJson).ToArrayAsync();
+        async Task Initialize()
+        {
+            db.ChangeTracker.Clear();
+            await DemoDatabase.SeedAsync(db, password, includeSupportFlags: true, includeMatches: true, includeQuoteCapture: true,
+                includeUnderwriting: true, includeRenewalLifecycle: true, includeCommercialCapture: true, includeCommercialUnderwriting: true);
+        }
+        // Add other missing demo modules once, while preserving issued business.
+        await Initialize();
+        Assert.Equal(versions, await db.Set<PolicyVersion>().AsNoTracking().OrderBy(x => x.Id).Select(x => x.SnapshotJson).ToArrayAsync());
+        Assert.Equal(documents, await db.Set<PolicyDocumentRequest>().AsNoTracking().OrderBy(x => x.Id).Select(x => x.PayloadJson).ToArrayAsync());
+        var before = await CommercialDemoFingerprints(db); Assert.True(before.Length >= 133);
+        for (var pass = 0; pass < 2; pass++) { await Initialize(); Assert.Equal(before, await CommercialDemoFingerprints(db)); }
+        Assert.False(db.Database.HasPendingModelChanges());
+    });
+
+    private static async Task<string[]> CommercialDemoFingerprints(BackOfficeDbContext db)
+    {
+        var database = db.Database.GetDbConnection().Database; Assert.StartsWith("CoverMGA_Test_", database);
+        var root = new DirectoryInfo(AppContext.BaseDirectory);
+        while (root is not null && !File.Exists(Path.Combine(root.FullName, "scripts/servicing-preservation.sql"))) root = root.Parent;
+        Assert.NotNull(root);
+        var sql = await File.ReadAllTextAsync(Path.Combine(root.FullName, "scripts/servicing-preservation.sql"));
+        const string target = "IF DB_NAME() <> N'CoverMGA_Demo'"; Assert.Contains(target, sql);
+        // Reuse the all-table ordered SHA256 query only on this exact owned test DB.
+        sql = sql.Replace(target, "IF DB_NAME() <> @ExpectedDatabase", StringComparison.Ordinal);
+        await db.Database.OpenConnectionAsync();
+        try
+        {
+            await using var command = db.Database.GetDbConnection().CreateCommand(); command.CommandText = sql; command.CommandTimeout = 120;
+            var parameter = command.CreateParameter(); parameter.ParameterName = "@ExpectedDatabase"; parameter.Value = database; command.Parameters.Add(parameter);
+            await using var reader = await command.ExecuteReaderAsync(); var result = new List<string>();
+            do { while (await reader.ReadAsync()) result.Add($"{reader.GetString(0)}|{reader.GetInt64(1)}|{reader.GetString(2)}"); } while (await reader.NextResultAsync());
+            return result.ToArray();
+        }
+        finally { await db.Database.CloseConnectionAsync(); }
+    }
+
     [Theory]
     [InlineData("version")]
     [InlineData("snapshot")]
@@ -92,6 +138,7 @@ public sealed partial class UnderwritingRuntimeTests
             var saved = await quotes.GetAsync(f.Actor, demo.QuoteId);
             using var proposal = JsonDocument.Parse(saved.Revision.ProposalJson);
             Assert.Equal(2, proposal.RootElement.GetProperty("risk").GetProperty("locations").GetArrayLength());
+            Assert.Empty(BackOffice.Application.Quotes.CommercialCaptureReadiness.Assess(proposal.RootElement, DateOnly.FromDateTime(now.UtcDateTime)));
             var referrals = BackOffice.Application.Underwriting.CommercialReferralRules.SourceReferrals(proposal.RootElement);
             if (demo.Scenario == "flood-referral") Assert.Contains(referrals, x => x.RuleCode == "PR-05");
             if (demo.Scenario == "outside-appetite") Assert.Contains(referrals, x => x.Disposition == "outside-appetite");

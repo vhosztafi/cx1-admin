@@ -12,7 +12,7 @@ if (args.Contains("--initialize-demo", StringComparer.Ordinal))
 }
 if (args.Contains("--reset-demo",StringComparer.Ordinal)) throw new InvalidOperationException("Reset requires --initialize-demo --reset-demo.");
 
-var builder = WebApplication.CreateBuilder(args.Where(x=>x!="--seed-commercial-proposals-demo").ToArray());
+var builder = WebApplication.CreateBuilder(args.Where(x=>x is not ("--seed-commercial-proposals-demo" or "--seed-commercial-authority-demo")).ToArray());
 builder.Services.AddProblemDetails();
 builder.Services.AddHealthChecks();
 builder.AddLocalIdentity();
@@ -112,6 +112,16 @@ if(args.Contains("--seed-quote-demo",StringComparer.Ordinal))
     await using(var db=await factory.CreateDbContextAsync()) DemoDatabase.ValidateDemoTarget(Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.GetConnectionString(db.Database)!);
     var result=await new BackOffice.Infrastructure.Quotes.QuoteDemo(factory,TimeProvider.System).SeedAsync();
     Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result));return;
+}
+if(args.Contains("--seed-commercial-authority-demo",StringComparer.Ordinal))
+{
+    if(!app.Environment.IsDevelopment())throw new InvalidOperationException("Commercial demo authority requires local Development.");
+    var factory=app.Services.GetRequiredService<Microsoft.EntityFrameworkCore.IDbContextFactory<BackOfficeDbContext>>();
+    await using var db=await factory.CreateDbContextAsync();
+    DemoDatabase.ValidateDemoTarget(Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.GetConnectionString(db.Database)!);
+    await using var transaction=await db.Database.BeginTransactionAsync();
+    var id=await BackOffice.Infrastructure.Policies.CommercialDemoAuthoritySeed.SeedAsync(db,app.Services.GetRequiredService<TimeProvider>().GetUtcNow());
+    await transaction.CommitAsync();Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new { grantId=id }));return;
 }
 if(args.Contains("--seed-commercial-proposals-demo",StringComparer.Ordinal))
 {

@@ -47,7 +47,10 @@ public sealed class CommercialDemoSeed(IDbContextFactory<BackOfficeDbContext> fa
                     proposal["insured"]!["tradingName"] = "Fictional commercial demo — " + scenario;
                     proposal["risk"]!["materialFacts"] = marker;
                     if (scenario == "flood-referral") proposal["risk"]!["locations"]![0]!["floodZone"] = "3";
-                    if (scenario is "conditional-capacity" or "capacity-contender") proposal["risk"]!["locations"]![0]!["buildings"] = "2500000.01";
+                    if (scenario == "conditional-capacity") proposal["risk"]!["locations"]![0]!["buildings"] = "2500000.01";
+                    // Within the district's own 40m bound, but the issued base
+                    // policy consumes enough shared headroom to exceed the book.
+                    if (scenario == "capacity-contender") proposal["risk"]!["locations"]![0]!["buildings"] = "39900000.01";
                     if (scenario == "outside-appetite")
                         proposal["risk"]!["declarations"]!["answers"]!.AsArray().Single(x => x!["questionId"]!.GetValue<string>() == "prototype.quote.ed8870d17328")!["value"] = true;
                     var created = await service.CreateAsync(actor, relationshipId, productVersionId, proposal.ToJsonString(),
