@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Phase8 plan07 complete; continue08-08 immutable dated commercial exposure storage and evaluator.
-last_updated: "2026-09-20T04:34:00Z"
-last_activity: "2026-09-20 —08-07 complete: exact carrier permissions and delivered/accepted CC terms;44 strict backend cases including4 SQL,162 web,382 root, final browser passed; continue08-08."
+stopped_at: Phase8 plan08 complete; continue08-09 atomic commercial issue and selected-cover documents.
+last_updated: "2026-09-20T05:14:16Z"
+last_activity: "2026-09-20 —08-08 complete: immutable dated commercial exposure;24 strict backend cases including4 SQL and4 source-ledger cases pass; continue08-09."
 progress:
   total_phases: 13
   completed_phases: 7
   total_plans: 81
-  completed_plans: 72
+  completed_plans: 73
   percent: 54
 ---
 
@@ -21,16 +21,16 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute08-08: immutable commercial exposure books, dated limits, version headers and temporal aggregate evaluator.
+**Current focus:** Execute08-09: shared book fence, scoped capacity assessment and atomic commercial policy/exposure/finance/document issue.
 
 ## Current Position
 
 Phase: 8 of 13 (Commercial Combined back office)
-Plan: 7 of16 complete;08-08 next
+Plan: 8 of16 complete;08-09 next
 Status: Executing
-Last activity: 2026-09-20 —08-07 carrier/terms/acceptance complete;44 strict backend cases including4 SQL,162 web,382 root and final actual browser/API schemas pass. Exact-subject carrier authority and separate internal/acceptance gates verified. Issue remains closed pending08-08/09.
+Last activity: 2026-09-20 —08-08 exposure books, limits and complete source projections complete;24 strict backend cases including4 SQL,4 source-ledger cases, build/model checks pass. Issue remains closed until08-09.
 
-Progress: Phases1–7 complete;7/13 phases,72/81 currently defined implementation plans. Phase8 research/UI/plans checked and08-01/02/03/04/05/06/07 complete; later phases await detailed planning.
+Progress: Phases1–7 complete;7/13 phases,73/81 currently defined implementation plans. Phase8 research/UI/plans checked and08-01/02/03/04/05/06/07/08 complete; later phases await detailed planning.
 
 ## Accumulated Context
 
@@ -44,7 +44,7 @@ Progress: Phases1–7 complete;7/13 phases,72/81 currently defined implementatio
 
 ### Pending Todos
 
-- Execute08-08;08-07 implementationfad26a6 and summaryc66e28e complete. KeepCC-05 partial until Phase9 operational workflows exist.
+- Execute08-09;08-08 implementation0f0fdc6 and summary644c1d4 complete. KeepCC-05 partial until Phase9 operational workflows exist.
 - Keep future endpoints closed until owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,9 +54,9 @@ Progress: Phases1–7 complete;7/13 phases,72/81 currently defined implementatio
 
 ## Session Continuity
 
-Last session: 2026-09-20T04:34:00Z
-Stopped at: Phase8 plan07 complete; continue08-08 immutable dated commercial exposure storage and evaluator.
-Resume file: .planning/phases/08-commercial-combined-back-office/08-08-PLAN.md
+Last session: 2026-09-20T05:14:16Z
+Stopped at: Phase8 plan08 complete; continue08-09 atomic commercial issue and selected-cover documents.
+Resume file: .planning/phases/08-commercial-combined-back-office/08-09-PLAN.md
 
 ## Autonomous continuation
 
