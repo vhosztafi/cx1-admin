@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Phase8 plan12 complete; continue08-13 commercial renewal experience, invitation and issue.
-last_updated: "2026-09-20T13:16:51Z"
-last_activity: "2026-09-20 —08-12 complete: commercial adjustment issue;242 strict backend cases including9 SQL,389 root and172 web pass; continue08-13."
+stopped_at: Phase8 plan13 complete; plan14 commercial cancellation executing.
+last_updated: "2026-09-20T17:06:25.012Z"
+last_activity: "2026-09-20 —08-13 complete;1077 backend cases/15 SQL and browser pass;08-14 begins."
 progress:
   total_phases: 13
   completed_phases: 7
   total_plans: 81
-  completed_plans: 77
+  completed_plans: 78
   percent: 54
 ---
 
@@ -21,16 +21,16 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute08-13: commercial renewal experience, invitation and issue with inception-dated exposure.
+**Current focus:** Execute08-14: commercial cancellation review, notice, atomic issue and effective-dated exposure release.
 
 ## Current Position
 
 Phase: 8 of 13 (Commercial Combined back office)
-Plan: 12 of16 complete;08-13 next
+Plan: 13 of16 complete;08-14 executing
 Status: Executing
-Last activity: 2026-09-20 —08-12 complete;242 strict backend/9 SQL, actual browser issue/readback,389 root and172 web checks pass. Commercial renewal is next.
+Last activity: 2026-09-20 —08-13 complete; implementationf0de861, verified summary committed.08-14 starts with the approved preflight and independent cancellation contract tests.
 
-Progress: Phases1–7 complete;7/13 phases,77/81 currently defined implementation plans. Phase8 research/UI/plans checked and08-01/02/03/04/05/06/07/08/09/10/11/12 complete; later phases await detailed planning.
+Progress: Phases1–7 complete;7/13 phases,78/81 currently defined implementation plans. Phase8 research/UI/plans checked and08-01/02/03/04/05/06/07/08/09/10/11/12/13 complete; later phases await detailed planning.
 
 ## Accumulated Context
 
@@ -44,7 +44,7 @@ Progress: Phases1–7 complete;7/13 phases,77/81 currently defined implementatio
 
 ### Pending Todos
 
-- Execute08-13;08-12 implementation5226707 and summaryce99da8 complete. KeepCC-05 partial until Phase9 operational workflows exist.
+- Execute08-14 cancellation;13 complete. KeepCC-04 compound until cancellation-to-renewal refusal is verified;CC-05 partial until Phase9 operational workflows exist.
 - Keep future endpoints closed until owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,9 +54,9 @@ Progress: Phases1–7 complete;7/13 phases,77/81 currently defined implementatio
 
 ## Session Continuity
 
-Last session: 2026-09-20T13:16:51Z
-Stopped at: Phase8 plan12 complete; continue08-13 commercial renewal experience, invitation and issue.
-Resume file: .planning/phases/08-commercial-combined-back-office/08-13-PLAN.md
+Last session: 2026-09-20T17:06:25.014Z
+Stopped at:08-14 begins; no running checks.13 strict1077/15 SQL passes, final build and source4 pass; desktop/mobile receipt inspected.
+Resume file: .planning/phases/08-commercial-combined-back-office/08-14-PLAN.md
 
 ## Autonomous continuation
 
