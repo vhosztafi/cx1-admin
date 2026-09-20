@@ -102,7 +102,7 @@ public static class QuoteRatingEligibility
         catch (JsonException) { throw Unavailable(); }
     }
 
-    private static bool PublishedProduct(string json, string code)
+    public static bool PublishedProduct(string json, string code)
     {
         try
         {

@@ -67,6 +67,10 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Empty((await Read(staff, $"/api/v1/policies?productCode=motor-trade-combined&q={policyReference}")).GetProperty("items").EnumerateArray());
         Assert.Equal(HttpStatusCode.BadRequest, (await staff.GetAsync("/api/v1/policies?productCode=unsupported-product")).StatusCode);
         using var admin = host.CreateClient(); await Post(admin, "/api/v1/auth/login", new { email = "agency-admin@cover.example", password });
+        var catalog = await Read(admin,"/api/v1/agency-product-catalog");
+        var commercialProduct = Assert.Single(catalog.GetProperty("items").EnumerateArray(),x=>x.GetProperty("productCode").GetString()=="commercial-combined");
+        Assert.True(commercialProduct.GetProperty("ratingReady").GetBoolean());
+        Assert.False(commercialProduct.TryGetProperty("unavailableReason",out _));
         using var broker = host.CreateClient();
         var agencyVersion = await db.Set<Agency>().AsNoTracking().Where(x => x.Id == f.Quote.AgencyId).Select(x => x.RowVersion).SingleAsync();
         var invitation = await Post(admin, $"/api/v1/agencies/{f.Quote.AgencyId}/invitations", new { email = "commercial-api-reader@example.invalid", displayName = "Fictional commercial reader", role = "broker-readonly" }, "\"" + Convert.ToBase64String(agencyVersion) + "\"");
@@ -96,5 +100,11 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Equal(HttpStatusCode.Forbidden, (await admin.GetAsync(path + cutoff)).StatusCode);
         await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ClientAgencyRelationship SET State=N'inactive' WHERE Id={f.Quote.RelationshipId}");
         Assert.Equal(HttpStatusCode.NotFound, (await broker.GetAsync(path + cutoff)).StatusCode);
+        var retired=await db.Set<AuthorityVersion>().SingleAsync(x=>x.Id==cycle.AuthorityVersionId);
+        retired.State="retired";await db.SaveChangesAsync();
+        var unavailableCatalog=await Read(admin,"/api/v1/agency-product-catalog");
+        var unavailableProduct=Assert.Single(unavailableCatalog.GetProperty("items").EnumerateArray(),x=>x.GetProperty("productCode").GetString()=="commercial-combined");
+        Assert.False(unavailableProduct.GetProperty("ratingReady").GetBoolean());
+        Assert.Contains("not currently available",unavailableProduct.GetProperty("unavailableReason").GetString());
     });
 }

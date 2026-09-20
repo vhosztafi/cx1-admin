@@ -142,9 +142,10 @@ public static class AgencyEndpoints
         var items=await(from v in db.Set<ProductVersion>() join p in db.Set<Product>() on v.ProductId equals p.Id join c in db.Set<CapacityProvider>() on v.ProviderId equals c.Id
             where p.Code=="motor-trade-road-risks"||p.Code=="motor-trade-combined"||p.Code=="commercial-combined" orderby p.Code,v.Version descending select new{productVersionId=v.Id,productCode=p.Code,p.Name,capacityProviderName=c.Name,v.EffectiveFrom,v.EffectiveTo,providerState=c.State}).ToListAsync(context.RequestAborted);
         var now=time.GetUtcNow();var rule=await AgencyDistributionService.Configuration(db,now,context.RequestAborted);
+        var ratingReady=await AgencyCatalogRating.ReadyAsync(db,now,context.RequestAborted);
         return Results.Json(new{items=items.DistinctBy(x=>x.productCode).Select(x=>new{x.productVersionId,x.productCode,x.Name,x.capacityProviderName,
             distributionEligible=rule?.ProductVersionIds.Contains(x.productVersionId)==true&&x.providerState=="active"&&x.EffectiveFrom<=now&&(x.EffectiveTo is null||x.EffectiveTo>now),
-            ratingReady=false,unavailableReason="Rating and policy issue are unavailable for these draft definitions. Distribution eligibility uses a fictional demo rule; agency approval is still required."})},Json);
+            ratingReady=ratingReady.Contains(x.productVersionId),unavailableReason=ratingReady.Contains(x.productVersionId)?null:"Published rating configuration is not currently available for this product version. Agency approval and quote eligibility are checked separately."})},Json);
     }
     private static async Task<IResult> Activity(Guid agencyId,HttpContext context,IDbContextFactory<BackOfficeDbContext> factory,PartyPaging paging)
     {
