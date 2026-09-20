@@ -3,6 +3,18 @@ import {writeFile} from 'node:fs/promises';
 import {underwritingResponseValidator} from './validate-underwriting-response.mjs';
 
 export async function commercialPolicyJourney({page,f,policy,checks}) {
+ await page.goto(f.webOrigin+'/policies');
+ await page.getByLabel('Product',{exact:true}).selectOption('commercial-combined');
+ await page.getByLabel('Search policies',{exact:true}).fill(policy.reference);
+ const searched=page.waitForResponse(r=>new URL(r.url()).pathname==='/api/v1/policies'&&new URL(r.url()).searchParams.get('q')===policy.reference);
+ await page.getByRole('button',{name:'Search',exact:true}).click();
+ const result=await searched;assert.equal(result.status(),200);
+ const listed=await result.json();assert.equal(listed.items.length,1);assert.equal(listed.items[0].id,policy.id);
+ assert.equal(listed.items[0].productCode,'commercial-combined');
+ await page.getByRole('table',{name:'Issued policies',exact:true}).getByText('Commercial Combined',{exact:true}).waitFor();
+ await page.getByRole('link',{name:policy.reference,exact:true}).click();
+ await page.getByRole('heading',{name:policy.reference,exact:true}).waitFor();
+ checks.push('Commercial policy discovery filters through actual API and opens the saved policy with a product label.');
  const tabs=['Overview','Risk details','Cover','Property schedule','Liability & employees','Business interruption','Transactions','Documents','History'];
  const money=value=>'£'+Number(value).toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2});
  const panel=page.getByRole('tabpanel');

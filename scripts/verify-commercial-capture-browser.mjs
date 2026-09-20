@@ -11,9 +11,13 @@ const plan = process.argv.includes('--cancellation')?'14':process.argv.includes(
 if (!process.argv.includes('--worker')) {
   const output = `.local/phase8-${plan}-browser-${randomUUID()}`;
   await mkdir(output, {recursive: true});
-  const child = spawn('dotnet', ['test', 'backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj', '--no-restore',
+  const assembly=process.env.COVER_COMMERCIAL_TEST_ASSEMBLY;
+  if(assembly){assert.match(assembly,/^\.local\/[a-zA-Z0-9-]+\/BackOffice\.IntegrationTests\.dll$/);await readFile(assembly);}
+  const invocation = ['test', 'backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj', '--no-restore',
     ...(process.argv.includes('--no-build') ? ['--no-build'] : []), '--filter', `FullyQualifiedName~${process.argv.includes('--cancellation')?'RealSqlCommercialCancellationBrowser':process.argv.includes('--renewal')?'RealSqlCommercialRenewalBrowser':process.argv.includes('--servicing-issue')?'RealSqlCommercialServicingIssueBrowser':process.argv.includes('--servicing')?'RealSqlCommercialServicingDraftBrowser':process.argv.includes('--policy')?'RealSqlCommercialPolicyReadBrowser':stage==='issue'?'RealSqlCommercialIssueBrowser':stage==='terms'?'RealSqlCommercialTermsBrowser':stage==='underwriting'?'RealSqlCommercialReferralBrowser':stage==='rating'?'RealSqlCommercialRatingBrowser':`RealSqlCommercialCapture${stage==='full'?'Full':'BusinessLoss'}Browser`}`,
-    '--logger', 'trx;LogFileName=sql.trx', '--results-directory', output], {stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true});
+    '--logger', 'trx;LogFileName=sql.trx', '--results-directory', output];
+  if(assembly){invocation[1]=assembly;for(const flag of ['--no-restore','--no-build']){const index=invocation.indexOf(flag);if(index>=0)invocation.splice(index,1);}}
+  const child=spawn('dotnet',invocation,{stdio:['ignore','pipe','pipe'],windowsHide:true});
   let log = ''; child.stdout.on('data', x => log += x); child.stderr.on('data', x => log += x);
   const code = await new Promise((resolve, reject) => {child.on('error', reject); child.on('close', resolve);});
   await writeFile(output + '/test.log', log); console.log(log.slice(-6500));
@@ -304,7 +308,7 @@ if (!process.argv.includes('--worker')) {
         await page.getByRole('heading',{name:'Supporting information',exact:true}).waitFor();
         for(const label of ['Five year claims experience from the previous insurer','Electrical inspection certificate, with C1 and C2 defects rectified',
           'Intruder alarm specification and maintenance contract','Health and safety policy and risk assessments','Structural survey for requested subsidence cover'])
-          assert.ok(await page.locator('legend').filter({hasText:label}).count()>0,label);
+          await page.locator('legend').filter({hasText:label}).first().waitFor();
         const decision=page.locator('.panel').filter({has:page.getByRole('heading',{name:'Record underwriting decision',exact:true})});
         await page.locator('[data-referral-id]').first().getByRole('checkbox').check();
         await field('Decision outcome').selectOption('query');
