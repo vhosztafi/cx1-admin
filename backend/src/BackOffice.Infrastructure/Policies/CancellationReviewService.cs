@@ -91,15 +91,16 @@ public sealed partial class CancellationReviewService(IDbContextFactory<BackOffi
         var draft = await ServicingDraftService.HoldDraft(db, source.Scope.Actor, draftId, write, token);
         if (draft.Kind != "cancellation") throw new QuoteOperationException(409, "cancellation-draft-required");
         var term = await db.Set<PolicyTerm>().SingleAsync(x => x.Id == draft.BaseTermId, token);
+        var product = await db.Set<Product>().AsNoTracking().SingleAsync(x => x.Id == term.ProductId, token);
+        var settingScope=product.Code=="commercial-combined"?CancellationConfiguration.CommercialScope:CancellationConfiguration.Scope;
         var now = time.GetUtcNow();
-        var settings = await db.Set<SettingVersion>().FromSqlInterpolated($"SELECT * FROM SettingVersion WITH(HOLDLOCK) WHERE Scope={CancellationConfiguration.Scope}").AsNoTracking().ToArrayAsync(token);
+        var settings = await db.Set<SettingVersion>().FromSqlInterpolated($"SELECT * FROM SettingVersion WITH(HOLDLOCK) WHERE Scope={settingScope}").AsNoTracking().ToArrayAsync(token);
         var setting = settings.Where(x => x.EffectiveFrom <= now).OrderByDescending(x => x.Version).FirstOrDefault();
-        var config = setting is null ? null : CancellationConfiguration.Parse(setting.Values);
+        var config = setting is null ? null : CancellationConfiguration.Parse(setting.Values,settingScope);
         if (setting is null || config is null) throw new QuoteOperationException(503, "cancellation-configuration-unavailable");
         var grants = new List<EffectiveUnderwritingGrant>();
         if (source.Scope.Actor.HasCapability("underwriting-decide-within-authority"))
         {
-            var product = await db.Set<Product>().AsNoTracking().SingleAsync(x => x.Id == term.ProductId, token);
             using var intent = JsonDocument.Parse(term.LocalTermIntentJson);
             var resolved = QuoteTerm.Assess(intent.RootElement).Term ?? throw new QuoteOperationException(409, "servicing-term-unavailable");
             var authorities = await db.Set<AuthorityVersion>().FromSqlInterpolated($"SELECT * FROM AuthorityVersion WITH(HOLDLOCK) WHERE ProductVersionId={term.ProductVersionId}").AsNoTracking().ToArrayAsync(token);

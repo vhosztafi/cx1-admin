@@ -33,7 +33,7 @@ public sealed partial class UnderwritingRuntimeTests
     [Fact]
     public Task RealSqlCommercialRenewalConcurrentReadProjectionsRemainCurrent()=>CommercialRenewalScenario(false,profileReads:true);
 
-    private Task CommercialRenewalScenario(bool issue,bool staleExperience=false,bool missingExperience=false,bool lapseInstead=false,bool profileReads=false,bool verifyDowngrade=false)=>CommercialTermsScenario(async(db,cycle,acceptance,actorId,now)=>
+    private Task CommercialRenewalScenario(bool issue,bool staleExperience=false,bool missingExperience=false,bool lapseInstead=false,bool profileReads=false,bool verifyDowngrade=false,bool verifyCancellation=false)=>CommercialTermsScenario(async(db,cycle,acceptance,actorId,now)=>
     {
         var source=await CommercialIssueCommand(db,cycle,acceptance,actorId);
         await source.Service.IssueAsync(source.Actor,source.Quote.Id,source.Quote.RowVersion,source.Input,Guid.NewGuid().ToString(),Guid.NewGuid());
@@ -168,6 +168,21 @@ public sealed partial class UnderwritingRuntimeTests
         }
         Assert.Equal(basis.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync(x=>x.Id==basis.Id)).SnapshotJson);
         var decision=await db.Set<ServicingIssueDecision>().AsNoTracking().SingleAsync();
+        if(verifyCancellation)
+        {
+            await using(var tx=await db.Database.BeginTransactionAsync()){await CommercialUnderwritingCancellationSeed.SeedAsync(db);await tx.CommitAsync();}
+            var list=await drafts.ListAsync(source.Actor,basis.TermId);
+            var cancel=await drafts.CreateAsync(source.Actor,basis.TermId,Version(list.Etag),new("cancellation",basis.Id,
+                JsonSerializer.SerializeToElement(new{localDate="2026-10-15",localTime="00:00",timeZone="Europe/London"}),"Do not cancel across an issued commercial renewal"),Key(),Guid.NewGuid());
+            var cancelLease=await drafts.LeaseAsync(source.Actor,cancel.ResourceId,Version(cancel.Etag!),"acquire",null,null,Key(),Guid.NewGuid());
+            var cancelBody=System.Text.Json.Nodes.JsonNode.Parse(cancelLease.Body)!;
+            cancelBody["proposal"]!["cancellationReasonCode"]="insured-request";
+            await drafts.SaveAsync(source.Actor,cancel.ResourceId,Version(cancelLease.Etag!),cancelBody["lease"]!["leaseToken"]!.GetValue<Guid>(),cancelBody["proposal"]!.ToJsonString(),Key(),Guid.NewGuid());
+            var cancellation=new CancellationReviewService(source.Factory,clock);var view=await cancellation.ReadAsync(source.Actor,cancel.ResourceId);
+            Assert.Contains("later-term-issued",view.Blockers);Assert.False(view.CanApprove);
+            Assert.Equal(2,await db.Set<PolicyTerm>().CountAsync());Assert.Equal(2,await db.Set<CommercialExposureVersion>().CountAsync());Assert.Empty(await db.Set<CancellationIssueDecision>().ToArrayAsync());
+            return;
+        }
         var actualGrant=await db.Set<UserAuthorityGrant>().AsNoTracking().SingleAsync(x=>x.Id==decision.GrantId);
         try
         {

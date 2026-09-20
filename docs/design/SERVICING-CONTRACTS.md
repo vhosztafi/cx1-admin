@@ -218,8 +218,9 @@ cannot acquire issue authority from a successful draft save.
 
 The existing create, lease, save and editor endpoints retain current scope,
 CSRF, ETag, idempotent receipt and lease fencing. Commercial creation permits
-adjustments against the current issued base and renewals against the expiring
-term-end winner, including scheduled adjustments. Saves append revisions
+adjustments and cancellations against the issued term, and renewals against the expiring
+term-end winner, including scheduled adjustments. Cancellation review independently
+requires the latest issued slice and rejects later issued terms. Saves append revisions
 without changing issued versions, exposure, financial postings or documents.
 Local edits retain their starting revision: polling a newer revision blocks
 saving until the user explicitly reloads it, rather than silently overwriting
@@ -229,7 +230,8 @@ Commercial adjustment rating and issue use the typed commercial underwriting
 pipeline, dated exposure assessment, one GBP25 demo fee and product-selected
 documents without MID output. Renewal uses full new-term rating and the separate
 `commercial-renewal-preparation` setting (GBP45 demo fee). Motor Trade retains its
-independent GBP35 renewal setting. Cancellation remains with08-14.
+independent GBP35 renewal setting. Cancellation uses its separate reviewed-return
+workflow described below.
 
 ### Commercial renewal experience and issue
 
@@ -262,3 +264,15 @@ term's exposure begins exactly at inception. Exact replay cannot create a second
 term or duplicate posting/exposure; late issue and overlapping terms are refused.
 Invitation delivery is a fictional local adapter operation. Payment collection
 and real provider transmission remain outside this implementation.
+
+### Commercial cancellation review and dated release
+
+Commercial cancellation reuses the draft cancellation evidence, preview, approval and issue routes. Stored product identity chooses commercial-cancellation-review; callers cannot choose that settings scope. The closed six-field settings retain demo-servicing-1 arithmetic and the existing five fictional reason/notice rules. Commercial demo settings allow commercial-demo-senior-1, while current user role, exact authority grant, term coverage and requester/approver separation remain independent checks. Missing-only initialization preserves all published settings and adds no user grants.
+
+The issued-commercial-cancellation-1 snapshot retains the exact insured, risk, cover, cumulative premium and original term JSON. Provenance identifies the cancellation issue decision, reviewed preview and approval, original base, revision, transaction and effective/processed dates. The separate signed financial obligation records the unearned return from posted components; cashPaid remains 0.00. The API policy-view union has a distinct CommercialCancellationPolicyView with cancellation IDs and commercialExposureDecisionId.
+
+Issue acquires the common commercial exposure transaction lock before policy/draft row locks. It writes the cancellation decision, policy version, balanced posting, original-book empty exposure header and closed commercial-cancellation-exposure-decision-1 together. The release decision records both source hashes, the original exposure/book/binder, preview/approval and actual issuing grant. A release is a reduction and does not require approval for additional district capacity. The empty header wins only at its effective instant; original exposure and cover survive until then. No historical interval is rewritten.
+
+Migration20260920172609_CommercialCancellationIssue extends the exact prior guard clauses and adds complete release/closure guards. Unknown prior clauses stop migration; SQL validates the closed22-field decision, retained source, current authority and atomic closure. Downgrade refuses once commercial cancellation drafts/history exist. An unused migration can be reversed/reapplied with published settings preserved.
+
+Commercial consequences are notice and task-close, plus certificate-withdrawal only where employers liability is selected in the exact issued cover. MID removal is never requested. The durable demo notice worker records delivery/no-recipient state without external email; document/task processing retains Phase9 ownership. The UI shows the saved cancellation receipt and actual follow-up rows, with credit due distinguished from money paid.

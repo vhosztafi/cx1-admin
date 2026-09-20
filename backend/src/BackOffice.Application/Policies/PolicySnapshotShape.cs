@@ -11,13 +11,14 @@ public static class PolicySnapshotShape
     private static readonly Lazy<JsonSchema> CommercialServicingSchema = new(() => QuoteCaptureShape.BuildBundled("CommercialServicing.SnapshotSchema"));
     private static readonly Lazy<JsonSchema> ServicingSchema = new(() => QuoteCaptureShape.BuildBundled("Servicing.SnapshotSchema"));
     private static readonly Lazy<JsonSchema> CancellationSchema = new(() => QuoteCaptureShape.BuildBundled("Cancellation.SnapshotSchema"));
+    private static readonly Lazy<JsonSchema> CommercialCancellationSchema = new(() => QuoteCaptureShape.BuildBundled("CommercialCancellation.SnapshotSchema"));
     public static bool Valid(JsonElement snapshot) => Errors(snapshot).Count == 0;
     public static IReadOnlyList<string> Errors(JsonElement snapshot)
     {
         if (snapshot.ValueKind != JsonValueKind.Object) return ["snapshot-object-required"];
         var format = snapshot.TryGetProperty("snapshotFormat",out var value) && value.ValueKind == JsonValueKind.String ? value.GetString() : null;
-        if (format is not ("issued-quote-1" or "issued-commercial-1" or "issued-commercial-servicing-1" or "issued-servicing-1" or "issued-cancellation-1")) return ["unsupported-snapshot-format"];
-        var schema = format switch { "issued-commercial-servicing-1" => CommercialServicingSchema.Value, "issued-commercial-1" => CommercialSchema.Value, "issued-servicing-1" => ServicingSchema.Value, "issued-cancellation-1" => CancellationSchema.Value, _ => Schema.Value };
+        if (format is not ("issued-quote-1" or "issued-commercial-1" or "issued-commercial-servicing-1" or "issued-commercial-cancellation-1" or "issued-servicing-1" or "issued-cancellation-1")) return ["unsupported-snapshot-format"];
+        var schema = format switch { "issued-commercial-cancellation-1" => CommercialCancellationSchema.Value, "issued-commercial-servicing-1" => CommercialServicingSchema.Value, "issued-commercial-1" => CommercialSchema.Value, "issued-servicing-1" => ServicingSchema.Value, "issued-cancellation-1" => CancellationSchema.Value, _ => Schema.Value };
         var result = schema.Evaluate(snapshot, new EvaluationOptions { RequireFormatValidation = true, OutputFormat = OutputFormat.Hierarchical });
         if (result.IsValid) return [];
         var errors = new List<string>();

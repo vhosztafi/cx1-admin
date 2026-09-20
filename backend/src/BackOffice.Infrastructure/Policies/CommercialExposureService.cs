@@ -25,7 +25,7 @@ internal sealed record CommercialServicingIssuePlan(Guid BookId, DateTimeOffset 
     IReadOnlyList<CommercialExposureSlice> Proposed, CommercialExposureAssessment Assessment,
     EffectiveUnderwritingGrant Grant, decimal ActorDistrictLimit, decimal BinderDistrictLimit);
 
-public static class CommercialExposureService
+public static partial class CommercialExposureService
 {
     internal static async Task<CommercialIssuePlan> AssessIssue(BackOfficeDbContext db, UnderwritingDecisionContext held,
         DateTimeOffset now, CancellationToken token)

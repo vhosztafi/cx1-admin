@@ -29,6 +29,6 @@ export function CancellationIssued({draftId}:{draftId:string}) {
       <DataTable caption="Cancellation follow-up status" columns={['Action','Status']}>
         {view.consequences.map(item=><tr key={item.id}><th scope="row" style={{width:'45%',overflowWrap:'normal',wordBreak:'normal'}}>{names[item.kind]??item.kind}</th>
           <td><span style={{whiteSpace:'nowrap'}}>{item.state}</span><p>{item.noticeOutcome==='demo-delivered'?'Demo delivery recorded':item.noticeOutcome==='demo-no-recipient'?'No recipient — attention required':item.kind==='cancellation-notice'?'Awaiting delivery':'Queued for document and task processing'}</p></td></tr>)}
-      </DataTable><p>Demo notices do not send external email. Certificate withdrawal, MID removal and task closure remain pending until their processors run.</p>
+      </DataTable><p>Demo notices do not send external email. The listed document and task actions remain pending until their processors run.</p>
     </>:<p role="status">Loading the issued cancellation…</p>}</div></Panel>;
 }

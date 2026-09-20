@@ -32,12 +32,16 @@ internal static class CancellationIssueWriter
         db.Add(version);await db.SaveChangesAsync(token);
         var financial=await CancellationPostingService.Write(db,transaction,decision,token);
         if(financial.InvoiceDue!=preview.Amounts!.Posting.InvoiceDue)throw new InvalidOperationException("Independent cancellation posting differs from reviewed preview.");
+        var commercial=source.RootElement.GetProperty("productCode").GetString()=="commercial-combined";
+        if(commercial)await CommercialExposureService.RecordCancellation(db,version,decision,now,token);
         var contacts=await db.Set<Contact>().FromSqlInterpolated($"SELECT * FROM Contact WITH(HOLDLOCK) WHERE ClientId={policy.ClientId} AND RelationshipId={policy.RelationshipId}")
             .AsNoTracking().Where(x=>x.EndedAt==null).OrderBy(x=>x.Id).ToArrayAsync(token);
         var recipients=contacts.Where(x=>!string.IsNullOrWhiteSpace(x.DeclaredFullName)&&x.Email is not null&&!x.Email.Any(char.IsControl)&&
             System.Net.Mail.MailAddress.TryCreate(x.Email,out var email)&&email.Address==x.Email).Select(x=>new ServicingTermsRecipient(x.Id,x.DeclaredFullName,x.Email!)).ToArray();
         var consequenceIds=new List<Guid>();
-        foreach(var kind in new[]{"notice","certificate-withdrawal","mid-removal","task-close"})
+        var kinds=commercial?CommercialDocumentSelection.CancellationKinds(source.RootElement.GetProperty("cover").GetProperty("sections")
+            .EnumerateArray().Any(x=>x.GetProperty("code").GetString()=="employers-liability")):["notice","certificate-withdrawal","mid-removal","task-close"];
+        foreach(var kind in kinds)
         {
             var intent=new CancellationConsequence{PolicyId=policy.Id,TermId=held.Term.Id,TransactionId=transaction.Id,VersionId=version.Id,
                 DecisionId=decision.Id,Kind=kind,CreatedAt=now,CreatedBy=decision.ActorId};

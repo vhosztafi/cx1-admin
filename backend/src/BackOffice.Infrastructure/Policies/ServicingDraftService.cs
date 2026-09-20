@@ -81,7 +81,6 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
                 using var snapshot = JsonDocument.Parse(basis.SnapshotJson);
                 if (snapshot.RootElement.GetProperty("productCode").GetString() == CommercialCaptureRules.ProductCode)
                 {
-                    if(input.Kind=="cancellation")throw new QuoteOperationException(409,"commercial-servicing-kind-unavailable");
                     if(input.Kind=="adjustment"&&term.CurrentVersionId!=basis.Id)throw new QuoteOperationException(409,"servicing-base-stale");
                     if(input.Kind=="renewal")
                     {

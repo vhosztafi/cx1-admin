@@ -117,6 +117,7 @@ public static class DemoDatabase
             await Underwriting.CommercialUnderwritingSeed.SeedAsync(db,cancellationToken);
             await Policies.CommercialExposureSeed.SeedAsync(db,cancellationToken);
             await Policies.RenewalPreparationSeed.SeedCommercialAsync(db,cancellationToken);
+            await Policies.CommercialUnderwritingCancellationSeed.SeedAsync(db,cancellationToken);
         }
         await transaction.CommitAsync(cancellationToken);
     }

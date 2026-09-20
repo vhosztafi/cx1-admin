@@ -22,6 +22,10 @@ public sealed partial class CancellationReviewService
             new{draftId,version=Convert.ToBase64String(version),lease,input},"cancellation.issued",
             async(db,ct)=>
             {
+                var hint=await (from d in db.Set<ServicingDraft>() join p in db.Set<Policy>() on d.PolicyId equals p.Id
+                    where d.Id==draftId select (Guid?)p.SourceQuoteId).SingleOrDefaultAsync(ct)
+                    ??throw new QuoteOperationException(404,"servicing-draft-not-found");
+                await CommercialExposureLock.ForQuoteAsync(db,hint,ct);
                 held=await Hold(db,actor,draftId,"policy-issue-within-authority",true,ct);
                 issued=held.Draft.State=="issued";
                 if(issued)

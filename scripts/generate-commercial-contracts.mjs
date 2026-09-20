@@ -111,6 +111,15 @@ export async function writeCommercialContracts(){
  const servicing=JSON.parse(await readFile(new URL('../contracts/schemas/issued-servicing.schema.json',import.meta.url),'utf8'));
  servicingIssued.properties.provenance=servicing.properties.provenance;
  await writeFile(new URL('../contracts/schemas/commercial-combined-servicing-issued.schema.json',import.meta.url),JSON.stringify(servicingIssued,null,2)+'\n');
+ const cancellationIssued=structuredClone(issued);
+ const cancellation=JSON.parse(await readFile(new URL('../contracts/schemas/issued-cancellation.schema.json',import.meta.url),'utf8'));
+ cancellationIssued.$id='https://schemas.cover-mga.example/issued-commercial-cancellation/1';
+ cancellationIssued.title='Immutable Commercial Combined cancellation with retained risk and exact reviewed decision';
+ cancellationIssued.properties.snapshotFormat={const:'issued-commercial-cancellation-1'};
+ cancellationIssued.properties.provenance=cancellation.properties.provenance;
+ cancellationIssued.properties.cancellation=cancellation.properties.cancellation;
+ cancellationIssued.required.push('cancellation');
+ await writeFile(new URL('../contracts/schemas/commercial-combined-cancellation-issued.schema.json',import.meta.url),JSON.stringify(cancellationIssued,null,2)+'\n');
  console.log('Generated closed CC capture, exposure and incident definitions; fixture remains an incomplete underwriting draft.');
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href)await writeCommercialContracts();

@@ -8,6 +8,7 @@
     <EmbeddedResource Include="../../../contracts/schemas/commercial-combined-servicing-issued.schema.json" LogicalName="CommercialServicing.SnapshotSchema" />
     <EmbeddedResource Include="../../../contracts/schemas/issued-servicing.schema.json" LogicalName="Servicing.SnapshotSchema" />
     <EmbeddedResource Include="../../../contracts/schemas/issued-cancellation.schema.json" LogicalName="Cancellation.SnapshotSchema" />
+    <EmbeddedResource Include="../../../contracts/schemas/commercial-combined-cancellation-issued.schema.json" LogicalName="CommercialCancellation.SnapshotSchema" />
     <EmbeddedResource Include="../../../contracts/schemas/underwriting-config.schema.json" LogicalName="Underwriting.ConfigSchema" />
     <EmbeddedResource Include="../../../contracts/schemas/commercial-underwriting.schema.json" LogicalName="CommercialUnderwriting.ConfigSchema" />
     <EmbeddedResource Include="../../../contracts/reference-data/underwriting-meanings.json" LogicalName="Underwriting.SourceMeanings" />

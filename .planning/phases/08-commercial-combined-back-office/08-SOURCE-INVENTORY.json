@@ -9908,8 +9908,8 @@
       "id": "CC-CANCELLATION-RELEASE",
       "condition": "Cancellation zero header releases exposure only at effective time",
       "ownerPlan": "08-14",
-      "verification": "Independent positive/negative temporal or product-boundary tests; pending",
-      "runtimeStatus": "pending"
+      "verification": "08-14: RealSqlCommercialCancellationReleasesOnlyAtEffectiveTimeAndPreventsRenewal(false/true), RealSqlCommercialCancellationRequiresCurrentNoticeSeparateApprovalAndPreview, RealSqlCommercialCancellationRejectsLaterIssuedRenewal; exact before/at release, original-book over-limit reduction, no MID/conditional EL, late rollback/malformed-release rejection, current authority before replay, notice/approval revocation, current preview and actual cancellation-to-renewal refusal. .local/phase8-14-final-sql2/sql.trx and RealSqlCommercialCancellationBrowser in .local/phase8-14-browser-2/sql.trx; receipt artifacts CoverMGA_Test_d98fa2aba90549b99ba564de6a005240.",
+      "runtimeStatus": "sql-and-browser-verified"
     },
     {
       "id": "CC-SOURCE-MT-FALLTHROUGH",

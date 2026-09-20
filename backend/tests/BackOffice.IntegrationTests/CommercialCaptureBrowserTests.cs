@@ -19,6 +19,8 @@ namespace BackOffice.IntegrationTests;
 
 public sealed partial class QuoteStorageTests
 {
+    private sealed class CommercialCancellationBrowserClock:TimeProvider { public override DateTimeOffset GetUtcNow()=>new(2026,9,18,12,0,0,TimeSpan.Zero); }
+
     [Fact]
     public Task RealSqlCommercialCaptureBusinessLossBrowser() => RunCommercialCaptureBrowser("business-loss");
 
@@ -49,7 +51,10 @@ public sealed partial class QuoteStorageTests
     [Fact]
     public Task RealSqlCommercialRenewalBrowser() => RunCommercialCaptureBrowser("issue", servicingIssue: true, renewal: true);
 
-    private async Task RunCommercialCaptureBrowser(string stage, bool servicing = false, bool servicingIssue = false, bool renewal = false)
+    [Fact]
+    public Task RealSqlCommercialCancellationBrowser()=>RunCommercialCaptureBrowser("issue",cancellation:true);
+
+    private async Task RunCommercialCaptureBrowser(string stage, bool servicing = false, bool servicingIssue = false, bool renewal = false,bool cancellation=false)
     {
         await WithDatabase(async (db, password) =>
         {
@@ -66,6 +71,7 @@ public sealed partial class QuoteStorageTests
                 if (stage == "issue") { await BackOffice.Infrastructure.Policies.CommercialExposureSeed.SeedAsync(db); await BackOffice.Infrastructure.Policies.PolicyTemplateSeed.SeedAsync(db); }
                 if(servicingIssue) { await BackOffice.Infrastructure.Policies.ServicingRatingSeed.SeedAsync(db); await BackOffice.Infrastructure.Policies.ServicingTermsSeed.SeedAsync(db); }
                 if(renewal) { await BackOffice.Infrastructure.Policies.RenewalPreparationSeed.SeedCommercialAsync(db); await BackOffice.Infrastructure.Policies.RenewalLifecycleSeed.SeedAsync(db); }
+                if(cancellation)await BackOffice.Infrastructure.Policies.CommercialUnderwritingCancellationSeed.SeedAsync(db);
                 await transaction.CommitAsync();
             }
             var cc = await CreateFixture(db, "-CC-BROWSER", CommercialCaptureRules.ProductCode, stage is "rating" or "underwriting" or "terms" or "issue" ? 3 : 2, fullTerms: stage is "rating" or "underwriting" or "terms" or "issue");
@@ -95,16 +101,19 @@ public sealed partial class QuoteStorageTests
             await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ClientAccount SET LegalName=N'Fictional quote client MT browser',NormalizedName=N'FICTIONAL QUOTE CLIENT MT BROWSER' WHERE Id={mt.Client}");
             await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ClientAgencyRelationship SET CreatedAt={fixtureCreatedAt} WHERE Id={cc.Relationship} OR Id={mt.Relationship}");
             await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Agency SET CreatedAt={fixtureCreatedAt} WHERE Id={cc.Agency} OR Id={mt.Agency}");
+            Guid? cancellationPolicyId=null;
+            if(cancellation)cancellationPolicyId=await new UnderwritingRuntimeTests().SeedCommercialCancellationBrowserPolicy(db);
+            TimeProvider browserClock=cancellation?new CommercialCancellationBrowserClock():new QuoteTime();
             using var host = new WebApplicationFactory<Program>().WithWebHostBuilder(builder => builder
                 .UseEnvironment("Development").UseUrls("http://127.0.0.1:0")
                 .UseSetting("Cover:SqlConnection", db.Database.GetConnectionString())
                 .UseSetting("Cover:DataProtectionPath", Path.Combine(root.FullName, ".local/commercial-browser-keys", db.Database.GetDbConnection().Database))
-                .UseSetting("Cover:CancellationNoticeWorkerEnabled", "false")
+                .UseSetting("Cover:CancellationNoticeWorkerEnabled", cancellation?"true":"false")
                 .UseSetting("Cover:RenewalLifecycleWorkerEnabled", "false")
                 .UseSetting("Cover:ServicingDeliveryWorkerEnabled", servicingIssue ? "true" : "false")
                 .ConfigureServices(services => {
-                    services.AddSingleton<TimeProvider>(new QuoteTime());
-                    services.AddScoped(provider => new QuoteService(provider.GetRequiredService<IDbContextFactory<BackOfficeDbContext>>(), new QuoteTime()));
+                    services.AddSingleton<TimeProvider>(browserClock);
+                    services.AddScoped(provider => new QuoteService(provider.GetRequiredService<IDbContextFactory<BackOfficeDbContext>>(), browserClock));
                 }));
             host.UseKestrel(0); using var client = host.CreateClient();
             await using (var configured = await host.Services.GetRequiredService<IDbContextFactory<BackOfficeDbContext>>().CreateDbContextAsync())
@@ -140,14 +149,25 @@ public sealed partial class QuoteStorageTests
                     await Task.Delay(250);
                 }
                 Assert.True(serving, "Isolated commercial preview did not start.");
-                var fixture = JsonSerializer.Serialize(new { stage, servicing, servicingIssue, renewal, apiOrigin = api, webOrigin = $"http://127.0.0.1:{port}", output, clockNow = new QuoteTime().GetUtcNow(), ccRelationship = cc.Relationship, mtRelationship = mt.Relationship });
-                browser = StartNode(["scripts/verify-commercial-capture-browser.mjs", "--worker", "--stage", stage], new() {
+                var fixture = JsonSerializer.Serialize(new { stage, servicing, servicingIssue, renewal, cancellation,cancellationPolicyId, apiOrigin = api, webOrigin = $"http://127.0.0.1:{port}", output, clockNow = browserClock.GetUtcNow(), ccRelationship = cc.Relationship, mtRelationship = mt.Relationship });
+                browser = StartNode([cancellation?"scripts/verify-commercial-cancellation-browser.mjs":"scripts/verify-commercial-capture-browser.mjs", "--worker", "--stage", stage], new() {
                     ["COVER_COMMERCIAL_BROWSER_FIXTURE"] = fixture, ["COVER_COMMERCIAL_BROWSER_PASSWORD"] = password });
                 var stdout = browser.StandardOutput.ReadToEndAsync(); var stderr = browser.StandardError.ReadToEndAsync();
-                await browser.WaitForExitAsync().WaitAsync(TimeSpan.FromMinutes(renewal ? 40 : servicingIssue ? 25 : servicing ? 12 : 8));
+                await browser.WaitForExitAsync().WaitAsync(TimeSpan.FromMinutes(cancellation?15:renewal ? 40 : servicingIssue ? 25 : servicing ? 12 : 8));
                 var text = await stdout + await stderr; await File.WriteAllTextAsync(Path.Combine(output, "browser.log"), text);
                 Assert.True(browser.ExitCode == 0, text);
                 using var report = JsonDocument.Parse(await File.ReadAllTextAsync(Path.Combine(output, "report.json")));
+                if(cancellation)
+                {
+                    Assert.Equal(cancellationPolicyId,report.RootElement.GetProperty("policyId").GetGuid());
+                    var cancellationDraft=await db.Set<ServicingDraft>().AsNoTracking().SingleAsync(x=>x.PolicyId==cancellationPolicyId);
+                    Assert.Equal("cancellation",cancellationDraft.Kind);Assert.Equal("issued",cancellationDraft.State);
+                    Assert.Equal(2,await db.Set<CommercialExposureVersion>().CountAsync(x=>x.PolicyId==cancellationPolicyId));
+                    Assert.Equal(2,await db.Set<Journal>().CountAsync());
+                    Assert.False(await db.Set<CancellationConsequence>().AnyAsync(x=>x.Kind=="mid-removal"));
+                    Assert.True(await db.Set<CancellationNoticeReceipt>().AnyAsync());
+                    return;
+                }
                 var quoteId = report.RootElement.GetProperty("quoteId").GetGuid();
                 var revisions = await db.Set<QuoteRevision>().AsNoTracking().Where(x => x.QuoteId == quoteId).OrderBy(x => x.Number).ToArrayAsync();
                 Assert.True(revisions.Length >= 7);

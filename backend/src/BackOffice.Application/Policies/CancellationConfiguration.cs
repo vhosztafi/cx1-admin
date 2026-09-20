@@ -7,11 +7,13 @@ public sealed record CancellationSettings(string RuleVersion, IReadOnlyList<stri
 public static class CancellationConfiguration
 {
     public const string Scope = "cancellation-review";
+    public const string CommercialScope = "commercial-cancellation-review";
+    public const string CommercialDemoJson = """{"demo":true,"kind":"commercial-cancellation-review","schemaVersion":"1","ruleVersion":"demo-servicing-1","authorityVersions":["commercial-demo-senior-1"],"seniorAuthorityVersions":["commercial-demo-senior-1"]}""";
     public const string DemoJson = """{"demo":true,"kind":"cancellation-review","schemaVersion":"1","ruleVersion":"demo-servicing-1","authorityVersions":["demo-underwriter-1","demo-senior-1"],"seniorAuthorityVersions":["demo-senior-1"]}""";
 
-    public static CancellationSettings? Parse(string json)
+    public static CancellationSettings? Parse(string json,string scope=Scope)
     {
-        if (json is null || json.Length > 8192) return null;
+        if (json is null || json.Length > 8192 || scope is not(Scope or CommercialScope)) return null;
         try
         {
             using var doc = JsonDocument.Parse(json, new JsonDocumentOptions { MaxDepth = 3 });
@@ -20,7 +22,7 @@ public static class CancellationConfiguration
             var expected = new HashSet<string>(["demo", "kind", "schemaVersion", "ruleVersion", "authorityVersions", "seniorAuthorityVersions"], StringComparer.Ordinal);
             foreach (var p in root.EnumerateObject()) if (!expected.Remove(p.Name)) return null;
             if (expected.Count != 0 || root.GetProperty("demo").ValueKind != JsonValueKind.True ||
-                Text("kind") != Scope || Text("schemaVersion") != "1" || Text("ruleVersion") != CancellationReviewRules.Version) return null;
+                Text("kind") != scope || Text("schemaVersion") != "1" || Text("ruleVersion") != CancellationReviewRules.Version) return null;
             var grants = Versions("authorityVersions"); var senior = Versions("seniorAuthorityVersions");
             if (grants is null || senior is null || senior.Any(x => !grants.Contains(x))) return null;
             return new(CancellationReviewRules.Version, grants, senior);

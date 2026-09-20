@@ -13,7 +13,7 @@ public static class CancellationIssueSnapshot
     // cancellation obligation records the credit; this snapshot records cover.
     public static string Create(JsonElement basis,CancellationSnapshotInput input)
     {
-        if(input is null || !PolicySnapshotShape.Valid(basis) || basis.GetProperty("snapshotFormat").GetString()=="issued-cancellation-1" ||
+        if(input is null || !PolicySnapshotShape.Valid(basis) || basis.GetProperty("snapshotFormat").GetString() is "issued-cancellation-1" or "issued-commercial-cancellation-1" ||
             new[]{input.SourceQuoteId,input.DecisionId,input.ApprovalId,input.PreviewId,input.BaseVersionId,input.RevisionId,input.TransactionId}.Contains(Guid.Empty) ||
             input.EffectiveAt.Offset!=TimeSpan.Zero || input.ProcessedAt.Offset!=TimeSpan.Zero ||
             input.PreviewHash is null || input.PreviewHash.Length!=64 || input.PreviewHash.Any(c=>!char.IsAsciiDigit(c)&&c is not(>='a' and <='f')) ||
@@ -23,7 +23,7 @@ public static class CancellationIssueSnapshot
         if(input.EffectiveAt<term.GetProperty("startsAt").GetDateTimeOffset() || input.EffectiveAt>=term.GetProperty("endsAt").GetDateTimeOffset())
             throw new ArgumentException("Cancellation effective time must be inside the original half-open term.");
         var snapshot=JsonNode.Parse(basis.GetRawText())!.AsObject();
-        snapshot["snapshotFormat"]="issued-cancellation-1";
+        snapshot["snapshotFormat"]=basis.GetProperty("productCode").GetString()=="commercial-combined"?"issued-commercial-cancellation-1":"issued-cancellation-1";
         snapshot["provenance"]=JsonSerializer.SerializeToNode(new {source="backoffice",sourceQuoteId=input.SourceQuoteId,
             cancellationIssueDecisionId=input.DecisionId,cancellationApprovalId=input.ApprovalId,cancellationPreviewId=input.PreviewId,
             baseVersionId=input.BaseVersionId,revisionId=input.RevisionId,transactionId=input.TransactionId,

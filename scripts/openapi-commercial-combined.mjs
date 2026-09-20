@@ -16,6 +16,7 @@ export function addCommercialContracts({schemas,ref,operation,paths}){
  install(draft,'CommercialCapture','CommercialCaptureDraft');
  install(issued,'CommercialIssued','CommercialIssuedPolicy');
  install(JSON.parse(readFileSync(new URL('../contracts/schemas/commercial-combined-servicing-issued.schema.json',import.meta.url),'utf8')),'CommercialServicingIssued','CommercialServicingIssuedPolicy');
+ install(JSON.parse(readFileSync(new URL('../contracts/schemas/commercial-combined-cancellation-issued.schema.json',import.meta.url),'utf8')),'CommercialCancellationIssued','CommercialCancellationIssuedPolicy');
  schemas.UnderwritingIssueResult.properties.commercialExposureDecisionId=id;
  schemas.UnderwritingIssueResult.properties.policyReference={type:'string',pattern:'^PL-(MT|CC)-[0-9]{10}$'};
  schemas.UnderwritingIssueResult.allOf=[{if:{properties:{policyReference:{type:'string',pattern:'^PL-CC-'}},required:['policyReference']},then:{required:['commercialExposureDecisionId'],properties:{commercialExposureDecisionId:id,documentRequestIds:{type:'array',minItems:2,maxItems:3}}},else:{not:{properties:{commercialExposureDecisionId:id},required:['commercialExposureDecisionId']},properties:{documentRequestIds:{type:'array',minItems:3,maxItems:3}}}}];
