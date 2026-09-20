@@ -15232,7 +15232,10 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "pending",
+      "verification": [
+        "08-08: immutable book/limit/version storage, dated property sums and distinct-policy counts verified by 19 unit cases and real SQL projection/publication tests; .local/phase8-08-final. Display remains pending08-10; atomic issue remains08-09."
+      ]
     },
     {
       "sourceOccurrence": 249,
@@ -15253,7 +15256,10 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "pending",
+      "verification": [
+        "08-08: immutable book/limit/version storage, dated property sums and distinct-policy counts verified by 19 unit cases and real SQL projection/publication tests; .local/phase8-08-final. Display remains pending08-10; atomic issue remains08-09."
+      ]
     },
     {
       "sourceOccurrence": 250,
@@ -15274,7 +15280,10 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "pending",
+      "verification": [
+        "08-08: immutable book/limit/version storage, dated property sums and distinct-policy counts verified by 19 unit cases and real SQL projection/publication tests; .local/phase8-08-final. Display remains pending08-10; atomic issue remains08-09."
+      ]
     },
     {
       "sourceOccurrence": 251,

@@ -13,7 +13,9 @@ namespace BackOffice.IntegrationTests;
 public sealed partial class UnderwritingRuntimeTests
 {
     [Fact]
-    public async Task RealSqlCommercialTermsCarrierConditionsAndIndependentAcceptance()
+    public Task RealSqlCommercialTermsCarrierConditionsAndIndependentAcceptance() => CommercialTermsScenario();
+
+    private async Task CommercialTermsScenario(Func<BackOfficeDbContext, UnderwritingCycle, Guid, Guid, DateTimeOffset, Task>? afterAccepted = null)
     {
         await WithDatabase(async (db, password) =>
         {
@@ -113,6 +115,7 @@ public sealed partial class UnderwritingRuntimeTests
             var accepted = await acceptance.RecordAsync(actor, created.ResourceId, acceptVersion, input, acceptKey, Guid.NewGuid());
             Assert.True((await acceptance.RecordAsync(actor, created.ResourceId, acceptVersion, input, acceptKey, Guid.NewGuid())).Replayed);
             Assert.Equal("accepted", (await quotes.GetAsync(actor, created.ResourceId)).Quote.State);
+            if (afterAccepted is not null) await afterAccepted(db, cycle, accepted.ResourceId, actor.UserId, clock.Current);
             var finalAssessment = await new QuoteUnderwritingReadModel(factory, clock).AssessmentAsync(actor, created.ResourceId);
             Assert.False(JsonSerializer.SerializeToElement(finalAssessment["capabilities"], new JsonSerializerOptions(JsonSerializerDefaults.Web)).GetProperty("canIssue").GetBoolean());
             await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Contact SET Email=N'changed@example.invalid' WHERE Id={contact.Id}");
