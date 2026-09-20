@@ -106,7 +106,7 @@ export async function writeCommercialContracts(){
  await writeFile(new URL('../contracts/schemas/commercial-combined-issued.schema.json',import.meta.url),JSON.stringify(issued,null,2)+'\n');
  const servicingIssued=structuredClone(issued);
  servicingIssued.$id='https://schemas.cover-mga.example/issued-commercial-servicing/1';
- servicingIssued.title='Immutable Commercial Combined adjustment slice with exact servicing provenance';
+ servicingIssued.title='Immutable Commercial Combined adjustment or renewal with exact servicing provenance';
  servicingIssued.properties.snapshotFormat={const:'issued-commercial-servicing-1'};
  const servicing=JSON.parse(await readFile(new URL('../contracts/schemas/issued-servicing.schema.json',import.meta.url),'utf8'));
  servicingIssued.properties.provenance=servicing.properties.provenance;

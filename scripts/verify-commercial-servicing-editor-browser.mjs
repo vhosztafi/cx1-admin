@@ -10,7 +10,7 @@ export async function commercialServicingJourney({page,f,policy,checks}) {
  const exposureUrl=f.apiOrigin+`/api/v1/policies/${policy.id}/commercial-exposure?`+new URLSearchParams({effectiveAt:policy.snapshot.term.startsAt,knownAt:f.clockNow});
  const exposureBefore=await (await page.request.get(exposureUrl)).json();
  await page.goto(f.webOrigin+`/policies/${policy.id}`);await button('Make a policy change').click();
- await field('Draft type').waitFor();assert.deepEqual(await field('Draft type').locator('option').evaluateAll(xs=>xs.map(x=>x.value)),['adjustment']);
+ await field('Draft type').waitFor();assert.deepEqual(await field('Draft type').locator('option').evaluateAll(xs=>xs.map(x=>x.value)),['adjustment','renewal']);
  await field('Requested effective date').fill('2026-10-01');await field('Reason for draft').fill('Fictional commercial browser adjustment');
  const created=page.waitForResponse(r=>r.url().endsWith(`/terms/${policy.termId}/drafts`)&&r.request().method()==='POST');
  await button('Create servicing draft').click();assert.equal((await created).status(),201);

@@ -81,10 +81,15 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
                 using var snapshot = JsonDocument.Parse(basis.SnapshotJson);
                 if (snapshot.RootElement.GetProperty("productCode").GetString() == CommercialCaptureRules.ProductCode)
                 {
-                    if (term.CurrentVersionId != basis.Id) throw new QuoteOperationException(409, "servicing-base-stale");
-                    // Renewal and cancellation have independent prerequisite
-                    // writers in their owning commercial lifecycle slices.
-                    if (input.Kind != "adjustment") throw new QuoteOperationException(409, "commercial-servicing-kind-unavailable");
+                    if(input.Kind=="cancellation")throw new QuoteOperationException(409,"commercial-servicing-kind-unavailable");
+                    if(input.Kind=="adjustment"&&term.CurrentVersionId!=basis.Id)throw new QuoteOperationException(409,"servicing-base-stale");
+                    if(input.Kind=="renewal")
+                    {
+                        var quoteId=await db.Set<Policy>().Where(x=>x.Id==term.PolicyId).Select(x=>x.SourceQuoteId).SingleAsync(ct);
+                        var source=await QuoteScope.ForQuoteAsync(db,actor,quoteId,QuoteAccess.Read,ct);
+                        var renewal=await RenewalPreparationService.ResolveEligibility(db,source,term.Id,null,null,time.GetUtcNow(),ct);
+                        if(renewal.Basis.Id!=basis.Id)throw new QuoteOperationException(409,"renewal-base-stale");
+                    }
                 }
                 if (input.Kind != "cancellation" && await db.Set<ServicingDraft>().AnyAsync(x => x.BaseTermId == termId && x.Kind == input.Kind && x.State == "draft", ct))
                     throw new QuoteOperationException(409, "servicing-active-draft-exists");

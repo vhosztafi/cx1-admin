@@ -64,10 +64,12 @@ public sealed class ServicingRatingService(IDbContextFactory<BackOfficeDbContext
                 {
                     if (assessment.Slices.Any(x => x.EffectiveAt != context.ResolvedTerm.StartsAt))
                         throw new QuoteOperationException(422, "renewal-change-must-start-at-inception");
-                    slices = [new(context.ResolvedTerm.StartsAt, cumulative.Order().ToArray(), QuoteUnderwritingInput.Project(assessment.Proposed, context.Eligible.Rating))];
+                    slices = [commercial?new(context.ResolvedTerm.StartsAt,cumulative.Order().ToArray(),null!) {
+                        Commercial=CommercialUnderwritingInput.Project(assessment.Proposed,context.Eligible.Capture.Pins,context.Eligible.Rating,DateOnly.FromDateTime(now.UtcDateTime))
+                    }:new(context.ResolvedTerm.StartsAt, cumulative.Order().ToArray(), QuoteUnderwritingInput.Project(assessment.Proposed, context.Eligible.Rating))];
                 }
                 var input = new ServicingRatingRequestInput {
-                    Format = commercial ? "commercial-servicing-rating-input-1" : context.Renewal is null ? "servicing-rating-input-1" : "servicing-rating-input-2", Renewal = context.Renewal,
+                    Format = commercial ? context.Renewal is null?"commercial-servicing-rating-input-1":"commercial-servicing-rating-input-2" : context.Renewal is null ? "servicing-rating-input-1" : "servicing-rating-input-2", Renewal = context.Renewal,
                     DraftId = draft.Id, RevisionId = revisionId, PolicyId = draft.PolicyId,
                     BaseTermId = draft.BaseTermId, BaseVersionId = draft.BaseVersionId, ProductVersionId = context.Eligible.Capture.ProductVersion.Id,
                     AgencyTermsVersionId = context.Eligible.Capture.Terms.Id, RatingRuleVersionId = context.Eligible.RatingVersion.Id,

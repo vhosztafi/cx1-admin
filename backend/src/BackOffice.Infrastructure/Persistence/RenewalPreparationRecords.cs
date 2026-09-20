@@ -35,6 +35,8 @@ public sealed class RenewalExperienceVersion : StoredRecord
     public string SourceCode { get; set; } = "";
     public string SourceReference { get; set; } = "";
     public Guid EvidenceAssociationId { get; set; }
+    public Guid? CommercialRevisionId { get; set; }
+    public string? CommercialSubjectsJson { get; set; }
 }
 
 public sealed class RenewalExperienceEvidence : StoredRecord

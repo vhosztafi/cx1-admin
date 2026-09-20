@@ -12573,6 +12573,81 @@
         "reason"
       ]
     },
+    "CommercialRenewalSubjects": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "format": {
+          "const": "commercial-renewal-subjects-1"
+        },
+        "baseVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "revisionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "inputHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "propertyLocationIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "minItems": 0,
+          "maxItems": 500,
+          "uniqueItems": true
+        },
+        "wageCategoryIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "minItems": 0,
+          "maxItems": 500,
+          "uniqueItems": true
+        },
+        "lossRecordIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "minItems": 0,
+          "maxItems": 500,
+          "uniqueItems": true
+        },
+        "liabilitySections": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "employers-liability",
+              "public-liability",
+              "products-liability"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 3,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "format",
+        "baseVersionId",
+        "revisionId",
+        "inputHash",
+        "propertyLocationIds",
+        "wageCategoryIds",
+        "lossRecordIds",
+        "liabilitySections"
+      ]
+    },
     "ServicingExperience": {
       "type": "object",
       "additionalProperties": false,
@@ -12619,6 +12694,9 @@
         "evidenceAssociationId": {
           "type": "string",
           "format": "uuid"
+        },
+        "commercialSubjects": {
+          "$ref": "#/$defs/CommercialRenewalSubjects"
         }
       },
       "required": [

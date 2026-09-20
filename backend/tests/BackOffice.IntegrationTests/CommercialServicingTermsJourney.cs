@@ -49,7 +49,9 @@ public sealed partial class UnderwritingRuntimeTests
         }
         await Proof("signed-statement");
         view=await terms.ReadAsync(actor,cycle.DraftId);Assert.True(view.CanSend,view.SendBlockingCode);
-        var sent=await terms.SendAsync(actor,cycle.DraftId,cycle.Id,contract.Id,[view.RecipientOptions.First().Id],Version(etag),lease,Key(),Guid.NewGuid());
+        var sendKey=Key();var sent=await terms.SendAsync(actor,cycle.DraftId,cycle.Id,contract.Id,[view.RecipientOptions.First().Id],Version(etag),lease,sendKey,Guid.NewGuid());
+        Assert.Equal(sent.Body,(await terms.SendAsync(actor,cycle.DraftId,cycle.Id,contract.Id,[view.RecipientOptions.First().Id],Version(etag),lease,sendKey,Guid.NewGuid())).Body);
+        Assert.Equal(1,await db.Set<ServicingTermsDelivery>().CountAsync(x=>x.TermsVersionId==contract.Id));
         var delivery=await db.Set<ServicingTermsDelivery>().AsNoTracking().SingleAsync(x=>x.Id==sent.ResourceId);
         var job=Assert.IsType<JobLease>(await new SqlJobLeases(factory,clock).ClaimWorkAsync(ServicingTermsService.WorkKind,delivery.WorkId));
         var worker=new ServicingDeliveryWorker(factory,clock);Assert.True(await worker.ApplyAsync(job,await worker.ExecuteProviderAsync(job)));

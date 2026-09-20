@@ -18,7 +18,7 @@ public sealed partial class ServicingEvidenceService
     public async Task<ServicingEvidenceView> RequirementsAsync(ActorContext actor, Guid draftId, CancellationToken token=default)
     {
         await using var db=await factory.CreateDbContextAsync(token);await using var tx=await db.Database.BeginTransactionAsync(token);
-        var held=await ServicingDecisionContext.Hold(db,actor,draftId,"policy-read",time.GetUtcNow(),token);
+        var held=await ServicingDecisionContext.Hold(db,actor,draftId,"policy-read",time.GetUtcNow(),token,write:false);
         var requirements=await ServicingEvidenceProjection.RequirementsAsync(db,held,token);
         var rows=await (from a in db.Set<ServicingEvidenceAssociation>().AsNoTracking()
             join f in db.Set<ServicingEvidenceFile>().AsNoTracking() on a.FileId equals f.Id

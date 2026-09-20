@@ -26,7 +26,7 @@ internal static class ServicingIssueWriter
         if(draft.Kind=="renewal")
         {
             var preparation=await db.Set<RenewalPreparationVersion>().AsNoTracking().SingleAsync(x=>x.Id==cycle.RenewalPreparationVersionId,token);
-            term=new PolicyTerm{PolicyId=draft.PolicyId,ProductId=cycle.ProductId,ProductVersionId=cycle.ProductVersionId,
+            term=new PolicyTerm{Id=exposurePlan?.Proposed[0].TermId??Guid.NewGuid(),PolicyId=draft.PolicyId,ProductId=cycle.ProductId,ProductVersionId=cycle.ProductVersionId,
                 Number=checked(await db.Set<PolicyTerm>().Where(x=>x.PolicyId==draft.PolicyId).MaxAsync(x=>x.Number,token)+1),
                 StartsAt=held.Input.Term.StartsAt,EndsAt=held.Input.Term.EndsAt,LocalTermIntentJson=preparation.TermIntentJson,
                 CreatedAt=now,UpdatedAt=now,CreatedBy=actor};

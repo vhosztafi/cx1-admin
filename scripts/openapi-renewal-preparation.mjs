@@ -13,9 +13,9 @@ export function addRenewalPreparation({schemas,ref,route,paths}) {
  schemas.RenewalPreparationRequest=object({termMonths:months,endUtcOffsetMinutes:offset},['termMonths']);
  schemas.RenewalPreparationReceipt=object({draftId:id,resourceId:id,kind:{const:'renewal'},updatedAt:instant});
  schemas.RenewalExperienceReviewRequest=object({outcome:{enum:['accepted','rejected']},reason:text(2000,10)});
- schemas.RenewalExperienceRecord=object({...schemas.ServicingExperience.properties,id,sequence:{type:'integer',minimum:1},recordedAt:instant,recordedBy:id});
+ schemas.RenewalExperienceRecord=object({...schemas.ServicingExperience.properties,commercialSubjects:nullable(ref('ServicingCaptureCommercialRenewalSubjects')),id,sequence:{type:'integer',minimum:1},recordedAt:instant,recordedBy:id});
  schemas.RenewalExperienceReview=object({id,experienceVersionId:id,outcome:{enum:['accepted','rejected']},reason:text(2000,10),authorityVersionId:id,authorityGrantId:id,recordedAt:instant,recordedBy:id});
- schemas.RenewalExperienceView=object({draftId:id,evidenceFileId:nullable(id),experience:nullable(ref('RenewalExperienceRecord')),review:nullable(ref('RenewalExperienceReview'))});
+ schemas.RenewalExperienceView=object({draftId:id,evidenceFileId:nullable(id),currentCommercialSubjects:nullable(ref('ServicingCaptureCommercialRenewalSubjects')),experience:nullable(ref('RenewalExperienceRecord')),review:nullable(ref('RenewalExperienceReview'))});
  schemas.RenewalPreparationPreview=object({policyId:id,expiringTermId:id,baseVersionId:id,termEtag:etag,
   term:object({kind:{enum:['annual','short-period']},startsAt:instant,endsAt:instant,timeZone:{const:'Europe/London'}}),termIntent:ref('RenewalTermIntent'),
   productVersionId:id,binderVersionId:id,agencyTermsVersionId:id,ruleSettingVersionId:id,ruleVersion:text(60),fairValueAssessmentId:nullable(id),

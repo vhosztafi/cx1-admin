@@ -60,15 +60,17 @@ public static class CommercialExposureService
         EffectiveUnderwritingGrant grant, DateTimeOffset now, CancellationToken token)
     {
         await CommercialExposureLock.RequireAsync(db,token);
-        if(!held.Input.IsCommercial || held.Scope.Draft.Kind!="adjustment") throw new InvalidOperationException("Commercial adjustment input required.");
+        if(!held.Input.IsCommercial || held.Scope.Draft.Kind is not("adjustment" or "renewal")) throw new InvalidOperationException("Commercial servicing input required.");
+        var renewal=held.Scope.Draft.Kind=="renewal";
         var book=await db.Set<CommercialExposureBinder>().AsNoTracking().Where(x=>x.BinderVersionId==held.Cycle.BinderVersionId)
             .Select(x=>(Guid?)x.BookId).SingleOrDefaultAsync(token)??throw new QuoteOperationException(409,"commercial-exposure-book-unavailable");
-        if(!await db.Set<CommercialExposureVersion>().AnyAsync(x=>x.VersionId==held.Cycle.BaseVersionId && x.BookId==book,token))
+        if(!await db.Set<CommercialExposureVersion>().AnyAsync(x=>x.VersionId==held.Cycle.BaseVersionId && (renewal||x.BookId==book),token))
             throw new QuoteOperationException(409,"commercial-servicing-exposure-base-unavailable");
-        var sequence=checked((await db.Set<PolicyTransaction>().Where(x=>x.TermId==held.Cycle.BaseTermId).MaxAsync(x=>(int?)x.Sequence,token)??0)+1);
+        var termId=renewal?Guid.NewGuid():held.Cycle.BaseTermId;
+        var sequence=renewal?1:checked((await db.Set<PolicyTransaction>().Where(x=>x.TermId==held.Cycle.BaseTermId).MaxAsync(x=>(int?)x.Sequence,token)??0)+1);
         var slices=ServicingEvidenceProjection.Slices(held);
-        var proposed=slices.Select((x,index)=>new CommercialExposureSlice(book,held.Cycle.PolicyId,held.Cycle.BaseTermId,Guid.NewGuid(),
-            held.Input.Term.StartsAt,held.Input.Term.EndsAt,x.EffectiveAt,now,sequence,index+1,"adjustment",CommercialExposureProjection.Locations(x.Proposal))).ToArray();
+        var proposed=slices.Select((x,index)=>new CommercialExposureSlice(book,held.Cycle.PolicyId,termId,Guid.NewGuid(),
+            held.Input.Term.StartsAt,held.Input.Term.EndsAt,x.EffectiveAt,now,sequence,index+1,held.Scope.Draft.Kind,CommercialExposureProjection.Locations(x.Proposal))).ToArray();
         var existing=await CommercialExposureProjection.ReadAsync(db,book,now,token);
         var limits=await CommercialExposureProjection.LimitsAsync(db,book,now,token);
         var assessment=CommercialExposureRules.Assess(existing,proposed,limits,book,held.Cycle.PolicyId,proposed[0].EffectiveAt,held.Input.Term.EndsAt,now);

@@ -46,14 +46,18 @@ public sealed partial class QuoteStorageTests
     [Fact]
     public Task RealSqlCommercialServicingIssueBrowser() => RunCommercialCaptureBrowser("issue", servicing: true, servicingIssue: true);
 
-    private async Task RunCommercialCaptureBrowser(string stage, bool servicing = false, bool servicingIssue = false)
+    [Fact]
+    public Task RealSqlCommercialRenewalBrowser() => RunCommercialCaptureBrowser("issue", servicingIssue: true, renewal: true);
+
+    private async Task RunCommercialCaptureBrowser(string stage, bool servicing = false, bool servicingIssue = false, bool renewal = false)
     {
         await WithDatabase(async (db, password) =>
         {
             var root = new DirectoryInfo(AppContext.BaseDirectory);
             while (root is not null && !File.Exists(Path.Combine(root.FullName, "package.json"))) root = root.Parent;
             Assert.NotNull(root);
-            Assert.True(File.Exists(Path.Combine(root.FullName, "apps/backoffice/.next/BUILD_ID")));
+            var dist=Environment.GetEnvironmentVariable("COVER_NEXT_DIST_DIR")??".next";
+            Assert.True(File.Exists(Path.Combine(root.FullName, "apps/backoffice",dist,"BUILD_ID")));
             await DemoDatabase.SeedAsync(db, password, includeQuoteCapture: true, includeCommercialCapture: true, includeUnderwriting: stage is "rating" or "underwriting" or "terms" or "issue");
             if (stage is "rating" or "underwriting" or "terms" or "issue")
             {
@@ -61,6 +65,7 @@ public sealed partial class QuoteStorageTests
                 await CommercialUnderwritingSeed.SeedAsync(db); await QuoteTermsSeed.SeedAsync(db); await CapacitySeed.SeedAsync(db);
                 if (stage == "issue") { await BackOffice.Infrastructure.Policies.CommercialExposureSeed.SeedAsync(db); await BackOffice.Infrastructure.Policies.PolicyTemplateSeed.SeedAsync(db); }
                 if(servicingIssue) { await BackOffice.Infrastructure.Policies.ServicingRatingSeed.SeedAsync(db); await BackOffice.Infrastructure.Policies.ServicingTermsSeed.SeedAsync(db); }
+                if(renewal) { await BackOffice.Infrastructure.Policies.RenewalPreparationSeed.SeedCommercialAsync(db); await BackOffice.Infrastructure.Policies.RenewalLifecycleSeed.SeedAsync(db); }
                 await transaction.CommitAsync();
             }
             var cc = await CreateFixture(db, "-CC-BROWSER", CommercialCaptureRules.ProductCode, stage is "rating" or "underwriting" or "terms" or "issue" ? 3 : 2, fullTerms: stage is "rating" or "underwriting" or "terms" or "issue");
@@ -135,11 +140,11 @@ public sealed partial class QuoteStorageTests
                     await Task.Delay(250);
                 }
                 Assert.True(serving, "Isolated commercial preview did not start.");
-                var fixture = JsonSerializer.Serialize(new { stage, servicing, servicingIssue, apiOrigin = api, webOrigin = $"http://127.0.0.1:{port}", output, clockNow = new QuoteTime().GetUtcNow(), ccRelationship = cc.Relationship, mtRelationship = mt.Relationship });
+                var fixture = JsonSerializer.Serialize(new { stage, servicing, servicingIssue, renewal, apiOrigin = api, webOrigin = $"http://127.0.0.1:{port}", output, clockNow = new QuoteTime().GetUtcNow(), ccRelationship = cc.Relationship, mtRelationship = mt.Relationship });
                 browser = StartNode(["scripts/verify-commercial-capture-browser.mjs", "--worker", "--stage", stage], new() {
                     ["COVER_COMMERCIAL_BROWSER_FIXTURE"] = fixture, ["COVER_COMMERCIAL_BROWSER_PASSWORD"] = password });
                 var stdout = browser.StandardOutput.ReadToEndAsync(); var stderr = browser.StandardError.ReadToEndAsync();
-                await browser.WaitForExitAsync().WaitAsync(TimeSpan.FromMinutes(servicingIssue ? 25 : servicing ? 12 : 8));
+                await browser.WaitForExitAsync().WaitAsync(TimeSpan.FromMinutes(renewal ? 40 : servicingIssue ? 25 : servicing ? 12 : 8));
                 var text = await stdout + await stderr; await File.WriteAllTextAsync(Path.Combine(output, "browser.log"), text);
                 Assert.True(browser.ExitCode == 0, text);
                 using var report = JsonDocument.Parse(await File.ReadAllTextAsync(Path.Combine(output, "report.json")));
@@ -161,6 +166,17 @@ public sealed partial class QuoteStorageTests
                     Assert.Equal("estimated-gross-profit", final.RootElement.GetProperty("risk").GetProperty("businessInterruption").GetProperty("basis").GetString());
                 }
                 Assert.Equal(2, await db.Set<Quote>().CountAsync());
+                if(renewal)
+                {
+                    using var result=JsonDocument.Parse(await File.ReadAllTextAsync(Path.Combine(output,"commercial-servicing-issue.json")));
+                    var draftId=result.RootElement.GetProperty("draftId").GetGuid();
+                    var draft=await db.Set<ServicingDraft>().AsNoTracking().SingleAsync(x=>x.Id==draftId);
+                    Assert.Equal("renewal",draft.Kind);Assert.Equal("issued",draft.State);
+                    Assert.Equal(2,await db.Set<PolicyTerm>().CountAsync());Assert.Equal(2,await db.Set<CommercialExposureVersion>().CountAsync());
+                    Assert.Equal(2,await db.Set<Journal>().CountAsync());Assert.False(await db.Set<PolicyMidIntent>().AnyAsync());
+                    var experience=Assert.Single(await db.Set<RenewalExperienceVersion>().AsNoTracking().ToArrayAsync());
+                    Assert.NotNull(experience.CommercialSubjectsJson);Assert.Equal(draft.CurrentRevisionId,experience.CommercialRevisionId);
+                }
                 if (servicing)
                 {
                     using var evidence = JsonDocument.Parse(await File.ReadAllTextAsync(Path.Combine(output,"commercial-servicing.json")));

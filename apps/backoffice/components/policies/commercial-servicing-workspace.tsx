@@ -13,6 +13,7 @@ import {ServicingSavedReview} from './servicing-saved-review';
 import {ServicingRating} from './servicingrating';
 import {ServicingEvidence} from './servicing-evidence';
 import {CommercialDraftExposurePanel} from './commercial-exposure-panel';
+import {RenewalPreparation} from './renewalpreparation';
 
 type View={data:CommercialServicingDraft;etag:string};
 export function CommercialServicingWorkspace({draftId,actorId,canTakeover,catalogue,initial}:{draftId:string;actorId:string;canTakeover:boolean;catalogue:CommercialCatalogue;initial:View}) {
@@ -21,6 +22,8 @@ export function CommercialServicingWorkspace({draftId,actorId,canTakeover,catalo
  const [fence,setFence]=useState<string|null>(null),[observedAt,setObservedAt]=useState(0),[busy,setBusy]=useState(false),[dirty,setDirty]=useState(false),[invalid,setInvalid]=useState(false);
  const [uncertain,setUncertain]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState(''),[reason,setReason]=useState(''),[confirmAbandon,setConfirmAbandon]=useState(false),[epoch,setEpoch]=useState(0);
  const [localRevision,setLocalRevision]=useState<string|null>(null);
+ const [renewalReady,setRenewalReady]=useState({etag:'',ready:false});
+ const kind=view.data.kind==='renewal'?'renewal':'adjustment';
  const readGeneration=useRef(0);
  const [proofPending,setProofPending]=useState(false),proofPendingRef=useRef(false);
  const dirtyRef=useRef(false),busyRef=useRef(false),pending=useRef<ServicingCommand|null>(null);const url=`/api/v1/drafts/${draftId}`;
@@ -71,7 +74,7 @@ export function CommercialServicingWorkspace({draftId,actorId,canTakeover,catalo
  }
  const conflict=dirty&&localRevision!==view.data.revisionId;
  const disabled=!editing||busy||uncertain||proofPending||!matched||conflict,labels=Object.fromEntries(catalogue.questions.map(x=>[x.id,x.label]));
- return <><div className="page-heading"><div><h1>Commercial policy adjustment</h1><p>{view.data.state==='issued'?'Issued adjustment · effective changes saved':'Saved proposal · issued cover and exposure stay unchanged'}</p></div><Link className="button" href={`/policies/${view.data.policyId}`}>Back to policy</Link></div>
+ return <><div className="page-heading"><div><h1>Commercial policy {kind}</h1><p>{view.data.state==='issued'?`Issued ${kind} · effective changes saved`:'Saved proposal · issued cover and exposure stay unchanged'}</p></div><Link className="button" href={`/policies/${view.data.policyId}`}>Back to policy</Link></div>
  <section className="quote-saved-banner" aria-label="Editing lease"><div><h2>{editing?'You are editing this draft':'Read-only draft'}</h2><p>{view.data.context?.policyReference} · {view.data.state!=='draft'?'This draft is closed; its saved history remains available.':otherEditor?'Another editor holds the lease.':editing?'Renew the lease to keep editing.':'Acquire an editing lease to make changes.'}</p></div><Status tone={editing?'success':'info'}>{dirty?'Local changes retained':view.data.state==='draft'?'Saved draft':view.data.state}</Status></section>
  {conflict?<p role="alert">Another revision was saved while you were editing. Your local edits are retained. Review the saved comparison, then discard local changes to load that revision before editing again.</p>:null}
  {error?<p role="alert">{error}</p>:null}{notice?<p role="status">{notice}</p>:null}
@@ -90,8 +93,9 @@ export function CommercialServicingWorkspace({draftId,actorId,canTakeover,catalo
  {editor?.data.draftId===draftId?<CommercialChangeEditors key={`${view.data.revisionId}:${epoch}`} proposal={proposal} editor={editor.data} policyId={view.data.policyId} catalogue={catalogue} disabled={disabled} change={change} bufferChanged={editedBuffer} invalidChanged={setInvalid}/>:<Panel title="Commercial risk changes"><p className="quote-rail-body">Waiting for the retained commercial base and current revision.</p></Panel>}
  <ServicingSavedReview editor={matched?editor!.data:null} dirty={dirty} questionLabels={labels}/>
  <CommercialDraftExposurePanel key={`${view.data.revisionId}:${view.data.state}`} draftId={draftId} revisionId={view.data.revisionId} dirty={dirty}/>
- <ServicingRating kind="adjustment" draftId={draftId} draftEtag={view.etag} baseTermPremium={view.data.context?.baseTermPremium} dirty={dirty} busy={busy||uncertain||proofPending} canRate={!disabled&&!dirty&&!invalid&&proposal.changes.length>0&&editor!.data.assessment.readinessIssues.length===0} rate={()=>void run('rate')}/>
- <ServicingEvidence draftId={draftId} revisionId={view.data.revisionId} etag={view.etag} fence={fence} editable={editing} blocked={busy||uncertain||proofPending} dirty={dirty} canReview={canTakeover} editor={matched?editor!.data:null} pendingChanged={proofPendingChanged} saved={proofSaved}/>
+ {kind==='renewal'?<RenewalPreparation policyId={view.data.policyId} editor={matched?editor!.data:null} draftId={draftId} etag={view.etag} fence={fence} editable={editing} blocked={busy||uncertain||proofPending} dirty={dirty} canReview={canTakeover} pendingChanged={proofPendingChanged} saved={proofSaved} readyChanged={setRenewalReady}/>:null}
+ <div id="renewal-rate"><ServicingRating kind={kind} draftId={draftId} draftEtag={view.etag} baseTermPremium={view.data.context?.baseTermPremium} dirty={dirty} busy={busy||uncertain||proofPending} canRate={!disabled&&!dirty&&!invalid&&(kind==='renewal'?renewalReady.etag===view.etag&&renewalReady.ready:proposal.changes.length>0)&&editor!.data.assessment.readinessIssues.length===0} rate={()=>void run('rate')}/></div>
+ <ServicingEvidence kind={kind} draftId={draftId} revisionId={view.data.revisionId} etag={view.etag} fence={fence} editable={editing} blocked={busy||uncertain||proofPending} dirty={dirty} canReview={canTakeover} editor={matched?editor!.data:null} pendingChanged={proofPendingChanged} saved={proofSaved}/>
  </div><aside className="underwriting-rail" aria-label="Draft actions"><Panel title="Editing controls"><div className="quote-rail-body servicing-controls">
  {uncertain?<button className="button button-primary" disabled={busy} onClick={()=>void run('save')}>Retry same action</button>:null}
  <button className="button" disabled={busy||uncertain||proofPending||editing||otherEditor||view.data.state!=='draft'} onClick={()=>void run('acquire')}>Acquire editing lease</button>

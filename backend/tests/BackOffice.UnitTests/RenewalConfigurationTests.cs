@@ -13,6 +13,16 @@ public sealed class RenewalConfigurationTests
         """;
 
     [Fact]
+    public void CommercialRenewalRequiresItsOwnExplicitPublishedScope()
+    {
+        var commercial=Definition.Replace("renewal-preparation","commercial-renewal-preparation").Replace("35.00","45.00");
+        Assert.Null(RenewalConfiguration.Parse(commercial));
+        Assert.Null(RenewalConfiguration.Parse(Definition,"commercial-renewal-preparation"));
+        Assert.Null(RenewalConfiguration.Parse(commercial,"caller-supplied-scope"));
+        Assert.Equal(45m,Assert.IsType<RenewalSettings>(RenewalConfiguration.Parse(commercial,"commercial-renewal-preparation")).RenewalFee);
+    }
+
+    [Fact]
     public void PublishedRenewalRulesCarryActualCalendarPricingAndWorkflowChoices()
     {
         var parsed=Assert.IsType<RenewalSettings>(RenewalConfiguration.Parse(Definition));

@@ -56,7 +56,10 @@ export function servicingDefinitions(quote) {
  defs.ServicingLeaseAcquire={oneOf:[o({mode:{const:'acquire'}}),o({mode:{const:'takeover'},reason})]};
  defs.ServicingLease=o({id,holderId:id,generation:bounded(1,2147483647),leaseToken:t(256),expiresAt:instant});
  defs.ServicingCancellationApproval=o({previewId:id,previewHash:hash,reason});
+ defs.CommercialRenewalSubjects=o({format:{const:'commercial-renewal-subjects-1'},baseVersionId:id,revisionId:id,inputHash:hash,
+  propertyLocationIds:many(id,500),wageCategoryIds:many(id,500),lossRecordIds:many(id,500),liabilitySections:many(e('employers-liability','public-liability','products-liability'),3)});
  defs.ServicingExperience=o({observationStartsOn:date,observationEndsOn:date,claimCount:bounded(0,100000),paid:money,outstanding:money,earnedPremium:money,sourceCode:e('insured','agency','administrator'),sourceReference:t(200),evidenceAssociationId:id});
+ defs.ServicingExperience.properties.commercialSubjects=r('CommercialRenewalSubjects');
  defs.ServicingAcceptance=o({termsId:id,deliveryId:id,accepter:t(200),receivedAt:instant,channel:e('email','telephone','written'),evidenceAssociationId:id});
  defs.ServicingDecision=o({cycleId:id,ratingId:id,outcome:e('approve','conditional','query','decline','reopen'),reason,conditions:many(conditionSchema,20)},['cycleId','ratingId','outcome','reason']);
  defs.ServicingSelectedDecision=o({...defs.ServicingDecision.properties,selected:many(o({id,etag:t(200)}),50,1)},[...defs.ServicingDecision.required,'selected']);

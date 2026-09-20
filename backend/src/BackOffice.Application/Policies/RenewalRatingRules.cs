@@ -14,11 +14,21 @@ public static class RenewalRatingRules
     public static CalculatedRenewalRating Calculate(JsonElement definition,RatingFacts facts,ResolvedQuoteTerm term,int commissionBasisPoints,
         RenewalExperienceFacts? experience,bool evidenceAccepted,DateTimeOffset now,int thresholdBasisPoints,int loadingBasisPoints,
         decimal renewalFee,decimal? minimumPremium=null)
+        => Complete(definition,QuoteRatingRules.Calculate(definition,facts,term,commissionBasisPoints,minimumPremium),term,
+            commissionBasisPoints,experience,evidenceAccepted,now,thresholdBasisPoints,loadingBasisPoints,renewalFee);
+
+    public static CalculatedRenewalRating CalculateCommercial(JsonElement definition,CommercialRatingFacts facts,ResolvedQuoteTerm term,int commissionBasisPoints,
+        RenewalExperienceFacts? experience,bool evidenceAccepted,DateTimeOffset now,int thresholdBasisPoints,int loadingBasisPoints,
+        decimal renewalFee,decimal? minimumPremium=null)
+        => Complete(definition,CommercialRatingRules.Calculate(definition,facts,term,commissionBasisPoints,minimumPremium),term,
+            commissionBasisPoints,experience,evidenceAccepted,now,thresholdBasisPoints,loadingBasisPoints,renewalFee);
+
+    private static CalculatedRenewalRating Complete(JsonElement definition,CalculatedQuoteRating basis,ResolvedQuoteTerm term,int commissionBasisPoints,
+        RenewalExperienceFacts? experience,bool evidenceAccepted,DateTimeOffset now,int thresholdBasisPoints,int loadingBasisPoints,decimal renewalFee)
     {
         if(renewalFee<0 || renewalFee>QuoteRatingRules.MaximumMoney || Round(renewalFee)!=renewalFee)
             throw new ArgumentException("Renewal fee must be a bounded configured amount in exact pennies.");
         var assessment=RenewalPreparationRules.Experience(experience,evidenceAccepted,now,thresholdBasisPoints,loadingBasisPoints);
-        var basis=QuoteRatingRules.Calculate(definition,facts,term,commissionBasisPoints,minimumPremium);
         var loading=Round(basis.AnnualPremium*assessment.LoadingBasisPoints/10000m);
         var annual=basis.AnnualPremium+loading;
         if(annual>UnderwritingConfiguration.Amount(definition,"maximumAnnualPremium") || annual>QuoteRatingRules.MaximumMoney)

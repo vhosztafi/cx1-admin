@@ -48,10 +48,10 @@ public static partial class RenewalPreparationEndpoints
             QuoteEndpoints.Id(draftId);QuoteHttpInput.NoQuery(context.Request);
             var view=await service.ReadExperienceAsync(LocalIdentityService.Actor(context.User),draftId,context.RequestAborted);
             context.Response.Headers.ETag=view.Etag;var row=view.Experience;var review=view.Review;
-            return Results.Json(new{view.DraftId,view.EvidenceFileId,
+            return Results.Json(new{view.DraftId,view.EvidenceFileId,view.CurrentCommercialSubjects,
                 experience=row is null?null:new{row.Id,row.Sequence,row.ObservationStartsOn,row.ObservationEndsOn,row.ClaimCount,
                     paid=Money(row.Paid),outstanding=Money(row.Outstanding),earnedPremium=Money(row.EarnedPremium),row.SourceCode,row.SourceReference,
-                    row.EvidenceAssociationId,recordedAt=row.CreatedAt,recordedBy=row.CreatedBy},
+                    row.EvidenceAssociationId,commercialSubjects=row.CommercialSubjectsJson is null?(JsonElement?)null:JsonSerializer.Deserialize<JsonElement>(row.CommercialSubjectsJson),recordedAt=row.CreatedAt,recordedBy=row.CreatedBy},
                 review=review is null?null:new{review.Id,review.ExperienceVersionId,review.Outcome,review.Reason,review.AuthorityVersionId,review.AuthorityGrantId,
                     recordedAt=review.CreatedAt,recordedBy=review.CreatedBy}});
         }
@@ -88,11 +88,12 @@ public static partial class RenewalPreparationEndpoints
         context.Response.Headers.CacheControl="no-store";
         try
         {
-            var command=Command(draftId,context);using var document=await QuoteHttpInput.Read(context.Request,context.RequestAborted,8192);var root=document.RootElement;
-            QuoteHttpInput.Keys(root,"observationStartsOn","observationEndsOn","claimCount","paid","outstanding","earnedPremium","sourceCode","sourceReference","evidenceAssociationId");
+            var command=Command(draftId,context);using var document=await QuoteHttpInput.Read(context.Request,context.RequestAborted,131072);var root=document.RootElement;
+            QuoteHttpInput.Keys(root,"observationStartsOn","observationEndsOn","claimCount","paid","outstanding","earnedPremium","sourceCode","sourceReference","evidenceAssociationId","commercialSubjects");
             var input=new RenewalExperienceFacts(Day(root,"observationStartsOn"),Day(root,"observationEndsOn"),Number(root,"claimCount"),
                 Amount(root,"paid"),Amount(root,"outstanding"),Amount(root,"earnedPremium"),QuoteReferralEndpoints.Text(root,"sourceCode",30),
-                QuoteReferralEndpoints.Text(root,"sourceReference",200),QuoteHttpInput.Id(root,"evidenceAssociationId"));
+                QuoteReferralEndpoints.Text(root,"sourceReference",200),QuoteHttpInput.Id(root,"evidenceAssociationId"),
+                root.TryGetProperty("commercialSubjects",out var subjects)?CommercialSubjects(subjects):null);
             return Outcome(context,await service.SaveExperienceAsync(LocalIdentityService.Actor(context.User),draftId,command.Version,command.Lease,input,command.Key,Guid.NewGuid(),context.RequestAborted));
         }
         catch(Exception error) when(QuoteEndpoints.Known(error)){return QuoteEndpoints.Failure(context,error);}

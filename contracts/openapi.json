@@ -131534,6 +131534,81 @@
           "expiresAt"
         ]
       },
+      "ServicingCaptureCommercialRenewalSubjects": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "format": {
+            "const": "commercial-renewal-subjects-1"
+          },
+          "baseVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revisionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "inputHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "propertyLocationIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "minItems": 0,
+            "maxItems": 500,
+            "uniqueItems": true
+          },
+          "wageCategoryIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "minItems": 0,
+            "maxItems": 500,
+            "uniqueItems": true
+          },
+          "lossRecordIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "minItems": 0,
+            "maxItems": 500,
+            "uniqueItems": true
+          },
+          "liabilitySections": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "employers-liability",
+                "public-liability",
+                "products-liability"
+              ]
+            },
+            "minItems": 0,
+            "maxItems": 3,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "format",
+          "baseVersionId",
+          "revisionId",
+          "inputHash",
+          "propertyLocationIds",
+          "wageCategoryIds",
+          "lossRecordIds",
+          "liabilitySections"
+        ]
+      },
       "ServicingExperience": {
         "type": "object",
         "additionalProperties": false,
@@ -131580,6 +131655,9 @@
           "evidenceAssociationId": {
             "type": "string",
             "format": "uuid"
+          },
+          "commercialSubjects": {
+            "$ref": "#/components/schemas/ServicingCaptureCommercialRenewalSubjects"
           }
         },
         "required": [
@@ -139512,6 +139590,16 @@
             "type": "string",
             "format": "uuid"
           },
+          "commercialSubjects": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ServicingCaptureCommercialRenewalSubjects"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "id": {
             "type": "string",
             "format": "uuid"
@@ -139539,6 +139627,7 @@
           "sourceCode",
           "sourceReference",
           "evidenceAssociationId",
+          "commercialSubjects",
           "id",
           "sequence",
           "recordedAt",
@@ -139615,6 +139704,16 @@
               }
             ]
           },
+          "currentCommercialSubjects": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ServicingCaptureCommercialRenewalSubjects"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "experience": {
             "anyOf": [
               {
@@ -139639,6 +139738,7 @@
         "required": [
           "draftId",
           "evidenceFileId",
+          "currentCommercialSubjects",
           "experience",
           "review"
         ]
@@ -167135,7 +167235,7 @@
         ]
       },
       "CommercialServicingIssuedPolicy": {
-        "title": "Immutable Commercial Combined adjustment slice with exact servicing provenance",
+        "title": "Immutable Commercial Combined adjustment or renewal with exact servicing provenance",
         "type": "object",
         "additionalProperties": false,
         "properties": {

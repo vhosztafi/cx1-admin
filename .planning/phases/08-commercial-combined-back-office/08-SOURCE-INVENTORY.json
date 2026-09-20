@@ -9901,8 +9901,8 @@
       "id": "CC-RENEWAL-BASE",
       "condition": "Use expiring term-end winner, preserve current term until inception",
       "ownerPlan": "08-13",
-      "verification": "Independent positive/negative temporal or product-boundary tests; pending",
-      "runtimeStatus": "pending"
+      "verification": "08-13: RealSqlCommercialRenewalEarlyIssuePreservesExpiringCoverAndStartsExposureAtInception and RealSqlCommercialRenewalSelectsFinalScheduledExpiringRisk; active original cover/exposure survive early issue, next term starts exactly at inception, overlap/stale/late/replay/current-authority negatives. RealSqlCommercialRenewalBrowser: .local/phase8-13-browser-7/sql.trx and .local/browser-evidence/commercial-capture/CoverMGA_Test_a3c166ca7d4e4e24b25debd467c30c68/report.json. Native active-cover proof: .local/phase8-13-active-final/sql.trx. Actual commercial cancellation-to-renewal refusal remains08-14.",
+      "runtimeStatus": "sql-and-browser-verified"
     },
     {
       "id": "CC-CANCELLATION-RELEASE",

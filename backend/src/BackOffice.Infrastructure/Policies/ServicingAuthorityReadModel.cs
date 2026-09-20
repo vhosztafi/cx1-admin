@@ -21,7 +21,7 @@ public sealed partial class ServicingReferralService
     {
         if(referralId==Guid.Empty || afterId==Guid.Empty || pageSize is <1 or >5)throw new QuoteOperationException(422,"servicing-authority-page-invalid");
         await using var db=await factory.CreateDbContextAsync(token);await using var tx=await db.Database.BeginTransactionAsync(token);
-        var now=time.GetUtcNow();var held=await ServicingDecisionContext.Hold(db,actor,draftId,"policy-read",now,token);
+        var now=time.GetUtcNow();var held=await ServicingDecisionContext.Hold(db,actor,draftId,"policy-read",now,token,write:false);
         var referral=await db.Set<ServicingReferral>().AsNoTracking().SingleOrDefaultAsync(x=>x.Id==referralId && x.DraftId==draftId && x.CycleId==held.Cycle.Id,token)
             ??throw new QuoteOperationException(404,"servicing-referral-not-found");
         var remaining=held.Input.Term with{Kind="short-period",StartsAt=held.Input.Slices[0].EffectiveAt};

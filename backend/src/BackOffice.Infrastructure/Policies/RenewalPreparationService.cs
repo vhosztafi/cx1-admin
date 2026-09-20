@@ -10,7 +10,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackOffice.Infrastructure.Policies;
 
-public sealed record RenewalExperienceView(Guid DraftId,string Etag,RenewalExperienceVersion? Experience,RenewalExperienceReview? Review,Guid? EvidenceFileId);
+public sealed record RenewalExperienceView(Guid DraftId,string Etag,RenewalExperienceVersion? Experience,RenewalExperienceReview? Review,Guid? EvidenceFileId,
+    CommercialRenewalSubjects? CurrentCommercialSubjects=null);
 
 public sealed partial class RenewalPreparationService(IDbContextFactory<BackOfficeDbContext> factory,TimeProvider time)
 {
@@ -25,7 +26,8 @@ public sealed partial class RenewalPreparationService(IDbContextFactory<BackOffi
         var review=experience is null?null:await db.Set<RenewalExperienceReview>().AsNoTracking().Where(x=>x.ExperienceVersionId==experience.Id && x.DraftId==draftId)
             .OrderByDescending(x=>x.Sequence).FirstOrDefaultAsync(token);
         var fileId=experience is null?null:await db.Set<RenewalExperienceEvidence>().Where(x=>x.Id==experience.EvidenceAssociationId && x.DraftId==draftId).Select(x=>(Guid?)x.FileId).SingleAsync(token);
-        await tx.CommitAsync(token);return new(draftId,Etag(draft),experience,review,fileId);
+        var subjects=await CurrentCommercialSubjects(db,actor,draft,token);
+        await tx.CommitAsync(token);return new(draftId,Etag(draft),experience,review,fileId,subjects);
     }
 
     public Task<CommandOutcome> UploadExperienceAsync(ActorContext actor,Guid draftId,byte[] version,Guid leaseToken,
@@ -52,11 +54,17 @@ public sealed partial class RenewalPreparationService(IDbContextFactory<BackOffi
         {
             if(!await db.Set<RenewalExperienceEvidence>().AnyAsync(x=>x.Id==input.EvidenceAssociationId && x.DraftId==draftId,ct))
                 throw new QuoteOperationException(404,"renewal-experience-evidence-not-found");
+            var commercial=await IsCommercial(db,draft,ct);
+            var subjects=await CurrentCommercialSubjects(db,current,draft,ct);
+            if(commercial&&(subjects is null||!CommercialRenewalExperienceRules.Matches(input.CommercialSubjects,subjects)))
+                throw new QuoteOperationException(409,"commercial-renewal-experience-stale");
+            if(!commercial&&input.CommercialSubjects is not null)throw new QuoteOperationException(422,"renewal-experience-product-mismatch");
             var sequence=checked((await db.Set<RenewalExperienceVersion>().Where(x=>x.DraftId==draftId).MaxAsync(x=>(int?)x.Sequence,ct)??0)+1);
             var row=new RenewalExperienceVersion{DraftId=draftId,Sequence=sequence,ObservationStartsOn=input.ObservationStartsOn,
                 ObservationEndsOn=input.ObservationEndsOn,ClaimCount=input.ClaimCount,Paid=input.Paid,Outstanding=input.Outstanding,
                 EarnedPremium=input.EarnedPremium,SourceCode=input.SourceCode,SourceReference=input.SourceReference,
-                EvidenceAssociationId=input.EvidenceAssociationId,CreatedAt=time.GetUtcNow(),CreatedBy=current.UserId};
+                EvidenceAssociationId=input.EvidenceAssociationId,CommercialRevisionId=subjects?.RevisionId,
+                CommercialSubjectsJson=subjects is null?null:JsonSerializer.Serialize(subjects,Json),CreatedAt=time.GetUtcNow(),CreatedBy=current.UserId};
             await ServicingRatingService.InvalidateAsync(db,draft,"Supplied renewal experience changed",time.GetUtcNow(),ct);
             db.Add(row);return row.Id;
         },token);
@@ -73,6 +81,7 @@ public sealed partial class RenewalPreparationService(IDbContextFactory<BackOffi
             {
                 if(await db.Set<RenewalExperienceVersion>().AnyAsync(x=>x.DraftId==draftId && x.Sequence>experience!.Sequence,ct))
                     throw new QuoteOperationException(412,"renewal-experience-version-conflict");
+                await DemandCommercialExperience(db,current,draft,experience!,ct);
                 var row=new RenewalExperienceReview{DraftId=draftId,ExperienceVersionId=experienceId,
                     Sequence=checked((await db.Set<RenewalExperienceReview>().Where(x=>x.ExperienceVersionId==experienceId).MaxAsync(x=>(int?)x.Sequence,ct)??0)+1),
                     Outcome=outcome,Reason=reason,AuthorityVersionId=grant!.Version.Id,AuthorityGrantId=grant.Grant.Id,CreatedBy=current.UserId,CreatedAt=time.GetUtcNow()};

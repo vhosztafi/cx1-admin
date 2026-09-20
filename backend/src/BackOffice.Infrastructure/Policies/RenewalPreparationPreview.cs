@@ -40,9 +40,10 @@ public sealed partial class RenewalPreparationService
             ??throw new QuoteOperationException(404,"policy-term-not-found");
         if(!await db.Set<Policy>().AnyAsync(x=>x.Id==term.PolicyId && x.SourceQuoteId==source.Quote.Id,token))throw new QuoteOperationException(404,"policy-term-not-found");
         if(await db.Set<RenewalLapseEvent>().AnyAsync(x=>x.TermId==term.Id,token))throw new QuoteOperationException(409,"renewal-already-lapsed");
-        var settings=await db.Set<SettingVersion>().FromSqlInterpolated($"SELECT * FROM SettingVersion WITH(HOLDLOCK) WHERE Scope={RenewalConfiguration.Scope}").AsNoTracking().ToArrayAsync(token);
+        var settingScope=await SettingsScope(db,term.ProductId,token);
+        var settings=await db.Set<SettingVersion>().FromSqlInterpolated($"SELECT * FROM SettingVersion WITH(HOLDLOCK) WHERE Scope={settingScope}").AsNoTracking().ToArrayAsync(token);
         var setting=settings.Where(x=>x.EffectiveFrom<=now).OrderByDescending(x=>x.Version).FirstOrDefault();
-        var config=setting is null?null:RenewalConfiguration.Parse(setting.Values);
+        var config=setting is null?null:RenewalConfiguration.Parse(setting.Values,settingScope);
         if(setting is null || config is null)throw new QuoteOperationException(503,"renewal-configuration-unavailable");
         RenewalPreparedTerm prepared;
         try{prepared=RenewalPreparationRules.Term(term.EndsAt,months??config.DefaultTermMonths,config.AllowedTermMonths,endOffsetMinutes);}
@@ -70,5 +71,16 @@ public sealed partial class RenewalPreparationService
             .OrderByDescending(x=>x.ApprovedAt).ThenBy(x=>x.Outcome=="pass").ThenBy(x=>x.Id).FirstOrDefault();
         var satisfied=assessment?.Outcome=="pass" && await db.Set<ProductEvidenceFileVersion>().AnyAsync(x=>x.Id==assessment.EvidenceFileVersionId && x.ScreeningState=="accepted",token);
         return new(term,basis,prepared,setting,config,eligible,assessment,satisfied);
+    }
+
+    internal static async Task<string> SettingsScope(BackOfficeDbContext db,Guid productId,CancellationToken token)
+    {
+        var code=await db.Set<Product>().Where(x=>x.Id==productId).Select(x=>x.Code).SingleAsync(token);
+        return code switch
+        {
+            "commercial-combined"=>RenewalConfiguration.CommercialScope,
+            "motor-trade-road-risks" or "motor-trade-combined"=>RenewalConfiguration.Scope,
+            _=>throw new QuoteOperationException(409,"renewal-product-unavailable")
+        };
     }
 }

@@ -10,7 +10,7 @@ namespace BackOffice.UnitTests;
 
 public sealed class CommercialServicingRatingInputTests
 {
-    private static ServicingRatingRequestInput Input()
+    internal static ServicingRatingRequestInput Input()
     {
         var term=QuoteRatingRulesTests.Term();
         var projected=new ProjectedCommercialUnderwritingInput(CommercialRatingTests.Facts(),term,JsonSerializer.SerializeToElement(new {productCode="commercial-combined"}));

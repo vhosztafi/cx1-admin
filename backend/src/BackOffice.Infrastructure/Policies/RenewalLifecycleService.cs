@@ -87,9 +87,10 @@ public sealed class RenewalLifecycleService(IDbContextFactory<BackOfficeDbContex
 
     private static async Task<(SettingVersion,RenewalTimeline)> Timeline(BackOfficeDbContext db,PolicyTerm term,DateTimeOffset now,CancellationToken token,Guid? pinnedSetting=null)
     {
-        var settings=await db.Set<SettingVersion>().FromSqlInterpolated($"SELECT * FROM SettingVersion WITH(HOLDLOCK) WHERE Scope={RenewalConfiguration.Scope}").AsNoTracking().ToArrayAsync(token);
+        var settingScope=await RenewalPreparationService.SettingsScope(db,term.ProductId,token);
+        var settings=await db.Set<SettingVersion>().FromSqlInterpolated($"SELECT * FROM SettingVersion WITH(HOLDLOCK) WHERE Scope={settingScope}").AsNoTracking().ToArrayAsync(token);
         var setting=pinnedSetting is {} id?settings.SingleOrDefault(x=>x.Id==id):settings.Where(x=>x.EffectiveFrom<=now).OrderByDescending(x=>x.Version).FirstOrDefault();
-        var rule=setting is null?null:RenewalConfiguration.Parse(setting.Values);
+        var rule=setting is null?null:RenewalConfiguration.Parse(setting.Values,settingScope);
         if(setting is null || rule is null)throw new QuoteOperationException(503,"renewal-configuration-unavailable");
         try{return(setting,RenewalLifecycleRules.Timeline(term.EndsAt,rule.InvitationDaysBeforeExpiry,rule.LapseDaysAfterExpiry));}
         catch(ArgumentException){throw new QuoteOperationException(409,"renewal-timeline-ambiguous");}

@@ -22,7 +22,7 @@ public sealed record ServicingRatingRequestInput
 {
     public required string Format { get; init; }
     [JsonIgnore]
-    public bool IsCommercial => Format == "commercial-servicing-rating-input-1";
+    public bool IsCommercial => Format is "commercial-servicing-rating-input-1" or "commercial-servicing-rating-input-2";
     public required Guid DraftId { get; init; }
     public required Guid RevisionId { get; init; }
     public required Guid PolicyId { get; init; }
@@ -55,6 +55,15 @@ public sealed record ServicingRatingRequestInput
 // exact immutable source hashes and server projections; this is not an HTTP DTO.
 public static class ServicingRatingInput
 {
+    public static bool SameRenewalContext(RenewalRatingContext? expected,RenewalRatingContext? actual)
+    {
+        if(expected?.Experience?.CommercialSubjects is not { } expectedSubjects || actual?.Experience?.CommercialSubjects is not { } actualSubjects)
+            return expected==actual;
+        return CommercialRenewalExperienceRules.Matches(expectedSubjects,actualSubjects) &&
+            (expected with {Experience=expected.Experience with {CommercialSubjects=null}})==
+            (actual with {Experience=actual.Experience with {CommercialSubjects=null}});
+    }
+
     public const int MaximumBytes = 8 * 1024 * 1024;
     private static readonly UTF8Encoding Utf8 = new(false, true);
     private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web)
@@ -90,8 +99,8 @@ public static class ServicingRatingInput
 
     private static void Validate(ServicingRatingRequestInput input)
     {
-        if (input is null || input.Format is not ("servicing-rating-input-1" or "servicing-rating-input-2" or "commercial-servicing-rating-input-1") ||
-            (input.Format == "servicing-rating-input-2") != (input.Renewal is not null) || input.RequestedAt.Offset != TimeSpan.Zero ||
+        if (input is null || input.Format is not ("servicing-rating-input-1" or "servicing-rating-input-2" or "commercial-servicing-rating-input-1" or "commercial-servicing-rating-input-2") ||
+            (input.Format is "servicing-rating-input-2" or "commercial-servicing-rating-input-2") != (input.Renewal is not null) || input.RequestedAt.Offset != TimeSpan.Zero ||
             new[] { input.DraftId, input.RevisionId, input.PolicyId, input.BaseTermId, input.BaseVersionId,
                 input.ProductVersionId, input.AgencyTermsVersionId, input.RatingRuleVersionId, input.BinderVersionId,
                 input.AuthorityVersionId, input.RuntimeVersionId, input.ScenarioVersionId, input.ServicingSettingVersionId, input.RequestedBy }.Any(id => id == Guid.Empty) ||
@@ -124,18 +133,18 @@ public static class ServicingRatingInput
         ArgumentNullException.ThrowIfNull(input);
         if (input.IsCommercial)
         {
-            if (input.Renewal is not null || input.Slices is null || input.Slices.Any(x => x is null || x.Input is not null || x.Commercial is null || x.Commercial.Term != input.Term)) throw Invalid();
-            return CommercialServicingRatingRules.Rate(input.RatingDefinition,input.Term,input.BaseAnnualPremium,
+            if (input.Slices is null || input.Slices.Any(x => x is null || x.Input is not null || x.Commercial is null || x.Commercial.Term != input.Term)) throw Invalid();
+            if(input.Format=="commercial-servicing-rating-input-1" && input.Renewal is null)return CommercialServicingRatingRules.Rate(input.RatingDefinition,input.Term,input.BaseAnnualPremium,
                 input.Slices.Select(x => new CommercialServicingRiskSlice(x.EffectiveAt,x.ChangeIds,x.Commercial!.Rating)).ToArray(),
                 input.CommissionBasisPoints,input.Fee,input.MinimumPremium);
         }
-        if (input.Slices is null || input.Slices.Any(x => x is null || x.Commercial is not null)) throw Invalid();
+        else if (input.Slices is null || input.Slices.Any(x => x is null || x.Commercial is not null)) throw Invalid();
         if (input.Format == "servicing-rating-input-1" && input.Renewal is null)
             return ServicingRatingRules.Rate(input.RatingDefinition, input.Term, input.BaseAnnualPremium,
             input.Slices.Select(x => new ServicingRiskSlice(x.EffectiveAt, x.ChangeIds, x.Input.Rating)).ToArray(),
             input.CommissionBasisPoints, input.Fee, input.MinimumPremium);
         var renewal = input.Renewal;
-        if (input.Format != "servicing-rating-input-2" || renewal is null || renewal.PreparationVersionId == Guid.Empty ||
+        if (input.Format != (input.IsCommercial?"commercial-servicing-rating-input-2":"servicing-rating-input-2") || renewal is null || renewal.PreparationVersionId == Guid.Empty ||
             renewal.ExperienceVersionId == Guid.Empty || renewal.ExperienceReviewId == Guid.Empty || renewal.FairValueAssessmentId == Guid.Empty ||
             (renewal.ExperienceVersionId is not null) != (renewal.Experience is not null) ||
             renewal.ExperienceReviewId is not null && renewal.ExperienceVersionId is null ||
@@ -146,9 +155,19 @@ public static class ServicingRatingInput
         var slice = input.Slices[0];
         if (slice.EffectiveAt != input.Term.StartsAt || slice.ChangeIds.Count > 100 || slice.ChangeIds.Contains(Guid.Empty) ||
             slice.ChangeIds.Distinct().Count() != slice.ChangeIds.Count) throw Invalid();
-        var calculated = RenewalRatingRules.Calculate(input.RatingDefinition, slice.Input.Rating, input.Term,
+        if(input.IsCommercial && renewal.Experience is { } experience)
+        {
+            if(!slice.Commercial!.Pricing.TryGetProperty("proposal",out var proposal))throw Invalid();
+            var subjects=CommercialRenewalExperienceRules.Subjects(input.BaseVersionId,input.RevisionId,proposal,
+                new(input.ProductVersionId,input.AgencyTermsVersionId,"1.0",CommercialCaptureRules.QuestionVersion,CommercialCaptureRules.ReferenceVersion));
+            if(!CommercialRenewalExperienceRules.Matches(experience.CommercialSubjects,subjects))throw Invalid();
+        }
+        else if(!input.IsCommercial && renewal.Experience?.CommercialSubjects is not null)throw Invalid();
+        var calculated = (input.IsCommercial?RenewalRatingRules.CalculateCommercial(input.RatingDefinition,slice.Commercial!.Rating,input.Term,
+            input.CommissionBasisPoints,renewal.Experience,renewal.EvidenceAccepted,input.RequestedAt,
+            renewal.ThresholdBasisPoints,renewal.LoadingBasisPoints,input.Fee,input.MinimumPremium):RenewalRatingRules.Calculate(input.RatingDefinition, slice.Input.Rating, input.Term,
             input.CommissionBasisPoints, renewal.Experience, renewal.EvidenceAccepted, input.RequestedAt,
-            renewal.ThresholdBasisPoints, renewal.LoadingBasisPoints, input.Fee, input.MinimumPremium).Price;
+            renewal.ThresholdBasisPoints, renewal.LoadingBasisPoints, input.Fee, input.MinimumPremium)).Price;
         // Renewal preparations use whole London civil days. Preserve the full
         // term premium while keeping the annual difference only for comparison.
         if (calculated.CivilDays != decimal.Truncate(calculated.CivilDays) ||

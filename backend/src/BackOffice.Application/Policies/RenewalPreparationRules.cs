@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using BackOffice.Application.Quotes;
 using BackOffice.Application.Underwriting;
 
@@ -7,7 +8,8 @@ namespace BackOffice.Application.Policies;
 
 public sealed record RenewalPreparedTerm(ResolvedQuoteTerm Term,JsonElement Intent);
 public sealed record RenewalExperienceFacts(DateOnly ObservationStartsOn,DateOnly ObservationEndsOn,int ClaimCount,
-    decimal Paid,decimal Outstanding,decimal EarnedPremium,string SourceCode,string SourceReference,Guid EvidenceAssociationId);
+    decimal Paid,decimal Outstanding,decimal EarnedPremium,string SourceCode,string SourceReference,Guid EvidenceAssociationId,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] CommercialRenewalSubjects? CommercialSubjects=null);
 public sealed record RenewalExperienceAssessment(bool InformationComplete,string State,decimal? LossRatio,bool RequiresSeniorDecision,int LoadingBasisPoints);
 
 public static class RenewalPreparationRules

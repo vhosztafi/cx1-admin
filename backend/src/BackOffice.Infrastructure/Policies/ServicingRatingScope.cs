@@ -21,7 +21,7 @@ internal static class ServicingRatingScope
             held.Eligible.Capture.Terms.Id == input.AgencyTermsVersionId && held.Eligible.RatingVersion.Id == input.RatingRuleVersionId &&
             held.Eligible.BinderVersion.Id == input.BinderVersionId && held.Eligible.AuthorityVersion.Id == input.AuthorityVersionId &&
             held.Eligible.RuntimeVersion.Id == input.RuntimeVersionId && held.Eligible.ScenarioVersion.Id == input.ScenarioVersionId &&
-            held.Setting.Id == input.ServicingSettingVersionId && held.Fee == input.Fee && held.Renewal == input.Renewal &&
+            held.Setting.Id == input.ServicingSettingVersionId && held.Fee == input.Fee && ServicingRatingInput.SameRenewalContext(held.Renewal,input.Renewal) &&
             cycle.RenewalPreparationVersionId == input.Renewal?.PreparationVersionId &&
             cycle.RenewalExperienceVersionId == input.Renewal?.ExperienceVersionId && cycle.RenewalExperienceReviewId == input.Renewal?.ExperienceReviewId &&
             held.ResolvedTerm == input.Term && held.Eligible.Capture.ProductVersion.Id == input.ProductVersionId &&
@@ -44,7 +44,7 @@ internal static class ServicingRatingScope
         var basis = await db.Set<PolicyVersion>().AsNoTracking().SingleAsync(x => x.Id == draft.BaseVersionId && x.TermId == term.Id && x.PolicyId == draft.PolicyId, token);
         using var productSource = JsonDocument.Parse(basis.SnapshotJson);
         var commercial = productSource.RootElement.GetProperty("productCode").GetString() == CommercialCaptureRules.ProductCode;
-        if (commercial && draft.Kind != "adjustment") throw new QuoteOperationException(409, "commercial-servicing-kind-unavailable");
+        if (commercial && draft.Kind is not("adjustment" or "renewal")) throw new QuoteOperationException(409, "commercial-servicing-kind-unavailable");
         if (draft.Kind == "renewal")
             return await HoldRenewal(db, source, draft, term, revision, basis, now, token);
         using var intent = JsonDocument.Parse(term.LocalTermIntentJson); var assessedTerm = QuoteTerm.Assess(intent.RootElement);
@@ -94,9 +94,21 @@ internal static class ServicingRatingScope
         var experiences = await db.Set<RenewalExperienceVersion>().FromSqlInterpolated($"SELECT * FROM RenewalExperienceVersion WITH(HOLDLOCK) WHERE DraftId={draft.Id}")
             .AsNoTracking().ToArrayAsync(token);
         var experience = experiences.OrderByDescending(x => x.Sequence).FirstOrDefault();
-        RenewalExperienceReview? review = null;
+        RenewalExperienceReview? review = null;CommercialRenewalSubjects? experienceSubjects=null;
         if (experience is not null)
         {
+            if(held.Eligible.Capture.Product.Code==CommercialCaptureRules.ProductCode)
+            {
+                try{experienceSubjects=experience.CommercialSubjectsJson is null?null:JsonSerializer.Deserialize<CommercialRenewalSubjects>(experience.CommercialSubjectsJson,ServicingRatingService.Json);}
+                catch(JsonException){throw new QuoteOperationException(409,"commercial-renewal-experience-stale");}
+                var assessment=ServicingProposalRules.Assess(basis.SnapshotJson,revision.ProposalJson,
+                    new(draft.PolicyId,draft.BaseVersionId,held.Prepared.Term.StartsAt,held.Prepared.Term.EndsAt,held.Prepared.Term.StartsAt,now,false,held.Prepared.Term));
+                var subjects=CommercialRenewalExperienceRules.Subjects(draft.BaseVersionId,revision.Id,assessment.Proposed,held.Eligible.Capture.Pins);
+                if(experience.CommercialRevisionId!=revision.Id||!CommercialRenewalExperienceRules.Matches(experienceSubjects,subjects))
+                    throw new QuoteOperationException(409,"commercial-renewal-experience-stale");
+            }
+            else if(experience.CommercialRevisionId is not null||experience.CommercialSubjectsJson is not null)
+                throw new QuoteOperationException(409,"renewal-experience-product-mismatch");
             var reviews = await db.Set<RenewalExperienceReview>().FromSqlInterpolated($"SELECT * FROM RenewalExperienceReview WITH(HOLDLOCK) WHERE ExperienceVersionId={experience.Id} AND DraftId={draft.Id}")
                 .AsNoTracking().ToArrayAsync(token);
             review = reviews.OrderByDescending(x => x.Sequence).FirstOrDefault();
@@ -111,7 +123,7 @@ internal static class ServicingRatingScope
             throw new QuoteOperationException(409, "renewal-experience-review-stale");
         var facts = experience is null ? null : new RenewalExperienceFacts(experience.ObservationStartsOn, experience.ObservationEndsOn,
             experience.ClaimCount, experience.Paid, experience.Outstanding, experience.EarnedPremium, experience.SourceCode,
-            experience.SourceReference, experience.EvidenceAssociationId);
+            experience.SourceReference, experience.EvidenceAssociationId,experienceSubjects);
         var context = new RenewalRatingContext(preparation.Id, experience?.Id, review?.Id, preparation.FairValueAssessmentId,
             facts, review?.Outcome == "accepted", held.Settings.RuleVersion, held.Settings.LossRatioThresholdBasisPoints, held.Settings.ExperienceLoadingBasisPoints);
         return new(source, draft, term, revision, basis, held.Prepared.Term, held.Eligible, held.Setting, held.Settings.RenewalFee, context);

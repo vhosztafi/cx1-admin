@@ -79,6 +79,14 @@ internal static class ServicingEvidenceProjection
         {
             if (assessment.ReadinessIssues.Count != 0 || input.Slices.Count != 1 || assessment.Slices.Any(x=>x.EffectiveAt!=input.Term.StartsAt))
                 throw new QuoteOperationException(409,"servicing-proof-source-stale");
+            if(input.IsCommercial)
+            {
+                var commercial=CommercialUnderwritingInput.Project(assessment.Proposed,scope.Eligible.Capture.Pins,input.RatingDefinition,DateOnly.FromDateTime(input.RequestedAt.UtcDateTime));
+                if(!assessment.Slices.SelectMany(x=>x.ChangeIds).Order().SequenceEqual(input.Slices[0].ChangeIds.Order())||input.Slices[0].Input is not null||
+                    !JsonNode.DeepEquals(JsonSerializer.SerializeToNode(commercial,ServicingRatingService.Json),JsonSerializer.SerializeToNode(input.Slices[0].Commercial,ServicingRatingService.Json)))
+                    throw new QuoteOperationException(409,"servicing-proof-source-stale");
+                return [new(input.Term.StartsAt,assessment.Proposed,null)];
+            }
             var projection=QuoteUnderwritingInput.Project(assessment.Proposed,input.RatingDefinition);
             if (!assessment.Slices.SelectMany(x=>x.ChangeIds).Order().SequenceEqual(input.Slices[0].ChangeIds.Order()) ||
                 !JsonNode.DeepEquals(JsonSerializer.SerializeToNode(projection,ServicingRatingService.Json),JsonSerializer.SerializeToNode(input.Slices[0].Input,ServicingRatingService.Json)))

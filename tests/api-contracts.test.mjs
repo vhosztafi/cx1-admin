@@ -43,8 +43,12 @@ test('renewal preparation exposes closed commands and explicit unknown experienc
  const check=name=>ajv.getSchema(`${rootId}#/$defs/${name}`),id='10000000-0000-4000-8000-000000000001';
  const prepare=check('RenewalPreparationRequest');assert.ok(prepare({termMonths:12}));assert.equal(prepare({termMonths:12,premium:'1.00'}),false);
  assert.equal(prepare({termMonths:13}),false);assert.equal(prepare({termMonths:6,endUtcOffsetMinutes:30}),false);
- const experience=check('RenewalExperienceView');assert.ok(experience({draftId:id,evidenceFileId:null,experience:null,review:null}));
- assert.equal(experience({draftId:id,evidenceFileId:null,experience:null,review:null,lossRatio:'0.00'}),false);
+ const experience=check('RenewalExperienceView');const empty={draftId:id,evidenceFileId:null,currentCommercialSubjects:null,experience:null,review:null};assert.ok(experience(empty));
+ assert.equal(experience({...empty,lossRatio:'0.00'}),false);
+ const subjects={format:'commercial-renewal-subjects-1',baseVersionId:id,revisionId:id,inputHash:'a'.repeat(64),propertyLocationIds:[id],wageCategoryIds:[],lossRecordIds:[],liabilitySections:['public-liability']};
+ assert.ok(experience({...empty,currentCommercialSubjects:subjects}),JSON.stringify(experience.errors));
+ assert.equal(experience({...empty,currentCommercialSubjects:{...subjects,propertyLocationIds:[id,id]}}),false);
+ assert.equal(experience({...empty,currentCommercialSubjects:{...subjects,liabilitySections:['motor-trade']}}),false);
 });
 
 test('servicing capacity exposes owned commands and bounded retained history',()=>{

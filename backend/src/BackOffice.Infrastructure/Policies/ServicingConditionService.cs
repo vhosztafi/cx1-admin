@@ -66,7 +66,7 @@ public sealed partial class ServicingReferralService
     public async Task<bool> ConditionSatisfiedAsync(ActorContext actor,Guid draftId,Guid conditionId,CancellationToken token=default)
     {
         await using var db=await factory.CreateDbContextAsync(token);await using var tx=await db.Database.BeginTransactionAsync(token);
-        var held=await ServicingDecisionContext.Hold(db,actor,draftId,"policy-read",time.GetUtcNow(),token);
+        var held=await ServicingDecisionContext.Hold(db,actor,draftId,"policy-read",time.GetUtcNow(),token,write:false);
         var condition=await db.Set<ServicingCondition>().AsNoTracking().SingleOrDefaultAsync(x=>x.Id==conditionId && x.DraftId==draftId && x.CycleId==held.Cycle.Id,token)
             ??throw new QuoteOperationException(404,"servicing-condition-not-found");
         var result=await ConditionSatisfied(db,held,condition,token);

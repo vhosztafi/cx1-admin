@@ -24,7 +24,7 @@ public sealed partial class UnderwritingRuntimeTests
     [Fact]
     public Task RealSqlCommercialServicingIssueRejectsStaleReviewedProof() => CommercialServicingIssueScenario(false,false,true);
 
-    private Task CommercialServicingIssueScenario(bool dated,bool race=false,bool staleProof=false) => CommercialTermsScenario(async(db,cycle,acceptance,actorId,now)=>
+    private Task CommercialServicingIssueScenario(bool dated,bool race=false,bool staleProof=false,bool verifyRenewal=false) => CommercialTermsScenario(async(db,cycle,acceptance,actorId,now)=>
     {
         var source=await CommercialIssueCommand(db,cycle,acceptance,actorId);
         await source.Service.IssueAsync(source.Actor,source.Quote.Id,source.Quote.RowVersion,source.Input,Guid.NewGuid().ToString(),Guid.NewGuid());
@@ -167,6 +167,22 @@ public sealed partial class UnderwritingRuntimeTests
             var refusal=await Assert.ThrowsAsync<QuoteOperationException>(()=>drafts.CreateAsync(source.Actor,basis.TermId,Version(options.Etag),new("adjustment",basis.Id,
                 JsonSerializer.SerializeToElement(new {localDate="2026-11-01",localTime="00:00",timeZone="Europe/London"}),"Reject obsolete commercial issued base"),Key(),Guid.NewGuid()));
             Assert.Equal("servicing-base-stale",refusal.Code);Assert.Equal(1,await db.Set<ServicingCycle>().CountAsync());
+            if(verifyRenewal)
+            {
+                await using(var tx=await db.Database.BeginTransactionAsync())
+                {await RenewalPreparationSeed.SeedCommercialAsync(db);await tx.CommitAsync();}
+                var renewals=new RenewalPreparationService(source.Factory,clock);
+                var preview=await renewals.PreviewAsync(source.Actor,basis.TermId);
+                Assert.Equal(secondVersion,preview.BaseVersionId);
+                Assert.Equal(basis.Id,(await new PolicyReadService(source.Factory,clock).ReadAsync(source.Actor,basis.PolicyId))["versionId"]);
+                var intent=preview.TermIntent;var effective=JsonSerializer.SerializeToElement(new{localDate=intent.GetProperty("localStartDate").GetString(),localTime=intent.GetProperty("localStartTime").GetString(),timeZone="Europe/London",utcOffsetMinutes=intent.GetProperty("utcOffsetMinutes").GetInt32()});
+                var oldBase=await Assert.ThrowsAsync<QuoteOperationException>(()=>drafts.CreateAsync(source.Actor,basis.TermId,Version(preview.TermEtag),new("renewal",basis.Id,effective,"Reject renewal from current rather than final risk"),Key(),Guid.NewGuid()));
+                Assert.Equal("renewal-base-stale",oldBase.Code);
+                var createdRenewal=await drafts.CreateAsync(source.Actor,basis.TermId,Version(preview.TermEtag),new("renewal",secondVersion,effective,"Renew the final scheduled commercial risk"),Key(),Guid.NewGuid());
+                Assert.Equal(201,createdRenewal.Status);
+                Assert.Equal(secondVersion,(await db.Set<ServicingDraft>().AsNoTracking().SingleAsync(x=>x.Id==createdRenewal.ResourceId)).BaseVersionId);
+                Assert.Equal(3,await db.Set<CommercialExposureVersion>().CountAsync());Assert.Equal(1,await db.Set<PolicyTerm>().CountAsync());
+            }
         }
         var actualDecision=await db.Set<ServicingIssueDecision>().AsNoTracking().SingleAsync();
         var actualGrant=await db.Set<UserAuthorityGrant>().AsNoTracking().SingleAsync(x=>x.Id==actualDecision.GrantId);

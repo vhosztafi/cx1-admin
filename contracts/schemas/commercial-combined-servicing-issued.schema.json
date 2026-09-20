@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.cover-mga.example/issued-commercial-servicing/1",
-  "title": "Immutable Commercial Combined adjustment slice with exact servicing provenance",
+  "title": "Immutable Commercial Combined adjustment or renewal with exact servicing provenance",
   "type": "object",
   "additionalProperties": false,
   "properties": {

@@ -73,7 +73,8 @@ public sealed class CommercialExposureReadModel(IDbContextFactory<BackOfficeDbCo
             return await Policy(db,draft.PolicyId,internalAudience,observed,effective,known,token);
         var source=revision is null?null:new Source("draft-revision",revision.Id,Convert.ToHexStringLower(revision.ContentHash));
         Dictionary<string,object> Unavailable(string code)=>Body(internalAudience,observed,effective,known,"unavailable",null,[],source,code);
-        if(revision is null || draft.Kind!="adjustment")return Unavailable("commercial-exposure-source-unavailable");
+        if(revision is null || draft.Kind is not("adjustment" or "renewal"))return Unavailable("commercial-exposure-source-unavailable");
+        var renewal=draft.Kind=="renewal";
         var basis=await db.Set<PolicyVersion>().AsNoTracking().SingleOrDefaultAsync(x=>x.Id==draft.BaseVersionId && x.ProcessedAt<=known,token);
         var term=await db.Set<PolicyTerm>().AsNoTracking().SingleAsync(x=>x.Id==draft.BaseTermId,token);
         if(basis is null)return Unavailable("commercial-exposure-source-unavailable");
@@ -81,20 +82,35 @@ public sealed class CommercialExposureReadModel(IDbContextFactory<BackOfficeDbCo
             .OrderByDescending(x=>x.EffectiveAt).ThenByDescending(x=>x.Sequence).Select(x=>x.Id).FirstAsync(token);
         if(latest!=basis.Id)return Unavailable("commercial-exposure-source-unavailable");
         var book=await db.Set<CommercialExposureVersion>().AsNoTracking().Where(x=>x.VersionId==basis.Id).Select(x=>(Guid?)x.BookId).SingleOrDefaultAsync(token);
+        RenewalPreparationVersion? preparation=null;
+        if(renewal)
+        {
+            preparation=await db.Set<RenewalPreparationVersion>().AsNoTracking().Where(x=>x.DraftId==draft.Id&&x.CreatedAt<=known).OrderByDescending(x=>x.Sequence).FirstOrDefaultAsync(token);
+            if(preparation is null)return Unavailable("commercial-exposure-proposal-incomplete");
+            book=await db.Set<CommercialExposureBinder>().AsNoTracking().Where(x=>x.BinderVersionId==preparation.BinderVersionId).Select(x=>(Guid?)x.BookId).SingleOrDefaultAsync(token);
+        }
         if(book is null)return Unavailable("commercial-exposure-book-unavailable");
         try
         {
             // Assess the retained saved revision at its own clock. This read is
             // advisory; it grants no backdating or reservation authority.
-            var assessment=CommercialServicingProposalRules.Assess(basis.SnapshotJson,revision.ProposalJson,
-                new(draft.PolicyId,basis.Id,term.StartsAt,term.EndsAt,basis.EffectiveAt,revision.CreatedAt,true));
-            if(assessment.ReadinessIssues.Count!=0 || assessment.Slices.Count==0)return Unavailable("commercial-exposure-proposal-incomplete");
+            ResolvedQuoteTerm? renewalTerm=null;
+            if(preparation is not null)
+            {
+                using var intent=JsonDocument.Parse(preparation.TermIntentJson);renewalTerm=QuoteTerm.Assess(intent.RootElement).Term;
+                if(renewalTerm is null||renewalTerm.StartsAt!=preparation.StartsAt||renewalTerm.EndsAt!=preparation.EndsAt)return Unavailable("commercial-exposure-proposal-incomplete");
+            }
+            var assessment=CommercialServicingProposalRules.Assess(basis.SnapshotJson,revision.ProposalJson,renewalTerm is {} coverage
+                ?new(draft.PolicyId,basis.Id,coverage.StartsAt,coverage.EndsAt,coverage.StartsAt,revision.CreatedAt,false,coverage)
+                :new(draft.PolicyId,basis.Id,term.StartsAt,term.EndsAt,basis.EffectiveAt,revision.CreatedAt,true));
+            if(assessment.ReadinessIssues.Count!=0 || (!renewal&&assessment.Slices.Count==0) || (renewal&&assessment.Slices.Any(x=>x.EffectiveAt!=renewalTerm!.StartsAt)))return Unavailable("commercial-exposure-proposal-incomplete");
             var sequence=checked((await db.Set<PolicyTransaction>().Where(x=>x.TermId==term.Id && x.ProcessedAt<=known).MaxAsync(x=>(int?)x.Sequence,token)??0)+1);
-            var proposed=assessment.Slices.Select((slice,index)=>new CommercialExposureSlice(book.Value,draft.PolicyId,term.Id,Guid.NewGuid(),term.StartsAt,term.EndsAt,
+            var proposed=renewal?[new CommercialExposureSlice(book.Value,draft.PolicyId,Guid.NewGuid(),Guid.NewGuid(),renewalTerm!.StartsAt,renewalTerm.EndsAt,
+                renewalTerm.StartsAt,revision.CreatedAt,1,1,"renewal",CommercialExposureProjection.Locations(assessment.Proposed))]:assessment.Slices.Select((slice,index)=>new CommercialExposureSlice(book.Value,draft.PolicyId,term.Id,Guid.NewGuid(),term.StartsAt,term.EndsAt,
                 slice.EffectiveAt,revision.CreatedAt,sequence,index+1,"adjustment",CommercialExposureProjection.Locations(slice.Proposed))).ToArray();
             var existing=await CommercialExposureProjection.ReadAsync(db,book.Value,known,token);
             var limits=await CommercialExposureProjection.LimitsAsync(db,book.Value,known,token);
-            var result=CommercialExposureRules.Assess(existing,proposed,limits,book.Value,draft.PolicyId,proposed[0].EffectiveAt,term.EndsAt,known);
+            var result=CommercialExposureRules.Assess(existing,proposed,limits,book.Value,draft.PolicyId,proposed[0].EffectiveAt,renewalTerm?.EndsAt??term.EndsAt,known);
             return Body(internalAudience,observed,effective,known,"proposed",book.Value,result.Intervals,source);
         }
         catch(Exception error) when(error is ArgumentException or QuoteInputException or QuoteValidationException or KeyNotFoundException or InvalidOperationException)

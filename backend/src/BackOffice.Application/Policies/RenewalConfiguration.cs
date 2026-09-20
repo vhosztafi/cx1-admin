@@ -10,9 +10,10 @@ public sealed record RenewalSettings(string RuleVersion,IReadOnlyList<int> Allow
 public static class RenewalConfiguration
 {
     public const string Scope="renewal-preparation";
-    public static RenewalSettings? Parse(string json)
+    public const string CommercialScope="commercial-renewal-preparation";
+    public static RenewalSettings? Parse(string json,string scope=Scope)
     {
-        if(json is null || json.Length>4096)return null;
+        if(json is null || json.Length>4096 || scope is not(Scope or CommercialScope))return null;
         try
         {
             using var document=JsonDocument.Parse(json,new JsonDocumentOptions{MaxDepth=4});var root=document.RootElement;
@@ -20,7 +21,7 @@ public static class RenewalConfiguration
             var keys=new HashSet<string>(["demo","kind","schemaVersion","ruleVersion","currency","allowedTermMonths","defaultTermMonths",
                 "lossRatioThresholdBasisPoints","experienceLoadingBasisPoints","renewalFee","invitationDaysBeforeExpiry","lapseDaysAfterExpiry"],StringComparer.Ordinal);
             foreach(var property in root.EnumerateObject())if(!keys.Remove(property.Name))return null;
-            if(keys.Count!=0 || root.GetProperty("demo").ValueKind!=JsonValueKind.True || Text("kind")!=Scope || Text("schemaVersion")!="1" || Text("currency")!="GBP")return null;
+            if(keys.Count!=0 || root.GetProperty("demo").ValueKind!=JsonValueKind.True || Text("kind")!=scope || Text("schemaVersion")!="1" || Text("currency")!="GBP")return null;
             var rule=Text("ruleVersion");
             if(rule is null || rule.Length is <1 or >60 || rule.Any(x=>!char.IsAsciiLetterOrDigit(x) && x!='-'))return null;
             var months=root.GetProperty("allowedTermMonths");

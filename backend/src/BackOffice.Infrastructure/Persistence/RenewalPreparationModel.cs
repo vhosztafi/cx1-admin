@@ -39,6 +39,9 @@ public sealed partial class BackOfficeDbContext
         experience.HasIndex(x=>new{x.DraftId,x.Sequence}).IsUnique();
         experience.HasOne<RenewalExperienceEvidence>().WithMany().HasForeignKey(x=>new{x.EvidenceAssociationId,x.DraftId})
             .HasPrincipalKey(x=>new{x.Id,x.DraftId}).OnDelete(DeleteBehavior.NoAction);
+        experience.HasOne<ServicingRevision>().WithMany().HasForeignKey(x=>new{x.CommercialRevisionId,x.DraftId})
+            .HasPrincipalKey(x=>new{x.Id,x.DraftId}).OnDelete(DeleteBehavior.NoAction);
+        Check(experience,"CommercialSubjects","([CommercialRevisionId] IS NULL AND [CommercialSubjectsJson] IS NULL) OR ([CommercialRevisionId] IS NOT NULL AND [CommercialSubjectsJson] IS NOT NULL AND ISJSON([CommercialSubjectsJson],OBJECT)=1 AND DATALENGTH([CommercialSubjectsJson])<=262144)");
         Text(experience,("SourceCode",30),("SourceReference",200));
         foreach(var name in new[]{"Paid","Outstanding","EarnedPremium"})
         {

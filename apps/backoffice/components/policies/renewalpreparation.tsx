@@ -6,6 +6,8 @@ import {formatGbp} from '../../lib/underwriting-api';
 import {renewalCommand,sendRenewal,renewalExperienceDisplay,type RenewalCommand,type RenewalWorkspace,type RenewalExperienceView,type RenewalExperienceFacts} from '../../lib/renewal-preparation';
 import type {ServicingRatingHistory} from '../../lib/servicing-rating';
 import type {ServicingEditor} from '../../lib/servicing-api';
+import type {CommercialServicingEditor} from '../../lib/commercial-servicing';
+import {CommercialRenewalContext} from './commercial-renewal-context';
 import {RenewalStages} from './renewalstages';
 
 const date=(value:string)=>new Date(value).toLocaleString('en-GB',{timeZone:'Europe/London'});
@@ -37,7 +39,7 @@ function useRenewalRead<T>(url:string,etag:string,paused:boolean) {
 }
 
 export function RenewalPreparation({draftId,policyId,editor,etag,fence,editable,blocked,dirty,canReview,pendingChanged,saved,readyChanged}:{
-  policyId:string;editor:ServicingEditor|null;
+  policyId:string;editor:ServicingEditor|CommercialServicingEditor|null;
   draftId:string;etag:string;fence:string|null;editable:boolean;blocked:boolean;dirty:boolean;canReview:boolean;
   pendingChanged:(value:boolean)=>void;saved:()=>Promise<void>;readyChanged:(value:{etag:string;ready:boolean})=>void;
 }) {
@@ -109,7 +111,9 @@ export function RenewalPreparation({draftId,policyId,editor,etag,fence,editable,
       {experience.data?.evidenceFileId?<a className="button" href={`/api/v1/drafts/${draftId}/evidence-files/${experience.data.evidenceFileId}/content`}>Download saved experience evidence</a>:null}
       <form onSubmit={event=>{event.preventDefault();void execute('/experience',{observationStartsOn:form.observationStartsOn,observationEndsOn:form.observationEndsOn,
         claimCount:form.claimCount,paid:form.paid,outstanding:form.outstanding,earnedPremium:form.earnedPremium,sourceCode:form.sourceCode,
-        sourceReference:form.sourceReference,evidenceAssociationId:association||form.evidenceAssociationId});}}><fieldset disabled={!active||sending}><div className="quote-form-grid">
+        sourceReference:form.sourceReference,evidenceAssociationId:association||form.evidenceAssociationId,
+        ...(experience.data?.currentCommercialSubjects?{commercialSubjects:experience.data.currentCommercialSubjects}:{})});}}><fieldset disabled={!active||sending}>
+        {experience.data?.currentCommercialSubjects?<CommercialRenewalContext subjects={experience.data.currentCommercialSubjects}/>:null}<div className="quote-form-grid">
         <label>Observation starts<input aria-label="Observation starts" type="date" required value={form.observationStartsOn} onChange={event=>update('observationStartsOn',event.target.value)}/></label>
         <label>Observation ends (exclusive)<input aria-label="Observation ends (exclusive)" type="date" required value={form.observationEndsOn} onChange={event=>update('observationEndsOn',event.target.value)}/></label>
         <label>Number of claims<input aria-label="Number of claims" type="number" required min={0} max={100000} step={1} value={Number.isFinite(form.claimCount)?form.claimCount:''} onChange={event=>update('claimCount',event.target.valueAsNumber)}/></label>

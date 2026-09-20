@@ -218,15 +218,47 @@ cannot acquire issue authority from a successful draft save.
 
 The existing create, lease, save and editor endpoints retain current scope,
 CSRF, ETag, idempotent receipt and lease fencing. Commercial creation permits
-adjustments only and requires the current issued base. Saves append revisions
+adjustments against the current issued base and renewals against the expiring
+term-end winner, including scheduled adjustments. Saves append revisions
 without changing issued versions, exposure, financial postings or documents.
 Local edits retain their starting revision: polling a newer revision blocks
 saving until the user explicitly reloads it, rather than silently overwriting
 concurrent work. Lease loss preserves local edits and requires reacquisition.
 
-Commercial adjustment rating currently returns
-`commercial-servicing-rating-unavailable`; 08-12 owns its replacement with the
-commercial underwriting and issue pipeline, including the actual draft exposure
-projection. Renewal and cancellation remain with 08-13/14. These boundaries do
-not disable the implemented Motor Trade workflows. No database migration is
-needed: commercial draft revisions use the existing append-only JSON storage.
+Commercial adjustment rating and issue use the typed commercial underwriting
+pipeline, dated exposure assessment, one GBP25 demo fee and product-selected
+documents without MID output. Renewal uses full new-term rating and the separate
+`commercial-renewal-preparation` setting (GBP45 demo fee). Motor Trade retains its
+independent GBP35 renewal setting. Cancellation remains with08-14.
+
+### Commercial renewal experience and issue
+
+The shared renewal preparation, experience, review, invitation, acceptance and
+issue routes also serve Commercial Combined. The server selects product/binder
+and agency terms for the new coverage period. Missing or unreviewed experience
+and zero earned premium stay unresolved; reviewed zero losses are explicit data.
+
+`GET /api/v1/drafts/{draftId}/renewal/experience` returns nullable
+`currentCommercialSubjects`; its saved experience includes nullable
+`commercialSubjects`. Commercial experience writes must submit the exact current
+manifest. Motor Trade writes omit it. The closed manifest has format
+`commercial-renewal-subjects-1`, baseVersionId, revisionId, inputHash, and sorted
+propertyLocationIds, wageCategoryIds, lossRecordIds and liabilitySections arrays.
+The canonical complete-risk hash and exact owned revision prevent experience
+from being reused after saved risk changes. Claims and monetary totals describe
+the whole risk once; the subject arrays do not duplicate these totals.
+
+Migration20260920133214_CommercialRenewalPreparation adds nullable
+CommercialRevisionId and CommercialSubjectsJson to RenewalExperienceVersion,
+with composite draft/revision ownership, bounded JSON and additive source guards.
+The immutable `commercial-servicing-rating-input-2` cycle binds preparation,
+reviewed experience and full-term commercial rating. Format1 remains adjustment
+only; existing Motor Trade formats and null-subject canonical bytes are retained.
+
+Early renewal issue creates a separate term and balances its opening posting in
+the same transaction as policy versions, exposure projections/decisions and output
+requests. Expiring cover and capacity remain effective until term end. The new
+term's exposure begins exactly at inception. Exact replay cannot create a second
+term or duplicate posting/exposure; late issue and overlapping terms are refused.
+Invitation delivery is a fictional local adapter operation. Payment collection
+and real provider transmission remain outside this implementation.
