@@ -43,7 +43,7 @@ Meaningful RED cases preceded document selection, commercial snapshot and fronte
 
 `08-09-REVIEW.md` passed with no unresolved HIGH/CRITICAL finding. The live demo database/services/keys, published history and sales funnel are preserved. No real provider/email, human UAT, hosted CI or Docker run is claimed. Documents are durable generation requests; operational rendering/delivery remain Phase9. Full phase regression and preservation remain08-16.
 
-Continue08-10: scoped quote/draft/policy exposure reads with capability-shaped privacy, coherent effective/known-time provenance, complete commercial tabs/schedules/history, exact selected-version source values and retained Motor Trade policy views. Commercial servicing issue remains fail-closed until its owning plans. CC-03/04 and compoundCC-05 remain open until their complete workflows are delivered.
+Continue08-10: scoped quote/draft/policy exposure reads with capability-shaped privacy, coherent effective/known-time provenance, complete commercial tabs/schedules/history, exact selected-version source values and retained Motor Trade policy views. Commercial servicing issue remains unavailable until its owning plans. CC-03/04 and compoundCC-05 remain open until their complete workflows are delivered.
 
 ## Self-Check: PASSED
 
