@@ -1,5 +1,13 @@
 # 08-16 final acceptance — ongoing
 
+## Automatic follow-on jobs —2026-09-20T21:39Z
+
+- Harness committedb60c273; interim evidence checkpoint6aba5cc. Allcodechanges arecommitted. Phase8 still15/16,CC05partial.
+- **Queued current-source full backend exec17292** runs `.local/phase8-16-final-backend-after-baseline.ps1`, queue log `.local/phase8-16-final-backend-queue.log`. It waits for verified originaltesthost31572 tofinish, inspectstheactualbaselineTRX and proceeds ONLYifitsnonpassingtests arethetwoalreadyfixedcases. Extra failuresstopthequeue forrepair. Itthenruns allintegrationtests from `.local/phase8-16-catalog-green-bin/BackOffice.IntegrationTests.dll` usingfinalwebbuild, writes `.local/phase8-16-full-current/sql.trx` and `phase8-16-full-current.log`. Assemblyhashpinned, bounded6hwait. Do notstartduplicatefullruns; inspectthisjob first.
+- **Queued full commercial exec62587** runs `.local/phase8-16-commercial-final-after-adjustment.ps1`, queue log `.local/phase8-16-commercial-final-queue.log`. Itwaits forfreshsuccessful08-12pointer/TRX from focusedexec42943; errors/timeoutsstop. Then runsall5stages withcatalog-greenassembly/finalwebdist, output `.local/phase8-16-commercial-suite-current.log` andfresh.local/commercial-suite/report. Do notstartduplicateaggregatewhilethisjobisactive.
+- Focusedcommercialadjustment42943 continuesprogressing: actualcommandsjournal in `.local/browser-evidence/commercial-capture/CoverMGA_Test_80681f37f65c489e810c2135dcf96c66` updated21:38Z. Noresultyet. Retainedservicing61503 is atfinalpolicy-history-and-clonestage; allpriorstagesincludingcancellationSQL2passed. ItsaggregateisNOTyetclaimedcomplete.
+- CurrentReleaseAPIbuild `.local/phase8-16-live-bin` passed0warnings/errors (`phase8-16-live-api-build.log`). Nextproduction `.local/next-phase8-16-final` passed. Neitherisinstalledinlivepreviewyet; live15 API72276/web61816 remains. Followpreservation/restartplanonceacceptanceallows.
+
 ## Latest update —2026-09-20T21:28Z (supersedes running notes below)
 
 - Discoveryfix committed e0a682a; exact seed/configuration and retainedpagination tests committed1919a98; currentcatalogratingreadiness fix committedd608c7e. Cataloghelper validates current runtime/scenario/team, published product/provider/rating/binder/authority identities and definitions; quoteeligibility remains unchanged. SQL `.local/phase8-16-catalog-green/sql.trx`2pass (commercialavailable/retiredauthority plus retaineddraftagencyworkflow). Strictcataloggate1093/2SQL/0skip overlaps priorfixgate1094/3SQL/0skip. CatalogruntimeRED against preservedpre-fixAPI+Infrastructure with currenttests is `.local/phase8-16-catalog-red2/sql.trx`; originalREDbuildonly failedxUnit2031 analyzer and isnotbehaviorproof.
