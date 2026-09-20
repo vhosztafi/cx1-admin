@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Phase8 plan02 complete; continue08-03 CC business and loss UI.
-last_updated: "2026-09-19T23:36:00Z"
-last_activity: "2026-09-19 —08-02 capture API/storage committed;915 backend cases including9SQL and376 source tests passed; continue08-03."
+stopped_at: Phase8 plan03 complete; continue08-04 remaining CC capture stages.
+last_updated: "2026-09-20T00:34:18Z"
+last_activity: "2026-09-20 —08-03 browser capture committed;17 source questions,26 backend cases including actualSQL/Chrome,154 web and376 source tests passed; continue08-04."
 progress:
   total_phases: 13
   completed_phases: 7
   total_plans: 81
-  completed_plans: 67
+  completed_plans: 68
   percent: 54
 ---
 
@@ -21,16 +21,16 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute08-03: explicit Commercial Combined wizard, proposer/history/loss capture and actual browser save/readback.
+**Current focus:** Execute08-04: locations, protections, property/BI, liabilities/wages and remaining source capture questions.
 
 ## Current Position
 
 Phase: 8 of 13 (Commercial Combined back office)
-Plan: 2 of16 complete;08-03 next
+Plan: 3 of16 complete;08-04 next
 Status: Executing
-Last activity: 2026-09-19 —08-02 capture complete;906 unit+9SQL/API cases,376 source tests and422-operation OpenAPI validated. Phase7 retained acceptance:1222 backend/303SQL,17 servicing stages,37 journeys,133 preserved tables and6 policy/18 version restart graphs.
+Last activity: 2026-09-20 —08-03 capture UI complete;25 CC unit+1SQL/browser scenario,154 web tests,376 source tests and422-operation OpenAPI validated. Phase7 retained acceptance:1222 backend/303SQL,17 servicing stages,37 journeys,133 preserved tables and6 policy/18 version restart graphs.
 
-Progress: Phases1–7 complete;7/13 phases,67/81 currently defined implementation plans. Phase8 research/UI/plans checked and08-01/02 complete; later phases await detailed planning.
+Progress: Phases1–7 complete;7/13 phases,68/81 currently defined implementation plans. Phase8 research/UI/plans checked and08-01/02/03 complete; later phases await detailed planning.
 
 ## Accumulated Context
 
@@ -44,7 +44,7 @@ Progress: Phases1–7 complete;7/13 phases,67/81 currently defined implementatio
 
 ### Pending Todos
 
-- Execute08-03;08-02 implementationf36d124 and summaryd92218f complete. KeepCC-05 partial until Phase9 operational workflows exist.
+- Execute08-04;08-03 implementationb373e62 and summarye69e845 complete. KeepCC-05 partial until Phase9 operational workflows exist.
 - Keep future endpoints closed until owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,9 +54,9 @@ Progress: Phases1–7 complete;7/13 phases,67/81 currently defined implementatio
 
 ## Session Continuity
 
-Last session: 2026-09-19T23:36:00Z
-Stopped at: Phase8 plan02 complete; continue08-03 CC business and loss UI.
-Resume file: .planning/phases/08-commercial-combined-back-office/08-03-PLAN.md
+Last session: 2026-09-20T00:34:18Z
+Stopped at: Phase8 plan03 complete; continue08-04 remaining CC capture stages.
+Resume file: .planning/phases/08-commercial-combined-back-office/08-04-PLAN.md
 
 ## Autonomous continuation
 
