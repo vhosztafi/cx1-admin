@@ -49,6 +49,36 @@ public static class CommercialExposureRules
         return Positions(rows, effectiveAt);
     }
 
+    // Observed issued position, not a proposed replacement or a reservation.
+    // The caller supplies only districts belonging to its selected source.
+    public static CommercialExposureAssessment Observe(IEnumerable<CommercialExposureSlice> source,
+        IEnumerable<CommercialExposureLimit> publishedLimits, Guid bookId, Guid ownPolicyId,
+        IReadOnlyList<string> districts, DateTimeOffset effectiveAt, DateTimeOffset knownAt)
+    {
+        if (bookId == Guid.Empty || ownPolicyId == Guid.Empty || districts.Count > 100 ||
+            districts.Any(x => NormalizeDistrict(x) != x) || effectiveAt >= DateTimeOffset.MaxValue.AddDays(-1)) throw Invalid();
+        var known = Visible(source, bookId, knownAt);
+        var limits = publishedLimits.Where(x => x.BookId == bookId).ToArray(); ValidateLimits(limits);
+        var visibleLimits = limits.Where(x => x.PublishedAt <= knownAt).ToArray();
+        var own = Positions(known.Where(x => x.PolicyId == ownPolicyId), effectiveAt).ToDictionary(x => x.District);
+        var other = Positions(known.Where(x => x.PolicyId != ownPolicyId), effectiveAt).ToDictionary(x => x.District);
+        var next = known.SelectMany(x => new[] { x.TermStartsAt, x.TermEndsAt, x.EffectiveAt })
+            .Concat(visibleLimits.SelectMany(x => new[] { x.EffectiveFrom, x.EffectiveTo })).Where(x => x > effectiveAt)
+            .DefaultIfEmpty(effectiveAt.AddDays(1)).Min();
+        return new(districts.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).Select(district =>
+        {
+            own.TryGetValue(district, out var ownValue); other.TryGetValue(district, out var otherValue);
+            var ownAmount = ownValue?.PropertySum ?? 0m; var otherAmount = otherValue?.PropertySum ?? 0m;
+            var total = checked(ownAmount + otherAmount);
+            var candidates = ApplicableLimits(visibleLimits, district, effectiveAt);
+            var limit = candidates.Length == 1 ? candidates[0] : null;
+            var blocker = candidates.Length == 0 ? "commercial-exposure-limit-missing" : candidates.Length > 1 ? "commercial-exposure-limit-ambiguous"
+                : total > limit!.Amount ? "commercial-district-capacity-exceeded" : null;
+            return new CommercialExposureInterval(effectiveAt, next, district, ownAmount, otherAmount, total,
+                (ownValue?.PolicyCount ?? 0) + (otherValue?.PolicyCount ?? 0), limit?.Id, limit?.ContentHash, limit?.Amount, limit is null ? null : limit.Amount - total, blocker);
+        }).ToArray());
+    }
+
     public static CommercialExposureAssessment Assess(IEnumerable<CommercialExposureSlice> existing,
         IReadOnlyList<CommercialExposureSlice> proposed, IEnumerable<CommercialExposureLimit> publishedLimits,
         Guid bookId, Guid policyId, DateTimeOffset from, DateTimeOffset to, DateTimeOffset knownAt)

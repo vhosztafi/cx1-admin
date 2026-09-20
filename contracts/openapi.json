@@ -99874,11 +99874,11 @@
       "get": {
         "operationId": "getCommercialQuoteExposure",
         "summary": "Read scoped Commercial Combined exposure assessment",
-        "description": "Requires quote-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Contract only until08-10 implements the route. Current parent scope is mandatory. Agency responses contain own exposure/outcome only; capable internal users may see book totals. Observed-time preview grants no capacity reservation. Issue rechecks every affected interval under the common transaction lock.",
+        "description": "Requires commercial-exposure-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current parent scope is mandatory. Supply both effectiveAt and knownAt, or neither; other filters are rejected. Agency responses contain own exposure/outcome only; capable internal users may see book totals. Policy observations use the exact E/K winner; unbound quotes assess the whole proposed term against knowledge available at K. A draft without a supported projection explicitly returns unavailable. Observed-time preview grants no capacity reservation. Issue rechecks every affected interval under the common transaction lock.",
         "tags": [
           "quotes"
         ],
-        "x-permission": "quote-read",
+        "x-permission": "commercial-exposure-read",
         "x-idempotency": "not-cached",
         "security": [
           {
@@ -100056,19 +100056,18 @@
               }
             }
           }
-        },
-        "x-runtime-status": "phase-8-plan-10-pending"
+        }
       }
     },
     "/drafts/{draftId}/commercial-exposure": {
       "get": {
         "operationId": "getCommercialDraftExposure",
         "summary": "Read scoped Commercial Combined exposure assessment",
-        "description": "Requires policy-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Contract only until08-10 implements the route. Current parent scope is mandatory. Agency responses contain own exposure/outcome only; capable internal users may see book totals. Observed-time preview grants no capacity reservation. Issue rechecks every affected interval under the common transaction lock.",
+        "description": "Requires commercial-exposure-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current parent scope is mandatory. Supply both effectiveAt and knownAt, or neither; other filters are rejected. Agency responses contain own exposure/outcome only; capable internal users may see book totals. Policy observations use the exact E/K winner; unbound quotes assess the whole proposed term against knowledge available at K. A draft without a supported projection explicitly returns unavailable. Observed-time preview grants no capacity reservation. Issue rechecks every affected interval under the common transaction lock.",
         "tags": [
           "drafts"
         ],
-        "x-permission": "policy-read",
+        "x-permission": "commercial-exposure-read",
         "x-idempotency": "not-cached",
         "security": [
           {
@@ -100246,19 +100245,18 @@
               }
             }
           }
-        },
-        "x-runtime-status": "phase-8-plan-10-pending"
+        }
       }
     },
     "/policies/{policyId}/commercial-exposure": {
       "get": {
         "operationId": "getCommercialPolicyExposure",
         "summary": "Read scoped Commercial Combined exposure assessment",
-        "description": "Requires policy-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Contract only until08-10 implements the route. Current parent scope is mandatory. Agency responses contain own exposure/outcome only; capable internal users may see book totals. Observed-time preview grants no capacity reservation. Issue rechecks every affected interval under the common transaction lock.",
+        "description": "Requires commercial-exposure-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics. Current parent scope is mandatory. Supply both effectiveAt and knownAt, or neither; other filters are rejected. Agency responses contain own exposure/outcome only; capable internal users may see book totals. Policy observations use the exact E/K winner; unbound quotes assess the whole proposed term against knowledge available at K. A draft without a supported projection explicitly returns unavailable. Observed-time preview grants no capacity reservation. Issue rechecks every affected interval under the common transaction lock.",
         "tags": [
           "policies"
         ],
-        "x-permission": "policy-read",
+        "x-permission": "commercial-exposure-read",
         "x-idempotency": "not-cached",
         "security": [
           {
@@ -100436,8 +100434,7 @@
               }
             }
           }
-        },
-        "x-runtime-status": "phase-8-plan-10-pending"
+        }
       }
     },
     "/policies/{policyId}/as-at": {
@@ -139554,7 +139551,7 @@
           },
           "ownProposedSumInsured": {
             "type": "string",
-            "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            "pattern": "^(0|[1-9][0-9]{0,17})\\.[0-9]{2}$"
           },
           "outcome": {
             "type": "string",
@@ -139601,7 +139598,7 @@
           },
           "ownProposedSumInsured": {
             "type": "string",
-            "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            "pattern": "^(0|[1-9][0-9]{0,17})\\.[0-9]{2}$"
           },
           "outcome": {
             "type": "string",
@@ -139613,24 +139610,23 @@
           },
           "bookSumInsured": {
             "type": "string",
-            "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            "pattern": "^(0|[1-9][0-9]{0,17})\\.[0-9]{2}$"
           },
           "policyCount": {
             "type": "integer",
-            "minimum": 0,
-            "maximum": 1000000
-          },
-          "limit": {
-            "type": "string",
-            "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
-          },
-          "headroom": {
-            "type": "string",
-            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            "minimum": 0
           },
           "bookId": {
             "type": "string",
             "format": "uuid"
+          },
+          "limit": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]{0,17})\\.[0-9]{2}$"
+          },
+          "headroom": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,17})\\.[0-9]{2}$"
           },
           "limitVersionId": {
             "type": "string",
@@ -139639,6 +139635,15 @@
           "limitHash": {
             "type": "string",
             "pattern": "^[a-f0-9]{64}$"
+          },
+          "blocker": {
+            "type": "string",
+            "enum": [
+              "commercial-exposure-limit-missing",
+              "commercial-exposure-limit-ambiguous",
+              "commercial-district-capacity-exceeded",
+              "commercial-district-authority-exceeded"
+            ]
           }
         },
         "required": [
@@ -139648,12 +139653,30 @@
           "outcome",
           "bookSumInsured",
           "policyCount",
-          "limit",
-          "headroom",
-          "bookId",
-          "limitVersionId",
-          "limitHash"
-        ]
+          "bookId"
+        ],
+        "dependentRequired": {
+          "limit": [
+            "headroom",
+            "limitVersionId",
+            "limitHash"
+          ],
+          "headroom": [
+            "limit",
+            "limitVersionId",
+            "limitHash"
+          ],
+          "limitVersionId": [
+            "limit",
+            "headroom",
+            "limitHash"
+          ],
+          "limitHash": [
+            "limit",
+            "headroom",
+            "limitVersionId"
+          ]
+        }
       },
       "CommercialCaptureAgencyExposure": {
         "type": "object",
@@ -139661,9 +139684,6 @@
         "properties": {
           "format": {
             "const": "commercial-exposure-1"
-          },
-          "audience": {
-            "const": "agency"
           },
           "observedAt": {
             "type": "string",
@@ -139680,12 +139700,74 @@
           "advisory": {
             "const": true
           },
+          "coverageState": {
+            "type": "string",
+            "enum": [
+              "active",
+              "scheduled",
+              "expired",
+              "cancelled",
+              "not-covered",
+              "proposed",
+              "unavailable"
+            ]
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "within-capacity",
+              "exceeds-capacity",
+              "unavailable"
+            ]
+          },
+          "truncated": {
+            "type": "boolean"
+          },
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "policy-version",
+                  "quote-revision",
+                  "draft-revision"
+                ]
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "hash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "kind",
+              "id",
+              "hash"
+            ]
+          },
+          "blocker": {
+            "type": "string",
+            "enum": [
+              "commercial-exposure-proposal-incomplete",
+              "commercial-exposure-book-unavailable",
+              "commercial-exposure-source-unavailable",
+              "commercial-exposure-draft-projection-unavailable"
+            ]
+          },
+          "audience": {
+            "const": "agency"
+          },
           "districts": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/CommercialCaptureOwnExposureDistrict"
             },
-            "maxItems": 100
+            "maxItems": 1000
           }
         },
         "required": [
@@ -139705,9 +139787,6 @@
           "format": {
             "const": "commercial-exposure-1"
           },
-          "audience": {
-            "const": "internal"
-          },
           "observedAt": {
             "type": "string",
             "format": "date-time"
@@ -139723,12 +139802,74 @@
           "advisory": {
             "const": true
           },
+          "coverageState": {
+            "type": "string",
+            "enum": [
+              "active",
+              "scheduled",
+              "expired",
+              "cancelled",
+              "not-covered",
+              "proposed",
+              "unavailable"
+            ]
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "within-capacity",
+              "exceeds-capacity",
+              "unavailable"
+            ]
+          },
+          "truncated": {
+            "type": "boolean"
+          },
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "policy-version",
+                  "quote-revision",
+                  "draft-revision"
+                ]
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "hash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "kind",
+              "id",
+              "hash"
+            ]
+          },
+          "blocker": {
+            "type": "string",
+            "enum": [
+              "commercial-exposure-proposal-incomplete",
+              "commercial-exposure-book-unavailable",
+              "commercial-exposure-source-unavailable",
+              "commercial-exposure-draft-projection-unavailable"
+            ]
+          },
+          "audience": {
+            "const": "internal"
+          },
           "districts": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/CommercialCaptureInternalExposureDistrict"
             },
-            "maxItems": 100
+            "maxItems": 1000
           }
         },
         "required": [
@@ -148093,7 +148234,7 @@
           },
           "ownProposedSumInsured": {
             "type": "string",
-            "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            "pattern": "^(0|[1-9][0-9]{0,17})\\.[0-9]{2}$"
           },
           "outcome": {
             "type": "string",
@@ -148140,7 +148281,7 @@
           },
           "ownProposedSumInsured": {
             "type": "string",
-            "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            "pattern": "^(0|[1-9][0-9]{0,17})\\.[0-9]{2}$"
           },
           "outcome": {
             "type": "string",
@@ -148152,24 +148293,23 @@
           },
           "bookSumInsured": {
             "type": "string",
-            "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            "pattern": "^(0|[1-9][0-9]{0,17})\\.[0-9]{2}$"
           },
           "policyCount": {
             "type": "integer",
-            "minimum": 0,
-            "maximum": 1000000
-          },
-          "limit": {
-            "type": "string",
-            "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
-          },
-          "headroom": {
-            "type": "string",
-            "pattern": "^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            "minimum": 0
           },
           "bookId": {
             "type": "string",
             "format": "uuid"
+          },
+          "limit": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]{0,17})\\.[0-9]{2}$"
+          },
+          "headroom": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,17})\\.[0-9]{2}$"
           },
           "limitVersionId": {
             "type": "string",
@@ -148178,6 +148318,15 @@
           "limitHash": {
             "type": "string",
             "pattern": "^[a-f0-9]{64}$"
+          },
+          "blocker": {
+            "type": "string",
+            "enum": [
+              "commercial-exposure-limit-missing",
+              "commercial-exposure-limit-ambiguous",
+              "commercial-district-capacity-exceeded",
+              "commercial-district-authority-exceeded"
+            ]
           }
         },
         "required": [
@@ -148187,12 +148336,30 @@
           "outcome",
           "bookSumInsured",
           "policyCount",
-          "limit",
-          "headroom",
-          "bookId",
-          "limitVersionId",
-          "limitHash"
-        ]
+          "bookId"
+        ],
+        "dependentRequired": {
+          "limit": [
+            "headroom",
+            "limitVersionId",
+            "limitHash"
+          ],
+          "headroom": [
+            "limit",
+            "limitVersionId",
+            "limitHash"
+          ],
+          "limitVersionId": [
+            "limit",
+            "headroom",
+            "limitHash"
+          ],
+          "limitHash": [
+            "limit",
+            "headroom",
+            "limitVersionId"
+          ]
+        }
       },
       "CommercialIssuedAgencyExposure": {
         "type": "object",
@@ -148200,9 +148367,6 @@
         "properties": {
           "format": {
             "const": "commercial-exposure-1"
-          },
-          "audience": {
-            "const": "agency"
           },
           "observedAt": {
             "type": "string",
@@ -148219,12 +148383,74 @@
           "advisory": {
             "const": true
           },
+          "coverageState": {
+            "type": "string",
+            "enum": [
+              "active",
+              "scheduled",
+              "expired",
+              "cancelled",
+              "not-covered",
+              "proposed",
+              "unavailable"
+            ]
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "within-capacity",
+              "exceeds-capacity",
+              "unavailable"
+            ]
+          },
+          "truncated": {
+            "type": "boolean"
+          },
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "policy-version",
+                  "quote-revision",
+                  "draft-revision"
+                ]
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "hash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "kind",
+              "id",
+              "hash"
+            ]
+          },
+          "blocker": {
+            "type": "string",
+            "enum": [
+              "commercial-exposure-proposal-incomplete",
+              "commercial-exposure-book-unavailable",
+              "commercial-exposure-source-unavailable",
+              "commercial-exposure-draft-projection-unavailable"
+            ]
+          },
+          "audience": {
+            "const": "agency"
+          },
           "districts": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/CommercialIssuedOwnExposureDistrict"
             },
-            "maxItems": 100
+            "maxItems": 1000
           }
         },
         "required": [
@@ -148244,9 +148470,6 @@
           "format": {
             "const": "commercial-exposure-1"
           },
-          "audience": {
-            "const": "internal"
-          },
           "observedAt": {
             "type": "string",
             "format": "date-time"
@@ -148262,12 +148485,74 @@
           "advisory": {
             "const": true
           },
+          "coverageState": {
+            "type": "string",
+            "enum": [
+              "active",
+              "scheduled",
+              "expired",
+              "cancelled",
+              "not-covered",
+              "proposed",
+              "unavailable"
+            ]
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "within-capacity",
+              "exceeds-capacity",
+              "unavailable"
+            ]
+          },
+          "truncated": {
+            "type": "boolean"
+          },
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "policy-version",
+                  "quote-revision",
+                  "draft-revision"
+                ]
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "hash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "kind",
+              "id",
+              "hash"
+            ]
+          },
+          "blocker": {
+            "type": "string",
+            "enum": [
+              "commercial-exposure-proposal-incomplete",
+              "commercial-exposure-book-unavailable",
+              "commercial-exposure-source-unavailable",
+              "commercial-exposure-draft-projection-unavailable"
+            ]
+          },
+          "audience": {
+            "const": "internal"
+          },
           "districts": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/CommercialIssuedInternalExposureDistrict"
             },
-            "maxItems": 100
+            "maxItems": 1000
           }
         },
         "required": [

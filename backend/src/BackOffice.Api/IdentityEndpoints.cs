@@ -53,6 +53,12 @@ public static class IdentityEndpoints
         });
         builder.Services.AddAuthorization(options =>
         {
+            options.AddPolicy("commercial-exposure-read", policy => policy.RequireAuthenticatedUser().RequireAssertion(context =>
+            {
+                if (!Guid.TryParse(context.User.FindFirstValue(ClaimTypes.NameIdentifier), out _)) return false;
+                var actor = LocalIdentityService.Actor(context.User);
+                return actor.HasCapability("policy-read") || actor.AgencyId != null;
+            }));
             options.AddPolicy("agency-context", policy => policy.RequireAuthenticatedUser().RequireAssertion(context => context.User.Identity?.IsAuthenticated == true && Guid.TryParse(context.User.FindFirstValue(ClaimTypes.NameIdentifier),out _) && LocalIdentityService.Actor(context.User).AgencyId != null));
             options.AddPolicy("agency-own-users", policy => policy.RequireAuthenticatedUser().RequireAssertion(context =>
             {

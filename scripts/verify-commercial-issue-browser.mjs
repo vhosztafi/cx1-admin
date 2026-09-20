@@ -21,11 +21,16 @@ export async function commercialIssueJourney({page,f,quoteId,checks}) {
   assert.equal(policy.documentRequests.filter(x=>x.kind==='policy-certificate').length,policy.snapshot.cover.sections.some(x=>x.code==='employers-liability')?1:0);
   assert.equal('vehicles' in policy.snapshot.risk,false);
   assert.equal(await page.getByRole('button',{name:/Make a policy change|Cancel policy|Renew policy/}).count(),0);
+  await page.getByRole('tab',{name:'Property schedule',exact:true}).click();
   await page.getByRole('heading',{name:'Locations and sums insured',exact:true}).waitFor();
+  await page.getByRole('tab',{name:'Cover',exact:true}).click();
   await page.getByRole('heading',{name:'Selected commercial cover',exact:true}).waitFor();
+  await page.getByRole('tab',{name:'Documents',exact:true}).click();
   await page.getByRole('rowheader',{name:'Employers’ liability certificate',exact:true}).waitFor();
   await page.reload();await page.getByRole('heading',{name:receipt.policyReference,exact:true}).waitFor();
   assert.deepEqual(await read(),policy);
+  const {commercialPolicyJourney}=await import('./verify-commercial-policy-browser.mjs');
+  await commercialPolicyJourney({page,f,policy,checks});
   await page.screenshot({path:f.output+'/issued-commercial-desktop.png',fullPage:true});
   await page.setViewportSize({width:390,height:844});
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true);

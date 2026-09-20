@@ -3,6 +3,7 @@ import { requireActor } from '../../../../lib/server-actor';
 import { canCaptureQuotes } from '../../../../lib/quotes';
 import { EmptyState, Panel } from '../../../../components/primitives';
 import { quoteQuestionLabels } from '../../../../lib/quote-form-catalogue';
+import {commercialCatalogue} from '../../../../lib/commercial-catalogue';
 import { PolicyRecord } from '../../../../components/policies/policy-record';
 
 export default async function PolicyPage({ params,searchParams }: { params: Promise<{ id: string }>; searchParams:Promise<{termId?:string;versionId?:string;tab?:string;effectiveAt?:string;knownAt?:string}> }) {
@@ -14,5 +15,5 @@ export default async function PolicyPage({ params,searchParams }: { params: Prom
   const selection=query.termId && query.versionId?{termId:query.termId,versionId:query.versionId}:undefined;
   if((query.effectiveAt||query.knownAt)&&![query.effectiveAt,query.knownAt].every(value=>typeof value==='string'&&value.length<=40&&/(?:Z|[+-]\d{2}:\d{2})$/.test(value)&&Number.isFinite(Date.parse(value))))notFound();
   const cutoffs=query.effectiveAt&&query.knownAt?new URLSearchParams({effectiveAt:query.effectiveAt,knownAt:query.knownAt}).toString():'';
-  return <PolicyRecord key={`${actor.id}:${id}:${query.versionId??'current'}:${query.tab??''}:${cutoffs}`} policyId={id} selection={selection} initialCutoffs={cutoffs} initialTab={query.tab==='Transactions'||query.tab==='Documents'?query.tab:undefined} questionLabels={quoteQuestionLabels} />;
+  return <PolicyRecord key={`${actor.id}:${id}:${query.versionId??'current'}:${query.tab??''}:${cutoffs}`} policyId={id} selection={selection} initialCutoffs={cutoffs} initialTab={query.tab==='Transactions'||query.tab==='Documents'?query.tab:undefined} questionLabels={{...quoteQuestionLabels,...Object.fromEntries(commercialCatalogue.questions.map(x=>[x.id,x.label]))}} />;
 }

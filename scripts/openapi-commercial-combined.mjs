@@ -1,7 +1,7 @@
 import {readFileSync} from 'node:fs';
 import {closed as o,uid as id,instant,hash,choice as e,many} from './underwriting-contract-model.mjs';
 // CC capture joins the shared quote routes through an explicit closed union.
-// First issue is implemented in08-09; advisory exposure reads remain08-10.
+// First issue and capability-shaped advisory exposure reads are implemented.
 export function addCommercialContracts({schemas,ref,operation,paths}){
  const draft=JSON.parse(readFileSync(new URL('../contracts/schemas/commercial-combined.schema.json',import.meta.url),'utf8'));
  const issued=JSON.parse(readFileSync(new URL('../contracts/schemas/commercial-combined-issued.schema.json',import.meta.url),'utf8'));
@@ -25,11 +25,11 @@ export function addCommercialContracts({schemas,ref,operation,paths}){
   ['district','startsAt','endsAt','ownSumInsured','otherSumInsured','resultingSumInsured','policyCount','code']);
  schemas.CommercialIssueCapacity=o({format:{const:'commercial-issue-capacity-1'},bookId:id,observedAt:instant,authorityLimit:aggregate,intervals:many(conflict,100,1),truncated:{type:'boolean'}});
  schemas.Problem.properties.commercialCapacity=ref('CommercialIssueCapacity');
- for(const [kind,id,permission] of [['quotes','quoteId','quote-read'],['drafts','draftId','policy-read'],['policies','policyId','policy-read']]){
+ for(const [kind,id] of [['quotes','quoteId'],['drafts','draftId'],['policies','policyId']]){
   const path=`/${kind}/{${id}}/commercial-exposure`,name=`getCommercial${kind==='quotes'?'Quote':kind==='drafts'?'Draft':'Policy'}Exposure`;
-  operation('get',path,name,permission,{output:ref('CommercialCaptureExposure'),query:[['effectiveAt',{type:'string',format:'date-time'}],['knownAt',{type:'string',format:'date-time'}]],summary:'Read scoped Commercial Combined exposure assessment'});
-  const op=paths[path].get;op['x-runtime-status']='phase-8-plan-10-pending';
-  op.description+=' Contract only until08-10 implements the route. Current parent scope is mandatory. Agency responses contain own exposure/outcome only; capable internal users may see book totals. Observed-time preview grants no capacity reservation. Issue rechecks every affected interval under the common transaction lock.';
+  operation('get',path,name,'commercial-exposure-read',{output:ref('CommercialCaptureExposure'),query:[['effectiveAt',{type:'string',format:'date-time'}],['knownAt',{type:'string',format:'date-time'}]],summary:'Read scoped Commercial Combined exposure assessment'});
+  const op=paths[path].get;
+  op.description+=' Current parent scope is mandatory. Supply both effectiveAt and knownAt, or neither; other filters are rejected. Agency responses contain own exposure/outcome only; capable internal users may see book totals. Policy observations use the exact E/K winner; unbound quotes assess the whole proposed term against knowledge available at K. A draft without a supported projection explicitly returns unavailable. Observed-time preview grants no capacity reservation. Issue rechecks every affected interval under the common transaction lock.';
   for(const response of Object.values(op.responses))response.headers={...response.headers,'Cache-Control':{description:'Personal underwriting information is not cacheable.',schema:{type:'string',const:'no-store'}}};
  }
 }

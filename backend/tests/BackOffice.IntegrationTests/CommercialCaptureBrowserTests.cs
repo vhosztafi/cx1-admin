@@ -36,6 +36,9 @@ public sealed partial class QuoteStorageTests
     [Fact]
     public Task RealSqlCommercialIssueBrowser() => RunCommercialCaptureBrowser("issue");
 
+    [Fact]
+    public Task RealSqlCommercialPolicyReadBrowser() => RunCommercialCaptureBrowser("issue");
+
     private async Task RunCommercialCaptureBrowser(string stage)
     {
         await WithDatabase(async (db, password) =>

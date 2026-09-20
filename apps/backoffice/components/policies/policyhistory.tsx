@@ -4,6 +4,7 @@ import {useState} from 'react';
 import {Panel,Status,DataTable} from '../primitives';
 import {LoadFeedback,useQuoteResource} from '../quotes/shared';
 import {QuoteProposalDetails} from '../quotes/quote-history';
+import type {CommercialPolicyView} from '../../lib/commercial-policy';
 import type {PolicyView} from '../../lib/policies-api';
 import type {PolicyHistoryView,PolicyComparison} from '../../lib/policy-history';
 import {formatCancellationMoney} from '../../lib/cancellation-review';
@@ -11,7 +12,7 @@ import {formatCancellationMoney} from '../../lib/cancellation-review';
 const date=(value:string)=>new Date(value).toLocaleString('en-GB',{timeZone:'Europe/London'});
 const names:Record<string,string>={'new-business':'New business',adjustment:'Adjustment',renewal:'Renewal',cancellation:'Cancellation',
  selected:'Selected cover','not-yet-known':'Recorded after known-at cutoff','not-yet-effective':'Effective after selected date','different-term':'Another policy term',superseded:'Superseded by later issued cover'};
-export function PolicyHistory({policy,questionLabels,cutoffs,onSelect}:{policy:PolicyView;questionLabels:Record<string,string>;cutoffs:string;onSelect:(value:{termId:string;versionId:string},tab?:'Transactions'|'Documents')=>void}) {
+export function PolicyHistory({policy,questionLabels,cutoffs,onSelect}:{policy:PolicyView|CommercialPolicyView;questionLabels:Record<string,string>;cutoffs:string;onSelect:(value:{termId:string;versionId:string},tab?:'Transactions'|'Documents')=>void}) {
  const history=useQuoteResource<PolicyHistoryView>(`/api/v1/policies/${policy.id}/history${cutoffs?'?'+cutoffs:''}`);
  const [before,setBefore]=useState(''),[after,setAfter]=useState(''),[comparison,setComparison]=useState('');
  const [includeDrafts,setIncludeDrafts]=useState(false);

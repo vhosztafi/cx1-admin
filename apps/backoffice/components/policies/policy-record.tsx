@@ -40,7 +40,7 @@ export function PolicyRecord({ policyId, questionLabels,selection,initialTab,ini
   </form></Panel>;
   if (!record.data) return <>{chronology}<Panel title="Policy record"><LoadFeedback error={record.error} retry={record.refresh} /></Panel></>;
   if (!('snapshot' in record.data)) return <>{chronology}<PolicyNoCover key={`${record.data.effectiveCutoff}:${record.data.knownCutoff}`} policyId={policyId} effectiveAt={record.data.effectiveCutoff} knownAt={record.data.knownCutoff}/></>;
-  if (isCommercialPolicy(record.data)) return <CommercialPolicyRecord policy={record.data} chronology={chronology} refresh={record.refresh} questionLabels={questionLabels}/>;
+  if (isCommercialPolicy(record.data)) return <CommercialPolicyRecord initialTab={tab==='Transactions'||tab==='Documents'?tab:undefined} cutoffs={cutoffs} onSelect={(value,next='Transactions')=>{setVersionSelection(value);setCutoffs('');setTab(next);window.history.replaceState(null,'','/policies/'+policyId+'?'+new URLSearchParams({...value,tab:next}));}} policy={record.data} chronology={chronology} refresh={record.refresh} questionLabels={questionLabels}/>;
   const policy = record.data, snapshot = policy.snapshot, financial = policy.financials;
   const cancelled = !!snapshot.cancellation;
   const adjusted = cancelled || 'servicingIssueDecisionId' in snapshot.provenance;

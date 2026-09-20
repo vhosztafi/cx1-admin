@@ -1,7 +1,7 @@
 {
   "format": "commercial-source-ledger-1",
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
-  "status": "capture-rating-referral-evidence-carrier-terms-issue-verified-policy-views-pending",
+  "status": "capture-through-commercial-policy-views-verified-servicing-pending",
   "denominators": {
     "captureControls": 166,
     "questions": 109,
@@ -1010,7 +1010,7 @@
       "questionId": null,
       "runtimeStatus": "browser-navigation-verified",
       "verification": [
-        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
+        "08-03: all ten named stages rendered; stages1\u20133 navigable,4\u201310 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_63c35410e3ed4051b516ba920b2fe206/report.json",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_514ef68179124ee1a56c876c43bb095e/report.json"
       ]
@@ -1029,7 +1029,7 @@
       "questionId": null,
       "runtimeStatus": "browser-navigation-verified",
       "verification": [
-        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
+        "08-03: all ten named stages rendered; stages1\u20133 navigable,4\u201310 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_63c35410e3ed4051b516ba920b2fe206/report.json",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_514ef68179124ee1a56c876c43bb095e/report.json"
       ]
@@ -1048,7 +1048,7 @@
       "questionId": null,
       "runtimeStatus": "browser-navigation-verified",
       "verification": [
-        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
+        "08-03: all ten named stages rendered; stages1\u20133 navigable,4\u201310 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_63c35410e3ed4051b516ba920b2fe206/report.json",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_514ef68179124ee1a56c876c43bb095e/report.json"
       ]
@@ -1067,7 +1067,7 @@
       "questionId": null,
       "runtimeStatus": "browser-navigation-verified",
       "verification": [
-        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
+        "08-03: all ten named stages rendered; stages1\u20133 navigable,4\u201310 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_63c35410e3ed4051b516ba920b2fe206/report.json",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_514ef68179124ee1a56c876c43bb095e/report.json"
       ]
@@ -1086,7 +1086,7 @@
       "questionId": null,
       "runtimeStatus": "browser-navigation-verified",
       "verification": [
-        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
+        "08-03: all ten named stages rendered; stages1\u20133 navigable,4\u201310 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_63c35410e3ed4051b516ba920b2fe206/report.json",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_514ef68179124ee1a56c876c43bb095e/report.json"
       ]
@@ -1105,7 +1105,7 @@
       "questionId": null,
       "runtimeStatus": "browser-navigation-verified",
       "verification": [
-        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
+        "08-03: all ten named stages rendered; stages1\u20133 navigable,4\u201310 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_63c35410e3ed4051b516ba920b2fe206/report.json",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_514ef68179124ee1a56c876c43bb095e/report.json"
       ]
@@ -1124,7 +1124,7 @@
       "questionId": null,
       "runtimeStatus": "browser-navigation-verified",
       "verification": [
-        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
+        "08-03: all ten named stages rendered; stages1\u20133 navigable,4\u201310 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_63c35410e3ed4051b516ba920b2fe206/report.json",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_514ef68179124ee1a56c876c43bb095e/report.json"
       ]
@@ -1143,7 +1143,7 @@
       "questionId": null,
       "runtimeStatus": "browser-navigation-verified",
       "verification": [
-        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
+        "08-03: all ten named stages rendered; stages1\u20133 navigable,4\u201310 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_63c35410e3ed4051b516ba920b2fe206/report.json",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_514ef68179124ee1a56c876c43bb095e/report.json"
       ]
@@ -1162,7 +1162,7 @@
       "questionId": null,
       "runtimeStatus": "browser-navigation-verified",
       "verification": [
-        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
+        "08-03: all ten named stages rendered; stages1\u20133 navigable,4\u201310 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_63c35410e3ed4051b516ba920b2fe206/report.json",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_514ef68179124ee1a56c876c43bb095e/report.json"
       ]
@@ -1181,7 +1181,7 @@
       "questionId": null,
       "runtimeStatus": "browser-navigation-verified",
       "verification": [
-        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
+        "08-03: all ten named stages rendered; stages1\u20133 navigable,4\u201310 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_63c35410e3ed4051b516ba920b2fe206/report.json",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_514ef68179124ee1a56c876c43bb095e/report.json"
       ]
@@ -1314,7 +1314,7 @@
       "controlId": "CTL-36ef01068295",
       "method": "pNewQuote",
       "path": ".sections[1].inputs[5]",
-      "label": "Employers’ liability required",
+      "label": "Employers\u2019 liability required",
       "sourceModalKinds": [],
       "sourceFieldBindings": [
         {
@@ -2321,7 +2321,7 @@
       "controlId": "CTL-eb37b8814a01",
       "method": "pNewQuote",
       "path": ".sections[5].inputs[2]",
-      "label": "Heating linked to a thermostat activating below 6°C",
+      "label": "Heating linked to a thermostat activating below 6\u00b0C",
       "sourceModalKinds": [],
       "sourceFieldBindings": [
         {
@@ -2921,7 +2921,7 @@
       "controlId": "CTL-c8c59a389166",
       "method": "pNewQuote",
       "path": ".sections[2].inputs[6]",
-      "label": "Money — cash on premises in business hours",
+      "label": "Money \u2014 cash on premises in business hours",
       "sourceModalKinds": [],
       "sourceFieldBindings": [
         {
@@ -3514,7 +3514,7 @@
       "controlId": "CTL-d7068d9c43bd",
       "method": "pNewQuote",
       "path": ".sections[3].inputs[0]",
-      "label": "Employers’ liability limit",
+      "label": "Employers\u2019 liability limit",
       "sourceModalKinds": [],
       "sourceFieldBindings": [
         {
@@ -4125,7 +4125,7 @@
   "questions": [
     {
       "questionId": "prototype.quote.36ef01068295",
-      "label": "Employers’ liability required",
+      "label": "Employers\u2019 liability required",
       "kind": "boolean",
       "targetContainer": "risk.declarations",
       "sourceControlId": "CTL-36ef01068295",
@@ -4169,7 +4169,7 @@
         "3",
         "4",
         "5",
-        "6–10",
+        "6\u201310",
         "Over 10"
       ],
       "stages": [
@@ -4202,7 +4202,7 @@
         },
         {
           "value": 7,
-          "label": "6–10"
+          "label": "6\u201310"
         },
         {
           "value": 8,
@@ -4241,7 +4241,7 @@
         "3",
         "4",
         "5",
-        "6–10",
+        "6\u201310",
         "Over 10"
       ],
       "stages": [
@@ -4274,7 +4274,7 @@
         },
         {
           "value": 7,
-          "label": "6–10"
+          "label": "6\u201310"
         },
         {
           "value": 8,
@@ -4637,8 +4637,8 @@
       "sourceControlId": "CTL-b01896689f29",
       "sourceOptions": [
         "No",
-        "Yes — security staff",
-        "Yes — resident caretaker"
+        "Yes \u2014 security staff",
+        "Yes \u2014 resident caretaker"
       ],
       "stages": [
         "Commercial Combined:step-4"
@@ -4650,11 +4650,11 @@
         },
         {
           "value": 2,
-          "label": "Yes — security staff"
+          "label": "Yes \u2014 security staff"
         },
         {
           "value": 3,
-          "label": "Yes — resident caretaker"
+          "label": "Yes \u2014 resident caretaker"
         }
       ],
       "requiredWhenApplicable": true,
@@ -4782,7 +4782,7 @@
         "Five lever deadlocks and shutters",
         "Roller shutters, padlocked",
         "Standard latch only",
-        "We don’t have these"
+        "We don\u2019t have these"
       ],
       "stages": [
         "Commercial Combined:step-5"
@@ -4806,7 +4806,7 @@
         },
         {
           "value": 5,
-          "label": "We don’t have these"
+          "label": "We don\u2019t have these"
         }
       ],
       "requiredWhenApplicable": true,
@@ -4838,7 +4838,7 @@
         "Bars or grilles",
         "Shutters",
         "No locks",
-        "We don’t have these"
+        "We don\u2019t have these"
       ],
       "stages": [
         "Commercial Combined:step-5"
@@ -4862,7 +4862,7 @@
         },
         {
           "value": 5,
-          "label": "We don’t have these"
+          "label": "We don\u2019t have these"
         }
       ],
       "requiredWhenApplicable": true,
@@ -4894,7 +4894,7 @@
         "Bars or grilles",
         "Shutters",
         "No locks",
-        "We don’t have these"
+        "We don\u2019t have these"
       ],
       "stages": [
         "Commercial Combined:step-5"
@@ -4918,7 +4918,7 @@
         },
         {
           "value": 5,
-          "label": "We don’t have these"
+          "label": "We don\u2019t have these"
         }
       ],
       "requiredWhenApplicable": true,
@@ -4949,7 +4949,7 @@
         "Bars or grilles",
         "Key operated locks",
         "No protection",
-        "We don’t have these"
+        "We don\u2019t have these"
       ],
       "stages": [
         "Commercial Combined:step-5"
@@ -4969,7 +4969,7 @@
         },
         {
           "value": 4,
-          "label": "We don’t have these"
+          "label": "We don\u2019t have these"
         }
       ],
       "requiredWhenApplicable": true,
@@ -5000,7 +5000,7 @@
         "Padlocked and barred",
         "Key operated locks",
         "No protection",
-        "We don’t have these"
+        "We don\u2019t have these"
       ],
       "stages": [
         "Commercial Combined:step-5"
@@ -5020,7 +5020,7 @@
         },
         {
           "value": 4,
-          "label": "We don’t have these"
+          "label": "We don\u2019t have these"
         }
       ],
       "requiredWhenApplicable": true,
@@ -5049,8 +5049,8 @@
       "sourceControlId": "CTL-ffef496a4941",
       "sourceOptions": [
         "None",
-        "Safe — cash only",
-        "Safe — cash and small tools",
+        "Safe \u2014 cash only",
+        "Safe \u2014 cash and small tools",
         "Security cage for high value stock",
         "Strong room"
       ],
@@ -5064,11 +5064,11 @@
         },
         {
           "value": 2,
-          "label": "Safe — cash only"
+          "label": "Safe \u2014 cash only"
         },
         {
           "value": 3,
-          "label": "Safe — cash and small tools"
+          "label": "Safe \u2014 cash and small tools"
         },
         {
           "value": 4,
@@ -5298,7 +5298,7 @@
     },
     {
       "questionId": "prototype.quote.eb37b8814a01",
-      "label": "Heating linked to a thermostat activating below 6°C",
+      "label": "Heating linked to a thermostat activating below 6\u00b0C",
       "kind": "boolean",
       "targetContainer": "risk.declarations",
       "sourceControlId": "CTL-eb37b8814a01",
@@ -5400,8 +5400,8 @@
       "sourceControlId": "CTL-48f5d2ed7ce2",
       "sourceOptions": [
         "No",
-        "Yes — within 20 years",
-        "Yes — over 20 years ago"
+        "Yes \u2014 within 20 years",
+        "Yes \u2014 over 20 years ago"
       ],
       "stages": [
         "Commercial Combined:step-5"
@@ -5413,11 +5413,11 @@
         },
         {
           "value": 2,
-          "label": "Yes — within 20 years"
+          "label": "Yes \u2014 within 20 years"
         },
         {
           "value": 3,
-          "label": "Yes — over 20 years ago"
+          "label": "Yes \u2014 over 20 years ago"
         }
       ],
       "requiredWhenApplicable": true,
@@ -5446,8 +5446,8 @@
       "sourceControlId": "CTL-ade0f3f0df5e",
       "sourceOptions": [
         "No",
-        "Yes — at the location",
-        "Yes — within 250 metres"
+        "Yes \u2014 at the location",
+        "Yes \u2014 within 250 metres"
       ],
       "stages": [
         "Commercial Combined:step-6"
@@ -5459,11 +5459,11 @@
         },
         {
           "value": 2,
-          "label": "Yes — at the location"
+          "label": "Yes \u2014 at the location"
         },
         {
           "value": 3,
-          "label": "Yes — within 250 metres"
+          "label": "Yes \u2014 within 250 metres"
         }
       ],
       "requiredWhenApplicable": true,
@@ -5612,8 +5612,8 @@
       "sourceControlId": "CTL-9922d03ca861",
       "sourceOptions": [
         "No",
-        "Yes — above 150mm",
-        "Yes — above 600mm"
+        "Yes \u2014 above 150mm",
+        "Yes \u2014 above 600mm"
       ],
       "stages": [
         "Commercial Combined:step-6"
@@ -5625,11 +5625,11 @@
         },
         {
           "value": 2,
-          "label": "Yes — above 150mm"
+          "label": "Yes \u2014 above 150mm"
         },
         {
           "value": 3,
-          "label": "Yes — above 600mm"
+          "label": "Yes \u2014 above 600mm"
         }
       ],
       "requiredWhenApplicable": true,
@@ -6038,9 +6038,9 @@
       "sourceControlId": "CTL-480819d83a08",
       "sourceOptions": [
         "Not required",
-        "£5,000 any one load",
-        "£10,000 any one load",
-        "£25,000 any one load"
+        "\u00a35,000 any one load",
+        "\u00a310,000 any one load",
+        "\u00a325,000 any one load"
       ],
       "stages": [
         "Commercial Combined:step-7"
@@ -6052,15 +6052,15 @@
         },
         {
           "value": 2,
-          "label": "£5,000 any one load"
+          "label": "\u00a35,000 any one load"
         },
         {
           "value": 3,
-          "label": "£10,000 any one load"
+          "label": "\u00a310,000 any one load"
         },
         {
           "value": 4,
-          "label": "£25,000 any one load"
+          "label": "\u00a325,000 any one load"
         }
       ],
       "requiredWhenApplicable": true,
@@ -6083,15 +6083,15 @@
     },
     {
       "questionId": "prototype.quote.c8c59a389166",
-      "label": "Money — cash on premises in business hours",
+      "label": "Money \u2014 cash on premises in business hours",
       "kind": "reference",
       "targetContainer": "cover.responses",
       "sourceControlId": "CTL-c8c59a389166",
       "sourceOptions": [
         "Not required",
-        "£1,000",
-        "£2,500",
-        "£5,000"
+        "\u00a31,000",
+        "\u00a32,500",
+        "\u00a35,000"
       ],
       "stages": [
         "Commercial Combined:step-7"
@@ -6103,15 +6103,15 @@
         },
         {
           "value": 2,
-          "label": "£1,000"
+          "label": "\u00a31,000"
         },
         {
           "value": 3,
-          "label": "£2,500"
+          "label": "\u00a32,500"
         },
         {
           "value": 4,
-          "label": "£5,000"
+          "label": "\u00a35,000"
         }
       ],
       "requiredWhenApplicable": true,
@@ -7094,8 +7094,8 @@
       "sourceControlId": "CTL-978fde66afb5",
       "sourceOptions": [
         "No",
-        "Yes — all completed",
-        "Yes — some outstanding"
+        "Yes \u2014 all completed",
+        "Yes \u2014 some outstanding"
       ],
       "stages": [
         "Commercial Combined:step-9"
@@ -7107,11 +7107,11 @@
         },
         {
           "value": 2,
-          "label": "Yes — all completed"
+          "label": "Yes \u2014 all completed"
         },
         {
           "value": 3,
-          "label": "Yes — some outstanding"
+          "label": "Yes \u2014 some outstanding"
         }
       ],
       "requiredWhenApplicable": true,
@@ -7139,11 +7139,11 @@
       "targetContainer": "cover.responses",
       "sourceControlId": "CTL-17b8e4af6aef",
       "sourceOptions": [
-        "£250",
-        "£500",
-        "£1,000",
-        "£2,500",
-        "£5,000"
+        "\u00a3250",
+        "\u00a3500",
+        "\u00a31,000",
+        "\u00a32,500",
+        "\u00a35,000"
       ],
       "stages": [
         "Commercial Combined:step-10"
@@ -7151,23 +7151,23 @@
       "referenceValues": [
         {
           "value": 1,
-          "label": "£250"
+          "label": "\u00a3250"
         },
         {
           "value": 2,
-          "label": "£500"
+          "label": "\u00a3500"
         },
         {
           "value": 3,
-          "label": "£1,000"
+          "label": "\u00a31,000"
         },
         {
           "value": 4,
-          "label": "£2,500"
+          "label": "\u00a32,500"
         },
         {
           "value": 5,
-          "label": "£5,000"
+          "label": "\u00a35,000"
         }
       ],
       "requiredWhenApplicable": true,
@@ -7195,9 +7195,9 @@
       "targetContainer": "cover.responses",
       "sourceControlId": "CTL-6517b7cd5c04",
       "sourceOptions": [
-        "£1,000",
-        "£2,500",
-        "£5,000"
+        "\u00a31,000",
+        "\u00a32,500",
+        "\u00a35,000"
       ],
       "stages": [
         "Commercial Combined:step-10"
@@ -7205,15 +7205,15 @@
       "referenceValues": [
         {
           "value": 1,
-          "label": "£1,000"
+          "label": "\u00a31,000"
         },
         {
           "value": 2,
-          "label": "£2,500"
+          "label": "\u00a32,500"
         },
         {
           "value": 3,
-          "label": "£5,000"
+          "label": "\u00a35,000"
         }
       ],
       "requiredWhenApplicable": true,
@@ -7242,9 +7242,9 @@
       "sourceControlId": "CTL-4a288359be03",
       "sourceOptions": [
         "Not applicable",
-        "£1,000",
-        "£2,500",
-        "£5,000"
+        "\u00a31,000",
+        "\u00a32,500",
+        "\u00a35,000"
       ],
       "stages": [
         "Commercial Combined:step-10"
@@ -7256,15 +7256,15 @@
         },
         {
           "value": 2,
-          "label": "£1,000"
+          "label": "\u00a31,000"
         },
         {
           "value": 3,
-          "label": "£2,500"
+          "label": "\u00a32,500"
         },
         {
           "value": 4,
-          "label": "£5,000"
+          "label": "\u00a35,000"
         }
       ],
       "requiredWhenApplicable": true,
@@ -7507,8 +7507,8 @@
       "sourceControlId": "CTL-0f6311356da8",
       "sourceOptions": [
         "No",
-        "Yes — non-combustible core",
-        "Yes — core unknown"
+        "Yes \u2014 non-combustible core",
+        "Yes \u2014 core unknown"
       ],
       "unit": "none",
       "stages": [],
@@ -7630,8 +7630,8 @@
       "sourceControlId": "CTL-348671532dea",
       "sourceOptions": [
         "No",
-        "Yes — empty",
-        "Yes — property stored"
+        "Yes \u2014 empty",
+        "Yes \u2014 property stored"
       ],
       "unit": "none",
       "stages": [],
@@ -7722,10 +7722,10 @@
       "sourceControlId": "CTL-7d01cde3f070",
       "sourceOptions": [
         "None",
-        "Yes — L1, maintained",
-        "Yes — L2, maintained",
-        "Yes — L3, maintained",
-        "Yes — not maintained"
+        "Yes \u2014 L1, maintained",
+        "Yes \u2014 L2, maintained",
+        "Yes \u2014 L3, maintained",
+        "Yes \u2014 not maintained"
       ],
       "unit": "none",
       "stages": [],
@@ -8387,8 +8387,12 @@
       "ownerPlan": "08-10",
       "disposition": "cc-policy-action",
       "contract": "Bind actual scoped CC policy data/action; never execute prototype toast as success.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "scoped-policy-navigation-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-b2e4c6b1cfe9",
@@ -8463,8 +8467,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-6dd508169708",
@@ -8481,8 +8489,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-51a57548f0da",
@@ -8499,8 +8511,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-d0ef58c41321",
@@ -8517,8 +8533,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-40e9b30cb9e8",
@@ -8535,8 +8555,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-972baee4e124",
@@ -8571,8 +8595,12 @@
       "ownerPlan": "08-10",
       "disposition": "cc-policy-action",
       "contract": "Bind actual scoped CC policy data/action; never execute prototype toast as success.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "scoped-policy-navigation-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-2a6401be6234",
@@ -8589,8 +8617,12 @@
       "ownerPlan": "08-10",
       "disposition": "cc-policy-action",
       "contract": "Bind actual scoped CC policy data/action; never execute prototype toast as success.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "scoped-policy-navigation-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-f1af905620b2",
@@ -8607,8 +8639,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-e5b1be5b9996",
@@ -8625,8 +8661,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-34224cd40d1e",
@@ -8643,8 +8683,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-ea8bce06f2ca",
@@ -8661,8 +8705,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-f483a775b1ff",
@@ -8679,8 +8727,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-ccf03cbea8ce",
@@ -8697,8 +8749,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-6582dec68d30",
@@ -8715,8 +8771,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-33cbb4fde70a",
@@ -8733,8 +8793,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-f624f194dc37",
@@ -8751,8 +8815,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-1ecddbaea446",
@@ -8769,8 +8837,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-743a4287e25a",
@@ -8787,8 +8859,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-cbe49710cfe8",
@@ -8805,8 +8881,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-19725f9cbe05",
@@ -8823,8 +8903,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-0b75753873f5",
@@ -8841,8 +8925,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-7339369f0fea",
@@ -8859,8 +8947,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-6545b6a077fe",
@@ -8877,8 +8969,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-14ccc32045e0",
@@ -8895,8 +8991,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-22ba92c7b207",
@@ -8913,8 +9013,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-db1741cea8a9",
@@ -8931,8 +9035,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-9c62bb998e73",
@@ -8949,8 +9057,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-ac3cc5554379",
@@ -8967,8 +9079,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-3b06827603c7",
@@ -8985,8 +9101,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-aeb46a753796",
@@ -9003,8 +9123,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-3c64b7e2f4b2",
@@ -9021,8 +9145,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-6b8b84b168aa",
@@ -9039,8 +9167,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-2419bccb96e3",
@@ -9057,8 +9189,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-d1824bc06898",
@@ -9075,8 +9211,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-fc4c4f117cb8",
@@ -9093,8 +9233,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-456c5d7d3e24",
@@ -9111,8 +9255,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-3aca421b48c2",
@@ -9129,8 +9277,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-3bfd2ff06187",
@@ -9147,8 +9299,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-094aea684a7e",
@@ -9165,8 +9321,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-2fade7608c9f",
@@ -9183,8 +9343,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-230e5b43b051",
@@ -9201,8 +9365,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-867eb6cb506f",
@@ -9219,8 +9387,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-fb0864dfa704",
@@ -9237,8 +9409,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-2513acd4a118",
@@ -9255,8 +9431,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-f7115f67c06e",
@@ -9273,8 +9453,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-83691d36bdf8",
@@ -9291,8 +9475,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-673333da8426",
@@ -9309,8 +9497,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-c3988d689323",
@@ -9327,8 +9519,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-365f47865fcb",
@@ -9345,8 +9541,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-beb074e34531",
@@ -9363,8 +9563,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-53280ea4a21b",
@@ -9381,8 +9585,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     },
     {
       "controlId": "CTL-833069e59afb",
@@ -9417,8 +9625,12 @@
       "ownerPlan": "08-10",
       "disposition": "invalid-tab-fallback",
       "contract": "Source renders the global tab set against CC; remove invalid MT fallback from CC routes. Use scoped actual product navigation only.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "removed-invalid-fallback-verified",
+      "verification": [
+        "08-10-REVIEW.md",
+        ".local/phase8-10-final",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_10e796995f244a168647d8317efa2457/report.json"
+      ]
     }
   ],
   "branches": [
@@ -9754,7 +9966,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 1,
@@ -9829,7 +10045,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 2,
@@ -9904,7 +10124,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 3,
@@ -9979,7 +10203,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 4,
@@ -10054,7 +10282,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 5,
@@ -10124,12 +10356,16 @@
         ],
         "path": ".recordHeader.items[4]",
         "label": "Cover period",
-        "value": "01/04/2026 – 31/03/2027"
+        "value": "01/04/2026 \u2013 31/03/2027"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 6,
@@ -10204,7 +10440,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 7,
@@ -10279,7 +10519,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 8,
@@ -10298,12 +10542,16 @@
         "note": "",
         "actionLabel": "See product config",
         "onAction": "() => this.go('admin', 'Products & schemes')",
-        "text": "This record uses the same shell as motor trade — the tab set comes from the product’s configured sections."
+        "text": "This record uses the same shell as motor trade \u2014 the tab set comes from the product\u2019s configured sections."
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 9,
@@ -10325,7 +10573,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 10,
@@ -10347,7 +10599,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 11,
@@ -10363,13 +10619,17 @@
         ],
         "path": ".sections[1].fields[1]",
         "label": "Cover period",
-        "value": "01/04/2026 – 31/03/2027",
+        "value": "01/04/2026 \u2013 31/03/2027",
         "hint": "12 months"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 12,
@@ -10391,7 +10651,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 13,
@@ -10413,7 +10677,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 14,
@@ -10435,7 +10703,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 15,
@@ -10452,12 +10724,16 @@
         "path": ".sections[1].fields[5]",
         "label": "Employees",
         "value": "18",
-        "hint": "Wage roll £642,000"
+        "hint": "Wage roll \u00a3642,000"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 16,
@@ -10479,7 +10755,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 17,
@@ -10502,7 +10782,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 18,
@@ -10524,7 +10808,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 19,
@@ -10546,7 +10834,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 20,
@@ -10562,13 +10854,17 @@
         ],
         "path": ".sections[2].fields[1]",
         "label": "Total sum insured",
-        "value": "£3,180,000",
+        "value": "\u00a33,180,000",
         "hint": ""
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 21,
@@ -10584,13 +10880,17 @@
         ],
         "path": ".sections[2].fields[2]",
         "label": "Maximum estimated loss",
-        "value": "£1,940,000",
+        "value": "\u00a31,940,000",
         "hint": "Largest single location"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 22,
@@ -10605,14 +10905,18 @@
           "ready"
         ],
         "path": ".sections[2].fields[3]",
-        "label": "Employers’ liability limit",
-        "value": "£10,000,000",
+        "label": "Employers\u2019 liability limit",
+        "value": "\u00a310,000,000",
         "hint": ""
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 23,
@@ -10628,13 +10932,17 @@
         ],
         "path": ".sections[2].fields[4]",
         "label": "Public liability limit",
-        "value": "£5,000,000",
+        "value": "\u00a35,000,000",
         "hint": ""
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 24,
@@ -10650,13 +10958,17 @@
         ],
         "path": ".sections[2].fields[5]",
         "label": "Business interruption",
-        "value": "£820,000",
+        "value": "\u00a3820,000",
         "hint": "12 month indemnity period"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 25,
@@ -10678,7 +10990,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 26,
@@ -10694,13 +11010,17 @@
         ],
         "path": ".sections[3].fields[0]",
         "label": "Gross written premium (term)",
-        "value": "£8,412.60",
+        "value": "\u00a38,412.60",
         "hint": ""
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 27,
@@ -10716,13 +11036,17 @@
         ],
         "path": ".sections[3].fields[1]",
         "label": "IPT at 12%",
-        "value": "£1,009.51",
+        "value": "\u00a31,009.51",
         "hint": ""
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 28,
@@ -10738,13 +11062,17 @@
         ],
         "path": ".sections[3].fields[2]",
         "label": "Policy fee",
-        "value": "£75.00",
+        "value": "\u00a375.00",
         "hint": ""
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 29,
@@ -10760,13 +11088,17 @@
         ],
         "path": ".sections[3].fields[3]",
         "label": "Total payable",
-        "value": "£9,497.11",
+        "value": "\u00a39,497.11",
         "hint": ""
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 30,
@@ -10782,7 +11114,7 @@
         ],
         "path": ".sections[3].fields[4]",
         "label": "Outstanding balance",
-        "value": "£2,374.28",
+        "value": "\u00a32,374.28",
         "hint": ""
       },
       "ownerPhase": 10,
@@ -10804,13 +11136,17 @@
         ],
         "path": ".sections[3].fields[5]",
         "label": "Commission",
-        "value": "£925.39",
+        "value": "\u00a3925.39",
         "hint": "11.00% of GWP"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 32,
@@ -10832,7 +11168,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 33,
@@ -10855,7 +11195,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 34,
@@ -10877,7 +11221,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 35,
@@ -10900,7 +11248,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 36,
@@ -10923,7 +11275,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 37,
@@ -10946,7 +11302,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 38,
@@ -10968,7 +11328,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 39,
@@ -10985,12 +11349,16 @@
         "path": ".rail[1].fields[0]",
         "label": "Sum insured any one location",
         "value": "Within binder",
-        "hint": "Limit £2,500,000"
+        "hint": "Limit \u00a32,500,000"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 40,
@@ -11007,12 +11375,16 @@
         "path": ".rail[1].fields[1]",
         "label": "Maximum estimated loss",
         "value": "Within binder",
-        "hint": "Limit £2,000,000"
+        "hint": "Limit \u00a32,000,000"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 41,
@@ -11028,13 +11400,17 @@
         ],
         "path": ".rail[1].fields[2]",
         "label": "Flood zone aggregation",
-        "value": "Sheffield S9 — 14 risks",
+        "value": "Sheffield S9 \u2014 14 risks",
         "hint": "Monitored, not yet at limit"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 42,
@@ -11049,14 +11425,18 @@
           "ready"
         ],
         "path": ".rail[1].fields[3]",
-        "label": "Employers’ liability",
+        "label": "Employers\u2019 liability",
         "value": "Within binder",
         "hint": ""
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 43,
@@ -11079,7 +11459,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 44,
@@ -11102,7 +11486,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 45,
@@ -11125,7 +11513,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 46,
@@ -11148,7 +11540,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 47,
@@ -11163,14 +11559,18 @@
         ],
         "path": ".sections[0]",
         "title": "Insured business",
-        "note": "Product-specific — the motor trade equivalent shows drivers, trade plates and stock basis",
+        "note": "Product-specific \u2014 the motor trade equivalent shows drivers, trade plates and stock basis",
         "actionLabel": "Propose a change",
         "onAction": "() => this.toast('Adjustment workspace (mock).', '', null)"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 48,
@@ -11191,7 +11591,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 49,
@@ -11212,7 +11616,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 50,
@@ -11233,7 +11641,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 51,
@@ -11254,7 +11666,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 52,
@@ -11275,7 +11691,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 53,
@@ -11296,7 +11716,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 54,
@@ -11317,7 +11741,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 55,
@@ -11338,7 +11766,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 56,
@@ -11359,7 +11791,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 57,
@@ -11380,7 +11816,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 58,
@@ -11399,7 +11839,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 59,
@@ -11418,7 +11862,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 60,
@@ -11437,7 +11885,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 61,
@@ -11456,7 +11908,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 62,
@@ -11475,7 +11931,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 63,
@@ -11489,12 +11949,16 @@
           "ready"
         ],
         "path": ".sections[1].rows[0].cells[2]",
-        "text": "Includes hot works — condition E-22 applies"
+        "text": "Includes hot works \u2014 condition E-22 applies"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 64,
@@ -11513,7 +11977,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 65,
@@ -11532,7 +12000,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 66,
@@ -11551,7 +12023,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 67,
@@ -11570,7 +12046,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 68,
@@ -11589,7 +12069,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 69,
@@ -11608,7 +12092,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 70,
@@ -11629,7 +12117,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 71,
@@ -11651,7 +12143,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 72,
@@ -11673,7 +12169,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 73,
@@ -11688,13 +12188,17 @@
         ],
         "path": ".sections[2].fields[2]",
         "label": "Wage roll",
-        "value": "£642,000",
+        "value": "\u00a3642,000",
         "hint": ""
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 74,
@@ -11709,13 +12213,17 @@
         ],
         "path": ".sections[2].fields[3]",
         "label": "Turnover",
-        "value": "£2,180,000",
+        "value": "\u00a32,180,000",
         "hint": ""
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 75,
@@ -11730,13 +12238,17 @@
         ],
         "path": ".sections[2].fields[4]",
         "label": "Work away from premises",
-        "value": "Yes — site installation",
+        "value": "Yes \u2014 site installation",
         "hint": ""
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 76,
@@ -11757,7 +12269,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 77,
@@ -11778,7 +12294,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 78,
@@ -11793,13 +12313,17 @@
         ],
         "path": ".sections[3].fields[0]",
         "label": "Claims in last 5 years",
-        "value": "1 claim · £8,400 paid (2023, escape of water)",
+        "value": "1 claim \u00b7 \u00a38,400 paid (2023, escape of water)",
         "hint": ""
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 79,
@@ -11820,7 +12344,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 80,
@@ -11841,7 +12369,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 81,
@@ -11862,7 +12394,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 82,
@@ -11883,7 +12419,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 83,
@@ -11904,7 +12444,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 84,
@@ -11924,7 +12468,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 85,
@@ -11943,7 +12491,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 86,
@@ -11962,7 +12514,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 87,
@@ -11982,7 +12538,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 88,
@@ -12001,7 +12561,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 89,
@@ -12020,7 +12584,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 90,
@@ -12039,7 +12607,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 91,
@@ -12053,12 +12625,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[0].cells[2]",
-        "text": "£3,180,000 total"
+        "text": "\u00a33,180,000 total"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 92,
@@ -12072,12 +12648,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[0].cells[3]",
-        "text": "£1,000"
+        "text": "\u00a31,000"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 93,
@@ -12096,7 +12676,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 94,
@@ -12115,7 +12699,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 95,
@@ -12134,7 +12722,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 96,
@@ -12148,12 +12740,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[1].cells[2]",
-        "text": "£820,000"
+        "text": "\u00a3820,000"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 97,
@@ -12172,7 +12768,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 98,
@@ -12191,7 +12791,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 99,
@@ -12205,12 +12809,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[2].cells[0]",
-        "text": "Employers’ liability"
+        "text": "Employers\u2019 liability"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 100,
@@ -12229,7 +12837,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 101,
@@ -12243,12 +12855,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[2].cells[2]",
-        "text": "£10,000,000"
+        "text": "\u00a310,000,000"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 102,
@@ -12262,12 +12878,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[2].cells[3]",
-        "text": "£0"
+        "text": "\u00a30"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 103,
@@ -12286,7 +12906,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 104,
@@ -12305,7 +12929,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 105,
@@ -12324,7 +12952,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 106,
@@ -12338,12 +12970,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[3].cells[2]",
-        "text": "£5,000,000"
+        "text": "\u00a35,000,000"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 107,
@@ -12357,12 +12993,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[3].cells[3]",
-        "text": "£250"
+        "text": "\u00a3250"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 108,
@@ -12381,7 +13021,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 109,
@@ -12400,7 +13044,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 110,
@@ -12419,7 +13067,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 111,
@@ -12433,12 +13085,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[4].cells[2]",
-        "text": "—"
+        "text": "\u2014"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 112,
@@ -12452,12 +13108,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[4].cells[3]",
-        "text": "—"
+        "text": "\u2014"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 113,
@@ -12476,7 +13136,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 114,
@@ -12497,7 +13161,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 115,
@@ -12516,7 +13184,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 116,
@@ -12535,7 +13207,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 117,
@@ -12554,7 +13230,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 118,
@@ -12573,7 +13253,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 119,
@@ -12592,7 +13276,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 120,
@@ -12606,12 +13294,16 @@
           "ready"
         ],
         "path": ".sections[1].rows[0].cells[1]",
-        "text": "Hot works condition — permit system required"
+        "text": "Hot works condition \u2014 permit system required"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 121,
@@ -12630,7 +13322,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 122,
@@ -12649,7 +13345,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 123,
@@ -12668,7 +13368,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 124,
@@ -12682,12 +13386,16 @@
           "ready"
         ],
         "path": ".sections[1].rows[1].cells[1]",
-        "text": "Minimum security warranty — both locations"
+        "text": "Minimum security warranty \u2014 both locations"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 125,
@@ -12706,7 +13414,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 126,
@@ -12725,7 +13437,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 127,
@@ -12748,7 +13464,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 128,
@@ -12771,7 +13491,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 129,
@@ -12794,7 +13518,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 130,
@@ -12817,7 +13545,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 131,
@@ -13141,7 +13873,7 @@
           "ready"
         ],
         "path": ".sections[1].rows[3].cells[2]",
-        "text": "Employers’ liability traceability"
+        "text": "Employers\u2019 liability traceability"
       },
       "ownerPhase": 9,
       "ownerPlan": null,
@@ -13390,7 +14122,7 @@
           "ready"
         ],
         "path": ".sections[2].rows[0].cells[2]",
-        "text": "Escape of water — contents"
+        "text": "Escape of water \u2014 contents"
       },
       "ownerPhase": 9,
       "ownerPlan": null,
@@ -13428,7 +14160,7 @@
           "ready"
         ],
         "path": ".sections[2].rows[0].cells[4]",
-        "text": "£8,400.00"
+        "text": "\u00a38,400.00"
       },
       "ownerPhase": 9,
       "ownerPlan": null,
@@ -13447,7 +14179,7 @@
           "ready"
         ],
         "path": ".sections[2].rows[0].cells[5]",
-        "text": "£0.00"
+        "text": "\u00a30.00"
       },
       "ownerPhase": 9,
       "ownerPlan": null,
@@ -13475,7 +14207,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 165,
@@ -13498,7 +14234,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 166,
@@ -13521,7 +14261,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 167,
@@ -13544,7 +14288,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 168,
@@ -13567,7 +14315,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 169,
@@ -13590,7 +14342,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 170,
@@ -13613,7 +14369,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 171,
@@ -13636,7 +14396,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 172,
@@ -13659,7 +14423,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 173,
@@ -13682,7 +14450,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 174,
@@ -13705,7 +14477,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 175,
@@ -13728,7 +14504,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 176,
@@ -13751,7 +14531,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 177,
@@ -13774,7 +14558,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 178,
@@ -13797,7 +14585,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 179,
@@ -13820,7 +14612,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 180,
@@ -13843,7 +14639,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 181,
@@ -13866,7 +14666,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 182,
@@ -13889,7 +14693,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 183,
@@ -13912,7 +14720,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 184,
@@ -13935,7 +14747,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 185,
@@ -13958,7 +14774,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 186,
@@ -13981,7 +14801,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 187,
@@ -14004,7 +14828,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 188,
@@ -14027,7 +14855,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 189,
@@ -14050,7 +14882,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 190,
@@ -14073,7 +14909,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 191,
@@ -14096,7 +14936,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 192,
@@ -14119,7 +14963,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 193,
@@ -14142,7 +14990,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 194,
@@ -14165,7 +15017,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 195,
@@ -14188,7 +15044,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 196,
@@ -14211,7 +15071,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 197,
@@ -14234,7 +15098,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 198,
@@ -14257,7 +15125,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 199,
@@ -14280,7 +15152,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 200,
@@ -14303,7 +15179,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 201,
@@ -14326,7 +15206,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 202,
@@ -14349,7 +15233,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 203,
@@ -14371,7 +15259,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 204,
@@ -14390,7 +15282,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 205,
@@ -14409,7 +15305,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 206,
@@ -14428,7 +15328,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 207,
@@ -14447,7 +15351,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 208,
@@ -14466,7 +15374,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 209,
@@ -14485,7 +15397,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 210,
@@ -14504,7 +15420,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 211,
@@ -14523,7 +15443,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 212,
@@ -14542,7 +15466,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 213,
@@ -14561,7 +15489,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 214,
@@ -14580,7 +15512,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 215,
@@ -14594,12 +15530,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[0].cells[3]",
-        "text": "£1,240,000"
+        "text": "\u00a31,240,000"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 216,
@@ -14613,12 +15553,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[0].cells[4]",
-        "text": "£480,000"
+        "text": "\u00a3480,000"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 217,
@@ -14632,12 +15576,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[0].cells[5]",
-        "text": "£220,000"
+        "text": "\u00a3220,000"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 218,
@@ -14651,12 +15599,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[0].cells[6]",
-        "text": "£1,940,000"
+        "text": "\u00a31,940,000"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 219,
@@ -14675,7 +15627,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 220,
@@ -14694,7 +15650,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 221,
@@ -14713,7 +15673,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 222,
@@ -14732,7 +15696,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 223,
@@ -14746,12 +15714,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[1].cells[3]",
-        "text": "£820,000"
+        "text": "\u00a3820,000"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 224,
@@ -14765,12 +15737,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[1].cells[4]",
-        "text": "£310,000"
+        "text": "\u00a3310,000"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 225,
@@ -14784,12 +15760,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[1].cells[5]",
-        "text": "£110,000"
+        "text": "\u00a3110,000"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 226,
@@ -14803,12 +15783,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[1].cells[6]",
-        "text": "£1,240,000"
+        "text": "\u00a31,240,000"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 227,
@@ -14827,7 +15811,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 228,
@@ -14848,7 +15836,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 229,
@@ -14867,7 +15859,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 230,
@@ -14886,7 +15882,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 231,
@@ -14905,7 +15905,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 232,
@@ -14924,7 +15928,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 233,
@@ -14943,7 +15951,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 234,
@@ -14962,7 +15974,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 235,
@@ -14981,7 +15997,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 236,
@@ -14995,12 +16015,16 @@
           "ready"
         ],
         "path": ".sections[1].rows[0].cells[1]",
-        "text": "Zone 2 — medium"
+        "text": "Zone 2 \u2014 medium"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 237,
@@ -15019,7 +16043,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 238,
@@ -15038,7 +16066,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 239,
@@ -15057,7 +16089,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 240,
@@ -15071,12 +16107,16 @@
           "ready"
         ],
         "path": ".sections[1].rows[0].cells[5]",
-        "text": "£1,000"
+        "text": "\u00a31,000"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 241,
@@ -15095,7 +16135,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 242,
@@ -15109,12 +16153,16 @@
           "ready"
         ],
         "path": ".sections[1].rows[1].cells[1]",
-        "text": "Zone 1 — low"
+        "text": "Zone 1 \u2014 low"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 243,
@@ -15133,7 +16181,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 244,
@@ -15152,7 +16204,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 245,
@@ -15171,7 +16227,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 246,
@@ -15185,12 +16245,16 @@
           "ready"
         ],
         "path": ".sections[1].rows[1].cells[5]",
-        "text": "£1,000"
+        "text": "\u00a31,000"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 247,
@@ -15211,7 +16275,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 248,
@@ -15232,9 +16300,10 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending",
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
       "verification": [
-        "08-08: immutable book/limit/version storage, dated property sums and distinct-policy counts verified by 19 unit cases and real SQL projection/publication tests; .local/phase8-08-final. Display remains pending08-10; atomic issue remains08-09."
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
       ]
     },
     {
@@ -15250,15 +16319,16 @@
         ],
         "path": ".sections[2].fields[1]",
         "label": "Aggregate sum insured, S9",
-        "value": "£24,180,000",
+        "value": "\u00a324,180,000",
         "hint": ""
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending",
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
       "verification": [
-        "08-08: immutable book/limit/version storage, dated property sums and distinct-policy counts verified by 19 unit cases and real SQL projection/publication tests; .local/phase8-08-final. Display remains pending08-10; atomic issue remains08-09."
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
       ]
     },
     {
@@ -15274,15 +16344,16 @@
         ],
         "path": ".sections[2].fields[2]",
         "label": "Binder aggregate limit, any district",
-        "value": "£40,000,000",
+        "value": "\u00a340,000,000",
         "hint": ""
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending",
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
       "verification": [
-        "08-08: immutable book/limit/version storage, dated property sums and distinct-policy counts verified by 19 unit cases and real SQL projection/publication tests; .local/phase8-08-final. Display remains pending08-10; atomic issue remains08-09."
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
       ]
     },
     {
@@ -15298,13 +16369,17 @@
         ],
         "path": ".sections[2].fields[3]",
         "label": "Headroom",
-        "value": "£15,820,000",
+        "value": "\u00a315,820,000",
         "hint": ""
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 252,
@@ -15325,7 +16400,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 253,
@@ -15344,7 +16423,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 254,
@@ -15363,7 +16446,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 255,
@@ -15382,7 +16469,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 256,
@@ -15396,12 +16487,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[0].cells[0]",
-        "text": "Employers’ liability"
+        "text": "Employers\u2019 liability"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 257,
@@ -15415,12 +16510,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[0].cells[1]",
-        "text": "£10,000,000"
+        "text": "\u00a310,000,000"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 258,
@@ -15439,7 +16538,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 259,
@@ -15453,12 +16556,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[0].cells[3]",
-        "text": "£0"
+        "text": "\u00a30"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 260,
@@ -15472,12 +16579,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[0].cells[4]",
-        "text": "Yes — statutory"
+        "text": "Yes \u2014 statutory"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 261,
@@ -15496,7 +16607,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 262,
@@ -15510,12 +16625,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[1].cells[1]",
-        "text": "£5,000,000"
+        "text": "\u00a35,000,000"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 263,
@@ -15534,7 +16653,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 264,
@@ -15548,12 +16671,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[1].cells[3]",
-        "text": "£250"
+        "text": "\u00a3250"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 265,
@@ -15572,7 +16699,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 266,
@@ -15591,7 +16722,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 267,
@@ -15605,12 +16740,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[2].cells[1]",
-        "text": "£5,000,000"
+        "text": "\u00a35,000,000"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 268,
@@ -15629,7 +16768,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 269,
@@ -15643,12 +16786,16 @@
           "ready"
         ],
         "path": ".sections[0].rows[2].cells[3]",
-        "text": "£250"
+        "text": "\u00a3250"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 270,
@@ -15667,7 +16814,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 271,
@@ -15682,13 +16833,17 @@
         ],
         "path": ".sections[1]",
         "title": "Employees and wage roll",
-        "note": "Rating basis for employers’ liability",
+        "note": "Rating basis for employers\u2019 liability",
         "actionLabel": ""
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 272,
@@ -15707,7 +16862,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 273,
@@ -15726,7 +16885,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 274,
@@ -15745,7 +16908,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 275,
@@ -15764,7 +16931,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 276,
@@ -15778,12 +16949,16 @@
           "ready"
         ],
         "path": ".sections[1].rows[0].cells[0]",
-        "text": "Manual — fabrication"
+        "text": "Manual \u2014 fabrication"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 277,
@@ -15802,7 +16977,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 278,
@@ -15816,12 +16995,16 @@
           "ready"
         ],
         "path": ".sections[1].rows[0].cells[2]",
-        "text": "£389,000"
+        "text": "\u00a3389,000"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 279,
@@ -15840,7 +17023,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 280,
@@ -15854,12 +17041,16 @@
           "ready"
         ],
         "path": ".sections[1].rows[1].cells[0]",
-        "text": "Manual — machining"
+        "text": "Manual \u2014 machining"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 281,
@@ -15878,7 +17069,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 282,
@@ -15892,12 +17087,16 @@
           "ready"
         ],
         "path": ".sections[1].rows[1].cells[2]",
-        "text": "£142,000"
+        "text": "\u00a3142,000"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 283,
@@ -15911,12 +17110,16 @@
           "ready"
         ],
         "path": ".sections[1].rows[1].cells[3]",
-        "text": "—"
+        "text": "\u2014"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 284,
@@ -15935,7 +17138,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 285,
@@ -15954,7 +17161,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 286,
@@ -15968,12 +17179,16 @@
           "ready"
         ],
         "path": ".sections[1].rows[2].cells[2]",
-        "text": "£111,000"
+        "text": "\u00a3111,000"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 287,
@@ -15987,12 +17202,16 @@
           "ready"
         ],
         "path": ".sections[1].rows[2].cells[3]",
-        "text": "—"
+        "text": "\u2014"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 288,
@@ -16009,12 +17228,16 @@
         "title": "",
         "note": "",
         "actionLabel": "",
-        "text": "Employers’ liability requires a certificate to be issued and displayed, and claims data to be traceable to the employer."
+        "text": "Employers\u2019 liability requires a certificate to be issued and displayed, and claims data to be traceable to the employer."
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 289,
@@ -16035,7 +17258,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 290,
@@ -16056,7 +17283,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 291,
@@ -16071,13 +17302,17 @@
         ],
         "path": ".sections[0].fields[1]",
         "label": "Sum insured",
-        "value": "£820,000",
+        "value": "\u00a3820,000",
         "hint": ""
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 292,
@@ -16098,7 +17333,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 293,
@@ -16119,7 +17358,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 294,
@@ -16140,7 +17383,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 295,
@@ -16155,13 +17402,17 @@
         ],
         "path": ".sections[0].fields[5]",
         "label": "Suppliers extension",
-        "value": "£100,000",
+        "value": "\u00a3100,000",
         "hint": "Two named suppliers"
       },
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 296,
@@ -16183,7 +17434,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     },
     {
       "sourceOccurrence": 297,
@@ -16206,7 +17461,11 @@
       "ownerPhase": 8,
       "ownerPlan": "08-10",
       "disposition": "cc-display-or-source-fallback",
-      "runtimeStatus": "pending"
+      "runtimeStatus": "reviewed-issued-view-or-explicit-boundary",
+      "verification": [
+        "08-10-SOURCE-MAPPING.md",
+        "08-10-REVIEW.md"
+      ]
     }
   ]
 }

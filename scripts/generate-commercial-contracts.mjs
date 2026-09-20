@@ -49,10 +49,20 @@ export async function commercialDefinitions(){
  defs.Cover=obj({responses:ref('CoverResponses'),contractWorks:obj({selected:bool,sumInsured:money,excess:money},[])},[]);
  const hash={type:'string',pattern:'^[a-f0-9]{64}$'};
  const interval=obj({startsAt:instant,endsAt:instant});
- defs.OwnExposureDistrict=obj({district:str(4),interval,ownProposedSumInsured:money,outcome:en('within-capacity','exceeds-capacity','unavailable')});
- defs.InternalExposureDistrict=obj({...defs.OwnExposureDistrict.properties,bookSumInsured:money,policyCount:count,limit:money,headroom:{type:'string',pattern:'^-?(0|[1-9][0-9]{0,12})\\.[0-9]{2}$'},bookId:id,limitVersionId:id,limitHash:hash});
- defs.AgencyExposure=obj({format:{const:'commercial-exposure-1'},audience:{const:'agency'},observedAt:instant,effectiveAt:instant,knownAt:instant,advisory:{const:true},districts:arr(ref('OwnExposureDistrict'))});
- defs.InternalExposure=obj({format:{const:'commercial-exposure-1'},audience:{const:'internal'},observedAt:instant,effectiveAt:instant,knownAt:instant,advisory:{const:true},districts:arr(ref('InternalExposureDistrict'))});
+ const aggregate={type:'string',pattern:'^(0|[1-9][0-9]{0,17})\\.[0-9]{2}$'};
+ const outcome=en('within-capacity','exceeds-capacity','unavailable');
+ defs.OwnExposureDistrict=obj({district:str(4),interval,ownProposedSumInsured:aggregate,outcome});
+ const limitFields={limit:aggregate,headroom:{type:'string',pattern:'^-?(0|[1-9][0-9]{0,17})\\.[0-9]{2}$'},limitVersionId:id,limitHash:hash};
+ const internalBase={...defs.OwnExposureDistrict.properties,bookSumInsured:aggregate,policyCount:{type:'integer',minimum:0},bookId:id};
+ defs.InternalExposureDistrict=obj({...internalBase,...limitFields,blocker:en('commercial-exposure-limit-missing','commercial-exposure-limit-ambiguous','commercial-district-capacity-exceeded','commercial-district-authority-exceeded')},Object.keys(internalBase));
+ defs.InternalExposureDistrict.dependentRequired=Object.fromEntries(Object.keys(limitFields).map(key=>[key,Object.keys(limitFields).filter(x=>x!==key)]));
+ const observed={format:{const:'commercial-exposure-1'},observedAt:instant,effectiveAt:instant,knownAt:instant,advisory:{const:true},
+  coverageState:en('active','scheduled','expired','cancelled','not-covered','proposed','unavailable'),outcome,truncated:bool,
+  source:obj({kind:en('policy-version','quote-revision','draft-revision'),id,hash}),
+  blocker:en('commercial-exposure-proposal-incomplete','commercial-exposure-book-unavailable','commercial-exposure-source-unavailable','commercial-exposure-draft-projection-unavailable')};
+ const observedRequired=['format','audience','observedAt','effectiveAt','knownAt','advisory','districts'];
+ defs.AgencyExposure=obj({...observed,audience:{const:'agency'},districts:arr(ref('OwnExposureDistrict'),1000)},observedRequired);
+ defs.InternalExposure=obj({...observed,audience:{const:'internal'},districts:arr(ref('InternalExposureDistrict'),1000)},observedRequired);
  defs.Exposure={oneOf:[ref('AgencyExposure'),ref('InternalExposure')]};
  defs.IncidentSubject={oneOf:[obj({kind:{const:'property'},locationId:id,damageDescription:str(4000)}),obj({kind:{const:'liability'},section:en('employers-liability','public-liability','products-liability'),locationId:id,employeeOccupation:str(200),thirdPartyDescription:str(2000)},['kind','section'])]};
  defs.IncidentPayload=obj({format:{const:'commercial-incident-1'},policyId:id,versionId:id,sourceContentHash:hash,occurredAt:instant,subject:ref('IncidentSubject')});
