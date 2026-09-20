@@ -76,7 +76,7 @@ public sealed partial class UnderwritingRuntimeTests
                 Assert.True((bool)view["applicable"]); Assert.Equal(result.GrossPayable.ToString("F2", System.Globalization.CultureInfo.InvariantCulture), view["grossPayable"]);
                 var assessment = await model.AssessmentAsync(f.Actor, created.ResourceId);
                 var capabilities = JsonSerializer.SerializeToElement(assessment["capabilities"]);
-                Assert.False(capabilities.GetProperty("canIssue").GetBoolean()); Assert.False(capabilities.GetProperty("canSubmit").GetBoolean());
+                Assert.False(capabilities.GetProperty("canIssue").GetBoolean()); Assert.True(capabilities.GetProperty("canSubmit").GetBoolean());
                 var saved = await quotes.GetAsync(f.Actor, created.ResourceId);
                 await CheckUnderwritingApi(db, password, created.ResourceId, before.Revision.Id, result.Id, saved.Quote.RowVersion, true, result.AnnualPremium.ToString("F2", System.Globalization.CultureInfo.InvariantCulture));
             }

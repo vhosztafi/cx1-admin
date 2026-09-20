@@ -1,4 +1,4 @@
-import { quoteFetch, validQuoteEtag, type PendingQuoteCommand, type QuoteObject, type QuoteProposal } from './quotes.ts';
+import { QuoteError, validQuoteEtag, type PendingQuoteCommand, type QuoteObject, type QuoteProposal } from './quotes.ts';
 import { underwritingWrite, validUnderwritingId } from './underwriting-decisions.ts';
 import type { QuotationTerms } from './underwriting-api.ts';
 
@@ -13,7 +13,8 @@ export function quotedIssueAmount(terms: Pick<QuotationTerms, 'rating' | 'settle
   return `${amount / BigInt(100)}.${String(amount % BigInt(100)).padStart(2, '0')}`;
 }
 
-export type PolicyIssueReceipt = { policyId: string; policyReference: string; quoteId: string; quoteEtag: string; termId: string; versionId: string; transactionId: string; obligationId: string; documentRequestIds: string[] };
+export type PolicyIssueExpectation = { product: 'motor-trade' } | { product: 'commercial-combined'; employersSelected: boolean };
+export type PolicyIssueReceipt = { policyId: string; policyReference: string; quoteId: string; quoteEtag: string; termId: string; versionId: string; transactionId: string; obligationId: string; documentRequestIds: string[]; commercialExposureDecisionId?: string };
 export type IssuedPolicySnapshot = Omit<QuoteProposal, 'termIntent'> & {
   insured: QuoteObject; risk: QuoteObject; cover: QuoteObject;
   term: { kind: string; startsAt: string; endsAt: string; timeZone: string };
@@ -47,13 +48,29 @@ export function issuePolicyCommand(quoteId: string, etag: string, body: Record<s
     throw new Error('Review the current accepted terms and enter an issue reason of up to 1,000 characters.');
   return underwritingWrite(quoteId, `/api/v1/quotes/${quoteId}/issue`, etag, body);
 }
-export async function sendPolicyIssue(command: PendingQuoteCommand, csrf: string): Promise<PolicyIssueReceipt> {
+export async function sendPolicyIssue(command: PendingQuoteCommand, csrf: string, expected: PolicyIssueExpectation = { product: 'motor-trade' }): Promise<PolicyIssueReceipt> {
   if (!csrf || command.method !== 'POST' || command.url !== `/api/v1/quotes/${command.expectedId}/issue`) throw new Error('The issue command cannot be confirmed.');
-  const { data, etag } = await quoteFetch<PolicyIssueReceipt>(command.url, { method: command.method, body: command.body,
+  const response = await fetch(command.url, { method: command.method, body: command.body, cache: 'no-store', signal: AbortSignal.timeout(15_000),
     headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf, 'Idempotency-Key': command.key, 'If-Match': command.etag! } });
+  if (!response.ok) {
+    if (response.status === 409) {
+      const problem = await response.json().catch(() => null);
+      if (['commercial-exposure-busy', 'command-busy'].includes(problem?.code))
+        throw new Error('Another issue action is in progress. Retry this same action to confirm its saved result.');
+      if (expected.product === 'commercial-combined' && ['commercial-exposure-limit-missing', 'commercial-exposure-limit-ambiguous', 'commercial-district-capacity-exceeded', 'commercial-district-authority-exceeded'].includes(problem?.code)) {
+        const error = new QuoteError(409);
+        error.message = 'The policy was not issued: district capacity or authority is unavailable for part of the cover period. Review the book limits and quotation before trying again.';
+        throw error;
+      }
+    }
+    throw new QuoteError(response.status);
+  }
+  const data = await response.json() as PolicyIssueReceipt, etag = response.headers.get('ETag');
+  const commercial = expected.product === 'commercial-combined', count = commercial && !expected.employersSelected ? 2 : 3;
   if (!data || ['policyId', 'termId', 'versionId', 'transactionId', 'obligationId'].some(x => typeof data[x as keyof PolicyIssueReceipt] !== 'string' || !validUnderwritingId(data[x as keyof PolicyIssueReceipt] as string)) ||
-      data.quoteId?.toLowerCase() !== command.expectedId?.toLowerCase() || !/^PL-MT-\d{10}$/.test(data.policyReference) || !validQuoteEtag(etag) || data.quoteEtag !== etag ||
-      !Array.isArray(data.documentRequestIds) || data.documentRequestIds.length !== 3 || data.documentRequestIds.some(x => !validUnderwritingId(x)) || new Set(data.documentRequestIds).size !== 3)
+      data.quoteId?.toLowerCase() !== command.expectedId?.toLowerCase() || !(commercial ? /^PL-CC-\d{10}$/ : /^PL-MT-\d{10}$/).test(data.policyReference) || !validQuoteEtag(etag) || data.quoteEtag !== etag ||
+      (commercial ? !data.commercialExposureDecisionId || !validUnderwritingId(data.commercialExposureDecisionId) : data.commercialExposureDecisionId !== undefined) ||
+      !Array.isArray(data.documentRequestIds) || data.documentRequestIds.length !== count || data.documentRequestIds.some(x => !validUnderwritingId(x)) || new Set(data.documentRequestIds).size !== count)
     throw new Error('The issued policy could not be confirmed. Retry this same action to recover its saved result.');
   return data;
 }

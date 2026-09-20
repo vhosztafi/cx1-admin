@@ -1,5 +1,6 @@
 using System.Text.Json;
 using BackOffice.Application;
+using BackOffice.Application.Policies;
 using BackOffice.Application.Underwriting;
 using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Platform;
@@ -23,7 +24,9 @@ public sealed class QuoteIssueService(IDbContextFactory<BackOfficeDbContext> fac
         return commands.ExecuteAuthorizedAsync(new(actor.UserId, $"/api/v1/quotes/{quoteId:D}/issue", key, correlationId),
             new { quoteId, version = Convert.ToBase64String(version), input }, "policy.issued",
             async (db, ct) => {
+                var commercialFence = await CommercialExposureLock.ForQuoteAsync(db, quoteId, ct);
                 held = await UnderwritingDecisionContext.Hold(db, actor, quoteId, input.CycleId, "policy-issue-within-authority", time.GetUtcNow(), true, ct);
+                if (held.Input.IsCommercial && !commercialFence) throw new QuoteOperationException(409, "commercial-exposure-context-changed");
                 // Current multidimensional authority precedes receipt lookup, including
                 // replay after the quote has already been bound.
                 grant = await Authority(db, held, time.GetUtcNow(), ct);
@@ -33,17 +36,22 @@ public sealed class QuoteIssueService(IDbContextFactory<BackOfficeDbContext> fac
                 if (held.Owned.Quote.State != "accepted" || held.Owned.Quote.BoundPolicyId is not null ||
                     await db.Set<Policy>().AnyAsync(x => x.SourceQuoteId == quoteId, ct)) throw new QuoteOperationException(409, "quote-issue-state");
                 await Accepted(db, held, input, now, ct);
-                var templates = await PolicyIssueWriter.Templates(db, held.Cycle.ProductId, now, ct);
-                var result = await PolicyIssueWriter.Write(db, held, grant!, input.Reason, templates, now, correlationId, ct);
+                var exposure = held.Input.IsCommercial ? await CommercialExposureService.AssessIssue(db, held, now, ct) : null;
+                if (exposure is not null) grant = exposure.Grant;
+                var kinds = held.Input.IsCommercial ? CommercialDocumentSelection.Kinds(held.Input.Commercial!.Rating.EmployersSelected) : null;
+                var templates = await PolicyIssueWriter.Templates(db, held.Cycle.ProductId, now, ct, kinds);
+                var result = await PolicyIssueWriter.Write(db, held, grant!, input.Reason, templates, now, correlationId, ct, exposure);
                 var quote = held.Owned.Quote; if (db.Entry(quote).State == EntityState.Detached) db.Attach(quote);
                 quote.BoundPolicyId = result.Policy.Id; quote.State = "bound";
                 quote.CaptureClosedAt ??= now; quote.CaptureClosedReason = "policy-issued";
                 db.Add(new ClientActivity { ClientId = quote.ClientId, RelationshipId = quote.RelationshipId, RecordKind = "quote", RecordId = quote.Id,
                     EventType = "policy.issued", ActorId = actor.UserId, CreatedBy = actor.UserId, CreatedAt = now, OccurredAt = now });
                 var receipt = await held.Receipt(db, result.Policy.Id, 201, "policy.issued", now, ct);
-                return receipt with { Body = JsonSerializer.Serialize(new { policyId = result.Policy.Id, policyReference = result.Policy.Reference, quoteId,
+                var body = JsonSerializer.SerializeToNode(new { policyId = result.Policy.Id, policyReference = result.Policy.Reference, quoteId,
                     quoteEtag = receipt.Etag, termId = result.Term.Id, versionId = result.Version.Id, transactionId = result.Transaction.Id,
-                    obligationId = result.Obligation.Id, documentRequestIds = result.Documents }, QuoteRatingService.Json) };
+                    obligationId = result.Obligation.Id, documentRequestIds = result.Documents }, QuoteRatingService.Json)!.AsObject();
+                if (result.ExposureDecisionId is Guid decisionId) body["commercialExposureDecisionId"] = decisionId;
+                return receipt with { Body = body.ToJsonString(QuoteRatingService.Json) };
             }, token);
     }
 

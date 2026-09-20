@@ -10,22 +10,29 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackOffice.Infrastructure.Policies;
 
-internal sealed record IssuedPolicy(Policy Policy, PolicyTerm Term, PolicyVersion Version, PolicyTransaction Transaction, IssueFinancialObligation Obligation, Guid[] Documents);
+internal sealed record IssuedPolicy(Policy Policy, PolicyTerm Term, PolicyVersion Version, PolicyTransaction Transaction, IssueFinancialObligation Obligation, Guid[] Documents, Guid? ExposureDecisionId = null);
 
 internal static class PolicyIssueWriter
 {
     internal static readonly string[] DocumentKinds = ["policy-schedule", "policy-certificate", "policy-statement"];
-    internal static async Task<TemplateVersion[]> Templates(BackOfficeDbContext db, Guid productId, DateTimeOffset now, CancellationToken token)
+    internal static async Task<TemplateVersion[]> Templates(BackOfficeDbContext db, Guid productId, DateTimeOffset now, CancellationToken token, string[]? documentKinds = null)
     {
         var templates = await db.Set<TemplateVersion>().FromSqlInterpolated($"SELECT * FROM TemplateVersion WITH(HOLDLOCK) WHERE ProductId={productId}").AsNoTracking().ToArrayAsync(token);
-        return DocumentKinds.Select(kind => templates.Where(x => x.Kind == kind && x.State == "published" && x.EffectiveFrom <= now && now < x.EffectiveTo)
+        return (documentKinds ?? DocumentKinds).Select(kind => templates.Where(x => x.Kind == kind && x.State == "published" && x.EffectiveFrom <= now && now < x.EffectiveTo)
             .OrderByDescending(x => x.Version).ThenBy(x => x.Id).FirstOrDefault() ?? throw new QuoteOperationException(409, "policy-template-unavailable")).ToArray();
     }
 
     internal static async Task<IssuedPolicy> Write(BackOfficeDbContext db, UnderwritingDecisionContext held, EffectiveUnderwritingGrant grant,
-        string reason, TemplateVersion[] templates, DateTimeOffset now, Guid correlationId, CancellationToken token)
+        string reason, TemplateVersion[] templates, DateTimeOffset now, Guid correlationId, CancellationToken token, CommercialIssuePlan? commercialPlan = null)
     {
         if (db.Database.CurrentTransaction is null) throw new InvalidOperationException("Policy issue requires one held transaction.");
+        if (held.Input.IsCommercial != (commercialPlan is not null)) throw new InvalidOperationException("Commercial issue requires its held capacity assessment.");
+        if (held.Input.IsCommercial)
+        {
+            await CommercialExposureLock.RequireAsync(db, token);
+            if (!templates.Select(x => x.Kind).SequenceEqual(CommercialDocumentSelection.Kinds(held.Input.Commercial!.Rating.EmployersSelected)))
+                throw new InvalidOperationException("Commercial documents must match selected cover.");
+        }
         var quote = held.Owned.Quote; var cycle = held.Cycle; var rating = held.Rating!; var actorId = held.Owned.Scope.Actor.UserId;
         using var commercial = JsonDocument.Parse(held.Eligible.Capture.Terms.Snapshot); var root = commercial.RootElement;
         var share = root.GetProperty("commercialTerms").GetProperty("feeSharing").GetString() == "agreed-split" ? root.GetProperty("commercialTerms").GetProperty("feeShareBasisPoints").GetInt32() : 0;
@@ -34,19 +41,25 @@ internal static class PolicyIssueWriter
             root.GetProperty("settlement").GetProperty("commissionSettlement").GetString()!, cycle.StartsAt, cycle.EndsAt));
         var conditions = await UnderwritingEvidenceService.ActiveConditions(db, cycle.Id, token);
         var snapshot = PolicyIssueSnapshot.Create(held, grant.Version.Id, posting, collector, share, conditions);
-        var policy = new Policy { SourceQuoteId = quote.Id, AgencyId = quote.AgencyId, ClientId = quote.ClientId, RelationshipId = quote.RelationshipId,
-            ProductId = quote.ProductId, CreatedAt = now, UpdatedAt = now, CreatedBy = actorId };
+        var policy = new Policy { Id = commercialPlan?.PolicyId ?? Guid.NewGuid(), SourceQuoteId = quote.Id, AgencyId = quote.AgencyId, ClientId = quote.ClientId, RelationshipId = quote.RelationshipId,
+            ProductId = quote.ProductId, ReferencePrefix = held.Input.IsCommercial ? "PL-CC-" : "PL-MT-", CreatedAt = now, UpdatedAt = now, CreatedBy = actorId };
         db.Add(policy); await db.SaveChangesAsync(token);
-        var term = new PolicyTerm { PolicyId = policy.Id, Number = 1, StartsAt = cycle.StartsAt, EndsAt = cycle.EndsAt, LocalTermIntentJson = held.Revision.TermIntentJson,
+        var term = new PolicyTerm { Id = commercialPlan?.TermId ?? Guid.NewGuid(), PolicyId = policy.Id, Number = 1, StartsAt = cycle.StartsAt, EndsAt = cycle.EndsAt, LocalTermIntentJson = held.Revision.TermIntentJson,
             ProductId = quote.ProductId, ProductVersionId = cycle.ProductVersionId, CreatedAt = now, UpdatedAt = now, CreatedBy = actorId };
         db.Add(term); await db.SaveChangesAsync(token);
         var transaction = new PolicyTransaction { PolicyId = policy.Id, TermId = term.Id, SourceQuoteId = quote.Id, CycleId = cycle.Id, QuoteRevisionId = held.Revision.Id,
             RatingId = rating.Id, AcceptanceId = cycle.CurrentAcceptanceId!.Value, Sequence = 1, EffectiveAt = cycle.StartsAt, ProcessedAt = now, Reason = reason,
             OperationKey = "policy-issue/" + quote.Id.ToString("N"), CreatedAt = now, CreatedBy = actorId };
         db.Add(transaction); await db.SaveChangesAsync(token);
-        var version = new PolicyVersion { PolicyId = policy.Id, TermId = term.Id, TransactionId = transaction.Id, Sequence = 1, SliceOrdinal = 1, SnapshotJson = snapshot,
+        var version = new PolicyVersion { Id = commercialPlan?.VersionId ?? Guid.NewGuid(), PolicyId = policy.Id, TermId = term.Id, TransactionId = transaction.Id, Sequence = 1, SliceOrdinal = 1, SnapshotJson = snapshot,
             ContentHash = Hash(snapshot), EffectiveAt = term.StartsAt, ProcessedAt = now, CreatedAt = now, CreatedBy = actorId };
         db.Add(version); await db.SaveChangesAsync(token); policy.CurrentTermId = term.Id; term.CurrentVersionId = version.Id;
+        Guid? exposureDecisionId = null;
+        if (commercialPlan is not null)
+        {
+            var exposure = await CommercialExposureProjection.AppendAsync(db, version.Id, cycle.BinderVersionId, actorId, token);
+            exposureDecisionId = await CommercialExposureService.Record(db, exposure, commercialPlan, actorId, token);
+        }
         using var risk = JsonDocument.Parse(snapshot);
         foreach (var vehicle in risk.RootElement.GetProperty("risk").TryGetProperty("vehicles", out var vehicles) ? vehicles.EnumerateArray().ToArray() : [])
             db.Add(new PolicyRegistration { PolicyId = policy.Id, VersionId = version.Id, RiskItemId = vehicle.GetProperty("id").GetGuid(),
@@ -84,7 +97,7 @@ internal static class PolicyIssueWriter
                 Payload = request.PayloadJson, CreatedAt = now, NextAttemptAt = now, CorrelationId = correlationId };
             db.Add(work); await db.SaveChangesAsync(token); request.WorkId = work.Id; db.Add(request); await db.SaveChangesAsync(token); documents.Add(request.Id);
         }
-        return new(policy, term, version, transaction, obligation, documents.ToArray());
+        return new(policy, term, version, transaction, obligation, documents.ToArray(), exposureDecisionId);
     }
     private static byte[] Hash(string json) => SHA256.HashData(Encoding.UTF8.GetBytes(json));
     internal static string Money(decimal amount) => amount.ToString("0.00", CultureInfo.InvariantCulture);

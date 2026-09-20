@@ -24,6 +24,15 @@ public static class CommercialExposureRules
 {
     public const decimal MaximumLocationProperty = 3m * QuoteRatingRules.MaximumMoney;
 
+    public static CommercialExposureAssessment WithinAuthority(CommercialExposureAssessment assessment, decimal actorLimit, decimal binderLimit)
+    {
+        if (actorLimit <= 0 || binderLimit <= 0 || actorLimit > QuoteRatingRules.MaximumMoney || binderLimit > QuoteRatingRules.MaximumMoney ||
+            decimal.Round(actorLimit, 2) != actorLimit || decimal.Round(binderLimit, 2) != binderLimit) throw Invalid();
+        var ceiling = Math.Min(actorLimit, binderLimit);
+        return new(assessment.Intervals.Select(x => x.Blocker is null && x.ResultingPropertySum > ceiling
+            ? x with { Blocker = "commercial-district-authority-exceeded" } : x).ToArray());
+    }
+
     public static string? NormalizeDistrict(string input)
     {
         ArgumentNullException.ThrowIfNull(input);

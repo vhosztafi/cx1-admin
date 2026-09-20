@@ -44,6 +44,11 @@ public sealed partial class BackOfficeDbContext
         location.HasOne<CommercialExposureVersion>().WithMany().HasForeignKey(x => x.ExposureVersionId).OnDelete(DeleteBehavior.NoAction);
         Check(location, "District", CommercialDistrictCheck("[District]"));
         Check(location, "Property", "[RiskItemId]<>'00000000-0000-0000-0000-000000000000' AND [SumInsured] BETWEEN 0 AND 29999999999999.97");
+        var decision = Record<CommercialExposureIssueDecision>(model, "CommercialExposureIssueDecision");
+        decision.ToTable(t => t.UseSqlOutputClause(false)); Json(decision, "DecisionJson"); Hash(decision, "DecisionHash");
+        decision.HasIndex(x => x.ExposureVersionId).IsUnique();
+        decision.HasOne<CommercialExposureVersion>().WithMany().HasForeignKey(x => x.ExposureVersionId).OnDelete(DeleteBehavior.NoAction);
+        Check(decision, "Provenance", "[CreatedBy] IS NOT NULL AND [CreatedAt]=[AssessedAt] AND [DecisionHash]<>0x0000000000000000000000000000000000000000000000000000000000000000");
     }
 
     private static string CommercialDistrictCheck(string value) => $"({value}='GIR' OR {value} LIKE '[A-PR-UWYZ][0-9]' OR {value} LIKE '[A-PR-UWYZ][0-9][0-9]' OR {value} LIKE '[A-PR-UWYZ][A-HK-Y][0-9]' OR {value} LIKE '[A-PR-UWYZ][A-HK-Y][0-9][0-9]' OR {value} LIKE '[A-PR-UWYZ][0-9][A-HJKPSTUW]' OR {value} LIKE '[A-PR-UWYZ][A-HK-Y][0-9][ABEHMNPRVWXY]') AND DATALENGTH({value})=2*LEN({value})";

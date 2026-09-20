@@ -6,13 +6,13 @@ import {chromium} from 'playwright';
 import {underwritingResponseValidator} from './validate-underwriting-response.mjs';
 
 const stage = process.argv.includes('--stage') ? process.argv[process.argv.indexOf('--stage') + 1] : 'full';
-assert.ok(['business-loss','full','rating','underwriting','terms'].includes(stage), 'Choose an implemented acceptance stage.');
-const plan = stage==='terms'?'07':stage==='underwriting'?'06':stage==='rating'?'05':stage==='full'?'04':'03';
+assert.ok(['business-loss','full','rating','underwriting','terms','issue'].includes(stage), 'Choose an implemented acceptance stage.');
+const plan = stage==='issue'?'09':stage==='terms'?'07':stage==='underwriting'?'06':stage==='rating'?'05':stage==='full'?'04':'03';
 if (!process.argv.includes('--worker')) {
   const output = `.local/phase8-${plan}-browser-${randomUUID()}`;
   await mkdir(output, {recursive: true});
   const child = spawn('dotnet', ['test', 'backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj', '--no-restore',
-    ...(process.argv.includes('--no-build') ? ['--no-build'] : []), '--filter', `FullyQualifiedName~${stage==='terms'?'RealSqlCommercialTermsBrowser':stage==='underwriting'?'RealSqlCommercialReferralBrowser':stage==='rating'?'RealSqlCommercialRatingBrowser':`RealSqlCommercialCapture${stage==='full'?'Full':'BusinessLoss'}Browser`}`,
+    ...(process.argv.includes('--no-build') ? ['--no-build'] : []), '--filter', `FullyQualifiedName~${stage==='issue'?'RealSqlCommercialIssueBrowser':stage==='terms'?'RealSqlCommercialTermsBrowser':stage==='underwriting'?'RealSqlCommercialReferralBrowser':stage==='rating'?'RealSqlCommercialRatingBrowser':`RealSqlCommercialCapture${stage==='full'?'Full':'BusinessLoss'}Browser`}`,
     '--logger', 'trx;LogFileName=sql.trx', '--results-directory', output], {stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true});
   let log = ''; child.stdout.on('data', x => log += x); child.stderr.on('data', x => log += x);
   const code = await new Promise((resolve, reject) => {child.on('error', reject); child.on('close', resolve);});
@@ -119,7 +119,7 @@ if (!process.argv.includes('--worker')) {
       await field('Location postcode').fill(index===2?'S4 7AA':'S9 2QT');await field('Location country').selectOption('GB');
       await field('Location use').selectOption('Warehouse and storage');await field('Sprinklers present').selectOption('no');await field('Declared flood zone').selectOption('1');
       await field('Buildings sum insured').fill('100000.011');assert.equal(await button('Apply location details').isDisabled(),true);
-      await field('Buildings sum insured').fill(stage==='terms'&&index===1?'3000000.00':index===2?'200000.00':'100000.01');await field('Contents sum insured').fill('25000.02');await field('Stock sum insured').fill('5000.03');await field('Supplied maximum loss estimate').fill('120000.00');
+      await field('Buildings sum insured').fill((stage==='terms'||stage==='issue')&&index===1?'3000000.00':index===2?'200000.00':'100000.01');await field('Contents sum insured').fill('25000.02');await field('Stock sum insured').fill('5000.03');await field('Supplied maximum loss estimate').fill('120000.00');
       for(const q of locationQuestions)await answer(q);
       await button('Apply location details').click();const current=await save();const row=current.view.proposal.risk.locations.at(-1);
       checkAnswers(current.view.proposal,locationQuestions,row);return row;
@@ -266,8 +266,8 @@ if (!process.argv.includes('--worker')) {
     assert.equal(attempts.length, 3); assert.deepEqual(attempts[0], attempts[1]); assert.deepEqual(attempts[0], attempts[2]); await page.unroute('**' + savePath);
     assert.equal((await read()).view.proposal.insured.tradingName, 'Confirmed exact retry');
     checks.push('stale save retains input, read-only comparison and explicit discard; committed lost response and intervening denial retain identical body/key/ETag and require current access recovery');
-    if(stage==='full'||stage==='rating'||stage==='underwriting'||stage==='terms') await fullCapture();
-    if(stage==='rating'||stage==='underwriting'||stage==='terms') {
+    if(stage==='full'||stage==='rating'||stage==='underwriting'||stage==='terms'||stage==='issue') await fullCapture();
+    if(stage==='rating'||stage==='underwriting'||stage==='terms'||stage==='issue') {
       await page.goto(f.webOrigin+`/quotes/${quoteId}`);
       const panel = page.locator('.panel').filter({has:page.getByRole('heading',{name:'Commercial Combined rating',exact:true})});
       await panel.getByRole('button',{name:'Rate quote',exact:true}).click();
@@ -298,7 +298,7 @@ if (!process.argv.includes('--worker')) {
       await page.setViewportSize({width:1480,height:980});
       await writeFile(f.output+'/rating.json',JSON.stringify(price,null,2));await writeFile(f.output+'/rating-assessment.json',JSON.stringify(assessed,null,2));
       checks.push('CC durable rating requested from actual UI, actual API schemas validated, saved premium/factors/multiplier read back and displayed after reload at desktop/390px, no terms/issue authority fabricated');
-      if(stage==='terms') { const {commercialTermsJourney}=await import('./verify-commercial-underwriting-browser.mjs'); await commercialTermsJourney({page,f,quoteId,checks}); }
+      if(stage==='terms'||stage==='issue') { const {commercialTermsJourney}=await import('./verify-commercial-underwriting-browser.mjs'); await commercialTermsJourney({page,f,quoteId,checks}); if(stage==='issue') { const {commercialIssueJourney}=await import('./verify-commercial-issue-browser.mjs'); await commercialIssueJourney({page,f,quoteId,checks}); } }
       if(stage==='underwriting') {
         await page.getByRole('tab',{name:'Underwriting',exact:true}).click();
         await page.getByRole('heading',{name:'Supporting information',exact:true}).waitFor();

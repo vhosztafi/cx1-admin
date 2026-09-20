@@ -13,6 +13,7 @@ public static class CommercialExposureSeed
     public static async Task SeedAsync(BackOfficeDbContext db, CancellationToken token = default)
     {
         if (db.Database.CurrentTransaction is null) throw new InvalidOperationException("Exposure initialization requires a held transaction.");
+        await CommercialExposureLock.AcquireAsync(db, token);
         var product = await db.Set<Product>().SingleAsync(x => x.Code == CommercialCaptureRules.ProductCode, token);
         var binders = await db.Set<BinderVersion>().Where(x => x.ProductId == product.Id && x.State == "published").OrderBy(x => x.EffectiveFrom).ThenBy(x => x.Id).ToArrayAsync(token);
         var actor = await db.Set<StaffUser>().SingleAsync(x => x.Email == "system-admin@cover.example", token);

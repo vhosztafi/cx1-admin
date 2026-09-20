@@ -8096,48 +8096,118 @@
         "sections": {
           "type": "array",
           "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "id": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "code": {
-                "type": "string",
-                "enum": [
-                  "property",
-                  "business-interruption",
-                  "employers-liability",
-                  "public-liability",
-                  "products-liability",
-                  "goods-in-transit",
-                  "money",
-                  "glass",
-                  "contract-works"
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "code": {
+                    "type": "string",
+                    "enum": [
+                      "property",
+                      "business-interruption",
+                      "employers-liability",
+                      "public-liability",
+                      "products-liability",
+                      "goods-in-transit",
+                      "money",
+                      "contract-works",
+                      "unspecified-suppliers",
+                      "named-suppliers",
+                      "named-customers",
+                      "denial-of-access",
+                      "loss-of-attraction"
+                    ]
+                  },
+                  "limit": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+                  },
+                  "excess": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+                  },
+                  "targetIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "maxItems": 100,
+                    "uniqueItems": true
+                  }
+                },
+                "required": [
+                  "id",
+                  "code",
+                  "limit",
+                  "targetIds"
+                ],
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "code": {
+                          "const": "property"
+                        }
+                      },
+                      "required": [
+                        "code"
+                      ]
+                    },
+                    "then": {
+                      "properties": {
+                        "targetIds": {
+                          "type": "array",
+                          "minItems": 1,
+                          "maxItems": 1
+                        }
+                      }
+                    }
+                  }
                 ]
               },
-              "limit": {
-                "type": "string",
-                "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
-              },
-              "excess": {
-                "type": "string",
-                "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
-              },
-              "basis": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 200
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "code": {
+                    "const": "glass"
+                  },
+                  "basis": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "targetIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "maxItems": 100,
+                    "uniqueItems": true,
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "id",
+                  "code",
+                  "basis",
+                  "targetIds"
+                ]
               }
-            },
-            "required": [
-              "id",
-              "code",
-              "limit"
             ]
           },
-          "maxItems": 30,
+          "maxItems": 120,
           "minItems": 1
         },
         "endorsements": {

@@ -77,6 +77,13 @@ public sealed class PolicyReadService(IDbContextFactory<BackOfficeDbContext> fac
                 retainedFeeIncome = Money(obligation.Fee - obligation.FeeShare), brokerRemunerationPayable = Money(obligation.BrokerPayable),
                 lines = lines.Select(x => new { accountCode = x.AccountCode, side = x.Debit > 0 ? "debit" : "credit", amount = Money(x.Debit + x.Credit), componentCode = x.ComponentCode }).ToArray() },
             ["documentRequests"] = documents.Select(x => new { id = x.Id, versionId = x.VersionId, templateVersionId = x.TemplateVersionId, kind = x.Kind, state = x.State }).ToArray() };
+        if (((JsonElement)result["snapshot"]).GetProperty("productCode").GetString() == "commercial-combined")
+        {
+            var decisionId = await (from exposure in db.Set<CommercialExposureVersion>().AsNoTracking()
+                join decision in db.Set<CommercialExposureIssueDecision>().AsNoTracking() on exposure.Id equals decision.ExposureVersionId
+                where exposure.VersionId == version.Id select decision.Id).SingleAsync(token);
+            result["commercialExposureDecisionId"] = decisionId;
+        }
         if(issued.Kind=="cancellation")
         {
             var decision=await db.Set<CancellationIssueDecision>().AsNoTracking().SingleAsync(x=>x.Id==issued.CancellationIssueDecisionId && x.PolicyId==policy.Id,token);

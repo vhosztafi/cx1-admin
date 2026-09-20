@@ -33,6 +33,7 @@ public static class DemoDatabase
         if (includeCommercialUnderwriting && (!includeUnderwriting || !includeCommercialCapture || !includeQuoteCapture))
             throw new ArgumentException("Commercial underwriting initialization requires its capture and shared underwriting dependencies.");
         await using var transaction = await db.Database.BeginTransactionAsync(IsolationLevel.Serializable,cancellationToken);
+        if (includeCommercialUnderwriting) await Policies.CommercialExposureLock.AcquireAsync(db, cancellationToken);
         // Serialize repeat startup seeds; failure aborts rather than partially applying.
         await db.Database.ExecuteSqlRawAsync("DECLARE @result int; EXEC @result = sys.sp_getapplock @Resource = N'CoverMGA.FoundationSeed', @LockMode = 'Exclusive', @LockOwner = 'Transaction', @LockTimeout = 10000; IF @result < 0 THROW 51000, 'Foundation seed lock unavailable.', 1;",cancellationToken);
         var team = await db.Set<Team>().SingleOrDefaultAsync(x => x.Name == "Demo operations",cancellationToken);

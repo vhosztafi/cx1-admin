@@ -4,6 +4,8 @@ using BackOffice.Application.Quotes;
 using BackOffice.Application.Underwriting;
 using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Quotes;
+using BackOffice.Infrastructure.Policies;
+using BackOffice.Application.Policies;
 using Microsoft.EntityFrameworkCore;
 
 namespace BackOffice.Infrastructure.Underwriting;
@@ -102,7 +104,7 @@ public sealed partial class QuoteUnderwritingReadModel
             }
             if (grants.Count == 0) authorityViews.Add(View(null)); else foreach (var grant in grants) authorityViews.Add(View(grant));
         }
-        var canPrepareTerms = false; var canSend = false; var canAccept = false; QuoteTermsVersion? currentTerms = null;
+        var canPrepareTerms = false; var canSend = false; var canAccept = false; var canIssue = false; QuoteTermsVersion? currentTerms = null;
         var acceptanceCurrent = false;
         if (current && cycle is not null && eligible is not null && rating is { Outcome: "rated" } && rating.ExpiresAt > now && quote.State is not ("draft" or "bound" or "withdrawn"))
         {
@@ -124,12 +126,23 @@ public sealed partial class QuoteUnderwritingReadModel
                         canAccept = recipients.SequenceEqual(actual) && owned.Scope.Actor.HasCapability("quote-acceptance") && proofs.Any(x => x.Code == "acceptance-proof" && x.TermsVersionId == termsId && x.Satisfied);
                         var assurance = await UnderwritingEvidenceService.Assurance(db, cycle, revision, token);
                         acceptanceCurrent = recipients.SequenceEqual(actual) && await db.Set<QuoteAcceptance>().AnyAsync(x => x.Id == cycle.CurrentAcceptanceId && x.TermsVersionId == termsId && x.DeliveryId == delivery.Id && x.TermsHash == currentTerms.TermsHash && x.AssuranceHash == assurance, token);
+                        if (acceptanceCurrent && quote.State == "accepted" && owned.Scope.Actor.HasCapability("policy-issue-within-authority") &&
+                            !await db.Set<Policy>().AnyAsync(x => x.SourceQuoteId == quote.Id, token))
+                        {
+                            await QuoteIssueService.Authority(db, held, now, token);
+                            await QuoteIssueService.Accepted(db, held, new(cycle.Id, rating.Id, cycle.CurrentAcceptanceId!.Value, currentTerms.TermsHash, assurance, "Read current issue prerequisites"), now, token);
+                            await PolicyIssueWriter.Templates(db, cycle.ProductId, now, token, CommercialDocumentSelection.Kinds(held.Input.Commercial!.Rating.EmployersSelected));
+                            if (!await db.Set<CommercialExposureBinder>().AnyAsync(x => x.BinderVersionId == cycle.BinderVersionId, token))
+                                throw new QuoteOperationException(409, "commercial-exposure-book-unavailable");
+                            // This is permission to review the issue action. The
+                            // write fence rechecks all dated capacity before issue.
+                            canIssue = true;
+                        }
                     }
                 }
             }
             catch (QuoteOperationException error) { blockers.Add(new UnderwritingReadBlocker(error.Code, "Complete the current quotation prerequisites.")); }
         }
-        blockers.Add(new UnderwritingReadBlocker("commercial-issue-progression-pending", "Commercial Combined policy issue and whole-book exposure checks are not yet available."));
         var details = await (from version in db.Set<ProductVersion>().AsNoTracking()
                              join product in db.Set<Product>().AsNoTracking() on version.ProductId equals product.Id
                              join provider in db.Set<CapacityProvider>().AsNoTracking() on version.ProviderId equals provider.Id
@@ -144,7 +157,7 @@ public sealed partial class QuoteUnderwritingReadModel
                 canRevise = writable && cycle is not null && owned.Scope.Actor.HasCapability("quote-revise") && UnderwritingLifecycleRules.CanReturnToDraft(quote.State),
                 canSubmit = writable && current && ready && cycle?.State == "rated" && rating?.ExpiresAt > now && quote.State is "rated" or "referred" && owned.Scope.Actor.HasCapability("quote-submit"), canReviewEvidence = writable && current && grants.Count > 0 && cycle?.State == "rated" && owned.Scope.Actor.HasCapability("underwriting-evidence-review"),
                 canDecide = writable && current && grants.Count > 0 && cycle?.State == "rated" && rating?.ExpiresAt > now && owned.Scope.Actor.HasCapability("underwriting-decide-within-authority"),
-                canEscalate = writable && current && grants.Count > 0 && cycle?.State == "rated" && rating?.ExpiresAt > now && owned.Scope.Actor.HasCapability("underwriting-escalate"), canPrepareTerms, canSend, canAccept, canIssue = false },
+                canEscalate = writable && current && grants.Count > 0 && cycle?.State == "rated" && rating?.ExpiresAt > now && owned.Scope.Actor.HasCapability("underwriting-escalate"), canPrepareTerms, canSend, canAccept, canIssue },
             ["proofRequirements"] = proofs, ["authorityViews"] = authorityViews, ["appliedEndorsements"] = Array.Empty<object>(), ["refreshOptions"] = Array.Empty<object>()
         };
         if (cycle is not null)

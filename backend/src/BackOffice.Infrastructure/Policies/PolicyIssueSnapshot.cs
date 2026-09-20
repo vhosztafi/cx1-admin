@@ -13,10 +13,15 @@ internal static class PolicyIssueSnapshot
     internal static string Create(UnderwritingDecisionContext held, Guid authorityId, IssuePosting posting, string collector, int share, IReadOnlyList<QuoteCondition> conditions)
     {
         var snapshot = JsonNode.Parse(held.Revision.ProposalJson)!.AsObject();
-        snapshot["snapshotFormat"] = "issued-quote-1";
+        snapshot["snapshotFormat"] = held.Input.IsCommercial ? "issued-commercial-1" : "issued-quote-1";
+        if (held.Input.IsCommercial) snapshot.Remove("format");
         snapshot.Remove("termIntent"); snapshot["productVersionId"] = held.Cycle.ProductVersionId;
         snapshot["insured"]!["clientId"] = held.Cycle.ClientId; snapshot["insured"]!["clientAgencyRelationshipId"] = held.Cycle.RelationshipId;
-        snapshot["term"] = JsonSerializer.SerializeToNode(new { kind = held.Input.Input.Term.Kind, startsAt = held.Cycle.StartsAt, endsAt = held.Cycle.EndsAt, timeZone = "Europe/London" });
+        snapshot["term"] = JsonSerializer.SerializeToNode(new { kind = held.Input.Term.Kind, startsAt = held.Cycle.StartsAt, endsAt = held.Cycle.EndsAt, timeZone = "Europe/London" });
+        var cover = snapshot["cover"]!.AsObject();
+        if (held.Input.IsCommercial) CommercialCover(held, snapshot, cover);
+        else
+        {
         var risk = snapshot["risk"]!.AsObject(); var input = held.Input.Input;
         if (input.AnyDriverCount == 0)
             risk["driverBasis"] = JsonSerializer.SerializeToNode(new { kind = "named", responses = risk["responses"] });
@@ -27,7 +32,6 @@ internal static class PolicyIssueSnapshot
                 minimumAge = input.AnyDriverMinimumAge, maximumAge = input.AnyDriverMaximumAge, driverCount = input.AnyDriverCount,
                 maximumVehicleGrouping = Answer("MTS-06-Q05"), maximumGrossVehicleWeight = Answer("MTS-06-Q06"), maximumMotorcycleCapacity = Answer("MTS-06-Q07"), responses = risk["responses"] });
         }
-        var cover = snapshot["cover"]!.AsObject();
         cover["sections"] = new JsonArray((cover["requestedSections"]?.AsArray() ?? []).Where(x => x!["selected"]!.GetValue<bool>()).Select(x => {
             var section = x!.DeepClone().AsObject(); section.Remove("selected"); return (JsonNode)section;
         }).ToArray());
@@ -38,6 +42,7 @@ internal static class PolicyIssueSnapshot
         foreach (var (code, fact) in new[] { ("own-vehicles", "ownVehicleLimit"), ("customer-vehicles", "customerVehicleLimit") })
             if (facts.Facts.TryGetValue(fact, out var limit))
                 cover["sections"]!.AsArray().Add(JsonSerializer.SerializeToNode(new { id = Guid.NewGuid(), code, limit, excess = facts.Facts["excess"] }));
+        }
         JsonArray Wording(string kind) => new(conditions.Where(x => x.Kind == kind).OrderBy(x => x.Id).Select(x => JsonSerializer.SerializeToNode(new {
             code = x.EndorsementCode ?? x.Code, version = JsonNode.Parse(x.DefinitionJson)?["wordingVersion"]?.GetValue<string>() ?? "1", text = x.Wording })).ToArray());
         cover["endorsements"] = Wording("endorsement"); cover["warranties"] = Wording("warranty");
@@ -55,4 +60,30 @@ internal static class PolicyIssueSnapshot
         if (errors.Count > 0) throw new InvalidOperationException("Issued policy schema: " + string.Join("; ", errors));
         return json;
     }
+    private static void CommercialCover(UnderwritingDecisionContext held, JsonObject snapshot, JsonObject cover)
+    {
+        var facts = held.Input.Commercial!.Rating;
+        foreach (var location in snapshot["risk"]!["locations"]!.AsArray())
+            location!["address"]!["postcode"] = CommercialCaptureRules.NormalizePostcode(location["address"]!["postcode"]!.GetValue<string>())!.Value.Postcode;
+        var sections = new JsonArray();
+        void Add(string code, decimal limit, Guid[] targets, string? excess = null)
+        {
+            var section = JsonSerializer.SerializeToNode(new { id = Guid.NewGuid(), code, limit = PolicyIssueWriter.Money(limit), targetIds = targets })!.AsObject();
+            if (excess is not null) section["excess"] = excess;
+            sections.Add(section);
+        }
+        foreach (var location in facts.Locations) Add("property", location.Buildings + location.Contents + location.Stock, [location.Id]);
+        if (facts.BiSelected) Add("business-interruption", facts.BiSumInsured, []);
+        if (facts.EmployersSelected) Add("employers-liability", facts.EmployersLimit, []);
+        if (facts.PublicLimit > 0) Add("public-liability", facts.PublicLimit, []);
+        if (facts.ProductsLimit > 0) Add("products-liability", facts.ProductsLimit, []);
+        if (facts.GoodsInTransit > 0) Add("goods-in-transit", facts.GoodsInTransit, []);
+        if (facts.Money > 0) Add("money", facts.Money, []);
+        if (facts.Glass) sections.Add(JsonSerializer.SerializeToNode(new { id = Guid.NewGuid(), code = "glass",
+            basis = "Included for the declared premises; no separate monetary limit captured", targetIds = facts.Locations.Select(x => x.Id).ToArray() }));
+        foreach (var extension in facts.Extensions) Add(extension.Code, extension.Limit, []);
+        if (facts.ContractWorks > 0) Add("contract-works", facts.ContractWorks, [], cover["contractWorks"]!["excess"]!.GetValue<string>());
+        cover["sections"] = sections;
+    }
+
 }

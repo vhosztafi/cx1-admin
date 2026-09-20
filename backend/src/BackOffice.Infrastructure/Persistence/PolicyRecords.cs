@@ -4,6 +4,7 @@ public sealed class Policy : MutableRecord
 {
     public long Number { get; set; }
     public string Reference { get; set; } = "";
+    public string ReferencePrefix { get; set; } = "PL-MT-";
     public Guid SourceQuoteId { get; set; }
     public Guid AgencyId { get; set; }
     public Guid ClientId { get; set; }

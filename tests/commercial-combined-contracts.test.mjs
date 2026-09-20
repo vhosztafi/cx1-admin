@@ -57,7 +57,7 @@ test('CC issued shape is distinct and cannot weaken retained Motor Trade snapsho
  const p=structuredClone(value);delete p.format;delete p.termIntent;
  Object.assign(p,{schemaVersion:'1.0',snapshotFormat:'issued-commercial-1',productVersionId:old.productVersionId,term:old.term,premium:old.premium,provenance:old.provenance});
  Object.assign(p.insured,{clientId:old.insured.clientId,clientAgencyRelationshipId:old.insured.clientAgencyRelationshipId});
- Object.assign(p.cover,{sections:[{id:'00000000-0000-4000-8000-000000000077',code:'property',limit:'2000000.00'}],endorsements:[],warranties:[]});
+ Object.assign(p.cover,{sections:[{id:'00000000-0000-4000-8000-000000000077',code:'property',limit:'2000000.00',targetIds:[p.risk.locations[0].id]}],endorsements:[],warranties:[]});
  assert.ok(validate(p),JSON.stringify(validate.errors));
  p.risk.driverBasis={kind:'named'};assert.equal(validate(p),false);
  assert.deepEqual(oldSchema.properties.productCode.enum,['motor-trade-road-risks','motor-trade-combined']);

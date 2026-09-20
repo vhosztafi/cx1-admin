@@ -178,4 +178,21 @@ public sealed class CommercialExposureRulesTests
         var result = CommercialExposureRules.Assess([], [basis], [original, specific], Book, Policy, Start, basis.TermEndsAt, Known);
         Assert.Equal(specific.Id, Assert.Single(result.Intervals).LimitVersionId); Assert.False(result.Allowed);
     }
+
+    [Fact]
+    public void HigherBookPublicationDoesNotBroadenActorOrBinderAuthority()
+    {
+        var basis = Slice(4, 50_000_000m); var limit = Limit() with { Amount = 80_000_000m };
+        var book = CommercialExposureRules.Assess([], [basis], [limit], Book, Policy, Start, basis.TermEndsAt, Known);
+        Assert.True(book.Allowed);
+        foreach (var pair in new[] { (40_000_000m, 80_000_000m), (80_000_000m, 40_000_000m) })
+        {
+            var blocked = CommercialExposureRules.WithinAuthority(book, pair.Item1, pair.Item2);
+            Assert.False(blocked.Allowed); var row = Assert.Single(blocked.Intervals);
+            Assert.Equal("commercial-district-authority-exceeded", row.Blocker);
+            Assert.Equal(limit.Id, row.LimitVersionId); Assert.Equal(limit.ContentHash, row.LimitHash); Assert.Equal(80_000_000m, row.Limit);
+        }
+        Assert.True(CommercialExposureRules.WithinAuthority(book, 50_000_000m, 50_000_000m).Allowed);
+        Assert.Throws<ArgumentException>(() => CommercialExposureRules.WithinAuthority(book, 0, 50_000_000m));
+    }
 }

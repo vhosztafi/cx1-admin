@@ -9,7 +9,9 @@ public sealed partial class BackOfficeDbContext
         model.HasSequence<long>("PolicyReferenceSequence").StartsAt(1).IncrementsBy(1).HasMax(9999999999);
         var policy = Record<Policy>(model, "Policy"); policy.ToTable(t => t.UseSqlOutputClause(false)); Text(policy, ("Reference", 40));
         policy.Property(x => x.Number).HasDefaultValueSql("NEXT VALUE FOR [PolicyReferenceSequence]");
-        policy.Property(x => x.Reference).HasComputedColumnSql("'PL-MT-' + RIGHT('0000000000' + CONVERT(varchar(20), [Number]), 10)", stored: true);
+        policy.Property(x => x.ReferencePrefix).HasMaxLength(6).HasDefaultValue("PL-MT-");
+        policy.Property(x => x.Reference).HasComputedColumnSql("[ReferencePrefix] + RIGHT('0000000000' + CONVERT(varchar(20), [Number]), 10)", stored: true);
+        Check(policy, "ReferencePrefix", "[ReferencePrefix] IN ('PL-MT-','PL-CC-')");
         policy.HasIndex(x => x.Number).IsUnique(); policy.HasIndex(x => x.Reference).IsUnique(); policy.HasIndex(x => x.SourceQuoteId).IsUnique();
         policy.HasIndex(x => new { x.AgencyId, x.CreatedAt, x.Id }); policy.HasIndex(x => new { x.ClientId, x.CreatedAt, x.Id });
         policy.HasAlternateKey(x => new { x.Id, x.SourceQuoteId }); policy.HasAlternateKey(x => new { x.Id, x.ProductId });

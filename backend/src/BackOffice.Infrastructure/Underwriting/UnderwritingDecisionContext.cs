@@ -22,7 +22,7 @@ internal sealed record UnderwritingDecisionContext(OwnedQuoteScope Owned, Underw
             ?? throw new QuoteOperationException(404, "underwriting-cycle-not-found");
         var revision = await db.Set<QuoteRevision>().AsNoTracking().SingleAsync(x => x.Id == cycle.QuoteRevisionId && x.QuoteId == quoteId, token);
         var input = action is "underwriting-decide-within-authority" or "underwriting-evidence-write" or "underwriting-evidence-review"
-            or "underwriting-escalate" or "underwriting-record-capacity" or "quote-terms" or "quote-acceptance"
+            or "underwriting-escalate" or "underwriting-record-capacity" or "quote-terms" or "quote-acceptance" or "policy-issue-within-authority"
             ? StoredRatingInput.Read(cycle) : StoredRatingInput.ReadMotorTrade(cycle);
         var eligible = await QuoteRatingEligibility.ResolveAsync(db, owned, cycle.ProductVersionId, cycle.AgencyTermsVersionId, input.Term, now, token);
         if (eligible.RatingVersion.Id != cycle.RatingRuleVersionId || eligible.BinderVersion.Id != cycle.BinderVersionId || eligible.AuthorityVersion.Id != cycle.AuthorityVersionId)

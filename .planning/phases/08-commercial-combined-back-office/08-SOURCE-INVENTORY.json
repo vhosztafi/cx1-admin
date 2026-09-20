@@ -1,7 +1,7 @@
 {
   "format": "commercial-source-ledger-1",
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
-  "status": "capture-rating-referral-evidence-carrier-terms-verified-issue-pending",
+  "status": "capture-rating-referral-evidence-carrier-terms-issue-verified-policy-views-pending",
   "denominators": {
     "captureControls": 166,
     "questions": 109,
@@ -9647,15 +9647,15 @@
       "id": "CC-DISTRICT-CAPACITY",
       "condition": "Whole-book property total at every affected effective breakpoint is within its published applicable book limit; own risk replaced, not double-counted",
       "ownerPlan": "08-09",
-      "verification": "Independent positive/negative temporal or product-boundary tests; pending",
-      "runtimeStatus": "pending"
+      "verification": "08-09: RealSqlCommercialIssueIndependentScopesRaceForOneRemainingDistrictPlace, RealSqlCommercialIssueRejectsFutureCollisionAcrossPublishedBinderVersions(false/true), RealSqlCommercialIssueLockTimeoutAndLateWriterFailureRollBackThenSameKeySucceeds, RealSqlCommercialIssueReplayAfterOtherPolicyConsumptionStillRequiresCurrentAuthority; common transaction fence, dated whole-book limits, rollback and current authority before exact replay. Actual browser issue/readback: .local/browser-evidence/commercial-capture/CoverMGA_Test_066690d7d91e467da78ddeacb9cb37d2/report.json. Advisory exposure UI remains08-10.",
+      "runtimeStatus": "sql-and-browser-verified"
     },
     {
       "id": "CC-EL-CERTIFICATE",
       "condition": "Request EL certificate only when EL selected in exact issued version",
       "ownerPlan": "08-09",
-      "verification": "Independent positive/negative temporal or product-boundary tests; pending",
-      "runtimeStatus": "pending"
+      "verification": "08-09: CommercialDocumentSelectionTests and RealSqlCommercialIssuePersistsExactSourceExposureFinanceAndSelectedDocuments(true/false); exact source snapshot/template/outbox/document selection, no EL certificate when unselected. RealSqlCommercialIssueBrowser verifies the selected EL certificate and persisted source version via actual UI/API.",
+      "runtimeStatus": "sql-and-browser-verified"
     },
     {
       "id": "CC-RENEWAL-BASE",

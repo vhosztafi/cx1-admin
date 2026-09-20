@@ -19,6 +19,7 @@ public static class CommercialExposureProjection
         Guid binderVersionId, Guid actorId, CancellationToken token = default)
     {
         RequireTransaction(db);
+        await CommercialExposureLock.RequireAsync(db, token);
         var source = await db.Set<PolicyVersion>().AsNoTracking().SingleAsync(x => x.Id == versionId, token);
         var transaction = await db.Set<PolicyTransaction>().AsNoTracking().SingleAsync(x => x.Id == source.TransactionId, token);
         var term = await db.Set<PolicyTerm>().AsNoTracking().SingleAsync(x => x.Id == source.TermId, token);

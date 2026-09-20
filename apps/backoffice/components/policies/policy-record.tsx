@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
-import { type PolicyTemporalView, policyCoverageLabel } from '../../lib/policies-api';
+import { policyCoverageLabel } from '../../lib/policies-api';
 import { formatCancellationMoney as formatGbp } from '../../lib/cancellation-review';
 import { DataTable, Panel, Status } from '../primitives';
 import { LoadFeedback, useQuoteResource } from '../quotes/shared';
@@ -12,6 +12,8 @@ import { PolicyHistory } from './policyhistory';
 import { PolicyHistoryActions } from './policyhistory-actions';
 import { PolicyRiskHistory } from './policyriskhistory';
 import { PolicyNoCover } from './policy-no-cover';
+import {CommercialPolicyRecord} from './commercial-policy-record';
+import {isCommercialPolicy, type AnyPolicyTemporalView} from '../../lib/commercial-policy';
 import { PolicyRiskOverview } from './policy-risk-overview';
 
 const documentNames: Record<string, string> = { 'policy-schedule': 'Policy schedule', 'policy-certificate': 'Certificate of motor insurance', 'policy-statement': 'Statement of fact' };
@@ -24,7 +26,7 @@ export function PolicyRecord({ policyId, questionLabels,selection,initialTab,ini
   function beginDraft(kind:string) { setDraftKind(kind); document.getElementById('servicing-drafts')?.scrollIntoView({block:'start'}); }
   function cancelDraft() { beginDraft('cancellation'); }
   const [cutoffs, setCutoffs] = useState(initialCutoffs), [effectiveInput, setEffectiveInput] = useState(''), [knownInput, setKnownInput] = useState('');
-  const record = useQuoteResource<PolicyTemporalView>(`/api/v1/policies/${policyId}${cutoffs ? `/as-at?${cutoffs}` : versionSelection?`/terms/${versionSelection.termId}/versions/${versionSelection.versionId}`:''}`), [tab, setTab] = useState<typeof tabs[number]>(initialTab??'Overview');
+  const record = useQuoteResource<AnyPolicyTemporalView>(`/api/v1/policies/${policyId}${cutoffs ? `/as-at?${cutoffs}` : versionSelection?`/terms/${versionSelection.termId}/versions/${versionSelection.versionId}`:''}`), [tab, setTab] = useState<typeof tabs[number]>(initialTab??'Overview');
   const chronology = <Panel title="View policy as at" note="Effective date selects cover; known-at date limits which issued changes were recorded."><form className="quote-rail-body" onSubmit={event => {
     event.preventDefault();
     const query = new URLSearchParams({ effectiveAt: new Date(effectiveInput + 'Z').toISOString(), knownAt: new Date(knownInput + 'Z').toISOString() });
@@ -38,6 +40,7 @@ export function PolicyRecord({ policyId, questionLabels,selection,initialTab,ini
   </form></Panel>;
   if (!record.data) return <>{chronology}<Panel title="Policy record"><LoadFeedback error={record.error} retry={record.refresh} /></Panel></>;
   if (!('snapshot' in record.data)) return <>{chronology}<PolicyNoCover key={`${record.data.effectiveCutoff}:${record.data.knownCutoff}`} policyId={policyId} effectiveAt={record.data.effectiveCutoff} knownAt={record.data.knownCutoff}/></>;
+  if (isCommercialPolicy(record.data)) return <CommercialPolicyRecord policy={record.data} chronology={chronology} refresh={record.refresh} questionLabels={questionLabels}/>;
   const policy = record.data, snapshot = policy.snapshot, financial = policy.financials;
   const cancelled = !!snapshot.cancellation;
   const adjusted = cancelled || 'servicingIssueDecisionId' in snapshot.provenance;

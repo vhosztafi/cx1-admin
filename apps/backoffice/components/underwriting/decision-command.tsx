@@ -4,9 +4,9 @@ import { csrfToken, type Actor } from '../../lib/auth';
 import { quoteFetch, QuoteError, uncertainQuoteFailure, staleQuoteFailure, type PendingQuoteCommand } from '../../lib/quotes';
 import { sendUnderwritingCommand, type UnderwritingAssessment } from '../../lib/underwriting-api';
 import { sendCapacityRecovery } from '../../lib/capacity';
-import { sendPolicyIssue } from '../../lib/policies-api';
+import { sendPolicyIssue, type PolicyIssueExpectation } from '../../lib/policies-api';
 
-export type DecisionRequest = { command: PendingQuoteCommand; label: string; description: string; kind?: 'issue'; jobId?: string; jobKind?: 'capacity-escalation' | 'quote-delivery' };
+export type DecisionRequest = { command: PendingQuoteCommand; label: string; description: string; kind?: 'issue'; issueExpectation?: PolicyIssueExpectation; jobId?: string; jobKind?: 'capacity-escalation' | 'quote-delivery' };
 export function DecisionCommand({ request, actorId, close, completed }: { request: DecisionRequest; actorId: string; close: () => void; completed: (policyId?: string) => void }) {
   const dialog = useRef<HTMLDialogElement>(null), guard = useRef({ busy: false, uncertain: false }), closeRef = useRef(close);
   const [busy, setBusy] = useState(false), [uncertain, setUncertain] = useState(false), [stale, setStale] = useState(false), [error, setError] = useState('');
@@ -45,7 +45,7 @@ export function DecisionCommand({ request, actorId, close, completed }: { reques
       if (account.data.id !== actorId) throw new QuoteError(403);
       attempted = true;
       let policyId: string | undefined;
-      if (request.kind === 'issue') policyId = (await sendPolicyIssue(request.command, csrf)).policyId;
+      if (request.kind === 'issue') policyId = (await sendPolicyIssue(request.command, csrf, request.issueExpectation)).policyId;
       else if (request.jobId) await sendCapacityRecovery(request.command, request.jobId, csrf, request.jobKind); else await sendUnderwritingCommand(request.command, csrf);
       guard.current = { busy: false, uncertain: false }; completed(policyId);
     } catch (failure) {

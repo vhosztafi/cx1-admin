@@ -15,13 +15,16 @@ public sealed partial class UnderwritingRuntimeTests
     [Fact]
     public Task RealSqlCommercialTermsCarrierConditionsAndIndependentAcceptance() => CommercialTermsScenario();
 
-    private async Task CommercialTermsScenario(Func<BackOfficeDbContext, UnderwritingCycle, Guid, Guid, DateTimeOffset, Task>? afterAccepted = null)
+    private async Task CommercialTermsScenario(Func<BackOfficeDbContext, UnderwritingCycle, Guid, Guid, DateTimeOffset, Task>? afterAccepted = null, bool stopAfterAccepted = false, Action<JsonNode>? configureProposal = null, BackOfficeDbContext? existingDb = null, Func<BackOfficeDbContext, string, Task>? inspectAccepted = null)
     {
-        await WithDatabase(async (db, password) =>
+        async Task Run(BackOfficeDbContext db, string password)
         {
+            if (existingDb is null)
+            {
             await DemoDatabase.SeedAsync(db, password, includeQuoteCapture: true, includeUnderwriting: true, includeCommercialCapture: true);
             await using (var transaction = await db.Database.BeginTransactionAsync())
             { await CommercialUnderwritingSeed.SeedAsync(db); await CapacitySeed.SeedAsync(db); await QuoteTermsSeed.SeedAsync(db); await transaction.CommitAsync(); }
+            }
             var f = await Fixture(db, 3, "commercial-combined");
             var factory = new RatingFactory(new DbContextOptionsBuilder<BackOfficeDbContext>().UseSqlServer(db.Database.GetConnectionString(), x => x.UseCompatibilityLevel(160)).Options);
             var clock = new RatingClock(); var quotes = new QuoteService(factory, clock); var rating = new QuoteRatingService(factory, clock);
@@ -29,10 +32,11 @@ public sealed partial class UnderwritingRuntimeTests
             using var stream = typeof(UnderwritingRuntimeTests).Assembly.GetManifestResourceStream("CommercialExamples.Ready")!;
             var proposal = JsonNode.Parse(stream)!; proposal["termIntent"]!["localStartDate"] = "2026-09-17";
             proposal["risk"]!["locations"]![0]!["buildings"] = "2500000.01";
+            configureProposal?.Invoke(proposal);
             var created = await quotes.CreateAsync(f.Actor, relationship, f.ProductVersion, proposal.ToJsonString(), Guid.NewGuid().ToString(), Guid.NewGuid());
             var before = await quotes.GetAsync(f.Actor, created.ResourceId);
             await rating.RateAsync(f.Actor, created.ResourceId, before.Revision.Id, before.Quote.RowVersion, "Commercial review fixture", Guid.NewGuid().ToString(), Guid.NewGuid());
-            var cycle = await db.Set<UnderwritingCycle>().AsNoTracking().SingleAsync();
+            var cycle = await db.Set<UnderwritingCycle>().AsNoTracking().SingleAsync(x => x.QuoteId == created.ResourceId);
             var leases = new SqlJobLeases(factory, clock); var worker = new QuoteRatingWorker(factory, clock);
             var lease = (await leases.ClaimWorkAsync(QuoteRatingService.WorkKind, cycle.WorkId))!;
             Assert.True(await worker.ApplyAsync(lease, await worker.ExecuteProviderAsync(lease)));
@@ -42,7 +46,9 @@ public sealed partial class UnderwritingRuntimeTests
             var authority = await db.Set<AuthorityVersion>().SingleAsync(x => x.Id == cycle.AuthorityVersionId);
             var grant = new UserAuthorityGrant { UserId = senior.Id, AuthorityVersionId = authority.Id, GrantedBy = admin.Id, CreatedBy = admin.Id,
                 CreatedAt = Now, EffectiveFrom = authority.EffectiveFrom, EffectiveTo = authority.EffectiveTo, Reason = "Explicit test-only commercial authority" };
-            db.Add(grant); await db.SaveChangesAsync(); db.ChangeTracker.Clear();
+            if (!await db.Set<UserAuthorityGrant>().AnyAsync(x => x.UserId == senior.Id && x.AuthorityVersionId == authority.Id && x.RevokedAt == null))
+            { db.Add(grant); await db.SaveChangesAsync(); }
+            db.ChangeTracker.Clear();
             var evidence = new UnderwritingEvidenceService(factory, clock); var decisions = new QuoteReferralService(factory, clock);
             async Task<byte[]> Version() => (await quotes.GetAsync(actor, created.ResourceId)).Quote.RowVersion;
             string Key() => Guid.NewGuid().ToString();
@@ -116,6 +122,8 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.True((await acceptance.RecordAsync(actor, created.ResourceId, acceptVersion, input, acceptKey, Guid.NewGuid())).Replayed);
             Assert.Equal("accepted", (await quotes.GetAsync(actor, created.ResourceId)).Quote.State);
             if (afterAccepted is not null) await afterAccepted(db, cycle, accepted.ResourceId, actor.UserId, clock.Current);
+            if (inspectAccepted is not null) await inspectAccepted(db, password);
+            if (stopAfterAccepted) return;
             var finalAssessment = await new QuoteUnderwritingReadModel(factory, clock).AssessmentAsync(actor, created.ResourceId);
             Assert.False(JsonSerializer.SerializeToElement(finalAssessment["capabilities"], new JsonSerializerOptions(JsonSerializerDefaults.Web)).GetProperty("canIssue").GetBoolean());
             await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Contact SET Email=N'changed@example.invalid' WHERE Id={contact.Id}");
@@ -148,7 +156,9 @@ public sealed partial class UnderwritingRuntimeTests
             await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE UserAuthorityGrant SET RevokedAt={Now},RevokedBy={admin.Id},RevocationReason=N'Revoke current carrier recording authority' WHERE Id={grant.Id}");
             Assert.Equal(403, (await Assert.ThrowsAsync<QuoteOperationException>(() => capacity.RecordResponseAsync(actor, created.ResourceId, cycle.Id, suppliedRequest.Id, responseVersion, responseRequest.RowVersion, supplied, responseKey, Guid.NewGuid()))).Status);
             Assert.Equal(retained.TermsJson, (await db.Set<QuoteTermsVersion>().AsNoTracking().SingleAsync(x => x.Id == retained.Id)).TermsJson);
-        });
+        }
+        if (existingDb is not null) await Run(existingDb, string.Empty);
+        else await WithDatabase(Run);
     }
 }
 

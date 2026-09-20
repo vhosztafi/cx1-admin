@@ -84,7 +84,11 @@ export async function writeCommercialContracts(){
  issuedDefs.Risk.required=['business','locations','wages','liability','losses','declarations','materialFacts'];
  issuedDefs.Risk.properties.locations.minItems=1;
  const wording=obj({code:str(100),version:str(100),text:str(10000)});
- issuedDefs.Cover.properties.sections=arr(obj({id,code:en('property','business-interruption','employers-liability','public-liability','products-liability','goods-in-transit','money','glass','contract-works'),limit:money,excess:money,basis:str(200)},['id','code','limit']),30);
+ const targets={...arr(id,100),uniqueItems:true};
+ const monetarySection=obj({id,code:en('property','business-interruption','employers-liability','public-liability','products-liability','goods-in-transit','money','contract-works','unspecified-suppliers','named-suppliers','named-customers','denial-of-access','loss-of-attraction'),limit:money,excess:money,targetIds:targets},['id','code','limit','targetIds']);
+ monetarySection.allOf=[{if:{properties:{code:{const:'property'}},required:['code']},then:{properties:{targetIds:{type:'array',minItems:1,maxItems:1}}}}];
+ const glassSection=obj({id,code:{const:'glass'},basis:str(200),targetIds:{...targets,minItems:1}});
+ issuedDefs.Cover.properties.sections=arr({oneOf:[monetarySection,glassSection]},120);
  issuedDefs.Cover.properties.sections.minItems=1;
  issuedDefs.Cover.properties.endorsements=arr(wording);issuedDefs.Cover.properties.warranties=arr(wording);
  issuedDefs.Cover.required=['responses','sections','endorsements','warranties'];

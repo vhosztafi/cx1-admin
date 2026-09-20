@@ -70,14 +70,14 @@ export async function commercialTermsJourney({page,f,quoteId,checks}) {
   await page.getByLabel('Reviewed acceptance evidence',{exact:true}).selectOption(acceptanceProof);
   await page.getByRole('button',{name:'Review acceptance',exact:true}).click();await confirm('/acceptances',201);
   await quotation();await page.getByText('Current acceptance recorded',{exact:true}).waitFor();
-  assessed=await assess();assert.equal(assessed.state,'accepted');assert.equal(assessed.capabilities.canIssue,false);
+  assessed=await assess();assert.equal(assessed.state,'accepted');assert.equal(assessed.capabilities.canIssue,f.stage==='issue');
   history=await read(quote+'/terms');
   const valid=await underwritingResponseValidator('UnderwritingTermsView');for(const terms of history.terms)assert.ok(valid(terms),JSON.stringify(valid.errors));
   await page.screenshot({path:f.output+'/accepted-terms-desktop.png',fullPage:true});
   await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true);
   await page.screenshot({path:f.output+'/accepted-terms-mobile.png',fullPage:true});await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:f.output+'/accepted-terms-mobile-viewport.png'});await page.setViewportSize({width:1480,height:980});
   await writeFile(f.output+'/accepted-terms.json',JSON.stringify({assessment:assessed,history},null,2));
-  checks.push('Actual completed CC capture -> exact location demo carrier submission through UI -> conditional response -> scoped API proof/review and independent internal decision -> UI prepared, delivered and accepted terms; API schemas and desktop/390px readback; issue remains unavailable');
+  checks.push('Actual completed CC capture -> exact location demo carrier submission through UI -> conditional response -> scoped API proof/review and independent internal decision -> UI prepared, delivered and accepted terms; API schemas and desktop/390px readback; issue capability matches the installed issue configuration');
 }
 
 if(process.argv[1]?.endsWith('verify-commercial-underwriting-browser.mjs')) {

@@ -56,3 +56,11 @@ public sealed class CommercialExposureLocationRecord
     public string District { get; set; } = "";
     public decimal SumInsured { get; set; }
 }
+
+public sealed class CommercialExposureIssueDecision : StoredRecord
+{
+    public Guid ExposureVersionId { get; set; }
+    public DateTimeOffset AssessedAt { get; set; }
+    public string DecisionJson { get; set; } = "{}";
+    public byte[] DecisionHash { get; set; } = [];
+}

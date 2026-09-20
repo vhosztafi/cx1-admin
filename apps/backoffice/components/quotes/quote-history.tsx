@@ -58,7 +58,7 @@ function ChangeValue({ path, side }: { path: string; side: Side }) {
   if (path === '/relationshipId') return <span>Agency relationship for the recorded client account</span>;
   return <Value value={value} />;
 }
-export function QuoteProposalDetails({ value, proposal, questionLabels }: { value: unknown; proposal: QuoteProposal | CommercialProposal; questionLabels: Record<string, string> }) {
+export function QuoteProposalDetails({ value, proposal, questionLabels }: { value: unknown; proposal: QuoteProposal | CommercialProposal | import('../../lib/commercial-policy').CommercialIssuedSnapshot; questionLabels: Record<string, string> }) {
   const names = new Map<string, string>();
   function collect(item: unknown, context = 'Risk item') {
     if (Array.isArray(item)) { item.forEach((child, index) => collect(child, `${context} ${index + 1}`)); return; }

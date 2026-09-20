@@ -24,6 +24,8 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.False(db.Database.HasPendingModelChanges());
             async Task Reject(string district, Guid? parent)
             {
+                await using var held = await db.Database.BeginTransactionAsync();
+                await CommercialExposureLock.AcquireAsync(db);
                 var row = new CommercialExposureLimitVersion { BookId = original.BookId, District = district, Version = 2,
                     Amount = 50_000_000m, EffectiveFrom = original.EffectiveFrom, EffectiveTo = original.EffectiveTo,
                     PublishedAt = original.PublishedAt, CreatedBy = original.CreatedBy, SupersedesLimitId = parent };
@@ -33,6 +35,15 @@ public sealed partial class UnderwritingRuntimeTests
             foreach (var district in new[] { "* ", "s9", "S9 ", "ZZ9", "*S9", "" }) await Reject(district, null);
             await Reject("S9", original.Id); // A district publication cannot replace a default scope.
             await Reject("*", Guid.NewGuid());
+            await using (var unfenced = await db.Database.BeginTransactionAsync())
+            {
+                var valid = new CommercialExposureLimitVersion { BookId = original.BookId, District = "S9", Version = 1,
+                    Amount = 1m, EffectiveFrom = original.EffectiveFrom, EffectiveTo = original.EffectiveTo,
+                    PublishedAt = original.PublishedAt, CreatedBy = original.CreatedBy };
+                CommercialExposureSeed.SetPublication(valid, "Valid publication without required fence"); db.Add(valid);
+                var failure = await Assert.ThrowsAsync<DbUpdateException>(() => db.SaveChangesAsync());
+                Assert.Equal(51920, Assert.IsType<SqlException>(failure.InnerException).Number); db.ChangeTracker.Clear();
+            }
             var book = await db.Set<CommercialExposureBook>().AsNoTracking().SingleAsync();
             var motor = await db.Set<Product>().FirstAsync(x => x.Code != "commercial-combined");
             db.Add(new CommercialExposureBook { Code = "wrong-product", ProductId = motor.Id, ProviderId = book.ProviderId, CreatedBy = original.CreatedBy });
@@ -80,7 +91,7 @@ public sealed partial class UnderwritingRuntimeTests
         var quote = await db.Set<Quote>().AsNoTracking().SingleAsync(x => x.Id == cycle.QuoteId);
         var revision = await db.Set<QuoteRevision>().AsNoTracking().SingleAsync(x => x.Id == cycle.QuoteRevisionId);
         var proposal = JsonNode.Parse(revision.ProposalJson)!;
-        var policy = new Policy { SourceQuoteId = quote.Id, AgencyId = quote.AgencyId, ClientId = quote.ClientId,
+        var policy = new Policy { ReferencePrefix = "PL-CC-", SourceQuoteId = quote.Id, AgencyId = quote.AgencyId, ClientId = quote.ClientId,
             RelationshipId = quote.RelationshipId, ProductId = quote.ProductId, CreatedBy = actor, CreatedAt = now };
         db.Add(policy); await db.SaveChangesAsync();
         var term = new PolicyTerm { PolicyId = policy.Id, ProductId = policy.ProductId, ProductVersionId = cycle.ProductVersionId,
@@ -113,6 +124,8 @@ public sealed partial class UnderwritingRuntimeTests
             LocationsJson = JsonSerializer.Serialize(CommercialExposureProjection.Locations(JsonDocument.Parse(json).RootElement), new JsonSerializerOptions(JsonSerializerDefaults.Web)) };
         async Task Reject(Action<CommercialExposureVersion> change)
         {
+            await using var held = await db.Database.BeginTransactionAsync();
+            await CommercialExposureLock.AcquireAsync(db);
             var bad = Header(); change(bad); db.Add(bad);
             await Assert.ThrowsAsync<DbUpdateException>(() => db.SaveChangesAsync()); db.ChangeTracker.Clear();
             Assert.Empty(await db.Set<CommercialExposureVersion>().ToArrayAsync()); Assert.Empty(await db.Set<CommercialExposureLocationRecord>().ToArrayAsync());
@@ -131,12 +144,19 @@ public sealed partial class UnderwritingRuntimeTests
         await Reject(x => { var rows = JsonNode.Parse(x.LocationsJson)!.AsArray(); rows[0]!["riskItemId"] = Guid.NewGuid(); x.LocationsJson = rows.ToJsonString(); });
         await Reject(x => { var rows = JsonNode.Parse(x.LocationsJson)!.AsArray(); rows.Add(rows[0]!.DeepClone()); x.LocationsJson = rows.ToJsonString(); });
         await Assert.ThrowsAsync<InvalidOperationException>(() => CommercialExposureProjection.AppendAsync(db, version.Id, mapping.BinderVersionId, actor));
+        await using (var unfenced = await db.Database.BeginTransactionAsync())
+        {
+            await Assert.ThrowsAsync<InvalidOperationException>(() => CommercialExposureProjection.AppendAsync(db, version.Id, mapping.BinderVersionId, actor));
+            db.Add(Header());
+            var failure = await Assert.ThrowsAsync<DbUpdateException>(() => db.SaveChangesAsync());
+            Assert.Equal(51920, Assert.IsType<SqlException>(failure.InnerException).Number); db.ChangeTracker.Clear();
+        }
         await using (var held = await db.Database.BeginTransactionAsync())
-        { await CommercialExposureProjection.AppendAsync(db, version.Id, mapping.BinderVersionId, actor); await held.RollbackAsync(); }
+        { await CommercialExposureLock.AcquireAsync(db); await CommercialExposureProjection.AppendAsync(db, version.Id, mapping.BinderVersionId, actor); await held.RollbackAsync(); }
         db.ChangeTracker.Clear(); Assert.Empty(await db.Set<CommercialExposureVersion>().ToArrayAsync());
         CommercialExposureVersion header;
         await using (var held = await db.Database.BeginTransactionAsync())
-        { header = await CommercialExposureProjection.AppendAsync(db, version.Id, mapping.BinderVersionId, actor); await held.CommitAsync(); }
+        { await CommercialExposureLock.AcquireAsync(db); header = await CommercialExposureProjection.AppendAsync(db, version.Id, mapping.BinderVersionId, actor); await held.CommitAsync(); }
         db.ChangeTracker.Clear();
         var children = await db.Set<CommercialExposureLocationRecord>().AsNoTracking().ToArrayAsync();
         Assert.Equal(proposal["risk"]!["locations"]!.AsArray().Count, children.Length);
@@ -176,10 +196,17 @@ public sealed partial class UnderwritingRuntimeTests
             CreatedBy = actor, SupersedesLimitId = limit.Id };
         CommercialExposureSeed.SetPublication(replacement, "Fictional dated lower ceiling");
         var correctHash = replacement.ContentHash; replacement.ContentHash = SHA256.HashData([9]);
-        db.Add(replacement); await Assert.ThrowsAsync<DbUpdateException>(() => db.SaveChangesAsync()); db.ChangeTracker.Clear();
+        await using (var held = await db.Database.BeginTransactionAsync())
+        { await CommercialExposureLock.AcquireAsync(db); db.Add(replacement); await Assert.ThrowsAsync<DbUpdateException>(() => db.SaveChangesAsync()); }
+        db.ChangeTracker.Clear();
         replacement.ContentHash = correctHash; replacement.Amount = 100_000_000m;
-        db.Add(replacement); await Assert.ThrowsAsync<DbUpdateException>(() => db.SaveChangesAsync()); db.ChangeTracker.Clear();
-        replacement.Amount = 1m; db.Add(replacement); await db.SaveChangesAsync(); db.ChangeTracker.Clear();
+        await using (var held = await db.Database.BeginTransactionAsync())
+        { await CommercialExposureLock.AcquireAsync(db); db.Add(replacement); await Assert.ThrowsAsync<DbUpdateException>(() => db.SaveChangesAsync()); }
+        db.ChangeTracker.Clear();
+        replacement.Amount = 1m;
+        await using (var held = await db.Database.BeginTransactionAsync())
+        { await CommercialExposureLock.AcquireAsync(db); db.Add(replacement); await db.SaveChangesAsync(); await held.CommitAsync(); }
+        db.ChangeTracker.Clear();
         var oldLimits = await CommercialExposureProjection.LimitsAsync(db, mapping.BookId, now);
         Assert.Single(oldLimits);
         var newLimits = await CommercialExposureProjection.LimitsAsync(db, mapping.BookId, now.AddDays(1));
