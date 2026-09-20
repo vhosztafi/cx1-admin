@@ -76,7 +76,7 @@ public sealed partial class QuoteReferralService(IDbContextFactory<BackOfficeDbC
                         throw new QuoteOperationException(409, "capacity-response-required");
                     if (item.Outcome == "approve")
                     {
-                        if (held.Input.IsCommercial && (await UnderwritingEvidenceService.Requirements(db, held.Cycle, held.Revision, held.Input, ct)).Any(x => !x.Satisfied))
+                        if (held.Input.IsCommercial && (await UnderwritingEvidenceService.Requirements(db, held.Cycle, held.Revision, held.Input, ct)).Any(x => !x.Satisfied && x.Code is not ("capacity-response" or "signed-statement" or "acceptance-proof")))
                             throw new QuoteOperationException(409, "commercial-proof-review-required");
                         foreach (var condition in oldConditions.Where(x => x.ReferralId == row.Id))
                             if (!await UnderwritingEvidenceService.Resolved(db, condition, ct)) throw new QuoteOperationException(409, "referral-condition-outstanding");

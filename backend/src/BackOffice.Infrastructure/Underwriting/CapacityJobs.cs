@@ -24,11 +24,13 @@ public sealed class CapacityJobs(IDbContextFactory<BackOfficeDbContext> factory,
             {
                 var now = time.GetUtcNow();
                 var cycle = await db.Set<UnderwritingCycle>().AsNoTracking().SingleAsync(x => x.Id == submission.CycleId, token);
-                var input = StoredRatingInput.ReadMotorTrade(cycle);
-                var eligible = await QuoteRatingEligibility.ResolveAsync(db, owned, cycle.ProductVersionId, cycle.AgencyTermsVersionId, input.Input.Term, now, token);
-                var grants = await QuoteUnderwritingScope.GrantsAsync(db, owned, cycle.ProductVersionId, eligible.BinderVersion, eligible.Capture.Product.Code, input.Input.Term, now, token);
+                var input = StoredRatingInput.Read(cycle);
+                var eligible = await QuoteRatingEligibility.ResolveAsync(db, owned, cycle.ProductVersionId, cycle.AgencyTermsVersionId, input.Term, now, token);
+                var grants = await QuoteUnderwritingScope.GrantsAsync(db, owned, cycle.ProductVersionId, eligible.BinderVersion, eligible.Capture.Product.Code, input.Term, now, token);
                 var escalation = await db.Set<CapacityEscalation>().AsNoTracking().SingleAsync(x => x.Id == submission.EscalationId, token);
-                allowed = owned.Scope.Actor.HasCapability("underwriting-escalate") && owned.Scope.Agency.State == "active" && grants.Count > 0 &&
+                var configurationCurrent = !input.IsCommercial || input.RuntimeVersionId == eligible.RuntimeVersion.Id && input.ScenarioVersionId == eligible.ScenarioVersion.Id &&
+                    input.CommissionBasisPoints == eligible.CommissionBasisPoints && input.MinimumPremium == eligible.MinimumPremium;
+                allowed = configurationCurrent && owned.Scope.Actor.HasCapability("underwriting-escalate") && owned.Scope.Agency.State == "active" && grants.Count > 0 &&
                     owned.Quote.CurrentUnderwritingCycleId == cycle.Id && owned.Quote.CurrentRevisionId == cycle.QuoteRevisionId && cycle.State == "rated" && owned.Quote.State is not ("draft" or "bound" or "withdrawn") &&
                     eligible.RatingVersion.Id == cycle.RatingRuleVersionId && eligible.BinderVersion.Id == cycle.BinderVersionId && eligible.AuthorityVersion.Id == cycle.AuthorityVersionId &&
                     escalation.CurrentSubmissionId == submission.Id && escalation.CurrentResponseId is null && escalation.State == "failed" &&

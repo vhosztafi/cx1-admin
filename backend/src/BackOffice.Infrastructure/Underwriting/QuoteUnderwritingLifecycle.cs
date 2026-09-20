@@ -72,8 +72,12 @@ public sealed class QuoteUnderwritingLifecycle(IDbContextFactory<BackOfficeDbCon
                 owned = await QuoteUnderwritingScope.HoldAsync(db, actor, quoteId, "quote-submit", ct);
                 cycle = await db.Set<UnderwritingCycle>().FromSqlInterpolated($"SELECT * FROM UnderwritingCycle WITH(HOLDLOCK) WHERE Id={cycleId} AND QuoteId={quoteId}").AsNoTracking().SingleOrDefaultAsync(ct)
                     ?? throw new QuoteOperationException(404, "underwriting-cycle-not-found");
-                var input = StoredRatingInput.ReadMotorTrade(cycle);
-                eligible = await QuoteRatingEligibility.ResolveAsync(db, owned, cycle.ProductVersionId, cycle.AgencyTermsVersionId, input.Input.Term, time.GetUtcNow(), ct);
+                var input = StoredRatingInput.Read(cycle);
+                eligible = await QuoteRatingEligibility.ResolveAsync(db, owned, cycle.ProductVersionId, cycle.AgencyTermsVersionId, input.Term, time.GetUtcNow(), ct);
+                if (input.IsCommercial && (owned.Quote.CurrentUnderwritingCycleId != cycle.Id || owned.Quote.CurrentRevisionId != cycle.QuoteRevisionId || cycle.State != "rated" ||
+                    input.RuntimeVersionId != eligible.RuntimeVersion.Id || input.ScenarioVersionId != eligible.ScenarioVersion.Id ||
+                    input.CommissionBasisPoints != eligible.CommissionBasisPoints || input.MinimumPremium != eligible.MinimumPremium))
+                    throw new QuoteOperationException(409, "underwriting-cycle-stale");
                 if (eligible.RatingVersion.Id != cycle.RatingRuleVersionId || eligible.BinderVersion.Id != cycle.BinderVersionId || eligible.AuthorityVersion.Id != cycle.AuthorityVersionId)
                     throw new QuoteOperationException(409, "underwriting-cycle-stale");
             },

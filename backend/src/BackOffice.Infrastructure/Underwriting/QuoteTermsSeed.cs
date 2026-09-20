@@ -14,6 +14,12 @@ public static class QuoteTermsSeed
                 db.Add(new TemplateVersion { Code = "demo-motor-trade-terms", ProductId = product.Id, Version = 1,
                     EffectiveFrom = new(2026, 1, 1, 0, 0, 0, TimeSpan.Zero), EffectiveTo = new(2035, 1, 1, 0, 0, 0, TimeSpan.Zero),
                     ContentJson = JsonSerializer.Serialize(new { format = "quote-template-1", title = product.Name + " quotation and statement of fact", notice = "Fictional demo quotation. Review the retained risk facts, cover and conditions before accepting." }) });
+        var commercial = await db.Set<Product>().SingleOrDefaultAsync(x => x.Code == "commercial-combined", token);
+        if (commercial is not null && !await db.Set<TemplateVersion>().AnyAsync(x => x.Code == "demo-commercial-combined-terms" && x.ProductId == commercial.Id, token))
+            db.Add(new TemplateVersion { Code = "demo-commercial-combined-terms", ProductId = commercial.Id, Version = 1,
+                EffectiveFrom = new(2026, 1, 1, 0, 0, 0, TimeSpan.Zero), EffectiveTo = new(2035, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                ContentJson = JsonSerializer.Serialize(new { format = "quote-template-1", title = "Commercial Combined quotation and statement of fact",
+                    notice = "Fictional demo quotation. Review each location, selected cover, liability activities, business interruption basis and retained conditions before accepting. Unspecified excesses require agreement before real use." }) });
         if (!await db.Set<SettingVersion>().AnyAsync(x => x.Scope == "quote-delivery", token))
             db.Add(new SettingVersion { Scope = "quote-delivery", Version = 1, EffectiveFrom = new(2026, 1, 1, 0, 0, 0, TimeSpan.Zero),
                 Values = "{\"demo\":true,\"kind\":\"quote-delivery\",\"schemaVersion\":\"1\",\"scenario\":\"success\"}" });

@@ -1,7 +1,7 @@
 {
   "format": "commercial-source-ledger-1",
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
-  "status": "capture-rating-referral-evidence-verified-terms-pending",
+  "status": "capture-rating-referral-evidence-carrier-terms-verified-issue-pending",
   "denominators": {
     "captureControls": 166,
     "questions": 109,
@@ -1789,7 +1789,8 @@
       "questionId": null,
       "runtimeStatus": "browser-and-sql-evidence-verified",
       "verification": [
-        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx."
+        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx.",
+        "08-07: exact location carrier authority, independent current proof/internal decision, UI prepared/delivered/accepted CC terms and desktop/390px readback verified in .local/browser-evidence/commercial-capture/CoverMGA_Test_7bcede49e6fa411198bce3bc89c69024/report.json; actual request/terms API schemas validated. District exposure and policy issue remain08-08/09."
       ]
     },
     {
@@ -4044,7 +4045,8 @@
       "questionId": null,
       "runtimeStatus": "browser-and-sql-evidence-verified",
       "verification": [
-        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx."
+        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx.",
+        "08-07: exact location carrier authority, independent current proof/internal decision, UI prepared/delivered/accepted CC terms and desktop/390px readback verified in .local/browser-evidence/commercial-capture/CoverMGA_Test_7bcede49e6fa411198bce3bc89c69024/report.json; actual request/terms API schemas validated. District exposure and policy issue remain08-08/09."
       ]
     },
     {
@@ -4061,7 +4063,8 @@
       "questionId": null,
       "runtimeStatus": "browser-and-sql-evidence-verified",
       "verification": [
-        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx."
+        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx.",
+        "08-07: exact location carrier authority, independent current proof/internal decision, UI prepared/delivered/accepted CC terms and desktop/390px readback verified in .local/browser-evidence/commercial-capture/CoverMGA_Test_7bcede49e6fa411198bce3bc89c69024/report.json; actual request/terms API schemas validated. District exposure and policy issue remain08-08/09."
       ]
     },
     {
@@ -4078,7 +4081,8 @@
       "questionId": null,
       "runtimeStatus": "browser-and-sql-evidence-verified",
       "verification": [
-        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx."
+        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx.",
+        "08-07: exact location carrier authority, independent current proof/internal decision, UI prepared/delivered/accepted CC terms and desktop/390px readback verified in .local/browser-evidence/commercial-capture/CoverMGA_Test_7bcede49e6fa411198bce3bc89c69024/report.json; actual request/terms API schemas validated. District exposure and policy issue remain08-08/09."
       ]
     },
     {
@@ -4095,7 +4099,8 @@
       "questionId": null,
       "runtimeStatus": "browser-and-sql-evidence-verified",
       "verification": [
-        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx."
+        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx.",
+        "08-07: exact location carrier authority, independent current proof/internal decision, UI prepared/delivered/accepted CC terms and desktop/390px readback verified in .local/browser-evidence/commercial-capture/CoverMGA_Test_7bcede49e6fa411198bce3bc89c69024/report.json; actual request/terms API schemas validated. District exposure and policy issue remain08-08/09."
       ]
     },
     {
@@ -4112,7 +4117,8 @@
       "questionId": null,
       "runtimeStatus": "browser-and-sql-evidence-verified",
       "verification": [
-        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx."
+        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx.",
+        "08-07: exact location carrier authority, independent current proof/internal decision, UI prepared/delivered/accepted CC terms and desktop/390px readback verified in .local/browser-evidence/commercial-capture/CoverMGA_Test_7bcede49e6fa411198bce3bc89c69024/report.json; actual request/terms API schemas validated. District exposure and policy issue remain08-08/09."
       ]
     }
   ],
@@ -9512,7 +9518,8 @@
       "condition": "Single-location buildings+contents+stock greater than2500000.00",
       "ownerPlan": "08-06",
       "verification": [
-        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners.",
+        "08-07: exact location carrier authority, independent current proof/internal decision, UI prepared/delivered/accepted CC terms and desktop/390px readback verified in .local/browser-evidence/commercial-capture/CoverMGA_Test_7bcede49e6fa411198bce3bc89c69024/report.json; actual request/terms API schemas validated. District exposure and policy issue remain08-08/09."
       ],
       "runtimeStatus": "unit-sql-and-browser-verified"
     },
@@ -9522,7 +9529,8 @@
       "condition": "Largest-location demo MEL greater than2000000.00",
       "ownerPlan": "08-06",
       "verification": [
-        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners.",
+        "08-07: exact location carrier authority, independent current proof/internal decision, UI prepared/delivered/accepted CC terms and desktop/390px readback verified in .local/browser-evidence/commercial-capture/CoverMGA_Test_7bcede49e6fa411198bce3bc89c69024/report.json; actual request/terms API schemas validated. District exposure and policy issue remain08-08/09."
       ],
       "runtimeStatus": "unit-sql-and-browser-verified"
     },

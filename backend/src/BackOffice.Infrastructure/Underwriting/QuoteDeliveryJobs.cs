@@ -23,8 +23,8 @@ public sealed class QuoteDeliveryJobs(IDbContextFactory<BackOfficeDbContext> fac
             {
                 var cycle = await db.Set<UnderwritingCycle>().AsNoTracking().SingleAsync(x => x.Id == delivery.CycleId, token);
                 var revision = await db.Set<QuoteRevision>().AsNoTracking().SingleAsync(x => x.Id == cycle.QuoteRevisionId, token);
-                var input = StoredRatingInput.ReadMotorTrade(cycle);
-                var eligible = await QuoteRatingEligibility.ResolveAsync(db, owned, cycle.ProductVersionId, cycle.AgencyTermsVersionId, input.Input.Term, time.GetUtcNow(), token);
+                var input = StoredRatingInput.Read(cycle);
+                var eligible = await QuoteRatingEligibility.ResolveAsync(db, owned, cycle.ProductVersionId, cycle.AgencyTermsVersionId, input.Term, time.GetUtcNow(), token);
                 var rating = await db.Set<QuoteRatingResult>().AsNoTracking().SingleOrDefaultAsync(x => x.Id == cycle.CurrentRatingId, token);
                 var held = new UnderwritingDecisionContext(owned, cycle, revision, rating, input, eligible, []);
                 held.Current(owned.Quote.RowVersion, time.GetUtcNow(), currentPrice: true); await Validate(db, held, delivery, time.GetUtcNow(), token); allowed = true;

@@ -2,6 +2,7 @@ using System.Data;
 using System.Security.Cryptography;
 using System.Text.Json;
 using BackOffice.Application;
+using BackOffice.Application.Underwriting;
 using BackOffice.Infrastructure.Identity;
 using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Platform;
@@ -40,19 +41,48 @@ public sealed class CapacityWorker(IDbContextFactory<BackOfficeDbContext> factor
             operation = new DemoProviderOperation { Kind = lease.Kind, OperationKey = lease.OperationKey, RequestHash = requestHash, ScenarioVersionId = lease.ScenarioVersionId, CreatedAt = time.GetUtcNow() };
             db.Add(operation);
         }
-        if (!existed && scenario == "transient-then-approve")
+        if (!existed && scenario is "transient-then-approve" or "cc-transient-then-approve")
         { operation.State = "transient-failed"; await db.SaveChangesAsync(token); await tx.CommitAsync(token); throw Failure(JobFailure.ProviderUnavailable); }
         using var request = JsonDocument.Parse(submission.ContextJson); var context = request.RootElement;
+        var commercial = context.TryGetProperty("productCode", out var product) && product.GetString() == "commercial-combined";
+        if (!CapacitySeed.ForProduct(scenario, commercial)) throw Failure(JobFailure.InvalidPayload);
         var dimension = BackOffice.Application.Underwriting.CapacityRules.Dimension(context.GetProperty("ruleCode").GetString()!, context.GetProperty("dimension").GetString()!);
         var targets = context.GetProperty("conditionTargetIds").EnumerateArray().Select(x => x.GetGuid()).ToArray();
         var outcome = scenario switch { "query-proof" => "query", "decline-trade" => "decline", "conditional-security" when dimension == "stock-limit" && targets.Length is > 0 and <= 20 => "approve-with-conditions",
             "conditional-security" => "query", _ when dimension == "stock-limit" => "approve", _ => "query" };
-        var approving = outcome is "approve" or "approve-with-conditions";
         var conditions = outcome == "approve-with-conditions" ? targets.Select(x => JsonSerializer.SerializeToElement(new { code = "overnight-security", premisesId = x, wordingVersion = "1" })).ToArray() : [];
+        JsonElement[] limits = outcome is "approve" or "approve-with-conditions" ? [JsonSerializer.SerializeToElement(new { dimension = "stock-limit", maximumAmount = "150000.00" })] : [];
+        if (commercial)
+        {
+            // The retained request carries only its exact authority dimension and
+            // subject. No other location or postcode book limit is expanded.
+            var requirements = context.GetProperty("requiredAuthority").GetProperty("requirements")
+                .Deserialize<UnderwritingRequirement[]>(Json) ?? [];
+            var target = context.GetProperty("targetId").ValueKind == JsonValueKind.Null ? (Guid?)null : context.GetProperty("targetId").GetGuid();
+            var requested = requirements.Where(x => x.Dimension == dimension && x.TargetId == target).Select(x => x.RequestedAmount).Max();
+            var applicable = CommercialCapacityRules.SupportedDimension(dimension) && requested is > 0 &&
+                (CommercialCapacityRules.LocationDimension(dimension) ? target is not null : target is null);
+            outcome = scenario switch { "cc-decline" => "decline", "cc-query-proof" => "query", _ when !applicable => "query",
+                "cc-conditional-proof" => "approve-with-conditions", _ => "approve" };
+            limits = [];
+            conditions = [];
+            if (outcome is "approve" or "approve-with-conditions")
+            {
+                var extent = new Dictionary<string, object> { ["dimension"] = dimension, ["maximumAmount"] = requested!.Value.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) };
+                if (target is Guid subject) extent["riskItemId"] = subject;
+                var serializedExtent = JsonSerializer.SerializeToElement(extent, Json);
+                _ = CommercialCapacityRules.Extension(serializedExtent);
+                limits = [serializedExtent];
+                if (outcome == "approve-with-conditions") conditions = [target is Guid location
+                    ? JsonSerializer.SerializeToElement(new { code = "provide-cc-location-proof", riskItemId = location })
+                    : JsonSerializer.SerializeToElement(new { code = "provide-cc-liability-proof" })];
+            }
+        }
+        var approving = outcome is "approve" or "approve-with-conditions";
         var now = time.GetUtcNow(); var startsAt = context.GetProperty("startsAt").GetDateTimeOffset();
         var definition = JsonSerializer.Serialize(new { quoteId = submission.QuoteId, cycleId = submission.CycleId, submissionId = submission.Id, submissionHash = submission.ContextHash,
             outcome, validFrom = approving ? (DateTimeOffset?)(startsAt < now ? startsAt : now) : null, validTo = approving ? (DateTimeOffset?)context.GetProperty("endsAt").GetDateTimeOffset() : null,
-            authorisedLimits = approving ? new[] { JsonSerializer.SerializeToElement(new { dimension = "stock-limit", maximumAmount = "150000.00" }) } : [], conditions }, Json);
+            authorisedLimits = limits, conditions }, Json);
         var result = new CapacityProviderOutcome(operation.Id, "capacity-" + operation.Id.ToString("N"), outcome,
             "Fictional demo provider: " + outcome + ". Scenario: " + scenario + ". Applies only to the retained submission.", now, definition);
         operation.State = "succeeded"; operation.CompletedAt = now; operation.Result = JsonSerializer.Serialize(result, Json);

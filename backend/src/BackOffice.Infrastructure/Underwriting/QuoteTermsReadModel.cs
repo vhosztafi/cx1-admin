@@ -65,14 +65,37 @@ public sealed class QuoteTermsReadModel(IDbContextFactory<BackOfficeDbContext> f
     {
         using var payload = JsonDocument.Parse(row.TermsJson); var document = payload.RootElement;
         var cycle = await db.Set<UnderwritingCycle>().AsNoTracking().SingleAsync(x => x.Id == row.CycleId, token);
-        var input = StoredRatingInput.ReadMotorTrade(cycle);
+        var input = StoredRatingInput.Read(cycle);
         var rating = await db.Set<QuoteRatingResult>().AsNoTracking().SingleAsync(x => x.Id == row.RatingId, token);
         var outcome = JsonSerializer.Deserialize<QuoteRatingOutcome>(rating.ResultJson, QuoteRatingService.Json)!;
         var revision = await db.Set<QuoteRevision>().AsNoTracking().SingleAsync(x => x.Id == cycle.QuoteRevisionId, token);
         string Money(decimal value) => value.ToString("0.00", CultureInfo.InvariantCulture);
-        var cover = new List<object> { new { code = "road-risks", limit = Money(input.Input.CoverLimits["road-risks"]), excess = Money(input.Input.Pricing.GetProperty("cover").GetProperty("excess").GetDecimal()), targetIds = Array.Empty<Guid>() } };
+        var cover = new List<object>();
+        if (input.IsCommercial)
+        {
+            var facts = input.Commercial!.Rating;
+            void Add(string code, decimal limit, Guid[] targets, string? excess = null) {
+                var item = new Dictionary<string, object> { ["code"] = code, ["limit"] = Money(limit), ["targetIds"] = targets };
+                if (excess is not null) item["excess"] = excess;
+                cover.Add(item);
+            }
+            foreach (var location in facts.Locations) Add("property", location.Buildings + location.Contents + location.Stock, [location.Id]);
+            if (facts.BiSelected) Add("business-interruption", facts.BiSumInsured, []);
+            if (facts.EmployersSelected) Add("employers-liability", facts.EmployersLimit, []);
+            if (facts.PublicLimit > 0) Add("public-liability", facts.PublicLimit, []);
+            if (facts.ProductsLimit > 0) Add("products-liability", facts.ProductsLimit, []);
+            if (facts.GoodsInTransit > 0) Add("goods-in-transit", facts.GoodsInTransit, []);
+            if (facts.Money > 0) Add("money", facts.Money, []);
+            if (facts.Glass) cover.Add(new { code = "glass", targetIds = facts.Locations.Select(x => x.Id).ToArray(), basis = "Included for the declared premises; no separate monetary limit captured" });
+            foreach (var extension in facts.Extensions) Add(extension.Code, extension.Limit, []);
+            if (facts.ContractWorks > 0) Add("contract-works", facts.ContractWorks, [], document.GetProperty("cover").GetProperty("contractWorks").GetProperty("excess").GetString());
+        }
+        else
+        {
+        cover.Add(new { code = "road-risks", limit = Money(input.Input.CoverLimits["road-risks"]), excess = Money(input.Input.Pricing.GetProperty("cover").GetProperty("excess").GetDecimal()), targetIds = Array.Empty<Guid>() });
         foreach (var section in document.GetProperty("cover").GetProperty("requestedSections").EnumerateArray().Where(x => x.GetProperty("selected").GetBoolean()))
             cover.Add(new { code = section.GetProperty("code").GetString(), limit = section.GetProperty("limit").GetString(), excess = section.GetProperty("excess").GetString(), targetIds = section.TryGetProperty("premisesIds", out var ids) ? ids.EnumerateArray().Select(x => x.GetGuid()).ToArray() : [] });
+        }
         var conditions = new List<object>(); var endorsements = new List<object>();
         foreach (var item in document.GetProperty("conditions").EnumerateArray())
         {

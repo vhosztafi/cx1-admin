@@ -8,6 +8,15 @@ namespace BackOffice.Infrastructure.Underwriting;
 
 public sealed partial class CapacityReadModel(IDbContextFactory<BackOfficeDbContext> factory, TimeProvider time)
 {
+    private static object[] CommercialBinderContext(QuoteReferral referral)
+    {
+        using var json = JsonDocument.Parse(referral.RequiredAuthorityJson);
+        var requirements = json.RootElement.GetProperty("requirements").Deserialize<BackOffice.Application.Underwriting.UnderwritingRequirement[]>(QuoteRatingService.Json) ?? [];
+        return requirements.DistinctBy(x => new { x.RuleCode, x.TargetId }).Select(x => (object)new {
+            code = x.RuleCode + (x.TargetId is Guid id ? ":" + id : ""), label = x.Dimension.Replace('-', ' '),
+            requested = x.RequestedAmount?.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) ?? "Review required",
+            binderLimit = x.AuthorisedAmount?.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) ?? "Published review authority" }).ToArray();
+    }
     public async Task<Guid> QuoteForEscalationAsync(ActorContext actor, Guid id, CancellationToken token = default)
     {
         await using var db = await factory.CreateDbContextAsync(token); await using var tx = await db.Database.BeginTransactionAsync(token);
@@ -23,10 +32,12 @@ public sealed partial class CapacityReadModel(IDbContextFactory<BackOfficeDbCont
         var cycle = await db.Set<UnderwritingCycle>().AsNoTracking().SingleAsync(x => x.Id == row.CycleId, token);
         var referral = await db.Set<QuoteReferral>().AsNoTracking().SingleAsync(x => x.Id == row.ReferralId, token);
         var rating = await db.Set<QuoteRatingResult>().AsNoTracking().SingleAsync(x => x.Id == cycle.CurrentRatingId, token);
-        var input = StoredRatingInput.ReadMotorTrade(cycle);
+        var input = StoredRatingInput.Read(cycle);
         var binder = await db.Set<BinderVersion>().AsNoTracking().SingleAsync(x => x.Id == cycle.BinderVersionId, token);
         using var binderDefinition = JsonDocument.Parse(binder.DefinitionJson);
-        var binderContext = BackOffice.Application.Underwriting.UnderwritingAuthorityView.Rows(input.Input.RiskForPremium(rating.AnnualPremium), binderDefinition.RootElement, null)
+        object binderContext = input.IsCommercial
+            ? CommercialBinderContext(referral)
+            : BackOffice.Application.Underwriting.UnderwritingAuthorityView.Rows(input.Input.RiskForPremium(rating.AnnualPremium), binderDefinition.RootElement, null)
             .Select(x => new { x.Code, x.Label, x.Requested, x.BinderLimit }).ToArray();
         var current = owned.Quote.CurrentUnderwritingCycleId == cycle.Id && owned.Quote.CurrentRevisionId == cycle.QuoteRevisionId && cycle.State == "rated" && owned.Quote.State is not ("draft" or "bound" or "withdrawn");
         var canWrite = false;
@@ -37,9 +48,11 @@ public sealed partial class CapacityReadModel(IDbContextFactory<BackOfficeDbCont
                 // A read must not upgrade the held agency/quote locks after a
                 // worker has acquired its update lock in the same scope.
                 var now = time.GetUtcNow();
-                var eligible = await QuoteRatingEligibility.ResolveAsync(db, owned, cycle.ProductVersionId, cycle.AgencyTermsVersionId, input.Input.Term, now, token);
-                var grants = await QuoteUnderwritingScope.GrantsAsync(db, owned, cycle.ProductVersionId, eligible.BinderVersion, eligible.Capture.Product.Code, input.Input.Term, now, token);
-                canWrite = owned.Scope.Agency.State == "active" && grants.Count > 0 && rating.Outcome == "rated" && rating.ExpiresAt > now &&
+                var eligible = await QuoteRatingEligibility.ResolveAsync(db, owned, cycle.ProductVersionId, cycle.AgencyTermsVersionId, input.Term, now, token);
+                var grants = await QuoteUnderwritingScope.GrantsAsync(db, owned, cycle.ProductVersionId, eligible.BinderVersion, eligible.Capture.Product.Code, input.Term, now, token);
+                var configurationCurrent = !input.IsCommercial || input.RuntimeVersionId == eligible.RuntimeVersion.Id && input.ScenarioVersionId == eligible.ScenarioVersion.Id &&
+                    input.CommissionBasisPoints == eligible.CommissionBasisPoints && input.MinimumPremium == eligible.MinimumPremium;
+                canWrite = configurationCurrent && owned.Scope.Agency.State == "active" && grants.Count > 0 && rating.Outcome == "rated" && rating.ExpiresAt > now &&
                     eligible.RatingVersion.Id == cycle.RatingRuleVersionId && eligible.BinderVersion.Id == cycle.BinderVersionId && eligible.AuthorityVersion.Id == cycle.AuthorityVersionId &&
                     await db.Set<CapacityProvider>().AnyAsync(x => x.Id == row.ProviderId && x.State == "active", token);
             }
@@ -62,6 +75,7 @@ public sealed partial class CapacityReadModel(IDbContextFactory<BackOfficeDbCont
                 canRevise = current && owned.Scope.Actor.HasCapability("quote-revise") },
             ["blockers"] = current ? Array.Empty<object>() : new object[] { new { code = "underwriting-cycle-stale", message = "This request belongs to an earlier quote cycle." } }
         };
+        if (referral.RiskItemId is Guid riskItemId) result["riskItemId"] = riskItemId;
         if (referral.AssignedUserId is Guid assignee) result["assignedUserLabel"] = await db.Set<StaffUser>().Where(x => x.Id == assignee).Select(x => x.DisplayName).SingleAsync(token);
         if (row.CurrentSubmissionId is Guid submissionId)
         {
@@ -76,7 +90,7 @@ public sealed partial class CapacityReadModel(IDbContextFactory<BackOfficeDbCont
         else result["attemptHistory"] = Array.Empty<object>();
         if (row.CurrentResponseId is Guid responseId) result["currentResponseId"] = responseId;
         var scenarios = await db.Set<SettingVersion>().AsNoTracking().Where(x => x.Scope.StartsWith("capacity-escalation/") && x.EffectiveFrom <= time.GetUtcNow()).ToArrayAsync(token);
-        result["scenarios"] = scenarios.GroupBy(x => x.Scope).Select(x => x.OrderByDescending(s => s.Version).First()).Where(x => CapacitySeed.Parse(x) is not null)
+        result["scenarios"] = scenarios.GroupBy(x => x.Scope).Select(x => x.OrderByDescending(s => s.Version).First()).Where(x => CapacitySeed.Parse(x) is { } parsed && CapacitySeed.ForProduct(parsed.Scenario, input.IsCommercial))
             .OrderBy(x => x.Scope, StringComparer.Ordinal).Select(x => new { id = x.Id, label = "Demo: " + CapacitySeed.Parse(x)!.Value.Scenario.Replace('-', ' '), version = x.Version }).ToArray();
         var messages = await db.Set<CapacityMessage>().AsNoTracking().Where(x => x.EscalationId == id).OrderByDescending(x => x.Sequence).Take(100).ToArrayAsync(token);
         var history = new List<object>(); foreach (var message in messages) history.Add(await Message(db, message, token)); result["messages"] = history;

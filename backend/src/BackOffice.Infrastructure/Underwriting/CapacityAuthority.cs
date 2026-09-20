@@ -16,10 +16,7 @@ internal static class CapacityAuthority
         {
             using var commercialProposal = JsonDocument.Parse(held.Revision.ProposalJson);
             var premium = held.Rating?.AnnualPremium ?? throw new BackOffice.Infrastructure.Quotes.QuoteOperationException(409, "quote-rating-required");
-            // Internal authority cannot grant a carrier exception. CC carrier
-            // response applicability is implemented separately in 08-07.
-            return CommercialReferralRules.AssessAuthority(authority, commercialProposal.RootElement, premium).Count == 0 &&
-                CommercialReferralRules.AssessAuthority(held.Eligible.Binder, commercialProposal.RootElement, premium).Count == 0;
+            return await AllowsCommercial(db, held, authority, commercialProposal.RootElement, premium, now, token);
         }
         var blockers = ReferralRules.AuthorityBlockers(authority, held.Eligible.Binder, held.Risk, conditions);
         if (blockers.Count == 0) return true;
@@ -56,6 +53,44 @@ internal static class CapacityAuthority
                     dimension == "trade-restriction" ? blocker.RuleCode : null), now))) return false;
         }
         return true;
+    }
+    private static async Task<bool> AllowsCommercial(BackOfficeDbContext db, UnderwritingDecisionContext held,
+        JsonElement authority, JsonElement proposal, decimal premium, DateTimeOffset now, CancellationToken token)
+    {
+        var blockers = CommercialReferralRules.AssessAuthority(authority, proposal, premium)
+            .Concat(CommercialReferralRules.AssessAuthority(held.Eligible.Binder, proposal, premium)).Distinct().ToArray();
+        if (blockers.Length == 0) return true;
+        // Documentary conditions and carrier correspondence cannot extend appetite
+        // or confer an internal review permission absent from the staff grant.
+        if (blockers.Any(x => !CommercialCapacityRules.SupportedDimension(x.Dimension) || x.RequestedAmount is null)) return false;
+        var responses = await (from e in db.Set<CapacityEscalation>().AsNoTracking()
+                               join s in db.Set<CapacitySubmission>().AsNoTracking() on e.CurrentSubmissionId equals s.Id
+                               join m in db.Set<CapacityMessage>().AsNoTracking() on e.CurrentResponseId equals m.Id
+                               join r in db.Set<QuoteReferral>().AsNoTracking() on e.ReferralId equals r.Id
+                               join p in db.Set<CapacityProvider>().AsNoTracking() on e.ProviderId equals p.Id
+                               where e.QuoteId == held.Cycle.QuoteId && e.CycleId == held.Cycle.Id && e.BinderVersionId == held.Cycle.BinderVersionId &&
+                                   p.State == "active" && (e.State == "approved" || e.State == "conditional") && m.SubmissionId == s.Id && m.ApplicationState == "applied" &&
+                                   (m.Outcome == "approve" || m.Outcome == "approve-with-conditions")
+                               select new { Submission = s, Message = m, Referral = r }).ToArrayAsync(token);
+        var eligible = new List<(CapacitySubmission Submission, QuoteReferral Referral, CommercialCapacityDecision Decision)>();
+        foreach (var item in responses)
+        {
+            if (!await SubmissionEvidenceCurrent(db, item.Submission.Id, token) ||
+                item.Message.Provenance == "supplied-response" && !await ProofCurrent(db, item.Message, token)) continue;
+            using var document = JsonDocument.Parse(item.Message.DefinitionJson); var value = document.RootElement;
+            try
+            {
+                var decision = new CommercialCapacityDecision(value.GetProperty("quoteId").GetGuid(), value.GetProperty("cycleId").GetGuid(),
+                    value.GetProperty("submissionId").GetGuid(), value.GetProperty("submissionHash").GetString()!, value.GetProperty("outcome").GetString()!,
+                    value.GetProperty("validFrom").GetDateTimeOffset(), value.GetProperty("validTo").GetDateTimeOffset(),
+                    value.GetProperty("authorisedLimits").EnumerateArray().Select(CommercialCapacityRules.Extension).ToArray());
+                eligible.Add((item.Submission, item.Referral, decision));
+            }
+            catch (ArgumentException) { /* An incompatible historic extent conveys no CC authority. */ }
+        }
+        return blockers.All(blocker => eligible.Any(x => x.Referral.Dimension == blocker.Dimension && x.Referral.RiskItemId == blocker.TargetId &&
+            CommercialCapacityRules.Applies(x.Decision, new(held.Cycle.QuoteId, held.Cycle.Id, x.Submission.Id, x.Submission.ContextHash,
+                held.Cycle.StartsAt, held.Cycle.EndsAt, blocker.Dimension, blocker.RequestedAmount!.Value, blocker.TargetId), now)));
     }
     internal static async Task<bool> HasBlockingRequest(BackOfficeDbContext db, UnderwritingDecisionContext held, Guid referralId, DateTimeOffset now, CancellationToken token)
     {

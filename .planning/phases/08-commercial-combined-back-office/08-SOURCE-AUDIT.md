@@ -31,3 +31,9 @@ Policy sample values—£3.18m TSI,£1.94m MEL,14 S9 risks and£15.82m headroom�
 08-02..07 must implement all captured inputs, readiness branches and underwriting evidence.08-08..14 must prove projection/issue/history/servicing against actual SQL and browsers.08-15 delivers exact-version operational payloads.08-16 checks every ledger row against behavior/evidence, including all298 display items and7 supplementary fields; no reclassification may hide missing Phase8 functionality.
 
 The prototype servicing-owner display has no dedicated owner field in the current shared policy model.08-10 must show an honest unassigned state until explicit assignment exists; it must not relabel CreatedBy as servicing owner. General assignment/task operations remain Phase9. This is a display-state decision, not permission to insert a fictional owner.
+
+## 08-07 carrier and quotation evidence
+
+Carrier authority and quotation progression extend the shared Phase6 workflows to CC. AU-05/AU-06 retain their source ownership in08-06 and now have additional07 evidence for exact location permissions. The existing six source-document controls were actually reviewed in the complete browser/API journey; no denominator or future policy/control ownership was changed. Status is capture/rating/referral/evidence/carrier/terms verified, issue pending. Dated postcode book checks and atomic issue remain08-08/09.
+
+Final browser/SQL evidence: .local/browser-evidence/commercial-capture/CoverMGA_Test_7bcede49e6fa411198bce3bc89c69024/report.json. Capture109, two locations/wages, actual carrier submissions, scoped proof, internal decision, UI delivered/accepted terms and current API schemas passed. Strict44 backend cases include4 real SQL and no skips;162 web,382 root and current changed-contract/source checks passed. See08-07-REVIEW and SUMMARY for exact paths and scope. No human UAT claim.

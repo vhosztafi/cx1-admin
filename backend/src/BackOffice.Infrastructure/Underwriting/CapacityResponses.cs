@@ -54,15 +54,30 @@ public sealed partial class CapacityService
                 var purpose = (await UnderwritingEvidenceService.Requirements(db, held.Cycle, held.Revision, held.Input, ct)).SingleOrDefault(x => x.CapacitySubmissionId == submission.Id);
                 if (purpose is null || proof!.CapacitySubmissionId != submission.Id || proof.RequirementCode != "capacity-response" ||
                     proof.InputFingerprint != purpose.InputFingerprint || proof.WithdrawnEventId is not null || proof.LatestReviewId is null ||
-                    !await db.Set<UnderwritingEvidenceEvent>().AnyAsync(x => x.Id == proof.LatestReviewId && x.AssociationId == proof.Id && x.Kind == "review" && x.Outcome == "accepted", ct))
+                    !await db.Set<UnderwritingEvidenceEvent>().AnyAsync(x => x.Id == proof.LatestReviewId && x.AssociationId == proof.Id && x.Kind == "review" && x.Outcome == "accepted", ct) ||
+                    !await db.Set<QuoteEvidenceFile>().AnyAsync(x => x.Id == proof.FileId && x.ScreeningState == "accepted", ct))
                     throw new QuoteOperationException(409, "capacity-response-proof-required");
                 using var proposal = JsonDocument.Parse(held.Revision.ProposalJson);
-                CapacityExtension[] extensions;
-                try { extensions = response.AuthorisedLimits.Select(CapacityRules.Extension).ToArray(); conditions = response.Conditions.Select(x => ReferralRules.Condition(x, proposal.RootElement)).ToArray(); }
+                bool extentValid;
+                try
+                {
+                    conditions = response.Conditions.Select(x => ReferralRules.Condition(x, proposal.RootElement)).ToArray();
+                    if (held.Input.IsCommercial)
+                    {
+                        var extensions = response.AuthorisedLimits.Select(CommercialCapacityRules.Extension).ToArray();
+                        extentValid = extensions.All(x => x.Dimension == referral!.Dimension && x.RiskItemId == referral.RiskItemId) &&
+                            extensions.Select(x => (x.Dimension, x.RiskItemId)).Distinct().Count() == extensions.Length;
+                    }
+                    else
+                    {
+                        var extensions = response.AuthorisedLimits.Select(CapacityRules.Extension).ToArray();
+                        var dimension = CapacityRules.Dimension(referral!.RuleCode, referral.Dimension);
+                        extentValid = extensions.All(x => x.Dimension == dimension && (x.Dimension != "trade-restriction" || x.QuestionId == referral.RuleCode)) &&
+                            extensions.Select(x => x.Dimension).Distinct().Count() == extensions.Length;
+                    }
+                }
                 catch (ArgumentException) { throw new QuoteOperationException(422, "capacity-response-definition"); }
-                var dimension = CapacityRules.Dimension(referral!.RuleCode, referral.Dimension);
-                if (extensions.Any(x => x.Dimension != dimension || x.Dimension == "trade-restriction" && x.QuestionId != referral.RuleCode) ||
-                    extensions.Select(x => x.Dimension).Distinct().Count() != extensions.Length || conditions.Select(x => x.DefinitionJson).Distinct().Count() != conditions.Length)
+                if (!extentValid || conditions.Select(x => x.DefinitionJson).Distinct().Count() != conditions.Length)
                     throw new QuoteOperationException(422, "capacity-response-extent");
                 foreach (var signed in conditions.Where(x => x.TermsVersionId is not null))
                 {
@@ -72,7 +87,7 @@ public sealed partial class CapacityService
                 var definition = JsonSerializer.Serialize(new { quoteId, cycleId, submissionId = submission.Id, submissionHash = submission.ContextHash,
                     outcome = response.Outcome, validFrom = response.ValidFrom, validTo = response.ValidTo, authorisedLimits = response.AuthorisedLimits, conditions = response.Conditions }, QuoteRatingService.Json);
                 var message = new CapacityMessage { QuoteId = quoteId, CycleId = cycleId, EscalationId = escalationId, SubmissionId = submission.Id,
-                    ReferralId = referral.Id, ProviderId = escalation.ProviderId, Sequence = await NextMessage(db, escalationId, ct), Direction = "inbound", Provenance = "supplied-response",
+                    ReferralId = referral!.Id, ProviderId = escalation.ProviderId, Sequence = await NextMessage(db, escalationId, ct), Direction = "inbound", Provenance = "supplied-response",
                     Outcome = response.Outcome, ProviderUnderwriter = response.ProviderUnderwriter, ProviderReference = response.ProviderReference, Body = response.Body,
                     DefinitionJson = definition, EvidenceAssociationId = proof.Id, EvidenceReviewId = proof.LatestReviewId, ReceivedAt = response.ReceivedAt,
                     RecordedAt = now, RecordedBy = actor.UserId, CreatedAt = now, CreatedBy = actor.UserId };

@@ -7,10 +7,12 @@ namespace BackOffice.Infrastructure.Underwriting;
 public static class CapacitySeed
 {
     public static readonly IReadOnlyList<string> Scenarios = ["approve-stock-150000", "conditional-security", "query-proof", "decline-trade", "transient-then-approve", "conflicting-duplicate"];
+    public static readonly IReadOnlyList<string> CommercialScenarios = ["cc-approve-requested", "cc-conditional-proof", "cc-query-proof", "cc-decline", "cc-transient-then-approve"];
+    internal static bool ForProduct(string scenario, bool commercial) => (commercial ? CommercialScenarios : Scenarios).Contains(scenario);
     public static async Task SeedAsync(BackOfficeDbContext db, CancellationToken token = default)
     {
         if (db.Database.CurrentTransaction is null) throw new InvalidOperationException("Capacity seed requires held initialization.");
-        foreach (var scenario in Scenarios)
+        foreach (var scenario in Scenarios.Concat(CommercialScenarios))
         {
             var scope = "capacity-escalation/" + scenario;
             var existing = await db.Set<SettingVersion>().Where(x => x.Scope == scope).ToArrayAsync(token);
@@ -33,7 +35,7 @@ public static class CapacitySeed
             if (fields.Length != 5 || fields.Distinct().Count() != 5 || fields.Except(["demo", "kind", "schemaVersion", "scenario", deadlineField]).Any() ||
                 root.GetProperty("demo").ValueKind != JsonValueKind.True || root.GetProperty("kind").GetString() != "capacity-escalation" || (!legacy && root.GetProperty("schemaVersion").GetString() != "2")) return null;
             var scenario = root.GetProperty("scenario").GetString(); var duration = root.GetProperty(deadlineField).GetInt32();
-            return scenario is not null && Scenarios.Contains(scenario) && row.Scope == "capacity-escalation/" + scenario && duration >= 1 && duration <= (legacy ? 168 : 10)
+            return scenario is not null && (Scenarios.Contains(scenario) || CommercialScenarios.Contains(scenario)) && row.Scope == "capacity-escalation/" + scenario && duration >= 1 && duration <= (legacy ? 168 : 10)
                 ? (scenario, legacy ? duration : null, legacy ? null : duration) : null;
         }
         catch (Exception error) when (error is JsonException or InvalidOperationException or KeyNotFoundException or FormatException) { return null; }

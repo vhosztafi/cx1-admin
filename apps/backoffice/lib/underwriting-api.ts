@@ -34,7 +34,7 @@ export type EvidenceEvent = { id: string; kind: string; outcome?: string; reason
 export type QuotationTerms = {
   id: string; quoteId: string; cycleId: string; revisionId: string; ratingId: string; number: number;
   termsHash: string; assuranceHashAtPreparation: string; templateVersionId: string; preparedAt: string; preparedBy: string;
-  cover: { code: string; limit: string; excess: string; targetIds: string[] }[];
+  cover: { code: string; limit?: string; basis?: string; excess?: string; targetIds: string[] }[];
   endorsements: { code: string; version: string; wording: string; decisionId: string; targetIds: string[] }[];
   conditions: ReferralCondition[]; rating: UnderwritingRating; agencyTermsVersionId: string;
   settlement: { collector: string; mode: string; commissionRateBps: number; feeShareBps: number }; documentState: 'structured-payload';

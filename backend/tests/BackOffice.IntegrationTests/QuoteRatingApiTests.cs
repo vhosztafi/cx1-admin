@@ -43,7 +43,7 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Equal(commercial ? "v3" : "v2", assessment.GetProperty("productVersionLabel").GetString());
         Assert.False(string.IsNullOrWhiteSpace(assessment.GetProperty("providerLabel").GetString()));
         Assert.True(assessment.GetProperty("createdAt").GetDateTimeOffset() > DateTimeOffset.MinValue);
-        Assert.Contains(assessment.GetProperty("blockers").EnumerateArray(), x => commercial ? x.GetProperty("code").GetString() == "commercial-terms-progression-pending" : x.GetProperty("code").GetString()!.StartsWith("evidence-review-required-", StringComparison.Ordinal));
+        Assert.Contains(assessment.GetProperty("blockers").EnumerateArray(), x => commercial ? x.GetProperty("code").GetString() == "commercial-issue-progression-pending" : x.GetProperty("code").GetString()!.StartsWith("evidence-review-required-", StringComparison.Ordinal));
         using var price = await client.GetAsync($"/api/v1/ratings/{ratingId:D}"); price.EnsureSuccessStatusCode(); Assert.True(price.Headers.CacheControl!.NoStore);
         var result = await price.Content.ReadFromJsonAsync<JsonElement>(); Assert.Equal(expectedPremium, result.GetProperty("annualPremium").GetString()); Assert.True(result.GetProperty("applicable").GetBoolean());
         Assert.Equal(revisionId, result.GetProperty("revisionId").GetGuid()); Assert.Equal(quoteId, result.GetProperty("quoteId").GetGuid());

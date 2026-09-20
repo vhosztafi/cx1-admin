@@ -1,11 +1,11 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
-import type { QuoteView } from '../../lib/quotes';
+import type { QuoteView, QuoteCaptureProposal } from '../../lib/quotes';
 import type { UnderwritingAssessment, UnderwritingEvidence as Evidence, ConditionDefinition } from '../../lib/underwriting-api';
 import { formatGbp } from '../../lib/underwriting-api';
-import { capacityDimension, capacityExtension, capacityInstant, type CapacityView, type CapacityMessage } from '../../lib/capacity';
-import { underwritingWrite, proofMatches, conditionLabels } from '../../lib/underwriting-decisions';
+import { commercialCapacityDimensions, commercialCapacityExtension, capacityDimension, capacityExtension, capacityInstant, type CapacityView, type CapacityMessage } from '../../lib/capacity';
+import { underwritingWrite, proofMatches, conditionLabels, riskTargetLabel } from '../../lib/underwriting-decisions';
 import { LoadFeedback, useQuoteResource } from '../quotes/shared';
 import { Panel, Status } from '../primitives';
 import { DecisionCommand, type DecisionRequest } from './decision-command';
@@ -22,7 +22,7 @@ export function CapacityEscalation({ id, actorId }: { id: string; actorId: strin
   return <CapacityWorkspace key={`${record.data.etag}:${record.data.quoteEtag}:${readGeneration}`} view={record.data} actorId={actorId} reload={reload} />;
 }
 function CapacityWorkspace({ view, actorId, reload }: { view: CapacityView; actorId: string; reload: () => void }) {
-  const quote = useQuoteResource<QuoteView>(`/api/v1/quotes/${view.quoteId}`);
+  const quote = useQuoteResource<QuoteView<QuoteCaptureProposal>>(`/api/v1/quotes/${view.quoteId}`);
   const assessment = useQuoteResource<UnderwritingAssessment>(`/api/v1/quotes/${view.quoteId}/underwriting`);
   const job = useQuoteResource<{ id: string; state: string; attempts: number; attemptLimit: number; retryAllowed: boolean }>(view.jobId ? `/api/v1/jobs/${view.jobId}` : null);
   const [recoveryReason, setRecoveryReason] = useState('');
@@ -34,7 +34,7 @@ function CapacityWorkspace({ view, actorId, reload }: { view: CapacityView; acto
   const coherent = !!quote.data && !!assessment.data && view.current && quote.data.revisionId === view.revisionId && assessment.data.context?.cycleId === view.cycleId && assessment.data.quoteEtag === view.quoteEtag;
   return <div className="underwriting-workspace capacity-workspace">
     <div className="page-heading"><div><p className="quote-step-label">Underwriting · Capacity</p><h1>Capacity escalation</h1><p>{view.providerLabel} · {view.ruleCode}</p></div><Link className="button" href={`/quotes/${view.quoteId}`}>Back to quote{quote.data ? ` ${quote.data.reference}` : ''}</Link></div>
-    <section className="quote-saved-banner"><div><h2>{quote.data?.clientName ?? view.providerLabel}</h2><p>{view.reason}</p></div><Status tone={view.state === 'approved' ? 'success' : view.state === 'declined' || view.state === 'failed' ? 'error' : 'warning'}>{view.state.replaceAll('-', ' ')}</Status></section>
+    <section className="quote-saved-banner"><div><h2>{quote.data?.clientName ?? view.providerLabel}</h2><p>{view.reason}</p>{view.riskItemId && quote.data && <p>Request subject: {riskTargetLabel(quote.data.proposal, view.riskItemId)}</p>}</div><Status tone={view.state === 'approved' ? 'success' : view.state === 'declined' || view.state === 'failed' ? 'error' : 'warning'}>{view.state.replaceAll('-', ' ')}</Status></section>
     {!view.current && <p role="status" className="quote-selected">Historical request. Its correspondence is retained; actions use the current quote cycle.</p>}
     {view.conflictCount > 0 && <p role="status" className="quote-selected">{view.conflictCount} conflicting provider event quarantined. The original response remains recorded.</p>}
     <div role="tablist" aria-label="Capacity sections" className="quote-row-actions quote-record-tabs"><button className="button" role="tab" aria-selected={tab === 'escalation'} onClick={() => setTab('escalation')}>Escalation</button><button className="button" role="tab" aria-selected={tab === 'authority'} onClick={() => setTab('authority')}>Authority context</button></div>
@@ -45,7 +45,7 @@ function CapacityWorkspace({ view, actorId, reload }: { view: CapacityView; acto
           {view.state === 'queued' && <p role="status">Submission queued for the demo provider. A queued request is not a recorded response. Refresh to check progress.</p>}
           {!messages.data ? <LoadFeedback error={messages.error} retry={messages.refresh} /> : <>{!messages.data.items.length && <p>No correspondence yet. Prepare the first submission below.</p>}{messages.data.items.map(message => <article className="quote-driver-card capacity-message" key={message.id}><div className="capacity-message-heading"><strong>{message.direction === 'outbound' ? 'Submitted request' : message.outcome?.replaceAll('-', ' ')}</strong><Status tone={message.applicationState === 'superseded' ? 'warning' : 'info'}>{message.provenance.replaceAll('-', ' ')}</Status></div><p className="client-help">{date(message.recordedAt)} · {message.recordedByLabel}{message.applicationState === 'superseded' ? ' · Retained, not applied' : ''}</p><p className="capacity-correspondence">{message.body}</p>
             {message.providerUnderwriter && <p>{message.providerUnderwriter} · {message.providerReference} · Received {date(message.receivedAt)}</p>}
-            {message.authorisedLimits?.map((limit, index) => <p key={index}><strong>{limit.dimension.replaceAll('-', ' ')}:</strong> {limit.maximumAmount ? formatGbp(limit.maximumAmount) : limit.dimension === 'driver-age' ? `${limit.minimumAge}–${limit.maximumAge} years` : `Permission for ${limit.questionId}`}</p>)}
+            {message.authorisedLimits?.map((limit, index) => <p key={index}><strong>{limit.dimension.replaceAll('-', ' ')}{limit.riskItemId && quote.data ? ` · ${riskTargetLabel(quote.data.proposal, limit.riskItemId)}` : ''}:</strong> {limit.maximumAmount ? formatGbp(limit.maximumAmount) : limit.dimension === 'driver-age' ? `${limit.minimumAge}–${limit.maximumAge} years` : `Permission for ${limit.questionId}`}</p>)}
             {message.validFrom && <p>Valid {date(message.validFrom)} to {date(message.validTo)}</p>}{message.conditions?.map((condition, index) => <p key={index}>Condition: {conditionLabels[condition.code] ?? condition.code}</p>)}
           </article>)}<div className="quote-row-actions"><button className="button" disabled={!messageCursor} onClick={() => setMessageCursor('')}>Latest correspondence</button><button className="button" disabled={!messages.data.nextCursor} onClick={() => setMessageCursor(messages.data!.nextCursor!)}>Older correspondence</button></div></>}
         </div></Panel>
@@ -78,20 +78,21 @@ function CapacitySend({ view, assessment, evidence, run }: { view: CapacityView;
   </fieldset>{!view.capabilities.canSend && <p className="client-help">A current request, rating and underwriting authority are required. A queued request must finish before another submission.</p>}</div></Panel>;
 }
 
-function CapacityResponse({ view, quote, assessment, evidence, run }: { view: CapacityView; quote: QuoteView; assessment: UnderwritingAssessment; evidence: Evidence[]; run: (request: DecisionRequest) => void }) {
+function CapacityResponse({ view, quote, assessment, evidence, run }: { view: CapacityView; quote: QuoteView<QuoteCaptureProposal>; assessment: UnderwritingAssessment; evidence: Evidence[]; run: (request: DecisionRequest) => void }) {
   const [outcome, setOutcome] = useState('query'), [underwriter, setUnderwriter] = useState(''), [reference, setReference] = useState(''), [body, setBody] = useState(''), [received, setReceived] = useState('');
   const [from, setFrom] = useState(''), [to, setTo] = useState(''), [amount, setAmount] = useState(''), [minimum, setMinimum] = useState(''), [maximum, setMaximum] = useState(''), [proof, setProof] = useState('');
   const [conditions, setConditions] = useState<ConditionDefinition[]>([]), [error, setError] = useState('');
   const purpose = assessment.proofRequirements.find(x => x.capacitySubmissionId === view.currentSubmissionId && x.code === 'capacity-response');
   const proofs = purpose ? evidence.filter(x => proofMatches(x, purpose, view.cycleId)) : [];
   const approving = outcome === 'approve' || outcome === 'approve-with-conditions', dimension = capacityDimension(view.ruleCode, view.dimension);
-  const extensible = ['premium-limit','stock-limit','vehicle-limit','tools-limit','premises-limit','driver-age','trade-restriction'].includes(dimension);
+  const commercial = quote.proposal.productCode === 'commercial-combined';
+  const extensible = commercial ? commercialCapacityDimensions.includes(dimension) : ['premium-limit','stock-limit','vehicle-limit','tools-limit','premises-limit','driver-age','trade-restriction'].includes(dimension);
   function record() {
     try {
       if (!view.currentSubmissionId || !view.submissionHash || !proofs.some(x => x.id === proof)) throw new Error('Select reviewed proof for this exact submission.');
       const response = { cycleId: view.cycleId, escalationEtag: view.etag, submissionId: view.currentSubmissionId, submissionHash: view.submissionHash,
         outcome, providerUnderwriter: underwriter, providerReference: reference, body, receivedAt: capacityInstant(received), evidenceAssociationId: proof,
-        ...(approving ? { validFrom: capacityInstant(from), validTo: capacityInstant(to), authorisedLimits: [capacityExtension(view.ruleCode, view.dimension, { maximumAmount: amount, minimumAge: minimum, maximumAge: maximum })] } : {}),
+        ...(approving ? { validFrom: capacityInstant(from), validTo: capacityInstant(to), authorisedLimits: [commercial ? commercialCapacityExtension(view.dimension, amount, view.riskItemId) : capacityExtension(view.ruleCode, view.dimension, { maximumAmount: amount, minimumAge: minimum, maximumAge: maximum })] } : {}),
         ...(outcome === 'approve-with-conditions' ? { conditions } : {}) };
       setError(''); run({ command: underwritingWrite(view.quoteId, `/api/v1/escalations/${view.id}/responses`, view.quoteEtag, response), label: 'Record supplied response', description: `${underwriter} · ${reference} · ${outcome.replaceAll('-', ' ')}` });
     } catch (failure) { setError(failure instanceof Error ? failure.message : 'Review the response.'); }

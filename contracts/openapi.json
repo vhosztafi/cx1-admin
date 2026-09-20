@@ -116741,6 +116741,69 @@
           }
         ]
       },
+      "QuoteCapacityExtension": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/UnderwritingCapacityExtension"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "dimension": {
+                "type": "string",
+                "enum": [
+                  "single-location",
+                  "maximum-estimated-loss"
+                ]
+              },
+              "maximumAmount": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$",
+                "not": {
+                  "const": "0.00"
+                }
+              },
+              "riskItemId": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "dimension",
+              "maximumAmount",
+              "riskItemId"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "dimension": {
+                "type": "string",
+                "enum": [
+                  "employers-liability",
+                  "public-liability",
+                  "products-liability",
+                  "business-interruption",
+                  "contract-works"
+                ]
+              },
+              "maximumAmount": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$",
+                "not": {
+                  "const": "0.00"
+                }
+              }
+            },
+            "required": [
+              "dimension",
+              "maximumAmount"
+            ]
+          }
+        ]
+      },
       "UnderwritingCapacityResponseRequest": {
         "oneOf": [
           {
@@ -116804,7 +116867,7 @@
               "authorisedLimits": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/UnderwritingCapacityExtension"
+                  "$ref": "#/components/schemas/QuoteCapacityExtension"
                 },
                 "minItems": 0,
                 "maxItems": 20,
@@ -116888,7 +116951,7 @@
               "authorisedLimits": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/UnderwritingCapacityExtension"
+                  "$ref": "#/components/schemas/QuoteCapacityExtension"
                 },
                 "minItems": 0,
                 "maxItems": 20,
@@ -117159,7 +117222,7 @@
           "authorisedLimits": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/UnderwritingCapacityExtension"
+              "$ref": "#/components/schemas/QuoteCapacityExtension"
             },
             "minItems": 0,
             "maxItems": 20,
@@ -117345,6 +117408,10 @@
             "pattern": "^[a-f0-9]{64}$"
           },
           "referralId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "riskItemId": {
             "type": "string",
             "format": "uuid"
           },
@@ -117948,42 +118015,123 @@
         ]
       },
       "UnderwritingTermCover": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "code": {
-            "type": "string",
-            "enum": [
-              "road-risks",
-              "stock-custody",
-              "premises",
-              "tools-equipment"
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "road-risks",
+                  "stock-custody",
+                  "premises",
+                  "tools-equipment"
+                ]
+              },
+              "limit": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+              },
+              "excess": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+              },
+              "targetIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "minItems": 0,
+                "maxItems": 100,
+                "uniqueItems": true
+              }
+            },
+            "required": [
+              "code",
+              "limit",
+              "excess",
+              "targetIds"
             ]
           },
-          "limit": {
-            "type": "string",
-            "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
-          },
-          "excess": {
-            "type": "string",
-            "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
-          },
-          "targetIds": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uuid"
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "property",
+                  "business-interruption",
+                  "employers-liability",
+                  "public-liability",
+                  "products-liability",
+                  "goods-in-transit",
+                  "money",
+                  "contract-works",
+                  "unspecified-suppliers",
+                  "named-suppliers",
+                  "named-customers",
+                  "denial-of-access",
+                  "loss-of-attraction"
+                ]
+              },
+              "limit": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+              },
+              "excess": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+              },
+              "targetIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "minItems": 0,
+                "maxItems": 100,
+                "uniqueItems": true
+              }
             },
-            "minItems": 0,
-            "maxItems": 100,
-            "uniqueItems": true
+            "required": [
+              "code",
+              "limit",
+              "targetIds"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "const": "glass"
+              },
+              "targetIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "minItems": 0,
+                "maxItems": 100,
+                "uniqueItems": true
+              },
+              "basis": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "code",
+              "targetIds",
+              "basis"
+            ]
           }
-        },
-        "required": [
-          "code",
-          "limit",
-          "excess",
-          "targetIds"
         ]
       },
       "UnderwritingEndorsement": {
@@ -118089,7 +118237,7 @@
               "$ref": "#/components/schemas/UnderwritingTermCover"
             },
             "minItems": 1,
-            "maxItems": 20,
+            "maxItems": 120,
             "uniqueItems": true
           },
           "endorsements": {

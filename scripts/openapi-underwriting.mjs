@@ -54,20 +54,24 @@ export function addUnderwritingContracts({schemas:s,ref:r,operation:op,paths}){
     o({dimension:{const:'driver-age'},minimumAge:{type:'integer',minimum:16,maximum:100},maximumAge:{type:'integer',minimum:16,maximum:100}}),
     o({dimension:{const:'trade-restriction'},questionId:t(100),permitted:{const:true}}),
   ]};
+  s.QuoteCapacityExtension={oneOf:[r('UnderwritingCapacityExtension'),
+    o({dimension:e('single-location','maximum-estimated-loss'),maximumAmount:positiveMoney,riskItemId:id}),
+    o({dimension:e('employers-liability','public-liability','products-liability','business-interruption','contract-works'),maximumAmount:positiveMoney}),
+  ]};
   const supplied={...commandContext,escalationEtag:etag,submissionId:id,submissionHash:hash,providerUnderwriter:t(),providerReference:t(100),body:t(8000),receivedAt:instant,evidenceAssociationId:id};
   s.UnderwritingCapacityResponseRequest={oneOf:['approve','approve-with-conditions','query','decline'].map(outcome=>o({
     ...supplied,outcome:{const:outcome},
-    ...(['approve','approve-with-conditions'].includes(outcome)?{validFrom:instant,validTo:instant,authorisedLimits:many(r('UnderwritingCapacityExtension'),20)}:{}),
+    ...(['approve','approve-with-conditions'].includes(outcome)?{validFrom:instant,validTo:instant,authorisedLimits:many(r('QuoteCapacityExtension'),20)}:{}),
     ...(outcome==='approve-with-conditions'?{conditions:many(r('UnderwritingConditionWrite'),20,1)}:{}),
   }))};
   s.UnderwritingCapacityMessage=o({id,escalationId:id,submissionId:id,submissionHash:hash,direction:e('outbound','inbound'),provenance:e('staff-submission','demo-provider','supplied-response'),body:t(8000),recordedAt:instant,receivedAt:instant,applicationState:e('applied','superseded'),recordedByLabel:t(),decisionId:id,
-    providerUnderwriter:t(),providerReference:t(100),outcome:e('approve','approve-with-conditions','query','decline'),validFrom:instant,validTo:instant,evidenceAssociationId:id,providerEventId:t(100),authorisedLimits:many(r('UnderwritingCapacityExtension'),20),conditions:many(r('UnderwritingConditionWrite'),20)},['id','escalationId','submissionId','submissionHash','direction','provenance','body','recordedAt']);
+    providerUnderwriter:t(),providerReference:t(100),outcome:e('approve','approve-with-conditions','query','decline'),validFrom:instant,validTo:instant,evidenceAssociationId:id,providerEventId:t(100),authorisedLimits:many(r('QuoteCapacityExtension'),20),conditions:many(r('UnderwritingConditionWrite'),20)},['id','escalationId','submissionId','submissionHash','direction','provenance','body','recordedAt']);
   s.UnderwritingCapacityScenario=o({id,label:t(),version:{type:'integer',minimum:1}});
   s.UnderwritingCapacityAttempt=o({number:{type:'integer',minimum:1,maximum:18},startedAt:instant,endedAt:instant,outcome:t(30),errorCode:t(100)},['number','startedAt','outcome']);
   s.UnderwritingCapacityActionRequest={oneOf:[
     o({...commandContext,escalationEtag:etag,action:e('withdraw','reopen'),reason}),
     o({...commandContext,escalationEtag:etag,action:{const:'assign'},assignedUserId:id,reason})]};
-  s.UnderwritingEscalationView=o({id,...context,referralId:id,providerId:id,binderVersionId:id,etag,quoteEtag:etag,state:e('draft','queued','sent','queried','approved','conditional','declined','superseded','failed'),
+  s.UnderwritingEscalationView=o({id,...context,referralId:id,riskItemId:id,providerId:id,binderVersionId:id,etag,quoteEtag:etag,state:e('draft','queued','sent','queried','approved','conditional','declined','superseded','failed'),
     binderContext:many(o({code:t(100),label:t(200),requested:t(200),binderLimit:t(200)}),1000),current:bool,reason,raisedAt:instant,raisedByLabel:t(),providerLabel:t(),ruleCode:t(60),dimension:t(60),assignedUserLabel:t(),
     currentSubmissionId:id,submissionHash:hash,submittedAt:instant,responseDueAt:instant,serviceStandard:t(200),jobId:id,currentResponseId:id,
     assignmentOptions:many(o({id,label:t()}),1000),actionHistory:many(o({id,occurredAt:instant,reason,actorLabel:t(),action:e('withdraw','reopen','assign')}),50),
@@ -79,10 +83,14 @@ export function addUnderwritingContracts({schemas:s,ref:r,operation:op,paths}){
   s.UnderwritingSendTermsRequest=o({termsVersionId:id,recipientContactIds:many(id,20,1)});
   s.UnderwritingAcceptanceRequest=o({...commandContext,ratingId:id,termsVersionId:id,termsHash:hash,assuranceHash:hash,accepterLabel:t(),acceptedAt:instant,channel:e('email','written','telephone'),evidenceAssociationId:id});
   s.UnderwritingAcceptanceView=o({id,...s.UnderwritingAcceptanceRequest.properties,quoteId:id,deliveryId:id,recordedBy:id,recordedAt:instant});
-  s.UnderwritingTermCover=o({code:e('road-risks','stock-custody','premises','tools-equipment'),limit:money,excess:money,targetIds:many(id,100)});
+  s.UnderwritingTermCover={oneOf:[
+    o({code:e('road-risks','stock-custody','premises','tools-equipment'),limit:money,excess:money,targetIds:many(id,100)}),
+    o({code:e('property','business-interruption','employers-liability','public-liability','products-liability','goods-in-transit','money','contract-works','unspecified-suppliers','named-suppliers','named-customers','denial-of-access','loss-of-attraction'),limit:money,excess:money,targetIds:many(id,100)},['code','limit','targetIds']),
+    o({code:{const:'glass'},targetIds:many(id,100),basis:t(200)}),
+  ]};
   s.UnderwritingEndorsement=o({code:t(60),version:t(60),wording:t(8000),decisionId:id,targetIds:many(id,100)});
   s.UnderwritingTermsView=o({id,...context,ratingId:id,number:{type:'integer',minimum:1},termsHash:hash,assuranceHashAtPreparation:hash,templateVersionId:id,preparedAt:instant,preparedBy:id,
-    cover:many(r('UnderwritingTermCover'),20,1),endorsements:many(r('UnderwritingEndorsement'),100),conditions:many(r('UnderwritingConditionView'),100),rating:r('UnderwritingRatingView'),agencyTermsVersionId:id,
+    cover:many(r('UnderwritingTermCover'),120,1),endorsements:many(r('UnderwritingEndorsement'),100),conditions:many(r('UnderwritingConditionView'),100),rating:r('UnderwritingRatingView'),agencyTermsVersionId:id,
     settlement:o({collector:e('agency','mga'),mode:e('net-remittance','separate-payment'),commissionRateBps:{type:'integer',minimum:0,maximum:10000},feeShareBps:{type:'integer',minimum:0,maximum:10000}}),documentState:e('structured-payload','generation-queued','generated')});
   s.UnderwritingTermsRecipient=o({id,name:t(),email:{...t(254),format:'email'}});
   s.UnderwritingTermsTemplate=o({id,code:t(60),version:{type:'integer',minimum:1},title:t(300)});

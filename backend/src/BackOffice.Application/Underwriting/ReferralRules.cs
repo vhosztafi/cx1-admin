@@ -15,7 +15,8 @@ public static class ReferralRules
 {
     public static ReferralCondition Condition(JsonElement value, JsonElement proposal)
     {
-        if (proposal.TryGetProperty("productCode", out var product) && product.GetString() == "commercial-combined")
+        if (proposal.TryGetProperty("productCode", out var product) && product.GetString() == "commercial-combined" &&
+            !(value.ValueKind == JsonValueKind.Object && value.TryGetProperty("code", out var conditionCode) && conditionCode.GetString() == "provide-signed-statement"))
             return CommercialEvidenceRules.Condition(value, proposal);
         if (value.ValueKind != JsonValueKind.Object) throw Invalid();
         string Text(string name)

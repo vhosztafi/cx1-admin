@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { formatGbp, type UnderwritingAssessment, type QuotationTerms } from '../../lib/underwriting-api';
 import { issuePolicyCommand, quotedIssueAmount } from '../../lib/policies-api';
 import type { DecisionRequest } from './decision-command';
-import type { QuoteView } from '../../lib/quotes';
+import type { QuoteView, QuoteCaptureProposal } from '../../lib/quotes';
 
-export function QuoteIssue({ quote, assessment, terms, run }: { quote: QuoteView; assessment: UnderwritingAssessment; terms?: QuotationTerms; run: (request: DecisionRequest) => void }) {
+export function QuoteIssue({ quote, assessment, terms, run }: { quote: QuoteView<QuoteCaptureProposal>; assessment: UnderwritingAssessment; terms?: QuotationTerms; run: (request: DecisionRequest) => void }) {
   const [reason, setReason] = useState(''), [error, setError] = useState('');
   function review() {
     try {

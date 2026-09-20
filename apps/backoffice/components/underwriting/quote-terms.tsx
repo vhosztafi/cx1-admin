@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import type { QuoteView } from '../../lib/quotes';
+import type { QuoteView, QuoteCaptureProposal } from '../../lib/quotes';
 import { formatGbp, type UnderwritingAssessment, type UnderwritingEvidence as Evidence, type QuotationHistory, type QuotationTerms, type QuotationDelivery } from '../../lib/underwriting-api';
 import { underwritingWrite } from '../../lib/underwriting-decisions';
 import { quotationCommand } from '../../lib/quotation';
@@ -13,7 +13,7 @@ import { UnderwritingEvidence } from './underwriting-evidence';
 import { DecisionCommand, type DecisionRequest } from './decision-command';
 import { QuoteAcceptance } from './quote-acceptance';
 import { QuoteIssue } from './quote-issue';
-export function QuoteTerms({ quote, actorId, refresh, questionLabels }: { quote: QuoteView; actorId: string; refresh: () => void; questionLabels: Record<string, string> }) {
+export function QuoteTerms({ quote, actorId, refresh, questionLabels }: { quote: QuoteView<QuoteCaptureProposal>; actorId: string; refresh: () => void; questionLabels: Record<string, string> }) {
   const router = useRouter();
   const assessment = useQuoteResource<UnderwritingAssessment>(`/api/v1/quotes/${quote.id}/underwriting`);
   const [cursors, setCursors] = useState({ terms: '', deliveries: '', acceptances: '' }), [evidenceCursor, setEvidenceCursor] = useState('');
@@ -56,7 +56,7 @@ export function QuoteTerms({ quote, actorId, refresh, questionLabels }: { quote:
     <Panel title="Acceptance history"><div className="quote-rail-body">{!data.acceptances.length && <p>No acceptance has been recorded.</p>}{data.acceptances.map(item => <article className="quote-driver-card" key={item.id}><h3>{item.accepterLabel}</h3><Status tone={item.id === current.acceptanceId ? 'success' : 'warning'}>{item.id === current.acceptanceId ? 'Current acceptance' : 'Historical acceptance'}</Status><p>{item.channel} · {new Date(item.acceptedAt).toLocaleString('en-GB', { timeZone: 'Europe/London' })} · London</p><dl className="underwriting-provenance"><div><dt>Terms version</dt><dd><code>{item.termsVersionId}</code></dd></div><div><dt>Delivered quotation</dt><dd><code>{item.deliveryId}</code></dd></div><div><dt>Reviewed evidence</dt><dd><code>{item.evidenceAssociationId}</code></dd></div></dl></article>)}{paging('acceptances', data.nextAcceptancesCursor)}</div></Panel>
     {coherent && <><UnderwritingEvidence quote={quote} assessment={{ ...current, proofRequirements: current.proofRequirements.filter(x => !!x.termsVersionId) }} evidence={evidence.data.items.filter(x => !!x.termsVersionId)} run={setRequest} /><div className="quote-row-actions"><button className="button" disabled={!evidenceCursor} onClick={() => setEvidenceCursor('')}>Latest evidence</button><button className="button" disabled={!evidence.data.nextCursor} onClick={() => setEvidenceCursor(evidence.data!.nextCursor!)}>Older evidence</button></div></>}
   </div><aside className="underwriting-rail" aria-label="Quotation actions"><Panel title="Next actions"><div className="quote-rail-body">
-    <button className="button" onClick={refresh}>Refresh quotation</button>
+    <button className="button" onClick={() => {assessment.refresh(); history.refresh(); evidence.refresh(); refresh();}}>Refresh quotation</button>
     <fieldset className="quote-reference-fields" disabled={!coherent || !current.capabilities.canPrepareTerms}><legend>Prepare quotation</legend><label>Quotation template<select aria-label="Quotation template" value={template} onChange={event => setTemplate(event.target.value)}><option value="">Select template</option>{data.templates.map(x => <option key={x.id} value={x.id}>{x.title} · v{x.version}</option>)}</select></label><button className="button" onClick={prepare}>Prepare exact terms</button></fieldset>
     <fieldset className="quote-reference-fields" disabled={!coherent || !terms || !current.capabilities.canSend}><legend>Send quote to agency</legend><p>Select current contacts for this client and agency relationship.</p>{!data.recipientOptions.length && <p>No active contacts with email are available. Add a contact on the client record.</p>}{data.recipientOptions.map(x => <label className="contact-check" key={x.id}><input type="checkbox" checked={recipients.includes(x.id)} onChange={event => setRecipients(event.target.checked ? [...recipients, x.id] : recipients.filter(id => id !== x.id))} />{x.name} · {x.email}</label>)}<button className="button button-primary" disabled={!recipients.length} onClick={send}>Review quotation delivery</button></fieldset>
     {error && <p role="alert" className="error-message">{error}</p>}
@@ -64,7 +64,7 @@ export function QuoteTerms({ quote, actorId, refresh, questionLabels }: { quote:
     {!current.capabilities.canAccept && <p className="client-help">Acceptance needs completed current delivery and reviewed acceptance evidence. Upload acceptance proof after delivery completes.</p>}
     {quote.boundPolicyId ? <Link className="button button-primary" href={`/policies/${quote.boundPolicyId}`}>Open issued policy</Link> : coherent && <QuoteIssue quote={quote} assessment={current} terms={terms} run={setRequest} />}
   </div></Panel><Panel title="Outstanding requirements"><div className="quote-rail-body">{current.blockers.length ? <ul>{current.blockers.map((x, index) => <li key={index}>{x.message}</li>)}</ul> : <p>No outstanding underwriting blockers.</p>}</div></Panel></aside></div>
-    {request && <DecisionCommand request={request} actorId={actorId} close={() => setRequest(undefined)} completed={policyId => { setRequest(undefined); if (policyId) router.push(`/policies/${policyId}`); else refresh(); }} />}
+    {request && <DecisionCommand request={request} actorId={actorId} close={() => setRequest(undefined)} completed={policyId => { setRequest(undefined); if (policyId) router.push(`/policies/${policyId}`); else {assessment.refresh(); history.refresh(); evidence.refresh(); refresh();} }} />}
   </div>;
 }
 function TermsPreview({ terms, questionLabels }: { terms: QuotationTerms; questionLabels: Record<string, string> }) {
@@ -72,7 +72,7 @@ function TermsPreview({ terms, questionLabels }: { terms: QuotationTerms; questi
   return <><p>Prepared {new Date(terms.preparedAt).toLocaleString('en-GB', { timeZone: 'Europe/London' })} · London. Valid until {new Date(rating.expiresAt).toLocaleString('en-GB', { timeZone: 'Europe/London' })} · London.</p>
     {!rating.applicable && <p role="status">Historical or expired rating — review the current quotation.</p>}
     <dl className="underwriting-premium">{[['Annual premium', rating.annualPremium], ['Term premium', rating.termPremium], ['Insurance Premium Tax', rating.tax], ['Fee', rating.fee], ['Total payable', rating.grossPayable], ['Broker commission', rating.brokerCommission]].map(([label, value]) => <div key={label} className={label === 'Total payable' ? 'underwriting-total' : ''}><dt>{label}</dt><dd>{formatGbp(value)}</dd></div>)}</dl>
-    <div className="table-scroll" role="region" aria-label={`Cover for terms version ${terms.number}`} tabIndex={0}><table><thead><tr><th>Cover</th><th>Limit</th><th>Excess</th></tr></thead><tbody>{terms.cover.map((x, index) => <tr key={`${x.code}:${index}`}><th scope="row">{x.code.replaceAll('-', ' ')}</th><td>{formatGbp(x.limit)}</td><td>{formatGbp(x.excess)}</td></tr>)}</tbody></table></div>
+    <div className="table-scroll" role="region" aria-label={`Cover for terms version ${terms.number}`} tabIndex={0}><table><thead><tr><th>Cover</th><th>Limit</th><th>Excess</th></tr></thead><tbody>{terms.cover.map((x, index) => <tr key={`${x.code}:${index}`}><th scope="row">{x.code.replaceAll('-', ' ')}</th><td>{x.limit === undefined ? x.basis ?? 'Not specified' : formatGbp(x.limit)}</td><td>{x.excess === undefined ? 'Not specified' : formatGbp(x.excess)}</td></tr>)}</tbody></table></div>
     <h3>Endorsements</h3>{terms.endorsements.length ? terms.endorsements.map(x => <p key={x.decisionId + x.code}><strong>{x.code} · v{x.version}</strong> {x.wording}</p>) : <p>No endorsements applied.</p>}
     <h3>Contract conditions</h3>{terms.conditions.length ? terms.conditions.map(x => <p key={x.id}>{x.definition.code.replaceAll('-', ' ')} · {x.state}</p>) : <p>No contractual conditions.</p>}
     <p>Premium collector: {terms.settlement.collector} · Commission settlement: {terms.settlement.mode} · Commission {terms.settlement.commissionRateBps / 100}% · Fee share {terms.settlement.feeShareBps / 100}%</p>

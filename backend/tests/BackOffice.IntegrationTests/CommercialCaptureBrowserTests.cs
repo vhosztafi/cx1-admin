@@ -30,6 +30,9 @@ public sealed partial class QuoteStorageTests
     [Fact]
     public Task RealSqlCommercialReferralBrowser() => RunCommercialCaptureBrowser("underwriting");
 
+    [Fact]
+    public Task RealSqlCommercialTermsBrowser() => RunCommercialCaptureBrowser("terms");
+
     private async Task RunCommercialCaptureBrowser(string stage)
     {
         await WithDatabase(async (db, password) =>
@@ -38,20 +41,28 @@ public sealed partial class QuoteStorageTests
             while (root is not null && !File.Exists(Path.Combine(root.FullName, "package.json"))) root = root.Parent;
             Assert.NotNull(root);
             Assert.True(File.Exists(Path.Combine(root.FullName, "apps/backoffice/.next/BUILD_ID")));
-            await DemoDatabase.SeedAsync(db, password, includeQuoteCapture: true, includeCommercialCapture: true, includeUnderwriting: stage is "rating" or "underwriting");
-            if (stage is "rating" or "underwriting")
+            await DemoDatabase.SeedAsync(db, password, includeQuoteCapture: true, includeCommercialCapture: true, includeUnderwriting: stage is "rating" or "underwriting" or "terms");
+            if (stage is "rating" or "underwriting" or "terms")
             {
                 await using var transaction = await db.Database.BeginTransactionAsync();
-                await CommercialUnderwritingSeed.SeedAsync(db); await transaction.CommitAsync();
+                await CommercialUnderwritingSeed.SeedAsync(db); await QuoteTermsSeed.SeedAsync(db); await CapacitySeed.SeedAsync(db); await transaction.CommitAsync();
             }
-            var cc = await CreateFixture(db, "-CC-BROWSER", CommercialCaptureRules.ProductCode, stage is "rating" or "underwriting" ? 3 : 2, fullTerms: stage is "rating" or "underwriting");
-            if (stage == "underwriting")
+            var cc = await CreateFixture(db, "-CC-BROWSER", CommercialCaptureRules.ProductCode, stage is "rating" or "underwriting" or "terms" ? 3 : 2, fullTerms: stage is "rating" or "underwriting" or "terms");
+            if (stage is "underwriting" or "terms")
             {
                 var reviewer = await db.Set<StaffUser>().SingleAsync(x => x.Email == "underwriter@cover.example");
                 var admin = await db.Set<StaffUser>().SingleAsync(x => x.Email == "system-admin@cover.example");
                 var authority = await db.Set<AuthorityVersion>().SingleAsync(x => x.ProductVersionId == cc.ProductVersion);
                 db.Add(new UserAuthorityGrant { UserId = reviewer.Id, AuthorityVersionId = authority.Id, GrantedBy = admin.Id, CreatedBy = admin.Id,
                     CreatedAt = new QuoteTime().GetUtcNow(), EffectiveFrom = authority.EffectiveFrom, EffectiveTo = authority.EffectiveTo, Reason = "Explicit browser-test Commercial Combined grant" });
+                await db.SaveChangesAsync();
+            }
+            if (stage == "terms")
+            {
+                var person = new Person { FullName = "Fictional CC browser customer" }; db.Add(person); await db.SaveChangesAsync();
+                db.Add(new Contact { ClientId = cc.Client, RelationshipId = cc.Relationship, PersonId = person.Id, DeclaredFullName = person.FullName,
+                    NormalizedName = person.FullName.ToUpperInvariant(), Role = "director", Email = "cc-browser@example.invalid",
+                    MarketingConsent = "{\"state\":\"not-asked\",\"email\":false,\"telephone\":false,\"source\":\"Fictional browser\",\"recordedAt\":\"2026-09-16T12:00:00Z\"}" });
                 await db.SaveChangesAsync();
             }
             var mt = await CreateFixture(db, "-MT-BROWSER");
@@ -126,7 +137,7 @@ public sealed partial class QuoteStorageTests
                 Assert.False(declarations.Single(x => x.GetProperty("questionId").GetString() == "prototype.quote.385743089b72").GetProperty("value").GetBoolean());
                 foreach (var question in report.RootElement.GetProperty("verifiedQuestionIds").EnumerateArray())
                     Assert.Contains(revisions, revision => revision.ProposalJson.Contains(question.GetString()!, StringComparison.Ordinal));
-                if (stage is "full" or "rating" or "underwriting")
+                if (stage is "full" or "rating" or "underwriting" or "terms")
                 {
                     Assert.Equal(109, report.RootElement.GetProperty("verifiedQuestionIds").GetArrayLength());
                     Assert.Equal(2, final.RootElement.GetProperty("risk").GetProperty("locations").GetArrayLength());

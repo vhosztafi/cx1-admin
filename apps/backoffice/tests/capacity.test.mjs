@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { capacityExtension, capacityInstant, sendCapacityRecovery } from '../lib/capacity.ts';
+import { commercialCapacityExtension, capacityExtension, capacityInstant, sendCapacityRecovery } from '../lib/capacity.ts';
 test('capacity forms retain exact typed monetary, age and trade extent', () => {
   assert.deepEqual(capacityExtension('cover-stock-custody', 'cover-restriction', { maximumAmount: '150000.00' }), { dimension: 'stock-limit', maximumAmount: '150000.00' });
   for (const amount of ['0.00','150000.001','1e6','-1.00','150000']) assert.throws(() => capacityExtension('stock-limit', 'stock-limit', { maximumAmount: amount }));
@@ -26,4 +26,15 @@ test('capacity recovery keeps exact retry identity and rejects a foreign job rec
   assert.deepEqual(calls[0], calls[1]);
   await assert.rejects(sendCapacityRecovery(command, 'other', 'csrf'), /original capacity job/);
   assert.equal(calls.length, 2);
+});
+
+test('commercial carrier extent binds an exact location and excludes Motor Trade and postcode dimensions', () => {
+  const id = 'aaaaaaaa-0000-4000-8000-000000000001';
+  assert.deepEqual(commercialCapacityExtension('single-location', '3000000.00', id), {dimension:'single-location',maximumAmount:'3000000.00',riskItemId:id});
+  assert.throws(() => commercialCapacityExtension('single-location', '3000000.00'));
+  assert.throws(() => commercialCapacityExtension('district-property', '50000000.00', id));
+  assert.throws(() => commercialCapacityExtension('driver-age', '40.00'));
+  assert.throws(() => commercialCapacityExtension('public-liability', '5000000.00', id));
+  assert.throws(() => commercialCapacityExtension('public-liability', '1e6'));
+  assert.deepEqual(commercialCapacityExtension('public-liability', '5000000.00'), {dimension:'public-liability',maximumAmount:'5000000.00'});
 });

@@ -56,7 +56,7 @@ public sealed partial class CapacityService(IDbContextFactory<BackOfficeDbContex
                 referral = await db.Set<QuoteReferral>().AsNoTracking().SingleAsync(x => x.Id == escalation.ReferralId && x.CycleId == cycleId, ct);
                 scenario = await db.Set<SettingVersion>().FromSqlInterpolated($"SELECT * FROM SettingVersion WITH(HOLDLOCK) WHERE Id={scenarioVersionId}").AsNoTracking().SingleOrDefaultAsync(ct);
                 var configuration = scenario is null ? null : CapacitySeed.Parse(scenario);
-                if (configuration is null || scenario!.EffectiveFrom > time.GetUtcNow() || await db.Set<SettingVersion>().AnyAsync(x => x.Scope == scenario.Scope && x.Version > scenario.Version && x.EffectiveFrom <= time.GetUtcNow(), ct))
+                if (configuration is null || !CapacitySeed.ForProduct(configuration.Value.Scenario, held.Input.IsCommercial) || scenario!.EffectiveFrom > time.GetUtcNow() || await db.Set<SettingVersion>().AnyAsync(x => x.Scope == scenario.Scope && x.Version > scenario.Version && x.EffectiveFrom <= time.GetUtcNow(), ct))
                     throw new QuoteOperationException(409, "capacity-scenario-unavailable");
                 dueHours = configuration.Value.ResponseDueHours;
                 dueWorkingDays = configuration.Value.ResponseDueWorkingDays;
@@ -76,10 +76,12 @@ public sealed partial class CapacityService(IDbContextFactory<BackOfficeDbContex
                 // Explicit provider projection: no full proposal, private support notes,
                 // client contact details or unselected evidence bodies leave this boundary.
                 using var proposal = JsonDocument.Parse(held.Revision.ProposalJson);
-                var conditionTargetIds = proposal.RootElement.GetProperty("cover").GetProperty("requestedSections").EnumerateArray()
+                var conditionTargetIds = held.Input.IsCommercial
+                    ? (referral.RiskItemId is Guid locationId ? new[] { locationId } : Array.Empty<Guid>())
+                    : proposal.RootElement.GetProperty("cover").GetProperty("requestedSections").EnumerateArray()
                     .Where(x => x.GetProperty("selected").GetBoolean() && x.GetProperty("code").GetString() == "premises")
                     .SelectMany(x => x.GetProperty("premisesIds").EnumerateArray().Select(p => p.GetGuid())).Distinct().Order().ToArray();
-                var context = JsonSerializer.Serialize(new { format = "capacity-submission-1", quoteId, cycleId, referralId = referral.Id,
+                var context = JsonSerializer.Serialize(new { format = "capacity-submission-1", productCode = held.Eligible.Capture.Product.Code, quoteId, cycleId, referralId = referral.Id,
                     revisionId = held.Revision.Id, pricingInputHash = Convert.ToHexStringLower(held.Cycle.PricingInputHash),
                     providerId = escalation.ProviderId, binderVersionId = held.Cycle.BinderVersionId, productVersionId = held.Cycle.ProductVersionId,
                     startsAt = held.Cycle.StartsAt, endsAt = held.Cycle.EndsAt, ruleCode = referral.RuleCode, dimension = referral.Dimension,

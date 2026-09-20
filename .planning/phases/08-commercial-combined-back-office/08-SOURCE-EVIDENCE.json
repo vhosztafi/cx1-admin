@@ -1,7 +1,7 @@
 {
   "format": "commercial-source-evidence-1",
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
-  "status": "capture-rating-referral-evidence-verified-terms-pending",
+  "status": "capture-rating-referral-evidence-carrier-terms-verified-issue-pending",
   "captureControls": {
     "CTL-edd4bf8b620d": {
       "runtimeStatus": "browser-saved-sql-verified",
@@ -76,7 +76,7 @@
     "CTL-7b091112a28e": {
       "runtimeStatus": "browser-navigation-verified",
       "verification": [
-        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
+        "08-03: all ten named stages rendered; stages1\u20133 navigable,4\u201310 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_63c35410e3ed4051b516ba920b2fe206/report.json",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_514ef68179124ee1a56c876c43bb095e/report.json"
       ]
@@ -84,7 +84,7 @@
     "CTL-0b7d4a4f3bd3": {
       "runtimeStatus": "browser-navigation-verified",
       "verification": [
-        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
+        "08-03: all ten named stages rendered; stages1\u20133 navigable,4\u201310 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_63c35410e3ed4051b516ba920b2fe206/report.json",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_514ef68179124ee1a56c876c43bb095e/report.json"
       ]
@@ -92,7 +92,7 @@
     "CTL-33bfe3df1db5": {
       "runtimeStatus": "browser-navigation-verified",
       "verification": [
-        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
+        "08-03: all ten named stages rendered; stages1\u20133 navigable,4\u201310 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_63c35410e3ed4051b516ba920b2fe206/report.json",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_514ef68179124ee1a56c876c43bb095e/report.json"
       ]
@@ -100,7 +100,7 @@
     "CTL-677f9821a5f0": {
       "runtimeStatus": "browser-navigation-verified",
       "verification": [
-        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
+        "08-03: all ten named stages rendered; stages1\u20133 navigable,4\u201310 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_63c35410e3ed4051b516ba920b2fe206/report.json",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_514ef68179124ee1a56c876c43bb095e/report.json"
       ]
@@ -108,7 +108,7 @@
     "CTL-c733f58674ce": {
       "runtimeStatus": "browser-navigation-verified",
       "verification": [
-        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
+        "08-03: all ten named stages rendered; stages1\u20133 navigable,4\u201310 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_63c35410e3ed4051b516ba920b2fe206/report.json",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_514ef68179124ee1a56c876c43bb095e/report.json"
       ]
@@ -116,7 +116,7 @@
     "CTL-24a6e1dda676": {
       "runtimeStatus": "browser-navigation-verified",
       "verification": [
-        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
+        "08-03: all ten named stages rendered; stages1\u20133 navigable,4\u201310 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_63c35410e3ed4051b516ba920b2fe206/report.json",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_514ef68179124ee1a56c876c43bb095e/report.json"
       ]
@@ -124,7 +124,7 @@
     "CTL-2b3f5c1f7dba": {
       "runtimeStatus": "browser-navigation-verified",
       "verification": [
-        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
+        "08-03: all ten named stages rendered; stages1\u20133 navigable,4\u201310 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_63c35410e3ed4051b516ba920b2fe206/report.json",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_514ef68179124ee1a56c876c43bb095e/report.json"
       ]
@@ -132,7 +132,7 @@
     "CTL-38847462c9ce": {
       "runtimeStatus": "browser-navigation-verified",
       "verification": [
-        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
+        "08-03: all ten named stages rendered; stages1\u20133 navigable,4\u201310 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_63c35410e3ed4051b516ba920b2fe206/report.json",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_514ef68179124ee1a56c876c43bb095e/report.json"
       ]
@@ -140,7 +140,7 @@
     "CTL-c7e79a944bfa": {
       "runtimeStatus": "browser-navigation-verified",
       "verification": [
-        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
+        "08-03: all ten named stages rendered; stages1\u20133 navigable,4\u201310 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_63c35410e3ed4051b516ba920b2fe206/report.json",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_514ef68179124ee1a56c876c43bb095e/report.json"
       ]
@@ -148,7 +148,7 @@
     "CTL-2a7c03bd9994": {
       "runtimeStatus": "browser-navigation-verified",
       "verification": [
-        "08-03: all ten named stages rendered; stages1–3 navigable,4–10 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
+        "08-03: all ten named stages rendered; stages1\u20133 navigable,4\u201310 disabled until08-04. Desktop and390px screenshots in .local/browser-evidence/commercial-capture/CoverMGA_Test_49d72ea4a6cc4037a4b0a13bf7681c6b/",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_63c35410e3ed4051b516ba920b2fe206/report.json",
         "08-04: all ten stages navigable; saves never request rating. .local/browser-evidence/commercial-capture/CoverMGA_Test_514ef68179124ee1a56c876c43bb095e/report.json"
       ]
@@ -1166,37 +1166,43 @@
     "CTL-e48b5c40a127": {
       "runtimeStatus": "browser-and-sql-evidence-verified",
       "verification": [
-        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx."
+        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx.",
+        "08-07: exact location carrier authority, independent current proof/internal decision, UI prepared/delivered/accepted CC terms and desktop/390px readback verified in .local/browser-evidence/commercial-capture/CoverMGA_Test_7bcede49e6fa411198bce3bc89c69024/report.json; actual request/terms API schemas validated. District exposure and policy issue remain08-08/09."
       ]
     },
     "CTL-73b23541e556": {
       "runtimeStatus": "browser-and-sql-evidence-verified",
       "verification": [
-        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx."
+        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx.",
+        "08-07: exact location carrier authority, independent current proof/internal decision, UI prepared/delivered/accepted CC terms and desktop/390px readback verified in .local/browser-evidence/commercial-capture/CoverMGA_Test_7bcede49e6fa411198bce3bc89c69024/report.json; actual request/terms API schemas validated. District exposure and policy issue remain08-08/09."
       ]
     },
     "CTL-8edb6a187769": {
       "runtimeStatus": "browser-and-sql-evidence-verified",
       "verification": [
-        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx."
+        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx.",
+        "08-07: exact location carrier authority, independent current proof/internal decision, UI prepared/delivered/accepted CC terms and desktop/390px readback verified in .local/browser-evidence/commercial-capture/CoverMGA_Test_7bcede49e6fa411198bce3bc89c69024/report.json; actual request/terms API schemas validated. District exposure and policy issue remain08-08/09."
       ]
     },
     "CTL-98e734d0c0dc": {
       "runtimeStatus": "browser-and-sql-evidence-verified",
       "verification": [
-        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx."
+        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx.",
+        "08-07: exact location carrier authority, independent current proof/internal decision, UI prepared/delivered/accepted CC terms and desktop/390px readback verified in .local/browser-evidence/commercial-capture/CoverMGA_Test_7bcede49e6fa411198bce3bc89c69024/report.json; actual request/terms API schemas validated. District exposure and policy issue remain08-08/09."
       ]
     },
     "CTL-de020621bc82": {
       "runtimeStatus": "browser-and-sql-evidence-verified",
       "verification": [
-        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx."
+        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx.",
+        "08-07: exact location carrier authority, independent current proof/internal decision, UI prepared/delivered/accepted CC terms and desktop/390px readback verified in .local/browser-evidence/commercial-capture/CoverMGA_Test_7bcede49e6fa411198bce3bc89c69024/report.json; actual request/terms API schemas validated. District exposure and policy issue remain08-08/09."
       ]
     },
     "CTL-edc0a8d5978f": {
       "runtimeStatus": "browser-and-sql-evidence-verified",
       "verification": [
-        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx."
+        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx.",
+        "08-07: exact location carrier authority, independent current proof/internal decision, UI prepared/delivered/accepted CC terms and desktop/390px readback verified in .local/browser-evidence/commercial-capture/CoverMGA_Test_7bcede49e6fa411198bce3bc89c69024/report.json; actual request/terms API schemas validated. District exposure and policy issue remain08-08/09."
       ]
     }
   },
@@ -2264,13 +2270,15 @@
     "AU-05": {
       "runtimeStatus": "unit-sql-and-browser-verified",
       "verification": [
-        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners.",
+        "08-07: exact location carrier authority, independent current proof/internal decision, UI prepared/delivered/accepted CC terms and desktop/390px readback verified in .local/browser-evidence/commercial-capture/CoverMGA_Test_7bcede49e6fa411198bce3bc89c69024/report.json; actual request/terms API schemas validated. District exposure and policy issue remain08-08/09."
       ]
     },
     "AU-06": {
       "runtimeStatus": "unit-sql-and-browser-verified",
       "verification": [
-        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners.",
+        "08-07: exact location carrier authority, independent current proof/internal decision, UI prepared/delivered/accepted CC terms and desktop/390px readback verified in .local/browser-evidence/commercial-capture/CoverMGA_Test_7bcede49e6fa411198bce3bc89c69024/report.json; actual request/terms API schemas validated. District exposure and policy issue remain08-08/09."
       ]
     },
     "LI-03": {
