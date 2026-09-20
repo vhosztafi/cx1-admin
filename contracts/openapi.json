@@ -13695,7 +13695,8 @@
               "type": "string",
               "enum": [
                 "motor-trade-road-risks",
-                "motor-trade-combined"
+                "motor-trade-combined",
+                "commercial-combined"
               ]
             }
           },
@@ -103066,7 +103067,8 @@
             "type": "string",
             "enum": [
               "motor-trade-road-risks",
-              "motor-trade-combined"
+              "motor-trade-combined",
+              "commercial-combined"
             ]
           },
           "state": {
@@ -112214,7 +112216,8 @@
             "type": "string",
             "enum": [
               "motor-trade-road-risks",
-              "motor-trade-combined"
+              "motor-trade-combined",
+              "commercial-combined"
             ]
           },
           "state": {
@@ -112272,7 +112275,8 @@
             "type": "string",
             "enum": [
               "motor-trade-road-risks",
-              "motor-trade-combined"
+              "motor-trade-combined",
+              "commercial-combined"
             ]
           },
           "state": {

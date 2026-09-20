@@ -504,7 +504,9 @@ test('agency policy projection rejects risk and financial facts and has no hidde
  }
  assert.equal(document.paths['/policies'].get['x-permission'],'policy-discovery-read');
  assert.equal(document.paths['/policies'].get.parameters.some(x=>x.name==='status'),false);
- assert.deepEqual(document.paths['/policies'].get.parameters.find(x=>x.name==='productCode').schema.enum,['motor-trade-road-risks','motor-trade-combined']);
+ assert.deepEqual(document.paths['/policies'].get.parameters.find(x=>x.name==='productCode').schema.enum,['motor-trade-road-risks','motor-trade-combined','commercial-combined']);
+ assert.equal(check({...value,productCode:'commercial-combined'}),true);
+ for(const field of ['registration','premium','risk','snapshot','authority','acceptanceId']) assert.equal(check({...value,productCode:'commercial-combined',[field]:'hidden'}),false);
 });
 
 

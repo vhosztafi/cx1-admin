@@ -8,7 +8,7 @@ import { AgencyFilter } from '../quotes/quote-list';
 
 type PolicyRow = { id: string; reference: string; clientId: string; clientName: string; agencyName: string; productCode: string; state: string; startsAt: string; endsAt: string; issuedAt: string };
 export const policyStateLabels: Record<string, string> = { scheduled: 'Inception scheduled', active: 'In force', expired: 'Term ended', cancelled: 'Cancelled' };
-const products: Record<string, string> = { 'motor-trade-road-risks': 'Motor Trade Road Risks', 'motor-trade-combined': 'Motor Trade Combined' };
+const products: Record<string, string> = { 'motor-trade-road-risks': 'Motor Trade Road Risks', 'motor-trade-combined': 'Motor Trade Combined', 'commercial-combined': 'Commercial Combined' };
 export function PolicyList({ clientId, embedded = false }: { clientId?: string; embedded?: boolean }) {
   const [input, setInput] = useState(''), [search, setSearch] = useState(''), [product, setProduct] = useState(''), [state, setState] = useState('');
   const [agency, setAgency] = useState(''), [client, setClient] = useState(clientId ?? ''), [from, setFrom] = useState(''), [to, setTo] = useState('');
@@ -22,7 +22,7 @@ export function PolicyList({ clientId, embedded = false }: { clientId?: string; 
     <Panel title={embedded ? 'Client policies' : 'Issued policies'} note="Search policy references, clients, agencies and issued registrations">
       <form className="operations-toolbar quote-list-filters" onSubmit={event => { event.preventDefault(); setSearch(input.trim()); refresh(); }}>
         <label>Search policies<input type="search" value={input} maxLength={200} placeholder="Reference, business or registration" onChange={event => setInput(event.target.value)} /></label>
-        <label>Product<select aria-label="Product" value={product} onChange={event => { setProduct(event.target.value); refresh(); }}><option value="">All Motor Trade products</option>{Object.entries(products).map(([key, label]) => <option key={key} value={key}>{label}</option>)}</select></label>
+        <label>Product<select aria-label="Product" value={product} onChange={event => { setProduct(event.target.value); refresh(); }}><option value="">All products</option>{Object.entries(products).map(([key, label]) => <option key={key} value={key}>{label}</option>)}</select></label>
         <label>Status<select aria-label="Status" value={state} onChange={event => { setState(event.target.value); refresh(); }}><option value="">All statuses</option>{Object.entries(policyStateLabels).map(([key, label]) => <option key={key} value={key}>{label}</option>)}</select></label>
         <label>Inception from<input type="date" value={from} max={to || undefined} onChange={event => { setFrom(event.target.value); refresh(); }} /></label>
         <label>Inception to<input type="date" value={to} min={from || undefined} onChange={event => { setTo(event.target.value); refresh(); }} /></label>

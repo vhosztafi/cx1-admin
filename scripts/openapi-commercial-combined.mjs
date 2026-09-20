@@ -3,6 +3,9 @@ import {closed as o,uid as id,instant,hash,choice as e,many} from './underwritin
 // CC capture joins the shared quote routes through an explicit closed union.
 // First issue and capability-shaped advisory exposure reads are implemented.
 export function addCommercialContracts({schemas,ref,operation,paths}){
+ const products=e('motor-trade-road-risks','motor-trade-combined','commercial-combined');
+ for(const name of ['PolicySummary','AgencySharedPolicy','AgencySharedQuote'])schemas[name].properties.productCode=products;
+ paths['/policies'].get.parameters.find(x=>x.name==='productCode').schema=products;
  const draft=JSON.parse(readFileSync(new URL('../contracts/schemas/commercial-combined.schema.json',import.meta.url),'utf8'));
  const issued=JSON.parse(readFileSync(new URL('../contracts/schemas/commercial-combined-issued.schema.json',import.meta.url),'utf8'));
  function install(source,prefix,name){

@@ -19,7 +19,7 @@ public static partial class PolicyEndpoints
         bool Id(string key, out Guid? id) { id = null; if (!query.ContainsKey(key)) return true; if (!Guid.TryParseExact(query[key], "D", out var parsed) || parsed == Guid.Empty) return false; id = parsed; return true; }
         bool Date(string key, out DateOnly? date) { date = null; if (!query.ContainsKey(key)) return true; if (!DateOnly.TryParseExact(query[key], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsed)) return false; date = parsed; return true; }
         if (search.Length > 200 || search.Any(char.IsControl) || search.Length > 0 && string.IsNullOrWhiteSpace(search) ||
-            product.Length > 0 && product is not ("motor-trade-road-risks" or "motor-trade-combined") || state.Length > 0 && state is not ("scheduled" or "active" or "expired" or "cancelled") ||
+            product.Length > 0 && product is not ("motor-trade-road-risks" or "motor-trade-combined" or "commercial-combined") || state.Length > 0 && state is not ("scheduled" or "active" or "expired" or "cancelled") ||
             sort is not ("reference" or "inception" or "issued") || direction is not ("asc" or "desc") ||
             !Id("clientId", out var clientId) || !Id("agencyId", out var agencyId) || !Date("inceptionFrom", out var from) || !Date("inceptionTo", out var to) || from > to ||
             registration.Length > 12 || registration.Length > 0 && (PolicyDiscoveryService.NormalizeRegistration(registration).Length == 0 || registration.Any(c => !char.IsAsciiLetterOrDigit(c) && c is not (' ' or '-'))))

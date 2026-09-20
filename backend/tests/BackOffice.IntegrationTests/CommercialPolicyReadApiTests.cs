@@ -61,6 +61,11 @@ public sealed partial class UnderwritingRuntimeTests
             return await response.Content.ReadFromJsonAsync<JsonElement>();
         }
         using var staff = host.CreateClient(); await Post(staff, "/api/v1/auth/login", new { email = "senior-underwriter@cover.example", password });
+        var policyReference = await db.Set<Policy>().Where(x => x.Id == issued.ResourceId).Select(x => x.Reference).SingleAsync();
+        var listed = await Read(staff, $"/api/v1/policies?productCode=commercial-combined&q={policyReference}");
+        Assert.Equal(issued.ResourceId, Assert.Single(listed.GetProperty("items").EnumerateArray()).GetProperty("id").GetGuid());
+        Assert.Empty((await Read(staff, $"/api/v1/policies?productCode=motor-trade-combined&q={policyReference}")).GetProperty("items").EnumerateArray());
+        Assert.Equal(HttpStatusCode.BadRequest, (await staff.GetAsync("/api/v1/policies?productCode=unsupported-product")).StatusCode);
         using var admin = host.CreateClient(); await Post(admin, "/api/v1/auth/login", new { email = "agency-admin@cover.example", password });
         using var broker = host.CreateClient();
         var agencyVersion = await db.Set<Agency>().AsNoTracking().Where(x => x.Id == f.Quote.AgencyId).Select(x => x.RowVersion).SingleAsync();
