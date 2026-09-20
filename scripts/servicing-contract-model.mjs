@@ -1,4 +1,5 @@
 import {closed as o, uid as id, money, label as t, instant, hash, choice as e, bounded, many, conditionSchema} from './underwriting-contract-model.mjs';
+import {readFileSync} from 'node:fs';
 
 const date={type:'string',format:'date'};
 const reason={...t(2000),minLength:10};
@@ -29,6 +30,26 @@ export function servicingDefinitions(quote) {
   write.allOf=[{if:{properties:{payloadMode:{const:'replace'}},required:['payloadMode']},then:{properties:{operation:{const:'update'}}}}];
   return [write,o({...common,operation:{const:'remove'},...effective,...vehicle},[...Object.keys(common),'operation'])];
  })};
+ const commercial=JSON.parse(readFileSync(new URL('../contracts/schemas/commercial-combined.schema.json',import.meta.url),'utf8'));
+ const prefix='CommercialServicing';
+ function scoped(value) {
+  if(Array.isArray(value))return value.map(scoped);
+  if(!value||typeof value!=='object')return value;
+  return Object.fromEntries(Object.entries(value).map(([key,item])=>[key,key==='$ref'&&item.startsWith('#/$defs/')?`#/$defs/${prefix}${item.slice(8)}`:scoped(item)]));
+ }
+ for(const [name,value] of Object.entries(commercial.$defs))defs[prefix+name]=scoped(value);
+ const commercialPayloads=Object.fromEntries(Object.entries({location:'Location',business:'Business',bi:'BusinessInterruption',liability:'Liability',wage:'Wage',loss:'Loss',cover:'Cover',insured:'Insured'}).map(([kind,name])=>{
+  const payload=structuredClone(defs[prefix+name]);delete payload.properties.id;payload.required=(payload.required??[]).filter(x=>x!=='id');return [kind,payload];
+ }));
+ commercialPayloads.property=o(Object.fromEntries(['buildings','contents','stock','maximumEstimatedLoss'].map(key=>[key,commercial.$defs.Location.properties[key]])),[]);
+ commercialPayloads.declarations=o({declarations:r(prefix+'Declarations'),materialFacts:commercial.$defs.Risk.properties.materialFacts},[]);
+ defs.ServicingChange.oneOf.push(...Object.entries(commercialPayloads).flatMap(([target,payload])=>{
+  const common={changeId:id,riskItemId:id,kind:{const:'commercial-'+target}};
+  const row=['location','wage','loss'].includes(target),effective=target==='cover'?{effectiveIntent:r('ServicingEffectiveIntent')}:{};
+  const write=o({...common,operation:row?e('add','update'):{const:'update'},payload,payloadMode:{const:'replace'},...effective},[...Object.keys(common),'operation','payload']);
+  write.allOf=[{if:{properties:{payloadMode:{const:'replace'}},required:['payloadMode']},then:{properties:{operation:{const:'update'}}}}];
+  return row?[write,o({...common,operation:{const:'remove'}},[...Object.keys(common),'operation'])]:[write];
+ }));
  defs.ServicingProposal=o({schemaVersion:{const:'1.0'},baseVersionId:id,reason,requestedBy:{oneOf:[o({kind:{const:'internal'}}),o({kind:e('insured','broker'),name:t(200)})]},commonEffectiveIntent:r('ServicingEffectiveIntent'),changes:many(r('ServicingChange'),100)});
  defs.ServicingProposal.properties.dateBasis=e('shared','per-cover-change');
  defs.ServicingProposal.properties.cancellationReasonCode=e('insured-request','non-payment','non-disclosure','trade-ceased','insurer-instruction');
@@ -69,8 +90,10 @@ export function servicingDefinitions(quote) {
  // Optional for retained pre-upgrade command receipts; current reads include it.
  defs.ServicingDraft.properties.context=o({policyReference:t(40),preparedBy:o({id,label:t(200)})});
  defs.ServicingDraft.properties.context.properties.baseTermPremium=money;
+ defs.ServicingDraft.properties.context.properties.productCode=e('motor-trade-road-risks','motor-trade-combined','commercial-combined');
  const capture=structuredClone(quote); delete capture.$schema; delete capture.$id; delete capture.$defs;
- defs.ServicingEditorCapture=capture;
+ const commercialCapture=scoped(commercial);delete commercialCapture.$schema;delete commercialCapture.$id;delete commercialCapture.$defs;
+ defs.ServicingEditorCapture={oneOf:[capture,commercialCapture]};
  const side=o({path:{type:'string',maxLength:2000},json:{type:'string',maxLength:2097152}});
  defs.ServicingEditorChange={oneOf:[
   o({kind:{const:'added'},path:t(2000),itemId:id,after:side},['kind','path','after']),

@@ -21,8 +21,20 @@ import { cancellationReasons, type CancellationReason } from '../../lib/cancella
 import { ServicingEvidence } from './servicing-evidence';
 import { ServicingCoverEditor } from './servicing-cover-editor';
 import type { QuoteFormCatalogue } from '../../lib/quote-catalogue';
+import type { CommercialCatalogue } from '../../lib/commercial-capture';
+import type { CommercialServicingDraft } from '../../lib/commercial-servicing';
+import { CommercialServicingWorkspace } from './commercial-servicing-workspace';
+import { useQuoteResource, LoadFeedback } from '../quotes/shared';
 
-export function ServicingWorkspace({ draftId, actorId, canTakeover, catalogue }: { draftId: string; actorId: string; canTakeover: boolean; catalogue: QuoteFormCatalogue }) {
+type WorkspaceProps = { draftId: string; actorId: string; canTakeover: boolean; catalogue: QuoteFormCatalogue };
+export function ServicingWorkspace(props: WorkspaceProps & { commercialCatalogue: CommercialCatalogue }) {
+  const record = useQuoteResource<ServicingDraft<unknown>>(`/api/v1/drafts/${props.draftId}`);
+  if (!record.data || !record.etag) return <Panel title="Servicing draft"><LoadFeedback error={record.error} retry={record.refresh} /></Panel>;
+  if (record.data.context?.productCode === 'commercial-combined') return <CommercialServicingWorkspace draftId={props.draftId} actorId={props.actorId} canTakeover={props.canTakeover} catalogue={props.commercialCatalogue} initial={{data: record.data as CommercialServicingDraft, etag: record.etag}} />;
+  if (['motor-trade-road-risks', 'motor-trade-combined'].includes(record.data.context?.productCode ?? '')) return <MotorServicingWorkspace {...props} />;
+  return <Panel title="Servicing draft"><p>This product does not have an available servicing editor.</p></Panel>;
+}
+function MotorServicingWorkspace({ draftId, actorId, canTakeover, catalogue }: WorkspaceProps) {
   const [view, setView] = useState<{ data: ServicingDraft; etag: string } | null>(null), [proposal, setProposal] = useState<ServicingProposal | null>(null);
   const [fence, setFence] = useState<string | null>(null), [busy, setBusy] = useState(false), [error, setError] = useState(''), [notice, setNotice] = useState('');
   const [reason, setReason] = useState(''), [retry, setRetry] = useState(false), [dirty, setDirty] = useState(false);

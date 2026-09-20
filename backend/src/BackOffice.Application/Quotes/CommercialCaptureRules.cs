@@ -35,9 +35,16 @@ public static partial class CommercialCaptureRules
         try { canonical = QuoteCanonicalJson.Create(text, pins); }
         catch (QuoteInputException error) { return new(null, [new(error.Code, "")]); }
         using var document = JsonDocument.Parse(canonical.Json);
-        var root = document.RootElement;
+        var issues = ValidateShapeAndIdentity(document.RootElement);
+        return issues.Count > 0 ? new(null, issues) : new(canonical, []);
+    }
+
+    // Also validates projections of trusted issued sources without manufacturing
+    // quote configuration pins or claiming a new canonical quote revision.
+    public static IReadOnlyList<QuoteFieldIssue> ValidateShapeAndIdentity(JsonElement root)
+    {
         var shapeIssues = QuoteCaptureShape.ValidateCommercial(root);
-        if (shapeIssues.Count > 0) return new(null, shapeIssues);
+        if (shapeIssues.Count > 0) return shapeIssues;
         var issues = new List<QuoteFieldIssue>();
         var ids = new HashSet<Guid>();
         var locations = new HashSet<Guid>();
@@ -71,7 +78,7 @@ public static partial class CommercialCaptureRules
             }
         }
         CheckResponses(root, "", issues);
-        return issues.Count > 0 ? new(null, issues.Take(QuoteCaptureShape.MaximumIssues).ToArray()) : new(canonical, []);
+        return issues.Take(QuoteCaptureShape.MaximumIssues).ToArray();
     }
 
     private static void CheckRows(JsonElement owner, string name, string path, HashSet<Guid> ids, List<QuoteFieldIssue> issues)

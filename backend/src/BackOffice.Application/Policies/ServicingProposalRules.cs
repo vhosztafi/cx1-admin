@@ -20,6 +20,9 @@ public static class ServicingProposalRules
 
     public static ServicingProposalAssessment Assess(string snapshotJson, string proposalJson, ServicingProposalContext context)
     {
+        using var productSource = JsonDocument.Parse(snapshotJson);
+        if (productSource.RootElement.GetProperty("productCode").GetString() == CommercialCaptureRules.ProductCode)
+            return CommercialServicingProposalRules.Assess(snapshotJson, proposalJson, context);
         if (context.PolicyId == Guid.Empty || context.StartsAt >= context.EndsAt) throw new ArgumentException("Trusted policy context is required.");
         if (context.CoverageTerm is { } coverage)
         {
@@ -28,6 +31,8 @@ public static class ServicingProposalRules
         }
         var canonical = ServicingProposalInput.Parse(proposalJson, context.BaseVersionId);
         var envelope = JsonNode.Parse(canonical.Json)!.AsObject(); var snapshot = JsonNode.Parse(snapshotJson)!.AsObject();
+        if (envelope["changes"]!.AsArray().Any(x => x!["kind"]!.GetValue<string>().StartsWith("commercial-", StringComparison.Ordinal)))
+            Fail("servicing-change-product-mismatch", "/changes");
         var capture = Capture(snapshot, context); var original = Element(capture);
         var sourceIdentities = Identities(capture); var sourceClient = Guid.Parse(snapshot["insured"]!["clientId"]!.GetValue<string>());
         var issues = new List<QuoteFieldIssue>(); var dates = new List<(JsonObject Change, DateTimeOffset? Effective, int Index)>();

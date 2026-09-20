@@ -184,3 +184,49 @@ with no selected vehicles produces an incomplete-capture readiness issue.
 Conflicting requirement values across vehicle changes are rejected. Restating
 membership preserves its order and produces no spurious material difference.
 The local form projection follows these rules; the API remains authoritative.
+
+## Commercial Combined adjustment capture (08-11)
+
+The shared draft routes now dispatch from the immutable base product. `GET
+/api/v1/drafts/{id}` includes `context.productCode`; the editor response uses the
+commercial question/reference catalogue and `CommercialCapture` for its base,
+proposed value and cumulative slices. The UI uses that trusted product context
+to select `CommercialServicingWorkspace`, retaining both Motor Trade editors.
+
+The closed proposal union adds these kinds:
+
+| Kind | Subject | Operations and payload |
+| --- | --- | --- |
+| `commercial-location` | Retained/new location UUID | Add, update, remove; capture location fields without envelope-owned `id` |
+| `commercial-property` | Retained location UUID | Update buildings, contents, stock and supplied maximum loss estimate |
+| `commercial-wage` | Retained/new wage UUID | Add, update, remove; capture wage fields without `id` |
+| `commercial-loss` | Retained/new loss UUID | Add, update, remove; capture loss fields without `id`, with owned optional location |
+| `commercial-business` | Policy UUID | Update capture business fields |
+| `commercial-bi` | Policy UUID | Update business interruption fields |
+| `commercial-liability` | Policy UUID | Update liability fields |
+| `commercial-cover` | Policy UUID | Update capture cover fields; optional individual London effective intent |
+| `commercial-insured` | Retained client UUID | Update declared insured fields; no client/relationship transfer |
+| `commercial-declarations` | Policy UUID | Update `declarations` and/or `materialFacts` |
+
+`payloadMode: replace` on updates explicitly clears omitted fields. Location,
+wage and loss identity stays in the envelope. Property replacement clears only
+its four amount fields, preserving location address and protections. Required
+issue answers may be missing in a saved draft and appear in readiness; invalid
+shape, foreign or reused subjects, duplicate targets and ownership changes are
+rejected. Invalid effective dates yield blockers and no proposed slices. They
+cannot acquire issue authority from a successful draft save.
+
+The existing create, lease, save and editor endpoints retain current scope,
+CSRF, ETag, idempotent receipt and lease fencing. Commercial creation permits
+adjustments only and requires the current issued base. Saves append revisions
+without changing issued versions, exposure, financial postings or documents.
+Local edits retain their starting revision: polling a newer revision blocks
+saving until the user explicitly reloads it, rather than silently overwriting
+concurrent work. Lease loss preserves local edits and requires reacquisition.
+
+Commercial adjustment rating currently returns
+`commercial-servicing-rating-unavailable`; 08-12 owns its replacement with the
+commercial underwriting and issue pipeline, including the actual draft exposure
+projection. Renewal and cancellation remain with 08-13/14. These boundaries do
+not disable the implemented Motor Trade workflows. No database migration is
+needed: commercial draft revisions use the existing append-only JSON storage.

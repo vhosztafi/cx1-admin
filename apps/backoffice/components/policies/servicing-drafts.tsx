@@ -8,7 +8,7 @@ import { quoteFetch, uncertainQuoteFailure } from '../../lib/quotes';
 import type { RenewalPreview } from '../../lib/renewal-preparation';
 import { sendServicing, servicingCommand, type ServicingCommand } from '../../lib/servicing-api';
 
-export function ServicingDrafts({ termId, baseVersionId, initialKind = 'adjustment' }: { termId: string; baseVersionId: string; initialKind?: string }) {
+export function ServicingDrafts({ termId, baseVersionId, initialKind = 'adjustment', adjustmentOnly = false }: { termId: string; baseVersionId: string; initialKind?: string; adjustmentOnly?: boolean }) {
   const list = useQuoteResource<{ items: { id: string; kind: string; state: string }[] }>(`/api/v1/terms/${termId}/drafts`);
   const [kind, setKind] = useState(initialKind), [date, setDate] = useState(''), [reason, setReason] = useState('');
   const [busy, setBusy] = useState(false), [error, setError] = useState(''), [retry, setRetry] = useState(false);
@@ -30,9 +30,9 @@ export function ServicingDrafts({ termId, baseVersionId, initialKind = 'adjustme
   }
   return <Panel title="Servicing drafts" note="Saved proposals are separate from issued cover"><div className="quote-rail-body">
     {!list.data ? <LoadFeedback error={list.error} retry={list.refresh} /> : <>
-      {list.data.items.length ? <ul>{list.data.items.map(item => <li key={item.id}><Link href={`/drafts/${item.id}`}>Resume {item.kind} · {item.state}</Link>{item.kind === 'adjustment' && item.state === 'draft' && <> · <Link href={`/drafts/${item.id}#servicing-referrals`}>Open referrals</Link></>}</li>)}</ul> : <p>No servicing drafts saved for this term.</p>}
+      {list.data.items.length ? <ul>{list.data.items.map(item => <li key={item.id}><Link href={`/drafts/${item.id}`}>Resume {item.kind} · {item.state}</Link>{!adjustmentOnly && item.kind === 'adjustment' && item.state === 'draft' && <> · <Link href={`/drafts/${item.id}#servicing-referrals`}>Open referrals</Link></>}</li>)}</ul> : <p>No servicing drafts saved for this term.</p>}
       <form onSubmit={event => { event.preventDefault(); void create(); }}><fieldset disabled={busy || retry}><div className="quote-form-grid">
-        <label>Draft type<select aria-label="Draft type" value={kind} onChange={event => setKind(event.target.value)}><option value="adjustment">Policy adjustment</option><option value="renewal">Renewal</option><option value="cancellation">Cancellation</option></select></label>
+        <label>Draft type<select aria-label="Draft type" value={kind} onChange={event => setKind(event.target.value)}><option value="adjustment">Policy adjustment</option>{!adjustmentOnly && <><option value="renewal">Renewal</option><option value="cancellation">Cancellation</option></>}</select></label>
         {kind === 'renewal' ? <p>The server selects the expiring term’s final known risk and exact expiry for this renewal.</p> : <label>Requested effective date<input type="date" required value={date} onChange={event => setDate(event.target.value)} /></label>}
         <label>Reason for draft<textarea required minLength={10} maxLength={2000} value={reason} onChange={event => setReason(event.target.value)} /></label>
       </div></fieldset><p className="client-help">Dates use London time. Saving a draft does not change cover.</p>

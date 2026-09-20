@@ -42,6 +42,9 @@ internal static class ServicingRatingScope
         var term = await db.Set<PolicyTerm>().SingleAsync(x => x.Id == draft.BaseTermId, token);
         var revision = await db.Set<ServicingRevision>().AsNoTracking().SingleAsync(x => x.Id == draft.CurrentRevisionId && x.DraftId == draft.Id, token);
         var basis = await db.Set<PolicyVersion>().AsNoTracking().SingleAsync(x => x.Id == draft.BaseVersionId && x.TermId == term.Id && x.PolicyId == draft.PolicyId, token);
+        using var productSource = JsonDocument.Parse(basis.SnapshotJson);
+        if (productSource.RootElement.GetProperty("productCode").GetString() == CommercialCaptureRules.ProductCode)
+            throw new QuoteOperationException(409, "commercial-servicing-rating-unavailable");
         if (draft.Kind == "renewal")
             return await HoldRenewal(db, source, draft, term, revision, basis, now, token);
         using var intent = JsonDocument.Parse(term.LocalTermIntentJson); var assessedTerm = QuoteTerm.Assess(intent.RootElement);

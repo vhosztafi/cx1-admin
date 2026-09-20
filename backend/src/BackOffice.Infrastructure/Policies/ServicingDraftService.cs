@@ -51,9 +51,14 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
             if(prepared is not null)assessment=assessment with{Slices=[new(prepared.StartsAt,assessment.Proposed,[])]};
         }
         var policy = await db.Set<Policy>().AsNoTracking().SingleAsync(x => x.Id == draft.PolicyId, token);
+        var commercial = assessment.Base.GetProperty("productCode").GetString() == CommercialCaptureRules.ProductCode;
+        if (commercial && !await db.Set<PolicyTerm>().AnyAsync(x => x.Id == draft.BaseTermId && x.CurrentVersionId == draft.BaseVersionId, token))
+            assessment = assessment with { ReadinessIssues = assessment.ReadinessIssues.Concat([new QuoteFieldIssue("servicing-base-stale", "/baseVersionId")]).ToArray() };
         var result = new ServicingDraftRead(JsonSerializer.Serialize(new { draftId, revisionId = revision.Id, policy.ClientId,
-            captureVersions = new { schemaVersion = "1.0", questionSetVersion = QuoteCatalogueIdentity.Version, referenceDataVersion = QuoteCatalogueIdentity.Version },
-            assessment }, Json), Etag(draft.RowVersion));
+            captureVersions = new { schemaVersion = "1.0", questionSetVersion = commercial ? CommercialCaptureRules.QuestionVersion : QuoteCatalogueIdentity.Version,
+                referenceDataVersion = commercial ? CommercialCaptureRules.ReferenceVersion : QuoteCatalogueIdentity.Version },
+            assessment = new { assessment.Base, assessment.Proposed, assessment.Changes, assessment.Slices,
+                readinessIssues = assessment.ReadinessIssues.Select(issue => new { issue.Code, issue.Path, questionId = issue.QuestionId }) } }, Json), Etag(draft.RowVersion));
         await tx.CommitAsync(token); return result;
     }
 
@@ -71,8 +76,16 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
                 Current(term!.RowVersion, version);
                 if(input.Kind=="renewal" && await db.Set<RenewalLapseEvent>().AnyAsync(x=>x.TermId==termId,ct))
                     throw new QuoteOperationException(409,"renewal-already-lapsed");
-                if (!await db.Set<PolicyVersion>().AnyAsync(x => x.Id == input.BaseVersionId && x.TermId == termId && x.PolicyId == term.PolicyId, ct))
-                    throw new QuoteOperationException(422, "servicing-base-mismatch");
+                var basis = await db.Set<PolicyVersion>().AsNoTracking().SingleOrDefaultAsync(x => x.Id == input.BaseVersionId && x.TermId == termId && x.PolicyId == term.PolicyId, ct)
+                    ?? throw new QuoteOperationException(422, "servicing-base-mismatch");
+                using var snapshot = JsonDocument.Parse(basis.SnapshotJson);
+                if (snapshot.RootElement.GetProperty("productCode").GetString() == CommercialCaptureRules.ProductCode)
+                {
+                    if (term.CurrentVersionId != basis.Id) throw new QuoteOperationException(409, "servicing-base-stale");
+                    // Renewal and cancellation have independent prerequisite
+                    // writers in their owning commercial lifecycle slices.
+                    if (input.Kind != "adjustment") throw new QuoteOperationException(409, "commercial-servicing-kind-unavailable");
+                }
                 if (input.Kind != "cancellation" && await db.Set<ServicingDraft>().AnyAsync(x => x.BaseTermId == termId && x.Kind == input.Kind && x.State == "draft", ct))
                     throw new QuoteOperationException(409, "servicing-active-draft-exists");
                 var draft = new ServicingDraft { PolicyId = term.PolicyId, BaseTermId = termId, BaseVersionId = input.BaseVersionId, Kind = input.Kind,
@@ -89,7 +102,10 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
         {
             await DemandLease(db, draft.Id, actor.UserId, leaseToken, ct);
             var proposal = ServicingProposalInput.Parse(json, draft.BaseVersionId);
-            await Assess(db, actor, draft, proposal, ct);
+            var assessment = await Assess(db, actor, draft, proposal, ct);
+            if (assessment.Base.GetProperty("productCode").GetString() == CommercialCaptureRules.ProductCode &&
+                !await db.Set<PolicyTerm>().AnyAsync(x => x.Id == draft.BaseTermId && x.CurrentVersionId == draft.BaseVersionId, ct))
+                throw new QuoteOperationException(409, "servicing-base-stale");
             await ServicingRatingService.InvalidateAsync(db, draft, "Proposal revision changed", time.GetUtcNow(), ct);
             await Append(db, draft, proposal, actor.UserId, ct);
         }, token);
@@ -228,7 +244,7 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
         // authenticated current holder and freshly checked policy permission.
         return new(JsonSerializer.Serialize(new { draft.Id, draft.PolicyId, draft.BaseTermId, draft.BaseVersionId, revisionId = revision.Id, draft.Kind, state,
             proposal = JsonSerializer.Deserialize<JsonElement>(revision.ProposalJson), draft.CreatedAt, draft.UpdatedAt,
-            context = new { policyReference, baseTermPremium, preparedBy = new { id = draft.CreatedBy, label = preparedByLabel } },
+            context = new { policyReference, productCode = snapshot.RootElement.GetProperty("productCode").GetString(), baseTermPremium, preparedBy = new { id = draft.CreatedBy, label = preparedByLabel } },
             lease = lease is null ? null : new { lease.Id, lease.HolderId, lease.Generation, leaseToken = lease.Token, lease.ExpiresAt, lease.Active } }, Json), Etag(draft.RowVersion));
     }
 

@@ -20,7 +20,8 @@ export async function commercialIssueJourney({page,f,quoteId,checks}) {
   assert.deepEqual(policy.documentRequests.map(x=>x.id).sort(),receipt.documentRequestIds.slice().sort());
   assert.equal(policy.documentRequests.filter(x=>x.kind==='policy-certificate').length,policy.snapshot.cover.sections.some(x=>x.code==='employers-liability')?1:0);
   assert.equal('vehicles' in policy.snapshot.risk,false);
-  assert.equal(await page.getByRole('button',{name:/Make a policy change|Cancel policy|Renew policy/}).count(),0);
+  assert.equal(await page.getByRole('button',{name:'Make a policy change',exact:true}).count(),1);
+  assert.equal(await page.getByRole('button',{name:/Cancel policy|Renew policy/}).count(),0);
   await page.getByRole('tab',{name:'Property schedule',exact:true}).click();
   await page.getByRole('heading',{name:'Locations and sums insured',exact:true}).waitFor();
   await page.getByRole('tab',{name:'Cover',exact:true}).click();
@@ -37,6 +38,7 @@ export async function commercialIssueJourney({page,f,quoteId,checks}) {
   await page.screenshot({path:f.output+'/issued-commercial-mobile.png',fullPage:true});
   await page.screenshot({path:f.output+'/issued-commercial-mobile-viewport.png'});
   await page.setViewportSize({width:1480,height:980});
+  if(f.servicing){const {commercialServicingJourney}=await import('./verify-commercial-servicing-editor-browser.mjs');await commercialServicingJourney({page,f,policy,checks});}
   await page.goto(f.webOrigin+`/quotes/${quoteId}`);await page.getByRole('link',{name:'Open issued policy',exact:true}).waitFor();
   await writeFile(f.output+'/issued-commercial.json',JSON.stringify({receipt,policy},null,2));
   checks.push('Actual UI Commercial Combined issue; validated receipt and immutable policy API; exposure decision identity, selected EL documents and source quote link; persisted reload and desktop/390px views');
