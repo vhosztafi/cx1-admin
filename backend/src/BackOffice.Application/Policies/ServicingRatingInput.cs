@@ -7,7 +7,13 @@ using BackOffice.Application.Underwriting;
 
 namespace BackOffice.Application.Policies;
 
-public sealed record ServicingRatingSliceInput(DateTimeOffset EffectiveAt, IReadOnlyList<Guid> ChangeIds, ProjectedUnderwritingInput Input);
+public sealed record ServicingRatingSliceInput(DateTimeOffset EffectiveAt, IReadOnlyList<Guid> ChangeIds, ProjectedUnderwritingInput Input)
+{
+    // Mutually exclusive with Input, which remains unchanged for retained MT
+    // payloads. The enclosing persisted format selects and validates this arm.
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public ProjectedCommercialUnderwritingInput? Commercial { get; init; }
+}
 public sealed record EncodedServicingRatingInput(string Json, byte[] ContentHash);
 public sealed record RenewalRatingContext(Guid PreparationVersionId, Guid? ExperienceVersionId, Guid? ExperienceReviewId,
     Guid? FairValueAssessmentId, RenewalExperienceFacts? Experience, bool EvidenceAccepted, string RuleVersion,
@@ -15,6 +21,8 @@ public sealed record RenewalRatingContext(Guid PreparationVersionId, Guid? Exper
 public sealed record ServicingRatingRequestInput
 {
     public required string Format { get; init; }
+    [JsonIgnore]
+    public bool IsCommercial => Format == "commercial-servicing-rating-input-1";
     public required Guid DraftId { get; init; }
     public required Guid RevisionId { get; init; }
     public required Guid PolicyId { get; init; }
@@ -82,16 +90,22 @@ public static class ServicingRatingInput
 
     private static void Validate(ServicingRatingRequestInput input)
     {
-        if (input is null || input.Format is not ("servicing-rating-input-1" or "servicing-rating-input-2") ||
+        if (input is null || input.Format is not ("servicing-rating-input-1" or "servicing-rating-input-2" or "commercial-servicing-rating-input-1") ||
             (input.Format == "servicing-rating-input-2") != (input.Renewal is not null) || input.RequestedAt.Offset != TimeSpan.Zero ||
             new[] { input.DraftId, input.RevisionId, input.PolicyId, input.BaseTermId, input.BaseVersionId,
                 input.ProductVersionId, input.AgencyTermsVersionId, input.RatingRuleVersionId, input.BinderVersionId,
                 input.AuthorityVersionId, input.RuntimeVersionId, input.ScenarioVersionId, input.ServicingSettingVersionId, input.RequestedBy }.Any(id => id == Guid.Empty) ||
             !Hash(input.BaseContentHash) || !Hash(input.RevisionContentHash) || input.Term is null || input.Slices is null ||
-            input.Slices.Count is < 1 or > 100 || !UnderwritingConfiguration.Valid(input.RatingDefinition, "rating")) throw Invalid();
+            input.Slices.Count is < 1 or > 100 || !(input.IsCommercial ? CommercialUnderwritingConfiguration.Valid(input.RatingDefinition, "rating") : UnderwritingConfiguration.Valid(input.RatingDefinition, "rating"))) throw Invalid();
         foreach (var slice in input.Slices)
         {
-            if (slice is null || slice.ChangeIds is null || slice.Input is null || slice.Input.Rating is null ||
+            if (input.IsCommercial)
+            {
+                if (slice is null || slice.ChangeIds is null || slice.Input is not null || slice.Commercial is not { } commercial ||
+                    commercial.Rating is null || commercial.Term != input.Term || commercial.Pricing.ValueKind != JsonValueKind.Object) throw Invalid();
+                continue;
+            }
+            if (slice is null || slice.Commercial is not null || slice.ChangeIds is null || slice.Input is null || slice.Input.Rating is null ||
                 slice.Input.Term != input.Term || slice.Input.Pricing.ValueKind != JsonValueKind.Object ||
                 slice.Input.Drivers is null || slice.Input.TradeValues is null || slice.Input.CoverLimits is null ||
                 slice.Input.Drivers.Count > 1000 || slice.Input.TradeValues.Count > 1000 || slice.Input.CoverLimits.Count > 1000 ||
@@ -107,6 +121,15 @@ public static class ServicingRatingInput
 
     public static CalculatedServicingRating Calculate(ServicingRatingRequestInput input)
     {
+        ArgumentNullException.ThrowIfNull(input);
+        if (input.IsCommercial)
+        {
+            if (input.Renewal is not null || input.Slices is null || input.Slices.Any(x => x is null || x.Input is not null || x.Commercial is null || x.Commercial.Term != input.Term)) throw Invalid();
+            return CommercialServicingRatingRules.Rate(input.RatingDefinition,input.Term,input.BaseAnnualPremium,
+                input.Slices.Select(x => new CommercialServicingRiskSlice(x.EffectiveAt,x.ChangeIds,x.Commercial!.Rating)).ToArray(),
+                input.CommissionBasisPoints,input.Fee,input.MinimumPremium);
+        }
+        if (input.Slices is null || input.Slices.Any(x => x is null || x.Commercial is not null)) throw Invalid();
         if (input.Format == "servicing-rating-input-1" && input.Renewal is null)
             return ServicingRatingRules.Rate(input.RatingDefinition, input.Term, input.BaseAnnualPremium,
             input.Slices.Select(x => new ServicingRiskSlice(x.EffectiveAt, x.ChangeIds, x.Input.Rating)).ToArray(),

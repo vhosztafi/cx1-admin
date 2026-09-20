@@ -1,9 +1,10 @@
 'use client';
 import { useState } from 'react';
 import { ConditionForm } from '../underwriting/referral-decisions';
-import { capacityDimension, capacityExtension, capacityInstant } from '../../lib/capacity';
+import { capacityDimension, capacityExtension, commercialCapacityExtension, capacityInstant } from '../../lib/capacity';
 import { conditionLabels } from '../../lib/underwriting-decisions';
 import type { ConditionDefinition } from '../../lib/underwriting-api';
+import type { QuoteCaptureProposal } from '../../lib/quotes';
 import type { ServicingEditor } from '../../lib/servicing-api';
 import { currentProof, type ProofAssociation, type ProofRequirement } from '../../lib/servicing-proof';
 import { carrierDate, carrierLabel, type CarrierDetail, type CarrierRun } from '../../lib/servicing-capacity';
@@ -28,11 +29,12 @@ export function CarrierSend({view,active,evidence,requirements,run}:{view:Carrie
  </fieldset>;
 }
 
-export function CarrierSuppliedResponse({view,active,evidence,requirements,editor,run}:{view:CarrierDetail;active:boolean;evidence:ProofAssociation[];requirements:ProofRequirement[];editor:ServicingEditor|null;run:CarrierRun}) {
+export function CarrierSuppliedResponse({view,active,evidence,requirements,editor,run}:{view:CarrierDetail;active:boolean;evidence:ProofAssociation[];requirements:ProofRequirement[];editor:ServicingEditor<QuoteCaptureProposal>|null;run:CarrierRun}) {
  const [outcome,setOutcome]=useState('query'),[body,setBody]=useState(''),[reason,setReason]=useState(''),[proof,setProof]=useState('');
  const [underwriter,setUnderwriter]=useState(''),[reference,setReference]=useState(''),[received,setReceived]=useState(''),[from,setFrom]=useState(''),[to,setTo]=useState('');
  const [amount,setAmount]=useState(''),[minimum,setMinimum]=useState(''),[maximum,setMaximum]=useState(''),[error,setError]=useState(''),[sliceDate,setSliceDate]=useState('');
  const [conditions,setConditions]=useState<{definition:ConditionDefinition;effectiveDates:string[]}[]>([]),[dates,setDates]=useState<string[]>([]);
+ const commercial=editor?.assessment.base.productCode==='commercial-combined';
  const item=view.case,approving=outcome==='approve'||outcome==='approve-with-conditions',conditional=outcome==='approve-with-conditions';
  const dimension=capacityDimension(item.ruleCode,item.dimension),canRecord=!['draft','superseded'].includes(item.state)&&!!item.currentSubmissionId;
  const options=evidence.filter(item=>item.reviewOutcome==='accepted'&&requirements.some(required=>required.code==='capacity-response'&&required.capacitySubmissionId===view.case.currentSubmissionId&&currentProof(item,required)));
@@ -40,7 +42,7 @@ export function CarrierSuppliedResponse({view,active,evidence,requirements,edito
  function record() {
   try {
    const definition={outcome,validFrom:approving?capacityInstant(from):null,validTo:approving?capacityInstant(to):null,
-    authorisedLimits:approving?[capacityExtension(item.ruleCode,item.dimension,{maximumAmount:amount,minimumAge:minimum,maximumAge:maximum})]:[],conditions:conditional?conditions:[]};
+    authorisedLimits:approving?[commercial?commercialCapacityExtension(item.dimension,amount,item.riskItemId??undefined):capacityExtension(item.ruleCode,item.dimension,{maximumAmount:amount,minimumAge:minimum,maximumAge:maximum})]:[],conditions:conditional?conditions:[]};
    if(approving&&Date.parse(definition.validFrom!)>=Date.parse(definition.validTo!))throw new Error('Permission must end after it begins.');
    if(conditional&&!conditions.length)throw new Error('Add the carrier conditions and their applicable dates.');
    setError('');run(`/capacity/${item.id}/responses`,{cycleId:item.cycleId,caseEtag:item.etag,submissionId:item.currentSubmissionId,evidenceAssociationId:proof,definition,body,providerUnderwriter:underwriter,providerReference:reference,receivedAt:capacityInstant(received),reason});
@@ -54,7 +56,7 @@ export function CarrierSuppliedResponse({view,active,evidence,requirements,edito
     <label>Carrier outcome<select aria-label="Carrier outcome" value={outcome} onChange={event=>{setOutcome(event.target.value);setConditions([]);}}><option value="query">Query</option><option value="approve">Approve</option><option value="approve-with-conditions">Approve with conditions</option><option value="decline">Decline</option></select></label></div>
    <p className="client-help">Date and time fields use your browser&apos;s local time and are saved as UTC instants.</p>
    {approving&&<div className="quote-form-grid"><label>Carrier permission starts<input aria-label="Carrier permission starts" type="datetime-local" step="1" value={from} onChange={event=>setFrom(event.target.value)}/></label><label>Carrier permission ends<input aria-label="Carrier permission ends" type="datetime-local" step="1" value={to} onChange={event=>setTo(event.target.value)}/></label>
-    {dimension.endsWith('-limit')&&<label>Carrier maximum amount (GBP)<input aria-label="Carrier maximum amount (GBP)" inputMode="decimal" placeholder="15000.00" value={amount} onChange={event=>setAmount(event.target.value)}/></label>}
+    {(commercial||dimension.endsWith('-limit'))&&<label>Carrier maximum amount (GBP)<input aria-label="Carrier maximum amount (GBP)" inputMode="decimal" placeholder="15000.00" value={amount} onChange={event=>setAmount(event.target.value)}/></label>}
     {dimension==='driver-age'&&<><label>Carrier minimum age<input aria-label="Carrier minimum age" type="number" min={16} max={100} value={minimum} onChange={event=>setMinimum(event.target.value)}/></label><label>Carrier maximum age<input aria-label="Carrier maximum age" type="number" min={16} max={100} value={maximum} onChange={event=>setMaximum(event.target.value)}/></label></>}
     {dimension==='trade-restriction'&&<p>Permission applies to this referral&apos;s stated trade restriction.</p>}
    </div>}

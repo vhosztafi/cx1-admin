@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Json;
 using BackOffice.Application.Underwriting;
+using BackOffice.Application.Quotes;
 
 namespace BackOffice.Application.Policies;
 
@@ -10,7 +11,10 @@ public sealed record ServicingCapacityResponseDefinition(string Outcome, DateTim
 public sealed record ServicingParsedCarrierCondition(string DefinitionJson, IReadOnlyList<DateTimeOffset> EffectiveDates,
     IReadOnlyList<ServicingParsedCondition> Slices);
 public sealed record ServicingParsedCapacityResponse(IReadOnlyList<CapacityExtension> Extensions,
-    IReadOnlyList<ServicingParsedCarrierCondition> Conditions);
+    IReadOnlyList<ServicingParsedCarrierCondition> Conditions)
+{
+    public IReadOnlyList<CommercialCapacityExtension>? CommercialExtensions { get; init; }
+}
 
 public static class ServicingCapacityResponseRules
 {
@@ -40,8 +44,19 @@ public static class ServicingCapacityResponseRules
                 response.ValidFrom >= response.ValidTo || response.ValidFrom.Value.Offset != TimeSpan.Zero || response.ValidTo.Value.Offset != TimeSpan.Zero
             : response.AuthorisedLimits.Count != 0 || response.ValidFrom is not null || response.ValidTo is not null) throw Invalid();
         if (response.Outcome == "approve-with-conditions" ? response.Conditions.Count is < 1 or > 20 : response.Conditions.Count != 0) throw Invalid();
-        var expected = CapacityRules.Dimension(ruleCode, dimension);
-        var extensions = response.AuthorisedLimits.Select(CapacityRules.Extension).ToArray();
+        var commercial = slices.Any(x => x.Proposal.TryGetProperty("productCode", out var code) && code.GetString() == CommercialCaptureRules.ProductCode);
+        CommercialCapacityExtension[]? commercialExtensions = null;
+        if (commercial)
+        {
+            if (slices.Any(x => !x.Proposal.TryGetProperty("productCode", out var code) || code.GetString() != CommercialCaptureRules.ProductCode)) throw Invalid();
+            foreach (var slice in slices) CommercialCaptureRules.ValidateShapeAndIdentity(slice.Proposal);
+            commercialExtensions = response.AuthorisedLimits.Select(CommercialCapacityRules.Extension).ToArray();
+            if (commercialExtensions.Any(x => x.Dimension != dimension || x.RiskItemId is { } id &&
+                    !slices.Any(s => s.Proposal.GetProperty("risk").GetProperty("locations").EnumerateArray().Any(l => l.GetProperty("id").GetGuid() == id))) ||
+                commercialExtensions.Select(x => (x.Dimension,x.RiskItemId)).Distinct().Count() != commercialExtensions.Length) throw Invalid();
+        }
+        var expected = commercial ? dimension : CapacityRules.Dimension(ruleCode, dimension);
+        var extensions = commercial ? [] : response.AuthorisedLimits.Select(CapacityRules.Extension).ToArray();
         if (extensions.Any(x => x.Dimension != expected || x.Dimension == "trade-restriction" && x.QuestionId != ruleCode) ||
             extensions.Select(x => x.Dimension).Distinct(StringComparer.Ordinal).Count() != extensions.Length) throw Invalid();
         var conditions = new List<ServicingParsedCarrierCondition>(); var definitions = new HashSet<string>(StringComparer.Ordinal);
@@ -55,7 +70,7 @@ public static class ServicingCapacityResponseRules
             if (!definitions.Add(canonical)) throw Invalid();
             conditions.Add(new(canonical, input.EffectiveDates.ToArray(), parsed));
         }
-        return new(extensions, conditions.AsReadOnly());
+        return new(extensions, conditions.AsReadOnly()) { CommercialExtensions = commercialExtensions };
     }
 
     private static ArgumentException Invalid() => new("A bounded current servicing response with exact extent and dated conditions is required.");

@@ -119,6 +119,7 @@ public sealed class ServicingRatingWorker(IDbContextFactory<BackOfficeDbContext>
             // temporary cover that a later change removes again.
             if (rating.Slices.Count != input.Slices.Count) throw Failure(JobFailure.ProviderConflict);
             var slices = new List<ServicingAuthoritySlice>();
+            var commercialSlices = new List<CommercialServicingAuthoritySlice>();
             for (var index = 0; index < input.Slices.Count; index++)
             {
                 var source = input.Slices[index]; var priced = rating.Slices[index];
@@ -126,10 +127,14 @@ public sealed class ServicingRatingWorker(IDbContextFactory<BackOfficeDbContext>
                 var endsAt = input.Term.EndsAt;
                 if (source.EffectiveAt != priced.EffectiveAt || priced.CoverageEndsAt != endsAt ||
                     !source.ChangeIds.Order().SequenceEqual(priced.ChangeIds.Order())) throw Failure(JobFailure.ProviderConflict);
-                slices.Add(new(source.EffectiveAt, source.Input.RiskForPremium(priced.AnnualPremium)));
+                if (input.IsCommercial)
+                    commercialSlices.Add(new(source.EffectiveAt, source.Commercial!.Pricing.GetProperty("proposal"), priced.AnnualPremium));
+                else slices.Add(new(source.EffectiveAt, source.Input.RiskForPremium(priced.AnnualPremium)));
             }
-            var needs = ServicingReferralRules.Assess(input.Term, slices, eligible.Eligible.Binder, eligible.Eligible.Authority,
-                input.RatingDefinition.GetProperty("minimumTradingYears").GetInt32()).ToList();
+            var needs = (input.IsCommercial
+                ? CommercialServicingReferralRules.Assess(input.Term, commercialSlices, eligible.Eligible.Binder, eligible.Eligible.Authority)
+                : ServicingReferralRules.Assess(input.Term, slices, eligible.Eligible.Binder, eligible.Eligible.Authority,
+                    input.RatingDefinition.GetProperty("minimumTradingYears").GetInt32())).ToList();
             if (input.Renewal is { } renewal)
             {
                 var experience = RenewalPreparationRules.Experience(renewal.Experience, renewal.EvidenceAccepted, input.RequestedAt,

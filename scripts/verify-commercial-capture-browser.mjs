@@ -7,12 +7,12 @@ import {underwritingResponseValidator} from './validate-underwriting-response.mj
 
 const stage = process.argv.includes('--stage') ? process.argv[process.argv.indexOf('--stage') + 1] : 'full';
 assert.ok(['business-loss','full','rating','underwriting','terms','issue'].includes(stage), 'Choose an implemented acceptance stage.');
-const plan = process.argv.includes('--servicing')?'11':process.argv.includes('--policy')?'10':stage==='issue'?'09':stage==='terms'?'07':stage==='underwriting'?'06':stage==='rating'?'05':stage==='full'?'04':'03';
+const plan = process.argv.includes('--servicing-issue')?'12':process.argv.includes('--servicing')?'11':process.argv.includes('--policy')?'10':stage==='issue'?'09':stage==='terms'?'07':stage==='underwriting'?'06':stage==='rating'?'05':stage==='full'?'04':'03';
 if (!process.argv.includes('--worker')) {
   const output = `.local/phase8-${plan}-browser-${randomUUID()}`;
   await mkdir(output, {recursive: true});
   const child = spawn('dotnet', ['test', 'backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj', '--no-restore',
-    ...(process.argv.includes('--no-build') ? ['--no-build'] : []), '--filter', `FullyQualifiedName~${process.argv.includes('--servicing')?'RealSqlCommercialServicingDraftBrowser':process.argv.includes('--policy')?'RealSqlCommercialPolicyReadBrowser':stage==='issue'?'RealSqlCommercialIssueBrowser':stage==='terms'?'RealSqlCommercialTermsBrowser':stage==='underwriting'?'RealSqlCommercialReferralBrowser':stage==='rating'?'RealSqlCommercialRatingBrowser':`RealSqlCommercialCapture${stage==='full'?'Full':'BusinessLoss'}Browser`}`,
+    ...(process.argv.includes('--no-build') ? ['--no-build'] : []), '--filter', `FullyQualifiedName~${process.argv.includes('--servicing-issue')?'RealSqlCommercialServicingIssueBrowser':process.argv.includes('--servicing')?'RealSqlCommercialServicingDraftBrowser':process.argv.includes('--policy')?'RealSqlCommercialPolicyReadBrowser':stage==='issue'?'RealSqlCommercialIssueBrowser':stage==='terms'?'RealSqlCommercialTermsBrowser':stage==='underwriting'?'RealSqlCommercialReferralBrowser':stage==='rating'?'RealSqlCommercialRatingBrowser':`RealSqlCommercialCapture${stage==='full'?'Full':'BusinessLoss'}Browser`}`,
     '--logger', 'trx;LogFileName=sql.trx', '--results-directory', output], {stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true});
   let log = ''; child.stdout.on('data', x => log += x); child.stderr.on('data', x => log += x);
   const code = await new Promise((resolve, reject) => {child.on('error', reject); child.on('close', resolve);});
@@ -25,13 +25,13 @@ if (!process.argv.includes('--worker')) {
   for (const origin of [f.apiOrigin, f.webOrigin]) assert.ok(['localhost', '127.0.0.1', '[::1]'].includes(new URL(origin).hostname));
   assert.notEqual(new URL(f.apiOrigin).port, '5000');
   const browser = await chromium.launch({channel: 'chrome', headless: true});
-  const page = await browser.newPage({viewport: {width: 1480, height: 980}}); page.setDefaultTimeout(25000);
+  const page = await browser.newPage({viewport: {width: 1480, height: 980}}); page.setDefaultTimeout(f.servicingIssue?90000:25000);
   await page.clock.setFixedTime(new Date(f.clockNow));
-  const errors = [], routeErrors = [], routeTasks = new Set(); let closing = false;
+  const errors = [], routeErrors = [], routeTasks = new Set(); let closing = false, primaryFailure = false;
   page.on('pageerror', error => errors.push(error.message));
   await page.route('**/api/v1/**', route => {
     const pending=(async()=>{
-    try {const url = new URL(route.request().url()); const response = await route.fetch({url: f.apiOrigin + url.pathname + url.search}); await route.fulfill({response});}
+    try {const url = new URL(route.request().url()); const response = await route.fetch({url: f.apiOrigin + url.pathname + url.search,timeout:f.servicingIssue?90000:30000}); await route.fulfill({response});}
     catch(error) {
       const message=String(error.message).split('Call log:')[0];
       if(!closing || !/already handled|disposed|closed/i.test(message))routeErrors.push(message);
@@ -341,6 +341,6 @@ if (!process.argv.includes('--worker')) {
     checks.push('retained Motor Trade creation and editor route');
     assert.deepEqual(errors, []); await writeFile(f.output + '/report.json', JSON.stringify({quoteId, activityId, lossId: firstLoss.id, mtId, verifiedQuestionIds:[...verifiedQuestionIds], checks}, null, 2));
     console.log(JSON.stringify({output: f.output, checks}));
-  } catch (error) {await page.screenshot({path: f.output + '/failure.png'}).catch(() => {}); throw error;}
-  finally {closing=true; await browser.close(); await Promise.all([...routeTasks]); assert.deepEqual(routeErrors,[]);}
+  } catch (error) {primaryFailure=true;await writeFile(f.output+'/failure.txt',error.stack??String(error));await page.screenshot({path: f.output + '/failure.png'}).catch(() => {}); throw error;}
+  finally {closing=true; await browser.close(); await Promise.all([...routeTasks]);await writeFile(f.output+'/route-errors.json',JSON.stringify(routeErrors,null,2));if(!primaryFailure)assert.deepEqual(routeErrors,[]);}
 }

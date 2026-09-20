@@ -27,6 +27,8 @@ public sealed class ServicingCapacityWorker(IDbContextFactory<BackOfficeDbContex
         if(lease.OperationKey!=$"servicing-capacity/{submission.Id:N}" || lease.ScenarioVersionId!=submission.ScenarioVersionId) throw Failure(JobFailure.ProviderConflict);
         var setting=await db.Set<SettingVersion>().AsNoTracking().SingleAsync(x=>x.Id==submission.ScenarioVersionId,token);
         var scenario=CapacitySeed.Parse(setting)?.Scenario??throw Failure(JobFailure.InvalidPayload);
+        var inputCycle=await db.Set<ServicingCycle>().AsNoTracking().SingleAsync(x=>x.Id==submission.CycleId,token);
+        if(!CapacitySeed.ForProduct(scenario,ServicingRatingInput.Read(inputCycle.InputJson,inputCycle.InputHash).IsCommercial)) throw Failure(JobFailure.InvalidPayload);
         await using var tx=await db.Database.BeginTransactionAsync(IsolationLevel.Serializable,token);
         var operation=await db.Set<DemoProviderOperation>().FromSqlInterpolated($"SELECT * FROM DemoProviderOperation WITH(UPDLOCK,HOLDLOCK) WHERE Kind={lease.Kind} AND OperationKey={lease.OperationKey}").SingleOrDefaultAsync(token);
         var existed=operation is not null;
@@ -41,27 +43,52 @@ public sealed class ServicingCapacityWorker(IDbContextFactory<BackOfficeDbContex
             operation=new DemoProviderOperation{Kind=lease.Kind,OperationKey=lease.OperationKey,ScenarioVersionId=lease.ScenarioVersionId,
                 RequestHash=submission.ContextHash,CreatedAt=time.GetUtcNow()};db.Add(operation);
         }
-        if(!existed && scenario=="transient-then-approve")
+        if(!existed && scenario is "transient-then-approve" or "cc-transient-then-approve")
         {
             operation.State="transient-failed";await db.SaveChangesAsync(token);await tx.CommitAsync(token);throw Failure(JobFailure.ProviderUnavailable);
         }
         using var document=JsonDocument.Parse(submission.ContextJson);var context=document.RootElement;
-        var dimension=CapacityRules.Dimension(context.GetProperty("ruleCode").GetString()!,context.GetProperty("dimension").GetString()!);
+        var commercial=context.TryGetProperty("productCode",out var product) && product.GetString()=="commercial-combined";
+        var dimension=commercial?context.GetProperty("dimension").GetString()!:CapacityRules.Dimension(context.GetProperty("ruleCode").GetString()!,context.GetProperty("dimension").GetString()!);
         var targets=context.TryGetProperty("conditionTargets",out var targetList)?targetList.EnumerateArray().ToArray():[];
         var outcome=scenario switch {"query-proof"=>"query","decline-trade"=>"decline",
             "conditional-security" when dimension=="stock-limit" && targets.Length is >0 and <=20=>"approve-with-conditions",
             "conditional-security"=>"query",_ when dimension=="stock-limit"=>"approve",_=>"query"};
-        var approving=outcome is "approve" or "approve-with-conditions";var now=time.GetUtcNow();
+        var now=time.GetUtcNow();
         var conditions=outcome=="approve-with-conditions"?targets.Select(x=>JsonSerializer.SerializeToElement(new{
             definition=new{code="overnight-security",premisesId=x.GetProperty("premisesId").GetGuid(),wordingVersion="1"},
             effectiveDates=x.GetProperty("effectiveDates").EnumerateArray().Select(d=>d.GetDateTimeOffset()).ToArray()})).ToArray():[];
+        JsonElement[] limits=outcome is "approve" or "approve-with-conditions"?[JsonSerializer.SerializeToElement(new{dimension="stock-limit",maximumAmount="150000.00"})]:[];
+        if(commercial)
+        {
+            var triggers=context.GetProperty("requiredAuthority").GetProperty("triggers").Deserialize<ServicingReferralTrigger[]>(Json)??[];
+            var target=context.GetProperty("targetId").ValueKind==JsonValueKind.Null?(Guid?)null:context.GetProperty("targetId").GetGuid();
+            var relevant=triggers.Where(x=>x.Requirement.Dimension==dimension && x.Requirement.TargetId==target).ToArray();
+            var requested=relevant.Select(x=>x.Requirement.RequestedAmount).Max();
+            var applicable=CommercialCapacityRules.SupportedDimension(dimension) && requested is >0 &&
+                (CommercialCapacityRules.LocationDimension(dimension)?target is not null:target is null);
+            outcome=scenario switch {"cc-decline"=>"decline","cc-query-proof"=>"query",_ when !applicable=>"query","cc-conditional-proof"=>"approve-with-conditions",_=>"approve"};
+            conditions=[];limits=[];
+            if(outcome is "approve" or "approve-with-conditions")
+            {
+                var extent=new Dictionary<string,object>{{"dimension",dimension},{"maximumAmount",requested!.Value.ToString("F2",System.Globalization.CultureInfo.InvariantCulture)}};
+                if(target is {} id)extent["riskItemId"]=id;
+                var serialized=JsonSerializer.SerializeToElement(extent,Json);_=CommercialCapacityRules.Extension(serialized);limits=[serialized];
+                if(outcome=="approve-with-conditions")
+                {
+                    var proof=target is {} location?JsonSerializer.SerializeToElement(new{code="provide-cc-location-proof",riskItemId=location}):JsonSerializer.SerializeToElement(new{code="provide-cc-liability-proof"});
+                    conditions=[JsonSerializer.SerializeToElement(new{definition=proof,effectiveDates=relevant.Select(x=>x.EffectiveAt).Distinct().Order().ToArray()})];
+                }
+            }
+        }
+        var approving=outcome is "approve" or "approve-with-conditions";
         var startsAt=context.GetProperty("startsAt").GetDateTimeOffset();
         var definition=JsonSerializer.Serialize(new{format="servicing-capacity-response-1",draftId=submission.DraftId,revisionId=submission.RevisionId,
             cycleId=submission.CycleId,ratingId=submission.RatingId,caseId=submission.CaseId,referralId=context.GetProperty("referralId").GetGuid(),
             providerId=context.GetProperty("providerId").GetGuid(),submissionId=submission.Id,submissionHash=Convert.ToHexStringLower(submission.ContextHash),outcome,
             validFrom=approving?(DateTimeOffset?)(startsAt<now?startsAt:now):null,
             validTo=approving?(DateTimeOffset?)context.GetProperty("endsAt").GetDateTimeOffset():null,
-            authorisedLimits=approving?new[]{JsonSerializer.SerializeToElement(new{dimension="stock-limit",maximumAmount="150000.00"})}:[],conditions},Json);
+            authorisedLimits=limits,conditions},Json);
         var result=new CapacityProviderOutcome(operation.Id,"servicing-capacity-"+operation.Id.ToString("N"),outcome,
             "Fictional demo provider: "+outcome+". Scenario: "+scenario+". Applies only to the retained servicing submission.",now,definition);
         operation.State="succeeded";operation.CompletedAt=now;operation.Result=JsonSerializer.Serialize(result,Json);

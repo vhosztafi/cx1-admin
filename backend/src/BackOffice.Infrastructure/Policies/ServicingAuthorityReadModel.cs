@@ -31,12 +31,12 @@ public sealed partial class ServicingReferralService
         var selected=grants.OrderBy(x=>x.Grant.Id).Where(x=>afterId is null || x.Grant.Id.CompareTo(afterId.Value)>0).Take(pageSize+1).ToArray();
         var outcome=JsonSerializer.Deserialize<ServicingRatingOutcome>(held.Rating.ResultJson,ServicingRatingService.Json);
         if(outcome?.Rating is not {} rating || rating.Slices.Count!=held.Input.Slices.Count)throw new QuoteOperationException(409,"servicing-rating-input-unavailable");
-        var risks=held.Input.Slices.Select((slice,index)=>{
+        var risks=held.Input.IsCommercial ? [] : held.Input.Slices.Select((slice,index)=>{
             if(slice.EffectiveAt!=rating.Slices[index].EffectiveAt || !slice.ChangeIds.Order().SequenceEqual(rating.Slices[index].ChangeIds.Order()))throw new QuoteOperationException(409,"servicing-rating-input-unavailable");
             return new ServicingAuthoritySlice(slice.EffectiveAt,slice.Input.RiskForPremium(rating.Slices[index].AnnualPremium));
         }).ToArray();
         var code=referral.RuleCode+(referral.RiskItemId is {} target?":"+target.ToString("D"):"");
-        IReadOnlyList<ServicingDatedAuthority> Rows(JsonElement? grant)=>risks.SelectMany(slice=>UnderwritingAuthorityView.Rows(slice.Risk,held.Scope.Eligible.Binder,grant,
+        IReadOnlyList<ServicingDatedAuthority> Rows(JsonElement? grant)=>held.Input.IsCommercial ? CommercialRows(held,referral,grant,rating) : risks.SelectMany(slice=>UnderwritingAuthorityView.Rows(slice.Risk,held.Scope.Eligible.Binder,grant,
             held.Input.RatingDefinition.GetProperty("minimumTradingYears").GetInt32()).Where(row=>row.Code==code).Select(row=>new ServicingDatedAuthority(slice.EffectiveAt,row))).ToArray();
         var views=new List<ServicingCurrentGrant>();
         foreach(var grant in selected.Take(pageSize))
@@ -48,4 +48,23 @@ public sealed partial class ServicingReferralService
             selected.Length>pageSize?views[^1].GrantId:null);
         await tx.CommitAsync(token);return result;
     }
+    private static IReadOnlyList<ServicingDatedAuthority> CommercialRows(ServicingDecisionContext held, ServicingReferral referral, JsonElement? grant, CalculatedServicingRating rating)
+    {
+        var slices=ServicingEvidenceProjection.Slices(held); var result=new List<ServicingDatedAuthority>();
+        for(var i=0;i<slices.Count;i++)
+        {
+            var slice=slices[i]; var binder=CommercialReferralRules.AssessAuthority(held.Scope.Eligible.Binder,slice.Proposal,rating.Slices[i].AnnualPremium);
+            var actor=grant is {} definition?CommercialReferralRules.AssessAuthority(definition,slice.Proposal,rating.Slices[i].AnnualPremium):null;
+            var source=CommercialReferralRules.SourceReferrals(slice.Proposal).Select(x=>x.Requirement);
+            bool Matches(UnderwritingRequirement x)=>x.RuleCode==referral.RuleCode && x.TargetId==referral.RiskItemId;
+            var need=source.Concat(binder).Concat(actor??[]).FirstOrDefault(Matches);
+            if(need is null)continue;
+            string Amount(decimal? amount,string fallback)=>amount?.ToString("F2",System.Globalization.CultureInfo.InvariantCulture)??fallback;
+            result.Add(new(slice.EffectiveAt,new(referral.RuleCode+(referral.RiskItemId is {} id?":"+id.ToString("D"):""),referral.Dimension.Replace('-',' '),
+                Amount(need.RequestedAmount,"Review required"), grant is null?"No current authority grant":Amount(actor!.FirstOrDefault(Matches)?.AuthorisedAmount,"Published review authority"),
+                Amount(binder.FirstOrDefault(Matches)?.AuthorisedAmount,"Published review authority"),actor is not null && !actor.Any(Matches),!binder.Any(Matches))));
+        }
+        return result;
+    }
+
 }

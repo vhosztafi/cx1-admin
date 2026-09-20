@@ -43,3 +43,15 @@ test('signed condition resolution requires the exact owned terms proof',()=>{
  assert.equal(conditionProof({...condition,definition:{...condition.definition,termsVersionId:ids[3]}},requirement,proof,'satisfied'),false);
  assert.equal(conditionProof(condition,requirement,{...proof,termsVersionId:ids[2]},'satisfied'),false);
 });
+
+test('commercial query and condition resolution retain their exact subject and dated proof',()=>{
+ const condition={kind:'documentary',code:'provide-cc-location-proof',definition:{code:'provide-cc-location-proof',riskItemId:ids[4]},clauses:[{effectiveAt:'2026-10-01T00:00:00Z',targetIds:[ids[4]]}]};
+ assert.equal(decisionRequest(ids[2],rows,[ids[0]],'query','Please review this location',[condition.definition],'Please provide exact location proof').body.decision.conditions[0].riskItemId,ids[4]);
+ assert.throws(()=>decisionRequest(ids[2],rows,[ids[0]],'query','Please review this location',[{code:'provide-cc-invented-proof'}],'Please provide exact location proof'));
+ const context={draftId:ids[0],cycleId:ids[1],revisionId:ids[2],ratingId:ids[3]};
+ const requirement={code:'cc-location-proof',riskItemId:ids[4],inputFingerprint:'a'.repeat(64),context,effectiveDates:['2026-10-01T00:00:00Z']};
+ const proof={...context,...requirement,withdrawn:false,latestReviewId:ids[0],reviewOutcome:'accepted'};
+ assert.equal(conditionProof(condition,requirement,proof,'satisfied'),true);
+ for(const bad of [{...requirement,riskItemId:ids[3]},{...requirement,effectiveDates:[]},{...requirement,inputFingerprint:'b'.repeat(64)}])assert.equal(conditionProof(condition,bad,proof,'satisfied'),false);
+ assert.equal(conditionProof(condition,requirement,{...proof,withdrawn:true},'satisfied'),false);
+});

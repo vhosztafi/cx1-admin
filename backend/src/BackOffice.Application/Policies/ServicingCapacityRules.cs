@@ -8,7 +8,10 @@ public sealed record ServicingCapacityExposure(string Dimension, Guid? TargetId,
     DateTimeOffset EndsAt, decimal? RequestedAmount = null, int? MinimumAge = null, int? MaximumAge = null,
     string? QuestionId = null);
 public sealed record ServicingCapacityResponse(Guid Id, ServicingCapacitySubject Subject, string Outcome,
-    DateTimeOffset? ValidFrom, DateTimeOffset? ValidTo, IReadOnlyList<CapacityExtension> Extensions);
+    DateTimeOffset? ValidFrom, DateTimeOffset? ValidTo, IReadOnlyList<CapacityExtension> Extensions)
+{
+    public IReadOnlyList<CommercialCapacityExtension>? CommercialExtensions { get; init; }
+}
 
 public static class ServicingCapacityRules
 {
@@ -28,8 +31,17 @@ public static class ServicingCapacityRules
             exposure.StartsAt >= exposure.EndsAt || exposure.TargetId == Guid.Empty || referralTargetId == Guid.Empty ||
             exposure.TargetId != referralTargetId || response.ValidFrom is null || response.ValidTo is null ||
             response.ValidFrom > now || now >= response.ValidTo || response.ValidFrom > exposure.StartsAt ||
-            response.ValidTo < exposure.EndsAt || response.Extensions is null || response.Extensions.Count is < 1 or > 20 ||
+            response.ValidTo < exposure.EndsAt || response.Extensions is null || (response.CommercialExtensions?.Count ?? response.Extensions.Count) is < 1 or > 20 ||
             response.Extensions.Any(x => x is null)) return false;
+        if (response.CommercialExtensions is { } commercial)
+        {
+            if (response.Extensions.Count != 0 || commercial.Any(x => x is null) || !CommercialCapacityRules.SupportedDimension(exposure.Dimension) ||
+                exposure.RequestedAmount is not { } amount || amount < 0 || amount > QuoteRatingRules.MaximumMoney || decimal.Round(amount, 2) != amount ||
+                exposure.MinimumAge is not null || exposure.MaximumAge is not null || exposure.QuestionId is not null ||
+                (CommercialCapacityRules.LocationDimension(exposure.Dimension) ? exposure.TargetId is null : exposure.TargetId is not null)) return false;
+            return commercial.Any(x => x.Dimension == exposure.Dimension && x.RiskItemId == exposure.TargetId &&
+                x.MaximumAmount > 0 && x.MaximumAmount <= QuoteRatingRules.MaximumMoney && decimal.Round(x.MaximumAmount, 2) == x.MaximumAmount && x.MaximumAmount >= amount);
+        }
         return response.Extensions.Any(extension => CapacityRules.Covers(extension, exposure.Dimension,
             exposure.RequestedAmount, exposure.MinimumAge, exposure.MaximumAge, exposure.QuestionId));
     }

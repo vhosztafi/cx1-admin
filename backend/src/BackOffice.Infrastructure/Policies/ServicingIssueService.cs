@@ -32,6 +32,7 @@ public sealed class ServicingIssueService(IDbContextFactory<BackOfficeDbContext>
                 var hint = await (from d in db.Set<ServicingDraft>() join p in db.Set<Policy>() on d.PolicyId equals p.Id
                     where d.Id==draftId select new { p.SourceQuoteId }).SingleOrDefaultAsync(ct)
                     ?? throw new QuoteOperationException(404,"servicing-draft-not-found");
+                await CommercialExposureLock.ForQuoteAsync(db,hint.SourceQuoteId,ct);
                 var source = await QuoteUnderwritingScope.HoldAsync(db,actor,hint.SourceQuoteId,"policy-issue-within-authority",ct);
                 var draft = await ServicingDraftService.HoldDraft(db,source.Scope.Actor,draftId,true,ct);
                 var now = time.GetUtcNow(); issued = draft.State=="issued";
@@ -49,7 +50,7 @@ public sealed class ServicingIssueService(IDbContextFactory<BackOfficeDbContext>
                 var remaining = held.Input.Term with { Kind="short-period",StartsAt=held.Input.Slices[0].EffectiveAt };
                 var grants = await QuoteUnderwritingScope.GrantsAsync(db,held.Scope.Source,held.Cycle.ProductVersionId,held.Scope.Eligible.BinderVersion,
                     held.Scope.Eligible.Capture.Product.Code,remaining,now,ct);
-                foreach (var candidate in grants.OrderBy(x=>x.Grant.Id))
+                foreach (var candidate in grants.OrderByDescending(x=>held.Input.IsCommercial?decimal.Parse(x.Definition.GetProperty("limits").GetProperty("districtProperty").GetString()!,System.Globalization.CultureInfo.InvariantCulture):0m).ThenBy(x=>x.Grant.Id))
                     if (await ServicingReferralService.ResolutionAuthority(db,held,candidate.Definition,now,ct)) { grant=candidate; break; }
                 if (grant is null) throw new QuoteOperationException(403,"servicing-issue-authority-required");
             },
@@ -68,7 +69,7 @@ public sealed class ServicingIssueService(IDbContextFactory<BackOfficeDbContext>
                 var assurance = await ServicingTermsService.Assurance(db,held,ct);
                 if (input.TermsHash!=accepted.TermsHash || input.AssuranceHash!=assurance || !await terms.AcceptanceCurrent(db,held,accepted,assurance,now,ct))
                     throw new QuoteOperationException(409,"servicing-issue-acceptance-stale");
-                var templates = await PolicyIssueWriter.Templates(db,held.Cycle.ProductId,now,ct);
+                var templates = await PolicyIssueWriter.Templates(db,held.Cycle.ProductId,now,ct,held.Input.IsCommercial?CommercialDocumentSelection.Kinds(held.Input.Slices.Any(x=>x.Commercial!.Rating.EmployersSelected)):null);
                 return await ServicingIssueWriter.Write(db,held,grant!,accepted,input.Reason,templates,now,correlation,ct);
             },token);
     }

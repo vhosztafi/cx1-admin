@@ -9,7 +9,7 @@ public static class ServicingTermsSeed
     public static async Task SeedAsync(BackOfficeDbContext db,CancellationToken token=default)
     {
         if(db.Database.CurrentTransaction is null)throw new InvalidOperationException("Terms seed requires held initialization.");
-        foreach(var product in await db.Set<Product>().Where(x=>x.Code=="motor-trade-road-risks" || x.Code=="motor-trade-combined").ToArrayAsync(token))
+        foreach(var product in await db.Set<Product>().Where(x=>x.Code=="motor-trade-road-risks" || x.Code=="motor-trade-combined" || x.Code=="commercial-combined").ToArrayAsync(token))
             if(!await db.Set<TemplateVersion>().AnyAsync(x=>x.Code=="demo-servicing-terms" && x.ProductId==product.Id,token))
                 db.Add(new TemplateVersion{Code="demo-servicing-terms",Kind="servicing-terms",ProductId=product.Id,Version=1,
                     EffectiveFrom=new(2026,1,1,0,0,0,TimeSpan.Zero),EffectiveTo=new(2035,1,1,0,0,0,TimeSpan.Zero),

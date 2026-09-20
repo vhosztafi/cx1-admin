@@ -15,7 +15,7 @@ export function addServicingCapacity({schemas:s,ref:r,route,paths}) {
  s.ServicingCarrierResponseDefinition={oneOf:['approve','approve-with-conditions','query','decline'].map(outcome=>{
   const approval=outcome.startsWith('approve'),conditional=outcome==='approve-with-conditions';
   return o({outcome:{const:outcome},validFrom:approval?instant:{type:'null'},validTo:approval?instant:{type:'null'},
-   authorisedLimits:a(r('UnderwritingCapacityExtension'),approval?20:0,approval?1:0),conditions:a(r('ServicingDatedCarrierCondition'),conditional?20:0,conditional?1:0)});
+   authorisedLimits:a(r('QuoteCapacityExtension'),approval?20:0,approval?1:0),conditions:a(r('ServicingDatedCarrierCondition'),conditional?20:0,conditional?1:0)});
  })};
  s.ServicingCapacityResponseRequest=o({...base,submissionId:id,evidenceAssociationId:id,definition:r('ServicingCarrierResponseDefinition'),body,
   providerUnderwriter:text(200),providerReference:text(100),receivedAt:instant,reason});

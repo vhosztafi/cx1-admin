@@ -6,6 +6,7 @@ import { currentProof, proofCommand, sendProof, type ProofAssociation, type Proo
 
 import { useProofRead, PageButtons } from './servicing-proof-read';
 import { ServicingReferrals } from './servicing-referrals';
+import type { QuoteCaptureProposal } from '../../lib/quotes';
 import type { ServicingEditor } from '../../lib/servicing-api';
 import { riskTargetLabel } from '../../lib/underwriting-decisions';
 import type { ServicingRatingHistory } from '../../lib/servicing-rating';
@@ -17,7 +18,7 @@ import { ServicingIssue } from './servicingissue';
 type Run = (path: string, body?: unknown, file?: File) => void;
 export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, blocked, dirty, canReview, editor, pendingChanged, saved, kind = 'adjustment' }: {
   kind?: 'adjustment' | 'renewal'; draftId: string; revisionId: string; etag: string; fence: string | null; editable: boolean; blocked: boolean; dirty: boolean; canReview: boolean;
-  editor: ServicingEditor | null; pendingChanged: (pending: boolean) => void; saved: () => Promise<void>;
+  editor: ServicingEditor<QuoteCaptureProposal> | null; pendingChanged: (pending: boolean) => void; saved: () => Promise<void>;
 }) {
   const [pendingState, setPendingState] = useState(false), [sending, setSending] = useState(false), [error, setError] = useState(''), [notice, setNotice] = useState('');
   const pending = useRef<ProofCommand | null>(null), sendingRef = useRef(false);
@@ -110,11 +111,11 @@ export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, 
     </>}
     <ServicingReferrals draftId={draftId} etag={etag} cycleId={cycleId ?? null} active={active && canReview} paused={paused} requirements={requirements.data?.requirements.map(x => x.requirement) ?? []} evidence={associations.current && selectedCycle === cycleId ? associations.data?.items ?? [] : []} editor={editor} run={run} />
     {<ServicingTerms kind={kind} draftId={draftId} revisionId={revisionId} cycleId={cycleId ?? null} etag={etag} active={active} paused={paused} requirements={requirements.data?.requirements.map(x => x.requirement) ?? []} evidence={associations.current && selectedCycle === cycleId ? associations.data?.items ?? [] : []} run={run} />}
-    {cycleId && <ServicingIssue kind={kind} scope={{draftId,revisionId,cycleId,etag,fence:fence ?? ''}} active={active && canReview} paused={paused} pendingChanged={value=>{setIssuePending(value);pendingChanged(value);}} saved={saved}/>}
+    {cycleId && <ServicingIssue productCode={editor?.assessment.base.productCode==='commercial-combined'?'commercial-combined':'motor-trade'} kind={kind} scope={{draftId,revisionId,cycleId,etag,fence:fence ?? ''}} active={active && canReview} paused={paused} pendingChanged={value=>{setIssuePending(value);pendingChanged(value);}} saved={saved}/>}
   </div></Panel>;
 }
 
-function AttachProof({ requirement, satisfied, editor, files, disabled, run }: { requirement: ProofRequirement; satisfied: boolean; editor: ServicingEditor | null; files: ProofFile[]; disabled: boolean; run: Run }) {
+function AttachProof({ requirement, satisfied, editor, files, disabled, run }: { requirement: ProofRequirement; satisfied: boolean; editor: ServicingEditor<QuoteCaptureProposal> | null; files: ProofFile[]; disabled: boolean; run: Run }) {
   const [fileId, setFileId] = useState(''), [reason, setReason] = useState('');
   return <fieldset className="quote-reference-fields" data-requirement-code={requirement.code} data-risk-item-id={requirement.riskItemId ?? ''} disabled={disabled}><legend>{requirement.label}</legend>
     <Status tone={satisfied ? 'success' : 'warning'}>{satisfied ? 'Reviewed proof received' : 'Proof required'}</Status>

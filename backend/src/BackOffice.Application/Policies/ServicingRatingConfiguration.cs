@@ -7,8 +7,9 @@ namespace BackOffice.Application.Policies;
 public sealed record ServicingRatingSettings(decimal AdjustmentFee);
 public static class ServicingRatingConfiguration
 {
-    public static ServicingRatingSettings? Parse(string json)
+    public static ServicingRatingSettings? Parse(string json, string scope = "servicing-rating")
     {
+        if (scope is not ("servicing-rating" or "commercial-servicing-rating")) return null;
         if (json is null || json.Length > 4096) return null;
         try
         {
@@ -18,7 +19,7 @@ public static class ServicingRatingConfiguration
             var keys = new HashSet<string>(["demo", "kind", "schemaVersion", "currency", "adjustmentFee", "earningBasis"], StringComparer.Ordinal);
             foreach (var property in root.EnumerateObject()) if (!keys.Remove(property.Name)) return null;
             if (keys.Count != 0 || root.GetProperty("demo").ValueKind != JsonValueKind.True ||
-                Text(root, "kind") != "servicing-rating" || Text(root, "schemaVersion") != "1" ||
+                Text(root, "kind") != scope || Text(root, "schemaVersion") != "1" ||
                 Text(root, "currency") != "GBP" || Text(root, "earningBasis") != "london-calendar-days") return null;
             var text = Text(root, "adjustmentFee");
             if (text is null || text.Length > 16 || !decimal.TryParse(text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var fee) ||

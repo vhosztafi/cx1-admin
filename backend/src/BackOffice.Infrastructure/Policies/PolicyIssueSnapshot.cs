@@ -2,6 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using BackOffice.Application.Policies;
 using BackOffice.Application.Quotes;
+using BackOffice.Application.Underwriting;
 using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Quotes;
 using BackOffice.Infrastructure.Underwriting;
@@ -19,7 +20,7 @@ internal static class PolicyIssueSnapshot
         snapshot["insured"]!["clientId"] = held.Cycle.ClientId; snapshot["insured"]!["clientAgencyRelationshipId"] = held.Cycle.RelationshipId;
         snapshot["term"] = JsonSerializer.SerializeToNode(new { kind = held.Input.Term.Kind, startsAt = held.Cycle.StartsAt, endsAt = held.Cycle.EndsAt, timeZone = "Europe/London" });
         var cover = snapshot["cover"]!.AsObject();
-        if (held.Input.IsCommercial) CommercialCover(held, snapshot, cover);
+        if (held.Input.IsCommercial) CommercialCover(held.Input.Commercial!.Rating, snapshot, cover);
         else
         {
         var risk = snapshot["risk"]!.AsObject(); var input = held.Input.Input;
@@ -60,15 +61,15 @@ internal static class PolicyIssueSnapshot
         if (errors.Count > 0) throw new InvalidOperationException("Issued policy schema: " + string.Join("; ", errors));
         return json;
     }
-    private static void CommercialCover(UnderwritingDecisionContext held, JsonObject snapshot, JsonObject cover)
+    internal static void CommercialCover(CommercialRatingFacts facts, JsonObject snapshot, JsonObject cover, Func<string,Guid[],Guid>? sectionId = null)
     {
-        var facts = held.Input.Commercial!.Rating;
+        Guid Id(string code,Guid[] targets)=>sectionId?.Invoke(code,targets)??Guid.NewGuid();
         foreach (var location in snapshot["risk"]!["locations"]!.AsArray())
             location!["address"]!["postcode"] = CommercialCaptureRules.NormalizePostcode(location["address"]!["postcode"]!.GetValue<string>())!.Value.Postcode;
         var sections = new JsonArray();
         void Add(string code, decimal limit, Guid[] targets, string? excess = null)
         {
-            var section = JsonSerializer.SerializeToNode(new { id = Guid.NewGuid(), code, limit = PolicyIssueWriter.Money(limit), targetIds = targets })!.AsObject();
+            var section = JsonSerializer.SerializeToNode(new { id = Id(code,targets), code, limit = PolicyIssueWriter.Money(limit), targetIds = targets })!.AsObject();
             if (excess is not null) section["excess"] = excess;
             sections.Add(section);
         }
@@ -79,7 +80,7 @@ internal static class PolicyIssueSnapshot
         if (facts.ProductsLimit > 0) Add("products-liability", facts.ProductsLimit, []);
         if (facts.GoodsInTransit > 0) Add("goods-in-transit", facts.GoodsInTransit, []);
         if (facts.Money > 0) Add("money", facts.Money, []);
-        if (facts.Glass) sections.Add(JsonSerializer.SerializeToNode(new { id = Guid.NewGuid(), code = "glass",
+        if (facts.Glass) sections.Add(JsonSerializer.SerializeToNode(new { id = Id("glass",facts.Locations.Select(x => x.Id).ToArray()), code = "glass",
             basis = "Included for the declared premises; no separate monetary limit captured", targetIds = facts.Locations.Select(x => x.Id).ToArray() }));
         foreach (var extension in facts.Extensions) Add(extension.Code, extension.Limit, []);
         if (facts.ContractWorks > 0) Add("contract-works", facts.ContractWorks, [], cover["contractWorks"]!["excess"]!.GetValue<string>());

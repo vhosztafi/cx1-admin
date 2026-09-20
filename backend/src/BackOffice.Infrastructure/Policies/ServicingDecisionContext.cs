@@ -13,6 +13,13 @@ internal sealed record ServicingDecisionContext(HeldServicingRating Scope,Servic
     ServicingRatingRequestInput Input)
 {
     internal DateTimeOffset AssessedAt { get; init; }
+    // These projections depend only on immutable held base/revision/input pins.
+    // Never cache live evidence reviews, conditions, grants or acceptance here.
+    internal IReadOnlyList<ServicingEvidenceSlice>? EvidenceSlices { get; set; }
+    internal IReadOnlyList<ServicingProofRequirement>? CommercialBaseProofs { get; set; }
+    // Immutable response parsing only; current case selection, proof review,
+    // validity and authority are still queried on every evaluation.
+    internal Dictionary<(Guid ResponseId,DateTimeOffset AssessedAt),ServicingParsedCapacityResponse> ParsedCapacityResponses { get; } = [];
     internal static async Task<ServicingDecisionContext> Hold(BackOfficeDbContext db,ActorContext actor,Guid draftId,
         string capability,DateTimeOffset now,CancellationToken token,Guid? requestedCycle=null,bool write=true)
     {

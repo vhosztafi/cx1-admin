@@ -117,7 +117,7 @@ public sealed partial class ServicingReferralService
             .Select(x=>new ServicingConditionSlice(x.Key,x.Select(c=>c.Condition).ToArray())).ToArray();
         var outcome=JsonSerializer.Deserialize<ServicingRatingOutcome>(held.Rating.ResultJson,ServicingRatingService.Json);
         if(outcome?.Rating is not {} rating || rating.Slices.Count!=held.Input.Slices.Count) throw new QuoteOperationException(409,"servicing-rating-input-unavailable");
-        var risks=held.Input.Slices.Select((x,i)=>
+        var risks=held.Input.IsCommercial ? [] : held.Input.Slices.Select((x,i)=>
         {
             if(x.EffectiveAt!=rating.Slices[i].EffectiveAt || !x.ChangeIds.Order().SequenceEqual(rating.Slices[i].ChangeIds.Order())) throw new QuoteOperationException(409,"servicing-rating-input-unavailable");
             return new ServicingAuthoritySlice(x.EffectiveAt,x.Input.RiskForPremium(rating.Slices[i].AnnualPremium));

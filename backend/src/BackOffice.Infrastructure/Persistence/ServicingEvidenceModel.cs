@@ -31,7 +31,7 @@ public sealed partial class BackOfficeDbContext
             .HasPrincipalKey(x=>new{x.Id,x.DraftId}).OnDelete(DeleteBehavior.NoAction);
         Check(association,"Fingerprint","LEN([InputFingerprint])=64 AND [InputFingerprint] NOT LIKE '%[^0-9a-f]%' COLLATE Latin1_General_100_BIN2");
         Check(association,"Reason","LEN(TRIM([Reason]))>=10 AND [CreatedBy] IS NOT NULL");
-        Check(association,"Purpose","([RequirementCode] IN ('motor-trader-proof','no-claims-proof','trading-history','warranty-acknowledgement','capacity-response','signed-statement','acceptance-proof') AND [RiskItemId] IS NULL) OR ([RequirementCode] IN ('photocard-both-sides','driving-record','premises-security') AND [RiskItemId] IS NOT NULL AND [RiskItemId]<>'00000000-0000-0000-0000-000000000000')");
+        Check(association,"Purpose","([RequirementCode] IN ('motor-trader-proof','no-claims-proof','trading-history','warranty-acknowledgement','capacity-response','signed-statement','acceptance-proof','cc-property-proof','cc-liability-proof','cc-claims-experience-proof','cc-health-safety-proof','cc-bi-proof','cc-business-proof') AND [RiskItemId] IS NULL) OR ([RequirementCode] IN ('photocard-both-sides','driving-record','premises-security','cc-location-proof','cc-electrical-proof','cc-alarm-proof','cc-structural-proof','cc-wage-proof') AND [RiskItemId] IS NOT NULL AND [RiskItemId]<>'00000000-0000-0000-0000-000000000000')");
         association.HasOne<ServicingCapacitySubmission>().WithMany()
             .HasForeignKey(x=>new{x.CapacitySubmissionId,x.CycleId,x.DraftId,x.RevisionId,x.RatingId})
             .HasPrincipalKey(x=>new{x.Id,x.CycleId,x.DraftId,x.RevisionId,x.RatingId}).OnDelete(DeleteBehavior.NoAction);

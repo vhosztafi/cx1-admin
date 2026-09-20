@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Status } from '../primitives';
 import { PageButtons, useProofRead } from './servicing-proof-read';
+import type { QuoteCaptureProposal } from '../../lib/quotes';
 import type { ServicingEditor } from '../../lib/servicing-api';
 import type { ProofAssociation, ProofRequirement } from '../../lib/servicing-proof';
 import type { ServicingReferral } from '../../lib/servicing-referrals';
@@ -11,7 +12,7 @@ import { CarrierCorrespondence, CarrierResolutionPanel } from './servicing-capac
 import { CarrierSend, CarrierSuppliedResponse } from './servicing-capacity-forms';
 
 export function ServicingCapacity({draftId,etag,cycleId,referral,active,paused,requirements,evidence,editor,run}:{
-  draftId:string;etag:string;cycleId:string;referral:ServicingReferral;active:boolean;paused:boolean;requirements:ProofRequirement[];evidence:ProofAssociation[];editor:ServicingEditor|null;run:CarrierRun;
+  draftId:string;etag:string;cycleId:string;referral:ServicingReferral;active:boolean;paused:boolean;requirements:ProofRequirement[];evidence:ProofAssociation[];editor:ServicingEditor<QuoteCaptureProposal>|null;run:CarrierRun;
 }) {
  const [open,setOpen]=useState(false),[reason,setReason]=useState(''),[selected,setSelected]=useState(''),[page,setPage]=useState({etag,cursor:''});
  const cursor=page.etag===etag?page.cursor:'';const base=`/api/v1/drafts/${draftId}`;
@@ -35,7 +36,7 @@ export function ServicingCapacity({draftId,etag,cycleId,referral,active,paused,r
  </details>;
 }
 
-function CarrierWorkspace({view,etag,active,paused,requirements,evidence,editor,run}:{view:CarrierDetail;etag:string;active:boolean;paused:boolean;requirements:ProofRequirement[];evidence:ProofAssociation[];editor:ServicingEditor|null;run:CarrierRun}) {
+function CarrierWorkspace({view,etag,active,paused,requirements,evidence,editor,run}:{view:CarrierDetail;etag:string;active:boolean;paused:boolean;requirements:ProofRequirement[];evidence:ProofAssociation[];editor:ServicingEditor<QuoteCaptureProposal>|null;run:CarrierRun}) {
  const item=view.case;const [tab,setTab]=useState('request'),[action,setAction]=useState(''),[reason,setReason]=useState(''),[senior,setSenior]=useState('');
  const base=`/api/v1/drafts/${item.draftId}/capacity/${item.id}`;
  const withdraw=['queued','sent','queried','failed'].includes(item.state),reopen=['approved','conditional','declined'].includes(item.state);

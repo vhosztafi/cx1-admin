@@ -33,9 +33,12 @@ internal static class ServicingEvidenceProjection
             foreach(var row in parsed) requested.Add(row.EffectiveAt);
         }
         var context=new ServicingProofContext(held.Scope.Draft.Id,held.Cycle.Id,held.Scope.Revision.Id,held.Rating.Id,Convert.ToHexStringLower(held.Cycle.InputHash),held.Scope.Eligible.Capture.Pins);
-        var requirements=ServicingEvidenceRules.Requirements(context,slices,requested.ToArray()).ToList();
-        var warranty=ServicingWarrantyRules.Requirement(context,slices,conditions.Where(x=>x.Kind=="warranty")
-            .Select(x=>new ServicingWarrantyInput(x.Id,JsonSerializer.Deserialize<JsonElement>(x.DefinitionJson),JsonSerializer.Deserialize<DateTimeOffset[]>(x.EffectiveDatesJson)!)).ToArray());
+        var core=held.Input.IsCommercial && requested.Count==0
+            ? held.CommercialBaseProofs??=ServicingEvidenceRules.Requirements(context,slices)
+            : ServicingEvidenceRules.Requirements(context,slices,requested.ToArray());
+        var requirements=core.ToList();
+        var warranty=conditions.Any(x=>x.Kind=="warranty")?ServicingWarrantyRules.Requirement(context,slices,conditions.Where(x=>x.Kind=="warranty")
+            .Select(x=>new ServicingWarrantyInput(x.Id,JsonSerializer.Deserialize<JsonElement>(x.DefinitionJson),JsonSerializer.Deserialize<DateTimeOffset[]>(x.EffectiveDatesJson)!)).ToArray()):null;
         if(warranty is not null) requirements.Add(warranty);
         var submissions=await (from k in db.Set<ServicingCapacityCase>().AsNoTracking()
             join s in db.Set<ServicingCapacitySubmission>().AsNoTracking() on k.CurrentSubmissionId equals s.Id
@@ -59,6 +62,9 @@ internal static class ServicingEvidenceProjection
     }
 
     internal static IReadOnlyList<ServicingEvidenceSlice> Slices(ServicingDecisionContext held)
+        => held.EvidenceSlices??=ProjectSlices(held);
+
+    private static IReadOnlyList<ServicingEvidenceSlice> ProjectSlices(ServicingDecisionContext held)
     {
         var scope=held.Scope;var input=held.Input;
         if (Convert.ToHexStringLower(scope.Base.ContentHash)!=input.BaseContentHash || Convert.ToHexStringLower(scope.Revision.ContentHash)!=input.RevisionContentHash)
@@ -85,6 +91,16 @@ internal static class ServicingEvidenceProjection
         for(var i=0;i<assessment.Slices.Count;i++)
         {
             var actual=assessment.Slices[i];var saved=input.Slices[i];
+            if (input.IsCommercial)
+            {
+                var commercial = CommercialUnderwritingInput.Project(actual.Proposed, scope.Eligible.Capture.Pins, input.RatingDefinition,
+                    DateOnly.FromDateTime(input.RequestedAt.UtcDateTime));
+                if (actual.EffectiveAt != saved.EffectiveAt || saved.Input is not null ||
+                    !JsonNode.DeepEquals(JsonSerializer.SerializeToNode(commercial, ServicingRatingService.Json), JsonSerializer.SerializeToNode(saved.Commercial, ServicingRatingService.Json)))
+                    throw new QuoteOperationException(409, "servicing-proof-source-stale");
+                slices.Add(new(actual.EffectiveAt, actual.Proposed, null));
+                continue;
+            }
             var projected=QuoteUnderwritingInput.Project(actual.Proposed,input.RatingDefinition);
             if (actual.EffectiveAt!=saved.EffectiveAt || !JsonNode.DeepEquals(JsonSerializer.SerializeToNode(projected,ServicingRatingService.Json),JsonSerializer.SerializeToNode(saved.Input,ServicingRatingService.Json)))
                 throw new QuoteOperationException(409,"servicing-proof-source-stale");

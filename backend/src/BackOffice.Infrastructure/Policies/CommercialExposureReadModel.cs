@@ -58,15 +58,47 @@ public sealed class CommercialExposureReadModel(IDbContextFactory<BackOfficeDbCo
                 var draft = await db.Set<ServicingDraft>().FromSqlInterpolated($"SELECT * FROM ServicingDraft WITH(HOLDLOCK) WHERE Id={subjectId}").AsNoTracking().SingleAsync(token);
                 if (draft.PolicyId != policy.Id || !await db.Set<PolicyVersion>().AnyAsync(x => x.Id == draft.BaseVersionId && x.PolicyId == policy.Id && x.TermId == draft.BaseTermId, token)) throw Missing();
                 var revision = await db.Set<ServicingRevision>().AsNoTracking().Where(x => x.DraftId == draft.Id && x.CreatedAt <= known).OrderByDescending(x => x.Sequence).FirstOrDefaultAsync(token);
-                // Capture/projection belongs to08-11/12. Never silently replace a
-                // changed draft with its issued base and label it proposed cover.
-                result = Body(internalAudience, observed, effective, known, "unavailable", null, [], revision is null ? null : new Source("draft-revision", revision.Id, Convert.ToHexStringLower(revision.ContentHash)),
-                    "commercial-exposure-draft-projection-unavailable");
+                result = await Draft(db,draft,revision,internalAudience,observed,effective,known,token);
             }
             else result = await Policy(db, policy.Id, internalAudience, observed, effective, known, token);
         }
         else result = await Quote(db, owned.Quote, internalAudience, observed, effective, known, token);
         await transaction.CommitAsync(token); return result;
+    }
+
+    private static async Task<Dictionary<string, object>> Draft(BackOfficeDbContext db,ServicingDraft draft,ServicingRevision? revision,
+        bool internalAudience,DateTimeOffset observed,DateTimeOffset effective,DateTimeOffset known,CancellationToken token)
+    {
+        if(draft.IssuedTransactionId is {} issued && await db.Set<PolicyTransaction>().AnyAsync(x=>x.Id==issued && x.ProcessedAt<=known,token))
+            return await Policy(db,draft.PolicyId,internalAudience,observed,effective,known,token);
+        var source=revision is null?null:new Source("draft-revision",revision.Id,Convert.ToHexStringLower(revision.ContentHash));
+        Dictionary<string,object> Unavailable(string code)=>Body(internalAudience,observed,effective,known,"unavailable",null,[],source,code);
+        if(revision is null || draft.Kind!="adjustment")return Unavailable("commercial-exposure-source-unavailable");
+        var basis=await db.Set<PolicyVersion>().AsNoTracking().SingleOrDefaultAsync(x=>x.Id==draft.BaseVersionId && x.ProcessedAt<=known,token);
+        var term=await db.Set<PolicyTerm>().AsNoTracking().SingleAsync(x=>x.Id==draft.BaseTermId,token);
+        if(basis is null)return Unavailable("commercial-exposure-source-unavailable");
+        var latest=await db.Set<PolicyVersion>().AsNoTracking().Where(x=>x.TermId==term.Id && x.ProcessedAt<=known)
+            .OrderByDescending(x=>x.EffectiveAt).ThenByDescending(x=>x.Sequence).Select(x=>x.Id).FirstAsync(token);
+        if(latest!=basis.Id)return Unavailable("commercial-exposure-source-unavailable");
+        var book=await db.Set<CommercialExposureVersion>().AsNoTracking().Where(x=>x.VersionId==basis.Id).Select(x=>(Guid?)x.BookId).SingleOrDefaultAsync(token);
+        if(book is null)return Unavailable("commercial-exposure-book-unavailable");
+        try
+        {
+            // Assess the retained saved revision at its own clock. This read is
+            // advisory; it grants no backdating or reservation authority.
+            var assessment=CommercialServicingProposalRules.Assess(basis.SnapshotJson,revision.ProposalJson,
+                new(draft.PolicyId,basis.Id,term.StartsAt,term.EndsAt,basis.EffectiveAt,revision.CreatedAt,true));
+            if(assessment.ReadinessIssues.Count!=0 || assessment.Slices.Count==0)return Unavailable("commercial-exposure-proposal-incomplete");
+            var sequence=checked((await db.Set<PolicyTransaction>().Where(x=>x.TermId==term.Id && x.ProcessedAt<=known).MaxAsync(x=>(int?)x.Sequence,token)??0)+1);
+            var proposed=assessment.Slices.Select((slice,index)=>new CommercialExposureSlice(book.Value,draft.PolicyId,term.Id,Guid.NewGuid(),term.StartsAt,term.EndsAt,
+                slice.EffectiveAt,revision.CreatedAt,sequence,index+1,"adjustment",CommercialExposureProjection.Locations(slice.Proposed))).ToArray();
+            var existing=await CommercialExposureProjection.ReadAsync(db,book.Value,known,token);
+            var limits=await CommercialExposureProjection.LimitsAsync(db,book.Value,known,token);
+            var result=CommercialExposureRules.Assess(existing,proposed,limits,book.Value,draft.PolicyId,proposed[0].EffectiveAt,term.EndsAt,known);
+            return Body(internalAudience,observed,effective,known,"proposed",book.Value,result.Intervals,source);
+        }
+        catch(Exception error) when(error is ArgumentException or QuoteInputException or QuoteValidationException or KeyNotFoundException or InvalidOperationException)
+        {return Unavailable("commercial-exposure-proposal-incomplete");}
     }
 
     private static async Task<Dictionary<string, object>> Policy(BackOfficeDbContext db, Guid policyId, bool internalAudience,

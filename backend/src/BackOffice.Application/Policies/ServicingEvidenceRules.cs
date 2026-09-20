@@ -6,7 +6,7 @@ using BackOffice.Application.Quotes;
 namespace BackOffice.Application.Policies;
 
 public sealed record ServicingProofContext(Guid DraftId, Guid CycleId, Guid RevisionId, Guid RatingId, string InputHash, QuoteVersionPins Pins);
-public sealed record ServicingEvidenceSlice(DateTimeOffset EffectiveAt, JsonElement Proposal, int TradingYears);
+public sealed record ServicingEvidenceSlice(DateTimeOffset EffectiveAt, JsonElement Proposal, int? TradingYears);
 public sealed record ServicingProofRequirement(string Code, string Label, string Path, Guid? RiskItemId, IReadOnlyList<DateTimeOffset> EffectiveDates, string InputFingerprint)
 {
     public required ServicingProofContext Context { get; init; }
@@ -26,6 +26,11 @@ public static class ServicingEvidenceRules
     {
         ArgumentNullException.ThrowIfNull(context); ArgumentNullException.ThrowIfNull(slices);
         requestedTradingHistoryDates??=[];
+        if(slices.Any(x=>x is not null && x.Proposal.ValueKind==JsonValueKind.Object && x.Proposal.TryGetProperty("productCode",out var product) && product.GetString()==CommercialCaptureRules.ProductCode))
+        {
+            if(requestedTradingHistoryDates.Count!=0)throw Invalid();
+            return CommercialServicingEvidenceRules.Requirements(context,slices);
+        }
         if(requestedTradingHistoryDates.Count>100) throw Invalid();
         DateTimeOffset? priorRequested=null;
         foreach(var date in requestedTradingHistoryDates)
@@ -39,7 +44,7 @@ public static class ServicingEvidenceRules
         var schedule = new List<object>(); DateTimeOffset? previous = null; long totalBytes = 0;
         foreach (var slice in slices)
         {
-            if (slice is null || slice.Proposal.ValueKind != JsonValueKind.Object || slice.TradingYears is < 0 or > 100 ||
+            if (slice is null || slice.Proposal.ValueKind != JsonValueKind.Object || slice.TradingYears is null or < 0 or > 100 ||
                 slice.EffectiveAt.Offset != TimeSpan.Zero || previous is not null && slice.EffectiveAt <= previous ||
                 !slice.Proposal.TryGetProperty("risk", out var risk) || risk.ValueKind != JsonValueKind.Object) throw Invalid();
             previous = slice.EffectiveAt;

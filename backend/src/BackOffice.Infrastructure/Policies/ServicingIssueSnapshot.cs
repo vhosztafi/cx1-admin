@@ -18,11 +18,26 @@ internal static class ServicingIssueSnapshot
     {
         var snapshot = JsonNode.Parse(slices[index].Proposal.GetRawText())!.AsObject();
         var basis = JsonNode.Parse(held.Scope.Base.SnapshotJson)!.AsObject();
-        snapshot["snapshotFormat"]="issued-servicing-1"; snapshot.Remove("termIntent"); snapshot["productVersionId"]=held.Cycle.ProductVersionId;
+        snapshot["snapshotFormat"]=held.Input.IsCommercial?"issued-commercial-servicing-1":"issued-servicing-1"; snapshot.Remove("termIntent");
+        if(held.Input.IsCommercial)snapshot.Remove("format"); snapshot["productVersionId"]=held.Cycle.ProductVersionId;
         snapshot["insured"]!["clientId"]=held.Scope.Source.Quote.ClientId;
         snapshot["insured"]!["clientAgencyRelationshipId"]=held.Scope.Source.Quote.RelationshipId;
         var renewal=held.Scope.Draft.Kind=="renewal";
         snapshot["term"]=renewal?JsonSerializer.SerializeToNode(held.Input.Term,ServicingRatingService.Json):basis["term"]!.DeepClone();
+        var cover=snapshot["cover"]!.AsObject();
+        if(held.Input.IsCommercial)
+        {
+            Guid SectionId(string code,Guid[] targets)
+            {
+                var retained=basis["cover"]!["sections"]!.AsArray().FirstOrDefault(x=>x!["code"]!.GetValue<string>()==code &&
+                    x["targetIds"]!.AsArray().Select(t=>Guid.Parse(t!.GetValue<string>())).Order().SequenceEqual(targets.Order()));
+                return retained is not null?Guid.Parse(retained["id"]!.GetValue<string>()):
+                    new Guid(SHA256.HashData(Encoding.UTF8.GetBytes(transaction.Id.ToString("D")+"/"+code+"/"+string.Join('/',targets.Order()))).AsSpan(0,16));
+            }
+            PolicyIssueSnapshot.CommercialCover(held.Input.Slices[index].Commercial!.Rating,snapshot,cover,SectionId);
+        }
+        else
+        {
         var risk = snapshot["risk"]!.AsObject(); var input = held.Input.Slices[index].Input;
         if(input.AnyDriverCount==0) risk["driverBasis"]=JsonSerializer.SerializeToNode(new{kind="named",responses=risk["responses"]});
         else
@@ -32,7 +47,7 @@ internal static class ServicingIssueSnapshot
                 minimumAge=input.AnyDriverMinimumAge,maximumAge=input.AnyDriverMaximumAge,driverCount=input.AnyDriverCount,
                 maximumVehicleGrouping=Answer("MTS-06-Q05"),maximumGrossVehicleWeight=Answer("MTS-06-Q06"),maximumMotorcycleCapacity=Answer("MTS-06-Q07"),responses=risk["responses"]});
         }
-        var cover=snapshot["cover"]!.AsObject();
+
         cover["sections"]=new JsonArray((cover["requestedSections"]?.AsArray()??[]).Where(x=>x!["selected"]!.GetValue<bool>()).Select(x=>
         {var section=x!.DeepClone().AsObject();section.Remove("selected");return (JsonNode)section;}).ToArray());
         Guid SectionId(string code)
@@ -45,6 +60,7 @@ internal static class ServicingIssueSnapshot
         cover["sections"]!.AsArray().Add(JsonSerializer.SerializeToNode(new{id=SectionId("road-risks"),code="road-risks",coverLevel=facts.Facts["coverLevel"]}));
         foreach(var (code,fact) in new[]{("own-vehicles","ownVehicleLimit"),("customer-vehicles","customerVehicleLimit")})
             if(facts.Facts.TryGetValue(fact,out var limit))cover["sections"]!.AsArray().Add(JsonSerializer.SerializeToNode(new{id=SectionId(code),code,limit,excess=facts.Facts["excess"]}));
+        }
         var applied=contract.GetProperty("conditions").EnumerateArray().SelectMany(x=>ServicingConditionRules.Parse(x.GetProperty("definition"),slices,
             x.GetProperty("effectiveDates").EnumerateArray().Select(d=>d.GetDateTimeOffset()).ToArray())).Where(x=>x.EffectiveAt==slices[index].EffectiveAt).Select(x=>x.Condition).ToArray();
         foreach(var (kind,property) in new[]{("endorsement","endorsements"),("warranty","warranties")})

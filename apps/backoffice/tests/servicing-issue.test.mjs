@@ -20,3 +20,9 @@ test('issue rejects wrong receipt owner, missing versions and incomplete side ef
   assert.throws(()=>confirmAdjustmentIssue(command,{...receipt,...bad},receipt.draftEtag));
  assert.throws(()=>adjustmentIssueCommand(scope,{...input,cycleId:ids[9]}));
 });
+
+test('commercial issue requires cover documents and rejects every MID side effect',()=>{
+ const command=adjustmentIssueCommand(scope,input,'commercial-combined');
+ for(const count of [2,3]) {const commercial={...receipt,documentRequestIds:ids.slice(0,count),midIntentIds:[]};assert.deepEqual(confirmAdjustmentIssue(command,commercial,receipt.draftEtag),commercial);}
+ for(const bad of [{documentRequestIds:[ids[0]],midIntentIds:[]},{documentRequestIds:ids.slice(0,4),midIntentIds:[]},{documentRequestIds:[ids[0],ids[0]],midIntentIds:[]},{midIntentIds:[ids[15]]}])assert.throws(()=>confirmAdjustmentIssue(command,{...receipt,...bad},receipt.draftEtag));
+});

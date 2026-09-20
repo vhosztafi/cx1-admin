@@ -17,7 +17,7 @@ public sealed partial class BackOfficeDbContext
         Check(condition,"Kind","[Kind] IN ('documentary','warranty','risk-change')");
         Check(condition,"Actor","[CreatedBy] IS NOT NULL");
         Check(condition,"Dates","ISJSON([EffectiveDatesJson],ARRAY)=1 AND DATALENGTH([EffectiveDatesJson])<=16384 AND JSON_VALUE([EffectiveDatesJson],'$[0]') IS NOT NULL");
-        Check(condition,"Code","JSON_VALUE([DefinitionJson],'$.code') IS NOT NULL AND [Code]=JSON_VALUE([DefinitionJson],'$.code') AND [Code] IN ('provide-driver-proof','provide-premises-security','provide-signed-statement','provide-trading-history','overnight-security','named-drivers-only','any-driver-minimum-licence','revise-stock-limit','revise-vehicle-limit')");
+        Check(condition,"Code","JSON_VALUE([DefinitionJson],'$.code') IS NOT NULL AND [Code]=JSON_VALUE([DefinitionJson],'$.code') AND [Code] IN ('provide-driver-proof','provide-premises-security','provide-signed-statement','provide-trading-history','overnight-security','named-drivers-only','any-driver-minimum-licence','revise-stock-limit','revise-vehicle-limit','provide-cc-property-proof','provide-cc-liability-proof','provide-cc-claims-experience-proof','provide-cc-health-safety-proof','provide-cc-bi-proof','provide-cc-business-proof','provide-cc-location-proof','provide-cc-electrical-proof','provide-cc-alarm-proof','provide-cc-structural-proof','provide-cc-wage-proof')");
         var resolution=Record<ServicingCapacityConditionResolution>(model,"ServicingCapacityConditionResolution");resolution.ToTable(t=>t.UseSqlOutputClause(false));
         Text(resolution,("Outcome",20),("Reason",2000),("InputFingerprint",64));
         resolution.Property(x=>x.InputFingerprint).UseCollation("Latin1_General_100_BIN2");

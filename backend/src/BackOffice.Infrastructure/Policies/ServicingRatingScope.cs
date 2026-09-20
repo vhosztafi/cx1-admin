@@ -43,8 +43,8 @@ internal static class ServicingRatingScope
         var revision = await db.Set<ServicingRevision>().AsNoTracking().SingleAsync(x => x.Id == draft.CurrentRevisionId && x.DraftId == draft.Id, token);
         var basis = await db.Set<PolicyVersion>().AsNoTracking().SingleAsync(x => x.Id == draft.BaseVersionId && x.TermId == term.Id && x.PolicyId == draft.PolicyId, token);
         using var productSource = JsonDocument.Parse(basis.SnapshotJson);
-        if (productSource.RootElement.GetProperty("productCode").GetString() == CommercialCaptureRules.ProductCode)
-            throw new QuoteOperationException(409, "commercial-servicing-rating-unavailable");
+        var commercial = productSource.RootElement.GetProperty("productCode").GetString() == CommercialCaptureRules.ProductCode;
+        if (commercial && draft.Kind != "adjustment") throw new QuoteOperationException(409, "commercial-servicing-kind-unavailable");
         if (draft.Kind == "renewal")
             return await HoldRenewal(db, source, draft, term, revision, basis, now, token);
         using var intent = JsonDocument.Parse(term.LocalTermIntentJson); var assessedTerm = QuoteTerm.Assess(intent.RootElement);
@@ -61,11 +61,14 @@ internal static class ServicingRatingScope
         var remaining = resolved with { Kind = "short-period", StartsAt = start };
         var capture = await QuoteCaptureEligibility.ResolveAsync(db, source.Scope, term.ProductVersionId, now, null, token);
         var eligible = await QuoteRatingEligibility.ResolveAsync(db, source, term.ProductVersionId, capture.Terms.Id, remaining, now, token);
-        var settings = await db.Set<SettingVersion>().FromSqlInterpolated($"SELECT * FROM SettingVersion WITH(HOLDLOCK) WHERE Scope={ServicingRatingSeed.Scope}")
+        var settingScope = commercial ? ServicingRatingSeed.CommercialScope : ServicingRatingSeed.Scope;
+        var settings = await db.Set<SettingVersion>().FromSqlInterpolated($"SELECT * FROM SettingVersion WITH(HOLDLOCK) WHERE Scope={settingScope}")
             .AsNoTracking().ToArrayAsync(token);
         var setting = settings.Where(x => x.EffectiveFrom <= now).OrderByDescending(x => x.Version).FirstOrDefault();
-        var values = setting is null ? null : ServicingRatingConfiguration.Parse(setting.Values);
+        var values = setting is null ? null : ServicingRatingConfiguration.Parse(setting.Values, settingScope);
         if (setting is null || values is null) throw new QuoteOperationException(503, "servicing-rating-configuration-unavailable");
+        if (commercial && values.AdjustmentFee != decimal.Parse(eligible.Rating.GetProperty("adjustmentFee").GetString()!, System.Globalization.CultureInfo.InvariantCulture))
+            throw new QuoteOperationException(503, "commercial-servicing-fee-configuration-mismatch");
         return new(source, draft, term, revision, basis, resolved, eligible, setting, values.AdjustmentFee);
     }
 

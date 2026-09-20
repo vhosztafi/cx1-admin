@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using BackOffice.Application.Policies;
 using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Platform;
 using BackOffice.Infrastructure.Quotes;
@@ -15,6 +16,7 @@ internal static class ServicingIssueWriter
         ServicingAcceptance acceptance,string reason,TemplateVersion[] templates,DateTimeOffset now,Guid correlation,CancellationToken token)
     {
         if(db.Database.CurrentTransaction is null)throw new InvalidOperationException("Servicing issue requires one held graph transaction.");
+        var exposurePlan=held.Input.IsCommercial?await CommercialExposureService.AssessServicing(db,held,grant,now,token):null;
         var draft=held.Scope.Draft;var actor=held.Scope.Source.Scope.Actor.UserId;var cycle=held.Cycle;var term=held.Scope.Term;
         var decision=new ServicingIssueDecision{DraftId=draft.Id,PolicyId=draft.PolicyId,BaseTermId=draft.BaseTermId,BaseVersionId=draft.BaseVersionId,
             RevisionId=cycle.RevisionId,CycleId=cycle.Id,RatingId=held.Rating.Id,TermsVersionId=acceptance.TermsVersionId,AcceptanceId=acceptance.Id,
@@ -46,7 +48,7 @@ internal static class ServicingIssueWriter
         for(var i=0;i<slices.Count;i++)
         {
             var snapshot=ServicingIssueSnapshot.Create(held,decision,transaction,slices,rating,i,contract.RootElement);
-            var version=new PolicyVersion{PolicyId=draft.PolicyId,TermId=term.Id,TransactionId=transaction.Id,Sequence=checked(baseSequence+i+1),SliceOrdinal=i+1,
+            var version=new PolicyVersion{Id=exposurePlan?.Proposed[i].VersionId??Guid.NewGuid(),PolicyId=draft.PolicyId,TermId=term.Id,TransactionId=transaction.Id,Sequence=checked(baseSequence+i+1),SliceOrdinal=i+1,
                 SnapshotJson=snapshot,ContentHash=Hash(snapshot),EffectiveAt=slices[i].EffectiveAt,ProcessedAt=now,CreatedAt=now,CreatedBy=actor};
             db.Add(version);await db.SaveChangesAsync(token);versions.Add(version);
             using var parsed=JsonDocument.Parse(snapshot);
@@ -55,12 +57,21 @@ internal static class ServicingIssueWriter
                     NormalizedRegistration=vehicle.GetProperty("registration").GetString()!.Replace(" ","").Replace("-","").ToUpperInvariant()});
             await db.SaveChangesAsync(token);
         }
+        if(exposurePlan is not null)
+        {
+            var headers=new List<CommercialExposureVersion>();
+            foreach(var version in versions)headers.Add(await CommercialExposureProjection.AppendAsync(db,version.Id,cycle.BinderVersionId,actor,token));
+            await CommercialExposureService.RecordServicing(db,headers,exposurePlan,actor,token);
+        }
         var financial=await ServicingPostingService.WriteAsync(db,transaction.Id,token);
         var policy=await db.Set<Policy>().AsNoTracking().SingleAsync(x=>x.Id==draft.PolicyId,token);
         var documents=new List<Guid>();var midIntents=new List<Guid>();
         foreach(var version in versions)
         {
-            foreach(var template in templates)
+            using var issuedSnapshot=JsonDocument.Parse(version.SnapshotJson);
+            var kinds=held.Input.IsCommercial?CommercialDocumentSelection.Kinds(issuedSnapshot.RootElement.GetProperty("cover").GetProperty("sections").EnumerateArray()
+                .Any(x=>x.GetProperty("code").GetString()=="employers-liability")):PolicyIssueWriter.DocumentKinds;
+            foreach(var template in templates.Where(x=>kinds.Contains(x.Kind)))
             {
                 var document=new PolicyDocumentRequest{PolicyId=policy.Id,TermId=term.Id,TransactionId=transaction.Id,VersionId=version.Id,Kind=template.Kind,
                     Purpose=draft.Kind,TemplateVersionId=template.Id,CreatedAt=now,UpdatedAt=now,CreatedBy=actor};
@@ -73,6 +84,7 @@ internal static class ServicingIssueWriter
                     Payload=document.PayloadJson,NextAttemptAt=now,CreatedAt=now,CreatedBy=actor,CorrelationId=correlation};
                 db.Add(work);await db.SaveChangesAsync(token);document.WorkId=work.Id;db.Add(document);await db.SaveChangesAsync(token);documents.Add(document.Id);
             }
+            if(held.Input.IsCommercial)continue;
             var mid=new PolicyMidIntent{PolicyId=policy.Id,TermId=term.Id,TransactionId=transaction.Id,VersionId=version.Id,Purpose=draft.Kind,CreatedAt=now,CreatedBy=actor};
             mid.PayloadJson=JsonSerializer.Serialize(new{format="policy-mid-intent-1",intentId=mid.Id,policyId=policy.Id,termId=term.Id,versionId=version.Id,
                 contentHash=Convert.ToHexStringLower(version.ContentHash),action="change",effectiveAt=version.EffectiveAt,endsAt=term.EndsAt},ServicingRatingService.Json);

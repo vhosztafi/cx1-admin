@@ -58,7 +58,7 @@ public sealed partial class ServicingCapacityService
                     throw new QuoteOperationException(404,"servicing-capacity-query-not-found");
                 scenario = await db.Set<SettingVersion>().FromSqlInterpolated($"SELECT * FROM SettingVersion WITH(HOLDLOCK) WHERE Id={scenarioVersionId}").AsNoTracking().SingleOrDefaultAsync(ct);
                 var setting = scenario is null ? null : CapacitySeed.Parse(scenario);
-                if (setting is null || scenario!.EffectiveFrom > time.GetUtcNow() ||
+                if (setting is null || !CapacitySeed.ForProduct(setting.Value.Scenario, held!.Input.IsCommercial) || scenario!.EffectiveFrom > time.GetUtcNow() ||
                     await db.Set<SettingVersion>().AnyAsync(x => x.Scope == scenario.Scope && x.Version > scenario.Version && x.EffectiveFrom <= time.GetUtcNow(), ct))
                     throw new QuoteOperationException(409, "servicing-capacity-scenario-unavailable");
                 dueDays = setting.Value.ResponseDueWorkingDays; dueHours = setting.Value.ResponseDueHours;
@@ -92,14 +92,14 @@ public sealed partial class ServicingCapacityService
                 if (capacity.State != "draft") throw new QuoteOperationException(409, "servicing-capacity-submission-state");
                 var now = time.GetUtcNow(); var id = Guid.NewGuid();
                 var sequence = checked((await db.Set<ServicingCapacitySubmission>().Where(x => x.CaseId == caseId).MaxAsync(x => (int?)x.Sequence, ct) ?? 0) + 1);
-                var targetDates = ServicingEvidenceProjection.Slices(held).SelectMany(x => x.Proposal.GetProperty("cover").GetProperty("requestedSections").EnumerateArray()
+                var targetDates = held.Input.IsCommercial ? [] : ServicingEvidenceProjection.Slices(held).SelectMany(x => x.Proposal.GetProperty("cover").GetProperty("requestedSections").EnumerateArray()
                     .Where(section => section.GetProperty("selected").GetBoolean() && section.GetProperty("code").GetString() == "premises")
                     .SelectMany(section => section.GetProperty("premisesIds").EnumerateArray().Select(p => new {premisesId=p.GetGuid(),x.EffectiveAt})))
                     .GroupBy(x=>x.premisesId).OrderBy(x=>x.Key).Select(x=>new {premisesId=x.Key,effectiveDates=x.Select(d=>d.EffectiveAt).Distinct().Order().ToArray()}).ToArray();
                 var targets=targetDates.Select(x=>x.premisesId).ToArray();
                 // Explicit minimal carrier projection, never full proposal,
                 // contacts, private notes or evidence bytes not selected by staff.
-                var context = JsonSerializer.Serialize(new { format = "servicing-capacity-submission-1", draftId, cycleId,
+                var context = JsonSerializer.Serialize(new { format = "servicing-capacity-submission-1", productCode = held.Scope.Eligible.Capture.Product.Code, draftId, cycleId,
                     revisionId = held.Cycle.RevisionId, ratingId = held.Rating.Id, caseId, referralId = referral!.Id,
                     providerId = capacity.ProviderId, binderVersionId = capacity.BinderVersionId, productVersionId = held.Cycle.ProductVersionId,
                     submissionId = id, sequence,queryResponseId, inputHash = Convert.ToHexStringLower(held.Cycle.InputHash),

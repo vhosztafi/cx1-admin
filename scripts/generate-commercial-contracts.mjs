@@ -104,6 +104,13 @@ export async function writeCommercialContracts(){
  issuedDefs.Cover.required=['responses','sections','endorsements','warranties'];
  const issued={$schema:schema.$schema,$id:'https://schemas.cover-mga.example/issued-commercial/1',title:'Immutable Commercial Combined issue snapshot; source readiness and provenance are enforced by the issue service',...obj({schemaVersion:{const:'1.0'},snapshotFormat:{const:'issued-commercial-1'},productCode:{const:'commercial-combined'},productVersionId:id,insured:ref('Insured'),term:oldIssued.properties.term,risk:ref('Risk'),cover:ref('Cover'),premium:ref('Premium'),provenance:oldIssued.properties.provenance}),$defs:issuedDefs};
  await writeFile(new URL('../contracts/schemas/commercial-combined-issued.schema.json',import.meta.url),JSON.stringify(issued,null,2)+'\n');
+ const servicingIssued=structuredClone(issued);
+ servicingIssued.$id='https://schemas.cover-mga.example/issued-commercial-servicing/1';
+ servicingIssued.title='Immutable Commercial Combined adjustment slice with exact servicing provenance';
+ servicingIssued.properties.snapshotFormat={const:'issued-commercial-servicing-1'};
+ const servicing=JSON.parse(await readFile(new URL('../contracts/schemas/issued-servicing.schema.json',import.meta.url),'utf8'));
+ servicingIssued.properties.provenance=servicing.properties.provenance;
+ await writeFile(new URL('../contracts/schemas/commercial-combined-servicing-issued.schema.json',import.meta.url),JSON.stringify(servicingIssued,null,2)+'\n');
  console.log('Generated closed CC capture, exposure and incident definitions; fixture remains an incomplete underwriting draft.');
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href)await writeCommercialContracts();

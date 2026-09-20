@@ -14491,7 +14491,7 @@
             "type": "string",
             "format": "uuid"
           },
-          "minItems": 3,
+          "minItems": 2,
           "maxItems": 300,
           "uniqueItems": true
         },
@@ -14501,7 +14501,7 @@
             "type": "string",
             "format": "uuid"
           },
-          "minItems": 1,
+          "minItems": 0,
           "maxItems": 100,
           "uniqueItems": true
         },

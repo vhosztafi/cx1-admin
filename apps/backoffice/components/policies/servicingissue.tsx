@@ -8,7 +8,7 @@ import type { ProofScope } from '../../lib/servicing-proof';
 import type { TermsView } from '../../lib/servicing-terms';
 import { useProofRead } from './servicing-proof-read';
 
-export function ServicingIssue({kind='adjustment',scope,active,paused,pendingChanged,saved}:{kind?:'adjustment'|'renewal';scope:ProofScope;active:boolean;paused:boolean;pendingChanged:(value:boolean)=>void;saved:()=>Promise<void>}) {
+export function ServicingIssue({kind='adjustment',productCode='motor-trade',scope,active,paused,pendingChanged,saved}:{kind?:'adjustment'|'renewal';productCode?:'motor-trade'|'commercial-combined';scope:ProofScope;active:boolean;paused:boolean;pendingChanged:(value:boolean)=>void;saved:()=>Promise<void>}) {
   const renewal=kind==='renewal';
   const read=useProofRead<TermsView>(`/api/v1/drafts/${scope.draftId}/terms`,scope.etag,paused);
   const [reason,setReason]=useState(''),[confirmed,setConfirmed]=useState(false),[busy,setBusy]=useState(false),[uncertain,setUncertain]=useState(false),[error,setError]=useState('');
@@ -23,7 +23,7 @@ export function ServicingIssue({kind='adjustment',scope,active,paused,pendingCha
     try {
       if(!pending.current) {
         pending.current=adjustmentIssueCommand(scope,{cycleId:scope.cycleId,ratingId:view!.ratingId,termsVersionId:view!.terms!.id,
-          acceptanceId:view!.acceptance!.id,termsHash:view!.terms!.termsHash,assuranceHash:view!.assuranceHash,reason});
+          acceptanceId:view!.acceptance!.id,termsHash:view!.terms!.termsHash,assuranceHash:view!.assuranceHash,reason},productCode);
         pendingChanged(true);
       }
       const result=await sendAdjustmentIssue(pending.current);
@@ -50,7 +50,7 @@ export function ServicingIssue({kind='adjustment',scope,active,paused,pendingCha
         <p>{renewal ? "Renewal" : "Adjustment"} premium £{issuedView.financials.premium} · {renewal ? "New" : "Revised"} term premium £{issuedView.snapshot.premium.termPremium}</p>
         <p>Payments collected by this action: £0.00. The charge or credit is recorded for settlement.</p></>}
       {view?.terms?.document.effectiveDates.map(value=><p key={value}>Changes effective {new Date(value).toLocaleString('en-GB')}</p>)}
-      <p>{receipt.versionIds.length} policy {receipt.versionIds.length===1?'version':'versions'} saved. Document requests and MID updates are queued.</p>
+      <p>{receipt.versionIds.length} policy {receipt.versionIds.length===1?'version':'versions'} saved. Document requests are queued.{receipt.midIntentIds.length ? ' MID updates are queued.' : ''}</p>
       <a href={`/policies/${receipt.policyId}`}>View current policy</a>
       <p><a href={`/policies/${receipt.policyId}?termId=${receipt.termId}&versionId=${receipt.versionId}&tab=Transactions`}>View issued transaction</a></p>
       <ul>{receipt.versionIds.map((id,index)=><li key={id}><a href={`/policies/${receipt.policyId}?termId=${receipt.termId}&versionId=${id}`}>View issued change {index+1}</a></li>)}</ul>

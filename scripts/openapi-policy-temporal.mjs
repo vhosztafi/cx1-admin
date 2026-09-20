@@ -27,9 +27,13 @@ export function addPolicyTemporalContracts({schemas:s,ref:r,operation,paths}) {
  s.CommercialFirstPolicyView.properties.snapshot=r('CommercialIssuedPolicy');
  s.CommercialFirstPolicyView.properties.commercialExposureDecisionId=id;
  s.CommercialFirstPolicyView.required.push('commercialExposureDecisionId');
- s.IssuedPolicyView={oneOf:[r('FirstPolicyView'),r('CommercialFirstPolicyView'),r('ServicingPolicyView'),r('CancellationPolicyView')]};
+ s.CommercialServicingPolicyView=structuredClone(s.ServicingPolicyView);
+ s.CommercialServicingPolicyView.properties.snapshot=r('CommercialServicingIssuedPolicy');
+ s.CommercialServicingPolicyView.properties.commercialExposureDecisionId=id;
+ s.CommercialServicingPolicyView.required.push('commercialExposureDecisionId');
+ s.IssuedPolicyView={oneOf:[r('FirstPolicyView'),r('CommercialFirstPolicyView'),r('CommercialServicingPolicyView'),r('ServicingPolicyView'),r('CancellationPolicyView')]};
  s.PolicyNotCovered=o({id,...context,coverageState:{const:'not-covered'}});
- s.PolicyTemporalView={oneOf:[r('FirstPolicyView'),r('CommercialFirstPolicyView'),r('ServicingPolicyView'),r('CancellationPolicyView'),r('PolicyNotCovered')]};
+ s.PolicyTemporalView={oneOf:[r('FirstPolicyView'),r('CommercialFirstPolicyView'),r('CommercialServicingPolicyView'),r('ServicingPolicyView'),r('CancellationPolicyView'),r('PolicyNotCovered')]};
  for(const suffix of ['versions/{versionId}','transactions/{transactionId}','obligations/{obligationId}'])
   paths[`/policies/{policyId}/terms/{termId}/${suffix}`].get.responses['200'].content['application/json'].schema=r('IssuedPolicyView');
  for(const path of ['/policies/{policyId}','/policies/{policyId}/terms/{termId}'])

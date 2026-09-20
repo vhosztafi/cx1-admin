@@ -15,6 +15,7 @@ internal static class ServicingCapacityAuthority
     internal static async Task<bool> Allows(BackOfficeDbContext db,ServicingDecisionContext held,JsonElement grant,
         IReadOnlyList<ServicingAuthoritySlice> risks,IReadOnlyList<ServicingConditionSlice> internalConditions,DateTimeOffset now,CancellationToken token)
     {
+        if (held.Input.IsCommercial) return await AllowsCommercial(db, held, grant, internalConditions, now, token);
         var minimum=held.Input.RatingDefinition.GetProperty("minimumTradingYears").GetInt32();
         // Validate the complete dated schedule even when an earlier slice fails.
         _=ServicingReferralRules.AuthorityAllows(held.Input.Term,risks,held.Scope.Eligible.Binder,grant,internalConditions,minimum);
@@ -37,6 +38,36 @@ internal static class ServicingCapacityAuthority
         return true;
     }
 
+    private static async Task<bool> AllowsCommercial(BackOfficeDbContext db, ServicingDecisionContext held, JsonElement grant,
+        IReadOnlyList<ServicingConditionSlice> conditions, DateTimeOffset now, CancellationToken token)
+    {
+        var slices = ServicingEvidenceProjection.Slices(held);
+        var rating = JsonSerializer.Deserialize<ServicingRatingOutcome>(held.Rating.ResultJson, ServicingRatingService.Json)?.Rating
+            ?? throw new QuoteOperationException(409,"servicing-rating-input-unavailable");
+        if (rating.Slices.Count != slices.Count) throw new QuoteOperationException(409,"servicing-rating-input-unavailable");
+        // Current CC conditions are documentary: none can waive appetite or
+        // alter a published numerical limit. Their proof is checked separately.
+        if (conditions.Any(x => !slices.Any(s => s.EffectiveAt == x.EffectiveAt) || x.Conditions.Any(c => c.Kind != "documentary"))) return false;
+        if (!CommercialUnderwritingConfiguration.WithinBinder(grant, held.Scope.Eligible.Binder)) return false;
+        var responses = await Current(db, held, now, token);
+        for (var i=0; i<slices.Count; i++)
+        {
+            var slice=slices[i]; var priced=rating.Slices[i];
+            if (slice.EffectiveAt != priced.EffectiveAt) throw new QuoteOperationException(409,"servicing-rating-input-unavailable");
+            var end=i+1<slices.Count?slices[i+1].EffectiveAt:held.Input.Term.EndsAt;
+            var blockers=CommercialReferralRules.AssessAuthority(grant,slice.Proposal,priced.AnnualPremium)
+                .Concat(CommercialReferralRules.AssessAuthority(held.Scope.Eligible.Binder,slice.Proposal,priced.AnnualPremium)).Distinct();
+            foreach(var blocker in blockers)
+            {
+                if (!CommercialCapacityRules.SupportedDimension(blocker.Dimension) || blocker.RequestedAmount is null) return false;
+                var exposure=new ServicingCapacityExposure(blocker.Dimension,blocker.TargetId,slice.EffectiveAt,end,blocker.RequestedAmount);
+                if (!responses.Any(x=>ServicingCapacityRules.ExtentApplies(x.Response,x.Response.Subject,x.Case.CurrentResponseId,x.Case.State,
+                    x.Referral.RiskItemId,exposure,now))) return false;
+            }
+        }
+        return true;
+    }
+
     internal static async Task<bool> HasBlockingRequest(BackOfficeDbContext db,ServicingDecisionContext held,Guid referralId,DateTimeOffset now,CancellationToken token)
     {
         if(!await db.Set<ServicingCapacityCase>().AnyAsync(x=>x.ReferralId==referralId && x.CycleId==held.Cycle.Id,token)) return false;
@@ -51,7 +82,9 @@ internal static class ServicingCapacityAuthority
             var index=held.Input.Slices.Select((slice,i)=>(slice,i)).Single(x=>x.slice.EffectiveAt==trigger.EffectiveAt).i;
             var slice=held.Input.Slices[index];var end=index+1<held.Input.Slices.Count?held.Input.Slices[index+1].EffectiveAt:held.Input.Term.EndsAt;
             if(rating.Slices[index].EffectiveAt!=slice.EffectiveAt) throw new QuoteOperationException(409,"servicing-rating-input-unavailable");
-            var exposure=Exposure(trigger.Requirement,slice.Input.RiskForPremium(rating.Slices[index].AnnualPremium),slice.EffectiveAt,end);
+            var exposure=held.Input.IsCommercial
+                ? new ServicingCapacityExposure(trigger.Requirement.Dimension,trigger.Requirement.TargetId,slice.EffectiveAt,end,trigger.Requirement.RequestedAmount)
+                : Exposure(trigger.Requirement,slice.Input.RiskForPremium(rating.Slices[index].AnnualPremium),slice.EffectiveAt,end);
             if(!ServicingCapacityRules.ExtentApplies(response.Response,response.Response.Subject,response.Case.CurrentResponseId,response.Case.State,
                 response.Referral.RiskItemId,exposure,now)) return true;
         }
@@ -96,10 +129,15 @@ internal static class ServicingCapacityAuthority
                 select a.Id).AnyAsync(token)) continue;
             var definition=JsonSerializer.Deserialize<ServicingCapacityResponseDefinition>(row.Record.DefinitionJson,ServicingRatingService.Json)!;
             if(definition.ValidFrom is null || definition.ValidTo is null || definition.ValidFrom>now || definition.ValidTo<=now) continue;
-            var parsed=ServicingCapacityResponseRules.Parse(definition,row.Referral.RuleCode,row.Referral.Dimension,row.Submission.SubmittedAt,row.Record.ReceivedAt,now,slices);
+            var parseKey=(row.Record.Id,now);
+            if(!held.ParsedCapacityResponses.TryGetValue(parseKey,out var parsed))
+            {
+                parsed=ServicingCapacityResponseRules.Parse(definition,row.Referral.RuleCode,row.Referral.Dimension,row.Submission.SubmittedAt,row.Record.ReceivedAt,now,slices);
+                held.ParsedCapacityResponses.Add(parseKey,parsed);
+            }
             var subject=new ServicingCapacitySubject(row.Case.DraftId,row.Case.RevisionId,row.Case.CycleId,row.Case.RatingId,row.Case.Id,
                 row.Case.ReferralId,row.Case.ProviderId,row.Submission.Id,Convert.ToHexStringLower(row.Submission.ContextHash));
-            result.Add(new(row.Case,row.Submission,row.Record,row.Referral,new(row.Record.Id,subject,definition.Outcome,definition.ValidFrom,definition.ValidTo,parsed.Extensions),parsed));
+            result.Add(new(row.Case,row.Submission,row.Record,row.Referral,new(row.Record.Id,subject,definition.Outcome,definition.ValidFrom,definition.ValidTo,parsed.Extensions){CommercialExtensions=parsed.CommercialExtensions},parsed));
         }
         return result;
     }

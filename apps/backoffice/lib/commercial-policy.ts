@@ -3,12 +3,12 @@ import type {QuoteObject} from './quotes';
 import type {IssuedPolicySnapshot, PolicyTemporalView, PolicyView} from './policies-api';
 
 export type CommercialIssuedSnapshot = Omit<CommercialProposal, 'format' | 'termIntent' | 'insured' | 'risk' | 'cover'> & {
-  snapshotFormat: 'issued-commercial-1';
+  snapshotFormat: 'issued-commercial-1' | 'issued-commercial-servicing-1';
   insured: NonNullable<CommercialProposal['insured']>;
   risk: NonNullable<CommercialProposal['risk']>;
   cover: NonNullable<CommercialProposal['cover']>;
   term: IssuedPolicySnapshot['term']; premium: IssuedPolicySnapshot['premium'];
-  provenance: {source: string; quoteRevisionId: string; authorityVersionId: string};
+  provenance: {source: string; quoteRevisionId?: string; authorityVersionId?: string; revisionId?: string; servicingIssueDecisionId?: string};
 };
 export type CommercialPolicyView = Omit<PolicyView, 'snapshot'> & {snapshot: CommercialIssuedSnapshot; commercialExposureDecisionId: string};
 export type AnyPolicyTemporalView = PolicyTemporalView | CommercialPolicyView;

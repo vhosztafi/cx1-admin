@@ -31,6 +31,19 @@ public sealed class CommercialIssueSnapshotShapeTests
         Assert.Null(snapshot["risk"]!["driverBasis"]); Assert.Null(snapshot["cover"]!["sections"]![1]!["limit"]);
     }
 
+    [Fact]
+    public void CommercialServicingSnapshotRequiresItsExactServicingProvenance()
+    {
+        var snapshot=Snapshot();snapshot["snapshotFormat"]="issued-commercial-servicing-1";
+        snapshot["provenance"]=JsonSerializer.SerializeToNode(new {source="backoffice",sourceQuoteId=Guid.NewGuid(),servicingIssueDecisionId=Guid.NewGuid(),
+            baseVersionId=Guid.NewGuid(),revisionId=Guid.NewGuid(),transactionId=Guid.NewGuid(),effectiveAt="2026-10-01T00:00:00Z",processedAt="2026-09-20T00:00:00Z",sliceOrdinal=1,inputHash=new string('a',64)});
+        Assert.Empty(PolicySnapshotShape.Errors(JsonSerializer.SerializeToElement(snapshot)));
+        var copy=snapshot.DeepClone();copy["snapshotFormat"]="issued-servicing-1";Assert.False(PolicySnapshotShape.Valid(JsonSerializer.SerializeToElement(copy)));
+        copy=snapshot.DeepClone();copy["provenance"]!.AsObject().Remove("baseVersionId");Assert.False(PolicySnapshotShape.Valid(JsonSerializer.SerializeToElement(copy)));
+        copy=snapshot.DeepClone();copy["provenance"]!["quoteRevisionId"]=Guid.NewGuid();Assert.False(PolicySnapshotShape.Valid(JsonSerializer.SerializeToElement(copy)));
+        copy=snapshot.DeepClone();copy["risk"]!["drivers"]=new JsonArray();Assert.False(PolicySnapshotShape.Valid(JsonSerializer.SerializeToElement(copy)));
+    }
+
     [Theory]
     [InlineData("motor-risk")]
     [InlineData("motor-format")]

@@ -5,6 +5,7 @@ import { ConditionForm } from '../underwriting/referral-decisions';
 import { conditionLabels } from '../../lib/underwriting-decisions';
 import type { ConditionDefinition } from '../../lib/underwriting-api';
 import type { TermsView } from '../../lib/servicing-terms';
+import type { QuoteCaptureProposal } from '../../lib/quotes';
 import type { ServicingEditor } from '../../lib/servicing-api';
 import type { ProofAssociation, ProofPage, ProofRequirement } from '../../lib/servicing-proof';
 import { conditionProof, decisionRequest, type ServicingCondition, type ServicingDecision, type ServicingReferrals as ReferralPage } from '../../lib/servicing-referrals';
@@ -17,7 +18,7 @@ const readWork=()=>referralWorkId(window.location.hash);
 const serverWork=()=>null;
 
 export function ServicingReferrals({ draftId, etag, cycleId, active, paused, requirements, evidence, editor, run }: {
-  draftId: string; etag: string; cycleId: string | null; active: boolean; paused: boolean; requirements: ProofRequirement[]; evidence: ProofAssociation[]; editor: ServicingEditor | null; run: Run;
+  draftId: string; etag: string; cycleId: string | null; active: boolean; paused: boolean; requirements: ProofRequirement[]; evidence: ProofAssociation[]; editor: ServicingEditor<QuoteCaptureProposal> | null; run: Run;
 }) {
   const heading = useRef<HTMLHeadingElement>(null);
   const focused=useSyncExternalStore(subscribeWork,readWork,serverWork);

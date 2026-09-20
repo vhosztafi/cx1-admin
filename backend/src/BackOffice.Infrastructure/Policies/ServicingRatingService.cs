@@ -50,11 +50,15 @@ public sealed class ServicingRatingService(IDbContextFactory<BackOfficeDbContext
                 using var baseJson = JsonDocument.Parse(context.Base.SnapshotJson);
                 if (!PolicySnapshotShape.Valid(baseJson.RootElement)) throw new QuoteOperationException(409, "servicing-base-format-unavailable");
                 var annual = decimal.Parse(baseJson.RootElement.GetProperty("premium").GetProperty("annualPremium").GetString()!, CultureInfo.InvariantCulture);
+                var commercial = baseJson.RootElement.GetProperty("productCode").GetString() == CommercialCaptureRules.ProductCode;
                 var cumulative = new List<Guid>(); var slices = new List<ServicingRatingSliceInput>();
                 foreach (var slice in assessment.Slices.OrderBy(x => x.EffectiveAt))
                 {
                     cumulative.AddRange(slice.ChangeIds);
-                    slices.Add(new(slice.EffectiveAt, cumulative.Order().ToArray(), QuoteUnderwritingInput.Project(slice.Proposed, context.Eligible.Rating)));
+                    slices.Add(commercial
+                        ? new(slice.EffectiveAt, cumulative.Order().ToArray(), null!) { Commercial = CommercialUnderwritingInput.Project(slice.Proposed,
+                            context.Eligible.Capture.Pins, context.Eligible.Rating, DateOnly.FromDateTime(now.UtcDateTime)) }
+                        : new(slice.EffectiveAt, cumulative.Order().ToArray(), QuoteUnderwritingInput.Project(slice.Proposed, context.Eligible.Rating)));
                 }
                 if (context.Renewal is not null)
                 {
@@ -63,7 +67,7 @@ public sealed class ServicingRatingService(IDbContextFactory<BackOfficeDbContext
                     slices = [new(context.ResolvedTerm.StartsAt, cumulative.Order().ToArray(), QuoteUnderwritingInput.Project(assessment.Proposed, context.Eligible.Rating))];
                 }
                 var input = new ServicingRatingRequestInput {
-                    Format = context.Renewal is null ? "servicing-rating-input-1" : "servicing-rating-input-2", Renewal = context.Renewal,
+                    Format = commercial ? "commercial-servicing-rating-input-1" : context.Renewal is null ? "servicing-rating-input-1" : "servicing-rating-input-2", Renewal = context.Renewal,
                     DraftId = draft.Id, RevisionId = revisionId, PolicyId = draft.PolicyId,
                     BaseTermId = draft.BaseTermId, BaseVersionId = draft.BaseVersionId, ProductVersionId = context.Eligible.Capture.ProductVersion.Id,
                     AgencyTermsVersionId = context.Eligible.Capture.Terms.Id, RatingRuleVersionId = context.Eligible.RatingVersion.Id,

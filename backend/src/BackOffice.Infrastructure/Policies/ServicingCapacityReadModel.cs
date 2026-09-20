@@ -68,7 +68,7 @@ public sealed partial class ServicingCapacityReadModel(IDbContextFactory<BackOff
         var settings=await db.Set<SettingVersion>().AsNoTracking().Where(x=>x.Scope.StartsWith("capacity-escalation/") && x.EffectiveFrom<=now)
             .GroupBy(x=>x.Scope).Select(x=>x.OrderByDescending(v=>v.Version).First()).Take(51).ToArrayAsync(token);
         if(settings.Length>50) throw new QuoteOperationException(409,"servicing-capacity-scenario-limit");
-        var scenarios=settings.GroupBy(x=>x.Scope).Select(x=>x.OrderByDescending(v=>v.Version).First()).Where(x=>CapacitySeed.Parse(x) is not null)
+        var scenarios=settings.GroupBy(x=>x.Scope).Select(x=>x.OrderByDescending(v=>v.Version).First()).Where(x=>held is not null && CapacitySeed.Parse(x) is {} setting && CapacitySeed.ForProduct(setting.Scenario,held.Input.IsCommercial))
             .Select(x=>new ServicingCapacityOption(x.Id,CapacitySeed.Parse(x)!.Value.Scenario)).OrderBy(x=>x.Label).ToArray();
         var seniors=await db.Set<StaffUser>().AsNoTracking().Where(u=>u.State=="active" && u.AgencyId==null &&
             (from membership in db.Set<UserRole>() join role in db.Set<Role>() on membership.RoleId equals role.Id

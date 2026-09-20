@@ -43,7 +43,10 @@ public sealed partial class QuoteStorageTests
     [Fact]
     public Task RealSqlCommercialServicingDraftBrowser() => RunCommercialCaptureBrowser("issue", servicing: true);
 
-    private async Task RunCommercialCaptureBrowser(string stage, bool servicing = false)
+    [Fact]
+    public Task RealSqlCommercialServicingIssueBrowser() => RunCommercialCaptureBrowser("issue", servicing: true, servicingIssue: true);
+
+    private async Task RunCommercialCaptureBrowser(string stage, bool servicing = false, bool servicingIssue = false)
     {
         await WithDatabase(async (db, password) =>
         {
@@ -57,6 +60,7 @@ public sealed partial class QuoteStorageTests
                 await using var transaction = await db.Database.BeginTransactionAsync();
                 await CommercialUnderwritingSeed.SeedAsync(db); await QuoteTermsSeed.SeedAsync(db); await CapacitySeed.SeedAsync(db);
                 if (stage == "issue") { await BackOffice.Infrastructure.Policies.CommercialExposureSeed.SeedAsync(db); await BackOffice.Infrastructure.Policies.PolicyTemplateSeed.SeedAsync(db); }
+                if(servicingIssue) { await BackOffice.Infrastructure.Policies.ServicingRatingSeed.SeedAsync(db); await BackOffice.Infrastructure.Policies.ServicingTermsSeed.SeedAsync(db); }
                 await transaction.CommitAsync();
             }
             var cc = await CreateFixture(db, "-CC-BROWSER", CommercialCaptureRules.ProductCode, stage is "rating" or "underwriting" or "terms" or "issue" ? 3 : 2, fullTerms: stage is "rating" or "underwriting" or "terms" or "issue");
@@ -92,7 +96,7 @@ public sealed partial class QuoteStorageTests
                 .UseSetting("Cover:DataProtectionPath", Path.Combine(root.FullName, ".local/commercial-browser-keys", db.Database.GetDbConnection().Database))
                 .UseSetting("Cover:CancellationNoticeWorkerEnabled", "false")
                 .UseSetting("Cover:RenewalLifecycleWorkerEnabled", "false")
-                .UseSetting("Cover:ServicingDeliveryWorkerEnabled", "false")
+                .UseSetting("Cover:ServicingDeliveryWorkerEnabled", servicingIssue ? "true" : "false")
                 .ConfigureServices(services => {
                     services.AddSingleton<TimeProvider>(new QuoteTime());
                     services.AddScoped(provider => new QuoteService(provider.GetRequiredService<IDbContextFactory<BackOfficeDbContext>>(), new QuoteTime()));
@@ -131,11 +135,11 @@ public sealed partial class QuoteStorageTests
                     await Task.Delay(250);
                 }
                 Assert.True(serving, "Isolated commercial preview did not start.");
-                var fixture = JsonSerializer.Serialize(new { stage, servicing, apiOrigin = api, webOrigin = $"http://127.0.0.1:{port}", output, clockNow = new QuoteTime().GetUtcNow(), ccRelationship = cc.Relationship, mtRelationship = mt.Relationship });
+                var fixture = JsonSerializer.Serialize(new { stage, servicing, servicingIssue, apiOrigin = api, webOrigin = $"http://127.0.0.1:{port}", output, clockNow = new QuoteTime().GetUtcNow(), ccRelationship = cc.Relationship, mtRelationship = mt.Relationship });
                 browser = StartNode(["scripts/verify-commercial-capture-browser.mjs", "--worker", "--stage", stage], new() {
                     ["COVER_COMMERCIAL_BROWSER_FIXTURE"] = fixture, ["COVER_COMMERCIAL_BROWSER_PASSWORD"] = password });
                 var stdout = browser.StandardOutput.ReadToEndAsync(); var stderr = browser.StandardError.ReadToEndAsync();
-                await browser.WaitForExitAsync().WaitAsync(TimeSpan.FromMinutes(servicing ? 12 : 8));
+                await browser.WaitForExitAsync().WaitAsync(TimeSpan.FromMinutes(servicingIssue ? 25 : servicing ? 12 : 8));
                 var text = await stdout + await stderr; await File.WriteAllTextAsync(Path.Combine(output, "browser.log"), text);
                 Assert.True(browser.ExitCode == 0, text);
                 using var report = JsonDocument.Parse(await File.ReadAllTextAsync(Path.Combine(output, "report.json")));
@@ -163,11 +167,25 @@ public sealed partial class QuoteStorageTests
                     var draftId = evidence.RootElement.GetProperty("draftId").GetGuid();
                     var saved = await db.Set<ServicingRevision>().AsNoTracking().Where(x=>x.DraftId==draftId).OrderByDescending(x=>x.Sequence).FirstAsync();
                     Assert.True(JsonNode.DeepEquals(JsonNode.Parse(saved.ProposalJson), JsonNode.Parse(evidence.RootElement.GetProperty("proposal").GetRawText())));
-                    var issued = await db.Set<PolicyVersion>().AsNoTracking().SingleAsync();
+                    var issued = await db.Set<PolicyVersion>().AsNoTracking().OrderBy(x=>x.Sequence).FirstAsync();
                     Assert.Equal(evidence.RootElement.GetProperty("issuedHash").GetString(),Convert.ToHexString(issued.ContentHash).ToLowerInvariant());
-                    Assert.Equal(1,await db.Set<CommercialExposureVersion>().CountAsync());
-                    Assert.Equal(1,await db.Set<CommercialExposureIssueDecision>().CountAsync());
-                    Assert.False(await db.Set<ServicingCycle>().AnyAsync());
+                    if(servicingIssue)
+                    {
+                        using var result=JsonDocument.Parse(await File.ReadAllTextAsync(Path.Combine(output,"commercial-servicing-issue.json")));
+                        var transactionId=result.RootElement.GetProperty("receipt").GetProperty("transactionId").GetGuid();
+                        var versions=await db.Set<PolicyVersion>().AsNoTracking().Where(x=>x.TransactionId==transactionId).ToArrayAsync();
+                        Assert.NotEmpty(versions);Assert.All(versions,x=>Assert.Equal("issued-commercial-servicing-1",JsonDocument.Parse(x.SnapshotJson).RootElement.GetProperty("snapshotFormat").GetString()));
+                        Assert.Equal(1+versions.Length,await db.Set<CommercialExposureVersion>().CountAsync());
+                        Assert.Equal(1+versions.Length,await db.Set<CommercialExposureIssueDecision>().CountAsync());
+                        Assert.Equal("issued",await db.Set<ServicingDraft>().Where(x=>x.Id==draftId).Select(x=>x.State).SingleAsync());
+                        Assert.Equal(2,await db.Set<Journal>().CountAsync());Assert.False(await db.Set<PolicyMidIntent>().AnyAsync());
+                    }
+                    else
+                    {
+                        Assert.Equal(1,await db.Set<CommercialExposureVersion>().CountAsync());
+                        Assert.Equal(1,await db.Set<CommercialExposureIssueDecision>().CountAsync());
+                        Assert.False(await db.Set<ServicingCycle>().AnyAsync());
+                    }
                 }
             }
             finally

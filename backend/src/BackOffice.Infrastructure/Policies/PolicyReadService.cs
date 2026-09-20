@@ -69,7 +69,7 @@ public sealed class PolicyReadService(IDbContextFactory<BackOfficeDbContext> fac
             ["transactionId"] = issued.Id, ["issuedAt"] = issued.ProcessedAt, ["snapshot"] = JsonSerializer.Deserialize<JsonElement>(version.SnapshotJson),
             ["effectiveCutoff"] = effective, ["knownCutoff"] = known,
             ["coverageState"] = selection?.State ?? (effective < term.StartsAt ? "scheduled" : issued.Kind == "cancellation" ? effective >= version.EffectiveAt ? "cancelled" : "scheduled" : effective >= term.EndsAt ? "expired" : "active"),
-            ["contentHash"] = Convert.ToHexStringLower(version.ContentHash), ["effectiveAt"] = issued.EffectiveAt, ["reason"] = issued.Reason,
+            ["contentHash"] = Convert.ToHexStringLower(version.ContentHash), ["effectiveAt"] = version.EffectiveAt, ["reason"] = issued.Reason,
             ["termNumber"] = term.Number, ["versionSequence"] = version.Sequence, ["transactionSequence"] = issued.Sequence,
             ["financials"] = new { obligationId = obligation.Id, transactionId = issued.Id, journalId = journal.Id, currency = "GBP", debtorKind = obligation.DebtorKind,
                 debtorId = obligation.DebtorAgencyId ?? obligation.DebtorRelationshipId!.Value, amountDue = Money(obligation.InvoiceDue), premium = Money(obligation.Premium), tax = Money(obligation.Tax),

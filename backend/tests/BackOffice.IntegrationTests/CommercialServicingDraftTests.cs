@@ -55,8 +55,6 @@ public sealed partial class UnderwritingRuntimeTests
             else await Assert.ThrowsAsync<QuoteInputException>(()=>service.SaveAsync(f.Actor,created.ResourceId,Version(saved.Etag!),fence,bad.ToJsonString(),Key(),Guid.NewGuid()));
         }
         var revision=Body(saved.Body).GetProperty("revisionId").GetGuid();
-        var rating=new ServicingRatingService(f.Factory,clock);
-        Assert.Equal("commercial-servicing-rating-unavailable",(await Assert.ThrowsAsync<QuoteOperationException>(()=>rating.RateAsync(f.Actor,created.ResourceId,revision,Version(saved.Etag!),fence,"Fictional unavailable commercial rating",Key(),Guid.NewGuid()))).Code);
         clock.Current=now.AddMinutes(6);
         Assert.Equal(409,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.SaveAsync(f.Actor,created.ResourceId,Version(saved.Etag!),fence,json,Key(),Guid.NewGuid()))).Status);
         var renewed=await service.LeaseAsync(f.Actor,created.ResourceId,Version(saved.Etag!),"acquire",null,null,Key(),Guid.NewGuid());

@@ -8349,11 +8349,14 @@
       "ownerPlan": "08-11",
       "disposition": "cc-policy-action",
       "contract": "Bind actual scoped CC policy data/action; never execute prototype toast as success.",
-      "runtimeStatus": "persisted-commercial-adjustment-verified",
+      "runtimeStatus": "issued-commercial-adjustment-verified",
       "verification": [
         "08-11-REVIEW.md",
         ".local/phase8-11-verified",
-        ".local/browser-evidence/commercial-capture/CoverMGA_Test_bc19a7bc68ac437db1ec591c70399963/commercial-servicing.json"
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_bc19a7bc68ac437db1ec591c70399963/commercial-servicing.json",
+        "08-12-REVIEW.md",
+        ".local/phase8-12-verified",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_e92d801adf384495b6f111726f993854/commercial-servicing-issue.json"
       ]
     },
     {
@@ -8414,11 +8417,14 @@
       "ownerPlan": "08-11",
       "disposition": "cc-policy-action",
       "contract": "Bind actual scoped CC policy data/action; never execute prototype toast as success.",
-      "runtimeStatus": "persisted-commercial-adjustment-verified",
+      "runtimeStatus": "issued-commercial-adjustment-verified",
       "verification": [
         "08-11-REVIEW.md",
         ".local/phase8-11-verified",
-        ".local/browser-evidence/commercial-capture/CoverMGA_Test_bc19a7bc68ac437db1ec591c70399963/commercial-servicing.json"
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_bc19a7bc68ac437db1ec591c70399963/commercial-servicing.json",
+        "08-12-REVIEW.md",
+        ".local/phase8-12-verified",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_e92d801adf384495b6f111726f993854/commercial-servicing-issue.json"
       ]
     },
     {
@@ -8585,11 +8591,14 @@
       "ownerPlan": "08-11",
       "disposition": "cc-policy-action",
       "contract": "Bind actual scoped CC policy data/action; never execute prototype toast as success.",
-      "runtimeStatus": "persisted-commercial-adjustment-verified",
+      "runtimeStatus": "issued-commercial-adjustment-verified",
       "verification": [
         "08-11-REVIEW.md",
         ".local/phase8-11-verified",
-        ".local/browser-evidence/commercial-capture/CoverMGA_Test_bc19a7bc68ac437db1ec591c70399963/commercial-servicing.json"
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_bc19a7bc68ac437db1ec591c70399963/commercial-servicing.json",
+        "08-12-REVIEW.md",
+        ".local/phase8-12-verified",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_e92d801adf384495b6f111726f993854/commercial-servicing-issue.json"
       ]
     },
     {
@@ -9619,11 +9628,14 @@
       "ownerPlan": "08-11",
       "disposition": "cc-policy-action",
       "contract": "Bind actual scoped CC policy data/action; never execute prototype toast as success.",
-      "runtimeStatus": "persisted-commercial-adjustment-verified",
+      "runtimeStatus": "issued-commercial-adjustment-verified",
       "verification": [
         "08-11-REVIEW.md",
         ".local/phase8-11-verified",
-        ".local/browser-evidence/commercial-capture/CoverMGA_Test_bc19a7bc68ac437db1ec591c70399963/commercial-servicing.json"
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_bc19a7bc68ac437db1ec591c70399963/commercial-servicing.json",
+        "08-12-REVIEW.md",
+        ".local/phase8-12-verified",
+        ".local/browser-evidence/commercial-capture/CoverMGA_Test_e92d801adf384495b6f111726f993854/commercial-servicing-issue.json"
       ]
     },
     {
