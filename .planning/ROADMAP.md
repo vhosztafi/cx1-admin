@@ -271,7 +271,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 5. Motor Trade quote capture | 11/11 | Complete    | 2026-09-16 |
 | 6. Underwriting and first policy issue | 14/14 | Complete | 2026-09-17 |
 | 7. Policy lifecycle and history | 16/16 | Complete    | 2026-09-19 |
-| 8. Commercial Combined back office | 14/16 | Executing08-15 | — |
+| 8. Commercial Combined back office | 15/16 | Executing08-16 | — |
 | 9. Tasks, documents, communication and incidents | 0/TBD | Not started | — |
 | 10. Accounting and insurer reporting | 0/TBD | Not started | — |
 | 11. Configuration and account administration | 0/TBD | Not started | — |
@@ -281,3 +281,4 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 ### Phase 3 downstream acceptance obligations
 
 CLI-01 is now complete: Phases3/5/6 verify clients, contacts/activity and navigation to actual linked quotes/policies. Phase 5 connects MatchSubmission to a real quote, implements automatic detection/rating blocks and guards reopening after downstream progression. Phase 9 connects persisted match information requests to the demo communication delivery workflow. Phase 13 checks these obligations before full requirement acceptance; placeholders and Recorded requests do not count as live records or Sent messages.
+
