@@ -109,6 +109,34 @@ public sealed class CommercialCaptureRulesTests
     }
 
     [Fact]
+    public void SourceEstimatedGrossProfitBasisHasADistinctCaptureValue()
+    {
+        var p = Example(); p["risk"]!["businessInterruption"]!["basis"] = "estimated-gross-profit";
+        Assert.NotNull(Prepare(p));
+    }
+
+    [Theory]
+    [InlineData(2, "Yes — at the location")]
+    [InlineData(3, "Yes — within 250 metres")]
+    public void FloodHistoryReferenceYesRequiresDetails(int value, string label)
+    {
+        var p = Example(); const string id = "prototype.quote.ade0f3f0df5e";
+        p["risk"]!["declarations"]!["answers"]!.AsArray().Add(new JsonObject { ["questionId"] = id, ["kind"] = "reference",
+            ["value"] = new JsonObject { ["collection"] = id, ["value"] = value, ["label"] = label, ["version"] = CommercialCaptureRules.ReferenceVersion } });
+        using var doc = JsonDocument.Parse(Prepare(p).Input.Json);
+        Assert.Contains(CommercialCaptureReadiness.Assess(doc.RootElement, new DateOnly(2026, 9, 20)), x => x.QuestionId == "prototype.quote-value.4799b8daa1ca");
+    }
+
+    [Fact]
+    public void SubsidenceQuestionsAreRequiredOnlyForRequestedSubsidenceCover()
+    {
+        var p = Example(); p["risk"]!["declarations"]!["answers"]!.AsArray().Add(new JsonObject {
+            ["questionId"] = "prototype.quote.be47c08f530f", ["kind"] = "boolean", ["value"] = false });
+        using var doc = JsonDocument.Parse(Prepare(p).Input.Json);
+        Assert.DoesNotContain(CommercialCaptureReadiness.Assess(doc.RootElement, new DateOnly(2026, 9, 20)), x => x.QuestionId == "prototype.quote.aaccb5c97c33");
+    }
+
+    [Fact]
     public void HealthAndSafetyDetailsAreNotRequiredForNoInspectorRecommendations()
     {
         var p = Example(); var answers = p["risk"]!["declarations"]!["answers"]!.AsArray();

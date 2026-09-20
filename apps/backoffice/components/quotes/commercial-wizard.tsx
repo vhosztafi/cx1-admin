@@ -3,12 +3,16 @@ import Link from 'next/link';
 import {useRouter} from 'next/navigation';
 import {useEffect, useRef, useState} from 'react';
 import {csrfToken, type Actor} from '../../lib/auth';
-import {changeCommercialField, commercialRows, commercialStages, commercialVersionsMatch, type CommercialCollection, type CommercialCatalogue, type CommercialQuoteView, type CommercialProposal} from '../../lib/commercial-capture';
+import {changeCommercialField, commercialInputStage, commercialRows, commercialStages, commercialVersionsMatch, type CommercialCollection, type CommercialCatalogue, type CommercialQuoteView, type CommercialProposal} from '../../lib/commercial-capture';
 import {QuoteError, quoteFetch, saveQuoteCommand, sendQuoteCommand, staleQuoteFailure, uncertainQuoteFailure, validQuoteEtag, type PendingQuoteCommand, type QuoteIssue, type QuoteValue} from '../../lib/quotes';
 import {termFeedback} from '../../lib/quote-term';
 import {Panel} from '../primitives';
 import {CommercialBusinessStage} from './commercial-business-stage';
 import {CommercialLossStage} from './commercial-loss-stage';
+import {CommercialLocationStage} from './commercial-location-stage';
+import {CommercialCoverStage} from './commercial-cover-stage';
+import {CommercialLiabilityStage} from './commercial-liability-stage';
+import {CommercialQuestionFields} from './commercial-question-fields';
 import type {CommercialFormProps} from './commercial-question-fields';
 import {QuoteTermFields} from './quote-term-fields';
 import {QuoteProposalDetails} from './quote-history';
@@ -92,7 +96,7 @@ export function CommercialWizard({actorId, initial, initialEtag, catalogue}: {ac
       attempted = true; await sendQuoteCommand(command.current, csrf); acknowledged = true;
       const latest = await readCurrent(); accept(latest); command.current = null; guard.current.uncertain = false; setUncertain(false);
       setStatus(`Draft saved. Revision ${latest.data.revisionNumber}.`); guard.current.busy = false;
-      if (action.current === 'exit') router.push(`/quotes/${saved.id}`); else if (action.current === 'continue') setStage(value => Math.min(value + 1, 2));
+      if (action.current === 'exit') router.push(`/quotes/${saved.id}`); else if (action.current === 'continue') setStage(value => Math.min(value + 1, 9));
     } catch (failure) {
       const pending = command.current !== null && (recovering || acknowledged || attempted && uncertainQuoteFailure(failure));
       guard.current.uncertain = pending; setUncertain(pending);
@@ -107,7 +111,7 @@ export function CommercialWizard({actorId, initial, initialEtag, catalogue}: {ac
   const matching = commercialVersionsMatch(saved, catalogue); const frozen = busy || uncertain || conflict || !saved.capabilities.canSave || !matching;
   const labels = Object.fromEntries(catalogue.questions.map(x => [x.id, x.label]));
   const stageFor = (issue: QuoteIssue) => issue.questionId ? (catalogue.questions.find(x => x.id === issue.questionId)?.stage ?? 10) - 1 :
-    issue.path.startsWith('/termIntent') ? 0 : issue.path.startsWith('/risk/losses') ? 2 : issue.path.startsWith('/insured') || issue.path.startsWith('/risk/business') ? 1 : 9;
+    issue.path.startsWith('/termIntent') ? 0 : issue.path.startsWith('/risk/losses') ? 2 : issue.path.startsWith('/risk/businessInterruption') ? 6 : issue.path.startsWith('/insured') || issue.path.startsWith('/risk/business') ? 1 : issue.path.startsWith('/risk/locations') ? 3 : issue.path.startsWith('/risk/wages') || issue.path.startsWith('/risk/liability') ? 7 : 9;
   function review(issue: QuoteIssue) {
     setStage(stageFor(issue));
     setReviewTarget({id: issue.questionId ? `cc-${issue.questionId}:proposal` : `cc-${issue.path.replace(/^\//, '').replaceAll('/', '.')}`});
@@ -118,20 +122,20 @@ export function CommercialWizard({actorId, initial, initialEtag, catalogue}: {ac
   return <><div className="page-heading"><div><h1>Edit {saved.reference}</h1><p>Commercial Combined · Saved revision {saved.revisionNumber} · {dirty ? 'Unsaved changes' : 'No unsaved changes'}</p></div><Link className="button" href={`/quotes/${saved.id}`}>View saved quote</Link></div>
     <div className="agency-layout"><div><Panel title={commercialStages[stage]} note="Incomplete answers can be saved. Saving does not request a rating.">
       <fieldset disabled={frozen} className="quote-selection"><legend className="sr-only">{commercialStages[stage]} details</legend>
-        {stage === 0 ? <><p>{saved.clientName} · {saved.agencyName}</p><p>Commercial Combined</p><QuoteTermFields intent={proposal.termIntent} change={change} /></> : stage === 1 ? <CommercialBusinessStage form={form} /> : <CommercialLossStage form={form} />}
+        {stage === 0 ? <><p>{saved.clientName} · {saved.agencyName}</p><p>Commercial Combined</p><QuoteTermFields intent={proposal.termIntent} change={change} /></> : stage === 1 ? <CommercialBusinessStage form={form} /> : stage === 2 ? <CommercialLossStage form={form} /> : stage >= 3 && stage <= 5 ? <CommercialLocationStage form={form} stage={stage+1}/> : stage === 6 ? <CommercialCoverStage form={form} stage={7}/> : stage === 7 ? <CommercialLiabilityStage form={form}/> : stage === 8 ? <><p>Record the actual health and safety position. Unknown answers remain unanswered; adverse answers require details.</p><CommercialQuestionFields form={form} questions={catalogue.questions.filter(q=>q.stage===9)}/></> : <CommercialCoverStage form={form} stage={10}/>}
       </fieldset></Panel>
       <Panel title="Saved readiness" note={dirty ? 'This assessment describes the saved revision. Save your changes to refresh it.' : 'Capture readiness is separate from underwriting approval.'}><div className="quote-rail-body">
-        <ul className="quote-readiness-list">{saved.readiness.issues.map((issue, index) => <li key={`${issue.code}:${index}`}><span>{issue.message}</span>{stageFor(issue) < 3 && <button type="button" className="button" disabled={frozen} onClick={() => review(issue)}>Review {commercialStages[stageFor(issue)]}</button>}</li>)}</ul>
+        <ul className="quote-readiness-list">{saved.readiness.issues.map((issue, index) => <li key={`${issue.code}:${index}`}><span>{issue.message}</span><button type="button" className="button" disabled={frozen} onClick={() => review(issue)}>Review {commercialStages[stageFor(issue)]}</button></li>)}</ul>
         {saved.matchReviewId && <Link href={`/matches/${saved.matchReviewId}`}>Open account matching review</Link>}
       </div></Panel>
       {conflict && <Panel title="Saved version changed"><div className="quote-rail-body"><p>This draft changed after you opened it. Your edits are retained. Compare the saved version before discarding them.</p><button className="button" disabled={busy} onClick={() => void compare()}>Load saved comparison</button>
         {comparison && <><h3>Your retained draft</h3><QuoteProposalDetails proposal={proposal} value={proposal} questionLabels={labels} /><h3>Saved revision {comparison.data.revisionNumber}</h3><QuoteProposalDetails proposal={comparison.data.proposal} value={comparison.data.proposal} questionLabels={labels} /><button className="button" disabled={busy || uncertain} onClick={() => {accept(comparison); setError(''); setStatus('Loaded the saved revision.');}}>Discard my edits and load saved revision</button></>}
       </div></Panel>}
-    </div><aside className="quote-create-rail"><Panel title="Quote progress"><div className="quote-rail-body"><nav className="agency-steps" aria-label="Quote stages">{commercialStages.map((name, index) => <button key={name} type="button" className="button" aria-current={stage === index ? 'step' : undefined} disabled={index > 2 || busy || uncertain} onClick={() => setStage(index)}><span>{index + 1}</span>{name}{index > 2 ? ' · unavailable' : ''}</button>)}</nav>
+    </div><aside className="quote-create-rail"><Panel title="Quote progress"><div className="quote-rail-body"><nav className="agency-steps" aria-label="Quote stages">{commercialStages.map((name, index) => <button key={name} type="button" className="button" aria-current={stage === index ? 'step' : undefined} disabled={busy || uncertain} onClick={() => setStage(index)}><span>{index + 1}</span>{name}</button>)}</nav>
       {!matching && <p role="alert">The catalogue matching this saved quote is unavailable. Existing answers are retained.</p>}
-      {error && <p role="alert" className="error-message">{error}</p>}{Object.entries(invalid).map(([key, value]) => <p role="alert" key={key}><button className="button" type="button" onClick={() => {setStage(1); setReviewTarget({id: `cc-${key}`});}}>{value}</button></p>)}{term.errors.map(value => <p role="alert" key={value}>{value}</p>)}
+      {error && <p role="alert" className="error-message">{error}</p>}{Object.entries(invalid).map(([key, value]) => <p role="alert" key={key}><button className="button" type="button" onClick={() => {setStage(commercialInputStage(proposal, catalogue, key)); setReviewTarget({id: `cc-${key}`});}}>{value}</button></p>)}{term.errors.map(value => <p role="alert" key={value}>{value}</p>)}
       {status && <p role="status">{status}</p>}{uncertain && <p role="status">The result of this save is not yet confirmed. Retry the same request.</p>}
       <div className="quote-save-actions"><button className="button button-primary" type="button" disabled={busy || conflict || !matching || !saved.capabilities.canSave || inputErrors > 0} onClick={() => void save('stay')}>{busy ? 'Saving…' : uncertain ? 'Retry same save' : 'Save quote draft'}</button>
-        <button className="button" type="button" disabled={frozen || inputErrors > 0 || stage >= 2} onClick={() => void save('continue')}>Save and continue</button><button className="button" type="button" disabled={frozen || inputErrors > 0} onClick={() => void save('exit')}>Save and exit</button></div>
+        <button className="button" type="button" disabled={frozen || inputErrors > 0 || stage >= 9} onClick={() => void save('continue')}>Save and continue</button><button className="button" type="button" disabled={frozen || inputErrors > 0} onClick={() => void save('exit')}>Save and exit</button></div>
     </div></Panel></aside></div></>;
 }

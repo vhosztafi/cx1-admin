@@ -10,6 +10,7 @@ public static class CommercialCaptureReadiness
 {
     private sealed record Question(string Id, string Container, string Label, string Stage);
     private static readonly Lazy<Question[]> Questions = new(LoadQuestions);
+    private static readonly string[] SubsidenceQuestions = ["prototype.quote.aaccb5c97c33", "prototype.quote.8293bc041f81", "prototype.quote.02d9c6be528a", "prototype.quote.a6a4579c177e", "prototype.quote.7a732bc99a5f", "prototype.quote.fcc7e22c33ea", "prototype.quote.923e600eb3a4"];
     public static int QuestionCount => Questions.Value.Length;
 
     public static IReadOnlyList<QuoteReadinessIssue> Assess(JsonElement proposal, DateOnly asOf)
@@ -106,12 +107,13 @@ public static class CommercialCaptureReadiness
         bool Yes(string id) => Boolean(Response(declarations, id)) == true;
         long? Choice(string id) => Number(At(Response(declarations, id), "value"));
         bool AnyStage(string stage, bool answer, params string[] exclude) => Questions.Value.Where(x => x.Stage == stage && x.Container == "risk.declarations" && !exclude.Contains(x.Id)).Any(x => Boolean(Response(declarations, x.Id)) == answer);
+        if (SubsidenceQuestions.Contains(q.Id)) return Yes("prototype.quote.be47c08f530f");
         return q.Id switch
         {
             "prototype.quote.7bd824326d4c" or "prototype.quote.9b4688f28580" or "prototype.quote.72cb884b6df1" or "prototype.quote.a2f1dd35162a" or "prototype.quote.ab908171e40b" => Boolean(Response(cover, "prototype.quote.7660fc5eb42e")) == true,
             "prototype.quote.4a288359be03" => Yes("prototype.quote.be47c08f530f"),
             "prototype.quote-value.b99b3a5b3004" => AnyStage("Commercial Combined:step-2", true, "prototype.quote.36ef01068295"),
-            "prototype.quote-value.4799b8daa1ca" => AnyStage("Commercial Combined:step-6", true, "prototype.quote.be47c08f530f"),
+            "prototype.quote-value.4799b8daa1ca" => Choice("prototype.quote.ade0f3f0df5e") is 2 or 3 || Yes("prototype.quote.c08c9ebaf825") || Yes("prototype.quote.a6ff9fdbe769") || Yes("prototype.quote.be47c08f530f") && SubsidenceQuestions.Any(Yes),
             "prototype.quote-value.a0e5d1b910f8" => AnyStage("Commercial Combined:step-9", false)
                 || Choice("prototype.quote.00fa2758dd8c") is 2 or 3
                 || Choice("prototype.quote.6d9a54d9e464") == 2

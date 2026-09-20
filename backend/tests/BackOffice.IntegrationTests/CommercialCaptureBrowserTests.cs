@@ -18,7 +18,12 @@ namespace BackOffice.IntegrationTests;
 public sealed partial class QuoteStorageTests
 {
     [Fact]
-    public async Task RealSqlCommercialCaptureBusinessLossBrowser()
+    public Task RealSqlCommercialCaptureBusinessLossBrowser() => RunCommercialCaptureBrowser("business-loss");
+
+    [Fact]
+    public Task RealSqlCommercialCaptureFullBrowser() => RunCommercialCaptureBrowser("full");
+
+    private async Task RunCommercialCaptureBrowser(string stage)
     {
         await WithDatabase(async (db, password) =>
         {
@@ -82,8 +87,8 @@ public sealed partial class QuoteStorageTests
                     await Task.Delay(250);
                 }
                 Assert.True(serving, "Isolated commercial preview did not start.");
-                var fixture = JsonSerializer.Serialize(new { apiOrigin = api, webOrigin = $"http://127.0.0.1:{port}", output, clockNow = new QuoteTime().GetUtcNow(), ccRelationship = cc.Relationship, mtRelationship = mt.Relationship });
-                browser = StartNode(["scripts/verify-commercial-capture-browser.mjs", "--worker", "--stage", "business-loss"], new() {
+                var fixture = JsonSerializer.Serialize(new { stage, apiOrigin = api, webOrigin = $"http://127.0.0.1:{port}", output, clockNow = new QuoteTime().GetUtcNow(), ccRelationship = cc.Relationship, mtRelationship = mt.Relationship });
+                browser = StartNode(["scripts/verify-commercial-capture-browser.mjs", "--worker", "--stage", stage], new() {
                     ["COVER_COMMERCIAL_BROWSER_FIXTURE"] = fixture, ["COVER_COMMERCIAL_BROWSER_PASSWORD"] = password });
                 var stdout = browser.StandardOutput.ReadToEndAsync(); var stderr = browser.StandardError.ReadToEndAsync();
                 await browser.WaitForExitAsync().WaitAsync(TimeSpan.FromMinutes(8));
@@ -100,6 +105,13 @@ public sealed partial class QuoteStorageTests
                 Assert.False(declarations.Single(x => x.GetProperty("questionId").GetString() == "prototype.quote.385743089b72").GetProperty("value").GetBoolean());
                 foreach (var question in report.RootElement.GetProperty("verifiedQuestionIds").EnumerateArray())
                     Assert.Contains(revisions, revision => revision.ProposalJson.Contains(question.GetString()!, StringComparison.Ordinal));
+                if (stage == "full")
+                {
+                    Assert.Equal(109, report.RootElement.GetProperty("verifiedQuestionIds").GetArrayLength());
+                    Assert.Equal(2, final.RootElement.GetProperty("risk").GetProperty("locations").GetArrayLength());
+                    Assert.Equal(2, final.RootElement.GetProperty("risk").GetProperty("wages").GetArrayLength());
+                    Assert.Equal("estimated-gross-profit", final.RootElement.GetProperty("risk").GetProperty("businessInterruption").GetProperty("basis").GetString());
+                }
                 Assert.Equal(2, await db.Set<Quote>().CountAsync());
             }
             finally

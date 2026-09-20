@@ -1,6 +1,6 @@
 'use client';
 import {useEffect, useRef, useState} from 'react';
-import {addCommercialRow, changeCommercialField, commercialField, commercialRows, commercialReferenceVersion, removeCommercialRow, updateCommercialRow, type CommercialProposal} from '../../lib/commercial-capture';
+import {addCommercialRow, changeCommercialField, commercialField, commercialRows, commercialReferenceVersion, removeCommercialRow, sumCommercialMoney, updateCommercialRow, type CommercialProposal} from '../../lib/commercial-capture';
 import type {QuoteValue} from '../../lib/quotes';
 import {CommercialInput, CommercialQuestionFields, type CommercialFormProps} from './commercial-question-fields';
 
@@ -24,6 +24,7 @@ export function CommercialLossStage({form}: {form: CommercialFormProps}) {
           <button className="button" type="button" onClick={() => {if (window.confirm(`Remove loss ${index + 1} from this draft? Save the quote to record the removal.`)) form.replace(removeCommercialRow(form.proposal, 'losses', row.id));}}>Remove loss {index + 1}</button>
         </div></td></tr>)}
       </tbody></table></div>}
+    {rows.length > 0 && <p>Total declared loss amount: <strong>{money(sumCommercialMoney(rows.map(row => row.amount)))}</strong></p>}
     <div className="quote-form-grid"><CommercialInput form={form} inputKey="risk.materialFacts" label="Additional loss circumstances" kind="textarea" maxLength={10000} value={commercialField(form.proposal, 'risk.materialFacts')} change={value => form.replace(changeCommercialField(form.proposal, 'risk.materialFacts', value))} /></div>
     {edit && <LossDialog key={edit.id} initial={edit} catalogue={form.catalogue} close={() => setEdit(undefined)} apply={proposal => {form.replace(proposal); setEdit(undefined);}} />}
   </>;

@@ -138449,7 +138449,8 @@
             "enum": [
               "gross-profit",
               "gross-revenue",
-              "increased-cost-of-working"
+              "increased-cost-of-working",
+              "estimated-gross-profit"
             ]
           },
           "sumInsured": {
@@ -146779,7 +146780,8 @@
             "enum": [
               "gross-profit",
               "gross-revenue",
-              "increased-cost-of-working"
+              "increased-cost-of-working",
+              "estimated-gross-profit"
             ]
           },
           "sumInsured": {
