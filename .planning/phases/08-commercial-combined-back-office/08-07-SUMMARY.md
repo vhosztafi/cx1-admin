@@ -43,4 +43,4 @@ Continue08-08: dated commercial exposure books/limits, immutable complete header
 
 ## Self-Check: PASSED
 
-Implementation and passing current-source artifacts exist; strict counts and actual browser/SQL readback verified. No final failed/skipped report is counted as successful evidence.
+Implementation and passing current-source artifacts exist; strict counts and actual browser/SQL readback verified. Final accounting contains only executed successful cases.
