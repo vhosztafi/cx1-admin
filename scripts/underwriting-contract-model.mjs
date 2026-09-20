@@ -61,6 +61,8 @@ export const underwritingConfigSchema={
 };
 
 export const conditionSchema={oneOf:[
+  ...['property','liability','bi','business','claims-experience','health-safety'].map(subject=>closed({code:{const:'provide-cc-'+subject+'-proof'}})),
+  ...['location','wage','electrical','alarm','structural'].map(subject=>closed({code:{const:'provide-cc-'+subject+'-proof'},riskItemId:uid})),
   closed({code:{const:'provide-driver-proof'},driverId:uid,requirementCode:label(60)}),
   closed({code:{const:'provide-premises-security'},premisesId:uid}),
   closed({code:{const:'provide-signed-statement'},termsVersionId:uid,termsHash:hash}),

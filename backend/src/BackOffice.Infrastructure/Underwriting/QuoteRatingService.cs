@@ -20,6 +20,14 @@ public sealed record StoredRatingInput(string Format, ProjectedUnderwritingInput
     [System.Text.Json.Serialization.JsonIgnore]
     public bool IsCommercial => Format == "commercial-underwriting-input-1" && Commercial is not null && Input is null;
 
+    public static StoredRatingInput Read(UnderwritingCycle cycle)
+    {
+        var value = JsonSerializer.Deserialize<StoredRatingInput>(cycle.InputJson, QuoteRatingService.Json);
+        if (value is null || !(value.IsCommercial || value.Format == "underwriting-input-1" && value.Input is not null && value.Commercial is null))
+            throw new QuoteOperationException(409, "underwriting-input-invalid");
+        return value;
+    }
+
     // Product-specific downstream consumers are enabled in their owning slice.
     // They must reject the new format before reading Motor Trade-only facts.
     public static StoredRatingInput ReadMotorTrade(UnderwritingCycle cycle)

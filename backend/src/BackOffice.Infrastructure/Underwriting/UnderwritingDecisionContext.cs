@@ -21,11 +21,16 @@ internal sealed record UnderwritingDecisionContext(OwnedQuoteScope Owned, Underw
         var cycle = await db.Set<UnderwritingCycle>().FromSqlInterpolated($"SELECT * FROM UnderwritingCycle WITH(HOLDLOCK) WHERE Id={id} AND QuoteId={quoteId}").AsNoTracking().SingleOrDefaultAsync(token)
             ?? throw new QuoteOperationException(404, "underwriting-cycle-not-found");
         var revision = await db.Set<QuoteRevision>().AsNoTracking().SingleAsync(x => x.Id == cycle.QuoteRevisionId && x.QuoteId == quoteId, token);
-        var input = StoredRatingInput.ReadMotorTrade(cycle);
-        var eligible = await QuoteRatingEligibility.ResolveAsync(db, owned, cycle.ProductVersionId, cycle.AgencyTermsVersionId, input.Input.Term, now, token);
+        var input = action is "underwriting-decide-within-authority" or "underwriting-evidence-write" or "underwriting-evidence-review"
+            ? StoredRatingInput.Read(cycle) : StoredRatingInput.ReadMotorTrade(cycle);
+        var eligible = await QuoteRatingEligibility.ResolveAsync(db, owned, cycle.ProductVersionId, cycle.AgencyTermsVersionId, input.Term, now, token);
         if (eligible.RatingVersion.Id != cycle.RatingRuleVersionId || eligible.BinderVersion.Id != cycle.BinderVersionId || eligible.AuthorityVersion.Id != cycle.AuthorityVersionId)
             throw new QuoteOperationException(409, "underwriting-cycle-stale");
-        var grants = await QuoteUnderwritingScope.GrantsAsync(db, owned, cycle.ProductVersionId, eligible.BinderVersion, eligible.Capture.Product.Code, input.Input.Term, now, token);
+        if (input.IsCommercial && (owned.Quote.CurrentUnderwritingCycleId != cycle.Id || owned.Quote.CurrentRevisionId != revision.Id ||
+            cycle.State != "rated" || input.RuntimeVersionId != eligible.RuntimeVersion.Id || input.ScenarioVersionId != eligible.ScenarioVersion.Id ||
+            input.CommissionBasisPoints != eligible.CommissionBasisPoints || input.MinimumPremium != eligible.MinimumPremium))
+            throw new QuoteOperationException(409, "underwriting-cycle-stale");
+        var grants = await QuoteUnderwritingScope.GrantsAsync(db, owned, cycle.ProductVersionId, eligible.BinderVersion, eligible.Capture.Product.Code, input.Term, now, token);
         if (grantRequired && grants.Count == 0) throw new QuoteOperationException(403, "underwriting-authority-required");
         var rating = cycle.CurrentRatingId is Guid ratingId ? await db.Set<QuoteRatingResult>().AsNoTracking().SingleAsync(x => x.Id == ratingId && x.CycleId == cycle.Id && x.QuoteId == quoteId, token) : null;
         return new(owned, cycle, revision, rating, input, eligible, grants);

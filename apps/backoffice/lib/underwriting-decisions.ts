@@ -1,25 +1,34 @@
-import { validQuoteEtag, type PendingQuoteCommand, type QuoteProposal, type QuoteObject } from './quotes.ts';
+import { validQuoteEtag, type PendingQuoteCommand, type QuoteCaptureProposal, type QuoteObject } from './quotes.ts';
 import type { ConditionDefinition, Referral, ProofRequirement, UnderwritingEvidence } from './underwriting-api.ts';
 
 export const conditionLabels: Record<string, string> = { 'provide-driver-proof': 'Driver proof', 'provide-premises-security': 'Premises security proof', 'provide-trading-history': 'Trading history proof', 'overnight-security': 'Overnight security warranty (W-07)', 'named-drivers-only': 'Named drivers only', 'any-driver-minimum-licence': 'Minimum licence experience', 'revise-stock-limit': 'Revise stock limit', 'revise-vehicle-limit': 'Revise vehicle limit' };
+Object.assign(conditionLabels, Object.fromEntries(['property','location','liability','wage','bi','business','claims-experience','health-safety','electrical','alarm','structural'].map(subject => ['provide-cc-'+subject+'-proof', 'Commercial '+subject+' proof'])));
 export const validUnderwritingId = (id: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id) && !/^0{8}-0{4}-0{4}-0{4}-0{12}$/.test(id);
-export function riskItems(proposal: QuoteProposal, kind: string): QuoteObject[] {
-  const items = proposal.risk?.[kind]; return Array.isArray(items) ? items.filter((x): x is QuoteObject => !!x && typeof x === 'object' && !Array.isArray(x) && typeof x.id === 'string') : [];
+export function riskItems(proposal: QuoteCaptureProposal, kind: string): QuoteObject[] {
+  const items = (proposal.risk as Record<string, unknown> | undefined)?.[kind]; return Array.isArray(items) ? items.filter((x): x is QuoteObject => !!x && typeof x === 'object' && !Array.isArray(x) && typeof x.id === 'string') : [];
 }
-export function riskTargetLabel(proposal: QuoteProposal, id?: string): string {
+export function riskTargetLabel(proposal: QuoteCaptureProposal, id?: string): string {
   if (!id) return '';
-  for (const kind of ['drivers','premises','vehicles']) {
+  for (const kind of ['drivers','premises','vehicles','locations','wages']) {
     const items = riskItems(proposal, kind), index = items.findIndex(item => item.id === id); if (index < 0) continue;
     const item = items[index];
+    if (kind === 'locations') return String(item.reference ?? 'Saved location');
+    if (kind === 'wages') return 'Wage category ' + (index + 1);
     if (kind === 'drivers') return `Driver ${index + 1} · ${item.firstName ?? ''} ${item.surname ?? ''}`.trim();
     if (kind === 'vehicles') return `Vehicle ${index + 1} · ${item.registration ?? 'Registration not recorded'}`;
     return `Premises ${index + 1}`;
   }
   return 'Historical risk target';
 }
-export function conditionFromForm(code: string, input: { targetId?: string; driverIds?: string[]; minimumYears?: string; maximumAmount?: string; requirementCode?: string }, proposal: QuoteProposal): ConditionDefinition {
+export function conditionFromForm(code: string, input: { targetId?: string; driverIds?: string[]; minimumYears?: string; maximumAmount?: string; requirementCode?: string }, proposal: QuoteCaptureProposal): ConditionDefinition {
   const target = (kind: string) => { if (!input.targetId || !riskItems(proposal, kind).some(x => x.id === input.targetId)) throw new Error('Select a current saved risk item.'); return input.targetId; };
   const maximum = () => { if (!input.maximumAmount || !/^(0|[1-9]\d{0,12})\.\d{2}$/.test(input.maximumAmount) || /^0\.00$/.test(input.maximumAmount)) throw new Error('Enter a positive GBP amount with two decimal places.'); return input.maximumAmount; };
+  if (proposal.productCode === 'commercial-combined') {
+    if (['provide-cc-location-proof','provide-cc-electrical-proof','provide-cc-alarm-proof','provide-cc-structural-proof'].includes(code)) return {code, riskItemId: target('locations')};
+    if (code === 'provide-cc-wage-proof') return {code, riskItemId: target('wages')};
+    if (['provide-cc-property-proof','provide-cc-liability-proof','provide-cc-bi-proof','provide-cc-business-proof','provide-cc-claims-experience-proof','provide-cc-health-safety-proof'].includes(code)) return {code};
+    throw new Error('Choose a Commercial Combined condition.');
+  }
   switch (code) {
     case 'provide-trading-history': return { code };
     case 'provide-driver-proof': if (!['photocard-both-sides', 'driving-record'].includes(input.requirementCode ?? '')) throw new Error('Choose a driver proof purpose.'); return { code, driverId: target('drivers'), requirementCode: input.requirementCode };

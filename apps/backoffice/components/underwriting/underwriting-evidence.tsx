@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import type { QuoteView } from '../../lib/quotes';
+import type { QuoteView, QuoteCaptureProposal } from '../../lib/quotes';
 import type { UnderwritingAssessment, UnderwritingEvidence as Evidence, ProofRequirement, EvidenceEvent } from '../../lib/underwriting-api';
 import { underwritingWrite, riskTargetLabel } from '../../lib/underwriting-decisions';
 import { Panel, Status } from '../primitives';
@@ -8,7 +8,7 @@ import { useQuoteResource, LoadFeedback } from '../quotes/shared';
 import type { DecisionRequest } from './decision-command';
 
 type EvidenceFile = { id: string; fileName: string; contentType: string; length: number; uploadedAt: string };
-export function UnderwritingEvidence({ quote, assessment, evidence, run }: { quote: QuoteView; assessment: UnderwritingAssessment; evidence: Evidence[]; run: (request: DecisionRequest) => void }) {
+export function UnderwritingEvidence({ quote, assessment, evidence, run }: { quote: QuoteView<QuoteCaptureProposal>; assessment: UnderwritingAssessment; evidence: Evidence[]; run: (request: DecisionRequest) => void }) {
   const files = useQuoteResource<{ items: EvidenceFile[] }>(`/api/v1/quotes/${quote.id}/evidence-files`);
   const [file, setFile] = useState<File>(), [error, setError] = useState('');
   const active = !!assessment.context && !['draft','bound','withdrawn','rating-pending'].includes(assessment.state);
@@ -26,7 +26,7 @@ export function UnderwritingEvidence({ quote, assessment, evidence, run }: { quo
     {evidence.map(item => <EvidenceCard key={item.id} item={item} quote={quote} assessment={assessment} active={active && item.cycleId === assessment.context?.cycleId} run={run} />)}
   </div></Panel>;
 }
-function Attachment({ requirement, files, quote, assessment, disabled, run }: { requirement: ProofRequirement; files: EvidenceFile[]; quote: QuoteView; assessment: UnderwritingAssessment; disabled: boolean; run: (request: DecisionRequest) => void }) {
+function Attachment({ requirement, files, quote, assessment, disabled, run }: { requirement: ProofRequirement; files: EvidenceFile[]; quote: QuoteView<QuoteCaptureProposal>; assessment: UnderwritingAssessment; disabled: boolean; run: (request: DecisionRequest) => void }) {
   const [fileId, setFile] = useState(''), [reason, setReason] = useState('');
   return <fieldset className="quote-reference-fields" disabled={disabled}><legend>{requirement.label}{requirement.riskItemId && ` · ${riskTargetLabel(quote.proposal, requirement.riskItemId)}`}</legend>
     <Status tone={requirement.satisfied ? 'success' : 'warning'}>{requirement.satisfied ? 'Current proof reviewed' : 'Underwriting review required'}</Status>
@@ -36,7 +36,7 @@ function Attachment({ requirement, files, quote, assessment, disabled, run }: { 
     <button className="button" disabled={!fileId || !reason.trim()} onClick={() => run({ command: underwritingWrite(quote.id, `/api/v1/quotes/${quote.id}/underwriting/evidence`, assessment.quoteEtag, { cycleId: assessment.context!.cycleId, fileId, requirementCode: requirement.code, inputFingerprint: requirement.inputFingerprint, ...(requirement.riskItemId ? { riskItemId: requirement.riskItemId } : {}), ...(requirement.conditionId ? { conditionId: requirement.conditionId } : {}), ...(requirement.capacitySubmissionId ? { capacitySubmissionId: requirement.capacitySubmissionId } : {}), ...(requirement.termsVersionId ? { termsVersionId: requirement.termsVersionId } : {}), reason }), label: 'Attach supporting proof', description: `${requirement.label} · ${reason}` })}>Attach proof</button>
   </fieldset>;
 }
-function EvidenceCard({ item, quote, assessment, active, run }: { item: Evidence; quote: QuoteView; assessment: UnderwritingAssessment; active: boolean; run: (request: DecisionRequest) => void }) {
+function EvidenceCard({ item, quote, assessment, active, run }: { item: Evidence; quote: QuoteView<QuoteCaptureProposal>; assessment: UnderwritingAssessment; active: boolean; run: (request: DecisionRequest) => void }) {
   const [reason, setReason] = useState(''), [outcome, setOutcome] = useState('accepted');
   const applicable = assessment.proofRequirements.some(x => x.code === item.requirementCode && x.conditionId === item.conditionId && x.riskItemId === item.riskItemId && x.termsVersionId === item.termsVersionId && x.capacitySubmissionId === item.capacitySubmissionId && x.inputFingerprint === item.inputFingerprint);
   function action(withdraw: boolean) {

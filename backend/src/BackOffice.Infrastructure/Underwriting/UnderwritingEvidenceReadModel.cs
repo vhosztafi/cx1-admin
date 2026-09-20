@@ -21,7 +21,7 @@ public sealed partial class UnderwritingEvidenceService
         if (owned.Quote.CurrentUnderwritingCycleId is not Guid id) { await tx.CommitAsync(token); return []; }
         var cycle = await db.Set<UnderwritingCycle>().AsNoTracking().SingleAsync(x => x.Id == id && x.QuoteId == quoteId, token);
         var revision = await db.Set<QuoteRevision>().AsNoTracking().SingleAsync(x => x.Id == cycle.QuoteRevisionId && x.QuoteId == quoteId, token);
-        var input = StoredRatingInput.ReadMotorTrade(cycle);
+        var input = StoredRatingInput.Read(cycle);
         var result = await Requirements(db, cycle, revision, input, token); await tx.CommitAsync(token); return result;
     }
 
@@ -38,7 +38,9 @@ public sealed partial class UnderwritingEvidenceService
             result.Add(new(code, label, path, riskId, condition?.Id, termsId, hash, false));
         }
         foreach (var requirement in QuoteEvidenceRequirements.ForProposal(proposal.RootElement)) Add(requirement.Code, requirement.Label, requirement.Path, requirement.RiskItemId);
-        if (input.Input.TradingYears < 5) Add("trading-history", "Business trading history and experience", "/risk/business");
+        if (input.IsCommercial)
+            foreach (var requirement in CommercialEvidenceRules.Requirements(proposal.RootElement)) Add(requirement.Code, requirement.Label, requirement.Path, requirement.RiskItemId);
+        else if (input.Input.TradingYears < 5) Add("trading-history", "Business trading history and experience", "/risk/business");
         if (proposal.RootElement.TryGetProperty("cover", out var cover) && cover.TryGetProperty("requestedSections", out var sections))
             foreach (var section in sections.EnumerateArray().Where(x => x.GetProperty("code").GetString() == "premises" && x.GetProperty("selected").GetBoolean()))
                 foreach (var premises in section.GetProperty("premisesIds").EnumerateArray()) Add("premises-security", "Security evidence for the insured premises", "/risk/premises", premises.GetGuid());
@@ -91,8 +93,9 @@ public sealed partial class UnderwritingEvidenceService
         return await (from r in db.Set<QuoteConditionResolution>().AsNoTracking()
                       join a in db.Set<UnderwritingEvidenceAssociation>().AsNoTracking() on r.EvidenceAssociationId equals a.Id
                       join e in db.Set<UnderwritingEvidenceEvent>().AsNoTracking() on r.EvidenceReviewId equals e.Id
+                      join f in db.Set<QuoteEvidenceFile>().AsNoTracking() on a.FileId equals f.Id
                       where r.Id == condition.LatestResolutionId && r.ConditionId == condition.Id && r.CycleId == condition.CycleId && r.Outcome == "satisfied" &&
-                          a.CycleId == condition.CycleId && a.WithdrawnEventId == null && a.LatestReviewId == e.Id && e.Outcome == "accepted"
+                          a.CycleId == condition.CycleId && a.WithdrawnEventId == null && a.LatestReviewId == e.Id && e.Outcome == "accepted" && f.ScreeningState == "accepted"
                       select r.Id).AnyAsync(token);
     }
 

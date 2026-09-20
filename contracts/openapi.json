@@ -114594,6 +114594,163 @@
             "additionalProperties": false,
             "properties": {
               "code": {
+                "const": "provide-cc-property-proof"
+              }
+            },
+            "required": [
+              "code"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "const": "provide-cc-liability-proof"
+              }
+            },
+            "required": [
+              "code"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "const": "provide-cc-bi-proof"
+              }
+            },
+            "required": [
+              "code"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "const": "provide-cc-business-proof"
+              }
+            },
+            "required": [
+              "code"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "const": "provide-cc-claims-experience-proof"
+              }
+            },
+            "required": [
+              "code"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "const": "provide-cc-health-safety-proof"
+              }
+            },
+            "required": [
+              "code"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "const": "provide-cc-location-proof"
+              },
+              "riskItemId": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "code",
+              "riskItemId"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "const": "provide-cc-wage-proof"
+              },
+              "riskItemId": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "code",
+              "riskItemId"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "const": "provide-cc-electrical-proof"
+              },
+              "riskItemId": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "code",
+              "riskItemId"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "const": "provide-cc-alarm-proof"
+              },
+              "riskItemId": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "code",
+              "riskItemId"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "const": "provide-cc-structural-proof"
+              },
+              "riskItemId": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "code",
+              "riskItemId"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
                 "const": "provide-driver-proof"
               },
               "driverId": {
@@ -121903,6 +122060,163 @@
                   "additionalProperties": false,
                   "properties": {
                     "code": {
+                      "const": "provide-cc-property-proof"
+                    }
+                  },
+                  "required": [
+                    "code"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-liability-proof"
+                    }
+                  },
+                  "required": [
+                    "code"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-bi-proof"
+                    }
+                  },
+                  "required": [
+                    "code"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-business-proof"
+                    }
+                  },
+                  "required": [
+                    "code"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-claims-experience-proof"
+                    }
+                  },
+                  "required": [
+                    "code"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-health-safety-proof"
+                    }
+                  },
+                  "required": [
+                    "code"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-location-proof"
+                    },
+                    "riskItemId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "riskItemId"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-wage-proof"
+                    },
+                    "riskItemId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "riskItemId"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-electrical-proof"
+                    },
+                    "riskItemId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "riskItemId"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-alarm-proof"
+                    },
+                    "riskItemId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "riskItemId"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-structural-proof"
+                    },
+                    "riskItemId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "riskItemId"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
                       "const": "provide-driver-proof"
                     },
                     "driverId": {
@@ -122134,6 +122448,163 @@
             "type": "array",
             "items": {
               "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-property-proof"
+                    }
+                  },
+                  "required": [
+                    "code"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-liability-proof"
+                    }
+                  },
+                  "required": [
+                    "code"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-bi-proof"
+                    }
+                  },
+                  "required": [
+                    "code"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-business-proof"
+                    }
+                  },
+                  "required": [
+                    "code"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-claims-experience-proof"
+                    }
+                  },
+                  "required": [
+                    "code"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-health-safety-proof"
+                    }
+                  },
+                  "required": [
+                    "code"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-location-proof"
+                    },
+                    "riskItemId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "riskItemId"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-wage-proof"
+                    },
+                    "riskItemId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "riskItemId"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-electrical-proof"
+                    },
+                    "riskItemId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "riskItemId"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-alarm-proof"
+                    },
+                    "riskItemId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "riskItemId"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-structural-proof"
+                    },
+                    "riskItemId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "riskItemId"
+                  ]
+                },
                 {
                   "type": "object",
                   "additionalProperties": false,
@@ -122543,6 +123014,163 @@
             "type": "array",
             "items": {
               "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-property-proof"
+                    }
+                  },
+                  "required": [
+                    "code"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-liability-proof"
+                    }
+                  },
+                  "required": [
+                    "code"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-bi-proof"
+                    }
+                  },
+                  "required": [
+                    "code"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-business-proof"
+                    }
+                  },
+                  "required": [
+                    "code"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-claims-experience-proof"
+                    }
+                  },
+                  "required": [
+                    "code"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-health-safety-proof"
+                    }
+                  },
+                  "required": [
+                    "code"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-location-proof"
+                    },
+                    "riskItemId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "riskItemId"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-wage-proof"
+                    },
+                    "riskItemId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "riskItemId"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-electrical-proof"
+                    },
+                    "riskItemId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "riskItemId"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-alarm-proof"
+                    },
+                    "riskItemId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "riskItemId"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "const": "provide-cc-structural-proof"
+                    },
+                    "riskItemId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "riskItemId"
+                  ]
+                },
                 {
                   "type": "object",
                   "additionalProperties": false,

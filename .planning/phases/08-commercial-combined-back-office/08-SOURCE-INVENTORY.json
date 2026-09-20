@@ -1,7 +1,7 @@
 {
   "format": "commercial-source-ledger-1",
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
-  "status": "capture-and-rating-browser-verified-decisions-pending",
+  "status": "capture-rating-referral-evidence-verified-terms-pending",
   "denominators": {
     "captureControls": 166,
     "questions": 109,
@@ -1787,8 +1787,10 @@
       "disposition": "persistent-evidence",
       "targetPaths": [],
       "questionId": null,
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "browser-and-sql-evidence-verified",
+      "verification": [
+        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx."
+      ]
     },
     {
       "controlId": "CTL-385743089b72",
@@ -4040,8 +4042,10 @@
       "disposition": "persistent-evidence",
       "targetPaths": [],
       "questionId": null,
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "browser-and-sql-evidence-verified",
+      "verification": [
+        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx."
+      ]
     },
     {
       "controlId": "CTL-8edb6a187769",
@@ -4055,8 +4059,10 @@
       "disposition": "persistent-evidence",
       "targetPaths": [],
       "questionId": null,
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "browser-and-sql-evidence-verified",
+      "verification": [
+        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx."
+      ]
     },
     {
       "controlId": "CTL-98e734d0c0dc",
@@ -4070,8 +4076,10 @@
       "disposition": "persistent-evidence",
       "targetPaths": [],
       "questionId": null,
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "browser-and-sql-evidence-verified",
+      "verification": [
+        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx."
+      ]
     },
     {
       "controlId": "CTL-de020621bc82",
@@ -4085,8 +4093,10 @@
       "disposition": "persistent-evidence",
       "targetPaths": [],
       "questionId": null,
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "browser-and-sql-evidence-verified",
+      "verification": [
+        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx."
+      ]
     },
     {
       "controlId": "CTL-edc0a8d5978f",
@@ -4100,8 +4110,10 @@
       "disposition": "persistent-evidence",
       "targetPaths": [],
       "questionId": null,
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "browser-and-sql-evidence-verified",
+      "verification": [
+        "08-06: .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json; actual source-document labels and location query; RealSqlCommercialReferralProofSubjectsAndAuthorityBeforeReplay normal scenario independently attaches/reviews all five source document purposes, separates electrical/alarm and resolves/withdraws exact condition proof. Current SQL .local/phase8-06-source-sql/sql.trx."
+      ]
     }
   ],
   "questions": [
@@ -9409,168 +9421,210 @@
       "sourceRule": "PR04",
       "condition": "Flood at a location or within250m",
       "ownerPlan": "08-06",
-      "verification": "Unit branch/boundary and SQL current decision/proof tests; pending",
-      "runtimeStatus": "pending"
+      "verification": [
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+      ],
+      "runtimeStatus": "unit-sql-and-browser-verified"
     },
     {
       "id": "PR-05",
       "sourceRule": "PR05",
       "condition": "Advised potential flood area",
       "ownerPlan": "08-06",
-      "verification": "Unit branch/boundary and SQL current decision/proof tests; pending",
-      "runtimeStatus": "pending"
+      "verification": [
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+      ],
+      "runtimeStatus": "unit-sql-and-browser-verified"
     },
     {
       "id": "PR-08",
       "sourceRule": "PR08",
       "condition": "Subsidence selected with movement/history outside appetite",
       "ownerPlan": "08-06",
-      "verification": "Unit branch/boundary and SQL current decision/proof tests; pending",
-      "runtimeStatus": "pending"
+      "verification": [
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+      ],
+      "runtimeStatus": "unit-sql-and-browser-verified"
     },
     {
       "id": "PR-11",
       "sourceRule": "PR11",
       "condition": "Composite panels",
       "ownerPlan": "08-06",
-      "verification": "Unit branch/boundary and SQL current decision/proof tests; pending",
-      "runtimeStatus": "pending"
+      "verification": [
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+      ],
+      "runtimeStatus": "unit-sql-and-browser-verified"
     },
     {
       "id": "PR-12",
       "sourceRule": "PR12",
       "condition": "Timber frame",
       "ownerPlan": "08-06",
-      "verification": "Unit branch/boundary and SQL current decision/proof tests; pending",
-      "runtimeStatus": "pending"
+      "verification": [
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+      ],
+      "runtimeStatus": "unit-sql-and-browser-verified"
     },
     {
       "id": "PR-14",
       "sourceRule": "PR14",
       "condition": "Listed building",
       "ownerPlan": "08-06",
-      "verification": "Unit branch/boundary and SQL current decision/proof tests; pending",
-      "runtimeStatus": "pending"
+      "verification": [
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+      ],
+      "runtimeStatus": "unit-sql-and-browser-verified"
     },
     {
       "id": "PR-17",
       "sourceRule": "PR17",
       "condition": "Waste burning outside appetite",
       "ownerPlan": "08-06",
-      "verification": "Unit branch/boundary and SQL current decision/proof tests; pending",
-      "runtimeStatus": "pending"
+      "verification": [
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+      ],
+      "runtimeStatus": "unit-sql-and-browser-verified"
     },
     {
       "id": "PR-18",
       "sourceRule": "PR18",
       "condition": "Recycling trade outside appetite",
       "ownerPlan": "08-06",
-      "verification": "Unit branch/boundary and SQL current decision/proof tests; pending",
-      "runtimeStatus": "pending"
+      "verification": [
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+      ],
+      "runtimeStatus": "unit-sql-and-browser-verified"
     },
     {
       "id": "PR-21",
       "sourceRule": "PR21",
       "condition": "Unoccupied30days",
       "ownerPlan": "08-06",
-      "verification": "Unit branch/boundary and SQL current decision/proof tests; pending",
-      "runtimeStatus": "pending"
+      "verification": [
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+      ],
+      "runtimeStatus": "unit-sql-and-browser-verified"
     },
     {
       "id": "AU-05",
       "sourceRule": "AU05",
       "condition": "Single-location buildings+contents+stock greater than2500000.00",
       "ownerPlan": "08-06",
-      "verification": "Unit branch/boundary and SQL current decision/proof tests; pending",
-      "runtimeStatus": "pending"
+      "verification": [
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+      ],
+      "runtimeStatus": "unit-sql-and-browser-verified"
     },
     {
       "id": "AU-06",
       "sourceRule": "AU06",
       "condition": "Largest-location demo MEL greater than2000000.00",
       "ownerPlan": "08-06",
-      "verification": "Unit branch/boundary and SQL current decision/proof tests; pending",
-      "runtimeStatus": "pending"
+      "verification": [
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+      ],
+      "runtimeStatus": "unit-sql-and-browser-verified"
     },
     {
       "id": "LI-03",
       "sourceRule": "LI03",
       "condition": "Heat away",
       "ownerPlan": "08-06",
-      "verification": "Unit branch/boundary and SQL current decision/proof tests; pending",
-      "runtimeStatus": "pending"
+      "verification": [
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+      ],
+      "runtimeStatus": "unit-sql-and-browser-verified"
     },
     {
       "id": "LI-05",
       "sourceRule": "LI05",
       "condition": "Work above2metres",
       "ownerPlan": "08-06",
-      "verification": "Unit branch/boundary and SQL current decision/proof tests; pending",
-      "runtimeStatus": "pending"
+      "verification": [
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+      ],
+      "runtimeStatus": "unit-sql-and-browser-verified"
     },
     {
       "id": "LI-08",
       "sourceRule": "LI08",
       "condition": "Refinery/offshore/aviation/railway/airport work",
       "ownerPlan": "08-06",
-      "verification": "Unit branch/boundary and SQL current decision/proof tests; pending",
-      "runtimeStatus": "pending"
+      "verification": [
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+      ],
+      "runtimeStatus": "unit-sql-and-browser-verified"
     },
     {
       "id": "LI-11",
       "sourceRule": "LI11",
       "condition": "Products sourced outside accepted territories",
       "ownerPlan": "08-06",
-      "verification": "Unit branch/boundary and SQL current decision/proof tests; pending",
-      "runtimeStatus": "pending"
+      "verification": [
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+      ],
+      "runtimeStatus": "unit-sql-and-browser-verified"
     },
     {
       "id": "LI-12",
       "sourceRule": "LI12",
       "condition": "USA/Canada turnover",
       "ownerPlan": "08-06",
-      "verification": "Unit branch/boundary and SQL current decision/proof tests; pending",
-      "runtimeStatus": "pending"
+      "verification": [
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+      ],
+      "runtimeStatus": "unit-sql-and-browser-verified"
     },
     {
       "id": "LI-15",
       "sourceRule": "LI15",
       "condition": "No formal written health/safety policy",
       "ownerPlan": "08-06",
-      "verification": "Unit branch/boundary and SQL current decision/proof tests; pending",
-      "runtimeStatus": "pending"
+      "verification": [
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+      ],
+      "runtimeStatus": "unit-sql-and-browser-verified"
     },
     {
       "id": "LI-18",
       "sourceRule": "LI18",
       "condition": "Prohibition/prosecution",
       "ownerPlan": "08-06",
-      "verification": "Unit branch/boundary and SQL current decision/proof tests; pending",
-      "runtimeStatus": "pending"
+      "verification": [
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+      ],
+      "runtimeStatus": "unit-sql-and-browser-verified"
     },
     {
       "id": "UW-18",
       "sourceRule": "UW18",
       "condition": "Declined/cancelled/special insurance terms",
       "ownerPlan": "08-06",
-      "verification": "Unit branch/boundary and SQL current decision/proof tests; pending",
-      "runtimeStatus": "pending"
+      "verification": [
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+      ],
+      "runtimeStatus": "unit-sql-and-browser-verified"
     },
     {
       "id": "UW-20",
       "sourceRule": "UW20",
       "condition": "Insolvency/CCJ",
       "ownerPlan": "08-06",
-      "verification": "Unit branch/boundary and SQL current decision/proof tests; pending",
-      "runtimeStatus": "pending"
+      "verification": [
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+      ],
+      "runtimeStatus": "unit-sql-and-browser-verified"
     },
     {
       "id": "UW-30",
       "sourceRule": "UW30",
       "condition": "More than2 losses in5years",
       "ownerPlan": "08-06",
-      "verification": "Unit branch/boundary and SQL current decision/proof tests; pending",
-      "runtimeStatus": "pending"
+      "verification": [
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+      ],
+      "runtimeStatus": "unit-sql-and-browser-verified"
     },
     {
       "id": "CC-READY",
@@ -9613,8 +9667,10 @@
       "id": "CC-SOURCE-MT-FALLTHROUGH",
       "condition": "Do not apply prototype unconditional MT checks after its CC branch",
       "ownerPlan": "08-06",
-      "verification": "Independent positive/negative temporal or product-boundary tests; pending",
-      "runtimeStatus": "pending"
+      "verification": [
+        "08-06: CommercialReferralTests source truth tables/boundaries and product guard; four Commercial SQL authority/proof scenarios in .local/phase8-06-source-sql/sql.trx; actual persisted referrals and CC-only conditions in .local/browser-evidence/commercial-capture/CoverMGA_Test_e9474b96ed3f403cb8e1ba2b1d6398e0/report.json. Carrier/terms/issue remain separate later owners."
+      ],
+      "runtimeStatus": "unit-sql-and-browser-verified"
     }
   ],
   "policyDisplayItems": [

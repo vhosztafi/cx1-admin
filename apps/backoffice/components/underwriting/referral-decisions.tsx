@@ -1,14 +1,14 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import type { QuoteView } from '../../lib/quotes';
+import type { QuoteView, QuoteCaptureProposal } from '../../lib/quotes';
 import type { UnderwritingAssessment, Referral, ReferralDecision, ConditionDefinition, UnderwritingEvidence } from '../../lib/underwriting-api';
-import { conditionFromForm, conditionLabels, referralDecisionCommand, riskItems, proofMatches, underwritingWrite } from '../../lib/underwriting-decisions';
+import { conditionFromForm, conditionLabels, referralDecisionCommand, riskItems, riskTargetLabel, proofMatches, underwritingWrite } from '../../lib/underwriting-decisions';
 import { Panel, Status } from '../primitives';
 import { useQuoteResource, LoadFeedback } from '../quotes/shared';
 import type { DecisionRequest } from './decision-command';
 
-export function ReferralDecisions({ quote, assessment, referrals, evidence, run }: { quote: QuoteView; assessment: UnderwritingAssessment; referrals: Referral[]; evidence: UnderwritingEvidence[]; run: (request: DecisionRequest) => void }) {
+export function ReferralDecisions({ quote, assessment, referrals, evidence, run }: { quote: QuoteView<QuoteCaptureProposal>; assessment: UnderwritingAssessment; referrals: Referral[]; evidence: UnderwritingEvidence[]; run: (request: DecisionRequest) => void }) {
   const [selected, setSelected] = useState<string[]>([]), [outcome, setOutcome] = useState('approve'), [reason, setReason] = useState(''), [question, setQuestion] = useState('');
   const [conditions, setConditions] = useState<ConditionDefinition[]>([]), [error, setError] = useState('');
   const cycle = assessment.context?.cycleId;
@@ -48,13 +48,14 @@ export function ReferralDecisions({ quote, assessment, referrals, evidence, run 
   </>;
 }
 
-export function ConditionForm({ quote, documentaryOnly, add }: { quote: Pick<QuoteView, 'proposal'>; documentaryOnly: boolean; add: (condition: ConditionDefinition) => void }) {
-  const [code, setCode] = useState('provide-trading-history'), [targetId, setTarget] = useState(''), [requirementCode, setRequirement] = useState('photocard-both-sides');
+export function ConditionForm({ quote, documentaryOnly, add }: { quote: Pick<QuoteView<QuoteCaptureProposal>, 'proposal'>; documentaryOnly: boolean; add: (condition: ConditionDefinition) => void }) {
+  const commercial = quote.proposal.productCode === 'commercial-combined';
+  const [code, setCode] = useState(commercial ? 'provide-cc-property-proof' : 'provide-trading-history'), [targetId, setTarget] = useState(''), [requirementCode, setRequirement] = useState('photocard-both-sides');
   const [driverIds, setDrivers] = useState<string[]>([]), [minimumYears, setYears] = useState('2'), [maximumAmount, setMaximum] = useState(''), [error, setError] = useState('');
-  const kind = code === 'provide-driver-proof' ? 'drivers' : ['provide-premises-security','overnight-security'].includes(code) ? 'premises' : code === 'revise-vehicle-limit' ? 'vehicles' : '';
-  const name = (item: Record<string, unknown>, index: number) => kind === 'drivers' ? `${item.firstName ?? ''} ${item.surname ?? ''}` : kind === 'vehicles' ? String(item.registration ?? `Vehicle ${index + 1}`) : `Premises ${index + 1}`;
+  const kind = ['provide-cc-location-proof','provide-cc-electrical-proof','provide-cc-alarm-proof','provide-cc-structural-proof'].includes(code) ? 'locations' : code === 'provide-cc-wage-proof' ? 'wages' : code === 'provide-driver-proof' ? 'drivers' : ['provide-premises-security','overnight-security'].includes(code) ? 'premises' : code === 'revise-vehicle-limit' ? 'vehicles' : '';
+  const name = (item: Record<string, unknown>, index: number) => commercial ? riskTargetLabel(quote.proposal, String(item.id)) : kind === 'drivers' ? `${item.firstName ?? ''} ${item.surname ?? ''}` : kind === 'vehicles' ? String(item.registration ?? `Vehicle ${index + 1}`) : `Premises ${index + 1}`;
   return <fieldset className="quote-reference-fields"><legend>Add a typed condition</legend>
-    <label>Condition type<select aria-label="Condition type" value={code} onChange={event => { setCode(event.target.value); setTarget(''); setError(''); }}>{Object.entries(conditionLabels).filter(([key]) => !documentaryOnly || key.startsWith('provide-')).map(([key, label]) => <option key={key} value={key}>{label}</option>)}</select></label>
+    <label>Condition type<select aria-label="Condition type" value={code} onChange={event => { setCode(event.target.value); setTarget(''); setError(''); }}>{Object.entries(conditionLabels).filter(([key]) => key.startsWith('provide-cc-') === commercial && (!documentaryOnly || key.startsWith('provide-'))).map(([key, label]) => <option key={key} value={key}>{label}</option>)}</select></label>
     {kind && <label>Risk target<select aria-label="Condition risk target" value={targetId} onChange={event => setTarget(event.target.value)}><option value="">Select saved {kind}</option>{riskItems(quote.proposal, kind).map((item, index) => <option key={String(item.id)} value={String(item.id)}>{name(item, index)}</option>)}</select></label>}
     {code === 'provide-driver-proof' && <label>Proof purpose<select aria-label="Driver proof purpose" value={requirementCode} onChange={event => setRequirement(event.target.value)}><option value="photocard-both-sides">Photocard licence, both sides</option><option value="driving-record">Driving record</option></select></label>}
     {code === 'named-drivers-only' && riskItems(quote.proposal, 'drivers').map(item => <label className="contact-check" key={String(item.id)}><input type="checkbox" checked={driverIds.includes(String(item.id))} onChange={event => setDrivers(ids => event.target.checked ? [...ids, String(item.id)] : ids.filter(x => x !== item.id))} />{String(item.firstName)} {String(item.surname)}</label>)}
@@ -74,7 +75,7 @@ function CapacityReferralAction({ row, assessment, run }: { row: Referral; asses
   </details>;
 }
 
-function ConditionResolution({ referral, conditionId, quote, assessment, evidence, run }: { referral: Referral; conditionId: string; quote: QuoteView; assessment: UnderwritingAssessment; evidence: UnderwritingEvidence[]; run: (request: DecisionRequest) => void }) {
+function ConditionResolution({ referral, conditionId, quote, assessment, evidence, run }: { referral: Referral; conditionId: string; quote: QuoteView<QuoteCaptureProposal>; assessment: UnderwritingAssessment; evidence: UnderwritingEvidence[]; run: (request: DecisionRequest) => void }) {
   const [selected, setSelected] = useState(''), [reason, setReason] = useState('');
   const condition = referral.conditions.find(x => x.id === conditionId)!;
   const requirement = assessment.proofRequirements.find(x => x.conditionId === conditionId);

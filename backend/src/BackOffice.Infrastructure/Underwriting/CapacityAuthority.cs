@@ -12,6 +12,15 @@ internal static class CapacityAuthority
     internal static async Task<bool> Allows(BackOfficeDbContext db, UnderwritingDecisionContext held, JsonElement authority,
         IReadOnlyList<ReferralCondition> conditions, DateTimeOffset now, CancellationToken token)
     {
+        if (held.Input.IsCommercial)
+        {
+            using var commercialProposal = JsonDocument.Parse(held.Revision.ProposalJson);
+            var premium = held.Rating?.AnnualPremium ?? throw new BackOffice.Infrastructure.Quotes.QuoteOperationException(409, "quote-rating-required");
+            // Internal authority cannot grant a carrier exception. CC carrier
+            // response applicability is implemented separately in 08-07.
+            return CommercialReferralRules.AssessAuthority(authority, commercialProposal.RootElement, premium).Count == 0 &&
+                CommercialReferralRules.AssessAuthority(held.Eligible.Binder, commercialProposal.RootElement, premium).Count == 0;
+        }
         var blockers = ReferralRules.AuthorityBlockers(authority, held.Eligible.Binder, held.Risk, conditions);
         if (blockers.Count == 0) return true;
         var responses = await (from e in db.Set<CapacityEscalation>().AsNoTracking()

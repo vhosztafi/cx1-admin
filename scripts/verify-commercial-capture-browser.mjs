@@ -6,13 +6,13 @@ import {chromium} from 'playwright';
 import {underwritingResponseValidator} from './validate-underwriting-response.mjs';
 
 const stage = process.argv.includes('--stage') ? process.argv[process.argv.indexOf('--stage') + 1] : 'full';
-assert.ok(['business-loss','full','rating'].includes(stage), 'Choose an implemented acceptance stage.');
-const plan = stage==='rating'?'05':stage==='full'?'04':'03';
+assert.ok(['business-loss','full','rating','underwriting'].includes(stage), 'Choose an implemented acceptance stage.');
+const plan = stage==='underwriting'?'06':stage==='rating'?'05':stage==='full'?'04':'03';
 if (!process.argv.includes('--worker')) {
   const output = `.local/phase8-${plan}-browser-${randomUUID()}`;
   await mkdir(output, {recursive: true});
   const child = spawn('dotnet', ['test', 'backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj', '--no-restore',
-    ...(process.argv.includes('--no-build') ? ['--no-build'] : []), '--filter', `FullyQualifiedName~${stage==='rating'?'RealSqlCommercialRatingBrowser':`RealSqlCommercialCapture${stage==='full'?'Full':'BusinessLoss'}Browser`}`,
+    ...(process.argv.includes('--no-build') ? ['--no-build'] : []), '--filter', `FullyQualifiedName~${stage==='underwriting'?'RealSqlCommercialReferralBrowser':stage==='rating'?'RealSqlCommercialRatingBrowser':`RealSqlCommercialCapture${stage==='full'?'Full':'BusinessLoss'}Browser`}`,
     '--logger', 'trx;LogFileName=sql.trx', '--results-directory', output], {stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true});
   let log = ''; child.stdout.on('data', x => log += x); child.stderr.on('data', x => log += x);
   const code = await new Promise((resolve, reject) => {child.on('error', reject); child.on('close', resolve);});
@@ -27,8 +27,18 @@ if (!process.argv.includes('--worker')) {
   const browser = await chromium.launch({channel: 'chrome', headless: true});
   const page = await browser.newPage({viewport: {width: 1480, height: 980}}); page.setDefaultTimeout(25000);
   await page.clock.setFixedTime(new Date(f.clockNow));
-  const errors = []; page.on('pageerror', error => errors.push(error.message));
-  await page.route('**/api/v1/**', async route => {const url = new URL(route.request().url()); const response = await route.fetch({url: f.apiOrigin + url.pathname + url.search}); await route.fulfill({response});});
+  const errors = [], routeErrors = [], routeTasks = new Set(); let closing = false;
+  page.on('pageerror', error => errors.push(error.message));
+  await page.route('**/api/v1/**', route => {
+    const pending=(async()=>{
+    try {const url = new URL(route.request().url()); const response = await route.fetch({url: f.apiOrigin + url.pathname + url.search}); await route.fulfill({response});}
+    catch(error) {
+      const message=String(error.message).split('Call log:')[0];
+      if(!closing || !/already handled|disposed|closed/i.test(message))routeErrors.push(message);
+    }
+    })();
+    routeTasks.add(pending);pending.finally(()=>routeTasks.delete(pending));return pending;
+  });
   const button = name => page.getByRole('button', {name, exact: true});
   const field = name => page.getByLabel(name, {exact: true});
   const checks = []; let quoteId;
@@ -256,8 +266,8 @@ if (!process.argv.includes('--worker')) {
     assert.equal(attempts.length, 3); assert.deepEqual(attempts[0], attempts[1]); assert.deepEqual(attempts[0], attempts[2]); await page.unroute('**' + savePath);
     assert.equal((await read()).view.proposal.insured.tradingName, 'Confirmed exact retry');
     checks.push('stale save retains input, read-only comparison and explicit discard; committed lost response and intervening denial retain identical body/key/ETag and require current access recovery');
-    if(stage==='full'||stage==='rating') await fullCapture();
-    if(stage==='rating') {
+    if(stage==='full'||stage==='rating'||stage==='underwriting') await fullCapture();
+    if(stage==='rating'||stage==='underwriting') {
       await page.goto(f.webOrigin+`/quotes/${quoteId}`);
       const panel = page.locator('.panel').filter({has:page.getByRole('heading',{name:'Commercial Combined rating',exact:true})});
       await panel.getByRole('button',{name:'Rate quote',exact:true}).click();
@@ -288,6 +298,41 @@ if (!process.argv.includes('--worker')) {
       await page.setViewportSize({width:1480,height:980});
       await writeFile(f.output+'/rating.json',JSON.stringify(price,null,2));await writeFile(f.output+'/rating-assessment.json',JSON.stringify(assessed,null,2));
       checks.push('CC durable rating requested from actual UI, actual API schemas validated, saved premium/factors/multiplier read back and displayed after reload at desktop/390px, no terms/issue authority fabricated');
+      if(stage==='underwriting') {
+        await page.getByRole('tab',{name:'Underwriting',exact:true}).click();
+        await page.getByRole('heading',{name:'Supporting information',exact:true}).waitFor();
+        for(const label of ['Five year claims experience from the previous insurer','Electrical inspection certificate, with C1 and C2 defects rectified',
+          'Intruder alarm specification and maintenance contract','Health and safety policy and risk assessments','Structural survey for requested subsidence cover'])
+          assert.ok(await page.locator('legend').filter({hasText:label}).count()>0,label);
+        const decision=page.locator('.panel').filter({has:page.getByRole('heading',{name:'Record underwriting decision',exact:true})});
+        await page.locator('[data-referral-id]').first().getByRole('checkbox').check();
+        await field('Decision outcome').selectOption('query');
+        await field('Underwriting question').fill('Please supply a fictional survey for the saved location.');
+        await field('Condition type').selectOption('provide-cc-location-proof');
+        const options=await field('Condition type').locator('option').evaluateAll(rows=>rows.map(x=>x.value));
+        assert.ok(options.length>=5 && options.every(x=>x.startsWith('provide-cc-')),JSON.stringify(options));
+        await field('Condition risk target').selectOption({index:1});
+        await button('Add condition').click();
+        await field('Referral decision reason').fill('Fictional Commercial Combined location review');
+        await decision.getByRole('button',{name:'Review decision (1)',exact:true}).click();
+        const response=page.waitForResponse(r=>r.url().includes('/referral-decisions')&&r.request().method()==='POST');
+        await button('Confirm action').click();assert.equal((await response).status(),200);
+        await page.getByRole('dialog').waitFor({state:'hidden'});
+        const saved=await page.request.get(f.apiOrigin+`/api/v1/referrals?quoteId=${quoteId}&pageSize=100`);assert.equal(saved.status(),200);
+        const referrals=await saved.json();assert.ok(referrals.items.some(x=>x.state==='queried'&&x.conditions.some(c=>c.definition.code==='provide-cc-location-proof')));
+        const validateReferral=await underwritingResponseValidator('UnderwritingReferralView');
+        for(const referral of referrals.items)assert.ok(validateReferral(referral),JSON.stringify(validateReferral.errors));
+        await page.reload();await page.getByRole('tab',{name:'Underwriting',exact:true}).click();
+        await page.getByRole('heading',{name:'Supporting information',exact:true}).waitFor();
+        await page.screenshot({path:f.output+'/underwriting-desktop.png',fullPage:true});
+        await page.setViewportSize({width:390,height:844});
+        assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true);
+        await page.screenshot({path:f.output+'/underwriting-mobile.png',fullPage:true});
+        await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:f.output+'/underwriting-mobile-viewport.png'});
+        await page.setViewportSize({width:1480,height:980});
+        await writeFile(f.output+'/referrals.json',JSON.stringify(referrals,null,2));
+        checks.push('CC underwriting UI persisted a location-specific query condition; no Motor Trade conditions offered; current referrals/proofs survive reload at desktop and390px');
+      }
     }
     const mtId = await create('MT-BROWSER', /Road Risks/); assert.notEqual(mtId, quoteId);
     const mt = await page.request.get(f.apiOrigin + `/api/v1/quotes/${mtId}`); assert.equal((await mt.json()).productCode, 'motor-trade-road-risks');
@@ -296,5 +341,5 @@ if (!process.argv.includes('--worker')) {
     assert.deepEqual(errors, []); await writeFile(f.output + '/report.json', JSON.stringify({quoteId, activityId, lossId: firstLoss.id, mtId, verifiedQuestionIds:[...verifiedQuestionIds], checks}, null, 2));
     console.log(JSON.stringify({output: f.output, checks}));
   } catch (error) {await page.screenshot({path: f.output + '/failure.png'}).catch(() => {}); throw error;}
-  finally {await browser.close();}
+  finally {closing=true; await browser.close(); await Promise.all([...routeTasks]); assert.deepEqual(routeErrors,[]);}
 }

@@ -126,7 +126,24 @@ public sealed class QuoteRatingWorker(IDbContextFactory<BackOfficeDbContext> fac
                 }
                 quote.State = requirements.Length == 0 ? "rated" : "referred";
             }
-            else if (rating is not null) quote.State = "rated"; // A price is not a CC authority decision; later actions remain explicitly closed.
+            else if (rating is not null)
+            {
+                var proposal = input.Commercial!.Pricing.GetProperty("proposal");
+                var source = CommercialReferralRules.SourceReferrals(proposal);
+                var requirements = source.Select(x => x.Requirement).Concat(CommercialReferralRules.AssessAuthority(eligible.Binder, proposal, rating.AnnualPremium))
+                    .Concat(CommercialReferralRules.AssessAuthority(eligible.Authority, proposal, rating.AnnualPremium))
+                    .GroupBy(x => new { x.RuleCode, x.TargetId }).OrderBy(x => x.Key.RuleCode, StringComparer.Ordinal).ThenBy(x => x.Key.TargetId).ToArray();
+                var sequence = 0;
+                foreach (var group in requirements)
+                {
+                    var requirement = group.First(); var disposition = source.FirstOrDefault(x => x.RuleCode == requirement.RuleCode && x.TargetId == requirement.TargetId)?.Disposition ?? "carrier-required";
+                    db.Add(new QuoteReferral { CycleId = cycle.Id, QuoteId = quote.Id, RatingId = result.Id, Sequence = ++sequence, RuleCode = requirement.RuleCode,
+                        Dimension = requirement.Dimension, RiskItemId = requirement.TargetId, TargetKey = requirement.TargetId ?? Guid.Empty,
+                        RequiredAuthorityJson = JsonSerializer.Serialize(new { requirements = group.ToArray(), disposition, binderVersionId = cycle.BinderVersionId, authorityVersionId = cycle.AuthorityVersionId }, Json),
+                        Reason = disposition + ": " + requirement.Dimension, CreatedAt = now, UpdatedAt = now });
+                }
+                quote.State = requirements.Length == 0 ? "rated" : "referred";
+            }
             // Provider rejection is a rating failure, never an underwriting
             // decline decision made on behalf of a human underwriter.
             quote.UpdatedAt = now;

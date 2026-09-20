@@ -46,6 +46,8 @@ public sealed partial class QuoteReferralService
                     throw new QuoteOperationException(409, "condition-proof-required");
                 var review = await db.Set<UnderwritingEvidenceEvent>().AsNoTracking().SingleAsync(x => x.Id == evidence.LatestReviewId && x.AssociationId == evidence.Id && x.CycleId == cycleId, ct);
                 if (review.Kind != "review" || outcome == "satisfied" && review.Outcome != "accepted") throw new QuoteOperationException(409, "condition-proof-review-required");
+                if (!await db.Set<QuoteEvidenceFile>().AnyAsync(x => x.Id == evidence.FileId && x.QuoteId == quoteId && x.ScreeningState == "accepted", ct))
+                    throw new QuoteOperationException(409, "evidence-screening-required");
                 var row = new QuoteConditionResolution { ConditionId = conditionId, CycleId = cycleId, QuoteId = quoteId,
                     Sequence = checked((await db.Set<QuoteConditionResolution>().Where(x => x.ConditionId == conditionId).MaxAsync(x => (int?)x.Sequence, ct) ?? 0) + 1),
                     EvidenceAssociationId = evidence.Id, EvidenceReviewId = review.Id, Outcome = outcome, ActorId = actor.UserId, AuthorityVersionId = grant!.Version.Id,

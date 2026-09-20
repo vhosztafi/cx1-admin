@@ -35,7 +35,8 @@ public static class QuoteUnderwritingScope
         using var binderJson = JsonDocument.Parse(binder.DefinitionJson);
         if (binder.ProductId != owned.Quote.ProductId || binder.State != "published" || binder.EffectiveFrom > now || now >= binder.EffectiveTo ||
             binder.EffectiveFrom > term.StartsAt || term.EndsAt > binder.EffectiveTo ||
-            !UnderwritingConfiguration.Current(binderJson.RootElement, "binder", productCode, now, term)) return [];
+            !(productCode == "commercial-combined" ? CommercialUnderwritingConfiguration.Current(binderJson.RootElement, "binder", now, term)
+                : UnderwritingConfiguration.Current(binderJson.RootElement, "binder", productCode, now, term))) return [];
         var result = new List<EffectiveUnderwritingGrant>();
         foreach (var grant in grants.Where(x => x.RevokedAt is null && x.EffectiveFrom <= now && now < x.EffectiveTo && x.EffectiveFrom <= term.StartsAt && term.EndsAt <= x.EffectiveTo))
         {
@@ -43,7 +44,9 @@ public static class QuoteUnderwritingScope
             if (authority.ProductId != owned.Quote.ProductId || authority.ProductVersionId != productVersionId || authority.BinderVersionId != binder.Id || authority.State != "published" ||
                 authority.EffectiveFrom > now || now >= authority.EffectiveTo || authority.EffectiveFrom > term.StartsAt || term.EndsAt > authority.EffectiveTo) continue;
             using var definition = JsonDocument.Parse(authority.DefinitionJson);
-            if (UnderwritingConfiguration.Current(definition.RootElement, "authority", productCode, now, term) && UnderwritingConfiguration.WithinBinder(definition.RootElement, binderJson.RootElement))
+            if (productCode == "commercial-combined"
+                ? CommercialUnderwritingConfiguration.Current(definition.RootElement, "authority", now, term) && CommercialUnderwritingConfiguration.WithinBinder(definition.RootElement, binderJson.RootElement)
+                : UnderwritingConfiguration.Current(definition.RootElement, "authority", productCode, now, term) && UnderwritingConfiguration.WithinBinder(definition.RootElement, binderJson.RootElement))
                 result.Add(new(grant, authority, definition.RootElement.Clone()));
         }
         return result.AsReadOnly();
