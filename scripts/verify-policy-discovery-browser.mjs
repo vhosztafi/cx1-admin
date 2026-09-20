@@ -18,6 +18,22 @@ async function findPaged(page, path, predicate) {
     cursors.add(data.nextCursor); url.searchParams.set('cursor', data.nextCursor);
   }
 }
+async function openPolicyAcrossPages(page, reference) {
+  const seen = new Set();
+  while (true) {
+    const table = page.getByRole('table', { name: 'Issued policies', exact: true });
+    await table.waitFor();
+    const link = table.getByRole('link', { name: reference, exact: true });
+    if (await link.count()) { await link.click(); return; }
+    const content = await table.innerText();
+    assert.ok(!seen.has(content), 'Policy pagination repeated the same records.'); seen.add(content);
+    const next = page.getByRole('button', { name: 'Next page', exact: true }).last();
+    assert.ok(await next.isEnabled(), 'Expected retained policy absent from all visible pages: ' + reference);
+    const loaded = page.waitForResponse(r => new URL(r.url()).pathname === '/api/v1/policies' && r.request().method() === 'GET');
+    await next.click(); assert.equal((await loaded).status(), 200);
+    await page.waitForFunction(previous => document.querySelector('table[aria-label="Issued policies"]')?.innerText !== previous, content);
+  }
+}
 async function post(page, path, data, etag) { const token = (await get(page, '/api/v1/auth/csrf')).data.requestToken; const r = await page.request.post(origin + path, { headers: { 'X-CSRF-Token': token, 'Idempotency-Key': crypto.randomUUID(), ...(etag ? { 'If-Match': etag } : {}) }, data }); assert.ok(r.ok(), `${path}: ${r.status()}: ${await r.text()}`); return r.json(); }
 async function login(role) { const context = await browser.newContext({ viewport: { width: 1560, height: 1000 } }); contexts.push(context); const page = await context.newPage(); page.setDefaultTimeout(30000); page.on('pageerror', e => errors.push(e.message)); await page.goto(origin + '/login'); await page.getByLabel('Email address').fill(role + '@cover.example'); await page.getByLabel('Password', { exact: true }).fill(password); await page.getByRole('button', { name: 'Sign in', exact: true }).click(); await page.waitForURL(origin + '/'); return page; }
 let page;
@@ -32,8 +48,10 @@ try {
     const filtered = (await get(page, `/api/v1/policies?q=${encodeURIComponent(policy.reference)}&productCode=${fixture.productCode}&state=${policy.coverageState}`)).data;
     assert.equal(filtered.items.find(x => x.id === policy.id)?.state, policy.coverageState);
     await page.getByLabel('Product', { exact: true }).selectOption(fixture.productCode); await page.getByLabel('Status', { exact: true }).selectOption(policy.coverageState);
-    await page.getByLabel('Sort by', { exact: true }).selectOption('inception'); await page.getByLabel('Order', { exact: true }).selectOption('desc');
-    await page.getByRole('link', { name: policy.reference, exact: true }).click(); await page.getByRole('heading', { name: policy.reference, exact: true }).waitFor();
+    await page.getByLabel('Sort by', { exact: true }).selectOption('inception');
+    const sorted = page.waitForResponse(r => new URL(r.url()).pathname === '/api/v1/policies' && new URL(r.url()).searchParams.get('direction') === 'desc');
+    await page.getByLabel('Order', { exact: true }).selectOption('desc'); assert.equal((await sorted).status(), 200);
+    await openPolicyAcrossPages(page, policy.reference); await page.getByRole('heading', { name: policy.reference, exact: true }).waitFor();
     await page.getByRole('link', { name: 'Open client record', exact: true }).click(); await page.getByRole('link', { name: 'Policies', exact: true }).last().click();
     await page.getByRole('link', { name: policy.reference, exact: true }).click(); await page.getByRole('heading', { name: policy.reference, exact: true }).waitFor();
     await findPaged(page, `/api/v1/clients/${policy.clientId}/records?kind=policy`, x => x.id === policy.id && x.kind === 'policy');

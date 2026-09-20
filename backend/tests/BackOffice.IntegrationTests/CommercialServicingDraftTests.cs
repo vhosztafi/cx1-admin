@@ -24,7 +24,11 @@ public sealed partial class UnderwritingRuntimeTests
         var list = await service.ListAsync(f.Actor,basis.TermId);
         var input = new ServicingDraftCreate("adjustment",basis.Id,JsonSerializer.SerializeToElement(new {localDate="2026-10-01",localTime="00:00",timeZone="Europe/London"}),"Fictional commercial change capture");
         Assert.Equal(422,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.CreateAsync(f.Actor,basis.TermId,Version(list.Etag),input with {BaseVersionId=Guid.NewGuid()},Key(),Guid.NewGuid()))).Status);
-        Assert.Equal(409,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.CreateAsync(f.Actor,basis.TermId,Version(list.Etag),input with {Kind="renewal"},Key(),Guid.NewGuid()))).Status);
+        // This adjustment fixture intentionally has no renewal configuration.
+        // Supported, configured commercial renewals have their own lifecycle tests.
+        var unavailable = await Assert.ThrowsAsync<QuoteOperationException>(()=>service.CreateAsync(f.Actor,basis.TermId,Version(list.Etag),input with {Kind="renewal"},Key(),Guid.NewGuid()));
+        Assert.Equal(503,unavailable.Status); Assert.Equal("renewal-configuration-unavailable",unavailable.Code);
+        Assert.Empty(await db.Set<ServicingDraft>().ToArrayAsync());
         var created = await service.CreateAsync(f.Actor,basis.TermId,Version(list.Etag),input,Key(),Guid.NewGuid());
         var acquired = await service.LeaseAsync(f.Actor,created.ResourceId,Version(created.Etag!),"acquire",null,null,Key(),Guid.NewGuid());
         var fence = Body(acquired.Body).GetProperty("lease").GetProperty("leaseToken").GetGuid();

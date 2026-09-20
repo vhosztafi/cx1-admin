@@ -25,8 +25,12 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.Equal(legacy.Values, (await db.Set<SettingVersion>().AsNoTracking().SingleAsync(x => x.Id == legacy.Id)).Values);
             Assert.Single(await db.Set<SettingVersion>().Where(x => x.Scope == custom.Scope).ToArrayAsync());
             Assert.Equal(custom.Values, (await db.Set<SettingVersion>().AsNoTracking().SingleAsync(x => x.Id == custom.Id)).Values);
+            var retained = await db.Set<SettingVersion>().AsNoTracking().Where(x => x.Scope.StartsWith("capacity-escalation/"))
+                .OrderBy(x => x.Id).Select(x => new { x.Id, x.Scope, x.Version, x.EffectiveFrom, x.Values }).ToArrayAsync();
             await using (var tx = await db.Database.BeginTransactionAsync()) { await CapacitySeed.SeedAsync(db); await tx.CommitAsync(); }
-            Assert.Equal(7, await db.Set<SettingVersion>().CountAsync(x => x.Scope.StartsWith("capacity-escalation/")));
+            var repeated = await db.Set<SettingVersion>().AsNoTracking().Where(x => x.Scope.StartsWith("capacity-escalation/"))
+                .OrderBy(x => x.Id).Select(x => new { x.Id, x.Scope, x.Version, x.EffectiveFrom, x.Values }).ToArrayAsync();
+            Assert.Equal(retained, repeated);
         });
     }
 }
