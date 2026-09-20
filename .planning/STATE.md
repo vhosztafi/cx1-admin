@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Phase8 plan10 complete; continue08-11 commercial adjustment proposal rules and typed editors.
-last_updated: "2026-09-20T07:41:37Z"
-last_activity: "2026-09-20 —08-10 complete: scoped exposure and commercial policy tabs;30 strict backend cases including7 SQL,387 root and166 web pass; continue08-11."
+stopped_at: Phase8 plan11 complete; continue08-12 commercial adjustment underwriting and atomic issue.
+last_updated: "2026-09-20T08:56:01Z"
+last_activity: "2026-09-20 —08-11 complete: persisted commercial adjustment editors;83 strict backend cases including5 SQL,389 root and170 web pass; continue08-12."
 progress:
   total_phases: 13
   completed_phases: 7
   total_plans: 81
-  completed_plans: 75
+  completed_plans: 76
   percent: 54
 ---
 
@@ -21,16 +21,16 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 
 **Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute08-11: commercial adjustment proposals, typed persisted editors and unchanged issued cover before issue.
+**Current focus:** Execute08-12: commercial adjustment rating, underwriting and atomic issue with dated exposure and signed money.
 
 ## Current Position
 
 Phase: 8 of 13 (Commercial Combined back office)
-Plan: 10 of16 complete;08-11 next
+Plan: 11 of16 complete;08-12 next
 Status: Executing
-Last activity: 2026-09-20 —08-10 policy views complete;30 strict backend/7 SQL, actual nine-tab browser history,387 root and166 web checks pass. Commercial servicing editors are next.
+Last activity: 2026-09-20 —08-11 editors complete;83 strict backend/5 SQL, exact browser save/retry/lease recovery,389 root and170 web checks pass. Commercial adjustment issue is next.
 
-Progress: Phases1–7 complete;7/13 phases,75/81 currently defined implementation plans. Phase8 research/UI/plans checked and08-01/02/03/04/05/06/07/08/09/10 complete; later phases await detailed planning.
+Progress: Phases1–7 complete;7/13 phases,76/81 currently defined implementation plans. Phase8 research/UI/plans checked and08-01/02/03/04/05/06/07/08/09/10 complete; later phases await detailed planning.
 
 ## Accumulated Context
 
@@ -44,7 +44,7 @@ Progress: Phases1–7 complete;7/13 phases,75/81 currently defined implementatio
 
 ### Pending Todos
 
-- Execute08-11;08-10 implementation1b6a4cc and summary6d96610 complete. KeepCC-05 partial until Phase9 operational workflows exist.
+- Execute08-12;08-11 implementation663cf1e and summaryd9edfcd complete. KeepCC-05 partial until Phase9 operational workflows exist.
 - Keep future endpoints closed until owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,9 +54,9 @@ Progress: Phases1–7 complete;7/13 phases,75/81 currently defined implementatio
 
 ## Session Continuity
 
-Last session: 2026-09-20T07:41:37Z
-Stopped at: Phase8 plan10 complete; continue08-11 commercial adjustment proposal rules and typed editors.
-Resume file: .planning/phases/08-commercial-combined-back-office/08-11-PLAN.md
+Last session: 2026-09-20T08:56:01Z
+Stopped at: Phase8 plan11 complete; continue08-12 commercial adjustment underwriting and atomic issue.
+Resume file: .planning/phases/08-commercial-combined-back-office/08-12-PLAN.md
 
 ## Autonomous continuation
 
