@@ -4,8 +4,8 @@ milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
 stopped_at: Plan08-15 complete and committed;08-16 full backend integration running. Retained commercial lifecycle and restart preservation passed.
-last_updated: "2026-09-20T20:27:00Z"
-last_activity: "2026-09-20 —08-15 demo gate1098/7 SQL passes; retained56867 rows/2keys and MT graphs preserved. Approved commercial grant applied; live fictional scenarios executing."
+last_updated: "2026-09-20T21:30:00Z"
+last_activity: "2026-09-20 —08-16 discovery/catalog fixes and targeted SQL gates committed. Retained underwriting aggregate passed; commercial adjustment, servicing aggregate and broad backend remain active."
 progress:
   total_phases: 13
   completed_phases: 7
@@ -55,12 +55,11 @@ Progress: Phases1–7 complete;7/13 phases,80/81 currently defined implementatio
 ## Session Continuity
 
 Last session: 2026-09-20T20:27:00Z
-Stopped at:08-15 payload gate1102/11 SQL and demo gate1098/7 SQL pass. Retained commercial lifecycle runs in.local/commercial-lifecycle-demo-v1; full current-source backend verification runs in.local/phase8-16-backend-all. Follow08-15-CHECKPOINT.md.
-Resume file: .planning/phases/08-commercial-combined-back-office/08-16-PLAN.md
+Stopped at:08-15 payload gate1102/11 SQL and demo gate1098/7 SQL pass. Retained commercial lifecycle runs in.local/commercial-lifecycle-demo-v1; full current-source backend verification runs in.local/phase8-16-backend-all. Follow08-16-CHECKPOINT.md.
+Resume file: .planning/phases/08-commercial-combined-back-office/08-16-CHECKPOINT.md
 
 ## Autonomous continuation
 
 User approved requirements/roadmap and autonomous choices/progression on2026-09-13. Routine confirmation is not required. Keep research, design, checks and verification enabled; fix gaps instead of silently deferring them. Current execute-phase7 --auto and configured auto_advance authorise transition to Phase8 planning.
 
 Thread heartbeat: continue-cover-mga-back-office-mvp, every10minutes. Continue in this task; notify meaningful progress/blockers only. Current owned previews are recorded in.local/phase8-15-preview-pids.json; API72276/web61816, ports5087/3100, canonical persistent keys. Previous phase7 preview processes were actually stopped after identity/start-time verification. Stop only verified owned processes.
-

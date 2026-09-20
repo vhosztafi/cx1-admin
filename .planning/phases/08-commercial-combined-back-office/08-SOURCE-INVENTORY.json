@@ -8208,8 +8208,10 @@
       "ownerPlan": "08-03",
       "sourceMethod": "pCcPolicy",
       "reason": "Persist source policy display fact absent from the109 capture-question definitions; do not invent a fixed sample value.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-16: RealSqlCommercialCaptureFullBrowser; .local/phase8-04-browser-d3760376-37c6-4467-9825-ef2fe9630b20/sql.trx; actual saved full-proposal.json in .local/browser-evidence/commercial-capture/CoverMGA_Test_dc7a268b5e0e473d8ba7a6f20e844ecd independently inspected for all seven supplemental fields. Capture proof only; final aggregate remains pending."
+      ]
     },
     {
       "id": "CC-POL-CONTRACT-WORKS",
@@ -8219,8 +8221,10 @@
       "ownerPlan": "08-04",
       "sourceMethod": "pCcPolicy",
       "reason": "Persist source policy display fact absent from the109 capture-question definitions; do not invent a fixed sample value.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-16: RealSqlCommercialCaptureFullBrowser; .local/phase8-04-browser-d3760376-37c6-4467-9825-ef2fe9630b20/sql.trx; actual saved full-proposal.json in .local/browser-evidence/commercial-capture/CoverMGA_Test_dc7a268b5e0e473d8ba7a6f20e844ecd independently inspected for all seven supplemental fields. Capture proof only; final aggregate remains pending."
+      ]
     },
     {
       "id": "CC-POL-HOT-WORKS",
@@ -8230,8 +8234,10 @@
       "ownerPlan": "08-04",
       "sourceMethod": "pCcPolicy",
       "reason": "Persist source policy display fact absent from the109 capture-question definitions; do not invent a fixed sample value.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-16: RealSqlCommercialCaptureFullBrowser; .local/phase8-04-browser-d3760376-37c6-4467-9825-ef2fe9630b20/sql.trx; actual saved full-proposal.json in .local/browser-evidence/commercial-capture/CoverMGA_Test_dc7a268b5e0e473d8ba7a6f20e844ecd independently inspected for all seven supplemental fields. Capture proof only; final aggregate remains pending."
+      ]
     },
     {
       "id": "CC-POL-BI-DECLARATION",
@@ -8241,8 +8247,10 @@
       "ownerPlan": "08-04",
       "sourceMethod": "pCcPolicy",
       "reason": "Persist source policy display fact absent from the109 capture-question definitions; do not invent a fixed sample value.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-16: RealSqlCommercialCaptureFullBrowser; .local/phase8-04-browser-d3760376-37c6-4467-9825-ef2fe9630b20/sql.trx; actual saved full-proposal.json in .local/browser-evidence/commercial-capture/CoverMGA_Test_dc7a268b5e0e473d8ba7a6f20e844ecd independently inspected for all seven supplemental fields. Capture proof only; final aggregate remains pending."
+      ]
     },
     {
       "id": "CC-POL-BI-DEPENDENCIES",
@@ -8252,8 +8260,10 @@
       "ownerPlan": "08-04",
       "sourceMethod": "pCcPolicy",
       "reason": "Persist source policy display fact absent from the109 capture-question definitions; do not invent a fixed sample value.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-16: RealSqlCommercialCaptureFullBrowser; .local/phase8-04-browser-d3760376-37c6-4467-9825-ef2fe9630b20/sql.trx; actual saved full-proposal.json in .local/browser-evidence/commercial-capture/CoverMGA_Test_dc7a268b5e0e473d8ba7a6f20e844ecd independently inspected for all seven supplemental fields. Capture proof only; final aggregate remains pending."
+      ]
     },
     {
       "id": "CC-POL-SPRINKLERS",
@@ -8263,8 +8273,10 @@
       "ownerPlan": "08-04",
       "sourceMethod": "pCcPolicy",
       "reason": "Persist source policy display fact absent from the109 capture-question definitions; do not invent a fixed sample value.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-16: RealSqlCommercialCaptureFullBrowser; .local/phase8-04-browser-d3760376-37c6-4467-9825-ef2fe9630b20/sql.trx; actual saved full-proposal.json in .local/browser-evidence/commercial-capture/CoverMGA_Test_dc7a268b5e0e473d8ba7a6f20e844ecd independently inspected for all seven supplemental fields. Capture proof only; final aggregate remains pending."
+      ]
     },
     {
       "id": "CC-POL-FLOOD-ZONE",
@@ -8274,8 +8286,10 @@
       "ownerPlan": "08-04",
       "sourceMethod": "pCcPolicy",
       "reason": "Persist source policy display fact absent from the109 capture-question definitions; do not invent a fixed sample value.",
-      "runtimeStatus": "pending",
-      "verification": []
+      "runtimeStatus": "browser-saved-sql-verified",
+      "verification": [
+        "08-16: RealSqlCommercialCaptureFullBrowser; .local/phase8-04-browser-d3760376-37c6-4467-9825-ef2fe9630b20/sql.trx; actual saved full-proposal.json in .local/browser-evidence/commercial-capture/CoverMGA_Test_dc7a268b5e0e473d8ba7a6f20e844ecd independently inspected for all seven supplemental fields. Capture proof only; final aggregate remains pending."
+      ]
     }
   ],
   "policyControls": [

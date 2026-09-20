@@ -1,0 +1,23 @@
+# 08-16 review — ongoing final acceptance
+
+This is an interim review, not phase completion. Updated2026-09-20T21:17Z.
+
+## Reviewed corrections
+
+- d608c7e fixes catalog ratingReady using current published runtime/scenario/team/product/provider/rating/binder/authority configuration and definitions. It remains product-level metadata; actor/agency/term/risk checks remain in the real rating service. Existing draftproducts stillreportunavailable; retiringtheactualcommercialauthority makescatalogunavailable. SQL2passes in `.local/phase8-16-catalog-green/sql.trx`; strictcataloggate1093/2SQL/no skips overlaps the fixgatebelow. The newassertionfails against preservedprefixedAPI/Infrastructurebinaries in `.local/phase8-16-catalog-red2/sql.trx`, with currenttestcode; initialanalyzerfailureisnotcounted asREDbehavior.
+
+- e0a682a fixes actual commercial policy discovery in the shared API filter, frontend product selector/label and policy/agency projection schemas. The API still applies existing current internal discovery authorization, serializable paging scope and product filtering. No new permission, response field or agency risk disclosure is introduced. SQL verifies exact owned policy discovery, Motor Trade exclusion and invalid-product refusal. Contract tests preserve agency hidden-field rejection for both Motor Trade and commercial products. Root391/frontend172/build/lint/typecheck pass.
+-1919a98 replaces a stale seed-row count with exact ID/scope/version/effective-date/JSON preservation and clarifies the unsupported-configuration boundary in the old adjustment fixture. The final servicing negative asserts503 plus exactcode and no created draft. Separate configured-renewal positive tests remain. Strict `.local/phase8-16-fixes-verified` accepts1094cases/3realSQL/zero skips. Failed earlier tests remain retained and excluded.
+-1919a98 also fixes retained Motor Trade discovery pagination after sorting. It follows actual next-page controls with response checks and repeated-page detection. Complete retained underwritingaggregate passed in `.local/underwriting-suite/2026-09-20T21-04-37-800Z/report.json`, including both products and nested quote/agency/client journeys. The aggregate retains its explicitly labelled terms UI fixtures; they are not represented as SQL publication proof.
+- Commercial evidence browser assertions wait for the required legends rather than reading count before asynchronous content loads. The latest aggregate has now passed both capture and referral/query stages; complete issuance/servicing stages remain ongoing. New discovery assertions use actual API responses and UI navigation, not mocked policy results.
+- The commercial wrapper's optional assembly override is restricted to a compiled `.local/<directory>/BackOffice.IntegrationTests.dll`. The aggregate records/checks the assembly hash and all browser source hashes and retains strict no-skip TRX accounting. This avoids rebuilding binaries locked by the original full test process. No environment check disables SQL.
+
+## Preservation and source review
+
+08-15 and the actual08-16 restart/readback artifacts prove retained139tables unchanged across two initializations,3policygraphs/12versions and pinned exposure unchanged after restart with canonical keys. New discovery code changes no stored policy data. Live15preview remains running; final16build is not installed there yet.
+
+Original166/109/60 identities and future owners remain intact. All seven supplemental capture fields have current actual saved-proposal evidence; no future incident/document action has been marked implemented. Desktop and390px capture screenshots were inspected: desktop controls remain readable, and the mobile cover schedule uses its contained horizontal table. This is not a human or assistive-technology UAT claim.
+
+## Still open
+
+Original fullbackend baseline has two identified, now-targeted-green regression assertions; the baseline itself remains running and cannot be accepted as passing. Complete commercial and retained servicing aggregates, final current-source accounting, remaining threat/source audit and final livebuild preservation are outstanding. Imported legacy terms display still needs disposition. No final verification or CC05 completion is claimed.

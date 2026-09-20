@@ -1,5 +1,15 @@
 # Phase8 source reconciliation
 
+## Final acceptance audit in progress —2026-09-20
+
+The original166 capture controls,109 question identities and60 policy controls remain intact. Current row evidence covers150 persisted capture controls,10 navigation controls,6 evidence controls,109 questions,4 issued adjustment controls,3 scoped policy links and50 removed invalid-tab fallbacks. The remaining3 policy controls retain their explicit Phase9/11 owners. Of298 display items,264 have issued-view/boundary review and34 retain Phase9/10 ownership.
+
+Fresh full capture passed in `.local/phase8-04-browser-d3760376-37c6-4467-9825-ef2fe9630b20/sql.trx`. The retained API proposal in `.local/browser-evidence/commercial-capture/CoverMGA_Test_dc7a268b5e0e473d8ba7a6f20e844ecd/full-proposal.json` was independently inspected: VAT=false, selected contract works10000.01/excess250.00, saved hot-work procedure, BI declaration=false, owned supplier dependency10000.01, and two locations with sprinklers=false/declared flood zone1. The seven supplemental evidence entries are now reconciled. This does not certify final aggregate or issued display coverage.
+
+Final acceptance found a missing Commercial Combined filter in shared policy discovery and response schemas; the fix has SQL and contract proof, with browser verification pending. Retained Motor Trade discovery now paginates after sorting instead of assuming the old policy remains on the first page. No source item has been reassigned to hide either finding.
+
+The sections below preserve earlier design and execution history; their pending status is not the final acceptance result. Final verification remains open.
+
 Status: design/source mapped; runtime pending. Generated ledger:08-SOURCE-INVENTORY.json. Rebuild with `node scripts/build-commercial-source.mjs`. Original source IDs and source hash are preserved.
 
 | Set | Count | Ownership |
