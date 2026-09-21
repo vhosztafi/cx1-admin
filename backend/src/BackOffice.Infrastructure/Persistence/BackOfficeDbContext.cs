@@ -160,6 +160,7 @@ public sealed partial class BackOfficeDbContext(DbContextOptions<BackOfficeDbCon
         ConfigureOperationalTasks(model);
         ConfigureWorkflowTasks(model);
         ConfigureOperationalFiles(model);
+        ConfigureOperationalDocuments(model);
         // All instants are UTC; retain London intent separately in domain records.
         foreach (var entity in model.Model.GetEntityTypes())
             foreach (var property in entity.GetProperties().Where(p => p.ClrType == typeof(DateTimeOffset) || p.ClrType == typeof(DateTimeOffset?)))
