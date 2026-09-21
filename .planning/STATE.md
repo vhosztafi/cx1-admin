@@ -4,8 +4,8 @@ milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
 stopped_at: Phase9 plans09-01 through09-06 complete; continue09-07 document generation.
-last_updated: "2026-09-21T19:03:00+00:00"
-last_activity: "2026-09-21 — 09-07 immutable storage, policy generation crash recovery, exact-byte APIs and hosted restart increments verified; generic generation remains in progress."
+last_updated: "2026-09-21T19:33:51.6801482Z"
+last_activity: "2026-09-21 — 09-07 selected policy, quotation and servicing generation plus public HTTP command verified; list/history/upload/cancellation integration remains in progress."
 progress:
   total_phases: 13
   completed_phases: 8

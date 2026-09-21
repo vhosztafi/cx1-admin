@@ -47,6 +47,32 @@ public sealed partial class UnderwritingRuntimeTests
         using var preview=await client.GetAsync(route+"/preview");preview.EnsureSuccessStatusCode();
         Assert.Equal("inline",preview.Content.Headers.ContentDisposition!.DispositionType);Assert.Equal(bytes,await preview.Content.ReadAsByteArrayAsync());
         Assert.Equal(HttpStatusCode.NotFound,(await client.GetAsync("/api/v1/document-versions/"+Guid.NewGuid())).StatusCode);
+        var document=await db.Set<OperationalDocument>().AsNoTracking().SingleAsync();
+        var generateRoute="/api/v1/records/"+document.SubjectId+"/documents/generate";
+        var generateInput=new{kind="policy-schedule",source=new{kind="policy-version",policyVersionId=request.VersionId},templateVersionId=request.TemplateVersionId,
+            visibility="internal",reason="Explicit API regeneration",documentId=document.Id};
+        csrf=(await client.GetFromJsonAsync<JsonElement>("/api/v1/auth/csrf")).GetProperty("requestToken").GetString();
+        async Task<HttpResponseMessage> Generate(object input,string? key,bool includeCsrf=true)
+        {
+            using var message=new HttpRequestMessage(HttpMethod.Post,generateRoute){Content=JsonContent.Create(input)};
+            if(includeCsrf)message.Headers.Add("X-CSRF-TOKEN",csrf);
+            if(key is not null)message.Headers.Add("Idempotency-Key",key);
+            return await client.SendAsync(message);
+        }
+        Assert.Equal(HttpStatusCode.Forbidden,(await Generate(generateInput,"no-csrf",false)).StatusCode);
+        Assert.Equal(HttpStatusCode.BadRequest,(await Generate(generateInput,null)).StatusCode);
+        var malformed=JsonSerializer.SerializeToNode(generateInput)!;malformed["source"]!["unknown"]=true;
+        Assert.Equal(HttpStatusCode.BadRequest,(await Generate(malformed,"document-invalid-field")).StatusCode);
+        malformed=JsonSerializer.SerializeToNode(generateInput)!;malformed["kind"]="renewal-invitation";
+        Assert.Equal(HttpStatusCode.UnprocessableEntity,(await Generate(malformed,"document-invalid-kind")).StatusCode);
+        using var generated=await Generate(generateInput,"document-api-regenerate");Assert.Equal(HttpStatusCode.Accepted,generated.StatusCode);
+        var generatedView=await generated.Content.ReadFromJsonAsync<JsonElement>();var regeneratedId=generatedView.GetProperty("id").GetGuid();
+        using var replayed=await Generate(generateInput,"document-api-regenerate");Assert.Equal(HttpStatusCode.Accepted,replayed.StatusCode);
+        Assert.Equal(regeneratedId,(await replayed.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("id").GetGuid());
+        var regenerateVersion=await db.Set<DocumentVersion>().AsNoTracking().SingleAsync(x=>x.Id==regeneratedId);Assert.Equal(2,regenerateVersion.Number);
+        await scope.ServiceProvider.GetRequiredService<DocumentGenerationWorker>().Process(regenerateVersion.WorkId,default);
+        Assert.Equal("ready",(await client.GetFromJsonAsync<JsonElement>("/api/v1/document-versions/"+regeneratedId)).GetProperty("state").GetString());
+        Assert.Equal(2,await db.Set<DocumentVersion>().CountAsync());
         var fileId=await db.Set<DocumentVersionContent>().Where(x=>x.VersionId==created.ResourceId).Select(x=>x.FileObjectId).SingleAsync();
         await File.WriteAllTextAsync(Path.Combine(root,"files","ready",fileId.ToString("N")+".bin"),"Simulated damaged demo storage");
         using var corrupt=await client.GetAsync(route+"/content");Assert.Equal(HttpStatusCode.ServiceUnavailable,corrupt.StatusCode);
@@ -55,5 +81,6 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Equal(HttpStatusCode.Conflict,(await client.GetAsync(route+"/preview")).StatusCode);
         var user=await db.Set<StaffUser>().SingleAsync(x=>x.Id==f.Underwriter.UserId);user.State="suspended";await db.SaveChangesAsync();
         Assert.Contains((await client.GetAsync(route+"/content")).StatusCode,new[]{HttpStatusCode.Unauthorized,HttpStatusCode.Forbidden});
+        Assert.Contains((await Generate(generateInput,"document-api-regenerate")).StatusCode,new[]{HttpStatusCode.Unauthorized,HttpStatusCode.Forbidden});
     });
 }

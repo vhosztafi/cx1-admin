@@ -23247,17 +23247,35 @@
                 }
               },
               "Location": {
-                "description": "Created resource or durable job URI.",
+                "description": "Status URL for the selected immutable document version.",
                 "schema": {
                   "type": "string",
-                  "format": "uri-reference"
+                  "minLength": 1,
+                  "maxLength": 500
+                }
+              },
+              "Cache-Control": {
+                "description": "Private, no-store.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              },
+              "X-Content-Type-Options": {
+                "description": "nosniff",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "nosniff"
+                  ]
                 }
               }
             },
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Job"
+                  "$ref": "#/components/schemas/OpsDocumentVersion"
                 }
               }
             }
@@ -23463,7 +23481,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-9-contract-only"
+        "x-runtime-status": "phase-9-07-api-verified"
       }
     },
     "/records/{recordId}/documents/upload": {

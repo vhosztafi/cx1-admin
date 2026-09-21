@@ -14,7 +14,7 @@ public sealed partial class DocumentService
         DocumentRules.Validate(input);
         PolicyDocumentRenderService.SelectedSource? selected = null;
         OperationalDocument? document = null;
-        return commands.ExecuteAuthorizedAsync(new(actor.UserId,"/api/v1/subjects/"+subjectId+"/documents/generate",key,Guid.NewGuid()),input,"document.generation-requested",
+        return commands.ExecuteAuthorizedAsync(new(actor.UserId,"/api/v1/records/"+subjectId+"/documents/generate",key,Guid.NewGuid()),input,"document.generation-requested",
             async(db,ct)=>
             {
                 var held = await OperationalScope.HoldSubjects(db,actor,[subjectId],"document-generate",ct);

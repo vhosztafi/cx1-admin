@@ -90,3 +90,11 @@ test('document version status and exact content routes use verified read contrac
   assert.ok(operation.responses[503]);
  }
 });
+
+test('explicit document generation returns its immutable pending version',async()=>{
+ const api=JSON.parse(await readFile(new URL('../contracts/openapi.json',import.meta.url),'utf8'));
+ const operation=api.paths['/records/{recordId}/documents/generate'].post;
+ assert.equal(operation.responses[202].content['application/json'].schema.$ref,'#/components/schemas/OpsDocumentVersion');
+ assert.equal(operation['x-runtime-status'],'phase-9-07-api-verified');
+ assert.ok(operation.parameters.some(x=>x.name==='Idempotency-Key'&&x.required));
+});
