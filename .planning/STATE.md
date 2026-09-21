@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: planning
-stopped_at: Phase8 verified complete; transition to Phase9 operational planning under standing auto authorization.
-last_updated: "2026-09-21T11:54:24Z"
-last_activity: "2026-09-21 — Phase8 all16 plans verified;1511 backend/383SQL/no skips; all commercial and retained aggregates passed."
+stopped_at: Phase8 verified complete; Phase9 context, research, UI contract and preliminary validation saved. Detailed plans are next.
+last_updated: "2026-09-21T12:16:41Z"
+last_activity: "2026-09-21 — Phase8 complete; Phase9 research, UI design and preliminary validation saved; detailed planning next."
 progress:
   total_phases: 13
   completed_phases: 8
@@ -26,7 +26,7 @@ Current focus: Phase9 tasks, documents, communication and incidents.
 
 Phase: 9 of13
 Plan: not yet planned
-Status: Ready for autonomous planning
+Status: Research and UI design complete; ready for detailed autonomous planning
 Last activity: Phase8 completed2026-09-21; all16 summaries and08-VERIFICATION pass. Final strict gate1511 unique cases/383 realSQL/no skips and exact420-case integration inventory;399root/172frontend, commercial5/5 and retained servicing17/17 plus underwriting pass. No verification process remains running.
 Progress: eight of13 phases complete;81/81 currently defined plans complete. Later phases still need detailed plans; the MVP is not100% complete.
 
@@ -40,7 +40,7 @@ Progress: eight of13 phases complete;81/81 currently defined plans complete. Lat
 
 ## Next work
 
-PlanPhase9 with research, API/data design, prototype/source reconciliation, UI contract and tests. Consume08-PHASE09-HANDOFF; never treat queued content or consequences as completed operations. Preserve original source identities and later finance/configuration owners.
+ContinuePhase9 detailed planning from09-CONTEXT,09-RESEARCH,09-UI-SPEC and09-VALIDATION. Context is the completed single automatic discussion pass; do not restart it. Research selects typed operational subjects, an additive legacy SQL-evidence bridge/new durable file store and PDFsharp-MigraDoc6.2.4 with bundled licensed fonts. UI contract passed its inline design check; validation remains preliminary until exact plan/task/threat mapping. No Phase9 implementation or complete source denominator is claimed. Finish source reconciliation, pattern mapping, bounded sequential plans and plan/decision/requirement coverage gates before execution. Consume08-PHASE09-HANDOFF; never treat queued content or consequences as completed operations. Preserve original source identities and later finance/configuration owners.
 
 ## Evidence and continuity
 
