@@ -70,12 +70,18 @@ public sealed class OperationalTaskApiTests
             var servicingCsrf = (await servicing.GetFromJsonAsync<JsonElement>("/api/v1/auth/csrf")).GetProperty("requestToken").GetString()!;
             using (var login = await Send(servicing, servicingCsrf, HttpMethod.Post, "/api/v1/auth/login", new { email = "servicing@cover.example", password })) login.EnsureSuccessStatusCode();
             Assert.Equal(0, (await servicing.GetFromJsonAsync<JsonElement>("/api/v1/tasks")).GetProperty("totalCount").GetInt32());
+            var hiddenSummary = await servicing.GetFromJsonAsync<JsonElement>("/api/v1/tasks/summary");
+            Assert.Equal(0, hiddenSummary.GetProperty("open").GetInt32());
+            Assert.Equal(0, hiddenSummary.GetProperty("completedSevenDays").GetInt32());
             Assert.Equal(HttpStatusCode.NotFound, (await servicing.GetAsync(path)).StatusCode);
             Assert.Equal(HttpStatusCode.BadRequest, (await servicing.GetAsync("/api/v1/tasks?pageSize=1&cursor=" + Uri.EscapeDataString(cursor))).StatusCode);
             using var comment = await Send(client, csrf, HttpMethod.Post, path + "/comments", new { body = "Additional observation" }, etag: completed.Headers.ETag!.ToString());
             Assert.Equal(HttpStatusCode.Created, comment.StatusCode);
             Assert.Equal(1, (await client.GetFromJsonAsync<JsonElement>(path + "/comments")).GetProperty("totalCount").GetInt32());
             Assert.Equal(3, (await client.GetFromJsonAsync<JsonElement>(path + "/events")).GetProperty("totalCount").GetInt32());
+            var summary = await client.GetFromJsonAsync<JsonElement>("/api/v1/tasks/summary");
+            Assert.Equal(1, summary.GetProperty("open").GetInt32());
+            Assert.Equal(1, summary.GetProperty("completedSevenDays").GetInt32());
             Assert.Equal(HttpStatusCode.NotFound, (await servicing.GetAsync(path + "/comments")).StatusCode);
             Assert.Equal(HttpStatusCode.BadRequest, (await client.GetAsync("/api/v1/tasks?pageSize=1&cursor=" + Uri.EscapeDataString(cursor))).StatusCode);
             foreach (var response in competing) response.Dispose();
@@ -97,6 +103,14 @@ public sealed class OperationalTaskApiTests
             var newTeam = new Team { Name = "Fictional reassigned team" }; reload.Add(newTeam); await reload.SaveChangesAsync();
             await reload.Database.ExecuteSqlInterpolatedAsync($"UPDATE [User] SET TeamId={newTeam.Id} WHERE Id={underwriterId}");
             Assert.Equal(HttpStatusCode.BadRequest, (await client.GetAsync("/api/v1/tasks?pageSize=1&cursor=" + Uri.EscapeDataString(rosterPage.GetProperty("nextCursor").GetString()!))).StatusCode);
+            // Historical fixture: a recent comment must not refresh an old completion.
+            var oldCompletion = new OperationalTask { SubjectId = subjectId, Reference = "TSK-HISTORICAL", TypeCode = "complaint", Title = "Historical completed task", State = "completed", CompletionReason = "Historical fixture review", EventSequence = 2, CreatedBy = underwriterId, CreatedAt = DateTimeOffset.UtcNow.AddDays(-10), UpdatedAt = DateTimeOffset.UtcNow };
+            reload.Add(oldCompletion);
+            reload.Add(new OperationalTaskEvent { TaskId = oldCompletion.Id, Sequence = 1, Kind = "task.transitioned", ActorLabel = "Fixture", CreatedBy = underwriterId, CreatedAt = DateTimeOffset.UtcNow.AddDays(-9), SnapshotJson = "{\"state\":\"completed\"}" });
+            reload.Add(new OperationalTaskEvent { TaskId = oldCompletion.Id, Sequence = 2, Kind = "task.comment-added", ActorLabel = "Fixture", CreatedBy = underwriterId, CreatedAt = DateTimeOffset.UtcNow, SnapshotJson = "{\"state\":\"completed\"}" });
+            reload.Add(new OperationalTaskComment { TaskId = oldCompletion.Id, AuthorLabel = "Fixture", CreatedBy = underwriterId, Body = "Recent observation on older work", CreatedAt = DateTimeOffset.UtcNow });
+            await reload.SaveChangesAsync();
+            Assert.Equal(1, (await client.GetFromJsonAsync<JsonElement>("/api/v1/tasks/summary")).GetProperty("completedSevenDays").GetInt32());
             var relationshipId = await reload.Set<ClientAgencyRelationship>().Where(x => x.State == "active").Select(x => x.Id).FirstAsync();
             var relationshipKey = Guid.NewGuid().ToString("N");
             using var related = await Send(client, csrf, HttpMethod.Post, "/api/v1/operational-subjects", new { kind = "relationship", parentId = relationshipId }, relationshipKey);

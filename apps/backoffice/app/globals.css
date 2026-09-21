@@ -437,3 +437,17 @@ h1, h2, p { margin: 0; }
 .renewal-stage-navigation nav[data-style="Breadcrumb"] a + a::before { content: '/'; margin-right: .5rem; color: #9aa0b0; }
 .cancellation-review .table-scroll table { min-width: 720px; }
 .cancellation-review .quote-form-grid dd { margin: .35rem 0 0; font-variant-numeric: tabular-nums; }
+.task-detail-grid { display: grid; grid-template-columns: minmax(0, 1fr) 314px; gap: 20px; }
+.task-detail-grid > * { min-width: 0; }
+.task-detail-grid .panel { margin-bottom: 20px; }
+.task-form { padding: 20px; }
+.task-form fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.task-form label { display: grid; gap: 6px; margin-bottom: 16px; font-weight: 500; }
+.task-form input:not([type="checkbox"]), .task-form select, .task-form textarea { width: 100%; }
+.task-form textarea { min-height: 100px; resize: vertical; }
+.task-form .task-checkbox { display: flex; align-items: center; gap: 8px; }
+.task-history { list-style: none; padding: 0 20px; }
+.task-history li { padding: 12px 0; border-bottom: 1px solid #e4e6ec; }
+.task-history small { color: #586174; }
+.task-preserve-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+@media (max-width: 1100px) { .task-detail-grid { grid-template-columns: minmax(0, 1fr); } }
