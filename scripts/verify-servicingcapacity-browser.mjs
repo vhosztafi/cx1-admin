@@ -34,7 +34,7 @@ try {
   await dialog.getByLabel('Tools and equipment choice',{exact:true}).selectOption('true');await dialog.getByLabel('Tools and equipment limit (£)',{exact:true}).fill('10000.00');await dialog.getByLabel('Tools and equipment excess (£)',{exact:true}).fill('250.00');await dialog.getByRole('button',{name:'Apply to draft',exact:true}).click();
   await button('Save draft').click();await page.getByText('Draft action saved.',{exact:true}).waitFor();await button('Rate saved adjustment').click();await page.getByText('Rated',{exact:true}).waitFor();
   const referrals=await get(path+'/referrals'),referral=referrals.items.find(item=>item.ruleCode==='cover-tools-equipment');assert.ok(referral,'Tools limit referral required');const cycleId=referrals.cycleId;
-  await page.getByRole('link',{name:'Refer to capacity provider',exact:true}).click();assert.ok(page.url().endsWith('#servicing-referrals'));
+  await page.getByRole('link',{name:'Refer to capacity provider',exact:true}).click();await page.waitForURL(url=>url.hash==='#servicing-referrals');
   const row=page.locator(`[data-referral-id="${referral.id}"]`);await row.getByText('Carrier capacity request',{exact:true}).click();await row.getByLabel('Capacity request reason',{exact:true}).fill('Request fictional tools permission for this saved change');
   const created=await command('/capacity',()=>row.getByRole('button',{name:'Create carrier request',exact:true}).click(),201);const caseId=created.id;const casePath=`/capacity/${caseId}`;
   const panel=row.getByRole('region',{name:'Servicing carrier case',exact:true});await panel.waitFor();

@@ -106,7 +106,8 @@ try{
    assert.deepEqual((await get(`/api/v1/policies/${fixture.policyId}`)).snapshot,before.snapshot);
    report.journeys.push({productCode:fixture.productCode,policyId:fixture.policyId,draftId,cycleId,referralId:referral.id,checks:['specific persisted referral work navigation','deep link reload and keyboard focus','single-referral conditional decision and history','live authority display','missing proof remains blocking','stale work link cannot target replacement referral','back to current referral list','390px containment','issued snapshot unchanged']});await writeFile(reportPath,JSON.stringify(report,null,2));continue;
   }
-  await page.getByRole('link',{name:'Review referrals',exact:true}).click();assert.ok(page.url().endsWith('#servicing-referrals'));
+   await page.getByRole('link',{name:'Review referrals',exact:true}).click();
+   await page.waitForURL(url=>url.hash==='#servicing-referrals');
   await page.getByRole('link',{name:'Back to policy',exact:true}).click();await page.locator(`a[href="/drafts/${draftId}#servicing-referrals"]`).click();
   await page.locator('#servicing-referrals').waitFor();await page.waitForFunction(()=>document.activeElement?.id==='servicing-referrals');
   await row.waitFor();await button('Acquire editing lease').click();await page.getByRole('heading',{name:'You are editing this draft',exact:true}).waitFor();
