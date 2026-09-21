@@ -36,6 +36,7 @@ public sealed partial class PolicyDocumentRenderService
         DocumentRules.Validate(selection);
         if (db.Database.CurrentTransaction is null) throw new InvalidOperationException("Document sources require a held transaction.");
         if (selection.Source.Kind == "quote-revision") return await LoadSelectedQuote(db, subject, selection, token);
+        if (selection.Source.Kind == "servicing-terms") return await LoadSelectedServicing(db, subject, selection, token);
         if (selection.Source.Kind != "policy-version" || subject.PolicyId is not Guid policyId) throw Missing();
         var policy = await db.Set<Policy>().AsNoTracking().SingleAsync(x => x.Id == policyId, token);
         if (selection.RelationshipId is Guid relationship && relationship != policy.RelationshipId) throw Missing();
@@ -82,5 +83,17 @@ public sealed partial class PolicyDocumentRenderService
         }
         _=DocumentRenderContract.Create(input);
         return new(input,termsHash);
+    }
+
+    private static async Task<SelectedSource> LoadSelectedServicing(BackOfficeDbContext db, OperationalSubject subject,
+        DocumentGenerateInput selection, CancellationToken token)
+    {
+        var terms=await db.Set<ServicingTermsVersion>().AsNoTracking().SingleOrDefaultAsync(x=>x.Id==selection.Source.TermsVersionId,token) ?? throw Missing();
+        var draft=await db.Set<ServicingDraft>().FromSqlInterpolated($"SELECT * FROM ServicingDraft WITH(HOLDLOCK,ROWLOCK) WHERE Id={terms.DraftId}")
+            .AsNoTracking().SingleAsync(token);
+        if(subject.ServicingDraftId!=draft.Id && subject.PolicyId!=draft.PolicyId || selection.TemplateVersionId!=terms.TemplateVersionId) throw Missing();
+        var policy=await db.Set<Policy>().AsNoTracking().SingleAsync(x=>x.Id==draft.PolicyId,token);
+        if(selection.RelationshipId is Guid relationship && relationship!=policy.RelationshipId) throw Missing();
+        return new(await LoadServicingTerms(db,draft.Id,terms.Id,selection.Kind,token),null);
     }
 }
