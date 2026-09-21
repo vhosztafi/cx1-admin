@@ -6,7 +6,7 @@ The original166 capture controls,109 question identities and60 policy controls r
 
 Fresh full capture passed in `.local/phase8-04-browser-d3760376-37c6-4467-9825-ef2fe9630b20/sql.trx`. The retained API proposal in `.local/browser-evidence/commercial-capture/CoverMGA_Test_dc7a268b5e0e473d8ba7a6f20e844ecd/full-proposal.json` was independently inspected: VAT=false, selected contract works10000.01/excess250.00, saved hot-work procedure, BI declaration=false, owned supplier dependency10000.01, and two locations with sprinklers=false/declared flood zone1. The seven supplemental evidence entries are now reconciled. This does not certify final aggregate or issued display coverage.
 
-Final acceptance found a missing Commercial Combined filter in shared policy discovery and response schemas; the fix has SQL and contract proof, with browser verification pending. Retained Motor Trade discovery now paginates after sorting instead of assuming the old policy remains on the first page. No source item has been reassigned to hide either finding.
+Final acceptance found a missing Commercial Combined filter in shared policy discovery and response schemas; the fix has SQL, contract and current actual browser proof. The full commercial adjustment stage passed on2026-09-21 at07:12:34Z, including real discovery, nine policy tabs, all nine editor groups, issuance and immutable readback (`.local/phase8-12-browser-89de2611-77cc-4e27-8704-25902d89214e/sql.trx`). Retained Motor Trade discovery now paginates after sorting instead of assuming the old policy remains on the first page. No source item has been reassigned to hide either finding.
 
 The sections below preserve earlier design and execution history; their pending status is not the final acceptance result. Final verification remains open.
 
@@ -38,7 +38,20 @@ Policy sample values—£3.18m TSI,£1.94m MEL,14 S9 risks and£15.82m headroom�
 
 ## Remaining execution obligations
 
-08-02..07 must implement all captured inputs, readiness branches and underwriting evidence.08-08..14 must prove projection/issue/history/servicing against actual SQL and browsers.08-15 delivers exact-version operational payloads.08-16 checks every ledger row against behavior/evidence, including all298 display items and7 supplementary fields; no reclassification may hide missing Phase8 functionality.
+Plans08-01 through08-15 have complete summaries and plan-level evidence. Plan08-16 is checking the current full regression gates before final acceptance; no reclassification may hide missing Phase8 functionality.
+
+The2026-09-21 ledger reconciliation preserves every original identity and denominator:
+
+| Ledger | Recorded disposition | Evidence boundary |
+|---|---|---|
+|166 capture controls|150 saved values,10 navigation,6 attachment/review controls|Every row has runtime evidence; evidence controls retain their real workflow owner.|
+|109 questions|109 saved and read back|Every original question has scoped browser/SQL evidence.|
+|7 supplemental facts|7 saved and read back|Actual saved proposal values inspected; no inferred default values.|
+|60 policy controls|4 issued-adjustment controls,3 scoped links,50 invalid prototype fallbacks removed,3 future controls|The3 pending controls remain withPhase9 orPhase11; no missingPhase8 control is moved downstream.|
+|27 branches|22 unit/SQL/browser,1 capture-readiness,4 SQL/browser|All27 have evidence, including the21 named underwriting source rules.|
+|298 display occurrences|264 reviewed issued-view or explicit-boundary rows;34 future rows|33 claims occurrences belong toPhase9;1 outstanding-cash occurrence belongs toPhase10.|
+
+The only ledger rows without runtime evidence are the already-approved future controls/display occurrences. Counts are source coverage, not test counts or final phase acceptance. Fresh aggregate verification remains pending. Current desktop wages and390px cover images were inspected in `.local/browser-evidence/commercial-capture/CoverMGA_Test_a67db5c661394d36aa0d66f79c0ca000`; the mobile table scroll remains contained. This does not claim human or assistive-technology UAT.
 
 The prototype servicing-owner display has no dedicated owner field in the current shared policy model.08-10 must show an honest unassigned state until explicit assignment exists; it must not relabel CreatedBy as servicing owner. General assignment/task operations remain Phase9. This is a display-state decision, not permission to insert a fictional owner.
 

@@ -268,3 +268,19 @@ test databases and starts owned temporary Next/API processes. Both Motor Trade
 products exercise manual lapse with lost-response retry and the actual hosted
 date worker with a controlled clock. Browser and server clocks are aligned;
 the shared demo clock and policy history are unchanged.
+
+## Resuming servicing acceptance
+
+Run `node scripts/verify-servicing-suite.mjs` for the complete sequential servicing
+suite. It records its report, logs and owned policy fixtures under
+`.local/servicing-suite/`. After repairing a failed check, use
+`node scripts/verify-servicing-suite.mjs --resume <reported-directory>` to resume
+the same run. Keep the original local API origin and policy fixtures available.
+Use resume for harness corrections with the same application build; start a new
+full run after changing application code or deployed binaries.
+
+Resume validates the full stage inventory and the source/log hashes of every
+completed stage. It preserves the prior report and failed logs, then runs the
+failed stage and every remaining stage. An active run, changed completed-stage
+source, missing evidence or changed origin is rejected. The report becomes
+successful only when all stages pass; this option does not filter out checks.

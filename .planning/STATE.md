@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan08-16 executing; retained suites active, remaining acceptance queued sequentially. Read checkpoint before launching any tests.
-last_updated: "2026-09-21T06:23:00Z"
+stopped_at: Plan08-16 executing; retained suites and editor regression passed, full commercial aggregate passed, all420 integration cases active. Read checkpoint before launching tests.
+last_updated: "2026-09-21T07:45:00Z"
 last_activity: "2026-09-21 — Sign-in hydration fix committed; SQL4/root395/frontend172 pass. Final demo initialization and actual restart preserve139 tables/3 policy graphs/12 versions/keys. Editor reload regression and full acceptance remain pending."
 progress:
   total_phases: 13
@@ -28,7 +28,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 8 of 13 (Commercial Combined back office)
 Plan: 15 of16 complete;08-16 executing
 Status: Executing
-Last activity: 2026-09-21 —08-16 current preview installed and preservation passed. Retained suites run in exec98002; sequential follow-on runner exec44798/PID56268 waits for them, then checks editor reload, commercial aggregate and all420 backend integration cases. Inspect.local/phase8-16-sequential-progress.json; do not duplicate active runs.
+Last activity: 2026-09-21 —08-16 current preview installed and preservation passed. Both retained aggregates and the focused editor regression passed. The full commercial aggregate passed5/5. Exec70737 runs all420 integration cases; final strict accounting follows. Earlier queue runners ended; do not restart them.
 
 Progress: Phases1–7 complete;7/13 phases,80/81 currently defined implementation plans. Phase8 research/UI/plans checked and08-01/02/03/04/05/06/07/08/09/10/11/12/13/14 complete; later phases await detailed planning.
 
@@ -44,7 +44,7 @@ Progress: Phases1–7 complete;7/13 phases,80/81 currently defined implementatio
 
 ### Pending Todos
 
-- Finish08-16: collect queued verification, fix any remaining failures, complete strict accounting and final source/security review. The12 baseline failures are triaged; a fresh editor-reload timeout is under verification. Catalog/sign-in fixes and final preview preservation are complete. KeepCC-05 partial until Phase9 operational workflows exist.
+- Finish08-16: collect queued verification, fix any remaining failures, complete strict accounting and final source/security review. The12 baseline failures are triaged; the editor-reload regression now passes. Catalog/sign-in fixes and final preview preservation are complete. KeepCC-05 partial until Phase9 operational workflows exist.
 - Keep future endpoints closed until owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,8 +54,8 @@ Progress: Phases1–7 complete;7/13 phases,80/81 currently defined implementatio
 
 ## Session Continuity
 
-Last session: 2026-09-21T06:23:00Z
-Stopped at:08-16 active sequential acceptance. Follow08-16-CHECKPOINT.md and.local/phase8-16-sequential-progress.json; older full-backend and commercial runs were interrupted and are not acceptance evidence.
+Last session: 2026-09-21T06:39:00Z
+Stopped at:08-16 active sequential acceptance. Follow the newest section of08-16-CHECKPOINT.md; the old sequential-progress.json and interrupted full-backend/commercial runs are not current acceptance evidence.
 Resume file: .planning/phases/08-commercial-combined-back-office/08-16-CHECKPOINT.md
 
 ## Autonomous continuation

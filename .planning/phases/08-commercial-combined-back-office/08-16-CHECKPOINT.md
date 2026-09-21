@@ -1,5 +1,34 @@
 # 08-16 final acceptance — ongoing
 
+## Current acceptance — 2026-09-21T07:45Z
+
+Full commercial aggregate passed5/5, with strict1096 cases/5 real-SQL/no skips: `.local/commercial-suite/2026-09-21T06-55-30-182Z-e697e685-bbbb-41d1-aa17-2f3212527ab5/report.json`. Renewal and cancellation both passed; the source and assembly hashes remained unchanged.
+
+Current exec70737 runs all420 integration cases from `.local/phase8-16-current-bin/BackOffice.IntegrationTests.dll`, sequentially with nativeSQL and the hydration build. Log `.local/phase8-16-full-sequential.log`; final TRX `.local/phase8-16-full-sequential/sql.trx`. Do not duplicate it. The full current inventory is recorded in `.local/phase8-16-final-test-inventory.log` (420 cases).
+
+After this passes, combine its TRX with `.local/phase8-16-final-unit/unit.trx` (1091 passed) and run strict1511/minimum382SQL accounting with cutoff2026-09-21T06:00:00Z. Compare all420 discovered test names with actual results, finish review/source reconciliation and completion artifacts. Both retained aggregates already passed; no repeat is required for documentation changes. KeepCC-05 partial throughPhase9. User requested continuous work; keep the task active through completion.
+
+The sections below are historical; the newest section governs active processes and acceptance status.
+
+
+## Current acceptance — 2026-09-21T06:55Z
+
+Current exec11360 runs the full five-stage commercial aggregate, log `.local/phase8-16-commercial-sequential.log`, current-bin assembly and hydration test build. Fresh full-unit TRX `.local/phase8-16-final-unit/unit.trx` passes1091/0skips; cutoff06:00Z. Do not duplicate this run or change its pinned browser sources. After it passes, run all420 current integration cases sequentially in a fresh results directory and strict combined1511/minimum382SQL accounting, then final review/summary/phase completion.
+
+The focused commercial editor passed1realSQL/browser case in5m29s: `.local/phase8-11-browser-853ba019-f27f-4dae-90d3-29f940e7e5fc/sql.trx`; helper committeddb219d0. Both retained aggregates are complete; servicing17/17 with2 preserved resume attempts, underwriting includes all retained quote/agency stages. All older queue runners are ended. The user requested continuous execution; do not end the turn because10minutes elapsed.
+
+## Current session — 2026-09-21T06:39Z
+
+Update06:49Z: the retained servicing report now passes17/17 stages, with2 preserved resume attempts. Full retained underwriting also passed. Exec62612 has advanced to the focused commercial editor; full commercial and full backend must follow. Harness fixes/resume guards committed66fa48a; root399 passes. Do not rerun either retained aggregate without a new relevant change.
+
+User explicitly requested continuous execution, not ending after10minutes. Stay in the active task through verification; the heartbeat is a fallback, not a reason to end the turn.
+
+- Current exec62612 runs `verify-servicing-suite.mjs --resume .local/servicing-suite/2026-09-21T06-23-21-643Z-76069fa0-830a-4fa4-a7b4-82da34e1073f`, log `.local/phase8-16-servicing-resume2.log`. On success the same runner executes the focused commercial editor with current-bin/hydration build into `.local/phase8-16-editor-reload-green.log`. Commercial aggregate/full backend must follow sequentially afterward.
+- Earlier retained suite passed all16 typed editor journeys and both rating journeys, then an immediate post-click URL assertion failed in evidence. Actual link navigation works: explicit waitForURL fixed the test, and focused evidence passed both products in `.local/phase8-16-evidence-navigation-green.log`. Resume1 then passed evidence but hit the identical assertion in capacity; capacity now uses explicit waitForURL too. Current resume2 starts there.
+- Guarded `--resume` was added to the servicing suite. It requires a finished failed run with an unchanged full stage inventory/origin, a contiguous successful prefix, exact completed-script/log hashes and retained policy fixtures. It archives the prior report and preserves failed logs, then executes the failed stage and entire remaining suffix. Four resume contract tests pass; full root399 passes `.local/phase8-16-resume-root.log`. These harness changes are awaiting completed runtime evidence before commit. No stage filters or skipped-stage success were added.
+- Source ledger reconciliation is complete in08-SOURCE-AUDIT.md:166/109/7/60/27/298 denominators unchanged; only previously approved future controls/displays lack runtime evidence. Final acceptance remains pending.
+- Both earlier sequential queue runners are ended/failed, not active. `.local/phase8-16-sequential-progress.json` currently records their historical servicing failure. Do not restart that old queue or duplicate exec62612. The helper `.local/phase8-16-remaining-acceptance-resume.ps1` now contains final strict1511/382 accounting, but its old retained PID must not be reused.
+
 ## Active sequential queue — 2026-09-21T06:23Z
 
 This is the authoritative current-run section. The06:16 section below is historical.

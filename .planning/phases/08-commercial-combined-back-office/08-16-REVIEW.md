@@ -1,6 +1,6 @@
 # 08-16 review — ongoing final acceptance
 
-This is an interim review, not phase completion. Updated2026-09-21T06:23Z. The latest section below supersedes historical open/run notes.
+This is an interim review, not phase completion. Updated2026-09-21T08:30Z. The latest section below supersedes historical open/run notes.
 
 ## Latest reviewed evidence
 
@@ -10,7 +10,7 @@ The first-page commercial history reader retries only409/underwriting-history-ch
 
 Final current live initialization preserved139 table fingerprints across two passes. Verified owned processes were actually restarted; all3 policy graphs/12 versions,5 pinned commercial exposure readings and persistent key hashes are unchanged. Evidence: `.local/phase8-16-final-initialization/report.json` and `.local/phase8-16-final-restart/compare-report.json`. The preview needed a separate build with its API5087 rewrite; the initial5080 test-build attempt is excluded. Desktop/390px current capture evidence was visually inspected with no new layout defect.
 
-Current full acceptance is still open. A fresh non-issue commercial editor run timed out while reacquiring after reload. Its helper now waits for the loaded editor before starting the response deadline and handles click/response promises together; actualGREEN is queued, not yet claimed. The interrupted full-backend/commercial runs are excluded. Retained suites and a source-pinned sequential follow-on runner are recorded in08-16-CHECKPOINT.md. Finish them, perform strict result accounting and reconcile final source/security evidence before writing08-16-SUMMARY or markingPhase8 complete.
+Current full acceptance is still open. A fresh non-issue commercial editor run timed out while reacquiring after reload. Its helper now waits for the loaded editor before starting the response deadline and handles click/response promises together; actualGREEN passed1realSQL/browser case in5m29s (`.local/phase8-11-browser-853ba019-f27f-4dae-90d3-29f940e7e5fc/sql.trx`). The interrupted full-backend/commercial runs are excluded. Retained suites and a source-pinned sequential follow-on runner are recorded in08-16-CHECKPOINT.md. Finish them, perform strict result accounting and reconcile final source/security evidence before writing08-16-SUMMARY or markingPhase8 complete.
 
 ## Reviewed corrections
 
@@ -24,10 +24,12 @@ Current full acceptance is still open. A fresh non-issue commercial editor run t
 
 ## Preservation and source review
 
-08-15 and the actual08-16 restart/readback artifacts prove retained139tables unchanged across two initializations,3policygraphs/12versions and pinned exposure unchanged after restart with canonical keys. New discovery code changes no stored policy data. Live15preview remains running; final16build is not installed there yet.
+The final08-16 restart/readback artifacts prove retained139tables unchanged across two initializations,3policygraphs/12versions and pinned exposure unchanged after restart with canonical keys. New discovery code changes no stored policy data. The current16API and frontend build are installed in the local preview; exact identities are in `.local/phase8-16-preview-pids.json`.
 
 Original166/109/60 identities and future owners remain intact. All seven supplemental capture fields have current actual saved-proposal evidence; no future incident/document action has been marked implemented. Desktop and390px capture screenshots were inspected: desktop controls remain readable, and the mobile cover schedule uses its contained horizontal table. This is not a human or assistive-technology UAT claim.
 
 ## Still open
 
-Original fullbackend baseline has two identified, now-targeted-green regression assertions; the baseline itself remains running and cannot be accepted as passing. Complete commercial and retained servicing aggregates, final current-source accounting, remaining threat/source audit and final livebuild preservation are outstanding. Imported legacy terms display still needs disposition. No final verification or CC05 completion is claimed.
+The original full backend baseline finished408passed/12failed and is excluded; all12 findings have been triaged. The subsequent editor-reload timeout is fixed and focused verification passed. Both retained aggregates passed. The full commercial aggregate passed5/5 on2026-09-21T07:45:10Z, with1096 strict cases/5SQL/no skips. All420 integration cases are now running in exec70737; final full-backend accounting remains open. Source coverage is reconciled in08-SOURCE-AUDIT.md, but final acceptance depends on those runtime results. ImportedAG-DEMO-QUOTES has an incomplete historical terms snapshot; its bytes remain unchanged and the supported retained commercial demo uses independently approvedAG-0000154. No fabricated terms repair, final phase acceptance or CC05 completion is claimed.
+
+Current commercial evidence: .local/commercial-suite/2026-09-21T06-55-30-182Z-e697e685-bbbb-41d1-aa17-2f3212527ab5/report.json. Source and assembly hashes remained unchanged. The new390px adjustment receipt was visually inspected and remains readable; no human UAT is claimed.
