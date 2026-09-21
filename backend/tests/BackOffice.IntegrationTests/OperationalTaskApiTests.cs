@@ -37,6 +37,11 @@ public sealed class OperationalTaskApiTests
             csrf = (await client.GetFromJsonAsync<JsonElement>("/api/v1/auth/csrf")).GetProperty("requestToken").GetString()!;
             using var subject = await Send(client, csrf, HttpMethod.Post, "/api/v1/operational-subjects", new { kind = "agency", parentId = agencyId });
             Assert.Equal(HttpStatusCode.Created, subject.StatusCode); var subjectId = (await subject.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("id").GetGuid();
+            var assignees = await client.GetFromJsonAsync<JsonElement>($"/api/v1/task-assignees?subjectRecordId={subjectId}&kind=user");
+            Assert.NotEmpty(assignees.GetProperty("items").EnumerateArray());
+            Assert.All(assignees.GetProperty("items").EnumerateArray(), item => Assert.False(string.IsNullOrWhiteSpace(item.GetProperty("label").GetString())));
+            Assert.Equal(HttpStatusCode.NotFound, (await client.GetAsync($"/api/v1/task-assignees?subjectRecordId={Guid.NewGuid()}&kind=user")).StatusCode);
+            Assert.Equal(HttpStatusCode.BadRequest, (await client.GetAsync($"/api/v1/task-assignees?subjectRecordId={subjectId}&subjectRecordId={subjectId}&kind=user")).StatusCode);
             object Body(string title) => new { subjectRecordId = subjectId, typeCode = "complaint", title, priority = "normal", assignment = new { kind = "unassigned" } };
             Assert.Equal(HttpStatusCode.Forbidden, (await Send(client, null, HttpMethod.Post, "/api/v1/tasks", Body("Missing CSRF"))).StatusCode);
             var key = Guid.NewGuid().ToString("N");
@@ -74,6 +79,7 @@ public sealed class OperationalTaskApiTests
             Assert.Equal(0, hiddenSummary.GetProperty("open").GetInt32());
             Assert.Equal(0, hiddenSummary.GetProperty("completedSevenDays").GetInt32());
             Assert.Equal(HttpStatusCode.NotFound, (await servicing.GetAsync(path)).StatusCode);
+            Assert.Equal(HttpStatusCode.NotFound, (await servicing.GetAsync($"/api/v1/task-assignees?subjectRecordId={subjectId}&kind=user")).StatusCode);
             Assert.Equal(HttpStatusCode.BadRequest, (await servicing.GetAsync("/api/v1/tasks?pageSize=1&cursor=" + Uri.EscapeDataString(cursor))).StatusCode);
             using var comment = await Send(client, csrf, HttpMethod.Post, path + "/comments", new { body = "Additional observation" }, etag: completed.Headers.ETag!.ToString());
             Assert.Equal(HttpStatusCode.Created, comment.StatusCode);
@@ -111,6 +117,12 @@ public sealed class OperationalTaskApiTests
             reload.Add(new OperationalTaskComment { TaskId = oldCompletion.Id, AuthorLabel = "Fixture", CreatedBy = underwriterId, Body = "Recent observation on older work", CreatedAt = DateTimeOffset.UtcNow });
             await reload.SaveChangesAsync();
             Assert.Equal(1, (await client.GetFromJsonAsync<JsonElement>("/api/v1/tasks/summary")).GetProperty("completedSevenDays").GetInt32());
+            var teamChoices = await client.GetFromJsonAsync<JsonElement>($"/api/v1/task-assignees?subjectRecordId={subjectId}&kind=team&q=Fictional%20reassigned");
+            Assert.Equal(newTeam.Id, Assert.Single(teamChoices.GetProperty("items").EnumerateArray()).GetProperty("id").GetGuid());
+            await reload.Database.ExecuteSqlInterpolatedAsync($"UPDATE [User] SET State=N'suspended' WHERE Id={underwriterId}");
+            var currentChoices = await client.GetFromJsonAsync<JsonElement>($"/api/v1/task-assignees?subjectRecordId={subjectId}&kind=user");
+            Assert.DoesNotContain(currentChoices.GetProperty("items").EnumerateArray(), x => x.GetProperty("id").GetGuid() == underwriterId);
+            Assert.Empty((await client.GetFromJsonAsync<JsonElement>($"/api/v1/task-assignees?subjectRecordId={subjectId}&kind=team&q=Fictional%20reassigned")).GetProperty("items").EnumerateArray());
             var relationshipId = await reload.Set<ClientAgencyRelationship>().Where(x => x.State == "active").Select(x => x.Id).FirstAsync();
             var relationshipKey = Guid.NewGuid().ToString("N");
             using var related = await Send(client, csrf, HttpMethod.Post, "/api/v1/operational-subjects", new { kind = "relationship", parentId = relationshipId }, relationshipKey);

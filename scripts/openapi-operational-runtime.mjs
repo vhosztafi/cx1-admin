@@ -14,6 +14,9 @@ export function addOperationalRuntimeContracts({schemas:s,ref:r,operation:op,lis
  const receipt=o({updatedIds:{type:'array',items:id,minItems:1,maxItems:100,uniqueItems:true}});
  op('get','/tasks/summary','getTaskSummary','task-read',{output:o({open:{type:'integer',minimum:0},dueToday:{type:'integer',minimum:0},overdue:{type:'integer',minimum:0},awaitingOthers:{type:'integer',minimum:0},completedSevenDays:{type:'integer',minimum:0},asOf:{type:'string',format:'date-time'}})});
  paths['/tasks/summary'].get['x-runtime-status']='phase-9-03-api-verified';
+ op('get','/task-assignees','listTaskAssignees','task-assign',{query:[['subjectRecordId',{type:'array',items:id,minItems:1,maxItems:100,uniqueItems:true}],['kind',{type:'string',enum:['user','team']}],['q',t(100)]],output:o({items:{type:'array',maxItems:50,items:o({id,label:t(300)})},hasMore:{type:'boolean'}})});
+ for(const parameter of paths['/task-assignees'].get.parameters){if(['subjectRecordId','kind'].includes(parameter.name))parameter.required=true;if(parameter.name==='subjectRecordId'){parameter.style='form';parameter.explode=true;}}
+ paths['/task-assignees'].get['x-runtime-status']='phase-9-03-api-verified';
  op('post','/operational-subjects','registerOperationalSubject','subject-read',{input:r('OpsSubjectWrite'),output:r('OpsSubject'),status:201});
  op('post','/tasks/bulk-due-date','changeTaskDueDates','task-assign',{input:r('OpsTaskBulkDue'),output:receipt});
  op('post','/tasks/bulk-completion','completeTasks','task-write',{input:r('OpsTaskBulkComplete'),output:receipt});

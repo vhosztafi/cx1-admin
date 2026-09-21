@@ -18,6 +18,7 @@ public static partial class TaskEndpoints
     {
         app.MapGet("/api/v1/tasks", List).RequireAuthorization("task-read");
         app.MapGet("/api/v1/tasks/summary", Summary).RequireAuthorization("task-read");
+        app.MapGet("/api/v1/task-assignees", Assignees).RequireAuthorization("task-assign");
         app.MapGet("/api/v1/tasks/{taskId:guid}/comments", (Guid taskId, HttpContext context, Microsoft.EntityFrameworkCore.IDbContextFactory<BackOffice.Infrastructure.Persistence.BackOfficeDbContext> factory, PartyPaging paging) => History(taskId, context, factory, paging, false)).RequireAuthorization("task-read");
         app.MapGet("/api/v1/tasks/{taskId:guid}/events", (Guid taskId, HttpContext context, Microsoft.EntityFrameworkCore.IDbContextFactory<BackOffice.Infrastructure.Persistence.BackOfficeDbContext> factory, PartyPaging paging) => History(taskId, context, factory, paging, true)).RequireAuthorization("task-read");
         app.MapPost("/api/v1/operational-subjects", (HttpContext context, TaskService service) => Run(context, async () =>
