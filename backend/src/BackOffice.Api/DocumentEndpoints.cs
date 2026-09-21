@@ -14,6 +14,8 @@ public static class DocumentEndpoints
 
     public static void MapDocuments(this WebApplication app)
     {
+        app.MapGet("/api/v1/records/{recordId:guid}/documents",(Guid recordId,HttpContext context,DocumentService service,PartyPaging paging)=>List(recordId,context,service,paging,false)).RequireAuthorization("document-read");
+        app.MapGet("/api/v1/documents/{documentId:guid}/versions",(Guid documentId,HttpContext context,DocumentService service,PartyPaging paging)=>List(documentId,context,service,paging,true)).RequireAuthorization("document-read");
         app.MapPost("/api/v1/records/{recordId:guid}/documents/generate",(Guid recordId,HttpContext context,DocumentService service)=>Run(context,async()=>
         {
             QuoteEndpoints.Id(recordId);
@@ -34,6 +36,15 @@ public static class DocumentEndpoints
         app.MapGet("/api/v1/document-versions/{versionId:guid}/content",(Guid versionId,HttpContext context,DocumentService service)=>Content(versionId,context,service,false)).RequireAuthorization("document-download");
         app.MapGet("/api/v1/document-versions/{versionId:guid}/preview",(Guid versionId,HttpContext context,DocumentService service)=>Content(versionId,context,service,true)).RequireAuthorization("document-download");
     }
+    private static Task<IResult> List(Guid id,HttpContext context,DocumentService service,PartyPaging paging,bool versions)=>Run(context,async()=>
+    {
+        QuoteEndpoints.Id(id);var actor=LocalIdentityService.Actor(context.User);
+        var page=paging.Read(context,actor,versions?"document-versions-sequence-v1":"documents-created-keyset-v1") ?? throw new QuoteHttpException(400,"invalid-document-cursor");
+        var result=versions?await service.ListVersions(actor,id,page.Offset,page.Size,page.AsOf,context.RequestAborted)
+            :await service.ListDocuments(actor,id,page.KeyId,page.Size,page.AsOf,context.RequestAborted);
+        var next=versions?paging.NextKeyset(page,result.NextNumber):paging.NextGuid(page,result.NextDocumentId);
+        return Results.Json(new{items=result.Items,totalCount=result.TotalCount,nextCursor=next},ClientEndpoints.Json);
+    });
     private static Task<IResult> Content(Guid id,HttpContext context,DocumentService service,bool preview)=>Run(context,async()=>
     {
         QuoteEndpoints.Id(id);QuoteHttpInput.NoQuery(context.Request);

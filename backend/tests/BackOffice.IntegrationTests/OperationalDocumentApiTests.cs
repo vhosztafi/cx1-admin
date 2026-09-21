@@ -73,6 +73,30 @@ public sealed partial class UnderwritingRuntimeTests
         await scope.ServiceProvider.GetRequiredService<DocumentGenerationWorker>().Process(regenerateVersion.WorkId,default);
         Assert.Equal("ready",(await client.GetFromJsonAsync<JsonElement>("/api/v1/document-versions/"+regeneratedId)).GetProperty("state").GetString());
         Assert.Equal(2,await db.Set<DocumentVersion>().CountAsync());
+        var documentsRoute="/api/v1/records/"+document.SubjectId+"/documents";
+        var documents=await client.GetFromJsonAsync<JsonElement>(documentsRoute+"?pageSize=1");
+        Assert.Equal(document.Id,Assert.Single(documents.GetProperty("items").EnumerateArray()).GetProperty("id").GetGuid());
+        Assert.Equal(regeneratedId,documents.GetProperty("items")[0].GetProperty("currentVersionId").GetGuid());
+        var historyRoute="/api/v1/documents/"+document.Id+"/versions";
+        var firstPage=await client.GetFromJsonAsync<JsonElement>(historyRoute+"?pageSize=1");
+        Assert.Equal(regeneratedId,Assert.Single(firstPage.GetProperty("items").EnumerateArray()).GetProperty("id").GetGuid());
+        var cursor=firstPage.GetProperty("nextCursor").GetString()!;
+        // Another generation can arrive between pages, even with the same clock timestamp.
+        using var concurrentVersion=await Generate(generateInput,"document-between-history-pages");
+        Assert.Equal(HttpStatusCode.Accepted,concurrentVersion.StatusCode);
+        var secondPage=await client.GetFromJsonAsync<JsonElement>(historyRoute+"?pageSize=1&cursor="+Uri.EscapeDataString(cursor));
+        Assert.Equal(created.ResourceId,Assert.Single(secondPage.GetProperty("items").EnumerateArray()).GetProperty("id").GetGuid());
+        var anotherInput=JsonSerializer.SerializeToNode(generateInput)!.AsObject();anotherInput.Remove("documentId");
+        using var another=await Generate(anotherInput,"document-new-logical-head");Assert.Equal(HttpStatusCode.Accepted,another.StatusCode);
+        var anotherDocumentId=(await another.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("documentId").GetGuid();
+        var headsPage=await client.GetFromJsonAsync<JsonElement>(documentsRoute+"?pageSize=1");
+        var headsNext=await client.GetFromJsonAsync<JsonElement>(documentsRoute+"?pageSize=1&cursor="+Uri.EscapeDataString(headsPage.GetProperty("nextCursor").GetString()!));
+        var headIds=new[]{Assert.Single(headsPage.GetProperty("items").EnumerateArray()).GetProperty("id").GetGuid(),
+            Assert.Single(headsNext.GetProperty("items").EnumerateArray()).GetProperty("id").GetGuid()};
+        Assert.Equal(2,headIds.Distinct().Count());Assert.Contains(document.Id,headIds);Assert.Contains(anotherDocumentId,headIds);
+        Assert.Equal(HttpStatusCode.BadRequest,(await client.GetAsync(documentsRoute+"?pageSize=1&cursor="+Uri.EscapeDataString(cursor))).StatusCode);
+        Assert.Equal(HttpStatusCode.BadRequest,(await client.GetAsync(historyRoute+"?unknown=true")).StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound,(await client.GetAsync("/api/v1/documents/"+Guid.NewGuid()+"/versions")).StatusCode);
         var fileId=await db.Set<DocumentVersionContent>().Where(x=>x.VersionId==created.ResourceId).Select(x=>x.FileObjectId).SingleAsync();
         await File.WriteAllTextAsync(Path.Combine(root,"files","ready",fileId.ToString("N")+".bin"),"Simulated damaged demo storage");
         using var corrupt=await client.GetAsync(route+"/content");Assert.Equal(HttpStatusCode.ServiceUnavailable,corrupt.StatusCode);
@@ -82,5 +106,6 @@ public sealed partial class UnderwritingRuntimeTests
         var user=await db.Set<StaffUser>().SingleAsync(x=>x.Id==f.Underwriter.UserId);user.State="suspended";await db.SaveChangesAsync();
         Assert.Contains((await client.GetAsync(route+"/content")).StatusCode,new[]{HttpStatusCode.Unauthorized,HttpStatusCode.Forbidden});
         Assert.Contains((await Generate(generateInput,"document-api-regenerate")).StatusCode,new[]{HttpStatusCode.Unauthorized,HttpStatusCode.Forbidden});
+        Assert.Contains((await client.GetAsync(historyRoute)).StatusCode,new[]{HttpStatusCode.Unauthorized,HttpStatusCode.Forbidden});
     });
 }

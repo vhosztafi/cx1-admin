@@ -22786,7 +22786,7 @@
       "get": {
         "operationId": "listDocuments",
         "summary": "list Documents",
-        "description": "Requires document-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "description": "Scoped immutable document history. Opaque cursors retain a saved position so concurrent generation cannot shift later pages.",
         "tags": [
           "records"
         ],
@@ -22986,14 +22986,15 @@
               }
             }
           }
-        }
+        },
+        "x-runtime-status": "phase-9-07-api-verified"
       }
     },
     "/documents/{documentId}/versions": {
       "get": {
         "operationId": "listDocumentVersions",
         "summary": "list Document Versions",
-        "description": "Requires document-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "description": "Scoped immutable document history. Opaque cursors retain a saved position so concurrent generation cannot shift later pages.",
         "tags": [
           "documents"
         ],
@@ -23194,7 +23195,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-9-contract-only"
+        "x-runtime-status": "phase-9-07-api-verified"
       }
     },
     "/records/{recordId}/documents/generate": {

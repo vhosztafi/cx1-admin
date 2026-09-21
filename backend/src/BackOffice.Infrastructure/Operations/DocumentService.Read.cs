@@ -13,14 +13,7 @@ public sealed partial class DocumentService
         await using var db=await factory.CreateDbContextAsync(token);await using var transaction=await db.Database.BeginTransactionAsync(token);
         var held=await HoldReadableVersion(db,actor,versionId,"document-read",token);
         var state=await ContentState(db,held.Version,token);
-        var view=new Dictionary<string,object?>{
-            ["id"]=held.Version.Id,["documentId"]=held.Document.Id,["number"]=held.Version.Number,["kind"]=held.Document.Kind,
-            ["state"]=state.State,["originalName"]=held.Version.OriginalName,["bytes"]=state.File?.ByteLength??0,
-            ["contentType"]=state.File?.MediaType??"application/pdf",["createdAt"]=held.Version.CreatedAt
-        };
-        if(state.File is not null)view["sha256"]=state.File.Sha256;
-        if(held.Version.TemplateVersionId is Guid template)view["templateVersionId"]=template;
-        if((held.Version.PolicyVersionId??held.Version.QuoteRevisionId??held.Version.ServicingTermsVersionId) is Guid source)view["sourceVersionId"]=source;
+        var view=VersionView(held.Version,held.Document.Kind,state.State,state.File);
         var result=new CommandOutcome(versionId,200,JsonSerializer.Serialize(view,Json));
         await transaction.CommitAsync(token);return result;
     }
@@ -48,10 +41,16 @@ public sealed partial class DocumentService
     private static async Task<(OperationalDocument Document,DocumentVersion Version)> HoldReadableVersion(BackOfficeDbContext db,ActorContext actor,Guid id,string capability,CancellationToken token)
     {
         var version=await db.Set<DocumentVersion>().AsNoTracking().SingleOrDefaultAsync(x=>x.Id==id,token)??throw MissingDocument();
-        var document=await db.Set<OperationalDocument>().AsNoTracking().SingleAsync(x=>x.Id==version.DocumentId,token);
+        var document=await HoldDocument(db,actor,version.DocumentId,capability,token);
+        return(document,version);
+    }
+
+    private static async Task<OperationalDocument> HoldDocument(BackOfficeDbContext db,ActorContext actor,Guid id,string capability,CancellationToken token)
+    {
+        var document=await db.Set<OperationalDocument>().AsNoTracking().SingleOrDefaultAsync(x=>x.Id==id,token)??throw MissingDocument();
         await OperationalScope.HoldSubjects(db,actor,[document.SubjectId],capability,token);
         if(document.RelationshipId is Guid relationship&&!await db.Set<ClientAgencyRelationship>().AnyAsync(x=>x.Id==relationship&&x.State=="active",token))throw MissingDocument();
-        return(document,version);
+        return document;
     }
 
     private static async Task<(string State,FileObject? File)> ContentState(BackOfficeDbContext db,DocumentVersion version,CancellationToken token)
@@ -59,8 +58,20 @@ public sealed partial class DocumentService
         var file=await(from binding in db.Set<DocumentVersionContent>() join bytes in db.Set<FileObject>() on binding.FileObjectId equals bytes.Id
             where binding.VersionId==version.Id select bytes).AsNoTracking().SingleOrDefaultAsync(token);
         var work=await db.Set<OutboxWork>().AsNoTracking().SingleAsync(x=>x.Id==version.WorkId,token);
-        var state=file?.State=="quarantined"?"quarantined":work.State=="failed"?"failed":file?.State=="ready"&&work.State=="succeeded"?"ready":"pending";
-        return(state,file);
+        return(VersionState(file,work.State),file);
+    }
+    private static string VersionState(FileObject? file,string workState)=>file?.State=="quarantined"?"quarantined":workState=="failed"?"failed":file?.State=="ready"&&workState=="succeeded"?"ready":"pending";
+    private static Dictionary<string,object?> VersionView(DocumentVersion version,string kind,string state,FileObject? file)
+    {
+        var view=new Dictionary<string,object?>{
+            ["id"]=version.Id,["documentId"]=version.DocumentId,["number"]=version.Number,["kind"]=kind,
+            ["state"]=state,["originalName"]=version.OriginalName,["bytes"]=file?.ByteLength??0,
+            ["contentType"]=file?.MediaType??"application/pdf",["createdAt"]=version.CreatedAt
+        };
+        if(file is not null)view["sha256"]=file.Sha256;
+        if(version.TemplateVersionId is Guid template)view["templateVersionId"]=template;
+        if((version.PolicyVersionId??version.QuoteRevisionId??version.ServicingTermsVersionId) is Guid source)view["sourceVersionId"]=source;
+        return view;
     }
     private static OperationalAccessException MissingDocument()=>new(404,"document-version-not-found");
 }

@@ -98,3 +98,12 @@ test('explicit document generation returns its immutable pending version',async(
  assert.equal(operation['x-runtime-status'],'phase-9-07-api-verified');
  assert.ok(operation.parameters.some(x=>x.name==='Idempotency-Key'&&x.required));
 });
+
+test('document lists and immutable history expose verified paged contracts',async()=>{
+ const api=JSON.parse(await readFile(new URL('../contracts/openapi.json',import.meta.url),'utf8'));
+ for(const path of ['/records/{recordId}/documents','/documents/{documentId}/versions']){
+  assert.equal(api.paths[path].get['x-runtime-status'],'phase-9-07-api-verified');
+  assert.ok(api.paths[path].get.parameters.some(x=>x.name==='cursor'));
+ }
+ assert.equal(api.paths['/documents/{documentId}/versions'].get.responses[200].content['application/json'].schema.properties.items.items.$ref,'#/components/schemas/OpsDocumentVersion');
+});

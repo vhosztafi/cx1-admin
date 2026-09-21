@@ -60,6 +60,10 @@ export function addOperationalRuntimeContracts({schemas:s,ref:r,operation:op,lis
  for(const methods of Object.values(paths))for(const operation of Object.values(methods))if(taskRuntime.has(operation.operationId))operation['x-runtime-status']='phase-9-02-api-verified';
  const documentReadRuntime=new Set(['getDocumentVersion','downloadDocumentVersion','previewDocumentVersion']);
  const generateDocument=paths['/records/{recordId}/documents/generate'].post;
+ for(const path of ['/records/{recordId}/documents','/documents/{documentId}/versions']){
+  paths[path].get['x-runtime-status']='phase-9-07-api-verified';
+  paths[path].get.description='Scoped immutable document history. Opaque cursors retain a saved position so concurrent generation cannot shift later pages.';
+ }
  generateDocument['x-runtime-status']='phase-9-07-api-verified';
  generateDocument.responses[202].headers??={};
  generateDocument.responses[202].headers['Location']={description:'Status URL for the selected immutable document version.',schema:t(500)};
