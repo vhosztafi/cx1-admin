@@ -44,8 +44,16 @@ export function operationalDefinitions(){
  d.OpsIncident=obj({id,reference:text(40),revisionId:id,draft:ref('OpsIncidentDraftWrite'),state:en('draft','logged','queued','handed-off','failed'),resolution:ref('OpsOccurrenceResolution'),providerReference:text(100),createdAt:instant,updatedAt:instant},['id','reference','revisionId','draft','state','createdAt','updatedAt']);
  d.OpsIncidentHandoff=obj({revisionId:id,resolutionId:id,providerId:id});
  d.OpsClaimsSummary=obj({id,incidentId:id,handoffId:id,asOf:instant,receivedAt:instant,status:en('notified','open','closed','rejected'),paid:{anyOf:[amount,{type:'null'}]},reserved:{anyOf:[amount,{type:'null'}]},currency:{const:'GBP'},providerReference:text(100)});
- const generation=obj({kind:en('quotation','statement-of-fact','policy-schedule','policy-certificate','endorsement','renewal-invitation','cancellation-notice'),source:{oneOf:[obj({kind:{const:'policy-version'},policyVersionId:id}),obj({kind:{const:'quote-revision'},quoteRevisionId:id}),obj({kind:{const:'servicing-terms'},termsVersionId:id})]},templateVersionId:id,reason});
- d.OpsDocumentGenerate={oneOf:[obj({...generation.properties,visibility:en('internal','insurer')}),obj({...generation.properties,visibility:{const:'agency'},relationshipId:id})]};
+ const generationSources=[
+  {kind:en('statement-of-fact','policy-schedule','policy-certificate','endorsement','cancellation-notice'),source:obj({kind:{const:'policy-version'},policyVersionId:id})},
+  {kind:{const:'quotation'},source:obj({kind:{const:'quote-revision'},quoteRevisionId:id,quoteTermsVersionId:id})},
+  {kind:{const:'statement-of-fact'},source:obj({kind:{const:'quote-revision'},quoteRevisionId:id,quoteTermsVersionId:id},['kind','quoteRevisionId'])},
+  {kind:en('quotation','statement-of-fact','renewal-invitation'),source:obj({kind:{const:'servicing-terms'},termsVersionId:id})}
+ ];
+ d.OpsDocumentGenerate={oneOf:generationSources.flatMap(source=>[
+  obj({...source,templateVersionId:id,reason,documentId:id,visibility:en('internal','insurer')},['kind','source','templateVersionId','reason','visibility']),
+  obj({...source,templateVersionId:id,reason,documentId:id,visibility:{const:'agency'},relationshipId:id},['kind','source','templateVersionId','reason','visibility','relationshipId'])
+ ])};
  d.OpsDocumentVersion=obj({id,documentId:id,number:{type:'integer',minimum:1},kind:text(60),state:en('pending','ready','failed','quarantined'),originalName:text(255),bytes:{type:'integer',minimum:0,maximum:20971520},contentType:en('application/pdf','image/png','image/jpeg'),sha256:hash,sourceVersionId:id,templateVersionId:id,createdAt:instant,withdrawnEffectiveAt:instant},['id','documentId','number','kind','state','originalName','bytes','contentType','createdAt']);
  d.OpsFileUpload=obj({id,subjectRecordId:id,name:text(255),mediaType:en('application/pdf','image/png','image/jpeg'),byteLength:{type:'integer',minimum:1,maximum:20971520},sha256:hash,state:en('pending','ready','quarantined'),createdAt:instant,verifiedAt:{anyOf:[instant,{type:'null'}]},failureCode:{anyOf:[text(100),{type:'null'}]}});
  d.OpsMidSubmission=obj({id,intentId:id,policyVersionId:id,jobId:id,state:en('pending','accepted','rejected','failed','superseded'),items:arr(obj({riskItemId:id,kind:en('vehicle','trade-plate'),registration:text(20),action:en('add','change','remove'),effectiveAt:instant}),1),reasonCodes:arr(text(100)),providerReference:text(100)},['id','intentId','policyVersionId','jobId','state','items','reasonCodes']);

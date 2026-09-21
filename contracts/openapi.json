@@ -194956,68 +194956,28 @@
               "kind": {
                 "type": "string",
                 "enum": [
-                  "quotation",
                   "statement-of-fact",
                   "policy-schedule",
                   "policy-certificate",
                   "endorsement",
-                  "renewal-invitation",
                   "cancellation-notice"
                 ]
               },
               "source": {
-                "oneOf": [
-                  {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "properties": {
-                      "kind": {
-                        "const": "policy-version"
-                      },
-                      "policyVersionId": {
-                        "type": "string",
-                        "format": "uuid"
-                      }
-                    },
-                    "required": [
-                      "kind",
-                      "policyVersionId"
-                    ]
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "policy-version"
                   },
-                  {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "properties": {
-                      "kind": {
-                        "const": "quote-revision"
-                      },
-                      "quoteRevisionId": {
-                        "type": "string",
-                        "format": "uuid"
-                      }
-                    },
-                    "required": [
-                      "kind",
-                      "quoteRevisionId"
-                    ]
-                  },
-                  {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "properties": {
-                      "kind": {
-                        "const": "servicing-terms"
-                      },
-                      "termsVersionId": {
-                        "type": "string",
-                        "format": "uuid"
-                      }
-                    },
-                    "required": [
-                      "kind",
-                      "termsVersionId"
-                    ]
+                  "policyVersionId": {
+                    "type": "string",
+                    "format": "uuid"
                   }
+                },
+                "required": [
+                  "kind",
+                  "policyVersionId"
                 ]
               },
               "templateVersionId": {
@@ -195029,6 +194989,367 @@
                 "minLength": 1,
                 "maxLength": 1000,
                 "pattern": "\\S"
+              },
+              "documentId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "visibility": {
+                "type": "string",
+                "enum": [
+                  "internal",
+                  "insurer"
+                ]
+              }
+            },
+            "required": [
+              "kind",
+              "source",
+              "templateVersionId",
+              "reason",
+              "visibility"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "statement-of-fact",
+                  "policy-schedule",
+                  "policy-certificate",
+                  "endorsement",
+                  "cancellation-notice"
+                ]
+              },
+              "source": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "policy-version"
+                  },
+                  "policyVersionId": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "policyVersionId"
+                ]
+              },
+              "templateVersionId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000,
+                "pattern": "\\S"
+              },
+              "documentId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "visibility": {
+                "const": "agency"
+              },
+              "relationshipId": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "kind",
+              "source",
+              "templateVersionId",
+              "reason",
+              "visibility",
+              "relationshipId"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "const": "quotation"
+              },
+              "source": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "quote-revision"
+                  },
+                  "quoteRevisionId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "quoteTermsVersionId": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "quoteRevisionId",
+                  "quoteTermsVersionId"
+                ]
+              },
+              "templateVersionId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000,
+                "pattern": "\\S"
+              },
+              "documentId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "visibility": {
+                "type": "string",
+                "enum": [
+                  "internal",
+                  "insurer"
+                ]
+              }
+            },
+            "required": [
+              "kind",
+              "source",
+              "templateVersionId",
+              "reason",
+              "visibility"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "const": "quotation"
+              },
+              "source": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "quote-revision"
+                  },
+                  "quoteRevisionId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "quoteTermsVersionId": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "quoteRevisionId",
+                  "quoteTermsVersionId"
+                ]
+              },
+              "templateVersionId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000,
+                "pattern": "\\S"
+              },
+              "documentId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "visibility": {
+                "const": "agency"
+              },
+              "relationshipId": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "kind",
+              "source",
+              "templateVersionId",
+              "reason",
+              "visibility",
+              "relationshipId"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "const": "statement-of-fact"
+              },
+              "source": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "quote-revision"
+                  },
+                  "quoteRevisionId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "quoteTermsVersionId": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "quoteRevisionId"
+                ]
+              },
+              "templateVersionId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000,
+                "pattern": "\\S"
+              },
+              "documentId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "visibility": {
+                "type": "string",
+                "enum": [
+                  "internal",
+                  "insurer"
+                ]
+              }
+            },
+            "required": [
+              "kind",
+              "source",
+              "templateVersionId",
+              "reason",
+              "visibility"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "const": "statement-of-fact"
+              },
+              "source": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "quote-revision"
+                  },
+                  "quoteRevisionId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "quoteTermsVersionId": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "quoteRevisionId"
+                ]
+              },
+              "templateVersionId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000,
+                "pattern": "\\S"
+              },
+              "documentId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "visibility": {
+                "const": "agency"
+              },
+              "relationshipId": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "kind",
+              "source",
+              "templateVersionId",
+              "reason",
+              "visibility",
+              "relationshipId"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "quotation",
+                  "statement-of-fact",
+                  "renewal-invitation"
+                ]
+              },
+              "source": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "servicing-terms"
+                  },
+                  "termsVersionId": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "termsVersionId"
+                ]
+              },
+              "templateVersionId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000,
+                "pattern": "\\S"
+              },
+              "documentId": {
+                "type": "string",
+                "format": "uuid"
               },
               "visibility": {
                 "type": "string",
@@ -195055,66 +195376,24 @@
                 "enum": [
                   "quotation",
                   "statement-of-fact",
-                  "policy-schedule",
-                  "policy-certificate",
-                  "endorsement",
-                  "renewal-invitation",
-                  "cancellation-notice"
+                  "renewal-invitation"
                 ]
               },
               "source": {
-                "oneOf": [
-                  {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "properties": {
-                      "kind": {
-                        "const": "policy-version"
-                      },
-                      "policyVersionId": {
-                        "type": "string",
-                        "format": "uuid"
-                      }
-                    },
-                    "required": [
-                      "kind",
-                      "policyVersionId"
-                    ]
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "servicing-terms"
                   },
-                  {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "properties": {
-                      "kind": {
-                        "const": "quote-revision"
-                      },
-                      "quoteRevisionId": {
-                        "type": "string",
-                        "format": "uuid"
-                      }
-                    },
-                    "required": [
-                      "kind",
-                      "quoteRevisionId"
-                    ]
-                  },
-                  {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "properties": {
-                      "kind": {
-                        "const": "servicing-terms"
-                      },
-                      "termsVersionId": {
-                        "type": "string",
-                        "format": "uuid"
-                      }
-                    },
-                    "required": [
-                      "kind",
-                      "termsVersionId"
-                    ]
+                  "termsVersionId": {
+                    "type": "string",
+                    "format": "uuid"
                   }
+                },
+                "required": [
+                  "kind",
+                  "termsVersionId"
                 ]
               },
               "templateVersionId": {
@@ -195126,6 +195405,10 @@
                 "minLength": 1,
                 "maxLength": 1000,
                 "pattern": "\\S"
+              },
+              "documentId": {
+                "type": "string",
+                "format": "uuid"
               },
               "visibility": {
                 "const": "agency"

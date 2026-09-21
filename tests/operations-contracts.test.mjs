@@ -69,3 +69,12 @@ test('document generation separates internal and agency audience shape',()=>{
  assert.equal(valid('OpsDocumentGenerate',{...input,visibility:'agency'}),false);
  assert.ok(valid('OpsDocumentGenerate',{...input,visibility:'agency',relationshipId:id}));
 });
+
+test('document generation pins quotation terms and constrains source kinds',()=>{
+ const input={kind:'quotation',source:{kind:'quote-revision',quoteRevisionId:id},templateVersionId:id,visibility:'internal',reason:'Requested exact terms'};
+ assert.equal(valid('OpsDocumentGenerate',input),false);
+ assert.ok(valid('OpsDocumentGenerate',{...input,source:{...input.source,quoteTermsVersionId:id}}));
+ assert.ok(valid('OpsDocumentGenerate',{...input,kind:'statement-of-fact',documentId:id}));
+ assert.equal(valid('OpsDocumentGenerate',{...input,kind:'policy-certificate'}),false);
+ assert.equal(valid('OpsDocumentGenerate',{...input,kind:'policy-schedule',source:{kind:'servicing-terms',termsVersionId:id}}),false);
+});
