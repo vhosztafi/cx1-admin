@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Phase9 planning approved; beginning09-01 source and contract closure.
-last_updated: "2026-09-21T12:36:05.091Z"
-last_activity: "2026-09-21 — Phase9 plans approved:18/18 structural checks,8/8 requirements,15/15 decisions. Begin09-01."
+stopped_at: Phase9 planning approved;09-01 source inventory saved, closed operational schemas/API mapping still in progress.
+last_updated: "2026-09-21T12:41:15.485Z"
+last_activity: "2026-09-21 — Phase9 source inventory118 controls/509 display occurrences/10 supplemental branches; source tests7/7 with retained CC;09-01 remains incomplete."
 progress:
   total_phases: 13
   completed_phases: 8
@@ -27,7 +27,7 @@ Current focus: Phase9 tasks, documents, communication and incidents.
 Phase: 9 of13
 Plan: 1 of18 — source and closed contracts
 Status: Executing09-01 after approved sequential planning
-Last activity: Phase8 completed2026-09-21; all16 summaries and08-VERIFICATION pass. Final strict gate1511 unique cases/383 realSQL/no skips and exact420-case integration inventory;399root/172frontend, commercial5/5 and retained servicing17/17 plus underwriting pass. No verification process remains running.
+Last activity: Phase8 completed2026-09-21; all16 summaries and08-VERIFICATION pass. Final strict gate1511 unique cases/383 realSQL/no skips and exact420-case integration inventory;399root/172frontend, commercial5/5 and retained servicing17/17 plus underwriting pass. No verification process remains running. Phase9 source checks are short completed Node runs; no new SQL/browser acceptance has been launched.
 Progress: eight of13 phases complete;81/99 currently defined plans complete. Later phases still need detailed plans; the MVP is not100% complete.
 
 ## Decisions and boundaries
