@@ -10,4 +10,4 @@ Document requests from commercial new business, adjustment and renewal contain `
 
 Commercial cancellation emits durable notice and task-close consequences, plus certificate-withdrawal only if EL was selected. It emits no MID consequence. Consequences retain the cancellation's effectiveAt. Notice delivery may precede that instant; certificate withdrawal and task closure must not be presented as completed simply because work exists. Future cancellation preserves active cover and original exposure until the effective boundary. The cancellation credit is a posted obligation, not proof of a cash refund.
 
-Outstanding plan15 acceptance work is tracked in its checkpoint until full demo orchestration and SQL verification are complete. This handoff is not a Phase8 completion claim or human UAT record.
+Plan15 is complete with normal-API demo orchestration and SQL verification recorded in08-15-SUMMARY.md. Current full regression and phase acceptance remain08-16. This handoff is not a Phase8 completion claim or human UAT record.

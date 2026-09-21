@@ -1,6 +1,16 @@
 # 08-16 review — ongoing final acceptance
 
-This is an interim review, not phase completion. Updated2026-09-20T21:17Z.
+This is an interim review, not phase completion. Updated2026-09-21T06:23Z. The latest section below supersedes historical open/run notes.
+
+## Latest reviewed evidence
+
+Commit0a18a17 guards sign-in until hydration and uses explicitPOST, preventing a native GET from placing credentials in the URL. Actual browserRED asserted disabled=false before the fix; no-JavaScript and hydrated validationGREEN both pass, including on the updated live preview. The first connection-refused attempt is excluded. Demo fixture logs redact the plain and URL-encoded generated password.
+
+The first-page commercial history reader retries only409/underwriting-history-changed, at most3 retries, and never retries a cursor, unrelated conflict or denied read. Four focused tests pass. Mutation replay behavior is unchanged. The rollback tests now expect the later document-history migration's51971 guard and verify its retention as well as the existing data-preservation assertions; nativeSQL4 passes. Root395,frontend172,lint,typecheck and builds pass.
+
+Final current live initialization preserved139 table fingerprints across two passes. Verified owned processes were actually restarted; all3 policy graphs/12 versions,5 pinned commercial exposure readings and persistent key hashes are unchanged. Evidence: `.local/phase8-16-final-initialization/report.json` and `.local/phase8-16-final-restart/compare-report.json`. The preview needed a separate build with its API5087 rewrite; the initial5080 test-build attempt is excluded. Desktop/390px current capture evidence was visually inspected with no new layout defect.
+
+Current full acceptance is still open. A fresh non-issue commercial editor run timed out while reacquiring after reload. Its helper now waits for the loaded editor before starting the response deadline and handles click/response promises together; actualGREEN is queued, not yet claimed. The interrupted full-backend/commercial runs are excluded. Retained suites and a source-pinned sequential follow-on runner are recorded in08-16-CHECKPOINT.md. Finish them, perform strict result accounting and reconcile final source/security evidence before writing08-16-SUMMARY or markingPhase8 complete.
 
 ## Reviewed corrections
 

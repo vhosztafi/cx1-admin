@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Plan08-15 complete and committed;08-16 full backend integration running. Retained commercial lifecycle and restart preservation passed.
-last_updated: "2026-09-20T21:30:00Z"
-last_activity: "2026-09-20 —08-16 discovery/catalog fixes and targeted SQL gates committed. Retained underwriting aggregate passed; commercial adjustment, servicing aggregate and broad backend remain active."
+stopped_at: Plan08-16 executing; retained suites active, remaining acceptance queued sequentially. Read checkpoint before launching any tests.
+last_updated: "2026-09-21T06:23:00Z"
+last_activity: "2026-09-21 — Sign-in hydration fix committed; SQL4/root395/frontend172 pass. Final demo initialization and actual restart preserve139 tables/3 policy graphs/12 versions/keys. Editor reload regression and full acceptance remain pending."
 progress:
   total_phases: 13
   completed_phases: 7
@@ -28,7 +28,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
 Phase: 8 of 13 (Commercial Combined back office)
 Plan: 15 of16 complete;08-16 executing
 Status: Executing
-Last activity: 2026-09-20 —08-15 completed with retained policy PL-CC-0000000025. All139 tables unchanged across two initializations;3 policy graphs/12 versions and pinned exposure unchanged after actual restart.08-16 integration and acceptance remain ongoing.
+Last activity: 2026-09-21 —08-16 current preview installed and preservation passed. Retained suites run in exec98002; sequential follow-on runner exec44798/PID56268 waits for them, then checks editor reload, commercial aggregate and all420 backend integration cases. Inspect.local/phase8-16-sequential-progress.json; do not duplicate active runs.
 
 Progress: Phases1–7 complete;7/13 phases,80/81 currently defined implementation plans. Phase8 research/UI/plans checked and08-01/02/03/04/05/06/07/08/09/10/11/12/13/14 complete; later phases await detailed planning.
 
@@ -44,7 +44,7 @@ Progress: Phases1–7 complete;7/13 phases,80/81 currently defined implementatio
 
 ### Pending Todos
 
-- Execute08-16 final acceptance and repair catalog display findings. KeepCC-05 partial until Phase9 operational workflows exist; Phase8 final acceptance remains08-16.
+- Finish08-16: collect queued verification, fix any remaining failures, complete strict accounting and final source/security review. The12 baseline failures are triaged; a fresh editor-reload timeout is under verification. Catalog/sign-in fixes and final preview preservation are complete. KeepCC-05 partial until Phase9 operational workflows exist.
 - Keep future endpoints closed until owning phases implement and verify them.
 
 ### Blockers/Concerns
@@ -54,12 +54,12 @@ Progress: Phases1–7 complete;7/13 phases,80/81 currently defined implementatio
 
 ## Session Continuity
 
-Last session: 2026-09-20T20:27:00Z
-Stopped at:08-15 payload gate1102/11 SQL and demo gate1098/7 SQL pass. Retained commercial lifecycle runs in.local/commercial-lifecycle-demo-v1; full current-source backend verification runs in.local/phase8-16-backend-all. Follow08-16-CHECKPOINT.md.
+Last session: 2026-09-21T06:23:00Z
+Stopped at:08-16 active sequential acceptance. Follow08-16-CHECKPOINT.md and.local/phase8-16-sequential-progress.json; older full-backend and commercial runs were interrupted and are not acceptance evidence.
 Resume file: .planning/phases/08-commercial-combined-back-office/08-16-CHECKPOINT.md
 
 ## Autonomous continuation
 
 User approved requirements/roadmap and autonomous choices/progression on2026-09-13. Routine confirmation is not required. Keep research, design, checks and verification enabled; fix gaps instead of silently deferring them. Current execute-phase7 --auto and configured auto_advance authorise transition to Phase8 planning.
 
-Thread heartbeat: continue-cover-mga-back-office-mvp, every10minutes. Continue in this task; notify meaningful progress/blockers only. Current owned previews are recorded in.local/phase8-15-preview-pids.json; API72276/web61816, ports5087/3100, canonical persistent keys. Previous phase7 preview processes were actually stopped after identity/start-time verification. Stop only verified owned processes.
+Thread heartbeat: continue-cover-mga-back-office-mvp, ACTIVE every10minutes, restored and verified2026-09-21. Continue in this task; notify meaningful progress/blockers only. Current owned previews are recorded in.local/phase8-16-preview-pids.json; API7800/web37736, ports5087/3100, canonical persistent keys. API and web have separate start timestamps; verify identity before stopping either.
