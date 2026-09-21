@@ -192803,6 +192803,76 @@
           "body"
         ]
       },
+      "OpsWorkflowProvenance": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "ruleCode": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "\\S"
+          },
+          "ruleVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ruleVersion": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "ruleTitle": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "\\S"
+          },
+          "sourceKind": {
+            "type": "string",
+            "enum": [
+              "quote-referral",
+              "servicing-referral",
+              "quote-query",
+              "servicing-query",
+              "match-information-request",
+              "policy-term",
+              "agency-follow-up",
+              "job-exception"
+            ]
+          },
+          "sourceEventId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "sourceCondition": {
+            "type": "string",
+            "enum": [
+              "outstanding",
+              "resolved",
+              "not-due",
+              "unavailable"
+            ]
+          },
+          "sourceChanged": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ruleCode",
+          "ruleVersionId",
+          "ruleVersion",
+          "ruleTitle",
+          "sourceKind",
+          "sourceEventId",
+          "createdAt",
+          "sourceCondition",
+          "sourceChanged"
+        ]
+      },
       "OpsTask": {
         "type": "object",
         "additionalProperties": false,
@@ -192945,6 +193015,9 @@
           },
           "sourceChanged": {
             "type": "boolean"
+          },
+          "workflow": {
+            "$ref": "#/components/schemas/OpsWorkflowProvenance"
           }
         },
         "required": [

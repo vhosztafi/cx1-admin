@@ -83,7 +83,7 @@ Core value: complete persistent insurance and servicing journeys with consistent
 ### Work management
 
 - [ ] **OPS-01**: Staff can view personal/team queues, create tasks, set priority/due date/owner, link records, change status and record completion reasons.
-- [ ] **OPS-02**: Stored workflow rules create tasks for referrals, missing information, renewals, agency evidence and integration exceptions without duplicates.
+- [x] **OPS-02**: Stored workflow rules create tasks for referrals, missing information, renewals, agency evidence and integration exceptions without duplicates.
 - [ ] **OPS-03**: Staff can add internal notes and send agency-visible thread messages with attachments, recipients and visibility enforced on the server.
 - [ ] **OPS-04**: Staff can generate, preview and download actual policy/quote/renewal/cancellation documents linked to the exact source version and template version.
 - [ ] **OPS-05**: Staff can upload and retrieve evidence files through authorised endpoints and see durable metadata, checksums and document version history.
@@ -201,7 +201,7 @@ Every v1 requirement has one owning delivery phase; later phases may consume its
 | CC-04 | 8 | Complete — 2026-09-21;08-VERIFICATION |
 | CC-05 | 8, 9 | Partial — exact Phase8 payloads/queued content verified; Phase9 incident logging/rendering/delivery remain |
 | OPS-01 | 9 | Pending |
-| OPS-02 | 9 | Pending |
+| OPS-02 | 9 | Complete (09-04) |
 | OPS-03 | 9 | Pending |
 | OPS-04 | 9 | Pending |
 | OPS-05 | 9 | Pending |

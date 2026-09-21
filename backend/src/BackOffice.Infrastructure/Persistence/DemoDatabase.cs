@@ -24,10 +24,10 @@ public static class DemoDatabase
         await using var db = new BackOfficeDbContext(new DbContextOptionsBuilder<BackOfficeDbContext>().UseSqlServer(connectionString, sql => sql.UseCompatibilityLevel(160)).Options);
         if (reset) await db.Database.EnsureDeletedAsync(cancellationToken);
         await db.Database.MigrateAsync(cancellationToken);
-        await SeedAsync(db,password,cancellationToken,includeSupportFlags:true,includeMatches:true,includeQuoteCapture:true,includeUnderwriting:true,includeRenewalLifecycle:true,includeCommercialCapture:true,includeCommercialUnderwriting:true);
+        await SeedAsync(db,password,cancellationToken,includeSupportFlags:true,includeMatches:true,includeQuoteCapture:true,includeUnderwriting:true,includeRenewalLifecycle:true,includeCommercialCapture:true,includeCommercialUnderwriting:true,includeOperationalWorkflows:true);
     }
 
-    public static async Task SeedAsync(BackOfficeDbContext db,string password,CancellationToken cancellationToken = default,bool includeSupportFlags=false,bool includeMatches=false,bool includeQuoteCapture=false,bool includeUnderwriting=false,bool includeRenewalLifecycle=false,bool includeAccounting=true,bool includeCommercialCapture=false,bool includeCommercialUnderwriting=false)
+    public static async Task SeedAsync(BackOfficeDbContext db,string password,CancellationToken cancellationToken = default,bool includeSupportFlags=false,bool includeMatches=false,bool includeQuoteCapture=false,bool includeUnderwriting=false,bool includeRenewalLifecycle=false,bool includeAccounting=true,bool includeCommercialCapture=false,bool includeCommercialUnderwriting=false,bool includeOperationalWorkflows=false)
     {
         ValidatePassword(password);
         if (includeCommercialUnderwriting && (!includeUnderwriting || !includeCommercialCapture || !includeQuoteCapture))
@@ -111,6 +111,7 @@ public static class DemoDatabase
             await Policies.RenewalPreparationSeed.SeedAsync(db,cancellationToken);
         }
         if(includeRenewalLifecycle)await Policies.RenewalLifecycleSeed.SeedAsync(db,cancellationToken);
+        if(includeOperationalWorkflows)await Operations.WorkflowTaskSeed.SeedAsync(db,cancellationToken);
         if(includeCommercialCapture)await Quotes.CommercialCaptureSeed.SeedAsync(db,cancellationToken);
         if(includeCommercialUnderwriting)
         {

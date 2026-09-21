@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1–8 complete;84 currently defined implementation plans verified. Phase9 task UI plan09-03 is complete;09-04 workflow tasks are next; the13-phase MVP remains in progress.
+**Status:** Autonomous progression authorised. Phases1–8 complete;85 currently defined implementation plans verified. Phase9 workflow task plan09-04 is complete;09-05 durable files are next; the13-phase MVP remains in progress.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
@@ -189,7 +189,7 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 - [x] 09-01 — Reconcile operational source and closed data/API contracts (wave 1).
 - [x] 09-02 — Persist scoped subjects and task commands (wave 2, after09-01).
 - [x] 09-03 — Deliver prototype task list and detail workflows (wave 3, after09-02).
-- [ ] 09-04 — Materialize deduplicated workflow tasks (wave 4, after09-03).
+- [x] 09-04 — Materialize deduplicated workflow tasks (wave 4, after09-03).
 - [ ] 09-05 — Store and retrieve safe immutable file bytes (wave 5, after09-04).
 - [ ] 09-06 — Render product-specific immutable PDF documents (wave 6, after09-05).
 - [ ] 09-07 — Generate and version real documents from retained requests (wave 7, after09-06).
@@ -295,7 +295,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 6. Underwriting and first policy issue | 14/14 | Complete | 2026-09-17 |
 | 7. Policy lifecycle and history | 16/16 | Complete    | 2026-09-19 |
 | 8. Commercial Combined back office | 16/16 | Complete | 2026-09-21 |
-| 9. Tasks, documents, communication and incidents | 3/18 | In progress | — |
+| 9. Tasks, documents, communication and incidents | 4/18 | In progress | — |
 | 10. Accounting and insurer reporting | 0/TBD | Not started | — |
 | 11. Configuration and account administration | 0/TBD | Not started | — |
 | 12. Dashboards, search and reports | 0/TBD | Not started | — |

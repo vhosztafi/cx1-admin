@@ -284,3 +284,20 @@ completed stage. It preserves the prior report and failed logs, then runs the
 failed stage and every remaining stage. An active run, changed completed-stage
 source, missing evidence or changed origin is rejected. The report becomes
 successful only when all stages pass; this option does not filter out checks.
+
+## Workflow task processing
+
+Demo initialization now adds missing fictional workflow rule scopes alongside the
+existing seed data. Existing rules are preserved, including drafts and disabled
+or invalid configurations that require review. The scanner creates tasks only
+from eligible, owned persisted source records and a currently authorized internal
+originator. Repeated scans and rule wording revisions do not duplicate tasks.
+
+After applying the current migrations and seeding the local demo, enable the
+Development worker with `Cover__WorkflowTaskWorkerEnabled=true` when starting the
+API. It scans bounded batches every30seconds; the default is off so unrelated
+test or older developer databases are not processed implicitly. The retained
+demo must be explicitly upgraded before enabling this worker. This setting does
+not send messages or perform insurance decisions. Task detail shows whether the
+underlying source remains outstanding or has resolved; human completion remains
+a separate action.

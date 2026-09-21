@@ -47,6 +47,7 @@ CapacityDispatcher.Register(builder);
 ServicingCapacityDispatcher.Register(builder);
 ServicingDeliveryDispatcher.Register(builder);
 RenewalLifecycleDispatcher.Register(builder);
+WorkflowTaskDispatcher.Register(builder);
 CancellationNoticeDispatcher.Register(builder);
 QuoteDeliveryDispatcher.Register(builder);
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.QuoteIssueService>();

@@ -215,17 +215,19 @@ public sealed partial class TaskService(IDbContextFactory<BackOfficeDbContext> f
         var ids = rows.Select(x => x.Id).ToArray();
         var checklist = await db.Set<OperationalTaskChecklist>().AsNoTracking().Where(x => ids.Contains(x.TaskId)).OrderBy(x => x.Ordinal).ToArrayAsync(token);
         var presentation = await TaskPresentation.Load(db, rows, token);
-        return rows.Select(row => JsonSerializer.SerializeToElement(View(row, checklist.Where(x => x.TaskId == row.Id).Select(x => new { x.Id, x.Label, x.Required, x.Completed }).ToArray(), presentation), Json)).ToArray();
+        var workflows = await WorkflowTaskProvenanceReader.Read(db, ids, time.GetUtcNow(), token);
+        return rows.Select(row => JsonSerializer.SerializeToElement(View(row, checklist.Where(x => x.TaskId == row.Id).Select(x => new { x.Id, x.Label, x.Required, x.Completed }).ToArray(), presentation, workflows.GetValueOrDefault(row.Id)), Json)).ToArray();
     }
 
-    private object View(OperationalTask row, object checklist, TaskPresentation presentation)
+    private object View(OperationalTask row, object checklist, TaskPresentation presentation, WorkflowTaskProvenance? workflow)
     {
         var today = DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(time.GetUtcNow(), TimeZoneInfo.FindSystemTimeZoneById("Europe/London")).DateTime);
         return new { row.Id, row.Reference, subjectRecordId = row.SubjectId, subject = presentation.Subjects[row.SubjectId],
             assignmentLabel = row.OwnerId is Guid owner ? presentation.Users[owner] : row.TeamId is Guid team ? presentation.Teams[team] : "Unassigned",
             createdByLabel = presentation.Users[row.CreatedBy!.Value], row.TypeCode, row.Title, row.Priority, etag = Etag(row.RowVersion),
             assignment = new TaskAssignment(row.OwnerId is not null ? "user" : row.TeamId is not null ? "team" : "unassigned", row.OwnerId, row.TeamId), row.DueOn, row.State,
-            row.CreatedBy, row.CreatedAt, row.UpdatedAt, overdue = TaskRules.IsOverdue(row.State, row.DueOn, today), checklist, row.CompletionReason, row.SourceChanged };
+            row.CreatedBy, row.CreatedAt, row.UpdatedAt, overdue = TaskRules.IsOverdue(row.State, row.DueOn, today), checklist, row.CompletionReason,
+            sourceChanged = row.SourceChanged || workflow?.SourceChanged == true, workflow };
     }
     private static string SubjectHref(OperationalParent parent) => parent.Kind switch
     {

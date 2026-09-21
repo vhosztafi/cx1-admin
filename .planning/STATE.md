@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Phase9 plans09-01 through09-03 complete; continue09-04 workflow tasks.
-last_updated: "2026-09-21T15:03:26.8740363+00:00"
-last_activity: "2026-09-21 — Task UI and16browserchecks/SQL readback verified; resume09-04 workflow tasks."
+stopped_at: Phase9 plans09-01 through09-04 complete; continue09-05 durable files.
+last_updated: "2026-09-21T16:02:00+00:00"
+last_activity: "2026-09-21 — Workflow tasks verified across5families; hosted dispatcher and18browserchecks pass. Continue09-05."
 progress:
   total_phases: 13
   completed_phases: 8
   total_plans: 99
-  completed_plans: 84
+  completed_plans: 85
   percent: 62
 ---
 
@@ -25,10 +25,11 @@ Current focus: Phase9 tasks, documents, communication and incidents.
 ## Current Position
 
 Phase: 9 of13
-Plan: 4 of18 — published workflow task sources and deduplication
-Status: Executing09-04 after verified09-03 task UI
+Plan: 5 of18 — durable files and recovery
+Status: Executing09-05 after verified09-04 workflow tasks
 Last activity: Phase8 completed2026-09-21; all16 summaries and08-VERIFICATION pass. Final strict gate1511 unique cases/383 realSQL/no skips and exact420-case integration inventory;399root/172frontend, commercial5/5 and retained servicing17/17 plus underwriting pass. No verification process remains running. Phase9 task SQL/API checks are complete:32 focused cases/3 realSQL,411root and57final contract checks. 09-03 task UI passed29focused cases/2realSQL and16browserchecks plus SQL readback;411root177frontend, build/lint/typecheck pass.
-Progress: eight of13 phases complete;84/99 currently defined plans complete. Later phases still need detailed plans; the MVP is not100% complete.
+09-04:41unique strict passes/8realSQL, all8typed adapters/fivefamilies, hosted dispatcher and18browserchecks plus SQL readback,411root177frontend54contracts; build/lint/typecheck pass. OPS-02 complete; no acceptance process remains running.
+Progress: eight of13 phases complete;85/99 currently defined plans complete. Later phases still need detailed plans; the MVP is not100% complete.
 
 ## Decisions and boundaries
 
@@ -40,7 +41,7 @@ Progress: eight of13 phases complete;84/99 currently defined plans complete. Lat
 
 ## Next work
 
-Execute09-04 workflow tasks, then remaining sequential plans. Read09-PLAN-REVIEW,09-DATA-CONTRACTS,09-PATTERNS and09-VALIDATION. All18 structures and15 decision coverage pass; plans09-01 through09-03 are implemented and verified. Source reconciliation closed in09-01 and task SQL/API in09-02; see their summaries. Preserve original source identities, retained bytes/envelopes and later finance/configuration owners. Do not restart discussion or accepted Phase8 verification.
+Execute09-05 durable files, then remaining sequential plans. Read09-PLAN-REVIEW,09-DATA-CONTRACTS,09-PATTERNS and09-VALIDATION. All18 structures and15 decision coverage pass; plans09-01 through09-04 are implemented and verified. Preserve original source identities, retained bytes/envelopes and later finance/configuration owners. Do not restart discussion or accepted Phase8/workflow verification. Current workflow gate.local/phase9-04-final-strict; no retained Phase9 demo migration has run.
 
 ## Evidence and continuity
 

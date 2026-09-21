@@ -90,7 +90,10 @@ public sealed partial class UnderwritingRuntimeTests
     [InlineData("motor-trade-combined", "referral-service")]
     [InlineData("motor-trade-road-risks", "referral-authority")]
     [InlineData("motor-trade-combined", "referral-authority")]
-    public async Task RealSqlServicingRatingRequestsPinFullScheduleAndReauthorizeReplay(string product, string scenario)
+    public Task RealSqlServicingRatingRequestsPinFullScheduleAndReauthorizeReplay(string product, string scenario)
+        => RunServicingRatingRequests(product, scenario);
+
+    private async Task RunServicingRatingRequests(string product, string scenario, bool workflowTasks = false)
     {
         await WithDatabase(async (db, password) =>
         {
@@ -296,6 +299,11 @@ public sealed partial class UnderwritingRuntimeTests
             }
             if (scenario is "reject" or "revoke-before-apply") Assert.Empty(await db.Set<ServicingReferral>().Where(x=>x.DraftId==draftId).ToArrayAsync());
             var ratedView = await readModel.ReadAsync(f.Servicing, draftId, pageSize: 1);
+            if (workflowTasks)
+            {
+                await VerifyOperationalWorkflowServicing(db, f, applied, ratedView.DraftEtag);
+                return;
+            }
             if(scenario=="referral-work-http")
             {
                 await VerifyServicingReferralWorkHttp(db,f,password,applied,fence,ratedView.DraftEtag);
