@@ -28,8 +28,21 @@ public sealed partial class DocumentService
             .Select(x=>new{x.Id,subjectRecordId=x.SubjectId,x.Kind,x.Visibility,x.RelationshipId,
                 currentVersionId=db.Set<DocumentVersion>().Where(v=>v.DocumentId==x.Id && v.CreatedAt<=asOf).OrderByDescending(v=>v.Number).Select(v=>(Guid?)v.Id).FirstOrDefault()})
             .ToArrayAsync(token);
+        var selected=rows.Take(size).ToArray();
+        var ids=selected.Where(x=>x.currentVersionId!=null).Select(x=>x.currentVersionId!.Value).ToArray();
+        var versions=await(from version in db.Set<DocumentVersion>() join work in db.Set<OutboxWork>() on version.WorkId equals work.Id
+            join binding in db.Set<DocumentVersionContent>() on version.Id equals binding.VersionId into bindings
+            from binding in bindings.DefaultIfEmpty()
+            join file in db.Set<FileObject>() on binding.FileObjectId equals file.Id into files
+            from file in files.DefaultIfEmpty()
+            where ids.Contains(version.Id) select new{Version=version,File=file,work.State}).AsNoTracking().ToArrayAsync(token);
+        var metadata=versions.Select(v=>(v.Version,View:VersionView(v.Version,selected.Single(x=>x.Id==v.Version.DocumentId).Kind,VersionState(v.File,v.State),v.File))).ToArray();
+        await AddSourceMetadata(db,metadata,token);
+        var byId=metadata.ToDictionary(x=>x.Version.Id,x=>x.View);
+        var items=selected.Select(x=>(object)new{x.Id,x.subjectRecordId,x.Kind,x.Visibility,x.RelationshipId,x.currentVersionId,
+            currentVersion=x.currentVersionId is Guid id?byId.GetValueOrDefault(id):null}).ToArray();
         await transaction.CommitAsync(token);
-        return new(rows.Take(size).Cast<object>().ToArray(),count,NextDocumentId:rows.Length>size?rows[size-1].Id:null);
+        return new(items,count,NextDocumentId:rows.Length>size?rows[size-1].Id:null);
     }
 
     public async Task<DocumentReadPage> ListVersions(ActorContext actor,Guid documentId,int offset,int size,DateTimeOffset asOf,CancellationToken token)
@@ -48,7 +61,9 @@ public sealed partial class DocumentService
             join file in db.Set<FileObject>() on binding.FileObjectId equals file.Id into files
             from file in files.DefaultIfEmpty()
             orderby version.Number descending select new{Version=version,File=file,work.State}).AsNoTracking().ToArrayAsync(token);
-        var items=rows.Take(size).Select(x=>(object)VersionView(x.Version,document.Kind,VersionState(x.File,x.State),x.File)).ToArray();
+        var metadata=rows.Take(size).Select(x=>(x.Version,View:VersionView(x.Version,document.Kind,VersionState(x.File,x.State),x.File))).ToArray();
+        await AddSourceMetadata(db,metadata,token);
+        var items=metadata.Select(x=>(object)x.View).ToArray();
         await transaction.CommitAsync(token);
         return new(items,count,NextNumber:rows.Length>size?rows[size-1].Version.Number:null);
     }

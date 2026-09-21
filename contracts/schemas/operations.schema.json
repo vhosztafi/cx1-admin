@@ -1906,6 +1906,286 @@
         "providerReference"
       ]
     },
+    "OpsDocumentGenerationChoice": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "statement-of-fact",
+                "policy-schedule",
+                "policy-certificate",
+                "endorsement",
+                "cancellation-notice"
+              ]
+            },
+            "source": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "const": "policy-version"
+                },
+                "policyVersionId": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "required": [
+                "kind",
+                "policyVersionId"
+              ]
+            },
+            "label": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            },
+            "templateVersionId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "templateLabel": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            }
+          },
+          "required": [
+            "kind",
+            "source",
+            "label",
+            "templateVersionId",
+            "templateLabel"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "quotation"
+            },
+            "source": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "const": "quote-revision"
+                },
+                "quoteRevisionId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "quoteTermsVersionId": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "required": [
+                "kind",
+                "quoteRevisionId",
+                "quoteTermsVersionId"
+              ]
+            },
+            "label": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            },
+            "templateVersionId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "templateLabel": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            }
+          },
+          "required": [
+            "kind",
+            "source",
+            "label",
+            "templateVersionId",
+            "templateLabel"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "statement-of-fact"
+            },
+            "source": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "const": "quote-revision"
+                },
+                "quoteRevisionId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "quoteTermsVersionId": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "required": [
+                "kind",
+                "quoteRevisionId"
+              ]
+            },
+            "label": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            },
+            "templateVersionId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "templateLabel": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            }
+          },
+          "required": [
+            "kind",
+            "source",
+            "label",
+            "templateVersionId",
+            "templateLabel"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "quotation",
+                "statement-of-fact",
+                "renewal-invitation"
+              ]
+            },
+            "source": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "const": "servicing-terms"
+                },
+                "termsVersionId": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "required": [
+                "kind",
+                "termsVersionId"
+              ]
+            },
+            "label": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            },
+            "templateVersionId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "templateLabel": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            }
+          },
+          "required": [
+            "kind",
+            "source",
+            "label",
+            "templateVersionId",
+            "templateLabel"
+          ]
+        }
+      ]
+    },
+    "OpsDocumentGenerationOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "productCode": {
+          "type": "string",
+          "enum": [
+            "motor-trade-road-risks",
+            "motor-trade-combined",
+            "commercial-combined"
+          ]
+        },
+        "sourceKind": {
+          "type": "string",
+          "enum": [
+            "policy-version",
+            "quote-revision",
+            "servicing-terms"
+          ]
+        },
+        "sourceVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "sourceLabel": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "\\S"
+        },
+        "sourceDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OpsDocumentGenerationChoice"
+          },
+          "minItems": 0,
+          "maxItems": 200,
+          "uniqueItems": true
+        },
+        "nextCursor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "productCode",
+        "sourceKind",
+        "sourceVersionId",
+        "sourceLabel",
+        "sourceDate",
+        "items"
+      ]
+    },
     "OpsDocumentGenerate": {
       "oneOf": [
         {
@@ -2554,6 +2834,64 @@
         "withdrawnEffectiveAt": {
           "type": "string",
           "format": "date-time"
+        },
+        "sourceKind": {
+          "type": "string",
+          "enum": [
+            "policy-version",
+            "quote-revision",
+            "servicing-terms",
+            "upload"
+          ]
+        },
+        "sourceLabel": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "\\S"
+        },
+        "sourceDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "sourceHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "templateHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "termsHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "quoteTermsVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "rendererVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "pattern": "\\S"
+        },
+        "projectionVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "pattern": "\\S"
+        },
+        "fontVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "pattern": "\\S"
+        },
+        "pageCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 300
         }
       },
       "required": [
@@ -2566,6 +2904,51 @@
         "bytes",
         "contentType",
         "createdAt"
+      ]
+    },
+    "OpsDocument": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "subjectRecordId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60,
+          "pattern": "\\S"
+        },
+        "visibility": {
+          "type": "string",
+          "enum": [
+            "internal",
+            "agency",
+            "insurer"
+          ]
+        },
+        "relationshipId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "currentVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "currentVersion": {
+          "$ref": "#/$defs/OpsDocumentVersion"
+        }
+      },
+      "required": [
+        "id",
+        "subjectRecordId",
+        "kind",
+        "visibility"
       ]
     },
     "OpsFileUpload": {

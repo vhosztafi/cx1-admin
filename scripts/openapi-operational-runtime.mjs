@@ -2,6 +2,15 @@ import {operationalDefinitions,relocateOperational} from './operations-contracts
 // Applied after legacy form modifiers. These routes remain contract-only until their owning Phase9 plan runs.
 export function addOperationalRuntimeContracts({schemas:s,ref:r,operation:op,list,paths,object:o,id,text:t}){
  Object.assign(s,relocateOperational(operationalDefinitions()));
+ paths['/records/{recordId}/documents'].get.responses[200].content['application/json'].schema.properties.items.items=r('OpsDocument');
+ op('get','/records/{recordId}/documents/options','listDocumentGenerationOptions','document-generate',{query:[['sourceKind',{type:'string',enum:['policy-version','quote-revision','servicing-terms']}],['sourceId',id],['quoteTermsVersionId',id],['pageSize',{type:'integer',minimum:1,maximum:100,default:25}],['cursor',t(2048)]],output:r('OpsDocumentGenerationOptions')});
+ const options=paths['/records/{recordId}/documents/options'].get;
+ for(const parameter of options.parameters)if(['sourceKind','sourceId'].includes(parameter.name))parameter.required=true;
+ options.description='Applicable templates for the explicitly selected owned source. Quote terms require a quote revision source. Empty pages may have a continuation; cursors are bound to actor, route and source filters.';
+ options['x-runtime-status']='phase-9-08-implemented';
+ options.responses[200].headers??={};
+ options.responses[200].headers['Cache-Control']={description:'Private, no-store.',schema:t(100)};
+ options.responses[200].headers['X-Content-Type-Options']={description:'nosniff',schema:{type:'string',enum:['nosniff']}};
  const input=(path,method,name)=>{paths[path][method].requestBody={required:true,content:{'application/json':{schema:r(name)}}};paths[path][method]['x-runtime-status']='phase-9-contract-only';};
  const output=(path,method,name)=>{const x=paths[path][method];for(const [code,response]of Object.entries(x.responses))if(Number(code)>=200&&Number(code)<300&&response.content?.['application/json'])response.content['application/json'].schema=r(name);x['x-runtime-status']='phase-9-contract-only';};
  for(const [path,method,name]of[['/tasks','post','OpsTaskWrite'],['/tasks/{taskId}','put','OpsTaskUpdateWrite'],['/tasks/{taskId}/transition','post','OpsTaskTransition'],['/tasks/bulk-assignment','post','OpsTaskBulkAssignment'],['/records/{recordId}/threads','post','OpsThreadWrite'],['/threads/{threadId}/messages','post','OpsMessageWrite'],['/messages/{messageId}','put','OpsMessageWrite'],['/records/{recordId}/document-deliveries','post','OpsPackWrite'],['/records/{recordId}/documents/generate','post','OpsDocumentGenerate'],['/incidents','post','OpsIncidentDraftWrite'],['/incidents/{incidentId}','put','OpsIncidentDraftWrite'],['/incidents/{incidentId}/handoff','post','OpsIncidentHandoff']])input(path,method,name);

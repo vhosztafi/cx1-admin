@@ -14,6 +14,28 @@ public static class DocumentEndpoints
 
     public static void MapDocuments(this WebApplication app)
     {
+        app.MapGet("/api/v1/records/{recordId:guid}/documents/options",(Guid recordId,HttpContext context,DocumentService service,PartyPaging paging)=>Run(context,async()=>
+        {
+            QuoteEndpoints.Id(recordId);var actor=LocalIdentityService.Actor(context.User);
+            var page=paging.Read(context,actor,"document-template-guid-v1","sourceKind","sourceId","quoteTermsVersionId") ?? throw new QuoteHttpException(400,"invalid-document-options-query");
+            var query=context.Request.Query;var kind=query["sourceKind"].ToString();
+            if(!Guid.TryParse(query["sourceId"],out var sourceId) || sourceId==Guid.Empty)throw new QuoteHttpException(400,"invalid-document-source");
+            Guid? termsId=null;
+            if(query.ContainsKey("quoteTermsVersionId"))
+            {
+                if(kind!="quote-revision" || !Guid.TryParse(query["quoteTermsVersionId"],out var terms) || terms==Guid.Empty)throw new QuoteHttpException(400,"invalid-document-source");
+                termsId=terms;
+            }
+            var source=kind switch
+            {
+                "policy-version"=>new DocumentSourceInput(kind,PolicyVersionId:sourceId),
+                "quote-revision"=>new DocumentSourceInput(kind,QuoteRevisionId:sourceId,QuoteTermsVersionId:termsId),
+                "servicing-terms"=>new DocumentSourceInput(kind,TermsVersionId:sourceId),
+                _=>throw new QuoteHttpException(400,"invalid-document-source")
+            };
+            var result=await service.GenerationOptions(actor,recordId,source,page.KeyId,page.Size,page.AsOf,context.RequestAborted);
+            return Results.Json(new{result.ProductCode,result.SourceKind,result.SourceVersionId,result.SourceLabel,result.SourceDate,result.Items,nextCursor=paging.NextGuid(page,result.NextTemplateId)},ClientEndpoints.Json);
+        })).RequireAuthorization("document-generate");
         app.MapPost("/api/v1/records/{recordId:guid}/documents/upload",(Guid recordId,HttpContext context,DocumentService service)=>Run(context,async()=>
         {
             QuoteEndpoints.Id(recordId);var key=QuoteHttpInput.Key(context.Request);

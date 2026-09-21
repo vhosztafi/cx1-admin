@@ -14,6 +14,7 @@ public sealed partial class DocumentService
         var held=await HoldReadableVersion(db,actor,versionId,"document-read",token);
         var state=await ContentState(db,held.Version,token);
         var view=VersionView(held.Version,held.Document.Kind,state.State,state.File);
+        await AddSourceMetadata(db,[(held.Version,view)],token);
         var result=new CommandOutcome(versionId,200,JsonSerializer.Serialize(view,Json));
         await transaction.CommitAsync(token);return result;
     }
