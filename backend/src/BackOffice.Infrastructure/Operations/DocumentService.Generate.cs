@@ -60,10 +60,17 @@ public sealed partial class DocumentService
             },token);
     }
 
-    internal static string GenerationPayload(DocumentVersion version)=>JsonSerializer.Serialize(new{
+    internal static string GenerationPayload(DocumentVersion version)
+    {
+        var payload=JsonSerializer.Serialize(new{
         format="document-generation-1",documentVersionId=version.Id,documentId=version.DocumentId,
         sourceKind=version.SourceKind,sourceVersionId=version.PolicyVersionId??version.QuoteRevisionId??version.ServicingTermsVersionId,
         quoteTermsVersionId=version.QuoteTermsVersionId,templateVersionId=version.TemplateVersionId,
         sourceHash=version.SourceHash,termsHash=version.TermsHash,templateHash=version.TemplateHash
-    },Json);
+        },Json);
+        if(version.CancellationConsequenceId is not Guid consequenceId)return payload;
+        var envelope=System.Text.Json.Nodes.JsonNode.Parse(payload)!;
+        envelope["cancellationConsequenceId"]=consequenceId;
+        return envelope.ToJsonString(Json);
+    }
 }

@@ -8,6 +8,26 @@ namespace BackOffice.Infrastructure.Operations;
 
 public sealed partial class DocumentService
 {
+    public async Task<IReadOnlyList<Guid>> UnregisteredCancellationNotices(int offset,CancellationToken token)
+    {
+        await using var db=await factory.CreateDbContextAsync(token);
+        return await db.Set<CancellationConsequence>().Where(n=>n.Kind=="notice"&&n.CreatedBy!=null&&
+            !db.Set<DocumentVersion>().Any(v=>v.CancellationConsequenceId==n.Id))
+            .OrderBy(n=>n.CreatedAt).ThenBy(n=>n.Id).Skip(offset).Take(32).Select(n=>n.Id).ToArrayAsync(token);
+    }
+
+    public async Task RegisterOriginalCancellationNotice(Guid noticeId,CancellationToken token)
+    {
+        await using var db=await factory.CreateDbContextAsync(token);
+        var notice=await db.Set<CancellationConsequence>().AsNoTracking().SingleAsync(n=>n.Id==noticeId,token);
+        var user=await db.Set<StaffUser>().AsNoTracking().SingleOrDefaultAsync(u=>u.Id==notice.CreatedBy,token)
+            ??throw new OperationalAccessException(403,"document-originator-unavailable");
+        var roles=await(from link in db.Set<UserRole>() join role in db.Set<Role>() on link.RoleId equals role.Id
+            where link.UserId==user.Id select role.Code).ToArrayAsync(token);
+        var actor=new ActorContext(user.Id,user.TeamId,user.AgencyId,roles.ToHashSet(StringComparer.Ordinal));
+        await RegisterCancellationNotice(actor,noticeId,"original-cancellation-document/"+noticeId.ToString("N"),token);
+    }
+
     public async Task<IReadOnlyList<Guid>> UnregisteredRequests(int offset,CancellationToken token)
     {
         await using var db=await factory.CreateDbContextAsync(token);var now=time.GetUtcNow();

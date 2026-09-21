@@ -311,7 +311,11 @@ retained policy-document requests and explicit policy/quotation/servicing docume
 original request/work identities and rechecks the original user's current
 authority; it does not send documents. It manages its generated file finalization
 and expired unreferenced temporary cleanup even if the separate upload file
-worker is disabled. Original cancellation consequence integration remains in progress.
+worker is disabled. It also discovers retained cancellation notices, including
+notices whose demo delivery has already succeeded. A separate technical PDF work
+item links to the original consequence; the original delivery work and receipt
+are never rewritten or resent. Operational template seeding supplies the new
+cancellation-notice and endorsement kinds without changing earlier policy templates.
 
 `POST /api/v1/records/{operationalSubjectId}/documents/generate` selects exact source
 and template IDs. Optional `documentId` appends a version while retaining earlier

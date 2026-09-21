@@ -17,6 +17,11 @@ public sealed partial class PolicyDocumentRenderService
         var version = await db.Set<DocumentVersion>().AsNoTracking().SingleOrDefaultAsync(x=>x.Id==versionId,token) ?? throw Missing();
         var document = await db.Set<OperationalDocument>().AsNoTracking().SingleAsync(x=>x.Id==version.DocumentId,token);
         var held = await OperationalScope.HoldSubjects(db, actor, [document.SubjectId], "document-generate", token);
+        if(version.CancellationConsequenceId is Guid consequenceId)
+        {
+            var original=await LoadCancellation(db,consequenceId,held.Subjects.Single().PolicyId ?? throw Missing(),actor.UserId,token);
+            if(original.Version.Id!=version.PolicyVersionId)throw Invalid();
+        }
         var selection = new DocumentGenerateInput(document.Kind,new(version.SourceKind,version.PolicyVersionId,version.QuoteRevisionId,version.ServicingTermsVersionId,version.QuoteTermsVersionId),
             version.TemplateVersionId ?? throw Missing(),document.Visibility,version.Reason,document.RelationshipId,document.Id);
         var selected = await LoadSelected(db, held.Subjects.Single(), selection, token);

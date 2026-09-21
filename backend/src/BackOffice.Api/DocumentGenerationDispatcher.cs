@@ -7,7 +7,7 @@ public sealed class DocumentGenerationDispatcher(IServiceScopeFactory scopes,Tim
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var requestOffset=0;var workOffset=0;
+        var requestOffset=0;var cancellationOffset=0;var workOffset=0;
         while(!stoppingToken.IsCancellationRequested)
         {
             try
@@ -18,6 +18,13 @@ public sealed class DocumentGenerationDispatcher(IServiceScopeFactory scopes,Tim
                 {
                     try{await service.RegisterOriginalRequest(request,stoppingToken);}
                     catch(OperationalAccessException){logger.LogWarning("Document request {RequestId} requires current original authority.",request);}
+                }
+                var notices=await service.UnregisteredCancellationNotices(cancellationOffset,stoppingToken);cancellationOffset=notices.Count==0?0:cancellationOffset+notices.Count;
+                foreach(var notice in notices)
+                {
+                    try{await service.RegisterOriginalCancellationNotice(notice,stoppingToken);}
+                    catch(OperationalAccessException){logger.LogWarning("Cancellation document {NoticeId} requires current original authority.",notice);}
+                    catch(DocumentRenderException){logger.LogWarning("Cancellation document {NoticeId} failed its retained provenance check.",notice);}
                 }
                 var work=await service.PendingGenerations(workOffset,stoppingToken);workOffset=work.Count==0?0:workOffset+work.Count;
                 foreach(var id in work)
