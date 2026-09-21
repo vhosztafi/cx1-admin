@@ -1,5 +1,6 @@
 'use client';
 import { TaskCreateEntry } from '../operations/task-create-entry';
+import { RecordDocuments } from '../operations/document-list';
 import Link from 'next/link';
 import { useState } from 'react';
 import { policyCoverageLabel } from '../../lib/policies-api';
@@ -17,7 +18,6 @@ import {CommercialPolicyRecord} from './commercial-policy-record';
 import {isCommercialPolicy, type AnyPolicyTemporalView} from '../../lib/commercial-policy';
 import { PolicyRiskOverview } from './policy-risk-overview';
 
-const documentNames: Record<string, string> = { 'policy-schedule': 'Policy schedule', 'policy-certificate': 'Certificate of motor insurance', 'policy-statement': 'Statement of fact' };
 const date = (value: string) => new Date(value).toLocaleString('en-GB', { timeZone: 'Europe/London', dateStyle: 'medium', timeStyle: 'short' });
 const tabs = ['Overview', 'Risk details', 'Cover', 'Drivers', 'Vehicles', 'Transactions', 'Documents'] as const;
 
@@ -52,9 +52,7 @@ export function PolicyRecord({ policyId, questionLabels,selection,initialTab,ini
   const declaredName = typeof snapshot.insured.legalName === 'string' ? snapshot.insured.legalName : [snapshot.insured.firstName, snapshot.insured.surname].filter(x => typeof x === 'string').join(' ') || 'Declared insured';
   const coverage = policy.coverageState === 'cancelled' ? 'Cancelled' : cancelled ? 'Cancellation scheduled' : policyCoverageLabel(snapshot.term.startsAt, snapshot.term.endsAt, Date.parse(policy.effectiveCutoff));
   const fields = (items: [string, string][]) => <dl className="underwriting-provenance">{items.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>;
-  const documents = <Panel title="Policy documents" note="Requests retained with the issued version"><DataTable caption="Policy document requests" columns={['Document', 'Version', 'Status']}>
-    {policy.documentRequests.map(item => <tr key={item.id}><th scope="row">{documentNames[item.kind] ?? item.kind}</th><td>v{policy.versionSequence}</td><td><Status tone="info">{item.state === 'requested' ? 'Generation requested' : item.state}</Status></td></tr>)}
-  </DataTable><div className="quote-rail-body"><p>Generation is pending. No documents have been generated or sent by this issue action.</p></div></Panel>;
+  const documents = <RecordDocuments parent={{kind:'policy',id:policyId,label:policy.reference}} source={{kind:'policy-version',policyVersionId:policy.versionId}} relationshipId={policy.relationshipId} />;
   const transaction = <Panel title={cancelled ? 'Cancellation transaction' : renewal ? 'Renewal transaction' : adjusted ? 'Adjustment transaction' : 'New-business transaction'} note={`Transaction ${policy.transactionSequence} · Version ${policy.versionSequence}`}><div className="quote-rail-body">
     {fields([['Policy', policy.reference], ['Issued', date(policy.issuedAt) + ' · London'], ['Effective', date(policy.effectiveAt) + ' · London'], ['Reason', policy.reason], [adjusted && !renewal ? 'Premium movement' : 'Term premium', formatGbp(financial.premium)], ['Insurance premium tax', formatGbp(financial.tax)], ['Policy fee', formatGbp(financial.fee)], [adjusted ? 'Amount due / credit' : 'Opening amount due', formatGbp(financial.amountDue)]])}
     <p>{cancelled ? 'This cancellation and its balanced charge or credit are recorded.' : renewal ? 'This renewal term and its balanced opening charge are recorded.' : adjusted ? 'This adjustment and its balanced charge or credit are recorded.' : 'One new-business transaction and a balanced opening posting are recorded.'} Payment collection is not part of policy issue.</p>

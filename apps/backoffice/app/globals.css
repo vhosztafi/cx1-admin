@@ -463,3 +463,16 @@ h1, h2, p { margin: 0; }
 .task-history small { color: #586174; }
 .task-preserve-text { white-space: pre-wrap; overflow-wrap: anywhere; }
 @media (max-width: 1100px) { .task-detail-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Documents share the existing record panels and controls. */
+.document-fields { border: 0; padding: 0; margin: 0; display: grid; gap: 14px; min-width: 0; }
+.document-fields label { display: grid; gap: 6px; }
+.document-secondary { display: block; margin-top: 5px; color: var(--muted, #667085); }
+.document-provenance { display: grid; gap: 10px; }
+.document-provenance div { min-width: 0; }
+.document-provenance dd { margin: 3px 0 0; overflow-wrap: anywhere; }
+.document-history-version { padding: 18px 0; border-top: 1px solid #e4e7ec; }
+.document-preview { width: min(1000px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); overflow: auto; }
+.document-preview-frame { display: block; width: 100%; height: 60dvh; margin-top: 16px; border: 1px solid #e4e7ec; background: #f6f7f9; }
+.document-preview p { overflow-wrap: anywhere; }
+@media (max-width: 600px) { .document-preview { width: calc(100vw - 20px); padding: 16px; } .document-fields input[type=file] { max-width: 100%; } }
