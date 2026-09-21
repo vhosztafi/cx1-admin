@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Phase9 plans09-01 through09-05 complete; continue09-06 PDF rendering.
-last_updated: "2026-09-21T17:32:00+00:00"
-last_activity: "2026-09-21 — Policy PDF increment verified37cases/1realSQL and independent multi-page PDF inspection; continue09-06 quotation/renewal rendering."
+stopped_at: Phase9 plans09-01 through09-06 complete; continue09-07 document generation.
+last_updated: "2026-09-21T18:22:00+00:00"
+last_activity: "2026-09-21 — PDF rendering verified72unique cases/7realSQL,412root and15 independent PDF examples; continue09-07."
 progress:
   total_phases: 13
   completed_phases: 8
   total_plans: 99
-  completed_plans: 86
+  completed_plans: 87
   percent: 62
 ---
 
@@ -25,13 +25,13 @@ Current focus: Phase9 tasks, documents, communication and incidents.
 ## Current Position
 
 Phase: 9 of13
-Plan: 6 of18 — exact-source PDF rendering
-09-06 checkpoint: issued-policy PDFs and scoped retained-request caller verified37unique cases/1realSQL,412root, independent parsed text and multi-page visual review. Full09-06 remains incomplete: quotation/servicing/renewal sources and future template publication next. No verification process remains running; see09-06-CHECKPOINT.
-Status: Executing09-06 after verified09-05 durable files
+Plan: 7 of18 — durable document generation and versioning
+09-06 complete:72unique cases/7realSQL/no skips in.local/phase9-06-final-strict,412root and15 independent parsed PDFs with multi-page visual review. Future templates are additive; migration protects retained rows. No verification process remains running; see09-06-SUMMARY.
+Status: Executing09-07 after verified09-06 PDF rendering
 Last activity: Phase8 completed2026-09-21; all16 summaries and08-VERIFICATION pass. Final strict gate1511 unique cases/383 realSQL/no skips and exact420-case integration inventory;399root/172frontend, commercial5/5 and retained servicing17/17 plus underwriting pass. No verification process remains running. Phase9 task SQL/API checks are complete:32 focused cases/3 realSQL,411root and57final contract checks. 09-03 task UI passed29focused cases/2realSQL and16browserchecks plus SQL readback;411root177frontend, build/lint/typecheck pass.
 09-04:41unique strict passes/8realSQL, all8typed adapters/fivefamilies, hosted dispatcher and18browserchecks plus SQL readback,411root177frontend54contracts; build/lint/typecheck pass. OPS-02 complete; no acceptance process remains running.
 09-05:47unique strict passes/4realSQL,8filesystem cases, all3legacy evidence bridges, hosted finalization and API host restart,412root55contracts; OpenAPI valid. Current gate.local/phase9-05-final-strict. No verification process remains running. OPS-05 history/UI obligations remain09-07/08.
-Progress: eight of13 phases complete;86/99 currently defined plans complete. Later phases still need detailed plans; the MVP is not100% complete.
+Progress: eight of13 phases complete;87/99 currently defined plans complete. Later phases still need detailed plans; the MVP is not100% complete.
 
 ## Decisions and boundaries
 
@@ -43,7 +43,7 @@ Progress: eight of13 phases complete;86/99 currently defined plans complete. Lat
 
 ## Next work
 
-Execute09-06 PDF rendering, then remaining sequential plans. Read09-05-SUMMARY,09-06-PLAN,09-RESEARCH,09-DATA-CONTRACTS,09-PATTERNS and09-VALIDATION. All18 structures and15 decision coverage pass; plans09-01 through09-05 are implemented and verified. Preserve original source identities, retained bytes/envelopes and later finance/configuration owners. Do not restart discussion or accepted Phase8/workflow/file verification. Current gate.local/phase9-05-final-strict; no retained Phase9 demo migration has run.
+Execute09-07 durable document generation, then remaining sequential plans. Read09-05-SUMMARY,09-06-PLAN,09-RESEARCH,09-DATA-CONTRACTS,09-PATTERNS and09-VALIDATION. All18 structures and15 decision coverage pass; plans09-01 through09-06 are implemented and verified. Preserve original source identities, retained bytes/envelopes and later finance/configuration owners. Do not restart discussion or accepted Phase8/workflow/file verification. Current gate.local/phase9-05-final-strict; no retained Phase9 demo migration has run.
 
 ## Evidence and continuity
 

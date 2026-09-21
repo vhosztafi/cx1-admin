@@ -19,7 +19,11 @@ public sealed partial class UnderwritingRuntimeTests
     [InlineData("motor-trade-combined",true,false)]
     [InlineData("motor-trade-road-risks",false,true)]
     [InlineData("motor-trade-combined",false,true)]
-    public async Task RealSqlRenewalLifecycleInvitationsRetainExactTermsAndSeparateAcceptance(string product,bool issue,bool lapseRace)
+    public Task RealSqlRenewalLifecycleInvitationsRetainExactTermsAndSeparateAcceptance(string product,bool issue,bool lapseRace)
+        => VerifyRenewalLifecycle(product,issue,lapseRace);
+
+    private async Task VerifyRenewalLifecycle(string product,bool issue,bool lapseRace,
+        Func<BackOfficeDbContext,DecisionFixture,ServicingCycle,ServicingTermsVersion,Task>? onPrepared=null)
     {
         await WithDatabase(async(db,password)=>
         {
@@ -72,6 +76,7 @@ public sealed partial class UnderwritingRuntimeTests
             var document=await db.Set<ServicingTermsVersion>().AsNoTracking().SingleAsync(x=>x.Id==invitation.ResourceId);
             using(var json=JsonDocument.Parse(document.TermsJson))
             {Assert.Equal("renewal-contract-1",json.RootElement.GetProperty("format").GetString());Assert.Equal(prepared.ResourceId,json.RootElement.GetProperty("ratingInput").GetProperty("renewal").GetProperty("preparationVersionId").GetGuid());}
+            if(onPrepared is not null){await onPrepared(db,f,cycle,document);return;}
             var sentEtag=await VerifyServicingDeliveryQueue(db,f,cycle,document,proofFile.ResourceId,fence,invitation.Etag!);
             var delivered=await terms.ReadAsync(f.Underwriter,draft.Id);Assert.Equal("delivered",delivered.Delivery!.State);Assert.Null(delivered.Acceptance);
             if(lapseRace){await VerifyServicingAcceptance(db,f,cycle,document,proofFile.ResourceId,fence,sentEtag,

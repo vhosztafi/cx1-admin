@@ -54,6 +54,10 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.True(pdf.PageCount > 2); SaveQuotationArtifact("real-sql-commercial-quotation", pdf, terms);
         Assert.Equal(terms.TermsHash, (await db.Set<QuoteTermsVersion>().AsNoTracking().SingleAsync(x => x.Id == terms.Id)).TermsHash);
         var statement = await service.RenderQuoteTerms(actor, cycle.QuoteId, terms.Id, "statement-of-fact"); Assert.True(statement.PageCount > 2);
+        var issue = await CommercialIssueCommand(db, cycle, acceptance, actorId);
+        await issue.Service.IssueAsync(issue.Actor, issue.Quote.Id, issue.Quote.RowVersion, issue.Input, Guid.NewGuid().ToString(), Guid.NewGuid());
+        var request = await db.Set<PolicyDocumentRequest>().AsNoTracking().SingleAsync(x => x.Kind == "policy-schedule");
+        Assert.True((await service.RenderRetainedRequest(actor, request.Id)).PageCount > 2);
     }, stopAfterAccepted: true);
 
     private static void SaveQuotationArtifact(string name, RenderedPolicyDocument pdf, QuoteTermsVersion terms)

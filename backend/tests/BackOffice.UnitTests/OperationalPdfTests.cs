@@ -104,6 +104,13 @@ public sealed class OperationalPdfTests
     }
 
     [Fact]
+    public void CanonicalStatementKindCanUseTheRetainedPolicyStatementTemplateIdentity()
+    {
+        var input = Input("policy-statement") with { Kind = "statement-of-fact" };
+        Assert.Equal("statement-of-fact", DocumentRenderContract.Create(input).Input.Kind);
+    }
+
+    [Fact]
     public void EmployersCertificateRequiresSelectedSectionNotJustDeclaredLimit()
     {
         var input = Input("policy-certificate", true);

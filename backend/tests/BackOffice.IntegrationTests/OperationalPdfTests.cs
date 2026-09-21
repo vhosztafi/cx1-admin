@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using BackOffice.Application.Operations;
+using BackOffice.Application.Policies;
 using BackOffice.Infrastructure.Operations;
 using PdfSharp.Pdf.IO;
 using Xunit;
@@ -16,18 +17,32 @@ public sealed class OperationalPdfTests
     [InlineData("motor-trade-combined", "statement-of-fact")]
     [InlineData("commercial-combined", "policy-schedule")]
     [InlineData("commercial-combined", "policy-certificate")]
+    [InlineData("motor-trade-road-risks", "policy-certificate")]
+    [InlineData("motor-trade-road-risks", "cancellation-notice")]
+    [InlineData("commercial-combined", "cancellation-notice")]
+    [InlineData("motor-trade-road-risks", "endorsement")]
+    [InlineData("commercial-combined", "endorsement")]
     public void ActualProductDocumentsParseAndRetainImmutableProvenance(string product, string kind)
     {
-        var source = Source(product); var json = source.ToJsonString();
+        var source = Source(product);
+        if (kind == "endorsement" && product != "commercial-combined")
+            source["cover"]!["endorsements"] = JsonSerializer.SerializeToNode(new[] { new { code = "demo-declared-vehicles", version = "1", text = "Use only the declared vehicles for the recorded business activities." } });
+        var json = source.ToJsonString();
+        if (kind == "cancellation-notice")
+        {
+            using var basis = JsonDocument.Parse(json);
+            var date = basis.RootElement.GetProperty("term").GetProperty("startsAt").GetDateTimeOffset().AddDays(1);
+            json = CancellationIssueSnapshot.Create(basis.RootElement, new(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), date, date, new string('c', 64), "insured-request", "demo-servicing-1"));
+        }
         var template = JsonSerializer.Serialize(new { format = "document-template-1", productCode = product, kind,
-            title = kind == "policy-certificate" ? "Employers' liability certificate" : kind == "statement-of-fact" ? "Statement of fact" : "Policy schedule",
+            title = kind switch { "policy-certificate" => product == "commercial-combined" ? "Employers' liability certificate" : "Motor insurance certificate", "statement-of-fact" => "Statement of fact", "cancellation-notice" => "Cancellation notice", "endorsement" => "Selected endorsements", _ => "Policy schedule" },
             notice = "Café Noël — fictional demonstration cover." });
         var input = new DocumentRenderInput(Guid.Parse("aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"), "policy-version", json, Hash(json),
             Guid.Parse("bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"), template, Hash(template), product, kind, "PL-PDF-0001", product, kind);
         var rendered = new PolicyDocumentRenderer().Render(input);
         using var parsed = PdfReader.Open(new MemoryStream(rendered.Bytes), PdfDocumentOpenMode.Import);
         Assert.Equal(rendered.PageCount, parsed.PageCount);
-        Assert.True(parsed.PageCount >= (kind == "policy-certificate" ? 1 : 3));
+        Assert.True(parsed.PageCount >= (kind is "policy-schedule" or "statement-of-fact" ? 3 : 1));
         Assert.Equal(HashBytes(rendered.Bytes), rendered.Sha256);
         Assert.Equal("policy-projection-1", rendered.ProjectionVersion);
         Assert.Equal(json, input.SourceJson);

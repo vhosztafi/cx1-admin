@@ -43,6 +43,7 @@ public sealed class PolicyDocumentRenderer : IPolicyDocumentRenderer
         if (input.SourceKind == "quote-revision") section.AddParagraph(input.Kind == "quotation"
             ? "Proposed terms — this quotation does not issue cover. The recorded price and expiry belong to the retained terms version."
             : "Proposed declarations — this statement does not issue cover or confirm a premium.");
+        if (input.SourceKind == "servicing-terms") section.AddParagraph("Proposed servicing terms — this document does not change or renew issued cover. Each declaration belongs to its recorded proposed effective date.");
 
         foreach (var group in content) AddSection(section, group);
         AddSection(section, new("Document provenance", [

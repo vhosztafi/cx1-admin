@@ -111,7 +111,11 @@ public static class DemoDatabase
             await Policies.RenewalPreparationSeed.SeedAsync(db,cancellationToken);
         }
         if(includeRenewalLifecycle)await Policies.RenewalLifecycleSeed.SeedAsync(db,cancellationToken);
-        if(includeOperationalWorkflows)await Operations.WorkflowTaskSeed.SeedAsync(db,cancellationToken);
+        if(includeOperationalWorkflows)
+        {
+            await Operations.WorkflowTaskSeed.SeedAsync(db,cancellationToken);
+            await Operations.DocumentTemplateSeed.SeedAsync(db,cancellationToken);
+        }
         if(includeCommercialCapture)await Quotes.CommercialCaptureSeed.SeedAsync(db,cancellationToken);
         if(includeCommercialUnderwriting)
         {

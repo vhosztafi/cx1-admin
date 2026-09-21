@@ -10,7 +10,8 @@ namespace BackOffice.IntegrationTests;
 
 public sealed partial class UnderwritingRuntimeTests
 {
-    private static async Task VerifyServicingTermsPreparation(BackOfficeDbContext db,DecisionFixture f,ServicingCycle cycle,Guid fence,string etag,string deliveryScenario="success",string? httpPassword=null,bool signatureCondition=false,bool posting=false,bool issue=false,Func<ServicingAcceptance,string,Task>? onAccepted=null)
+    private static async Task VerifyServicingTermsPreparation(BackOfficeDbContext db,DecisionFixture f,ServicingCycle cycle,Guid fence,string etag,string deliveryScenario="success",string? httpPassword=null,bool signatureCondition=false,bool posting=false,bool issue=false,Func<ServicingAcceptance,string,Task>? onAccepted=null,
+        Func<BackOfficeDbContext,DecisionFixture,ServicingCycle,ServicingTermsVersion,Task>? onPrepared=null)
     {
         static byte[] Version(string value)=>Convert.FromBase64String(value.Trim('"'));
         static string Key()=>Guid.NewGuid().ToString();
@@ -45,6 +46,7 @@ public sealed partial class UnderwritingRuntimeTests
         var purposes=(await evidence.RequirementsAsync(f.Underwriter,cycle.DraftId)).Requirements;
         Assert.Equal(stored.Id,Assert.Single(purposes,x=>x.Requirement.Code=="signed-statement").Requirement.TermsVersionId);
         Assert.Equal(stored.Id,Assert.Single(purposes,x=>x.Requirement.Code=="acceptance-proof").Requirement.TermsVersionId);
+        if(onPrepared is not null){await onPrepared(db,f,cycle,stored);return;}
         var queuedEtag=await VerifyServicingDeliveryQueue(db,f,cycle,stored,uploaded.ResourceId,fence,prepared.Etag!,deliveryScenario);
         if(deliveryScenario!="success")return;
         var reused=await terms.PrepareAsync(f.Underwriter,cycle.DraftId,cycle.Id,cycle.CurrentRatingId!.Value,template.Id,Version(queuedEtag),fence,Key(),Guid.NewGuid());

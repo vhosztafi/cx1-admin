@@ -33,7 +33,8 @@ public sealed partial class UnderwritingRuntimeTests
     [Fact]
     public Task RealSqlCommercialRenewalConcurrentReadProjectionsRemainCurrent()=>CommercialRenewalScenario(false,profileReads:true);
 
-    private Task CommercialRenewalScenario(bool issue,bool staleExperience=false,bool missingExperience=false,bool lapseInstead=false,bool profileReads=false,bool verifyDowngrade=false,bool verifyCancellation=false)=>CommercialTermsScenario(async(db,cycle,acceptance,actorId,now)=>
+    private Task CommercialRenewalScenario(bool issue,bool staleExperience=false,bool missingExperience=false,bool lapseInstead=false,bool profileReads=false,bool verifyDowngrade=false,bool verifyCancellation=false,
+        Func<BackOfficeDbContext,IDbContextFactory<BackOfficeDbContext>,BackOffice.Application.ActorContext,ServicingCycle,ServicingTermsVersion,Task>? onAccepted=null)=>CommercialTermsScenario(async(db,cycle,acceptance,actorId,now)=>
     {
         var source=await CommercialIssueCommand(db,cycle,acceptance,actorId);
         await source.Service.IssueAsync(source.Actor,source.Quote.Id,source.Quote.RowVersion,source.Input,Guid.NewGuid().ToString(),Guid.NewGuid());
@@ -126,6 +127,7 @@ public sealed partial class UnderwritingRuntimeTests
         }
         if(!issue)return;
         var accepted=await VerifyCommercialServicingDecisions(db,source.Factory,source.Actor,clock,stored,fence,read.DraftEtag);
+        if(onAccepted is not null){await onAccepted(db,source.Factory,source.Actor,stored,await db.Set<ServicingTermsVersion>().AsNoTracking().SingleAsync(x=>x.Id==accepted.Acceptance.TermsVersionId));return;}
         var issuer=new ServicingIssueService(source.Factory,clock);
         var command=new ServicingIssueInput(stored.Id,accepted.Acceptance.RatingId,accepted.Acceptance.TermsVersionId,accepted.Acceptance.Id,
             accepted.Acceptance.TermsHash,accepted.Acceptance.AssuranceHash,"Issue fictional commercial renewal with inception exposure");

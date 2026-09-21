@@ -7,7 +7,8 @@ using BackOffice.Application.Quotes;
 namespace BackOffice.Application.Operations;
 
 // IDs and template ownership are loaded by the scoped SQL caller, never taken
-// as proof of ownership from an HTTP request. Hashes refer to exact stored UTF-8.
+// as proof of ownership from an HTTP request. Policy/servicing hashes cover
+// stored UTF-8; quote hashes also bind the saved configuration envelope.
 public sealed record DocumentRenderInput(Guid SourceId, string SourceKind, string SourceJson, string SourceHash,
     Guid TemplateId, string TemplateJson, string TemplateHash, string ProductCode, string Kind, string Reference,
     string TemplateProductCode, string TemplateKind, QuoteVersionPins? QuotePins = null, DocumentQuoteTerms? QuoteTerms = null);
@@ -39,37 +40,40 @@ public sealed class DocumentRenderContract
         try
         {
             if (input is null || input.SourceId == Guid.Empty || input.TemplateId == Guid.Empty ||
-                input.SourceKind is not ("policy-version" or "quote-revision") || input.ProductCode is not ("motor-trade-road-risks" or "motor-trade-combined" or "commercial-combined") ||
-                input.Kind is not ("policy-schedule" or "statement-of-fact" or "policy-statement" or "policy-certificate" or "endorsement" or "cancellation-notice" or "quotation") ||
+                input.SourceKind is not ("policy-version" or "quote-revision" or "servicing-terms") || input.ProductCode is not ("motor-trade-road-risks" or "motor-trade-combined" or "commercial-combined") ||
+                input.Kind is not ("policy-schedule" or "statement-of-fact" or "policy-statement" or "policy-certificate" or "endorsement" or "cancellation-notice" or "quotation" or "renewal-invitation") ||
                 input.TemplateProductCode != input.ProductCode || !TemplateKindMatches(input) || !Text(input.Reference, 100, false))
                 throw Invalid("document-render-identity");
             using var source = ReadSource(input);
             using var template = Read(input.TemplateJson, input.TemplateHash, MaximumTemplateBytes);
             var root = source.RootElement; var definition = template.RootElement;
             var quote = input.SourceKind == "quote-revision";
-            if (root.GetProperty("productCode").GetString() != input.ProductCode ||
+            var servicing = input.SourceKind == "servicing-terms";
+            var policy = input.SourceKind == "policy-version";
+            if (servicing) DocumentServicingTermsRules.Validate(input, root, definition);
+            else if (root.GetProperty("productCode").GetString() != input.ProductCode ||
                 (quote ? (input.ProductCode == "commercial-combined" ? QuoteCaptureShape.ValidateCommercial(root) : QuoteCaptureShape.Validate(root)).Count != 0 : !PolicySnapshotShape.Valid(root)))
                 throw Invalid("document-render-source");
-            if (quote && input.Kind is not ("statement-of-fact" or "quotation") || !quote && input.Kind == "quotation") throw Invalid("document-render-kind-not-applicable");
-            if (input.Kind != "quotation" && input.QuoteTerms is not null) throw Invalid("document-render-unexpected-terms");
-            var cancelled = !quote && root.GetProperty("snapshotFormat").GetString() is "issued-cancellation-1" or "issued-commercial-cancellation-1";
+            if (quote && input.Kind is not ("statement-of-fact" or "quotation") || policy && input.Kind is "quotation" or "renewal-invitation") throw Invalid("document-render-kind-not-applicable");
+            if ((!quote || input.Kind != "quotation") && input.QuoteTerms is not null) throw Invalid("document-render-unexpected-terms");
+            var cancelled = policy && root.GetProperty("snapshotFormat").GetString() is "issued-cancellation-1" or "issued-commercial-cancellation-1";
             if (cancelled != (input.Kind == "cancellation-notice")) throw Invalid("document-render-kind-not-applicable");
             if (input.ProductCode == "commercial-combined" && input.Kind == "policy-certificate" &&
                 root.GetProperty("cover").GetProperty("sections").EnumerateArray().Count(x => x.GetProperty("code").GetString() == "employers-liability") != 1)
                 throw Invalid("document-render-kind-not-applicable");
 
             var format = definition.GetProperty("format").GetString();
-            var legacy = format == (quote ? "quote-template-1" : "policy-template-1");
+            var legacy = format == (quote ? "quote-template-1" : servicing ? root.GetProperty("format").GetString() == "renewal-contract-1" ? "renewal-template-1" : "servicing-template-1" : "policy-template-1");
             if (!legacy && format != "document-template-1") throw Invalid("document-render-template");
             string[] fields = legacy ? ["format", "title", "notice"] : ["format", "title", "notice", "productCode", "kind"];
             if (definition.EnumerateObject().Any(x => !fields.Contains(x.Name, StringComparer.Ordinal)) ||
                 definition.EnumerateObject().Count() != fields.Length ||
-                !legacy && (definition.GetProperty("productCode").GetString() != input.ProductCode || definition.GetProperty("kind").GetString() != input.Kind))
+                !legacy && (definition.GetProperty("productCode").GetString() != input.ProductCode || CanonicalKind(definition.GetProperty("kind").GetString()!) != CanonicalKind(input.Kind)))
                 throw Invalid("document-render-template");
             var title = definition.GetProperty("title").GetString(); var notice = definition.GetProperty("notice").GetString();
             if (!Text(title, 200, false) || !Text(notice, 4000, true) || title!.IndexOfAny(['<', '>']) >= 0 || notice!.IndexOfAny(['<', '>']) >= 0)
                 throw Invalid("document-render-template-text");
-            var terms = input.Kind == "quotation" ? DocumentQuoteTermsRules.Validate(input, root, definition) : (JsonElement?)null;
+            var terms = quote && input.Kind == "quotation" ? DocumentQuoteTermsRules.Validate(input, root, definition) : (JsonElement?)null;
             return new(input, root, title, notice, legacy, terms);
         }
         catch (Exception ex) when (ex is JsonException or InvalidOperationException or KeyNotFoundException or FormatException or ArgumentException or QuoteInputException)
@@ -78,7 +82,8 @@ public sealed class DocumentRenderContract
 
     private static bool TemplateKindMatches(DocumentRenderInput input) =>
         CanonicalKind(input.TemplateKind) == CanonicalKind(input.Kind) ||
-        input.SourceKind == "quote-revision" && input.TemplateKind == "quote-terms" && input.Kind is "statement-of-fact" or "quotation";
+        input.SourceKind == "quote-revision" && input.TemplateKind == "quote-terms" && input.Kind is "statement-of-fact" or "quotation" ||
+        input.SourceKind == "servicing-terms" && (input.TemplateKind == "servicing-terms" && input.Kind is "statement-of-fact" or "quotation" || input.TemplateKind == "renewal-invitation" && input.Kind == "statement-of-fact");
 
     private static JsonDocument ReadSource(DocumentRenderInput input)
     {
@@ -110,6 +115,7 @@ public sealed class DocumentRenderContract
                     var keys = new HashSet<string>(StringComparer.Ordinal);
                     foreach (var property in value.EnumerateObject())
                     {
+                        if (!Text(property.Name, 200, false)) throw Invalid("document-render-property-name");
                         if (!keys.Add(property.Name)) throw Invalid("document-render-duplicate-property");
                         Visit(property.Value);
                     }

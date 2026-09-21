@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1–8 complete;86 currently defined implementation plans verified. Phase9 durable file plan09-05 is complete;09-06 PDF rendering is next; the13-phase MVP remains in progress.
+**Status:** Autonomous progression authorised. Phases1–8 complete;87 currently defined implementation plans verified. Phase9 PDF rendering plan09-06 is complete;09-07 document generation is next; the13-phase MVP remains in progress.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
@@ -184,14 +184,14 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 **Goal:** Make servicing activities and demo handoffs operational.
 **Depends on:** Phase 8
 **Requirements:** OPS-01 through OPS-08
-**Plans:** 18 sequential plans; 5 complete.09-06 policy PDF increment verified; quotation/renewal rendering remains in progress.
+**Plans:** 18 sequential plans;6 complete.09-06 rendering verified72unique cases/7realSQL,412root and15 independent PDF examples.
 
 - [x] 09-01 — Reconcile operational source and closed data/API contracts (wave 1).
 - [x] 09-02 — Persist scoped subjects and task commands (wave 2, after09-01).
 - [x] 09-03 — Deliver prototype task list and detail workflows (wave 3, after09-02).
 - [x] 09-04 — Materialize deduplicated workflow tasks (wave 4, after09-03).
 - [x] 09-05 — Store and retrieve safe immutable file bytes (wave 5, after09-04).
-- [ ] 09-06 — Render product-specific immutable PDF documents (wave 6, after09-05).
+- [x] 09-06 — Render product-specific immutable PDF documents (wave 6, after09-05).
 - [ ] 09-07 — Generate and version real documents from retained requests (wave 7, after09-06).
 - [ ] 09-08 — Implement document/evidence UI and exact-version preview (wave 8, after09-07).
 - [ ] 09-09 — Persist internal notes and agency message drafts (wave 9, after09-08).

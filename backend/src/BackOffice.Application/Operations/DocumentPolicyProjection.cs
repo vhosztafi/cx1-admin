@@ -27,16 +27,33 @@ public static partial class DocumentPolicyProjection
 
     public static IReadOnlyList<DocumentSection> Create(DocumentRenderContract contract)
     {
-        var source = contract.Source; var kind = DocumentRenderContract.CanonicalKind(contract.Input.Kind);
-        var sections = new List<DocumentSection>();
-        void Add(string title, JsonElement value)
+        if (contract.Input.SourceKind == "servicing-terms")
         {
-            var fields = new List<DocumentField>(); Flatten(value, "", fields);
-            if (fields.Count == 0) fields.Add(new("Recorded items", "None"));
-            sections.Add(new(title, fields.AsReadOnly()));
+            var groups = new List<DocumentSection>();
+            foreach (var slice in contract.Source.GetProperty("slices").EnumerateArray())
+            {
+                var date = slice.GetProperty("effectiveAt").GetDateTimeOffset().ToString("yyyy-MM-dd HH:mm 'UTC'", CultureInfo.InvariantCulture);
+                groups.AddRange(Project(slice.GetProperty("proposal"), "statement-of-fact", contract.Input.ProductCode, true, null)
+                    .Select(x => x with { Title = "Proposed from " + date + " / " + x.Title }));
+            }
+            if (contract.Input.Kind != "statement-of-fact")
+            {
+                groups.Add(Block("Proposed price", contract.Source.GetProperty("price")));
+                groups.Add(Block("Conditions and effective dates", contract.Source.GetProperty("conditions")));
+                groups.Add(Block("Terms expiry", contract.Source.GetProperty("expiresAt")));
+            }
+            if (groups.Sum(x => x.Fields.Count) > 12000) throw new DocumentRenderException("document-render-row-limit");
+            return groups.AsReadOnly();
         }
+        return Project(contract.Source, DocumentRenderContract.CanonicalKind(contract.Input.Kind), contract.Input.ProductCode,
+            contract.Input.SourceKind == "quote-revision", contract.QuotationTerms);
+    }
+
+    private static IReadOnlyList<DocumentSection> Project(JsonElement source, string kind, string product, bool quote, JsonElement? quotationTerms)
+    {
+        var sections = new List<DocumentSection>();
+        void Add(string title, JsonElement value) => sections.Add(Block(title, value));
         Add("Insured", source.GetProperty("insured"));
-        var quote = contract.Input.SourceKind == "quote-revision";
         Add(quote ? "Proposed period" : "Policy period", source.GetProperty(quote ? "termIntent" : "term"));
         var risk = source.GetProperty("risk"); var cover = source.GetProperty("cover");
         if (kind == "cancellation-notice")
@@ -46,7 +63,7 @@ public static partial class DocumentPolicyProjection
         }
         else if (kind == "policy-certificate")
         {
-            if (contract.Input.ProductCode == "commercial-combined")
+            if (product == "commercial-combined")
             {
                 Add("Employers' liability cover", cover.GetProperty("sections").EnumerateArray().Single(x => x.GetProperty("code").GetString() == "employers-liability"));
                 if (risk.GetProperty("liability").TryGetProperty("employersReferenceNumber", out var number))
@@ -75,15 +92,22 @@ public static partial class DocumentPolicyProjection
                 Add(property.Name switch { "sections" => quote ? "Proposed cover" : "Selected cover", "requestedSections" => "Requested options (declarations)", "endorsements" => "Selected endorsements", _ => Label(property.Name) }, property.Value);
             if (kind == "policy-schedule") Add("Premium and charges", source.GetProperty("premium"));
         }
-        if (sections.Sum(x => x.Fields.Count) > 12000) throw new DocumentRenderException("document-render-row-limit");
-        if (contract.QuotationTerms is JsonElement terms)
+        if (quotationTerms is JsonElement terms)
         {
             sections.Insert(0, new("Quotation parties", [new("Named insured", terms.GetProperty("insuredName").GetString()!), new("Agency", terms.GetProperty("agencyName").GetString()!)]));
             Add("Quoted price", terms.GetProperty("price"));
             Add("Quoted conditions", terms.GetProperty("conditions"));
             sections.Add(new("Quotation validity", [new("Starts at", terms.GetProperty("startsAt").GetString()!), new("Ends at", terms.GetProperty("endsAt").GetString()!), new("Expires at", terms.GetProperty("expiresAt").GetString()!)]));
         }
+        if (sections.Sum(x => x.Fields.Count) > 12000) throw new DocumentRenderException("document-render-row-limit");
         return sections.AsReadOnly();
+    }
+
+    private static DocumentSection Block(string title, JsonElement value)
+    {
+        var fields = new List<DocumentField>(); Flatten(value, "", fields);
+        if (fields.Count == 0) fields.Add(new("Recorded items", "None"));
+        return new(title, fields.AsReadOnly());
     }
 
     private static void Flatten(JsonElement value, string path, List<DocumentField> fields)

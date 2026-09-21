@@ -31521,14 +31521,14 @@
       "sourceNeedle": "Statement of fact",
       "ownerPlan": "09-06",
       "expectedBehavior": "Render exact original/current source statement of fact and keep historical versions.",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "rendering-verified-09-06-history-publication-pending-09-07"
     },
     {
       "id": "DOCUMENT-ENDORSEMENT",
       "sourceNeedle": "Endorsement E-14",
       "ownerPlan": "09-06",
       "expectedBehavior": "Render applicable selected endorsement content pinned to source/template.",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "rendering-verified-09-06-publication-pending-09-07"
     }
   ]
 }

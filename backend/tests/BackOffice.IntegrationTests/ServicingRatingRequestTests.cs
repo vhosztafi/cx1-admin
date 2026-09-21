@@ -93,7 +93,8 @@ public sealed partial class UnderwritingRuntimeTests
     public Task RealSqlServicingRatingRequestsPinFullScheduleAndReauthorizeReplay(string product, string scenario)
         => RunServicingRatingRequests(product, scenario);
 
-    private async Task RunServicingRatingRequests(string product, string scenario, bool workflowTasks = false)
+    private async Task RunServicingRatingRequests(string product, string scenario, bool workflowTasks = false,
+        Func<BackOfficeDbContext,DecisionFixture,ServicingCycle,ServicingTermsVersion,Task>? onPrepared=null)
     {
         await WithDatabase(async (db, password) =>
         {
@@ -341,7 +342,7 @@ public sealed partial class UnderwritingRuntimeTests
             }
             if(scenario is "terms-prepare" or "terms-http" or "terms-condition" or "ServicingPostingTests" or "ServicingIssueTests" || scenario.StartsWith("terms-delivery-",StringComparison.Ordinal))
             {
-                await VerifyServicingTermsPreparation(db,f,applied,fence,ratedView.DraftEtag,scenario is "terms-prepare" or "terms-http" or "terms-condition" or "ServicingPostingTests" or "ServicingIssueTests"?"success":scenario["terms-delivery-".Length..],scenario is "terms-http" or "ServicingIssueTests"?password:null,scenario=="terms-condition",scenario=="ServicingPostingTests",scenario=="ServicingIssueTests");
+                await VerifyServicingTermsPreparation(db,f,applied,fence,ratedView.DraftEtag,scenario is "terms-prepare" or "terms-http" or "terms-condition" or "ServicingPostingTests" or "ServicingIssueTests"?"success":scenario["terms-delivery-".Length..],scenario is "terms-http" or "ServicingIssueTests"?password:null,scenario=="terms-condition",scenario=="ServicingPostingTests",scenario=="ServicingIssueTests",onPrepared:onPrepared);
                 Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync(x=>x.Id==issued.Id)).SnapshotJson);return;
             }
             if(scenario=="submission-storage")

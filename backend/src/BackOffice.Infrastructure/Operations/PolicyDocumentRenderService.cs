@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using BackOffice.Application;
 using BackOffice.Application.Operations;
+using BackOffice.Application.Policies;
 using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Quotes;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,7 @@ namespace BackOffice.Infrastructure.Operations;
 
 // Internal composition for the document generation owner. Rendering is not
 // publication: no request is marked ready and no DocumentVersion is invented.
-public sealed class PolicyDocumentRenderService(IDbContextFactory<BackOfficeDbContext> factory, IPolicyDocumentRenderer renderer)
+public sealed partial class PolicyDocumentRenderService(IDbContextFactory<BackOfficeDbContext> factory, IPolicyDocumentRenderer renderer)
 {
     public async Task<RenderedPolicyDocument> RenderQuoteTerms(ActorContext actor, Guid quoteId, Guid termsId, string kind, CancellationToken token = default)
     {
@@ -71,6 +72,12 @@ public sealed class PolicyDocumentRenderService(IDbContextFactory<BackOfficeDbCo
                 root.GetProperty("policyReference").GetString() != policy.Reference ||
                 !JsonElement.DeepEquals(root.GetProperty("snapshot"), source.RootElement) || !JsonElement.DeepEquals(root.GetProperty("template"), content.RootElement))
                 throw Invalid();
+            if (root.TryGetProperty("commercial", out var commercial))
+            {
+                if (product.Code != "commercial-combined") throw Invalid();
+                var end = await db.Set<PolicyTerm>().Where(x => x.Id == version.TermId && x.PolicyId == policy.Id).Select(x => x.EndsAt).SingleAsync(token);
+                if (!CommercialDocumentPayload.Valid(commercial, new(policy.Id, version.Id, input.SourceHash, version.SnapshotJson, version.EffectiveAt, end), request.Kind)) throw Invalid();
+            }
         }
         catch (Exception ex) when (ex is JsonException or InvalidOperationException or KeyNotFoundException or FormatException)
         { throw Invalid(); }

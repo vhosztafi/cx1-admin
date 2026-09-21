@@ -1,6 +1,6 @@
 # Document rendering
 
-Status: Phase09-06 in progress. Policy and quotation rendering are implemented; servicing/renewal terms, future template publication and the complete acceptance gate remain open. This is not a claim that document generation/delivery is complete.
+Status: Phase09-06 rendering is implemented and verified. Durable generation and delivery are separate downstream work.
 
 ## Boundaries
 
@@ -18,6 +18,10 @@ Policy kinds currently supported are policy schedule, statement of fact (includi
 
 ## Layout and immutable dependencies
 
+`RenderServicingTerms(actor, draftId, termsId, kind)` holds current servicing/policy/identity scope and validates the exact terms/cycle/revision/base-version/rating/template graph. The SHA-256 covers the saved terms JSON. Closed servicing and renewal envelopes preserve every chronological effective slice, product-shaped proposal, signed price, condition and expiry. Renewal accepts exactly one slice. Statements omit the proposed price; invitations and adjustment quotations include it. All explicitly state that proposed terms do not change issued cover. Optional commercial projections on retained policy requests are checked against the exact retained policy source.
+
+`DocumentTemplateSeed` publishes only missing future versions effective2026-09-22: policy schedule/certificate/statement version2 and endorsement/cancellation-notice version1 for each of the three products. Old template content and request bindings remain unchanged. It runs only with operational demo initialization. Migration `20260921180754_OperationalDocumentTemplates` extends the closed template-kind check; downgrade refuses to remove support while either new kind exists. The retained demo database has not yet been migrated or seeded for this phase.
+
 PDFsharp-MigraDoc6.2.4 is centrally pinned with package locks. IBM Plex Sans regular/bold from official releasev6.4.0, commit383c681f015ed2626e919ec4e3cca16ccc204e9d, is embedded. Font hashes, original download URLs and OFL1.1 are retained in Infrastructure/Operations/Fonts. A custom resolver registers the fonts and MigraDoc auxiliary fonts without installed-font lookup.
 
 A4 pages use the prototype's IBM Plex Sans, blue accent and restrained grey table borders. Tables repeat column headings; long field values use bounded continuation rows without truncation. Footer page numbering and immutable source/template/renderer provenance are included. Output limits are300pages and20MiB; source JSON is8MiB with bounded depth/value/array counts.
@@ -26,8 +30,10 @@ A4 pages use the prototype's IBM Plex Sans, blue accent and restrained grey tabl
 
 Money formatting applies only to known monetary fields. Other saved strings and decimal-looking values remain declarations, not inferred prices. Selected cover and requested options have distinct headings. All content is emitted through text/table APIs; source text is never executed or resolved as a resource.
 
-## Verification in progress
+## Verification
 
 Current strict policy increment passes37unique cases/1realSQL/no skips:31unit and6integration including four product PDFs, font proof and a normally issued policy with preserved source/template/request and suspended-user denial. Root412passes. Independent `scripts/verify-policy-pdf-examples.py` checks expected names, money, glyphs, source/template IDs, page numbers, A4 geometry and all30 repeated clauses/end markers of a long declaration. Poppler pages were inspected; hash wrapping was corrected. Current fixtures span10–13pages for declaration-rich schedules/statements and2pages for the commercial certificate. Evidence is in `.local/phase9-06-policy-wrap-strict` and09-06-CHECKPOINT. Quotation/renewal and full plan acceptance remain open.
 
-The later quotation increment passes44unit and7integration cases, including2realSQL cases covering MotorTrade and CC. Its independently parsed PDFs match separately saved SQL expectations for parties, gross payable, conditions and terms identities/hashes. Reports are `.local/phase9-06-quote-final-unit` and `-sql`; commercial quotation first page visually inspected. Servicing/renewal work and full plan acceptance remain open.
+The later quotation increment passes44unit and7integration cases, including2realSQL cases covering MotorTrade and CC. Its independently parsed PDFs match separately saved SQL expectations for parties, gross payable, conditions and terms identities/hashes. Reports are `.local/phase9-06-quote-final-unit` and `-sql`; commercial quotation first page visually inspected.
+
+Authoritative final gate `.local/phase9-06-final-strict` passes72unique tests:55unit,17integration including7realSQL, no skips. Root412passes. All15 independently parsed final examples pass, including both MT renewals, CC renewal, a two-slice adjustment, MT certificate and both products' endorsement/cancellation documents. Final Poppler first/continuation pages were inspected for cancellation, endorsement and MT certificate, complementing earlier quotation/renewal/long-table review. Migration tests prove additive seed repeatability, original bindings unchanged, safe empty Down/Up and refusal to downgrade retained new-kind templates. See09-06-SUMMARY for exact evidence and downstream boundaries.

@@ -11,7 +11,7 @@ public sealed partial class BackOfficeDbContext
         template.HasIndex(x => new { x.Code, x.ProductId, x.Version }).IsUnique();
         template.HasOne<Product>().WithMany().HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.NoAction);
         Check(template, "Version", "[Version]>0"); Check(template, "State", "[State] IN ('published','retired')");
-        Check(template, "Kind", "[Kind] IN ('quote-terms','servicing-terms','renewal-invitation','policy-schedule','policy-certificate','policy-statement')"); Check(template, "Interval", "[EffectiveFrom]<[EffectiveTo]");
+        Check(template, "Kind", "[Kind] IN ('quote-terms','servicing-terms','renewal-invitation','policy-schedule','policy-certificate','policy-statement','endorsement','cancellation-notice')"); Check(template, "Interval", "[EffectiveFrom]<[EffectiveTo]");
 
         var terms = Record<QuoteTermsVersion>(model, "QuoteTermsVersion"); terms.ToTable(t => t.UseSqlOutputClause(false));
         Text(terms, ("TermsHash", 64), ("AssuranceHashAtPreparation", 64)); UnderwritingJson(terms, "TermsJson");
