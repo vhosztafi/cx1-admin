@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Phase9 planning approved;09-01 source inventory saved, closed operational schemas/API mapping still in progress.
-last_updated: "2026-09-21T12:41:15.485Z"
-last_activity: "2026-09-21 — Phase9 source inventory118 controls/509 display occurrences/10 supplemental branches; source tests7/7 with retained CC;09-01 remains incomplete."
+stopped_at: Phase9 plan09-01 complete; continue09-02 typed subjects and task persistence.
+last_updated: "2026-09-21T13:10:56.083Z"
+last_activity: "2026-09-21 — Closed Phase9 source/API contracts;411 root tests passed; start09-02."
 progress:
   total_phases: 13
   completed_phases: 8
   total_plans: 99
-  completed_plans: 81
+  completed_plans: 82
   percent: 62
 ---
 
@@ -25,10 +25,10 @@ Current focus: Phase9 tasks, documents, communication and incidents.
 ## Current Position
 
 Phase: 9 of13
-Plan: 1 of18 — source and closed contracts
-Status: Executing09-01 after approved sequential planning
+Plan: 2 of18 — typed subjects and task persistence
+Status: Executing09-02 after reviewed09-01 contract closure
 Last activity: Phase8 completed2026-09-21; all16 summaries and08-VERIFICATION pass. Final strict gate1511 unique cases/383 realSQL/no skips and exact420-case integration inventory;399root/172frontend, commercial5/5 and retained servicing17/17 plus underwriting pass. No verification process remains running. Phase9 source checks are short completed Node runs; no new SQL/browser acceptance has been launched.
-Progress: eight of13 phases complete;81/99 currently defined plans complete. Later phases still need detailed plans; the MVP is not100% complete.
+Progress: eight of13 phases complete;82/99 currently defined plans complete. Later phases still need detailed plans; the MVP is not100% complete.
 
 ## Decisions and boundaries
 
@@ -40,7 +40,7 @@ Progress: eight of13 phases complete;81/99 currently defined plans complete. Lat
 
 ## Next work
 
-Execute09-01 source and closed contracts, then remaining18 sequential plans. Read09-PLAN-REVIEW,09-DATA-CONTRACTS,09-PATTERNS and09-VALIDATION. All18 structures and15 decision coverage pass; no implementation/test pass is claimed. Source reconciliation must close before09-02. Preserve original source identities, retained bytes/envelopes and later finance/configuration owners. Do not restart discussion or accepted Phase8 verification.
+Execute09-02 typed registry/task persistence, then remaining sequential plans. Read09-PLAN-REVIEW,09-DATA-CONTRACTS,09-PATTERNS and09-VALIDATION. All18 structures and15 decision coverage pass; no implementation/test pass is claimed. Source reconciliation closed in09-01; see its summary and final411/411 root report. Preserve original source identities, retained bytes/envelopes and later finance/configuration owners. Do not restart discussion or accepted Phase8 verification.
 
 ## Evidence and continuity
 

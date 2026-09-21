@@ -667,6 +667,7 @@
       "status": "reviewed",
       "disposition": "read-and-command",
       "operationIds": [
+        "previewDocumentVersion",
         "downloadDocumentVersion",
         "sendDocumentPack"
       ],
@@ -681,6 +682,7 @@
       "status": "reviewed",
       "disposition": "read-and-command",
       "operationIds": [
+        "previewDocumentVersion",
         "downloadDocumentVersion",
         "sendDocumentPack"
       ],
@@ -1074,7 +1076,7 @@
       "apiFields": [
         {
           "operationId": "savePolicyDraft",
-          "field": "effectiveAt"
+          "field": "commonEffectiveIntent"
         }
       ],
       "reason": "Change timing and requestor are persisted with the lease/ETag; schedule timing changes invalidate rating and acceptance."
@@ -3089,9 +3091,9 @@
       "disposition": "navigation-read",
       "operationIds": [
         "getTask",
-        "listNotes"
+        "listTaskComments"
       ],
-      "reason": "Literal pTask tab selection Task; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+      "reason": "Open the task comment composer and read its own append-only comment history; saving uses addTaskComment."
     },
     {
       "controlId": "CTL-7764c5c29640",
@@ -3143,7 +3145,7 @@
       "status": "reviewed",
       "disposition": "edit-then-save",
       "operationIds": [
-        "updateTask"
+        "updateTaskChecklist"
       ],
       "reason": "Toggle the selected checklist item and persist task state; a tick cannot satisfy an independent referral decision."
     },
@@ -3156,7 +3158,7 @@
       "status": "reviewed",
       "disposition": "edit-then-save",
       "operationIds": [
-        "updateTask"
+        "updateTaskChecklist"
       ],
       "reason": "Toggle the selected checklist item and persist task state; a tick cannot satisfy an independent referral decision."
     },
@@ -3169,7 +3171,7 @@
       "status": "reviewed",
       "disposition": "edit-then-save",
       "operationIds": [
-        "updateTask"
+        "updateTaskChecklist"
       ],
       "reason": "Toggle the selected checklist item and persist task state; a tick cannot satisfy an independent referral decision."
     },
@@ -3182,7 +3184,7 @@
       "status": "reviewed",
       "disposition": "edit-then-save",
       "operationIds": [
-        "updateTask"
+        "updateTaskChecklist"
       ],
       "reason": "Toggle the selected checklist item and persist task state; a tick cannot satisfy an independent referral decision."
     },
@@ -3195,11 +3197,11 @@
       "status": "reviewed",
       "disposition": "edit-then-save",
       "operationIds": [
-        "addNote"
+        "addTaskComment"
       ],
       "apiFields": [
         {
-          "operationId": "addNote",
+          "operationId": "addTaskComment",
           "field": "body"
         }
       ],
@@ -3259,7 +3261,7 @@
       "apiFields": [
         {
           "operationId": "updateTask",
-          "field": "ownerId"
+          "field": "assignment"
         }
       ],
       "reason": "Selected owner and due instant save under task ETag and assignment scope."
@@ -3278,7 +3280,7 @@
       "apiFields": [
         {
           "operationId": "updateTask",
-          "field": "dueAt"
+          "field": "dueOn"
         }
       ],
       "reason": "Selected owner and due instant save under task ETag and assignment scope."
@@ -5935,10 +5937,9 @@
       "status": "reviewed",
       "disposition": "command",
       "operationIds": [
-        "logIncident",
-        "handoffIncident"
+        "logAndHandoffIncident"
       ],
-      "reason": "Disabled sample surfaces required fields; complete valid incident is logged then durably handed off with separate job state."
+      "reason": "Validate the current revision and occurrence resolution, atomically log and queue one durable claims handoff; display saved job outcome."
     },
     {
       "controlId": "CTL-c4ffd43a8598",
@@ -5955,7 +5956,8 @@
       "apiFields": [
         {
           "operationId": "updateIncidentDraft",
-          "field": "occurredOn"
+          "field": "occurrence",
+          "jsonPointer": "/occurrence/occurredOn"
         }
       ],
       "reason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage."
@@ -5975,7 +5977,8 @@
       "apiFields": [
         {
           "operationId": "updateIncidentDraft",
-          "field": "approximateLocalTime"
+          "field": "occurrence",
+          "jsonPointer": "/occurrence/approximateLocalTime"
         }
       ],
       "reason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage."
@@ -6015,7 +6018,12 @@
       "apiFields": [
         {
           "operationId": "updateIncidentDraft",
-          "field": "involvement"
+          "field": "motorSubject",
+          "jsonPointer": "/motorSubject/kind",
+          "schemaProductCodes": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
         }
       ],
       "reason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage."
@@ -6075,7 +6083,12 @@
       "apiFields": [
         {
           "operationId": "updateIncidentDraft",
-          "field": "itemDescription"
+          "field": "motorSubject",
+          "jsonPointer": "/motorSubject/itemDescription",
+          "schemaProductCodes": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
         }
       ],
       "reason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage."
@@ -6095,7 +6108,12 @@
       "apiFields": [
         {
           "operationId": "updateIncidentDraft",
-          "field": "owner"
+          "field": "motorSubject",
+          "jsonPointer": "/motorSubject/owner",
+          "schemaProductCodes": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
         }
       ],
       "reason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage."
@@ -6115,7 +6133,12 @@
       "apiFields": [
         {
           "operationId": "updateIncidentDraft",
-          "field": "estimatedValueAtRisk"
+          "field": "motorSubject",
+          "jsonPointer": "/motorSubject/estimatedValueAtRisk",
+          "schemaProductCodes": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
         }
       ],
       "reason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage."
@@ -6310,9 +6333,7 @@
       "status": "reviewed",
       "disposition": "opens-command-form",
       "operationIds": [
-        "createThread",
-        "createMessageDraft",
-        "sendMessage"
+        "contactClaimsAdministrator"
       ],
       "reason": "Draft contact message to claims administrator; explicit send is a separate persistent demo action."
     },
@@ -7426,7 +7447,7 @@
       "apiFields": [
         {
           "operationId": "savePolicyDraft",
-          "field": "effectiveAt"
+          "field": "commonEffectiveIntent"
         }
       ],
       "reason": "Cancellation modal retains a structured reason selection and separate audit detail in command intent; neither control issues cancellation."
@@ -7515,7 +7536,7 @@
       "apiFields": [
         {
           "operationId": "createTask",
-          "field": "ownerId"
+          "field": "assignment"
         }
       ],
       "reason": "Task modal values save only on confirmation with an authorised typed parent."
@@ -7553,7 +7574,7 @@
       "apiFields": [
         {
           "operationId": "createTask",
-          "field": "dueAt"
+          "field": "dueOn"
         }
       ],
       "reason": "Task modal values save only on confirmation with an authorised typed parent."

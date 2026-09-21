@@ -2,14 +2,14 @@ import {readFile,writeFile} from 'node:fs/promises';
 const file='docs/design/reviewed-api-controls.json';const reviews=JSON.parse(await readFile(file,'utf8'));
 const groups=[
  ['savePolicyDraft','a5cbae9b8992:commonEffectiveIntent 60ada0e23106:dateBasis 37837fb0eb28:requestedBy','Change timing and requestor are persisted with the lease/ETag; schedule timing changes invalidate rating and acceptance.'],
- ['addNote','b1917d871627:body','Comment composer has onSend as well as onChange; explicit send saves an internal task note and rejects blank content.'],
- ['updateTask','340623a67370:ownerId d3cef2ca0552:dueAt','Selected owner and due instant save under task ETag and assignment scope.'],
+ ['addTaskComment','b1917d871627:body','Comment composer has onSend as well as onChange; explicit send saves an internal task note and rejects blank content.'],
+ ['updateTask','340623a67370:assignment d3cef2ca0552:dueOn','Selected typed assignment and local due date save under task ETag and assignment scope.'],
  ['transitionTask','bb257a94cac5:state','Changing status is an explicit lifecycle command with reason/checklist gates, not a generic task write.'],
  ['updateProfile','e9ca9b8ddf5f:fullName fb7fd0380a0e:displayName ae3dc91658bf:telephone 6fa068333beb:jobTitle a6317a500517:outOfOffice 10bc9f0e6f7c:taskDigest','Self-profile fields persist under profile ETag; out-of-office affects new assignments only.'],
  ['changePassword','664235c9a920:currentPassword 1ca7dc6c8e73:newPassword','Password input remains transient; explicit command uses framework verification/history and never caches secrets.'],
  ['sendEscalation','4aa26265290c:body','Composer text is sent explicitly via its onSend handler; pin referral revision, provider and attachments.'],
  ['savePolicyDraft','bdb6e9ab15e0:cancellationReasonCode c6ed3365f90b:commonEffectiveIntent 9c276d4c11eb:reason','Cancellation modal retains a structured reason selection and separate audit detail in command intent; neither control issues cancellation.'],
- ['createTask','912fdd744a9d:typeCode deb1c93c9380:title 3b92b95bf767:ownerId 1244b13ffc62:priority c1a4eed5f8d7:dueAt','Task modal values save only on confirmation with an authorised typed parent.'],
+ ['createTask','912fdd744a9d:typeCode deb1c93c9380:title 3b92b95bf767:assignment 1244b13ffc62:priority c1a4eed5f8d7:dueOn','Task modal values save only on confirmation with an authorised typed parent.'],
  ['createContact','a824b6d082ef:role bbfeae72249c:email 768bb83c62f3:telephone af4438a7842d:isPrimary 44e8ab200a0e:marketingConsent','Agency-scoped contact values preserve primary uniqueness and distinct marketing consent channel/source.'],
  ['recordCapacityResponse','996063cc0f6f:outcome 544b08dc9b9d:providerUnderwriter 4d20dd209c0d:providerReference ae1b5b522c32:body','Provider outcome fields are recorded with evidence and received time; not treated as direct permission to issue.'],
  ['inviteAgencyUser','35c078b12b2f:email 2b148516c13c:role','Onboarding invitation is agency-scoped and sends only when activation prerequisites hold.'],

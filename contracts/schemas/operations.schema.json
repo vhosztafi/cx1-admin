@@ -1,0 +1,2201 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cover-mga.example/operations-1",
+  "title": "Closed operational API contracts; runtime authority remains mandatory",
+  "$defs": {
+    "OpsSubjectWrite": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "agency"
+            },
+            "parentId": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "required": [
+            "kind",
+            "parentId"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "relationship"
+            },
+            "parentId": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "required": [
+            "kind",
+            "parentId"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "quote"
+            },
+            "parentId": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "required": [
+            "kind",
+            "parentId"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "policy"
+            },
+            "parentId": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "required": [
+            "kind",
+            "parentId"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "servicing-draft"
+            },
+            "parentId": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "required": [
+            "kind",
+            "parentId"
+          ]
+        }
+      ]
+    },
+    "OpsSubject": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "agency",
+            "relationship",
+            "quote",
+            "policy",
+            "servicing-draft"
+          ]
+        },
+        "parentId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "\\S"
+        },
+        "href": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "parentId",
+        "label",
+        "href"
+      ]
+    },
+    "OpsAssignment": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "user"
+            },
+            "ownerId": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "required": [
+            "kind",
+            "ownerId"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "team"
+            },
+            "teamId": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "required": [
+            "kind",
+            "teamId"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "unassigned"
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        }
+      ]
+    },
+    "OpsTaskWrite": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "subjectRecordId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "typeCode": {
+          "type": "string",
+          "enum": [
+            "servicing",
+            "underwriting-referral",
+            "authority-referral",
+            "renewal",
+            "data-exception",
+            "agency-onboarding",
+            "complaint",
+            "underwriting"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "\\S"
+        },
+        "priority": {
+          "type": "string",
+          "enum": [
+            "low",
+            "normal",
+            "high",
+            "urgent"
+          ]
+        },
+        "assignment": {
+          "$ref": "#/$defs/OpsAssignment"
+        },
+        "dueOn": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "required": [
+        "subjectRecordId",
+        "typeCode",
+        "title",
+        "priority",
+        "assignment"
+      ]
+    },
+    "OpsTaskUpdateWrite": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "typeCode": {
+          "type": "string",
+          "enum": [
+            "servicing",
+            "underwriting-referral",
+            "authority-referral",
+            "renewal",
+            "data-exception",
+            "agency-onboarding",
+            "complaint",
+            "underwriting"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "\\S"
+        },
+        "priority": {
+          "type": "string",
+          "enum": [
+            "low",
+            "normal",
+            "high",
+            "urgent"
+          ]
+        },
+        "assignment": {
+          "$ref": "#/$defs/OpsAssignment"
+        },
+        "dueOn": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "required": [
+        "typeCode",
+        "title",
+        "priority",
+        "assignment"
+      ]
+    },
+    "OpsTaskTransition": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "open",
+            "in-progress",
+            "awaiting-information",
+            "blocked",
+            "completed",
+            "cancelled"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "state",
+        "reason"
+      ]
+    },
+    "OpsTaskSelection": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "etag": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 100,
+            "pattern": "^\"[!#-~]+\"$"
+          }
+        },
+        "required": [
+          "id",
+          "etag"
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 100,
+      "uniqueItems": true
+    },
+    "OpsTaskBulkAssignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tasks": {
+          "$ref": "#/$defs/OpsTaskSelection"
+        },
+        "assignment": {
+          "$ref": "#/$defs/OpsAssignment"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "tasks",
+        "assignment",
+        "reason"
+      ]
+    },
+    "OpsTaskBulkDue": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tasks": {
+          "$ref": "#/$defs/OpsTaskSelection"
+        },
+        "dueOn": {
+          "type": "string",
+          "format": "date"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "tasks",
+        "dueOn",
+        "reason"
+      ]
+    },
+    "OpsTaskBulkComplete": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tasks": {
+          "$ref": "#/$defs/OpsTaskSelection"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "tasks",
+        "reason"
+      ]
+    },
+    "OpsTaskChecklistWrite": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "completed": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "id",
+              "completed"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "items",
+        "reason"
+      ]
+    },
+    "OpsTextWrite": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "body": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "body"
+      ]
+    },
+    "OpsTask": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40,
+          "pattern": "\\S"
+        },
+        "subjectRecordId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "typeCode": {
+          "type": "string",
+          "enum": [
+            "servicing",
+            "underwriting-referral",
+            "authority-referral",
+            "renewal",
+            "data-exception",
+            "agency-onboarding",
+            "complaint",
+            "underwriting"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "\\S"
+        },
+        "priority": {
+          "type": "string",
+          "enum": [
+            "low",
+            "normal",
+            "high",
+            "urgent"
+          ]
+        },
+        "assignment": {
+          "$ref": "#/$defs/OpsAssignment"
+        },
+        "dueOn": {
+          "type": "string",
+          "format": "date"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "open",
+            "in-progress",
+            "awaiting-information",
+            "blocked",
+            "completed",
+            "cancelled"
+          ]
+        },
+        "createdBy": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "overdue": {
+          "type": "boolean"
+        },
+        "checklist": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 300,
+                "pattern": "\\S"
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "completed": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "id",
+              "label",
+              "required",
+              "completed"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "completionReason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000,
+          "pattern": "\\S"
+        },
+        "sourceChanged": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "reference",
+        "subjectRecordId",
+        "typeCode",
+        "title",
+        "priority",
+        "assignment",
+        "state",
+        "createdBy",
+        "createdAt",
+        "updatedAt",
+        "overdue",
+        "checklist",
+        "sourceChanged"
+      ]
+    },
+    "OpsTaskEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "taskId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60,
+          "pattern": "\\S"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000,
+          "pattern": "\\S"
+        },
+        "actorLabel": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "\\S"
+        },
+        "recordedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "taskId",
+        "sequence",
+        "kind",
+        "actorLabel",
+        "recordedAt"
+      ]
+    },
+    "OpsComment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "taskId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "body": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8000,
+          "pattern": "\\S"
+        },
+        "authorLabel": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "\\S"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "taskId",
+        "body",
+        "authorLabel",
+        "createdAt"
+      ]
+    },
+    "OpsThreadWrite": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "visibility": {
+              "const": "internal"
+            },
+            "subject": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            }
+          },
+          "required": [
+            "visibility",
+            "subject"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "visibility": {
+              "const": "agency"
+            },
+            "relationshipId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "subject": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            }
+          },
+          "required": [
+            "visibility",
+            "relationshipId",
+            "subject"
+          ]
+        }
+      ]
+    },
+    "OpsMessageWrite": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "body": {
+          "type": "string",
+          "maxLength": 8000
+        },
+        "recipientContactIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "attachmentVersionIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "minItems": 0,
+          "maxItems": 20,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "body",
+        "recipientContactIds",
+        "attachmentVersionIds"
+      ]
+    },
+    "OpsThread": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "subjectRecordId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "visibility": {
+              "const": "internal"
+            },
+            "subject": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            }
+          },
+          "required": [
+            "id",
+            "subjectRecordId",
+            "visibility",
+            "subject"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "subjectRecordId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "visibility": {
+              "const": "agency"
+            },
+            "relationshipId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "subject": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            }
+          },
+          "required": [
+            "id",
+            "subjectRecordId",
+            "visibility",
+            "relationshipId",
+            "subject"
+          ]
+        }
+      ]
+    },
+    "OpsMessage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "threadId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "body": {
+          "type": "string",
+          "maxLength": 8000
+        },
+        "recipientContactIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "attachmentVersionIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "minItems": 0,
+          "maxItems": 20,
+          "uniqueItems": true
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "queued",
+            "sent",
+            "failed",
+            "superseded"
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "authorLabel": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "\\S"
+        },
+        "sendJobId": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "required": [
+        "id",
+        "threadId",
+        "body",
+        "recipientContactIds",
+        "attachmentVersionIds",
+        "state",
+        "createdAt",
+        "authorLabel"
+      ]
+    },
+    "OpsPackWrite": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "documentVersionIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "minItems": 1,
+          "maxItems": 20,
+          "uniqueItems": true
+        },
+        "recipientContactIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "minItems": 1,
+          "maxItems": 50,
+          "uniqueItems": true
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "\\S"
+        },
+        "body": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "documentVersionIds",
+        "recipientContactIds",
+        "subject",
+        "body"
+      ]
+    },
+    "OpsDelivery": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "jobId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "queued",
+            "delivered",
+            "failed",
+            "superseded"
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "completedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "documentVersionIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "minItems": 0,
+          "maxItems": 20,
+          "uniqueItems": true
+        },
+        "recipientLabels": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "maxItems": 50,
+          "uniqueItems": true
+        },
+        "errorCode": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "id",
+        "jobId",
+        "state",
+        "createdAt",
+        "documentVersionIds",
+        "recipientLabels"
+      ]
+    },
+    "OpsDeliveryAttempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "deliveryId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "startedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "started",
+            "succeeded",
+            "rejected",
+            "retryable",
+            "superseded",
+            "quarantined"
+          ]
+        },
+        "errorCode": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "id",
+        "deliveryId",
+        "number",
+        "startedAt",
+        "outcome"
+      ]
+    },
+    "OpsOccurrence": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "occurredOn": {
+              "type": "string",
+              "format": "date"
+            },
+            "timeZone": {
+              "const": "Europe/London"
+            },
+            "precision": {
+              "const": "date"
+            }
+          },
+          "required": [
+            "occurredOn",
+            "timeZone",
+            "precision"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "occurredOn": {
+              "type": "string",
+              "format": "date"
+            },
+            "timeZone": {
+              "const": "Europe/London"
+            },
+            "precision": {
+              "const": "approximate"
+            },
+            "approximateLocalTime": {
+              "type": "string",
+              "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+            }
+          },
+          "required": [
+            "occurredOn",
+            "timeZone",
+            "precision",
+            "approximateLocalTime"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "occurredOn": {
+              "type": "string",
+              "format": "date"
+            },
+            "timeZone": {
+              "const": "Europe/London"
+            },
+            "precision": {
+              "const": "exact"
+            },
+            "occurredAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "required": [
+            "occurredOn",
+            "timeZone",
+            "precision",
+            "occurredAt"
+          ]
+        }
+      ]
+    },
+    "OpsMotorSubject": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "registered-vehicle"
+            },
+            "vehicleId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "driverId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "driverDeclaration": {
+              "type": "string",
+              "enum": [
+                "named",
+                "not-named",
+                "unknown"
+              ]
+            },
+            "drivable": {
+              "type": "string",
+              "enum": [
+                "yes",
+                "no-recovered",
+                "unknown"
+              ]
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "unregistered-vehicle"
+            },
+            "registration": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20,
+              "pattern": "\\S"
+            },
+            "driverDeclaration": {
+              "type": "string",
+              "enum": [
+                "not-named",
+                "unknown"
+              ]
+            },
+            "drivable": {
+              "type": "string",
+              "enum": [
+                "yes",
+                "no-recovered",
+                "unknown"
+              ]
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "stock-or-customer-vehicle",
+                "premises",
+                "third-party-only"
+              ]
+            },
+            "itemDescription": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000,
+              "pattern": "\\S"
+            },
+            "owner": {
+              "type": "string",
+              "enum": [
+                "insured",
+                "customer",
+                "third-party"
+              ]
+            },
+            "estimatedValueAtRisk": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        }
+      ]
+    },
+    "OpsCommercialSubject": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "property"
+            },
+            "locationId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "coverCode": {
+              "type": "string",
+              "enum": [
+                "buildings",
+                "contents",
+                "stock",
+                "business-interruption"
+              ]
+            },
+            "itemDescription": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000,
+              "pattern": "\\S"
+            },
+            "owner": {
+              "type": "string",
+              "enum": [
+                "insured",
+                "customer",
+                "third-party"
+              ]
+            },
+            "estimatedValueAtRisk": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "liability"
+            },
+            "coverCode": {
+              "type": "string",
+              "enum": [
+                "public-liability",
+                "products-liability",
+                "employers-liability"
+              ]
+            },
+            "locationId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "occupationId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "itemDescription": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000,
+              "pattern": "\\S"
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        }
+      ]
+    },
+    "OpsIncidentDraftWrite": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "policyId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "occurrence": {
+              "$ref": "#/$defs/OpsOccurrence"
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "road-accident",
+                "vehicle-theft",
+                "premises-theft",
+                "fire",
+                "malicious-damage",
+                "third-party-injury",
+                "customer-vehicle-damage",
+                "property-damage",
+                "liability",
+                "other"
+              ]
+            },
+            "locationDescription": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000,
+              "pattern": "\\S"
+            },
+            "policeReference": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100,
+              "pattern": "\\S"
+            },
+            "thirdPartyInvolvement": {
+              "type": "string",
+              "enum": [
+                "yes",
+                "no",
+                "unknown"
+              ]
+            },
+            "thirdPartyName": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            },
+            "thirdPartyInsurerOrRegistration": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8000,
+              "pattern": "\\S"
+            },
+            "reportedBy": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            },
+            "reportingRoute": {
+              "type": "string",
+              "enum": [
+                "agency",
+                "insured-direct",
+                "third-party-or-insurer",
+                "police-or-recovery"
+              ]
+            },
+            "bestContactDescription": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000,
+              "pattern": "\\S"
+            },
+            "evidenceDocumentVersionIds": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "minItems": 0,
+              "maxItems": 20,
+              "uniqueItems": true
+            },
+            "productCode": {
+              "type": "string",
+              "enum": [
+                "motor-trade-road-risks",
+                "motor-trade-combined"
+              ]
+            },
+            "motorSubject": {
+              "$ref": "#/$defs/OpsMotorSubject"
+            }
+          },
+          "required": [
+            "policyId",
+            "productCode"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "policyId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "occurrence": {
+              "$ref": "#/$defs/OpsOccurrence"
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "premises-theft",
+                "fire",
+                "malicious-damage",
+                "third-party-injury",
+                "property-damage",
+                "liability",
+                "other"
+              ]
+            },
+            "locationDescription": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000,
+              "pattern": "\\S"
+            },
+            "policeReference": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100,
+              "pattern": "\\S"
+            },
+            "thirdPartyInvolvement": {
+              "type": "string",
+              "enum": [
+                "yes",
+                "no",
+                "unknown"
+              ]
+            },
+            "thirdPartyName": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            },
+            "thirdPartyInsurerOrRegistration": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8000,
+              "pattern": "\\S"
+            },
+            "reportedBy": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            },
+            "reportingRoute": {
+              "type": "string",
+              "enum": [
+                "agency",
+                "insured-direct",
+                "third-party-or-insurer",
+                "police-or-recovery"
+              ]
+            },
+            "bestContactDescription": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000,
+              "pattern": "\\S"
+            },
+            "evidenceDocumentVersionIds": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "minItems": 0,
+              "maxItems": 20,
+              "uniqueItems": true
+            },
+            "productCode": {
+              "const": "commercial-combined"
+            },
+            "commercialSubject": {
+              "$ref": "#/$defs/OpsCommercialSubject"
+            }
+          },
+          "required": [
+            "policyId",
+            "productCode"
+          ]
+        }
+      ]
+    },
+    "OpsOccurrenceClarification": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "occurrence": {
+          "$ref": "#/$defs/OpsOccurrence"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "occurrence",
+        "reason"
+      ]
+    },
+    "OpsOccurrenceResolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "policyId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "revisionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "knownAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "resolved",
+            "ambiguous",
+            "partly-uncovered",
+            "uncovered",
+            "incomplete"
+          ]
+        },
+        "candidates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "versionId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "from": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "to": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 300,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "versionId",
+              "from",
+              "to",
+              "label"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "sourceHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "id",
+        "policyId",
+        "revisionId",
+        "knownAt",
+        "state",
+        "candidates"
+      ]
+    },
+    "OpsIncident": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40,
+          "pattern": "\\S"
+        },
+        "revisionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "draft": {
+          "$ref": "#/$defs/OpsIncidentDraftWrite"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "logged",
+            "queued",
+            "handed-off",
+            "failed"
+          ]
+        },
+        "resolution": {
+          "$ref": "#/$defs/OpsOccurrenceResolution"
+        },
+        "providerReference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "pattern": "\\S"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "reference",
+        "revisionId",
+        "draft",
+        "state",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "OpsIncidentHandoff": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "revisionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "resolutionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "providerId": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "required": [
+        "revisionId",
+        "resolutionId",
+        "providerId"
+      ]
+    },
+    "OpsClaimsSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "incidentId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "handoffId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "asOf": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "receivedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "notified",
+            "open",
+            "closed",
+            "rejected"
+          ]
+        },
+        "paid": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reserved": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "currency": {
+          "const": "GBP"
+        },
+        "providerReference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "id",
+        "incidentId",
+        "handoffId",
+        "asOf",
+        "receivedAt",
+        "status",
+        "paid",
+        "reserved",
+        "currency",
+        "providerReference"
+      ]
+    },
+    "OpsDocumentGenerate": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "quotation",
+                "statement-of-fact",
+                "policy-schedule",
+                "policy-certificate",
+                "endorsement",
+                "renewal-invitation",
+                "cancellation-notice"
+              ]
+            },
+            "source": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "kind": {
+                      "const": "policy-version"
+                    },
+                    "policyVersionId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "policyVersionId"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "kind": {
+                      "const": "quote-revision"
+                    },
+                    "quoteRevisionId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "quoteRevisionId"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "kind": {
+                      "const": "servicing-terms"
+                    },
+                    "termsVersionId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "termsVersionId"
+                  ]
+                }
+              ]
+            },
+            "templateVersionId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000,
+              "pattern": "\\S"
+            },
+            "visibility": {
+              "type": "string",
+              "enum": [
+                "internal",
+                "insurer"
+              ]
+            }
+          },
+          "required": [
+            "kind",
+            "source",
+            "templateVersionId",
+            "reason",
+            "visibility"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "quotation",
+                "statement-of-fact",
+                "policy-schedule",
+                "policy-certificate",
+                "endorsement",
+                "renewal-invitation",
+                "cancellation-notice"
+              ]
+            },
+            "source": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "kind": {
+                      "const": "policy-version"
+                    },
+                    "policyVersionId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "policyVersionId"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "kind": {
+                      "const": "quote-revision"
+                    },
+                    "quoteRevisionId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "quoteRevisionId"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "kind": {
+                      "const": "servicing-terms"
+                    },
+                    "termsVersionId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "termsVersionId"
+                  ]
+                }
+              ]
+            },
+            "templateVersionId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000,
+              "pattern": "\\S"
+            },
+            "visibility": {
+              "const": "agency"
+            },
+            "relationshipId": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "required": [
+            "kind",
+            "source",
+            "templateVersionId",
+            "reason",
+            "visibility",
+            "relationshipId"
+          ]
+        }
+      ]
+    },
+    "OpsDocumentVersion": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "documentId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60,
+          "pattern": "\\S"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "ready",
+            "failed",
+            "quarantined"
+          ]
+        },
+        "originalName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "\\S"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20971520
+        },
+        "contentType": {
+          "type": "string",
+          "enum": [
+            "application/pdf",
+            "image/png",
+            "image/jpeg"
+          ]
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "sourceVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "templateVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "withdrawnEffectiveAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "documentId",
+        "number",
+        "kind",
+        "state",
+        "originalName",
+        "bytes",
+        "contentType",
+        "createdAt"
+      ]
+    },
+    "OpsMidSubmission": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "intentId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "policyVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "jobId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "accepted",
+            "rejected",
+            "failed",
+            "superseded"
+          ]
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "riskItemId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "vehicle",
+                  "trade-plate"
+                ]
+              },
+              "registration": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20,
+                "pattern": "\\S"
+              },
+              "action": {
+                "type": "string",
+                "enum": [
+                  "add",
+                  "change",
+                  "remove"
+                ]
+              },
+              "effectiveAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "riskItemId",
+              "kind",
+              "registration",
+              "action",
+              "effectiveAt"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "reasonCodes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "providerReference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "id",
+        "intentId",
+        "policyVersionId",
+        "jobId",
+        "state",
+        "items",
+        "reasonCodes"
+      ]
+    }
+  }
+}

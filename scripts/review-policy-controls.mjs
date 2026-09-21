@@ -17,7 +17,7 @@ add('47ad572ff959 7f2b0fedb3a8','command',['cloneQuote'],'Clone selected source 
 add('a90cc5e42de1 e0b763ff7753','opens-command-form',['createPolicyDraft'],'Prepare cancellation intent for the selected term; do not cancel cover on opening the form.');
 add('c2f7efead94c 64a95d6b56a5 13581e1a3c26 a32dc8670b0a 600cfa71899e a5137896520d','read',['comparePolicyVersions'],'Compare selected transaction source/result versions after authorising both; render permitted field differences.');
 add('f7e2892adf6c','opens-command-form',['uploadDocument'],'Choose evidence bytes, then upload under the authorised parent and typed metadata.');
-add('0e889362450f efe5919f52c7','read-and-command',['downloadDocumentVersion','sendDocumentPack'],'Split compound preview/download/send cell into actual read and explicit send actions; never send on preview.');
+add('0e889362450f efe5919f52c7','read-and-command',['previewDocumentVersion','downloadDocumentVersion','sendDocumentPack'],'Split compound preview/download/send cell into actual read and explicit send actions; never send on preview.');
 add('1ef57f2aabee 4215a62af861 5024c53b5eaf','command',['acquireDraftLease'],'Takeover requires grant/reason; atomically replace holder, notify prior editor and preserve ETag conflict checks.');
 add('811c233ef5c7 ee26e427d19a','command',['savePolicyDraft'],'Save proposed MTA with lease and ETag, preserving issued cover and invalidating material dependencies.');
 add('bcb0e563f02d cc443272c9e7 17cfb5f13bd1','command',['ratePolicyDraft'],'Persist current draft first and rate its exact revision; return durable rating job rather than toast success.');
@@ -47,7 +47,7 @@ add('e7a0096dd263','opens-command-form',['requestUserAccessChange'],'Edit or dea
 add('5337ca2ab8d2','command',['resendInvitation'],'Replace old token and queue invitation resend under the same agency.');
 add('2aefbeec3f5b','command',['decideIdentityChange'],'Approve/reject the selected identity-change request with audit and independent approver.');
 add('158574620277 1fc029a2f764 99aaeed351bc 18d24939cef0 3b63dda255aa 8d144a7ab5a8 9b62a0d11fe5','client-only',[],'Select rows in the current scoped result page; selection has no persisted task mutation.');
-add('1757c932af2d 1def7d3809c4 0f3e72d17e21 fae56e7ecb06','edit-then-save',['updateTask'],'Toggle the selected checklist item and persist task state; a tick cannot satisfy an independent referral decision.');
+add('1757c932af2d 1def7d3809c4 0f3e72d17e21 fae56e7ecb06','edit-then-save',['updateTaskChecklist'],'Toggle the selected checklist item and persist task state; a tick cannot satisfy an independent referral decision.');
 add('083355dcd818','command',['transitionTask'],'Complete task with reason after checklist checks; MTA still requires referral resolution and separate issue.');
 add('dc74aa65f196','command',['exportReport'],'Export the finance definition with selected period and processing basis, retaining run/source identities.');
 add('af1ae0986051','opens-command-form',['postJournal'],'Collect balanced lines/open period/reason and apply finance posting authority.');
@@ -65,8 +65,8 @@ add('879db9a21bfd 9914b0bf4f9f f70a8d0246fc 07199cfc7aaf 5ebc3446d851','client-o
 add('c85ad01a33e0 be7dce14a48f','command',['issuePolicyDraft'],'Issue cancellation atomically with effective time, financial credit and durable side effects; no payment within business commit.');
 add('bfe2f6136895','opens-command-form',['savePolicyDraft'],'Amend cancellation reason/effective time and recompute preview before issue.');
 add('45919e221aad 37f4631d197a','command',['createIncidentDraft','updateIncidentDraft'],'Save incomplete incident without handoff; existing draft uses its ETag rather than creating a duplicate.');
-add('ad5d48567dbf','command',['logIncident','handoffIncident'],'Disabled sample surfaces required fields; complete valid incident is logged then durably handed off with separate job state.');
-add('f66d2004123b','opens-command-form',['createThread','createMessageDraft','sendMessage'],'Draft contact message to claims administrator; explicit send is a separate persistent demo action.');
+add('ad5d48567dbf','command',['logAndHandoffIncident'],'Validate the current revision and occurrence resolution, atomically log and queue one durable claims handoff; display saved job outcome.');
+add('f66d2004123b','opens-command-form',['contactClaimsAdministrator'],'Draft contact message to claims administrator; explicit send is a separate persistent demo action.');
 add('c7575e4e2213','command',['exportPolicyReconstruction'],'Export precisely selected effective and knowledge cutoff with immutable source version metadata.');
 add('f3387357521c','read',['listDocumentVersions','downloadDocumentVersion'],'Open schedule bytes for selected historical version, never regenerate using current terms.');
 add('7aed007d8279','command',['sendEscalation'],'Submit provider escalation under the exact referral/target scope and durable operation key.');

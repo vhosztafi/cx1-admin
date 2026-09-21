@@ -1,7 +1,7 @@
 {
   "format": "operations-source-1",
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
-  "status": "extracted-pending-detailed-source-review",
+  "status": "source-contract-review-complete-runtime-pending",
   "denominators": {
     "directControls": 62,
     "explicitInheritedControls": 34,
@@ -88,6 +88,8 @@
       "operationIds": [
         "listTasks"
       ],
+      "fieldBindings": [],
+      "contractReason": "Literal navigation to tasks; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed.",
       "ownerPhase": 12,
       "ownerPlan": "phase-12",
       "disposition": "dashboard-consumer-future-owner-task-destination-phase9",
@@ -171,6 +173,8 @@
       "operationIds": [
         "listTasks"
       ],
+      "fieldBindings": [],
+      "contractReason": "Literal navigation to tasks; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed.",
       "ownerPhase": 12,
       "ownerPlan": "phase-12",
       "disposition": "dashboard-consumer-future-owner-task-destination-phase9",
@@ -254,6 +258,8 @@
       "operationIds": [
         "getTask"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 12,
       "ownerPlan": "phase-12",
       "disposition": "dashboard-consumer-future-owner-task-destination-phase9",
@@ -337,6 +343,8 @@
       "operationIds": [
         "listTasks"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 12,
       "ownerPlan": "phase-12",
       "disposition": "dashboard-consumer-future-owner-task-destination-phase9",
@@ -420,6 +428,8 @@
       "operationIds": [
         "listTasks"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 12,
       "ownerPlan": "phase-12",
       "disposition": "dashboard-consumer-future-owner-task-destination-phase9",
@@ -503,6 +513,8 @@
       "operationIds": [
         "listTasks"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 12,
       "ownerPlan": "phase-12",
       "disposition": "dashboard-consumer-future-owner-task-destination-phase9",
@@ -586,6 +598,8 @@
       "operationIds": [
         "listTasks"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 12,
       "ownerPlan": "phase-12",
       "disposition": "dashboard-consumer-future-owner-task-destination-phase9",
@@ -669,6 +683,8 @@
       "operationIds": [
         "sendDocumentPack"
       ],
+      "fieldBindings": [],
+      "contractReason": "Send selected authorised existing document versions through one durable delivery; no regeneration of historical files.",
       "ownerPhase": 9,
       "ownerPlan": "09-10",
       "disposition": "implement-owned-saved-workflow",
@@ -752,6 +768,8 @@
       "operationIds": [
         "createTask"
       ],
+      "fieldBindings": [],
+      "contractReason": "Open a task form linked to the current authorised record; persist only on confirmation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -835,6 +853,8 @@
       "operationIds": [
         "listNotes"
       ],
+      "fieldBindings": [],
+      "contractReason": "Literal pPolicy tab selection Notes; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped.",
       "ownerPhase": 9,
       "ownerPlan": "09-09",
       "disposition": "implement-owned-saved-workflow",
@@ -918,6 +938,8 @@
       "operationIds": [
         "getPolicyVersion"
       ],
+      "fieldBindings": [],
+      "contractReason": "Literal navigation to logclaim; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -947,6 +969,8 @@
       "operationIds": [
         "listNotes"
       ],
+      "fieldBindings": [],
+      "contractReason": "Literal pPolicy tab selection Notes; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped.",
       "ownerPhase": 9,
       "ownerPlan": "09-09",
       "disposition": "implement-owned-saved-workflow",
@@ -976,6 +1000,8 @@
       "operationIds": [
         "listDocuments"
       ],
+      "fieldBindings": [],
+      "contractReason": "Literal pPolicy tab selection Documents; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped.",
       "ownerPhase": 9,
       "ownerPlan": "09-08",
       "disposition": "implement-owned-saved-workflow",
@@ -1005,6 +1031,8 @@
       "operationIds": [
         "sendDocumentPack"
       ],
+      "fieldBindings": [],
+      "contractReason": "Send selected authorised existing document versions through one durable delivery; no regeneration of historical files.",
       "ownerPhase": 9,
       "ownerPlan": "09-10",
       "disposition": "implement-owned-saved-workflow",
@@ -1034,6 +1062,8 @@
       "operationIds": [
         "createTask"
       ],
+      "fieldBindings": [],
+      "contractReason": "Open a task form linked to the current authorised record; persist only on confirmation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -1063,6 +1093,8 @@
       "operationIds": [
         "listNotes"
       ],
+      "fieldBindings": [],
+      "contractReason": "Literal pPolicy tab selection Notes; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped.",
       "ownerPhase": 9,
       "ownerPlan": "09-09",
       "disposition": "implement-owned-saved-workflow",
@@ -1092,6 +1124,8 @@
       "operationIds": [
         "getPolicyVersion"
       ],
+      "fieldBindings": [],
+      "contractReason": "Literal navigation to logclaim; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -1121,6 +1155,8 @@
       "operationIds": [
         "listTasks"
       ],
+      "fieldBindings": [],
+      "contractReason": "Literal pPolicy tab selection Tasks; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -1150,6 +1186,8 @@
       "operationIds": [
         "getTask"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -1179,6 +1217,8 @@
       "operationIds": [
         "listTasks"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -1208,6 +1248,8 @@
       "operationIds": [
         "getPolicyAsAt"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-16",
       "disposition": "implement-owned-saved-workflow",
@@ -1237,6 +1279,8 @@
       "operationIds": [
         "addNote"
       ],
+      "fieldBindings": [],
+      "contractReason": "Trim and require note text, then persist with server actor/time; clear input only after success.",
       "ownerPhase": 9,
       "ownerPlan": "09-09",
       "disposition": "implement-owned-saved-workflow",
@@ -1265,6 +1309,8 @@
       "operationIds": [
         "uploadDocument"
       ],
+      "fieldBindings": [],
+      "contractReason": "Choose evidence bytes, then upload under the authorised parent and typed metadata.",
       "ownerPhase": 9,
       "ownerPlan": "09-08",
       "disposition": "implement-owned-saved-workflow",
@@ -1291,9 +1337,12 @@
       "originalPhase": 7,
       "origin": "explicit-phase7-8-handoff",
       "operationIds": [
+        "previewDocumentVersion",
         "downloadDocumentVersion",
         "sendDocumentPack"
       ],
+      "fieldBindings": [],
+      "contractReason": "Split compound preview/download/send cell into actual read and explicit send actions; never send on preview.",
       "ownerPhase": 9,
       "ownerPlan": "09-10",
       "disposition": "implement-owned-saved-workflow",
@@ -1320,9 +1369,12 @@
       "originalPhase": 7,
       "origin": "explicit-phase7-8-handoff",
       "operationIds": [
+        "previewDocumentVersion",
         "downloadDocumentVersion",
         "sendDocumentPack"
       ],
+      "fieldBindings": [],
+      "contractReason": "Split compound preview/download/send cell into actual read and explicit send actions; never send on preview.",
       "ownerPhase": 9,
       "ownerPlan": "09-10",
       "disposition": "implement-owned-saved-workflow",
@@ -1351,6 +1403,8 @@
       "operationIds": [
         "createTask"
       ],
+      "fieldBindings": [],
+      "contractReason": "Open a task form linked to the current authorised record; persist only on confirmation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -1379,6 +1433,8 @@
       "operationIds": [
         "getTask"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -1407,6 +1463,8 @@
       "operationIds": [
         "listTasks"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -1435,6 +1493,8 @@
       "operationIds": [
         "listTasks"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -1463,6 +1523,8 @@
       "operationIds": [
         "listTasks"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -1491,6 +1553,8 @@
       "operationIds": [
         "listTasks"
       ],
+      "fieldBindings": [],
+      "contractReason": "Literal navigation to tasks; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -1521,6 +1585,8 @@
         "createMessageDraft",
         "sendMessage"
       ],
+      "fieldBindings": [],
+      "contractReason": "Persist the message in the scoped agency thread, then enqueue deterministic demo delivery. Clear input after successful save; show queued/failed status honestly.",
       "ownerPhase": 9,
       "ownerPlan": "09-10",
       "disposition": "implement-owned-saved-workflow",
@@ -1549,6 +1615,8 @@
       "operationIds": [
         "getPolicyVersion"
       ],
+      "fieldBindings": [],
+      "contractReason": "Literal navigation to logclaim; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -1577,6 +1645,8 @@
       "operationIds": [
         "getIncident"
       ],
+      "fieldBindings": [],
+      "contractReason": "Open the selected incident ID; never reuse fixed prototype claim reference.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -1605,6 +1675,8 @@
       "operationIds": [
         "getIncident"
       ],
+      "fieldBindings": [],
+      "contractReason": "Open the selected incident ID; never reuse fixed prototype claim reference.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -1633,6 +1705,8 @@
       "operationIds": [
         "getTask"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -1716,6 +1790,8 @@
       "operationIds": [
         "createTask"
       ],
+      "fieldBindings": [],
+      "contractReason": "Open a task form linked to the current authorised record; persist only on confirmation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -1799,6 +1875,8 @@
       "operationIds": [
         "listNotes"
       ],
+      "fieldBindings": [],
+      "contractReason": "Open quote Notes tab; composer separately persists an internal note.",
       "ownerPhase": 9,
       "ownerPlan": "09-09",
       "disposition": "implement-owned-saved-workflow",
@@ -1828,6 +1906,8 @@
       "operationIds": [
         "createTask"
       ],
+      "fieldBindings": [],
+      "contractReason": "Open a task form linked to the current authorised record; persist only on confirmation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -1857,6 +1937,8 @@
       "operationIds": [
         "listNotes"
       ],
+      "fieldBindings": [],
+      "contractReason": "Open quote Notes tab without creating an empty note.",
       "ownerPhase": 9,
       "ownerPlan": "09-09",
       "disposition": "implement-owned-saved-workflow",
@@ -1885,6 +1967,8 @@
       "operationIds": [
         "createTask"
       ],
+      "fieldBindings": [],
+      "contractReason": "Open a task form linked to the current authorised record; persist only on confirmation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -1913,6 +1997,8 @@
       "operationIds": [
         "listTasks"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -1943,6 +2029,8 @@
         "createMessageDraft",
         "sendMessage"
       ],
+      "fieldBindings": [],
+      "contractReason": "Record query decisions and explicitly send a safe information request; unresolved referrals remain blocking.",
       "ownerPhase": 9,
       "ownerPlan": "09-10",
       "disposition": "implement-owned-saved-workflow",
@@ -2021,6 +2109,8 @@
       "operationIds": [
         "listThreads"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-10",
       "disposition": "implement-owned-saved-workflow",
@@ -2099,6 +2189,8 @@
       "operationIds": [
         "listIncidents"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -2180,6 +2272,8 @@
       "originalPhase": 9,
       "origin": "direct-phase9",
       "operationIds": [],
+      "fieldBindings": [],
+      "contractReason": "Select rows in the current scoped result page; selection has no persisted task mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -2263,6 +2357,8 @@
       "operationIds": [
         "createTask"
       ],
+      "fieldBindings": [],
+      "contractReason": "Open a task form linked to the current authorised record; persist only on confirmation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -2346,6 +2442,8 @@
       "operationIds": [
         "listTasks"
       ],
+      "fieldBindings": [],
+      "contractReason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -2429,6 +2527,8 @@
       "operationIds": [
         "listTasks"
       ],
+      "fieldBindings": [],
+      "contractReason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -2512,6 +2612,8 @@
       "operationIds": [
         "listTasks"
       ],
+      "fieldBindings": [],
+      "contractReason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -2595,6 +2697,8 @@
       "operationIds": [
         "getTask"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -2676,6 +2780,8 @@
       "originalPhase": 9,
       "origin": "direct-phase9",
       "operationIds": [],
+      "fieldBindings": [],
+      "contractReason": "Select rows in the current scoped result page; selection has no persisted task mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -2758,6 +2864,8 @@
       "operationIds": [
         "getTask"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -2838,6 +2946,8 @@
       "originalPhase": 9,
       "origin": "direct-phase9",
       "operationIds": [],
+      "fieldBindings": [],
+      "contractReason": "Select rows in the current scoped result page; selection has no persisted task mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -2918,6 +3028,8 @@
       "operationIds": [
         "getTask"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -2996,6 +3108,8 @@
       "originalPhase": 9,
       "origin": "direct-phase9",
       "operationIds": [],
+      "fieldBindings": [],
+      "contractReason": "Select rows in the current scoped result page; selection has no persisted task mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -3076,6 +3190,8 @@
       "operationIds": [
         "getTask"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -3154,6 +3270,8 @@
       "originalPhase": 9,
       "origin": "direct-phase9",
       "operationIds": [],
+      "fieldBindings": [],
+      "contractReason": "Select rows in the current scoped result page; selection has no persisted task mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -3233,6 +3351,8 @@
       "operationIds": [
         "getTask"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -3310,6 +3430,8 @@
       "originalPhase": 9,
       "origin": "direct-phase9",
       "operationIds": [],
+      "fieldBindings": [],
+      "contractReason": "Select rows in the current scoped result page; selection has no persisted task mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -3388,6 +3510,8 @@
       "operationIds": [
         "getTask"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -3464,6 +3588,8 @@
       "originalPhase": 9,
       "origin": "direct-phase9",
       "operationIds": [],
+      "fieldBindings": [],
+      "contractReason": "Select rows in the current scoped result page; selection has no persisted task mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -3548,6 +3674,8 @@
         "listPolicyDrafts",
         "getPolicyDraft"
       ],
+      "fieldBindings": [],
+      "contractReason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -3630,8 +3758,10 @@
       "origin": "direct-phase9",
       "operationIds": [
         "getTask",
-        "listNotes"
+        "listTaskComments"
       ],
+      "fieldBindings": [],
+      "contractReason": "Open the task comment composer and read its own append-only comment history; saving uses addTaskComment.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -3716,6 +3846,8 @@
         "listPolicyDrafts",
         "getPolicyDraft"
       ],
+      "fieldBindings": [],
+      "contractReason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -3799,6 +3931,8 @@
       "operationIds": [
         "getAgency"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -3883,6 +4017,8 @@
         "getPolicy",
         "getPolicyAsAt"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -3964,8 +4100,10 @@
       "originalPhase": 9,
       "origin": "direct-phase9",
       "operationIds": [
-        "updateTask"
+        "updateTaskChecklist"
       ],
+      "fieldBindings": [],
+      "contractReason": "Toggle the selected checklist item and persist task state; a tick cannot satisfy an independent referral decision.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -4047,8 +4185,10 @@
       "originalPhase": 9,
       "origin": "direct-phase9",
       "operationIds": [
-        "updateTask"
+        "updateTaskChecklist"
       ],
+      "fieldBindings": [],
+      "contractReason": "Toggle the selected checklist item and persist task state; a tick cannot satisfy an independent referral decision.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -4130,8 +4270,10 @@
       "originalPhase": 9,
       "origin": "direct-phase9",
       "operationIds": [
-        "updateTask"
+        "updateTaskChecklist"
       ],
+      "fieldBindings": [],
+      "contractReason": "Toggle the selected checklist item and persist task state; a tick cannot satisfy an independent referral decision.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -4213,8 +4355,10 @@
       "originalPhase": 9,
       "origin": "direct-phase9",
       "operationIds": [
-        "updateTask"
+        "updateTaskChecklist"
       ],
+      "fieldBindings": [],
+      "contractReason": "Toggle the selected checklist item and persist task state; a tick cannot satisfy an independent referral decision.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -4297,8 +4441,15 @@
       "originalPhase": 9,
       "origin": "direct-phase9",
       "operationIds": [
-        "addNote"
+        "addTaskComment"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "addTaskComment",
+          "field": "body"
+        }
+      ],
+      "contractReason": "Comment composer has onSend as well as onChange; explicit send saves an internal task note and rejects blank content.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -4382,6 +4533,8 @@
       "operationIds": [
         "transitionTask"
       ],
+      "fieldBindings": [],
+      "contractReason": "Complete task with reason after checklist checks; MTA still requires referral resolution and separate issue.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -4465,6 +4618,8 @@
       "operationIds": [
         "listTasks"
       ],
+      "fieldBindings": [],
+      "contractReason": "Literal navigation to tasks; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -4549,6 +4704,8 @@
         "listPolicyDrafts",
         "getPolicyDraft"
       ],
+      "fieldBindings": [],
+      "contractReason": "Literal navigation to mta; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -4632,6 +4789,13 @@
       "operationIds": [
         "updateTask"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "updateTask",
+          "field": "assignment"
+        }
+      ],
+      "contractReason": "Selected owner and due instant save under task ETag and assignment scope.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -4715,6 +4879,13 @@
       "operationIds": [
         "updateTask"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "updateTask",
+          "field": "dueOn"
+        }
+      ],
+      "contractReason": "Selected owner and due instant save under task ETag and assignment scope.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -4798,6 +4969,13 @@
       "operationIds": [
         "transitionTask"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "transitionTask",
+          "field": "state"
+        }
+      ],
+      "contractReason": "Changing status is an explicit lifecycle command with reason/checklist gates, not a generic task write.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -4883,6 +5061,8 @@
         "getJob",
         "downloadDocumentVersion"
       ],
+      "fieldBindings": [],
+      "contractReason": "Persist scoped export from the selected report run and deliver actual CSV bytes.",
       "ownerPhase": 12,
       "ownerPlan": "phase-12",
       "disposition": "report-export-consumer-future-owner",
@@ -4913,6 +5093,8 @@
         "getJob",
         "downloadDocumentVersion"
       ],
+      "fieldBindings": [],
+      "contractReason": "Produce an actual preview artifact from pinned source/template and safe audience.",
       "ownerPhase": 11,
       "ownerPlan": "phase-11",
       "disposition": "template-administration-future-owner",
@@ -4996,6 +5178,8 @@
       "operationIds": [
         "retryMidSubmission"
       ],
+      "fieldBindings": [],
+      "contractReason": "Retry the selected failed eligible MID submission with its existing operation identity; no duplicate business effect.",
       "ownerPhase": 9,
       "ownerPlan": "09-14",
       "disposition": "implement-owned-saved-workflow",
@@ -5079,6 +5263,8 @@
       "operationIds": [
         "listTasks"
       ],
+      "fieldBindings": [],
+      "contractReason": "Literal navigation to tasks; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed.",
       "ownerPhase": 9,
       "ownerPlan": "09-14",
       "disposition": "implement-owned-saved-workflow",
@@ -5162,6 +5348,8 @@
       "operationIds": [
         "getTask"
       ],
+      "fieldBindings": [],
+      "contractReason": "Literal navigation to task; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -5245,6 +5433,8 @@
       "operationIds": [
         "listThreads"
       ],
+      "fieldBindings": [],
+      "contractReason": "Literal navigation to policy / Messages; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed.",
       "ownerPhase": 9,
       "ownerPlan": "09-10",
       "disposition": "implement-owned-saved-workflow",
@@ -5328,6 +5518,8 @@
       "operationIds": [
         "listIncidents"
       ],
+      "fieldBindings": [],
+      "contractReason": "Literal navigation to policy / Claims; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -5412,6 +5604,8 @@
         "createIncidentDraft",
         "updateIncidentDraft"
       ],
+      "fieldBindings": [],
+      "contractReason": "Save incomplete incident without handoff; existing draft uses its ETag rather than creating a duplicate.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -5493,9 +5687,10 @@
       "originalPhase": 9,
       "origin": "direct-phase9",
       "operationIds": [
-        "logIncident",
-        "handoffIncident"
+        "logAndHandoffIncident"
       ],
+      "fieldBindings": [],
+      "contractReason": "Validate the current revision and occurrence resolution, atomically log and queue one durable claims handoff; display saved job outcome.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -5580,6 +5775,14 @@
         "createIncidentDraft",
         "updateIncidentDraft"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "occurrence",
+          "jsonPointer": "/occurrence/occurredOn"
+        }
+      ],
+      "contractReason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -5664,6 +5867,14 @@
         "createIncidentDraft",
         "updateIncidentDraft"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "occurrence",
+          "jsonPointer": "/occurrence/approximateLocalTime"
+        }
+      ],
+      "contractReason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -5748,6 +5959,13 @@
         "createIncidentDraft",
         "updateIncidentDraft"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "kind"
+        }
+      ],
+      "contractReason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -5832,6 +6050,18 @@
         "createIncidentDraft",
         "updateIncidentDraft"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "motorSubject",
+          "jsonPointer": "/motorSubject/kind",
+          "schemaProductCodes": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ],
+      "contractReason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -5916,6 +6146,13 @@
         "createIncidentDraft",
         "updateIncidentDraft"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "locationDescription"
+        }
+      ],
+      "contractReason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -6000,6 +6237,13 @@
         "createIncidentDraft",
         "updateIncidentDraft"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "policeReference"
+        }
+      ],
+      "contractReason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -6084,6 +6328,18 @@
         "createIncidentDraft",
         "updateIncidentDraft"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "motorSubject",
+          "jsonPointer": "/motorSubject/itemDescription",
+          "schemaProductCodes": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ],
+      "contractReason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -6168,6 +6424,18 @@
         "createIncidentDraft",
         "updateIncidentDraft"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "motorSubject",
+          "jsonPointer": "/motorSubject/owner",
+          "schemaProductCodes": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ],
+      "contractReason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -6252,6 +6520,18 @@
         "createIncidentDraft",
         "updateIncidentDraft"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "motorSubject",
+          "jsonPointer": "/motorSubject/estimatedValueAtRisk",
+          "schemaProductCodes": [
+            "motor-trade-road-risks",
+            "motor-trade-combined"
+          ]
+        }
+      ],
+      "contractReason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -6336,6 +6616,13 @@
         "createIncidentDraft",
         "updateIncidentDraft"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "thirdPartyInvolvement"
+        }
+      ],
+      "contractReason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -6420,6 +6707,13 @@
         "createIncidentDraft",
         "updateIncidentDraft"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "thirdPartyName"
+        }
+      ],
+      "contractReason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -6504,6 +6798,13 @@
         "createIncidentDraft",
         "updateIncidentDraft"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "thirdPartyInsurerOrRegistration"
+        }
+      ],
+      "contractReason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -6589,6 +6890,13 @@
         "createIncidentDraft",
         "updateIncidentDraft"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "description"
+        }
+      ],
+      "contractReason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -6673,6 +6981,13 @@
         "createIncidentDraft",
         "updateIncidentDraft"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "reportedBy"
+        }
+      ],
+      "contractReason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -6757,6 +7072,13 @@
         "createIncidentDraft",
         "updateIncidentDraft"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "reportingRoute"
+        }
+      ],
+      "contractReason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -6841,6 +7163,13 @@
         "createIncidentDraft",
         "updateIncidentDraft"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "updateIncidentDraft",
+          "field": "bestContactDescription"
+        }
+      ],
+      "contractReason": "Capture explicit incident field in incomplete typed draft. Date and optional approximate local time remain separate; Unknown is preserved. Placeholder selections are omitted. Description onSend actually saves. Evidence/version/coverage validation gates log and handoff; capture never confirms coverage.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -6925,6 +7254,8 @@
         "getPolicy",
         "getPolicyAsAt"
       ],
+      "fieldBindings": [],
+      "contractReason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -7009,6 +7340,8 @@
         "createIncidentDraft",
         "updateIncidentDraft"
       ],
+      "fieldBindings": [],
+      "contractReason": "Save incomplete incident without handoff; existing draft uses its ETag rather than creating a duplicate.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -7092,6 +7425,8 @@
       "operationIds": [
         "listIncidents"
       ],
+      "fieldBindings": [],
+      "contractReason": "Literal navigation to policy / Claims; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -7173,10 +7508,10 @@
       "originalPhase": 9,
       "origin": "direct-phase9",
       "operationIds": [
-        "createThread",
-        "createMessageDraft",
-        "sendMessage"
+        "contactClaimsAdministrator"
       ],
+      "fieldBindings": [],
+      "contractReason": "Draft contact message to claims administrator; explicit send is a separate persistent demo action.",
       "ownerPhase": 9,
       "ownerPlan": "09-13",
       "disposition": "implement-owned-saved-workflow",
@@ -7261,6 +7596,8 @@
         "listDocumentVersions",
         "downloadDocumentVersion"
       ],
+      "fieldBindings": [],
+      "contractReason": "Open schedule bytes for selected historical version, never regenerate using current terms.",
       "ownerPhase": 9,
       "ownerPlan": "09-08",
       "disposition": "implement-owned-saved-workflow",
@@ -7290,6 +7627,8 @@
       "operationIds": [
         "sendDocumentPack"
       ],
+      "fieldBindings": [],
+      "contractReason": "Send selected authorised existing document versions through one durable delivery; no regeneration of historical files.",
       "ownerPhase": 9,
       "ownerPlan": "09-10",
       "disposition": "implement-owned-saved-workflow",
@@ -7319,6 +7658,8 @@
       "operationIds": [
         "createIncidentDraft"
       ],
+      "fieldBindings": [],
+      "contractReason": "Open CC incident capture with property risk links; no Motor Trade-only assumptions.",
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
@@ -7347,6 +7688,8 @@
       "operationIds": [
         "listIncidents"
       ],
+      "fieldBindings": [],
+      "contractReason": "Literal navigation to policy / Claims; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed.",
       "ownerPhase": 9,
       "ownerPlan": "09-17",
       "disposition": "invalid-commercial-motor-fallback-already-removed-verify-no-reintroduction",
@@ -7433,6 +7776,8 @@
         "createMessageDraft",
         "sendMessage"
       ],
+      "fieldBindings": [],
+      "contractReason": "Record queried match state and safe company-number request to the submitting agency.",
       "ownerPhase": 9,
       "ownerPlan": "09-16",
       "disposition": "implement-owned-saved-workflow",
@@ -7460,6 +7805,8 @@
       "operationIds": [
         "createTask"
       ],
+      "fieldBindings": [],
+      "contractReason": "Confirm new task with typed subject, owner, priority and due date; persist and return actual task ID.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -7487,6 +7834,13 @@
       "operationIds": [
         "createTask"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "createTask",
+          "field": "typeCode"
+        }
+      ],
+      "contractReason": "Task modal values save only on confirmation with an authorised typed parent.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -7514,6 +7868,13 @@
       "operationIds": [
         "createTask"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "createTask",
+          "field": "title"
+        }
+      ],
+      "contractReason": "Task modal values save only on confirmation with an authorised typed parent.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -7541,6 +7902,13 @@
       "operationIds": [
         "createTask"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "createTask",
+          "field": "assignment"
+        }
+      ],
+      "contractReason": "Task modal values save only on confirmation with an authorised typed parent.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -7568,6 +7936,13 @@
       "operationIds": [
         "createTask"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "createTask",
+          "field": "priority"
+        }
+      ],
+      "contractReason": "Task modal values save only on confirmation with an authorised typed parent.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -7595,6 +7970,13 @@
       "operationIds": [
         "createTask"
       ],
+      "fieldBindings": [
+        {
+          "operationId": "createTask",
+          "field": "dueOn"
+        }
+      ],
+      "contractReason": "Task modal values save only on confirmation with an authorised typed parent.",
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
@@ -30405,7 +30787,8 @@
         "text": "The handoff model is shared; the incident capture fields are not."
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 132,
@@ -30424,7 +30807,8 @@
         "actionLabel": ""
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 133,
@@ -30441,7 +30825,8 @@
         "label": "Capture field"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 134,
@@ -30458,7 +30843,8 @@
         "label": "Motor trade"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 135,
@@ -30475,7 +30861,8 @@
         "label": "Commercial combined"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 136,
@@ -30492,7 +30879,8 @@
         "text": "What was involved"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 137,
@@ -30509,7 +30897,8 @@
         "text": "Vehicle, stock, premises, third party"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 138,
@@ -30526,7 +30915,8 @@
         "text": "Location, contents, employee, third party"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 139,
@@ -30543,7 +30933,8 @@
         "text": "Key identifier"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 140,
@@ -30560,7 +30951,8 @@
         "text": "Vehicle registration"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 141,
@@ -30577,7 +30969,8 @@
         "text": "Location reference"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 142,
@@ -30594,7 +30987,8 @@
         "text": "Person involved"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 143,
@@ -30611,7 +31005,8 @@
         "text": "Named driver"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 144,
@@ -30628,7 +31023,8 @@
         "text": "Employee, with occupation"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 145,
@@ -30645,7 +31041,8 @@
         "text": "Statutory reporting"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 146,
@@ -30662,7 +31059,8 @@
         "text": "Motor insurance data service"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 147,
@@ -30679,7 +31077,8 @@
         "text": "Employers’ liability traceability"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 148,
@@ -30696,7 +31095,8 @@
         "text": "Excess applied"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 149,
@@ -30713,7 +31113,8 @@
         "text": "Road risks or stock excess"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 150,
@@ -30730,7 +31131,8 @@
         "text": "Property or liability excess"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 151,
@@ -30749,7 +31151,8 @@
         "actionLabel": ""
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 152,
@@ -30766,7 +31169,8 @@
         "label": "Claim reference"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 153,
@@ -30783,7 +31187,8 @@
         "label": "Date of loss"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 154,
@@ -30800,7 +31205,8 @@
         "label": "Type"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 155,
@@ -30817,7 +31223,8 @@
         "label": "Status"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 156,
@@ -30834,7 +31241,8 @@
         "label": "Paid"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 157,
@@ -30851,7 +31259,8 @@
         "label": "Reserve"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 158,
@@ -30868,7 +31277,8 @@
         "text": "CL-84120"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 159,
@@ -30885,7 +31295,8 @@
         "text": "18/11/2023"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 160,
@@ -30902,7 +31313,8 @@
         "text": "Escape of water — contents"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 161,
@@ -30919,7 +31331,8 @@
         "text": "Settled"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 162,
@@ -30936,7 +31349,8 @@
         "text": "£8,400.00"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     },
     {
       "sourceOccurrence": 163,
@@ -30953,7 +31367,8 @@
         "text": "£0.00"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "not-implemented-in-phase9",
+      "verification": []
     }
   ],
   "branches": [

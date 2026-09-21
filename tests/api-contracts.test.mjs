@@ -390,6 +390,12 @@ test('servicing input bindings resolve to their actual command payload fields',a
  }
  for(const row of rows)for(const binding of row.apiFields??[]){
   let schema=getOperation(binding.operationId).requestBody.content['application/json'].schema;
+  if(binding.schemaProductCodes){
+   while(schema.$ref)schema=document.components.schemas[schema.$ref.split('/').at(-1)];
+   const matching=(schema.oneOf??[]).filter(branch=>binding.schemaProductCodes.some(code=>branch.properties?.productCode?.const===code||branch.properties?.productCode?.enum?.includes(code)));
+   assert.ok(matching.length,`${row.controlId}: no matching product branch`);
+   schema={oneOf:matching};
+  }
   assert.ok(hasField(schema,binding.field),`${row.controlId}: ${binding.operationId}.${binding.field}`);
  }
  const contact=ajv.getSchema(`${rootId}#/$defs/ContactWrite`);

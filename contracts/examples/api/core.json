@@ -92,8 +92,11 @@
           "etag": "\"AQAAAA==\""
         }
       ],
-      "ownerId": "22222222-2222-4222-8222-222222222222",
-      "reason": "Cover absent colleague"
+      "reason": "Cover absent colleague",
+      "assignment": {
+        "kind": "user",
+        "ownerId": "22222222-2222-4222-8222-222222222222"
+      }
     }
   }
 ]

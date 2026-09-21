@@ -1,6 +1,6 @@
-# Phase9 source audit — initial reconciliation
+# Phase9 source audit — closed source and contract reconciliation
 
-2026-09-21. Extraction complete; field-by-field API mapping and final runtime evidence remain pending. Never interpret this inventory as implementation acceptance.
+2026-09-21. Extraction and field-by-field API contract review complete; runtime evidence remains pending. Never interpret this inventory as implementation acceptance.
 
 `scripts/build-operations-source.mjs` preserves the original prototype hash and control IDs. It unions62 directly assigned Phase9 controls,34 explicit Phase7/8 handoffs and mapped operational consumers, resulting in118 unique original controls. This includes future dashboard/report/template consumers with explicit Phase12/11 owners; inclusion does not move their whole phase intoPhase9.509 rendered occurrences retain their global source indices and exact raw observations.33 commercial claims occurrences retain their separate Phase8 inventory indices (do not sum these overlapping populations). Ten supplemental source branches retain exact decoded-source needles and explicit implementation owners.
 
@@ -17,4 +17,4 @@ Direct source methods pTasks/pTask/pLogClaim/pClaim are fully retained at render
 
 ## Current evidence
 
-Three Node source-invariant tests initially failed because the ledger did not exist, then passed after extraction. They independently compare original IDs/handlers, exact display indices/objects and source branch needles. This proves preservation and planned ownership only. Each runtimeStatus remains not-implemented-in-phase9; later plans replace it only after actual saved behavior and tests. Detailed schema/operation field mapping and additional inherited non-rendered display review remain09-01 work before its summary/09-02.
+Three Node source-invariant tests initially failed because the ledger did not exist, then passed after extraction. They independently compare original IDs/handlers, exact display indices/objects and source branch needles. This proves preservation and planned ownership only. Each runtimeStatus remains not-implemented-in-phase9; later plans replace it only after actual saved behavior and tests. All118 controls were reviewed with their final operation/field bindings and exact owning plan. The509 raw display occurrences retain source content and the tab/method owner;33 overlapping commercial occurrences retain separate prior identities. The ten unrendered branches have explicit downstream owners. The final contract covers typed assignments, task comments/checklist, exact document preview/send, incomplete product-specific incidents and atomic log/handoff. Future dashboard/report/admin owners remain explicit. No operational runtime acceptance is claimed.
