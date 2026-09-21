@@ -1,4 +1,5 @@
 'use client';
+import { TaskCreateEntry } from '../operations/task-create-entry';
 import Link from 'next/link';
 import {useState} from 'react';
 import type {CommercialCatalogue, CommercialQuoteView} from '../../lib/commercial-capture';
@@ -15,7 +16,7 @@ export function CommercialReceipt({actorId, quote, etag, catalogue, refresh}: {a
   const [tab, setTab] = useState<'overview' | 'risk' | 'losses' | 'history' | 'underwriting' | 'quotation'>('overview'); const [selected, setSelected] = useState('');
   const underwriting = useQuoteResource<{capabilities: {canRate: boolean}; blockers: {code: string; message: string}[]}>(`/api/v1/quotes/${quote.id}/underwriting`);
   const labels = Object.fromEntries(catalogue.questions.map(x => [x.id, x.label]));
-  return <><div className="page-heading"><div><h1>{quote.reference}</h1><p>Saved quote · Revision {quote.revisionNumber}</p></div><Link className="button" href="/quotes/new">New quote</Link></div>
+  return <><div className="page-heading"><div><h1>{quote.reference}</h1><p>Saved quote · Revision {quote.revisionNumber}</p></div><Link className="button" href="/quotes/new">New quote</Link><TaskCreateEntry parent={{kind: "quote", id: quote.id, label: quote.reference}} /></div>
     <section className="quote-saved-banner" aria-label="Quote identity"><div><span className="quote-step-label">Commercial Combined</span><h2>{quote.clientName}</h2><p>{quote.agencyName}</p></div><Status tone="warning">{quoteStateLabel(quote.state)}</Status></section>
     <div className="quote-row-actions"><Link className="button" href={`/clients/${quote.clientId}`}>Open client account</Link>{quote.capabilities.canSave && <Link className="button button-primary" href={`/quotes/${quote.id}/edit`}>Edit quote draft</Link>}{quote.matchReviewId && <Link className="button" href={`/matches/${quote.matchReviewId}`}>Open account matching review</Link>}</div>
     <div className="quote-row-actions quote-record-tabs" role="tablist" aria-label="Commercial Combined quote tabs">{(['overview', 'risk', 'losses', 'underwriting', 'quotation', 'history'] as const).map(x => <button key={x} className="button" role="tab" aria-selected={x === tab} onClick={() => setTab(x)}>{x === 'overview' ? 'Overview' : x === 'risk' ? 'Business details' : x === 'losses' ? 'Claims and losses' : x === 'underwriting' ? 'Underwriting' : x === 'quotation' ? 'Quotation' : 'History and comparison'}</button>)}</div>

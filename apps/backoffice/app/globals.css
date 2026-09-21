@@ -439,12 +439,24 @@ h1, h2, p { margin: 0; }
 .cancellation-review .quote-form-grid dd { margin: .35rem 0 0; font-variant-numeric: tabular-nums; }
 .task-detail-grid { display: grid; grid-template-columns: minmax(0, 1fr) 314px; gap: 20px; }
 .task-detail-grid > * { min-width: 0; }
+.task-detail-grid[hidden] { display: none; }
+.task-rail-facts { padding: 0 18px 16px; margin: 0; }
+.task-rail-facts dt { margin-top: 14px; color: #677184; }
+.task-rail-facts dd { margin: 4px 0 0; overflow-wrap: anywhere; }
 .task-detail-grid .panel { margin-bottom: 20px; }
 .task-form { padding: 20px; }
 .task-form fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 .task-form label { display: grid; gap: 6px; margin-bottom: 16px; font-weight: 500; }
 .task-form input:not([type="checkbox"]), .task-form select, .task-form textarea { width: 100%; }
 .task-form textarea { min-height: 100px; resize: vertical; }
+.task-form input:not([type="checkbox"]), .task-form select, .task-form textarea,
+.task-filters input, .task-filters select { border: 1px solid #dce0e9; border-radius: 5px; background: #fff; padding: 9px 10px; color: #14233c; font: inherit; font-size: 14px; min-width: 0; }
+.task-form input:disabled, .task-form select:disabled, .task-form textarea:disabled { background: #f5f6fa; color: #677184; }
+.task-filters { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; padding: 16px 18px; border-bottom: 1px solid #e4e6ec; }
+.task-filters label { display: grid; gap: 6px; flex: 1 1 150px; min-width: 0; }
+.task-filters label:first-child { flex-basis: 220px; }
+.task-filters + .operations-actions { padding: 12px 18px; }
+.section-tabs button[aria-pressed="true"] { background: #eef1fe; color: #304fdb; border-color: #aebafa; }
 .task-form .task-checkbox { display: flex; align-items: center; gap: 8px; }
 .task-history { list-style: none; padding: 0 20px; }
 .task-history li { padding: 12px 0; border-bottom: 1px solid #e4e6ec; }

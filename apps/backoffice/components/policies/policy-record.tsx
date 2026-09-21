@@ -1,4 +1,5 @@
 'use client';
+import { TaskCreateEntry } from '../operations/task-create-entry';
 import Link from 'next/link';
 import { useState } from 'react';
 import { policyCoverageLabel } from '../../lib/policies-api';
@@ -61,7 +62,7 @@ export function PolicyRecord({ policyId, questionLabels,selection,initialTab,ini
       <DataTable caption={renewal ? 'Renewal journal lines' : adjusted ? 'Adjustment journal lines' : 'Opening journal lines'} columns={['Component', 'Account', 'Debit', 'Credit']}>{financial.lines.map((line, index) => <tr key={index}><th scope="row">{line.componentCode}</th><td>{line.accountCode}</td><td>{line.side === 'debit' ? formatGbp(line.amount) : '—'}</td><td>{line.side === 'credit' ? formatGbp(line.amount) : '—'}</td></tr>)}</DataTable>
     </details>
   </div></Panel>;
-  return <><div className="page-heading"><div><h1>{policy.reference}</h1><p>{cancelled ? 'Cancelled policy version' : renewal ? 'Renewed policy' : adjusted ? 'Adjusted policy' : 'New-business policy'} · Term {policy.termNumber} · Version {policy.versionSequence}</p></div><Link className="button" href={`/quotes/${policy.sourceQuoteId}`}>Open source quote</Link><button className="button" onClick={cancelDraft}>Cancel policy</button></div>
+  return <><div className="page-heading"><div><h1>{policy.reference}</h1><p>{cancelled ? 'Cancelled policy version' : renewal ? 'Renewed policy' : adjusted ? 'Adjusted policy' : 'New-business policy'} · Term {policy.termNumber} · Version {policy.versionSequence}</p></div><Link className="button" href={`/quotes/${policy.sourceQuoteId}`}>Open source quote</Link><TaskCreateEntry parent={{kind: "policy", id: policy.id, label: policy.reference}} /><button className="button" onClick={cancelDraft}>Cancel policy</button></div>
     <section className="quote-saved-banner" aria-label="Issued policy"><div><span className="quote-step-label">{product}</span><h2>{declaredName}</h2><p>Policy issued · {date(policy.issuedAt)} · London</p></div><Status tone={coverage === 'In force' ? 'success' : 'info'}>{coverage}</Status></section>
     {chronology}
     <PolicyHistoryActions key={`${policy.id}:${policy.versionId}:${policy.effectiveCutoff}:${policy.knownCutoff}`} policy={policy} />

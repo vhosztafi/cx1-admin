@@ -1,4 +1,5 @@
 'use client';
+import { TaskCreateEntry } from '../operations/task-create-entry';
 import Link from 'next/link';
 import {useEffect,useRef,useState} from 'react';
 import type {CommercialCatalogue} from '../../lib/commercial-capture';
@@ -77,7 +78,7 @@ export function CommercialServicingWorkspace({draftId,actorId,canTakeover,catalo
  }
  const conflict=dirty&&localRevision!==view.data.revisionId;
  const disabled=!editing||busy||uncertain||proofPending||!matched||conflict,labels=Object.fromEntries(catalogue.questions.map(x=>[x.id,x.label]));
- return <><div className="page-heading"><div><h1>Commercial policy {kind}</h1><p>{view.data.state==='issued'?`Issued ${kind} · effective changes saved`:'Saved proposal · issued cover and exposure stay unchanged'}</p></div><Link className="button" href={`/policies/${view.data.policyId}`}>Back to policy</Link></div>
+ return <><div className="page-heading"><div><h1>Commercial policy {kind}</h1><p>{view.data.state==='issued'?`Issued ${kind} · effective changes saved`:'Saved proposal · issued cover and exposure stay unchanged'}</p></div><Link className="button" href={`/policies/${view.data.policyId}`}>Back to policy</Link><TaskCreateEntry parent={{kind: "servicing-draft", id: draftId, label: "Commercial " + kind + " draft"}} /></div>
  <section className="quote-saved-banner" aria-label="Editing lease"><div><h2>{editing?'You are editing this draft':'Read-only draft'}</h2><p>{view.data.context?.policyReference} · {view.data.state!=='draft'?'This draft is closed; its saved history remains available.':otherEditor?'Another editor holds the lease.':editing?'Renew the lease to keep editing.':'Acquire an editing lease to make changes.'}</p></div><Status tone={editing?'success':'info'}>{dirty?'Local changes retained':view.data.state==='draft'?'Saved draft':view.data.state}</Status></section>
  {conflict?<p role="alert">Another revision was saved while you were editing. Your local edits are retained. Review the saved comparison, then discard local changes to load that revision before editing again.</p>:null}
  {error?<p role="alert">{error}</p>:null}{notice?<p role="status">{notice}</p>:null}

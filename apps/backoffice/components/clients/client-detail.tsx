@@ -10,6 +10,7 @@ import { AddRelationship } from './add-relationship';
 import { Contacts } from './contacts';
 import { QuoteList } from '../quotes/quote-list';
 import { PolicyList } from '../policies/policy-list';
+import { TaskCreateEntry } from '../operations/task-create-entry';
 
 const tabs = ['Overview','Policies','Quotes','Contacts','Activity'];
 export function ClientDetail({ clientId, tab: requestedTab, canWrite, canWriteContacts, canSupport }: { clientId: string; tab: string; canWrite: boolean; canWriteContacts: boolean; canSupport: boolean }) {
@@ -43,7 +44,7 @@ function Relationships({ clientId, onAdd }: { clientId: string; onAdd?: () => vo
   return <Panel title="Agency relationships" note="Contacts and servicing instructions belong to each relationship">
     {onAdd && <div className="panel-footer"><button className="button" onClick={onAdd}>Add agency relationship</button></div>}
     {!resource.data ? <LoadFeedback error={resource.error} retry={resource.refresh} /> : !resource.data.items.length ? <EmptyState title="No agency relationships">Agency relationships will appear here when this client is associated with an agency.</EmptyState> : <DataTable caption="Agency relationships" columns={['Agency','Reference','Relationship status']}>
-      {resource.data.items.map(row => <tr key={row.id}><td>{row.agencyName}</td><td>{row.agencyReference}</td><td><Status tone={row.state === 'active' ? 'success' : 'muted'}>{row.state}</Status></td></tr>)}
+      {resource.data.items.map(row => <tr key={row.id}><td>{row.agencyName}</td><td>{row.agencyReference}</td><td><Status tone={row.state === 'active' ? 'success' : 'muted'}>{row.state}</Status>{row.state === 'active' && <TaskCreateEntry parent={{kind: 'relationship', id: row.id, label: row.agencyReference + ' · ' + row.agencyName}} />}</td></tr>)}
     </DataTable>}
     <Paging total={resource.data?.totalCount} previous={history.length > 1 ? () => setHistory(x => x.slice(0,-1)) : undefined} next={resource.data?.nextCursor ? () => setHistory(x => [...x,resource.data!.nextCursor!]) : undefined} />
   </Panel>;

@@ -2277,8 +2277,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "task-core-verified",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-36d0d597e5e9",
@@ -2362,8 +2364,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "task-core-verified",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-d6cec7d66670",
@@ -2447,8 +2451,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-ed74b3103b7c",
@@ -2532,8 +2538,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-429bddccb3a4",
@@ -2617,8 +2625,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-29220498fb90",
@@ -2702,8 +2712,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "task-core-verified",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-1fc029a2f764",
@@ -2785,8 +2797,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "task-core-verified",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-5a3269df5606",
@@ -2869,8 +2883,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "task-core-verified",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-99aaeed351bc",
@@ -2951,8 +2967,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "task-core-verified",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-a9cbff4ebe72",
@@ -3033,8 +3051,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "task-core-verified",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-18d24939cef0",
@@ -3113,8 +3133,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "task-core-verified",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-3c5e95611bdd",
@@ -3195,8 +3217,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "task-core-verified",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-3b63dda255aa",
@@ -3275,8 +3299,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "task-core-verified",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-18b64a8de0f9",
@@ -3356,8 +3382,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "task-core-verified",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-8d144a7ab5a8",
@@ -3435,8 +3463,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "task-core-verified",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-5779d07ee892",
@@ -3515,8 +3545,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "task-core-verified",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-9b62a0d11fe5",
@@ -3593,8 +3625,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "task-core-verified",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-786034b4a40f",
@@ -3679,8 +3713,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "task-core-verified",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-47453f96b730",
@@ -3765,8 +3801,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "task-core-verified",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-7764c5c29640",
@@ -3851,8 +3889,11 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "generic-task-core-verified-workflow-content-pending",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback",
+        "Published source/checklist context remains09-04 and09-17"
+      ]
     },
     {
       "controlId": "CTL-abcd385e28c9",
@@ -3936,8 +3977,11 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "generic-task-core-verified-workflow-content-pending",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback",
+        "Published source/checklist context remains09-04 and09-17"
+      ]
     },
     {
       "controlId": "CTL-e2d56c8dcbb7",
@@ -4022,8 +4066,11 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "generic-task-core-verified-workflow-content-pending",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback",
+        "Published source/checklist context remains09-04 and09-17"
+      ]
     },
     {
       "controlId": "CTL-1757c932af2d",
@@ -4107,8 +4154,11 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "generic-task-core-verified-workflow-content-pending",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback",
+        "Published source/checklist context remains09-04 and09-17"
+      ]
     },
     {
       "controlId": "CTL-1def7d3809c4",
@@ -4192,8 +4242,11 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "generic-task-core-verified-workflow-content-pending",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback",
+        "Published source/checklist context remains09-04 and09-17"
+      ]
     },
     {
       "controlId": "CTL-0f3e72d17e21",
@@ -4277,8 +4330,11 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "generic-task-core-verified-workflow-content-pending",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback",
+        "Published source/checklist context remains09-04 and09-17"
+      ]
     },
     {
       "controlId": "CTL-fae56e7ecb06",
@@ -4362,8 +4418,11 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "generic-task-core-verified-workflow-content-pending",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback",
+        "Published source/checklist context remains09-04 and09-17"
+      ]
     },
     {
       "controlId": "CTL-b1917d871627",
@@ -4453,8 +4512,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "task-core-verified",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-083355dcd818",
@@ -4538,8 +4599,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "task-core-verified",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-80b621a2936e",
@@ -4623,8 +4686,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "task-core-verified",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-fa1cb7ce3ecc",
@@ -4709,8 +4774,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "task-core-verified",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-340623a67370",
@@ -4799,8 +4866,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "task-core-verified",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-d3cef2ca0552",
@@ -4889,8 +4958,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "task-core-verified",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-bb257a94cac5",
@@ -4979,8 +5050,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-03",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "task-core-verified",
+      "verification": [
+        "09-03-SUMMARY.md;16 browser checks and independent SQL readback"
+      ]
     },
     {
       "controlId": "CTL-72186486df6f",
@@ -31377,28 +31450,28 @@
       "sourceNeedle": "Reopen task",
       "ownerPlan": "09-03",
       "expectedBehavior": "Reasoned explicit reopen retains previous completion and never approves linked referral.",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "task-core-verified"
     },
     {
       "id": "TASK-BULK-COMPLETE",
       "sourceNeedle": "'Complete ' + sel.length",
       "ownerPlan": "09-03",
       "expectedBehavior": "Validate100-or-fewer unique scoped selections and ETags; atomic completion with reasons/checklist.",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "task-core-verified"
     },
     {
       "id": "TASK-BULK-REASSIGN",
       "sourceNeedle": "Reassign selected",
       "ownerPlan": "09-03",
       "expectedBehavior": "Only currently eligible assignee/team; whole batch rollback on conflict.",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "task-core-verified"
     },
     {
       "id": "TASK-BULK-DUE",
       "sourceNeedle": "change due date or complete them together",
       "ownerPlan": "09-03",
       "expectedBehavior": "Source-implied bulk due edit is a real atomic audited command.",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "task-core-verified"
     },
     {
       "id": "INCIDENT-VEHICLE",

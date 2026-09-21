@@ -108,3 +108,13 @@ Generated from the final OpenAPI contract. Task/subject entries are API-verified
 ##09-02 implementation refinement
 
 Task list/detail responses include a strong etag per row, required by OpsTask, for preserving displayed selections in bulk commands. Task commands and history are implemented/SQL-verified; UI remains09-03. Pure discovery uses the existing QuoteDiscovery serializable read pattern with current identity and scoped parent predicates; writes retain the held agency→identity→parent→task lock order. Cursor versions include visible task and relevant owner rowversions because owner team changes affect the team view. Task references are currently stable UUID-based strings; the UI plan may add readable reference allocation.
+
+## 09-03 presentation and discovery refinement
+
+Task read rows now require `subject` (typed id/kind/parentId/label/href), `assignmentLabel` and `createdByLabel`; labels are batch-projected only from already authorised subjects in the held transaction. New task references use `TaskReferenceSequence` and `TSK-` plus at least7digits. Migration20260921140631_TaskReferences preserves all existing references and restarts above existing numeric task references if reapplied.
+
+`GET /api/v1/tasks/summary` (`getTaskSummary`, task-read, no query, no-store) returns open/dueToday/overdue/awaitingOthers/completedSevenDays and asOf. Due measures exclude terminal tasks and use London dates. Completed7days counts currently completed visible tasks with an immutable completion transition during the preceding7days, not recent comments or updates.
+
+`GET /api/v1/task-assignees` (`listTaskAssignees`, task-assign, no-store) accepts1..100distinct repeated subjectRecordId UUIDs, required kind=user|team and optional q<=100chars. It holds current scope for every subject and reuses command assignment eligibility for active internal users or teams with an eligible member across all selected subjects. Returns at most50eligible `{id,label}` items and hasMore; search refines larger result sets. The write still rechecks current assignment authority.
+
+Frontend pending commands freeze the exact body, key, actor and task ETag(s). Unconfirmed outcomes retry the original request; stale failures retain forms/selection. Detail review loads the current saved values separately and requires explicit adoption before rebuilding a command. Creation registers a typed saved parent with its own fixed-key recovery before creating the task. Task completion remains distinct from any underwriting, issue or servicing decision.

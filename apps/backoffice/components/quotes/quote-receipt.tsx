@@ -1,4 +1,5 @@
 'use client';
+import { TaskCreateEntry } from '../operations/task-create-entry';
 import Link from 'next/link';
 import { useState } from 'react';
 import { QuoteRating } from '../underwriting/quote-rating';
@@ -24,7 +25,7 @@ export function QuoteReceipt({ quoteId, actorId, questionLabels, commercialCatal
     ? <CommercialReceipt actorId={actorId} quote={record.data} etag={record.etag} catalogue={commercialCatalogue} refresh={refresh} />
     : <Panel title="Saved commercial quote"><LoadFeedback error="The saved version could not be confirmed." retry={record.refresh} /></Panel>;
   const quote = record.data;
-  return <><div className="page-heading"><div><h1>{quote.reference}</h1><p>Saved quote · Revision {quote.revisionNumber}</p></div><Link className="button" href="/quotes/new">New quote</Link></div>
+  return <><div className="page-heading"><div><h1>{quote.reference}</h1><p>Saved quote · Revision {quote.revisionNumber}</p></div><Link className="button" href="/quotes/new">New quote</Link><TaskCreateEntry parent={{kind: "quote", id: quoteId, label: quote.reference}} /></div>
     <section className="quote-saved-banner" aria-label="Quote identity"><div><span className="quote-step-label">{quote.productCode === 'motor-trade-road-risks' ? 'Motor Trade Road Risks' : 'Motor Trade Combined'}</span><h2>{quote.clientName}</h2><p>{quote.agencyName}</p></div><Status tone="warning">{quoteStateLabel(quote.state)}</Status></section>
     {quote.matchReviewId && <p className="quote-selected"><Link href={`/matches/${quote.matchReviewId}`}>Open account matching review</Link></p>}
     {quote.boundPolicyId && <p className="quote-selected" role="status">New-business policy issued. <Link className="button button-primary" href={`/policies/${quote.boundPolicyId}`}>Open issued policy</Link></p>}

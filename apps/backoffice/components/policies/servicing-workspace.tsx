@@ -1,4 +1,5 @@
 'use client';
+import { TaskCreateEntry } from '../operations/task-create-entry';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { Panel, Status } from '../primitives';
@@ -109,7 +110,7 @@ function MotorServicingWorkspace({ draftId, actorId, canTakeover, catalogue }: W
   if (!view || !proposal) return <Panel title="Servicing draft"><div className="quote-rail-body"><p role="status">{error || 'Loading saved draft…'}</p></div></Panel>;
   const insured = editorReadOk && matchingServicingEditor(view, editor) ? editor!.data.assessment.base.insured : undefined;
   const insuredLabel = typeof insured?.legalName === 'string' ? insured.legalName : [insured?.firstName, insured?.surname].filter(value => typeof value === 'string').join(' ');
-  return <><div className="page-heading"><div><h1>{view.data.kind === 'adjustment' ? 'Policy adjustment' : view.data.kind === 'renewal' ? 'Renewal draft' : 'Cancellation draft'}</h1><p>{view.data.state === 'issued' ? view.data.kind === 'cancellation' ? 'Cancellation issued · Decision saved' : view.data.kind === 'renewal' ? 'Renewal issued · New term saved' : 'Issued adjustment · Effective changes saved' : 'Saved proposal · Issued cover remains unchanged'}</p></div><Link className="button" href={`/policies/${view.data.policyId}`}>Back to policy</Link></div>
+  return <><div className="page-heading"><div><h1>{view.data.kind === 'adjustment' ? 'Policy adjustment' : view.data.kind === 'renewal' ? 'Renewal draft' : 'Cancellation draft'}</h1><p>{view.data.state === 'issued' ? view.data.kind === 'cancellation' ? 'Cancellation issued · Decision saved' : view.data.kind === 'renewal' ? 'Renewal issued · New term saved' : 'Issued adjustment · Effective changes saved' : 'Saved proposal · Issued cover remains unchanged'}</p></div><Link className="button" href={`/policies/${view.data.policyId}`}>Back to policy</Link><TaskCreateEntry parent={{kind: "servicing-draft", id: draftId, label: view.data.kind + " draft"}} /></div>
     <dl className="underwriting-provenance" aria-label="Draft context">
       <div><dt>Policy</dt><dd>{view.data.context ? <Link href={`/policies/${view.data.policyId}`}>{view.data.context.policyReference}</Link> : 'Policy reference unavailable'}</dd></div>
       <div><dt>Insured on issued base</dt><dd>{insuredLabel || 'Insured details unavailable'}</dd></div>

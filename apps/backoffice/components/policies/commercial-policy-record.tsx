@@ -1,4 +1,5 @@
 'use client';
+import { TaskCreateEntry } from '../operations/task-create-entry';
 import Link from 'next/link';
 import {useState, type ReactNode} from 'react';
 import type {CommercialPolicyView} from '../../lib/commercial-policy';
@@ -21,7 +22,7 @@ export function CommercialPolicyRecord({policy, chronology, refresh, questionLab
   const servicing=policy.snapshot.snapshotFormat==='issued-commercial-servicing-1';
   const renewal=servicing&&policy.termNumber>1&&policy.transactionSequence===1;
   const adjustment=servicing&&!renewal;
-  return <><div className="page-heading"><div><h1>{policy.reference}</h1><p>{cancellation?'Cancellation record':renewal?'Renewal policy':adjustment?'Adjusted policy':'New-business policy'} · Term {policy.termNumber} · Version {policy.versionSequence}</p></div><Link className="button" href={`/quotes/${policy.sourceQuoteId}`}>Open source quote</Link></div>
+  return <><div className="page-heading"><div><h1>{policy.reference}</h1><p>{cancellation?'Cancellation record':renewal?'Renewal policy':adjustment?'Adjusted policy':'New-business policy'} · Term {policy.termNumber} · Version {policy.versionSequence}</p></div><Link className="button" href={`/quotes/${policy.sourceQuoteId}`}>Open source quote</Link><TaskCreateEntry parent={{kind: "policy", id: policy.id, label: policy.reference}} /></div>
     <section className="quote-saved-banner" aria-label="Issued policy"><div><span className="quote-step-label">Commercial Combined</span><h2>{insured}</h2><p>Policy issued · {date(policy.issuedAt)} · London</p></div><Status tone={coverage === 'In force' ? 'success' : 'info'}>{coverage}</Status></section>
     {chronology}
     <div className="quote-row-actions quote-record-tabs" role="tablist" aria-label="Commercial policy tabs">{commercialPolicyTabs.map(item=><button key={item} id={`cc-tab-${item.replaceAll(' ','-')}`} className="button" role="tab" aria-selected={tab===item} aria-controls="commercial-policy-section" onClick={()=>setTab(item)}>{item}</button>)}</div>
