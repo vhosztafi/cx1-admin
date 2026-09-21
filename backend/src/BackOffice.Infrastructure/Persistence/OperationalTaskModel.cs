@@ -6,6 +6,7 @@ public sealed partial class BackOfficeDbContext
 {
     private static void ConfigureOperationalTasks(ModelBuilder model)
     {
+        model.HasSequence<long>("TaskReferenceSequence").StartsAt(1).IncrementsBy(1);
         var subject = Record<OperationalSubject>(model, "OperationalSubject");
         Text(subject, ("Kind", 30)); subject.ToTable(t => t.UseSqlOutputClause(false));
         subject.HasOne<Agency>().WithMany().HasForeignKey(x => x.AgencyId).OnDelete(DeleteBehavior.NoAction);

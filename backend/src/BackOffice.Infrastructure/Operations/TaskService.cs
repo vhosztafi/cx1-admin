@@ -90,7 +90,10 @@ public sealed partial class TaskService(IDbContextFactory<BackOfficeDbContext> f
             {
                 var now = time.GetUtcNow(); var row = new OperationalTask { SubjectId = subjectId, TypeCode = input.TypeCode, Title = input.Title, Priority = input.Priority,
                     OwnerId = input.Assignment.OwnerId, TeamId = input.Assignment.TeamId, DueOn = input.DueOn, CreatedBy = held!.Actor.UserId, CreatedAt = now, UpdatedAt = now, EventSequence = 1 };
-                row.Reference = "TK-" + row.Id.ToString("N");
+                await using var referenceCommand = db.Database.GetDbConnection().CreateCommand();
+                referenceCommand.Transaction = db.Database.CurrentTransaction!.GetDbTransaction();
+                referenceCommand.CommandText = "SELECT NEXT VALUE FOR TaskReferenceSequence";
+                row.Reference = "TSK-" + Convert.ToInt64(await referenceCommand.ExecuteScalarAsync(ct), System.Globalization.CultureInfo.InvariantCulture).ToString("D7", System.Globalization.CultureInfo.InvariantCulture);
                 db.Add(row); await AddEvent(db, row, held, "created", null, ct); await db.SaveChangesAsync(ct);
                 return await Outcome(db, row, 201, ct);
             }, token);
@@ -178,21 +181,24 @@ public sealed partial class TaskService(IDbContextFactory<BackOfficeDbContext> f
 
     private async Task<CommandOutcome> Outcome(BackOfficeDbContext db, OperationalTask row, int status, CancellationToken token)
     {
-        var checklist = await db.Set<OperationalTaskChecklist>().AsNoTracking().Where(x => x.TaskId == row.Id).OrderBy(x => x.Ordinal).Select(x => new { x.Id, x.Label, x.Required, x.Completed }).ToArrayAsync(token);
-        return new(row.Id, status, Serialize(View(row, checklist)), Etag: Etag(row.RowVersion));
+        var view = (await Views(db, [row], token))[0];
+        return new(row.Id, status, view.GetRawText(), Etag: Etag(row.RowVersion));
     }
 
     public async Task<JsonElement[]> Views(BackOfficeDbContext db, IReadOnlyList<OperationalTask> rows, CancellationToken token)
     {
         var ids = rows.Select(x => x.Id).ToArray();
         var checklist = await db.Set<OperationalTaskChecklist>().AsNoTracking().Where(x => ids.Contains(x.TaskId)).OrderBy(x => x.Ordinal).ToArrayAsync(token);
-        return rows.Select(row => JsonSerializer.SerializeToElement(View(row, checklist.Where(x => x.TaskId == row.Id).Select(x => new { x.Id, x.Label, x.Required, x.Completed }).ToArray()), Json)).ToArray();
+        var presentation = await TaskPresentation.Load(db, rows, token);
+        return rows.Select(row => JsonSerializer.SerializeToElement(View(row, checklist.Where(x => x.TaskId == row.Id).Select(x => new { x.Id, x.Label, x.Required, x.Completed }).ToArray(), presentation), Json)).ToArray();
     }
 
-    private object View(OperationalTask row, object checklist)
+    private object View(OperationalTask row, object checklist, TaskPresentation presentation)
     {
         var today = DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(time.GetUtcNow(), TimeZoneInfo.FindSystemTimeZoneById("Europe/London")).DateTime);
-        return new { row.Id, row.Reference, subjectRecordId = row.SubjectId, row.TypeCode, row.Title, row.Priority, etag = Etag(row.RowVersion),
+        return new { row.Id, row.Reference, subjectRecordId = row.SubjectId, subject = presentation.Subjects[row.SubjectId],
+            assignmentLabel = row.OwnerId is Guid owner ? presentation.Users[owner] : row.TeamId is Guid team ? presentation.Teams[team] : "Unassigned",
+            createdByLabel = presentation.Users[row.CreatedBy!.Value], row.TypeCode, row.Title, row.Priority, etag = Etag(row.RowVersion),
             assignment = new TaskAssignment(row.OwnerId is not null ? "user" : row.TeamId is not null ? "team" : "unassigned", row.OwnerId, row.TeamId), row.DueOn, row.State,
             row.CreatedBy, row.CreatedAt, row.UpdatedAt, overdue = TaskRules.IsOverdue(row.State, row.DueOn, today), checklist, row.CompletionReason, row.SourceChanged };
     }

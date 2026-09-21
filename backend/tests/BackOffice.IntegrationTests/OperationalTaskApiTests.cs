@@ -42,7 +42,13 @@ public sealed class OperationalTaskApiTests
             var key = Guid.NewGuid().ToString("N");
             var competing = await Task.WhenAll(Send(client, csrf, HttpMethod.Post, "/api/v1/tasks", Body("First"), key), Send(client, csrf, HttpMethod.Post, "/api/v1/tasks", Body("Second"), key));
             var created = Assert.Single(competing, x => x.StatusCode == HttpStatusCode.Created); Assert.Single(competing, x => x.StatusCode == HttpStatusCode.Conflict);
-            var taskId = (await created.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("id").GetGuid(); var etag = created.Headers.ETag!.ToString();
+            var createdBody = await created.Content.ReadFromJsonAsync<JsonElement>();
+            Assert.Matches("^TSK-[0-9]{7,}$", createdBody.GetProperty("reference").GetString()!);
+            Assert.Equal("AG-TASK-API", createdBody.GetProperty("subject").GetProperty("label").GetString());
+            Assert.Equal($"/agents/{agencyId}", createdBody.GetProperty("subject").GetProperty("href").GetString());
+            Assert.Equal("Unassigned", createdBody.GetProperty("assignmentLabel").GetString());
+            Assert.False(string.IsNullOrWhiteSpace(createdBody.GetProperty("createdByLabel").GetString()));
+            var taskId = createdBody.GetProperty("id").GetGuid(); var etag = created.Headers.ETag!.ToString();
             var path = $"/api/v1/tasks/{taskId}";
             Assert.Equal((HttpStatusCode)428, (await Send(client, csrf, HttpMethod.Post, path + "/transition", new { state = "completed", reason = "Reviewed" })).StatusCode);
             using var completed = await Send(client, csrf, HttpMethod.Post, path + "/transition", new { state = "completed", reason = "Reviewed" }, etag: etag);

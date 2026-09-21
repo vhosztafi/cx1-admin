@@ -23,7 +23,7 @@ export function operationalDefinitions(){
  d.OpsTaskBulkComplete=obj({tasks:ref('OpsTaskSelection'),reason});
  d.OpsTaskChecklistWrite=obj({items:arr(obj({id,completed:bool}),1),reason});
  d.OpsTextWrite=obj({body:text(8000)});
- d.OpsTask=obj({id,etag,reference:text(40),...d.OpsTaskWrite.properties,state:states,createdBy:id,createdAt:instant,updatedAt:instant,overdue:bool,checklist:arr(obj({id,label:text(),required:bool,completed:bool})),completionReason:reason,sourceChanged:bool},['id','etag','reference',...d.OpsTaskWrite.required,'state','createdBy','createdAt','updatedAt','overdue','checklist','sourceChanged']);
+ d.OpsTask=obj({id,etag,subject:ref('OpsSubject'),assignmentLabel:text(),createdByLabel:text(),reference:text(40),...d.OpsTaskWrite.properties,state:states,createdBy:id,createdAt:instant,updatedAt:instant,overdue:bool,checklist:arr(obj({id,label:text(),required:bool,completed:bool})),completionReason:reason,sourceChanged:bool},['id','etag','subject','assignmentLabel','createdByLabel','reference',...d.OpsTaskWrite.required,'state','createdBy','createdAt','updatedAt','overdue','checklist','sourceChanged']);
  d.OpsTaskEvent=obj({id,taskId:id,sequence:{type:'integer',minimum:1},kind:text(60),reason,actorLabel:text(),recordedAt:instant},['id','taskId','sequence','kind','actorLabel','recordedAt']);
  d.OpsComment=obj({id,taskId:id,body:text(8000),authorLabel:text(),createdAt:instant});
  d.OpsThreadWrite={oneOf:[obj({visibility:{const:'internal'},subject:text()}),obj({visibility:{const:'agency'},relationshipId:id,subject:text()})]};

@@ -471,6 +471,21 @@
           "maxLength": 100,
           "pattern": "^\"[!#-~]+\"$"
         },
+        "subject": {
+          "$ref": "#/$defs/OpsSubject"
+        },
+        "assignmentLabel": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "\\S"
+        },
+        "createdByLabel": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "\\S"
+        },
         "reference": {
           "type": "string",
           "minLength": 1,
@@ -589,6 +604,9 @@
       "required": [
         "id",
         "etag",
+        "subject",
+        "assignmentLabel",
+        "createdByLabel",
         "reference",
         "subjectRecordId",
         "typeCode",
