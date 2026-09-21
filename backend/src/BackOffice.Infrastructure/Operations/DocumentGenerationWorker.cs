@@ -30,11 +30,14 @@ public sealed class DocumentGenerationWorker(IDbContextFactory<BackOfficeDbConte
             StagedOperationalFile staged;
             try
             {
-                if(version.PolicyDocumentRequestId is not Guid requestId) throw new DocumentRenderException("document-source-not-supported");
-                var input=await sources.LoadRetainedRequest(actor,requestId,token);
-                if(input.SourceHash!=version.SourceHash||input.TemplateHash!=version.TemplateHash||input.TemplateId!=version.TemplateVersionId||input.SourceId!=version.PolicyVersionId)
-                    throw new DocumentRenderException("document-version-source-mismatch");
-                rendered=await sources.RenderRetainedRequest(actor,requestId,token);
+                if(version.PolicyDocumentRequestId is Guid requestId)
+                {
+                    var input=await sources.LoadRetainedRequest(actor,requestId,token);
+                    if(input.SourceHash!=version.SourceHash||input.TemplateHash!=version.TemplateHash||input.TemplateId!=version.TemplateVersionId||input.SourceId!=version.PolicyVersionId)
+                        throw new DocumentRenderException("document-version-source-mismatch");
+                    rendered=await sources.RenderRetainedRequest(actor,requestId,token);
+                }
+                else rendered=await sources.RenderSelectedVersion(actor,version.Id,token);
                 staged=await store.Stage(version.OriginalName,"application/pdf",new MemoryStream(rendered.Bytes,writable:false),FileRules.MaximumFileBytes,token);
                 if(staged.Sha256!=rendered.Sha256)throw new DocumentRenderException("document-rendered-file-mismatch");
             }
@@ -140,10 +143,16 @@ public sealed class DocumentGenerationWorker(IDbContextFactory<BackOfficeDbConte
     private static async Task<OutboxWork> HoldWork(BackOfficeDbContext db,DocumentVersion version,CancellationToken token)
     {
         var work=await db.Set<OutboxWork>().FromSqlInterpolated($"SELECT * FROM OutboxWork WITH(UPDLOCK,HOLDLOCK,ROWLOCK) WHERE Id={version.WorkId}").SingleAsync(token);
-        if(work.Kind!="policy-document"||version.PolicyDocumentRequestId is null||work.SubjectRecordId!=version.PolicyDocumentRequestId||work.OperationKey!="policy-document/"+version.PolicyDocumentRequestId.Value.ToString("N"))
+        if(version.PolicyDocumentRequestId is Guid requestId)
+        {
+            if(work.Kind!="policy-document"||work.SubjectRecordId!=requestId||work.OperationKey!="policy-document/"+requestId.ToString("N"))
+                throw new DocumentRenderException("document-work-mismatch");
+            var request=await db.Set<PolicyDocumentRequest>().AsNoTracking().SingleAsync(x=>x.Id==requestId,token);
+            if(work.Payload!=request.PayloadJson||request.WorkId!=work.Id)throw new DocumentRenderException("document-work-payload-mismatch");
+        }
+        else if(work.Kind!="document-generation"||work.SubjectRecordId!=version.Id||work.OperationKey!="document/"+version.Id.ToString("N")||
+            work.CreatedBy!=version.CreatedBy||work.Payload!=DocumentService.GenerationPayload(version))
             throw new DocumentRenderException("document-work-mismatch");
-        var request=await db.Set<PolicyDocumentRequest>().AsNoTracking().SingleAsync(x=>x.Id==version.PolicyDocumentRequestId,token);
-        if(work.Payload!=request.PayloadJson||request.WorkId!=work.Id)throw new DocumentRenderException("document-work-payload-mismatch");
         if(work.State=="pending"&&work.Attempts>=work.AttemptLimit)throw new DocumentRenderException("document-retry-budget-invalid");
         return work;
     }

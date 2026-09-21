@@ -46,7 +46,7 @@ public sealed partial class DocumentService
     {
         await using var db=await factory.CreateDbContextAsync(token);var now=time.GetUtcNow();
         return await(from version in db.Set<DocumentVersion>() join work in db.Set<OutboxWork>() on version.WorkId equals work.Id
-            where version.PolicyDocumentRequestId!=null&&work.State=="pending"&&work.NextAttemptAt<=now
+            where (version.PolicyDocumentRequestId!=null||work.Kind=="document-generation")&&work.State=="pending"&&work.NextAttemptAt<=now
             orderby work.NextAttemptAt,work.Id select work.Id).Skip(offset).Take(32).ToArrayAsync(token);
     }
 }
