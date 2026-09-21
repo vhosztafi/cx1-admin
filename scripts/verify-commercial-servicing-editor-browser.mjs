@@ -17,7 +17,17 @@ export async function commercialServicingJourney({page,f,policy,checks}) {
  await page.waitForURL(/\/drafts\/[0-9a-f-]{36}$/);const draftId=new URL(page.url()).pathname.split('/').at(-1),url=`/api/v1/drafts/${draftId}`;
  const read=async()=>{const r=await page.request.get(f.apiOrigin+url);assert.equal(r.status(),200,await r.text());const data=await r.json();assert.ok(validateDraft(data),JSON.stringify(validateDraft.errors));return {data,etag:r.headers().etag};};
  const editor=async()=>{const r=await page.request.get(f.apiOrigin+url+'/editor');assert.equal(r.status(),200,await r.text());const data=await r.json();assert.ok(validateEditor(data),JSON.stringify(validateEditor.errors));return data;};
- async function acquire(){const ack=page.waitForResponse(r=>r.url().endsWith(url+'/lease')&&r.request().method()==='POST');await button('Acquire editing lease').click();assert.equal((await ack).status(),200);await field('Reason for change').and(page.locator(':enabled')).waitFor();}
+ async function acquire(){
+  // This navigation is rendered only after the hydrated editor has loaded its
+  // current base. Do not start the response deadline while the page is loading.
+  await page.getByRole('navigation',{name:'Commercial change groups'}).waitFor();
+  await button('Acquire editing lease').and(page.locator(':enabled')).waitFor();
+  const [ack]=await Promise.all([
+   page.waitForResponse(r=>r.url().endsWith(url+'/lease')&&r.request().method()==='POST'),
+   button('Acquire editing lease').click(),
+  ]);
+  assert.equal(ack.status(),200);await field('Reason for change').and(page.locator(':enabled')).waitFor();
+ }
  async function save(){const ack=page.waitForResponse(r=>r.url().endsWith(url+'/proposal')&&r.request().method()==='PUT');await button('Save draft').click();const r=await ack;assert.equal(r.status(),200,await r.text());const saved=await r.json();await button('Save draft').and(page.locator(':enabled')).waitFor();const e=await editor();assert.equal(e.revisionId,saved.revisionId);assert.ok(e.assessment.slices.length);assert.deepEqual(e.assessment.slices.at(-1).proposed,e.assessment.proposed);return e.assessment.proposed;}
  async function command(method,suffix,view,body,key=randomUUID()) {const csrf=await (await page.request.get(f.apiOrigin+'/api/v1/auth/csrf')).json();return page.request.fetch(f.apiOrigin+url+suffix,{method,headers:{'X-CSRF-Token':csrf.requestToken,'Idempotency-Key':key,'If-Match':view.etag,'X-Edit-Lease':view.data.lease.leaseToken},...(body===undefined?{}:{data:body})});}
  await acquire();assert.equal((await read()).data.context.productCode,'commercial-combined');
