@@ -1,7 +1,7 @@
 {
   "format": "commercial-source-ledger-1",
   "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
-  "status": "capture-through-commercial-policy-views-verified-servicing-pending",
+  "status": "phase8-verified-future-operational-owners-retained",
   "denominators": {
     "captureControls": 166,
     "questions": 109,

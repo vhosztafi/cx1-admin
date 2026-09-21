@@ -1,16 +1,16 @@
 # Phase8 source reconciliation
 
-## Final acceptance audit in progress —2026-09-20
+## Final acceptance passed — 2026-09-21
 
 The original166 capture controls,109 question identities and60 policy controls remain intact. Current row evidence covers150 persisted capture controls,10 navigation controls,6 evidence controls,109 questions,4 issued adjustment controls,3 scoped policy links and50 removed invalid-tab fallbacks. The remaining3 policy controls retain their explicit Phase9/11 owners. Of298 display items,264 have issued-view/boundary review and34 retain Phase9/10 ownership.
 
-Fresh full capture passed in `.local/phase8-04-browser-d3760376-37c6-4467-9825-ef2fe9630b20/sql.trx`. The retained API proposal in `.local/browser-evidence/commercial-capture/CoverMGA_Test_dc7a268b5e0e473d8ba7a6f20e844ecd/full-proposal.json` was independently inspected: VAT=false, selected contract works10000.01/excess250.00, saved hot-work procedure, BI declaration=false, owned supplier dependency10000.01, and two locations with sprinklers=false/declared flood zone1. The seven supplemental evidence entries are now reconciled. This does not certify final aggregate or issued display coverage.
+Fresh full capture passed in `.local/phase8-04-browser-d3760376-37c6-4467-9825-ef2fe9630b20/sql.trx`. The retained API proposal in `.local/browser-evidence/commercial-capture/CoverMGA_Test_dc7a268b5e0e473d8ba7a6f20e844ecd/full-proposal.json` was independently inspected: VAT=false, selected contract works10000.01/excess250.00, saved hot-work procedure, BI declaration=false, owned supplier dependency10000.01, and two locations with sprinklers=false/declared flood zone1. The seven supplemental evidence entries are now reconciled. The final five-stage aggregate now also passes capture, issued views, adjustment, renewal and cancellation.
 
 Final acceptance found a missing Commercial Combined filter in shared policy discovery and response schemas; the fix has SQL, contract and current actual browser proof. The full commercial adjustment stage passed on2026-09-21 at07:12:34Z, including real discovery, nine policy tabs, all nine editor groups, issuance and immutable readback (`.local/phase8-12-browser-89de2611-77cc-4e27-8704-25902d89214e/sql.trx`). Retained Motor Trade discovery now paginates after sorting instead of assuming the old policy remains on the first page. No source item has been reassigned to hide either finding.
 
-The sections below preserve earlier design and execution history; their pending status is not the final acceptance result. Final verification remains open.
+Final acceptance: 1,511 unique backend passes/383 real SQL/no skips, 399 root and 172 frontend passes, all five commercial and both retained aggregates pass. Exact paths and boundaries are in08-16-SUMMARY.md and08-VERIFICATION.md. The source IDs and previously approved future owners are unchanged.
 
-Status: design/source mapped; runtime pending. Generated ledger:08-SOURCE-INVENTORY.json. Rebuild with `node scripts/build-commercial-source.mjs`. Original source IDs and source hash are preserved.
+Status: Phase8 runtime verified; future operational owners retained. Generated ledger:08-SOURCE-INVENTORY.json. Rebuild with `node scripts/build-commercial-source.mjs`. Original source IDs and source hash are preserved.
 
 | Set | Count | Ownership |
 |---|---|---|
@@ -20,7 +20,7 @@ Status: design/source mapped; runtime pending. Generated ledger:08-SOURCE-INVENT
 | CC render display items |298|Full original source objects retained;08-10 reconciles live risk/display/fallback; Claims rows Phase9 and outstanding cash balance Phase10 |
 | Supplementary policy facts |7|VAT, contract works, hot-work procedures, BI declaration linkage, named dependencies, sprinklers, declared flood zone;08-03/04 capture |
 
-Counts are not browser assertion counts. Every runtime verification array starts empty. Tests protect identity and ownership; they do not mark a control implemented.
+Counts are not browser assertion counts. Verification arrays were initially empty during planning; the current Phase8 rows contain recorded runtime evidence. Identity/ownership tests alone do not establish implementation.
 
 ## Source-specific corrections
 
@@ -36,9 +36,9 @@ Source occupancy has seven values; wage categories have eight (including employe
 
 Policy sample values—£3.18m TSI,£1.94m MEL,14 S9 risks and£15.82m headroom—are display examples. Runtime must derive selected-version risk and dated whole-book totals. Supplied loss estimate is distinct from the largest-location conservative demo proxy. Policy construction/security summaries derive saved location responses; they are not a second free-text source of authority.
 
-## Remaining execution obligations
+## Final source reconciliation
 
-Plans08-01 through08-15 have complete summaries and plan-level evidence. Plan08-16 is checking the current full regression gates before final acceptance; no reclassification may hide missing Phase8 functionality.
+All16 plans have complete summaries and current final acceptance passes. No missing Phase8 functionality was reclassified to hide an omission.
 
 The2026-09-21 ledger reconciliation preserves every original identity and denominator:
 
@@ -51,11 +51,11 @@ The2026-09-21 ledger reconciliation preserves every original identity and denomi
 |27 branches|22 unit/SQL/browser,1 capture-readiness,4 SQL/browser|All27 have evidence, including the21 named underwriting source rules.|
 |298 display occurrences|264 reviewed issued-view or explicit-boundary rows;34 future rows|33 claims occurrences belong toPhase9;1 outstanding-cash occurrence belongs toPhase10.|
 
-The only ledger rows without runtime evidence are the already-approved future controls/display occurrences. Counts are source coverage, not test counts or final phase acceptance. Fresh aggregate verification remains pending. Current desktop wages and390px cover images were inspected in `.local/browser-evidence/commercial-capture/CoverMGA_Test_a67db5c661394d36aa0d66f79c0ca000`; the mobile table scroll remains contained. This does not claim human or assistive-technology UAT.
+The only ledger rows without runtime evidence are the already-approved future controls/display occurrences. Counts describe source coverage, not test counts. Current full acceptance is recorded independently in08-VERIFICATION.md. Current desktop wages and390px cover images were inspected in `.local/browser-evidence/commercial-capture/CoverMGA_Test_a67db5c661394d36aa0d66f79c0ca000`; the mobile table scroll remains contained. This does not claim human or assistive-technology UAT.
 
-The prototype servicing-owner display has no dedicated owner field in the current shared policy model.08-10 must show an honest unassigned state until explicit assignment exists; it must not relabel CreatedBy as servicing owner. General assignment/task operations remain Phase9. This is a display-state decision, not permission to insert a fictional owner.
+The prototype servicing-owner display has no dedicated owner field in the current shared policy model.08-10 shows an honest unassigned state until explicit assignment exists; CreatedBy is not relabelled as servicing owner. General assignment/task operations remain Phase9. This is a display-state decision, not permission to insert a fictional owner.
 
-## 08-07 carrier and quotation evidence
+## Historical 08-07 carrier and quotation checkpoint
 
 Carrier authority and quotation progression extend the shared Phase6 workflows to CC. AU-05/AU-06 retain their source ownership in08-06 and now have additional07 evidence for exact location permissions. The existing six source-document controls were actually reviewed in the complete browser/API journey; no denominator or future policy/control ownership was changed. Status is capture/rating/referral/evidence/carrier/terms verified, issue pending. Dated postcode book checks and atomic issue remain08-08/09.
 

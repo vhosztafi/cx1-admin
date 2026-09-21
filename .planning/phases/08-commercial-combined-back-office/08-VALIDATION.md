@@ -1,7 +1,7 @@
 ---
 phase: 08
 slug: commercial-combined-back-office
-status: approved
+status: passed
 nyquist_compliant: true
 wave_0_complete: true
 created: 2026-09-19
@@ -19,7 +19,7 @@ created: 2026-09-19
 | Targeted backend |`dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~Commercial` |
 | Full backend |`dotnet test backend/BackOffice.slnx --no-restore` with the existing native SQL environment and fresh TRX directories |
 | Full frontend/source |`pnpm test`; `pnpm web:test`; `pnpm web:lint`; `pnpm web:typecheck`; `pnpm web:build` |
-| Runtime |Unit/contracts generally seconds; SQL/browser minutes; preceding full backend83minutes. Measure actual runs. |
+| Runtime |Unit/contracts generally seconds; SQL/browser minutes; current full integration4.1284hours; unit54seconds. Browser aggregates are measured separately; do not run them concurrently with the full SQL gate. |
 
 ## Sampling rate
 
@@ -88,5 +88,4 @@ All commands below are planned checks, not claimed results. For task02, inspect 
 |08-13-01 / 08-13-02|13|T08-13|`dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~CommercialRenewal; pnpm web:test; node scripts/verify-commercial-renewal-browser.mjs`|08-13-01 creates new named tests; existing suites retained|passed:1077 backend/15 SQL;08-13-SUMMARY.md|
 |08-14-01 / 08-14-02|14|T08-14|`dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~CommercialCancellation; node scripts/verify-commercial-cancellation-browser.mjs`|08-14-01 creates new named tests; existing suites retained|passed:1081 backend/10 SQL;08-14-SUMMARY.md|
 |08-15-01 / 08-15-02|15|T08-15|`dotnet test backend/tests/BackOffice.UnitTests/BackOffice.UnitTests.csproj --no-restore --filter FullyQualifiedName~CommercialOperationalPayload; dotnet test backend/tests/BackOffice.IntegrationTests/BackOffice.IntegrationTests.csproj --no-restore --filter FullyQualifiedName~CommercialDemo; node --test tests/commercial-combined-contracts.test.mjs`|08-15-01 creates new named tests; existing suites retained|passed at plan close-out;08-15-SUMMARY.md; current full acceptance remains08-16|
-|08-16-01 / 08-16-02|16|T08-16|`pnpm test; pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; dotnet test backend/BackOffice.slnx --no-restore; node scripts/verify-commercial-suite.mjs; node scripts/verify-underwriting-suite.mjs; node scripts/verify-servicing-suite.mjs`|08-16-01 creates new named tests; existing suites retained|pending|
-
+|08-16-01 / 08-16-02|16|T08-16|`pnpm test; pnpm web:test; pnpm web:lint; pnpm web:typecheck; pnpm web:build; dotnet test backend/BackOffice.slnx --no-restore; node scripts/verify-commercial-suite.mjs; node scripts/verify-underwriting-suite.mjs; node scripts/verify-servicing-suite.mjs`|08-16-01 creates new named tests; existing suites retained|passed:1511 unique backend/383SQL/no skips,399root,172frontend, all commercial/retained aggregates and actual restart;08-16-SUMMARY.md|

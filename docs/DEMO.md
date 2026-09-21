@@ -387,3 +387,9 @@ The retained example uses agencyAG-0000154, clientCN-0000197 and commercial poli
 | District capacity contention | [QT-MT-0000000695](http://127.0.0.1:3100/quotes/1b695b03-5cbf-443c-b48a-972b61535eb8) |
 
 These are Commercial Combined quotes; their opaque references retain the existing shared `QT-MT` numbering format. The exact IDs, versions, consequences and current scenario readbacks are in `.local/commercial-lifecycle-demo-v1/references.json` and its Markdown companion. Keep that directory with the database.
+
+## Phase 8 acceptance — 21 September 2026
+
+Commercial capture, underwriting, issue, all nine adjustment editor groups, renewal and cancellation passed the full local acceptance suite. The current complete backend gate passes1,511 unique tests, including383 real-SQL scenarios, with no skips; all420 discovered integration cases executed. Retained MotorTrade underwriting and all17 servicing stages also pass. See .planning/phases/08-commercial-combined-back-office/08-VERIFICATION.md for exact artifacts and exclusions.
+
+Two additive initializations preserved139 table fingerprints. Actual preview restart preserved three policy graphs/12 versions, five pinned commercial exposure readings and the original keys. The retained business references above are unchanged. Documents are queued content; rendering/delivery and incident logging remainPhase9. Posted cancellation credit is not proof of a cash refund. Human business/assistive-technology UAT remains to be performed.
