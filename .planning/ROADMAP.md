@@ -184,7 +184,30 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 **Goal:** Make servicing activities and demo handoffs operational.
 **Depends on:** Phase 8
 **Requirements:** OPS-01 through OPS-08
-**Plans:** Not yet planned.
+**Plans:** 18 sequential plans; 0 complete.
+
+- [ ] 09-01 — Reconcile operational source and closed data/API contracts (wave 1).
+- [ ] 09-02 — Persist scoped subjects and task commands (wave 2, after09-01).
+- [ ] 09-03 — Deliver prototype task list and detail workflows (wave 3, after09-02).
+- [ ] 09-04 — Materialize deduplicated workflow tasks (wave 4, after09-03).
+- [ ] 09-05 — Store and retrieve safe immutable file bytes (wave 5, after09-04).
+- [ ] 09-06 — Render product-specific immutable PDF documents (wave 6, after09-05).
+- [ ] 09-07 — Generate and version real documents from retained requests (wave 7, after09-06).
+- [ ] 09-08 — Implement document/evidence UI and exact-version preview (wave 8, after09-07).
+- [ ] 09-09 — Persist internal notes and agency message drafts (wave 9, after09-08).
+- [ ] 09-10 — Deliver messages and immutable document packs (wave 10, after09-09).
+- [ ] 09-11 — Resolve historical incident occurrence with honest precision (wave 11, after09-10).
+- [ ] 09-12 — Implement saved Motor Trade and commercial incident forms (wave 12, after09-11).
+- [ ] 09-13 — Persist claims handoffs and administrator summaries (wave 13, after09-12).
+- [ ] 09-14 — Apply and recover exact Motor Trade MID submissions (wave 14, after09-13).
+- [ ] 09-15 — Complete effective-dated cancellation operational consequences (wave 15, after09-14).
+- [ ] 09-16 — Connect inherited operational obligations and persistent demo (wave 16, after09-15).
+- [ ] 09-17 — Reconcile full source coverage and operational browser acceptance (wave 17, after09-16).
+- [ ] 09-18 — Verify full current regression and preserved demo restart (wave 18, after09-17).
+
+**Wave dependencies:** Each wave is blocked on its predecessor completion and reviewed summary.09-01 source/contract closure is required before09-02;09-17 source/browser acceptance precedes09-18 full verification.
+
+**Cross-cutting constraints:** Current scope before replay; immutable source/template/file/message identities; persistent demo adapters only; no sales-funnel edits; sequential SQL acceptance; meaningful tests and honest human-UAT boundary.
 
 **Success criteria:**
 
@@ -272,7 +295,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 6. Underwriting and first policy issue | 14/14 | Complete | 2026-09-17 |
 | 7. Policy lifecycle and history | 16/16 | Complete    | 2026-09-19 |
 | 8. Commercial Combined back office | 16/16 | Complete | 2026-09-21 |
-| 9. Tasks, documents, communication and incidents | 0/TBD | Not started | — |
+| 9. Tasks, documents, communication and incidents | 0/18 | Not started | — |
 | 10. Accounting and insurer reporting | 0/TBD | Not started | — |
 | 11. Configuration and account administration | 0/TBD | Not started | — |
 | 12. Dashboards, search and reports | 0/TBD | Not started | — |

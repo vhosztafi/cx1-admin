@@ -1,7 +1,7 @@
 ---
 phase: 09
 slug: tasks-documents-communication-and-incidents
-status: draft
+status: planned
 nyquist_compliant: false
 wave_0_complete: false
 created: 2026-09-21
@@ -9,7 +9,7 @@ created: 2026-09-21
 
 # Phase 9 validation strategy
 
-Research-derived strategy. Detailed plan/task mapping is not yet written and is required before planning approval. No Phase9 runtime pass is claimed.
+Research-derived strategy with18 sequential plans and36 mapped tasks. No Phase9 runtime pass is claimed. nyquist_compliant/wave_0_complete remain false until implemented test infrastructure and outcomes justify them.
 
 ## Test infrastructure
 
@@ -46,11 +46,38 @@ Rendered PDF inspection must include long tables, multiline names/addresses, cur
 
 ## Sign-off
 
-- [ ] Concrete plan/task verification map and threat IDs assigned.
-- [ ] Every implementation task has an executable meaningful check or earlier dependency creating it.
-- [ ] No three consecutive implementation tasks without automated feedback.
+- [x] Concrete plan/task verification map and threat IDs assigned.
+- [x] Every implementation task has an executable meaningful check or owning task creating it.
+- [x] No three consecutive implementation tasks without planned automated feedback.
 - [ ] Source-ID and inherited obligation coverage reconciled.
 - [ ] Final full current suites, actual PDFs, browser readbacks and restart preservation passed.
 - [ ] nyquist_compliant and wave_0_complete updated from actual evidence, not planning intent.
 
-Approval: preliminary strategy only; detailed plans and implementation verification pending.
+Approval: planning strategy reviewed; execution evidence pending.
+
+## Concrete plan/task mapping
+
+All rows cover task01 implementation and task02 review of the same fresh results, with git diff --check. SQL test names must include RealSql or RealApiProcessRestart; each filtered suite must run nonzero cases. Commands are individual sequential invocations. Existing runners require no bootstrap install; each test/script below is an explicit output of its owning plan before invocation.
+
+| Tasks | Requirements | Threat | Automated verification | State |
+|---|---|---|---|---|
+|09-01-01/02|OPS-01, OPS-02, OPS-03, OPS-04, OPS-05, OPS-06, OPS-07, OPS-08|T09-01|`node --test tests/operations-contracts.test.mjs tests/operations-source.test.mjs`|Pending implementation|
+|09-02-01/02|OPS-01|T09-02|`dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~OperationalTask --logger trx --results-directory .local/phase9-02-unit`<br>`dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter FullyQualifiedName~OperationalTask --logger trx --results-directory .local/phase9-02-sql`|Pending implementation|
+|09-03-01/02|OPS-01|T09-03|`node --test apps/backoffice/tests/tasks.test.mjs`<br>`dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter FullyQualifiedName~OperationalTaskBrowser --logger trx --results-directory .local/phase9-03-sql`<br>`node scripts/verify-task-browser.mjs`|Pending implementation|
+|09-04-01/02|OPS-02|T09-04|`dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~OperationalWorkflow --logger trx --results-directory .local/phase9-04-unit`<br>`dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter FullyQualifiedName~OperationalWorkflow --logger trx --results-directory .local/phase9-04-sql`|Pending implementation|
+|09-05-01/02|OPS-05|T09-05|`dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~OperationalFile --logger trx --results-directory .local/phase9-05-unit`<br>`dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter FullyQualifiedName~OperationalFile --logger trx --results-directory .local/phase9-05-sql`|Pending implementation|
+|09-06-01/02|OPS-04, CC-05|T09-06|`dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~OperationalPdf --logger trx --results-directory .local/phase9-06-unit`<br>`dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter FullyQualifiedName~OperationalPdf --logger trx --results-directory .local/phase9-06-sql`|Pending implementation|
+|09-07-01/02|OPS-04, OPS-05, CC-05|T09-07|`dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~OperationalDocument --logger trx --results-directory .local/phase9-07-unit`<br>`dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter FullyQualifiedName~OperationalDocument --logger trx --results-directory .local/phase9-07-sql`|Pending implementation|
+|09-08-01/02|OPS-04, OPS-05|T09-08|`node --test apps/backoffice/tests/documents.test.mjs`<br>`dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter FullyQualifiedName~OperationalDocumentBrowser --logger trx --results-directory .local/phase9-08-sql`<br>`node scripts/verify-document-browser.mjs`|Pending implementation|
+|09-09-01/02|OPS-03|T09-09|`dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~OperationalCommunication --logger trx --results-directory .local/phase9-09-unit`<br>`dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter FullyQualifiedName~OperationalCommunication --logger trx --results-directory .local/phase9-09-sql`|Pending implementation|
+|09-10-01/02|OPS-03, OPS-06|T09-10|`dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~OperationalDelivery --logger trx --results-directory .local/phase9-10-unit`<br>`dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter FullyQualifiedName~OperationalDelivery --logger trx --results-directory .local/phase9-10-sql`<br>`node scripts/verify-communication-browser.mjs`|Pending implementation|
+|09-11-01/02|OPS-07, CC-05|T09-11|`dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~OperationalOccurrence --logger trx --results-directory .local/phase9-11-unit`<br>`dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter FullyQualifiedName~OperationalOccurrence --logger trx --results-directory .local/phase9-11-sql`|Pending implementation|
+|09-12-01/02|OPS-07, CC-05|T09-12|`dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~OperationalIncident --logger trx --results-directory .local/phase9-12-unit`<br>`dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter FullyQualifiedName~OperationalIncident --logger trx --results-directory .local/phase9-12-sql`<br>`node scripts/verify-incident-browser.mjs`|Pending implementation|
+|09-13-01/02|OPS-07, CC-05|T09-13|`dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~OperationalClaims --logger trx --results-directory .local/phase9-13-unit`<br>`dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter FullyQualifiedName~OperationalClaims --logger trx --results-directory .local/phase9-13-sql`|Pending implementation|
+|09-14-01/02|OPS-08|T09-14|`dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~OperationalMid --logger trx --results-directory .local/phase9-14-unit`<br>`dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter FullyQualifiedName~OperationalMid --logger trx --results-directory .local/phase9-14-sql`<br>`node scripts/verify-mid-browser.mjs`|Pending implementation|
+|09-15-01/02|OPS-02, OPS-04, OPS-06, OPS-08, CC-05, POL-01|T09-15|`dotnet test backend/tests/BackOffice.UnitTests --no-restore --filter FullyQualifiedName~OperationalCancellation --logger trx --results-directory .local/phase9-15-unit`<br>`dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter FullyQualifiedName~OperationalCancellation --logger trx --results-directory .local/phase9-15-sql`|Pending implementation|
+|09-16-01/02|OPS-01, OPS-02, OPS-03, OPS-04, OPS-05, OPS-06, OPS-07, OPS-08|T09-16|`dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter FullyQualifiedName~OperationalDemo --logger trx --results-directory .local/phase9-16-sql`|Pending implementation|
+|09-17-01/02|OPS-01, OPS-02, OPS-03, OPS-04, OPS-05, OPS-06, OPS-07, OPS-08, CC-05|T09-17|`dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --filter FullyQualifiedName~OperationalAcceptance --logger trx --results-directory .local/phase9-17-sql`|Pending implementation|
+|09-18-01/02|OPS-01, OPS-02, OPS-03, OPS-04, OPS-05, OPS-06, OPS-07, OPS-08, CC-05, POL-01|T09-18|`dotnet test backend/tests/BackOffice.UnitTests --no-restore --logger trx --results-directory .local/phase9-final/unit`<br>`dotnet test backend/tests/BackOffice.IntegrationTests --no-restore --logger trx --results-directory .local/phase9-final/sql`<br>`pwsh -NoProfile -File scripts/assert-test-results.ps1 -ResultsDirectory .local/phase9-final -MinimumTests 1511 -MinimumSqlTests 383`<br>`pnpm test`<br>`pnpm web:test`<br>`pnpm web:lint`<br>`pnpm web:typecheck`<br>`pnpm web:build`<br>`node scripts/verify-operational-suite.mjs`<br>`node scripts/verify-commercial-suite.mjs`<br>`node scripts/verify-servicing-suite.mjs`<br>`node scripts/verify-underwriting-suite.mjs`|Pending implementation|
+
+Planning sign-off2026-09-21: each task has a concrete check or reviews its already produced current-source reports; all new test files are owned by that implementation task. Unit feedback target under60seconds per focused family; SQL/browser feedback may take minutes and final regression hours. Do not interrupt a healthy long run to meet that target. No watch mode.
