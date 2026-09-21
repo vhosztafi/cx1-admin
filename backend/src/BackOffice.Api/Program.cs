@@ -53,6 +53,7 @@ ServicingDeliveryDispatcher.Register(builder);
 RenewalLifecycleDispatcher.Register(builder);
 WorkflowTaskDispatcher.Register(builder);
 FileFinalizationDispatcher.Register(builder);
+DocumentGenerationDispatcher.Register(builder);
 CancellationNoticeDispatcher.Register(builder);
 QuoteDeliveryDispatcher.Register(builder);
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.QuoteIssueService>();

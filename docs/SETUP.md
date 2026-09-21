@@ -304,6 +304,20 @@ a separate action.
 
 ## Durable operational files
 
+The09-07 document worker requires migration `20260921183129_OperationalDocuments`
+and the same persistent private file volume described below. In Development,
+`Cover__DocumentWorkerEnabled=true` enables bounded discovery and processing of
+retained policy-document requests. It is off by default. This worker preserves
+original request/work identities and rechecks the original user's current
+authority; it does not send documents. It manages its generated file finalization
+and expired unreferenced temporary cleanup even if the separate upload file
+worker is disabled. Other generation command families are still being implemented.
+
+`GET /api/v1/document-versions/{id}` reports saved generation availability.
+`/content` downloads the exact verified bytes; `/preview` serves the same bytes
+inline. Both require current parent access and refuse pending/quarantined files.
+Storage corruption persists quarantine rather than returning damaged content.
+
 After applying migration `20260921162248_OperationalFileObjects`, configure
 `Cover__FileStoragePath` as an absolute persistent private directory. Development
 defaults to `.local/operational-files` under the API content root. The directory
