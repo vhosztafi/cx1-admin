@@ -307,11 +307,17 @@ a separate action.
 The09-07 document worker requires migration `20260921183129_OperationalDocuments`
 and the same persistent private file volume described below. In Development,
 `Cover__DocumentWorkerEnabled=true` enables bounded discovery and processing of
-retained policy-document requests. It is off by default. This worker preserves
+retained policy-document requests and explicit policy/quotation/servicing document generation. It is off by default. This worker preserves
 original request/work identities and rechecks the original user's current
 authority; it does not send documents. It manages its generated file finalization
 and expired unreferenced temporary cleanup even if the separate upload file
-worker is disabled. Other generation command families are still being implemented.
+worker is disabled. Original cancellation consequence integration remains in progress.
+
+`POST /api/v1/records/{operationalSubjectId}/documents/generate` selects exact source
+and template IDs. Optional `documentId` appends a version while retaining earlier
+PDF bytes. It returns202 with the document-version status URL. Document lists and
+version history use `GET /records/{id}/documents` and `GET /documents/{id}/versions`
+under the same `/api/v1` prefix, with bounded opaque continuation cursors.
 
 `GET /api/v1/document-versions/{id}` reports saved generation availability.
 `/content` downloads the exact verified bytes; `/preview` serves the same bytes
@@ -343,8 +349,13 @@ with the matching Content-Type, CSRF token and Idempotency-Key. The limit is20Mi
 and is enforced on actual streamed bytes. Poll the returned Location, then use
 `GET /api/v1/file-uploads/{uploadId}/content` once ready. The upload ID is separate
 from the private file identity. Responses include size and SHA256; downloads
-use attachment filenames, private/no-store and nosniff. These are staging
-resources; document versions, visibility and the document UI belong to09-07/08.
+use attachment filenames, private/no-store and nosniff. Attach that upload ID using
+`POST /api/v1/records/{id}/documents/upload` with JSON `uploadId`, `kind`, `visibility`
+and `reason`; agency visibility also requires `relationshipId`. Optional `documentId`
+adds a new version from a new upload. The command preserves the existing bytes and
+finalization work, returns202 `OpsDocumentVersion`, and accepts the original uploader
+under current parent access. It can attach a pending upload; downloads remain blocked
+until the file worker finalizes it. The document UI remains owned by09-08.
 The original evidence APIs and retained SQL bytes remain supported, including
 previously screened text files. Signature screening is deterministic demo
 validation, not antivirus or document certification.

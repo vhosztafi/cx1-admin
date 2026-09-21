@@ -14,16 +14,21 @@ public static class DocumentEndpoints
 
     public static void MapDocuments(this WebApplication app)
     {
+        app.MapPost("/api/v1/records/{recordId:guid}/documents/upload",(Guid recordId,HttpContext context,DocumentService service)=>Run(context,async()=>
+        {
+            QuoteEndpoints.Id(recordId);var key=QuoteHttpInput.Key(context.Request);
+            var input=await Input<DocumentUploadInput>(context);
+            var result=await service.AttachUpload(LocalIdentityService.Actor(context.User),recordId,input,key,context.RequestAborted);
+            context.Response.Headers.Location="/api/v1/document-versions/"+result.ResourceId;
+            return QuoteEndpoints.Outcome(context,result);
+        })).RequireAuthorization("document-upload");
         app.MapGet("/api/v1/records/{recordId:guid}/documents",(Guid recordId,HttpContext context,DocumentService service,PartyPaging paging)=>List(recordId,context,service,paging,false)).RequireAuthorization("document-read");
         app.MapGet("/api/v1/documents/{documentId:guid}/versions",(Guid documentId,HttpContext context,DocumentService service,PartyPaging paging)=>List(documentId,context,service,paging,true)).RequireAuthorization("document-read");
         app.MapPost("/api/v1/records/{recordId:guid}/documents/generate",(Guid recordId,HttpContext context,DocumentService service)=>Run(context,async()=>
         {
             QuoteEndpoints.Id(recordId);
             var key=QuoteHttpInput.Key(context.Request);
-            using var body=await QuoteHttpInput.Read(context.Request,context.RequestAborted,65536);
-            DocumentGenerateInput input;
-            try { input=body.RootElement.Deserialize<DocumentGenerateInput>(InputJson) ?? throw new QuoteHttpException(400,"invalid-document-input"); }
-            catch(JsonException) { throw new QuoteHttpException(400,"invalid-document-input"); }
+            var input=await Input<DocumentGenerateInput>(context);
             var result=await service.Generate(LocalIdentityService.Actor(context.User),recordId,input,key,context.RequestAborted);
             context.Response.Headers.Location="/api/v1/document-versions/"+result.ResourceId;
             return QuoteEndpoints.Outcome(context,result);
@@ -35,6 +40,12 @@ public static class DocumentEndpoints
         })).RequireAuthorization("document-read");
         app.MapGet("/api/v1/document-versions/{versionId:guid}/content",(Guid versionId,HttpContext context,DocumentService service)=>Content(versionId,context,service,false)).RequireAuthorization("document-download");
         app.MapGet("/api/v1/document-versions/{versionId:guid}/preview",(Guid versionId,HttpContext context,DocumentService service)=>Content(versionId,context,service,true)).RequireAuthorization("document-download");
+    }
+    private static async Task<T> Input<T>(HttpContext context)
+    {
+        using var body=await QuoteHttpInput.Read(context.Request,context.RequestAborted,65536);
+        try { return body.RootElement.Deserialize<T>(InputJson) ?? throw new QuoteHttpException(400,"invalid-document-input"); }
+        catch(JsonException) { throw new QuoteHttpException(400,"invalid-document-input"); }
     }
     private static Task<IResult> List(Guid id,HttpContext context,DocumentService service,PartyPaging paging,bool versions)=>Run(context,async()=>
     {

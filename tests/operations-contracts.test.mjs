@@ -107,3 +107,12 @@ test('document lists and immutable history expose verified paged contracts',asyn
  }
  assert.equal(api.paths['/documents/{documentId}/versions'].get.responses[200].content['application/json'].schema.properties.items.items.$ref,'#/components/schemas/OpsDocumentVersion');
 });
+
+test('uploaded documents attach a staged upload identity without accepting storage identities or bytes',()=>{
+ const input={kind:'evidence',uploadId:id,visibility:'internal',reason:'Attach supplied evidence'};
+ assert.ok(valid('OpsDocumentUpload',input));
+ assert.equal(valid('OpsDocumentUpload',{...input,fileId:id}),false);
+ assert.equal(valid('OpsDocumentUpload',{...input,file:'raw bytes'}),false);
+ assert.equal(valid('OpsDocumentUpload',{...input,visibility:'agency'}),false);
+ assert.ok(valid('OpsDocumentUpload',{...input,visibility:'agency',relationshipId:id}));
+});

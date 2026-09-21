@@ -23489,7 +23489,7 @@
       "post": {
         "operationId": "uploadDocument",
         "summary": "upload Document",
-        "description": "Requires document-upload. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "description": "Attach an owned staged upload to an immutable document version. First stream bytes to file-uploads; this command preserves that upload and finalization work.",
         "tags": [
           "records"
         ],
@@ -23523,8 +23523,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Resource created.",
+          "202": {
+            "description": "Upload attached; version state tracks durable file finalization.",
             "headers": {
               "ETag": {
                 "description": "Opaque resource version for subsequent conditional writes.",
@@ -23535,10 +23535,11 @@
                 }
               },
               "Location": {
-                "description": "Created resource or durable job URI.",
+                "description": "Status URL for the immutable document version.",
                 "schema": {
                   "type": "string",
-                  "format": "uri-reference"
+                  "minLength": 1,
+                  "maxLength": 500
                 }
               }
             },
@@ -23665,7 +23666,7 @@
             }
           },
           "413": {
-            "description": "Upload exceeds the allowed size or content type.",
+            "description": "Document metadata requires a bounded JSON request.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -23675,7 +23676,7 @@
             }
           },
           "415": {
-            "description": "Upload exceeds the allowed size or content type.",
+            "description": "Document metadata requires a bounded JSON request.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -23764,43 +23765,14 @@
         "requestBody": {
           "required": true,
           "content": {
-            "multipart/form-data": {
+            "application/json": {
               "schema": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "kind": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 50
-                  },
-                  "visibility": {
-                    "type": "string",
-                    "enum": [
-                      "internal",
-                      "agency",
-                      "insurer"
-                    ]
-                  },
-                  "relationshipId": {
-                    "type": "string",
-                    "format": "uuid"
-                  },
-                  "file": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                },
-                "required": [
-                  "kind",
-                  "visibility",
-                  "file"
-                ]
+                "$ref": "#/components/schemas/OpsDocumentUpload"
               }
             }
           }
         },
-        "x-runtime-status": "phase-9-contract-only"
+        "x-runtime-status": "phase-9-07-api-verified"
       }
     },
     "/document-versions/{versionId}/content": {
@@ -195609,6 +195581,103 @@
               "kind",
               "source",
               "templateVersionId",
+              "reason",
+              "visibility",
+              "relationshipId"
+            ]
+          }
+        ]
+      },
+      "OpsDocumentUpload": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "evidence",
+                  "quotation",
+                  "statement-of-fact",
+                  "policy-schedule",
+                  "policy-certificate",
+                  "endorsement",
+                  "renewal-invitation",
+                  "cancellation-notice"
+                ]
+              },
+              "uploadId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000,
+                "pattern": "\\S"
+              },
+              "documentId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "visibility": {
+                "type": "string",
+                "enum": [
+                  "internal",
+                  "insurer"
+                ]
+              }
+            },
+            "required": [
+              "kind",
+              "uploadId",
+              "reason",
+              "visibility"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "evidence",
+                  "quotation",
+                  "statement-of-fact",
+                  "policy-schedule",
+                  "policy-certificate",
+                  "endorsement",
+                  "renewal-invitation",
+                  "cancellation-notice"
+                ]
+              },
+              "uploadId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000,
+                "pattern": "\\S"
+              },
+              "documentId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "visibility": {
+                "const": "agency"
+              },
+              "relationshipId": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "kind",
+              "uploadId",
               "reason",
               "visibility",
               "relationshipId"

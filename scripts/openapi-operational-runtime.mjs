@@ -7,6 +7,15 @@ export function addOperationalRuntimeContracts({schemas:s,ref:r,operation:op,lis
  for(const [path,method,name]of[['/tasks','post','OpsTaskWrite'],['/tasks/{taskId}','put','OpsTaskUpdateWrite'],['/tasks/{taskId}/transition','post','OpsTaskTransition'],['/tasks/bulk-assignment','post','OpsTaskBulkAssignment'],['/records/{recordId}/threads','post','OpsThreadWrite'],['/threads/{threadId}/messages','post','OpsMessageWrite'],['/messages/{messageId}','put','OpsMessageWrite'],['/records/{recordId}/document-deliveries','post','OpsPackWrite'],['/records/{recordId}/documents/generate','post','OpsDocumentGenerate'],['/incidents','post','OpsIncidentDraftWrite'],['/incidents/{incidentId}','put','OpsIncidentDraftWrite'],['/incidents/{incidentId}/handoff','post','OpsIncidentHandoff']])input(path,method,name);
  for(const [path,method,name]of[['/tasks','post','OpsTask'],['/tasks/{taskId}','get','OpsTask'],['/tasks/{taskId}','put','OpsTask'],['/tasks/{taskId}/transition','post','OpsTask'],['/incidents','post','OpsIncident'],['/incidents/{incidentId}','get','OpsIncident'],['/incidents/{incidentId}','put','OpsIncident'],['/incidents/{incidentId}/log','post','OpsIncident'],['/records/{recordId}/documents/upload','post','OpsDocumentVersion']])output(path,method,name);
  output('/records/{recordId}/documents/generate','post','OpsDocumentVersion');
+ input('/records/{recordId}/documents/upload','post','OpsDocumentUpload');
+ const attachUpload=paths['/records/{recordId}/documents/upload'].post;
+ attachUpload['x-runtime-status']='phase-9-07-api-verified';
+ attachUpload.responses[202]=attachUpload.responses[201];delete attachUpload.responses[201];
+ attachUpload.responses[202].description='Upload attached; version state tracks durable file finalization.';
+ attachUpload.responses[202].headers??={};
+ attachUpload.responses[202].headers['Location']={description:'Status URL for the immutable document version.',schema:t(500)};
+ for(const code of [413,415])attachUpload.responses[code].description='Document metadata requires a bounded JSON request.';
+ attachUpload.description='Attach an owned staged upload to an immutable document version. First stream bytes to file-uploads; this command preserves that upload and finalization work.';
  for(const [path,name]of[['/tasks','OpsTask'],['/incidents','OpsIncident'],['/incidents/{incidentId}/summaries','OpsClaimsSummary'],['/documents/{documentId}/versions','OpsDocumentVersion'],['/versions/{versionId}/mid-submissions','OpsMidSubmission']]){paths[path].get.responses[200].content['application/json'].schema.properties.items.items=r(name);paths[path].get['x-runtime-status']='phase-9-contract-only';}
  const taskQuery=paths['/tasks'].get.parameters;taskQuery.find(x=>x.name==='state').schema=s.OpsTask.properties.state;taskQuery.push({name:'view',in:'query',schema:{type:'string',enum:['my-open','team','created-by-me','completed']}},{name:'typeCode',in:'query',schema:s.OpsTask.properties.typeCode},{name:'q',in:'query',schema:t(300)});
  input('/incidents/validate','post','OpsIncidentDraftWrite');

@@ -14,9 +14,10 @@ public sealed partial class DocumentService
         ValidatePage(0,size);
         await using var db=await factory.CreateDbContextAsync(token);
         await using var transaction=await db.Database.BeginTransactionAsync(IsolationLevel.Serializable,token);
-        await OperationalScope.HoldSubjects(db,actor,[subjectId],"document-read",token);
+        var held=await OperationalScope.HoldSubjects(db,actor,[subjectId],"document-read",token);
+        var audience=AllowedAudience(db,held.Subjects.Single());
         var query=db.Set<OperationalDocument>().AsNoTracking().Where(x=>x.SubjectId==subjectId && x.CreatedAt<=asOf &&
-            (x.RelationshipId==null || db.Set<ClientAgencyRelationship>().Any(r=>r.Id==x.RelationshipId && r.State=="active")));
+            (x.RelationshipId==null || audience.Any(r=>r.Id==x.RelationshipId)));
         var count=await query.CountAsync(token);
         if(beforeId is Guid previousId)
         {

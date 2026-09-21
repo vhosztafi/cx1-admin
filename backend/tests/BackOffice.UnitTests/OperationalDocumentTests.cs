@@ -6,6 +6,16 @@ namespace BackOffice.UnitTests;
 public sealed class OperationalDocumentTests
 {
     [Fact]
+    public void UploadAttachmentRequiresAnExplicitUploadIdentityAndAudience()
+    {
+        var input=new DocumentUploadInput("evidence",Guid.NewGuid(),"internal","Attach supplied evidence");
+        DocumentRules.Validate(input);
+        Assert.Throws<DocumentRuleException>(()=>DocumentRules.Validate(input with{UploadId=Guid.Empty}));
+        Assert.Throws<DocumentRuleException>(()=>DocumentRules.Validate(input with{Kind="arbitrary"}));
+        Assert.Throws<DocumentRuleException>(()=>DocumentRules.Validate(input with{Visibility="agency"}));
+        Assert.Throws<DocumentRuleException>(()=>DocumentRules.Validate(input with{Reason=" "}));
+    }
+    [Fact]
     public void GenerationCapabilityRequiresAnInternalOperationalRole()
     {
         Assert.True(new BackOffice.Application.ActorContext(Guid.NewGuid(),null,null,new HashSet<string>{"servicing"}).HasCapability("document-generate"));

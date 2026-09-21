@@ -48,8 +48,8 @@ public sealed partial class DocumentService
     private static async Task<OperationalDocument> HoldDocument(BackOfficeDbContext db,ActorContext actor,Guid id,string capability,CancellationToken token)
     {
         var document=await db.Set<OperationalDocument>().AsNoTracking().SingleOrDefaultAsync(x=>x.Id==id,token)??throw MissingDocument();
-        await OperationalScope.HoldSubjects(db,actor,[document.SubjectId],capability,token);
-        if(document.RelationshipId is Guid relationship&&!await db.Set<ClientAgencyRelationship>().AnyAsync(x=>x.Id==relationship&&x.State=="active",token))throw MissingDocument();
+        var held=await OperationalScope.HoldSubjects(db,actor,[document.SubjectId],capability,token);
+        await HoldAudience(db,held.Subjects.Single(),document.RelationshipId,token);
         return document;
     }
 

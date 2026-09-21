@@ -2388,6 +2388,103 @@
         }
       ]
     },
+    "OpsDocumentUpload": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "evidence",
+                "quotation",
+                "statement-of-fact",
+                "policy-schedule",
+                "policy-certificate",
+                "endorsement",
+                "renewal-invitation",
+                "cancellation-notice"
+              ]
+            },
+            "uploadId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000,
+              "pattern": "\\S"
+            },
+            "documentId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "visibility": {
+              "type": "string",
+              "enum": [
+                "internal",
+                "insurer"
+              ]
+            }
+          },
+          "required": [
+            "kind",
+            "uploadId",
+            "reason",
+            "visibility"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "evidence",
+                "quotation",
+                "statement-of-fact",
+                "policy-schedule",
+                "policy-certificate",
+                "endorsement",
+                "renewal-invitation",
+                "cancellation-notice"
+              ]
+            },
+            "uploadId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000,
+              "pattern": "\\S"
+            },
+            "documentId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "visibility": {
+              "const": "agency"
+            },
+            "relationshipId": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "required": [
+            "kind",
+            "uploadId",
+            "reason",
+            "visibility",
+            "relationshipId"
+          ]
+        }
+      ]
+    },
     "OpsDocumentVersion": {
       "type": "object",
       "additionalProperties": false,

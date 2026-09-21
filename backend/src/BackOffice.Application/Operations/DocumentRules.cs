@@ -11,6 +11,10 @@ public sealed record DocumentGenerateInput([property: JsonRequired] string Kind,
     [property: JsonRequired] Guid TemplateVersionId, [property: JsonRequired] string Visibility,
     [property: JsonRequired] string Reason, Guid? RelationshipId = null, Guid? DocumentId = null);
 
+[JsonUnmappedMemberHandling(JsonUnmappedMemberHandling.Disallow)]
+public sealed record DocumentUploadInput([property: JsonRequired] string Kind, [property: JsonRequired] Guid UploadId,
+    [property: JsonRequired] string Visibility, [property: JsonRequired] string Reason, Guid? RelationshipId = null, Guid? DocumentId = null);
+
 public sealed class DocumentRuleException(string code) : Exception("The document command is invalid.")
 {
     public string Code { get; } = code;
@@ -20,14 +24,21 @@ public sealed class DocumentRuleException(string code) : Exception("The document
 // source, template and audience ownership before command replay/application.
 public static class DocumentRules
 {
+    public static void Validate(DocumentUploadInput input)
+    {
+        if(input is null || input.UploadId==Guid.Empty || input.DocumentId==Guid.Empty ||
+            input.Kind is not ("evidence" or "quotation" or "statement-of-fact" or "policy-schedule" or "policy-certificate" or "endorsement" or "renewal-invitation" or "cancellation-notice"))
+            throw Invalid("invalid-document-upload");
+        ValidateAudience(input.Visibility,input.RelationshipId);
+        ValidateReason(input.Reason);
+    }
     public static void Validate(DocumentGenerateInput input)
     {
         if (input is null || input.Source is null || input.TemplateVersionId == Guid.Empty || input.DocumentId == Guid.Empty ||
             input.Kind is not ("quotation" or "statement-of-fact" or "policy-schedule" or "policy-certificate" or "endorsement" or "renewal-invitation" or "cancellation-notice"))
             throw Invalid("invalid-document-command");
         ValidateAudience(input.Visibility, input.RelationshipId);
-        if (string.IsNullOrWhiteSpace(input.Reason) || input.Reason.Length > 1000 || input.Reason.Any(char.IsControl))
-            throw Invalid("document-reason-required");
+        ValidateReason(input.Reason);
         var source = input.Source;
         var valid = source.Kind switch
         {
@@ -50,5 +61,9 @@ public static class DocumentRules
     }
 
     private static bool Present(Guid? value) => value is Guid id && id != Guid.Empty;
+    private static void ValidateReason(string reason)
+    {
+        if(string.IsNullOrWhiteSpace(reason) || reason.Length>1000 || reason.Any(char.IsControl))throw Invalid("document-reason-required");
+    }
     private static DocumentRuleException Invalid(string code) => new(code);
 }

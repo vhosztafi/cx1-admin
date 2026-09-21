@@ -38,7 +38,7 @@ public sealed class OperationalFileApiTests
                 var agency = new Agency { Reference = "AG-FILE-API", LegalName = "Fictional file API" }; db.Add(agency); await db.SaveChangesAsync();
                 var subject = new OperationalSubject { Kind = "agency", AgencyId = agency.Id, CreatedBy = user.Id }; db.Add(subject); await db.SaveChangesAsync(); subjectId = subject.Id;
             }
-            Guid uploadId;
+            Guid uploadId; Guid documentVersionId;
             using (var host = Host())
             using (var client = host.CreateClient())
             {
@@ -54,7 +54,15 @@ public sealed class OperationalFileApiTests
                 Assert.Equal("pending", body.GetProperty("state").GetString()); Assert.False(body.TryGetProperty("fileId", out _));
                 Assert.Equal($"/api/v1/file-uploads/{uploadId}", created.Headers.Location!.ToString());
                 Assert.Equal(HttpStatusCode.Conflict, (await client.GetAsync($"/api/v1/file-uploads/{uploadId}/content")).StatusCode);
+                var documentPath=$"/api/v1/records/{subjectId}/documents/upload";
+                Assert.Equal(HttpStatusCode.Forbidden,(await AttachDocument(client,documentPath,null,uploadId)).StatusCode);
+                using var attached=await AttachDocument(client,documentPath,csrf,uploadId);Assert.Equal(HttpStatusCode.Accepted,attached.StatusCode);
+                var document=await attached.Content.ReadFromJsonAsync<JsonElement>();documentVersionId=document.GetProperty("id").GetGuid();
+                Assert.Equal("pending",document.GetProperty("state").GetString());Assert.False(document.TryGetProperty("templateVersionId",out _));
+                using var replay=await AttachDocument(client,documentPath,csrf,uploadId);
+                Assert.Equal(documentVersionId,(await replay.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("id").GetGuid());
                 await using var scope = host.Services.CreateAsyncScope(); Assert.True(await scope.ServiceProvider.GetRequiredService<FileFinalizationWorker>().Process(uploadId, default));
+                Assert.Equal(bytes,await client.GetByteArrayAsync($"/api/v1/document-versions/{documentVersionId}/content"));
                 using var downloaded = await client.GetAsync($"/api/v1/file-uploads/{uploadId}/content"); downloaded.EnsureSuccessStatusCode();
                 Assert.Equal(bytes, await downloaded.Content.ReadAsByteArrayAsync()); Assert.Equal("application/pdf", downloaded.Content.Headers.ContentType!.MediaType);
                 Assert.Equal("attachment", downloaded.Content.Headers.ContentDisposition!.DispositionType);
@@ -62,12 +70,14 @@ public sealed class OperationalFileApiTests
                 Assert.True(downloaded.Headers.CacheControl!.NoStore); Assert.Equal("nosniff", Assert.Single(downloaded.Headers.GetValues("X-Content-Type-Options")));
                 using var servicing = host.CreateClient(); await Login(servicing, "servicing@cover.example", password);
                 Assert.Equal(HttpStatusCode.NotFound, (await servicing.GetAsync($"/api/v1/file-uploads/{uploadId}/content")).StatusCode);
+                Assert.Equal(HttpStatusCode.NotFound,(await servicing.GetAsync($"/api/v1/document-versions/{documentVersionId}/content")).StatusCode);
             }
             using (var restarted = Host(worker: true))
             using (var client = restarted.CreateClient())
             {
                 var csrf = await Login(client, "agency-admin@cover.example", password);
                 Assert.Equal(bytes, await client.GetByteArrayAsync($"/api/v1/file-uploads/{uploadId}/content"));
+                Assert.Equal(bytes,await client.GetByteArrayAsync($"/api/v1/document-versions/{documentVersionId}/content"));
                 var status = await client.GetFromJsonAsync<JsonElement>($"/api/v1/file-uploads/{uploadId}"); Assert.Equal("ready", status.GetProperty("state").GetString());
                 Assert.Equal(Convert.ToHexStringLower(SHA256.HashData(bytes)), status.GetProperty("sha256").GetString());
                 using var automatic = await Upload(client, $"/api/v1/records/{subjectId}/file-uploads?name=fictional.pdf", csrf, "hosted-worker", bytes);
@@ -110,6 +120,13 @@ public sealed class OperationalFileApiTests
         using var request = new HttpRequestMessage(HttpMethod.Post, path) { Content = new ByteArrayContent(bytes) };
         request.Content.Headers.ContentType = new("application/pdf"); request.Headers.Add("Idempotency-Key", "file-api-acceptance-" + key);
         if (csrf is not null) request.Headers.Add("X-CSRF-TOKEN", csrf);
+        return await client.SendAsync(request);
+    }
+    private static async Task<HttpResponseMessage> AttachDocument(HttpClient client,string path,string? csrf,Guid uploadId)
+    {
+        using var request=new HttpRequestMessage(HttpMethod.Post,path){Content=JsonContent.Create(new{kind="evidence",uploadId,visibility="internal",reason="Attach uploaded fictional evidence"})};
+        request.Headers.Add("Idempotency-Key","document-upload-api-acceptance");
+        if(csrf is not null)request.Headers.Add("X-CSRF-TOKEN",csrf);
         return await client.SendAsync(request);
     }
 }
