@@ -1,6 +1,6 @@
 # Document rendering
 
-Status: Phase09-06 in progress. Policy rendering is implemented; quotation/servicing terms, future template publication and the complete acceptance gate remain open. This is not a claim that document generation/delivery is complete.
+Status: Phase09-06 in progress. Policy and quotation rendering are implemented; servicing/renewal terms, future template publication and the complete acceptance gate remain open. This is not a claim that document generation/delivery is complete.
 
 ## Boundaries
 
@@ -13,6 +13,8 @@ Policy kinds currently supported are policy schedule, statement of fact (includi
 `IPolicyDocumentRenderer.Render` returns real PDF bytes, their SHA-256, page count and renderer/projection/font versions. It neither writes a FileObject nor marks a DocumentVersion/request ready. Those state transitions belong to09-07. PDFs contain an explicit fictional demonstration notice and make no PDF/UA or legal certificate compliance claim.
 
 `PolicyDocumentRenderService.RenderRetainedRequest` loads a real request, holds current identity and policy scope, joins the exact policy version and product-owned template, checks the request envelope hash and source/template identities/content, then calls the renderer while scope remains held. Historical published requests can use their retained templates; this operation does not select a new template by current date. There is no new public HTTP endpoint in this increment.
+
+`RenderQuoteTerms(actor, quoteId, termsId, kind)` similarly holds current quote/identity scope and loads the exact retained terms/cycle/revision graph. Quote hashes have a different domain: `QuoteCanonicalJson` binds the revision to `QuoteVersionPins`; `UnderwritingHashes.Terms` binds the contractual payload to its cycle/rating/configuration. The contract verifies those hashes, rejects substitutions and uses the revision's insured/declarations with the terms' exact named insured, agency, price, conditions and expiry. A quote statement does not imply a premium; a quotation requires the immutable terms payload. Neither creates issued cover. The retained three-field `quote-template-1` format is supported as literal text.
 
 ## Layout and immutable dependencies
 
@@ -27,3 +29,5 @@ Money formatting applies only to known monetary fields. Other saved strings and 
 ## Verification in progress
 
 Current strict policy increment passes37unique cases/1realSQL/no skips:31unit and6integration including four product PDFs, font proof and a normally issued policy with preserved source/template/request and suspended-user denial. Root412passes. Independent `scripts/verify-policy-pdf-examples.py` checks expected names, money, glyphs, source/template IDs, page numbers, A4 geometry and all30 repeated clauses/end markers of a long declaration. Poppler pages were inspected; hash wrapping was corrected. Current fixtures span10–13pages for declaration-rich schedules/statements and2pages for the commercial certificate. Evidence is in `.local/phase9-06-policy-wrap-strict` and09-06-CHECKPOINT. Quotation/renewal and full plan acceptance remain open.
+
+The later quotation increment passes44unit and7integration cases, including2realSQL cases covering MotorTrade and CC. Its independently parsed PDFs match separately saved SQL expectations for parties, gross payable, conditions and terms identities/hashes. Reports are `.local/phase9-06-quote-final-unit` and `-sql`; commercial quotation first page visually inspected. Servicing/renewal work and full plan acceptance remain open.

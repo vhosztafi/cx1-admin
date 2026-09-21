@@ -4,6 +4,7 @@ using System.Text.Json;
 using BackOffice.Application;
 using BackOffice.Application.Operations;
 using BackOffice.Infrastructure.Persistence;
+using BackOffice.Infrastructure.Quotes;
 using Microsoft.EntityFrameworkCore;
 
 namespace BackOffice.Infrastructure.Operations;
@@ -12,6 +13,33 @@ namespace BackOffice.Infrastructure.Operations;
 // publication: no request is marked ready and no DocumentVersion is invented.
 public sealed class PolicyDocumentRenderService(IDbContextFactory<BackOfficeDbContext> factory, IPolicyDocumentRenderer renderer)
 {
+    public async Task<RenderedPolicyDocument> RenderQuoteTerms(ActorContext actor, Guid quoteId, Guid termsId, string kind, CancellationToken token = default)
+    {
+        if (kind is not ("quotation" or "statement-of-fact")) throw Invalid();
+        await using var db = await factory.CreateDbContextAsync(token);
+        await using var transaction = await db.Database.BeginTransactionAsync(token);
+        await OperationalScope.HoldParents(db, actor, [new("quote", quoteId)], "document-read", token);
+        var quote = await db.Set<Quote>().AsNoTracking().SingleAsync(x => x.Id == quoteId, token);
+        var terms = await db.Set<QuoteTermsVersion>().AsNoTracking().SingleOrDefaultAsync(x => x.Id == termsId && x.QuoteId == quoteId, token) ?? throw Missing();
+        var cycle = await db.Set<UnderwritingCycle>().AsNoTracking().SingleOrDefaultAsync(x => x.Id == terms.CycleId && x.QuoteId == quoteId, token) ?? throw Missing();
+        var revision = await db.Set<QuoteRevision>().AsNoTracking().SingleOrDefaultAsync(x => x.Id == cycle.QuoteRevisionId && x.QuoteId == quoteId &&
+            x.ClientId == quote.ClientId && x.RelationshipId == quote.RelationshipId && x.AgencyId == quote.AgencyId && x.ProductId == quote.ProductId, token) ?? throw Missing();
+        var template = await db.Set<TemplateVersion>().AsNoTracking().SingleOrDefaultAsync(x => x.Id == terms.TemplateVersionId && x.ProductId == revision.ProductId, token) ?? throw Missing();
+        var product = await db.Set<Product>().AsNoTracking().SingleAsync(x => x.Id == revision.ProductId, token);
+        var input = new DocumentRenderInput(revision.Id, "quote-revision", revision.ProposalJson, Convert.ToHexStringLower(revision.ContentHash),
+            template.Id, template.ContentJson, Hash(template.ContentJson), product.Code, "quotation", quote.Reference, product.Code, template.Kind,
+            QuoteService.Pins(revision), new(terms.Id, terms.TermsJson, terms.TermsHash));
+        // Always validate the chosen retained terms, even for an unpriced
+        // statement of fact. An arbitrary terms ID cannot select a revision.
+        var validated = DocumentRenderContract.Create(input).QuotationTerms!.Value;
+        if (validated.GetProperty("quoteId").GetGuid() != quote.Id || validated.GetProperty("cycleId").GetGuid() != cycle.Id ||
+            validated.GetProperty("ratingId").GetGuid() != terms.RatingId || validated.GetProperty("clientId").GetGuid() != revision.ClientId ||
+            validated.GetProperty("relationshipId").GetGuid() != revision.RelationshipId) throw Invalid();
+        if (kind == "statement-of-fact") input = input with { Kind = kind, QuoteTerms = null };
+        var result = renderer.Render(input);
+        await transaction.CommitAsync(token); return result;
+    }
+
     public async Task<RenderedPolicyDocument> RenderRetainedRequest(ActorContext actor, Guid requestId, CancellationToken token = default)
     {
         await using var db = await factory.CreateDbContextAsync(token);

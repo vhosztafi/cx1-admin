@@ -36,7 +36,8 @@ public static partial class DocumentPolicyProjection
             sections.Add(new(title, fields.AsReadOnly()));
         }
         Add("Insured", source.GetProperty("insured"));
-        Add("Policy period", source.GetProperty("term"));
+        var quote = contract.Input.SourceKind == "quote-revision";
+        Add(quote ? "Proposed period" : "Policy period", source.GetProperty(quote ? "termIntent" : "term"));
         var risk = source.GetProperty("risk"); var cover = source.GetProperty("cover");
         if (kind == "cancellation-notice")
         {
@@ -71,10 +72,17 @@ public static partial class DocumentPolicyProjection
             // Requested options remain declarations; only the selected sections
             // constitute issued cover. Give them distinct printed headings.
             foreach (var property in cover.EnumerateObject())
-                Add(property.Name switch { "sections" => "Selected cover", "requestedSections" => "Requested options (declarations)", "endorsements" => "Selected endorsements", _ => Label(property.Name) }, property.Value);
+                Add(property.Name switch { "sections" => quote ? "Proposed cover" : "Selected cover", "requestedSections" => "Requested options (declarations)", "endorsements" => "Selected endorsements", _ => Label(property.Name) }, property.Value);
             if (kind == "policy-schedule") Add("Premium and charges", source.GetProperty("premium"));
         }
         if (sections.Sum(x => x.Fields.Count) > 12000) throw new DocumentRenderException("document-render-row-limit");
+        if (contract.QuotationTerms is JsonElement terms)
+        {
+            sections.Insert(0, new("Quotation parties", [new("Named insured", terms.GetProperty("insuredName").GetString()!), new("Agency", terms.GetProperty("agencyName").GetString()!)]));
+            Add("Quoted price", terms.GetProperty("price"));
+            Add("Quoted conditions", terms.GetProperty("conditions"));
+            sections.Add(new("Quotation validity", [new("Starts at", terms.GetProperty("startsAt").GetString()!), new("Ends at", terms.GetProperty("endsAt").GetString()!), new("Expires at", terms.GetProperty("expiresAt").GetString()!)]));
+        }
         return sections.AsReadOnly();
     }
 

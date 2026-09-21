@@ -38,7 +38,11 @@ public sealed class PolicyDocumentRenderer : IPolicyDocumentRenderer
         section.AddParagraph(input.Reference + "  •  " + ProductName(input.ProductCode));
         var disclaimer = section.AddParagraph("DEMONSTRATION ONLY — no insurance is provided by this document.");
         disclaimer.Format.Font.Bold = true; disclaimer.Format.SpaceAfter = Unit.FromPoint(12);
-        if (!contract.LegacyTemplate) section.AddParagraph(contract.Notice);
+        var historicalPendingNotice = contract.LegacyTemplate && input.SourceKind == "policy-version";
+        if (!historicalPendingNotice) section.AddParagraph(contract.Notice);
+        if (input.SourceKind == "quote-revision") section.AddParagraph(input.Kind == "quotation"
+            ? "Proposed terms — this quotation does not issue cover. The recorded price and expiry belong to the retained terms version."
+            : "Proposed declarations — this statement does not issue cover or confirm a premium.");
 
         foreach (var group in content) AddSection(section, group);
         AddSection(section, new("Document provenance", [
@@ -48,7 +52,8 @@ public sealed class PolicyDocumentRenderer : IPolicyDocumentRenderer
             new("Template SHA-256", input.TemplateHash),
             new("Question labels SHA-256", DocumentPolicyProjection.QuestionLabelsHash),
             new("Rendering", Version + " / " + DocumentPolicyProjection.Version + " / " + FontVersion)]));
-        if (contract.LegacyTemplate)
+        if (input.QuoteTerms is { } quoteTerms) AddSection(section, new("Quotation provenance", [new("Terms version", quoteTerms.Id.ToString()), new("Terms hash", quoteTerms.Hash)]));
+        if (historicalPendingNotice)
             AddSection(section, new("Retained template wording (historical provenance)", [
                 new("Original notice", contract.Notice),
                 new("Meaning", "The original wording is retained unchanged. It describes the historical template, not the generation state of this PDF.")]));

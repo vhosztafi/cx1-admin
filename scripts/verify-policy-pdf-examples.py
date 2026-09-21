@@ -1,6 +1,8 @@
 """Independent text/geometry check of the OperationalPdfTests outputs (pypdf)."""
 import argparse
 from pathlib import Path
+from decimal import Decimal
+import json
 from pypdf import PdfReader
 
 parser = argparse.ArgumentParser()
@@ -36,3 +38,22 @@ for name in sorted(expected):
         assert "£25,000.00" in text, name
     path.with_suffix(".txt").write_text(text, encoding="utf-8")
     print(f"{name}: {len(pdf.pages)} A4 pages; independent expected content passed")
+
+for name in ("real-sql-motor-quotation", "real-sql-commercial-quotation"):
+    path = args.directory / (name + ".pdf")
+    expected_terms = json.loads(path.with_suffix(".expected.json").read_text(encoding="utf-8-sig"))
+    pdf = PdfReader(path)
+    text = "\n".join(page.extract_text() for page in pdf.pages)
+    normalized = " ".join(text.split())
+    assert expected_terms["insuredName"] in normalized, name
+    assert expected_terms["agencyName"] in normalized, name
+    assert f"£{Decimal(expected_terms['grossPayable']):,.2f}" in normalized, name
+    assert expected_terms["termsId"] in text, name
+    assert expected_terms["termsHash"] in "".join(text.split()), name
+    assert "this quotation does not issue cover" in normalized, name
+    for wording in expected_terms["conditions"]:
+        assert " ".join(wording.split()) in normalized, name
+    if "commercial" in name:
+        assert "Drivers" not in text and "Motor cover" not in text, name
+    path.with_suffix(".txt").write_text(text, encoding="utf-8")
+    print(f"{name}: {len(pdf.pages)} pages; independent retained SQL price, parties, conditions and terms identity passed")

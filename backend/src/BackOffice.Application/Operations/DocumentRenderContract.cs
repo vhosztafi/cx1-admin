@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using BackOffice.Application.Policies;
+using BackOffice.Application.Quotes;
 
 namespace BackOffice.Application.Operations;
 
@@ -9,7 +10,9 @@ namespace BackOffice.Application.Operations;
 // as proof of ownership from an HTTP request. Hashes refer to exact stored UTF-8.
 public sealed record DocumentRenderInput(Guid SourceId, string SourceKind, string SourceJson, string SourceHash,
     Guid TemplateId, string TemplateJson, string TemplateHash, string ProductCode, string Kind, string Reference,
-    string TemplateProductCode, string TemplateKind);
+    string TemplateProductCode, string TemplateKind, QuoteVersionPins? QuotePins = null, DocumentQuoteTerms? QuoteTerms = null);
+
+public sealed record DocumentQuoteTerms(Guid Id, string Json, string Hash);
 
 public sealed class DocumentRenderException(string code) : Exception("The document source or template cannot be rendered.")
 {
@@ -26,32 +29,37 @@ public sealed class DocumentRenderContract
     public string Title { get; }
     public string Notice { get; }
     public bool LegacyTemplate { get; }
+    public JsonElement? QuotationTerms { get; }
 
-    private DocumentRenderContract(DocumentRenderInput input, JsonElement source, string title, string notice, bool legacy)
-        => (Input, Source, Title, Notice, LegacyTemplate) = (input, source.Clone(), title, notice, legacy);
+    private DocumentRenderContract(DocumentRenderInput input, JsonElement source, string title, string notice, bool legacy, JsonElement? terms)
+        => (Input, Source, Title, Notice, LegacyTemplate, QuotationTerms) = (input, source.Clone(), title, notice, legacy, terms);
 
     public static DocumentRenderContract Create(DocumentRenderInput input)
     {
         try
         {
             if (input is null || input.SourceId == Guid.Empty || input.TemplateId == Guid.Empty ||
-                input.SourceKind != "policy-version" || input.ProductCode is not ("motor-trade-road-risks" or "motor-trade-combined" or "commercial-combined") ||
-                input.Kind is not ("policy-schedule" or "statement-of-fact" or "policy-statement" or "policy-certificate" or "endorsement" or "cancellation-notice") ||
-                input.TemplateProductCode != input.ProductCode || CanonicalKind(input.TemplateKind) != CanonicalKind(input.Kind) || !Text(input.Reference, 100, false))
+                input.SourceKind is not ("policy-version" or "quote-revision") || input.ProductCode is not ("motor-trade-road-risks" or "motor-trade-combined" or "commercial-combined") ||
+                input.Kind is not ("policy-schedule" or "statement-of-fact" or "policy-statement" or "policy-certificate" or "endorsement" or "cancellation-notice" or "quotation") ||
+                input.TemplateProductCode != input.ProductCode || !TemplateKindMatches(input) || !Text(input.Reference, 100, false))
                 throw Invalid("document-render-identity");
-            using var source = Read(input.SourceJson, input.SourceHash, MaximumSourceBytes);
+            using var source = ReadSource(input);
             using var template = Read(input.TemplateJson, input.TemplateHash, MaximumTemplateBytes);
             var root = source.RootElement; var definition = template.RootElement;
-            if (!PolicySnapshotShape.Valid(root) || root.GetProperty("productCode").GetString() != input.ProductCode)
+            var quote = input.SourceKind == "quote-revision";
+            if (root.GetProperty("productCode").GetString() != input.ProductCode ||
+                (quote ? (input.ProductCode == "commercial-combined" ? QuoteCaptureShape.ValidateCommercial(root) : QuoteCaptureShape.Validate(root)).Count != 0 : !PolicySnapshotShape.Valid(root)))
                 throw Invalid("document-render-source");
-            var cancelled = root.GetProperty("snapshotFormat").GetString() is "issued-cancellation-1" or "issued-commercial-cancellation-1";
+            if (quote && input.Kind is not ("statement-of-fact" or "quotation") || !quote && input.Kind == "quotation") throw Invalid("document-render-kind-not-applicable");
+            if (input.Kind != "quotation" && input.QuoteTerms is not null) throw Invalid("document-render-unexpected-terms");
+            var cancelled = !quote && root.GetProperty("snapshotFormat").GetString() is "issued-cancellation-1" or "issued-commercial-cancellation-1";
             if (cancelled != (input.Kind == "cancellation-notice")) throw Invalid("document-render-kind-not-applicable");
             if (input.ProductCode == "commercial-combined" && input.Kind == "policy-certificate" &&
                 root.GetProperty("cover").GetProperty("sections").EnumerateArray().Count(x => x.GetProperty("code").GetString() == "employers-liability") != 1)
                 throw Invalid("document-render-kind-not-applicable");
 
             var format = definition.GetProperty("format").GetString();
-            var legacy = format == "policy-template-1";
+            var legacy = format == (quote ? "quote-template-1" : "policy-template-1");
             if (!legacy && format != "document-template-1") throw Invalid("document-render-template");
             string[] fields = legacy ? ["format", "title", "notice"] : ["format", "title", "notice", "productCode", "kind"];
             if (definition.EnumerateObject().Any(x => !fields.Contains(x.Name, StringComparer.Ordinal)) ||
@@ -61,13 +69,30 @@ public sealed class DocumentRenderContract
             var title = definition.GetProperty("title").GetString(); var notice = definition.GetProperty("notice").GetString();
             if (!Text(title, 200, false) || !Text(notice, 4000, true) || title!.IndexOfAny(['<', '>']) >= 0 || notice!.IndexOfAny(['<', '>']) >= 0)
                 throw Invalid("document-render-template-text");
-            return new(input, root, title, notice, legacy);
+            var terms = input.Kind == "quotation" ? DocumentQuoteTermsRules.Validate(input, root, definition) : (JsonElement?)null;
+            return new(input, root, title, notice, legacy, terms);
         }
-        catch (Exception ex) when (ex is JsonException or InvalidOperationException or KeyNotFoundException or FormatException or ArgumentException)
+        catch (Exception ex) when (ex is JsonException or InvalidOperationException or KeyNotFoundException or FormatException or ArgumentException or QuoteInputException)
         { throw Invalid("document-render-invalid"); }
     }
 
-    private static JsonDocument Read(string json, string hash, int maximum)
+    private static bool TemplateKindMatches(DocumentRenderInput input) =>
+        CanonicalKind(input.TemplateKind) == CanonicalKind(input.Kind) ||
+        input.SourceKind == "quote-revision" && input.TemplateKind == "quote-terms" && input.Kind is "statement-of-fact" or "quotation";
+
+    private static JsonDocument ReadSource(DocumentRenderInput input)
+    {
+        if (input.SourceKind == "quote-revision")
+        {
+            if (input.QuotePins is null || QuoteCanonicalJson.Create(input.SourceJson, input.QuotePins).ContentHash != input.SourceHash)
+                throw Invalid("document-render-quote-hash");
+            return Read(input.SourceJson, Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(input.SourceJson))), MaximumSourceBytes);
+        }
+        if (input.QuotePins is not null) throw Invalid("document-render-unexpected-pins");
+        return Read(input.SourceJson, input.SourceHash, MaximumSourceBytes);
+    }
+
+    internal static JsonDocument Read(string json, string hash, int maximum)
     {
         if (string.IsNullOrEmpty(json) || Encoding.UTF8.GetByteCount(json) > maximum || hash is null || hash.Length != 64 ||
             hash.Any(c => !char.IsAsciiDigit(c) && c is not (>= 'a' and <= 'f')) ||
