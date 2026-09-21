@@ -20,6 +20,8 @@ builder.Services.AddSingleton<PartyPaging>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.TaskService>();
 builder.Services.AddSingleton<BackOffice.Application.Operations.IPolicyDocumentRenderer, BackOffice.Infrastructure.Operations.PolicyDocumentRenderer>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.PolicyDocumentRenderService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Operations.DocumentService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Operations.DocumentGenerationWorker>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Quotes.QuoteService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Quotes.QuoteEvidenceService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Quotes.QuoteLifecycleService>();

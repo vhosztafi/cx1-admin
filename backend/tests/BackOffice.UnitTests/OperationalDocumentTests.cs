@@ -5,6 +5,13 @@ namespace BackOffice.UnitTests;
 
 public sealed class OperationalDocumentTests
 {
+    [Fact]
+    public void GenerationCapabilityRequiresAnInternalOperationalRole()
+    {
+        Assert.True(new BackOffice.Application.ActorContext(Guid.NewGuid(),null,null,new HashSet<string>{"servicing"}).HasCapability("document-generate"));
+        Assert.False(new BackOffice.Application.ActorContext(Guid.NewGuid(),null,Guid.NewGuid(),new HashSet<string>{"servicing"}).HasCapability("document-generate"));
+        Assert.False(new BackOffice.Application.ActorContext(Guid.NewGuid(),null,null,new HashSet<string>{"finance"}).HasCapability("document-generate"));
+    }
     private static DocumentGenerateInput Input() => new("policy-schedule", new("policy-version", PolicyVersionId: Guid.NewGuid()), Guid.NewGuid(), "internal", "Generate retained policy schedule");
 
     [Fact]

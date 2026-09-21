@@ -41,7 +41,13 @@ public sealed partial class PolicyDocumentRenderService(IDbContextFactory<BackOf
         await transaction.CommitAsync(token); return result;
     }
 
-    public async Task<RenderedPolicyDocument> RenderRetainedRequest(ActorContext actor, Guid requestId, CancellationToken token = default)
+    public Task<RenderedPolicyDocument> RenderRetainedRequest(ActorContext actor, Guid requestId, CancellationToken token = default)
+        => UseRetainedRequest(actor, requestId, renderer.Render, token);
+
+    public Task<DocumentRenderInput> LoadRetainedRequest(ActorContext actor, Guid requestId, CancellationToken token = default)
+        => UseRetainedRequest(actor, requestId, input => input, token);
+
+    private async Task<T> UseRetainedRequest<T>(ActorContext actor, Guid requestId, Func<DocumentRenderInput,T> consume, CancellationToken token)
     {
         await using var db = await factory.CreateDbContextAsync(token);
         await using var transaction = await db.Database.BeginTransactionAsync(token);
@@ -81,7 +87,7 @@ public sealed partial class PolicyDocumentRenderService(IDbContextFactory<BackOf
         }
         catch (Exception ex) when (ex is JsonException or InvalidOperationException or KeyNotFoundException or FormatException)
         { throw Invalid(); }
-        var result = renderer.Render(input);
+        var result = consume(input);
         await transaction.CommitAsync(token); return result;
     }
     private static string Hash(string text) => Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(text)));

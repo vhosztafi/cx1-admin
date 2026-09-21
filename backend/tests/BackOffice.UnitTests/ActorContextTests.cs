@@ -16,7 +16,7 @@ public sealed class ActorContextTests
     public void FileCapabilitiesRequireInternalOperationalRole(string role, bool allowed)
     {
         var actor = new ActorContext(Guid.NewGuid(), null, null, new HashSet<string> { role });
-        foreach (var capability in new[] { "document-read", "document-download", "document-upload" })
+        foreach (var capability in new[] { "document-read", "document-download", "document-upload", "document-generate" })
         {
             Assert.Equal(allowed, actor.HasCapability(capability));
             Assert.False((actor with { AgencyId = Guid.NewGuid() }).HasCapability(capability));
