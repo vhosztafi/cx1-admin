@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1–8 complete;87 currently defined implementation plans verified. Phase9 PDF rendering plan09-06 is complete;09-07 document generation is next; the13-phase MVP remains in progress.
+**Status:** Autonomous progression authorised. Phases1–8 complete;88 currently defined implementation plans verified. Phase9 document generation plan09-07 is complete;09-08 document/evidence UI is next; the13-phase MVP remains in progress.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
@@ -184,7 +184,7 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 **Goal:** Make servicing activities and demo handoffs operational.
 **Depends on:** Phase 8
 **Requirements:** OPS-01 through OPS-08
-**Plans:** 18 sequential plans;6 complete.09-06 rendering verified72unique cases/7realSQL,412root and15 independent PDF examples.
+**Plans:** 18 sequential plans;7 complete.09-07 generation verified40unique cases/26realSQL,417root and45 parsed issued PDFs with sample visual review.
 
 - [x] 09-01 — Reconcile operational source and closed data/API contracts (wave 1).
 - [x] 09-02 — Persist scoped subjects and task commands (wave 2, after09-01).
@@ -192,7 +192,7 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 - [x] 09-04 — Materialize deduplicated workflow tasks (wave 4, after09-03).
 - [x] 09-05 — Store and retrieve safe immutable file bytes (wave 5, after09-04).
 - [x] 09-06 — Render product-specific immutable PDF documents (wave 6, after09-05).
-- [ ] 09-07 — Generate and version real documents from retained requests (wave 7, after09-06).
+- [x] 09-07 — Generate and version real documents from retained requests (wave 7, after09-06).
 - [ ] 09-08 — Implement document/evidence UI and exact-version preview (wave 8, after09-07).
 - [ ] 09-09 — Persist internal notes and agency message drafts (wave 9, after09-08).
 - [ ] 09-10 — Deliver messages and immutable document packs (wave 10, after09-09).

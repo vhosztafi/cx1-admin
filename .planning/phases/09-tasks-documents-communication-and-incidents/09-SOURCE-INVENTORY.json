@@ -1006,7 +1006,9 @@
       "ownerPlan": "09-08",
       "disposition": "implement-owned-saved-workflow",
       "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "verification": [
+        "09-07-SUMMARY.md: scoped durable document generation/upload/history and exact bytes verified40unique cases/26realSQL. This control still awaits09-08 UI/browser verification; delivery/withdrawal remain with their owning plans."
+      ]
     },
     {
       "controlId": "CTL-21e20d4ce3cd",
@@ -1316,7 +1318,8 @@
       "disposition": "implement-owned-saved-workflow",
       "runtimeStatus": "not-implemented-in-phase9",
       "verification": [
-        "09-05-SUMMARY.md: durable scoped file staging/retrieval and retained evidence bridges verified; document versions/history/UI/delivery remain with their owning plans."
+        "09-05-SUMMARY.md: durable scoped file staging/retrieval and retained evidence bridges verified; document versions/history/UI/delivery remain with their owning plans.",
+        "09-07-SUMMARY.md: scoped durable document generation/upload/history and exact bytes verified40unique cases/26realSQL. This control still awaits09-08 UI/browser verification; delivery/withdrawal remain with their owning plans."
       ]
     },
     {
@@ -7689,7 +7692,8 @@
       "disposition": "implement-owned-saved-workflow",
       "runtimeStatus": "not-implemented-in-phase9",
       "verification": [
-        "09-05-SUMMARY.md: durable scoped file staging/retrieval and retained evidence bridges verified; document versions/history/UI/delivery remain with their owning plans."
+        "09-05-SUMMARY.md: durable scoped file staging/retrieval and retained evidence bridges verified; document versions/history/UI/delivery remain with their owning plans.",
+        "09-07-SUMMARY.md: scoped durable document generation/upload/history and exact bytes verified40unique cases/26realSQL. This control still awaits09-08 UI/browser verification; delivery/withdrawal remain with their owning plans."
       ]
     },
     {

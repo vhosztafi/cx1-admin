@@ -24,7 +24,8 @@ public sealed partial class UnderwritingRuntimeTests
     [Fact]
     public Task RealSqlCommercialServicingIssueRejectsStaleReviewedProof() => CommercialServicingIssueScenario(false,false,true);
 
-    private Task CommercialServicingIssueScenario(bool dated,bool race=false,bool staleProof=false,bool verifyRenewal=false) => CommercialTermsScenario(async(db,cycle,acceptance,actorId,now)=>
+    private Task CommercialServicingIssueScenario(bool dated,bool race=false,bool staleProof=false,bool verifyRenewal=false,
+        Func<BackOfficeDbContext,IDbContextFactory<BackOfficeDbContext>,BackOffice.Application.ActorContext,TimeProvider,Task>? onIssued=null) => CommercialTermsScenario(async(db,cycle,acceptance,actorId,now)=>
     {
         var source=await CommercialIssueCommand(db,cycle,acceptance,actorId);
         await source.Service.IssueAsync(source.Actor,source.Quote.Id,source.Quote.RowVersion,source.Input,Guid.NewGuid().ToString(),Guid.NewGuid());
@@ -133,6 +134,7 @@ public sealed partial class UnderwritingRuntimeTests
         }
         var issueKey=Key();
         var issued=await issueService.IssueAsync(source.Actor,created.ResourceId,Version(accepted.Etag),fence,issueInput,issueKey,Guid.NewGuid());
+        if(onIssued is not null){Assert.Equal(201,issued.Status);await onIssued(db,source.Factory,source.Actor,clock);return;}
         Assert.Equal(201,issued.Status);
         Assert.Equal(issued.Body,(await issueService.IssueAsync(source.Actor,created.ResourceId,Version(accepted.Etag),fence,issueInput,issueKey,Guid.NewGuid())).Body);
         Assert.Empty(Body(issued.Body).GetProperty("midIntentIds").EnumerateArray());

@@ -32,6 +32,14 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.All(after, next => Assert.Contains(old, previous => previous.ProductId == productId && previous.Kind == next.Kind && previous.Version == 1 && previous.EffectiveFrom < next.EffectiveFrom));
             Assert.All(after, x => Assert.DoesNotContain("pending", x.ContentJson, StringComparison.OrdinalIgnoreCase));
             Assert.Equal(15, await db.Set<TemplateVersion>().CountAsync(x => x.EffectiveFrom == DocumentTemplateSeed.EffectiveFrom));
+            var baseline=await db.Set<TemplateVersion>().AsNoTracking().Where(x=>x.Code.StartsWith("demo-operational-start-")).ToArrayAsync();
+            Assert.Equal(6,baseline.Length);
+            Assert.All(baseline,x=>
+            {
+                Assert.Contains(x.Kind,new[]{"endorsement","cancellation-notice"});
+                Assert.Equal(DocumentTemplateSeed.EffectiveFrom,x.EffectiveTo);
+                Assert.True(x.EffectiveFrom<=f.Clock.GetUtcNow());
+            });
             await transaction.CommitAsync();
         }
         foreach (var template in old) Assert.Equal(template.ContentJson, (await db.Set<TemplateVersion>().AsNoTracking().SingleAsync(x => x.Id == template.Id)).ContentJson);

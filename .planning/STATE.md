@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Phase9 plans09-01 through09-06 complete; continue09-07 document generation.
-last_updated: "2026-09-21T19:33:51.6801482Z"
-last_activity: "2026-09-21 — 09-07 selected policy, quotation and servicing generation plus public HTTP command verified; list/history/upload/cancellation integration remains in progress."
+stopped_at: Phase9 plans09-01 through09-07 complete; continue09-08 document/evidence UI.
+last_updated: "2026-09-21T20:54:05.716Z"
+last_activity: "2026-09-21 — 09-07 complete:40 unique passes/26 realSQL/no skips,417root,45 parsed PDFs and sample visual review. Continue09-08; no verification process remains active."
 progress:
   total_phases: 13
   completed_phases: 8
   total_plans: 99
-  completed_plans: 87
+  completed_plans: 88
   percent: 62
 ---
 
@@ -25,13 +25,13 @@ Current focus: Phase9 tasks, documents, communication and incidents.
 ## Current Position
 
 Phase: 9 of13
-Plan: 7 of18 — durable document generation and versioning
+Plan: 8 of18 — document/evidence UI and exact-version preview
 09-06 complete:72unique cases/7realSQL/no skips in.local/phase9-06-final-strict,412root and15 independent parsed PDFs with multi-page visual review. Future templates are additive; migration protects retained rows. No verification process remains running; see09-06-SUMMARY.
-Status: Executing09-07 after verified09-06 PDF rendering
+Status: Executing09-08 after verified durable document generation.09-07-SUMMARY records40unique passes/26realSQL/no skips; final session43341 completed. No acceptance process remains running.
 Last activity: Phase8 completed2026-09-21; all16 summaries and08-VERIFICATION pass. Final strict gate1511 unique cases/383 realSQL/no skips and exact420-case integration inventory;399root/172frontend, commercial5/5 and retained servicing17/17 plus underwriting pass. No verification process remains running. Phase9 task SQL/API checks are complete:32 focused cases/3 realSQL,411root and57final contract checks. 09-03 task UI passed29focused cases/2realSQL and16browserchecks plus SQL readback;411root177frontend, build/lint/typecheck pass.
 09-04:41unique strict passes/8realSQL, all8typed adapters/fivefamilies, hosted dispatcher and18browserchecks plus SQL readback,411root177frontend54contracts; build/lint/typecheck pass. OPS-02 complete; no acceptance process remains running.
 09-05:47unique strict passes/4realSQL,8filesystem cases, all3legacy evidence bridges, hosted finalization and API host restart,412root55contracts; OpenAPI valid. Current gate.local/phase9-05-final-strict. No verification process remains running. OPS-05 history/UI obligations remain09-07/08.
-Progress: eight of13 phases complete;87/99 currently defined plans complete. Later phases still need detailed plans; the MVP is not100% complete.
+Progress: eight of13 phases complete;88/99 currently defined plans complete. Later phases still need detailed plans; the MVP is not100% complete.
 
 ## Decisions and boundaries
 
@@ -43,7 +43,7 @@ Progress: eight of13 phases complete;87/99 currently defined plans complete. Lat
 
 ## Next work
 
-Execute09-07 durable document generation, then remaining sequential plans. Read09-05-SUMMARY,09-06-PLAN,09-RESEARCH,09-DATA-CONTRACTS,09-PATTERNS and09-VALIDATION. All18 structures and15 decision coverage pass; plans09-01 through09-06 are implemented and verified. Preserve original source identities, retained bytes/envelopes and later finance/configuration owners. Do not restart discussion or accepted Phase8/workflow/file verification. Current gate.local/phase9-05-final-strict; no retained Phase9 demo migration has run.
+Execute09-08 document/evidence UI, then remaining sequential plans. Read09-07-SUMMARY,09-08-PLAN,09-08-INTEGRATION-NOTES,09-UI-SPEC,09-DATA-CONTRACTS and09-VALIDATION. Plans09-01 through09-07 are implemented and verified. Preserve original source identities, retained bytes/envelopes and later delivery/withdrawal owners. Current gate.local/phase9-07-final-strict passed; no retained Phase9 demo migration has run. Do not repeat accepted SQL suites.
 
 ## Evidence and continuity
 

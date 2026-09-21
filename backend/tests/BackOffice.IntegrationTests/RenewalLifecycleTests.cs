@@ -23,7 +23,8 @@ public sealed partial class UnderwritingRuntimeTests
         => VerifyRenewalLifecycle(product,issue,lapseRace);
 
     private async Task VerifyRenewalLifecycle(string product,bool issue,bool lapseRace,
-        Func<BackOfficeDbContext,DecisionFixture,ServicingCycle,ServicingTermsVersion,Task>? onPrepared=null)
+        Func<BackOfficeDbContext,DecisionFixture,ServicingCycle,ServicingTermsVersion,Task>? onPrepared=null,
+        Func<BackOfficeDbContext,DecisionFixture,ServicingCycle,ServicingAcceptance,Guid,string,Task>? onAccepted=null)
     {
         await WithDatabase(async(db,password)=>
         {
@@ -79,6 +80,8 @@ public sealed partial class UnderwritingRuntimeTests
             if(onPrepared is not null){await onPrepared(db,f,cycle,document);return;}
             var sentEtag=await VerifyServicingDeliveryQueue(db,f,cycle,document,proofFile.ResourceId,fence,invitation.Etag!);
             var delivered=await terms.ReadAsync(f.Underwriter,draft.Id);Assert.Equal("delivered",delivered.Delivery!.State);Assert.Null(delivered.Acceptance);
+            if(onAccepted is not null){await VerifyServicingAcceptance(db,f,cycle,document,proofFile.ResourceId,fence,sentEtag,
+                onAccepted:(acceptance,etag)=>onAccepted(db,f,cycle,acceptance,fence,etag));return;}
             if(lapseRace){await VerifyServicingAcceptance(db,f,cycle,document,proofFile.ResourceId,fence,sentEtag,
                 onAcceptancePrepared:(input,version)=>VerifyRenewalAcceptanceLapseRace(db,f,cycle,input,version,fence));return;}
             if(issue){await VerifyServicingAcceptance(db,f,cycle,document,proofFile.ResourceId,fence,sentEtag,

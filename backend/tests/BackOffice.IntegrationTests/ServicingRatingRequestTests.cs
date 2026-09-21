@@ -94,7 +94,8 @@ public sealed partial class UnderwritingRuntimeTests
         => RunServicingRatingRequests(product, scenario);
 
     private async Task RunServicingRatingRequests(string product, string scenario, bool workflowTasks = false,
-        Func<BackOfficeDbContext,DecisionFixture,ServicingCycle,ServicingTermsVersion,Task>? onPrepared=null)
+        Func<BackOfficeDbContext,DecisionFixture,ServicingCycle,ServicingTermsVersion,Task>? onPrepared=null,
+        Func<BackOfficeDbContext,DecisionFixture,ServicingCycle,ServicingAcceptance,Guid,string,Task>? onAccepted=null)
     {
         await WithDatabase(async (db, password) =>
         {
@@ -342,7 +343,14 @@ public sealed partial class UnderwritingRuntimeTests
             }
             if(scenario is "terms-prepare" or "terms-http" or "terms-condition" or "ServicingPostingTests" or "ServicingIssueTests" || scenario.StartsWith("terms-delivery-",StringComparison.Ordinal))
             {
-                await VerifyServicingTermsPreparation(db,f,applied,fence,ratedView.DraftEtag,scenario is "terms-prepare" or "terms-http" or "terms-condition" or "ServicingPostingTests" or "ServicingIssueTests"?"success":scenario["terms-delivery-".Length..],scenario is "terms-http" or "ServicingIssueTests"?password:null,scenario=="terms-condition",scenario=="ServicingPostingTests",scenario=="ServicingIssueTests",onPrepared:onPrepared);
+                await VerifyServicingTermsPreparation(db,f,applied,fence,ratedView.DraftEtag,scenario is "terms-prepare" or "terms-http" or "terms-condition" or "ServicingPostingTests" or "ServicingIssueTests"?"success":scenario["terms-delivery-".Length..],scenario is "terms-http" or "ServicingIssueTests"?password:null,scenario=="terms-condition",scenario=="ServicingPostingTests",scenario=="ServicingIssueTests",onPrepared:onPrepared,
+                    onAccepted:onAccepted is null?null:async(acceptance,etag)=>
+                    {
+                        // Terms review takes over the original servicing lease.
+                        var currentLease=await db.Set<ServicingLease>().AsNoTracking().SingleAsync(x=>x.DraftId==applied.DraftId);
+                        Assert.Equal(f.Underwriter.UserId,currentLease.HolderId);
+                        await onAccepted(db,f,applied,acceptance,currentLease.Token,etag);
+                    });
                 Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync(x=>x.Id==issued.Id)).SnapshotJson);return;
             }
             if(scenario=="submission-storage")

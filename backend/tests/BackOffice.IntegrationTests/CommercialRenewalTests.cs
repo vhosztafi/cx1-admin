@@ -34,7 +34,8 @@ public sealed partial class UnderwritingRuntimeTests
     public Task RealSqlCommercialRenewalConcurrentReadProjectionsRemainCurrent()=>CommercialRenewalScenario(false,profileReads:true);
 
     private Task CommercialRenewalScenario(bool issue,bool staleExperience=false,bool missingExperience=false,bool lapseInstead=false,bool profileReads=false,bool verifyDowngrade=false,bool verifyCancellation=false,
-        Func<BackOfficeDbContext,IDbContextFactory<BackOfficeDbContext>,BackOffice.Application.ActorContext,ServicingCycle,ServicingTermsVersion,Task>? onAccepted=null)=>CommercialTermsScenario(async(db,cycle,acceptance,actorId,now)=>
+        Func<BackOfficeDbContext,IDbContextFactory<BackOfficeDbContext>,BackOffice.Application.ActorContext,ServicingCycle,ServicingTermsVersion,Task>? onAccepted=null,
+        Func<BackOfficeDbContext,IDbContextFactory<BackOfficeDbContext>,BackOffice.Application.ActorContext,TimeProvider,Task>? onIssued=null)=>CommercialTermsScenario(async(db,cycle,acceptance,actorId,now)=>
     {
         var source=await CommercialIssueCommand(db,cycle,acceptance,actorId);
         await source.Service.IssueAsync(source.Actor,source.Quote.Id,source.Quote.RowVersion,source.Input,Guid.NewGuid().ToString(),Guid.NewGuid());
@@ -148,6 +149,7 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Equal(1,await db.Set<PolicyTerm>().CountAsync());Assert.Equal(1,await db.Set<CommercialExposureVersion>().CountAsync());
         var issueKey=Key();var issued=await issuer.IssueAsync(source.Actor,created.ResourceId,Version(accepted.Etag),fence,command,issueKey,Guid.NewGuid());
         Assert.Equal(201,issued.Status);
+        if(onIssued is not null){await onIssued(db,source.Factory,source.Actor,clock);return;}
         Assert.Equal(issued.Body,(await issuer.IssueAsync(source.Actor,created.ResourceId,Version(accepted.Etag),fence,command,issueKey,Guid.NewGuid())).Body);
         Assert.Equal("servicing-already-issued",(await Assert.ThrowsAsync<QuoteOperationException>(()=>issuer.IssueAsync(source.Actor,created.ResourceId,Version(accepted.Etag),fence,command,Key(),Guid.NewGuid()))).Code);
         var receipt=Body(issued.Body);var nextId=receipt.GetProperty("termId").GetGuid();var nextVersion=receipt.GetProperty("versionId").GetGuid();
