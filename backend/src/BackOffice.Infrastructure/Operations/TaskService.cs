@@ -88,15 +88,40 @@ public sealed partial class TaskService(IDbContextFactory<BackOfficeDbContext> f
                 await Assignment(db, input.Assignment, held.Subjects, ct);
             }, async (db, ct) =>
             {
-                var now = time.GetUtcNow(); var row = new OperationalTask { SubjectId = subjectId, TypeCode = input.TypeCode, Title = input.Title, Priority = input.Priority,
-                    OwnerId = input.Assignment.OwnerId, TeamId = input.Assignment.TeamId, DueOn = input.DueOn, CreatedBy = held!.Actor.UserId, CreatedAt = now, UpdatedAt = now, EventSequence = 1 };
-                await using var referenceCommand = db.Database.GetDbConnection().CreateCommand();
-                referenceCommand.Transaction = db.Database.CurrentTransaction!.GetDbTransaction();
-                referenceCommand.CommandText = "SELECT NEXT VALUE FOR TaskReferenceSequence";
-                row.Reference = "TSK-" + Convert.ToInt64(await referenceCommand.ExecuteScalarAsync(ct), System.Globalization.CultureInfo.InvariantCulture).ToString("D7", System.Globalization.CultureInfo.InvariantCulture);
-                db.Add(row); await AddEvent(db, row, held, "created", null, ct); await db.SaveChangesAsync(ct);
+                var row = await Insert(db, held!, subjectId, input, "open", [], ct);
                 return await Outcome(db, row, 201, ct);
             }, token);
+    }
+
+    // Shared atomic creation primitive. The caller owns the transaction through
+    // its task binding/audit/receipt; no nested command boundary is opened here.
+    internal async Task<OperationalTask> Insert(BackOfficeDbContext db, HeldOperationalScope held, Guid subjectId,
+        TaskWrite input, string initialState, IReadOnlyList<WorkflowChecklistDefinition> checklist, CancellationToken token)
+    {
+        if (db.Database.CurrentTransaction is null || !held.Actor.HasCapability("task-write") || !held.Subjects.Any(x => x.Id == subjectId))
+            throw new InvalidOperationException("Task insertion requires a held authorized subject.");
+        TaskRules.ValidateWrite(input);
+        if (initialState is not ("open" or "awaiting-information")) throw new TaskRuleException("invalid-initial-task-state");
+        if (input.Assignment.Kind != "unassigned" && !held.Actor.HasCapability("task-assign")) throw new OperationalAccessException(403, "task-assignment-denied");
+        await Assignment(db, input.Assignment, held.Subjects, token);
+        var now = time.GetUtcNow();
+        var row = new OperationalTask { SubjectId = subjectId, TypeCode = input.TypeCode, Title = input.Title, Priority = input.Priority,
+            State = initialState, OwnerId = input.Assignment.OwnerId, TeamId = input.Assignment.TeamId, DueOn = input.DueOn,
+            CreatedBy = held.Actor.UserId, CreatedAt = now, UpdatedAt = now, EventSequence = 1 };
+        await using var command = db.Database.GetDbConnection().CreateCommand();
+        command.Transaction = db.Database.CurrentTransaction.GetDbTransaction(); command.CommandText = "SELECT NEXT VALUE FOR TaskReferenceSequence";
+        row.Reference = "TSK-" + Convert.ToInt64(await command.ExecuteScalarAsync(token), System.Globalization.CultureInfo.InvariantCulture).ToString("D7", System.Globalization.CultureInfo.InvariantCulture);
+        db.Add(row);
+        foreach (var (item, index) in checklist.Select((item, index) => (item, index)))
+        {
+            TaskRules.RequireText(item.Label, 300, "invalid-workflow-checklist");
+            db.Add(new OperationalTaskChecklist { TaskId = row.Id, Ordinal = index, Label = item.Label, Required = item.Required, CreatedBy = held.Actor.UserId, CreatedAt = now, UpdatedAt = now });
+        }
+        // Persist within the same transaction so the first event captures the
+        // entire initial checklist, including unsatisfied required items.
+        await db.SaveChangesAsync(token);
+        await AddEvent(db, row, held, "created", null, token); await db.SaveChangesAsync(token);
+        return row;
     }
 
     public Task<CommandOutcome> Transition(ActorContext actor, Guid taskId, string etag, string key, string state, string reason, CancellationToken token)
