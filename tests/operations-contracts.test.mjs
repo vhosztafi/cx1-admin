@@ -78,3 +78,15 @@ test('document generation pins quotation terms and constrains source kinds',()=>
  assert.equal(valid('OpsDocumentGenerate',{...input,kind:'policy-certificate'}),false);
  assert.equal(valid('OpsDocumentGenerate',{...input,kind:'policy-schedule',source:{kind:'servicing-terms',termsVersionId:id}}),false);
 });
+
+test('document version status and exact content routes use verified read contracts',async()=>{
+ const api=JSON.parse(await readFile(new URL('../contracts/openapi.json',import.meta.url),'utf8'));
+ assert.equal(api.paths['/document-versions/{versionId}'].get.responses[200].content['application/json'].schema.$ref,'#/components/schemas/OpsDocumentVersion');
+ for(const path of ['/document-versions/{versionId}','/document-versions/{versionId}/content','/document-versions/{versionId}/preview']){
+  const operation=api.paths[path].get;
+  assert.equal(operation['x-runtime-status'],'phase-9-07-api-verified');
+  assert.ok(operation.responses[200].headers['Cache-Control']);
+  assert.ok(operation.responses[200].headers['X-Content-Type-Options']);
+  assert.ok(operation.responses[503]);
+ }
+});

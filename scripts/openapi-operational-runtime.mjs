@@ -50,10 +50,17 @@ export function addOperationalRuntimeContracts({schemas:s,ref:r,operation:op,lis
  op('post','/message-deliveries/{deliveryId}/retry','retryMessageDelivery','message-send',{existing:true,input:o({reason:t(1000)}),output:r('Job'),status:202});
  op('get','/document-versions/{versionId}/preview','previewDocumentVersion','document-download',{output:{type:'string',format:'binary'}});
  const preview=paths['/document-versions/{versionId}/preview'].get.responses[200];preview.content={'application/pdf':{schema:{type:'string',format:'binary'}},'image/png':{schema:{type:'string',format:'binary'}},'image/jpeg':{schema:{type:'string',format:'binary'}}};
+ op('get','/document-versions/{versionId}','getDocumentVersion','document-read',{output:r('OpsDocumentVersion')});
  preview.headers['Content-Disposition']={description:'Safe inline filename; exact authorized immutable version only.',schema:t(500)};
  preview.headers['Cache-Control']={description:'Private, no-store.',schema:t(100)};
  const newIds=new Set(['registerOperationalSubject','changeTaskDueDates','completeTasks','updateTaskChecklist','addTaskComment','listTaskComments','listTaskEvents','clarifyIncidentOccurrence','resolveIncidentOccurrence','logAndHandoffIncident','contactClaimsAdministrator','listMessageDeliveries','listDocumentDeliveries','getDocumentDelivery','listDocumentDeliveryAttempts','retryDocumentDelivery','resendDocumentPack','retryMessageDelivery','previewDocumentVersion']);
  for(const methods of Object.values(paths))for(const operation of Object.values(methods))if(newIds.has(operation.operationId))operation['x-runtime-status']='phase-9-contract-only';
  const taskRuntime=new Set(['registerOperationalSubject','createTask','getTask','updateTask','listTasks','transitionTask','assignTasks','changeTaskDueDates','completeTasks','updateTaskChecklist','addTaskComment','listTaskComments','listTaskEvents']);
  for(const methods of Object.values(paths))for(const operation of Object.values(methods))if(taskRuntime.has(operation.operationId))operation['x-runtime-status']='phase-9-02-api-verified';
+ const documentReadRuntime=new Set(['getDocumentVersion','downloadDocumentVersion','previewDocumentVersion']);
+ for(const methods of Object.values(paths))for(const operation of Object.values(methods))if(documentReadRuntime.has(operation.operationId)){
+  operation['x-runtime-status']='phase-9-07-api-verified';
+  for(const [code,response]of Object.entries(operation.responses))if(Number(code)>=200&&Number(code)<300){response.headers??={};response.headers['Cache-Control']={description:'Private, no-store.',schema:{type:'string'}};response.headers['X-Content-Type-Options']={description:'nosniff',schema:{type:'string',enum:['nosniff']}};}
+  operation.responses[503]={description:'Stored document bytes are unavailable; no paths or storage keys are disclosed.',content:{'application/problem+json':{schema:r('Problem')}}};
+ }
 }

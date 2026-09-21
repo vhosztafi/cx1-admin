@@ -21,7 +21,8 @@ public sealed partial class UnderwritingRuntimeTests
         var root=Path.GetFullPath(Path.Combine(Path.GetTempPath(),"CoverMGA_DocumentGeneration",Guid.NewGuid().ToString("N")));
         var store=new OperationalFileStore(root,[]);
         var renderer=new PolicyDocumentRenderService(f.Factory,new PolicyDocumentRenderer());
-        var service=new DocumentService(f.Factory,new SqlCommandBoundary(f.Factory,f.Clock),renderer,f.Clock);
+        var boundary=new SqlCommandBoundary(f.Factory,f.Clock);
+        var service=new DocumentService(f.Factory,boundary,renderer,f.Clock,new FileService(f.Factory,boundary,store,f.Clock));
         var result=await service.RegisterRetainedRequest(f.Underwriter,request.Id,"register-document",default);
         Assert.True((await service.RegisterRetainedRequest(f.Underwriter,request.Id,"register-document",default)).Replayed);
         Assert.Equal(result.ResourceId,(await service.RegisterRetainedRequest(f.Underwriter,request.Id,"same-original-document",default)).ResourceId);

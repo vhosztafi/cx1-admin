@@ -227,6 +227,7 @@ app.MapCommercialExposure();
 app.MapPolicies();
 app.MapTasks();
 app.MapFiles();
+app.MapDocuments();
 app.MapServicingDrafts();
 app.MapRenewalPreparation();
 app.MapRenewalLifecycle();

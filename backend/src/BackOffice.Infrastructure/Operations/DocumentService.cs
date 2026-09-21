@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 namespace BackOffice.Infrastructure.Operations;
 
 public sealed partial class DocumentService(IDbContextFactory<BackOfficeDbContext> factory, SqlCommandBoundary commands,
-    PolicyDocumentRenderService sources, TimeProvider time)
+    PolicyDocumentRenderService sources, TimeProvider time, FileService files)
 {
     private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
 
