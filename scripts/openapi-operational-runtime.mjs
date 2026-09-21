@@ -12,6 +12,19 @@ export function addOperationalRuntimeContracts({schemas:s,ref:r,operation:op,lis
  for(const [path,method,name]of[['/records/{recordId}/threads','post','OpsThread'],['/threads/{threadId}/messages','post','OpsMessage'],['/messages/{messageId}','put','OpsMessage']])output(path,method,name);
  for(const [path,name]of[['/records/{recordId}/threads','OpsThread'],['/threads/{threadId}/messages','OpsMessage']])paths[path].get.responses[200].content['application/json'].schema.properties.items.items=r(name);
  const receipt=o({updatedIds:{type:'array',items:id,minItems:1,maxItems:100,uniqueItems:true}});
+ op('post','/records/{recordId}/file-uploads','stageFileUpload','document-upload',{query:[['name',t(255)]],output:r('OpsFileUpload'),status:202});
+ const fileUpload=paths['/records/{recordId}/file-uploads'].post;
+ fileUpload.parameters.find(x=>x.name==='name').required=true;
+ fileUpload.requestBody={required:true,content:Object.fromEntries(['application/pdf','image/png','image/jpeg'].map(type=>[type,{schema:{type:'string',format:'binary',maxLength:20971520}}]))};
+ op('get','/file-uploads/{uploadId}','getFileUpload','document-read',{output:r('OpsFileUpload')});
+ op('get','/file-uploads/{uploadId}/content','downloadFileUpload','document-download',{output:{type:'string',format:'binary'}});
+ const fileDownload=paths['/file-uploads/{uploadId}/content'].get.responses[200];
+ fileDownload.content=Object.fromEntries(['application/pdf','image/png','image/jpeg'].map(type=>[type,{schema:{type:'string',format:'binary'}}]));
+ fileDownload.headers['Content-Disposition']={description:'Safe attachment filename; verified original bytes.',schema:t(500)};
+ for(const operation of [fileUpload,paths['/file-uploads/{uploadId}'].get,paths['/file-uploads/{uploadId}/content'].get]){
+  operation['x-runtime-status']='phase-9-05-api-verified';
+  for(const [code,response]of Object.entries(operation.responses))if(Number(code)>=200&&Number(code)<300){response.headers??={};response.headers['Cache-Control']={description:'Private, no-store.',schema:{type:'string'}};response.headers['X-Content-Type-Options']={description:'nosniff',schema:{type:'string',enum:['nosniff']}};}
+ }
  op('get','/tasks/summary','getTaskSummary','task-read',{output:o({open:{type:'integer',minimum:0},dueToday:{type:'integer',minimum:0},overdue:{type:'integer',minimum:0},awaitingOthers:{type:'integer',minimum:0},completedSevenDays:{type:'integer',minimum:0},asOf:{type:'string',format:'date-time'}})});
  paths['/tasks/summary'].get['x-runtime-status']='phase-9-03-api-verified';
  op('get','/task-assignees','listTaskAssignees','task-assign',{query:[['subjectRecordId',{type:'array',items:id,minItems:1,maxItems:100,uniqueItems:true}],['kind',{type:'string',enum:['user','team']}],['q',t(100)]],output:o({items:{type:'array',maxItems:50,items:o({id,label:t(300)})},hasMore:{type:'boolean'}})});

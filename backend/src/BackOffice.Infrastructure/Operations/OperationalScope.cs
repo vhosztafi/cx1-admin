@@ -109,7 +109,7 @@ public static class OperationalScope
     private static void Demand(BackOfficeDbContext db, ActorContext actor, string capability)
     {
         if (db.Database.CurrentTransaction is null) throw new InvalidOperationException("Operational scope requires a held transaction.");
-        if (capability is not ("subject-read" or "task-read" or "task-write" or "task-assign") || !actor.HasCapability(capability)) throw Denied();
+        if (capability is not ("subject-read" or "task-read" or "task-write" or "task-assign" or "document-read" or "document-download" or "document-upload") || !actor.HasCapability(capability)) throw Denied();
     }
     private static OperationalAccessException Missing() => new(404, "operational-subject-not-found");
     private static OperationalAccessException Denied() => new(403, "operational-access-denied");

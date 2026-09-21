@@ -295,7 +295,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 6. Underwriting and first policy issue | 14/14 | Complete | 2026-09-17 |
 | 7. Policy lifecycle and history | 16/16 | Complete    | 2026-09-19 |
 | 8. Commercial Combined back office | 16/16 | Complete | 2026-09-21 |
-| 9. Tasks, documents, communication and incidents | 4/18 | In progress | — |
+| 9. Tasks, documents, communication and incidents | 5/18 | In progress | — |
 | 10. Accounting and insurer reporting | 0/TBD | Not started | — |
 | 11. Configuration and account administration | 0/TBD | Not started | — |
 | 12. Dashboards, search and reports | 0/TBD | Not started | — |

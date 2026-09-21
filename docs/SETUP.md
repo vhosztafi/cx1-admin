@@ -301,3 +301,36 @@ demo must be explicitly upgraded before enabling this worker. This setting does
 not send messages or perform insurance decisions. Task detail shows whether the
 underlying source remains outstanding or has resolved; human completion remains
 a separate action.
+
+## Durable operational files
+
+After applying migration `20260921162248_OperationalFileObjects`, configure
+`Cover__FileStoragePath` as an absolute persistent private directory. Development
+defaults to `.local/operational-files` under the API content root. The directory
+must be writable only by the application/operator, outside static web roots,
+and backed up with the SQL database. Junctions and symbolic links are rejected.
+Do not clear this directory when restarting the API or preserve SQL while
+discarding its referenced files.
+
+Set `Cover__FileWorkerEnabled=true` for the local Development API to run durable
+finalization every ten seconds. It is off by default for older/test databases.
+Uploads remain pending until their actual bytes pass finalization; worker retry
+verifies an existing rename after a crash. Storage failures retry up to six
+attempts; corruption is quarantined. Terminal finalization failures create a
+job exception that the workflow-task worker can turn into one follow-up task.
+An originator who has lost access cannot finalize or disclose files. Cleanup
+removes only unreferenced temporary files older than24hours, under the same SQL
+file identity lock used when inserting metadata. Ready or referenced files are
+never removed by this cleanup.
+
+The staging API accepts a raw PDF/PNG/JPEG body at
+`POST /api/v1/records/{operationalSubjectId}/file-uploads?name={encodedFilename}`,
+with the matching Content-Type, CSRF token and Idempotency-Key. The limit is20MiB
+and is enforced on actual streamed bytes. Poll the returned Location, then use
+`GET /api/v1/file-uploads/{uploadId}/content` once ready. The upload ID is separate
+from the private file identity. Responses include size and SHA256; downloads
+use attachment filenames, private/no-store and nosniff. These are staging
+resources; document versions, visibility and the document UI belong to09-07/08.
+The original evidence APIs and retained SQL bytes remain supported, including
+previously screened text files. Signature screening is deterministic demo
+validation, not antivirus or document certification.

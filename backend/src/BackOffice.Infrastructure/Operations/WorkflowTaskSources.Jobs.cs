@@ -25,6 +25,7 @@ internal static partial class WorkflowTaskSources
             "cancellation-notice" => await db.Set<CancellationConsequence>().Where(x => x.WorkId == work.Id).Select(x => new OperationalParent("policy", x.PolicyId)).SingleOrDefaultAsync(token),
             "renewal-lapse-notification" => await db.Set<RenewalLapseEvent>().Where(x => x.WorkId == work.Id).Select(x => new OperationalParent("policy", x.PolicyId)).SingleOrDefaultAsync(token),
             "agency-notification" => await db.Set<AgencyNotification>().Where(x => x.WorkId == work.Id).Select(x => new OperationalParent("agency", x.AgencyId)).SingleOrDefaultAsync(token),
+            "file-finalization" => await FileParent(db, work.Id, token),
             _ => null
         };
         if (parent is null) throw new OperationalAccessException(409, "workflow-source-parent-unavailable");
@@ -33,5 +34,12 @@ internal static partial class WorkflowTaskSources
         return new(parent, actor, LocalDate(exception.OccurredAt).AddDays(rule.DueDays), !resolved, resolved,
             JsonSerializer.Serialize(new { sourceKind = "job-exception", sourceEventId = id, parent, actorId = actor,
                 details = new { exception.WorkId, exception.Code, exception.OccurredAt, work.Kind, work.State, work.Attempts, work.ErrorCode } }, Json));
+    }
+
+    private static async Task<OperationalParent?> FileParent(BackOfficeDbContext db, Guid workId, CancellationToken token)
+    {
+        var subject = await (from file in db.Set<FileObject>() join parent in db.Set<OperationalSubject>() on file.SubjectId equals parent.Id
+            where file.WorkId == workId && file.StorageKind == "local" select parent).AsNoTracking().SingleOrDefaultAsync(token);
+        return subject is null ? null : OperationalScope.Parent(subject);
     }
 }

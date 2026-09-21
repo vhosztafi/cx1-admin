@@ -7,6 +7,12 @@ const schema=JSON.parse(await readFile(new URL('../contracts/schemas/operations.
 const ajv=new Ajv2020({strict:true,allErrors:true});addFormats(ajv);ajv.addSchema(schema);
 const valid=(name,value)=>{const check=ajv.getSchema(`${schema.$id}#/$defs/${name}`);assert.ok(check,name);return check(value);};
 const id='11111111-1111-4111-8111-111111111111';
+
+test('file staging receipt is distinct from document version and excludes storage identities',()=>{
+ const upload={id,subjectRecordId:id,name:'fictional.pdf',mediaType:'application/pdf',byteLength:100,sha256:'a'.repeat(64),state:'pending',createdAt:'2026-09-21T12:00:00Z',verifiedAt:null,failureCode:null};
+ assert.ok(valid('OpsFileUpload',upload));
+ for(const extra of [{fileId:id},{storageKey:'ready/example.bin'},{documentId:id},{byteLength:20971521},{mediaType:'text/html'},{state:'sent'}])assert.equal(valid('OpsFileUpload',{...upload,...extra}),false);
+});
 test('operational subjects and assignments use closed typed alternatives',()=>{
  assert.ok(valid('OpsSubjectWrite',{kind:'policy',parentId:id}));
  for(const value of [{kind:'support-flag',parentId:id},{kind:'policy',parentId:id,agencyId:id},{kind:'policy',parentId:'bad'}])assert.equal(valid('OpsSubjectWrite',value),false);

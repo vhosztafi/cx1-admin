@@ -9,6 +9,24 @@ public sealed class ActorContextTests
     [InlineData("servicing", true)]
     [InlineData("underwriter", true)]
     [InlineData("senior-underwriter", true)]
+    [InlineData("agency-admin", true)]
+    [InlineData("system-admin", true)]
+    [InlineData("finance", false)]
+    [InlineData("broker-admin", false)]
+    public void FileCapabilitiesRequireInternalOperationalRole(string role, bool allowed)
+    {
+        var actor = new ActorContext(Guid.NewGuid(), null, null, new HashSet<string> { role });
+        foreach (var capability in new[] { "document-read", "document-download", "document-upload" })
+        {
+            Assert.Equal(allowed, actor.HasCapability(capability));
+            Assert.False((actor with { AgencyId = Guid.NewGuid() }).HasCapability(capability));
+        }
+    }
+
+    [Theory]
+    [InlineData("servicing", true)]
+    [InlineData("underwriter", true)]
+    [InlineData("senior-underwriter", true)]
     [InlineData("agency-admin", false)]
     [InlineData("system-admin", false)]
     [InlineData("finance", false)]

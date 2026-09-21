@@ -15,6 +15,7 @@ public interface IOperationalFileStore
     Task<StagedOperationalFile> Stage(string name, string mediaType, Stream source, int maximumBytes, CancellationToken token);
     Task Finalize(Guid id, long length, string sha256, CancellationToken token);
     Task<Stream> OpenReady(Guid id, long length, string sha256, CancellationToken token);
+    IReadOnlyList<Guid> ExpiredTemporary(DateTimeOffset olderThan, int maximum);
     Task<bool> DeleteExpiredTemporary(Guid id, DateTimeOffset olderThan, Func<CancellationToken, Task<bool>> isReferenced, CancellationToken token);
 }
 
@@ -116,6 +117,21 @@ public sealed class OperationalFileStore : IOperationalFileStore
         token.ThrowIfCancellationRequested(); CheckAncestors(path);
         if (!File.Exists(path) || File.GetLastWriteTimeUtc(path) >= olderThan.UtcDateTime) return false;
         File.Delete(path); return true;
+    }
+
+    public IReadOnlyList<Guid> ExpiredTemporary(DateTimeOffset olderThan, int maximum)
+    {
+        if (maximum is < 1 or > 100) throw new ArgumentOutOfRangeException(nameof(maximum));
+        var directory = Path.Combine(root, "pending"); CheckAncestors(directory);
+        var result = new List<Guid>();
+        foreach (var path in Directory.EnumerateFiles(directory, "*.upload", SearchOption.TopDirectoryOnly))
+        {
+            CheckAncestors(path);
+            if (Guid.TryParseExact(Path.GetFileNameWithoutExtension(path), "N", out var id) && id != Guid.Empty && File.GetLastWriteTimeUtc(path) < olderThan.UtcDateTime)
+                result.Add(id);
+            if (result.Count == maximum) break;
+        }
+        return result;
     }
 
     private async Task Verify(string path, long length, string sha256, CancellationToken token)
