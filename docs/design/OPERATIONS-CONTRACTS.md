@@ -59,7 +59,7 @@ Contract acceptance includes strict AJV negatives, all generated request/respons
 
 ## Operational endpoint matrix
 
-Generated from the final OpenAPI contract. All entries remain runtime pending. Write commands require session and CSRF; operation scope is rechecked before receipt replay. Bounded Problem responses use the common API conventions (400 malformed input,403 forbidden,404 unavailable subject,409 conflict,412 stale,422 invalid transition/readiness,428 missing version). Bulk uses each selected head ETag. A queued202 response never means the adapter completed.
+Generated from the final OpenAPI contract. Task/subject entries are API-verified by09-02; remaining families are runtime pending. Write commands require session and CSRF; operation scope is rechecked before receipt replay. Bounded Problem responses use the common API conventions (400 malformed input,403 forbidden,404 unavailable subject,409 conflict,412 stale,422 invalid transition/readiness,428 missing version). Bulk uses each selected head ETag. A queued202 response never means the adapter completed.
 
 | Operation | Route | Permission | If-Match | Idempotency |
 |---|---|---|---|---|
@@ -104,3 +104,7 @@ Generated from the final OpenAPI contract. All entries remain runtime pending. W
 | resendDocumentPack | POST /document-deliveries/{deliveryId}/resend | document-send | required | required |
 | retryMessageDelivery | POST /message-deliveries/{deliveryId}/retry | message-send | required | required |
 | previewDocumentVersion | GET /document-versions/{versionId}/preview | document-download | none / per-selection for bulk | not-cached |
+
+##09-02 implementation refinement
+
+Task list/detail responses include a strong etag per row, required by OpsTask, for preserving displayed selections in bulk commands. Task commands and history are implemented/SQL-verified; UI remains09-03. Pure discovery uses the existing QuoteDiscovery serializable read pattern with current identity and scoped parent predicates; writes retain the held agency→identity→parent→task lock order. Cursor versions include visible task and relevant owner rowversions because owner team changes affect the team view. Task references are currently stable UUID-based strings; the UI plan may add readable reference allocation.

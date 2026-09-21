@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Phase9 plan09-01 complete; continue09-02 typed subjects and task persistence.
-last_updated: "2026-09-21T13:10:56.083Z"
-last_activity: "2026-09-21 — Closed Phase9 source/API contracts;411 root tests passed; start09-02."
+stopped_at: Phase9 plans09-01 and09-02 complete; continue09-03 task UI.
+last_updated: "2026-09-21T13:55:13.730Z"
+last_activity: "2026-09-21 — Scoped task SQL/API complete;32 focused passes/3 realSQL; continue task screens."
 progress:
   total_phases: 13
   completed_phases: 8
   total_plans: 99
-  completed_plans: 82
+  completed_plans: 83
   percent: 62
 ---
 
@@ -25,10 +25,10 @@ Current focus: Phase9 tasks, documents, communication and incidents.
 ## Current Position
 
 Phase: 9 of13
-Plan: 2 of18 — typed subjects and task persistence
-Status: Executing09-02 after reviewed09-01 contract closure
-Last activity: Phase8 completed2026-09-21; all16 summaries and08-VERIFICATION pass. Final strict gate1511 unique cases/383 realSQL/no skips and exact420-case integration inventory;399root/172frontend, commercial5/5 and retained servicing17/17 plus underwriting pass. No verification process remains running. Phase9 source checks are short completed Node runs; no new SQL/browser acceptance has been launched.
-Progress: eight of13 phases complete;82/99 currently defined plans complete. Later phases still need detailed plans; the MVP is not100% complete.
+Plan: 3 of18 — task list/detail UI and browser acceptance
+Status: Executing09-03 after reviewed09-02 SQL/API closure
+Last activity: Phase8 completed2026-09-21; all16 summaries and08-VERIFICATION pass. Final strict gate1511 unique cases/383 realSQL/no skips and exact420-case integration inventory;399root/172frontend, commercial5/5 and retained servicing17/17 plus underwriting pass. No verification process remains running. Phase9 task SQL/API checks are complete:32 focused cases/3 realSQL,411root and57final contract checks. No Phase9 browser acceptance launched yet.
+Progress: eight of13 phases complete;83/99 currently defined plans complete. Later phases still need detailed plans; the MVP is not100% complete.
 
 ## Decisions and boundaries
 
@@ -40,7 +40,7 @@ Progress: eight of13 phases complete;82/99 currently defined plans complete. Lat
 
 ## Next work
 
-Execute09-02 typed registry/task persistence, then remaining sequential plans. Read09-PLAN-REVIEW,09-DATA-CONTRACTS,09-PATTERNS and09-VALIDATION. All18 structures and15 decision coverage pass; no implementation/test pass is claimed. Source reconciliation closed in09-01; see its summary and final411/411 root report. Preserve original source identities, retained bytes/envelopes and later finance/configuration owners. Do not restart discussion or accepted Phase8 verification.
+Execute09-03 task UI, then remaining sequential plans. Read09-PLAN-REVIEW,09-DATA-CONTRACTS,09-PATTERNS and09-VALIDATION. All18 structures and15 decision coverage pass; no implementation/test pass is claimed. Source reconciliation closed in09-01 and task SQL/API in09-02; see their summaries. Preserve original source identities, retained bytes/envelopes and later finance/configuration owners. Do not restart discussion or accepted Phase8 verification.
 
 ## Evidence and continuity
 

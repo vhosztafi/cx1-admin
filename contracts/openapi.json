@@ -19567,7 +19567,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-9-contract-only"
+        "x-runtime-status": "phase-9-02-api-verified"
       },
       "post": {
         "operationId": "createTask",
@@ -19825,7 +19825,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-9-contract-only"
+        "x-runtime-status": "phase-9-02-api-verified"
       }
     },
     "/tasks/{taskId}": {
@@ -19990,7 +19990,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-9-contract-only"
+        "x-runtime-status": "phase-9-02-api-verified"
       },
       "put": {
         "operationId": "updateTask",
@@ -20260,7 +20260,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-9-contract-only"
+        "x-runtime-status": "phase-9-02-api-verified"
       }
     },
     "/tasks/{taskId}/transition": {
@@ -20532,7 +20532,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-9-contract-only"
+        "x-runtime-status": "phase-9-02-api-verified"
       }
     },
     "/tasks/bulk-assignment": {
@@ -20799,7 +20799,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-9-contract-only"
+        "x-runtime-status": "phase-9-02-api-verified"
       }
     },
     "/records/{recordId}/notes": {
@@ -102211,7 +102211,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-9-contract-only"
+        "x-runtime-status": "phase-9-02-api-verified"
       }
     },
     "/tasks/bulk-due-date": {
@@ -102480,7 +102480,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-9-contract-only"
+        "x-runtime-status": "phase-9-02-api-verified"
       }
     },
     "/tasks/bulk-completion": {
@@ -102749,7 +102749,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-9-contract-only"
+        "x-runtime-status": "phase-9-02-api-verified"
       }
     },
     "/tasks/{taskId}/checklist": {
@@ -103021,7 +103021,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-9-contract-only"
+        "x-runtime-status": "phase-9-02-api-verified"
       }
     },
     "/tasks/{taskId}/comments": {
@@ -103300,7 +103300,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-9-contract-only"
+        "x-runtime-status": "phase-9-02-api-verified"
       },
       "get": {
         "operationId": "listTaskComments",
@@ -103506,7 +103506,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-9-contract-only"
+        "x-runtime-status": "phase-9-02-api-verified"
       }
     },
     "/tasks/{taskId}/events": {
@@ -103714,7 +103714,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-9-contract-only"
+        "x-runtime-status": "phase-9-02-api-verified"
       }
     },
     "/incidents/{incidentId}/occurrence": {
@@ -192389,6 +192389,12 @@
             "type": "string",
             "format": "uuid"
           },
+          "etag": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 100,
+            "pattern": "^\"[!#-~]+\"$"
+          },
           "reference": {
             "type": "string",
             "minLength": 1,
@@ -192506,6 +192512,7 @@
         },
         "required": [
           "id",
+          "etag",
           "reference",
           "subjectRecordId",
           "typeCode",

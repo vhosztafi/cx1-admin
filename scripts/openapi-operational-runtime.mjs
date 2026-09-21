@@ -36,4 +36,6 @@ export function addOperationalRuntimeContracts({schemas:s,ref:r,operation:op,lis
  preview.headers['Cache-Control']={description:'Private, no-store.',schema:t(100)};
  const newIds=new Set(['registerOperationalSubject','changeTaskDueDates','completeTasks','updateTaskChecklist','addTaskComment','listTaskComments','listTaskEvents','clarifyIncidentOccurrence','resolveIncidentOccurrence','logAndHandoffIncident','contactClaimsAdministrator','listMessageDeliveries','listDocumentDeliveries','getDocumentDelivery','listDocumentDeliveryAttempts','retryDocumentDelivery','resendDocumentPack','retryMessageDelivery','previewDocumentVersion']);
  for(const methods of Object.values(paths))for(const operation of Object.values(methods))if(newIds.has(operation.operationId))operation['x-runtime-status']='phase-9-contract-only';
+ const taskRuntime=new Set(['registerOperationalSubject','createTask','getTask','updateTask','listTasks','transitionTask','assignTasks','changeTaskDueDates','completeTasks','updateTaskChecklist','addTaskComment','listTaskComments','listTaskEvents']);
+ for(const methods of Object.values(paths))for(const operation of Object.values(methods))if(taskRuntime.has(operation.operationId))operation['x-runtime-status']='phase-9-02-api-verified';
 }
