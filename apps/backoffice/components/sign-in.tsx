@@ -1,9 +1,14 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useSyncExternalStore } from 'react';
 import { authError, csrfToken, validateSignIn } from '../lib/auth';
 
+const subscribe = () => () => {};
+const clientReady = () => true;
+const serverReady = () => false;
+
 export function SignIn() {
+  const ready = useSyncExternalStore(subscribe, clientReady, serverReady);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -31,10 +36,10 @@ export function SignIn() {
     finally { submitting.current = false; setBusy(false); }
   }
 
-  return <form onSubmit={submit} noValidate className="sign-in-form" aria-busy={busy}>
-    <div className="field"><label htmlFor="email">Email address</label><input id="email" name="email" type="email" autoComplete="username" maxLength={254} value={email} onChange={event => setEmail(event.target.value)} placeholder="name@company.co.uk" required disabled={busy} /></div>
-    <div className="field"><label htmlFor="password">Password</label><input id="password" name="password" type="password" autoComplete="current-password" maxLength={1024} value={password} onChange={event => setPassword(event.target.value)} required disabled={busy} /></div>
+  return <form onSubmit={submit} method="post" noValidate className="sign-in-form" aria-busy={busy}>
+    <div className="field"><label htmlFor="email">Email address</label><input id="email" name="email" type="email" autoComplete="username" maxLength={254} value={email} onChange={event => setEmail(event.target.value)} placeholder="name@company.co.uk" required disabled={!ready || busy} /></div>
+    <div className="field"><label htmlFor="password">Password</label><input id="password" name="password" type="password" autoComplete="current-password" maxLength={1024} value={password} onChange={event => setPassword(event.target.value)} required disabled={!ready || busy} /></div>
     <div className="form-feedback" aria-live="polite" role="status">{error && <p className="error-message">{error}</p>}</div>
-    <button className="button button-primary" type="submit" disabled={busy}>{busy ? 'Signing in…' : 'Sign in'}</button>
+    <button className="button button-primary" type="submit" disabled={!ready || busy}>{busy ? 'Signing in…' : 'Sign in'}</button>
   </form>;
 }

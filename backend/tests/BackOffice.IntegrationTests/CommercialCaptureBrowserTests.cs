@@ -187,7 +187,9 @@ public sealed partial class QuoteStorageTests
                         var standard=process.StandardOutput.ReadToEndAsync();var errors=process.StandardError.ReadToEndAsync();
                         try{await process.WaitForExitAsync().WaitAsync(TimeSpan.FromMinutes(demoReferrals?20:10));}
                         finally{if(!process.HasExited)process.Kill(entireProcessTree:true);}
-                        var log=await standard+await errors;await File.WriteAllTextAsync(Path.Combine(output,$"demo-{number}.log"),log);
+                        var log=(await standard+await errors).Replace(password,"[redacted]",StringComparison.Ordinal)
+                            .Replace(Uri.EscapeDataString(password),"[redacted]",StringComparison.OrdinalIgnoreCase);
+                        await File.WriteAllTextAsync(Path.Combine(output,$"demo-{number}.log"),log);
                         Assert.True(process.ExitCode==0,$"Commercial demo failed; inspect sanitized demo-{number}.log in {output}.");
                     }
                     await RunDemo(1);

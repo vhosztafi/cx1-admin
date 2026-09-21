@@ -99,7 +99,9 @@ public sealed partial class UnderwritingRuntimeTests
         var admin=await db.Set<StaffUser>().SingleAsync(x=>x.Email=="system-admin@cover.example");
         await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE UserAuthorityGrant SET RevokedAt={present},RevokedBy={admin.Id},RevocationReason=N'Owned cancellation replay authority test' WHERE Id={grant.Id}");
         Assert.Equal(403,(await Assert.ThrowsAsync<QuoteOperationException>(()=>review.IssueAsync(source.Actor,created.ResourceId,V(approval.Etag!),fence,command,key,Guid.NewGuid()))).Status);
-        var downgrade=await Assert.ThrowsAsync<SqlException>(()=>db.GetService<IMigrator>().MigrateAsync("20260920133214_CommercialRenewalPreparation"));Assert.Equal(51963,downgrade.Number);
+        // Issued document payload history is guarded before the older cancellation migration.
+        var downgrade=await Assert.ThrowsAsync<SqlException>(()=>db.GetService<IMigrator>().MigrateAsync("20260920133214_CommercialRenewalPreparation"));Assert.Equal(51971,downgrade.Number);
+        Assert.Contains("20260920182749_CommercialOperationalPayloads",await db.Database.GetAppliedMigrationsAsync());
         Assert.Equal(2,await db.Set<PolicyVersion>().CountAsync());Assert.Equal(2,await db.Set<CommercialExposureVersion>().CountAsync());Assert.Equal(2,await db.Set<Journal>().CountAsync());
     },stopAfterAccepted:true,configureProposal:proposal=>
     {

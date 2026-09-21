@@ -3,9 +3,21 @@ import {randomUUID} from 'node:crypto';
 import {writeFile} from 'node:fs/promises';
 import {underwritingResponseValidator} from './validate-underwriting-response.mjs';
 
+export async function readCommercialHistory(request,apiOrigin,path) {
+    for(let attempt=0;;attempt++) {
+      const response=await request.get(apiOrigin+path);
+      // A first-page read can race the worker updating discovery between reads.
+      // Restart only this read; never replay a mutation or stale cursor.
+      if(response.status()===409 && attempt<3 && !new URL(path,apiOrigin).searchParams.has('cursor') &&
+        (await response.json()).code==='underwriting-history-changed') {
+        await new Promise(resolve=>setTimeout(resolve,100));continue;
+      }
+      assert.equal(response.status(),200,await response.text());return response.json();
+    }
+  }
 export async function commercialTermsJourney({page,f,quoteId,checks}) {
   const root='/api/v1', quote=`${root}/quotes/${quoteId}`;
-  async function read(path) { const response=await page.request.get(f.apiOrigin+path);assert.equal(response.status(),200,await response.text());return response.json(); }
+  const read=path=>readCommercialHistory(page.request,f.apiOrigin,path);
   const assess=()=>read(quote+'/underwriting');
   async function post(path,data,status=200,multipart) {
     const current=await assess(),csrf=await read(root+'/auth/csrf');

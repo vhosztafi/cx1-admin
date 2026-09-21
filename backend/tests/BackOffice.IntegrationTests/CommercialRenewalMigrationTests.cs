@@ -24,7 +24,9 @@ public sealed partial class UnderwritingRuntimeTests
     {
         var before=await db.Set<RenewalLapseEvent>().AsNoTracking().SingleAsync();
         var error=await Assert.ThrowsAsync<SqlException>(()=>db.GetService<IMigrator>().MigrateAsync("20260920095821_CommercialServicingAtomicIssue"));
-        Assert.Equal(51953,error.Number);
+        // The later operational-payload migration now protects the issued base first.
+        Assert.Equal(51971,error.Number);
+        Assert.Contains("20260920182749_CommercialOperationalPayloads",await db.Database.GetAppliedMigrationsAsync());
         Assert.Equal(before.Id,(await db.Set<RenewalLapseEvent>().AsNoTracking().SingleAsync()).Id);
         Assert.Contains("20260920133214_CommercialRenewalPreparation",await db.Database.GetAppliedMigrationsAsync());
     }
@@ -34,7 +36,9 @@ public sealed partial class UnderwritingRuntimeTests
         var before=await db.Set<RenewalExperienceVersion>().AsNoTracking().SingleAsync();
         var cycle=await db.Set<ServicingCycle>().AsNoTracking().SingleAsync();
         var error=await Assert.ThrowsAsync<SqlException>(()=>db.GetService<IMigrator>().MigrateAsync("20260920095821_CommercialServicingAtomicIssue"));
-        Assert.Equal(51953,error.Number);
+        // The later operational-payload migration now protects the issued base first.
+        Assert.Equal(51971,error.Number);
+        Assert.Contains("20260920182749_CommercialOperationalPayloads",await db.Database.GetAppliedMigrationsAsync());
         var after=await db.Set<RenewalExperienceVersion>().AsNoTracking().SingleAsync();
         Assert.Equal(before.CommercialRevisionId,after.CommercialRevisionId);
         Assert.Equal(before.CommercialSubjectsJson,after.CommercialSubjectsJson);
