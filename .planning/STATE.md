@@ -4,8 +4,8 @@ milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
 stopped_at: Phase9 plans09-01 through09-05 complete; continue09-06 PDF rendering.
-last_updated: "2026-09-21T16:54:00+00:00"
-last_activity: "2026-09-21 — Durable files verified47cases/4realSQL, hosted worker/restart and all3legacy bridges; continue09-06."
+last_updated: "2026-09-21T17:32:00+00:00"
+last_activity: "2026-09-21 — Policy PDF increment verified37cases/1realSQL and independent multi-page PDF inspection; continue09-06 quotation/renewal rendering."
 progress:
   total_phases: 13
   completed_phases: 8
@@ -26,6 +26,7 @@ Current focus: Phase9 tasks, documents, communication and incidents.
 
 Phase: 9 of13
 Plan: 6 of18 — exact-source PDF rendering
+09-06 checkpoint: issued-policy PDFs and scoped retained-request caller verified37unique cases/1realSQL,412root, independent parsed text and multi-page visual review. Full09-06 remains incomplete: quotation/servicing/renewal sources and future template publication next. No verification process remains running; see09-06-CHECKPOINT.
 Status: Executing09-06 after verified09-05 durable files
 Last activity: Phase8 completed2026-09-21; all16 summaries and08-VERIFICATION pass. Final strict gate1511 unique cases/383 realSQL/no skips and exact420-case integration inventory;399root/172frontend, commercial5/5 and retained servicing17/17 plus underwriting pass. No verification process remains running. Phase9 task SQL/API checks are complete:32 focused cases/3 realSQL,411root and57final contract checks. 09-03 task UI passed29focused cases/2realSQL and16browserchecks plus SQL readback;411root177frontend, build/lint/typecheck pass.
 09-04:41unique strict passes/8realSQL, all8typed adapters/fivefamilies, hosted dispatcher and18browserchecks plus SQL readback,411root177frontend54contracts; build/lint/typecheck pass. OPS-02 complete; no acceptance process remains running.

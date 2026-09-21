@@ -184,7 +184,7 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 **Goal:** Make servicing activities and demo handoffs operational.
 **Depends on:** Phase 8
 **Requirements:** OPS-01 through OPS-08
-**Plans:** 18 sequential plans; 0 complete.
+**Plans:** 18 sequential plans; 5 complete.09-06 policy PDF increment verified; quotation/renewal rendering remains in progress.
 
 - [x] 09-01 — Reconcile operational source and closed data/API contracts (wave 1).
 - [x] 09-02 — Persist scoped subjects and task commands (wave 2, after09-01).

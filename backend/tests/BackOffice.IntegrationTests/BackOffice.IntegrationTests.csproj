@@ -7,5 +7,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
     <ProjectReference Include="../../src/BackOffice.Api/BackOffice.Api.csproj" />
     <EmbeddedResource Include="../../../contracts/examples/commercial-combined-ready.json" LogicalName="CommercialExamples.Ready" />
+    <EmbeddedResource Include="../../../contracts/examples/issued-motor-trade-*.json" LogicalName="PdfExamples.%(Filename)%(Extension)" />
   </ItemGroup>
 </Project>

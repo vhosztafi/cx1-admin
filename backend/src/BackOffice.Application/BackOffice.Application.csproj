@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup><ProjectReference Include="../BackOffice.Domain/BackOffice.Domain.csproj" /></ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Operations/document-question-labels-v1.json" LogicalName="Document.QuestionLabelsV1" />
     <PackageReference Include="JsonSchema.Net" />
     <EmbeddedResource Include="../../../contracts/schemas/servicing.schema.json" LogicalName="Servicing.ProposalSchema" />
     <EmbeddedResource Include="../../../contracts/schemas/issued-policy.schema.json" LogicalName="Policy.SnapshotSchema" />
