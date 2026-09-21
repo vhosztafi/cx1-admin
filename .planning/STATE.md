@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
-status: executing
-stopped_at: Plan08-16 executing; retained suites and editor regression passed, full commercial aggregate passed, all420 integration cases active. Read checkpoint before launching tests.
-last_updated: "2026-09-21T07:45:00Z"
-last_activity: "2026-09-21 — Sign-in hydration fix committed; SQL4/root395/frontend172 pass. Final demo initialization and actual restart preserve139 tables/3 policy graphs/12 versions/keys. Editor reload regression and full acceptance remain pending."
+status: planning
+stopped_at: Phase8 verified complete; transition to Phase9 operational planning under standing auto authorization.
+last_updated: "2026-09-21T11:54:24Z"
+last_activity: "2026-09-21 — Phase8 all16 plans verified;1511 backend/383SQL/no skips; all commercial and retained aggregates passed."
 progress:
   total_phases: 13
-  completed_phases: 7
+  completed_phases: 8
   total_plans: 81
-  completed_plans: 80
-  percent: 54
+  completed_plans: 81
+  percent: 62
 ---
 
 # Project State
@@ -19,47 +19,31 @@ progress:
 ## Project Reference
 
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
-
-**Core value:** Complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-**Current focus:** Execute08-16 final acceptance, source audit and retained regression.
+Core value: complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
+Current focus: Phase9 tasks, documents, communication and incidents.
 
 ## Current Position
 
-Phase: 8 of 13 (Commercial Combined back office)
-Plan: 15 of16 complete;08-16 executing
-Status: Executing
-Last activity: 2026-09-21 —08-16 current preview installed and preservation passed. Both retained aggregates and the focused editor regression passed. The full commercial aggregate passed5/5. Exec70737 runs all420 integration cases; final strict accounting follows. Earlier queue runners ended; do not restart them.
+Phase: 9 of13
+Plan: not yet planned
+Status: Ready for autonomous planning
+Last activity: Phase8 completed2026-09-21; all16 summaries and08-VERIFICATION pass. Final strict gate1511 unique cases/383 realSQL/no skips and exact420-case integration inventory;399root/172frontend, commercial5/5 and retained servicing17/17 plus underwriting pass. No verification process remains running.
+Progress: eight of13 phases complete;81/81 currently defined plans complete. Later phases still need detailed plans; the MVP is not100% complete.
 
-Progress: Phases1–7 complete;7/13 phases,80/81 currently defined implementation plans. Phase8 research/UI/plans checked and08-01/02/03/04/05/06/07/08/09/10/11/12/13/14 complete; later phases await detailed planning.
+## Decisions and boundaries
 
-## Accumulated Context
+- Both MotorTrade products and CommercialCombined use the shared back office. CC assumptions are authorised; frontend-code remains unchanged.
+- SQLServer relational core plus immutable versioned policy JSON; persistent deterministic demo adapters, local identity and original data-protection keys.
+- Current identity/scope and exact immutable provenance precede replay. Drafts never change issued cover.
+- POL-02..09 andCC-01..04 complete. POL-01 remains compound throughPhase9/10. CC-05 remains partial untilPhase9 incident logging/rendering/delivery exist.
+- ImportedAG-DEMO-QUOTES historical terms remain unchanged; supported CC demo uses independently approvedAG-0000154. The explicit local authority grant was approved and applied; no approval remains outstanding.
 
-### Decisions
+## Next work
 
-- Both Motor Trade products and Commercial Combined in back office; CC assumptions authorised.
-- External services use persistent deterministic demo adapters; sales funnel remains read-only.
-- Current identity/scope and exact immutable provenance precede command replay; drafts never change issued cover.
-- POL-02..09 complete. POL-01 remains compound across approved Phase9/10 document, task/incident and finance modules.
-- Simple local identity remains; separate broker portal excluded by prototype boundary.
+PlanPhase9 with research, API/data design, prototype/source reconciliation, UI contract and tests. Consume08-PHASE09-HANDOFF; never treat queued content or consequences as completed operations. Preserve original source identities and later finance/configuration owners.
 
-### Pending Todos
+## Evidence and continuity
 
-- Finish08-16: collect queued verification, fix any remaining failures, complete strict accounting and final source/security review. The12 baseline failures are triaged; the editor-reload regression now passes. Catalog/sign-in fixes and final preview preservation are complete. KeepCC-05 partial until Phase9 operational workflows exist.
-- Keep future endpoints closed until owning phases implement and verify them.
+Phase8 final evidence:08-16-SUMMARY.md and08-VERIFICATION.md. Full integration session70737 ended successfully; strict.local/phase8-16-final-strict verifies1511/383 and exact inventory. Do not restart old acceptance queues. Current preview identities are in.local/phase8-16-preview-pids.json (API7800/web37736,5087/3100); verify identity before changing processes.
 
-### Blockers/Concerns
-
-- User explicitly approved the missing commercial v3 authority grant for senior-underwriter@cover.example in CoverMGA_Demo; the exact tested command then succeeded. No outstanding approval. Human business/assistive-technology UAT, hostedCI and Docker runtime remain unperformed.
-- Generic GSD state commands reset milestone metadata/counts and may over-complete compound requirements. Reconcile actual files and approved downstream boundaries after each call.
-
-## Session Continuity
-
-Last session: 2026-09-21T06:39:00Z
-Stopped at:08-16 active sequential acceptance. Follow the newest section of08-16-CHECKPOINT.md; the old sequential-progress.json and interrupted full-backend/commercial runs are not current acceptance evidence.
-Resume file: .planning/phases/08-commercial-combined-back-office/08-16-CHECKPOINT.md
-
-## Autonomous continuation
-
-User approved requirements/roadmap and autonomous choices/progression on2026-09-13. Routine confirmation is not required. Keep research, design, checks and verification enabled; fix gaps instead of silently deferring them. Current execute-phase7 --auto and configured auto_advance authorise transition to Phase8 planning.
-
-Thread heartbeat: continue-cover-mga-back-office-mvp, ACTIVE every10minutes, restored and verified2026-09-21. Continue in this task; notify meaningful progress/blockers only. Current owned previews are recorded in.local/phase8-16-preview-pids.json; API7800/web37736, ports5087/3100, canonical persistent keys. API and web have separate start timestamps; verify identity before stopping either.
+User authorised autonomous research/planning/implementation and explicitly requested continuous work. No routine confirmation is required. Heartbeat continue-cover-mga-back-office-mvp remains ACTIVE every10minutes as a fallback and must avoid duplicate work. Human business/assistive-technology UAT, hostedCI and Docker runtime remain unperformed. Generic GSD state commands can reset custom metadata and over-complete compound requirements; reconcile actual records instead.

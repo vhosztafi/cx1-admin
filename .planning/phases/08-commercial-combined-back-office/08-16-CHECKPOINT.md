@@ -1,4 +1,10 @@
-# 08-16 final acceptance — ongoing
+# 08-16 final acceptance — complete
+
+## Completed — 2026-09-21T11:54:24Z
+
+All16 Phase8 plans are complete. Session70737 ended with420/420 integration passes, zero failures. Strict.local/phase8-16-final-strict verifies1511 unique backend cases/383 realSQL/no skips; inventory-proof.json confirms all420 discovered/executed names agree. Full commercial5/5 and both retained aggregates pass; initialization/restart preservation and source reconciliation pass. See08-16-SUMMARY.md and08-VERIFICATION.md. No old acceptance process or queue is active; do not restart one. Transition toPhase9 planning. CC-05 remains partial with its explicit operational owner.
+
+Everything below is historical execution evidence, not a current process instruction.
 
 ## Current acceptance — 2026-09-21T07:45Z
 
@@ -115,4 +121,3 @@ This entry supersedes earlier running-test notes. Phase8 remains15/16 complete; 
 - Focused commercial adjustment passed1 SQL/browser test: `.local/phase8-12-browser-89de2611-77cc-4e27-8704-25902d89214e/sql.trx`.
 - No final current-backend or current-commercial aggregate output was found at this check. Queue logs were empty; do not infer completion or active execution from prior session IDs. The backend queue allows only two known baseline failures, so the12-failure result requires review before continuation.
 - Full units1091, root391 and frontend172 remain passing evidence; retained underwriting aggregate also passed. Final full current-source backend/commercial acceptance and final live update/preservation remain outstanding. No approval is outstanding.
-

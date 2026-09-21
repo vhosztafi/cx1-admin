@@ -18,12 +18,7 @@ Staff can complete a quote-to-policy-to-servicing journey and trust that its pol
 
 ### Validated
 
-Phases1–7 are verified locally. Both Motor Trade products support capture, rating,
-proof/referrals/carrier decisions, exact terms acceptance, first issue and full
-adjustment/renewal/lapse/cancellation with immutable JSON and balanced obligations.
-POL-02..09 are complete. POL-01 and other compound later-module requirements retain
-explicit Phase9/10 owners. The prototype and untouched sales funnel remain references;
-the full MVP is in progress. See REQUIREMENTS.md and07-VERIFICATION.
+Phases1–8 are verified locally. Both Motor Trade products and Commercial Combined support persistent capture, rating, proof/referral/carrier decisions, exact terms acceptance, first issue and adjustment/renewal/cancellation with immutable JSON and balanced obligations. POL-02..09 and CC-01..04 are complete. POL-01 and CC-05 retain explicit Phase9/10 operational owners; queued content is not generated or delivered documentation. The prototype and untouched sales funnel remain references. The full MVP remains in progress; see REQUIREMENTS.md and08-VERIFICATION.
 
 ### Active
 
@@ -85,13 +80,9 @@ Keep research, plan checks, unit tests, integration checks and verification enab
 
 Commit reviewed local work in manageable units. No production deployment, real payment/delivery or separate customer-facing funnel is authorised. Continue in this task; no additional user-owned tasks are needed.
 
-Last updated: 2026-09-19 — Phase7 verified; autonomous Phase8 transition.
+Last updated: 2026-09-21 — Phase8 verified; autonomous Phase9 transition.
 
 
 ## Current State
 
-Phase7 complete:16/16 plans,1222backend/303realSQL,149frontend,363source/contract
-checks,all17servicing stages and37retained journeys. Two additive initializations
-preserve133table hashes; actual restart preserves6policy/18version graphs. Phase8
-adds distinct Commercial Combined risks using07-PHASE08-HANDOFF. Human business/
-assistive-technology UAT,hostedCI andDocker remain unperformed.
+Phase8 complete:16/16 plans; all81 currently defined plans across eight of13 phases are verified. Current acceptance passes1511 unique backend cases/383realSQL/no skips,399root and172frontend tests, all five commercial stages and both retained MotorTrade aggregates. Two additive initializations preserve139 table fingerprints; actual restart preserves three policy graphs/12 versions, five pinned exposure readings and original keys. Phase9 implements tasks, notes/messages, document rendering/delivery and incidents using08-PHASE09-HANDOFF. Human business/assistive-technology UAT, hostedCI and Docker runtime remain unperformed.

@@ -74,10 +74,10 @@ Core value: complete persistent insurance and servicing journeys with consistent
 
 ### Commercial Combined
 
-- [ ] **CC-01**: Staff can create/resume an internal Commercial Combined quote using the shared client, agency and quote lifecycle.
-- [ ] **CC-02**: Staff can maintain locations, construction/protections, property sums insured, liabilities, wage rolls, business interruption and losses using product-specific JSON sections.
-- [ ] **CC-03**: Staff can rate and refer CC risks using documented demo assumptions, including location exposure, estimated loss and postcode aggregation.
-- [ ] **CC-04**: Staff can issue and service CC policies through adjustments, renewals, cancellation and historical views without Motor Trade-only tabs or validation.
+- [x] **CC-01**: Staff can create/resume an internal Commercial Combined quote using the shared client, agency and quote lifecycle.
+- [x] **CC-02**: Staff can maintain locations, construction/protections, property sums insured, liabilities, wage rolls, business interruption and losses using product-specific JSON sections.
+- [x] **CC-03**: Staff can rate and refer CC risks using documented demo assumptions, including location exposure, estimated loss and postcode aggregation.
+- [x] **CC-04**: Staff can issue and service CC policies through adjustments, renewals, cancellation and historical views without Motor Trade-only tabs or validation.
 - [ ] **CC-05**: Staff can log CC property/liability incidents and generate product-appropriate document content through the shared operational infrastructure.
 
 ### Work management
@@ -195,11 +195,11 @@ Every v1 requirement has one owning delivery phase; later phases may consume its
 | POL-07 | 7 | Complete |
 | POL-08 | 7 | Complete |
 | POL-09 | 7 | Complete |
-| CC-01 | 8 | Pending |
-| CC-02 | 8 | Pending |
-| CC-03 | 8 | Pending |
-| CC-04 | 8 | Pending |
-| CC-05 | 8 | Pending |
+| CC-01 | 8 | Complete — 2026-09-21;08-VERIFICATION |
+| CC-02 | 8 | Complete — 2026-09-21;08-VERIFICATION |
+| CC-03 | 8 | Complete — 2026-09-21;08-VERIFICATION |
+| CC-04 | 8 | Complete — 2026-09-21;08-VERIFICATION |
+| CC-05 | 8, 9 | Partial — exact Phase8 payloads/queued content verified; Phase9 incident logging/rendering/delivery remain |
 | OPS-01 | 9 | Pending |
 | OPS-02 | 9 | Pending |
 | OPS-03 | 9 | Pending |

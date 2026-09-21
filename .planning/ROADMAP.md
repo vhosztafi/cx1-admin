@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1–7 complete;65 implementation plans verified. Phase8 research/UI and16 sequential plans checked; continue execution automatically.
+**Status:** Autonomous progression authorised. Phases1–8 complete;81 currently defined implementation plans verified. Phase9 operational planning is next; the13-phase MVP remains in progress.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
@@ -17,7 +17,7 @@
 - [x] **Phase 5: Motor Trade quote capture** — Capture complete persistent Motor Trade risks in the back office. (completed 2026-09-16)
 - [x] **Phase 6: Underwriting and first policy issue** — Complete the first quote-to-issued-policy journey.
 - [x] **Phase 7: Policy lifecycle and history** — Service issued policies without corrupting history. (completed 2026-09-19)
-- [ ] **Phase 8: Commercial Combined back office** — Demonstrate shared workflows with a different risk structure.
+- [x] **Phase 8: Commercial Combined back office** — Demonstrate shared workflows with a different risk structure.
 - [ ] **Phase 9: Tasks, documents, communication and incidents** — Make servicing activities and demo handoffs operational.
 - [ ] **Phase 10: Accounting and insurer reporting** — Reconcile policy movements through finance workflows.
 - [ ] **Phase 11: Configuration and account administration** — Expose controlled configuration and complete account functions.
@@ -159,7 +159,7 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 **Goal:** Demonstrate shared workflows with a different risk structure.
 **Depends on:** Phase 7
 **Requirements:** CC-01 through CC-05
-**Plans:**16 checked sequential plans (08-01 through08-16).
+**Plans:**16/16 complete (08-01 through08-16), verified2026-09-21. Full1511 backend/383SQL,399root,172frontend, commercial/retained aggregates and actual restart passed.
 
 **Waves1–4:** contracts/source reconciliation → persistent capture boundary → proposer/loss wizard → property/BI/liability/questions. Each wave depends on its predecessor.
 
@@ -271,7 +271,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 5. Motor Trade quote capture | 11/11 | Complete    | 2026-09-16 |
 | 6. Underwriting and first policy issue | 14/14 | Complete | 2026-09-17 |
 | 7. Policy lifecycle and history | 16/16 | Complete    | 2026-09-19 |
-| 8. Commercial Combined back office | 15/16 | Executing08-16 | — |
+| 8. Commercial Combined back office | 16/16 | Complete | 2026-09-21 |
 | 9. Tasks, documents, communication and incidents | 0/TBD | Not started | — |
 | 10. Accounting and insurer reporting | 0/TBD | Not started | — |
 | 11. Configuration and account administration | 0/TBD | Not started | — |
@@ -281,4 +281,3 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 ### Phase 3 downstream acceptance obligations
 
 CLI-01 is now complete: Phases3/5/6 verify clients, contacts/activity and navigation to actual linked quotes/policies. Phase 5 connects MatchSubmission to a real quote, implements automatic detection/rating blocks and guards reopening after downstream progression. Phase 9 connects persisted match information requests to the demo communication delivery workflow. Phase 13 checks these obligations before full requirement acceptance; placeholders and Recorded requests do not count as live records or Sent messages.
-
