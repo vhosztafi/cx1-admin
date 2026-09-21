@@ -1,6 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup><ProjectReference Include="../BackOffice.Application/BackOffice.Application.csproj" /></ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Operations/Fonts/*.ttf" LogicalName="DocumentFonts.%(Filename)%(Extension)" />
+    <EmbeddedResource Include="Operations/Fonts/manifest.json" LogicalName="DocumentFonts.Manifest" />
+    <EmbeddedResource Include="Operations/Fonts/LICENSE.txt" LogicalName="DocumentFonts.License" />
     <EmbeddedResource Include="../../../contracts/examples/quote-capture-*.json" LogicalName="QuoteDemo.%(Filename)%(Extension)" />
     <EmbeddedResource Include="../../../contracts/examples/underwriting-demo.json" LogicalName="UnderwritingDemo.Definitions" />
     <EmbeddedResource Include="../../../contracts/examples/commercial-underwriting-demo.json" LogicalName="CommercialUnderwriting.Definitions" />
@@ -8,6 +11,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+    <PackageReference Include="PDFsharp-MigraDoc" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" PrivateAssets="all" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
