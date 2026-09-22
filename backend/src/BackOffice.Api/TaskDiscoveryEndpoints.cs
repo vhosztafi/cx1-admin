@@ -54,7 +54,7 @@ public static partial class TaskEndpoints
                 if (Guid.TryParseExact(Value(name), "D", out var id) && id != Guid.Empty) return id;
                 throw new QuoteHttpException(400, "invalid-task-query");
             }
-            var subjectId = Id("subjectRecordId"); var owner = Id("ownerId"); var team = Id("teamId");
+            var subjectId = Id("subjectRecordId"); var owner = Id("ownerId"); var team = Id("teamId"); var policyId = Id("policyId");
             var state = Value("state"); var priority = Value("priority"); var view = Value("view"); var search = Value("q"); var window = Value("dueWindow");
             var type = Value("typeCode"); if (query.ContainsKey("kind")) { if (type.Length > 0) throw new QuoteHttpException(400, "invalid-task-query"); type = Value("kind"); }
             if (state.Length > 0 && !TaskRules.States.Contains(state) || type.Length > 0 && !TaskRules.Types.Contains(type) || search.Length > 300 ||
@@ -69,9 +69,17 @@ public static partial class TaskEndpoints
             }
             await using var db = await factory.CreateDbContextAsync(token);
             await using var transaction = await db.Database.BeginTransactionAsync(IsolationLevel.Serializable, token);
-            var actor = await TaskDiscovery.Authorize(db, LocalIdentityService.Actor(context.User), token);
+            var requestedActor = LocalIdentityService.Actor(context.User);
+            // Parent authorization holds agencies before identity, matching command
+            // lock order. A policy ID is a filter, never an ownership assertion.
+            var actor = policyId is Guid parentPolicy
+                ? (await OperationalScope.HoldParents(db, requestedActor, [new("policy", parentPolicy)], "task-read", token)).Actor
+                : await TaskDiscovery.Authorize(db, requestedActor, token);
             var visible = TaskDiscovery.Rows(db, actor);
-            var page = paging.ReadBound(context, actor, "task-reference-v1", await TaskDiscovery.Version(db, visible, token), "ownerId", "teamId", "state", "priority", "dueBefore", "subjectRecordId", "kind", "dueWindow", "view", "typeCode", "q");
+            if (policyId is Guid selectedPolicy)
+                visible = visible.Where(task => db.Set<OperationalSubject>().Any(subject => subject.Id == task.SubjectId &&
+                    (subject.PolicyId == selectedPolicy || subject.Kind == "servicing-draft" && db.Set<ServicingDraft>().Any(draft => draft.Id == subject.ServicingDraftId && draft.PolicyId == selectedPolicy))));
+            var page = paging.ReadBound(context, actor, "task-reference-v1", await TaskDiscovery.Version(db, visible, token), "ownerId", "teamId", "state", "priority", "dueBefore", "subjectRecordId", "policyId", "kind", "dueWindow", "view", "typeCode", "q");
             if (page is null) throw new QuoteHttpException(400, "invalid-task-cursor");
             var rows = visible.Where(x => x.CreatedAt <= page.AsOf);
             if (subjectId is not null) rows = rows.Where(x => x.SubjectId == subjectId);

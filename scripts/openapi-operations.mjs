@@ -17,7 +17,8 @@ export function addOperationsApi({schemas:s,ref:r,text:t,enumeration:e,object:o,
  s.EscalationMessage=o({id,escalationId:id,direction:e('inbound','outbound'),authorLabel:t(),body:t(8000),recordedAt:instant,outcome:e('approve','conditions','query','decline'),evidenceDocumentId:id},['id','escalationId','direction','authorLabel','body','recordedAt']);
  s.MidSubmission=o({id,policyVersionId:id,riskItemId:id,registration:t(20),action:e('add','change','remove'),effectiveAt:instant,state:e('pending','accepted','rejected','failed'),providerReference:t(100),reasonCodes:a(t(100)),jobId:id},['id','policyVersionId','riskItemId','registration','action','effectiveAt','state','reasonCodes','jobId']);
 
- list('/tasks','listTasks','task-read',r('Task'),[['ownerId',id],['teamId',id],['state',s.Task.properties.state],['priority',taskFields.priority],['dueBefore',instant],['subjectRecordId',id]]);
+ list('/tasks','listTasks','task-read',r('Task'),[['ownerId',id],['teamId',id],['state',s.Task.properties.state],['priority',taskFields.priority],['dueBefore',instant],['subjectRecordId',id],['policyId',id]]);
+ paths['/tasks'].get.parameters.find(x=>x.name==='policyId').description='Current authorized policy and its servicing-draft tasks. Other query filters intersect this scope; inaccessible policies return 404.';
  op('post','/tasks','createTask','task-write',{input:r('TaskWrite'),output:r('Task'),status:201});
  op('get','/tasks/{taskId}','getTask','task-read',{output:r('Task')});
  op('put','/tasks/{taskId}','updateTask','task-write',{existing:true,input:r('TaskWrite'),output:r('Task')});

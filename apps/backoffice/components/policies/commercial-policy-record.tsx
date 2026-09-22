@@ -1,5 +1,6 @@
 'use client';
 import {CancellationConsequences} from '../operations/cancellation-consequences';
+import { RecordTasks } from '../operations/record-tasks';
 import { TaskCreateEntry } from '../operations/task-create-entry';
 import { RecordCommunications } from '../operations/communication-shared';
 import { RecordIncidents } from '../operations/incident-detail';
@@ -39,6 +40,7 @@ export function CommercialPolicyRecord({policy, chronology, refresh, questionLab
         </details></div></Panel>:null}
       {cancellation && ['Transactions','Documents'].includes(tab) && <CancellationConsequences key={policy.versionId} versionId={policy.versionId}/>}
       {(tab==='Notes'||tab==='Messages')&&<RecordCommunications parent={{kind:'policy',id:policy.id,label:policy.reference}} mode={tab==='Notes'?'notes':'messages'}/>}
+      {tab==='Tasks'&&<RecordTasks parent={{kind:'policy',id:policy.id,label:policy.reference}}/>}
       {tab==='Claims'&&<RecordIncidents policyId={policy.id} productCode="commercial-combined"/>}
       {tab==='Documents'?<RecordDocuments parent={{kind:'policy',id:policy.id,label:policy.reference}} source={{kind:'policy-version',policyVersionId:policy.versionId}} relationshipId={policy.relationshipId}/>:null}
     </div><aside className="underwriting-rail" aria-label="Policy actions"><Panel title={cancellation?"Cancellation credit / amount due":renewal?"Renewal amount due":adjustment?"Adjustment amount due / credit":"Opening amount due"}><div className="quote-rail-body"><p className="policy-opening-amount">{formatGbp(financial.amountDue)}</p><p>{financial.amountDue.startsWith('-')?(financial.debtorKind==='agency'?'Credit due to the agency':'Credit due to the client'):(financial.debtorKind === 'agency' ? 'Payable by the agency' : 'Payable by the client')}</p></div></Panel><Panel title="Next actions"><div className="quote-rail-body"><Link className="button" href={`/clients/${policy.clientId}`}>Open client record</Link><Link className="button" href={`/agents/${policy.agencyId}`}>Open agency record</Link><Link className="button" href={`/quotes/${policy.sourceQuoteId}`}>View source quote and acceptance</Link><button className="button" onClick={()=>setTab('Property schedule')}>View locations</button><button className="button" onClick={()=>setTab('Liability & employees')}>View employees and liability</button><button className="button" onClick={()=>setTab('History')}>View issued history</button><button className="button" onClick={()=>{setTab('History');requestAnimationFrame(()=>document.getElementById('commercial-servicing-drafts')?.scrollIntoView({block:'start'}));}}>Make a policy change</button><button className="button" onClick={refresh}>Refresh policy</button><p className="client-help">Commercial adjustment, renewal and cancellation drafts are available. Documents and incident reports are available in their policy tabs.</p></div></Panel></aside></div>

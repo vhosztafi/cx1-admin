@@ -19355,6 +19355,16 @@
             }
           },
           {
+            "name": "policyId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Current authorized policy and its servicing-draft tasks. Other query filters intersect this scope; inaccessible policies return 404."
+          },
+          {
             "in": "query",
             "name": "kind",
             "required": false,
