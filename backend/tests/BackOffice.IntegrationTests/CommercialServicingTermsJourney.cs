@@ -1,6 +1,7 @@
 using System.Text;
 using BackOffice.Application;
 using BackOffice.Infrastructure.Persistence;
+using BackOffice.Infrastructure.Agencies;
 using BackOffice.Infrastructure.Policies;
 using BackOffice.Infrastructure.Platform;
 using BackOffice.Infrastructure.Quotes;
@@ -53,8 +54,11 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Equal(sent.Body,(await terms.SendAsync(actor,cycle.DraftId,cycle.Id,contract.Id,[view.RecipientOptions.First().Id],Version(etag),lease,sendKey,Guid.NewGuid())).Body);
         Assert.Equal(1,await db.Set<ServicingTermsDelivery>().CountAsync(x=>x.TermsVersionId==contract.Id));
         var delivery=await db.Set<ServicingTermsDelivery>().AsNoTracking().SingleAsync(x=>x.Id==sent.ResourceId);
+        var agency=await db.Set<Policy>().Where(x=>x.Id==cycle.PolicyId).Select(x=>x.AgencyId).SingleAsync();
+        Assert.DoesNotContain((await AgencySharingService.PreviewOpenItems(db,actor,agency,new(At:clock.GetUtcNow()))).Items,x=>x.Id==contract.Id);
         var job=Assert.IsType<JobLease>(await new SqlJobLeases(factory,clock).ClaimWorkAsync(ServicingTermsService.WorkKind,delivery.WorkId));
         var worker=new ServicingDeliveryWorker(factory,clock);Assert.True(await worker.ApplyAsync(job,await worker.ExecuteProviderAsync(job)));
+        Assert.Equal("servicing-acceptance",Assert.Single((await AgencySharingService.PreviewOpenItems(db,actor,agency,new(At:clock.GetUtcNow()))).Items,x=>x.Id==contract.Id).Kind);
         etag="\""+Convert.ToBase64String(await db.Set<ServicingDraft>().AsNoTracking().Where(x=>x.Id==cycle.DraftId).Select(x=>x.RowVersion).SingleAsync())+"\"";
         var proof=await Proof("acceptance-proof");view=await terms.ReadAsync(actor,cycle.DraftId);
         var input=new ServicingAcceptanceInput(cycle.Id,ratingId,contract.Id,delivery.Id,contract.TermsHash,view.AssuranceHash,
@@ -64,6 +68,7 @@ public sealed partial class UnderwritingRuntimeTests
         var key=Key();var accepted=await terms.AcceptAsync(actor,cycle.DraftId,Version(etag),lease,input,key,Guid.NewGuid());
         Assert.Equal(201,accepted.Status);Assert.True((await terms.AcceptAsync(actor,cycle.DraftId,Version(etag),lease,input,key,Guid.NewGuid())).Replayed);
         Assert.True((await terms.ReadAsync(actor,cycle.DraftId)).AcceptanceApplicable);
+        Assert.DoesNotContain((await AgencySharingService.PreviewOpenItems(db,actor,agency,new(At:clock.GetUtcNow()))).Items,x=>x.Id==contract.Id);
         return(await db.Set<ServicingAcceptance>().AsNoTracking().SingleAsync(x=>x.Id==accepted.ResourceId),accepted.Etag!);
     }
 }

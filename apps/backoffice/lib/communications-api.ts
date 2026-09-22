@@ -5,7 +5,7 @@ import type { OpsNote, OpsThread, OpsMessage } from '../../../contracts/generate
 export type NoteView = OpsNote;
 export type ThreadView = OpsThread;
 export type MessageView = OpsMessage;
-export type CommunicationAction = 'note' | 'thread' | 'create-draft' | 'update-draft' | 'send-message' | 'send-pack' | 'retry-message' | 'resend-message' | 'retry-document' | 'resend-document';
+export type CommunicationAction = 'note' | 'thread' | 'create-draft' | 'update-draft' | 'send-message' | 'send-pack' | 'retry-message' | 'resend-message' | 'retry-document' | 'resend-document' | 'track-response' | 'resolve-response';
 export type PendingCommunicationCommand = Readonly<{ action: CommunicationAction; method: 'POST' | 'PUT'; url: string; body: string; key: string; expectedId: string; etag?: string }>;
 export class CommunicationError extends QuoteError {
   constructor(status: number) {
@@ -46,6 +46,11 @@ export function communicationCommand(action: CommunicationAction, id: string, in
   } else if (['retry-message','resend-message','retry-document','resend-document'].includes(action)) {
     if (!validQuoteEtag(etag) || !text(input.reason,1000)) throw new Error('Read the current delivery and enter a reason.');
     const [operation,kind] = action.split('-'); fields = ['reason']; url = `/api/v1/${kind}-deliveries/${id}/${operation}`;
+  } else if (action === 'track-response' || action === 'resolve-response') {
+    if (!text(input.reason,2000) || input.reason.trim().length < 10) throw new Error('Enter a reason of 10 to 2,000 characters.');
+    if (action === 'resolve-response' && (!validQuoteEtag(etag) || !['response-received','withdrawn'].includes(String(input.outcome)))) throw new Error('Refresh the saved request and choose a closure outcome.');
+    fields = action === 'track-response' ? ['reason'] : ['outcome','reason'];
+    url = action === 'track-response' ? `/api/v1/messages/${id}/agency-response` : `/api/v1/agency-responses/${id}/resolve`;
   } else throw new Error('Choose a supported communication action.');
   if (Object.keys(input).some(x => !fields.includes(x)) || fields.some(x => !Object.hasOwn(input, x))) throw new Error('Review the communication fields.');
   return Object.freeze({ action, method: action === 'update-draft' ? 'PUT' : 'POST', url, body: JSON.stringify(input), key, expectedId: id, ...(etag ? { etag } : {}) });
@@ -56,6 +61,11 @@ export async function sendCommunicationCommand(command: PendingCommunicationComm
     headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf, 'Idempotency-Key': command.key, ...(command.etag ? { 'If-Match': command.etag } : {}) } });
   const saved = result.data, input = JSON.parse(command.body) as Record<string, unknown>;
   const unconfirmed = () => new Error('The saved communication could not be confirmed. Retry the same action.');
+  if (command.action === 'track-response' || command.action === 'resolve-response') {
+    if (!saved || !validTaskId(saved.id) || !validQuoteEtag(result.etag) || saved.etag !== result.etag || !text(saved.reference,40) || !text(saved.instruction,8000) ||
+      (command.action === 'track-response' ? saved.messageId !== command.expectedId || saved.state !== 'awaiting-response' || saved.reason !== String(input.reason).trim() : saved.id !== command.expectedId || saved.state !== input.outcome || saved.resolutionReason !== String(input.reason).trim())) throw unconfirmed();
+    return {id:saved.id};
+  }
   if (command.action.startsWith('send-') || command.action.startsWith('retry-') || command.action.startsWith('resend-')) {
     if (!saved || !validTaskId(saved.id) || saved.kind !== 'operational-delivery' || saved.state !== 'pending' || !Number.isInteger(saved.attempts) || !validQuoteEtag(result.etag)) throw unconfirmed();
     return { id: saved.id };

@@ -1,4 +1,5 @@
 using BackOffice.Infrastructure.Persistence;
+using BackOffice.Infrastructure.Agencies;
 using BackOffice.Infrastructure.Policies;
 using BackOffice.Infrastructure.Quotes;
 using Microsoft.Data.SqlClient;
@@ -40,6 +41,8 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.Equal(0,await db.Set<ServicingAcceptance>().CountAsync(x=>x.DraftId==cycle.DraftId));
         }
         var accepted=await terms.AcceptAsync(f.Underwriter,cycle.DraftId,version,fence,input,key,Guid.NewGuid());Assert.Equal(201,accepted.Status);
+        var sharingAgency=await db.Set<Policy>().Where(x=>x.Id==cycle.PolicyId).Select(x=>x.AgencyId).SingleAsync();
+        Assert.DoesNotContain((await AgencySharingService.PreviewOpenItems(db,f.Underwriter,sharingAgency,new(At:f.Clock.GetUtcNow()))).Items,x=>x.Id==contract.Id);
         Assert.True((await terms.AcceptAsync(f.Underwriter,cycle.DraftId,version,fence,input,key,Guid.NewGuid())).Replayed);
         var row=await db.Set<ServicingAcceptance>().AsNoTracking().SingleAsync();
         Assert.Equal(proof.Id,row.EvidenceAssociationId);Assert.Equal(contract.Id,row.TermsVersionId);Assert.Equal(delivery.Id,row.DeliveryId);

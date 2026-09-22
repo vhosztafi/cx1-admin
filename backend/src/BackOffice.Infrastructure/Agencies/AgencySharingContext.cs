@@ -15,6 +15,7 @@ public sealed record AgencySharingContext(AgencySharedIdentity Agency, IReadOnly
 {
     public AgencySharedQuoteSection Quotes { get; init; } = new("available", 0);
     public AgencySharedQuoteSection Policies { get; init; } = new("available", 0);
+    public AgencySharedQuoteSection OpenItems { get; init; } = new("available", 0);
     [System.Text.Json.Serialization.JsonIgnore]
     public byte[] AgencyVersion { get; init; } = [];
 }
@@ -52,8 +53,7 @@ public static partial class AgencySharingService
         // workflows. These summaries must never fabricate policy or ledger data.
         var result = new AgencySharingContext(new(agency.Id, agency.Reference, agency.LegalName, agency.State), products,
             [new(AgencyPermissionRules.BordereauDownload, granted, false)],
-            [new("tasks", "unavailable", 9, "Shared task workflows are delivered in phase 9."),
-             new("statements", "unavailable", 10, "Statements and bordereau downloads are delivered in phase 10.")]);
+            [new("statements", "unavailable", 10, "Statements and bordereau downloads are delivered in phase 10.")]);
         if (preview)
         {
             db.Add(new AuditEvent { ActorId = actor.UserId, CreatedBy = actor.UserId, OccurredAt = now, EventType = "agency.sharing-preview", CorrelationId = Guid.NewGuid(), After = JsonSerializer.Serialize(new { agencyId, section = "context" }) });
@@ -61,6 +61,7 @@ public static partial class AgencySharingService
         }
         var quoteCount = await QuoteRows(db, agencyId, new()).CountAsync(token);
         var policyCount = await PolicyRows(db, agencyId, new()).CountAsync(token);
-        await transaction.CommitAsync(token); return result with { AgencyVersion = agency.RowVersion, Quotes = new("available", quoteCount), Policies = new("available", policyCount) };
+        var openCount=(await OpenItemRows(db,agencyId,new(At:now),token)).Count;
+        await transaction.CommitAsync(token); return result with { AgencyVersion = agency.RowVersion, Quotes = new("available", quoteCount), Policies = new("available", policyCount), OpenItems = new("available",openCount) };
     }
 }

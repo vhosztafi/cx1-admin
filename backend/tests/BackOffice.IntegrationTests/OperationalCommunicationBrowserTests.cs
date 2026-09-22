@@ -103,6 +103,10 @@ public sealed partial class UnderwritingRuntimeTests
             var information=await db.Set<OperationalMessageDraft>().AsNoTracking().SingleAsync(x=>x.Body=="Please supply the evidence requested in the saved underwriting query.");Assert.Equal("sent",information.State);
             var informationThread=await db.Set<OperationalThread>().SingleAsync(x=>x.Id==information.ThreadId);
             Assert.Equal(quoteId,(await db.Set<OperationalSubject>().SingleAsync(x=>x.Id==informationThread.SubjectId)).QuoteId);
+            var responseRequest=await db.Set<AgencyResponseRequest>().AsNoTracking().SingleAsync();
+            Assert.Equal("response-received",responseRequest.State);Assert.Equal(information.Body,responseRequest.Instruction);
+            Assert.Equal("Fictional requested information received",responseRequest.ResolutionReason);
+            Assert.Equal(information.Id,await db.Set<OperationalMessageVersion>().Where(x=>x.Id==responseRequest.MessageVersionId).Select(x=>x.MessageId).SingleAsync());
             Assert.Equal(3,await db.Set<OperationalDelivery>().CountAsync(x=>x.State=="delivered"));
             Assert.Equal(3,await db.Set<DemoProviderOperation>().CountAsync(x=>x.Kind==MessageDeliveryService.WorkKind));
             Assert.Equal(1,await (from exception in db.Set<JobException>()
@@ -110,7 +114,7 @@ public sealed partial class UnderwritingRuntimeTests
                 select exception).CountAsync());
             Assert.Equal(file.Id,(await db.Set<MessageDraftAttachment>().SingleAsync()).DocumentVersionId);Assert.Equal(2,await db.Set<MessageDraftRecipient>().CountAsync());
             Assert.Equal(version.ContentHash,await db.Set<PolicyVersion>().Where(x=>x.Id==version.Id).Select(x=>x.ContentHash).SingleAsync());
-            await File.WriteAllTextAsync(Path.Combine(output,"sql-readback.json"),JsonSerializer.Serialize(new{passed=true,noteCount=4,message.Id,attachmentVersionId=file.Id}));
+            await File.WriteAllTextAsync(Path.Combine(output,"sql-readback.json"),JsonSerializer.Serialize(new{passed=true,noteCount=4,message.Id,attachmentVersionId=file.Id,responseRequestId=responseRequest.Id,responseState=responseRequest.State}));
             Directory.CreateDirectory(Path.Combine(root.FullName,".local/phase9-10-browser"));
             await File.WriteAllTextAsync(Path.Combine(root.FullName,$".local/phase9-10-browser/{product}.json"),JsonSerializer.Serialize(new{output,passed=true,verifiedAt=DateTimeOffset.UtcNow}));
         }

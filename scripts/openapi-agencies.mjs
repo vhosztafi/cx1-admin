@@ -80,7 +80,8 @@ export function addAgencyContracts({schemas:s,ref:r,text:t,enumeration:e,object:
  s.AgencySharedProduct=o({productCode,name:t(),effectiveFrom:date,effectiveTo:date,available:b},['productCode','name','effectiveFrom','available']);
  s.AgencySharedQuote=o({id,reference:t(40),clientName:t(),productCode:e('motor-trade-road-risks','motor-trade-combined'),state:e('draft','withdrawn'),updatedAt:instant,startDate:date},['id','reference','clientName','productCode','state','updatedAt']);
  s.AgencySharedPolicy=o({id,reference:t(40),clientName:t(),productCode:e('motor-trade-road-risks','motor-trade-combined'),state:e('scheduled','active','expired','cancelled'),startsAt:instant,endsAt:instant});
- s.AgencySharing=o({policies:o({state:{const:'available'},totalCount:integer}),quotes:o({state:{const:'available'},totalCount:integer}),agency:o({id,reference:t(40),legalName:t(),state}),products:bounded(r('AgencySharedProduct'),3),permissions:bounded(o({permission:{const:'bordereau-download'},granted:b,available:b}),1),unavailableSections:bounded(r('AgencyUnavailableSection'),4)});
+ s.AgencySharedOpenItem=o({id,reference:t(40),kind:e('requested-response','quotation-acceptance','servicing-acceptance'),subject:t(300),instruction:t(8000),state:e('awaiting-response','awaiting-acceptance'),createdAt:instant});
+ s.AgencySharing=o({openItems:o({state:{const:'available'},totalCount:integer}),policies:o({state:{const:'available'},totalCount:integer}),quotes:o({state:{const:'available'},totalCount:integer}),agency:o({id,reference:t(40),legalName:t(),state}),products:bounded(r('AgencySharedProduct'),3),permissions:bounded(o({permission:{const:'bordereau-download'},granted:b,available:b}),1),unavailableSections:bounded(r('AgencyUnavailableSection'),4)});
  s.AgencySharedClient=o({id,relationshipId:id,reference:t(40),legalName:t()});
  s.AgencySharedContact=o({id,personId:id,fullName:t(),role:t(100),email,telephone:t(50),isPrimary:b},['id','personId','fullName','role','isPrimary']);
  s.AgencySharedInstruction=o({id,personId:id,contactName:t(200),instruction:t(1000),reviewOn:date},['id','personId','contactName','instruction']);
@@ -166,6 +167,7 @@ export function addAgencyContracts({schemas:s,ref:r,text:t,enumeration:e,object:
  for(const [prefix,suffix] of [['/agencies/{agencyId}/sharing','Preview'],['/agency-context','Current']]){
   const permission=suffix==='Preview'?'agency-read-audited':'active-own-agency';
   list(`${prefix}/quotes`,`list${suffix}AgencyQuotes`,permission,r('AgencySharedQuote'),[['q',t(200)]]);
+  list(`${prefix}/open-items`,`list${suffix}AgencyOpenItems`,permission,r('AgencySharedOpenItem'),[['q',t(200)]]);
   list(`${prefix}/policies`,`list${suffix}AgencyPolicies`,permission,r('AgencySharedPolicy'),[['q',t(200)]]);
   op('get',`${prefix}/policies/{policyId}`,`get${suffix}AgencyPolicy`,permission,{output:r('AgencySharedPolicy')});
   list(`${prefix}/clients`,`list${suffix}AgencyClients`,permission,r('AgencySharedClient'),[['q',t()]]);

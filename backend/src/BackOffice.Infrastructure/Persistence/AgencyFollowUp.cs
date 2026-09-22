@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 namespace BackOffice.Infrastructure.Persistence;
 
-// Durable obligation provenance. Phase 9 will add a real task association;
-// this record does not pretend that a work queue task already exists.
+// Durable obligation provenance. WorkflowTaskSource links any materialized task;
+// this source record alone does not imply a work queue task already exists.
 public sealed class AgencyFollowUp:StoredRecord
 {
     public Guid AgencyId {get;set;}

@@ -6,6 +6,7 @@ import { Status } from '../primitives';
 import { CommunicationCommand, type CommunicationConfirmation } from './communication-command';
 import { DocumentPreview } from './document-preview';
 import { DeliveryHistory } from './delivery-history';
+import { AgencyResponseTracking } from './agency-response-tracking';
 import { documentDate } from './document-shared';
 import { LoadFeedback, Paging, useCommunicationResource, type CommunicationPage } from './communication-shared';
 
@@ -52,6 +53,7 @@ function ThreadWorkspace({ thread, actorId, initialAttachment }: { thread: Threa
       {message.state === 'draft' && <button className="button" disabled={compose} onClick={() => { setEditing(message); setCompose(true); }}>Edit draft</button>}
       {message.state === 'draft' && thread.visibility==='agency' && <button className="button button-primary" disabled={compose||!!send||!message.body.trim()||!message.recipientContactIds.length} onClick={()=>{try{setSendError('');setSend({command:communicationCommand('send-message',message.id,{},message.etag),label:'Send to agency',description:`Queue the saved message with ${message.recipientContactIds.length} recipients and ${message.attachmentVersionIds.length} exact file versions. Delivery status will be recorded separately.`});}catch(error){setSendError((error as Error).message);}}}>Send to agency</button>}
       {message.state!=='draft'&&<DeliveryHistory id={message.id} kind="message" actorId={actorId}/>}
+      {message.state==='sent'&&thread.visibility==='agency'&&<AgencyResponseTracking messageId={message.id} actorId={actorId}/>}
     </article>)}<Paging total={read.data.totalCount} previous={pages.length > 1 ? () => setPages(x => x.slice(0, -1)) : undefined} next={read.data.nextCursor ? () => setPages(x => [...x, read.data!.nextCursor!]) : undefined} /></> : <LoadFeedback error={read.error} retry={read.refresh} />}
     {compose && <DraftComposer key={`${editing?.id ?? 'new'}:${revision}`} thread={thread} actorId={actorId} initial={editing} initialAttachment={initialAttachment} saved={() => { setCompose(false); setEditing(undefined); setRevision(x => x + 1); setNotice('Draft saved.'); setPages(['']); read.refresh(); }} />}
     {sendError&&<p role="alert">{sendError}</p>}

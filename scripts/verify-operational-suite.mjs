@@ -33,6 +33,11 @@ try{
  assert.equal(incident.passed,true);assert.equal(incident.reports.length,2);assert.deepEqual(incident.errors,[]);assert.equal(sql.passed,true);
  const retries=JSON.parse(await readFile('.local/operational-pack-demo-v1/retry-acceptance.json','utf8'));
  assert.equal(retries.passed,true);assert.equal(retries.sameOperations,true);assert.equal(retries.packExceptionTasks,1);assert.equal(retries.midExceptionTasks,1);
+ const responses=JSON.parse(await readFile('.local/agency-response-demo-v1/report.json','utf8'));
+ const responseSql=JSON.parse(await readFile('.local/agency-response-demo-v1/sql-readback.json','utf8'));
+ assert.equal(responses.passed,true);assert.equal(responses.rows.length,2);assert.deepEqual(responses.errors,[]);
+ assert.equal(responseSql.passed,true);assert.equal(responseSql.requests,2);assert.equal(responseSql.exactDeliveredContent,true);
+ for(const row of responses.rows)assert.ok(responseSql.rows.some(x=>x.id===row.response.id&&x.messageId===row.messageId&&x.policyId===row.policyId&&x.state===row.response.state));
  retained.status='passed';
 }catch(error){retained.status='failed';retained.error=String(error);}
 report.finishedAt=new Date().toISOString();report.passed=report.stages.every(x=>x.status==='passed');await save();

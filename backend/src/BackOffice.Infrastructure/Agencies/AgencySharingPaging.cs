@@ -29,6 +29,9 @@ public static partial class AgencySharingService
         object visible;
         switch (section)
         {
+            case "open-items":
+                visible = await OpenItemRows(db, agencyId, query, token);
+                break;
             case "policies":
                 visible = await PolicyRows(db, agencyId, query).ToListAsync(token);
                 break;

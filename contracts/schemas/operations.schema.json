@@ -1161,6 +1161,121 @@
         "items"
       ]
     },
+    "OpsAgencyResponseTrack": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reason": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 2000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "reason"
+      ]
+    },
+    "OpsAgencyResponseResolve": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "response-received",
+            "withdrawn"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 2000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "outcome",
+        "reason"
+      ]
+    },
+    "OpsAgencyResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "messageId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40,
+          "pattern": "\\S"
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "\\S"
+        },
+        "instruction": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8000,
+          "pattern": "\\S"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "awaiting-response",
+            "response-received",
+            "withdrawn"
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000,
+          "pattern": "\\S"
+        },
+        "etag": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 100,
+          "pattern": "^\"[!#-~]+\"$"
+        },
+        "resolvedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "resolutionReason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "id",
+        "messageId",
+        "reference",
+        "subject",
+        "instruction",
+        "state",
+        "createdAt",
+        "reason",
+        "etag"
+      ]
+    },
     "OpsRecipientOptions": {
       "type": "object",
       "additionalProperties": false,

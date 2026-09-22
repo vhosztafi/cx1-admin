@@ -12,6 +12,20 @@ public static class CommunicationEndpoints
     private static readonly JsonSerializerOptions InputJson=new(JsonSerializerDefaults.Web){PropertyNameCaseInsensitive=false,UnmappedMemberHandling=JsonUnmappedMemberHandling.Disallow};
     public static void MapCommunications(this WebApplication app)
     {
+        app.MapPost("/api/v1/messages/{messageId:guid}/agency-response",(Guid messageId,HttpContext context,AgencyResponseService service)=>Run(context,async()=>
+        {
+            QuoteEndpoints.Id(messageId);var input=await Input<ResponseTrackInput>(context);
+            return await service.Track(LocalIdentityService.Actor(context.User),messageId,input.Reason,QuoteHttpInput.Key(context.Request),context.RequestAborted);
+        })).RequireAuthorization("message-write");
+        app.MapGet("/api/v1/messages/{messageId:guid}/agency-response",(Guid messageId,HttpContext context,AgencyResponseService service)=>Run(context,()=>
+        {
+            QuoteEndpoints.Id(messageId);QuoteHttpInput.NoQuery(context.Request);return service.Read(LocalIdentityService.Actor(context.User),messageId,context.RequestAborted);
+        })).RequireAuthorization("message-read");
+        app.MapPost("/api/v1/agency-responses/{requestId:guid}/resolve",(Guid requestId,HttpContext context,AgencyResponseService service)=>Run(context,async()=>
+        {
+            QuoteEndpoints.Id(requestId);var input=await Input<ResponseResolveInput>(context);
+            return await service.Resolve(LocalIdentityService.Actor(context.User),requestId,input.Outcome,input.Reason,TaskService.Etag(QuoteHttpInput.Version(context.Request)),QuoteHttpInput.Key(context.Request),context.RequestAborted);
+        })).RequireAuthorization("message-write");
         app.MapGet("/api/v1/records/{recordId:guid}/thread-relationships",(Guid recordId,HttpContext context,ThreadService service,PartyPaging paging)=>Options(recordId,context,paging,(actor,page)=>service.Relationships(actor,recordId,page.KeyId,page.Size,page.AsOf,context.RequestAborted))).RequireAuthorization("message-read");
         app.MapGet("/api/v1/threads/{threadId:guid}/recipient-options",(Guid threadId,HttpContext context,ThreadService service,PartyPaging paging)=>Options(threadId,context,paging,(actor,page)=>service.RecipientOptions(actor,threadId,page.KeyId,page.Size,page.AsOf,context.RequestAborted))).RequireAuthorization("message-read");
         app.MapGet("/api/v1/threads/{threadId:guid}/attachment-options",(Guid threadId,HttpContext context,ThreadService service,PartyPaging paging)=>Options(threadId,context,paging,(actor,page)=>service.AttachmentOptions(actor,threadId,page.KeyId,page.Size,page.AsOf,context.RequestAborted))).RequireAuthorization("message-read");
@@ -88,6 +102,8 @@ public static class CommunicationEndpoints
         catch(Exception error) when(QuoteEndpoints.Known(error)){return QuoteEndpoints.Failure(context,error);}
     }
     public sealed record NoteInput([property:JsonRequired]string Body);
+    public sealed record ResponseTrackInput([property:JsonRequired]string Reason);
+    public sealed record ResponseResolveInput([property:JsonRequired]string Outcome,[property:JsonRequired]string Reason);
     public sealed record ThreadInput([property:JsonRequired]string Visibility,[property:JsonRequired]string Subject,Guid? RelationshipId=null);
     public sealed record DraftInput([property:JsonRequired]string Body,[property:JsonRequired]Guid[] RecipientContactIds,[property:JsonRequired]Guid[] AttachmentVersionIds);
 }

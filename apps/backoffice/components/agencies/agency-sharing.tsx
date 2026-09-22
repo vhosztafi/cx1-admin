@@ -6,6 +6,7 @@ import {clientDate,type Page} from '../../lib/clients';
 import {LoadFeedback,Paging,useAgencyResource} from './shared';
 import {AgencySharedQuotes} from './agency-shared-quotes';
 import {AgencySharedPolicies} from './agency-shared-policies';
+import {AgencySharedOpenItems} from './agency-shared-open-items';
 
 type Sharing={agency:{id:string;reference:string;legalName:string;state:string};products:{productCode:string;name:string;effectiveFrom:string;effectiveTo?:string;available:boolean}[];permissions:{permission:string;granted:boolean;available:boolean}[]};
 type SharedClient={id:string;relationshipId:string;reference:string;legalName:string};
@@ -24,7 +25,7 @@ export function AgencySharing({id,canOpenPolicies=false}:{id:string;canOpenPolic
       <SharedClients key={`${id}:${revision}`} id={id}/>
       <Panel title="Approved products" note="Current agreed product selection"><DataTable caption="Products in the sharing reference" columns={['Product','Effective from','Effective until','Availability']}>{resource.data.products.map(product=><tr key={product.productCode}><td>{product.name}</td><td>{clientDate(product.effectiveFrom)}</td><td>{product.effectiveTo?`${clientDate(product.effectiveTo)} (exclusive)`:'No scheduled end'}</td><td><Status tone={product.available?'success':'muted'}>{product.available?'Available':'Not available yet'}</Status></td></tr>)}</DataTable>{!resource.data.products.length&&<p className="match-copy">No approved product terms are in effect.</p>}</Panel>
       <AgencySharedPolicies key={`policies:${id}:${revision}`} agencyId={id} canOpenInternal={canOpenPolicies}/>
-      <AgencySharedQuotes key={`quotes:${id}:${revision}`} agencyId={id}/><Panel title="Their open items"><p className="match-copy">Shared tasks are not available yet.</p></Panel>
+      <AgencySharedQuotes key={`quotes:${id}:${revision}`} agencyId={id}/><AgencySharedOpenItems key={`open-items:${id}:${revision}`} agencyId={id}/>
       <Panel title="Hidden from agency users" note="Shown here for internal reference only"><DataTable caption="Agency sharing boundaries" columns={['Area','Visible to agency','Reason']}>
         <tr><td>Internal notes</td><td><Status>No</Status></td><td>Underwriting commentary stays inside the back office.</td></tr>
         <tr><td>Referral rules and authority limits</td><td><Status>No</Status></td><td>Commercially sensitive internal rules.</td></tr>

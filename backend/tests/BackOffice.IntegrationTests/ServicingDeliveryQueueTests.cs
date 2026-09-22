@@ -1,4 +1,5 @@
 using BackOffice.Infrastructure.Persistence;
+using BackOffice.Infrastructure.Agencies;
 using BackOffice.Infrastructure.Policies;
 using BackOffice.Infrastructure.Platform;
 using BackOffice.Infrastructure.Quotes;
@@ -35,6 +36,7 @@ public sealed partial class UnderwritingRuntimeTests
         var delivery=await db.Set<ServicingTermsDelivery>().AsNoTracking().SingleAsync(x=>x.Id==sent.ResourceId);
         Assert.Equal("queued",delivery.State);Assert.Null(delivery.CompletedAt);Assert.Null(delivery.ProviderOperationId);
         Assert.Equal(contract.Id,delivery.TermsVersionId);
+        Assert.DoesNotContain((await AgencySharingService.PreviewOpenItems(db,f.Underwriter,source.AgencyId,new(At:f.Clock.GetUtcNow()))).Items,x=>x.Id==contract.Id);
         var work=await db.Set<OutboxWork>().AsNoTracking().SingleAsync(x=>x.Id==delivery.WorkId);
         Assert.Equal("servicing-delivery",work.Kind);Assert.Equal(delivery.Id,work.SubjectRecordId);
         Assert.Equal(delivery.Id,(await db.Set<ServicingCycle>().AsNoTracking().SingleAsync(x=>x.Id==cycle.Id)).CurrentDeliveryId);
@@ -82,6 +84,18 @@ public sealed partial class UnderwritingRuntimeTests
         delivery=await db.Set<ServicingTermsDelivery>().AsNoTracking().SingleAsync(x=>x.Id==sent.ResourceId);
         Assert.Equal(scenario is "withdraw-signature" or "sender-revoked" or "recipient-ended" or "amended" or "cancelled"?"superseded":scenario=="reject"?"failed":"delivered",delivery.State);
         Assert.NotNull(delivery.CompletedAt);Assert.Equal(delivered.OperationId,delivery.ProviderOperationId);
+        // A suspended sender deliberately fails current staff scope; test the list only for current actors.
+        if(scenario!="sender-revoked")
+        {
+            var open=await AgencySharingService.PreviewOpenItems(db,f.Underwriter,source.AgencyId,new(At:f.Clock.GetUtcNow()));
+            if(delivery.State=="delivered")
+            {
+                Assert.Equal("servicing-acceptance",Assert.Single(open.Items,x=>x.Id==contract.Id).Kind);
+                var expires=await db.Set<ServicingRatingResult>().Where(x=>x.Id==contract.RatingId).Select(x=>x.ExpiresAt).SingleAsync();
+                Assert.DoesNotContain((await AgencySharingService.PreviewOpenItems(db,f.Underwriter,source.AgencyId,new(At:expires))).Items,x=>x.Id==contract.Id);
+            }
+            else Assert.DoesNotContain(open.Items,x=>x.Id==contract.Id);
+        }
         Assert.Equal(1,await db.Set<DemoProviderOperation>().CountAsync(x=>x.Kind==ServicingTermsService.WorkKind));
         return "\""+Convert.ToBase64String((await db.Set<ServicingDraft>().AsNoTracking().SingleAsync(x=>x.Id==cycle.DraftId)).RowVersion)+"\"";
     }

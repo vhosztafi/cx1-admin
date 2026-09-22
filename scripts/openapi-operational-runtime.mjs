@@ -2,6 +2,14 @@ import {operationalDefinitions,relocateOperational} from './operations-contracts
 // Applied after legacy form modifiers. These routes remain contract-only until their owning Phase9 plan runs.
 export function addOperationalRuntimeContracts({schemas:s,ref:r,operation:op,list,paths,object:o,id,text:t}){
  Object.assign(s,relocateOperational(operationalDefinitions()));
+ op('post','/messages/{messageId}/agency-response','trackAgencyResponse','message-write',{input:r('OpsAgencyResponseTrack'),output:r('OpsAgencyResponse')});
+ op('get','/messages/{messageId}/agency-response','getAgencyResponse','message-read',{output:{oneOf:[r('OpsAgencyResponse'),{type:'null'}]}});
+ op('post','/agency-responses/{requestId}/resolve','resolveAgencyResponse','message-write',{existing:true,input:r('OpsAgencyResponseResolve'),output:r('OpsAgencyResponse')});
+ for(const path of ['/messages/{messageId}/agency-response','/agency-responses/{requestId}/resolve'])for(const operation of Object.values(paths[path])){
+  operation['x-runtime-status']='phase-9-17-implemented-acceptance-pending';
+  operation.description='Track an exact delivered agency message or retain its reasoned closure. Current parent/audience scope precedes replay; closure does not make an underwriting decision.';
+  for(const [code,response]of Object.entries(operation.responses))if(Number(code)>=200&&Number(code)<300){response.headers??={};response.headers['Cache-Control']={description:'Private, no-store.',schema:t(100)};}
+ }
  op('get','/versions/{versionId}/cancellation-consequences','listCancellationConsequences','document-read',{output:r('OpsCancellationConsequences')});
  paths['/versions/{versionId}/cancellation-consequences'].get['x-runtime-status']='phase-9-15-implemented-acceptance-pending';
  paths['/versions/{versionId}/cancellation-consequences'].get.responses[200].headers={'Cache-Control':{description:'Private, no-store.',schema:t(100)}};

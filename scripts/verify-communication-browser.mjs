@@ -8,19 +8,21 @@ const sources=['scripts/verify-communication-browser.mjs','backend/tests/BackOff
  'backend/src/BackOffice.Api/DeliveryEndpoints.cs','backend/src/BackOffice.Infrastructure/Operations/DeliveryReadService.cs','backend/src/BackOffice.Infrastructure/Operations/MessageDeliveryService.cs','backend/src/BackOffice.Infrastructure/Operations/MessageDeliveryService.Recovery.cs','backend/src/BackOffice.Infrastructure/Operations/MessageDeliveryWorker.cs','backend/src/BackOffice.Infrastructure/Operations/MessageDeliveryWorker.Apply.cs','apps/backoffice/lib/communications-api.ts','apps/backoffice/app/globals.css',...['communication-shared','communication-command','notes','thread','document-list','document-pack','delivery-history'].map(x=>`apps/backoffice/components/operations/${x}.tsx`),
  ...['quotes/quote-receipt','quotes/commercial-receipt','policies/policy-record','policies/commercial-policy-record','clients/client-detail','agencies/agency-detail'].map(x=>`apps/backoffice/components/${x}.tsx`)];
 sources.push('apps/backoffice/components/underwriting/referral-decisions.tsx');
+sources.push('apps/backoffice/components/operations/agency-response-tracking.tsx','apps/backoffice/components/agencies/agency-shared-open-items.tsx','backend/src/BackOffice.Infrastructure/Operations/AgencyResponseService.cs','backend/src/BackOffice.Infrastructure/Agencies/AgencySharingOpenItems.cs');
+sources.push('backend/src/BackOffice.Api/AgencySharingEndpoints.cs','backend/src/BackOffice.Api/AgencyContextEndpoints.cs','backend/src/BackOffice.Infrastructure/Agencies/AgencySharingPaging.cs','backend/src/BackOffice.Infrastructure/Persistence/Migrations/AgencyResponseTracking.Guards.cs');
 const hash=createHash('sha256');for(const path of sources){hash.update(path);hash.update((await readFile(path,'utf8')).replaceAll('\r\n','\n').trimEnd());}const sourceHash=hash.digest('hex');
 if(!process.argv.includes('--worker')){
  for(const product of ['motor-trade','commercial-combined']){
   const latest=JSON.parse(await readFile(`.local/phase9-10-browser/${product}.json`,'utf8'));
   const report=JSON.parse(await readFile(latest.output+'/browser-report.json','utf8')),sql=JSON.parse(await readFile(latest.output+'/sql-readback.json','utf8'));
-  assert.equal(latest.passed,true);assert.equal(sql.passed,true);assert.equal(report.sourceHash,sourceHash);assert.ok(report.cases.length>=16);assert.deepEqual(report.errors,[]);
+  assert.equal(latest.passed,true);assert.equal(sql.passed,true);assert.equal(sql.responseState,'response-received');assert.equal(report.sourceHash,sourceHash);assert.ok(report.cases.length>=22);assert.deepEqual(report.errors,[]);
   console.log(`${product}: ${report.cases.length} communication browser checks and SQL readback.`);
  }
 }else{
  const f=JSON.parse(process.env.COVER_COMMUNICATION_BROWSER_FIXTURE);
  assert.equal(new URL(f.apiOrigin).hostname,'127.0.0.1');assert.notEqual(new URL(f.apiOrigin).port,'5000');assert.equal(new URL(f.webOrigin).hostname,'127.0.0.1');
  const browser=await chromium.launch({channel:'chrome',headless:true}),page=await browser.newPage({viewport:{width:1480,height:980}});page.setDefaultTimeout(30000);
- const errors=[],cases=[],noteCommands=[];let loseNote=true;
+ const errors=[],cases=[],noteCommands=[],responseCommands=[];let loseNote=true,loseResponse=true;
  page.on('pageerror',error=>errors.push(error.message));
  await page.route('**/api/v1/**',async route=>{
   try{
@@ -28,6 +30,10 @@ if(!process.argv.includes('--worker')){
    if(url.pathname.endsWith('/notes')&&request.method()==='POST'){
     noteCommands.push({body:request.postData(),key:request.headers()['idempotency-key']});
     if(loseNote&&response.status()===201){loseNote=false;await route.abort('failed');return;}
+   }
+   if(url.pathname.endsWith('/agency-response')&&request.method()==='POST'){
+    responseCommands.push({body:request.postData(),key:request.headers()['idempotency-key']});
+    if(loseResponse&&response.status()===201){loseResponse=false;await route.abort('failed');return;}
    }
    await route.fulfill({response});
   }catch{await route.abort('failed').catch(()=>{});}
@@ -103,6 +109,22 @@ if(!process.argv.includes('--worker')){
   assert.deepEqual((await api(`/referrals?quoteId=${f.quoteId}&pageSize=50`)).body.items.map(x=>({id:x.id,state:x.state})),referralsBefore);
   await page.reload();await page.getByRole('tab',{name:'Messages',exact:true}).click();await button('Browser underwriting information request').click();await page.getByText(informationDraft.body,{exact:true}).waitFor();
   assert.equal((await api(`/threads/${informationThread.id}/messages`)).body.items.find(x=>x.id===informationDraft.id).state,'sent');cases.push('underwriting information request persists on the quote and delivers without changing referral decisions');
+  const tracking=page.getByRole('region',{name:'Agency response tracking',exact:true});
+  await tracking.getByLabel('Internal tracking reason',{exact:true}).fill('Track this fictional agency evidence response');
+  await tracking.getByRole('button',{name:'Track requested response',exact:true}).click();await page.getByRole('dialog').getByRole('button',{name:'Track requested response',exact:true}).click();
+  await button('Retry same action').waitFor();const tracked=await confirm('Retry same action',`/messages/${informationDraft.id}/agency-response`);assert.deepEqual(responseCommands[0],responseCommands[1]);assert.equal(tracked.messageId,informationDraft.id);
+  await tracking.getByText(`${tracked.reference} · Awaiting agency response`,{exact:true}).waitFor();cases.push('tracked delivered request recovers a lost response with identical key and bytes');
+  await page.goto(f.webOrigin+`/agents/${f.agencyId}/sharing`);await page.getByLabel('Search shared open items',{exact:true}).fill(tracked.reference);await button('Search open items').click();
+  const shared=page.getByRole('table',{name:'Shared open items',exact:true});await shared.getByText(tracked.reference,{exact:true}).waitFor();await shared.getByText(informationDraft.body,{exact:true}).waitFor();
+  assert.equal(await shared.getByText('Track this fictional agency evidence response',{exact:true}).count(),0);
+  await page.reload();await page.getByRole('table',{name:'Shared open items',exact:true}).getByText(tracked.reference,{exact:true}).waitFor();cases.push('agency sharing reload retains public instruction and excludes internal tracking reason');
+  await page.setViewportSize({width:390,height:844});await page.getByRole('table',{name:'Shared open items',exact:true}).scrollIntoViewIfNeeded();assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:f.output+'/agency-open-items-mobile.png'});cases.push('shared response is readable at390px without page overflow');
+  await page.goto(f.webOrigin+`/quotes/${f.quoteId}`);await page.getByRole('tab',{name:'Messages',exact:true}).click();await button('Browser underwriting information request').click();
+  await tracking.getByLabel('Internal tracking reason',{exact:true}).fill('Fictional requested information received');await tracking.getByRole('button',{name:'Close response request',exact:true}).click();
+  await confirm('Close response request',`/agency-responses/${tracked.id}/resolve`,200);
+  await tracking.getByText('Fictional requested information received',{exact:true}).waitFor();await page.reload();await page.getByRole('tab',{name:'Messages',exact:true}).click();await button('Browser underwriting information request').click();await tracking.getByText('Fictional requested information received',{exact:true}).waitFor();
+  assert.equal((await api(`/agencies/${f.agencyId}/sharing/open-items?q=${tracked.reference}`)).body.totalCount,0);
+  assert.deepEqual((await api(`/referrals?quoteId=${f.quoteId}&pageSize=50`)).body.items.map(x=>({id:x.id,state:x.state})),referralsBefore);cases.push('reasoned closure persists after reload, removes public open item and leaves underwriting decisions unchanged');
   assert.deepEqual(errors,[]);await writeFile(f.output+'/browser-report.json',JSON.stringify({sourceHash,cases,errors,messageId:saved.id,informationMessageId:informationDraft.id},null,2));
  }catch(error){await page.screenshot({path:f.output+'/failure.png'}).catch(()=>{});const selects=await page.locator('select').evaluateAll(nodes=>nodes.map(n=>({value:n.value,disabled:n.disabled,options:[...n.options].map(o=>({value:o.value,text:o.text}))}))).catch(()=>[]);await writeFile(f.output+'/browser-failure.json',JSON.stringify({sourceHash,cases,errors,relationshipId:f.relationshipId,selects,error:String(error).split('\n')[0],locatorLog:error.name==='TimeoutError'?error.message:undefined},null,2));process.exitCode=1;}
  finally{await browser.close();}

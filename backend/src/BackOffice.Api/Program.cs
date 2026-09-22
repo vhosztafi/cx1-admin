@@ -20,6 +20,7 @@ builder.Services.AddSingleton<PartyPaging>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.TaskService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.NoteService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.ThreadService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Operations.AgencyResponseService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.LegacyOperationalBridge>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.OperationalDemoSeed>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.OperationalDemoQuoteSeed>();

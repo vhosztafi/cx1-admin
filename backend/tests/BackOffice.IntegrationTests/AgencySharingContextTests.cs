@@ -62,7 +62,8 @@ public sealed class AgencySharingContextTests
                 var preview = await AgencySharingService.PreviewContext(db, staff, agencyId, clock);
                 Assert.Equal(JsonSerializer.Serialize(before), JsonSerializer.Serialize(preview));
                 Assert.True(Assert.Single(before.Permissions).Granted); Assert.False(before.Permissions[0].Available);
-                Assert.Equal(new[] { 9, 10 }, before.UnavailableSections.Select(x => x.OwningPhase));
+                Assert.Equal(new[] { 10 }, before.UnavailableSections.Select(x => x.OwningPhase));
+                Assert.Equal("available",before.OpenItems.State);Assert.Equal(0,before.OpenItems.TotalCount);
                 var json = JsonSerializer.Serialize(before);
                 foreach (var secret in new[] { "Snapshot", "Commission", "CreditLimit", "DecisionReason", "Balance", "Password" }) Assert.DoesNotContain(secret, json);
                 clock.Now = midnight; var after = await AgencySharingService.Context(db, broker, agencyId, clock);

@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Json;
 using BackOffice.Infrastructure.Persistence;
+using BackOffice.Infrastructure.Agencies;
 using BackOffice.Infrastructure.Platform;
 using BackOffice.Infrastructure.Quotes;
 using BackOffice.Infrastructure.Underwriting;
@@ -70,10 +71,16 @@ public sealed partial class UnderwritingRuntimeTests
             var sent = await terms.SendAsync(f.Servicing, f.QuoteId, row.Id, [setup.ContactId], sendVersion, key, Guid.NewGuid());
             Assert.True((await terms.SendAsync(f.Servicing, f.QuoteId, row.Id, [setup.ContactId], sendVersion, key, Guid.NewGuid())).Replayed);
             var delivery = await db.Set<QuoteTermsDelivery>().AsNoTracking().SingleAsync(x => x.Id == sent.ResourceId);
+            var sharingAgency=await db.Set<Quote>().Where(x=>x.Id==f.QuoteId).Select(x=>x.AgencyId).SingleAsync();
+            async Task<AgencySharingPage<AgencySharedOpenItem>> Shared(DateTimeOffset? at=null)=>await AgencySharingService.PreviewOpenItems(db,f.Underwriter,sharingAgency,new(At:at??f.Clock.GetUtcNow()));
+            Assert.DoesNotContain((await Shared()).Items,x=>x.Id==row.Id);
             Assert.Equal("queued", delivery.State); Assert.Single(await db.Set<OutboxWork>().Where(x => x.Kind == QuoteTermsService.WorkKind).ToArrayAsync());
             var leases = new SqlJobLeases(f.Factory, f.Clock); var worker = new QuoteDeliveryWorker(f.Factory, f.Clock);
             var lease = (await leases.ClaimWorkAsync(QuoteTermsService.WorkKind, delivery.WorkId))!;
             var outcome = await worker.ExecuteProviderAsync(lease); Assert.True(await worker.ApplyAsync(lease, outcome)); Assert.False(await worker.ApplyAsync(lease, outcome));
+            Assert.Equal("quotation-acceptance",Assert.Single((await Shared()).Items,x=>x.Id==row.Id).Kind);
+            var expires=await db.Set<QuoteRatingResult>().Where(x=>x.Id==setup.RatingId).Select(x=>x.ExpiresAt).SingleAsync();
+            Assert.DoesNotContain((await Shared(expires)).Items,x=>x.Id==row.Id);
             Assert.Equal("sent", await db.Set<Quote>().AsNoTracking().Where(x => x.Id == f.QuoteId).Select(x => x.State).SingleAsync());
             var proofId = await TermsProof(db, f, (await evidence.RequirementsAsync(f.Servicing, f.QuoteId)).Single(x => x.Code == "acceptance-proof"));
             var assessment = await new QuoteUnderwritingReadModel(f.Factory, f.Clock).AssessmentAsync(f.Servicing, f.QuoteId);
@@ -81,6 +88,7 @@ public sealed partial class UnderwritingRuntimeTests
             var input = new QuoteAcceptanceInput(f.CycleId, setup.RatingId, row.Id, row.TermsHash, (string)assessment["assuranceHash"], "Fictional policy customer", f.Clock.Current, "email", proofId);
             var acceptVersion = await TermsVersion(db, f); var acceptKey = Guid.NewGuid().ToString();
             var accepted = await acceptance.RecordAsync(f.Servicing, f.QuoteId, acceptVersion, input, acceptKey, Guid.NewGuid());
+            Assert.DoesNotContain((await Shared()).Items,x=>x.Id==row.Id);
             Assert.True((await acceptance.RecordAsync(f.Servicing, f.QuoteId, acceptVersion, input, acceptKey, Guid.NewGuid())).Replayed);
             Assert.Equal("accepted", await db.Set<Quote>().AsNoTracking().Where(x => x.Id == f.QuoteId).Select(x => x.State).SingleAsync());
             Assert.Equal(input.AssuranceHash, (await new QuoteUnderwritingReadModel(f.Factory, f.Clock).AssessmentAsync(f.Servicing, f.QuoteId))["assuranceHash"]);

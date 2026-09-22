@@ -163,6 +163,7 @@ public sealed partial class BackOfficeDbContext(DbContextOptions<BackOfficeDbCon
         ConfigureOperationalDocuments(model);
         ConfigureTaskDocumentAttachments(model);
         ConfigureOperationalCommunication(model);
+        ConfigureAgencyResponse(model);
         ConfigureOperationalDelivery(model);
         ConfigureOperationalIncidents(model);
         ConfigureOperationalClaims(model);

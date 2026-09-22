@@ -35,6 +35,9 @@ export function operationalDefinitions(){
  d.OpsThread={oneOf:d.OpsThreadWrite.oneOf.map(branch=>obj({id,subjectRecordId:id,...branch.properties,authorLabel:text(300),createdAt:instant},['id','subjectRecordId',...branch.required,'authorLabel','createdAt']))};
  d.OpsMessage=obj({id,threadId:id,...d.OpsMessageWrite.properties,state:en('draft','queued','sent','failed','superseded'),etag,createdAt:instant,updatedAt:instant,authorLabel:text(),sendJobId:id},['id','threadId',...d.OpsMessageWrite.required,'state','etag','createdAt','updatedAt','authorLabel']);
  d.OpsThreadRelationships=obj({items:arr(obj({id,label:text()})),nextCursor:text(2048)},['items']);
+ d.OpsAgencyResponseTrack=obj({reason:{...text(2000),minLength:10}});
+ d.OpsAgencyResponseResolve=obj({outcome:en('response-received','withdrawn'),reason:{...text(2000),minLength:10}});
+ d.OpsAgencyResponse=obj({id,messageId:id,reference:text(40),subject:text(300),instruction:text(8000),state:en('awaiting-response','response-received','withdrawn'),createdAt:instant,reason:text(2000),etag,resolvedAt:instant,resolutionReason:text(2000)},['id','messageId','reference','subject','instruction','state','createdAt','reason','etag']);
  d.OpsRecipientOptions=obj({items:arr(obj({id,label:text(),email:text(254)})),nextCursor:text(2048)},['items']);
  d.OpsAttachmentOptions=obj({items:arr(ref('OpsDocumentVersion')),nextCursor:text(2048)},['items']);
  d.OpsPackWrite=obj({documentVersionIds:arr(id,1,20),recipientContactIds:arr(id,1,50),subject:text(),body:text(8000)});

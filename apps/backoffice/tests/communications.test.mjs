@@ -5,6 +5,28 @@ import {uncertainQuoteFailure} from '../lib/quotes.ts';
 const id=n=>`aaaaaaaa-0000-4000-8000-${String(n).padStart(12,'0')}`;
 const draft=()=>({body:'Fictional saved text',recipientContactIds:[id(2)],attachmentVersionIds:[id(3)]});
 const etag='"AAAAAAAAAAA="';
+test('response tracking keeps one retry command and requires reasoned versioned closure',async()=>{
+ const input={reason:'Track the delivered licence request'};
+ const tracked=communicationCommand('track-response',id(1),input);input.reason='Changed later';
+ assert.equal(JSON.parse(tracked.body).reason,'Track the delivered licence request');assert.ok(Object.isFrozen(tracked));
+ assert.throws(()=>communicationCommand('track-response',id(1),{reason:'short'}));
+ assert.throws(()=>communicationCommand('track-response',id(1),{reason:'Valid reason text',instruction:'Unsent invented text'}));
+ assert.throws(()=>communicationCommand('resolve-response',id(2),{reason:'Response recorded',outcome:'approved'},etag));
+ assert.throws(()=>communicationCommand('resolve-response',id(2),{reason:'Response recorded',outcome:'response-received'}));
+ const close=communicationCommand('resolve-response',id(2),{reason:'Response recorded',outcome:'response-received'},etag),original=globalThis.fetch,calls=[];
+ try{
+  const trackingReceipt={id:id(2),messageId:id(1),reference:'ARQ-0000001',instruction:'Please send the licence details',state:'awaiting-response',reason:'Track the delivered licence request',etag};
+  globalThis.fetch=async()=>new Response(JSON.stringify(trackingReceipt),{headers:{ETag:etag}});await sendCommunicationCommand(tracked,'csrf');
+  globalThis.fetch=async()=>new Response(JSON.stringify({...trackingReceipt,messageId:id(3)}),{headers:{ETag:etag}});await assert.rejects(sendCommunicationCommand(tracked,'csrf'),uncertainQuoteFailure);
+  const receipt={id:id(2),reference:'ARQ-0000001',instruction:'Please send the licence details',state:'response-received',resolutionReason:'Response recorded',etag};
+  globalThis.fetch=async(_,init)=>{calls.push(init);return new Response(JSON.stringify(receipt),{headers:{ETag:etag}});};
+  await sendCommunicationCommand(close,'csrf');await sendCommunicationCommand(close,'csrf');
+  assert.equal(calls[0].body,calls[1].body);assert.equal(calls[0].headers['Idempotency-Key'],calls[1].headers['Idempotency-Key']);
+  for(const change of [{id:id(3)},{state:'awaiting-response'},{resolutionReason:'Different reason'},{etag:'different'}]){
+   globalThis.fetch=async()=>new Response(JSON.stringify({...receipt,...change}),{headers:{ETag:etag}});await assert.rejects(sendCommunicationCommand(close,'csrf'),uncertainQuoteFailure);
+  }
+ }finally{globalThis.fetch=original;}
+});
 const receipt=()=>({id:id(4),threadId:id(1),...draft(),state:'draft',etag,authorLabel:'Fictional author',createdAt:'2026-09-22T08:00:00Z'});
 test('commands pin retry bytes and enforce closed audiences and limits',()=>{
  const input=draft(),command=communicationCommand('create-draft',id(1),input);input.body='Changed';input.attachmentVersionIds.push(id(5));

@@ -15,6 +15,7 @@ public static class AgencySharingEndpoints
         app.MapGet("/api/v1/agencies/{agencyId:guid}/sharing/clients", (Guid agencyId, HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, PartyPaging paging) => Page(agencyId, null, "clients", context, factory, paging)).RequireAuthorization("agency-read");
         app.MapGet("/api/v1/agencies/{agencyId:guid}/sharing/quotes", (Guid agencyId, HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, PartyPaging paging) => Page(agencyId, null, "quotes", context, factory, paging)).RequireAuthorization("agency-read");
         app.MapGet("/api/v1/agencies/{agencyId:guid}/sharing/policies", (Guid agencyId, HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, PartyPaging paging) => Page(agencyId, null, "policies", context, factory, paging)).RequireAuthorization("agency-read");
+        app.MapGet("/api/v1/agencies/{agencyId:guid}/sharing/open-items", (Guid agencyId, HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, PartyPaging paging) => Page(agencyId, null, "open-items", context, factory, paging)).RequireAuthorization("agency-read");
         app.MapGet("/api/v1/agencies/{agencyId:guid}/sharing/policies/{policyId:guid}", (Guid agencyId, Guid policyId, HttpContext context, IDbContextFactory<BackOfficeDbContext> factory) => AgencyContextEndpoints.PolicySummary(agencyId, policyId, context, factory, true)).RequireAuthorization("agency-read");
         foreach (var section in new[] { "contacts", "instructions" })
             app.MapGet($"/api/v1/agencies/{{agencyId:guid}}/sharing/relationships/{{relationshipId:guid}}/{section}", (Guid agencyId, Guid relationshipId, HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, PartyPaging paging) => Page(agencyId, relationshipId, section, context, factory, paging)).RequireAuthorization("agency-read");
@@ -25,15 +26,20 @@ public static class AgencySharingEndpoints
         try
         {
             var token = context.RequestAborted; var actor = LocalIdentityService.Actor(context.User);
-            var query = new AgencySharingQuery(Search: section is "clients" or "quotes" or "policies" ? context.Request.Query["q"].ToString() : null, RelationshipId: relationshipId);
+            var query = new AgencySharingQuery(Search: section is "clients" or "quotes" or "policies" or "open-items" ? context.Request.Query["q"].ToString() : null, RelationshipId: relationshipId, At: context.RequestServices.GetRequiredService<TimeProvider>().GetUtcNow());
             await using var db = await factory.CreateDbContextAsync(token);
             await using var transaction = await db.Database.BeginTransactionAsync(IsolationLevel.Serializable, token);
             var scope = await AgencySharingService.PreviewPageScope(db, actor, agencyId, section, query, token);
-            var page = paging.ReadBound(context, actor, section, scope, section is "clients" or "quotes" or "policies" ? ["q"] : []);
+            var page = paging.ReadBound(context, actor, section, scope, section is "clients" or "quotes" or "policies" or "open-items" ? ["q"] : []);
             if (page == null) return IdentityEndpoints.Problem(context, 400, "invalid-query", "Refresh the sharing list and use its current cursor.");
             query = query with { Offset = page.Offset, Size = page.Size };
             object response;
-            if (section == "policies")
+            if (section == "open-items")
+            {
+                var rows = await AgencySharingService.PreviewOpenItems(db, actor, agencyId, query, token);
+                response = new { items = rows.Items, totalCount = rows.Total, nextCursor = paging.Next(page, page.Offset + rows.Items.Count < rows.Total) };
+            }
+            else if (section == "policies")
             {
                 var rows = await AgencySharingService.PreviewPolicies(db, actor, agencyId, query, token);
                 response = new { items = rows.Items, totalCount = rows.Total, nextCursor = paging.Next(page, page.Offset + rows.Items.Count < rows.Total) };

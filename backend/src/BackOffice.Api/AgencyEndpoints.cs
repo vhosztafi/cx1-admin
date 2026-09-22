@@ -68,7 +68,7 @@ public static class AgencyEndpoints
         var invitedUserCount=await BrokerUsers(db).CountAsync(x=>x.AgencyId==agencyId&&x.State=="invited",context.RequestAborted);
         await transaction.CommitAsync(context.RequestAborted);
         context.Response.Headers.ETag=AgencyDraftService.Etag(agency.RowVersion);
-        return Results.Json(new{agency.Id,agency.Reference,agency.State,agency.OnboardingStep,userCount,invitedUserCount,details=doc.RootElement.Clone(),validation,unavailableSections=new[]{new{kind="quotes",state="unavailable",owningPhase=5,message="Quote capture is not available yet."},new{kind="policies",state="unavailable",owningPhase=6,message="Policy records are not available yet."},new{kind="tasks",state="unavailable",owningPhase=9,message="Agency tasks are not available yet."},new{kind="statements",state="unavailable",owningPhase=10,message="Statements are not available yet."}}},Json);
+        return Results.Json(new{agency.Id,agency.Reference,agency.State,agency.OnboardingStep,userCount,invitedUserCount,details=doc.RootElement.Clone(),validation,unavailableSections=new[]{new{kind="statements",state="unavailable",owningPhase=10,message="Statements are not available yet."}}},Json);
     }
     private static async Task<IResult> List(HttpContext context,IDbContextFactory<BackOfficeDbContext> factory,PartyPaging paging,TimeProvider time)
     {

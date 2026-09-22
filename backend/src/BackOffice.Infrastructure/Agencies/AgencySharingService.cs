@@ -11,7 +11,7 @@ namespace BackOffice.Infrastructure.Agencies;
 public sealed record AgencySharedClient(Guid Id, Guid RelationshipId, string Reference, string LegalName, string EntityType, string? CompanyNumber);
 public sealed record AgencySharedContact(Guid Id, Guid ClientId, Guid RelationshipId, Guid PersonId, string FullName, string? FirstName, string? Surname, string Role, string? Email, string? Telephone, bool IsPrimary);
 public sealed record AgencySharedInstruction(Guid Id, Guid ClientId, Guid RelationshipId, Guid PersonId, string ContactName, string Instruction, DateOnly ReviewOn);
-public sealed record AgencySharingQuery(string? Search = null, int Offset = 0, int Size = 25, Guid? RelationshipId = null, Guid? PolicyId = null);
+public sealed record AgencySharingQuery(string? Search = null, int Offset = 0, int Size = 25, Guid? RelationshipId = null, Guid? PolicyId = null, DateTimeOffset? At = null);
 public sealed record AgencySharingPage<T>(IReadOnlyList<T> Items, int Total, int Offset, int Size);
 
 // These materialized reads are the common boundary for future external endpoints
