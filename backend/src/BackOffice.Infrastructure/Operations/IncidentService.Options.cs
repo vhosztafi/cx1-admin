@@ -21,11 +21,22 @@ public sealed partial class IncidentService
         if(Hash(version.SnapshotJson)!=source.SourceHash)throw new IncidentOccurrenceException("occurrence-source-invalid");
         using var document=JsonDocument.Parse(version.SnapshotJson);var snapshot=document.RootElement;var risk=snapshot.GetProperty("risk");
         object[] Choices(string collection,params string[] labels)=>risk.TryGetProperty(collection,out var values)?values.EnumerateArray().Select((x,index)=>(object)new{
-            id=x.GetProperty("id").GetGuid(),label=string.Join(" · ",labels.Where(name=>x.TryGetProperty(name,out _)).Select(name=>x.GetProperty(name).ToString())) is string label&&label.Length>0?label:$"{collection} {index+1}"
+            id=x.GetProperty("id").GetGuid(),label=ChoiceLabel(x,labels) is string label&&label.Length>0?label:$"{collection} {index+1}"
         }).ToArray():[];
         var sections=snapshot.GetProperty("cover").GetProperty("sections").EnumerateArray().Select(x=>x.GetProperty("code").GetString()!).ToArray();
         var result=new{incidentId=id,revisionId=row.CurrentRevisionId,resolutionId,versionId,sourceHash=source.SourceHash,
-            vehicles=Choices("vehicles","registration","make","model"),drivers=Choices("drivers","firstName","surname"),locations=Choices("locations","name","addressLine1","postcode"),occupations=Choices("wages","occupation"),coverCodes=sections};
+            vehicles=Choices("vehicles","registration","make","model"),drivers=Choices("drivers","firstName","surname"),locations=Choices("locations","reference","name","address.line1","address.postcode"),occupations=Choices("wages","category","occupation"),coverCodes=sections};
         await transaction.CommitAsync(token);return new(id,200,JsonSerializer.Serialize(result,Json),Etag:TaskService.Etag(row.RowVersion));
+    }
+    private static string ChoiceLabel(JsonElement row,IEnumerable<string> paths)
+    {
+        var labels=new List<string>();
+        foreach(var path in paths)
+        {
+            var value=row;foreach(var part in path.Split('.')){if(value.ValueKind!=JsonValueKind.Object||!value.TryGetProperty(part,out var found)){value=default;break;}value=found;}
+            if(value.ValueKind==JsonValueKind.Object&&value.TryGetProperty("label",out var label))value=label;
+            if(value.ValueKind==JsonValueKind.String&&!string.IsNullOrWhiteSpace(value.GetString()))labels.Add(value.GetString()!);
+        }
+        var joined=string.Join(" · ",labels.Distinct(StringComparer.Ordinal));return joined[..Math.Min(joined.Length,1000)];
     }
 }

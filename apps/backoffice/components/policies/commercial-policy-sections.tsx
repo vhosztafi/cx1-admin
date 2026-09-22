@@ -6,7 +6,7 @@ import {DataTable,Panel} from '../primitives';
 import {QuoteProposalDetails} from '../quotes/quote-history';
 import {CommercialExposurePanel} from './commercial-exposure-panel';
 
-export const commercialPolicyTabs=['Overview','Risk details','Cover','Property schedule','Liability & employees','Business interruption','Transactions','Documents','Notes','Messages','History'] as const;
+export const commercialPolicyTabs=['Overview','Risk details','Cover','Property schedule','Liability & employees','Business interruption','Transactions','Documents','Claims','Notes','Messages','History'] as const;
 export type CommercialPolicyTab=typeof commercialPolicyTabs[number];
 const text=(value:QuoteValue|undefined):string=>typeof value==='string'?value:typeof value==='number'?String(value):typeof value==='boolean'?(value?'Yes':'No'):value&&typeof value==='object'&&!Array.isArray(value)&&typeof value.label==='string'?value.label:'Not recorded';
 const object=(value:QuoteValue|undefined):QuoteObject=>value&&typeof value==='object'&&!Array.isArray(value)?value:{};

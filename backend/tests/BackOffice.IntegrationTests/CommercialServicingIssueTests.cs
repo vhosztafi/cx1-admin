@@ -25,7 +25,8 @@ public sealed partial class UnderwritingRuntimeTests
     public Task RealSqlCommercialServicingIssueRejectsStaleReviewedProof() => CommercialServicingIssueScenario(false,false,true);
 
     private Task CommercialServicingIssueScenario(bool dated,bool race=false,bool staleProof=false,bool verifyRenewal=false,
-        Func<BackOfficeDbContext,IDbContextFactory<BackOfficeDbContext>,BackOffice.Application.ActorContext,TimeProvider,Task>? onIssued=null) => CommercialTermsScenario(async(db,cycle,acceptance,actorId,now)=>
+        Func<BackOfficeDbContext,IDbContextFactory<BackOfficeDbContext>,BackOffice.Application.ActorContext,TimeProvider,Task>? onIssued=null,
+        string localTime="00:00",Func<BackOfficeDbContext,string,Task>? inspectIssued=null) => CommercialTermsScenario(async(db,cycle,acceptance,actorId,now)=>
     {
         var source=await CommercialIssueCommand(db,cycle,acceptance,actorId);
         await source.Service.IssueAsync(source.Actor,source.Quote.Id,source.Quote.RowVersion,source.Input,Guid.NewGuid().ToString(),Guid.NewGuid());
@@ -40,7 +41,7 @@ public sealed partial class UnderwritingRuntimeTests
         static string Key()=>Guid.NewGuid().ToString();
         var listed=await drafts.ListAsync(source.Actor,basis.TermId);
         var created=await drafts.CreateAsync(source.Actor,basis.TermId,Version(listed.Etag),new("adjustment",basis.Id,
-            JsonSerializer.SerializeToElement(new {localDate="2026-10-01",localTime="00:00",timeZone="Europe/London"}),"Fictional commercial adjustment rating"),Key(),Guid.NewGuid());
+            JsonSerializer.SerializeToElement(new {localDate="2026-10-01",localTime,timeZone="Europe/London"}),"Fictional commercial adjustment rating"),Key(),Guid.NewGuid());
         var owned=await drafts.LeaseAsync(source.Actor,created.ResourceId,Version(created.Etag!),"acquire",null,null,Key(),Guid.NewGuid());
         var fence=Body(owned.Body).GetProperty("lease").GetProperty("leaseToken").GetGuid();
         var proposal=JsonNode.Parse(Body(owned.Body).GetProperty("proposal").GetRawText())!;
@@ -195,5 +196,5 @@ public sealed partial class UnderwritingRuntimeTests
         await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE UserAuthorityGrant SET RevokedAt={current},RevokedBy={admin.Id},RevocationReason=N'Owned commercial servicing replay authorization test' WHERE Id={actualGrant.Id}");
         Assert.Equal(403,(await Assert.ThrowsAsync<QuoteOperationException>(()=>issueService.IssueAsync(source.Actor,created.ResourceId,Version(accepted.Etag),fence,issueInput,issueKey,Guid.NewGuid()))).Status);
         Assert.Equal(dated?3:2,await db.Set<PolicyVersion>().CountAsync());Assert.Equal(2,await db.Set<Journal>().CountAsync());
-    },stopAfterAccepted:true);
+    },stopAfterAccepted:true,inspectAccepted:inspectIssued);
 }

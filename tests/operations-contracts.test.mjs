@@ -60,7 +60,9 @@ test('generated OpenAPI uses final operational schemas after legacy form modifie
  assert.equal(api.paths['/incidents'].post.requestBody.content['application/json'].schema.$ref,'#/components/schemas/OpsIncidentDraftWrite');
  assert.equal(api.paths['/tasks'].post.requestBody.content['application/json'].schema.$ref,'#/components/schemas/OpsTaskWrite');
  for(const path of ['/tasks/bulk-due-date','/tasks/bulk-completion','/tasks/{taskId}/comments','/incidents/{incidentId}/contact'])assert.ok(api.paths[path],path);
- assert.equal(api.paths['/incidents'].post['x-runtime-status'],'phase-9-contract-only');
+ assert.equal(api.paths['/incidents'].post['x-runtime-status'],'phase-9-12-implemented-acceptance-pending');
+ assert.equal(api.paths['/incidents'].get.parameters.find(x=>x.name==='policyId').required,true);
+ assert.equal(api.paths['/incidents/{incidentId}/occurrence-resolutions'].get.operationId,'listIncidentOccurrenceResolutions');
 });
 test('document generation separates internal and agency audience shape',()=>{
  const input={kind:'policy-schedule',source:{kind:'policy-version',policyVersionId:id},templateVersionId:id,visibility:'internal',reason:'Requested copy'};

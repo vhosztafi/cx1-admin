@@ -487,3 +487,20 @@ h1, h2, p { margin: 0; }
 .communication-form .communication-choice input[type="checkbox"] { width: 16px; height: 16px; min-height: 16px; margin-top: 3px; padding: 0; flex: 0 0 16px; }
 .communication-form .communication-choice span { min-width: 0; overflow-wrap: anywhere; }
 .communication-form .quote-row-actions { margin-top: 12px; margin-bottom: 12px; }
+
+.incident-evidence-choice { display:flex; align-items:center; gap:.65rem; padding:.5rem 0; }
+.incident-evidence-choice input[type="checkbox"] { width:1rem; height:1rem; flex:0 0 auto; }
+
+.incident-editor > fieldset { min-width:0; border:0; padding:0; margin:0; }
+.incident-editor fieldset.quote-reference-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; border:0; padding:0; margin:0 0 1.5rem; min-width:0; }
+.incident-editor legend { width:100%; padding:0; margin-bottom:1rem; font-weight:600; color:#15213b; }
+.incident-editor label { display:flex; flex-direction:column; gap:.4rem; min-width:0; font-weight:500; }
+.incident-editor input:not([type="checkbox"]), .incident-editor select, .incident-editor textarea { display:block; width:100%; min-width:0; min-height:2.5rem; border:1px solid #d8deeb; border-radius:.45rem; padding:.6rem .7rem; background:#fff; color:#15213b; font:inherit; line-height:1.4; }
+.incident-editor textarea { resize:vertical; }
+.incident-editor input:focus-visible, .incident-editor select:focus-visible, .incident-editor textarea:focus-visible { outline:2px solid #465cff; outline-offset:2px; }
+.incident-editor .client-help { grid-column:1 / -1; line-height:1.5; }
+.incident-editor .incident-evidence-choice { flex-direction:row; align-items:center; }
+.incident-editor .quote-row-actions { flex-wrap:wrap; gap:.5rem; margin:.85rem 0; }
+.incident-editor details { margin:1rem 0; }
+.incident-editor summary { cursor:pointer; font-weight:500; margin-bottom:.65rem; }
+@media(max-width:640px) { .incident-editor fieldset.quote-reference-fields { grid-template-columns:minmax(0,1fr); } }
