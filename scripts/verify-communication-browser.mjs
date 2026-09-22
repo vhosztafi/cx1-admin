@@ -7,6 +7,7 @@ const sources=['scripts/verify-communication-browser.mjs','backend/tests/BackOff
  'backend/src/BackOffice.Api/CommunicationEndpoints.cs','backend/src/BackOffice.Infrastructure/Operations/NoteService.cs','backend/src/BackOffice.Infrastructure/Operations/ThreadService.cs','backend/src/BackOffice.Infrastructure/Operations/ThreadService.Options.cs','backend/src/BackOffice.Infrastructure/Operations/CommunicationScope.cs',
  'backend/src/BackOffice.Api/DeliveryEndpoints.cs','backend/src/BackOffice.Infrastructure/Operations/DeliveryReadService.cs','backend/src/BackOffice.Infrastructure/Operations/MessageDeliveryService.cs','backend/src/BackOffice.Infrastructure/Operations/MessageDeliveryService.Recovery.cs','backend/src/BackOffice.Infrastructure/Operations/MessageDeliveryWorker.cs','backend/src/BackOffice.Infrastructure/Operations/MessageDeliveryWorker.Apply.cs','apps/backoffice/lib/communications-api.ts','apps/backoffice/app/globals.css',...['communication-shared','communication-command','notes','thread','document-list','document-pack','delivery-history'].map(x=>`apps/backoffice/components/operations/${x}.tsx`),
  ...['quotes/quote-receipt','quotes/commercial-receipt','policies/policy-record','policies/commercial-policy-record','clients/client-detail','agencies/agency-detail'].map(x=>`apps/backoffice/components/${x}.tsx`)];
+sources.push('apps/backoffice/components/underwriting/referral-decisions.tsx');
 const hash=createHash('sha256');for(const path of sources){hash.update(path);hash.update((await readFile(path,'utf8')).replaceAll('\r\n','\n').trimEnd());}const sourceHash=hash.digest('hex');
 if(!process.argv.includes('--worker')){
  for(const product of ['motor-trade','commercial-combined']){
@@ -90,7 +91,19 @@ if(!process.argv.includes('--worker')){
    if(kind==='relationship'){const relationships=await api(`/clients/${f.clientId}/relationships?pageSize=100`);const r=relationships.body.items.find(x=>x.id===f.relationshipId);assert.ok(r);await button(`${r.agencyReference} · ${r.agencyName}`).click();}
    await note(`Browser ${kind} internal note`);cases.push(`${kind} note saves on its original scoped parent`);
   }
-  assert.deepEqual(errors,[]);await writeFile(f.output+'/browser-report.json',JSON.stringify({sourceHash,cases,errors,messageId:saved.id},null,2));
+  await page.goto(f.webOrigin+`/quotes/${f.quoteId}`);await page.getByRole('tab',{name:'Underwriting',exact:true}).click();
+  const referralsBefore=(await api(`/referrals?quoteId=${f.quoteId}&pageSize=50`)).body.items.map(x=>({id:x.id,state:x.state}));
+  await button('Prepare agency information request').click();const information=page.getByRole('region',{name:'Agency information request',exact:true});
+  await information.getByLabel('Conversation subject',{exact:true}).fill('Browser underwriting information request');await information.getByRole('combobox',{name:/^Client relationship/}).selectOption(f.relationshipId);
+  await information.getByRole('button',{name:'Create conversation',exact:true}).click();const informationThread=await confirm('Create conversation','/threads');
+  await information.getByRole('button',{name:'New message draft',exact:true}).click();
+  await information.getByRole('textbox',{name:/^Message text/}).fill('Please supply the evidence requested in the saved underwriting query.');
+  await information.getByRole('region',{name:'Recipients',exact:true}).getByRole('checkbox').first().check();await information.getByRole('button',{name:'Save draft',exact:true}).click();const informationDraft=await confirm('Save draft','/messages');
+  await information.getByRole('button',{name:'Send to agency',exact:true}).click();await confirm('Send to agency',`/messages/${informationDraft.id}/send`,202);await waitDelivery(`/messages/${informationDraft.id}/deliveries`,'delivered');
+  assert.deepEqual((await api(`/referrals?quoteId=${f.quoteId}&pageSize=50`)).body.items.map(x=>({id:x.id,state:x.state})),referralsBefore);
+  await page.reload();await page.getByRole('tab',{name:'Messages',exact:true}).click();await button('Browser underwriting information request').click();await page.getByText(informationDraft.body,{exact:true}).waitFor();
+  assert.equal((await api(`/threads/${informationThread.id}/messages`)).body.items.find(x=>x.id===informationDraft.id).state,'sent');cases.push('underwriting information request persists on the quote and delivers without changing referral decisions');
+  assert.deepEqual(errors,[]);await writeFile(f.output+'/browser-report.json',JSON.stringify({sourceHash,cases,errors,messageId:saved.id,informationMessageId:informationDraft.id},null,2));
  }catch(error){await page.screenshot({path:f.output+'/failure.png'}).catch(()=>{});const selects=await page.locator('select').evaluateAll(nodes=>nodes.map(n=>({value:n.value,disabled:n.disabled,options:[...n.options].map(o=>({value:o.value,text:o.text}))}))).catch(()=>[]);await writeFile(f.output+'/browser-failure.json',JSON.stringify({sourceHash,cases,errors,relationshipId:f.relationshipId,selects,error:String(error).split('\n')[0],locatorLog:error.name==='TimeoutError'?error.message:undefined},null,2));process.exitCode=1;}
  finally{await browser.close();}
 }

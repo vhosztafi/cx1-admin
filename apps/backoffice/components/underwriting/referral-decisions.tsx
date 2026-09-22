@@ -7,10 +7,12 @@ import { conditionFromForm, conditionLabels, referralDecisionCommand, riskItems,
 import { Panel, Status } from '../primitives';
 import { useQuoteResource, LoadFeedback } from '../quotes/shared';
 import type { DecisionRequest } from './decision-command';
+import { RecordCommunications } from '../operations/communication-shared';
 
 export function ReferralDecisions({ quote, assessment, referrals, evidence, run }: { quote: QuoteView<QuoteCaptureProposal>; assessment: UnderwritingAssessment; referrals: Referral[]; evidence: UnderwritingEvidence[]; run: (request: DecisionRequest) => void }) {
   const [selected, setSelected] = useState<string[]>([]), [outcome, setOutcome] = useState('approve'), [reason, setReason] = useState(''), [question, setQuestion] = useState('');
   const [conditions, setConditions] = useState<ConditionDefinition[]>([]), [error, setError] = useState('');
+  const [informationRequest, setInformationRequest] = useState(false);
   const cycle = assessment.context?.cycleId;
   const current = referrals.filter(x => x.cycleId === cycle && x.state !== 'superseded');
   const conditional = outcome === 'approve-with-conditions' || outcome === 'query';
@@ -37,14 +39,16 @@ export function ReferralDecisions({ quote, assessment, referrals, evidence, run 
         <label>Outcome<select aria-label="Decision outcome" value={outcome} onChange={event => { setOutcome(event.target.value); setConditions([]); }}>
           <option value="approve">Approve selected ({selected.length})</option><option value="approve-with-conditions">Approve with conditions</option><option value="query">Request more information</option><option value="decline">Decline</option><option value="reopen">Reopen decision</option>
         </select></label>
-        {outcome === 'query' && <><label>Question<textarea aria-label="Underwriting question" value={question} maxLength={2000} onChange={event => setQuestion(event.target.value)} /></label><p className="client-help">Records a case-specific request. External message delivery is not enabled here.</p></>}
+        {outcome === 'query' && <><label>Question<textarea aria-label="Underwriting question" value={question} maxLength={2000} onChange={event => setQuestion(event.target.value)} /></label><p className="client-help">Record the query decision, then prepare the agency information request below. Sending a message is a separate confirmed action and leaves the referral unresolved.</p></>}
         {conditional && <><ConditionForm quote={quote} documentaryOnly={outcome === 'query'} add={value => setConditions(items => [...items, value])} />
           <ol>{conditions.map((item, index) => <li key={index}>{conditionLabels[item.code]} <button className="button" onClick={() => setConditions(items => items.filter((_, i) => i !== index))}>Remove condition {index + 1}</button></li>)}</ol>
           <p className="client-help">Signed-statement conditions become available after exact quotation terms are prepared.</p></>}
         <label>Reason<textarea aria-label="Referral decision reason" value={reason} maxLength={2000} onChange={event => setReason(event.target.value)} /></label>
         <button className="button button-primary" disabled={!selected.length || !reason.trim() || conditional && !conditions.length} onClick={decide}>Review decision ({selected.length})</button>
       </fieldset>{error && <p role="alert">{error}</p>}
+      <div className="quote-row-actions"><button className="button" aria-expanded={informationRequest} onClick={() => setInformationRequest(value => !value)}>Prepare agency information request</button></div>
     </div></Panel>
+    {informationRequest && <section aria-label="Agency information request" style={{gridColumn:'1 / -1'}}><h3>Agency information request</h3><p className="client-help">Use the saved query decision and current quote when composing the request. Choose an eligible agency contact, save the draft and explicitly confirm Send to agency. Delivery uses the persistent demo adapter; it does not approve or resolve a referral.</p><RecordCommunications parent={{kind:'quote',id:quote.id,label:quote.reference}} mode="messages" /></section>}
   </>;
 }
 

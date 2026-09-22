@@ -38,6 +38,14 @@ try{
   await page.goto(origin+'/quotes/'+policy.sourceQuoteId);
   await page.locator('.page-heading').getByRole('button',{name:'Add note',exact:true}).click();
   await page.getByLabel('Internal note',{exact:true}).waitFor();report.checks.push({quoteId:policy.sourceQuoteId,action:'Add note'});
+  await page.getByRole('tab',{name:'Underwriting',exact:true}).click();
+  await page.getByRole('button',{name:'Prepare agency information request',exact:true}).click();
+  await page.getByRole('region',{name:'Agency information request',exact:true}).getByLabel('Conversation subject',{exact:true}).waitFor();
+  await page.setViewportSize({width:390,height:844});await page.getByRole('region',{name:'Agency information request',exact:true}).scrollIntoViewIfNeeded();
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true);await page.screenshot({path:output+'/'+policy.snapshot.productCode+'-information-mobile.png'});
+  await page.setViewportSize({width:1440,height:1000});
+  report.checks.push({quoteId:policy.sourceQuoteId,action:'Underwriting opens saved agency correspondence on this quote'});
+  await page.getByRole('tab',{name:'Notes',exact:true}).click();await page.getByLabel('Internal note',{exact:true}).waitFor();
   await page.setViewportSize({width:390,height:844});
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true);
   await page.screenshot({path:output+'/'+policy.snapshot.productCode+'-notes-mobile.png'});

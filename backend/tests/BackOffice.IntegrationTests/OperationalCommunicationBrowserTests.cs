@@ -99,13 +99,16 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.True(browser.HasExited,"Communication browser exceeded its acceptance deadline.");
             await File.WriteAllTextAsync(Path.Combine(output,"browser.log"),await stdout+await stderr);Assert.True(browser.ExitCode==0,"Communication browser failed; inspect sanitized failure evidence.");
             Assert.Equal(4,await db.Set<InternalNote>().CountAsync(x=>x.Body.StartsWith("Browser ")));
-            var message=await db.Set<OperationalMessageDraft>().AsNoTracking().SingleAsync();Assert.Equal("Browser revised agency draft",message.Body);Assert.Equal("sent",message.State);
-            Assert.Equal(2,await db.Set<OperationalDelivery>().CountAsync(x=>x.State=="delivered"));
-            Assert.Equal(2,await db.Set<DemoProviderOperation>().CountAsync(x=>x.Kind==MessageDeliveryService.WorkKind));
+            var message=await db.Set<OperationalMessageDraft>().AsNoTracking().SingleAsync(x=>x.Body=="Browser revised agency draft");Assert.Equal("sent",message.State);
+            var information=await db.Set<OperationalMessageDraft>().AsNoTracking().SingleAsync(x=>x.Body=="Please supply the evidence requested in the saved underwriting query.");Assert.Equal("sent",information.State);
+            var informationThread=await db.Set<OperationalThread>().SingleAsync(x=>x.Id==information.ThreadId);
+            Assert.Equal(quoteId,(await db.Set<OperationalSubject>().SingleAsync(x=>x.Id==informationThread.SubjectId)).QuoteId);
+            Assert.Equal(3,await db.Set<OperationalDelivery>().CountAsync(x=>x.State=="delivered"));
+            Assert.Equal(3,await db.Set<DemoProviderOperation>().CountAsync(x=>x.Kind==MessageDeliveryService.WorkKind));
             Assert.Equal(1,await (from exception in db.Set<JobException>()
                 join delivery in db.Set<OperationalDelivery>() on exception.WorkId equals delivery.WorkId
                 select exception).CountAsync());
-            Assert.Equal(file.Id,(await db.Set<MessageDraftAttachment>().SingleAsync()).DocumentVersionId);Assert.Single(await db.Set<MessageDraftRecipient>().ToArrayAsync());
+            Assert.Equal(file.Id,(await db.Set<MessageDraftAttachment>().SingleAsync()).DocumentVersionId);Assert.Equal(2,await db.Set<MessageDraftRecipient>().CountAsync());
             Assert.Equal(version.ContentHash,await db.Set<PolicyVersion>().Where(x=>x.Id==version.Id).Select(x=>x.ContentHash).SingleAsync());
             await File.WriteAllTextAsync(Path.Combine(output,"sql-readback.json"),JsonSerializer.Serialize(new{passed=true,noteCount=4,message.Id,attachmentVersionId=file.Id}));
             Directory.CreateDirectory(Path.Combine(root.FullName,".local/phase9-10-browser"));

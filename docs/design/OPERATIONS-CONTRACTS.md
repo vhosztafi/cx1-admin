@@ -484,3 +484,7 @@ The explicit immutable `summary-details` demo setting yields fictional known sum
 ### Source underwriting view and personal task measures — 2026-09-22
 
 The incident subject-options policyContext also returns the exact selected saved version's nullable termPremium and termEndsAt. The read-only underwriting view shows the administrator-reported incurred amount divided by that written premium, using integer decimal arithmetic and half-up rounding to two percentage decimals. Unknown incurred or non-positive/missing premium produces no percentage. This is explicitly one incident's contribution, not an earned or whole-term loss ratio. The view links the saved policy/renewal workflow and creates an ordinary persisted policy follow-up task; it never changes cover, renewal terms, liability or approval.
+
+### Quote information requests from underwriting
+
+The referral decision screen now opens saved quote correspondence directly. Recording a query remains a reasoned underwriting decision; choose an eligible agency contact, create/save the message draft and explicitly confirm its independent send. Delivery uses the durable demo message adapter and does not approve or resolve any referral. The quote Messages tab retains the same conversation after reload. The MT and CC acceptance cases verify saved quote parent identity, one delivery for the added request and unchanged referral states.
