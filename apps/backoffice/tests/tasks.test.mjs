@@ -5,6 +5,17 @@ import { uncertainQuoteFailure } from '../lib/quotes.ts';
 const id=n=>`aaaaaaaa-0000-4000-8000-${String(n).padStart(12,'0')}`;
 const etag='"AAAAAAAAAAE="';
 
+test('task attachments freeze an exact document version and require task concurrency',()=>{
+ const input={documentVersionId:id(2),reason:'Review this saved evidence'},command=taskCommand('attach-document',id(1),etag,input);
+ input.documentVersionId=id(3);assert.equal(JSON.parse(command.body).documentVersionId,id(2));assert.equal(command.url,`/api/v1/tasks/${id(1)}/attachments`);assert.equal(command.etag,etag);
+ const removed=taskCommand('remove-attachment',id(1),etag,{attachmentId:id(4),reason:'No longer needed'});
+ assert.equal(removed.url,`/api/v1/tasks/${id(1)}/attachments/${id(4)}/remove`);assert.deepEqual(JSON.parse(removed.body),{reason:'No longer needed'});
+ assert.throws(()=>taskCommand('attach-document',id(1),null,{documentVersionId:id(2),reason:'Review'}));
+ assert.throws(()=>taskCommand('attach-document',id(1),etag,{documentVersionId:'latest',reason:'Review'}));
+ assert.throws(()=>taskCommand('remove-attachment',id(1),etag,{attachmentId:id(4),reason:' '}));
+ assert.throws(()=>taskCommand('attach-document',id(1),etag,{documentVersionId:id(2),reason:'Review',subjectRecordId:id(9)}));
+});
+
 test('task command freezes user intent and retains source types',()=>{
  const body={typeCode:'complaint',title:'Review',priority:'normal',assignment:{kind:'unassigned'}};
  const command=taskCommand('create',id(1),null,body);

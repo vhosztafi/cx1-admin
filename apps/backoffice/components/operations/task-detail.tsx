@@ -7,6 +7,7 @@ import { LoadFeedback, useTaskResource } from './shared';
 import { TaskCommand, type TaskConfirmation } from './task-command';
 import { TaskHistory } from './task-history';
 import { TaskAssignmentField } from './task-assignment';
+import { TaskAttachments } from './task-attachments';
 
 export function TaskDetail({ id, actorId }: { id: string; actorId: string }) {
   const result = useTaskResource<TaskView>(`/api/v1/tasks/${id}`);
@@ -61,7 +62,7 @@ function TaskEditor({ task, actorId, refresh }: { task: TaskView; actorId: strin
       </form></Panel>
       <Panel title="Add internal comment"><form className="task-form" onSubmit={event => { event.preventDefault(); prepare('comment', { body: comment }, 'Add comment', `Save this internal comment on ${task.reference}.`); }}><label>Comment<textarea aria-label="Comment" required maxLength={8000} value={comment} onChange={event => setComment(event.target.value)} /></label><button className="button" type="submit">Add comment</button></form></Panel>
       <TaskHistory taskId={task.id} kind="comments" /><TaskHistory taskId={task.id} kind="events" />
-    </div><aside><Panel title="Ownership and due date"><dl className="task-rail-facts"><dt>Owner</dt><dd>{baseline.assignmentLabel}</dd><dt>Due date</dt><dd>{baseline.dueOn ?? 'No due date'}</dd><dt>Priority</dt><dd>{taskPriorities.find(([code]) => code === baseline.priority)?.[1]}</dd></dl></Panel><Panel title="Linked record"><p className="match-copy"><Link href={task.subject.href}>{task.subject.label}</Link></p><p className="match-copy">{task.subject.kind.replaceAll('-', ' ')}</p></Panel><Panel title="Attachments"><p className="match-copy">Document attachments will be available with document management.</p></Panel></aside></div>
+    </div><aside><Panel title="Ownership and due date"><dl className="task-rail-facts"><dt>Owner</dt><dd>{baseline.assignmentLabel}</dd><dt>Due date</dt><dd>{baseline.dueOn ?? 'No due date'}</dd><dt>Priority</dt><dd>{taskPriorities.find(([code]) => code === baseline.priority)?.[1]}</dd></dl></Panel><Panel title="Linked record"><p className="match-copy"><Link href={task.subject.href}>{task.subject.label}</Link></p><p className="match-copy">{task.subject.kind.replaceAll('-', ' ')}</p></Panel><TaskAttachments task={baseline} actorId={actorId} saved={refresh}/></aside></div>
     {pending && <TaskCommand key={pending.command.key} request={pending} actorId={actorId} close={() => setPending(undefined)} saved={() => { setPending(undefined); refresh(); }} />}
   </>;
 }

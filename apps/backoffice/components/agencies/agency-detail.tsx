@@ -1,5 +1,6 @@
 'use client';
 import { TaskCreateEntry } from '../operations/task-create-entry';
+import { RecordDocuments } from '../operations/document-list';
 import Link from 'next/link';
 import { useState } from 'react';
 import { Panel, DataTable } from '../primitives';
@@ -16,7 +17,7 @@ import { AgencyStateRequests } from './agency-state-requests';
 import { AgencyTermsHistory } from './agency-terms-history';
 import { AgencyTermsProposal } from './agency-terms-proposal';
 import { AgencyTermsRequests } from './agency-terms-requests';
-const tabs = ['Overview','Users','Permissions & access','Products','Accounts','Activity'];
+const tabs = ['Overview','Users','Permissions & access','Products','Accounts','Documents','Activity'];
 export function AgencyDetail({id,actorId,canWrite,tab: requested}: {id: string; actorId:string; canWrite: boolean; tab: string}) {
   const [updatedCounts,setUpdatedCounts]=useState<{id:string;users?:number;invited?:number}>();
   const [activityRevision,setActivityRevision]=useState(0);
@@ -33,6 +34,7 @@ export function AgencyDetail({id,actorId,canWrite,tab: requested}: {id: string; 
     {tab === 'Accounts' && (['active','suspended'].includes(agency.state) ? <AgencyTermsHistory id={id} accounts /> : <Panel title="Credit and settlement"><dl className="agency-review">{agencyFields.filter(x => x.stage === 5 && values[x.path]).map(field => <div key={field.path}><dt>{field.label}</dt><dd>{field.options ? Object.entries(field.options).find(([,value]) => String(value) === values[field.path])?.[0] ?? values[field.path] : values[field.path]}</dd></div>)}</dl><p className="match-copy">Balances, statements and exports are not available yet.</p></Panel>)}
     {tab === 'Users' && (canWrite ? <AgencyUsers id={id} agencyState={agency.state} onSaved={async()=>{setActivityRevision(x=>x+1);try{const fresh=await agencyFetch<AgencyDraft>(`/api/v1/agencies/${id}`);setUpdatedCounts({id,users:fresh.data.userCount,invited:fresh.data.invitedUserCount});}catch{setUpdatedCounts({id});}}}/> : <Panel title="Agency users"><p className="match-copy">User administration requires agency administrator access.</p></Panel>)}
     {tab === 'Permissions & access' && (canWrite?<AgencyPermissions id={id} actorId={actorId} agencyState={agency.state} etag={resource.etag!} onSaved={()=>{resource.refresh();setActivityRevision(x=>x+1);}}/>:<Panel title={tab}><p className="match-copy">Permission administration requires agency administrator access. Use Preview shared data to view the agency’s sharing reference.</p></Panel>)}
+    {tab === 'Documents' && <RecordDocuments parent={{kind:'agency',id,label:agency.reference}} />}
     {tab === 'Activity' && <><AgencyActivity key={activityRevision} id={id} />{canWrite && <AgencyNotifications id={id} onSaved={()=>setActivityRevision(x=>x+1)}/>}</>}
   </>;
 }

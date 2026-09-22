@@ -475,4 +475,7 @@ h1, h2, p { margin: 0; }
 .document-preview { width: min(1000px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); overflow: auto; }
 .document-preview-frame { display: block; width: 100%; height: 60dvh; margin-top: 16px; border: 1px solid #e4e7ec; background: #f6f7f9; }
 .document-preview p { overflow-wrap: anywhere; }
+.task-attachments p, .task-attachments h3 { overflow-wrap: anywhere; }
+.task-attachments label { display: grid; gap: 6px; }
+.task-attachments .document-fields { margin-top: 14px; }
 @media (max-width: 600px) { .document-preview { width: calc(100vw - 20px); padding: 16px; } .document-fields input[type=file] { max-width: 100%; } }

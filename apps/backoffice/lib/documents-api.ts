@@ -49,6 +49,12 @@ function key(value: string) { if (!text(value, 200) || value.length < 16 || valu
 function sameId(a: unknown, b: unknown) { return validTaskId(a) && validTaskId(b) && a.toLowerCase() === b.toLowerCase(); }
 const unconfirmed = () => new Error('The saved document result could not be confirmed. Retry the same action.');
 
+export function legacyEvidenceUrl(kind: 'quote' | 'agency' | 'servicing-draft', parentId: string, fileId?: string): string {
+  if (!['quote', 'agency', 'servicing-draft'].includes(kind) || !validTaskId(parentId) || fileId !== undefined && !validTaskId(fileId)) throw new Error('Choose an original evidence file and record.');
+  const family = kind === 'quote' ? 'quotes' : kind === 'agency' ? 'agencies' : 'drafts';
+  return `/api/v1/${family}/${parentId.toLowerCase()}/evidence-files${fileId ? `/${fileId.toLowerCase()}/content` : ''}`;
+}
+
 export function documentOptionsUrl(subjectId: string, source: DocumentSource, cursor?: string): string {
   // Validate the closed source union without choosing a template or a latest version.
   const sourceId = source.kind === 'policy-version' ? source.policyVersionId : source.kind === 'quote-revision' ? source.quoteRevisionId : source.termsVersionId;

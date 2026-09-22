@@ -12,7 +12,7 @@ export const taskTypes = [
 export const taskStates = [['open', 'Open'], ['in-progress', 'In progress'], ['awaiting-information', 'Awaiting information'], ['blocked', 'Blocked'], ['completed', 'Completed'], ['cancelled', 'Cancelled']] as const;
 export const taskPriorities = [['low', 'Low'], ['normal', 'Medium'], ['high', 'High'], ['urgent', 'Urgent']] as const;
 export type TaskPage = { items: TaskView[]; totalCount: number; nextCursor?: string };
-export type TaskAction = 'register' | 'create' | 'update' | 'transition' | 'checklist' | 'comment';
+export type TaskAction = 'register' | 'create' | 'update' | 'transition' | 'checklist' | 'comment' | 'attach-document' | 'remove-attachment';
 export type PendingTaskCommand = Readonly<{ method: 'POST' | 'PUT'; url: string; body: string; key: string; etag?: string; action: TaskAction | 'bulk'; expectedId?: string; selectedIds?: readonly string[] }>;
 
 export class TaskError extends QuoteError {
@@ -57,7 +57,7 @@ function reason(value: unknown) { if (!text(value, 1000)) throw new Error('Enter
 function commandKey(value: string) { if (!text(value, 200) || value.length < 16 || value !== value.trim() || /[\u0000-\u001f]/.test(value)) throw new Error('The save cannot be prepared. Retry from the form.'); return value; }
 
 export function taskCommand(action: TaskAction, recordId: string, etag: string | null, input: Record<string, unknown>, key = crypto.randomUUID()): PendingTaskCommand {
-  if (!['register', 'create', 'update', 'transition', 'checklist', 'comment'].includes(action)) throw new Error('Choose a supported task action.');
+  if (!['register', 'create', 'update', 'transition', 'checklist', 'comment', 'attach-document', 'remove-attachment'].includes(action)) throw new Error('Choose a supported task action.');
   if (!validTaskId(recordId)) throw new Error('Choose a saved linked record.');
   const id = recordId.toLowerCase(); let body = { ...input };
   if (action === 'create' || action === 'update') {
@@ -77,12 +77,18 @@ export function taskCommand(action: TaskAction, recordId: string, etag: string |
       if (!object(item)) throw new Error('Review the checklist selection.'); keys(item, ['id', 'completed']);
       if (!validTaskId(item.id) || typeof item.completed !== 'boolean' || ids.has(item.id.toLowerCase())) throw new Error('Review the checklist selection.'); ids.add(item.id.toLowerCase());
     }
+  } else if (action === 'attach-document' || action === 'remove-attachment') {
+    const field = action === 'attach-document' ? 'documentVersionId' : 'attachmentId';
+    keys(body, [field, 'reason']); reason(body.reason);
+    if (!validTaskId(body[field])) throw new Error('Choose a saved document version or attachment.');
   } else {
     keys(body, ['kind']); if (!['agency', 'relationship', 'quote', 'policy', 'servicing-draft'].includes(String(body.kind))) throw new Error('Choose a supported linked record.');
     body = { ...body, parentId: id };
   }
   if (action !== 'create' && action !== 'register' && !validQuoteEtag(etag)) throw new Error('Reload the saved task version before saving.');
-  const url = action === 'register' ? '/api/v1/operational-subjects' : action === 'create' ? '/api/v1/tasks' : `/api/v1/tasks/${id}${action === 'update' ? '' : action === 'comment' ? '/comments' : `/${action}`}`;
+  const url = action === 'register' ? '/api/v1/operational-subjects' : action === 'create' ? '/api/v1/tasks' : action === 'attach-document' ? `/api/v1/tasks/${id}/attachments`
+    : action === 'remove-attachment' ? `/api/v1/tasks/${id}/attachments/${String(body.attachmentId).toLowerCase()}/remove` : `/api/v1/tasks/${id}${action === 'update' ? '' : action === 'comment' ? '/comments' : `/${action}`}`;
+  if (action === 'remove-attachment') body = { reason: body.reason };
   return Object.freeze({ action, method: action === 'update' || action === 'checklist' ? 'PUT' : 'POST', url, body: JSON.stringify(body), key: commandKey(key),
     ...(etag && action !== 'create' && action !== 'register' ? { etag } : {}), expectedId: id });
 }

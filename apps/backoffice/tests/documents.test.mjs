@@ -1,10 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { documentCommand, sendDocumentCommand, prepareFileUpload, sendFileUpload, documentContentUrl, documentOptionsUrl } from '../lib/documents-api.ts';
+import { documentCommand, sendDocumentCommand, prepareFileUpload, sendFileUpload, documentContentUrl, documentOptionsUrl, legacyEvidenceUrl } from '../lib/documents-api.ts';
 import { uncertainQuoteFailure } from '../lib/quotes.ts';
 const id=n=>`aaaaaaaa-0000-4000-8000-${String(n).padStart(12,'0')}`;
 const input=()=>({kind:'policy-schedule',source:{kind:'policy-version',policyVersionId:id(2)},templateVersionId:id(3),visibility:'internal',reason:'Generate the selected historical cover'});
 const receipt=()=>({id:id(4),documentId:id(5),number:1,kind:'policy-schedule',state:'pending',originalName:'schedule.pdf',bytes:0,contentType:'application/pdf',sourceVersionId:id(2),templateVersionId:id(3),createdAt:'2026-09-21T12:00:00Z'});
+
+test('retained evidence keeps original typed download identity without arbitrary URLs',()=>{
+ for(const [kind,path] of [['quote','quotes'],['agency','agencies'],['servicing-draft','drafts']])assert.equal(legacyEvidenceUrl(kind,id(1),id(2)),`/api/v1/${path}/${id(1)}/evidence-files/${id(2)}/content`);
+ assert.throws(()=>legacyEvidenceUrl('policy',id(1),id(2)));assert.throws(()=>legacyEvidenceUrl('quote','../../other',id(2)));assert.throws(()=>legacyEvidenceUrl('agency',id(1),'https://example.test'));
+});
 
 test('template picker URL retains explicit historical source and opaque cursor',()=>{
  const url=new URL(documentOptionsUrl(id(1),{kind:'quote-revision',quoteRevisionId:id(2),quoteTermsVersionId:id(3)},'a+b/=c'),'https://local.example');

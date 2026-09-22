@@ -6,6 +6,7 @@ import { quoteFetch } from '../../lib/quotes';
 import type { TermsDocument, TermsHistoryItem, TermsSnapshot, TermsView, TermsDocumentHistory } from '../../lib/servicing-terms';
 import { PageButtons, useProofRead } from './servicing-proof-read';
 import { QuoteProposalDetails } from '../quotes/quote-history';
+import { RecordDocuments } from '../operations/document-list';
 
 const date = (value: string) => new Date(value).toLocaleString('en-GB');
 const money = (value: string) => new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(Number(value));
@@ -30,6 +31,7 @@ export function ServicingTerms({ kind = 'adjustment', draftId, revisionId, cycle
   const [templateId, setTemplateId] = useState(''), [recipients, setRecipients] = useState<string[]>([]);
   const [accepter, setAccepter] = useState(''), [acceptedAt, setAcceptedAt] = useState(''), [channel, setChannel] = useState('email'), [proofId, setProofId] = useState('');
   const [observedAt, setObservedAt] = useState(0);
+  const [documentTermsId, setDocumentTermsId] = useState<string>();
   const enabled = active && read.current && view?.cycleId === cycleId && view?.revisionId === revisionId && view.applicable;
   const template = templateId || view?.templates[0]?.id || '';
   const terms = view?.terms;
@@ -77,7 +79,9 @@ export function ServicingTerms({ kind = 'adjustment', draftId, revisionId, cycle
       {view.acceptance && <article className="quote-driver-card" aria-label="Recorded acceptance"><h4>Recorded acceptance</h4><Status tone={read.current && view.acceptanceApplicable ? 'success' : 'warning'}>{read.current && view.acceptanceApplicable ? 'Current acceptance' : 'Historical acceptance — fresh confirmation required'}</Status>
         <p>{view.acceptance.accepterLabel} · {view.acceptance.channel} · {date(view.acceptance.acceptedAt)}</p><p>Acceptance is recorded separately from delivery. Final issue checks still apply.</p></article>}
     </>}
-    <TermsHistory base={base} etag={etag} paused={paused} renewal={renewal} />
+    {terms && <button className="button" disabled={paused} onClick={() => setDocumentTermsId(terms.id)}>Documents for prepared terms</button>}
+    <TermsHistory base={base} etag={etag} paused={paused} renewal={renewal} openDocuments={setDocumentTermsId} />
+    {documentTermsId && <><button className="button" onClick={() => setDocumentTermsId(undefined)}>Close terms documents</button><RecordDocuments key={documentTermsId} parent={{kind:'servicing-draft',id:draftId,label:renewal?'Renewal draft':'Adjustment draft'}} source={{kind:'servicing-terms',termsVersionId:documentTermsId}} /></>}
   </section>;
 }
 
@@ -106,7 +110,7 @@ function Contract({ document, renewal = false }: { document: TermsDocument; rene
   </details>;
 }
 
-function TermsHistory({ base, etag, paused, renewal }: { base: string; etag: string; paused: boolean; renewal: boolean }) {
+function TermsHistory({ base, etag, paused, renewal, openDocuments }: { base: string; etag: string; paused: boolean; renewal: boolean; openDocuments: (id: string) => void }) {
   const [kind, setKind] = useState('terms'), [open, setOpen] = useState(false), [page, setPage] = useState({ etag, cursor: '' });
   const [document, setDocument] = useState<TermsSnapshot | null>(null), [error, setError] = useState('');
   const cursor = page.etag === etag ? page.cursor : '';
@@ -116,7 +120,7 @@ function TermsHistory({ base, etag, paused, renewal }: { base: string; etag: str
     <p>Retained records show what happened. Historical acceptance does not grant current issue permission.</p>
     <label>Terms history type<select aria-label="Terms history type" disabled={paused} value={kind} onChange={e => { setKind(e.target.value); setPage({ etag, cursor: '' }); setDocument(null); }}><option value="terms">Prepared terms</option><option value="deliveries">Delivery attempts</option><option value="acceptances">Recorded acceptances</option></select></label>
     {read.error && <p role="status">{read.error}</p>}{error && <p role="alert">{error}</p>}
-    {read.data?.items.map(x => <article key={x.id} className="quote-driver-card"><p>{x.label} · {x.state} · {date(x.recordedAt)}</p><button className="button" onClick={() => void show(x.termsVersionId)}>View retained contract</button></article>)}
+    {read.data?.items.map(x => <article key={x.id} className="quote-driver-card"><p>{x.label} · {x.state} · {date(x.recordedAt)}</p><button className="button" onClick={() => void show(x.termsVersionId)}>View retained contract</button><button className="button" disabled={paused} onClick={() => openDocuments(x.termsVersionId)}>Documents for these terms</button></article>)}
     {read.data && <PageButtons cursor={cursor} next={read.data.nextCursor} disabled={paused} change={value => setPage({ etag, cursor: value })} />}
     {document && <><p>Historical contract prepared {date(document.preparedAt)}.</p><Contract document={document.document} renewal={renewal} /></>}
   </details>;

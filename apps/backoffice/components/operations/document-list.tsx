@@ -8,6 +8,7 @@ import { DataTable, Panel, Status } from '../primitives';
 import type { TaskParent } from './task-create';
 import { DocumentGenerate } from './document-generate';
 import { DocumentUpload } from './document-upload';
+import { LegacyEvidence } from './document-legacy-evidence';
 import { DocumentMetadata, DocumentPreview } from './document-preview';
 import { documentDate, documentSize, LoadFeedback, Paging, useDocumentResource } from './document-shared';
 
@@ -30,6 +31,7 @@ export function RecordDocuments({ parent, source, relationshipId }: { parent: Ta
   return <Panel title="Documents" note="Saved files and immutable version history. Generating a file does not send it.">
     {result.key === key && result.subjectId && result.actorId ? <DocumentList key={`${result.actorId}:${result.subjectId}:${JSON.stringify(source)}`} subjectId={result.subjectId} actorId={result.actorId} source={source} relationshipId={relationshipId} />
       : <LoadFeedback error={result.key === key ? result.error : undefined} retry={() => setRevision(x => x + 1)} />}
+    {['quote', 'agency', 'servicing-draft'].includes(parent.kind) && <LegacyEvidence key={`${parent.kind}:${parent.id}`} kind={parent.kind as 'quote' | 'agency' | 'servicing-draft'} parentId={parent.id} />}
   </Panel>;
 }
 export function DocumentList({ subjectId, actorId, source, relationshipId }: { subjectId: string; actorId: string; source?: DocumentSource; relationshipId?: string }) {

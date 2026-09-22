@@ -1,4 +1,5 @@
 'use client';
+import { RecordDocuments } from '../operations/document-list';
 import { useState } from 'react';
 import Link from 'next/link';
 import { DataTable, EmptyState, Panel, Status } from '../primitives';
@@ -39,14 +40,16 @@ export function ClientDetail({ clientId, tab: requestedTab, canWrite, canWriteCo
 }
 function Unavailable({ title, description }: { title: string; description: string }) { return <Panel title={title}><EmptyState title={`${title} are not available yet`}>{description}</EmptyState></Panel>; }
 function Relationships({ clientId, onAdd }: { clientId: string; onAdd?: () => void }) {
+  const [documentRelationship, setDocumentRelationship] = useState<Relationship>();
   const [history,setHistory] = useState(['']); const cursor = history.at(-1)!;
   const resource = useClientResource<Page<Relationship>>(`/api/v1/clients/${clientId}/relationships?pageSize=15${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`);
   return <Panel title="Agency relationships" note="Contacts and servicing instructions belong to each relationship">
     {onAdd && <div className="panel-footer"><button className="button" onClick={onAdd}>Add agency relationship</button></div>}
     {!resource.data ? <LoadFeedback error={resource.error} retry={resource.refresh} /> : !resource.data.items.length ? <EmptyState title="No agency relationships">Agency relationships will appear here when this client is associated with an agency.</EmptyState> : <DataTable caption="Agency relationships" columns={['Agency','Reference','Relationship status']}>
-      {resource.data.items.map(row => <tr key={row.id}><td>{row.agencyName}</td><td>{row.agencyReference}</td><td><Status tone={row.state === 'active' ? 'success' : 'muted'}>{row.state}</Status>{row.state === 'active' && <TaskCreateEntry parent={{kind: 'relationship', id: row.id, label: row.agencyReference + ' · ' + row.agencyName}} />}</td></tr>)}
+      {resource.data.items.map(row => <tr key={row.id}><td>{row.agencyName}</td><td>{row.agencyReference}</td><td><Status tone={row.state === 'active' ? 'success' : 'muted'}>{row.state}</Status>{row.state === 'active' && <><TaskCreateEntry parent={{kind: 'relationship', id: row.id, label: row.agencyReference + ' · ' + row.agencyName}} /><button className="button" onClick={() => setDocumentRelationship(row)}>Relationship documents</button></>}</td></tr>)}
     </DataTable>}
     <Paging total={resource.data?.totalCount} previous={history.length > 1 ? () => setHistory(x => x.slice(0,-1)) : undefined} next={resource.data?.nextCursor ? () => setHistory(x => [...x,resource.data!.nextCursor!]) : undefined} />
+    {documentRelationship && <div className="quote-rail-body"><h3>{documentRelationship.agencyReference} · {documentRelationship.agencyName}</h3><button className="button" onClick={() => setDocumentRelationship(undefined)}>Close relationship documents</button><RecordDocuments key={documentRelationship.id} parent={{kind:'relationship',id:documentRelationship.id,label:documentRelationship.agencyReference}} relationshipId={documentRelationship.id}/></div>}
   </Panel>;
 }
 function ClientActivity({ clientId }: { clientId: string }) {

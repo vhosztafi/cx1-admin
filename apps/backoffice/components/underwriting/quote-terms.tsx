@@ -13,6 +13,7 @@ import { UnderwritingEvidence } from './underwriting-evidence';
 import { DecisionCommand, type DecisionRequest } from './decision-command';
 import { QuoteAcceptance } from './quote-acceptance';
 import { QuoteIssue } from './quote-issue';
+import { RecordDocuments } from '../operations/document-list';
 export function QuoteTerms({ quote, actorId, refresh, questionLabels }: { quote: QuoteView<QuoteCaptureProposal>; actorId: string; refresh: () => void; questionLabels: Record<string, string> }) {
   const router = useRouter();
   const assessment = useQuoteResource<UnderwritingAssessment>(`/api/v1/quotes/${quote.id}/underwriting`);
@@ -21,6 +22,7 @@ export function QuoteTerms({ quote, actorId, refresh, questionLabels }: { quote:
   const history = useQuoteResource<QuotationHistory>(`/api/v1/quotes/${quote.id}/terms?${query}`);
   const evidence = useQuoteResource<{ items: Evidence[]; nextCursor?: string }>(`/api/v1/quotes/${quote.id}/underwriting/evidence?pageSize=100${evidenceCursor ? '&cursor=' + encodeURIComponent(evidenceCursor) : ''}`);
   const [template, setTemplate] = useState(''), [recipients, setRecipients] = useState<string[]>([]), [request, setRequest] = useState<DecisionRequest>(), [error, setError] = useState('');
+  const [documentTerms, setDocumentTerms] = useState<QuotationTerms>();
   if (!assessment.data || !history.data || !evidence.data) return <Panel title="Quotation"><LoadFeedback error={assessment.error || history.error || evidence.error} retry={refresh} /></Panel>;
   const current = assessment.data, data = history.data;
   const coherent = current.quoteId === quote.id && current.state === quote.state && current.context?.revisionId === quote.revisionId;
@@ -46,9 +48,10 @@ export function QuoteTerms({ quote, actorId, refresh, questionLabels }: { quote:
       {current.acceptanceId ? <Status tone="success">Current acceptance recorded</Status> : data.acceptances.length > 0 ? <p role="status">The quote has changed since acceptance. Review the current terms and record fresh acceptance.</p> : <p>No current acceptance recorded.</p>}
       {!terms && <p>{current.termsVersionId ? 'Current terms are on the latest history page.' : 'Prepare the current quotation once the pricing and underwriting requirements are complete.'}</p>}
       {terms && <p>Terms version {terms.number} · {current.capabilities.canSend ? 'Required signing proof reviewed' : 'Review current requirements and exact-version proof'}</p>}
-      <p className="client-help">Prepared terms are available below as structured information. Generated quotation documents are not available yet.</p>
+      <p className="client-help">Choose a saved terms version below to generate or view its documents.</p>
     </div></Panel>
-    {data.terms.map(item => <Panel key={item.id} title={`Terms version ${item.number}`} note={item.id === current.termsVersionId ? 'Current prepared version' : 'Historical version · retained unchanged'}><div className="quote-rail-body"><TermsPreview terms={item} questionLabels={questionLabels} /></div></Panel>)}
+    {data.terms.map(item => <Panel key={item.id} title={`Terms version ${item.number}`} note={item.id === current.termsVersionId ? 'Current prepared version' : 'Historical version · retained unchanged'}><div className="quote-rail-body"><TermsPreview terms={item} questionLabels={questionLabels} /><button className="button" onClick={() => setDocumentTerms(item)}>Documents for terms version {item.number}</button></div></Panel>)}
+    {documentTerms && <><button className="button" onClick={() => setDocumentTerms(undefined)}>Close quotation documents</button><RecordDocuments key={documentTerms.id} parent={{kind:'quote',id:quote.id,label:quote.reference}} source={{kind:'quote-revision',quoteRevisionId:documentTerms.revisionId,quoteTermsVersionId:documentTerms.id}} relationshipId={quote.relationshipId}/></>}
     {paging('terms', data.nextTermsCursor)}
     <Panel title="Delivery history" note="Persisted demo delivery · no external transmission"><div className="quote-rail-body">
       {!data.deliveries.length && <p>No delivery requested.</p>}{data.deliveries.map(item => <Delivery key={item.id} item={item} quoteId={quote.id} run={setRequest} />)}{paging('deliveries', data.nextDeliveriesCursor)}
