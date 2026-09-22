@@ -3,6 +3,13 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 const read=async p=>JSON.parse(await readFile(p,'utf8'));
 const path='.planning/phases/09-tasks-documents-communication-and-incidents/09-SOURCE-INVENTORY.json';
+test('agency open-items handoff retains every original display occurrence',async()=>{
+ const [ledger,render]=await Promise.all([read(path),read('docs/design/source/prototype-render-data.json')]);
+ const expected=render.items.flatMap((x,i)=>x.method==='pPortal'&&x.path.startsWith('.sections[2]')?[i]:[]);
+ assert.equal(expected.length,13);assert.deepEqual(ledger.supplementalInheritedDisplays.map(x=>x.sourceOccurrence),expected);
+ for(const row of ledger.supplementalInheritedDisplays){assert.deepEqual(row.source,render.items[row.sourceOccurrence]);assert.equal(row.ownerPlan,'09-17');assert.equal(row.handoff,'docs/design/AGENCY-SOURCE-COVERAGE.md');}
+ assert.equal(ledger.denominators.displayOccurrences,509);assert.equal(ledger.denominators.supplementalInheritedDisplayOccurrences,13);
+});
 test('operational source ledger preserves all direct and inherited original identities',async()=>{
  const [ledger,original,seven,eight]=await Promise.all([read(path),read('docs/design/control-inventory.json'),read('.planning/phases/07-policy-lifecycle-and-history/07-SOURCE-INVENTORY.json'),read('.planning/phases/08-commercial-combined-back-office/08-SOURCE-INVENTORY.json')]);
  const direct=original.controls.filter(x=>Number(x.phase)===9);assert.equal(direct.length,62);

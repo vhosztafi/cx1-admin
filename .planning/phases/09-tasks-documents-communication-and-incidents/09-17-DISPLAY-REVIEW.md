@@ -41,3 +41,9 @@ Component paths below are relative to apps/backoffice/components/operations unle
 |4675–4680|Task type/title/eligible assignee/priority/due, saved parent, explicit review/create and persisted reload. No fake successful toast.|task-create.tsx, task-assignment.tsx, task-command.tsx; task browser create and task API validation|
 
 Outstanding review work: reconcile each original control/branch and commercial occurrence with these field bindings and exact final report paths; validate the removed commercial motor fallback explicitly; collect all current browser reports and full regression. No Phase9 completion or human UAT is inferred from this document.
+
+### Supplemental inherited agency open items
+
+Original pPortal occurrences3806–3818 (13raw entries) are retained separately from the original509display denominator. Title/column/item/ref/action/status bind to the scoped shared list: explicit delivered-message requests with stable ARQ references, and exact current delivered unaccepted quote/servicing terms. Internal reasons/task comments never enter the public row. Signed proof precedes terms delivery in the actual implemented lifecycle. Closed/accepted/superseded/expired items leave the open list while immutable history remains.
+
+Bounded proof: .local/phase9-17-agency-response-browser/sql.trx passed2/2,22checks per product and SQL closure readbacks; original-message provenance, lost-response identical replay, actual agency-page reload,390px overflow check and reasoned closure without referral changes. Both mobile screenshots were visually inspected. Scoped SQL includes broker/foreign/ended relationship, stale cursor/ETag, duplicate keys, SQL history immutability and downgrade refusal. .local/phase9-17-agency-response-scope/sql.trx3pass; commercial gate3pass. Retained migration/preservation and full current phase acceptance remain pending.

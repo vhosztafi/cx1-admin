@@ -1,5 +1,15 @@
 # Operational contracts v1
 
+## Agency-facing response requests and pending acceptance — Phase9 source handoff
+
+AgencyResponseRequest is an explicit staff tracking decision for one exact delivered OperationalMessageVersion, with a unique version FK and ARQ reference. Public subject/instruction are copied from that immutable delivered snapshot. The original subject/relationship/message version and internal creation reason cannot change. Awaiting-response transitions once to response-received or withdrawn with actor/time/internal reason and rowversion. SQL rejects forged public content, undelivered provenance, deletes and terminal rewrites; downgrade refuses retained requests. This correspondence state never approves underwriting or changes cover.
+
+POST `/messages/{messageId}/agency-response` accepts only reason and requires an idempotency key. GET returns null when untracked or a retained receipt with originating messageId and ETag. POST `/agency-responses/{requestId}/resolve` accepts only outcome/reason and requires If-Match plus idempotency key. Current staff identity, typed parent and active agency thread relationship are held before receipt replay. Queued/failed messages cannot be tracked; separate keys cannot create duplicate requests. Closed items remain internally readable.
+
+The staff `/agencies/{agencyId}/sharing/open-items` and broker `/agency-context/open-items` use the same explicit public allowlist: id, reference, kind, subject, instruction, state and createdAt. Internal reasons, recipients, task titles/comments and underwriting rules never enter search, counts or cursor fingerprints. Current active agency/relationship ownership is rechecked for every page. The API resolves one current server time for both scope fingerprint and materialization, under the same serializable transaction. Each source is translated separately to SQL, then public rows are searched case-insensitively and ordered by creation/id before paging.
+
+Sources are open explicitly tracked delivered messages and currently delivered unaccepted quotation/servicing terms. Acceptance rows pin current revision/cycle/rating/terms/delivery, exclude superseded/expired/issued sources and stale servicing base versions or lapsed renewals. Quotation capture locking is not withdrawal; sent state is used. The existing application requires signed proof before terms delivery, so these public rows request acceptance only. No external portal is introduced; the prototype page remains an internal data-sharing reference.
+
 Phase9 implementation contract,2026-09-21. This document describes the approved target; runtime routes/storage remain pending their owning plans. `contracts/schemas/operations.schema.json` and generated `contracts/generated/operations.ts` are produced from `scripts/operations-contracts.mjs`. OpenAPI applies `addOperationalRuntimeContracts` after legacy form modifiers, so its final endpoint schemas are authoritative. New/updated routes are labelled phase-9-contract-only until proven implemented. Existing issued-policy JSON, source envelopes and live underwriting/servicing routes remain unchanged.
 
 ## Ownership and transactional model

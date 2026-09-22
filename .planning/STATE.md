@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Phase9 plan09-16 complete;09-17 request-history fix verified and committed;full549-case v3 regression76741 running.
-last_updated: "2026-09-22T20:53:00+00:00"
-last_activity: "2026-09-22 — Request history restored in3a5dd2e; targeted commercial and MT history plus retained mobile/keyboard checks pass; full v3 regression76741 running."
+stopped_at: Phase9 plan09-17 bounded agency response checks and retained upgrade passed; fresh full v4 gate prepared.
+last_updated: "2026-09-22T22:11:17.3103921+00:00"
+last_activity: "2026-09-22 — Agency responses implemented and demonstrated; 1337 units, 421 root tests, focused SQL and both-product browser checks passed. Full v4 regression pending."
 progress:
   total_phases: 13
   completed_phases: 8
@@ -27,7 +27,7 @@ Current focus: Phase9 tasks, documents, communication and incidents.
 Phase: 9 of13
 Plan: 17 of18 — final source reconciliation and current runtime evidence
 09-06 complete:72unique cases/7realSQL/no skips in.local/phase9-06-final-strict,412root and15 independent parsed PDFs with multi-page visual review. Future templates are additive; migration protects retained rows. No verification process remains running; see09-06-SUMMARY.
-Status: Executing09-17.09-16 complete. Underwriting view/personal task fixes committed d827548,3/3 focused SQL/browser and21retained entry checks pass. Full1328units pass; query correspondence d811fc6 passed2/2SQL/browser and23retained entry checks; source map reviewed. Full integration53019 and92140 are interrupted evidence only. Request history restored in3a5dd2e; commercial passed, both MT history cases passed after stale agency-route assertions were corrected, retained desktop/390px/keyboard checks passed. Fresh549-case full v3 regression76741 running; do not duplicate or change its inputs. Source reconciliation, collectors and restart remain.
+Status: Executing09-17.09-16 complete. Agency response tracking and current public open items are implemented; focused SQL, 22 browser checks per product and retained migration preservation passed. Feature commit1c7b285. Full attempts53019/92140/76741 are interrupted evidence only; supervisor11608 stopped before any stages. Fresh v4 inventory550integration/485realSQL with1337passedunits; full run not yet launched. Inspect latest09-16-CHECKPOINT before starting acceptance.
 Last activity: Phase8 completed2026-09-21; all16 summaries and08-VERIFICATION pass. Final strict gate1511 unique cases/383 realSQL/no skips and exact420-case integration inventory;399root/172frontend, commercial5/5 and retained servicing17/17 plus underwriting pass. No verification process remains running. Phase9 task SQL/API checks are complete:32 focused cases/3 realSQL,411root and57final contract checks. 09-03 task UI passed29focused cases/2realSQL and16browserchecks plus SQL readback;411root177frontend, build/lint/typecheck pass.
 09-04:41unique strict passes/8realSQL, all8typed adapters/fivefamilies, hosted dispatcher and18browserchecks plus SQL readback,411root177frontend54contracts; build/lint/typecheck pass. OPS-02 complete; no acceptance process remains running.
 09-05:47unique strict passes/4realSQL,8filesystem cases, all3legacy evidence bridges, hosted finalization and API host restart,412root55contracts; OpenAPI valid. Current gate.local/phase9-05-final-strict. No verification process remains running. OPS-05 history/UI obligations remain09-07/08.
@@ -43,10 +43,10 @@ Progress: eight of13 phases complete;97/99 currently defined plans complete. Lat
 
 ## Next work
 
-Review active full549-case v3 gate76741 before launching another SQL/browser suite. Supervisor11608 waits behind it and will run strict inventory, legacy-result accounting, operational collector and retained servicing/underwriting sequentially only after a pass; do not duplicate those stages. See `.local/phase9-final-v3-followthrough/report.json`. Final additive initialization/restart/readback remains after the supervisor. Plans09-01 through09-16 are complete. Keep both interrupted full attempts separate. Inspect09-16-CHECKPOINT before changing processes or builds.
+Launch the prepared fresh v4 full gate once, then validate exact inventory/source hashes and strict accounting. Reuse existing legacy SQL results, run current operational collector and retained servicing/underwriting sequentially. Final two initializations, restart/readbacks, source acceptance and verification remain. Do not relaunch v3 or its supervisor; do not count interrupted gates as passes.
 
 ## Evidence and continuity
 
-Phase8 final evidence:08-16-SUMMARY.md and08-VERIFICATION.md. Full integration session70737 ended successfully; strict.local/phase8-16-final-strict verifies1511/383 and exact inventory. Do not restart old acceptance queues. Current preview identities are in.local/phase9-16-preview-pids.json (API75380/web32188,5087/3100); verify identity before changing processes.
+Phase8 final evidence:08-16-SUMMARY.md and08-VERIFICATION.md. Full integration session70737 ended successfully; strict.local/phase8-16-final-strict verifies1511/383 and exact inventory. Do not restart old acceptance queues. Current preview identities are in.local/phase9-16-preview-pids.json (API88392/web2432,5087/3100); verify identity before changing processes.
 
 User authorised autonomous research/planning/implementation and explicitly requested continuous work. No routine confirmation is required. Heartbeat continue-cover-mga-back-office-mvp remains ACTIVE every10minutes as a fallback and must avoid duplicate work. Human business/assistive-technology UAT, hostedCI and Docker runtime remain unperformed. Generic GSD state commands can reset custom metadata and over-complete compound requirements; reconcile actual records instead.

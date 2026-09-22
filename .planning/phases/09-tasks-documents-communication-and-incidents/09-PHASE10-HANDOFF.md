@@ -33,3 +33,22 @@ Components retain coverage intervals and optional `OriginalComponentId` for reve
 | FIN-08 | Period lock ordering, closure prerequisites and later correcting journals without rewriting posted history. |
 
 POL-01 remains partial until its linked finance view is implemented and verified. CC-05 must only be completed after Phase 9's actual operational verification, not from this handoff. The original prototype remains the source inventory for finance UI controls; this document does not reduce that inventory. Human business and assistive-technology UAT remains unperformed.
+
+## Source census preparation
+
+Read-only comparison while Phase 9 regression runs found **24 controls** assigned to Phase 10 in `docs/design/control-inventory.json`, all under `pAccounting` and all initially tagged FIN-01. This is a discovery baseline, not a complete finance denominator or requirement mapping. The decoded original `docs/design/source/prototype-template.txt:2824` also contains disabled, display-only and implied behavior that must be inventoried explicitly during Phase 10 planning.
+
+| Original surface | Additional source obligations to preserve |
+| --- | --- |
+| Overview | Written premium/tax/fees/commission/net-to-insurer; cash in period; closing/overdue agency balances; earned premium on the stated pro-rata monthly basis; ageing buckets; scoped KPI and attention-row navigation. Define each calculation and time basis before rendering. |
+| Transactions | Actual insurance movement and policy drill-through; effective versus posted date; signed components; invoice/paid/credited/write-off states require real persisted finance evidence. A posting alone does not establish paid status. |
+| Broker accounts | Current and historical settlement terms, due/overdue balances and last receipt; selected agency/period statement with opening + debits − credits = closing. Do not copy the fixed Brightside statement. |
+| Payments | Receipt details including the display-only View action, explicit payer assignment, match/allocation/unallocation and residual cash. Navigation must retain selected receipt/invoice identities. |
+| Reconciliation | Bank-line identity and duplicate evidence; actual receipts, refunds, insurer settlements and fee drawings; explain/exclude/resolve with audit. Do not manufacture a balancing number to clear the banner. |
+| Bordereaux | Prior submitted downloads, batch detail, all failing-row correction actions (including link-styled cells without handlers), repeat validation, reasoned exclusions, CSV, and disabled Submit becoming available only for a valid exact version. |
+| Refunds | The final `else` branch renders refund records and audit history. Approval/payment actions are implied by the approved requirement even though the source has no clickable approval button. The displayed £250 second-approval threshold is a prototype demo value requiring explicit versioned rules, not a production compliance assertion. |
+| Journal / period | Post journal and Export period are toast-only in the prototype and require actual authorized persisted behavior. Closed-period banner implies a real closure state and correction workflow; FIN-08 cannot be omitted because there is no source close button. |
+
+Inherited entry `CTL-e834b4734421` is **pAgency → Open in Accounting**, historically owned by Phase 4 but explicitly handed to Phase 10 in AGENCY-SOURCE-COVERAGE. It must open the selected scoped agency account. `CTL-f68f49a17b06` (**pAdmin → Open bordereaux**) retains Phase 11's configuration owner; its Phase 10 destination must nevertheless be real. Policy finance and reporting's Finance-category navigation are additional cross-phase callers to reconcile. Keep separate raw source identities rather than assigning every accounting action to FIN-01 or treating an entire tab as verified from one click.
+
+No finance source inventory was regenerated, no finance code or schema was changed, and no Phase 10 plan was approved by this preparation.

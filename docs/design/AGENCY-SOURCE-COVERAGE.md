@@ -26,3 +26,7 @@ Phase 4 contract review, 04-01. This is design coverage; runtime acceptance is s
 | Local invitation link/password acceptance (required to make invitations functional) | Development-only audited secret reveal, fragment removal, CSRF-protected one-time acceptance; no automatic sign-in | 04-05/04-07 |
 
 The source relationship-manager names are examples replaced with stored selectable user IDs. Both source TOBA versions remain selectable declarations; only the current configured agreement can satisfy activation. Fleet references do not enable an unapproved fourth product. Compliance declarations preserve source choices but cannot claim regulator/provider verification. Phase 4 SQL/API/browser checks must prove persistence, denial, concurrency and truthful delivery separately from this source contract.
+
+### Phase9 agency-sharing handoff implementation
+
+The13original pPortal open-item display occurrences3806–3818 now map to the shared public open-items projection and the agency sharing-reference table. Explicit tracking copies only the exact delivered agency message; internal task titles/comments/reasons remain hidden. Pending quotation and servicing acceptance use current delivered immutable terms and disappear after acceptance, expiry or supersession. Reasoned response closure retains history without changing underwriting decisions. Detailed current evidence and remaining browser/preservation gates are recorded in09-17-AGENCY-OPEN-ITEMS and09-16-CHECKPOINT; this note does not claim final Phase9 acceptance.
