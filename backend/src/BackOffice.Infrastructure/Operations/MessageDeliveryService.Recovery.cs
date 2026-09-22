@@ -21,7 +21,11 @@ public sealed partial class MessageDeliveryService
                 if(message!=(hint.MessageVersionId is not null))throw CommunicationScope.Missing();
                 var held=await OperationalScope.HoldSubjects(db,actor,[hint.SubjectId],message?"message-send":"document-send",ct);
                 var original=JsonSerializer.Deserialize<DeliveryContent>(hint.ContentJson,CommunicationScope.Json)!;
-                snapshot=await DeliverySnapshots.Capture(db,actor,held.Subjects.Single(),hint.RelationshipId,original.Subject,new(original.Body,original.Recipients.Select(x=>x.ContactId).ToArray(),original.Attachments.Select(x=>x.VersionId).ToArray()),ct);
+                var cancellation=await db.Set<CancellationNoticeDispatch>().AsNoTracking().SingleOrDefaultAsync(x=>x.DeliveryId==hint.Id,ct);
+                if(cancellation is not null && resend)throw new OperationalAccessException(409,"cancellation-notice-resend-not-supported");
+                snapshot=cancellation is null
+                    ? await DeliverySnapshots.Capture(db,actor,held.Subjects.Single(),hint.RelationshipId,original.Subject,new(original.Body,original.Recipients.Select(x=>x.ContactId).ToArray(),original.Attachments.Select(x=>x.VersionId).ToArray()),ct)
+                    : await DeliveryAuthority.HoldSender(db,hint,ct);
                 if(DeliverySnapshots.Serialize(snapshot)!=hint.ContentJson)throw new OperationalAccessException(409,"delivery-context-changed");
             },async(db,ct)=>
             {

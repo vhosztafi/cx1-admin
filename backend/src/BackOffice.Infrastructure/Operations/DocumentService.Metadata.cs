@@ -32,9 +32,16 @@ public sealed partial class DocumentService
             foreach(var t in terms)sources[t.Id]=($"{(t.Kind=="renewal"?"Renewal":"Adjustment")} terms {t.Sequence}",t.PreparedAt);
         }
         var versionIds=rows.Select(x=>x.Version.Id).ToArray();
+        var withdrawals=await(from version in db.Set<PolicyVersion>() join withdrawal in db.Set<CertificateWithdrawal>() on version.TermId equals withdrawal.TermId
+            where policyIds.Contains(version.Id) select new{version.Id,withdrawal.CertificateKind,withdrawal.EffectiveAt}).AsNoTracking().ToArrayAsync(token);
         var contents=await db.Set<DocumentVersionContent>().AsNoTracking().Where(x=>versionIds.Contains(x.VersionId)).ToDictionaryAsync(x=>x.VersionId,token);
         foreach(var (version,view) in rows)
         {
+            if(version.PolicyVersionId is Guid policyVersion && view.TryGetValue("kind",out var kind))
+            {
+                var withdrawal=withdrawals.SingleOrDefault(x=>x.Id==policyVersion && x.CertificateKind==(string?)kind);
+                if(withdrawal is not null)view["withdrawnEffectiveAt"]=withdrawal.EffectiveAt;
+            }
             view["sourceKind"]=version.SourceKind;
             var sourceId=version.PolicyVersionId??version.QuoteRevisionId??version.ServicingTermsVersionId;
             if(sourceId is Guid id && sources.TryGetValue(id,out var source)){view["sourceLabel"]=source.Label;view["sourceDate"]=source.Date;}

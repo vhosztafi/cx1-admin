@@ -37,7 +37,7 @@ public sealed partial class MessageDeliveryService(SqlCommandBoundary commands,T
                 draft.State="queued";await db.SaveChangesAsync(ct);return result;
             },token);
     }
-    internal async Task<CommandOutcome> Queue(BackOfficeDbContext db,ActorContext actor,DeliveryContent content,Guid? versionId,Guid? resendOf,CancellationToken token)
+    internal async Task<CommandOutcome> Queue(BackOfficeDbContext db,ActorContext actor,DeliveryContent content,Guid? versionId,Guid? resendOf,CancellationToken token,Func<OperationalDelivery,Task>? associate=null)
     {
         var now=time.GetUtcNow();var setting=await db.Set<SettingVersion>().Where(x=>x.Scope==WorkKind&&x.EffectiveFrom<=now).OrderByDescending(x=>x.Version).FirstOrDefaultAsync(token);
         if(setting is null||OperationalDeliverySeed.Scenario(setting) is null)throw new OperationalAccessException(503,"delivery-scenario-unavailable");
@@ -46,6 +46,7 @@ public sealed partial class MessageDeliveryService(SqlCommandBoundary commands,T
             ScenarioVersionId=setting.Id,ContentJson=json,ContentHash=DeliverySnapshots.Hash(json),CreatedBy=actor.UserId,CreatedAt=now,UpdatedAt=now};
         var work=new OutboxWork{Kind=WorkKind,SubjectRecordId=delivery.Id,ScenarioVersionId=setting.Id,Payload=json,CreatedBy=actor.UserId,CreatedAt=now,NextAttemptAt=now,OperationKey=$"operational-delivery/{delivery.Id:N}"};
         delivery.WorkId=work.Id;db.Add(work);db.Add(delivery);await db.SaveChangesAsync(token);
+        if(associate is not null)await associate(delivery);
         db.AddRange(content.Recipients.Select(x=>new OperationalDeliveryRecipient{DeliveryId=delivery.Id,ContactId=x.ContactId,Name=x.Name,Email=x.Email,CreatedBy=actor.UserId,CreatedAt=now}));
         db.AddRange(content.Attachments.Select(x=>new OperationalDeliveryAttachment{DeliveryId=delivery.Id,DocumentVersionId=x.VersionId,FileObjectId=x.FileId,ContentHash=x.Hash,OriginalName=x.Name,MediaType=x.MediaType,Length=x.Length,CreatedBy=actor.UserId,CreatedAt=now}));
         await db.SaveChangesAsync(token);return JobOutcome(work);

@@ -23,7 +23,7 @@ internal static partial class WorkflowTaskSources
             "servicing-capacity" => await db.Set<ServicingCapacitySubmission>().Where(x => x.WorkId == work.Id).Select(x => new OperationalParent("servicing-draft", x.DraftId)).SingleOrDefaultAsync(token),
             "servicing-delivery" => await db.Set<ServicingTermsDelivery>().Where(x => x.WorkId == work.Id).Select(x => new OperationalParent("servicing-draft", x.DraftId)).SingleOrDefaultAsync(token),
             "mid-update" => await db.Set<PolicyMidIntent>().Where(x=>x.WorkId==work.Id).Select(x=>new OperationalParent("policy",x.PolicyId)).SingleOrDefaultAsync(token),
-            "cancellation-mid-removal" or "cancellation-notice" => await db.Set<CancellationConsequence>().Where(x => x.WorkId == work.Id).Select(x => new OperationalParent("policy", x.PolicyId)).SingleOrDefaultAsync(token),
+            "cancellation-mid-removal" or "cancellation-notice" or "cancellation-task-close" or "cancellation-certificate-withdrawal" => await db.Set<CancellationConsequence>().Where(x => x.WorkId == work.Id).Select(x => new OperationalParent("policy", x.PolicyId)).SingleOrDefaultAsync(token),
             "renewal-lapse-notification" => await db.Set<RenewalLapseEvent>().Where(x => x.WorkId == work.Id).Select(x => new OperationalParent("policy", x.PolicyId)).SingleOrDefaultAsync(token),
             "agency-notification" => await db.Set<AgencyNotification>().Where(x => x.WorkId == work.Id).Select(x => new OperationalParent("agency", x.AgencyId)).SingleOrDefaultAsync(token),
             "file-finalization" => await FileParent(db, work.Id, token),
@@ -34,9 +34,9 @@ internal static partial class WorkflowTaskSources
         if (parent is null) throw new OperationalAccessException(409, "workflow-source-parent-unavailable");
         if (work.CreatedBy is not Guid actor) throw new OperationalAccessException(409, "workflow-source-actor-unavailable");
         var originalActor=actor;
-        if(work.Kind is "operational-delivery" or "operational-claims" or "mid-update" or "cancellation-mid-removal")actor=await DeliveryExceptionOwner(db,parent,actor,token);
+        if(work.Kind is "operational-delivery" or "operational-claims" or "mid-update" or "cancellation-mid-removal" or "cancellation-notice" or "cancellation-task-close" or "cancellation-certificate-withdrawal")actor=await DeliveryExceptionOwner(db,parent,actor,token);
         var resolved = work.State == "succeeded";
-        object details=work.Kind is "operational-delivery" or "operational-claims" or "mid-update" or "cancellation-mid-removal"
+        object details=work.Kind is "operational-delivery" or "operational-claims" or "mid-update" or "cancellation-mid-removal" or "cancellation-notice" or "cancellation-task-close" or "cancellation-certificate-withdrawal"
             ? new { exception.WorkId, exception.Code, exception.OccurredAt, work.Kind, work.State, work.Attempts, work.ErrorCode, originalActorId=originalActor }
             : new { exception.WorkId, exception.Code, exception.OccurredAt, work.Kind, work.State, work.Attempts, work.ErrorCode };
         return new(parent, actor, LocalDate(exception.OccurredAt).AddDays(rule.DueDays), !resolved, resolved,

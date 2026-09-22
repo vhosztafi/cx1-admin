@@ -375,3 +375,62 @@ Persistence:20260922135419_OperationalMid plus OperationalMid.Guards.cs and EF s
 Unique work/version/intent associations, original owned version FK, immutable requests/results,
 provider provenance and registered work identity guards apply. Retained MID rows or initial
 intents prevent destructive downgrade. External calls remain deterministic local demo effects.
+
+
+## 09-15 cancellation operations (implemented)
+
+`CancellationOperationsWorker.Apply(JobLease, CancellationToken)` owns the original
+`cancellation-certificate-withdrawal` or `cancellation-task-close` work. Claiming and
+application both check the pinned cancellation effective instant. Application holds current
+original staff identity and typed policy scope before the child work lease, validates the
+original notice, issued version, decision and sibling consequence envelope, then appends
+`CancellationOperationalReceipt` with withdrawal or task events in one transaction.
+MID remains the original09-14 `cancellation-mid-removal` operation and is never requeued here.
+Commercial Combined has no MID and creates withdrawal only for covered Employers’ Liability.
+
+`TaskService.CloseCancelledTerm` closes only open/in-progress/awaiting-information/blocked
+renewal tasks whose immutable policy-term binding owns this cancelled term, whose subject
+matches the policy and whose stored source-changed flag is false. It records cancelled,
+not completed, and retains unsatisfied checklists in the canonical task event. Manual,
+complaint, unrelated term and already terminal tasks remain untouched.
+`CertificateWithdrawal` is term-level, with the original effectiveAt. Read metadata projects
+that date onto every policy-certificate for the term, including a later historical render.
+File content and download authorization remain unchanged.
+
+`PrepareNotice(workId, MessageDeliveryService, token)` rechecks current original policy,
+recipient and document source and registers one `CancellationNoticeDispatch` before the
+existing delivery adapter's attachment rows. `MessageDeliveryService.Queue` has an optional
+internal association callback, executed inside its caller's transaction after delivery
+insertion and before attachments. This is the only extra visibility exception: the exact
+internal cancellation-notice PDF, matching the cancellation version and original recipients,
+can be attached to its specifically associated delivery. Generic sharing still requires
+agency visibility and matching relationship. `DeliveryAuthority.HoldSender` rebuilds this
+snapshot on each provider/application attempt. Original contact names/emails must still match.
+The existing adapter handles persistent provider effects, expired leases and explicit retry.
+Cancellation deliveries expose resendAllowed=false; a resend route returns409 before any effect.
+
+`ApplyNotice` records the adapter-backed outcome against the original notice work; provider
+failure remains visible on the child delivery and its existing exception task. An existing
+`CancellationNoticeReceipt` remains immutable legacy evidence, and never registers a new
+delivery. The old dispatcher is disabled when the new development dispatcher is enabled;
+work fencing and symmetric SQL guards also prevent mixed workers creating both receipt types.
+No-recipient notices fail visibly. Current source/actor failures become one original work
+exception. Historical completed notice work is not reopened or rewritten.
+
+GET `/api/v1/versions/{versionId}/cancellation-consequences` requires document-read under
+current typed policy scope and returns at most four exact-version consequences, no arbitrary
+query filters. It is private/no-store and returns404 for an unavailable version. Each result
+contains original job identity, kind, effectiveAt, appliedAt, state, safe error code, exact
+notice document/delivery, legacy receipt, MID submission, closed task IDs and exception task.
+`CancellationConsequences` appears in Motor Trade and Commercial policy transaction/document
+views; it reuses exact PDF preview and delivery recovery, and distinguishes a posted credit
+from cash refund. Delivery details expose resendAllowed for all callers.
+
+Program registers/maps `CancellationOperationsDispatcher`, `CancellationOperationsWorker`,
+`CancellationOperationsService` and `CancellationOperationsEndpoints`. Development flag
+`Cover:OperationalCancellationWorkerEnabled` defaults true. The document worker still generates
+one source-bound PDF; the cancellation worker waits for it without inventing a delivery.
+Migration `20260922144152_CancellationOperations` plus `CancellationOperations.Guards.cs`
+adds the four immutable evidence tables, original ownership/time guards, the narrowly bound
+attachment exception and mixed-worker legacy receipt exclusion. Retained operations block
+migration downgrade. No retained demo database migration is performed by this slice.

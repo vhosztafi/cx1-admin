@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using BackOffice.Infrastructure.Operations;
 using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Platform;
 using Microsoft.EntityFrameworkCore;
@@ -17,8 +18,10 @@ public sealed class CancellationNoticeWorker(IDbContextFactory<BackOfficeDbConte
     {
         if(lease.Kind!=Kind)throw Failure(JobFailure.InvalidPayload);
         await using var db=await factory.CreateDbContextAsync(token);await using var tx=await db.Database.BeginTransactionAsync(token);
+        await CancellationOperationsAuthority.Hold(db,lease.WorkId,token);
         var work=await SqlJobLeases.OwnedAsync(db,lease,time.GetUtcNow(),token);if(work is null)return null;
         var intent=await Validate(db,lease,work,token);
+        if(await db.Set<CancellationNoticeDispatch>().AnyAsync(x=>x.ConsequenceId==intent.Id,token))throw Failure(JobFailure.ProviderConflict);
         var prior=await db.Set<CancellationNoticeReceipt>().AsNoTracking().SingleOrDefaultAsync(x=>x.ConsequenceId==intent.Id,token);
         if(prior is not null){await tx.CommitAsync(token);return prior.Id;}
         using var payload=JsonDocument.Parse(intent.PayloadJson);
@@ -30,6 +33,7 @@ public sealed class CancellationNoticeWorker(IDbContextFactory<BackOfficeDbConte
     public async Task<bool> Apply(JobLease lease,Guid receiptId,CancellationToken token=default)
     {
         await using var db=await factory.CreateDbContextAsync(token);await using var tx=await db.Database.BeginTransactionAsync(token);
+        await CancellationOperationsAuthority.Hold(db,lease.WorkId,token);
         var now=time.GetUtcNow();var work=await SqlJobLeases.OwnedAsync(db,lease,now,token);if(work is null)return false;
         var intent=await Validate(db,lease,work,token);
         var receipt=await db.Set<CancellationNoticeReceipt>().AsNoTracking().SingleOrDefaultAsync(x=>x.Id==receiptId&&x.ConsequenceId==intent.Id&&x.WorkId==work.Id,token);

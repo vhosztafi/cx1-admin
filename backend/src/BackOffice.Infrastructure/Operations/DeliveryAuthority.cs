@@ -19,8 +19,11 @@ internal static class DeliveryAuthority
         var content=JsonSerializer.Deserialize<DeliveryContent>(delivery.ContentJson,CommunicationScope.Json)??throw new OperationalAccessException(409,"invalid-delivery-snapshot");
         if(content.Format!="operational-delivery-1"||content.SubjectId!=delivery.SubjectId||content.RelationshipId!=delivery.RelationshipId||content.Recipients is null||content.Attachments is null||
             DeliverySnapshots.Hash(delivery.ContentJson)!=delivery.ContentHash)throw new OperationalAccessException(409,"invalid-delivery-snapshot");
-        var current=await DeliverySnapshots.Capture(db,actor,held.Subjects.Single(),delivery.RelationshipId,content.Subject,
-            new(content.Body,content.Recipients.Select(x=>x.ContactId).ToArray(),content.Attachments.Select(x=>x.VersionId).ToArray()),token);
+        var cancellation=await db.Set<CancellationNoticeDispatch>().AsNoTracking().SingleOrDefaultAsync(x=>x.DeliveryId==delivery.Id,token);
+        var current=cancellation is null
+            ? await DeliverySnapshots.Capture(db,actor,held.Subjects.Single(),delivery.RelationshipId,content.Subject,
+                new(content.Body,content.Recipients.Select(x=>x.ContactId).ToArray(),content.Attachments.Select(x=>x.VersionId).ToArray()),token)
+            : await CancellationNoticeDelivery.Capture(db,actor,cancellation.ConsequenceId,cancellation.DocumentVersionId,token);
         if(DeliverySnapshots.Serialize(current)!=delivery.ContentJson)throw new OperationalAccessException(409,"delivery-context-changed");
         return content;
     }

@@ -37,7 +37,7 @@ public sealed partial class UnderwritingRuntimeTests
         await VerifyCancellationDocument(db,source.Factory,new RatingClock{Current=term.StartsAt.AddDays(1)},source.Actor);
     },stopAfterAccepted:true);
 
-    private static async Task VerifyCancellationDocument(BackOfficeDbContext db,IDbContextFactory<BackOfficeDbContext> factory,TimeProvider clock,ActorContext actor,bool hosted=false)
+    private static async Task VerifyCancellationDocument(BackOfficeDbContext db,IDbContextFactory<BackOfficeDbContext> factory,TimeProvider clock,ActorContext actor,bool hosted=false,Func<Task>? afterIssue=null)
     {
         var basis=await db.Set<PolicyVersion>().AsNoTracking().SingleAsync();
         var drafts=new ServicingDraftService(factory,clock);var review=new CancellationReviewService(factory,clock);
@@ -57,6 +57,7 @@ public sealed partial class UnderwritingRuntimeTests
         var approved=await review.ApproveAsync(actor,created.ResourceId,V(prepared.Etag!),fence,prepared.ResourceId,view.PreviewHash,"Approve fictional cancellation",K(),Guid.NewGuid());
         await review.IssueAsync(actor,created.ResourceId,V(approved.Etag!),fence,new(prepared.ResourceId,approved.ResourceId,view.PreviewHash,"Issue fictional cancellation"),K(),Guid.NewGuid());
         var notice=await db.Set<CancellationConsequence>().AsNoTracking().SingleAsync(x=>x.Kind=="notice");
+        if(afterIssue is not null){await afterIssue();return;}
         var lease=(await new SqlJobLeases(factory,clock).ClaimWorkAsync("cancellation-notice",notice.WorkId))!;
         var notices=new CancellationNoticeWorker(factory,clock);var receiptId=(await notices.Deliver(lease))!.Value;Assert.True(await notices.Apply(lease,receiptId));
         var originalWork=JsonSerializer.Serialize(await db.Set<OutboxWork>().AsNoTracking().SingleAsync(x=>x.Id==notice.WorkId));

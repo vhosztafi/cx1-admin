@@ -1307,6 +1307,9 @@
         "retryAllowed": {
           "type": "boolean"
         },
+        "resendAllowed": {
+          "type": "boolean"
+        },
         "resendOfId": {
           "type": "string",
           "format": "uuid"
@@ -4390,6 +4393,166 @@
         "createdAt",
         "verifiedAt",
         "failureCode"
+      ]
+    },
+    "OpsCancellationConsequence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "notice",
+            "certificate-withdrawal",
+            "task-close",
+            "mid-removal"
+          ]
+        },
+        "policyVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "effectiveAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "appliedAt": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "state": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "pattern": "\\S"
+        },
+        "jobId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "errorCode": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "documentVersionId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "deliveryId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "legacyReceiptId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "midSubmissionId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "closedTaskIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "minItems": 0,
+          "maxItems": 1000,
+          "uniqueItems": true
+        },
+        "exceptionTaskId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "policyVersionId",
+        "effectiveAt",
+        "appliedAt",
+        "state",
+        "jobId",
+        "errorCode",
+        "documentVersionId",
+        "deliveryId",
+        "legacyReceiptId",
+        "midSubmissionId",
+        "closedTaskIds",
+        "exceptionTaskId"
+      ]
+    },
+    "OpsCancellationConsequences": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OpsCancellationConsequence"
+          },
+          "minItems": 0,
+          "maxItems": 4,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "items"
       ]
     },
     "OpsMidItem": {

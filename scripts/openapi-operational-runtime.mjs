@@ -2,6 +2,9 @@ import {operationalDefinitions,relocateOperational} from './operations-contracts
 // Applied after legacy form modifiers. These routes remain contract-only until their owning Phase9 plan runs.
 export function addOperationalRuntimeContracts({schemas:s,ref:r,operation:op,list,paths,object:o,id,text:t}){
  Object.assign(s,relocateOperational(operationalDefinitions()));
+ op('get','/versions/{versionId}/cancellation-consequences','listCancellationConsequences','document-read',{output:r('OpsCancellationConsequences')});
+ paths['/versions/{versionId}/cancellation-consequences'].get['x-runtime-status']='phase-9-15-implemented-acceptance-pending';
+ paths['/versions/{versionId}/cancellation-consequences'].get.responses[200].headers={'Cache-Control':{description:'Private, no-store.',schema:t(100)}};
  op('get','/tasks/{taskId}/attachments','listTaskAttachments','task-read',{output:r('OpsTaskAttachments')});
  op('post','/tasks/{taskId}/attachments','attachTaskDocument','task-write',{existing:true,input:r('OpsTaskAttachmentWrite'),output:r('OpsTask')});
  op('post','/tasks/{taskId}/attachments/{attachmentId}/remove','removeTaskAttachment','task-write',{existing:true,input:r('OpsTaskAttachmentRemove'),output:r('OpsTask')});

@@ -25,12 +25,12 @@ public sealed class SqlJobLeases(IDbContextFactory<BackOfficeDbContext> factory,
 
     private async Task<JobLease?> ClaimCoreAsync(string kind,Guid? workId,CancellationToken cancellationToken)
     {
-        if(kind is not (DiagnosticKind or "agency-notification" or "quote-lookup" or "quote-rating" or "servicing-rating" or "servicing-capacity" or "servicing-delivery" or "renewal-lapse-notification" or "cancellation-notice" or "capacity-escalation" or "quote-delivery" or "operational-delivery" or "operational-claims" or "mid-update" or "cancellation-mid-removal"))throw new ArgumentException("Unsupported job kind.");
+        if(kind is not (DiagnosticKind or "agency-notification" or "quote-lookup" or "quote-rating" or "servicing-rating" or "servicing-capacity" or "servicing-delivery" or "renewal-lapse-notification" or "cancellation-notice" or "capacity-escalation" or "quote-delivery" or "operational-delivery" or "operational-claims" or "mid-update" or "cancellation-mid-removal" or "cancellation-certificate-withdrawal" or "cancellation-task-close"))throw new ArgumentException("Unsupported job kind.");
         await using var db=await factory.CreateDbContextAsync(cancellationToken);
         // REPEATABLE READ permits READPAST even when the database uses read-committed snapshots.
         await using var transaction=await db.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead,cancellationToken);
         var now=time.GetUtcNow();
-        var job=await db.Set<OutboxWork>().FromSqlInterpolated($"SELECT TOP (1) * FROM [OutboxWork] WITH (UPDLOCK,READPAST,ROWLOCK) WHERE [Kind]={kind} AND ([Kind] NOT IN ('mid-update','cancellation-mid-removal') OR EXISTS(SELECT 1 FROM MidSubmission m WHERE m.WorkId=[OutboxWork].Id)) AND ({workId} IS NULL OR [Id]={workId}) AND (([State]='pending' AND [NextAttemptAt]<={now}) OR ([State]='leased' AND [LeaseExpiresAt]<={now})) ORDER BY [NextAttemptAt],[CreatedAt],[Id]")
+        var job=await db.Set<OutboxWork>().FromSqlInterpolated($"SELECT TOP (1) * FROM [OutboxWork] WITH (UPDLOCK,READPAST,ROWLOCK) WHERE [Kind]={kind} AND ([Kind] NOT IN ('cancellation-certificate-withdrawal','cancellation-task-close') OR EXISTS(SELECT 1 FROM CancellationConsequence c JOIN CancellationIssueDecision d ON d.Id=c.DecisionId WHERE c.WorkId=[OutboxWork].Id AND d.EffectiveAt<={now})) AND ([Kind] NOT IN ('mid-update','cancellation-mid-removal') OR EXISTS(SELECT 1 FROM MidSubmission m WHERE m.WorkId=[OutboxWork].Id)) AND ({workId} IS NULL OR [Id]={workId}) AND (([State]='pending' AND [NextAttemptAt]<={now}) OR ([State]='leased' AND [LeaseExpiresAt]<={now})) ORDER BY [NextAttemptAt],[CreatedAt],[Id]")
             .SingleOrDefaultAsync(cancellationToken);
         if (job is null) return null;
         if (job.State=="leased")
@@ -60,7 +60,7 @@ public sealed class SqlJobLeases(IDbContextFactory<BackOfficeDbContext> factory,
             JobFailure.ProviderRejected => "provider-rejected",
             JobFailure.InvalidPayload => "invalid-payload",
             JobFailure.ProviderConflict => "provider-conflict",
-            JobFailure.Superseded => lease.Kind == "operational-delivery" ? "delivery-context-unavailable" : lease.Kind == "operational-claims" ? "claims-context-unavailable" : lease.Kind is "mid-update" or "cancellation-mid-removal" ? "mid-context-unavailable" : "invitation-superseded",
+            JobFailure.Superseded => lease.Kind == "operational-delivery" ? "delivery-context-unavailable" : lease.Kind == "operational-claims" ? "claims-context-unavailable" : lease.Kind is "mid-update" or "cancellation-mid-removal" ? "mid-context-unavailable" : lease.Kind.StartsWith("cancellation-",StringComparison.Ordinal) ? "cancellation-context-unavailable" : "invitation-superseded",
             _ => throw new ArgumentOutOfRangeException(nameof(failure))
         };
         var transient=failure is JobFailure.ProviderUnavailable or JobFailure.ProviderTimeout;

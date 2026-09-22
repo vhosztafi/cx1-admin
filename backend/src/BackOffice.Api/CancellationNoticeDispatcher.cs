@@ -28,7 +28,7 @@ public sealed class CancellationNoticeDispatcher(SqlJobLeases leases,Cancellatio
     public static void Register(WebApplicationBuilder builder)
     {
         builder.Services.AddSingleton<CancellationNoticeWorker>();
-        if(builder.Environment.IsDevelopment()&&builder.Configuration.GetValue("Cover:CancellationNoticeWorkerEnabled",false))
+        if(builder.Environment.IsDevelopment()&&!builder.Configuration.GetValue("Cover:OperationalCancellationWorkerEnabled",true)&&builder.Configuration.GetValue("Cover:CancellationNoticeWorkerEnabled",false))
             builder.Services.AddHostedService<CancellationNoticeDispatcher>();
     }
 }

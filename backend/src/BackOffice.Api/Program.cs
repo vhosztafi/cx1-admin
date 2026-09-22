@@ -28,6 +28,7 @@ builder.Services.AddScoped<BackOffice.Infrastructure.Operations.IncidentService>
 MessageDeliveryDispatcher.Register(builder);
 ClaimsDispatcher.Register(builder);
 MidDispatcher.Register(builder);
+CancellationOperationsDispatcher.Register(builder);
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.ClaimsHandoffService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.ClaimsSummaryService>();
 builder.Services.AddSingleton<BackOffice.Application.Operations.IPolicyDocumentRenderer, BackOffice.Infrastructure.Operations.PolicyDocumentRenderer>();
@@ -244,6 +245,7 @@ app.MapDeliveries();
 app.MapIncidents();
 app.MapClaims();
 app.MapMid();
+app.MapCancellationOperations();
 app.MapFiles();
 app.MapDocuments();
 app.MapServicingDrafts();

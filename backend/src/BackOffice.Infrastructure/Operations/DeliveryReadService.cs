@@ -69,6 +69,7 @@ public sealed class DeliveryReadService(IDbContextFactory<BackOfficeDbContext> f
         return new{id=row.Id,jobId=row.WorkId,subjectRecordId=row.SubjectId,row.State,row.CreatedAt,row.CompletedAt,documentVersionIds=content.Attachments.Select(x=>x.VersionId).ToArray(),
             recipientLabels=content.Recipients.Select(x=>x.Name+" · "+x.Email).ToArray(),content.Subject,content.Body,errorCode=row.OutcomeCode??work.ErrorCode,
             etag=TaskService.Etag(row.RowVersion),row.ResendOfId,providerOutcome=providerState=="succeeded"?"delivered":providerState=="rejected"?"rejected":null,
-            retryAllowed=JobRetryBudget.ExpandedLimit(work.State,work.ErrorCode,work.Attempts,work.AttemptLimit) is not null};
+            retryAllowed=JobRetryBudget.ExpandedLimit(work.State,work.ErrorCode,work.Attempts,work.AttemptLimit) is not null,
+            resendAllowed=!await db.Set<CancellationNoticeDispatch>().AnyAsync(x=>x.DeliveryId==row.Id,token)};
     }
 }
