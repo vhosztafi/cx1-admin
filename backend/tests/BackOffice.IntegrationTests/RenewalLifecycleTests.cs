@@ -24,7 +24,8 @@ public sealed partial class UnderwritingRuntimeTests
 
     private async Task VerifyRenewalLifecycle(string product,bool issue,bool lapseRace,
         Func<BackOfficeDbContext,DecisionFixture,ServicingCycle,ServicingTermsVersion,Task>? onPrepared=null,
-        Func<BackOfficeDbContext,DecisionFixture,ServicingCycle,ServicingAcceptance,Guid,string,Task>? onAccepted=null)
+        Func<BackOfficeDbContext,DecisionFixture,ServicingCycle,ServicingAcceptance,Guid,string,Task>? onAccepted=null,
+        Func<BackOfficeDbContext,string,DecisionFixture,ServicingTermsVersion,Task>? onPreparedBrowser=null)
     {
         await WithDatabase(async(db,password)=>
         {
@@ -77,6 +78,7 @@ public sealed partial class UnderwritingRuntimeTests
             var document=await db.Set<ServicingTermsVersion>().AsNoTracking().SingleAsync(x=>x.Id==invitation.ResourceId);
             using(var json=JsonDocument.Parse(document.TermsJson))
             {Assert.Equal("renewal-contract-1",json.RootElement.GetProperty("format").GetString());Assert.Equal(prepared.ResourceId,json.RootElement.GetProperty("ratingInput").GetProperty("renewal").GetProperty("preparationVersionId").GetGuid());}
+            if(onPreparedBrowser is not null){await onPreparedBrowser(db,password,f,document);return;}
             if(onPrepared is not null){await onPrepared(db,f,cycle,document);return;}
             var sentEtag=await VerifyServicingDeliveryQueue(db,f,cycle,document,proofFile.ResourceId,fence,invitation.Etag!);
             var delivered=await terms.ReadAsync(f.Underwriter,draft.Id);Assert.Equal("delivered",delivered.Delivery!.State);Assert.Null(delivered.Acceptance);

@@ -10,6 +10,7 @@ public sealed partial class TaskService
 {
     public Task<CommandOutcome> AttachDocument(ActorContext actor,Guid taskId,string etag,string key,Guid versionId,string reason,CancellationToken token)
     {
+        TaskRules.RequireText(reason,1000,"task-reason-required");
         if(versionId==Guid.Empty)throw new OperationalAccessException(422,"invalid-document-version");
         return Mutate(actor,[new(taskId,etag)],key,$"/api/v1/tasks/{taskId}/attachments","task.document-attached",new{versionId,reason},"task-write",null,
             async(db,row,ct)=>
@@ -25,6 +26,7 @@ public sealed partial class TaskService
 
     public Task<CommandOutcome> RemoveDocumentAttachment(ActorContext actor,Guid taskId,string etag,string key,Guid attachmentId,string reason,CancellationToken token)
     {
+        TaskRules.RequireText(reason,1000,"task-reason-required");
         if(attachmentId==Guid.Empty)throw new OperationalAccessException(422,"invalid-task-attachment");
         return Mutate(actor,[new(taskId,etag)],key,$"/api/v1/tasks/{taskId}/attachments/{attachmentId}/remove","task.document-removed",new{attachmentId,reason},"task-write",null,
             async(db,row,ct)=>

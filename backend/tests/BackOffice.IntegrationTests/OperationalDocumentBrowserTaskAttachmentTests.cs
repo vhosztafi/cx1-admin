@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Xunit;
 
 namespace BackOffice.IntegrationTests;
@@ -90,5 +92,11 @@ public sealed partial class UnderwritingRuntimeTests
         var user=await db.Set<StaffUser>().SingleAsync(x=>x.Id==f.Underwriter.UserId);user.State="suspended";await db.SaveChangesAsync();
         await Assert.ThrowsAsync<OperationalAccessException>(()=>tasks.ListDocumentAttachments(f.Underwriter,created.ResourceId,default));
         await Assert.ThrowsAsync<OperationalAccessException>(()=>tasks.AttachDocument(f.Underwriter,created.ResourceId,etag,"task-link-ready",version.Id,"Attach exact policy file",default));
+        // A rollback must not erase retained attachment/removal history.
+        var retainedCount=await db.Set<TaskDocumentAttachment>().CountAsync();
+        var downgrade=await Assert.ThrowsAsync<SqlException>(()=>db.GetService<IMigrator>().MigrateAsync("20260921183129_OperationalDocuments"));
+        Assert.Equal(52000,downgrade.Number);
+        Assert.Contains("Cannot remove retained task attachment history",downgrade.Message);
+        Assert.Equal(retainedCount,await db.Set<TaskDocumentAttachment>().CountAsync());
     });
 }

@@ -102,6 +102,10 @@ namespace BackOffice.Infrastructure.Persistence.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql("""
+                IF EXISTS(SELECT 1 FROM TaskDocumentAttachment)
+                  THROW 52000,'Cannot remove retained task attachment history.',1;
+                """);
             migrationBuilder.DropTable(
                 name: "TaskDocumentAttachment");
         }
