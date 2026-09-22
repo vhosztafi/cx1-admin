@@ -5,7 +5,7 @@ namespace BackOffice.Infrastructure.Operations;
 
 public sealed partial class DocumentService
 {
-    private static IQueryable<ClientAgencyRelationship> AllowedAudience(BackOfficeDbContext db,OperationalSubject subject)
+    internal static IQueryable<ClientAgencyRelationship> AllowedAudience(BackOfficeDbContext db,OperationalSubject subject)
     {
         var query=db.Set<ClientAgencyRelationship>().Where(x=>x.State=="active");
         return subject.Kind switch
