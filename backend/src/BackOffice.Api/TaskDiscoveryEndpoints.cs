@@ -55,6 +55,8 @@ public static partial class TaskEndpoints
                 throw new QuoteHttpException(400, "invalid-task-query");
             }
             var subjectId = Id("subjectRecordId"); var owner = Id("ownerId"); var team = Id("teamId"); var policyId = Id("policyId");
+            var riskItemId = Id("riskItemId");
+            if(riskItemId is not null && policyId is null)throw new QuoteHttpException(400,"risk-task-policy-required");
             var state = Value("state"); var priority = Value("priority"); var view = Value("view"); var search = Value("q"); var window = Value("dueWindow");
             var type = Value("typeCode"); if (query.ContainsKey("kind")) { if (type.Length > 0) throw new QuoteHttpException(400, "invalid-task-query"); type = Value("kind"); }
             if (state.Length > 0 && !TaskRules.States.Contains(state) || type.Length > 0 && !TaskRules.Types.Contains(type) || search.Length > 300 ||
@@ -78,8 +80,17 @@ public static partial class TaskEndpoints
             var visible = TaskDiscovery.Rows(db, actor);
             if (policyId is Guid selectedPolicy)
                 visible = visible.Where(task => db.Set<OperationalSubject>().Any(subject => subject.Id == task.SubjectId &&
-                    (subject.PolicyId == selectedPolicy || subject.Kind == "servicing-draft" && db.Set<ServicingDraft>().Any(draft => draft.Id == subject.ServicingDraftId && draft.PolicyId == selectedPolicy))));
-            var page = paging.ReadBound(context, actor, "task-reference-v1", await TaskDiscovery.Version(db, visible, token), "ownerId", "teamId", "state", "priority", "dueBefore", "subjectRecordId", "policyId", "kind", "dueWindow", "view", "typeCode", "q");
+                    (subject.PolicyId == selectedPolicy || subject.Kind == "servicing-draft" && db.Set<ServicingDraft>().Any(draft => draft.Id == subject.ServicingDraftId && draft.PolicyId == selectedPolicy) ||
+                    riskItemId != null && subject.Kind == "quote" && db.Set<Policy>().Any(policy => policy.Id == selectedPolicy && policy.SourceQuoteId == subject.QuoteId))));
+            if(riskItemId is Guid selectedRisk)
+            {
+                var quotes=db.Set<QuoteReferral>().Where(x=>x.RiskItemId==selectedRisk);
+                var drafts=db.Set<ServicingReferral>().Where(x=>x.RiskItemId==selectedRisk);
+                visible=visible.Where(task=>db.Set<WorkflowTaskBinding>().Any(binding=>binding.TaskId==task.Id &&
+                    (quotes.Any(referral=>referral.Id==binding.QuoteReferralId || db.Set<QuoteReferralDecision>().Any(decision=>decision.Id==binding.QuoteQueryDecisionId&&decision.ReferralId==referral.Id)) ||
+                     drafts.Any(referral=>referral.Id==binding.ServicingReferralId || db.Set<ServicingReferralDecision>().Any(decision=>decision.Id==binding.ServicingQueryDecisionId&&decision.ReferralId==referral.Id)))));
+            }
+            var page = paging.ReadBound(context, actor, "task-reference-v1", await TaskDiscovery.Version(db, visible, token), "ownerId", "teamId", "state", "priority", "dueBefore", "subjectRecordId", "policyId", "riskItemId", "kind", "dueWindow", "view", "typeCode", "q");
             if (page is null) throw new QuoteHttpException(400, "invalid-task-cursor");
             var rows = visible.Where(x => x.CreatedAt <= page.AsOf);
             if (subjectId is not null) rows = rows.Where(x => x.SubjectId == subjectId);

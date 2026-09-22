@@ -19,6 +19,7 @@ export function addOperationsApi({schemas:s,ref:r,text:t,enumeration:e,object:o,
 
  list('/tasks','listTasks','task-read',r('Task'),[['ownerId',id],['teamId',id],['state',s.Task.properties.state],['priority',taskFields.priority],['dueBefore',instant],['subjectRecordId',id],['policyId',id]]);
  paths['/tasks'].get.parameters.find(x=>x.name==='policyId').description='Current authorized policy and its servicing-draft tasks. Other query filters intersect this scope; inaccessible policies return 404.';
+ paths['/tasks'].get.parameters.push({name:'riskItemId',in:'query',required:false,schema:id,description:'Requires policyId. Only saved referral/query workflow tasks for this stable risk item, including the policy source quote and servicing drafts. Unknown items return an empty list.'});
  op('post','/tasks','createTask','task-write',{input:r('TaskWrite'),output:r('Task'),status:201});
  op('get','/tasks/{taskId}','getTask','task-read',{output:r('Task')});
  op('put','/tasks/{taskId}','updateTask','task-write',{existing:true,input:r('TaskWrite'),output:r('Task')});

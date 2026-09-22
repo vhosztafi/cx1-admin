@@ -13,6 +13,7 @@ const report={startedAt,passed:false,stages:[
  ['claims-administrator','verify-claims-browser.mjs'],['mid','verify-mid-browser.mjs'],
  ['cancellation-operations','verify-cancellation-browser.mjs'],['matching-correspondence','verify-operational-match-browser.mjs'],
  ['lapse-correspondence','verify-operational-lapse-browser.mjs'],
+ ['driver-referral-tasks','verify-driver-task-browser.mjs'],
 ].map(([name,script])=>({name,script:'scripts/'+script,status:'not-run'}))};
 const save=()=>writeFile(directory+'/report.json',JSON.stringify(report,null,2));await save();
 for(const stage of report.stages){

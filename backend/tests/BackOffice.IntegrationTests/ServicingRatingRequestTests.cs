@@ -95,7 +95,8 @@ public sealed partial class UnderwritingRuntimeTests
 
     private async Task RunServicingRatingRequests(string product, string scenario, bool workflowTasks = false,
         Func<BackOfficeDbContext,DecisionFixture,ServicingCycle,ServicingTermsVersion,Task>? onPrepared=null,
-        Func<BackOfficeDbContext,DecisionFixture,ServicingCycle,ServicingAcceptance,Guid,string,Task>? onAccepted=null)
+        Func<BackOfficeDbContext,DecisionFixture,ServicingCycle,ServicingAcceptance,Guid,string,Task>? onAccepted=null,
+        Func<BackOfficeDbContext,string,DecisionFixture,ServicingCycle,Task>? onRated=null)
     {
         await WithDatabase(async (db, password) =>
         {
@@ -301,6 +302,7 @@ public sealed partial class UnderwritingRuntimeTests
             }
             if (scenario is "reject" or "revoke-before-apply") Assert.Empty(await db.Set<ServicingReferral>().Where(x=>x.DraftId==draftId).ToArrayAsync());
             var ratedView = await readModel.ReadAsync(f.Servicing, draftId, pageSize: 1);
+            if(onRated is not null){await onRated(db,password,f,applied);return;}
             if (workflowTasks)
             {
                 await VerifyOperationalWorkflowServicing(db, f, applied, ratedView.DraftEtag);

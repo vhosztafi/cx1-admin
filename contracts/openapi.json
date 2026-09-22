@@ -19365,6 +19365,16 @@
             "description": "Current authorized policy and its servicing-draft tasks. Other query filters intersect this scope; inaccessible policies return 404."
           },
           {
+            "name": "riskItemId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Requires policyId. Only saved referral/query workflow tasks for this stable risk item, including the policy source quote and servicing drafts. Unknown items return an empty list."
+          },
+          {
             "in": "query",
             "name": "kind",
             "required": false,

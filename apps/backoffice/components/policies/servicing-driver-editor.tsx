@@ -5,6 +5,7 @@ import type { QuoteObject, QuoteProposal } from '../../lib/quotes';
 import type { ServicingChange, ServicingEditor, ServicingProposal } from '../../lib/servicing-api';
 import { projectServicingCapture, putServicingChange, sameServicingId } from '../../lib/servicing-change-form';
 import { QuoteDrivers } from '../quotes/quote-drivers';
+import { DriverTasks } from '../operations/driver-tasks';
 
 type Session = { operation: 'add' | 'update' | 'remove'; targetId: string; changeId: string; prior?: ServicingChange; capture: QuoteProposal };
 export function ServicingDriverEditor({ proposal, editor, policyId, catalogue, disabled, change }: {
@@ -57,9 +58,10 @@ export function ServicingDriverEditor({ proposal, editor, policyId, catalogue, d
   return <section aria-label="Named driver changes"><h3>Named drivers</h3>
     {contextError ? <p role="alert">{contextError}</p> : null}
     <div className="operations-actions">{session ? <button ref={resume} type="button" className="button" onClick={() => { dialog.current?.showModal(); heading.current?.focus(); }}>Resume driver form</button> : null}<button type="button" className="button" disabled={disabled || !!contextError || !!session} onClick={() => begin('add')}>Add named driver</button>
-      <label>Named driver to change<select aria-label="Named driver to change" disabled={disabled} value={target} onChange={event => setSelected(event.target.value)}><option value="">Select a named driver</option>{drivers.map((driver, index) => <option key={String(driver.id)} value={String(driver.id)}>{String(driver.fullName ?? ([driver.firstName, driver.surname].filter(Boolean).join(' ') || `Driver ${index + 1}`))}</option>)}</select></label>
+      <label>Named driver to change<select aria-label="Named driver to change" disabled={!!contextError} value={target} onChange={event => setSelected(event.target.value)}><option value="">Select a named driver</option>{drivers.map((driver, index) => <option key={String(driver.id)} value={String(driver.id)}>{String(driver.fullName ?? ([driver.firstName, driver.surname].filter(Boolean).join(' ') || `Driver ${index + 1}`))}</option>)}</select></label>
       <button type="button" className="button" disabled={disabled || !target || !!contextError || !!session} onClick={() => begin('update')}>Edit named driver</button>
       <button type="button" className="button" disabled={disabled || !target || !!contextError || !!session} onClick={() => begin('remove')}>Remove named driver</button></div>
+    {target&&<DriverTasks key={target} policyId={policyId} driverId={target}/>}
     <dialog className="agency-dialog agency-terms-dialog servicing-change-dialog" ref={dialog} aria-labelledby="servicing-driver-title" onCancel={event => { event.preventDefault(); keepForm(); }}>
       {session && controls ? <form noValidate onSubmit={event => { event.preventDefault(); apply(); }}><h2 id="servicing-driver-title" tabIndex={-1} ref={heading}>{session.operation === 'remove' ? 'Remove named driver' : session.operation === 'add' ? 'Add named driver' : 'Edit named driver'}</h2>
         <p>Apply this proposal, then save the draft. Issued cover remains unchanged. Incomplete details can be saved for review.</p>

@@ -9,8 +9,8 @@ import { incidentLabel } from './incident-fields';
 import { IncidentFacts } from './incident-facts';
 
 type Page<T>={items:T[];totalCount:number;nextCursor?:string};
-export function RecordIncidents({policyId,productCode}:{policyId:string;productCode:OpsIncidentDraftWrite['productCode']}){
-  const [cursor,setCursor]=useState(''),[selected,setSelected]=useState<string>();
+export function RecordIncidents({policyId,productCode,initialNew=false}:{policyId:string;productCode:OpsIncidentDraftWrite['productCode'];initialNew?:boolean}){
+  const [cursor,setCursor]=useState(''),[selected,setSelected]=useState<string|undefined>(initialNew?'new':undefined);
   const list=useQuoteResource<Page<OpsIncident>>(`/api/v1/incidents?policyId=${policyId}&pageSize=20${cursor?`&cursor=${encodeURIComponent(cursor)}`:''}`);
   if(selected==='new')return <IncidentEditor policyId={policyId} productCode={productCode} saved={list.refresh} cancel={()=>{setSelected(undefined);list.refresh();}}/>;
   if(selected)return <IncidentDetail id={selected} policyId={policyId} productCode={productCode} saved={list.refresh} cancel={()=>{setSelected(undefined);list.refresh();}}/>;

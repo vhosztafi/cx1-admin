@@ -428,3 +428,11 @@ Setup tools are explicit local demo commands, not application startup:
 - `node scripts/verify-retained-operational-retries.mjs` opens the real exception tasks and retries only while the original operations are failed; subsequent runs verify the completed operations without creating a resend.
 
 The three downloaded documents independently parse as a 13-page schedule, 12-page statement of fact and 2-page certificate. Schedule first/last and certificate final pages, plus desktop/mobile retry views, were visually inspected. This is engineering verification, not human business or assistive-technology UAT.
+
+### Saved tasks and claims navigation
+
+Motor Trade PL-MT-0000000012 and Commercial Combined PL-CC-0000000033 each have a Tasks tab with a saved fictional follow-up; their source quotes have their own task lists. Policy lists also include accessible tasks from servicing drafts and link to the actual owning record. Open a driver record under Drivers, or select a named driver in a servicing draft, to find saved referral tasks for that stable driver identity. A driver without a saved referral task shows an explicit empty state.
+
+Open a client's Claims tab, find the policy by reference, and select **Claims for …** to read its saved incident reports and administrator summaries. **Open policy claims** keeps the selected policy context. The policy heading and Next actions rail both offer **Log an incident**; opening the form or cancelling it saves nothing. Motor policies also have **View vehicles and MID submissions** in Next actions.
+
+The retained incident examples remain INC-0000001 and INC-0000002. Two complete demo initializations after the operational examples preserved all 74,856 existing business rows across 175 tables and all 167 captured key/document files exactly (`.local/phase9-16-final-initializations/report.json`). Post-restart task, incident and retry readbacks passed. Final full-phase regression and source coverage review remain separate gates.
