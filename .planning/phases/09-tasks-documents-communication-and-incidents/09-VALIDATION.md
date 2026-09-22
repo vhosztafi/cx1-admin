@@ -1,7 +1,7 @@
 ---
 phase: 09
 slug: tasks-documents-communication-and-incidents
-status: planned
+status: in-progress
 nyquist_compliant: false
 wave_0_complete: false
 created: 2026-09-21
@@ -9,7 +9,7 @@ created: 2026-09-21
 
 # Phase 9 validation strategy
 
-Research-derived strategy with18 sequential plans and36 mapped tasks. No Phase9 runtime pass is claimed. nyquist_compliant/wave_0_complete remain false until implemented test infrastructure and outcomes justify them.
+Research-derived strategy with18 sequential plans and36 mapped tasks. Plans01–16 have bounded runtime acceptance recorded in their summaries. Plan17 source fixes have focused SQL/browser proof; the final549-case integration run and complete phase verification remain pending. nyquist_compliant/wave_0_complete remain false until the final infrastructure/coverage audit and outcomes justify them.
 
 ## Test infrastructure
 
