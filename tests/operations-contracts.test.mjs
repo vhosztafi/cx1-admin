@@ -118,3 +118,15 @@ test('uploaded documents attach a staged upload identity without accepting stora
  assert.equal(valid('OpsDocumentUpload',{...input,visibility:'agency'}),false);
  assert.ok(valid('OpsDocumentUpload',{...input,visibility:'agency',relationshipId:id}));
 });
+
+test('claims summary distinguishes not advised from zero and rejects local settlement injection',()=>{
+ const summary={id,incidentId:id,handoffId:id,asOf:'2026-09-22T12:00:00Z',receivedAt:'2026-09-22T12:01:00Z',status:'notified',paid:null,reserved:null,currency:'GBP',providerReference:'DEMO-CLAIM',providerEventId:'claims/event-1'};
+ assert.ok(valid('OpsClaimsSummary',summary));assert.ok(valid('OpsClaimsSummary',{...summary,paid:'0.00'}));
+ const {paid,...omitted}=summary;assert.equal(valid('OpsClaimsSummary',omitted),false);
+ for(const extra of[{paid:'-1.00'},{settlementAmount:'100.00'},{status:'settled-locally'}])assert.equal(valid('OpsClaimsSummary',{...summary,...extra}),false);
+});
+test('claims provider facts exclude local evidence selections and storage locators',()=>{
+ const facts={policyId:id,productCode:'motor-trade-road-risks',description:'Fictional factual report'};
+ assert.ok(valid('OpsClaimsFacts',facts));assert.equal(valid('OpsClaimsFacts',{...facts,evidenceDocumentVersionIds:[id]}),false);assert.equal(valid('OpsClaimsFacts',{...facts,storageKey:'local/secret'}),false);
+ const file={versionId:id,name:'fictional.pdf',mediaType:'application/pdf',length:100,sha256:'a'.repeat(64)};assert.ok(valid('OpsClaimsEvidence',file));assert.equal(valid('OpsClaimsEvidence',{...file,fileId:id}),false);
+});

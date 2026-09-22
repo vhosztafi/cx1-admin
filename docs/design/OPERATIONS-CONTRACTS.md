@@ -284,3 +284,50 @@ transport commands retain their original body, key and ETag. Stale responses ret
 local inputs and require reviewing the latest saved version before another write.
 Browser acceptance passed for both products with SQL readback; see09-12-SUMMARY.
 Provider handoff remains the09-13 consumer.
+
+## Claims handoff and administrator summaries (09-13)
+
+ClaimsHandoffService.Handoff(actor,incidentId,etag,revisionId,resolutionId,providerId,
+log,key,token) owns both handoff and atomic log-and-handoff. It pins the complete saved
+revision, resolved historical source, exact source hashes and administrator identity.
+A new request is never derived from the latest policy pointer. ClaimsAdministrator is
+seeded as a persistent demo identity, separate from capacity providers. No real transport.
+
+ClaimsHandoff stores immutable request JSON/hash with mutable acknowledgement state.
+ClaimsRequest binds each handoff, refresh or contact to one OutboxWork, stable operation
+key, immutable payload/hash and scenario version. ClaimsSummary appends exact provider
+operation/event/hash, reported AsOf and server ReceivedAt. Migration
+20260922125221_OperationalClaims retains histories and blocks destructive downgrade.
+Only definite provider rejection permits a corrected incident revision/new handoff;
+unknown failures retain their exact revision and operation. Manual retry expands the
+existing job budget. A terminal exception uses the shared unique workflow task binding.
+
+ClaimsSnapshots captures facts without internal notes, policy-wide private JSON or
+storage locators. Only selected ready insurer-visible document versions are disclosed
+in the administrator projection. Agency-only/internal selections remain local with a
+visible withheld count. Provider execution rechecks current original sender authority,
+exact snapshot identity and actual ready file bytes. No automatic visibility promotion.
+Commercial projections use commercial-incident-2; legacy adapter envelopes stay valid.
+
+ClaimsHandoffWorker commits the deterministic provider effect separately from local
+application. Apply requires exact retained result, operation/scenario/request hashes,
+current authority and a live owned lease. Changed duplicates are quarantined. A revoked
+actor after the provider effect blocks local summary application while preserving that
+effect. No local settlement endpoint exists. Paid/reserve remain explicit null until
+advised; null differs from zero. Summaries sort by AsOf, then ReceivedAt and stable ID.
+
+POST /incidents/{id}/handoff and /log-and-handoff take revisionId,resolutionId,providerId.
+POST /refresh takes an empty object; POST /contact takes body. Both require acknowledged
+handoff. These mutations use incident ETag and idempotency/CSRF. POST
+/incidents/{id}/requests/{requestId}/retry takes reason and the job ETag, retaining its
+original sender and operation. GET /administrators provides available demo destinations;
+GET /handoffs, /summaries and /requests expose signed, scoped history pagination. Generic
+GET /jobs/{id} delegates claims authority to ClaimsSummaryService. All responses are
+private/no-store. Incident detail/list includes the current revision's latest retained
+administrator summary, with null-preserving money and its source chronology.
+
+ClaimsSummaryPanel exposes submitted facts, administrator summary, recorded contact,
+requests/attempts and retry. Unconfirmed UI writes retain actor/body/key/ETag, block
+navigation and cannot be retried under another actor. The policy Claims table displays
+stored reference/status/paid/reserve. Final acceptance evidence is recorded in09-13-SUMMARY
+when complete; implementation alone does not establish phase completion.

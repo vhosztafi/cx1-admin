@@ -39,7 +39,7 @@ public sealed partial class IncidentService
             },async(db,ct)=>
             {
                 var row=await Head(db,id,etag,ct);if(!row.RowVersion.SequenceEqual(hint!.RowVersion))throw new OperationalAccessException(412,"stale-incident");
-                Editable(row);await Append(db,row,draft,reason!,held!.ActorLabel,actor.UserId,ct);return await Outcome(db,row,200,ct);
+                await Editable(db,row,ct);await Append(db,row,draft,reason!,held!.ActorLabel,actor.UserId,ct);return await Outcome(db,row,200,ct);
             },token);
     }
     public async Task<CommandOutcome> Resolve(ActorContext actor,Guid id,string etag,bool log,string key,CancellationToken token)
@@ -55,7 +55,7 @@ public sealed partial class IncidentService
             },async(db,ct)=>
             {
                 // Original policy/identity/evidence locks precede this mutable head.
-                var row=await Head(db,id,etag,ct);if(!row.RowVersion.SequenceEqual(hint!.RowVersion))throw new OperationalAccessException(412,"stale-incident");Editable(row);
+                var row=await Head(db,id,etag,ct);if(!row.RowVersion.SequenceEqual(hint!.RowVersion))throw new OperationalAccessException(412,"stale-incident");await Editable(db,row,ct);
                 var occurrence=draft.TryGetProperty("occurrence",out var observed)?observed.Deserialize<IncidentOccurrence>(Json):null;
                 var known=time.GetUtcNow();var result=await resolver.ResolveHeld(db,actor,row.PolicyId,occurrence,known,ct,Subject(draft));
                 var missing=IncidentRules.Missing(draft,result.State,Subject(draft)is not null&&result.State=="resolved");
@@ -74,6 +74,9 @@ public sealed partial class IncidentService
         var row=await db.Set<OperationalIncident>().FromSqlInterpolated($"SELECT * FROM Incident WITH(UPDLOCK,HOLDLOCK,ROWLOCK) WHERE Id={id}").SingleOrDefaultAsync(token)??throw Missing();
         if(TaskService.Etag(row.RowVersion)!=etag)throw new OperationalAccessException(412,"stale-incident");return row;
     }
-    private static void Editable(OperationalIncident row)
-    {if(row.State is "queued" or "handed-off")throw new OperationalAccessException(409,"incident-already-handed-off");}
+    private static async Task Editable(BackOfficeDbContext db,OperationalIncident row,CancellationToken token)
+    {
+        var handoff=await db.Set<ClaimsHandoff>().AsNoTracking().SingleOrDefaultAsync(x=>x.RevisionId==row.CurrentRevisionId,token);
+        if(!ClaimsRules.CanCorrect(row.State,handoff?.State,handoff?.OutcomeCode))throw new OperationalAccessException(409,"incident-handoff-unresolved");
+    }
 }

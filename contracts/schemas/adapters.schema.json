@@ -1166,53 +1166,60 @@
           "format": "date-time"
         },
         "payload": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "incidentId": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "source": {
+          "oneOf": [
+            {
               "type": "object",
               "additionalProperties": false,
               "properties": {
-                "recordId": {
+                "incidentId": {
                   "type": "string",
                   "format": "uuid"
                 },
-                "versionId": {
-                  "type": "string",
-                  "format": "uuid"
+                "source": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "recordId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "versionId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "contentHash": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    }
+                  },
+                  "required": [
+                    "recordId",
+                    "versionId",
+                    "contentHash"
+                  ]
                 },
-                "contentHash": {
+                "productCode": {
                   "type": "string",
-                  "pattern": "^[a-f0-9]{64}$"
+                  "enum": [
+                    "motor-trade-road-risks",
+                    "motor-trade-combined",
+                    "commercial-combined"
+                  ]
+                },
+                "incident": {
+                  "$ref": "#/$defs/IncidentWrite"
                 }
               },
               "required": [
-                "recordId",
-                "versionId",
-                "contentHash"
+                "incidentId",
+                "source",
+                "productCode",
+                "incident"
               ]
             },
-            "productCode": {
-              "type": "string",
-              "enum": [
-                "motor-trade-road-risks",
-                "motor-trade-combined",
-                "commercial-combined"
-              ]
-            },
-            "incident": {
-              "$ref": "#/$defs/IncidentWrite"
+            {
+              "$ref": "#/$defs/OpsClaimsSnapshot"
             }
-          },
-          "required": [
-            "incidentId",
-            "source",
-            "productCode",
-            "incident"
           ]
         }
       },
@@ -1264,52 +1271,59 @@
           "format": "date-time"
         },
         "payload": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "providerReference": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 100
-            },
-            "state": {
-              "type": "string",
-              "enum": [
-                "received",
-                "open",
-                "closed",
-                "rejected"
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "providerReference": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "received",
+                    "open",
+                    "closed",
+                    "rejected"
+                  ]
+                },
+                "asOf": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "paid": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+                },
+                "reserved": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+                },
+                "reasonCodes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "maxItems": 1000
+                }
+              },
+              "required": [
+                "providerReference",
+                "state",
+                "asOf",
+                "paid",
+                "reserved",
+                "reasonCodes"
               ]
             },
-            "asOf": {
-              "type": "string",
-              "format": "date-time"
-            },
-            "paid": {
-              "type": "string",
-              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
-            },
-            "reserved": {
-              "type": "string",
-              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
-            },
-            "reasonCodes": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 100
-              },
-              "maxItems": 1000
+            {
+              "$ref": "#/$defs/OpsClaimsProviderSummary"
             }
-          },
-          "required": [
-            "providerReference",
-            "state",
-            "asOf",
-            "paid",
-            "reserved",
-            "reasonCodes"
           ]
         }
       },
@@ -2541,6 +2555,829 @@
         "contact",
         "evidenceDocumentIds",
         "occurredOn"
+      ]
+    },
+    "OpsClaimsSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "format": {
+          "const": "claims-handoff-2"
+        },
+        "incidentId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "policyId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "revisionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "revisionHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "resolutionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "resolutionHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "sourceVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "sourceHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "administratorId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "administratorName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "\\S"
+        },
+        "facts": {
+          "$ref": "#/$defs/OpsClaimsFacts"
+        },
+        "resolution": {
+          "$ref": "#/$defs/OpsOccurrenceResolution"
+        },
+        "commercial": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/OpsCommercialIncidentProjection"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OpsClaimsEvidence"
+          },
+          "minItems": 0,
+          "maxItems": 20,
+          "uniqueItems": true
+        },
+        "withheldEvidenceCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        }
+      },
+      "required": [
+        "format",
+        "incidentId",
+        "policyId",
+        "revisionId",
+        "revisionHash",
+        "resolutionId",
+        "resolutionHash",
+        "sourceVersionId",
+        "sourceHash",
+        "administratorId",
+        "administratorName",
+        "facts",
+        "resolution",
+        "commercial",
+        "evidence",
+        "withheldEvidenceCount"
+      ]
+    },
+    "OpsClaimsFacts": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "policyId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "occurrence": {
+              "$ref": "#/$defs/OpsOccurrence"
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "road-accident",
+                "vehicle-theft",
+                "premises-theft",
+                "fire",
+                "malicious-damage",
+                "third-party-injury",
+                "customer-vehicle-damage",
+                "property-damage",
+                "liability",
+                "other"
+              ]
+            },
+            "locationDescription": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000,
+              "pattern": "\\S"
+            },
+            "policeReference": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100,
+              "pattern": "\\S"
+            },
+            "thirdPartyInvolvement": {
+              "type": "string",
+              "enum": [
+                "yes",
+                "no",
+                "unknown"
+              ]
+            },
+            "thirdPartyName": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            },
+            "thirdPartyInsurerOrRegistration": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8000,
+              "pattern": "\\S"
+            },
+            "reportedBy": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            },
+            "reportingRoute": {
+              "type": "string",
+              "enum": [
+                "agency",
+                "insured-direct",
+                "third-party-or-insurer",
+                "police-or-recovery"
+              ]
+            },
+            "bestContactDescription": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000,
+              "pattern": "\\S"
+            },
+            "productCode": {
+              "type": "string",
+              "enum": [
+                "motor-trade-road-risks",
+                "motor-trade-combined"
+              ]
+            },
+            "motorSubject": {
+              "$ref": "#/$defs/OpsMotorSubject"
+            }
+          },
+          "required": [
+            "policyId",
+            "productCode"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "policyId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "occurrence": {
+              "$ref": "#/$defs/OpsOccurrence"
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "premises-theft",
+                "fire",
+                "malicious-damage",
+                "third-party-injury",
+                "property-damage",
+                "liability",
+                "other"
+              ]
+            },
+            "locationDescription": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000,
+              "pattern": "\\S"
+            },
+            "policeReference": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100,
+              "pattern": "\\S"
+            },
+            "thirdPartyInvolvement": {
+              "type": "string",
+              "enum": [
+                "yes",
+                "no",
+                "unknown"
+              ]
+            },
+            "thirdPartyName": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            },
+            "thirdPartyInsurerOrRegistration": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8000,
+              "pattern": "\\S"
+            },
+            "reportedBy": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            },
+            "reportingRoute": {
+              "type": "string",
+              "enum": [
+                "agency",
+                "insured-direct",
+                "third-party-or-insurer",
+                "police-or-recovery"
+              ]
+            },
+            "bestContactDescription": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000,
+              "pattern": "\\S"
+            },
+            "productCode": {
+              "const": "commercial-combined"
+            },
+            "commercialSubject": {
+              "$ref": "#/$defs/OpsCommercialSubject"
+            }
+          },
+          "required": [
+            "policyId",
+            "productCode"
+          ]
+        }
+      ]
+    },
+    "OpsOccurrence": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "occurredOn": {
+              "type": "string",
+              "format": "date"
+            },
+            "timeZone": {
+              "const": "Europe/London"
+            },
+            "precision": {
+              "const": "date"
+            }
+          },
+          "required": [
+            "occurredOn",
+            "timeZone",
+            "precision"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "occurredOn": {
+              "type": "string",
+              "format": "date"
+            },
+            "timeZone": {
+              "const": "Europe/London"
+            },
+            "precision": {
+              "const": "approximate"
+            },
+            "approximateLocalTime": {
+              "type": "string",
+              "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+            }
+          },
+          "required": [
+            "occurredOn",
+            "timeZone",
+            "precision",
+            "approximateLocalTime"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "occurredOn": {
+              "type": "string",
+              "format": "date"
+            },
+            "timeZone": {
+              "const": "Europe/London"
+            },
+            "precision": {
+              "const": "exact"
+            },
+            "occurredAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "required": [
+            "occurredOn",
+            "timeZone",
+            "precision",
+            "occurredAt"
+          ]
+        }
+      ]
+    },
+    "OpsMotorSubject": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "registered-vehicle"
+            },
+            "vehicleId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "driverId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "driverDeclaration": {
+              "type": "string",
+              "enum": [
+                "named",
+                "not-named",
+                "unknown"
+              ]
+            },
+            "drivable": {
+              "type": "string",
+              "enum": [
+                "yes",
+                "no-recovered",
+                "unknown"
+              ]
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "unregistered-vehicle"
+            },
+            "registration": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20,
+              "pattern": "\\S"
+            },
+            "driverDeclaration": {
+              "type": "string",
+              "enum": [
+                "not-named",
+                "unknown"
+              ]
+            },
+            "drivable": {
+              "type": "string",
+              "enum": [
+                "yes",
+                "no-recovered",
+                "unknown"
+              ]
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "stock-or-customer-vehicle",
+                "premises",
+                "third-party-only"
+              ]
+            },
+            "itemDescription": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000,
+              "pattern": "\\S"
+            },
+            "owner": {
+              "type": "string",
+              "enum": [
+                "insured",
+                "customer",
+                "third-party"
+              ]
+            },
+            "estimatedValueAtRisk": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        }
+      ]
+    },
+    "OpsCommercialSubject": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "property"
+            },
+            "locationId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "coverCode": {
+              "type": "string",
+              "enum": [
+                "buildings",
+                "contents",
+                "stock",
+                "business-interruption"
+              ]
+            },
+            "itemDescription": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000,
+              "pattern": "\\S"
+            },
+            "owner": {
+              "type": "string",
+              "enum": [
+                "insured",
+                "customer",
+                "third-party"
+              ]
+            },
+            "estimatedValueAtRisk": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "liability"
+            },
+            "coverCode": {
+              "type": "string",
+              "enum": [
+                "public-liability",
+                "products-liability",
+                "employers-liability"
+              ]
+            },
+            "locationId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "occupationId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "itemDescription": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000,
+              "pattern": "\\S"
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        }
+      ]
+    },
+    "OpsOccurrenceResolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "policyId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "revisionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "knownAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "resolved",
+            "ambiguous",
+            "partly-uncovered",
+            "uncovered",
+            "incomplete"
+          ]
+        },
+        "window": {
+          "$ref": "#/$defs/OpsOccurrenceWindow"
+        },
+        "candidates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "versionId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "sourceHash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "from": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "to": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 300,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "versionId",
+              "sourceHash",
+              "from",
+              "to",
+              "label"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "sourceHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "id",
+        "policyId",
+        "revisionId",
+        "knownAt",
+        "state",
+        "candidates"
+      ]
+    },
+    "OpsOccurrenceWindow": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "from": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "to": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isExact": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "from",
+        "to",
+        "isExact"
+      ]
+    },
+    "OpsCommercialIncidentProjection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "format": {
+          "const": "commercial-incident-2"
+        },
+        "policyId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "versionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "sourceContentHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "occurrence": {
+          "$ref": "#/$defs/OpsOccurrence"
+        },
+        "applicability": {
+          "$ref": "#/$defs/OpsOccurrenceWindow"
+        },
+        "knownAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "subject": {
+          "$ref": "#/$defs/OpsCommercialSubject"
+        }
+      },
+      "required": [
+        "format",
+        "policyId",
+        "versionId",
+        "sourceContentHash",
+        "occurrence",
+        "applicability",
+        "knownAt",
+        "subject"
+      ]
+    },
+    "OpsClaimsEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "versionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "\\S"
+        },
+        "mediaType": {
+          "type": "string",
+          "enum": [
+            "application/pdf",
+            "image/png",
+            "image/jpeg"
+          ]
+        },
+        "length": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20971520
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "versionId",
+        "name",
+        "mediaType",
+        "length",
+        "sha256"
+      ]
+    },
+    "OpsClaimsProviderSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "providerReference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "pattern": "\\S"
+        },
+        "eventId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "pattern": "\\S"
+        },
+        "asOf": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "notified",
+            "open",
+            "closed",
+            "rejected"
+          ]
+        },
+        "paid": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reserved": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,12})\\.[0-9]{2}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "currency": {
+          "const": "GBP"
+        }
+      },
+      "required": [
+        "providerReference",
+        "eventId",
+        "asOf",
+        "status",
+        "paid",
+        "reserved",
+        "currency"
       ]
     }
   }

@@ -27,6 +27,9 @@ const ports={
  payment:{request:o({obligationKind:e('refund','broker-remuneration'),obligationId:id,paymentKey:id,amount,currency:{const:'GBP'},payeeReference:t(100)}),result:o({state:e('confirmed','rejected','unknown'),paymentKey:id,providerReference:t(100),amount,currency:{const:'GBP'},asOf:instant,reasonCode:t(100)})},
  bordereau:{request:o({batchId:id,providerId:id,from:date,to:date,export:file,validationVersion:t(100)}),result:o({status:e('accepted','rejected'),reference:t(100),submittedAt:instant,exportSha256:hash,rowErrors:a(o({rowId:id,code:t(100),message:t(1000)}))})}
 };
+// Retained v1 claims envelopes remain valid; the incident revision projection is versioned.
+ports.claims.request={oneOf:[ports.claims.request,apiRef('OpsClaimsSnapshot')]};
+ports.claims.result={oneOf:[ports.claims.result,apiRef('OpsClaimsProviderSummary')]};
 const alternatives=[];
 for(const [kind,port] of Object.entries(ports))for(const direction of ['request','result']){
  alternatives.push(o({kind:{const:kind},direction:{const:direction},operationId:id,operationKey:t(200),sourceVersionId:id,scenarioVersionId:id,correlationId:id,recordedAt:instant,payload:port[direction]}));

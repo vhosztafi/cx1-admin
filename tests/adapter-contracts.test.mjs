@@ -41,3 +41,10 @@ test('design payment reconciliation after timeout deduplicates callback and quar
  state=applyRecoveryEvent(state,{type:'payment-callback',hash:'result-b'});
  assert.equal(state.quarantined,true);assert.equal(state.paymentJournals,1);
 });
+
+test('versioned claims summary permits null money while retained legacy results remain valid',()=>{
+ const summary={providerReference:'DEMO-CLAIM',eventId:'claims/event-1',asOf:'2026-09-22T12:00:00Z',status:'notified',paid:null,reserved:null,currency:'GBP'};
+ assert.ok(validate({...base,kind:'claims',direction:'result',payload:summary}),JSON.stringify(validate.errors));
+ assert.ok(validate({...base,kind:'claims',direction:'result',payload:{providerReference:'LEGACY-CLAIM',state:'received',asOf:summary.asOf,paid:'0.00',reserved:'0.00',reasonCodes:[]}}),JSON.stringify(validate.errors));
+ assert.equal(validate({...base,kind:'claims',direction:'result',payload:{...summary,settlementAmount:'500.00'}}),false);
+});

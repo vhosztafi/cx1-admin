@@ -77,6 +77,17 @@ public sealed partial class IncidentService(IDbContextFactory<BackOfficeDbContex
         using var resolutionDocument=resolution is null?null:JsonDocument.Parse(resolution.ResolutionJson);
         var value=resolutionDocument?.RootElement.Clone();
         var missing=IncidentRules.Missing(draft.RootElement,resolution?.State??"incomplete",Subject(draft.RootElement)is not null&&resolution?.State=="resolved");
-        return new(row.Id,status,JsonSerializer.Serialize(new{id=row.Id,row.Reference,revisionId=revision.Id,draft=draft.RootElement,row.State,resolution=value,row.CreatedAt,row.UpdatedAt,missing},Json),Etag:TaskService.Etag(row.RowVersion));
+        var handoff=await db.Set<ClaimsHandoff>().AsNoTracking().SingleOrDefaultAsync(x=>x.RevisionId==revision.Id,token);
+        JsonElement? administratorSummary=null;
+        if(handoff is not null)
+        {
+            var summary=await db.Set<ClaimsSummary>().AsNoTracking().Where(x=>x.HandoffId==handoff.Id).OrderByDescending(x=>x.AsOf).ThenByDescending(x=>x.ReceivedAt).ThenByDescending(x=>x.Id).FirstOrDefaultAsync(token);
+            if(summary is not null)
+            {
+                var external=JsonSerializer.Deserialize<ClaimsAdministratorSummary>(summary.SummaryJson,ClaimsSnapshots.Json)!;
+                administratorSummary=JsonSerializer.SerializeToElement(new{summary.Id,incidentId=row.Id,summary.HandoffId,summary.AsOf,summary.ReceivedAt,external.Status,external.Paid,external.Reserved,external.Currency,external.ProviderReference,providerEventId=summary.ProviderEventId},ClaimsSnapshots.Json);
+            }
+        }
+        return new(row.Id,status,JsonSerializer.Serialize(new{id=row.Id,row.Reference,revisionId=revision.Id,draft=draft.RootElement,row.State,resolution=value,row.CreatedAt,row.UpdatedAt,missing,providerReference=handoff?.ProviderReference,administratorSummary},Json),Etag:TaskService.Etag(row.RowVersion));
     }
 }

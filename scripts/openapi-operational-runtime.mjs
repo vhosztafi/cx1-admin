@@ -140,4 +140,16 @@ export function addOperationalRuntimeContracts({schemas:s,ref:r,operation:op,lis
   operation.description='Durable deterministic demo delivery. Exact content, contact addresses and document versions are frozen. Retry retains the operation; resend creates a new delivery. Mutations require current original scope before replay. Send uses message ETag; recovery uses delivery ETag.';
   for(const [code,response]of Object.entries(operation.responses))if(Number(code)>=200&&Number(code)<300){response.headers??={};response.headers['Cache-Control']={description:'Private, no-store.',schema:t(100)};if(!['listMessageDeliveries','listDocumentDeliveries','listDocumentDeliveryAttempts','listMessageDeliveryAttempts'].includes(operation.operationId))response.headers.ETag={description:'Strong opaque current resource ETag.',schema:t(100)};}
  }
+ list('/incidents/{incidentId}/handoffs','listIncidentHandoffs','incident-read',r('OpsClaimsHandoff'));
+ list('/incidents/{incidentId}/requests','listClaimsRequests','incident-read',r('OpsClaimsRequest'));
+ op('get','/incidents/{incidentId}/administrators','listIncidentAdministrators','incident-read',{output:r('OpsClaimsAdministrators')});
+ op('post','/incidents/{incidentId}/requests/{requestId}/retry','retryClaimsRequest','incident-handoff',{existing:true,input:o({reason:t(1000)}),output:r('Job'),status:202});
+ paths['/incidents/{incidentId}/refresh'].post.requestBody={required:true,content:{'application/json':{schema:o({})}}};
+ const claimsRuntime=new Set(['handoffIncident','logAndHandoffIncident','contactClaimsAdministrator','refreshClaimSummary','listClaimSummaries','listIncidentHandoffs','listClaimsRequests','listIncidentAdministrators','retryClaimsRequest']);
+ for(const methods of Object.values(paths))for(const operation of Object.values(methods))if(claimsRuntime.has(operation.operationId)){
+  operation['x-runtime-status']='phase-9-13-implemented-acceptance-pending';
+  operation.description='Persistent deterministic demo claims operation scoped to the original incident. Handoff pins the complete revision and historical resolution. Refresh/contact require acknowledged handoff. Writes use incident ETag; retry uses request job ETag. Unknown money remains null.';
+  for(const [code,response]of Object.entries(operation.responses))if(Number(code)>=200&&Number(code)<300){response.headers??={};response.headers['Cache-Control']={description:'Private, no-store.',schema:t(100)};}
+ }
+
 }

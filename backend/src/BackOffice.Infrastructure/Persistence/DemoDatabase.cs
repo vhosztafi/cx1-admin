@@ -116,6 +116,7 @@ public static class DemoDatabase
             await Operations.WorkflowTaskSeed.SeedAsync(db,cancellationToken);
             await Operations.DocumentTemplateSeed.SeedAsync(db,cancellationToken);
             await Operations.OperationalDeliverySeed.Seed(db,cancellationToken);
+            await Operations.OperationalClaimsSeed.Seed(db,cancellationToken);
         }
         if(includeCommercialCapture)await Quotes.CommercialCaptureSeed.SeedAsync(db,cancellationToken);
         if(includeCommercialUnderwriting)

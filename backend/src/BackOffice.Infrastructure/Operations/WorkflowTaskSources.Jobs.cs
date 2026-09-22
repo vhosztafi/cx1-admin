@@ -27,14 +27,15 @@ internal static partial class WorkflowTaskSources
             "agency-notification" => await db.Set<AgencyNotification>().Where(x => x.WorkId == work.Id).Select(x => new OperationalParent("agency", x.AgencyId)).SingleOrDefaultAsync(token),
             "file-finalization" => await FileParent(db, work.Id, token),
             "operational-delivery" => await DeliveryParent(db, work.Id, token),
+            "operational-claims" => await(from request in db.Set<ClaimsRequest>() join handoff in db.Set<ClaimsHandoff>() on request.HandoffId equals handoff.Id where request.WorkId==work.Id select new OperationalParent("policy",handoff.PolicyId)).SingleOrDefaultAsync(token),
             _ => null
         };
         if (parent is null) throw new OperationalAccessException(409, "workflow-source-parent-unavailable");
         if (work.CreatedBy is not Guid actor) throw new OperationalAccessException(409, "workflow-source-actor-unavailable");
         var originalActor=actor;
-        if(work.Kind=="operational-delivery")actor=await DeliveryExceptionOwner(db,parent,actor,token);
+        if(work.Kind is "operational-delivery" or "operational-claims")actor=await DeliveryExceptionOwner(db,parent,actor,token);
         var resolved = work.State == "succeeded";
-        object details=work.Kind=="operational-delivery"
+        object details=work.Kind is "operational-delivery" or "operational-claims"
             ? new { exception.WorkId, exception.Code, exception.OccurredAt, work.Kind, work.State, work.Attempts, work.ErrorCode, originalActorId=originalActor }
             : new { exception.WorkId, exception.Code, exception.OccurredAt, work.Kind, work.State, work.Attempts, work.ErrorCode };
         return new(parent, actor, LocalDate(exception.OccurredAt).AddDays(rule.DueDays), !resolved, resolved,
