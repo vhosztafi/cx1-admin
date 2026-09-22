@@ -31,7 +31,7 @@ public sealed partial class UnderwritingRuntimeTests
         {
             var root=new DirectoryInfo(AppContext.BaseDirectory);
             while(root is not null && !File.Exists(Path.Combine(root.FullName,"package.json")))root=root.Parent;
-            Assert.NotNull(root);Assert.True(File.Exists(Path.Combine(root.FullName,"apps/backoffice/.next/BUILD_ID")));
+            Assert.NotNull(root);var dist=OperationalBrowserBuild.Select(root.FullName,Environment.GetEnvironmentVariable("COVER_NEXT_DIST_DIR")??".next");Assert.True(File.Exists(Path.Combine(root.FullName,"apps/backoffice",dist,"BUILD_ID")));
             var setup=await AcceptedIssue(db,password,product);var f=setup.Source;
             await new QuoteIssueService(f.Factory,f.Clock).IssueAsync(f.Underwriter,f.QuoteId,setup.Version,setup.Input,Guid.NewGuid().ToString(),Guid.NewGuid());
             var term=await db.Set<PolicyTerm>().AsNoTracking().SingleAsync();var basis=await db.Set<PolicyVersion>().AsNoTracking().SingleAsync();
@@ -50,7 +50,7 @@ public sealed partial class UnderwritingRuntimeTests
                 foreach(var arg in args)info.ArgumentList.Add(arg);foreach(var (key,value) in environment)info.Environment[key]=value;
                 return Process.Start(info)??throw new InvalidOperationException("Cancellation browser child could not start.");
             }
-            using var web=StartNode(["apps/backoffice/node_modules/next/dist/bin/next","start","apps/backoffice","--hostname","127.0.0.1","--port",port.ToString()],new(){["BACKOFFICE_API_ORIGIN"]=api});
+            using var web=StartNode(["apps/backoffice/node_modules/next/dist/bin/next","start","apps/backoffice","--hostname","127.0.0.1","--port",port.ToString()],new(){["BACKOFFICE_API_ORIGIN"]=api,["COVER_NEXT_DIST_DIR"]=dist});
             var webOut=web.StandardOutput.ReadToEndAsync();var webErr=web.StandardError.ReadToEndAsync();Process? browser=null;
             try
             {
