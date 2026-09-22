@@ -164,3 +164,13 @@ Preview API75380 unchanged; current web49256 started against the new manifest. P
 ### Request history verified — 2026-09-22 20:51 UTC
 
 Session81534 ended0: both Motor Trade history cases passed in1m33, `.local/phase9-17-request-history-v2-sql/sql.trx`; exact selected request/version IDs, reconstruction and clone checks executed. Commercial servicing already passed in initial3-case report. Retained `.local/phase9-17-request-history-retained/report.json` passed both products at1480/390px, exact saved IDs, keyboard provenance and no page errors; commercial mobile image inspected. Runtime fix is ready to commit. No SQL/browser process remains active at this checkpoint. Fresh full549-case v3 follows without rerunning unchanged1328backend units.
+
+### Full v3 regression RUNNING — 2026-09-22 20:53 UTC
+
+Commit3a5dd2e contains the reviewed request-history fix. Session76741 runs `.local/phase9-final-v3-run.ps1`; all549 integration cases, no filter. Source/assembly inventory `.local/phase9-final-v3-start.json`, live log `.local/phase9-final-v3-sql.log`, eventual TRX `.local/phase9-final-v3/sql/sql.trx`, finish marker `.local/phase9-final-v3-finish.json`. This is the sole active SQL/browser acceptance. Freeze runtime/UI/tests/browser scripts and compiled bundle. Unit1328 remains the same unchanged-backend report, counted once. Do not relaunch interrupted53019/92140 or targeted38066/81534.
+
+After completion, run `.local/phase9-final-v3-check.ps1`; then `.local/phase9-reuse-legacy-results.ps1`, operational collector, `.local/phase9-retained-servicing.mjs` and original underwriting aggregate sequentially. Source/strict/legacy helpers all point to v3. Retained preview API75380/web49256, original keys/files. Final source acceptance, two initializations, verified process restart and retained readbacks remain; no Phase9 completion or human UAT claim.
+
+### Guarded continuation armed
+
+Session11608 runs `.local/phase9-final-v3-followthrough.ps1`, initially waiting for this exact v3 finish marker. It launches no acceptance unless full v3 exits0 with unchanged assembly. It then runs strict inventory/source validation, existing15-case legacy accounting, operational collector, retained13-stage servicing helper and original underwriting aggregate sequentially, stopping on any failure. Report `.local/phase9-final-v3-followthrough/report.json` records stage starts/exits/log hashes. Do not manually duplicate these stages while11608 remains active. This is a supervisor waiting behind the single SQL/browser run76741, not a concurrent SQL suite. Final actual initialization/restart/readback and review remain outside the supervisor and must follow its successful results. All helper parsing/syntax checks passed; no queued stage is claimed executed.
