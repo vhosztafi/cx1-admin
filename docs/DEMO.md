@@ -411,4 +411,20 @@ Both resolve to the exact issued historical version, have one acknowledged deter
 
 `node scripts/seed-operational-incidents-demo.mjs <fixtures.json>` accepts two explicit `{policyId,occurredOn}` fixtures. It uses normal scoped APIs and a persistent local command journal; rerunning preserves the same incidents, revisions, handoffs and summaries. Retained fixtures are `.local/phase9-16-incidents-fixtures.json`; reports and desktop/mobile captures are in `.local/operational-incidents-demo-v1`. `scripts/verify-operational-incidents-readback.ps1` independently checks SQL provenance and exact counts. Both first and repeat browser runs and SQL readback passed. Keep these journals; removing them is not a supported reset.
 
-Phase9 is still in progress: the retained failed-pack/task/retry and MID transient retry walkthroughs and final full-phase verification remain unfinished. These examples do not constitute human business UAT.
+Phase9 is still in progress: current full browser/source reconciliation and final full-phase verification remain unfinished. These examples do not constitute human business UAT.
+### Retained failure and retry examples
+
+The Commercial Combined policy's Documents tab contains the **Fictional operational retry demonstration pack**. Its agency-visible copies were generated explicitly from the original issued source and template hashes; the original internal PDFs were preserved. Open **View delivery and attempts** to inspect six transient failures and the seventh successful attempt. The same delivery, recipient and three exact PDF versions survived retry. The exception is task `6b5e4e97-e11c-4cfc-97c6-9a5737b55a66`.
+
+Motor Trade **PL-MT-0000000012 → Vehicles → MID submissions** shows the corresponding accepted initial submission. Its six failed attempts, seventh accepted attempt, original version and exception task `47a1d24b-3c24-4922-9bfe-6a0b2bbb9184` remain in history. This demonstrates recovery from a transient failure; a definite rejection is not retried.
+
+Both examples use real hosted lease/provider/application processing against persistent deterministic adapters. To avoid waiting through the long demo backoff, `scripts/wake-operational-demo-retries.ps1` brought forward only these two recorded pending jobs' next-attempt times. It never changed attempts, results, payloads, permissions or provider receipts. The schedule records disclose that time compression. The browser then used the actual Retry controls. Independent SQL verification proves one exception task and provider operation per original job, seven actual attempts each, and three unchanged PDF hashes. Reports and screenshots are in `.local/operational-pack-demo-v1`; run `scripts/verify-operational-retries-readback.ps1` for the independent readback.
+
+Setup tools are explicit local demo commands, not application startup:
+
+- `--register-operational-mid-demo --version-id <existing-issued-motor-version>` uses current senior-underwriter scope and the normal missing-only initial-intent registration service.
+- `scripts/operational-retry-demo-settings.ps1 -Mode Prepare` appends immutable retry-required settings for the bounded setup window; `-Mode Restore` appends the previous success values. Keep its journal and always restore in `finally`. Existing work retains the selected scenario. The retained defaults have been restored.
+- `node scripts/seed-operational-pack-demo.mjs prepare` creates explicit agency copies from exact retained source/templates. `queue` uses its saved command journal; `read` only inspects the same pack. Do not delete journals to rerun setup.
+- `node scripts/verify-retained-operational-retries.mjs` opens the real exception tasks and retries only while the original operations are failed; subsequent runs verify the completed operations without creating a resend.
+
+The three downloaded documents independently parse as a 13-page schedule, 12-page statement of fact and 2-page certificate. Schedule first/last and certificate final pages, plus desktop/mobile retry views, were visually inspected. This is engineering verification, not human business or assistive-technology UAT.

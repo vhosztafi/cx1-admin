@@ -12,7 +12,7 @@ if (args.Contains("--initialize-demo", StringComparer.Ordinal))
 }
 if (args.Contains("--reset-demo",StringComparer.Ordinal)) throw new InvalidOperationException("Reset requires --initialize-demo --reset-demo.");
 
-var builder = WebApplication.CreateBuilder(args.Where(x=>x is not ("--seed-commercial-proposals-demo" or "--seed-commercial-authority-demo" or "--seed-operational-demo" or "--prepare-operational-commercial-demo")).ToArray());
+var builder = WebApplication.CreateBuilder(args.Where(x=>x is not ("--seed-commercial-proposals-demo" or "--seed-commercial-authority-demo" or "--seed-operational-demo" or "--prepare-operational-commercial-demo" or "--register-operational-mid-demo")).ToArray());
 builder.Services.AddProblemDetails();
 builder.Services.AddHealthChecks();
 builder.AddLocalIdentity();
@@ -130,6 +130,22 @@ if(args.Contains("--seed-servicing-terms-demo",StringComparer.Ordinal))
     await using var transaction=await Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.BeginTransactionAsync(db.Database,System.Data.IsolationLevel.Serializable);
     await BackOffice.Infrastructure.Policies.ServicingTermsSeed.SeedAsync(db);await transaction.CommitAsync();
     Console.WriteLine("Missing fictional servicing terms templates and delivery scenario added.");return;
+}
+if(args.Contains("--register-operational-mid-demo",StringComparer.Ordinal))
+{
+    if(!app.Environment.IsDevelopment())throw new InvalidOperationException("Operational fixtures require local Development.");
+    var index=Array.IndexOf(args,"--version-id");
+    if(index<0||index+1>=args.Length||!Guid.TryParse(args[index+1],out var versionId)||versionId==Guid.Empty)throw new InvalidOperationException("An existing issued Motor Trade --version-id is required.");
+    var factory=app.Services.GetRequiredService<Microsoft.EntityFrameworkCore.IDbContextFactory<BackOfficeDbContext>>();
+    await using var db=await factory.CreateDbContextAsync();DemoDatabase.ValidateDemoTarget(Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.GetConnectionString(db.Database)!);
+    var user=await Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.SingleAsync(db.Set<StaffUser>(),x=>x.Email=="senior-underwriter@cover.example"&&x.State=="active"&&x.AgencyId==null);
+    var roles=await Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToArrayAsync(from link in db.Set<UserRole>() join role in db.Set<Role>() on link.RoleId equals role.Id where link.UserId==user.Id select role.Code);
+    var actor=new BackOffice.Application.ActorContext(user.Id,user.TeamId,null,roles.ToHashSet(StringComparer.Ordinal));
+    await using var seedScope=app.Services.CreateAsyncScope();
+    var service=seedScope.ServiceProvider.GetRequiredService<BackOffice.Infrastructure.Operations.MidSubmissionRegistration>();
+    var work=await service.RegisterMissingInitial(actor,versionId,"Prepare retained fictional Motor Trade MID demonstration","operational-mid-demo:"+versionId.ToString("D"));
+    var submission=await service.Register(work.ResourceId);
+    Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new{versionId,workId=work.ResourceId,submissionId=submission}));return;
 }
 if(args.Contains("--prepare-operational-commercial-demo",StringComparer.Ordinal))
 {

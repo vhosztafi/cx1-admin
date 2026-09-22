@@ -43,10 +43,10 @@ Progress: eight of13 phases complete;96/99 currently defined plans complete. Lat
 
 ## Next work
 
-Execute09-16 inherited obligations and demo, then remaining sequential plans. Read09-15-SUMMARY,09-16-PLAN and09-16-INTEGRATION-NOTES. Plans09-01 through09-15 are implemented and verified. No retained Phase9 demo migration has run; do not repeat accepted SQL suites.
+Execute09-16 inherited obligations and demo, then remaining sequential plans. Read09-15-SUMMARY,09-16-PLAN and09-16-INTEGRATION-NOTES. Plans09-01 through09-15 are implemented and verified. Retained Phase9 migration and two initialization checks passed; historical MT/CC incident demos are saved. Retry scenarios remain active; inspect09-16-CHECKPOINT before launching work.
 
 ## Evidence and continuity
 
-Phase8 final evidence:08-16-SUMMARY.md and08-VERIFICATION.md. Full integration session70737 ended successfully; strict.local/phase8-16-final-strict verifies1511/383 and exact inventory. Do not restart old acceptance queues. Current preview identities are in.local/phase8-16-preview-pids.json (API7800/web37736,5087/3100); verify identity before changing processes.
+Phase8 final evidence:08-16-SUMMARY.md and08-VERIFICATION.md. Full integration session70737 ended successfully; strict.local/phase8-16-final-strict verifies1511/383 and exact inventory. Do not restart old acceptance queues. Current preview identities are in.local/phase9-16-preview-pids.json (API78144/web79668,5087/3100); verify identity before changing processes.
 
 User authorised autonomous research/planning/implementation and explicitly requested continuous work. No routine confirmation is required. Heartbeat continue-cover-mga-back-office-mvp remains ACTIVE every10minutes as a fallback and must avoid duplicate work. Human business/assistive-technology UAT, hostedCI and Docker runtime remain unperformed. Generic GSD state commands can reset custom metadata and over-complete compound requirements; reconcile actual records instead.
