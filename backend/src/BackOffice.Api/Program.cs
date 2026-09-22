@@ -12,7 +12,7 @@ if (args.Contains("--initialize-demo", StringComparer.Ordinal))
 }
 if (args.Contains("--reset-demo",StringComparer.Ordinal)) throw new InvalidOperationException("Reset requires --initialize-demo --reset-demo.");
 
-var builder = WebApplication.CreateBuilder(args.Where(x=>x is not ("--seed-commercial-proposals-demo" or "--seed-commercial-authority-demo")).ToArray());
+var builder = WebApplication.CreateBuilder(args.Where(x=>x is not ("--seed-commercial-proposals-demo" or "--seed-commercial-authority-demo" or "--seed-operational-demo" or "--prepare-operational-commercial-demo")).ToArray());
 builder.Services.AddProblemDetails();
 builder.Services.AddHealthChecks();
 builder.AddLocalIdentity();
@@ -22,6 +22,7 @@ builder.Services.AddScoped<BackOffice.Infrastructure.Operations.NoteService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.ThreadService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.LegacyOperationalBridge>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.OperationalDemoSeed>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Operations.OperationalDemoQuoteSeed>();
 if(builder.Environment.IsDevelopment()&&builder.Configuration.GetValue("Cover:LegacyOperationalWorkerEnabled",false))
     builder.Services.AddHostedService<LegacyOperationalDispatcher>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.MessageDeliveryService>();
@@ -129,6 +130,21 @@ if(args.Contains("--seed-servicing-terms-demo",StringComparer.Ordinal))
     await using var transaction=await Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.BeginTransactionAsync(db.Database,System.Data.IsolationLevel.Serializable);
     await BackOffice.Infrastructure.Policies.ServicingTermsSeed.SeedAsync(db);await transaction.CommitAsync();
     Console.WriteLine("Missing fictional servicing terms templates and delivery scenario added.");return;
+}
+if(args.Contains("--prepare-operational-commercial-demo",StringComparer.Ordinal))
+{
+    if(!app.Environment.IsDevelopment())throw new InvalidOperationException("Operational fixtures require local Development.");
+    string Value(string name){var index=Array.IndexOf(args,name);if(index<0||index+1>=args.Length)throw new InvalidOperationException(name+" is required.");return args[index+1];}
+    if(!Guid.TryParse(Value("--relationship-id"),out var relationshipId)||relationshipId==Guid.Empty||!Guid.TryParse(Value("--product-version-id"),out var productVersionId)||productVersionId==Guid.Empty||
+        !DateOnly.TryParseExact(Value("--starts-on"),"yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture,System.Globalization.DateTimeStyles.None,out var startsOn))
+        throw new InvalidOperationException("Choose valid existing relationship/product IDs and a YYYY-MM-DD start date.");
+    var factory=app.Services.GetRequiredService<Microsoft.EntityFrameworkCore.IDbContextFactory<BackOfficeDbContext>>();
+    await using var db=await factory.CreateDbContextAsync();DemoDatabase.ValidateDemoTarget(Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.GetConnectionString(db.Database)!);
+    var user=await Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.SingleAsync(db.Set<StaffUser>(),x=>x.Email=="senior-underwriter@cover.example"&&x.State=="active"&&x.AgencyId==null);
+    var roles=await Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToArrayAsync(from link in db.Set<UserRole>() join role in db.Set<Role>() on link.RoleId equals role.Id where link.UserId==user.Id select role.Code);
+    var actor=new BackOffice.Application.ActorContext(user.Id,user.TeamId,null,roles.ToHashSet(StringComparer.Ordinal));
+    var result=await app.Services.GetRequiredService<BackOffice.Infrastructure.Operations.OperationalDemoQuoteSeed>().PrepareCommercialIncident(actor,relationshipId,productVersionId,startsOn);
+    Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result));return;
 }
 if(args.Contains("--seed-operational-demo",StringComparer.Ordinal))
 {
