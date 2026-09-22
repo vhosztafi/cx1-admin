@@ -26,14 +26,20 @@ internal static partial class WorkflowTaskSources
             "renewal-lapse-notification" => await db.Set<RenewalLapseEvent>().Where(x => x.WorkId == work.Id).Select(x => new OperationalParent("policy", x.PolicyId)).SingleOrDefaultAsync(token),
             "agency-notification" => await db.Set<AgencyNotification>().Where(x => x.WorkId == work.Id).Select(x => new OperationalParent("agency", x.AgencyId)).SingleOrDefaultAsync(token),
             "file-finalization" => await FileParent(db, work.Id, token),
+            "operational-delivery" => await DeliveryParent(db, work.Id, token),
             _ => null
         };
         if (parent is null) throw new OperationalAccessException(409, "workflow-source-parent-unavailable");
         if (work.CreatedBy is not Guid actor) throw new OperationalAccessException(409, "workflow-source-actor-unavailable");
+        var originalActor=actor;
+        if(work.Kind=="operational-delivery")actor=await DeliveryExceptionOwner(db,parent,actor,token);
         var resolved = work.State == "succeeded";
+        object details=work.Kind=="operational-delivery"
+            ? new { exception.WorkId, exception.Code, exception.OccurredAt, work.Kind, work.State, work.Attempts, work.ErrorCode, originalActorId=originalActor }
+            : new { exception.WorkId, exception.Code, exception.OccurredAt, work.Kind, work.State, work.Attempts, work.ErrorCode };
         return new(parent, actor, LocalDate(exception.OccurredAt).AddDays(rule.DueDays), !resolved, resolved,
             JsonSerializer.Serialize(new { sourceKind = "job-exception", sourceEventId = id, parent, actorId = actor,
-                details = new { exception.WorkId, exception.Code, exception.OccurredAt, work.Kind, work.State, work.Attempts, work.ErrorCode } }, Json));
+                details }, Json));
     }
 
     private static async Task<OperationalParent?> FileParent(BackOfficeDbContext db, Guid workId, CancellationToken token)
@@ -41,5 +47,26 @@ internal static partial class WorkflowTaskSources
         var subject = await (from file in db.Set<FileObject>() join parent in db.Set<OperationalSubject>() on file.SubjectId equals parent.Id
             where file.WorkId == workId && file.StorageKind == "local" select parent).AsNoTracking().SingleOrDefaultAsync(token);
         return subject is null ? null : OperationalScope.Parent(subject);
+    }
+
+    private static async Task<OperationalParent?> DeliveryParent(BackOfficeDbContext db, Guid workId, CancellationToken token)
+    {
+        var subject=await(from delivery in db.Set<OperationalDelivery>() join parent in db.Set<OperationalSubject>() on delivery.SubjectId equals parent.Id
+            where delivery.WorkId==workId select parent).AsNoTracking().SingleOrDefaultAsync(token);
+        return subject is null?null:OperationalScope.Parent(subject);
+    }
+    private static async Task<Guid> DeliveryExceptionOwner(BackOfficeDbContext db,OperationalParent parent,Guid original,CancellationToken token)
+    {
+        // A revoked sender cannot execute the delivery. Its failure still needs
+        // an operational owner with existing current parent authority. This is an
+        // automatic workflow task, not an action attributed to a human sender;
+        // the retained source snapshot records the original actor separately.
+        string[] roles=parent.Kind=="agency"?["underwriter","senior-underwriter","agency-admin","system-admin"]:
+            parent.Kind=="relationship"?["servicing","underwriter","senior-underwriter","agency-admin"]:["servicing","underwriter","senior-underwriter"];
+        var candidates=from user in db.Set<StaffUser>() where user.State=="active"&&user.AgencyId==null&&
+            (from link in db.Set<UserRole>() join role in db.Set<Role>() on link.RoleId equals role.Id where link.UserId==user.Id&&role.Scope=="internal"&&roles.Contains(role.Code) select link).Any()&&
+            !(from link in db.Set<UserRole>() join role in db.Set<Role>() on link.RoleId equals role.Id where link.UserId==user.Id&&role.Scope!="internal" select link).Any()
+            orderby user.Id==original descending,user.Id select user.Id;
+        return await candidates.Select(x=>(Guid?)x).FirstOrDefaultAsync(token)??throw new OperationalAccessException(409,"workflow-source-actor-unavailable");
     }
 }

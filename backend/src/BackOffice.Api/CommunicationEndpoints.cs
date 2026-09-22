@@ -57,6 +57,13 @@ public static class CommunicationEndpoints
             QuoteEndpoints.Id(messageId);QuoteHttpInput.NoQuery(context.Request);return service.ReadDraft(LocalIdentityService.Actor(context.User),messageId,context.RequestAborted);
         })).RequireAuthorization("message-read");
     }
+    public static void MapDocumentPackOptions(this WebApplication app)
+    {
+        app.MapGet("/api/v1/records/{recordId:guid}/document-delivery-recipients/{relationshipId:guid}",(Guid recordId,Guid relationshipId,HttpContext context,ThreadService service,PartyPaging paging)=>Options(recordId,context,paging,(actor,page)=>
+        {
+            QuoteEndpoints.Id(relationshipId);return service.PackRecipients(actor,recordId,relationshipId,page.KeyId,page.Size,page.AsOf,context.RequestAborted);
+        })).RequireAuthorization("document-send");
+    }
     private static CommandOutcome Page(Guid id,CommunicationPage rows,PartyPaging paging,PartyPaging.Page page)
         =>new(id,200,JsonSerializer.Serialize(new{items=rows.Items,totalCount=rows.TotalCount,nextCursor=paging.NextGuid(page,rows.NextId)},ClientEndpoints.Json));
     private static Task<IResult> Options(Guid id,HttpContext context,PartyPaging paging,Func<BackOffice.Application.ActorContext,PartyPaging.Page,Task<CommunicationOptionsPage>> read)=>Run(context,async()=>

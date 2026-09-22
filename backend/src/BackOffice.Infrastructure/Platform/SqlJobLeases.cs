@@ -25,7 +25,7 @@ public sealed class SqlJobLeases(IDbContextFactory<BackOfficeDbContext> factory,
 
     private async Task<JobLease?> ClaimCoreAsync(string kind,Guid? workId,CancellationToken cancellationToken)
     {
-        if(kind is not (DiagnosticKind or "agency-notification" or "quote-lookup" or "quote-rating" or "servicing-rating" or "servicing-capacity" or "servicing-delivery" or "renewal-lapse-notification" or "cancellation-notice" or "capacity-escalation" or "quote-delivery"))throw new ArgumentException("Unsupported job kind.");
+        if(kind is not (DiagnosticKind or "agency-notification" or "quote-lookup" or "quote-rating" or "servicing-rating" or "servicing-capacity" or "servicing-delivery" or "renewal-lapse-notification" or "cancellation-notice" or "capacity-escalation" or "quote-delivery" or "operational-delivery"))throw new ArgumentException("Unsupported job kind.");
         await using var db=await factory.CreateDbContextAsync(cancellationToken);
         // REPEATABLE READ permits READPAST even when the database uses read-committed snapshots.
         await using var transaction=await db.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead,cancellationToken);
@@ -60,7 +60,7 @@ public sealed class SqlJobLeases(IDbContextFactory<BackOfficeDbContext> factory,
             JobFailure.ProviderRejected => "provider-rejected",
             JobFailure.InvalidPayload => "invalid-payload",
             JobFailure.ProviderConflict => "provider-conflict",
-            JobFailure.Superseded => "invitation-superseded",
+            JobFailure.Superseded => lease.Kind == "operational-delivery" ? "delivery-context-unavailable" : "invitation-superseded",
             _ => throw new ArgumentOutOfRangeException(nameof(failure))
         };
         var transient=failure is JobFailure.ProviderUnavailable or JobFailure.ProviderTimeout;
@@ -89,6 +89,15 @@ public sealed class SqlJobLeases(IDbContextFactory<BackOfficeDbContext> factory,
     internal static async Task MarkTerminalAsync(BackOfficeDbContext db,OutboxWork job,string code,DateTimeOffset now,CancellationToken cancellationToken)
     {
         job.State="failed"; job.CompletedAt=now; job.ErrorCode=code; job.LeaseToken=null; job.LeaseExpiresAt=null;
+        if (job.Kind == "operational-delivery")
+        {
+            var delivery = await db.Set<OperationalDelivery>().SingleOrDefaultAsync(x => x.WorkId == job.Id, cancellationToken);
+            if (delivery is { State: "queued" })
+            {
+                delivery.State = code == "delivery-context-unavailable" ? "superseded" : "failed"; delivery.CompletedAt = now; delivery.OutcomeCode = code;
+                await Operations.DeliverySnapshots.UpdateMessageState(db, delivery, cancellationToken);
+            }
+        }
         if (job.Kind == "quote-delivery")
         {
             var delivery = await db.Set<QuoteTermsDelivery>().SingleOrDefaultAsync(x => x.WorkId == job.Id, cancellationToken);

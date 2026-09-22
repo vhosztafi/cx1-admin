@@ -9,6 +9,17 @@ namespace BackOffice.Infrastructure.Operations;
 public sealed record CommunicationOptionsPage(IReadOnlyList<object> Items,Guid? NextId);
 public sealed partial class ThreadService
 {
+    public async Task<CommunicationOptionsPage> PackRecipients(ActorContext actor,Guid subjectId,Guid relationshipId,Guid? before,int size,DateTimeOffset asOf,CancellationToken token)
+    {
+        CommunicationScope.Page(size);await using var db=await factory.CreateDbContextAsync(token);
+        await using var transaction=await db.Database.BeginTransactionAsync(token);
+        var held=await OperationalScope.HoldSubjects(db,actor,[subjectId],"document-send",token);
+        await CommunicationScope.Audience(db,held.Subjects.Single(),relationshipId,token);
+        var query=db.Set<Contact>().AsNoTracking().Where(x=>x.RelationshipId==relationshipId&&x.EndedAt==null&&x.Email!=null&&x.CreatedAt<=asOf);
+        if(before is Guid id)query=query.Where(x=>x.Id.CompareTo(id)<0);
+        var rows=await query.OrderByDescending(x=>x.Id).Take(size+1).Select(x=>new{x.Id,label=x.DeclaredFullName,email=x.Email}).ToArrayAsync(token);
+        await transaction.CommitAsync(token);return new(rows.Take(size).Where(x=>CommunicationRules.Email(x.email)).Cast<object>().ToArray(),rows.Length>size?rows[size-1].Id:null);
+    }
     public async Task<CommunicationOptionsPage> Relationships(ActorContext actor,Guid subjectId,Guid? before,int size,DateTimeOffset asOf,CancellationToken token)
     {
         CommunicationScope.Page(size);await using var db=await factory.CreateDbContextAsync(token);

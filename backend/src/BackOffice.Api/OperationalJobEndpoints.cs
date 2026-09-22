@@ -100,6 +100,19 @@ public static class OperationalJobEndpoints
             }
             catch (Exception error) when (QuoteEndpoints.Known(error)) { return QuoteEndpoints.Failure(context, error); }
         }
+        if (await db.Set<OutboxWork>().AsNoTracking().AnyAsync(x => x.Id == jobId && x.Kind == "operational-delivery", context.RequestAborted))
+        {
+            context.Response.Headers.CacheControl = "private, no-store";
+            try
+            {
+                QuoteHttpInput.NoQuery(context.Request);
+                var read = await context.RequestServices.GetRequiredService<BackOffice.Infrastructure.Operations.DeliveryReadService>().Job(actor, jobId, context.RequestAborted);
+                context.Response.Headers.ETag = "\"" + Convert.ToBase64String(read.Work.RowVersion) + "\"";
+                return Results.Json(View(read.Work) with { RetryAllowed = read.RetryAllowed }, Json);
+            }
+            catch (BackOffice.Infrastructure.Operations.OperationalAccessException error) { return IdentityEndpoints.Problem(context, error.Status, error.Code, "The delivery job is unavailable."); }
+            catch (Exception error) when (QuoteEndpoints.Known(error)) { return QuoteEndpoints.Failure(context, error); }
+        }
         // Business-job subject scope is supplied by its owning phase. It cannot inherit
         // diagnostic creator access or administrator access by sharing this endpoint.
         var job = await db.Set<OutboxWork>().AsNoTracking().SingleOrDefaultAsync(x => x.Id == jobId &&
