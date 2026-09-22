@@ -1,4 +1,5 @@
 'use client';
+import {CancellationConsequences} from '../operations/cancellation-consequences';
 import { TaskCreateEntry } from '../operations/task-create-entry';
 import { RecordCommunications } from '../operations/communication-shared';
 import { MidSubmissions } from '../operations/mid-submissions';
@@ -79,6 +80,7 @@ export function PolicyRecord({ policyId, questionLabels,selection,initialTab,ini
       {tab === 'Overview' ? <Panel title="Policy administration"><div className="quote-rail-body">{fields([['Product review', 'Not recorded'], ['Complaints', 'Not recorded']])}<p>Recorded referrals, authority decisions and supporting evidence are available from the originating quote or draft in Transactions and versions.</p></div></Panel> : null}
       {tab === 'Risk details' ? <p className="client-help">These declarations belong to the selected version. Earlier insurance details and renewal assessments are available through Transactions and versions. Details not shown were not recorded in this version.</p> : null}
       {tab === 'Drivers' ? <p className="client-help">Open the originating transaction to review its underwriting assessment, referral decisions and licence evidence. Details not shown were not recorded in this version.</p> : null}
+      {cancelled && ['Overview','Transactions','Documents'].includes(tab) && <CancellationConsequences key={policy.versionId} versionId={policy.versionId}/>}
       {tab === 'Vehicles' && <MidSubmissions key={policy.versionId} versionId={policy.versionId}/>}
       {tab === 'Vehicles' ? <p className="client-help">Open a vehicle record for its issued history and policy cover context. Details not shown were not recorded in this version.</p> : null}
       {tab === 'Overview' ? <Panel title="Premium at selected version" note={cancelled ? 'Retained cover charges before cancellation; the cancellation credit is shown separately in the transaction.' : 'Cumulative charges recorded in this issued cover snapshot.'}><div className="quote-rail-body">{fields([['Term premium', formatGbp(snapshot.premium.termPremium)], ['Insurance premium tax', formatGbp(snapshot.premium.tax)], ['Policy fee', formatGbp(snapshot.premium.fee)], ['Gross payable', formatGbp(snapshot.premium.grossPayable)], ['Broker commission', formatGbp(snapshot.premium.brokerCommission)]])}</div></Panel> : null}

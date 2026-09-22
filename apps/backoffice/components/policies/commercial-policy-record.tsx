@@ -1,4 +1,5 @@
 'use client';
+import {CancellationConsequences} from '../operations/cancellation-consequences';
 import { TaskCreateEntry } from '../operations/task-create-entry';
 import { RecordCommunications } from '../operations/communication-shared';
 import { RecordIncidents } from '../operations/incident-detail';
@@ -10,7 +11,7 @@ import {commercialPolicyCoverage} from '../../lib/commercial-policy';
 import {CommercialPolicySections,commercialPolicyTabs,type CommercialPolicyTab} from './commercial-policy-sections';
 import {ServicingDrafts} from './servicing-drafts';
 import {PolicyHistory} from './policyhistory';
-import {formatGbp} from '../../lib/underwriting-api';
+import {formatCancellationMoney as formatGbp} from '../../lib/cancellation-review';
 import {DataTable, Panel, Status} from '../primitives';
 
 const date = (value: string) => new Date(value).toLocaleString('en-GB', {timeZone: 'Europe/London', dateStyle: 'medium', timeStyle: 'short'});
@@ -36,6 +37,7 @@ export function CommercialPolicyRecord({policy, chronology, refresh, questionLab
         <details><summary>Posting and source provenance</summary>{fields([['Policy version', policy.versionId], ['Transaction', policy.transactionId], ['Journal', financial.journalId], ['Source revision', snapshot.provenance.revisionId??snapshot.provenance.quoteRevisionId??'Unavailable'], ['Capacity decision', policy.commercialExposureDecisionId], ['Issued snapshot hash', policy.contentHash]])}
           <DataTable caption={cancellation?"Cancellation journal lines":adjustment?"Adjustment journal lines":"Opening journal lines"} columns={['Component', 'Account', 'Debit', 'Credit']}>{financial.lines.map((line, index) => <tr key={index}><th scope="row">{line.componentCode}</th><td>{line.accountCode}</td><td>{line.side === 'debit' ? formatGbp(line.amount) : '—'}</td><td>{line.side === 'credit' ? formatGbp(line.amount) : '—'}</td></tr>)}</DataTable>
         </details></div></Panel>:null}
+      {cancellation && ['Transactions','Documents'].includes(tab) && <CancellationConsequences key={policy.versionId} versionId={policy.versionId}/>}
       {(tab==='Notes'||tab==='Messages')&&<RecordCommunications parent={{kind:'policy',id:policy.id,label:policy.reference}} mode={tab==='Notes'?'notes':'messages'}/>}
       {tab==='Claims'&&<RecordIncidents policyId={policy.id} productCode="commercial-combined"/>}
       {tab==='Documents'?<RecordDocuments parent={{kind:'policy',id:policy.id,label:policy.reference}} source={{kind:'policy-version',policyVersionId:policy.versionId}} relationshipId={policy.relationshipId}/>:null}

@@ -20,12 +20,13 @@ export function DeliveryHistory({ id, kind, actorId }: { id: string; kind: 'mess
     {selected&&<DeliveryDetails key={selected} id={selected} kind={kind} actorId={actorId} changed={read.refresh}/>}
   </section>;
 }
-function DeliveryDetails({id,kind,actorId,changed}:{id:string;kind:'message'|'document';actorId:string;changed:()=>void}) {
+export function DeliveryDetails({id,kind,actorId,changed,allowResend=true}:{id:string;kind:'message'|'document';actorId:string;changed:()=>void;allowResend?:boolean}) {
   const [reason,setReason]=useState(''),[error,setError]=useState(''),[preview,setPreview]=useState<string>(),[request,setRequest]=useState<CommunicationConfirmation>();
   const base=`/api/v1/${kind}-deliveries/${id}`;
   const read=useCommunicationResource<OpsDelivery>(base),attempts=useCommunicationResource<OpsDeliveryAttempts>(`${base}/attempts`);
   if(!read.data)return <LoadFeedback error={read.error} retry={read.refresh}/>;
   const row=read.data;
+  allowResend=allowResend&&row.resendAllowed!==false;
   function recover(resend:boolean) {
     try {setError('');setRequest({command:communicationCommand(`${resend?'resend':'retry'}-${kind}`,id,{reason},row.etag),label:resend?'Resend original delivery':'Retry delivery',description:resend?'Create a new delivery using the original recipients, message and exact file versions.':'Continue the same delivery. An already completed provider effect will not be repeated.'});}
     catch(failure){setError((failure as Error).message);}
@@ -38,8 +39,8 @@ function DeliveryDetails({id,kind,actorId,changed}:{id:string;kind:'message'|'do
     {attempts.data?<ol>{attempts.data.items.map(attempt=><li key={attempt.id}>Attempt {attempt.number}: {attempt.outcome} · {documentDate(attempt.startedAt)}</li>)}</ol>:<LoadFeedback error={attempts.error} retry={attempts.refresh}/>}
     <button className="button" onClick={()=>{read.refresh();attempts.refresh();changed();}}>Refresh delivery details</button>
     {row.state!=='queued'&&<fieldset disabled={!!request}><legend>Delivery recovery</legend><label>Reason<input maxLength={1000} value={reason} onChange={event=>setReason(event.target.value)}/></label>
-      {row.retryAllowed&&<button className="button" onClick={()=>recover(false)}>Retry delivery</button>}<button className="button" onClick={()=>recover(true)}>Resend original delivery</button>
-      <p>A resend creates a new delivery and preserves this receipt. Current recipient and file access will be checked again.</p></fieldset>}
+      {row.retryAllowed&&<button className="button" onClick={()=>recover(false)}>Retry delivery</button>}{allowResend&&<button className="button" onClick={()=>recover(true)}>Resend original delivery</button>}
+      <p>{allowResend?'A resend creates a new delivery and preserves this receipt.':'Retry continues the same cancellation delivery.'} Current recipient and file access will be checked again.</p></fieldset>}
     {error&&<p role="alert">{error}</p>}{preview&&<DocumentPreview versionId={preview} close={()=>setPreview(undefined)}/>}
     {request&&<CommunicationCommand request={request} actorId={actorId} close={()=>setRequest(undefined)} saved={()=>{setRequest(undefined);setReason('');read.refresh();attempts.refresh();changed();}}/>}
   </section>;
