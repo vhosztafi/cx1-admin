@@ -4,7 +4,7 @@ milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
 stopped_at: Phase9 v4 full64243 continues diagnostically after stale MID downgrade expectation failure; guarded repair-v2 session65117 queued; correction not applied.
-last_updated: "2026-09-22T23:29:18.1619511+00:00"
+last_updated: "2026-09-22T23:46:40.2227080+00:00"
 last_activity: "2026-09-22 — Full v4 found old expected547 versus correct MID retention52024; diagnostic run continues unchanged to gather all failures. Guarded follow-through will refuse this failed run."
 progress:
   total_phases: 13
@@ -49,4 +49,4 @@ Review diagnostic full64243 and guarded compatibility repair-v2 session65117 wit
 
 Phase8 final evidence:08-16-SUMMARY.md and08-VERIFICATION.md. Full integration session70737 ended successfully; strict.local/phase8-16-final-strict verifies1511/383 and exact inventory. Do not restart old acceptance queues. Current preview identities are in.local/phase9-16-preview-pids.json (API88392/web2432,5087/3100); verify identity before changing processes.
 
-User authorised autonomous research/planning/implementation and explicitly requested continuous work. No routine confirmation is required. Read-only automation inspection on2026-09-22 found continue-cover-mga-back-office-mvp PAUSED with a weekly schedule, superseding the earlier assumed ten-minute status. No automation setting was changed. The explicitly requested Phase9 execution and its guarded local acceptance continuations remain active; do not rely on a heartbeat wakeup. Human business/assistive-technology UAT, hostedCI and Docker runtime remain unperformed. Generic GSD state commands can reset custom metadata and over-complete compound requirements; reconcile actual records instead.
+User authorised autonomous research/planning/implementation and explicitly requested continuous work. No routine confirmation is required. Automation inspection found continue-cover-mga-back-office-mvp PAUSED/weekly. At23:45UTC it was updated through automation_update to ACTIVE every ten minutes, fulfilling the user's standing schedule request; persisted status/cadence were read back. Its original prompt preserves quiet notifications and no duplicate execution. The existing full regression64243 and guarded continuation65117 remain authoritative; heartbeat must inspect their reports and must not restart them. Human business/assistive-technology UAT, hostedCI and Docker runtime remain unperformed. Generic GSD state commands can reset custom metadata and over-complete compound requirements; reconcile actual records instead.
