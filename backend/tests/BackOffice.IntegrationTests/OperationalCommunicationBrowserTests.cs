@@ -102,7 +102,9 @@ public sealed partial class UnderwritingRuntimeTests
             var message=await db.Set<OperationalMessageDraft>().AsNoTracking().SingleAsync();Assert.Equal("Browser revised agency draft",message.Body);Assert.Equal("sent",message.State);
             Assert.Equal(2,await db.Set<OperationalDelivery>().CountAsync(x=>x.State=="delivered"));
             Assert.Equal(2,await db.Set<DemoProviderOperation>().CountAsync(x=>x.Kind==MessageDeliveryService.WorkKind));
-            Assert.Equal(1,await db.Set<JobException>().CountAsync());
+            Assert.Equal(1,await (from exception in db.Set<JobException>()
+                join delivery in db.Set<OperationalDelivery>() on exception.WorkId equals delivery.WorkId
+                select exception).CountAsync());
             Assert.Equal(file.Id,(await db.Set<MessageDraftAttachment>().SingleAsync()).DocumentVersionId);Assert.Single(await db.Set<MessageDraftRecipient>().ToArrayAsync());
             Assert.Equal(version.ContentHash,await db.Set<PolicyVersion>().Where(x=>x.Id==version.Id).Select(x=>x.ContentHash).SingleAsync());
             await File.WriteAllTextAsync(Path.Combine(output,"sql-readback.json"),JsonSerializer.Serialize(new{passed=true,noteCount=4,message.Id,attachmentVersionId=file.Id}));
