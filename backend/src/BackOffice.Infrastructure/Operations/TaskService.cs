@@ -134,7 +134,8 @@ public sealed partial class TaskService(IDbContextFactory<BackOfficeDbContext> f
 
     private async Task<CommandOutcome> Mutate<T>(ActorContext actor, IReadOnlyList<TaskSelection> tasks, string key, string route, string eventType, T input, string capability,
         TaskAssignment? assignment, Func<BackOfficeDbContext, OperationalTask, CancellationToken, Task> change, string? reason, bool bulk, CancellationToken token,
-        Func<BackOfficeDbContext, OperationalTask, CancellationToken, Task<CommandOutcome>>? project = null)
+        Func<BackOfficeDbContext, OperationalTask, CancellationToken, Task<CommandOutcome>>? project = null,
+        Func<BackOfficeDbContext, IReadOnlyList<OperationalSubject>, CancellationToken, Task>? authorize = null)
     {
         TaskRules.ValidateSelection(tasks); if (reason is not null) TaskRules.RequireText(reason, 1000, "task-reason-required");
         HeldOperationalScope? held = null; Dictionary<Guid, Guid>? subjects = null;
@@ -150,6 +151,7 @@ public sealed partial class TaskService(IDbContextFactory<BackOfficeDbContext> f
                     if (!held.Actor.HasCapability("task-assign")) throw new OperationalAccessException(403, "task-assignment-denied");
                     await Assignment(db, assignment, held.Subjects, ct);
                 }
+                if (authorize is not null) await authorize(db, held.Subjects, ct);
             }, async (db, ct) =>
             {
                 var rows = new List<OperationalTask>();

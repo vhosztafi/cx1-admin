@@ -8,6 +8,25 @@ namespace BackOffice.Infrastructure.Operations;
 
 public sealed partial class DocumentService
 {
+    internal static async Task<Dictionary<string,object?>> AttachmentVersion(BackOfficeDbContext db,ActorContext actor,Guid subjectId,Guid versionId,bool requireReady,CancellationToken token)
+    {
+        // Reject a different original parent before taking any second parent lock.
+        var owner=await(from version in db.Set<DocumentVersion>() join document in db.Set<OperationalDocument>() on version.DocumentId equals document.Id
+            where version.Id==versionId select (Guid?)document.SubjectId).SingleOrDefaultAsync(token);
+        if(owner!=subjectId)throw MissingDocument();
+        var held=await HoldReadableVersion(db,actor,versionId,"document-read",token);
+        if(requireReady)
+        {
+            // New attachment mutation holds the task before these work/file locks.
+            // Keep ready state stable until the association and audit commit.
+            await db.Set<OutboxWork>().FromSqlInterpolated($"SELECT * FROM OutboxWork WITH(HOLDLOCK,ROWLOCK) WHERE Id={held.Version.WorkId}").AsNoTracking().SingleAsync(token);
+            var fileId=await db.Set<DocumentVersionContent>().Where(x=>x.VersionId==versionId).Select(x=>(Guid?)x.FileObjectId).SingleOrDefaultAsync(token);
+            if(fileId is Guid id)await db.Set<FileObject>().FromSqlInterpolated($"SELECT * FROM FileObject WITH(HOLDLOCK,ROWLOCK) WHERE Id={id}").AsNoTracking().SingleAsync(token);
+        }
+        var state=await ContentState(db,held.Version,token);
+        if(requireReady&&state.State!="ready")throw new OperationalAccessException(409,"document-not-ready");
+        var view=VersionView(held.Version,held.Document.Kind,state.State,state.File);await AddSourceMetadata(db,[(held.Version,view)],token);return view;
+    }
     public async Task<CommandOutcome> ReadVersion(ActorContext actor,Guid versionId,CancellationToken token)
     {
         await using var db=await factory.CreateDbContextAsync(token);await using var transaction=await db.Database.BeginTransactionAsync(token);

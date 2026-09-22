@@ -2951,6 +2951,100 @@
         "visibility"
       ]
     },
+    "OpsTaskAttachment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "taskId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "version": {
+          "$ref": "#/$defs/OpsDocumentVersion"
+        },
+        "authorLabel": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "\\S"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "id",
+        "taskId",
+        "version",
+        "authorLabel",
+        "createdAt",
+        "reason"
+      ]
+    },
+    "OpsTaskAttachments": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OpsTaskAttachment"
+          },
+          "minItems": 0,
+          "maxItems": 20,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "items"
+      ]
+    },
+    "OpsTaskAttachmentWrite": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "documentVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "documentVersionId",
+        "reason"
+      ]
+    },
+    "OpsTaskAttachmentRemove": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "reason"
+      ]
+    },
     "OpsFileUpload": {
       "type": "object",
       "additionalProperties": false,

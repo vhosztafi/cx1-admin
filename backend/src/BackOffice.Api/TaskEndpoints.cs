@@ -16,6 +16,7 @@ public static partial class TaskEndpoints
 
     public static void MapTasks(this WebApplication app)
     {
+        MapTaskAttachments(app);
         app.MapGet("/api/v1/tasks", List).RequireAuthorization("task-read");
         app.MapGet("/api/v1/tasks/summary", Summary).RequireAuthorization("task-read");
         app.MapGet("/api/v1/task-assignees", Assignees).RequireAuthorization("task-assign");

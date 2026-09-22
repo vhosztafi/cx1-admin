@@ -2,6 +2,14 @@ import {operationalDefinitions,relocateOperational} from './operations-contracts
 // Applied after legacy form modifiers. These routes remain contract-only until their owning Phase9 plan runs.
 export function addOperationalRuntimeContracts({schemas:s,ref:r,operation:op,list,paths,object:o,id,text:t}){
  Object.assign(s,relocateOperational(operationalDefinitions()));
+ op('get','/tasks/{taskId}/attachments','listTaskAttachments','task-read',{output:r('OpsTaskAttachments')});
+ op('post','/tasks/{taskId}/attachments','attachTaskDocument','task-write',{existing:true,input:r('OpsTaskAttachmentWrite'),output:r('OpsTask')});
+ op('post','/tasks/{taskId}/attachments/{attachmentId}/remove','removeTaskAttachment','task-write',{existing:true,input:r('OpsTaskAttachmentRemove'),output:r('OpsTask')});
+ for(const path of ['/tasks/{taskId}/attachments','/tasks/{taskId}/attachments/{attachmentId}/remove'])for(const operation of Object.values(paths[path])){
+  operation['x-runtime-status']='phase-9-08-implemented';
+  operation.description='Persisted exact-version task evidence; original subject and current document scope are checked. Maximum20 active links. Mutations require task ETag and retain removal history without changing file bytes.';
+  for(const [code,response]of Object.entries(operation.responses))if(Number(code)>=200&&Number(code)<300){response.headers??={};response.headers['Cache-Control']={description:'Private, no-store.',schema:t(100)};}
+ }
  paths['/records/{recordId}/documents'].get.responses[200].content['application/json'].schema.properties.items.items=r('OpsDocument');
  op('get','/records/{recordId}/documents/options','listDocumentGenerationOptions','document-generate',{query:[['sourceKind',{type:'string',enum:['policy-version','quote-revision','servicing-terms']}],['sourceId',id],['quoteTermsVersionId',id],['pageSize',{type:'integer',minimum:1,maximum:100,default:25}],['cursor',t(2048)]],output:r('OpsDocumentGenerationOptions')});
  const options=paths['/records/{recordId}/documents/options'].get;

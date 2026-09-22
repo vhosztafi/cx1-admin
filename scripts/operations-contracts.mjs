@@ -63,6 +63,10 @@ export function operationalDefinitions(){
  ]};
  d.OpsDocumentVersion=obj({id,documentId:id,number:{type:'integer',minimum:1},kind:text(60),state:en('pending','ready','failed','quarantined'),originalName:text(255),bytes:{type:'integer',minimum:0,maximum:20971520},contentType:en('application/pdf','image/png','image/jpeg'),sha256:hash,sourceVersionId:id,templateVersionId:id,createdAt:instant,withdrawnEffectiveAt:instant,sourceKind:en('policy-version','quote-revision','servicing-terms','upload'),sourceLabel:text(),sourceDate:instant,sourceHash:hash,templateHash:hash,termsHash:hash,quoteTermsVersionId:id,rendererVersion:text(100),projectionVersion:text(100),fontVersion:text(100),pageCount:{type:'integer',minimum:1,maximum:300}},['id','documentId','number','kind','state','originalName','bytes','contentType','createdAt']);
  d.OpsDocument=obj({id,subjectRecordId:id,kind:text(60),visibility:en('internal','agency','insurer'),relationshipId:id,currentVersionId:id,currentVersion:ref('OpsDocumentVersion')},['id','subjectRecordId','kind','visibility']);
+ d.OpsTaskAttachment=obj({id,taskId:id,version:ref('OpsDocumentVersion'),authorLabel:text(),createdAt:instant,reason});
+ d.OpsTaskAttachments=obj({items:arr(ref('OpsTaskAttachment'),0,20)});
+ d.OpsTaskAttachmentWrite=obj({documentVersionId:id,reason});
+ d.OpsTaskAttachmentRemove=obj({reason});
  d.OpsFileUpload=obj({id,subjectRecordId:id,name:text(255),mediaType:en('application/pdf','image/png','image/jpeg'),byteLength:{type:'integer',minimum:1,maximum:20971520},sha256:hash,state:en('pending','ready','quarantined'),createdAt:instant,verifiedAt:{anyOf:[instant,{type:'null'}]},failureCode:{anyOf:[text(100),{type:'null'}]}});
  d.OpsMidSubmission=obj({id,intentId:id,policyVersionId:id,jobId:id,state:en('pending','accepted','rejected','failed','superseded'),items:arr(obj({riskItemId:id,kind:en('vehicle','trade-plate'),registration:text(20),action:en('add','change','remove'),effectiveAt:instant}),1),reasonCodes:arr(text(100)),providerReference:text(100)},['id','intentId','policyVersionId','jobId','state','items','reasonCodes']);
  return d;
