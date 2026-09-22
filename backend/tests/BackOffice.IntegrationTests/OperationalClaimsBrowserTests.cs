@@ -80,6 +80,8 @@ public sealed partial class UnderwritingRuntimeTests
             using var deadline=new CancellationTokenSource(TimeSpan.FromMinutes(7));await browser.WaitForExitAsync(deadline.Token);
             await File.WriteAllTextAsync(Path.Combine(output,"browser.log"),await stdout+await stderr);Assert.True(browser.ExitCode==0,"Incident browser failed; inspect sanitized failure evidence.");
             var incident=await db.Set<OperationalIncident>().AsNoTracking().SingleAsync();Assert.Equal("handed-off",incident.State);
+            var followUp=await db.Set<OperationalTask>().AsNoTracking().SingleAsync(x=>x.Title=="Fictional claims follow-up");Assert.Equal("underwriting",followUp.TypeCode);
+            Assert.Equal(policy.Id,await db.Set<OperationalSubject>().Where(x=>x.Id==followUp.SubjectId).Select(x=>x.PolicyId).SingleAsync());
             Assert.True(await db.Set<IncidentRevision>().CountAsync()>=4);Assert.True(await db.Set<IncidentOccurrenceRecord>().CountAsync()>=1);
             Assert.Equal(file.Id,(await db.Set<IncidentEvidence>().Where(x=>x.RevisionId==incident.CurrentRevisionId).SingleAsync()).DocumentVersionId);
             var handoff=await db.Set<ClaimsHandoff>().AsNoTracking().SingleAsync();Assert.Equal("acknowledged",handoff.State);Assert.Equal(version.Id,handoff.SourceVersionId);Assert.Equal(incident.CurrentRevisionId,handoff.RevisionId);

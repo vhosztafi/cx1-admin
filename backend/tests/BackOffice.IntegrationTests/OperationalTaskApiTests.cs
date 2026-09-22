@@ -105,6 +105,10 @@ public sealed class OperationalTaskApiTests
             var secondId = (await second.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("id").GetGuid();
             using var assigned = await Send(client, csrf, HttpMethod.Put, $"/api/v1/tasks/{secondId}", new { typeCode = "complaint", title = "Assigned task", priority = "normal", assignment = new { kind = "user", ownerId = underwriterId } }, etag: second.Headers.ETag!.ToString());
             Assert.Equal(HttpStatusCode.OK, assigned.StatusCode);
+            var mine = await underwriter.GetFromJsonAsync<JsonElement>("/api/v1/tasks/summary");
+            Assert.True(mine.TryGetProperty("mine",out var personal), "Task summary must distinguish assigned-to-me measures from all accessible work.");
+            Assert.Equal(1,personal.GetProperty("open").GetInt32());
+            Assert.Equal(0,(await client.GetFromJsonAsync<JsonElement>("/api/v1/tasks/summary")).GetProperty("mine").GetProperty("open").GetInt32());
             var rosterPage = await client.GetFromJsonAsync<JsonElement>("/api/v1/tasks?pageSize=1");
             var newTeam = new Team { Name = "Fictional reassigned team" }; reload.Add(newTeam); await reload.SaveChangesAsync();
             await reload.Database.ExecuteSqlInterpolatedAsync($"UPDATE [User] SET TeamId={newTeam.Id} WHERE Id={underwriterId}");
@@ -123,6 +127,15 @@ public sealed class OperationalTaskApiTests
             var currentChoices = await client.GetFromJsonAsync<JsonElement>($"/api/v1/task-assignees?subjectRecordId={subjectId}&kind=user");
             Assert.DoesNotContain(currentChoices.GetProperty("items").EnumerateArray(), x => x.GetProperty("id").GetGuid() == underwriterId);
             Assert.Empty((await client.GetFromJsonAsync<JsonElement>($"/api/v1/task-assignees?subjectRecordId={subjectId}&kind=team&q=Fictional%20reassigned")).GetProperty("items").EnumerateArray());
+            var account=await client.GetFromJsonAsync<JsonElement>("/api/v1/account");var actorId=account.GetProperty("id").GetGuid();
+            var today=DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow,TimeZoneInfo.FindSystemTimeZoneById("Europe/London")).DateTime).ToString("yyyy-MM-dd");
+            using var personalTask=await Send(client,csrf,HttpMethod.Post,"/api/v1/tasks",new{subjectRecordId=subjectId,typeCode="complaint",title="Fictional personal summary",priority="normal",assignment=new{kind="user",ownerId=actorId},dueOn=today});personalTask.EnsureSuccessStatusCode();
+            var personalId=(await personalTask.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("id").GetGuid();
+            using var waiting=await Send(client,csrf,HttpMethod.Post,$"/api/v1/tasks/{personalId}/transition",new{state="awaiting-information",reason="Awaiting fictional agency response"},etag:personalTask.Headers.ETag!.ToString());waiting.EnsureSuccessStatusCode();
+            var personalSummary=(await client.GetFromJsonAsync<JsonElement>("/api/v1/tasks/summary")).GetProperty("mine");
+            Assert.Equal(1,personalSummary.GetProperty("open").GetInt32());Assert.Equal(1,personalSummary.GetProperty("dueToday").GetInt32());Assert.Equal(1,personalSummary.GetProperty("awaitingOthers").GetInt32());
+            using var personalCompleted=await Send(client,csrf,HttpMethod.Post,$"/api/v1/tasks/{personalId}/transition",new{state="completed",reason="Fictional follow-up completed"},etag:waiting.Headers.ETag!.ToString());personalCompleted.EnsureSuccessStatusCode();
+            var teamSummary=await client.GetFromJsonAsync<JsonElement>("/api/v1/tasks/summary");Assert.Equal(0,teamSummary.GetProperty("mine").GetProperty("open").GetInt32());Assert.Equal(1,teamSummary.GetProperty("teamCompletedSevenDays").GetInt32());
             var relationshipId = await reload.Set<ClientAgencyRelationship>().Where(x => x.State == "active").Select(x => x.Id).FirstAsync();
             var relationshipKey = Guid.NewGuid().ToString("N");
             using var related = await Send(client, csrf, HttpMethod.Post, "/api/v1/operational-subjects", new { kind = "relationship", parentId = relationshipId }, relationshipKey);

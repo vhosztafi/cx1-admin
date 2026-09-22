@@ -33,6 +33,8 @@ public sealed partial class UnderwritingRuntimeTests
         var insured = source.RootElement.GetProperty("insured");
         var expectedName = insured.TryGetProperty("legalName", out var company) ? company.GetString() : insured.GetProperty("firstName").GetString() + " " + insured.GetProperty("surname").GetString();
         Assert.Equal(expectedName, context.GetProperty("insuredName").GetString());
+        Assert.Equal(source.RootElement.GetProperty("premium").GetProperty("termPremium").GetString(), context.GetProperty("termPremium").GetString());
+        Assert.Equal(source.RootElement.GetProperty("term").GetProperty("endsAt").GetString(), context.GetProperty("termEndsAt").GetString());
         Assert.Equal($"/policies/{policy.Id}?termId={term.Id}&versionId={version.Id}&tab=Transactions", context.GetProperty("href").GetString());
         Assert.Equal(source.RootElement.GetProperty("cover").GetProperty("sections").GetArrayLength(), context.GetProperty("sections").GetArrayLength());
         Assert.Equal(404, (await Assert.ThrowsAsync<OperationalAccessException>(() => incidents.SubjectOptions(f.Underwriter, created.ResourceId, Guid.NewGuid(), default))).Status);

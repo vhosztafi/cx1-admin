@@ -27,6 +27,9 @@ public static partial class TaskEndpoints
             var dueToday = await active.CountAsync(x => x.DueOn == today, token);
             var overdue = await active.CountAsync(x => x.DueOn < today, token);
             var awaitingOthers = await active.CountAsync(x => x.State == "awaiting-information", token);
+            var personal = active.Where(x => x.OwnerId == actor.UserId);
+            var mine = new { open = await personal.CountAsync(token), dueToday = await personal.CountAsync(x => x.DueOn == today, token),
+                overdue = await personal.CountAsync(x => x.DueOn < today, token), awaitingOthers = await personal.CountAsync(x => x.State == "awaiting-information", token) };
             // Comments and edits do not count as completions. Only immutable
             // transition events for currently completed, visible tasks qualify.
             var since = now.AddDays(-7);
@@ -39,8 +42,14 @@ public static partial class TaskEndpoints
                 using var snapshot = JsonDocument.Parse(completion.SnapshotJson);
                 if (snapshot.RootElement.GetProperty("state").GetString() == "completed") completedIds.Add(completion.TaskId);
             }
+            int? teamCompletedSevenDays = null;
+            if(actor.TeamId is Guid teamId)
+            {
+                var ids=completedIds.ToArray();
+                teamCompletedSevenDays=await rows.CountAsync(t=>ids.Contains(t.Id)&&(t.TeamId==teamId||db.Set<StaffUser>().Any(u=>u.Id==t.OwnerId&&u.TeamId==teamId)),token);
+            }
             await transaction.CommitAsync(token);
-            return Results.Json(new { open, dueToday, overdue, awaitingOthers, completedSevenDays = completedIds.Count, asOf = now }, ClientEndpoints.Json);
+            return Results.Json(new { open, dueToday, overdue, awaitingOthers, completedSevenDays = completedIds.Count, mine, teamCompletedSevenDays, asOf = now }, ClientEndpoints.Json);
         }
         catch (OperationalAccessException error) { return IdentityEndpoints.Problem(context, error.Status, error.Code, "The task summary could not be read."); }
         catch (Exception error) when (QuoteEndpoints.Known(error)) { return QuoteEndpoints.Failure(context, error); }

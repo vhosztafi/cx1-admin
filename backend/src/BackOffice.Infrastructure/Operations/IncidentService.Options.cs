@@ -30,6 +30,7 @@ public sealed partial class IncidentService
         var insured=snapshot.GetProperty("insured");
         var insuredName=Optional(insured,"legalName")??ChoiceLabel(insured,["firstName","surname"]).Replace(" · "," ",StringComparison.Ordinal);
         var policyContext=new{reference,insuredName=string.IsNullOrWhiteSpace(insuredName)?"Not recorded in this policy version":insuredName,
+            termPremium=Optional(snapshot.GetProperty("premium"),"termPremium"),termEndsAt=snapshot.GetProperty("term").GetProperty("endsAt").GetString(),
             href=$"/policies/{row.PolicyId}?termId={version.TermId}&versionId={version.Id}&tab=Transactions",
             sections=sectionRows.Select(x=>new{code=x.GetProperty("code").GetString(),coverLevel=Optional(x,"coverLevel"),limit=Optional(x,"limit"),excess=Optional(x,"excess")}).ToArray()};
         var result=new{incidentId=id,revisionId=row.CurrentRevisionId,resolutionId,versionId,sourceHash=source.SourceHash,policyContext,

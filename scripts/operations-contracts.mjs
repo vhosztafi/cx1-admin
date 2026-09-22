@@ -53,7 +53,7 @@ export function operationalDefinitions(){
  d.OpsIncidentDescription=obj({description:text(8000)});
  d.OpsIncidentRevision=obj({id,incidentId:id,number:{type:'integer',minimum:1},draft:ref('OpsIncidentDraftWrite'),contentHash:hash,reason,authorLabel:text(),createdAt:instant});
  d.OpsIncidentSubjectOptions=obj({incidentId:id,revisionId:id,resolutionId:id,versionId:id,sourceHash:hash,vehicles:arr(obj({id,label:text(1000)}),0,1000),drivers:arr(obj({id,label:text(1000)}),0,1000),locations:arr(obj({id,label:text(1000)}),0,1000),occupations:arr(obj({id,label:text(1000)}),0,1000),coverCodes:arr(text(100))});
- d.OpsIncidentSubjectOptions.properties.policyContext=obj({reference:text(40),insuredName:text(200),href:text(500),sections:arr(obj({code:text(100),coverLevel:{anyOf:[text(100),{type:'null'}]},limit:{anyOf:[amount,{type:'null'}]},excess:{anyOf:[amount,{type:'null'}]}},['code']))});
+ d.OpsIncidentSubjectOptions.properties.policyContext=obj({reference:text(40),insuredName:text(300),href:text(500),termPremium:{anyOf:[amount,{type:'null'}]},termEndsAt:instant,sections:arr(obj({code:text(100),coverLevel:{anyOf:[text(100),{type:'null'}]},limit:{anyOf:[amount,{type:'null'}]},excess:{anyOf:[amount,{type:'null'}]}},['code']))});
  d.OpsIncidentSubjectOptions.required.push('policyContext');
  d.OpsIncidentHandoff=obj({revisionId:id,resolutionId:id,providerId:id});
  d.OpsClaimsSummary=obj({id,incidentId:id,handoffId:id,asOf:instant,receivedAt:instant,status:en('notified','open','closed','rejected'),paid:{anyOf:[amount,{type:'null'}]},reserved:{anyOf:[amount,{type:'null'}]},currency:{const:'GBP'},providerReference:text(100)});
