@@ -1014,7 +1014,8 @@
       "runtimeStatus": "implemented-final-source-acceptance-pending",
       "verification": [
         "09-07-SUMMARY.md: scoped durable document generation/upload/history and exact bytes verified40unique cases/26realSQL. This control still awaits09-08 UI/browser verification; delivery/withdrawal remain with their owning plans.",
-        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18.",
+        "09-15-SUMMARY.md: exact cancellation notice delivery and term-level certificate withdrawal history;1330unique/11realSQL,14browser checks with SQL readback. Final occurrence acceptance remains09-18."
       ]
     },
     {
