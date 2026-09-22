@@ -197797,6 +197797,28 @@
           "reason"
         ]
       },
+      "OpsOccurrenceWindow": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "from": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "to": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isExact": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "from",
+          "to",
+          "isExact"
+        ]
+      },
       "OpsOccurrenceResolution": {
         "type": "object",
         "additionalProperties": false,
@@ -197827,6 +197849,9 @@
               "incomplete"
             ]
           },
+          "window": {
+            "$ref": "#/components/schemas/OpsOccurrenceWindow"
+          },
           "candidates": {
             "type": "array",
             "items": {
@@ -197836,6 +197861,10 @@
                 "versionId": {
                   "type": "string",
                   "format": "uuid"
+                },
+                "sourceHash": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
                 },
                 "from": {
                   "type": "string",
@@ -197854,6 +197883,7 @@
               },
               "required": [
                 "versionId",
+                "sourceHash",
                 "from",
                 "to",
                 "label"

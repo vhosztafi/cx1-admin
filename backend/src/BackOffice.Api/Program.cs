@@ -23,6 +23,7 @@ builder.Services.AddScoped<BackOffice.Infrastructure.Operations.ThreadService>()
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.MessageDeliveryService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.DocumentPackService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.DeliveryReadService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Operations.IncidentOccurrenceResolver>();
 MessageDeliveryDispatcher.Register(builder);
 builder.Services.AddSingleton<BackOffice.Application.Operations.IPolicyDocumentRenderer, BackOffice.Infrastructure.Operations.PolicyDocumentRenderer>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.PolicyDocumentRenderService>();

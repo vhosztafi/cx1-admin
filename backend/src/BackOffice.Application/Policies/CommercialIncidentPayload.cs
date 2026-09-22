@@ -4,6 +4,20 @@ namespace BackOffice.Application.Policies;
 
 public static class CommercialIncidentPayload
 {
+    public static JsonElement CreateResolved(CommercialPayloadSource source,BackOffice.Application.Operations.IncidentOccurrence occurrence,DateTimeOffset knownAt,JsonElement subject)
+    {
+        try
+        {
+            var snapshot=source.Read();var window=BackOffice.Application.Operations.IncidentOccurrenceRules.Window(occurrence);
+            if(snapshot.GetProperty("snapshotFormat").GetString()=="issued-commercial-cancellation-1"||window.From<source.EffectiveFrom||
+                (window.IsExact?window.From>=source.EffectiveUntil:window.To>source.EffectiveUntil)||window.To>knownAt||
+                snapshot.GetProperty("provenance").TryGetProperty("processedAt",out var processed)&&processed.GetDateTimeOffset()>knownAt||
+                !BackOffice.Application.Operations.IncidentSubjectRules.Ready(snapshot,subject))throw new ArgumentException("commercial-incident-resolution-not-applicable");
+            return JsonSerializer.SerializeToElement(new{format="commercial-incident-2",policyId=source.PolicyId,versionId=source.VersionId,sourceContentHash=source.SourceContentHash,
+                occurrence,applicability=window,knownAt,subject},new JsonSerializerOptions(JsonSerializerDefaults.Web){DefaultIgnoreCondition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull});
+        }
+        catch(BackOffice.Application.Operations.IncidentOccurrenceException){throw new ArgumentException("commercial-incident-subject-invalid");}
+    }
     public static JsonElement Create(CommercialPayloadSource source, DateTimeOffset occurredAt, DateTimeOffset knownAt, JsonElement subject)
     {
         var snapshot = source.Read();

@@ -216,3 +216,35 @@ triggers in `OperationalDelivery.Guards.cs`. The runtime flag is
 `Cover:OperationalDeliveryWorkerEnabled` (development default true). Acceptance
 hosts disable it when controlling leases explicitly. There is no real mail or
 external transport.
+
+### Historical occurrence producer (09-11)
+
+`IncidentOccurrenceRules.Window` accepts a local date, `Europe/London`, and one of
+`date`, `approximate` or `exact`. Approximate time serializes as `HH:mm` and remains
+a hint; it does not narrow the full local day. London days can be23 or25hours.
+Exact UTC instants must agree with the stated local date. `ExactLocal` rejects
+nonexistent local times and requires a valid explicit offset for repeated times.
+Applicability intervals are half-open; exact points do not gain cover at expiry.
+
+`IncidentOccurrenceResolver.Resolve/ResolveHeld` authorizes the typed original
+policy and uses `PolicyTemporalSelector` at the bounded knowledge cutoff. It splits
+the claimed interval at retained version/term/cancellation boundaries and validates
+the actual stored source hash. Its value contains policy, knownAt, factual window,
+state and source-version/hash intervals. Date/approximate windows crossing versions
+are ambiguous; gaps are partly-uncovered or uncovered. Missing facts and potentially
+future windows are incomplete. These are readiness outcomes, never claim decisions.
+
+The owning incident command in09-12 must bind and persist this value with its
+immutable revision identity, and pass server time for a new knowledge cutoff.
+Supplying a subject validates its retained IDs when one temporal source is resolved;
+ambiguous source selection cannot authorize handoff. Final handoff also requires
+complete factual incident fields and current original scope.
+
+`IncidentSubjectRules.Ready` validates closed product branches against the retained
+source, including MT vehicles/drivers, commercial property location and selected
+subcover, and liability section/EL wage identity. Missing selections remain draft
+facts. Supplied foreign identities or incompatible product fields fail.
+`CommercialIncidentPayload.CreateResolved` emits `commercial-incident-2` with the
+observed occurrence and applicability window. It never replaces approximate facts
+with an invented observed instant. The prior exact-only `Create/Valid` contract
+remains compatible with retained `commercial-incident-1` payloads.

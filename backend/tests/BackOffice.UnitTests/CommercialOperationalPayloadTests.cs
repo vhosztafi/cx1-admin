@@ -9,6 +9,43 @@ namespace BackOffice.UnitTests;
 
 public sealed class CommercialOperationalPayloadTests
 {
+    [Fact]
+    public void OperationalOccurrenceCommercialPayloadPreservesApproximationWithoutInventingObservedInstant()
+    {
+        var source=Source();var location=JsonNode.Parse(source.SnapshotJson)!["risk"]!["locations"]![0]!["id"]!.GetValue<Guid>();
+        var observed=new BackOffice.Application.Operations.IncidentOccurrence(new(2026,10,1),"Europe/London","approximate",new TimeOnly(12,30));
+        var subject=JsonSerializer.SerializeToElement(new{kind="property",locationId=location,coverCode="buildings",itemDescription="Fictional building damage"});
+        var payload=CommercialIncidentPayload.CreateResolved(source,observed,Known,subject);
+        Assert.False(payload.TryGetProperty("occurredAt",out _));Assert.Equal("approximate",payload.GetProperty("occurrence").GetProperty("precision").GetString());
+        Assert.Equal("12:30",payload.GetProperty("occurrence").GetProperty("approximateLocalTime").GetString());
+        Assert.Equal(source.SourceContentHash,payload.GetProperty("sourceContentHash").GetString());
+        Assert.Throws<ArgumentException>(()=>CommercialIncidentPayload.CreateResolved(source with{EffectiveUntil=Occurred},observed,Known,subject));
+        Assert.Throws<ArgumentException>(()=>CommercialIncidentPayload.CreateResolved(source,observed,Known,JsonSerializer.SerializeToElement(new{kind="property",locationId=Guid.NewGuid(),coverCode="buildings"})));
+    }
+    [Theory]
+    [InlineData("foreign-location")]
+    [InlineData("uncovered-location")]
+    [InlineData("unselected-cover")]
+    [InlineData("foreign-occupation")]
+    [InlineData("motor-subject")]
+    public void OperationalOccurrenceRejectsSelectionsOutsideRetainedCommercialCover(string change)
+    {
+        var source=Source(true);var snapshot=JsonNode.Parse(source.SnapshotJson)!;
+        var subject=JsonSerializer.SerializeToNode(new{kind="property",locationId=snapshot["risk"]!["locations"]![0]!["id"]!.GetValue<Guid>(),coverCode="buildings"})!;
+        if(change=="foreign-location")subject["locationId"]=Guid.NewGuid();
+        if(change=="uncovered-location")subject["locationId"]=snapshot["risk"]!["locations"]![1]!["id"]!.DeepClone();
+        if(change=="unselected-cover")subject["coverCode"]="business-interruption";
+        if(change=="foreign-occupation")subject=JsonSerializer.SerializeToNode(new{kind="liability",coverCode="employers-liability",occupationId=Guid.NewGuid()})!;
+        if(change=="motor-subject")subject=JsonSerializer.SerializeToNode(new{kind="registered-vehicle",vehicleId=Guid.NewGuid()})!;
+        Assert.Throws<ArgumentException>(()=>CommercialIncidentPayload.CreateResolved(source,new(new(2026,10,1),"Europe/London","date"),Known,JsonSerializer.SerializeToElement(subject)));
+    }
+    [Fact]
+    public void OperationalOccurrenceEmployerSelectionUsesRetainedWageIdentity()
+    {
+        var source=Source(true);var occupation=JsonNode.Parse(source.SnapshotJson)!["risk"]!["wages"]![0]!["id"]!.GetValue<Guid>();
+        var payload=CommercialIncidentPayload.CreateResolved(source,new(new(2026,10,1),"Europe/London","date"),Known,JsonSerializer.SerializeToElement(new{kind="liability",coverCode="employers-liability",occupationId=occupation}));
+        Assert.Equal(occupation,payload.GetProperty("subject").GetProperty("occupationId").GetGuid());
+    }
     private static readonly DateTimeOffset Occurred = DateTimeOffset.Parse("2026-10-01T12:00:00Z");
     private static readonly DateTimeOffset Known = Occurred.AddDays(1);
     private static CommercialPayloadSource Source(bool employers = false)
