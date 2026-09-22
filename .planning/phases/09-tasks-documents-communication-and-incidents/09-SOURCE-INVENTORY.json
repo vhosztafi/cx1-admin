@@ -1647,8 +1647,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md: current MT/CC browser and SQL acceptance; final placement audit09-17"
+      ]
     },
     {
       "controlId": "CTL-ba17ee21e305",
@@ -1677,8 +1679,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md: current MT/CC browser and SQL acceptance; final placement audit09-17"
+      ]
     },
     {
       "controlId": "CTL-08231528f503",
@@ -1707,8 +1711,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md: current MT/CC browser and SQL acceptance; final placement audit09-17"
+      ]
     },
     {
       "controlId": "CTL-d2bf3015d449",
@@ -5640,8 +5646,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md: current MT/CC browser and SQL acceptance; final placement audit09-17"
+      ]
     },
     {
       "controlId": "CTL-45919e221aad",
@@ -5726,8 +5734,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md: current MT/CC browser and SQL acceptance; final placement audit09-17"
+      ]
     },
     {
       "controlId": "CTL-ad5d48567dbf",
@@ -5903,8 +5913,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md: current MT/CC browser and SQL acceptance; final placement audit09-17"
+      ]
     },
     {
       "controlId": "CTL-ee1c956b54f9",
@@ -5995,8 +6007,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md: current MT/CC browser and SQL acceptance; final placement audit09-17"
+      ]
     },
     {
       "controlId": "CTL-89d11bb2324e",
@@ -6086,8 +6100,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md: current MT/CC browser and SQL acceptance; final placement audit09-17"
+      ]
     },
     {
       "controlId": "CTL-b61ed8c59966",
@@ -6182,8 +6198,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md: current MT/CC browser and SQL acceptance; final placement audit09-17"
+      ]
     },
     {
       "controlId": "CTL-4a54f9a1db70",
@@ -6273,8 +6291,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md: current MT/CC browser and SQL acceptance; final placement audit09-17"
+      ]
     },
     {
       "controlId": "CTL-a2a7451bd190",
@@ -6364,8 +6384,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md: current MT/CC browser and SQL acceptance; final placement audit09-17"
+      ]
     },
     {
       "controlId": "CTL-73b607083ecb",
@@ -6460,8 +6482,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md: current MT/CC browser and SQL acceptance; final placement audit09-17"
+      ]
     },
     {
       "controlId": "CTL-dc4e9be87788",
@@ -6556,8 +6580,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md: current MT/CC browser and SQL acceptance; final placement audit09-17"
+      ]
     },
     {
       "controlId": "CTL-5c7b088e78cd",
@@ -6652,8 +6678,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md: current MT/CC browser and SQL acceptance; final placement audit09-17"
+      ]
     },
     {
       "controlId": "CTL-9d79d518cc70",
@@ -6743,8 +6771,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md: current MT/CC browser and SQL acceptance; final placement audit09-17"
+      ]
     },
     {
       "controlId": "CTL-8b9319d7f822",
@@ -6834,8 +6864,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md: current MT/CC browser and SQL acceptance; final placement audit09-17"
+      ]
     },
     {
       "controlId": "CTL-41dbc7060484",
@@ -6925,8 +6957,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md: current MT/CC browser and SQL acceptance; final placement audit09-17"
+      ]
     },
     {
       "controlId": "CTL-44501af9a5fa",
@@ -7004,8 +7038,7 @@
       "originalPhase": 9,
       "origin": "direct-phase9",
       "operationIds": [
-        "createIncidentDraft",
-        "updateIncidentDraft"
+        "saveIncidentDescription"
       ],
       "fieldBindings": [
         {
@@ -7017,8 +7050,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md: current MT/CC browser and SQL acceptance; final placement audit09-17"
+      ]
     },
     {
       "controlId": "CTL-d7e5cf297a3f",
@@ -7108,8 +7143,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md: current MT/CC browser and SQL acceptance; final placement audit09-17"
+      ]
     },
     {
       "controlId": "CTL-6a8b096871df",
@@ -7199,8 +7236,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md: current MT/CC browser and SQL acceptance; final placement audit09-17"
+      ]
     },
     {
       "controlId": "CTL-d4d9f1ee7792",
@@ -7290,8 +7329,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md: current MT/CC browser and SQL acceptance; final placement audit09-17"
+      ]
     },
     {
       "controlId": "CTL-026efb151c2a",
@@ -7462,8 +7503,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md: current MT/CC browser and SQL acceptance; final placement audit09-17"
+      ]
     },
     {
       "controlId": "CTL-39ca0b1a11ee",
@@ -7547,8 +7590,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md: current MT/CC browser and SQL acceptance; final placement audit09-17"
+      ]
     },
     {
       "controlId": "CTL-f66d2004123b",
@@ -31682,21 +31727,30 @@
       "sourceNeedle": "'lcVeh'",
       "ownerPlan": "09-12",
       "expectedBehavior": "Select owned vehicle at historical occurrence or preserve explicit not-on-register declaration.",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md"
+      ]
     },
     {
       "id": "INCIDENT-DRIVER",
       "sourceNeedle": "'lcDriver'",
       "ownerPlan": "09-12",
       "expectedBehavior": "Owned historical driver or explicit not-a-named-driver; never imply cover.",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md"
+      ]
     },
     {
       "id": "INCIDENT-DRIVABLE",
       "sourceNeedle": "'lcDrivable'",
       "ownerPlan": "09-12",
       "expectedBehavior": "Preserve Yes/No recovered/Unknown without coercing unknown tofalse.",
-      "runtimeStatus": "not-implemented-in-phase9"
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-12-SUMMARY.md"
+      ]
     },
     {
       "id": "INCIDENT-HANDOFF-READY",

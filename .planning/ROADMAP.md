@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1–8 complete;92 currently defined implementation plans verified. Phase9 occurrence plan09-11 is complete;09-12 incident forms are next; the13-phase MVP remains in progress.
+**Status:** Autonomous progression authorised. Phases1–8 complete;93 currently defined implementation plans verified. Phase9 incident forms09-12 are complete;09-13 claims handoffs are active; the13-phase MVP remains in progress.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
@@ -184,7 +184,7 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 **Goal:** Make servicing activities and demo handoffs operational.
 **Depends on:** Phase 8
 **Requirements:** OPS-01 through OPS-08
-**Plans:** 18 sequential plans;11 complete.09-11 occurrence verified42unique/2realSQL;09-10 delivery retains17 current browser checks per product with SQL readback.
+**Plans:** 18 sequential plans;12 complete.09-11 occurrence verified42unique/2realSQL;09-10 delivery retains17 current browser checks per product with SQL readback.
 
 - [x] 09-01 — Reconcile operational source and closed data/API contracts (wave 1).
 - [x] 09-02 — Persist scoped subjects and task commands (wave 2, after09-01).
@@ -197,7 +197,7 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 - [x] 09-09 — Persist internal notes and agency message drafts (wave 9, after09-08).
 - [x] 09-10 — Deliver messages and immutable document packs (wave 10, after09-09).
 - [x] 09-11 — Resolve historical incident occurrence with honest precision (wave 11, after09-10).
-- [ ] 09-12 — Implement saved Motor Trade and commercial incident forms (wave 12, after09-11).
+- [x] 09-12 — Implement saved Motor Trade and commercial incident forms (wave 12, after09-11).
 - [ ] 09-13 — Persist claims handoffs and administrator summaries (wave 13, after09-12).
 - [ ] 09-14 — Apply and recover exact Motor Trade MID submissions (wave 14, after09-13).
 - [ ] 09-15 — Complete effective-dated cancellation operational consequences (wave 15, after09-14).

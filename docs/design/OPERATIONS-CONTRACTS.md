@@ -282,5 +282,5 @@ The MT/CC policy Claims tabs provide draft and description saving, original revi
 history, conditional product fields, readiness and exact evidence selection. Pending
 transport commands retain their original body, key and ETag. Stale responses retain
 local inputs and require reviewing the latest saved version before another write.
-Browser acceptance is still in progress; see09-12-CHECKPOINT rather than inferring
-completion from the implemented routes.
+Browser acceptance passed for both products with SQL readback; see09-12-SUMMARY.
+Provider handoff remains the09-13 consumer.
