@@ -82,6 +82,14 @@ export function addOperationalRuntimeContracts({schemas:s,ref:r,operation:op,lis
  list('/tasks/{taskId}/events','listTaskEvents','task-read',r('OpsTaskEvent'));
  op('post','/incidents/{incidentId}/occurrence','clarifyIncidentOccurrence','incident-write',{existing:true,input:r('OpsOccurrenceClarification'),output:r('OpsIncident')});
  op('post','/incidents/{incidentId}/occurrence-resolution','resolveIncidentOccurrence','incident-write',{existing:true,input:o({}),output:r('OpsOccurrenceResolution')});
+ op('put','/incidents/{incidentId}/description','saveIncidentDescription','incident-write',{existing:true,input:r('OpsIncidentDescription'),output:r('OpsIncident')});
+ list('/incidents/{incidentId}/revisions','listIncidentRevisions','incident-read',r('OpsIncidentRevision'));
+ list('/incidents/{incidentId}/occurrence-resolutions','listIncidentOccurrenceResolutions','incident-read',r('OpsOccurrenceResolution'));
+ op('get','/incidents/{incidentId}/subject-options','getIncidentSubjectOptions','incident-read',{query:[['versionId',id]],output:r('OpsIncidentSubjectOptions')});
+ paths['/incidents/{incidentId}/subject-options'].get.parameters.find(x=>x.name==='versionId').required=true;
+ paths['/incidents'].get.parameters.find(x=>x.name==='policyId').required=true;
+ paths['/incidents'].get.description='Incidents belonging to the required original policy. Current internal actor and policy access are checked on every page.';
+ paths['/incidents/{incidentId}/log'].post.requestBody={required:true,content:{'application/json':{schema:o({})}}};
  op('post','/incidents/{incidentId}/log-and-handoff','logAndHandoffIncident','incident-handoff',{existing:true,input:r('OpsIncidentHandoff'),output:r('Job'),status:202});
  op('post','/incidents/{incidentId}/contact','contactClaimsAdministrator','incident-handoff',{existing:true,input:r('OpsTextWrite'),output:r('Job'),status:202});
  list('/messages/{messageId}/deliveries','listMessageDeliveries','message-read',r('OpsDelivery'));
@@ -121,6 +129,11 @@ export function addOperationalRuntimeContracts({schemas:s,ref:r,operation:op,lis
  }
 
  const deliveryRuntime=new Set(['sendMessage','sendDocumentPack','listMessageDeliveries','listDocumentDeliveries','getDocumentDelivery','getMessageDelivery','listDocumentDeliveryAttempts','listMessageDeliveryAttempts','retryDocumentDelivery','resendDocumentPack','retryMessageDelivery','resendMessageDelivery']);
+ const incidentRuntime=new Set(['createIncidentDraft','updateIncidentDraft','getIncident','listIncidents','validateIncidentProposal','logIncident','saveIncidentDescription','listIncidentRevisions','listIncidentOccurrenceResolutions','getIncidentSubjectOptions','clarifyIncidentOccurrence','resolveIncidentOccurrence']);
+ for(const methods of Object.values(paths))for(const operation of Object.values(methods))if(incidentRuntime.has(operation.operationId)){
+  operation['x-runtime-status']='phase-9-12-implemented-acceptance-pending';
+  for(const [code,response]of Object.entries(operation.responses))if(Number(code)>=200&&Number(code)<300){response.headers??={};response.headers['Cache-Control']={description:'Private, no-store.',schema:t(100)};if(!['listIncidents','listIncidentRevisions','listIncidentOccurrenceResolutions','validateIncidentProposal'].includes(operation.operationId))response.headers.ETag={description:'Strong incident head ETag; resolve retains the owning incident version.',schema:t(100)};}
+ }
  paths['/messages/{messageId}/send'].post.requestBody={required:true,content:{'application/json':{schema:o({})}}};
  for(const methods of Object.values(paths))for(const operation of Object.values(methods))if(deliveryRuntime.has(operation.operationId)){
   operation['x-runtime-status']='phase-9-10-implemented-acceptance-pending';

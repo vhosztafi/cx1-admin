@@ -24,6 +24,7 @@ builder.Services.AddScoped<BackOffice.Infrastructure.Operations.MessageDeliveryS
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.DocumentPackService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.DeliveryReadService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.IncidentOccurrenceResolver>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Operations.IncidentService>();
 MessageDeliveryDispatcher.Register(builder);
 builder.Services.AddSingleton<BackOffice.Application.Operations.IPolicyDocumentRenderer, BackOffice.Infrastructure.Operations.PolicyDocumentRenderer>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.PolicyDocumentRenderService>();
@@ -236,6 +237,7 @@ app.MapPolicies();
 app.MapTasks();
 app.MapCommunications();
 app.MapDeliveries();
+app.MapIncidents();
 app.MapFiles();
 app.MapDocuments();
 app.MapServicingDrafts();

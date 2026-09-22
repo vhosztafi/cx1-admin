@@ -47,7 +47,10 @@ export function operationalDefinitions(){
  d.OpsOccurrenceClarification=obj({occurrence:ref('OpsOccurrence'),reason});
  d.OpsOccurrenceWindow=obj({from:instant,to:instant,isExact:{type:'boolean'}});
  d.OpsOccurrenceResolution=obj({id,policyId:id,revisionId:id,knownAt:instant,state:en('resolved','ambiguous','partly-uncovered','uncovered','incomplete'),window:ref('OpsOccurrenceWindow'),candidates:arr(obj({versionId:id,sourceHash:hash,from:instant,to:instant,label:text()})),sourceHash:hash},['id','policyId','revisionId','knownAt','state','candidates']);
- d.OpsIncident=obj({id,reference:text(40),revisionId:id,draft:ref('OpsIncidentDraftWrite'),state:en('draft','logged','queued','handed-off','failed'),resolution:ref('OpsOccurrenceResolution'),providerReference:text(100),createdAt:instant,updatedAt:instant},['id','reference','revisionId','draft','state','createdAt','updatedAt']);
+ d.OpsIncident=obj({id,reference:text(40),revisionId:id,draft:ref('OpsIncidentDraftWrite'),state:en('draft','logged','queued','handed-off','failed'),resolution:ref('OpsOccurrenceResolution'),providerReference:text(100),createdAt:instant,updatedAt:instant,missing:arr(text(100))},['id','reference','revisionId','draft','state','createdAt','updatedAt','missing']);
+ d.OpsIncidentDescription=obj({description:text(8000)});
+ d.OpsIncidentRevision=obj({id,incidentId:id,number:{type:'integer',minimum:1},draft:ref('OpsIncidentDraftWrite'),contentHash:hash,reason,authorLabel:text(),createdAt:instant});
+ d.OpsIncidentSubjectOptions=obj({incidentId:id,revisionId:id,resolutionId:id,versionId:id,sourceHash:hash,vehicles:arr(obj({id,label:text(1000)}),0,1000),drivers:arr(obj({id,label:text(1000)}),0,1000),locations:arr(obj({id,label:text(1000)}),0,1000),occupations:arr(obj({id,label:text(1000)}),0,1000),coverCodes:arr(text(100))});
  d.OpsIncidentHandoff=obj({revisionId:id,resolutionId:id,providerId:id});
  d.OpsClaimsSummary=obj({id,incidentId:id,handoffId:id,asOf:instant,receivedAt:instant,status:en('notified','open','closed','rejected'),paid:{anyOf:[amount,{type:'null'}]},reserved:{anyOf:[amount,{type:'null'}]},currency:{const:'GBP'},providerReference:text(100)});
  const generationSources=[

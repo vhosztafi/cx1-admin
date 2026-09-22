@@ -248,3 +248,39 @@ facts. Supplied foreign identities or incompatible product fields fail.
 observed occurrence and applicability window. It never replaces approximate facts
 with an invented observed instant. The prior exact-only `Create/Valid` contract
 remains compatible with retained `commercial-incident-1` payloads.
+
+## Saved incident reports (09-12)
+
+`IncidentService` owns create/update, description-only saves, explicit occurrence
+clarifications, historical resolution and logged-unsent state. Each content change
+inserts an `IncidentRevision`; the prior facts, author, reason and content hash remain
+unchanged. Resolving inserts `IncidentOccurrenceResolution` bound to that revision,
+with normalized exact `IncidentResolutionSource` intervals. `IncidentEvidence`
+retains each selected ready document version from the original policy. No operation
+in this slice queues provider handoff or asserts that a claims administrator received it.
+
+`GET /incidents` requires `policyId`. Detail and revision history check current internal
+identity and original policy access. Signed cursors retain list position and knowledge
+cutoff. Writes require CSRF and idempotency; mutations require the current incident
+head ETag. Authorization and original evidence ownership precede receipt replay.
+Drafts may be incomplete. Log requires occurrence, type, involvement (including
+unknown), factual description, reporter/route/contact, valid owned subject and an
+unambiguous historical source. Editing a logged-unsent report returns it to draft.
+
+`PUT /incidents/{incidentId}/description` writes only description; other submitted
+fields are rejected. `POST .../occurrence` accepts occurrence plus a reason.
+`POST .../occurrence-resolution` and `POST .../log` accept an empty object. The former
+returns the immutable resolution with the updated incident ETag; the latter returns
+the incident as logged. Every response is private/no-store.
+
+`GET .../subject-options?versionId=...` only reads a source present in the current
+revision's stored resolution and verifies the original snapshot hash. Choosing a
+candidate to view its vehicles, drivers, locations or occupations does not resolve
+an ambiguous date. An explicit factual occurrence clarification is required.
+
+The MT/CC policy Claims tabs provide draft and description saving, original revision
+history, conditional product fields, readiness and exact evidence selection. Pending
+transport commands retain their original body, key and ETag. Stale responses retain
+local inputs and require reviewing the latest saved version before another write.
+Browser acceptance is still in progress; see09-12-CHECKPOINT rather than inferring
+completion from the implemented routes.
