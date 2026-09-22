@@ -858,8 +858,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-09",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-09-SUMMARY.md: scoped persisted notes/drafts,16unique/4realSQL and current13browserchecks per product with SQLreadback. Delivery remains09-10; exact source placement/seeded history reconciliation remains09-17/18."
+      ]
     },
     {
       "controlId": "CTL-3cb0cf7677f1",
@@ -974,8 +976,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-09",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-09-SUMMARY.md: scoped persisted notes/drafts,16unique/4realSQL and current13browserchecks per product with SQLreadback. Delivery remains09-10; exact source placement/seeded history reconciliation remains09-17/18."
+      ]
     },
     {
       "controlId": "CTL-d1cdc62aa154",
@@ -1101,8 +1105,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-09",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-09-SUMMARY.md: scoped persisted notes/drafts,16unique/4realSQL and current13browserchecks per product with SQLreadback. Delivery remains09-10; exact source placement/seeded history reconciliation remains09-17/18."
+      ]
     },
     {
       "controlId": "CTL-9ce9ceaff0ff",
@@ -1287,8 +1293,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-09",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-09-SUMMARY.md: scoped persisted notes/drafts,16unique/4realSQL and current13browserchecks per product with SQLreadback. Delivery remains09-10; exact source placement/seeded history reconciliation remains09-17/18."
+      ]
     },
     {
       "controlId": "CTL-f7e2892adf6c",
@@ -1891,8 +1899,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-09",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-09-SUMMARY.md: scoped persisted notes/drafts,16unique/4realSQL and current13browserchecks per product with SQLreadback. Delivery remains09-10; exact source placement/seeded history reconciliation remains09-17/18."
+      ]
     },
     {
       "controlId": "CTL-7763e7b7f887",
@@ -1953,8 +1963,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-09",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-09-SUMMARY.md: scoped persisted notes/drafts,16unique/4realSQL and current13browserchecks per product with SQLreadback. Delivery remains09-10; exact source placement/seeded history reconciliation remains09-17/18."
+      ]
     },
     {
       "controlId": "CTL-985ab2e4f5a0",
@@ -8102,8 +8114,10 @@
         "onSend": "() => {\n          const t = this.state.noteDraft.trim();\n          if (!t) { this.toast('Enter a note before saving.', '', null); return; }\n          this.setState((s) => ({notes: [{title:'Note added', meta:'James Smith · 09/09/2026 08:24', body: t}].concat(s.notes), noteDraft: ''}));\n          this.toast('Note added to PN/CC/000622.', '', null);\n        }"
       },
       "ownerPlan": "09-09",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-09-SUMMARY.md: scoped persisted notes/drafts,16unique/4realSQL and current13browserchecks per product with SQLreadback. Delivery remains09-10; exact source placement/seeded history reconciliation remains09-17/18."
+      ]
     },
     {
       "sourceOccurrence": 175,
@@ -8122,8 +8136,10 @@
         "actionLabel": ""
       },
       "ownerPlan": "09-09",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-09-SUMMARY.md: scoped persisted notes/drafts,16unique/4realSQL and current13browserchecks per product with SQLreadback. Delivery remains09-10; exact source placement/seeded history reconciliation remains09-17/18."
+      ]
     },
     {
       "sourceOccurrence": 176,
@@ -8140,8 +8156,10 @@
         "title": "Broker requested MTA"
       },
       "ownerPlan": "09-09",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-09-SUMMARY.md: scoped persisted notes/drafts,16unique/4realSQL and current13browserchecks per product with SQLreadback. Delivery remains09-10; exact source placement/seeded history reconciliation remains09-17/18."
+      ]
     },
     {
       "sourceOccurrence": 177,
@@ -8158,8 +8176,10 @@
         "title": "Licence check outstanding"
       },
       "ownerPlan": "09-09",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-09-SUMMARY.md: scoped persisted notes/drafts,16unique/4realSQL and current13browserchecks per product with SQLreadback. Delivery remains09-10; exact source placement/seeded history reconciliation remains09-17/18."
+      ]
     },
     {
       "sourceOccurrence": 178,
@@ -8176,8 +8196,10 @@
         "title": "Premises inspection"
       },
       "ownerPlan": "09-09",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-09-SUMMARY.md: scoped persisted notes/drafts,16unique/4realSQL and current13browserchecks per product with SQLreadback. Delivery remains09-10; exact source placement/seeded history reconciliation remains09-17/18."
+      ]
     },
     {
       "sourceOccurrence": 179,
@@ -8194,8 +8216,10 @@
         "title": "Version 6 issued"
       },
       "ownerPlan": "09-09",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-09-SUMMARY.md: scoped persisted notes/drafts,16unique/4realSQL and current13browserchecks per product with SQLreadback. Delivery remains09-10; exact source placement/seeded history reconciliation remains09-17/18."
+      ]
     },
     {
       "sourceOccurrence": 180,
@@ -8212,8 +8236,10 @@
         "title": "Version 5 issued"
       },
       "ownerPlan": "09-09",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-09-SUMMARY.md: scoped persisted notes/drafts,16unique/4realSQL and current13browserchecks per product with SQLreadback. Delivery remains09-10; exact source placement/seeded history reconciliation remains09-17/18."
+      ]
     },
     {
       "sourceOccurrence": 246,
@@ -10331,8 +10357,10 @@
         "actionLabel": ""
       },
       "ownerPlan": "09-09",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-09-SUMMARY.md: scoped persisted notes/drafts,16unique/4realSQL and current13browserchecks per product with SQLreadback. Delivery remains09-10; exact source placement/seeded history reconciliation remains09-17/18."
+      ]
     },
     {
       "sourceOccurrence": 1011,
@@ -10349,8 +10377,10 @@
         "title": "Appetite check"
       },
       "ownerPlan": "09-09",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-09-SUMMARY.md: scoped persisted notes/drafts,16unique/4realSQL and current13browserchecks per product with SQLreadback. Delivery remains09-10; exact source placement/seeded history reconciliation remains09-17/18."
+      ]
     },
     {
       "sourceOccurrence": 1012,
@@ -10367,8 +10397,10 @@
         "title": "Broker context"
       },
       "ownerPlan": "09-09",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-09-SUMMARY.md: scoped persisted notes/drafts,16unique/4realSQL and current13browserchecks per product with SQLreadback. Delivery remains09-10; exact source placement/seeded history reconciliation remains09-17/18."
+      ]
     },
     {
       "sourceOccurrence": 1014,
@@ -30166,8 +30198,10 @@
         "text": "The Notes tab is line-agnostic and behaves identically to motor trade."
       },
       "ownerPlan": "09-09",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-09-SUMMARY.md: scoped persisted notes/drafts,16unique/4realSQL and current13browserchecks per product with SQLreadback. Delivery remains09-10; exact source placement/seeded history reconciliation remains09-17/18."
+      ]
     },
     {
       "sourceOccurrence": 4322,
