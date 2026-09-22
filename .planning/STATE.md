@@ -5,7 +5,7 @@ milestone_name: Functional Back Office MVP
 status: executing
 stopped_at: Phase9 plan09-17 bounded agency response checks and retained upgrade passed; fresh full v4 session64243 active.
 last_updated: "2026-09-22T22:11:17.3103921+00:00"
-last_activity: "2026-09-22 — Agency responses implemented and demonstrated; 1337 units, 421 root tests, focused SQL and both-product browser checks passed. Full v4 regression pending."
+last_activity: "2026-09-22 — Agency responses implemented and demonstrated; 1337 units, 421 root tests, focused SQL and both-product browser checks passed. Full v4 regression64243 active; guarded continuation44048 and preservation80151 queued."
 progress:
   total_phases: 13
   completed_phases: 8
@@ -43,7 +43,7 @@ Progress: eight of13 phases complete;97/99 currently defined plans complete. Lat
 
 ## Next work
 
-Review the active v4 full gate session64243 without duplication, then validate exact inventory/source hashes and strict accounting. Reuse existing legacy SQL results, run current operational collector and retained servicing/underwriting sequentially. Final two initializations, restart/readbacks, source acceptance and verification remain. Do not relaunch v3 or its supervisor; do not count interrupted gates as passes.
+Review full64243, guarded follow-through44048 and preservation80151 without duplication. They queue strict inventory/source validation, legacy result reuse, current collectors, retained servicing/underwriting, two initializations and restart/readbacks sequentially. Inspect their .local/phase9-final-v4* reports; source acceptance and final goal-backward verification still require agent review after successful reports. Do not relaunch v3 or its supervisor; do not count interrupted gates as passes.
 
 ## Evidence and continuity
 
