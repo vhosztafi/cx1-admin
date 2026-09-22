@@ -20,6 +20,9 @@ export function addOperationalRuntimeContracts({schemas:s,ref:r,operation:op,lis
  options.responses[200].headers['Cache-Control']={description:'Private, no-store.',schema:t(100)};
  options.responses[200].headers['X-Content-Type-Options']={description:'nosniff',schema:{type:'string',enum:['nosniff']}};
  const optionQuery=[['pageSize',{type:'integer',minimum:1,maximum:100,default:25}],['cursor',t(2048)]];
+ op('get','/records/{recordId}/document-delivery-recipients/{relationshipId}','listDocumentPackRecipients','document-send',{query:optionQuery,output:r('OpsRecipientOptions')});
+ paths['/records/{recordId}/document-delivery-recipients/{relationshipId}'].get['x-runtime-status']='phase-9-10-implemented-acceptance-pending';
+ paths['/records/{recordId}/document-delivery-recipients/{relationshipId}'].get.description='Eligible active contacts for the selected relationship, checked against the original document subject. A sparse page can still have a continuation cursor.';
  op('get','/records/{recordId}/thread-relationships','listThreadRelationships','message-read',{query:optionQuery,output:r('OpsThreadRelationships')});
  op('get','/threads/{threadId}/recipient-options','listMessageRecipientOptions','message-read',{query:optionQuery,output:r('OpsRecipientOptions')});
  op('get','/threads/{threadId}/attachment-options','listMessageAttachmentOptions','message-read',{query:optionQuery,output:r('OpsAttachmentOptions')});
@@ -84,7 +87,10 @@ export function addOperationalRuntimeContracts({schemas:s,ref:r,operation:op,lis
  list('/messages/{messageId}/deliveries','listMessageDeliveries','message-read',r('OpsDelivery'));
  list('/records/{recordId}/document-deliveries','listDocumentDeliveries','document-read',r('OpsDelivery'));
  op('get','/document-deliveries/{deliveryId}','getDocumentDelivery','document-read',{output:r('OpsDelivery')});
- list('/document-deliveries/{deliveryId}/attempts','listDocumentDeliveryAttempts','document-read',r('OpsDeliveryAttempt'));
+ op('get','/document-deliveries/{deliveryId}/attempts','listDocumentDeliveryAttempts','document-read',{output:r('OpsDeliveryAttempts')});
+ op('get','/message-deliveries/{deliveryId}','getMessageDelivery','message-read',{output:r('OpsDelivery')});
+ op('get','/message-deliveries/{deliveryId}/attempts','listMessageDeliveryAttempts','message-read',{output:r('OpsDeliveryAttempts')});
+ op('post','/message-deliveries/{deliveryId}/resend','resendMessageDelivery','message-send',{existing:true,input:o({reason:t(1000)}),output:r('Job'),status:202});
  op('post','/document-deliveries/{deliveryId}/retry','retryDocumentDelivery','document-send',{existing:true,input:o({reason:t(1000)}),output:r('Job'),status:202});
  op('post','/document-deliveries/{deliveryId}/resend','resendDocumentPack','document-send',{existing:true,input:o({reason:t(1000)}),output:r('Job'),status:202});
  op('post','/message-deliveries/{deliveryId}/retry','retryMessageDelivery','message-send',{existing:true,input:o({reason:t(1000)}),output:r('Job'),status:202});
@@ -112,5 +118,13 @@ export function addOperationalRuntimeContracts({schemas:s,ref:r,operation:op,lis
   operation['x-runtime-status']='phase-9-07-api-verified';
   for(const [code,response]of Object.entries(operation.responses))if(Number(code)>=200&&Number(code)<300){response.headers??={};response.headers['Cache-Control']={description:'Private, no-store.',schema:{type:'string'}};response.headers['X-Content-Type-Options']={description:'nosniff',schema:{type:'string',enum:['nosniff']}};}
   operation.responses[503]={description:'Stored document bytes are unavailable; no paths or storage keys are disclosed.',content:{'application/problem+json':{schema:r('Problem')}}};
+ }
+
+ const deliveryRuntime=new Set(['sendMessage','sendDocumentPack','listMessageDeliveries','listDocumentDeliveries','getDocumentDelivery','getMessageDelivery','listDocumentDeliveryAttempts','listMessageDeliveryAttempts','retryDocumentDelivery','resendDocumentPack','retryMessageDelivery','resendMessageDelivery']);
+ paths['/messages/{messageId}/send'].post.requestBody={required:true,content:{'application/json':{schema:o({})}}};
+ for(const methods of Object.values(paths))for(const operation of Object.values(methods))if(deliveryRuntime.has(operation.operationId)){
+  operation['x-runtime-status']='phase-9-10-implemented-acceptance-pending';
+  operation.description='Durable deterministic demo delivery. Exact content, contact addresses and document versions are frozen. Retry retains the operation; resend creates a new delivery. Mutations require current original scope before replay. Send uses message ETag; recovery uses delivery ETag.';
+  for(const [code,response]of Object.entries(operation.responses))if(Number(code)>=200&&Number(code)<300){response.headers??={};response.headers['Cache-Control']={description:'Private, no-store.',schema:t(100)};if(!['listMessageDeliveries','listDocumentDeliveries','listDocumentDeliveryAttempts','listMessageDeliveryAttempts'].includes(operation.operationId))response.headers.ETag={description:'Strong opaque current resource ETag.',schema:t(100)};}
  }
 }

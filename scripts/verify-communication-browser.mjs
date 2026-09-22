@@ -5,14 +5,14 @@ import {chromium} from 'playwright';
 
 const sources=['scripts/verify-communication-browser.mjs','backend/tests/BackOffice.IntegrationTests/OperationalCommunicationBrowserTests.cs',
  'backend/src/BackOffice.Api/CommunicationEndpoints.cs','backend/src/BackOffice.Infrastructure/Operations/NoteService.cs','backend/src/BackOffice.Infrastructure/Operations/ThreadService.cs','backend/src/BackOffice.Infrastructure/Operations/ThreadService.Options.cs','backend/src/BackOffice.Infrastructure/Operations/CommunicationScope.cs',
- 'apps/backoffice/lib/communications-api.ts','apps/backoffice/app/globals.css',...['communication-shared','communication-command','notes','thread','document-list'].map(x=>`apps/backoffice/components/operations/${x}.tsx`),
+ 'backend/src/BackOffice.Api/DeliveryEndpoints.cs','backend/src/BackOffice.Infrastructure/Operations/DeliveryReadService.cs','backend/src/BackOffice.Infrastructure/Operations/MessageDeliveryService.cs','backend/src/BackOffice.Infrastructure/Operations/MessageDeliveryService.Recovery.cs','backend/src/BackOffice.Infrastructure/Operations/MessageDeliveryWorker.cs','backend/src/BackOffice.Infrastructure/Operations/MessageDeliveryWorker.Apply.cs','apps/backoffice/lib/communications-api.ts','apps/backoffice/app/globals.css',...['communication-shared','communication-command','notes','thread','document-list','document-pack','delivery-history'].map(x=>`apps/backoffice/components/operations/${x}.tsx`),
  ...['quotes/quote-receipt','quotes/commercial-receipt','policies/policy-record','policies/commercial-policy-record','clients/client-detail','agencies/agency-detail'].map(x=>`apps/backoffice/components/${x}.tsx`)];
 const hash=createHash('sha256');for(const path of sources){hash.update(path);hash.update((await readFile(path,'utf8')).replaceAll('\r\n','\n').trimEnd());}const sourceHash=hash.digest('hex');
 if(!process.argv.includes('--worker')){
  for(const product of ['motor-trade','commercial-combined']){
-  const latest=JSON.parse(await readFile(`.local/phase9-09-browser/${product}.json`,'utf8'));
+  const latest=JSON.parse(await readFile(`.local/phase9-10-browser/${product}.json`,'utf8'));
   const report=JSON.parse(await readFile(latest.output+'/browser-report.json','utf8')),sql=JSON.parse(await readFile(latest.output+'/sql-readback.json','utf8'));
-  assert.equal(latest.passed,true);assert.equal(sql.passed,true);assert.equal(report.sourceHash,sourceHash);assert.ok(report.cases.length>=12);assert.deepEqual(report.errors,[]);
+  assert.equal(latest.passed,true);assert.equal(sql.passed,true);assert.equal(report.sourceHash,sourceHash);assert.ok(report.cases.length>=16);assert.deepEqual(report.errors,[]);
   console.log(`${product}: ${report.cases.length} communication browser checks and SQL readback.`);
  }
 }else{
@@ -70,6 +70,21 @@ if(!process.argv.includes('--worker')){
   await button('Review current saved draft').click();await page.getByRole('region',{name:'Current saved draft',exact:true}).getByText('Competing saved draft',{exact:true}).waitFor();await button('Keep my text and use this version for the next save').click();
   await button('Save draft').click();await confirm('Save draft',`/messages/${saved.id}`,200,'PUT');await page.getByText('Browser revised agency draft',{exact:true}).waitFor();cases.push('explicit current-version review permits saving retained text');
   const message=await api(`/messages/${saved.id}`);assert.equal(message.body.body,'Browser revised agency draft');assert.equal(message.body.state,'draft');assert.deepEqual(message.body.attachmentVersionIds,[f.versionId]);cases.push('saved message API independently matches selected file version and draft text');
+  await button('Send to agency').click();await confirm('Send to agency',`/messages/${saved.id}/send`,202);
+  async function waitDelivery(path,state){for(let n=0;n<90;n++){const response=await api(path);if(response.status===200&&response.body.items?.some(x=>x.state===state))return response.body.items.find(x=>x.state===state);await page.waitForTimeout(500);}throw new Error('Expected persisted delivery state '+state);}
+  const failed=await waitDelivery(`/messages/${saved.id}/deliveries`,'failed');
+  await button('Refresh deliveries').click();await button('View delivery and attempts').click();
+  const delivery=page.getByRole('region',{name:'Delivery details',exact:true});await delivery.getByLabel('Reason',{exact:true}).fill('Browser deliberate delivery recovery');
+  await delivery.getByRole('button',{name:'Retry delivery',exact:true}).click();await confirm('Retry delivery',`/message-deliveries/${failed.id}/retry`,202);
+  const delivered=await waitDelivery(`/messages/${saved.id}/deliveries`,'delivered');assert.equal(delivered.id,failed.id);assert.equal(delivered.jobId,failed.jobId);
+  await button('Refresh delivery details').click();await delivery.getByText(/^Status: delivered/).waitFor();cases.push('failed message retries same persisted delivery and reaches delivered');
+  const attempts=await api(`/message-deliveries/${failed.id}/attempts`);assert.equal(attempts.body.totalCount,7);cases.push('delivery history exposes seven durable attempts without duplicate provider effect');
+  await page.getByRole('tab',{name:'Documents',exact:true}).click();await page.locator(`[data-document-id="${f.documentId}"]`).getByRole('button',{name:'Version history',exact:true}).click();
+  await page.getByRole('region',{name:'Document version history',exact:true}).getByRole('button',{name:'Add to document pack',exact:true}).click();
+  const pack=page.getByRole('region',{name:'Document pack',exact:true});await pack.getByRole('checkbox').first().check();await pack.getByRole('button',{name:'Review and send pack',exact:true}).click();await confirm('Send document pack','/document-deliveries',202);
+  const packed=await waitDelivery(`/records/${f.subjectId}/document-deliveries`,'delivered');assert.deepEqual(packed.documentVersionIds,[f.versionId]);cases.push('historical file selection sends exact document version through pack UI');
+  await button('Refresh deliveries').click();await button('View delivery and attempts').click();await page.getByRole('region',{name:'Delivery details',exact:true}).getByText(/^Status: delivered/).waitFor();
+  await page.setViewportSize({width:390,height:844});await page.getByRole('region',{name:'Delivery details',exact:true}).scrollIntoViewIfNeeded();assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:f.output+'/delivery-mobile.png'});cases.push('390px delivery details retains readable recipients and original file action');await page.setViewportSize({width:1480,height:980});
   for(const [kind,url] of [['quote',`/quotes/${f.quoteId}`],['agency',`/agents/${f.agencyId}?tab=Notes`],['relationship',`/clients/${f.clientId}?tab=Notes`]]){
    await page.goto(f.webOrigin+url);if(kind==='quote')await page.getByRole('tab',{name:'Notes',exact:true}).click();
    if(kind==='relationship'){const relationships=await api(`/clients/${f.clientId}/relationships?pageSize=100`);const r=relationships.body.items.find(x=>x.id===f.relationshipId);assert.ok(r);await button(`${r.agencyReference} · ${r.agencyName}`).click();}

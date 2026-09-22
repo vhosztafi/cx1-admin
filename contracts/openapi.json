@@ -22760,7 +22760,7 @@
       "post": {
         "operationId": "sendMessage",
         "summary": "send Message",
-        "description": "Requires message-send. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "description": "Durable deterministic demo delivery. Exact content, contact addresses and document versions are frozen. Retry retains the operation; resend creates a new delivery. Mutations require current original scope before replay. Send uses message ETag; recovery uses delivery ETag.",
         "tags": [
           "messages"
         ],
@@ -22808,7 +22808,7 @@
             "description": "Durable work accepted; inspect Location for completion.",
             "headers": {
               "ETag": {
-                "description": "Opaque resource version for subsequent conditional writes.",
+                "description": "Strong opaque current resource ETag.",
                 "schema": {
                   "type": "string",
                   "minLength": 1,
@@ -22820,6 +22820,14 @@
                 "schema": {
                   "type": "string",
                   "format": "uri-reference"
+                }
+              },
+              "Cache-Control": {
+                "description": "Private, no-store.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
                 }
               }
             },
@@ -23021,7 +23029,21 @@
               }
             }
           }
-        }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {},
+                "required": []
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-9-10-implemented-acceptance-pending"
       }
     },
     "/records/{recordId}/documents": {
@@ -59918,7 +59940,7 @@
       "post": {
         "operationId": "sendDocumentPack",
         "summary": "send Document Pack",
-        "description": "Requires document-send. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "description": "Durable deterministic demo delivery. Exact content, contact addresses and document versions are frozen. Retry retains the operation; resend creates a new delivery. Mutations require current original scope before replay. Send uses message ETag; recovery uses delivery ETag.",
         "tags": [
           "records"
         ],
@@ -59956,7 +59978,7 @@
             "description": "Durable work accepted; inspect Location for completion.",
             "headers": {
               "ETag": {
-                "description": "Opaque resource version for subsequent conditional writes.",
+                "description": "Strong opaque current resource ETag.",
                 "schema": {
                   "type": "string",
                   "minLength": 1,
@@ -59968,6 +59990,14 @@
                 "schema": {
                   "type": "string",
                   "format": "uri-reference"
+                }
+              },
+              "Cache-Control": {
+                "description": "Private, no-store.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
                 }
               }
             },
@@ -60180,12 +60210,12 @@
             }
           }
         },
-        "x-runtime-status": "phase-9-contract-only"
+        "x-runtime-status": "phase-9-10-implemented-acceptance-pending"
       },
       "get": {
         "operationId": "listDocumentDeliveries",
         "summary": "list Document Deliveries",
-        "description": "Requires document-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "description": "Durable deterministic demo delivery. Exact content, contact addresses and document versions are frozen. Retry retains the operation; resend creates a new delivery. Mutations require current original scope before replay. Send uses message ETag; recovery uses delivery ETag.",
         "tags": [
           "records"
         ],
@@ -60234,6 +60264,14 @@
             "headers": {
               "ETag": {
                 "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              },
+              "Cache-Control": {
+                "description": "Private, no-store.",
                 "schema": {
                   "type": "string",
                   "minLength": 1,
@@ -60386,7 +60424,7 @@
             }
           }
         },
-        "x-runtime-status": "phase-9-contract-only"
+        "x-runtime-status": "phase-9-10-implemented-acceptance-pending"
       }
     },
     "/terms/{termId}/as-at/export": {
@@ -103168,6 +103206,201 @@
         "x-runtime-status": "phase-9-08-implemented"
       }
     },
+    "/records/{recordId}/document-delivery-recipients/{relationshipId}": {
+      "get": {
+        "operationId": "listDocumentPackRecipients",
+        "summary": "list Document Pack Recipients",
+        "description": "Eligible active contacts for the selected relationship, checked against the original document subject. A sparse page can still have a continuation cursor.",
+        "tags": [
+          "records"
+        ],
+        "x-permission": "document-send",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "recordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "relationshipId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpsRecipientOptions"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-9-10-implemented-acceptance-pending"
+      }
+    },
     "/records/{recordId}/thread-relationships": {
       "get": {
         "operationId": "listThreadRelationships",
@@ -107731,7 +107964,7 @@
       "get": {
         "operationId": "listMessageDeliveries",
         "summary": "list Message Deliveries",
-        "description": "Requires message-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "description": "Durable deterministic demo delivery. Exact content, contact addresses and document versions are frozen. Retry retains the operation; resend creates a new delivery. Mutations require current original scope before replay. Send uses message ETag; recovery uses delivery ETag.",
         "tags": [
           "messages"
         ],
@@ -107780,6 +108013,14 @@
             "headers": {
               "ETag": {
                 "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              },
+              "Cache-Control": {
+                "description": "Private, no-store.",
                 "schema": {
                   "type": "string",
                   "minLength": 1,
@@ -107932,14 +108173,14 @@
             }
           }
         },
-        "x-runtime-status": "phase-9-contract-only"
+        "x-runtime-status": "phase-9-10-implemented-acceptance-pending"
       }
     },
     "/document-deliveries/{deliveryId}": {
       "get": {
         "operationId": "getDocumentDelivery",
         "summary": "get Document Delivery",
-        "description": "Requires document-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "description": "Durable deterministic demo delivery. Exact content, contact addresses and document versions are frozen. Retry retains the operation; resend creates a new delivery. Mutations require current original scope before replay. Send uses message ETag; recovery uses delivery ETag.",
         "tags": [
           "document-deliveries"
         ],
@@ -107966,7 +108207,15 @@
             "description": "Operation succeeded.",
             "headers": {
               "ETag": {
-                "description": "Opaque resource version for subsequent conditional writes.",
+                "description": "Strong opaque current resource ETag.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              },
+              "Cache-Control": {
+                "description": "Private, no-store.",
                 "schema": {
                   "type": "string",
                   "minLength": 1,
@@ -108097,14 +108346,14 @@
             }
           }
         },
-        "x-runtime-status": "phase-9-contract-only"
+        "x-runtime-status": "phase-9-10-implemented-acceptance-pending"
       }
     },
     "/document-deliveries/{deliveryId}/attempts": {
       "get": {
         "operationId": "listDocumentDeliveryAttempts",
         "summary": "list Document Delivery Attempts",
-        "description": "Requires document-read. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "description": "Durable deterministic demo delivery. Exact content, contact addresses and document versions are frozen. Retry retains the operation; resend creates a new delivery. Mutations require current original scope before replay. Send uses message ETag; recovery uses delivery ETag.",
         "tags": [
           "document-deliveries"
         ],
@@ -108124,26 +108373,351 @@
               "type": "string",
               "format": "uuid"
             }
-          },
-          {
-            "name": "cursor",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 2048
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              },
+              "Cache-Control": {
+                "description": "Private, no-store.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpsDeliveryAttempts"
+                }
+              }
             }
           },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-9-10-implemented-acceptance-pending"
+      }
+    },
+    "/message-deliveries/{deliveryId}": {
+      "get": {
+        "operationId": "getMessageDelivery",
+        "summary": "get Message Delivery",
+        "description": "Durable deterministic demo delivery. Exact content, contact addresses and document versions are frozen. Retry retains the operation; resend creates a new delivery. Mutations require current original scope before replay. Send uses message ETag; recovery uses delivery ETag.",
+        "tags": [
+          "message-deliveries"
+        ],
+        "x-permission": "message-read",
+        "x-idempotency": "not-cached",
+        "security": [
           {
-            "name": "pageSize",
-            "in": "query",
-            "required": false,
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "deliveryId",
+            "in": "path",
+            "required": true,
             "schema": {
-              "type": "integer",
-              "minimum": 1,
-              "maximum": 100,
-              "default": 25
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Strong opaque current resource ETag.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              },
+              "Cache-Control": {
+                "description": "Private, no-store.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpsDelivery"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-9-10-implemented-acceptance-pending"
+      }
+    },
+    "/message-deliveries/{deliveryId}/attempts": {
+      "get": {
+        "operationId": "listMessageDeliveryAttempts",
+        "summary": "list Message Delivery Attempts",
+        "description": "Durable deterministic demo delivery. Exact content, contact addresses and document versions are frozen. Retry retains the operation; resend creates a new delivery. Mutations require current original scope before replay. Send uses message ETag; recovery uses delivery ETag.",
+        "tags": [
+          "message-deliveries"
+        ],
+        "x-permission": "message-read",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "deliveryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
@@ -108158,227 +108732,20 @@
                   "minLength": 1,
                   "maxLength": 100
                 }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "properties": {
-                    "items": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/OpsDeliveryAttempt"
-                      },
-                      "maxItems": 1000
-                    },
-                    "nextCursor": {
-                      "type": "string",
-                      "minLength": 1,
-                      "maxLength": 2048
-                    },
-                    "totalCount": {
-                      "type": "integer",
-                      "minimum": 0
-                    }
-                  },
-                  "required": [
-                    "items"
-                  ]
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
+              },
               "Cache-Control": {
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                },
-                "description": "Policy data is not cacheable."
-              }
-            }
-          },
-          "401": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                },
-                "description": "Policy data is not cacheable."
-              }
-            }
-          },
-          "403": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                },
-                "description": "Policy data is not cacheable."
-              }
-            }
-          },
-          "404": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                },
-                "description": "Policy data is not cacheable."
-              }
-            }
-          },
-          "429": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                },
-                "description": "Policy data is not cacheable."
-              }
-            }
-          },
-          "503": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                },
-                "description": "Policy data is not cacheable."
-              }
-            }
-          }
-        },
-        "x-runtime-status": "phase-9-contract-only"
-      }
-    },
-    "/document-deliveries/{deliveryId}/retry": {
-      "post": {
-        "operationId": "retryDocumentDelivery",
-        "summary": "retry Document Delivery",
-        "description": "Requires document-send. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
-        "tags": [
-          "document-deliveries"
-        ],
-        "x-permission": "document-send",
-        "x-idempotency": "required",
-        "security": [
-          {
-            "Session": [],
-            "Csrf": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "deliveryId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "Idempotency-Key",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "minLength": 16,
-              "maxLength": 200
-            }
-          },
-          {
-            "name": "If-Match",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 100
-            }
-          }
-        ],
-        "responses": {
-          "202": {
-            "description": "Durable work accepted; inspect Location for completion.",
-            "headers": {
-              "ETag": {
-                "description": "Opaque resource version for subsequent conditional writes.",
+                "description": "Private, no-store.",
                 "schema": {
                   "type": "string",
                   "minLength": 1,
                   "maxLength": 100
                 }
-              },
-              "Location": {
-                "description": "Created resource or durable job URI.",
-                "schema": {
-                  "type": "string",
-                  "format": "uri-reference"
-                }
               }
             },
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Job"
+                  "$ref": "#/components/schemas/OpsDeliveryAttempts"
                 }
               }
             }
@@ -108459,82 +108826,6 @@
               }
             }
           },
-          "409": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                },
-                "description": "Policy data is not cacheable."
-              }
-            }
-          },
-          "412": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                },
-                "description": "Policy data is not cacheable."
-              }
-            }
-          },
-          "422": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                },
-                "description": "Policy data is not cacheable."
-              }
-            }
-          },
-          "428": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                },
-                "description": "Policy data is not cacheable."
-              }
-            }
-          },
           "429": {
             "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
             "content": {
@@ -108574,325 +108865,14 @@
             }
           }
         },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "reason": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 1000
-                  }
-                },
-                "required": [
-                  "reason"
-                ]
-              }
-            }
-          }
-        },
-        "x-runtime-status": "phase-9-contract-only"
+        "x-runtime-status": "phase-9-10-implemented-acceptance-pending"
       }
     },
-    "/document-deliveries/{deliveryId}/resend": {
+    "/message-deliveries/{deliveryId}/resend": {
       "post": {
-        "operationId": "resendDocumentPack",
-        "summary": "resend Document Pack",
-        "description": "Requires document-send. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
-        "tags": [
-          "document-deliveries"
-        ],
-        "x-permission": "document-send",
-        "x-idempotency": "required",
-        "security": [
-          {
-            "Session": [],
-            "Csrf": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "deliveryId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "Idempotency-Key",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "minLength": 16,
-              "maxLength": 200
-            }
-          },
-          {
-            "name": "If-Match",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 100
-            }
-          }
-        ],
-        "responses": {
-          "202": {
-            "description": "Durable work accepted; inspect Location for completion.",
-            "headers": {
-              "ETag": {
-                "description": "Opaque resource version for subsequent conditional writes.",
-                "schema": {
-                  "type": "string",
-                  "minLength": 1,
-                  "maxLength": 100
-                }
-              },
-              "Location": {
-                "description": "Created resource or durable job URI.",
-                "schema": {
-                  "type": "string",
-                  "format": "uri-reference"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Job"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                },
-                "description": "Policy data is not cacheable."
-              }
-            }
-          },
-          "401": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                },
-                "description": "Policy data is not cacheable."
-              }
-            }
-          },
-          "403": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                },
-                "description": "Policy data is not cacheable."
-              }
-            }
-          },
-          "404": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                },
-                "description": "Policy data is not cacheable."
-              }
-            }
-          },
-          "409": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                },
-                "description": "Policy data is not cacheable."
-              }
-            }
-          },
-          "412": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                },
-                "description": "Policy data is not cacheable."
-              }
-            }
-          },
-          "422": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                },
-                "description": "Policy data is not cacheable."
-              }
-            }
-          },
-          "428": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                },
-                "description": "Policy data is not cacheable."
-              }
-            }
-          },
-          "429": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                },
-                "description": "Policy data is not cacheable."
-              }
-            }
-          },
-          "503": {
-            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            },
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "type": "string",
-                  "const": "no-store"
-                },
-                "description": "Policy data is not cacheable."
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "reason": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 1000
-                  }
-                },
-                "required": [
-                  "reason"
-                ]
-              }
-            }
-          }
-        },
-        "x-runtime-status": "phase-9-contract-only"
-      }
-    },
-    "/message-deliveries/{deliveryId}/retry": {
-      "post": {
-        "operationId": "retryMessageDelivery",
-        "summary": "retry Message Delivery",
-        "description": "Requires message-send. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "operationId": "resendMessageDelivery",
+        "summary": "resend Message Delivery",
+        "description": "Durable deterministic demo delivery. Exact content, contact addresses and document versions are frozen. Retry retains the operation; resend creates a new delivery. Mutations require current original scope before replay. Send uses message ETag; recovery uses delivery ETag.",
         "tags": [
           "message-deliveries"
         ],
@@ -108940,7 +108920,7 @@
             "description": "Durable work accepted; inspect Location for completion.",
             "headers": {
               "ETag": {
-                "description": "Opaque resource version for subsequent conditional writes.",
+                "description": "Strong opaque current resource ETag.",
                 "schema": {
                   "type": "string",
                   "minLength": 1,
@@ -108952,6 +108932,14 @@
                 "schema": {
                   "type": "string",
                   "format": "uri-reference"
+                }
+              },
+              "Cache-Control": {
+                "description": "Private, no-store.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
                 }
               }
             },
@@ -109175,7 +109163,901 @@
             }
           }
         },
-        "x-runtime-status": "phase-9-contract-only"
+        "x-runtime-status": "phase-9-10-implemented-acceptance-pending"
+      }
+    },
+    "/document-deliveries/{deliveryId}/retry": {
+      "post": {
+        "operationId": "retryDocumentDelivery",
+        "summary": "retry Document Delivery",
+        "description": "Durable deterministic demo delivery. Exact content, contact addresses and document versions are frozen. Retry retains the operation; resend creates a new delivery. Mutations require current original scope before replay. Send uses message ETag; recovery uses delivery ETag.",
+        "tags": [
+          "document-deliveries"
+        ],
+        "x-permission": "document-send",
+        "x-idempotency": "required",
+        "security": [
+          {
+            "Session": [],
+            "Csrf": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "deliveryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 200
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Durable work accepted; inspect Location for completion.",
+            "headers": {
+              "ETag": {
+                "description": "Strong opaque current resource ETag.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              },
+              "Location": {
+                "description": "Created resource or durable job URI.",
+                "schema": {
+                  "type": "string",
+                  "format": "uri-reference"
+                }
+              },
+              "Cache-Control": {
+                "description": "Private, no-store.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "409": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "412": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "422": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "428": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1000
+                  }
+                },
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-9-10-implemented-acceptance-pending"
+      }
+    },
+    "/document-deliveries/{deliveryId}/resend": {
+      "post": {
+        "operationId": "resendDocumentPack",
+        "summary": "resend Document Pack",
+        "description": "Durable deterministic demo delivery. Exact content, contact addresses and document versions are frozen. Retry retains the operation; resend creates a new delivery. Mutations require current original scope before replay. Send uses message ETag; recovery uses delivery ETag.",
+        "tags": [
+          "document-deliveries"
+        ],
+        "x-permission": "document-send",
+        "x-idempotency": "required",
+        "security": [
+          {
+            "Session": [],
+            "Csrf": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "deliveryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 200
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Durable work accepted; inspect Location for completion.",
+            "headers": {
+              "ETag": {
+                "description": "Strong opaque current resource ETag.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              },
+              "Location": {
+                "description": "Created resource or durable job URI.",
+                "schema": {
+                  "type": "string",
+                  "format": "uri-reference"
+                }
+              },
+              "Cache-Control": {
+                "description": "Private, no-store.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "409": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "412": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "422": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "428": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1000
+                  }
+                },
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-9-10-implemented-acceptance-pending"
+      }
+    },
+    "/message-deliveries/{deliveryId}/retry": {
+      "post": {
+        "operationId": "retryMessageDelivery",
+        "summary": "retry Message Delivery",
+        "description": "Durable deterministic demo delivery. Exact content, contact addresses and document versions are frozen. Retry retains the operation; resend creates a new delivery. Mutations require current original scope before replay. Send uses message ETag; recovery uses delivery ETag.",
+        "tags": [
+          "message-deliveries"
+        ],
+        "x-permission": "message-send",
+        "x-idempotency": "required",
+        "security": [
+          {
+            "Session": [],
+            "Csrf": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "deliveryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 200
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Durable work accepted; inspect Location for completion.",
+            "headers": {
+              "ETag": {
+                "description": "Strong opaque current resource ETag.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              },
+              "Location": {
+                "description": "Created resource or durable job URI.",
+                "schema": {
+                  "type": "string",
+                  "format": "uri-reference"
+                }
+              },
+              "Cache-Control": {
+                "description": "Private, no-store.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "409": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "412": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "422": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "428": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1000
+                  }
+                },
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-9-10-implemented-acceptance-pending"
       }
     },
     "/document-versions/{versionId}/preview": {
@@ -196241,6 +197123,10 @@
             "type": "string",
             "format": "uuid"
           },
+          "subjectRecordId": {
+            "type": "string",
+            "format": "uuid"
+          },
           "state": {
             "type": "string",
             "enum": [
@@ -196273,12 +197159,44 @@
             "items": {
               "type": "string",
               "minLength": 1,
-              "maxLength": 300,
+              "maxLength": 600,
               "pattern": "\\S"
             },
             "minItems": 0,
             "maxItems": 50,
-            "uniqueItems": true
+            "uniqueItems": false
+          },
+          "subject": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300,
+            "pattern": "\\S"
+          },
+          "body": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 8000,
+            "pattern": "\\S"
+          },
+          "etag": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 100,
+            "pattern": "^\"[!#-~]+\"$"
+          },
+          "retryAllowed": {
+            "type": "boolean"
+          },
+          "resendOfId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "providerOutcome": {
+            "type": "string",
+            "enum": [
+              "delivered",
+              "rejected"
+            ]
           },
           "errorCode": {
             "type": "string",
@@ -196290,10 +197208,15 @@
         "required": [
           "id",
           "jobId",
+          "subjectRecordId",
           "state",
           "createdAt",
           "documentVersionIds",
-          "recipientLabels"
+          "recipientLabels",
+          "subject",
+          "body",
+          "etag",
+          "retryAllowed"
         ]
       },
       "OpsDeliveryAttempt": {
@@ -196344,6 +197267,30 @@
           "number",
           "startedAt",
           "outcome"
+        ]
+      },
+      "OpsDeliveryAttempts": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OpsDeliveryAttempt"
+            },
+            "minItems": 0,
+            "maxItems": 18,
+            "uniqueItems": true
+          },
+          "totalCount": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 18
+          }
+        },
+        "required": [
+          "items",
+          "totalCount"
         ]
       },
       "OpsOccurrence": {

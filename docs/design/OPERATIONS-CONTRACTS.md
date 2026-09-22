@@ -170,3 +170,49 @@ Record documents are composed on quote, policy, agency, client-relationship and 
 `GET /records/{recordId}/thread-relationships`, `/threads/{threadId}/recipient-options` and `/threads/{threadId}/attachment-options` return bounded current choices and an opaque nextCursor. Lists resolve current authority before counts/materialization. Commands require CSRF and Idempotency-Key and revalidate current subject/audience/selection authority before receipt replay. Selection-only changes advance the draft ETag. Conflict review loads the current saved draft separately; adopting its ETag is explicit and retains local text.
 
 Migration `20260922083328_OperationalCommunication` adds InternalNote, OperationalThread, OperationalMessageDraft, MessageDraftRecipient and MessageDraftAttachment with relational ownership, creator and exact-version FKs. SQL guards enforce immutable note/thread history, bounded bodies, original audience, ready attachments, and immutable queued content/selections. Nonempty history prevents downgrade. Draft save does not queue or send anything; immutable delivery versions, outbox work and deterministic delivery belong to09-10.
+
+### Operational delivery (09-10 implementation, acceptance in progress)
+
+`POST /messages/{messageId}/send` accepts an empty object, the saved message ETag,
+an idempotency key and CSRF token. It atomically freezes the saved agency message,
+recipient names/addresses and exact ready document versions, then queues an
+`operational-delivery` job. `POST /records/{recordId}/document-deliveries` accepts
+`subject`, `body`, `recipientContactIds` and `documentVersionIds`; a pack requires
+at least one file. Both return 202 with the job identity and Location. Acceptance
+means queued, never delivered.
+
+`GET /records/{recordId}/document-delivery-recipients/{relationshipId}` offers
+paged active, valid-email contacts only after checking the relationship against
+the original subject. No conversation must be created merely to send a pack.
+
+History is available at `/messages/{messageId}/deliveries` and
+`/records/{recordId}/document-deliveries`. Individual receipts and bounded attempt
+histories are under `/message-deliveries/{deliveryId}` or
+`/document-deliveries/{deliveryId}`, with `/attempts` for attempts. Private reads
+use no-store. A delivery carries its own ETag. `/retry` and `/resend` require that
+ETag and a reason. Retry expands the bounded budget on the same job and provider
+operation. Resend creates a new receipt/job using the original exact snapshot;
+new document versions never replace historical attachments. Current authorization
+is rechecked before either action, including replay.
+
+The development worker uses persistent deterministic scenarios (`success`,
+`reject`, `transient-once`, `timeout-after-success`, `retry-required`). Its provider
+transaction is independent of local application, so timeout/restart cannot create
+a duplicate provider effect. It checks current sender, recipient and file access
+before execution and application, verifies stored file bytes, and applies only an
+owned lease and matching provider operation/scenario/hash/result. Changed duplicate
+results are quarantined. If access changes after a provider effect, local state
+becomes superseded while `providerOutcome` records what already happened.
+
+Delivery status reads retain explicit parent/identity/audience authorization locks,
+but do not retain shared mutable delivery locks while waiting for the work head.
+Polling responses can become stale; recovery writes enforce the delivery ETag.
+A terminal failure retains one job exception. Published workflow rules materialize
+its task; a suspended sender's task can use an existing active authorized internal
+owner, with the original sender retained in the source snapshot.
+
+Storage migration: `20260922094628_OperationalDelivery`, with retained-source
+triggers in `OperationalDelivery.Guards.cs`. The runtime flag is
+`Cover:OperationalDeliveryWorkerEnabled` (development default true). Acceptance
+hosts disable it when controlling leases explicitly. There is no real mail or
+external transport.

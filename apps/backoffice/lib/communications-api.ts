@@ -5,7 +5,7 @@ import type { OpsNote, OpsThread, OpsMessage } from '../../../contracts/generate
 export type NoteView = OpsNote;
 export type ThreadView = OpsThread;
 export type MessageView = OpsMessage;
-export type CommunicationAction = 'note' | 'thread' | 'create-draft' | 'update-draft';
+export type CommunicationAction = 'note' | 'thread' | 'create-draft' | 'update-draft' | 'send-message' | 'send-pack' | 'retry-message' | 'resend-message' | 'retry-document' | 'resend-document';
 export type PendingCommunicationCommand = Readonly<{ action: CommunicationAction; method: 'POST' | 'PUT'; url: string; body: string; key: string; expectedId: string; etag?: string }>;
 export class CommunicationError extends QuoteError {
   constructor(status: number) {
@@ -37,9 +37,18 @@ export function communicationCommand(action: CommunicationAction, id: string, in
     if (!text(input.body, 8000, true) || !ids(input.recipientContactIds, 50) || !ids(input.attachmentVersionIds, 20)) throw new Error('Review the message text and selected recipients and versions.');
     if (action === 'update-draft' && !validQuoteEtag(etag)) throw new Error('Read the current saved draft before editing.');
     fields = ['body', 'recipientContactIds', 'attachmentVersionIds']; url = action === 'create-draft' ? `/api/v1/threads/${id}/messages` : `/api/v1/messages/${id}`;
+  } else if (action === 'send-message') {
+    if (!validQuoteEtag(etag)) throw new Error('Read the current saved draft before sending.');
+    fields = []; url = `/api/v1/messages/${id}/send`;
+  } else if (action === 'send-pack') {
+    if (!text(input.subject,300) || !text(input.body,8000) || !ids(input.recipientContactIds,50) || !input.recipientContactIds.length || !ids(input.documentVersionIds,20) || !input.documentVersionIds.length) throw new Error('Enter a subject and message, and select recipients and ready file versions.');
+    fields = ['subject','body','recipientContactIds','documentVersionIds']; url = `/api/v1/records/${id}/document-deliveries`;
+  } else if (['retry-message','resend-message','retry-document','resend-document'].includes(action)) {
+    if (!validQuoteEtag(etag) || !text(input.reason,1000)) throw new Error('Read the current delivery and enter a reason.');
+    const [operation,kind] = action.split('-'); fields = ['reason']; url = `/api/v1/${kind}-deliveries/${id}/${operation}`;
   } else throw new Error('Choose a supported communication action.');
   if (Object.keys(input).some(x => !fields.includes(x)) || fields.some(x => !Object.hasOwn(input, x))) throw new Error('Review the communication fields.');
-  return Object.freeze({ action, method: action === 'update-draft' ? 'PUT' : 'POST', url, body: JSON.stringify(input), key, expectedId: id, ...(action === 'update-draft' ? { etag } : {}) });
+  return Object.freeze({ action, method: action === 'update-draft' ? 'PUT' : 'POST', url, body: JSON.stringify(input), key, expectedId: id, ...(etag ? { etag } : {}) });
 }
 export async function sendCommunicationCommand(command: PendingCommunicationCommand, csrf: string): Promise<{ id: string }> {
   if (!csrf) throw new Error('The security token is unavailable. Retry this save.');
@@ -47,6 +56,10 @@ export async function sendCommunicationCommand(command: PendingCommunicationComm
     headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf, 'Idempotency-Key': command.key, ...(command.etag ? { 'If-Match': command.etag } : {}) } });
   const saved = result.data, input = JSON.parse(command.body) as Record<string, unknown>;
   const unconfirmed = () => new Error('The saved communication could not be confirmed. Retry the same action.');
+  if (command.action.startsWith('send-') || command.action.startsWith('retry-') || command.action.startsWith('resend-')) {
+    if (!saved || !validTaskId(saved.id) || saved.kind !== 'operational-delivery' || saved.state !== 'pending' || !Number.isInteger(saved.attempts) || !validQuoteEtag(result.etag)) throw unconfirmed();
+    return { id: saved.id };
+  }
   if (!saved || !validTaskId(saved.id) || !text(saved.authorLabel, 300) || typeof saved.createdAt !== 'string' || !Number.isFinite(Date.parse(saved.createdAt))) throw unconfirmed();
   if (command.action === 'note' || command.action === 'thread') {
     if (saved.subjectRecordId !== command.expectedId || Object.entries(input).some(([key, value]) => saved[key] !== value)) throw unconfirmed();

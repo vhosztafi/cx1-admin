@@ -1243,6 +1243,10 @@
           "type": "string",
           "format": "uuid"
         },
+        "subjectRecordId": {
+          "type": "string",
+          "format": "uuid"
+        },
         "state": {
           "type": "string",
           "enum": [
@@ -1275,12 +1279,44 @@
           "items": {
             "type": "string",
             "minLength": 1,
-            "maxLength": 300,
+            "maxLength": 600,
             "pattern": "\\S"
           },
           "minItems": 0,
           "maxItems": 50,
-          "uniqueItems": true
+          "uniqueItems": false
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "\\S"
+        },
+        "body": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8000,
+          "pattern": "\\S"
+        },
+        "etag": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 100,
+          "pattern": "^\"[!#-~]+\"$"
+        },
+        "retryAllowed": {
+          "type": "boolean"
+        },
+        "resendOfId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "providerOutcome": {
+          "type": "string",
+          "enum": [
+            "delivered",
+            "rejected"
+          ]
         },
         "errorCode": {
           "type": "string",
@@ -1292,10 +1328,15 @@
       "required": [
         "id",
         "jobId",
+        "subjectRecordId",
         "state",
         "createdAt",
         "documentVersionIds",
-        "recipientLabels"
+        "recipientLabels",
+        "subject",
+        "body",
+        "etag",
+        "retryAllowed"
       ]
     },
     "OpsDeliveryAttempt": {
@@ -1346,6 +1387,30 @@
         "number",
         "startedAt",
         "outcome"
+      ]
+    },
+    "OpsDeliveryAttempts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OpsDeliveryAttempt"
+          },
+          "minItems": 0,
+          "maxItems": 18,
+          "uniqueItems": true
+        },
+        "totalCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 18
+        }
+      },
+      "required": [
+        "items",
+        "totalCount"
       ]
     },
     "OpsOccurrence": {

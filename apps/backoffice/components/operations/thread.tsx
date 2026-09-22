@@ -5,6 +5,7 @@ import type { DocumentVersion } from '../../lib/documents-api';
 import { Status } from '../primitives';
 import { CommunicationCommand, type CommunicationConfirmation } from './communication-command';
 import { DocumentPreview } from './document-preview';
+import { DeliveryHistory } from './delivery-history';
 import { documentDate } from './document-shared';
 import { LoadFeedback, Paging, useCommunicationResource, type CommunicationPage } from './communication-shared';
 
@@ -39,6 +40,7 @@ export function Threads({ subjectId, actorId, initialAttachment }: { subjectId: 
   </div>;
 }
 function ThreadWorkspace({ thread, actorId, initialAttachment }: { thread: ThreadView; actorId: string; initialAttachment?:DocumentVersion }) {
+  const [send,setSend]=useState<CommunicationConfirmation>(),[sendError,setSendError]=useState('');
   const [pages, setPages] = useState(['']), [editing, setEditing] = useState<MessageView>(), [compose, setCompose] = useState(!!initialAttachment), [notice, setNotice] = useState(''), [revision, setRevision] = useState(0);
   const cursor = pages.at(-1)!;
   const read = useCommunicationResource<CommunicationPage<MessageView>>(`/api/v1/threads/${thread.id}/messages?pageSize=10${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`);
@@ -48,8 +50,12 @@ function ThreadWorkspace({ thread, actorId, initialAttachment }: { thread: Threa
     {read.data ? <>{!read.data.items.length && <p>No messages in this thread. Choose recipients and write the first message.</p>}{read.data.items.map(message => <article key={message.id} className="quote-driver-card"><p><strong>{message.authorLabel}</strong> · {documentDate(message.createdAt)} · <Status tone="info">{message.state === 'draft' ? 'Draft' : message.state}</Status></p><p style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>{message.body || 'Empty draft'}</p>
       <p>{message.recipientContactIds.length} selected recipients · {message.attachmentVersionIds.length} exact file versions</p>
       {message.state === 'draft' && <button className="button" disabled={compose} onClick={() => { setEditing(message); setCompose(true); }}>Edit draft</button>}
+      {message.state === 'draft' && thread.visibility==='agency' && <button className="button button-primary" disabled={compose||!!send||!message.body.trim()||!message.recipientContactIds.length} onClick={()=>{try{setSendError('');setSend({command:communicationCommand('send-message',message.id,{},message.etag),label:'Send to agency',description:`Queue the saved message with ${message.recipientContactIds.length} recipients and ${message.attachmentVersionIds.length} exact file versions. Delivery status will be recorded separately.`});}catch(error){setSendError((error as Error).message);}}}>Send to agency</button>}
+      {message.state!=='draft'&&<DeliveryHistory id={message.id} kind="message" actorId={actorId}/>}
     </article>)}<Paging total={read.data.totalCount} previous={pages.length > 1 ? () => setPages(x => x.slice(0, -1)) : undefined} next={read.data.nextCursor ? () => setPages(x => [...x, read.data!.nextCursor!]) : undefined} /></> : <LoadFeedback error={read.error} retry={read.refresh} />}
     {compose && <DraftComposer key={`${editing?.id ?? 'new'}:${revision}`} thread={thread} actorId={actorId} initial={editing} initialAttachment={initialAttachment} saved={() => { setCompose(false); setEditing(undefined); setRevision(x => x + 1); setNotice('Draft saved.'); setPages(['']); read.refresh(); }} />}
+    {sendError&&<p role="alert">{sendError}</p>}
+    {send&&<CommunicationCommand request={send} actorId={actorId} close={()=>setSend(undefined)} saved={()=>{setSend(undefined);setNotice('Delivery queued. Refresh delivery history to view its outcome.');read.refresh();}}/>}
   </section>;
 }
 function DraftComposer({ thread, actorId, initial, initialAttachment, saved }: { thread: ThreadView; actorId: string; initial?: MessageView; initialAttachment?:DocumentVersion; saved: () => void }) {
@@ -76,7 +82,7 @@ function DraftComposer({ thread, actorId, initial, initialAttachment, saved }: {
     {request && <CommunicationCommand request={request} actorId={actorId} close={() => setRequest(undefined)} saved={() => { setRequest(undefined); saved(); }} />}
   </section>;
 }
-function ChoiceList<T extends { id: string }>({ url, label, selected, change, maximum, describe, preview }: { url: string; label: string; selected: string[]; change: (ids: string[]) => void; maximum: number; describe: (item: T) => string; preview?: (id: string) => void }) {
+export function ChoiceList<T extends { id: string }>({ url, label, selected, change, maximum, describe, preview }: { url: string; label: string; selected: string[]; change: (ids: string[]) => void; maximum: number; describe: (item: T) => string; preview?: (id: string) => void }) {
   const [pages, setPages] = useState(['']); const cursor = pages.at(-1)!;
   const read = useCommunicationResource<Options<T>>(`${url}?pageSize=25${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`);
   return <section aria-label={label}><h5>{label}</h5><p>{selected.length} selected · maximum {maximum}</p>

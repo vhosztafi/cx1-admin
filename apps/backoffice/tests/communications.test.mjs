@@ -37,3 +37,25 @@ test('busy responses remain uncertain while stale versions require review',async
   globalThis.fetch=async()=>new Response('{}',{status:412});await assert.rejects(sendCommunicationCommand(command,'csrf'),error=>error instanceof CommunicationError&&!uncertainQuoteFailure(error));
  }finally{globalThis.fetch=original;}
 });
+test('delivery commands retain message or delivery versions and require an explicit recovery reason',()=>{
+ const send=communicationCommand('send-message',id(1),{},etag);
+ assert.equal(send.etag,etag);assert.equal(send.url,`/api/v1/messages/${id(1)}/send`);
+ assert.throws(()=>communicationCommand('send-message',id(1),{}));
+ assert.throws(()=>communicationCommand('send-message',id(1),{body:'unsaved text'},etag));
+ for(const action of ['retry-message','resend-message','retry-document','resend-document']){
+  assert.throws(()=>communicationCommand(action,id(1),{reason:''},etag));
+  const frozen=communicationCommand(action,id(1),{reason:'Fictional recovery'},etag);
+  assert.equal(frozen.etag,etag);assert.ok(Object.isFrozen(frozen));
+ }
+ assert.throws(()=>communicationCommand('send-pack',id(1),{subject:'Pack',body:'Text',recipientContactIds:[id(2)],documentVersionIds:[]}));
+});
+test('queued delivery receipt never claims the provider has delivered',async()=>{
+ const original=globalThis.fetch,command=communicationCommand('send-message',id(1),{},etag),calls=[];
+ try{
+  globalThis.fetch=async(url,init)=>{calls.push(init);return new Response(JSON.stringify({id:id(7),kind:'operational-delivery',state:'pending',attempts:0}),{headers:{ETag:etag}});};
+  assert.equal((await sendCommunicationCommand(command,'csrf')).id,id(7));await sendCommunicationCommand(command,'csrf');
+  assert.equal(calls[0].headers['If-Match'],etag);assert.equal(calls[0].headers['Idempotency-Key'],calls[1].headers['Idempotency-Key']);
+  globalThis.fetch=async()=>new Response(JSON.stringify({id:id(7),kind:'operational-delivery',state:'delivered',attempts:1}),{headers:{ETag:etag}});
+  await assert.rejects(sendCommunicationCommand(command,'csrf'),uncertainQuoteFailure);
+ }finally{globalThis.fetch=original;}
+});
