@@ -688,8 +688,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-10",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-10-SUMMARY.md: durable messages and exact-version packs,11unique/7realSQL,17browserchecks per product plus SQL readback. Final source placement and seeded histories remain09-17/18."
+      ]
     },
     {
       "controlId": "CTL-41c6ab527690",
@@ -1043,8 +1045,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-10",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-10-SUMMARY.md: durable messages and exact-version packs,11unique/7realSQL,17browserchecks per product plus SQL readback. Final source placement and seeded histories remain09-17/18."
+      ]
     },
     {
       "controlId": "CTL-737c18fda414",
@@ -1361,9 +1365,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-10",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
       "verification": [
-        "09-05-SUMMARY.md: durable scoped file staging/retrieval and retained evidence bridges verified; document versions/history/UI/delivery remain with their owning plans."
+        "09-05-SUMMARY.md: durable scoped file staging/retrieval and retained evidence bridges verified; document versions/history/UI/delivery remain with their owning plans.",
+        "09-10-SUMMARY.md: durable messages and exact-version packs,11unique/7realSQL,17browserchecks per product plus SQL readback. Final source placement and seeded histories remain09-17/18."
       ]
     },
     {
@@ -1395,9 +1400,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-10",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
       "verification": [
-        "09-05-SUMMARY.md: durable scoped file staging/retrieval and retained evidence bridges verified; document versions/history/UI/delivery remain with their owning plans."
+        "09-05-SUMMARY.md: durable scoped file staging/retrieval and retained evidence bridges verified; document versions/history/UI/delivery remain with their owning plans.",
+        "09-10-SUMMARY.md: durable messages and exact-version packs,11unique/7realSQL,17browserchecks per product plus SQL readback. Final source placement and seeded histories remain09-17/18."
       ]
     },
     {
@@ -1609,8 +1615,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-10",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-10-SUMMARY.md: durable messages and exact-version packs,11unique/7realSQL,17browserchecks per product plus SQL readback. Final source placement and seeded histories remain09-17/18."
+      ]
     },
     {
       "controlId": "CTL-4c97724a5bfa",
@@ -2057,8 +2065,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-10",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-10-SUMMARY.md: durable messages and exact-version packs,11unique/7realSQL,17browserchecks per product plus SQL readback. Final source placement and seeded histories remain09-17/18."
+      ]
     },
     {
       "controlId": "CTL-ee7614ae0ce6",
@@ -2137,8 +2147,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-10",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-10-SUMMARY.md: durable messages and exact-version packs,11unique/7realSQL,17browserchecks per product plus SQL readback. Final source placement and seeded histories remain09-17/18."
+      ]
     },
     {
       "controlId": "CTL-fde5701b6044",
@@ -5541,8 +5553,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-10",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-10-SUMMARY.md: durable messages and exact-version packs,11unique/7realSQL,17browserchecks per product plus SQL readback. Final source placement and seeded histories remain09-17/18."
+      ]
     },
     {
       "controlId": "CTL-74c4fab0dc7a",
@@ -7739,8 +7753,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-10",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-10-SUMMARY.md: durable messages and exact-version packs,11unique/7realSQL,17browserchecks per product plus SQL readback. Final source placement and seeded histories remain09-17/18."
+      ]
     },
     {
       "controlId": "CTL-04e2a11eab51",
@@ -9736,8 +9752,10 @@
         "actionLabel": ""
       },
       "ownerPlan": "09-10",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-10-SUMMARY.md: durable messages and exact-version packs,11unique/7realSQL,17browserchecks per product plus SQL readback. Final source placement and seeded histories remain09-17/18."
+      ]
     },
     {
       "sourceOccurrence": 715,
@@ -9761,8 +9779,10 @@
         "onSend": "() => {\n          const t = this.state.msgDraft.trim();\n          if (!t) { this.toast('Write a message before sending.', '', null); return; }\n          this.setState((s) => ({messages: s.messages.concat([{who:'James Smith · Cover MGA', tag:'External', when:'09/09/2026 08:31', body: t, attach:''}]), msgDraft: ''}));\n          this.toast('Reply sent to Brightside and logged against the policy.', '', null);\n        }"
       },
       "ownerPlan": "09-10",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-10-SUMMARY.md: durable messages and exact-version packs,11unique/7realSQL,17browserchecks per product plus SQL readback. Final source placement and seeded histories remain09-17/18."
+      ]
     },
     {
       "sourceOccurrence": 716,
@@ -30268,8 +30288,10 @@
         "text": "The Messages tab is line-agnostic and behaves identically to motor trade."
       },
       "ownerPlan": "09-10",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-10-SUMMARY.md: durable messages and exact-version packs,11unique/7realSQL,17browserchecks per product plus SQL readback. Final source placement and seeded histories remain09-17/18."
+      ]
     },
     {
       "sourceOccurrence": 4408,
