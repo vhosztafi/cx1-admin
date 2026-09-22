@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Phase9 plans09-01 through09-07 complete; continue09-08 document/evidence UI.
-last_updated: "2026-09-21T20:54:05.716Z"
-last_activity: "2026-09-21 — 09-07 complete:40 unique passes/26 realSQL/no skips,417root,45 parsed PDFs and sample visual review. Continue09-08; no verification process remains active."
+stopped_at: Phase9 plan09-08 complete; resume09-09 notes and message drafts.
+last_updated: "2026-09-22T08:20:11.879Z"
+last_activity: "2026-09-22 — 09-08 complete:63 unique cases/12realSQL, four browser journeys and SQL readback. No acceptance process remains running."
 progress:
   total_phases: 13
   completed_phases: 8
   total_plans: 99
-  completed_plans: 88
+  completed_plans: 89
   percent: 62
 ---
 
@@ -25,13 +25,13 @@ Current focus: Phase9 tasks, documents, communication and incidents.
 ## Current Position
 
 Phase: 9 of13
-Plan: 8 of18 — document/evidence UI and exact-version preview
+Plan: 9 of18 — internal notes and editable message drafts
 09-06 complete:72unique cases/7realSQL/no skips in.local/phase9-06-final-strict,412root and15 independent parsed PDFs with multi-page visual review. Future templates are additive; migration protects retained rows. No verification process remains running; see09-06-SUMMARY.
-Status: Executing09-08 after verified durable document generation.09-07-SUMMARY records40unique passes/26realSQL/no skips; final session43341 completed. No acceptance process remains running.
+Status: Executing09-09.09-08 complete; see09-08-SUMMARY. No SQL/browser acceptance remains active.
 Last activity: Phase8 completed2026-09-21; all16 summaries and08-VERIFICATION pass. Final strict gate1511 unique cases/383 realSQL/no skips and exact420-case integration inventory;399root/172frontend, commercial5/5 and retained servicing17/17 plus underwriting pass. No verification process remains running. Phase9 task SQL/API checks are complete:32 focused cases/3 realSQL,411root and57final contract checks. 09-03 task UI passed29focused cases/2realSQL and16browserchecks plus SQL readback;411root177frontend, build/lint/typecheck pass.
 09-04:41unique strict passes/8realSQL, all8typed adapters/fivefamilies, hosted dispatcher and18browserchecks plus SQL readback,411root177frontend54contracts; build/lint/typecheck pass. OPS-02 complete; no acceptance process remains running.
 09-05:47unique strict passes/4realSQL,8filesystem cases, all3legacy evidence bridges, hosted finalization and API host restart,412root55contracts; OpenAPI valid. Current gate.local/phase9-05-final-strict. No verification process remains running. OPS-05 history/UI obligations remain09-07/08.
-Progress: eight of13 phases complete;88/99 currently defined plans complete. Later phases still need detailed plans; the MVP is not100% complete.
+Progress: eight of13 phases complete;89/99 currently defined plans complete. Later phases still need detailed plans; the MVP is not100% complete.
 
 ## Decisions and boundaries
 
@@ -43,7 +43,7 @@ Progress: eight of13 phases complete;88/99 currently defined plans complete. Lat
 
 ## Next work
 
-Execute09-08 document/evidence UI, then remaining sequential plans. Read09-07-SUMMARY,09-08-PLAN,09-08-INTEGRATION-NOTES,09-UI-SPEC,09-DATA-CONTRACTS and09-VALIDATION. Plans09-01 through09-07 are implemented and verified. Preserve original source identities, retained bytes/envelopes and later delivery/withdrawal owners. Current gate.local/phase9-07-final-strict passed; no retained Phase9 demo migration has run. Do not repeat accepted SQL suites.
+Execute09-09 notes/message drafts, then remaining sequential plans. Read09-07-SUMMARY,09-08-PLAN,09-08-INTEGRATION-NOTES,09-UI-SPEC,09-DATA-CONTRACTS and09-VALIDATION. Plans09-01 through09-08 are implemented and verified. Preserve original source identities, retained bytes/envelopes and later delivery/withdrawal owners. Current gate.local/phase9-07-final-strict passed; no retained Phase9 demo migration has run. Do not repeat accepted SQL suites.
 
 ## Evidence and continuity
 

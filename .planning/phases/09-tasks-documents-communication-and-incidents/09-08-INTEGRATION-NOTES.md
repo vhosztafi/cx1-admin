@@ -64,3 +64,21 @@ Actual API and browser acceptance must include new version/old-byte stability,
 scope denial, reload, real file bytes, 390px and keyboard/focus recovery. The final
 phase owner handles withdrawal/delivery states as their endpoints are implemented;
 this slice must not claim a message was sent merely because a PDF exists.
+
+## Task attachment refinement
+
+The existing task model has no persisted attachments. Add an explicit
+TaskDocumentAttachment association to an exact DocumentVersion; do not display
+the parent record's entire document list as task attachments. Default deny a
+different original subject, even when the actor can read both records. This
+matches the existing cross-subject attachment boundary. Require current
+task-write and original document-read before command receipt replay, a ready
+version before adding, the task ETag, and a reason. Limit active links to20.
+Remove only the association with retained removal provenance; never delete or
+rewrite document bytes. A later reattachment creates a new association while
+retaining the removed row. A filtered unique index prevents duplicate active
+task/version pairs. SQL guards reject cross-parent inserts and identity changes.
+Task events/audit and updated task ETag commit with the association. Reads and
+downloads recheck original scope. Use the existing TaskService mutation path
+with an authorization callback before child locks; no new task service or
+identity provider is needed.

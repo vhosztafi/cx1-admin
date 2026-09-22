@@ -1005,9 +1005,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-08",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
       "verification": [
-        "09-07-SUMMARY.md: scoped durable document generation/upload/history and exact bytes verified40unique cases/26realSQL. This control still awaits09-08 UI/browser verification; delivery/withdrawal remain with their owning plans."
+        "09-07-SUMMARY.md: scoped durable document generation/upload/history and exact bytes verified40unique cases/26realSQL. This control still awaits09-08 UI/browser verification; delivery/withdrawal remain with their owning plans.",
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
       ]
     },
     {
@@ -1316,10 +1317,11 @@
       "ownerPhase": 9,
       "ownerPlan": "09-08",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
       "verification": [
         "09-05-SUMMARY.md: durable scoped file staging/retrieval and retained evidence bridges verified; document versions/history/UI/delivery remain with their owning plans.",
-        "09-07-SUMMARY.md: scoped durable document generation/upload/history and exact bytes verified40unique cases/26realSQL. This control still awaits09-08 UI/browser verification; delivery/withdrawal remain with their owning plans."
+        "09-07-SUMMARY.md: scoped durable document generation/upload/history and exact bytes verified40unique cases/26realSQL. This control still awaits09-08 UI/browser verification; delivery/withdrawal remain with their owning plans.",
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
       ]
     },
     {
@@ -7690,10 +7692,11 @@
       "ownerPhase": 9,
       "ownerPlan": "09-08",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
       "verification": [
         "09-05-SUMMARY.md: durable scoped file staging/retrieval and retained evidence bridges verified; document versions/history/UI/delivery remain with their owning plans.",
-        "09-07-SUMMARY.md: scoped durable document generation/upload/history and exact bytes verified40unique cases/26realSQL. This control still awaits09-08 UI/browser verification; delivery/withdrawal remain with their owning plans."
+        "09-07-SUMMARY.md: scoped durable document generation/upload/history and exact bytes verified40unique cases/26realSQL. This control still awaits09-08 UI/browser verification; delivery/withdrawal remain with their owning plans.",
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
       ]
     },
     {
@@ -8230,8 +8233,10 @@
         "onAction": "() => this.toast('File picker would open here (mock).', '', null)"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 247,
@@ -8248,8 +8253,10 @@
         "label": "Document"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 248,
@@ -8266,8 +8273,10 @@
         "label": "Type"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 249,
@@ -8284,8 +8293,10 @@
         "label": "Version"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 250,
@@ -8302,8 +8313,10 @@
         "label": "Applies to"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 251,
@@ -8320,8 +8333,10 @@
         "label": "Created"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 252,
@@ -8338,8 +8353,10 @@
         "label": "Actions"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 253,
@@ -8356,8 +8373,10 @@
         "text": "Policy schedule"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 254,
@@ -8374,8 +8393,10 @@
         "text": "Generated"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 255,
@@ -8392,8 +8413,10 @@
         "text": "v6"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 256,
@@ -8410,8 +8433,10 @@
         "text": "Current"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 257,
@@ -8428,8 +8453,10 @@
         "text": "01/07/2026 14:02"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 258,
@@ -8447,8 +8474,10 @@
         "onClick": "() => this.toast('Document sent to brightside@ (mock).', '', null)"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "partial-preview-download-verified-delivery-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Send remains09-10."
+      ]
     },
     {
       "sourceOccurrence": 259,
@@ -8465,8 +8494,10 @@
         "text": "Certificate of motor insurance"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 260,
@@ -8483,8 +8514,10 @@
         "text": "Generated"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 261,
@@ -8501,8 +8534,10 @@
         "text": "v6"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 262,
@@ -8519,8 +8554,10 @@
         "text": "Current"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 263,
@@ -8537,8 +8574,10 @@
         "text": "01/07/2026 14:02"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 264,
@@ -8556,8 +8595,10 @@
         "onClick": "() => this.toast('Document sent to brightside@ (mock).', '', null)"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "partial-preview-download-verified-delivery-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Send remains09-10."
+      ]
     },
     {
       "sourceOccurrence": 265,
@@ -8574,8 +8615,10 @@
         "text": "Endorsement E-14"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 266,
@@ -8592,8 +8635,10 @@
         "text": "Generated"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 267,
@@ -8610,8 +8655,10 @@
         "text": "v6"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 268,
@@ -8628,8 +8675,10 @@
         "text": "Current"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 269,
@@ -8646,8 +8695,10 @@
         "text": "01/07/2026 14:02"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 270,
@@ -8664,8 +8715,10 @@
         "text": "Preview · Download"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 271,
@@ -8682,8 +8735,10 @@
         "text": "Policy schedule"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 272,
@@ -8700,8 +8755,10 @@
         "text": "Generated"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 273,
@@ -8718,8 +8775,10 @@
         "text": "v5"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 274,
@@ -8736,8 +8795,10 @@
         "text": "Superseded"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 275,
@@ -8754,8 +8815,10 @@
         "text": "01/05/2026 09:40"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 276,
@@ -8772,8 +8835,10 @@
         "text": "Preview"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 277,
@@ -8790,8 +8855,10 @@
         "text": "Statement of fact"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 278,
@@ -8808,8 +8875,10 @@
         "text": "Generated"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 279,
@@ -8826,8 +8895,10 @@
         "text": "v1"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 280,
@@ -8844,8 +8915,10 @@
         "text": "Original"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 281,
@@ -8862,8 +8935,10 @@
         "text": "19/12/2024 16:11"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 282,
@@ -8880,8 +8955,10 @@
         "text": "Preview · Download"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 283,
@@ -8898,8 +8975,10 @@
         "text": "Premises survey report.pdf"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 284,
@@ -8916,8 +8995,10 @@
         "text": "Uploaded evidence"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 286,
@@ -8934,8 +9015,10 @@
         "text": "Supporting"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 287,
@@ -8952,8 +9035,10 @@
         "text": "22/08/2026 09:12"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 288,
@@ -8970,8 +9055,10 @@
         "text": "Download"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 289,
@@ -10300,8 +10387,10 @@
         "actionLabel": ""
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 1015,
@@ -10318,8 +10407,10 @@
         "label": "Document"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 1016,
@@ -10336,8 +10427,10 @@
         "label": "Type"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 1017,
@@ -10354,8 +10447,10 @@
         "label": "Version"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 1018,
@@ -10372,8 +10467,10 @@
         "label": "Created"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 1019,
@@ -10390,8 +10487,10 @@
         "label": "Actions"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 1020,
@@ -10408,8 +10507,10 @@
         "text": "Quotation"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 1021,
@@ -10426,8 +10527,10 @@
         "text": "Generated"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 1022,
@@ -10444,8 +10547,10 @@
         "text": "v2"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 1023,
@@ -10462,8 +10567,10 @@
         "text": "06/09/2026 15:01"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 1024,
@@ -10480,8 +10587,10 @@
         "text": "Preview · Download"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 1025,
@@ -10498,8 +10607,10 @@
         "text": "Statement of fact"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 1026,
@@ -10516,8 +10627,10 @@
         "text": "Generated"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 1027,
@@ -10534,8 +10647,10 @@
         "text": "v2"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 1028,
@@ -10552,8 +10667,10 @@
         "text": "06/09/2026 15:01"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 1029,
@@ -10570,8 +10687,10 @@
         "text": "Preview · Download"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 1030,
@@ -10588,8 +10707,10 @@
         "text": "security-spec.pdf"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 1031,
@@ -10606,8 +10727,10 @@
         "text": "Uploaded evidence"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 1033,
@@ -10624,8 +10747,10 @@
         "text": "08/09/2026 10:15"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 1034,
@@ -10642,8 +10767,10 @@
         "text": "Download"
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 1035,
@@ -30061,8 +30188,10 @@
         "text": "The Documents tab is line-agnostic and behaves identically to motor trade."
       },
       "ownerPlan": "09-08",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-08-SUMMARY.md: scoped exact-version UI, real upload/preview/download/history and task attachments; 63 unique cases/12realSQL; current browser checks22/22/22/23 with SQL readback. Final occurrence acceptance remains09-18."
+      ]
     },
     {
       "sourceOccurrence": 4323,
