@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace BackOffice.Infrastructure.Operations;
 
-public sealed class LegacyOperationalBridge(IDbContextFactory<BackOfficeDbContext> factory, TaskService tasks, ThreadService threads, TimeProvider time)
+public sealed partial class LegacyOperationalBridge(IDbContextFactory<BackOfficeDbContext> factory, TaskService tasks, ThreadService threads, TimeProvider time)
 {
     public async Task<Guid> MatchRequest(Guid requestId, CancellationToken token = default)
     {

@@ -15,7 +15,7 @@ import {formatCancellationMoney as formatGbp} from '../../lib/cancellation-revie
 import {DataTable, Panel, Status} from '../primitives';
 
 const date = (value: string) => new Date(value).toLocaleString('en-GB', {timeZone: 'Europe/London', dateStyle: 'medium', timeStyle: 'short'});
-export function CommercialPolicyRecord({policy, chronology, refresh, questionLabels, initialTab, cutoffs, onSelect}: {initialTab?:'Transactions'|'Documents';cutoffs:string;onSelect:(value:{termId:string;versionId:string},tab?:'Transactions'|'Documents')=>void;policy: CommercialPolicyView; chronology: ReactNode; refresh: () => void; questionLabels: Record<string, string>}) {
+export function CommercialPolicyRecord({policy, chronology, refresh, questionLabels, initialTab, cutoffs, onSelect}: {initialTab?:'Transactions'|'Documents'|'Notes'|'Messages';cutoffs:string;onSelect:(value:{termId:string;versionId:string},tab?:'Transactions'|'Documents')=>void;policy: CommercialPolicyView; chronology: ReactNode; refresh: () => void; questionLabels: Record<string, string>}) {
   const [tab,setTab]=useState<CommercialPolicyTab>(initialTab??'Overview');
   const snapshot = policy.snapshot, financial = policy.financials;
   const coverage = commercialPolicyCoverage(policy.coverageState);

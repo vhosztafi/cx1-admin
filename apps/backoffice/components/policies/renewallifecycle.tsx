@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 import {useEffect,useRef,useState} from 'react';
 import {Panel,Status} from '../primitives';
 import {quoteFetch,uncertainQuoteFailure} from '../../lib/quotes';
@@ -34,8 +35,8 @@ export function RenewalLifecyclePanel({termId,blocked=false}:{termId:string;bloc
    <dl className="underwriting-premium"><div><dt>Invitation due</dt><dd>{date(view.timeline.invitationDueAt)}</dd></div><div><dt>Current term ends</dt><dd>{date(view.timeline.expiringEnd)}</dd></div><div><dt>Proposed renewal starts</dt><dd>{date(view.timeline.renewalInception)}</dd></div><div><dt>Automatic lapse deadline</dt><dd>{date(view.timeline.autoLapseAt)}</dd></div></dl>
    {!current&&<p role="status">Current renewal status could not be confirmed. Actions are paused while refreshing.</p>}
    {view.lapseEventId?<><p>Recorded {date(view.recordedAt!)} · {view.lapseMode==='automatic'?'Automatic lapse':'Manual lapse'}</p><p>{view.lapseReason}</p>
-    <p>Existing cover ends at its original expiry. Lapse creates no new policy term.</p><p>Demo notification: {view.notificationState==='succeeded'?'Delivered':view.notificationState==='failed'?'Failed — review required':view.notificationState==='leased'?'Processing':'Queued'}. No email is sent.</p>
-    <details><summary>Notification attempts ({view.notificationAttempts.length})</summary>{view.notificationAttempts.map(attempt=><p key={attempt.number}>Attempt {attempt.number} · {date(attempt.startedAt)} · {attempt.outcome.replaceAll('-',' ')}{attempt.errorCode&&` · ${attempt.errorCode}`}</p>)}</details></>:
+    <p>Existing cover ends at its original expiry. Lapse creates no new policy term.</p><p>Legacy demo notification record: {view.notificationState==='succeeded'?'Delivered':view.notificationState==='failed'?'Failed — review required':view.notificationState==='leased'?'Processing':'Queued'}. No email is sent.</p>
+    {view.correspondenceMessageId&&<p><Link href={`/policies/${view.policyId}?tab=Messages`}>Open retained lapse correspondence</Link> · Internal draft; no notice is resent.</p>}<details><summary>Notification attempts ({view.notificationAttempts.length})</summary>{view.notificationAttempts.map(attempt=><p key={attempt.number}>Attempt {attempt.number} · {date(attempt.startedAt)} · {attempt.outcome.replaceAll('-',' ')}{attempt.errorCode&&` · ${attempt.errorCode}`}</p>)}</details></>:
     <><p>Only a successfully delivered invitation is marked invited. Acceptance is recorded separately; an accepted or issued renewal cannot lapse.</p>
      <fieldset className="quote-reference-fields" disabled={!current||!view.canLapse||blocked||busy||retry}><legend>Record lapse</legend>
       <label>Lapse reason<textarea aria-label="Lapse reason" minLength={10} maxLength={1000} value={reason} onChange={event=>setReason(event.target.value)}/></label>

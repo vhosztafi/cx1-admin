@@ -11,7 +11,7 @@ namespace BackOffice.Infrastructure.Policies;
 
 public sealed record RenewalLifecycleView(Guid PolicyId,Guid TermId,string Etag,Guid RuleSettingVersionId,RenewalTimeline Timeline,
     string State,bool CanLapse,Guid? LapseEventId,string? LapseReason,string? LapseMode,DateTimeOffset? RecordedAt,string? NotificationState,
-    IReadOnlyList<RenewalNotificationAttempt> NotificationAttempts);
+    IReadOnlyList<RenewalNotificationAttempt> NotificationAttempts,Guid? CorrespondenceMessageId=null);
 public sealed record RenewalNotificationAttempt(int Number,DateTimeOffset StartedAt,DateTimeOffset? EndedAt,string Outcome,string? ErrorCode);
 
 public sealed class RenewalLifecycleService(IDbContextFactory<BackOfficeDbContext> factory,TimeProvider time)
@@ -31,7 +31,8 @@ public sealed class RenewalLifecycleService(IDbContextFactory<BackOfficeDbContex
         var attempts=lapse is null?[]:await db.Set<AdapterAttempt>().AsNoTracking().Where(x=>x.WorkId==lapse.WorkId).OrderBy(x=>x.AttemptNumber)
             .Take(18).Select(x=>new RenewalNotificationAttempt(x.AttemptNumber,x.StartedAt,x.EndedAt,x.Outcome,x.ErrorCode)).ToArrayAsync(token);
         var result=new RenewalLifecycleView(term.PolicyId,termId,Etag(term),setting.Id,timeline,state,state is not("lapsed" or "accepted" or "issued" or "cancelled"),
-            lapse?.Id,lapse?.Reason,lapse?.Mode,lapse?.CreatedAt,notification,attempts);
+            lapse?.Id,lapse?.Reason,lapse?.Mode,lapse?.CreatedAt,notification,attempts,
+            lapse is null||!actor.HasCapability("message-read")?null:await db.Set<RenewalLapseCorrespondence>().Where(x=>x.LapseEventId==lapse.Id).Select(x=>(Guid?)x.MessageId).SingleOrDefaultAsync(token));
         await tx.CommitAsync(token);return result;
     }
 

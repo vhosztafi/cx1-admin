@@ -3,7 +3,7 @@ import {quoteFetch,validQuoteEtag} from './quotes.ts';
 export type RenewalLifecycle = {policyId:string;termId:string;etag:string;ruleSettingVersionId:string;
  timeline:{invitationDueAt:string;expiringEnd:string;renewalInception:string;autoLapseAt:string};
  state:'not-due'|'due'|'overdue'|'invited'|'accepted'|'issued'|'lapsed'|'cancelled';canLapse:boolean;
- lapseEventId:string|null;lapseReason:string|null;lapseMode:'manual'|'automatic'|null;recordedAt:string|null;notificationState:string|null;
+ correspondenceMessageId?:string|null;lapseEventId:string|null;lapseReason:string|null;lapseMode:'manual'|'automatic'|null;recordedAt:string|null;notificationState:string|null;
  notificationAttempts:{number:number;startedAt:string;endedAt:string|null;outcome:string;errorCode:string|null}[]};
 export type RenewalLapseReceipt={id:string;policyId:string;termId:string;termEtag:string;effectiveAt:string;recordedAt:string;mode:'manual'|'automatic';notificationId:string};
 export type RenewalLapseCommand=Readonly<{termId:string;etag:string;key:string;body:string}>;

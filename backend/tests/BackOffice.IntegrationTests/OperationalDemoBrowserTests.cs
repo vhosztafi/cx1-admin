@@ -14,7 +14,8 @@ namespace BackOffice.IntegrationTests;
 
 public sealed partial class OperationalDemoTests
 {
-    private static async Task RunMatchBrowser(WebApplicationFactory<Program> host,BackOfficeDbContext db,string password,Guid matchId,Guid messageId)
+    internal static async Task RunMatchBrowser(WebApplicationFactory<Program> host,BackOfficeDbContext db,string password,Guid matchId,Guid messageId,
+        string scenario="matching",Guid? policyId=null,Guid? termId=null)
     {
         var root=new DirectoryInfo(AppContext.BaseDirectory);while(root is not null&&!File.Exists(Path.Combine(root.FullName,"package.json")))root=root.Parent;Assert.NotNull(root);
         const string dist=".local/next-phase9-16-browser";Assert.True(File.Exists(Path.Combine(root.FullName,"apps/backoffice",dist,"BUILD_ID")),"Build the operational demo browser bundle first.");
@@ -34,16 +35,18 @@ public sealed partial class OperationalDemoTests
             using var probe=new HttpClient();var serving=false;
             for(var attempt=0;attempt<80&&!web.HasExited;attempt++){try{using var response=await probe.GetAsync(webOrigin+"/login");if(response.IsSuccessStatusCode){serving=true;break;}}catch(HttpRequestException){}await Task.Delay(250);}
             Assert.True(serving,"Isolated operational demo web did not start.");
-            var fixture=JsonSerializer.Serialize(new{apiOrigin=api,webOrigin,output,matchId,messageId});
-            browser=Start(["scripts/verify-operational-match-browser.mjs","--worker"],new(){["COVER_OPERATIONAL_DEMO_FIXTURE"]=fixture,["COVER_OPERATIONAL_DEMO_PASSWORD"]=password});
+            var fixture=JsonSerializer.Serialize(new{apiOrigin=api,webOrigin,output,matchId,messageId,scenario,policyId,termId});
+            var script=scenario=="matching"?"scripts/verify-operational-match-browser.mjs":"scripts/verify-operational-lapse-browser.mjs";
+            browser=Start([script,"--worker"],new(){["COVER_OPERATIONAL_DEMO_FIXTURE"]=fixture,["COVER_OPERATIONAL_DEMO_PASSWORD"]=password});
             var stdout=browser.StandardOutput.ReadToEndAsync();var stderr=browser.StandardError.ReadToEndAsync();
             using var deadline=new CancellationTokenSource(TimeSpan.FromMinutes(4));await browser.WaitForExitAsync(deadline.Token);
             await File.WriteAllTextAsync(Path.Combine(output,"browser.log"),await stdout+await stderr);Assert.True(browser.ExitCode==0,"Operational demo browser failed; inspect sanitized evidence.");
-            Assert.Equal("Staff revised this retained request; preserve this edit.",await db.Set<OperationalMessageDraft>().Where(x=>x.Id==messageId).Select(x=>x.Body).SingleAsync());
-            Assert.Equal("recorded",await db.Set<MatchInformationRequest>().Where(x=>x.MatchId==matchId).Select(x=>x.DeliveryState).SingleAsync());
+            Assert.Equal(scenario=="matching"?"Staff revised this retained request; preserve this edit.":"Staff retained and annotated the historical lapse notice.",await db.Set<OperationalMessageDraft>().Where(x=>x.Id==messageId).Select(x=>x.Body).SingleAsync());
+            if(scenario=="matching")Assert.Equal("recorded",await db.Set<MatchInformationRequest>().Where(x=>x.MatchId==matchId).Select(x=>x.DeliveryState).SingleAsync());
+            else Assert.Equal(messageId,await db.Set<RenewalLapseCorrespondence>().Select(x=>x.MessageId).SingleAsync());
             Assert.Empty(await db.Set<OperationalDelivery>().ToListAsync());
             await File.WriteAllTextAsync(Path.Combine(output,"sql-readback.json"),JsonSerializer.Serialize(new{matchId,messageId,passed=true,verifiedAt=DateTimeOffset.UtcNow}));
-            Directory.CreateDirectory(Path.Combine(root.FullName,".local/phase9-16-browser"));await File.WriteAllTextAsync(Path.Combine(root.FullName,".local/phase9-16-browser/matching.json"),JsonSerializer.Serialize(new{output,passed=true}));
+            Directory.CreateDirectory(Path.Combine(root.FullName,".local/phase9-16-browser"));await File.WriteAllTextAsync(Path.Combine(root.FullName,$".local/phase9-16-browser/{scenario}.json"),JsonSerializer.Serialize(new{output,passed=true}));
         }
         finally
         {

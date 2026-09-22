@@ -150870,6 +150870,17 @@
               }
             ]
           },
+          "correspondenceMessageId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "recordedAt": {
             "anyOf": [
               {
@@ -150960,6 +150971,7 @@
           "lapseEventId",
           "lapseReason",
           "lapseMode",
+          "correspondenceMessageId",
           "recordedAt",
           "notificationState",
           "notificationAttempts"

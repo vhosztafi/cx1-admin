@@ -6,7 +6,7 @@ export function addRenewalLifecycle({schemas,ref,route,paths}) {
   timeline:object({invitationDueAt:instant,expiringEnd:instant,renewalInception:instant,autoLapseAt:instant}),
   state:{enum:['not-due','due','overdue','invited','accepted','issued','lapsed','cancelled']},canLapse:{type:'boolean'},
   lapseEventId:nullable(id),lapseReason:nullable({type:'string',minLength:10,maxLength:1000}),lapseMode:nullable({enum:['manual','automatic']}),
-  recordedAt:nullable(instant),notificationState:nullable({enum:['pending','leased','succeeded','failed']}),notificationAttempts:{type:'array',maxItems:18,
+  correspondenceMessageId:nullable(id),recordedAt:nullable(instant),notificationState:nullable({enum:['pending','leased','succeeded','failed']}),notificationAttempts:{type:'array',maxItems:18,
    items:object({number:{type:'integer',minimum:1,maximum:18},startedAt:instant,endedAt:nullable(instant),outcome:{type:'string',maxLength:40},errorCode:nullable({type:'string',maxLength:100})})}});
  schemas.RenewalLapseRequest=object({reason:{type:'string',minLength:10,maxLength:1000}});
  schemas.RenewalLapseReceipt=object({id,policyId:id,termId:id,termEtag:etag,effectiveAt:instant,recordedAt:instant,mode:{enum:['manual','automatic']},notificationId:id});

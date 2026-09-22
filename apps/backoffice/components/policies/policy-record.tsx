@@ -25,7 +25,7 @@ import { PolicyRiskOverview } from './policy-risk-overview';
 const date = (value: string) => new Date(value).toLocaleString('en-GB', { timeZone: 'Europe/London', dateStyle: 'medium', timeStyle: 'short' });
 const tabs = ['Overview', 'Risk details', 'Cover', 'Drivers', 'Vehicles', 'Transactions', 'Documents', 'Claims', 'Notes', 'Messages'] as const;
 
-export function PolicyRecord({ policyId, questionLabels,selection,initialTab,initialCutoffs='' }: { policyId: string; questionLabels: Record<string, string>;selection?:{termId:string;versionId:string};initialTab?:'Transactions'|'Documents';initialCutoffs?:string }) {
+export function PolicyRecord({ policyId, questionLabels,selection,initialTab,initialCutoffs='' }: { policyId: string; questionLabels: Record<string, string>;selection?:{termId:string;versionId:string};initialTab?:'Transactions'|'Documents'|'Notes'|'Messages';initialCutoffs?:string }) {
   const [versionSelection,setVersionSelection]=useState(selection);
   const [draftKind,setDraftKind]=useState('adjustment');
   function beginDraft(kind:string) { setDraftKind(kind); document.getElementById('servicing-drafts')?.scrollIntoView({block:'start'}); }
