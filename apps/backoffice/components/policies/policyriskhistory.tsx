@@ -1,6 +1,7 @@
 'use client';
 import {useState} from 'react';
 import Link from 'next/link';
+import {MidSubmissions} from '../operations/mid-submissions';
 import {Panel} from '../primitives';
 import {LoadFeedback,useQuoteResource} from '../quotes/shared';
 import {QuoteProposalDetails} from '../quotes/quote-history';
@@ -24,6 +25,7 @@ export function PolicyRiskHistory({policy,kind,questionLabels}:{policy:PolicyVie
    {kind==='drivers'&&item.item?<dl className="underwriting-provenance"><div><dt>Age at version effective date</dt><dd>{item.ageAtEffectiveDate??'Not recorded'}</dd></div><div><dt>Licence held at version effective date</dt><dd>{item.licenceYearsAtEffectiveDate===null?'Not recorded':`${item.licenceYearsAtEffectiveDate} complete years`}</dd></div></dl>:null}
    {item.item?<><QuoteProposalDetails value={item.item} proposal={policy.snapshot} questionLabels={questionLabels}/>{kind==='vehicles'?<dl className="underwriting-provenance"><div><dt>VIN</dt><dd>Not recorded in this issued version</dd></div></dl>:null}</>:<p>This item is not present in this issued version.</p>}
    {item.item?<section aria-label="Cover context at this version"><h4>Policy cover at this version</h4><p>{item.kind==='cancellation'?'This version records cancellation; the retained cover terms describe the cover before cancellation.':'Read these policy terms together with the declarations and endorsements for this item.'}</p><QuoteProposalDetails value={{cover:item.cover,permittedDriverBasis:item.driverBasis??'Not recorded'}} proposal={policy.snapshot} questionLabels={questionLabels}/></section>:null}
+   {kind==='vehicles'&&<MidSubmissions versionId={item.versionId} riskItemId={selected}/>}
   </details>)}</section>:null}
  </div></Panel>;
 }

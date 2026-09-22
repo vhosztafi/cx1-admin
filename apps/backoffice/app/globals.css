@@ -510,3 +510,10 @@ h1, h2, p { margin: 0; }
 .incident-editor article { border-top: 1px solid #e2e5ee; margin-top: 16px; padding-top: 12px; }
 .incident-editor article dl { display: grid; grid-template-columns: 80px 1fr; gap: 8px; }
 .incident-editor article dd { margin: 0; }
+
+.mid-submissions article { padding-block: 1rem; border-top: 1px solid var(--border); overflow-wrap: anywhere; }
+.mid-submissions fieldset { border: 0; padding: 1rem 0; display: grid; gap: .75rem; }
+.mid-submissions label { display: grid; gap: .5rem; }
+.mid-submissions input { width: 100%; padding: .6rem; border: 1px solid #d6dcec; border-radius: 6px; }
+.mid-submissions table { min-width: 540px; }
+.mid-submissions td:last-child { white-space: nowrap; }
