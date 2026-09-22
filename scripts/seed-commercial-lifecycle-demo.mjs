@@ -13,12 +13,16 @@ assert.ok(['localhost','127.0.0.1'].includes(new URL(apiOrigin).hostname));asser
 const knownAt=()=>process.env.COVER_COMMERCIAL_DEMO_KNOWN_AT??new Date().toISOString();
 const file=process.argv[2];assert.ok(file,'Pass the JSON result of --seed-commercial-proposals-demo.');
 const stage=process.argv[3]??'issue';assert.ok(['issue','adjustment','renewal','cancellation','scenarios','full'].includes(stage));
+const operational=process.argv[4]==='operational-incident';
+assert.ok(process.argv[4]===undefined||operational,'Unknown demo scenario selector.');
+if(operational)assert.equal(stage,'issue','Operational incident setup only issues its separate policy.');
 const supplied=JSON.parse(await readFile(file,'utf8'));
 assert.ok(Array.isArray(supplied));
 const fixtures=supplied.map(x=>({scenario:x.scenario??x.Scenario,quoteId:x.quoteId??x.QuoteId}));
 assert.equal(new Set(fixtures.map(x=>x.scenario)).size,fixtures.length);
 for(const f of fixtures)assert.match(f.quoteId,/^[a-f0-9-]{36}$/i);
 const directory=process.env.COVER_COMMERCIAL_DEMO_DIRECTORY??'.local/commercial-lifecycle-demo-v1';
+if(operational)assert.notEqual(resolve(directory),resolve('.local/commercial-lifecycle-demo-v1'),'Use a separate operational journal.');
 assert.ok(resolve(directory).startsWith(resolve('.local')+sep));await mkdir(directory,{recursive:true});
 const lock=await open(directory+'/running.lock','wx');let browser;
 try {
@@ -55,14 +59,15 @@ try {
   await command(step+':review',route+`/underwriting/evidence/${saved.id}/reviews`,{cycleId:assessment.context.cycleId,associationEtag:saved.etag,expectedFingerprint:purpose.inputFingerprint,outcome:'accepted',reason:'Review fictional proof against its exact current purpose'},route);
   return saved;
  }
- const fixture=fixtures.find(x=>x.scenario==='two-location');assert.ok(fixture,'The two-location demonstration proposal is required.');
- const route='/api/v1/quotes/'+fixture.quoteId,prefix='two-location';
+ const prefix=operational?'commercial-incident':'two-location';
+ const fixture=fixtures.find(x=>x.scenario===prefix);assert.ok(fixture,`The ${prefix} demonstration proposal is required.`);
+ const route='/api/v1/quotes/'+fixture.quoteId;
  const quote=(await get(route)).data;assert.equal(quote.productCode,'commercial-combined');
  let policy;
  if(quote.boundPolicyId)policy=(await get('/api/v1/policies/'+quote.boundPolicyId)).data;
  else {
-  assert.equal(quote.proposal.risk.materialFacts,'Fictional commercial demo v1: two-location','Edited scenario requires review before automated demonstration issue.');
-  await command(prefix+':rate',route+'/rate',{revisionId:quote.revisionId,reason:'Rate the fictional two-location commercial demonstration'},route);
+  assert.equal(quote.proposal.risk.materialFacts,operational?'Fictional operational demo v1: commercial-incident':'Fictional commercial demo v1: two-location','Edited scenario requires review before automated demonstration issue.');
+  await command(prefix+':rate',route+'/rate',{revisionId:quote.revisionId,reason:`Rate the fictional ${prefix} commercial demonstration`},route);
   let assessment=await until(route+'/underwriting',x=>!!x.ratingId);
   for(const purpose of assessment.proofRequirements.filter(x=>!x.satisfied))await proof(prefix,route,purpose);
   const referrals=(await get('/api/v1/referrals?quoteId='+fixture.quoteId)).data.items;

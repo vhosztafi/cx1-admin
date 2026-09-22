@@ -393,3 +393,22 @@ These are Commercial Combined quotes; their opaque references retain the existin
 Commercial capture, underwriting, issue, all nine adjustment editor groups, renewal and cancellation passed the full local acceptance suite. The current complete backend gate passes1,511 unique tests, including383 real-SQL scenarios, with no skips; all420 discovered integration cases executed. Retained MotorTrade underwriting and all17 servicing stages also pass. See .planning/phases/08-commercial-combined-back-office/08-VERIFICATION.md for exact artifacts and exclusions.
 
 Two additive initializations preserved139 table fingerprints. Actual preview restart preserved three policy graphs/12 versions, five pinned commercial exposure readings and the original keys. The retained business references above are unchanged. Documents are queued content; rendering/delivery and incident logging remainPhase9. Posted cancellation credit is not proof of a cash refund. Human business/assistive-technology UAT remains to be performed.
+
+## Phase9 retained operational examples (partial acceptance)
+
+The retained preview now uses the Phase9 API on5087 and web on3100, with the original data-protection keys. Process identities are recorded in `.local/phase9-16-preview-pids.json`; verify identities before stopping a preview. Its private generated files are in `.local/operational-files`. The Phase9 upgrade and additive setup preserved all68,356 original rows and both key files; two repeat foundation initializations preserved all176 current table fingerprints. Read-only upgrade evidence is in `.local/phase9-16-retained-upgrade`; initialization evidence is in `.local/phase9-16-two-initializations`.
+
+`--seed-operational-demo` is a Development-only, missing-only setup command for CoverMGA_Demo. It connects retained matching information requests and renewal lapse notices to internal correspondence. Existing recorded/sent legacy states and receipts remain unchanged; this does not resend a historical notification. The retained run associated31 matching requests and2 lapse notices. Links open the actual agency or policy Messages tab.
+
+A separate policy **PL-CC-0000000033** starts21September2026 so it can support a historical commercial incident. The original **PL-CC-0000000025**, including its future renewal/cancellation, is preserved. `--prepare-operational-commercial-demo --relationship-id <existing-id> --product-version-id <published-id> --starts-on YYYY-MM-DD` prepares its missing quote using the existing senior underwriter and normal quote service. It does not grant authority or issue a policy. The first-revision scenario marker preserves later staff edits. Issue uses `node scripts/seed-commercial-lifecycle-demo.mjs <fixtures.json> issue operational-incident` with `COVER_COMMERCIAL_DEMO_DIRECTORY` set to a separate local journal. Keep `.local/operational-commercial-demo-v1` with the database; its journal retains normal rate, proof, referral decision, terms, acceptance and issue commands.
+
+Two fictional incidents are now available under each policy's Claims tab:
+
+- **INC-0000001**, Motor Trade **PL-MT-0000000012**, occurrence20September2026 at12:00 London.
+- **INC-0000002**, Commercial Combined **PL-CC-0000000033**, occurrence21September2026 at12:00 London.
+
+Both resolve to the exact issued historical version, have one acknowledged deterministic administrator handoff, and retain separate Notified and Open summaries. Paid/reserve remain unknown, displayed as “Not advised”. No real administrator was contacted. Open the incident, then **Summary from administrator** to inspect these records.
+
+`node scripts/seed-operational-incidents-demo.mjs <fixtures.json>` accepts two explicit `{policyId,occurredOn}` fixtures. It uses normal scoped APIs and a persistent local command journal; rerunning preserves the same incidents, revisions, handoffs and summaries. Retained fixtures are `.local/phase9-16-incidents-fixtures.json`; reports and desktop/mobile captures are in `.local/operational-incidents-demo-v1`. `scripts/verify-operational-incidents-readback.ps1` independently checks SQL provenance and exact counts. Both first and repeat browser runs and SQL readback passed. Keep these journals; removing them is not a supported reset.
+
+Phase9 is still in progress: the retained failed-pack/task/retry and MID transient retry walkthroughs and final full-phase verification remain unfinished. These examples do not constitute human business UAT.
