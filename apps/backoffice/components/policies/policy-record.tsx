@@ -22,6 +22,7 @@ import { PolicyNoCover } from './policy-no-cover';
 import {CommercialPolicyRecord} from './commercial-policy-record';
 import {isCommercialPolicy, type AnyPolicyTemporalView} from '../../lib/commercial-policy';
 import { PolicyRiskOverview } from './policy-risk-overview';
+import { PolicyDocumentRequests } from './policy-document-requests';
 
 const date = (value: string) => new Date(value).toLocaleString('en-GB', { timeZone: 'Europe/London', dateStyle: 'medium', timeStyle: 'short' });
 const tabs = ['Overview', 'Risk details', 'Cover', 'Drivers', 'Vehicles', 'Transactions', 'Documents', 'Tasks', 'Claims', 'Notes', 'Messages'] as const;
@@ -57,7 +58,7 @@ export function PolicyRecord({ policyId, questionLabels,selection,initialTab,ini
   const declaredName = typeof snapshot.insured.legalName === 'string' ? snapshot.insured.legalName : [snapshot.insured.firstName, snapshot.insured.surname].filter(x => typeof x === 'string').join(' ') || 'Declared insured';
   const coverage = policy.coverageState === 'cancelled' ? 'Cancelled' : cancelled ? 'Cancellation scheduled' : policyCoverageLabel(snapshot.term.startsAt, snapshot.term.endsAt, Date.parse(policy.effectiveCutoff));
   const fields = (items: [string, string][]) => <dl className="underwriting-provenance">{items.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>;
-  const documents = <RecordDocuments parent={{kind:'policy',id:policyId,label:policy.reference}} source={{kind:'policy-version',policyVersionId:policy.versionId}} relationshipId={policy.relationshipId} />;
+  const documents = <><RecordDocuments parent={{kind:'policy',id:policyId,label:policy.reference}} source={{kind:'policy-version',policyVersionId:policy.versionId}} relationshipId={policy.relationshipId} /><PolicyDocumentRequests requests={policy.documentRequests}/></>;
   const transaction = <Panel title={cancelled ? 'Cancellation transaction' : renewal ? 'Renewal transaction' : adjusted ? 'Adjustment transaction' : 'New-business transaction'} note={`Transaction ${policy.transactionSequence} · Version ${policy.versionSequence}`}><div className="quote-rail-body">
     {fields([['Policy', policy.reference], ['Issued', date(policy.issuedAt) + ' · London'], ['Effective', date(policy.effectiveAt) + ' · London'], ['Reason', policy.reason], [adjusted && !renewal ? 'Premium movement' : 'Term premium', formatGbp(financial.premium)], ['Insurance premium tax', formatGbp(financial.tax)], ['Policy fee', formatGbp(financial.fee)], [adjusted ? 'Amount due / credit' : 'Opening amount due', formatGbp(financial.amountDue)]])}
     <p>{cancelled ? 'This cancellation and its balanced charge or credit are recorded.' : renewal ? 'This renewal term and its balanced opening charge are recorded.' : adjusted ? 'This adjustment and its balanced charge or credit are recorded.' : 'One new-business transaction and a balanced opening posting are recorded.'} Payment collection is not part of policy issue.</p>

@@ -28,6 +28,9 @@ export async function commercialIssueJourney({page,f,quoteId,checks}) {
   await page.getByRole('heading',{name:'Selected commercial cover',exact:true}).waitFor();
   await page.getByRole('tab',{name:'Documents',exact:true}).click();
   await page.getByRole('rowheader',{name:'Employers’ liability certificate',exact:true}).waitFor();
+  const requestRows=page.getByRole('table',{name:'Policy document requests',exact:true}).locator('tbody tr');
+  assert.deepEqual((await requestRows.evaluateAll(rows=>rows.map(row=>row.getAttribute('data-request-id')))).sort(),policy.documentRequests.map(x=>x.id).sort());
+  assert.ok((await requestRows.evaluateAll(rows=>rows.map(row=>row.getAttribute('data-version-id')))).every(id=>id===policy.versionId));
   await page.reload();await page.getByRole('heading',{name:receipt.policyReference,exact:true}).waitFor();
   assert.deepEqual(await read(),policy);
   const {commercialPolicyJourney}=await import('./verify-commercial-policy-browser.mjs');

@@ -43,8 +43,8 @@ if(!process.argv.includes('--worker')) {
   await page.getByRole('tab',{name:'Cover',exact:true}).click();
   const coverPanel=page.locator('section.panel').filter({has:page.getByRole('heading',{name:'Cover',exact:true})});
   for(const section of declared.cover.sections)for(const value of [section.code,section.coverLevel,section.limit,section.excess].filter(x=>typeof x==='string'))await coverPanel.getByText(value,{exact:true}).first().waitFor();
-  await page.locator(`a[href="/agencies/${openingPolicy.agencyId}"]`).first().click();
-  await page.waitForURL(f.webOrigin+`/agencies/${openingPolicy.agencyId}`);
+  await page.locator(`a[href="/agents/${openingPolicy.agencyId}"]`).first().click();
+  await page.waitForURL(f.webOrigin+`/agents/${openingPolicy.agencyId}`);
   await page.getByRole('heading').first().waitFor();
   await page.goto(f.webOrigin+`/policies/${f.policyId}`);
   await page.getByRole('tab',{name:'Cover',exact:true}).click();
@@ -58,6 +58,10 @@ if(!process.argv.includes('--worker')) {
   await page.getByRole('table',{name:'Policy document requests',exact:true}).waitFor();
   assert.equal(await page.getByRole('table',{name:'Policy document requests',exact:true}).getByRole('row').count(),4);
   assert.equal(new URL(page.url()).searchParams.get('versionId'),f.originalVersionId);
+  const historicalRequests=await read(root+`/terms/${openingPolicy.termId}/versions/${f.originalVersionId}`);
+  const requestRows=page.getByRole('table',{name:'Policy document requests',exact:true}).locator('tbody tr');
+  assert.deepEqual((await requestRows.evaluateAll(rows=>rows.map(row=>row.getAttribute('data-request-id')))).sort(),historicalRequests.documentRequests.map(x=>x.id).sort());
+  assert.ok((await requestRows.evaluateAll(rows=>rows.map(row=>row.getAttribute('data-version-id')))).every(id=>id===f.originalVersionId));
   await page.getByRole('tab',{name:'Transactions',exact:true}).click();
   await page.getByLabel('Compare from',{exact:true}).selectOption(f.originalVersionId);await page.getByLabel('Compare to',{exact:true}).selectOption(f.changedVersionId);
   await button('Compare selected versions').click();await page.getByRole('region',{name:'Policy version comparison'}).locator('details').first().waitFor();
