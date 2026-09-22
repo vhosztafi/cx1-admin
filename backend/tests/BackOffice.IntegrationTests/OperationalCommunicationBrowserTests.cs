@@ -37,7 +37,7 @@ public sealed partial class UnderwritingRuntimeTests
     private static async Task RunCommunicationBrowser(BackOfficeDbContext db,string password,IDbContextFactory<BackOfficeDbContext> factory,TimeProvider clock,ActorContext actor,Guid quoteId,string product)
     {
         var root=new DirectoryInfo(AppContext.BaseDirectory);while(root is not null&&!File.Exists(Path.Combine(root.FullName,"package.json")))root=root.Parent;Assert.NotNull(root);
-        const string dist=".local/next-phase9-10-browser";Assert.True(File.Exists(Path.Combine(root.FullName,"apps/backoffice",dist,"BUILD_ID")),"Build the communication browser bundle first.");
+        var dist=OperationalBrowserBuild.Select(root.FullName,".local/next-phase9-10-browser");Assert.True(File.Exists(Path.Combine(root.FullName,"apps/backoffice",dist,"BUILD_ID")),"Build the communication browser bundle first.");
         var version=await db.Set<PolicyVersion>().AsNoTracking().SingleAsync();var policy=await db.Set<Policy>().AsNoTracking().SingleAsync();
         await using(var transaction=await db.Database.BeginTransactionAsync()){await AgencyDemoSeed.SeedAsync(db);await transaction.CommitAsync();}
         var relationship=await db.Set<ClientAgencyRelationship>().SingleAsync(x=>x.Id==policy.RelationshipId);relationship.CreatedAt=clock.GetUtcNow();

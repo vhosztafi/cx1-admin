@@ -46,7 +46,7 @@ public sealed partial class UnderwritingRuntimeTests
     private static async Task RunDocumentBrowser(BackOfficeDbContext db,string password,IDbContextFactory<BackOfficeDbContext> factory,TimeProvider clock,ActorContext actor,Guid quoteId,string product,ServicingTermsVersion? servicingTerms=null)
     {
         var root=new DirectoryInfo(AppContext.BaseDirectory);while(root is not null&&!File.Exists(Path.Combine(root.FullName,"package.json")))root=root.Parent;
-        Assert.NotNull(root);const string dist=".local/next-phase9-08-browser";
+        Assert.NotNull(root);var dist=OperationalBrowserBuild.Select(root.FullName,".local/next-phase9-08-browser");
         Assert.True(File.Exists(Path.Combine(root.FullName,"apps/backoffice",dist,"BUILD_ID")),"Build the isolated document browser bundle first.");
         var version=await db.Set<PolicyVersion>().AsNoTracking().SingleAsync();
         var policy=await db.Set<Policy>().AsNoTracking().SingleAsync(x=>x.Id==version.PolicyId);

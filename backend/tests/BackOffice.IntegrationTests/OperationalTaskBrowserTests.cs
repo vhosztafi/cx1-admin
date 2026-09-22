@@ -30,7 +30,7 @@ public sealed class OperationalTaskBrowserTests
         var password = "Demo!" + Convert.ToHexString(RandomNumberGenerator.GetBytes(24)) + "a1";
         var root = new DirectoryInfo(AppContext.BaseDirectory); while (root is not null && !File.Exists(Path.Combine(root.FullName, "package.json"))) root = root.Parent;
         Assert.NotNull(root);
-        const string dist = ".local/next-phase9-03-browser";
+        var dist=OperationalBrowserBuild.Select(root.FullName,".local/next-phase9-03-browser");
         Assert.True(File.Exists(Path.Combine(root.FullName, "apps/backoffice", dist, "BUILD_ID")), "Build the isolated task browser bundle first.");
         var output = Path.Combine(root.FullName, ".local/browser-evidence/tasks", owned); Directory.CreateDirectory(output);
         try

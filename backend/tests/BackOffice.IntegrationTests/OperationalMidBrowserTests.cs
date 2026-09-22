@@ -30,7 +30,7 @@ public sealed partial class UnderwritingRuntimeTests
     private static async Task RunMidBrowser(BackOfficeDbContext db,string password,IDbContextFactory<BackOfficeDbContext> factory,RatingClock clock,ActorContext actor)
     {
         var root=new DirectoryInfo(AppContext.BaseDirectory);while(root is not null&&!File.Exists(Path.Combine(root.FullName,"package.json")))root=root.Parent;Assert.NotNull(root);
-        const string dist=".local/next-phase9-14-browser";Assert.True(File.Exists(Path.Combine(root.FullName,"apps/backoffice",dist,"BUILD_ID")),"Build the MID browser bundle first.");
+        var dist=OperationalBrowserBuild.Select(root.FullName,".local/next-phase9-14-browser");Assert.True(File.Exists(Path.Combine(root.FullName,"apps/backoffice",dist,"BUILD_ID")),"Build the MID browser bundle first.");
         var version=await db.Set<PolicyVersion>().AsNoTracking().SingleAsync();var policy=await db.Set<Policy>().AsNoTracking().SingleAsync();
         await using(var tx=await db.Database.BeginTransactionAsync()){await OperationalMidSeed.Seed(db);await tx.CommitAsync();}
         db.Add(new SettingVersion{Scope=OperationalMidSeed.Scope,Version=2,EffectiveFrom=clock.Current,Values="{\"demo\":true,\"kind\":\"operational-mid\",\"schemaVersion\":\"2\",\"scenario\":\"retry-required\"}"});await db.SaveChangesAsync();

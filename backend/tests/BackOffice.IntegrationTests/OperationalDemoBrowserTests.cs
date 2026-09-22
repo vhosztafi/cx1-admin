@@ -18,7 +18,7 @@ public sealed partial class OperationalDemoTests
         string scenario="matching",Guid? policyId=null,Guid? termId=null)
     {
         var root=new DirectoryInfo(AppContext.BaseDirectory);while(root is not null&&!File.Exists(Path.Combine(root.FullName,"package.json")))root=root.Parent;Assert.NotNull(root);
-        const string dist=".local/next-phase9-16-browser";Assert.True(File.Exists(Path.Combine(root.FullName,"apps/backoffice",dist,"BUILD_ID")),"Build the operational demo browser bundle first.");
+        var dist=OperationalBrowserBuild.Select(root.FullName,".local/next-phase9-16-browser");Assert.True(File.Exists(Path.Combine(root.FullName,"apps/backoffice",dist,"BUILD_ID")),"Build the operational demo browser bundle first.");
         var output=Path.Combine(root.FullName,".local/browser-evidence/operational-demo",db.Database.GetDbConnection().Database);Directory.CreateDirectory(output);
         var api=host.Services.GetRequiredService<IServer>().Features.Get<IServerAddressesFeature>()!.Addresses.Single();Assert.True(new Uri(api).IsLoopback);Assert.NotEqual(5000,new Uri(api).Port);
         var listener=new TcpListener(IPAddress.Loopback,0);listener.Start();var port=((IPEndPoint)listener.LocalEndpoint).Port;listener.Stop();var webOrigin=$"http://127.0.0.1:{port}";

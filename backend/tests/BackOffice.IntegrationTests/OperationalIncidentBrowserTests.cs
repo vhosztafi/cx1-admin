@@ -40,7 +40,7 @@ public sealed partial class UnderwritingRuntimeTests
     private static async Task RunIncidentBrowser(BackOfficeDbContext db,string password,IDbContextFactory<BackOfficeDbContext> factory,TimeProvider clock,ActorContext actor,Guid quoteId,string product)
     {
         var root=new DirectoryInfo(AppContext.BaseDirectory);while(root is not null&&!File.Exists(Path.Combine(root.FullName,"package.json")))root=root.Parent;Assert.NotNull(root);
-        const string dist=".local/next-phase9-12-browser";Assert.True(File.Exists(Path.Combine(root.FullName,"apps/backoffice",dist,"BUILD_ID")),"Build the incident browser bundle first.");
+        var dist=OperationalBrowserBuild.Select(root.FullName,".local/next-phase9-12-browser");Assert.True(File.Exists(Path.Combine(root.FullName,"apps/backoffice",dist,"BUILD_ID")),"Build the incident browser bundle first.");
         var version=await db.Set<PolicyVersion>().AsNoTracking().OrderBy(x=>x.ProcessedAt).ThenBy(x=>x.EffectiveAt).FirstAsync();var policy=await db.Set<Policy>().AsNoTracking().SingleAsync();
         var term=await db.Set<PolicyTerm>().AsNoTracking().SingleAsync();
         clock=new RatingClock{Current=term.EndsAt.AddDays(2)};
