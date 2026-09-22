@@ -126,6 +126,19 @@ public static class OperationalJobEndpoints
             catch(BackOffice.Infrastructure.Operations.OperationalAccessException e){return IdentityEndpoints.Problem(context,e.Status,e.Code,"The claims request is unavailable.");}
             catch(Exception e)when(QuoteEndpoints.Known(e)){return QuoteEndpoints.Failure(context,e);}
         }
+        if(await db.Set<OutboxWork>().AsNoTracking().AnyAsync(x=>x.Id==jobId&&(x.Kind=="mid-update"||x.Kind=="cancellation-mid-removal"),context.RequestAborted))
+        {
+            context.Response.Headers.CacheControl="private, no-store";
+            try
+            {
+                QuoteHttpInput.NoQuery(context.Request);
+                var read=await context.RequestServices.GetRequiredService<BackOffice.Infrastructure.Operations.MidSubmissionService>().Job(actor,jobId,context.RequestAborted);
+                context.Response.Headers.ETag=BackOffice.Infrastructure.Operations.TaskService.Etag(read.Work.RowVersion);
+                return Results.Json(View(read.Work) with{RetryAllowed=read.RetryAllowed},Json);
+            }
+            catch(BackOffice.Infrastructure.Operations.OperationalAccessException e){return IdentityEndpoints.Problem(context,e.Status,e.Code,"The MID submission is unavailable.");}
+            catch(Exception e)when(QuoteEndpoints.Known(e)){return QuoteEndpoints.Failure(context,e);}
+        }
         // Business-job subject scope is supplied by its owning phase. It cannot inherit
         // diagnostic creator access or administrator access by sharing this endpoint.
         var job = await db.Set<OutboxWork>().AsNoTracking().SingleOrDefaultAsync(x => x.Id == jobId &&

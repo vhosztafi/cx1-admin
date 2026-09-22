@@ -4392,6 +4392,276 @@
         "failureCode"
       ]
     },
+    "OpsMidItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "riskItemId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "vehicle",
+            "trade-plate"
+          ]
+        },
+        "registration": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20,
+          "pattern": "\\S"
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "add",
+            "change",
+            "remove"
+          ]
+        },
+        "effectiveAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endsAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "riskItemId",
+        "kind",
+        "registration",
+        "action",
+        "effectiveAt",
+        "endsAt"
+      ]
+    },
+    "OpsMidSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "format": {
+          "const": "mid-submission-2"
+        },
+        "intentId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "policyId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "termId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "transactionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "versionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "contentHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "baseVersionId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "baseContentHash": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "purpose": {
+          "type": "string",
+          "enum": [
+            "new-business",
+            "adjustment",
+            "renewal",
+            "cancellation"
+          ]
+        },
+        "effectiveAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endsAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OpsMidItem"
+          },
+          "minItems": 0,
+          "maxItems": 2000,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "format",
+        "intentId",
+        "policyId",
+        "termId",
+        "transactionId",
+        "versionId",
+        "contentHash",
+        "baseVersionId",
+        "baseContentHash",
+        "purpose",
+        "effectiveAt",
+        "endsAt",
+        "items"
+      ]
+    },
+    "OpsMidProviderOutcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "operationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "eventId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "pattern": "\\S"
+        },
+        "submissionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "policyVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "accepted",
+            "rejected",
+            "not-required"
+          ]
+        },
+        "providerReference": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reasonCodes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "completedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "operationId",
+        "eventId",
+        "submissionId",
+        "policyVersionId",
+        "state",
+        "providerReference",
+        "reasonCodes",
+        "completedAt"
+      ]
+    },
+    "OpsMidAttempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "startedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endedAt": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "outcome": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "pattern": "\\S"
+        },
+        "errorCode": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "number",
+        "startedAt",
+        "endedAt",
+        "outcome",
+        "errorCode"
+      ]
+    },
     "OpsMidSubmission": {
       "type": "object",
       "additionalProperties": false,
@@ -4419,55 +4689,17 @@
             "accepted",
             "rejected",
             "failed",
-            "superseded"
+            "superseded",
+            "not-required"
           ]
         },
         "items": {
           "type": "array",
           "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "riskItemId": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "kind": {
-                "type": "string",
-                "enum": [
-                  "vehicle",
-                  "trade-plate"
-                ]
-              },
-              "registration": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 20,
-                "pattern": "\\S"
-              },
-              "action": {
-                "type": "string",
-                "enum": [
-                  "add",
-                  "change",
-                  "remove"
-                ]
-              },
-              "effectiveAt": {
-                "type": "string",
-                "format": "date-time"
-              }
-            },
-            "required": [
-              "riskItemId",
-              "kind",
-              "registration",
-              "action",
-              "effectiveAt"
-            ]
+            "$ref": "#/$defs/OpsMidItem"
           },
-          "minItems": 1,
-          "maxItems": 100,
+          "minItems": 0,
+          "maxItems": 2000,
           "uniqueItems": true
         },
         "reasonCodes": {
@@ -4483,10 +4715,93 @@
           "uniqueItems": true
         },
         "providerReference": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "createdAt": {
           "type": "string",
-          "minLength": 1,
+          "format": "date-time"
+        },
+        "completedAt": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "attempts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OpsMidAttempt"
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "exceptionTaskId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "retryAllowed": {
+          "type": "boolean"
+        },
+        "etag": {
+          "type": "string",
+          "minLength": 3,
           "maxLength": 100,
-          "pattern": "\\S"
+          "pattern": "^\"[!#-~]+\"$"
+        },
+        "purpose": {
+          "type": "string",
+          "enum": [
+            "new-business",
+            "adjustment",
+            "renewal",
+            "cancellation"
+          ]
+        },
+        "baseVersionId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "contentHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "effectiveAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endsAt": {
+          "type": "string",
+          "format": "date-time"
         }
       },
       "required": [
@@ -4496,7 +4811,19 @@
         "jobId",
         "state",
         "items",
-        "reasonCodes"
+        "reasonCodes",
+        "providerReference",
+        "createdAt",
+        "completedAt",
+        "attempts",
+        "exceptionTaskId",
+        "retryAllowed",
+        "etag",
+        "purpose",
+        "baseVersionId",
+        "contentHash",
+        "effectiveAt",
+        "endsAt"
       ]
     }
   }

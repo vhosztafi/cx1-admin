@@ -56,6 +56,6 @@ export function addOperationsApi({schemas:s,ref:r,text:t,enumeration:e,object:o,
  list('/escalations/{escalationId}/messages','listEscalationMessages','underwriting-read',r('EscalationMessage'));
  op('post','/escalations/{escalationId}/send','sendEscalation','underwriting-escalate',{existing:true,input:o({body:t(8000),attachmentVersionIds:a(id)}),output:r('Job'),status:202});
  op('post','/escalations/{escalationId}/responses','recordCapacityResponse','underwriting-record-capacity',{existing:true,input:o({body:t(8000),outcome:s.EscalationMessage.properties.outcome,evidenceDocumentId:id,providerReference:t(100),receivedAt:instant}),output:r('EscalationMessage'),status:201});
- list('/versions/{versionId}/mid-submissions','listMidSubmissions','policy-read',r('MidSubmission'));
+ list('/versions/{versionId}/mid-submissions','listMidSubmissions','mid-read',r('MidSubmission'));
  op('post','/mid-submissions/{submissionId}/retry','retryMidSubmission','mid-retry',{existing:true,input:reason,output:r('Job'),status:202});
 }

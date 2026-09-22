@@ -954,82 +954,89 @@
           "format": "date-time"
         },
         "payload": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "action": {
-              "type": "string",
-              "enum": [
-                "add",
-                "change",
-                "remove"
-              ]
-            },
-            "source": {
+          "oneOf": [
+            {
               "type": "object",
               "additionalProperties": false,
               "properties": {
-                "recordId": {
+                "action": {
                   "type": "string",
-                  "format": "uuid"
+                  "enum": [
+                    "add",
+                    "change",
+                    "remove"
+                  ]
                 },
-                "versionId": {
-                  "type": "string",
-                  "format": "uuid"
+                "source": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "recordId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "versionId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "contentHash": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    }
+                  },
+                  "required": [
+                    "recordId",
+                    "versionId",
+                    "contentHash"
+                  ]
                 },
-                "contentHash": {
+                "registration": {
                   "type": "string",
-                  "pattern": "^[a-f0-9]{64}$"
+                  "minLength": 1,
+                  "maxLength": 20
+                },
+                "itemKind": {
+                  "type": "string",
+                  "enum": [
+                    "vehicle",
+                    "trade-plate"
+                  ]
+                },
+                "policyReference": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 40
+                },
+                "startsAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "endsAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "productCode": {
+                  "type": "string",
+                  "enum": [
+                    "motor-trade-road-risks",
+                    "motor-trade-combined"
+                  ]
                 }
               },
               "required": [
-                "recordId",
-                "versionId",
-                "contentHash"
+                "action",
+                "source",
+                "registration",
+                "itemKind",
+                "policyReference",
+                "startsAt",
+                "endsAt",
+                "productCode"
               ]
             },
-            "registration": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 20
-            },
-            "itemKind": {
-              "type": "string",
-              "enum": [
-                "vehicle",
-                "trade-plate"
-              ]
-            },
-            "policyReference": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 40
-            },
-            "startsAt": {
-              "type": "string",
-              "format": "date-time"
-            },
-            "endsAt": {
-              "type": "string",
-              "format": "date-time"
-            },
-            "productCode": {
-              "type": "string",
-              "enum": [
-                "motor-trade-road-risks",
-                "motor-trade-combined"
-              ]
+            {
+              "$ref": "#/$defs/OpsMidSnapshot"
             }
-          },
-          "required": [
-            "action",
-            "source",
-            "registration",
-            "itemKind",
-            "policyReference",
-            "startsAt",
-            "endsAt",
-            "productCode"
           ]
         }
       },
@@ -1081,40 +1088,47 @@
           "format": "date-time"
         },
         "payload": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "status": {
-              "type": "string",
-              "enum": [
-                "accepted",
-                "rejected"
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "accepted",
+                    "rejected"
+                  ]
+                },
+                "reference": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "acknowledgedAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "reasonCodes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "maxItems": 1000
+                }
+              },
+              "required": [
+                "status",
+                "reference",
+                "acknowledgedAt",
+                "reasonCodes"
               ]
             },
-            "reference": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 100
-            },
-            "acknowledgedAt": {
-              "type": "string",
-              "format": "date-time"
-            },
-            "reasonCodes": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 100
-              },
-              "maxItems": 1000
+            {
+              "$ref": "#/$defs/OpsMidProviderOutcome"
             }
-          },
-          "required": [
-            "status",
-            "reference",
-            "acknowledgedAt",
-            "reasonCodes"
           ]
         }
       },
@@ -3378,6 +3392,220 @@
         "paid",
         "reserved",
         "currency"
+      ]
+    },
+    "OpsMidSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "format": {
+          "const": "mid-submission-2"
+        },
+        "intentId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "policyId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "termId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "transactionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "versionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "contentHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "baseVersionId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "baseContentHash": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "purpose": {
+          "type": "string",
+          "enum": [
+            "new-business",
+            "adjustment",
+            "renewal",
+            "cancellation"
+          ]
+        },
+        "effectiveAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endsAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OpsMidItem"
+          },
+          "minItems": 0,
+          "maxItems": 2000,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "format",
+        "intentId",
+        "policyId",
+        "termId",
+        "transactionId",
+        "versionId",
+        "contentHash",
+        "baseVersionId",
+        "baseContentHash",
+        "purpose",
+        "effectiveAt",
+        "endsAt",
+        "items"
+      ]
+    },
+    "OpsMidItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "riskItemId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "vehicle",
+            "trade-plate"
+          ]
+        },
+        "registration": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20,
+          "pattern": "\\S"
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "add",
+            "change",
+            "remove"
+          ]
+        },
+        "effectiveAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endsAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "riskItemId",
+        "kind",
+        "registration",
+        "action",
+        "effectiveAt",
+        "endsAt"
+      ]
+    },
+    "OpsMidProviderOutcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "operationId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "eventId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "pattern": "\\S"
+        },
+        "submissionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "policyVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "accepted",
+            "rejected",
+            "not-required"
+          ]
+        },
+        "providerReference": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reasonCodes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "completedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "operationId",
+        "eventId",
+        "submissionId",
+        "policyVersionId",
+        "state",
+        "providerReference",
+        "reasonCodes",
+        "completedAt"
       ]
     }
   }

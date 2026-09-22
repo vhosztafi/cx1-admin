@@ -40,6 +40,6 @@ public sealed partial class BackOfficeDbContext
         mid.HasOne<PolicyVersion>().WithMany().HasForeignKey(x => new { x.VersionId,x.TransactionId,x.TermId,x.PolicyId })
             .HasPrincipalKey(x => new { x.Id,x.TransactionId,x.TermId,x.PolicyId }).OnDelete(DeleteBehavior.NoAction);
         mid.HasOne<OutboxWork>().WithMany().HasForeignKey(x => x.WorkId).OnDelete(DeleteBehavior.NoAction);
-        Check(mid,"Purpose","[Purpose] IN ('adjustment','renewal')");
+        Check(mid,"Purpose","[Purpose] IN ('new-business','adjustment','renewal')");
     }
 }

@@ -82,7 +82,7 @@ Generated from the final OpenAPI contract. Task/subject entries are API-verified
 | logIncident | POST /incidents/{incidentId}/log | incident-write | required | required |
 | handoffIncident | POST /incidents/{incidentId}/handoff | incident-handoff | required | required |
 | listClaimSummaries | GET /incidents/{incidentId}/summaries | incident-read | none / per-selection for bulk | not-cached |
-| listMidSubmissions | GET /versions/{versionId}/mid-submissions | policy-read | none / per-selection for bulk | not-cached |
+| listMidSubmissions | GET /versions/{versionId}/mid-submissions | mid-read | none / per-selection for bulk | not-cached |
 | sendDocumentPack | POST /records/{recordId}/document-deliveries | document-send | none / per-selection for bulk | required |
 | listDocumentDeliveries | GET /records/{recordId}/document-deliveries | document-read | none / per-selection for bulk | not-cached |
 | validateIncidentProposal | POST /incidents/validate | incident-write | none / per-selection for bulk | not-cached |
@@ -331,3 +331,47 @@ requests/attempts and retry. Unconfirmed UI writes retain actor/body/key/ETag, b
 navigation and cannot be retried under another actor. The policy Claims table displays
 stored reference/status/paid/reserve. Final acceptance evidence is recorded in09-13-SUMMARY
 when complete; implementation alone does not establish phase completion.
+
+
+##09-14 Motor Trade MID runtime
+
+MidSubmissionRegistration.Register(workId) associates one exact retained PolicyMidIntent or
+cancellation mid-removal consequence with its original OutboxWork. Initial issue now adds a
+new-business PolicyMidIntent using the same mid-update envelope/key family. The explicit
+RegisterMissingInitial(actor,versionId,reason,key) service supports missing-only retained demo
+initial sources; no GET enqueues work and no historical source/receipt is rewritten.
+
+MidSnapshots.Capture uses immutable source hashes and the prior slice or recorded issue
+BaseVersionId. Vehicles require the explicit prototype.addveh.report-mid=true declaration;
+trade plates come from covered tradePlates, never the merely held inventory. Registration
+replacement removes old/adds new; reporting removal removes the prior entry; changed rows or
+cover produce change; unchanged adjustment items produce no reportable changes. Renewal
+updates surviving registrations for the new term. No CC reporting exists.
+
+MidSubmission stores its own provider scenario, typed mid-submission-2 snapshot, base/source
+version hashes and immutable items. Cancellation retains its original work scenario, key and
+payload; its execution waits until effectiveAt. Normal servicing work receives its provider
+scenario before registration. MidResult appends the exact provider event with nullable
+reference for not-required. This state does not claim an accepted provider submission.
+
+MidSubmissionWorker.ExecuteProvider/Apply persists a deterministic demo operation separately,
+then applies only a matching retained result under current original actor authority and a
+live owned lease. Expired leases cannot apply, identical results deduplicate, changed events
+quarantine. Post-effect revocation retains the external demo effect but no authorized local
+result. Original source versions and later issued versions remain untouched. One terminal
+JobException maps to one actual policy workflow task. Retry requires current caller and
+original sender authority, strong job ETag and the same immutable command/operation; only
+transient exhaustion has an expanded retry budget.
+
+GET /versions/{versionId}/mid-submissions uses current typed policy scope and signed paging;
+POST /mid-submissions/{submissionId}/retry accepts only reason, CSRF, Idempotency-Key and job
+If-Match. Both are private/no-store. Generic job reads delegate to the same source scope.
+MidEndpoints, MidDispatcher and MidSubmissionService are wired in Program; development worker
+flag Cover:OperationalMidWorkerEnabled defaults true. Read DTOs expose exact actions/effective
+endsAt, state, safe reasons, attempts, retry ETag and exceptionTaskId. UI policy Vehicles and
+vehicle version history use those persisted reads and freeze actor/body/key/ETag on uncertainty.
+
+Persistence:20260922135419_OperationalMid plus OperationalMid.Guards.cs and EF snapshot.
+Unique work/version/intent associations, original owned version FK, immutable requests/results,
+provider provenance and registered work identity guards apply. Retained MID rows or initial
+intents prevent destructive downgrade. External calls remain deterministic local demo effects.

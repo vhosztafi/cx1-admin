@@ -30,6 +30,8 @@ const ports={
 // Retained v1 claims envelopes remain valid; the incident revision projection is versioned.
 ports.claims.request={oneOf:[ports.claims.request,apiRef('OpsClaimsSnapshot')]};
 ports.claims.result={oneOf:[ports.claims.result,apiRef('OpsClaimsProviderSummary')]};
+ports.mid.request={oneOf:[ports.mid.request,apiRef('OpsMidSnapshot')]};
+ports.mid.result={oneOf:[ports.mid.result,apiRef('OpsMidProviderOutcome')]};
 const alternatives=[];
 for(const [kind,port] of Object.entries(ports))for(const direction of ['request','result']){
  alternatives.push(o({kind:{const:kind},direction:{const:direction},operationId:id,operationKey:t(200),sourceVersionId:id,scenarioVersionId:id,correlationId:id,recordedAt:instant,payload:port[direction]}));

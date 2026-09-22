@@ -98,6 +98,7 @@ internal static class PolicyIssueWriter
                 Payload = request.PayloadJson, CreatedAt = now, NextAttemptAt = now, CorrelationId = correlationId };
             db.Add(work); await db.SaveChangesAsync(token); request.WorkId = work.Id; db.Add(request); await db.SaveChangesAsync(token); documents.Add(request.Id);
         }
+        if (!held.Input.IsCommercial) await Operations.MidSubmissionRegistration.InitialIntent(db, version, term, actorId, now, correlationId, token);
         return new(policy, term, version, transaction, obligation, documents.ToArray(), exposureDecisionId);
     }
     private static byte[] Hash(string json) => SHA256.HashData(Encoding.UTF8.GetBytes(json));
