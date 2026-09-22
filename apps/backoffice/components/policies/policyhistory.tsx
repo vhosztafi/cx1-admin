@@ -21,7 +21,7 @@ export function PolicyHistory({policy,questionLabels,cutoffs,onSelect}:{policy:P
  return <Panel title="Transactions and versions" note="Issued history · saved drafts do not change cover">
   {!history.data?<LoadFeedback error={history.error} retry={history.refresh}/>:<>
    <div className="quote-rail-body"><p>Effective at {date(history.data.effectiveAt)} · Known at {date(history.data.knownAt)} · London</p>
-    <p>Agency: <Link href={`/agencies/${policy.agencyId}`}>{history.data.agencyName}</Link></p>
+    <p>Agency: <Link href={`/agents/${policy.agencyId}`}>{history.data.agencyName}</Link></p>
     <p>Each row explains whether that issued version contributes to the selected cover. Draft proposals are available separately under Servicing drafts.</p></div>
    <div className="quote-rail-body"><label><input type="checkbox" checked={includeDrafts} onChange={event=>setIncludeDrafts(event.target.checked)}/>Include draft transactions</label>
     {includeDrafts?<section aria-label="Drafts excluded from policy cover"><h3>Draft proposals for term {policy.termNumber}</h3><p>These proposals are not counted in the selected cover, comparison or reconstruction.</p>

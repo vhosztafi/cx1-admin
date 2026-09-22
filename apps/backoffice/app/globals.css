@@ -479,3 +479,11 @@ h1, h2, p { margin: 0; }
 .task-attachments label { display: grid; gap: 6px; }
 .task-attachments .document-fields { margin-top: 14px; }
 @media (max-width: 600px) { .document-preview { width: calc(100vw - 20px); padding: 16px; } .document-fields input[type=file] { max-width: 100%; } }
+
+.communication-form label { display: grid; gap: 6px; margin-bottom: 16px; font-weight: 500; }
+.communication-form input:not([type="checkbox"]), .communication-form select, .communication-form textarea { display: block; width: 100%; min-width: 0; border: 1px solid #dce0e9; border-radius: 6px; background: #fff; padding: 9px 10px; color: #14233c; font: inherit; font-size: 14px; font-weight: 400; }
+.communication-form textarea { min-height: 110px; resize: vertical; }
+.communication-form label.communication-choice { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; }
+.communication-form .communication-choice input[type="checkbox"] { width: 16px; height: 16px; min-height: 16px; margin-top: 3px; padding: 0; flex: 0 0 16px; }
+.communication-form .communication-choice span { min-width: 0; overflow-wrap: anywhere; }
+.communication-form .quote-row-actions { margin-top: 12px; margin-bottom: 12px; }

@@ -39,7 +39,7 @@ test('incomplete incident drafts are product specific without invented occurrenc
 });
 test('task updates cannot reparent records and blank message drafts have valid saved read models',()=>{
  assert.equal(valid('OpsTaskUpdateWrite',{subjectRecordId:id,typeCode:'complaint',title:'Review',priority:'normal',assignment:{kind:'unassigned'}}),false);
- assert.ok(valid('OpsMessage',{id,threadId:id,body:'',recipientContactIds:[],attachmentVersionIds:[],state:'draft',createdAt:'2026-09-21T12:00:00Z',authorLabel:'Demo user'}));
+ assert.ok(valid('OpsMessage',{id,threadId:id,body:'',recipientContactIds:[],attachmentVersionIds:[],state:'draft',etag:'"AAAAAAAAAAA="',createdAt:'2026-09-21T12:00:00Z',updatedAt:'2026-09-21T12:00:00Z',authorLabel:'Demo user'}));
 });
 test('occurrence preserves date and approximate precision and rejects fake exact precision',()=>{
  const date={occurredOn:'2026-09-01',timeZone:'Europe/London',precision:'date'};

@@ -9,6 +9,7 @@ import type { TaskParent } from './task-create';
 import { DocumentGenerate } from './document-generate';
 import { DocumentUpload } from './document-upload';
 import { LegacyEvidence } from './document-legacy-evidence';
+import { Threads } from './thread';
 import { DocumentMetadata, DocumentPreview } from './document-preview';
 import { documentDate, documentSize, LoadFeedback, Paging, useDocumentResource } from './document-shared';
 
@@ -38,6 +39,7 @@ export function DocumentList({ subjectId, actorId, source, relationshipId }: { s
   const [cursor, setCursor] = useState<string>(), [previous, setPrevious] = useState<(string | undefined)[]>([]), [generation, setGeneration] = useState(0);
   const [action, setAction] = useState<'generate' | 'upload'>(), [history, setHistory] = useState<OpsDocument>(), [preview, setPreview] = useState<string>(), [message, setMessage] = useState('');
   const [replacement, setReplacement] = useState<OpsDocument>();
+  const [agencyDraft, setAgencyDraft] = useState<{version:DocumentVersion;relationshipId:string}>();
   const url = `/api/v1/records/${subjectId}/documents?pageSize=10${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`;
   const documents = useDocumentResource<Page<OpsDocument>>(url, generation);
   function refresh() { setGeneration(x => x + 1); }
@@ -55,12 +57,14 @@ export function DocumentList({ subjectId, actorId, source, relationshipId }: { s
         <td>{version?.originalName ?? 'Awaiting file'}{version && <small className="document-secondary">Version {version.number} · {documentSize(version.bytes)} · {version.contentType}<br />Created {documentDate(version.createdAt)}</small>}</td>
         <td><DocumentAvailability version={version} /></td><td><div className="quote-row-actions"><VersionActions version={version} preview={setPreview} /><button className="button" onClick={() => setHistory(document)}>Version history</button>
           {(document.kind === 'evidence' || source) && <button className="button" disabled={!!action} onClick={() => { setReplacement(document); setAction(document.kind === 'evidence' ? 'upload' : 'generate'); }}>New version</button>}
+          <MessageAction document={document} version={version} select={setAgencyDraft}/>
         </div></td></tr>; })}
     </DataTable> : <div className="quote-rail-body"><p>No documents available yet.</p><p>Generate an applicable document or upload evidence.</p></div>}
       <Paging total={documents.data.totalCount} previous={previous.length ? () => { setCursor(previous.at(-1)); setPrevious(x => x.slice(0, -1)); } : undefined} next={documents.data.nextCursor ? () => { setPrevious(x => [...x, cursor]); setCursor(documents.data!.nextCursor); } : undefined} />
     </> : <LoadFeedback error={documents.error} retry={documents.refresh} />}
-    {history && <DocumentHistory key={history.id} document={history} preview={setPreview} close={() => setHistory(undefined)} />}
+    {history && <DocumentHistory key={history.id} document={history} preview={setPreview} selectMessage={setAgencyDraft} close={() => setHistory(undefined)} />}
     {preview && <DocumentPreview key={preview} versionId={preview} close={() => setPreview(undefined)} />}
+    {agencyDraft && <section className="quote-rail-body" aria-label="Draft agency message from document"><h3>Draft agency message</h3><button className="button" onClick={()=>setAgencyDraft(undefined)}>Close agency message</button><Threads key={agencyDraft.version.id} subjectId={subjectId} actorId={actorId} initialAttachment={agencyDraft}/></section>}
   </>;
 }
 function DocumentAvailability({ version }: { version?: DocumentVersion }) {
@@ -70,11 +74,14 @@ function DocumentAvailability({ version }: { version?: DocumentVersion }) {
 function VersionActions({ version, preview }: { version?: DocumentVersion; preview: (id: string) => void }) {
   return version?.state === 'ready' && validDocumentVersion(version) ? <><button className="button" onClick={() => preview(version.id)}>Preview v{version.number}</button><a className="button" href={documentContentUrl(version)} download>Download v{version.number}</a></> : null;
 }
-function DocumentHistory({ document, preview, close }: { document: OpsDocument; preview: (id: string) => void; close: () => void }) {
+function MessageAction({document,version,select}:{document:OpsDocument;version?:DocumentVersion;select:(value:{version:DocumentVersion;relationshipId:string})=>void}) {
+  return document.visibility==='agency'&&document.relationshipId&&version?.state==='ready'?<button type="button" className="button" onClick={()=>select({version,relationshipId:document.relationshipId!})}>Draft agency message</button>:null;
+}
+function DocumentHistory({ document, preview, close, selectMessage }: { document: OpsDocument; preview: (id: string) => void; close: () => void;selectMessage:(value:{version:DocumentVersion;relationshipId:string})=>void }) {
   const [cursor, setCursor] = useState<string>(), [previous, setPrevious] = useState<(string | undefined)[]>([]);
   const versions = useDocumentResource<Page<DocumentVersion>>(`/api/v1/documents/${document.id}/versions?pageSize=10${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`);
   return <section className="quote-rail-body" aria-label="Document version history"><div className="quote-row-actions"><h3>Version history</h3><button className="button" onClick={close}>Close history</button><button className="button" onClick={versions.refresh}>Refresh history</button></div>
-    {versions.data ? <>{versions.data.items.map(version => <article key={version.id} className="document-history-version"><h4>File version {version.number}</h4><DocumentAvailability version={version} /><DocumentMetadata version={version} /><div className="quote-row-actions"><VersionActions version={version} preview={preview} /></div></article>)}
+    {versions.data ? <>{versions.data.items.map(version => <article key={version.id} className="document-history-version"><h4>File version {version.number}</h4><DocumentAvailability version={version} /><DocumentMetadata version={version} /><div className="quote-row-actions"><VersionActions version={version} preview={preview} /><MessageAction document={document} version={version} select={selectMessage}/></div></article>)}
       <Paging total={versions.data.totalCount} previous={previous.length ? () => { setCursor(previous.at(-1)); setPrevious(x => x.slice(0, -1)); } : undefined} next={versions.data.nextCursor ? () => { setPrevious(x => [...x, cursor]); setCursor(versions.data!.nextCursor); } : undefined} />
     </> : <LoadFeedback error={versions.error} retry={versions.refresh} />}
   </section>;

@@ -27,10 +27,14 @@ export function operationalDefinitions(){
  d.OpsTask=obj({id,etag,subject:ref('OpsSubject'),assignmentLabel:text(),createdByLabel:text(),reference:text(40),...d.OpsTaskWrite.properties,state:states,createdBy:id,createdAt:instant,updatedAt:instant,overdue:bool,checklist:arr(obj({id,label:text(),required:bool,completed:bool})),completionReason:reason,sourceChanged:bool,workflow:ref('OpsWorkflowProvenance')},['id','etag','subject','assignmentLabel','createdByLabel','reference',...d.OpsTaskWrite.required,'state','createdBy','createdAt','updatedAt','overdue','checklist','sourceChanged']);
  d.OpsTaskEvent=obj({id,taskId:id,sequence:{type:'integer',minimum:1},kind:text(60),reason,actorLabel:text(),recordedAt:instant},['id','taskId','sequence','kind','actorLabel','recordedAt']);
  d.OpsComment=obj({id,taskId:id,body:text(8000),authorLabel:text(),createdAt:instant});
- d.OpsThreadWrite={oneOf:[obj({visibility:{const:'internal'},subject:text()}),obj({visibility:{const:'agency'},relationshipId:id,subject:text()})]};
- d.OpsMessageWrite=obj({body:{type:'string',maxLength:8000},recipientContactIds:arr(id),attachmentVersionIds:arr(id,0,20)});
- d.OpsThread={oneOf:d.OpsThreadWrite.oneOf.map(branch=>obj({id,subjectRecordId:id,...branch.properties},['id','subjectRecordId',...branch.required]))};
- d.OpsMessage=obj({id,threadId:id,...d.OpsMessageWrite.properties,state:en('draft','queued','sent','failed','superseded'),createdAt:instant,authorLabel:text(),sendJobId:id},['id','threadId',...d.OpsMessageWrite.required,'state','createdAt','authorLabel']);
+ d.OpsNote=obj({id,subjectRecordId:id,body:text(8000),authorLabel:text(300),createdAt:instant});
+ d.OpsThreadWrite={oneOf:[obj({visibility:{const:'internal'},subject:text(300)}),obj({visibility:{const:'agency'},relationshipId:id,subject:text(300)})]};
+ d.OpsMessageWrite=obj({body:{type:'string',maxLength:8000},recipientContactIds:arr(id,0,50),attachmentVersionIds:arr(id,0,20)});
+ d.OpsThread={oneOf:d.OpsThreadWrite.oneOf.map(branch=>obj({id,subjectRecordId:id,...branch.properties,authorLabel:text(300),createdAt:instant},['id','subjectRecordId',...branch.required,'authorLabel','createdAt']))};
+ d.OpsMessage=obj({id,threadId:id,...d.OpsMessageWrite.properties,state:en('draft','queued','sent','failed','superseded'),etag,createdAt:instant,updatedAt:instant,authorLabel:text(),sendJobId:id},['id','threadId',...d.OpsMessageWrite.required,'state','etag','createdAt','updatedAt','authorLabel']);
+ d.OpsThreadRelationships=obj({items:arr(obj({id,label:text()})),nextCursor:text(2048)},['items']);
+ d.OpsRecipientOptions=obj({items:arr(obj({id,label:text(),email:text(254)})),nextCursor:text(2048)},['items']);
+ d.OpsAttachmentOptions=obj({items:arr(ref('OpsDocumentVersion')),nextCursor:text(2048)},['items']);
  d.OpsPackWrite=obj({documentVersionIds:arr(id,1,20),recipientContactIds:arr(id,1,50),subject:text(),body:text(8000)});
  d.OpsDelivery=obj({id,jobId:id,state:en('queued','delivered','failed','superseded'),createdAt:instant,completedAt:instant,documentVersionIds:arr(id,0,20),recipientLabels:arr(text(),0,50),errorCode:text(100)},['id','jobId','state','createdAt','documentVersionIds','recipientLabels']);
  d.OpsDeliveryAttempt=obj({id,deliveryId:id,number:{type:'integer',minimum:1},startedAt:instant,endedAt:instant,outcome:en('started','succeeded','rejected','retryable','superseded','quarantined'),errorCode:text(100)},['id','deliveryId','number','startedAt','outcome']);

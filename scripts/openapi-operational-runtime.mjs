@@ -19,6 +19,11 @@ export function addOperationalRuntimeContracts({schemas:s,ref:r,operation:op,lis
  options.responses[200].headers??={};
  options.responses[200].headers['Cache-Control']={description:'Private, no-store.',schema:t(100)};
  options.responses[200].headers['X-Content-Type-Options']={description:'nosniff',schema:{type:'string',enum:['nosniff']}};
+ const optionQuery=[['pageSize',{type:'integer',minimum:1,maximum:100,default:25}],['cursor',t(2048)]];
+ op('get','/records/{recordId}/thread-relationships','listThreadRelationships','message-read',{query:optionQuery,output:r('OpsThreadRelationships')});
+ op('get','/threads/{threadId}/recipient-options','listMessageRecipientOptions','message-read',{query:optionQuery,output:r('OpsRecipientOptions')});
+ op('get','/threads/{threadId}/attachment-options','listMessageAttachmentOptions','message-read',{query:optionQuery,output:r('OpsAttachmentOptions')});
+ op('get','/messages/{messageId}','getMessageDraft','message-read',{output:r('OpsMessage')});
  const input=(path,method,name)=>{paths[path][method].requestBody={required:true,content:{'application/json':{schema:r(name)}}};paths[path][method]['x-runtime-status']='phase-9-contract-only';};
  const output=(path,method,name)=>{const x=paths[path][method];for(const [code,response]of Object.entries(x.responses))if(Number(code)>=200&&Number(code)<300&&response.content?.['application/json'])response.content['application/json'].schema=r(name);x['x-runtime-status']='phase-9-contract-only';};
  for(const [path,method,name]of[['/tasks','post','OpsTaskWrite'],['/tasks/{taskId}','put','OpsTaskUpdateWrite'],['/tasks/{taskId}/transition','post','OpsTaskTransition'],['/tasks/bulk-assignment','post','OpsTaskBulkAssignment'],['/records/{recordId}/threads','post','OpsThreadWrite'],['/threads/{threadId}/messages','post','OpsMessageWrite'],['/messages/{messageId}','put','OpsMessageWrite'],['/records/{recordId}/document-deliveries','post','OpsPackWrite'],['/records/{recordId}/documents/generate','post','OpsDocumentGenerate'],['/incidents','post','OpsIncidentDraftWrite'],['/incidents/{incidentId}','put','OpsIncidentDraftWrite'],['/incidents/{incidentId}/handoff','post','OpsIncidentHandoff']])input(path,method,name);
@@ -38,6 +43,14 @@ export function addOperationalRuntimeContracts({schemas:s,ref:r,operation:op,lis
  input('/incidents/validate','post','OpsIncidentDraftWrite');
  for(const [path,method,name]of[['/records/{recordId}/threads','post','OpsThread'],['/threads/{threadId}/messages','post','OpsMessage'],['/messages/{messageId}','put','OpsMessage']])output(path,method,name);
  for(const [path,name]of[['/records/{recordId}/threads','OpsThread'],['/threads/{threadId}/messages','OpsMessage']])paths[path].get.responses[200].content['application/json'].schema.properties.items.items=r(name);
+ output('/records/{recordId}/notes','post','OpsNote');
+ paths['/records/{recordId}/notes'].get.responses[200].content['application/json'].schema.properties.items.items=r('OpsNote');
+ paths['/records/{recordId}/threads'].get.parameters.push({name:'visibility',in:'query',schema:{type:'string',enum:['internal','agency']}});
+ for(const path of ['/records/{recordId}/notes','/records/{recordId}/threads','/threads/{threadId}/messages','/messages/{messageId}', '/records/{recordId}/thread-relationships','/threads/{threadId}/recipient-options','/threads/{threadId}/attachment-options'])for(const operation of Object.values(paths[path])){
+  operation['x-runtime-status']='phase-9-09-implemented-acceptance-pending';
+  for(const [code,response]of Object.entries(operation.responses))if(Number(code)>=200&&Number(code)<300){response.headers??={};response.headers['Cache-Control']={description:'Private, no-store.',schema:t(100)};}
+ }
+ for(const [path,method,status]of[['/threads/{threadId}/messages','post',201],['/messages/{messageId}','put',200]])paths[path][method].responses[status].headers.ETag={description:'Current strong message draft version.',schema:t(100)};
  const receipt=o({updatedIds:{type:'array',items:id,minItems:1,maxItems:100,uniqueItems:true}});
  op('post','/records/{recordId}/file-uploads','stageFileUpload','document-upload',{query:[['name',t(255)]],output:r('OpsFileUpload'),status:202});
  const fileUpload=paths['/records/{recordId}/file-uploads'].post;

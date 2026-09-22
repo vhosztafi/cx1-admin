@@ -780,6 +780,43 @@
         "createdAt"
       ]
     },
+    "OpsNote": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "subjectRecordId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "body": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8000,
+          "pattern": "\\S"
+        },
+        "authorLabel": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "\\S"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "subjectRecordId",
+        "body",
+        "authorLabel",
+        "createdAt"
+      ]
+    },
     "OpsThreadWrite": {
       "oneOf": [
         {
@@ -842,7 +879,7 @@
             "format": "uuid"
           },
           "minItems": 0,
-          "maxItems": 100,
+          "maxItems": 50,
           "uniqueItems": true
         },
         "attachmentVersionIds": {
@@ -884,13 +921,25 @@
               "minLength": 1,
               "maxLength": 300,
               "pattern": "\\S"
+            },
+            "authorLabel": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            },
+            "createdAt": {
+              "type": "string",
+              "format": "date-time"
             }
           },
           "required": [
             "id",
             "subjectRecordId",
             "visibility",
-            "subject"
+            "subject",
+            "authorLabel",
+            "createdAt"
           ]
         },
         {
@@ -917,6 +966,16 @@
               "minLength": 1,
               "maxLength": 300,
               "pattern": "\\S"
+            },
+            "authorLabel": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "\\S"
+            },
+            "createdAt": {
+              "type": "string",
+              "format": "date-time"
             }
           },
           "required": [
@@ -924,7 +983,9 @@
             "subjectRecordId",
             "visibility",
             "relationshipId",
-            "subject"
+            "subject",
+            "authorLabel",
+            "createdAt"
           ]
         }
       ]
@@ -952,7 +1013,7 @@
             "format": "uuid"
           },
           "minItems": 0,
-          "maxItems": 100,
+          "maxItems": 50,
           "uniqueItems": true
         },
         "attachmentVersionIds": {
@@ -975,7 +1036,17 @@
             "superseded"
           ]
         },
+        "etag": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 100,
+          "pattern": "^\"[!#-~]+\"$"
+        },
         "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
           "type": "string",
           "format": "date-time"
         },
@@ -997,8 +1068,123 @@
         "recipientContactIds",
         "attachmentVersionIds",
         "state",
+        "etag",
         "createdAt",
+        "updatedAt",
         "authorLabel"
+      ]
+    },
+    "OpsThreadRelationships": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 300,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "id",
+              "label"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "nextCursor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "items"
+      ]
+    },
+    "OpsRecipientOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 300,
+                "pattern": "\\S"
+              },
+              "email": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 254,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "id",
+              "label",
+              "email"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "nextCursor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "items"
+      ]
+    },
+    "OpsAttachmentOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OpsDocumentVersion"
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "nextCursor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "items"
       ]
     },
     "OpsPackWrite": {
