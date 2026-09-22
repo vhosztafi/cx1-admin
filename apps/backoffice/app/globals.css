@@ -504,3 +504,9 @@ h1, h2, p { margin: 0; }
 .incident-editor details { margin:1rem 0; }
 .incident-editor summary { cursor:pointer; font-weight:500; margin-bottom:.65rem; }
 @media(max-width:640px) { .incident-editor fieldset.quote-reference-fields { grid-template-columns:minmax(0,1fr); } }
+
+.incident-editor [role="tablist"] { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.incident-editor [role="tab"][aria-selected="true"] { color: var(--brand, #4b4dff); background: #efefff; border-color: #cbcaff; }
+.incident-editor article { border-top: 1px solid #e2e5ee; margin-top: 16px; padding-top: 12px; }
+.incident-editor article dl { display: grid; grid-template-columns: 80px 1fr; gap: 8px; }
+.incident-editor article dd { margin: 0; }

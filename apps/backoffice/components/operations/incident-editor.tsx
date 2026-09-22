@@ -7,12 +7,14 @@ import { Panel } from '../primitives';
 import { IncidentFields, incidentLabel } from './incident-fields';
 import { useQuoteResource } from '../quotes/shared';
 import { IncidentEvidence } from './incident-evidence';
+import { ClaimsSummaryPanel } from './claims-summary';
+import type { OpsClaimsHandoff } from '../../../../contracts/generated/operations';
 
 export function IncidentEditor({initial,initialEtag,policyId,productCode,cancel,saved}:{initial?:OpsIncident;initialEtag?:string;policyId:string;productCode:OpsIncidentDraftWrite['productCode'];cancel:()=>void;saved:()=>void}){
   const [draft,setDraft]=useState<OpsIncidentDraftWrite>(initial?.draft??{policyId,productCode});
   const [record,setRecord]=useState(initial),[etag,setEtag]=useState(initialEtag),[pending,setPending]=useState<IncidentCommand>(),[busy,setBusy]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState(''),[stale,setStale]=useState(false);
   const [day,setDay]=useState(draft.occurrence?.occurredOn??''),[precision,setPrecision]=useState(draft.occurrence?.precision??'date'),[approximate,setApproximate]=useState(draft.occurrence?.precision==='approximate'?draft.occurrence.approximateLocalTime:''),[exact,setExact]=useState(draft.occurrence?.precision==='exact'?draft.occurrence.occurredAt:''),[reason,setReason]=useState('');
-  const [versionChoice,setVersionChoice]=useState('');
+  const [versionChoice,setVersionChoice]=useState(''),[claimsBlocked,setClaimsBlocked]=useState(false);
   useEffect(()=>{
     if(!pending)return;
     const warn=()=>setError('Retry the same action to confirm its result before leaving.');
@@ -23,6 +25,8 @@ export function IncidentEditor({initial,initialEtag,policyId,productCode,cancel,
     window.addEventListener('beforeunload',unload);document.addEventListener('click',click,true);navigation?.addEventListener('navigate',navigate);
     return()=>{window.removeEventListener('beforeunload',unload);document.removeEventListener('click',click,true);navigation?.removeEventListener('navigate',navigate);};
   },[pending]);
+  const failedHandoffs=useQuoteResource<{items:OpsClaimsHandoff[]}>(record?.state==='failed'?`/api/v1/incidents/${record.id}/handoffs?pageSize=10`:null);
+  const unresolvedFailure=record?.state==='failed'&&!failedHandoffs.data?.items.some(x=>x.revisionId===record.revisionId&&x.state==='rejected');
   const source=versionChoice||record?.resolution?.candidates[0]?.versionId;
   const options=useQuoteResource<IncidentOptions>(record?.resolution&&source?`/api/v1/incidents/${record.id}/subject-options?versionId=${source}`:null);
   const dirty=JSON.stringify(draft)!==JSON.stringify(record?.draft)||day!==(record?.draft.occurrence?.occurredOn??'')||precision!==(record?.draft.occurrence?.precision??'date')||precision==='approximate'&&approximate!==(record?.draft.occurrence?.precision==='approximate'?record.draft.occurrence.approximateLocalTime:'')||precision==='exact'&&exact!==(record?.draft.occurrence?.precision==='exact'?record.draft.occurrence.occurredAt:'');
@@ -55,9 +59,10 @@ export function IncidentEditor({initial,initialEtag,policyId,productCode,cancel,
   }
   return <Panel title={record?`${record.reference} · ${record.state==='logged'?'Logged, unsent':incidentLabel(record.state)}`:'Log an incident'} note="Capture the report before sending to the claims administrator."><div className="quote-rail-body incident-editor">
     {error&&<p role="alert" className="form-error">{error}</p>}{notice&&<p role="status">{notice}</p>}
+    {unresolvedFailure&&<p role="status">This submission has no definitive rejection. Keep its saved facts and retry the existing claims request below.</p>}
     {stale&&<button className="button" disabled={busy} onClick={()=>void review()}>Review latest saved version</button>}
     {pending&&!busy&&<button className="button" onClick={()=>void act(pending.action,pending)}>Retry unconfirmed action</button>}
-    <fieldset disabled={busy||!!pending||stale||record?.state==='queued'||record?.state==='handed-off'}>
+    <fieldset disabled={busy||!!pending||claimsBlocked||stale||unresolvedFailure||record?.state==='queued'||record?.state==='handed-off'}>
       <fieldset className="quote-reference-fields"><legend>When did it happen?</legend>
         <label>Occurrence date<input aria-label="Occurrence date" type="date" value={day} onChange={event=>setDay(event.target.value)}/></label>
         <label>Time precision<select aria-label="Time precision" value={precision} onChange={event=>setPrecision(event.target.value as typeof precision)}><option value="date">Date only</option><option value="approximate">Approximate time</option><option value="exact">Confirmed exact time</option></select></label>
@@ -71,11 +76,12 @@ export function IncidentEditor({initial,initialEtag,policyId,productCode,cancel,
       {record&&<><div className="quote-row-actions"><button className="button" disabled={dirty} onClick={()=>void act('occurrence-resolution')}>Check historical cover</button><button className="button" disabled={dirty||record.missing.length>0} onClick={()=>void act('log')}>Log without sending</button></div><p className="client-help">Save edits before checking cover or logging.</p>
         <details><summary>Clarify the occurrence</summary><label>Reason for clarification<textarea aria-label="Occurrence clarification reason" value={reason} maxLength={1000} onChange={event=>setReason(event.target.value)}/></label><button className="button" disabled={!day||!reason.trim()} onClick={()=>void act('occurrence')}>Save occurrence clarification</button></details></>}
     </fieldset>
-    {record&&<><h3>Readiness</h3>{record.missing.length?<ul>{record.missing.map(x=><li key={x}>{incidentLabel(x)} required</li>)}</ul>:<p>Ready to log. Nothing has been sent.</p>}
+    {record&&<><h3>Readiness</h3>{record.missing.length?<ul>{record.missing.map(x=><li key={x}>{incidentLabel(x)} required</li>)}</ul>:<p>{record.state==='queued'?'Handoff queued; awaiting acknowledgement.':record.state==='handed-off'?'Acknowledged by the claims administrator.':record.state==='failed'?'Review the claims outcome before correcting or retrying.':'Ready to log. Nothing has been sent.'}</p>}
       {record.resolution&&<><p>Historical cover: {incidentLabel(record.resolution.state)}</p>{record.resolution.state==='ambiguous'&&<p>More than one version applies to the reported day. Clarify the confirmed occurrence before logging; selecting a version here only changes the choices shown.</p>}
         {!!record.resolution.candidates.length&&<label>Historical choices<select aria-label="Historical choices" value={source??''} onChange={event=>setVersionChoice(event.target.value)}>{[...new Map(record.resolution.candidates.map(x=>[x.versionId,x])).values()].map(x=><option key={x.versionId} value={x.versionId}>{x.label}</option>)}</select></label>}
       </>}
       <details><summary>Latest saved report</summary><p>{record.draft.description??'No description recorded'}</p><p>Updated {new Date(record.updatedAt).toLocaleString('en-GB')}</p></details></>}
-    <button className="button" disabled={busy||!!pending} onClick={cancel}>Cancel / back to claims</button>
+    {record&&etag&&<ClaimsSummaryPanel record={record} etag={etag} disabled={busy||!!pending||dirty||stale} blocked={setClaimsBlocked} updated={(value,nextEtag)=>{setRecord(value);setEtag(nextEtag);saved();}}/>}
+    <button className="button" disabled={busy||!!pending||claimsBlocked} onClick={cancel}>Cancel / back to claims</button>
   </div></Panel>;
 }
