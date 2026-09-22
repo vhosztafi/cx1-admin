@@ -60,7 +60,7 @@ export function addPartyContracts({schemas:s,ref:r,text:t,enumeration:e,object:o
  s.MatchReview.required=[...s.MatchReview.required.filter(k=>k!=='quoteId'),'submissionId','submission','rule'];
  s.MatchReview.description='Internal comparison evidence pinned at capture. submissionId and embedded submission.id agree; ruleVersionId and rule.id agree. quoteId is absent until linked to an actual quote. No candidate data belongs in a submission-side decline.';
  s.MatchDecision=o({id,matchId:id,outcome:e('link','separate','decline','query','reopen'),reason:t(1000),actorLabel:t(),occurredAt:instant,clientId:id,relationshipId:id,informationRequestId:id},['id','matchId','outcome','reason','actorLabel','occurredAt']);
- s.MatchInformationRequest=o({id,matchId:id,description:t(1000),recordedAt:instant,deliveryState:e('recorded','queued','delivered','failed')});
+ s.MatchInformationRequest=o({id,matchId:id,description:t(1000),recordedAt:instant,deliveryState:e('recorded','queued','delivered','failed'),correspondence:o({messageId:id,threadId:id,subjectRecordId:id,agencyId:id})},['id','matchId','description','recordedAt','deliveryState']);
  list('/matches/{matchId}/decisions','listMatchDecisions','match-review',r('MatchDecision'));
  list('/matches/{matchId}/information-requests','listMatchInformationRequests','match-review',r('MatchInformationRequest'));
  const decision=paths['/matches/{matchId}/decisions'].post;

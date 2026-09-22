@@ -6,7 +6,7 @@ export type MatchReview={id:string;submissionId:string;candidateClientId:string;
   rule:{id:string;version:number;duplicateQuotePolicy:string;requireReview:boolean;summary:string};
   submission:{id:string;reference:string;agencyId:string;agencyName:string;identity:ClientWrite;createdAt:string;linkedClientId?:string;linkedRelationshipId?:string;quoteId?:string;quoteEtag?:string;captureClosed?:boolean}};
 export type MatchDecision={id:string;matchId:string;outcome:MatchOutcome;reason:string;actorLabel:string;occurredAt:string;clientId?:string;relationshipId?:string;informationRequestId?:string};
-export type MatchRequest={id:string;matchId:string;description:string;recordedAt:string;deliveryState:string};
+export type MatchRequest={id:string;matchId:string;description:string;recordedAt:string;deliveryState:string;correspondence?:{messageId:string;threadId:string;subjectRecordId:string;agencyId:string}};
 export const canReadMatches=(roles:string[])=>roles.some(role=>['underwriter','senior-underwriter'].includes(role));
 export const canDecideMatches=canReadMatches;
 export const matchStates:Record<MatchState,string>={pending:'Awaiting decision',queried:'Information requested',linked:'Linked',separate:'Not a duplicate',declined:'Declined as duplicate'};

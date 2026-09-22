@@ -434,3 +434,10 @@ Migration `20260922144152_CancellationOperations` plus `CancellationOperations.G
 adds the four immutable evidence tables, original ownership/time guards, the narrowly bound
 attachment exception and mixed-worker legacy receipt exclusion. Retained operations block
 migration downgrade. No retained demo database migration is performed by this slice.
+##09-16 matching correspondence bridge (first sub-slice accepted)
+
+LegacyOperationalBridge.MatchRequest(requestId, token) revalidates original current staff and submitting agency, registers its typed operational subject, then locks the source association after parent authority. ThreadService.ImportRecordedRequest creates an internal editable draft and MatchCorrespondence in one transaction. Existing associations return the original message without replacing edited content. Unresolved candidates never become recipients; the source MatchInformationRequest stays recorded. Migration20260922154416_LegacyOperationalLinks and Guards add immutable typed source/message FKs, uniqueness, audience/creator ownership and protected downgrade. No existing receipt is rewritten as sent.
+
+OperationalDemoSeed.Initialize and the Development-only --seed-operational-demo command perform missing-only association. Optional Cover:LegacyOperationalWorkerEnabled processes newly recorded requests in bounded batches. GET matching information requests includes an optional current-scope correspondence association; the UI links to the actual /agents/{id}?tab=Messages workspace. Source state and draft state remain separate. No automatic send occurs.
+
+This sub-slice passed .local/phase9-16-match-accepted:1 real-SQL/API/browser preservation scenario, five browser cases and SQL readback, revoked-actor denial, and the actual immutable trigger52040. Root420/frontend200, production build, lint and OpenAPI0errors104warnings passed. Failed port/link diagnostics are excluded. Remaining09-16 obligations are in its checkpoint; this is not full-plan acceptance.

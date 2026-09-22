@@ -1,0 +1,19 @@
+#09-16 active checkpoint
+
+09-15 committed and accepted (0789bbd backend, f613754 UI,0643677 summary). STATE96/99;09-16 active. Continue16,17,18; no routine question/stop.
+
+First16 sub-slice: missing-only MatchCorrespondence association, scoped internal thread/draft through ThreadService, preserved original recorded request and staff edits. Migration20260922154416_LegacyOperationalLinks plus SQL guards. Development --seed-operational-demo and opt-in LegacyOperationalWorkerEnabled caller; matching list exposes authorized correspondence link to submitting agency Messages. No candidate contacts or automatic delivery.
+
+RED observed .local/phase9-16-match-red-ready (NotImplemented business boundary,1failure). Green migration/service1SQL .local/phase9-16-match-green; current API/repeated initializer/revocation1SQL .local/phase9-16-match-api. Root420/frontend200 and production .local/next-phase9-16-browser build passed. No16commit yet.
+
+Current ONLY SQL/browser acceptance: session51127,.local/phase9-16-match-browser-dynamic.log/results; expected1combinedSQL/API/browser test with5browserchecks. Previous browser run57523 failed BEFORE browser because host bound5000; fixed explicit UseUrls(loopback:0), never count failedreport. Check active run before any further suite. No current runtime edits during this acceptance.
+
+Still required: finalize matching browser/API negatives/review/commit; inherited renewal lapse/invitation and document/terms associations; persistent fictional failed pack/retry, historical MT+CC incidents and MID retry story through normal services; two full initializations preserve edits/files; actual integrated browser walkthrough. No16SUMMARY/completion until whole plan accepted.
+
+Discovery: RenewalLapseNotificationWorker currently retains legacy demo receipt without OperationalDelivery/message. Automatic RenewalLapseEvent has CreatedBy null. Never label that receipt current physical delivery or silently resend; new owned internal correspondence must retain history. Need current scope before replay/effect; automatic source authority must derive owned policy/current eligible actor explicitly rather than invent a user grant. Existing quote/servicing exact document registration and workflow follow-up reconciliation already cover their underlying sources; prove actual navigation/readbacks.
+
+Retained commercial policy startsNov2026/renewalNov2027/cancellationDec2027; preserve it. New operational CC incident needs another temporally applicable normal-service demo policy or a clearly labelled controlled demo as-of, not an invented historical occurrence on this policy. Read normal-service scripts seed-commercial-lifecycle-demo, commercial-demo helpers and demo-command-journal for persisted command identity. No retained Phase9 migration has run. Preserve original demo keys and frontend-code.
+
+Inherited dirty apps/backoffice/next-env.d.ts and tsconfig.json remain excluded from commits (Next builds add generated paths).
+
+17:01 matching sub-slice accepted: .local/phase9-16-match-accepted passed1SQL/API/browser including immutable52040; collector5browserchecks+SQLreadback passed. Corrected /agents route build .local/phase9-16-web-build-corrected passes. Priorwrongroute and port5000 diagnostics excluded. Desktop/mobile visual inspection passes. No activeSQL/browser process; session88696 ended successfully. Continue broader16 work; no16completion claim. Readonly retainedSQL confirmed CCv3 effective1Sep2026, existing senior grant starts20Sep2026 20:17:53UTC. An additional21/22Sep operational policy may be temporally eligible after checking approved agencyterms; no newgrant needed.

@@ -20,6 +20,10 @@ builder.Services.AddSingleton<PartyPaging>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.TaskService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.NoteService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.ThreadService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Operations.LegacyOperationalBridge>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Operations.OperationalDemoSeed>();
+if(builder.Environment.IsDevelopment()&&builder.Configuration.GetValue("Cover:LegacyOperationalWorkerEnabled",false))
+    builder.Services.AddHostedService<LegacyOperationalDispatcher>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.MessageDeliveryService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.DocumentPackService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.DeliveryReadService>();
@@ -125,6 +129,14 @@ if(args.Contains("--seed-servicing-terms-demo",StringComparer.Ordinal))
     await using var transaction=await Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.BeginTransactionAsync(db.Database,System.Data.IsolationLevel.Serializable);
     await BackOffice.Infrastructure.Policies.ServicingTermsSeed.SeedAsync(db);await transaction.CommitAsync();
     Console.WriteLine("Missing fictional servicing terms templates and delivery scenario added.");return;
+}
+if(args.Contains("--seed-operational-demo",StringComparer.Ordinal))
+{
+    if(!app.Environment.IsDevelopment())throw new InvalidOperationException("Operational fixtures require local Development.");
+    var factory=app.Services.GetRequiredService<Microsoft.EntityFrameworkCore.IDbContextFactory<BackOfficeDbContext>>();
+    await using(var db=await factory.CreateDbContextAsync()) DemoDatabase.ValidateDemoTarget(Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.GetConnectionString(db.Database)!);
+    var result=await app.Services.GetRequiredService<BackOffice.Infrastructure.Operations.OperationalDemoSeed>().Initialize();
+    Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result));return;
 }
 if(args.Contains("--seed-quote-demo",StringComparer.Ordinal))
 {

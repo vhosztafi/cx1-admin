@@ -61,7 +61,23 @@ public static class MatchEndpoints
         {
             var query=scope.InformationRequests(db).Where(x=>x.MatchId==matchId && x.RecordedAt<=page.AsOf);var total=await query.CountAsync(token);
             var rows=await query.OrderByDescending(x=>x.RecordedAt).ThenBy(x=>x.Id).Skip(page.Offset).Take(page.Size).Select(x=>new {x.Id,x.MatchId,x.Description,x.RecordedAt,x.DeliveryState}).ToListAsync(token);
-            return Results.Json(new {items=rows,totalCount=total,nextCursor=paging.Next(page,page.Offset+rows.Count<total)},ClientEndpoints.Json);
+            var ids=rows.Select(x=>x.Id).ToArray();
+            await using var transaction=await db.Database.BeginTransactionAsync(token);
+            var links=await (from link in db.Set<MatchCorrespondence>() join message in db.Set<OperationalMessageDraft>() on link.MessageId equals message.Id
+                join thread in db.Set<OperationalThread>() on message.ThreadId equals thread.Id
+                join subject in db.Set<OperationalSubject>() on thread.SubjectId equals subject.Id
+                where ids.Contains(link.InformationRequestId)
+                select new {link.InformationRequestId,link.MessageId,threadId=thread.Id,subjectRecordId=subject.Id,subject.AgencyId}).ToListAsync(token);
+            try
+            {
+                foreach(var subjectId in links.Select(x=>x.subjectRecordId).Distinct().Order())
+                    await BackOffice.Infrastructure.Operations.OperationalScope.HoldSubjects(db,actor,[subjectId],"message-read",token);
+            }
+            catch(BackOffice.Infrastructure.Operations.OperationalAccessException){return Missing(context);}
+            var items=rows.Select(row=>new {row.Id,row.MatchId,row.Description,row.RecordedAt,row.DeliveryState,
+                correspondence=links.Where(x=>x.InformationRequestId==row.Id).Select(x=>new{x.MessageId,x.threadId,x.subjectRecordId,x.AgencyId}).SingleOrDefault()}).ToArray();
+            await transaction.CommitAsync(token);
+            return Results.Json(new {items,totalCount=total,nextCursor=paging.Next(page,page.Offset+rows.Count<total)},ClientEndpoints.Json);
         }
         else
         {

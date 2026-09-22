@@ -121234,6 +121234,34 @@
               "delivered",
               "failed"
             ]
+          },
+          "correspondence": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "messageId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "threadId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "subjectRecordId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "agencyId": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "messageId",
+              "threadId",
+              "subjectRecordId",
+              "agencyId"
+            ]
           }
         },
         "required": [
