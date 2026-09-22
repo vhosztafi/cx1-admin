@@ -79,7 +79,7 @@ public sealed partial class QuoteStorageTests
             var root = new DirectoryInfo(AppContext.BaseDirectory);
             while (root is not null && !File.Exists(Path.Combine(root.FullName, "package.json"))) root = root.Parent;
             Assert.NotNull(root);
-            var dist=Environment.GetEnvironmentVariable("COVER_NEXT_DIST_DIR")??".next";
+            var dist=OperationalBrowserBuild.Select(root.FullName,Environment.GetEnvironmentVariable("COVER_NEXT_DIST_DIR")??".next");
             Assert.True(File.Exists(Path.Combine(root.FullName, "apps/backoffice",dist,"BUILD_ID")));
             await DemoDatabase.SeedAsync(db, password, includeQuoteCapture: true, includeCommercialCapture: true, includeUnderwriting: stage is "rating" or "underwriting" or "terms" or "issue");
             if (stage is "rating" or "underwriting" or "terms" or "issue")

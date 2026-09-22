@@ -20,6 +20,12 @@ try{
  await page.getByRole('button',{name:'Sign in',exact:true}).click();await page.waitForURL(origin+'/');
  for(const fixture of fixtures){
   const response=await page.request.get(origin+'/api/v1/policies/'+fixture.policyId);assert.equal(response.status(),200);const policy=await response.json();
+  if(policy.snapshot.productCode==='commercial-combined'){
+   await page.goto(origin+'/policies/'+policy.id+'?tab=Claims');await page.getByRole('heading',{name:policy.reference,exact:true}).waitFor();
+   await page.getByRole('button',{name:'Log an incident',exact:true}).waitFor();
+   assert.equal(await page.getByText('See the motor trade version',{exact:true}).count(),0);
+   report.checks.push({policyId:policy.id,action:'Commercial claims has its own incident entry and no motor fallback'});
+  }
   for(const placement of ['heading','rail'])for(const action of ['Add note','Send documents']){
    await page.goto(origin+'/policies/'+policy.id);await page.getByRole('heading',{name:policy.reference,exact:true}).waitFor();
    const scope=placement==='heading'?page.locator('.page-heading'):page.getByRole('complementary',{name:'Policy actions',exact:true});

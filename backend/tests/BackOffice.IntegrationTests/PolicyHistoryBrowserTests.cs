@@ -25,7 +25,7 @@ public sealed partial class UnderwritingRuntimeTests
         {
             var root = new DirectoryInfo(AppContext.BaseDirectory);
             while (root is not null && !File.Exists(Path.Combine(root.FullName, "package.json"))) root = root.Parent;
-            Assert.NotNull(root); const string dist = ".local/next-policy-history";
+            Assert.NotNull(root); var dist = OperationalBrowserBuild.Select(root.FullName, ".local/next-policy-history");
             Assert.True(File.Exists(Path.Combine(root.FullName, "apps/backoffice", dist, "BUILD_ID")), "Build the isolated history preview first.");
             var setup = await AcceptedIssue(db, password, product); var f = setup.Source;
             await new QuoteIssueService(f.Factory, f.Clock).IssueAsync(f.Underwriter, f.QuoteId, setup.Version, setup.Input, Guid.NewGuid().ToString(), Guid.NewGuid());
