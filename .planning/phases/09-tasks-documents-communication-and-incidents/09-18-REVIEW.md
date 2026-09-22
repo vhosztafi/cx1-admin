@@ -6,17 +6,17 @@ status: pending-runtime-gates
 
 # Final acceptance review — not yet a pass
 
-Prepared while the complete v4 diagnostic is still running. Plan17 remains active; this review does not complete either plan or any requirement. The canonical continuation is `.local/phase9-v4-compatibility-repair/report.json`.
+Prepared while the complete v4 diagnostic is still running. Plan17 remains active; this review does not complete either plan or any requirement. The canonical continuation is `.local/phase9-v4-compatibility-repair-v2/report.json`.
 
 ## Evidence integrity
 
 The discovered integration inventory is550 cases, including485 named RealSql or RealApiProcessRestart. Current unchanged production has1337 passed unit cases. Reused unit evidence must remain byte-identical and count once. The strict checker compares every discovered and executed integration name, rejects skips and requires unchanged source and assembly hashes. Interrupted earlier runs and the known-failing v4 diagnostic cannot count as final acceptance.
 
-The diagnosed regression is in older migration compatibility assertions: current Motor Trade issue now retains initial MID work, so the newer52024 retention guard rejects downgrade before the old547 template constraint. The prepared test correction verifies the actual applicable guard and exact retained template/MID rows; it does not weaken production protection or delete history. All complete diagnostic failures must match the reviewed cause before automatic correction. Fourteen focused cases and a fresh complete inventory remain required afterward.
+The diagnosed regression is in older migration compatibility assertions: current Motor Trade issue now retains initial MID work, so the newer52024 retention guard rejects downgrade before the old547 template constraint. The prepared test correction verifies the actual applicable guard and exact retained template/MID rows; it does not weaken production protection or delete history. All complete diagnostic failures must match the reviewed cause before automatic correction. Fifteen focused cases and a fresh complete inventory remain required afterward.
 
 Existing bounded results remain:421 root tests,204 frontend tests, lint/typecheck, manifest-bound production UI/API builds and OpenAPI passed; unit source is `.local/phase9-17-agency-response-all-unit/unit.trx`. Both-product agency response browsers passed22 checks each plus SQL readback. Five commercial and ten servicing SQL/browser cases are members of the full550 inventory and are reused by exact name/result identity, never represented as newly rerun cases. Thirteen live retained servicing stages and the original underwriting aggregate run afterward. The expected strict total is1887 unique cases; it must not be reduced to accommodate failures.
 
-Diagnostic64243 retains production1c7b285/source9f1637c hashes in `.local/phase9-final-v4-start.json`. Older continuations44048/80151 must stop without stages on its failed result. Repair57391 then owns the focused test-only correction, v5 and all sequential continuations. Its report is authoritative; no duplicate acceptance run should be launched. Preview identities remain API88392/web2432 until the verified restart updates `.local/phase9-16-preview-pids.json`.
+Diagnostic64243 retains production1c7b285/source9f1637c hashes in `.local/phase9-final-v4-start.json`. Older continuations44048/80151 must stop without stages on its failed result. Original repair57391 must also refuse the additional commercial migration case without stages. Repair65117 then owns the focused test-only correction, v5 and all sequential continuations. Its report is authoritative; no duplicate acceptance run should be launched. Preview identities remain API88392/web2432 until the verified restart updates `.local/phase9-16-preview-pids.json`.
 
 ## Requirement-to-runtime review map
 
