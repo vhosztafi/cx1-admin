@@ -5821,8 +5821,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-12",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-13-SUMMARY.md: persisted exact handoff/contact with19MT/20CC browser checks and SQL readback; literal source placement remains09-17."
+      ]
     },
     {
       "controlId": "CTL-c4ffd43a8598",
@@ -7677,8 +7679,10 @@
       "ownerPhase": 9,
       "ownerPlan": "09-13",
       "disposition": "implement-owned-saved-workflow",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-13-SUMMARY.md: persisted exact handoff/contact with19MT/20CC browser checks and SQL readback; literal source placement remains09-17."
+      ]
     },
     {
       "controlId": "CTL-f3387357521c",
@@ -31473,8 +31477,10 @@
         "actionLabel": ""
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-13-SUMMARY.md: actual persisted reference/date/type/status/nullable paid/reserve in policy Claims table; final source reconciliation09-17."
+      ]
     },
     {
       "sourceOccurrence": 152,
@@ -31491,8 +31497,10 @@
         "label": "Claim reference"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-13-SUMMARY.md: actual persisted reference/date/type/status/nullable paid/reserve in policy Claims table; final source reconciliation09-17."
+      ]
     },
     {
       "sourceOccurrence": 153,
@@ -31509,8 +31517,10 @@
         "label": "Date of loss"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-13-SUMMARY.md: actual persisted reference/date/type/status/nullable paid/reserve in policy Claims table; final source reconciliation09-17."
+      ]
     },
     {
       "sourceOccurrence": 154,
@@ -31527,8 +31537,10 @@
         "label": "Type"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-13-SUMMARY.md: actual persisted reference/date/type/status/nullable paid/reserve in policy Claims table; final source reconciliation09-17."
+      ]
     },
     {
       "sourceOccurrence": 155,
@@ -31545,8 +31557,10 @@
         "label": "Status"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-13-SUMMARY.md: actual persisted reference/date/type/status/nullable paid/reserve in policy Claims table; final source reconciliation09-17."
+      ]
     },
     {
       "sourceOccurrence": 156,
@@ -31563,8 +31577,10 @@
         "label": "Paid"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-13-SUMMARY.md: actual persisted reference/date/type/status/nullable paid/reserve in policy Claims table; final source reconciliation09-17."
+      ]
     },
     {
       "sourceOccurrence": 157,
@@ -31581,8 +31597,10 @@
         "label": "Reserve"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-13-SUMMARY.md: actual persisted reference/date/type/status/nullable paid/reserve in policy Claims table; final source reconciliation09-17."
+      ]
     },
     {
       "sourceOccurrence": 158,
@@ -31599,8 +31617,10 @@
         "text": "CL-84120"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-13-SUMMARY.md: actual persisted reference/date/type/status/nullable paid/reserve in policy Claims table; final source reconciliation09-17."
+      ]
     },
     {
       "sourceOccurrence": 159,
@@ -31617,8 +31637,10 @@
         "text": "18/11/2023"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-13-SUMMARY.md: actual persisted reference/date/type/status/nullable paid/reserve in policy Claims table; final source reconciliation09-17."
+      ]
     },
     {
       "sourceOccurrence": 160,
@@ -31635,8 +31657,10 @@
         "text": "Escape of water — contents"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-13-SUMMARY.md: actual persisted reference/date/type/status/nullable paid/reserve in policy Claims table; final source reconciliation09-17."
+      ]
     },
     {
       "sourceOccurrence": 161,
@@ -31653,8 +31677,10 @@
         "text": "Settled"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-13-SUMMARY.md: actual persisted reference/date/type/status/nullable paid/reserve in policy Claims table; final source reconciliation09-17."
+      ]
     },
     {
       "sourceOccurrence": 162,
@@ -31671,8 +31697,10 @@
         "text": "£8,400.00"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-13-SUMMARY.md: actual persisted reference/date/type/status/nullable paid/reserve in policy Claims table; final source reconciliation09-17."
+      ]
     },
     {
       "sourceOccurrence": 163,
@@ -31689,8 +31717,10 @@
         "text": "£0.00"
       },
       "ownerPlan": "09-13",
-      "runtimeStatus": "not-implemented-in-phase9",
-      "verification": []
+      "runtimeStatus": "implemented-final-source-acceptance-pending",
+      "verification": [
+        "09-13-SUMMARY.md: actual persisted reference/date/type/status/nullable paid/reserve in policy Claims table; final source reconciliation09-17."
+      ]
     }
   ],
   "branches": [

@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1–8 complete;93 currently defined implementation plans verified. Phase9 incident forms09-12 are complete;09-13 claims handoffs are active; the13-phase MVP remains in progress.
+**Status:** Autonomous progression authorised. Phases1–8 complete;94 currently defined implementation plans verified. Phase9 claims handoffs09-13 are complete;09-14 MID submissions are active; the13-phase MVP remains in progress.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
@@ -198,7 +198,7 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 - [x] 09-10 — Deliver messages and immutable document packs (wave 10, after09-09).
 - [x] 09-11 — Resolve historical incident occurrence with honest precision (wave 11, after09-10).
 - [x] 09-12 — Implement saved Motor Trade and commercial incident forms (wave 12, after09-11).
-- [ ] 09-13 — Persist claims handoffs and administrator summaries (wave 13, after09-12).
+- [x] 09-13 — Persist claims handoffs and administrator summaries (wave 13, after09-12).
 - [ ] 09-14 — Apply and recover exact Motor Trade MID submissions (wave 14, after09-13).
 - [ ] 09-15 — Complete effective-dated cancellation operational consequences (wave 15, after09-14).
 - [ ] 09-16 — Connect inherited operational obligations and persistent demo (wave 16, after09-15).
@@ -295,7 +295,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 6. Underwriting and first policy issue | 14/14 | Complete | 2026-09-17 |
 | 7. Policy lifecycle and history | 16/16 | Complete    | 2026-09-19 |
 | 8. Commercial Combined back office | 16/16 | Complete | 2026-09-21 |
-| 9. Tasks, documents, communication and incidents | 7/18 | In progress | — |
+| 9. Tasks, documents, communication and incidents | 13/18 | In progress | — |
 | 10. Accounting and insurer reporting | 0/TBD | Not started | — |
 | 11. Configuration and account administration | 0/TBD | Not started | — |
 | 12. Dashboards, search and reports | 0/TBD | Not started | — |

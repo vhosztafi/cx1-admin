@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Phase9 plan09-12 complete; executing09-13 claims handoffs and summaries.
-last_updated: "2026-09-22T12:41:13.564942+00:00"
-last_activity: "2026-09-22 — 09-12 complete;10unique/4realSQL,13MT/14CC browser checks,417root/196frontend; executing09-13."
+stopped_at: Phase9 plan09-13 complete; executing09-14 MID submissions.
+last_updated: "2026-09-22T13:44:58.016025+00:00"
+last_activity: "2026-09-22 — 09-13 complete;1280unique/4realSQL,19MT/20CC browser checks,420root/198frontend; executing09-14."
 progress:
   total_phases: 13
   completed_phases: 8
   total_plans: 99
-  completed_plans: 93
+  completed_plans: 94
   percent: 62
 ---
 
@@ -25,13 +25,13 @@ Current focus: Phase9 tasks, documents, communication and incidents.
 ## Current Position
 
 Phase: 9 of13
-Plan: 13 of18 — claims handoffs and administrator summaries
+Plan: 14 of18 — Motor Trade MID submissions
 09-06 complete:72unique cases/7realSQL/no skips in.local/phase9-06-final-strict,412root and15 independent parsed PDFs with multi-page visual review. Future templates are additive; migration protects retained rows. No verification process remains running; see09-06-SUMMARY.
-Status: Executing09-13.09-12 complete; see09-12-SUMMARY. No SQL/browser acceptance remains active.
+Status: Executing09-14.09-13 complete; see09-13-SUMMARY. No SQL/browser acceptance remains active.
 Last activity: Phase8 completed2026-09-21; all16 summaries and08-VERIFICATION pass. Final strict gate1511 unique cases/383 realSQL/no skips and exact420-case integration inventory;399root/172frontend, commercial5/5 and retained servicing17/17 plus underwriting pass. No verification process remains running. Phase9 task SQL/API checks are complete:32 focused cases/3 realSQL,411root and57final contract checks. 09-03 task UI passed29focused cases/2realSQL and16browserchecks plus SQL readback;411root177frontend, build/lint/typecheck pass.
 09-04:41unique strict passes/8realSQL, all8typed adapters/fivefamilies, hosted dispatcher and18browserchecks plus SQL readback,411root177frontend54contracts; build/lint/typecheck pass. OPS-02 complete; no acceptance process remains running.
 09-05:47unique strict passes/4realSQL,8filesystem cases, all3legacy evidence bridges, hosted finalization and API host restart,412root55contracts; OpenAPI valid. Current gate.local/phase9-05-final-strict. No verification process remains running. OPS-05 history/UI obligations remain09-07/08.
-Progress: eight of13 phases complete;93/99 currently defined plans complete. Later phases still need detailed plans; the MVP is not100% complete.
+Progress: eight of13 phases complete;94/99 currently defined plans complete. Later phases still need detailed plans; the MVP is not100% complete.
 
 ## Decisions and boundaries
 
@@ -43,7 +43,7 @@ Progress: eight of13 phases complete;93/99 currently defined plans complete. Lat
 
 ## Next work
 
-Execute09-13 claims handoffs and administrator summaries, then remaining sequential plans. Read09-12-SUMMARY,09-13-PLAN and09-13-INTEGRATION-NOTES. Plans09-01 through09-12 are implemented and verified. No retained Phase9 demo migration has run; do not repeat accepted SQL suites.
+Execute09-14 MID submissions, then remaining sequential plans. Read09-13-SUMMARY,09-14-PLAN and09-14-INTEGRATION-NOTES. Plans09-01 through09-13 are implemented and verified. No retained Phase9 demo migration has run; do not repeat accepted SQL suites.
 
 ## Evidence and continuity
 
