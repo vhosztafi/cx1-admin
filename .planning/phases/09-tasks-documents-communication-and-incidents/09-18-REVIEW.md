@@ -1,28 +1,52 @@
 ---
 phase: 09
 plan: '18'
-status: in-progress
+status: pending-runtime-gates
 ---
 
-# Final verification review
+# Final acceptance review — not yet a pass
 
-Current full regression v4 runs in session64243 against production1c7b285/source9f1637c. Its exact source/assembly hashes and550-case inventory are retained in `.local/phase9-final-v4-start.json`; output is `.local/phase9-final-v4-sql.log`. An active process or discovered inventory is not passing evidence. Previous full attempts current/reviewed/v3 were interrupted to fix query entry, selected-version document requests and agency-sharing open items; retain them as diagnostic evidence only.
+Prepared while the complete v4 diagnostic is still running. Plan17 remains active; this review does not complete either plan or any requirement. The canonical continuation is `.local/phase9-v4-compatibility-repair/report.json`.
 
-| Gate | Evidence and current status |
-| --- | --- |
-| Backend units |1337passed in `.local/phase9-17-agency-response-all-unit/unit.trx`, copied byte-for-byte to v4/unit. Counted once. |
-| Full integration |550discovered, including485realSQL/process-restart. Session64243 active; final TRX and strict inventory/source validation pending. |
-| Root/frontend/build |421root,204frontend,lint/typecheck,current manifest-bound production UI/API build andOpenAPI passed. See09-17 review/checkpoint for reports. |
-| Agency response scope/lifecycle |MT/commercial terms and explicit delivered-message tracking/closure passed scoped SQL; both-product browser2/2 with22checks each and SQL readback. Retained migration preserved74892original rows/175tables/167files. |
-| Source review |Original118control/509display/33commercial/10branch denominators preserved; supplemental13raw agency open-item displays mapped independently. Final current runtime evidence reconciliation pending. |
-| Operational collector |Queued after full regression, strict source/inventory and legacy accounting; validates actual current fingerprinted browser/SQL reports. No duplicate25-case suite. |
-| Commercial/servicing SQL browsers |Five commercial and ten servicing cases are included in the550-case inventory. Reuse actual full-run results with names/IDs/timestamps and TRX hash; no synthetic reports or claim of repeated execution. |
-| Retained journeys |Thirteen live servicing stages plus original underwriting aggregate are queued sequentially after the operational collector. |
-| Demo preservation |Earlier two initializations preserved74856rows/175tables/167files; subsequent additive response migration preserved74892rows/175tables/167files. Final fresh snapshot/two initializations/restart/readbacks remain pending after retained journeys. |
-| Human UAT |Unperformed. Engineering evidence does not substitute for business or assistive-technology acceptance. |
+## Evidence integrity
 
-`.local/phase9-final-v4-check.ps1` requires successful unchanged completion, verifies every captured runtime source hash and exact discovered/executed test names, then invokes the strict no-skip/nonzero-SQL validator in a child PowerShell. Expected total1887=1337units+550integration, with485realSQL/process-restart cases. Minimums must not be reduced to accommodate failures.
+The discovered integration inventory is550 cases, including485 named RealSql or RealApiProcessRestart. Current unchanged production has1337 passed unit cases. Reused unit evidence must remain byte-identical and count once. The strict checker compares every discovered and executed integration name, rejects skips and requires unchanged source and assembly hashes. Interrupted earlier runs and the known-failing v4 diagnostic cannot count as final acceptance.
 
-Guarded continuation session44048 (`.local/phase9-final-v4-followthrough.ps1`) waits for this exact finish marker before sequential strict validation, legacy case accounting, operational collector, retained servicing and retained underwriting. Its report is `.local/phase9-final-v4-followthrough/report.json`; it stops on the first failure. Do not duplicate any queued acceptance stage. Final preservation and goal-backward review remain outside this continuation.
+The diagnosed regression is in older migration compatibility assertions: current Motor Trade issue now retains initial MID work, so the newer52024 retention guard rejects downgrade before the old547 template constraint. The prepared test correction verifies the actual applicable guard and exact retained template/MID rows; it does not weaken production protection or delete history. All complete diagnostic failures must match the reviewed cause before automatic correction. Fourteen focused cases and a fresh complete inventory remain required afterward.
 
-Runtime/UI/contracts/scripts remain frozen during the full run. Preview API88392/web2432 use the original keys/files and current acceptance build. Verify identity before any later process stop. All original demo rows, issued versions, journals, document bytes and frontend-code remain preserved. POL-01 remains partial throughPhase10. CC-05/OPS completion requires actual final evidence; no phase completion is asserted here.
+Existing bounded results remain:421 root tests,204 frontend tests, lint/typecheck, manifest-bound production UI/API builds and OpenAPI passed; unit source is `.local/phase9-17-agency-response-all-unit/unit.trx`. Both-product agency response browsers passed22 checks each plus SQL readback. Five commercial and ten servicing SQL/browser cases are members of the full550 inventory and are reused by exact name/result identity, never represented as newly rerun cases. Thirteen live retained servicing stages and the original underwriting aggregate run afterward. The expected strict total is1887 unique cases; it must not be reduced to accommodate failures.
+
+Diagnostic64243 retains production1c7b285/source9f1637c hashes in `.local/phase9-final-v4-start.json`. Older continuations44048/80151 must stop without stages on its failed result. Repair57391 then owns the focused test-only correction, v5 and all sequential continuations. Its report is authoritative; no duplicate acceptance run should be launched. Preview identities remain API88392/web2432 until the verified restart updates `.local/phase9-16-preview-pids.json`.
+
+## Requirement-to-runtime review map
+
+| Requirement | Concrete acceptance owner | Remaining final evidence |
+| --- | --- | --- |
+| OPS-01 | OperationalTaskCommand/Api/BrowserTests, TaskContextAcceptance and DriverTask tests; saved task and related-record navigation | Current full TRX, task collector and retained record readback |
+| OPS-02 | OperationalWorkflowUnderwriting/Servicing/Agency/Match tests and concurrent job workflow tests | Current full TRX; prior09-04 completion remains bounded evidence |
+| OPS-03 | OperationalCommunicationTests/AttachmentTests, both-product communication browser and agency-response tests | Current full TRX/collector, retained response request readback after restart |
+| OPS-04 | OperationalPdfSql/Servicing/Template tests; quote, servicing, cancellation and regeneration document tests | Current full TRX/collector plus retained parsed/rendered PDF evidence already recorded in09-06/16 |
+| OPS-05 | OperationalFileApi/Command/Metadata/Legacy and DocumentUpload/TaskAttachment tests | Current full TRX, ready-byte download checks, actual file hashes across initialization/restart |
+| OPS-06 | OperationalDeliveryPack/Recovery/Revocation tests and both-product communication browsers | Current full TRX/collector; retained six-failure/seventh-success identities and SQL readback |
+| OPS-07 | OperationalOccurrence/Incident/Claims/Recovery tests, historical context and both-product browsers | Current full TRX/collectors; saved MT/CC incident and administrator result readbacks |
+| OPS-08 | OperationalMid/Servicing/Cancellation/Recovery/Browser tests and commercial exclusion | Current full TRX/collector; original MID intent/work/submission and retry history after restart |
+| CC-05 | Commercial incident/claims facts and product-specific document generation/delivery | Same current commercial operational evidence; do not close from Phase8 payloads alone |
+| POL-01 | Persisted policy task/document/note/message/incident entry points | Phase9 portion only; finance remains Phase10 and the compound requirement stays open |
+
+The source denominator remains62 direct controls,34 explicit inherited controls,118 selected controls,509 display occurrences,33 commercial aliases and10 branches, plus13 separately retained inherited agency-open-item displays. Final status requires the actual current-source collectors, not just this map or static path existence.
+
+## Preservation and acceptance ordering
+
+Reviewed the queued sequence: strict inventory/source check; reused exact legacy cases; operational evidence collectors; retained servicing and underwriting; recheck source; verified-owned preview shutdown; two complete additive initializations with all captured business-row and key/document-file fingerprints; restart in finally; health and actual retained navigation/API/SQL readbacks. SQL and browser acceptance remain sequential. Process identity and listener ownership must match before stopping either preview process.
+
+The initialization helper refuses an already-used evidence directory, uses the original demo password without printing it, and requires the preview workers to be stopped before capture. It compares a canonical fingerprint containing table/column/key identities, every captured row hash and file path/hash after each initialization. Final counts must come from the resulting report; the earlier74892-row/175-table/167-file migration proof is not a substitute.
+
+## Open items and limits
+
+- Complete diagnostic, reviewed correction, focused regression and fresh full regression are pending.
+- Current operational/retained aggregates and final preservation/restart are pending.
+- Final source-ledger statuses,09-17/18 summaries and goal verification must be written from those actual reports.
+- 09-UI-REVIEW records four nonblocking refinements for Phase13; no unresolved HIGH/CRITICAL product finding is currently identified, but final regression remains a blocking acceptance gate.
+- Human business and assistive-technology UAT, hosted CI, Docker runtime, real provider certification and production deployment are not performed.
+- Demo retry scheduling was compressed for two retained jobs. Genuine attempts and stable identities are verified; elapsed real-duration backoff is not claimed.
+- Preserve frontend-code, original demo keys/files and the inherited next-env.d.ts/tsconfig.json edits.

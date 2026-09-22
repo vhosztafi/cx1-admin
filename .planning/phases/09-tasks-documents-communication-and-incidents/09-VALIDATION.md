@@ -9,7 +9,7 @@ created: 2026-09-21
 
 # Phase 9 validation strategy
 
-Research-derived strategy with18 sequential plans and36 mapped tasks. Plans01–16 have bounded acceptance recorded in their summaries (01 is schema/source-only; later slices include runtime evidence). Plan17 source fixes have focused SQL/browser proof; the final549-case integration run and complete phase verification remain pending. nyquist_compliant/wave_0_complete remain false until the final infrastructure/coverage audit and outcomes justify them. Commands in the planning matrix below describe the original intended checks; each completed summary records the actual implemented names, unique result inventory, failures and final evidence. Historical slice acceptance does not substitute for the final current-source run.
+Research-derived strategy with18 sequential plans and36 mapped tasks. Plans01–16 have bounded acceptance recorded in their summaries (01 is schema/source-only; later slices include runtime evidence). Plan17 source fixes have focused SQL/browser proof; the current550-case integration diagnostic has known older migration-test failures and complete phase verification remains pending. The guarded test correction and fresh full regression must pass before acceptance. nyquist_compliant/wave_0_complete remain false until the final infrastructure/coverage audit and outcomes justify them. Commands in the planning matrix below describe the original intended checks; each completed summary records the actual implemented names, unique result inventory, failures and final evidence. Historical slice acceptance does not substitute for the final current-source run.
 
 ## Test infrastructure
 
