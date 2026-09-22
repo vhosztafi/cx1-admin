@@ -1,12 +1,14 @@
 ---
 phase: 09
 status: in-progress
-reviewed_commit: a2eaf0c
+reviewed_commit: ae51811
 ---
 
 # Operational source audit — working findings
 
-This is a source comparison in progress, not a passed plan17 or phase verification. Plan16's current acceptance session68436 is running against commit a2eaf0c. Application, API and existing browser-helper sources stay unchanged until it finishes. New standalone regression tests are preparation for the findings below.
+This is a source comparison in progress, not a passed plan17 or phase verification. The findings below retain their original discovery context; current status is recorded here and in the checkpoint. Plan16 is complete. Commits4608c61/d827548 resolve saved claims fields/context, linked task records, inherited navigation, the underwriting view and personal task measures. Focused tests and23retained entry checks have passed. Query correspondence is now committed d811fc6 and passed2SQL/browser cases (18checks per product), plus23retained entry/390px checks. No implementation gap remains identified by this review; final current regression and evidence collection remain pending. The full549-case regression53019 was deliberately interrupted early when that gap was found; it is not an acceptance result.
+
+The ledger now contains individual sourceReview entries for109Phase9 controls,509global display occurrences,33commercial occurrences and10branches. Commercial occurrence indices belong to a different original inventory and are matched by exact raw source object to global indices, not by coincidental index equality.09-17-DISPLAY-REVIEW documents the reviewed field bindings and explicit semantic changes. Runtime acceptance statuses remain pending until final current reports pass.
 
 ## Preserved scope
 
@@ -16,7 +18,7 @@ The original ledger remains unchanged:62direct controls,34explicit inherited con
 | --- | ---: | --- | --- |
 | Policy |117|RecordTasks, RecordDocuments, RecordCommunications, RecordIncidents, PolicyRiskHistory, policy chronology|Task lists and direct Claims/Notes/Messages links now have retained evidence. Claims handler/context gaps below remain. Current document/communication/incident refresh pending.|
 | Quote |33|RecordTasks, RecordDocuments, Notes|Actual source-quote task lists and document/note histories exist; match each state/file occurrence to current evidence.|
-| Task queues |120|TaskList, TaskSummaryEndpoints, TaskDiscoveryEndpoints|Personal/team/creator/completed queues, filters, paged saved rows, atomic bulk actions and scoped KPIs. KPI labels explicitly say all accessible tasks; personal values remain obtainable through the My open queue and filters. Do not copy prototype numeric fixtures. Current task browser refreshed in68436.|
+| Task queues |120|TaskList, TaskSummaryEndpoints, TaskDiscoveryEndpoints|Personal/team/creator/completed queues, filters, paged saved rows, atomic bulk actions and scoped KPIs. Initial all-accessible KPI interpretation was insufficient; d827548 now displays personal totals and team completions. SQL RED/GREEN and19current task browser checks passed. Prototype numeric fixtures are not copied.|
 | Task detail |47|TaskDetail, TaskPresentation, WorkflowTaskProvenance, TaskAttachments|Persistent controls, source-change state, checklist/comments/events and files exist. Related agency/insured/policy context is incomplete. Generic source state must not claim delegated authority.|
 | Task modal |6|TaskCreate, TaskAssignmentField, TaskCommand|Saved parent identity, type/title/priority/due and currently eligible assignment; existing lost-response/conflict/focus regressions.|
 | Incident entry |65|IncidentEditor, IncidentFields, IncidentEvidence, historical resolver|Draft/log/handoff controls and closed product fields exist; historical policy context/direct link needs completion. Unknown/approximate facts remain distinct from fabricated certainty.|
