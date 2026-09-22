@@ -42,6 +42,10 @@ public sealed partial class ClaimsHandoffWorker(IDbContextFactory<BackOfficeDbCo
         if(!existed&&scenario=="transient-once"||scenario=="retry-required"&&lease.Attempt<=6){operation.State="transient-failed";await db.SaveChangesAsync(token);await tx.CommitAsync(token);throw Failure(JobFailure.ProviderUnavailable);}
         var now=time.GetUtcNow();var rejected=scenario=="reject";var eventId=$"operational-claims/{operation.Id:N}";
         ClaimsAdministratorSummary? summary=request.Purpose=="contact"?null:new(handoff.ProviderReference??$"CLM-DEMO-{handoff.Id:N}",eventId,now,rejected?"rejected":request.Purpose=="handoff"?"notified":"open",null,null);
+        // Explicit fictional scenario only. Default and retained unknown amounts stay unknown.
+        if(summary is not null&&scenario=="summary-details")summary=summary with{Status="open",Paid="0.00",Reserved="6500.00",
+            Liability="Not yet determined by administrator",Incurred="6500.00",RecoveryExpected="Recovery enquiries pending",
+            ExcessApplied="750.00",MovementNote="Security footage requested"};
         var outcome=new ClaimsProviderOutcome(operation.Id,eventId,rejected?"rejected":"acknowledged",now,summary);
         operation.State=rejected?"rejected":"succeeded";operation.CompletedAt=now;operation.Result=ClaimsSnapshots.Serialize(outcome);
         Validate(operation,outcome,request,handoff,now);await db.SaveChangesAsync(token);await tx.CommitAsync(token);

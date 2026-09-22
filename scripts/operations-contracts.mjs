@@ -13,6 +13,7 @@ export function operationalDefinitions(){
  const d={};
  d.OpsSubjectWrite={oneOf:['agency','relationship','quote','policy','servicing-draft'].map(kind=>obj({kind:{const:kind},parentId:id}))};
  d.OpsSubject=obj({id,kind:en('agency','relationship','quote','policy','servicing-draft'),parentId:id,label:text(),href:text(500)});
+ d.OpsTaskRelatedRecord=obj({kind:en('agency','client','policy'),id,label:text(),href:text(500)});
  d.OpsAssignment={oneOf:[obj({kind:{const:'user'},ownerId:id}),obj({kind:{const:'team'},teamId:id}),obj({kind:{const:'unassigned'}})]};
  d.OpsTaskWrite=obj({subjectRecordId:id,typeCode:types,title:text(),priority:en('low','normal','high','urgent'),assignment:ref('OpsAssignment'),dueOn:date},['subjectRecordId','typeCode','title','priority','assignment']);
  d.OpsTaskUpdateWrite=obj(Object.fromEntries(Object.entries(d.OpsTaskWrite.properties).filter(([key])=>key!=='subjectRecordId')),['typeCode','title','priority','assignment']);
@@ -25,6 +26,7 @@ export function operationalDefinitions(){
  d.OpsTextWrite=obj({body:text(8000)});
  d.OpsWorkflowProvenance=obj({ruleCode:text(64),ruleVersionId:id,ruleVersion:{type:'integer',minimum:1},ruleTitle:text(200),sourceKind:en('quote-referral','servicing-referral','quote-query','servicing-query','match-information-request','policy-term','agency-follow-up','job-exception'),sourceEventId:id,createdAt:instant,sourceCondition:en('outstanding','resolved','not-due','unavailable'),sourceChanged:bool});
  d.OpsTask=obj({id,etag,subject:ref('OpsSubject'),assignmentLabel:text(),createdByLabel:text(),reference:text(40),...d.OpsTaskWrite.properties,state:states,createdBy:id,createdAt:instant,updatedAt:instant,overdue:bool,checklist:arr(obj({id,label:text(),required:bool,completed:bool})),completionReason:reason,sourceChanged:bool,workflow:ref('OpsWorkflowProvenance')},['id','etag','subject','assignmentLabel','createdByLabel','reference',...d.OpsTaskWrite.required,'state','createdBy','createdAt','updatedAt','overdue','checklist','sourceChanged']);
+ d.OpsTask.properties.relatedRecords=arr(ref('OpsTaskRelatedRecord'),0,3);d.OpsTask.required.push('relatedRecords');
  d.OpsTaskEvent=obj({id,taskId:id,sequence:{type:'integer',minimum:1},kind:text(60),reason,actorLabel:text(),recordedAt:instant},['id','taskId','sequence','kind','actorLabel','recordedAt']);
  d.OpsComment=obj({id,taskId:id,body:text(8000),authorLabel:text(),createdAt:instant});
  d.OpsNote=obj({id,subjectRecordId:id,body:text(8000),authorLabel:text(300),createdAt:instant});
@@ -51,10 +53,15 @@ export function operationalDefinitions(){
  d.OpsIncidentDescription=obj({description:text(8000)});
  d.OpsIncidentRevision=obj({id,incidentId:id,number:{type:'integer',minimum:1},draft:ref('OpsIncidentDraftWrite'),contentHash:hash,reason,authorLabel:text(),createdAt:instant});
  d.OpsIncidentSubjectOptions=obj({incidentId:id,revisionId:id,resolutionId:id,versionId:id,sourceHash:hash,vehicles:arr(obj({id,label:text(1000)}),0,1000),drivers:arr(obj({id,label:text(1000)}),0,1000),locations:arr(obj({id,label:text(1000)}),0,1000),occupations:arr(obj({id,label:text(1000)}),0,1000),coverCodes:arr(text(100))});
+ d.OpsIncidentSubjectOptions.properties.policyContext=obj({reference:text(40),insuredName:text(200),href:text(500),sections:arr(obj({code:text(100),coverLevel:{anyOf:[text(100),{type:'null'}]},limit:{anyOf:[amount,{type:'null'}]},excess:{anyOf:[amount,{type:'null'}]}},['code']))});
+ d.OpsIncidentSubjectOptions.required.push('policyContext');
  d.OpsIncidentHandoff=obj({revisionId:id,resolutionId:id,providerId:id});
  d.OpsClaimsSummary=obj({id,incidentId:id,handoffId:id,asOf:instant,receivedAt:instant,status:en('notified','open','closed','rejected'),paid:{anyOf:[amount,{type:'null'}]},reserved:{anyOf:[amount,{type:'null'}]},currency:{const:'GBP'},providerReference:text(100)});
  d.OpsIncident.properties.administratorSummary=ref('OpsClaimsSummary');
  d.OpsClaimsProviderSummary=obj({providerReference:text(100),eventId:text(200),asOf:instant,status:en('notified','open','closed','rejected'),paid:{anyOf:[amount,{type:'null'}]},reserved:{anyOf:[amount,{type:'null'}]},currency:{const:'GBP'}});
+ const providerDetails={liability:text(300),incurred:amount,recoveryExpected:text(1000),excessApplied:amount,movementNote:text(2000)};
+ for(const [key,value] of Object.entries(providerDetails))for(const schema of [d.OpsClaimsSummary,d.OpsClaimsProviderSummary])schema.properties[key]={anyOf:[value,{type:'null'}]};
+ d.OpsIncident.properties.administratorName={anyOf:[text(300),{type:'null'}]};
  d.OpsClaimsSummary.properties.providerEventId=text(200);d.OpsClaimsSummary.required.push('providerEventId');
  d.OpsClaimsEvidence=obj({versionId:id,name:text(255),mediaType:en('application/pdf','image/png','image/jpeg'),length:{type:'integer',minimum:1,maximum:20971520},sha256:hash});
  d.OpsCommercialIncidentProjection=obj({format:{const:'commercial-incident-2'},policyId:id,versionId:id,sourceContentHash:hash,occurrence:ref('OpsOccurrence'),applicability:ref('OpsOccurrenceWindow'),knownAt:instant,subject:ref('OpsCommercialSubject')});

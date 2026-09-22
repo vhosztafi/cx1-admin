@@ -43,7 +43,7 @@ function TaskEditor({ task, actorId, refresh }: { task: TaskView; actorId: strin
       <ul>{review.checklist.map(item => <li key={item.id}>{item.label}: {item.completed ? 'Complete' : 'Incomplete'}{item.required ? ' (required)' : ''}</li>)}</ul>
       <div className="operations-actions"><button className="button" onClick={() => { setBaseline(review); setReview(undefined); }}>Keep my inputs against this saved version</button><button className="button" onClick={refresh}>Discard form and load saved version</button></div></Panel>}
     <nav className="section-tabs" aria-label="Task sections"><button className="button" aria-pressed={tab === 'task'} onClick={() => setTab('task')}>Task</button><button className="button" aria-pressed={tab === 'linked'} onClick={() => setTab('linked')}>Linked records</button></nav>
-    {tab === 'linked' && <Panel title="Linked records"><p className="match-copy"><Link href={task.subject.href}>{task.subject.label}</Link> · {task.subject.kind.replaceAll('-', ' ')}</p><p className="match-copy">Task actions record follow-up work. Open the linked record to review its current insurance details and decisions.</p></Panel>}
+    {tab === 'linked' && <Panel title="Linked records"><TaskRecordLinks task={task}/><p className="match-copy">Task actions record follow-up work. Open the linked record to review its current insurance details and decisions. Underwriting authority is checked in that record when a decision is made.</p></Panel>}
     <div className="task-detail-grid" hidden={tab !== 'task'}><div>
       <Panel title="Task details"><form className="task-form" onSubmit={event => { event.preventDefault(); prepare('update', { title, typeCode: type, priority, assignment, ...(due ? { dueOn: due } : {}) }, 'Save task', `Update ${task.reference} with these details. Owner: ${ownerLabel}.`); }}>
         <fieldset disabled={terminal}><label>Task title<input required maxLength={300} value={title} onChange={event => setTitle(event.target.value)} /></label>
@@ -62,7 +62,12 @@ function TaskEditor({ task, actorId, refresh }: { task: TaskView; actorId: strin
       </form></Panel>
       <Panel title="Add internal comment"><form className="task-form" onSubmit={event => { event.preventDefault(); prepare('comment', { body: comment }, 'Add comment', `Save this internal comment on ${task.reference}.`); }}><label>Comment<textarea aria-label="Comment" required maxLength={8000} value={comment} onChange={event => setComment(event.target.value)} /></label><button className="button" type="submit">Add comment</button></form></Panel>
       <TaskHistory taskId={task.id} kind="comments" /><TaskHistory taskId={task.id} kind="events" />
-    </div><aside><Panel title="Ownership and due date"><dl className="task-rail-facts"><dt>Owner</dt><dd>{baseline.assignmentLabel}</dd><dt>Due date</dt><dd>{baseline.dueOn ?? 'No due date'}</dd><dt>Priority</dt><dd>{taskPriorities.find(([code]) => code === baseline.priority)?.[1]}</dd></dl></Panel><Panel title="Linked record"><p className="match-copy"><Link href={task.subject.href}>{task.subject.label}</Link></p><p className="match-copy">{task.subject.kind.replaceAll('-', ' ')}</p></Panel><TaskAttachments task={baseline} actorId={actorId} saved={refresh}/></aside></div>
+    </div><aside><Panel title="Ownership and due date"><dl className="task-rail-facts"><dt>Owner</dt><dd>{baseline.assignmentLabel}</dd><dt>Due date</dt><dd>{baseline.dueOn ?? 'No due date'}</dd><dt>Priority</dt><dd>{taskPriorities.find(([code]) => code === baseline.priority)?.[1]}</dd></dl></Panel><Panel title="Linked record"><TaskRecordLinks task={task}/></Panel><TaskAttachments task={baseline} actorId={actorId} saved={refresh}/></aside></div>
     {pending && <TaskCommand key={pending.command.key} request={pending} actorId={actorId} close={() => setPending(undefined)} saved={() => { setPending(undefined); refresh(); }} />}
   </>;
+}
+
+function TaskRecordLinks({task}:{task:TaskView}){
+  return <><p className="match-copy"><Link href={task.subject.href}>{task.subject.label}</Link> · {task.subject.kind.replaceAll('-', ' ')}</p>
+    {task.relatedRecords?.map(record=><p className="match-copy" key={`${record.kind}:${record.id}`}><Link href={record.href}>{record.kind==='agency'?'Agency':record.kind==='client'?'Insured account':'Insured policy'} · {record.label}</Link></p>)}</>;
 }

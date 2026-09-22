@@ -85,7 +85,14 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Equal(JobFailure.ProviderTimeout,(await Assert.ThrowsAsync<ClaimsWorkerException>(()=>worker.ExecuteProvider(refreshLease))).Failure);
         var lateOutcome=await worker.ExecuteProvider(refreshLease);Assert.NotNull(lateOutcome);
         var summaryId=await db.Set<ClaimsSummary>().Select(x=>x.Id).SingleAsync();Assert.Equal(52000,(await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ClaimsSummary SET SummaryJson=N'{{}}' WHERE Id={summaryId}"))).Number);
-        Assert.Equal(52000,(await Assert.ThrowsAsync<SqlException>(()=>db.GetService<IMigrator>().MigrateAsync("20260922111525_OperationalIncidents"))).Number);
+        // Later MID/cancellation guards can reject a full downgrade first. Test
+        // the actual claims migration guard without mutating unrelated history.
+        var migrations=db.GetService<IMigrationsAssembly>();
+        var migration=migrations.CreateMigration(migrations.Migrations["20260922125221_OperationalClaims"],db.Database.ProviderName!);
+        var guard=migration.DownOperations.OfType<Microsoft.EntityFrameworkCore.Migrations.Operations.SqlOperation>().First();
+        var downgrade=await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlRawAsync(guard.Sql));
+        Assert.Equal(52000,downgrade.Number);Assert.Contains("Cannot remove retained claims history",downgrade.Message);
+        Assert.Equal(1,await db.Set<ClaimsSummary>().CountAsync());
         await db.Set<StaffUser>().Where(x=>x.Id==f.Underwriter.UserId).ExecuteUpdateAsync(setters=>setters.SetProperty(x=>x.State,"suspended"));
         Assert.Equal(InboxApplication.Applied,await worker.Apply(refreshLease,lateOutcome));Assert.Equal(1,await db.Set<ClaimsSummary>().CountAsync());
         Assert.Equal("claims-context-unavailable",await db.Set<OutboxWork>().Where(x=>x.Id==refreshRequest.WorkId).Select(x=>x.ErrorCode).SingleAsync());

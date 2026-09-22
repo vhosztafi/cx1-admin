@@ -16,7 +16,7 @@ public static class OperationalClaimsSeed
     {
         try{using var json=JsonDocument.Parse(setting.Values);var root=json.RootElement;var fields=root.EnumerateObject().Select(x=>x.Name).ToArray();
             if(setting.Scope!=ClaimsHandoffService.WorkKind||fields.Length!=4||fields.Distinct().Count()!=4||root.GetProperty("demo").ValueKind!=JsonValueKind.True||root.GetProperty("kind").GetString()!=ClaimsHandoffService.WorkKind||root.GetProperty("schemaVersion").GetString()!="2")return null;
-            var scenario=root.GetProperty("scenario").GetString();return scenario is "success" or "reject" or "transient-once" or "timeout-after-success" or "retry-required"?scenario:null;
+            var scenario=root.GetProperty("scenario").GetString();return scenario is "success" or "reject" or "transient-once" or "timeout-after-success" or "retry-required" or "summary-details"?scenario:null;
         }catch(Exception e)when(e is JsonException or InvalidOperationException or KeyNotFoundException){return null;}
     }
 }

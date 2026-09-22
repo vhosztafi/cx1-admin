@@ -27,11 +27,16 @@ if(!process.argv.includes('--worker')){
   const savedResponse=await page.request.get(f.apiOrigin+'/api/v1/tasks/'+f.taskId);assert.equal(savedResponse.status(),200);
   const saved=await savedResponse.json();assert.equal(saved.id,f.taskId);
   await page.getByRole('heading',{name:saved.title,exact:true}).waitFor();await page.getByText(' / '+saved.reference,{exact:false}).first().waitFor();assert.deepEqual(errors,[]);
+  await page.goto(f.webOrigin+'/policies/'+f.policyId);await page.getByRole('tab',{name:'Drivers',exact:true}).click();await page.locator(`[data-risk-item-id="${f.driverId}"]`).click();
+  await page.getByRole('region',{name:'Driver referral tasks',exact:true}).getByRole('link',{name:'Chase agency',exact:true}).click();await page.waitForURL(f.webOrigin+'/policies/'+f.policyId+'?tab=Messages');
+  await page.getByRole('heading',{name:'Messages',exact:true}).waitFor();
   await page.goto(f.webOrigin+'/drafts/'+f.draftId);
   const proposed=page.getByRole('region',{name:'Named driver changes',exact:true});await proposed.waitFor();
   const proposedLink=proposed.getByRole('link',{name:/Open referral task/});await proposedLink.waitFor();assert.equal(await proposedLink.getAttribute('href'),'/tasks/'+f.taskId);
   await proposedLink.focus();await proposedLink.scrollIntoViewIfNeeded();await page.screenshot({path:f.output+'/proposed-driver-task.png'});
   await page.keyboard.press('Enter');await page.waitForURL(f.webOrigin+'/tasks/'+f.taskId);await page.getByRole('heading',{name:saved.title,exact:true}).waitFor();assert.deepEqual(errors,[]);
+  await page.goto(f.webOrigin+'/drafts/'+f.draftId);await page.getByRole('region',{name:'Named driver changes',exact:true}).getByRole('link',{name:'Chase agency',exact:true}).click();
+  await page.waitForURL(f.webOrigin+'/policies/'+f.policyId+'?tab=Messages');await page.getByRole('heading',{name:'Messages',exact:true}).waitFor();assert.deepEqual(errors,[]);
   await writeFile(f.output+'/browser-report.json',JSON.stringify({passed:true,sourceHash,taskId:f.taskId,policyId:f.policyId,driverId:f.driverId,draftId:f.draftId,errors},null,2));
  }catch(error){await writeFile(f.output+'/failure.json',JSON.stringify({name:error.name,message:error.message.split('Call log:')[0]}));await page.screenshot({path:f.output+'/failure.png',fullPage:true}).catch(()=>{});throw error;}finally{await page.unrouteAll({behavior:'ignoreErrors'});await browser.close();}
 }

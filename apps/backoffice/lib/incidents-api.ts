@@ -1,6 +1,6 @@
 import { QuoteError, validQuoteEtag } from './quotes.ts';
 import { validTaskId } from './tasks-api.ts';
-import type { OpsIncident, OpsIncidentDraftWrite, OpsOccurrenceResolution } from '../../../contracts/generated/operations.ts';
+import type { OpsIncident, OpsIncidentDraftWrite, OpsOccurrenceResolution, OpsIncidentSubjectOptions } from '../../../contracts/generated/operations.ts';
 export type { OpsIncident, OpsIncidentDraftWrite, OpsOccurrenceResolution };
 export type IncidentAction = 'create' | 'update' | 'description' | 'log' | 'occurrence' | 'occurrence-resolution';
 export type IncidentCommand = Readonly<{action:IncidentAction; url:string; method:'POST'|'PUT'; body:string; key:string; etag?:string; id:string;actorId:string}>;
@@ -40,5 +40,5 @@ function stable(value:unknown):string{
   if(value&&typeof value==='object')return '{'+Object.entries(value).sort(([a],[b])=>a.localeCompare(b)).map(([key,item])=>JSON.stringify(key)+':'+stable(item)).join(',')+'}';
   return JSON.stringify(value);
 }
-export type IncidentOptions={incidentId:string;revisionId:string;resolutionId:string;versionId:string;sourceHash:string;vehicles:Choice[];drivers:Choice[];locations:Choice[];occupations:Choice[];coverCodes:string[]};
+export type IncidentOptions=OpsIncidentSubjectOptions;
 export type Choice={id:string;label:string};

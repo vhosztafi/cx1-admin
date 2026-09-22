@@ -46,6 +46,7 @@ public sealed partial class UnderwritingRuntimeTests
         clock=new RatingClock{Current=term.EndsAt.AddDays(2)};
         var occurrenceDay=DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(version.EffectiveAt,TimeZoneInfo.FindSystemTimeZoneById("Europe/London")).DateTime).AddDays(1).ToString("yyyy-MM-dd");
         await using(var seed=await db.Database.BeginTransactionAsync()){await OperationalClaimsSeed.Seed(db);await seed.CommitAsync();}
+        db.Add(new SettingVersion{Scope=ClaimsHandoffService.WorkKind,Version=2,EffectiveFrom=clock.GetUtcNow(),Values="{\"demo\":true,\"kind\":\"operational-claims\",\"schemaVersion\":\"2\",\"scenario\":\"summary-details\"}"});await db.SaveChangesAsync();
         var boundary=new SqlCommandBoundary(factory,clock);var subject=await new TaskService(factory,boundary,clock).Register(actor,new("policy",policy.Id),"communication-browser-subject",default);
         var output=Path.Combine(root.FullName,".local/browser-evidence/claims",db.Database.GetDbConnection().Database);Directory.CreateDirectory(output);
         var store=new OperationalFileStore(Path.Combine(output,"files"),[]);var renderer=new PolicyDocumentRenderService(factory,new PolicyDocumentRenderer());
@@ -83,6 +84,12 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.Equal(file.Id,(await db.Set<IncidentEvidence>().Where(x=>x.RevisionId==incident.CurrentRevisionId).SingleAsync()).DocumentVersionId);
             var handoff=await db.Set<ClaimsHandoff>().AsNoTracking().SingleAsync();Assert.Equal("acknowledged",handoff.State);Assert.Equal(version.Id,handoff.SourceVersionId);Assert.Equal(incident.CurrentRevisionId,handoff.RevisionId);
             Assert.Equal(2,await db.Set<ClaimsSummary>().CountAsync());Assert.Equal(3,await db.Set<ClaimsRequest>().CountAsync());Assert.Equal(3,await db.Set<DemoProviderOperation>().CountAsync(x=>x.Kind==ClaimsHandoffService.WorkKind));
+            foreach(var savedSummary in await db.Set<ClaimsSummary>().AsNoTracking().ToArrayAsync())
+            {
+                using var details=JsonDocument.Parse(savedSummary.SummaryJson);
+                Assert.Equal("6500.00",details.RootElement.GetProperty("incurred").GetString());Assert.Equal("750.00",details.RootElement.GetProperty("excessApplied").GetString());
+                Assert.Equal("Not yet determined by administrator",details.RootElement.GetProperty("liability").GetString());Assert.Equal("Security footage requested",details.RootElement.GetProperty("movementNote").GetString());
+            }
             using var submitted=JsonDocument.Parse(handoff.RequestJson);Assert.Equal(file.Id,submitted.RootElement.GetProperty("evidence")[0].GetProperty("versionId").GetGuid());
             Assert.Equal(0,submitted.RootElement.GetProperty("withheldEvidenceCount").GetInt32());
             var expectedSource=Convert.ToHexStringLower(version.ContentHash);Assert.Equal(expectedSource,submitted.RootElement.GetProperty("sourceHash").GetString());

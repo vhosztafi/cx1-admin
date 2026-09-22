@@ -39,7 +39,7 @@ public sealed partial class ClaimsSummaryService(IDbContextFactory<BackOfficeDbC
         var total=await query.CountAsync(token);
         if(before is Guid cursor){var row=await query.SingleOrDefaultAsync(x=>x.Id==cursor,token)??throw CommunicationScope.BadCursor();query=query.Where(x=>x.AsOf<row.AsOf||x.AsOf==row.AsOf&&(x.ReceivedAt<row.ReceivedAt||x.ReceivedAt==row.ReceivedAt&&x.Id.CompareTo(cursor)<0));}
         var rows=await query.OrderByDescending(x=>x.AsOf).ThenByDescending(x=>x.ReceivedAt).ThenByDescending(x=>x.Id).Take(size+1).ToArrayAsync(token);
-        var items=rows.Take(size).Select(x=>{var value=JsonSerializer.Deserialize<ClaimsAdministratorSummary>(x.SummaryJson,ClaimsSnapshots.Json)!;return(object)new{x.Id,incidentId,x.HandoffId,x.AsOf,x.ReceivedAt,value.Status,value.Paid,value.Reserved,value.Currency,value.ProviderReference,providerEventId=x.ProviderEventId};}).ToArray();
+        var items=rows.Take(size).Select(x=>{var value=JsonSerializer.Deserialize<ClaimsAdministratorSummary>(x.SummaryJson,ClaimsSnapshots.Json)!;return(object)new{x.Id,incidentId,x.HandoffId,x.AsOf,x.ReceivedAt,value.Status,value.Paid,value.Reserved,value.Currency,value.ProviderReference,value.Liability,value.Incurred,value.RecoveryExpected,value.ExcessApplied,value.MovementNote,providerEventId=x.ProviderEventId};}).ToArray();
         await tx.CommitAsync(token);return new(items,total,rows.Length>size?rows[size-1].Id:null);
     }
     public async Task<CommunicationPage> Handoffs(ActorContext actor,Guid incidentId,Guid? before,int size,DateTimeOffset asOf,CancellationToken token)

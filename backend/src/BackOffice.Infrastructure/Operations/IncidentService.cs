@@ -78,16 +78,18 @@ public sealed partial class IncidentService(IDbContextFactory<BackOfficeDbContex
         var value=resolutionDocument?.RootElement.Clone();
         var missing=IncidentRules.Missing(draft.RootElement,resolution?.State??"incomplete",Subject(draft.RootElement)is not null&&resolution?.State=="resolved");
         var handoff=await db.Set<ClaimsHandoff>().AsNoTracking().SingleOrDefaultAsync(x=>x.RevisionId==revision.Id,token);
-        JsonElement? administratorSummary=null;
+        JsonElement? administratorSummary=null;string? administratorName=null;
         if(handoff is not null)
         {
+            using var submitted=JsonDocument.Parse(handoff.RequestJson);
+            administratorName=submitted.RootElement.GetProperty("administratorName").GetString();
             var summary=await db.Set<ClaimsSummary>().AsNoTracking().Where(x=>x.HandoffId==handoff.Id).OrderByDescending(x=>x.AsOf).ThenByDescending(x=>x.ReceivedAt).ThenByDescending(x=>x.Id).FirstOrDefaultAsync(token);
             if(summary is not null)
             {
                 var external=JsonSerializer.Deserialize<ClaimsAdministratorSummary>(summary.SummaryJson,ClaimsSnapshots.Json)!;
-                administratorSummary=JsonSerializer.SerializeToElement(new{summary.Id,incidentId=row.Id,summary.HandoffId,summary.AsOf,summary.ReceivedAt,external.Status,external.Paid,external.Reserved,external.Currency,external.ProviderReference,providerEventId=summary.ProviderEventId},ClaimsSnapshots.Json);
+                administratorSummary=JsonSerializer.SerializeToElement(new{summary.Id,incidentId=row.Id,summary.HandoffId,summary.AsOf,summary.ReceivedAt,external.Status,external.Paid,external.Reserved,external.Currency,external.ProviderReference,external.Liability,external.Incurred,external.RecoveryExpected,external.ExcessApplied,external.MovementNote,providerEventId=summary.ProviderEventId},ClaimsSnapshots.Json);
             }
         }
-        return new(row.Id,status,JsonSerializer.Serialize(new{id=row.Id,row.Reference,revisionId=revision.Id,draft=draft.RootElement,row.State,resolution=value,row.CreatedAt,row.UpdatedAt,missing,providerReference=handoff?.ProviderReference,administratorSummary},Json),Etag:TaskService.Etag(row.RowVersion));
+        return new(row.Id,status,JsonSerializer.Serialize(new{id=row.Id,row.Reference,revisionId=revision.Id,draft=draft.RootElement,row.State,resolution=value,row.CreatedAt,row.UpdatedAt,missing,providerReference=handoff?.ProviderReference,administratorName,administratorSummary},Json),Etag:TaskService.Etag(row.RowVersion));
     }
 }

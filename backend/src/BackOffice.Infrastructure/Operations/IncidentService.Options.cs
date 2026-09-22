@@ -23,8 +23,16 @@ public sealed partial class IncidentService
         object[] Choices(string collection,params string[] labels)=>risk.TryGetProperty(collection,out var values)?values.EnumerateArray().Select((x,index)=>(object)new{
             id=x.GetProperty("id").GetGuid(),label=ChoiceLabel(x,labels) is string label&&label.Length>0?label:$"{collection} {index+1}"
         }).ToArray():[];
-        var sections=snapshot.GetProperty("cover").GetProperty("sections").EnumerateArray().Select(x=>x.GetProperty("code").GetString()!).ToArray();
-        var result=new{incidentId=id,revisionId=row.CurrentRevisionId,resolutionId,versionId,sourceHash=source.SourceHash,
+        var sectionRows=snapshot.GetProperty("cover").GetProperty("sections").EnumerateArray().ToArray();
+        var sections=sectionRows.Select(x=>x.GetProperty("code").GetString()!).ToArray();
+        var reference=await db.Set<Policy>().Where(x=>x.Id==row.PolicyId).Select(x=>x.Reference).SingleAsync(token);
+        string? Optional(JsonElement value,string name)=>value.TryGetProperty(name,out var found)&&found.ValueKind==JsonValueKind.String?found.GetString():null;
+        var insured=snapshot.GetProperty("insured");
+        var insuredName=Optional(insured,"legalName")??ChoiceLabel(insured,["firstName","surname"]).Replace(" · "," ",StringComparison.Ordinal);
+        var policyContext=new{reference,insuredName=string.IsNullOrWhiteSpace(insuredName)?"Not recorded in this policy version":insuredName,
+            href=$"/policies/{row.PolicyId}?termId={version.TermId}&versionId={version.Id}&tab=Transactions",
+            sections=sectionRows.Select(x=>new{code=x.GetProperty("code").GetString(),coverLevel=Optional(x,"coverLevel"),limit=Optional(x,"limit"),excess=Optional(x,"excess")}).ToArray()};
+        var result=new{incidentId=id,revisionId=row.CurrentRevisionId,resolutionId,versionId,sourceHash=source.SourceHash,policyContext,
             vehicles=Choices("vehicles","registration","make","model"),drivers=Choices("drivers","firstName","surname"),locations=Choices("locations","reference","name","address.line1","address.postcode"),occupations=Choices("wages","category","occupation"),coverCodes=sections};
         await transaction.CommitAsync(token);return new(id,200,JsonSerializer.Serialize(result,Json),Etag:TaskService.Etag(row.RowVersion));
     }

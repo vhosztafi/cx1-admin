@@ -224,7 +224,7 @@ public sealed partial class TaskService(IDbContextFactory<BackOfficeDbContext> f
     private object View(OperationalTask row, object checklist, TaskPresentation presentation, WorkflowTaskProvenance? workflow)
     {
         var today = DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(time.GetUtcNow(), TimeZoneInfo.FindSystemTimeZoneById("Europe/London")).DateTime);
-        return new { row.Id, row.Reference, subjectRecordId = row.SubjectId, subject = presentation.Subjects[row.SubjectId],
+        return new { row.Id, row.Reference, subjectRecordId = row.SubjectId, subject = presentation.Subjects[row.SubjectId], relatedRecords = presentation.RelatedRecords[row.SubjectId],
             assignmentLabel = row.OwnerId is Guid owner ? presentation.Users[owner] : row.TeamId is Guid team ? presentation.Teams[team] : "Unassigned",
             createdByLabel = presentation.Users[row.CreatedBy!.Value], row.TypeCode, row.Title, row.Priority, etag = Etag(row.RowVersion),
             assignment = new TaskAssignment(row.OwnerId is not null ? "user" : row.TeamId is not null ? "team" : "unassigned", row.OwnerId, row.TeamId), row.DueOn, row.State,
