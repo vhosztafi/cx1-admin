@@ -43,7 +43,7 @@ Progress: eight of13 phases complete;97/99 currently defined plans complete. Lat
 
 ## Next work
 
-Wait for the active v7 full SQL result; run `.local/phase9-final-v7-stream-check.ps1` only after its successful finish. Then run the remaining root/frontend gates against the frozen source, reconcile each source ledger status with the individual binding and reports, and complete plan17/18 summaries, verification, requirements, roadmap and demo runbook. Keep Phase11/12 controls and POL-01's Phase10 finance portion open. Do not count interrupted gates as passes.
+Wait for the active v7 full SQL result. `.local/phase9-final-v7-followthrough.ps1` is already queued as one guarded detached helper (`.local/phase9-final-v7-followthrough/report.json`): after a successful finish it will run the streaming strict check, root/frontend gates and per-binding source reconciliation sequentially. Do not launch duplicate checks. Once its report passes, complete plan17/18 summaries, verification, requirements, roadmap and demo runbook. Keep Phase11/12 controls and POL-01's Phase10 finance portion open. Do not count interrupted gates as passes.
 
 ## Evidence and continuity
 
