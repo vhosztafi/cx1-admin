@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Phase9 v4 full64243 continues with14 migration,4 renewal-copy and2 legacy cancellation-host failures; repair-v2 will refuse before edits.
-last_updated: "2026-09-23T01:15:24.9525194+00:00"
+stopped_at: Phase9 v4 full64243 continues with17 migration,4 renewal-copy and2 legacy cancellation-host failures; repair-v2 will refuse before edits.
+last_updated: "2026-09-23T01:38:52.4282664+00:00"
 last_activity: "2026-09-22 — Full v4 found old expected547 versus correct MID retention52024; diagnostic run continues unchanged to gather all failures. Guarded follow-through will refuse this failed run."
 progress:
   total_phases: 13
