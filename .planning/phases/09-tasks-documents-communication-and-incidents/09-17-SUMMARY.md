@@ -1,0 +1,19 @@
+---
+phase: 09
+plan: '17'
+status: final-source-gate-running
+---
+
+# Source reconciliation and operational acceptance
+
+The original prototype hash and denominators were independently checked in `.local/phase9-17-source-structural-audit.json`: 118 selected controls (109 owned by Phase 9 and nine owned by Phases 11/12), 509 original display occurrences, 33 separate Commercial Combined claims occurrences, ten conditional branches, and 13 supplemental inherited agency displays. Every owned control has an individual implementation and evidence reference with existing paths. Every display and branch resolves to a semantic binding in `09-17-DISPLAY-REVIEW.md`. The nine future controls retain their owners. These structural checks are not, by themselves, runtime acceptance.
+
+The source review fixed the inherited task, document, incident, agency sharing and correspondence gaps recorded in `09-17-REVIEW.md`. Key behavior includes authorized related-record task links, historical incident context, nullable provider summary facts and append-only movements, a saved single-incident underwriting view, selected-version document request history, confirmed quote correspondence, and durable delivered-message response requests in shared agency open items. The last production feature commit is `1c7b285`; `e247fc7` and `f201f31` correct only the renewal and client browser verification scripts. No product source changed after the full v6 assembly snapshot.
+
+The full v6 native SQL run exited successfully and the streaming strict checker proved 1,337 unit plus exactly 550 discovered/executed integration cases, 485 named real SQL/process-restart cases, 1,887 unique IDs and no skips. The frozen 1,883 tracked source paths and assembly matched the start snapshot. Evidence: `.local/phase9-final-v6/strict-report.json` and the retained raw TRX. This is an implementation regression anchor; two browser-script corrections were committed after its start. The final current-source v7 run started with a fresh 1,337/1,337 unit gate and exact 550-case discovery. Its outcome must be checked before this plan is marked complete.
+
+The current operational collector passed all ten browser families and retained readbacks (`.local/operational-suite/2026-09-23T12-05-03-096Z/report.json`). The clean retained servicing collector passed 13 live stages (`.local/servicing-suite/phase9-reused-143c369e-dc85-4a5f-ab42-3b1d262fd0fd/report.json`); the ten SQL servicing cases were already members of the full v6 inventory and are not counted again. The clean underwriting collector passed four stages, including 37 quote, client and agency journeys (`.local/underwriting-suite/2026-09-23T13-17-57-077Z/report.json`). Earlier failed and interrupted attempts remain on disk. The deterministic agency notification fixture needed the owned preview worker disabled during that collector to avoid a competing dispatcher; no production behavior was changed.
+
+The retained Commercial Combined PDF pack was parsed and rendered. The old pack's final schedule and statement continuation pages have a tight top margin and missing running header; text remains readable. Newer Motor Trade and Commercial Combined schedule final pages have the expected header and margin. This is a medium artifact-specific pagination finding, recorded in `09-17-REVIEW.md`, and does not establish visual acceptance for every possible PDF. Desktop and 390px browser evidence, keyboard/focus and saved readbacks are in the named collectors. Human business and assistive-technology UAT remain unperformed.
+
+Source ledger runtime statuses and final plan disposition remain pending the exact v7 gate. The ledger must be updated per reviewed control/display/branch binding and actual evidence, without reducing any denominator or converting Phase 11/12 controls to Phase 9 ownership.
