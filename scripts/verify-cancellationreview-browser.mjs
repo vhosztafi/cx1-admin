@@ -84,13 +84,20 @@ if(!process.argv.includes('--worker')) {
    assert.equal(retryRequest.postData(),originalBody);
    await page.getByRole('heading',{name:'Issued cancellation',exact:true}).waitFor();
    await page.getByText('Demo delivery recorded',{exact:true}).waitFor();
-   const response=await page.request.get(f.apiOrigin+issueUrl);assert.equal(response.status(),200);assert.equal(response.headers()['cache-control'],'no-store');
-   const issued=await response.json();assert.equal(issued.transactionId,receipt.transactionId);assert.equal(issued.netAmount,approved.amounts.posting.invoiceDue);
+   let issued;
+   for(let attempt=0;attempt<60;attempt++){
+    const response=await page.request.get(f.apiOrigin+issueUrl);assert.equal(response.status(),200);assert.equal(response.headers()['cache-control'],'no-store');
+    issued=await response.json();
+    if(issued.consequences.some(x=>x.kind==='cancellation-notice'&&x.state==='succeeded'&&x.noticeOutcome==='demo-delivered'))break;
+    await new Promise(resolve=>setTimeout(resolve,500));
+   }
+   assert.equal(issued.transactionId,receipt.transactionId);assert.equal(issued.netAmount,approved.amounts.posting.invoiceDue);
    await capture('issued','CancellationIssuedView',issued);
    assert.deepEqual(issued.consequences.map(x=>x.id).sort(),receipt.consequenceIds.slice().sort());
    const notice=issued.consequences.filter(x=>x.kind==='cancellation-notice');
    assert.equal(notice.length,1);assert.equal(notice[0].state,'succeeded');assert.equal(notice[0].noticeOutcome,'demo-delivered');
    assert.equal(issued.consequences.filter(x=>x.state==='pending').length,2);
+   if(issued.consequences.some(x=>x.state==='failed'))await page.getByText('Action failed. Review before retrying.',{exact:true}).first().waitFor();
    await page.reload();await page.getByText('Demo delivery recorded',{exact:true}).waitFor();
    const receiptPanel=page.locator('section.panel').filter({has:page.getByRole('heading',{name:'Issued cancellation',exact:true})});
    await receiptPanel.screenshot({path:f.output+'/issued-desktop.png'});await page.setViewportSize({width:390,height:844});
@@ -111,5 +118,5 @@ if(!process.argv.includes('--worker')) {
    checks:['actual Next.js and SQL API','policy cancellation action and amend navigation','editable reason and date change calculated preview','reviewed delivered notice','lost response exact retry','distinct senior approval','reload preserves approval','abandonment retains review history and policy navigation','cover unchanged and no cash paid','390px containment and signed amounts']},null,2));
   }
  } catch(error){await page.screenshot({path:f.output+'/failure.png'}).catch(()=>{});await writeFile(f.output+'/failure.txt',String(error)+'\n'+await page.locator('body').innerText().catch(()=>''));throw error;}
- finally{await browser.close();}
+ finally{await page.unrouteAll({behavior:'wait'});await browser.close();}
 }

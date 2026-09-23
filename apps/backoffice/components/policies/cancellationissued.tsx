@@ -9,6 +9,14 @@ type Issued={draftId:string;draftEtag:string;policyId:string;policyReference:str
   consequences:{id:string;kind:string;state:string;noticeOutcome:string|null}[]};
 const names:Record<string,string>={'cancellation-notice':'Cancellation notice','cancellation-certificate-withdrawal':'Certificate withdrawal',
   'cancellation-mid-removal':'MID removal','cancellation-task-close':'Task closure'};
+function followUpDescription(item:Issued['consequences'][number]) {
+  if(item.noticeOutcome==='demo-delivered')return 'Demo delivery recorded';
+  if(item.noticeOutcome==='demo-no-recipient')return 'No recipient — attention required';
+  if(item.state==='failed')return 'Action failed. Review before retrying.';
+  if(item.state==='succeeded')return 'Action completed.';
+  if(item.state==='leased')return 'Action processing.';
+  return item.kind==='cancellation-notice'?'Awaiting demo delivery':'Queued for processing';
+}
 export function CancellationIssued({draftId}:{draftId:string}) {
   const [view,setView]=useState<Issued|null>(null),[error,setError]=useState('');
   useEffect(()=>{const controller=new AbortController();let loading=false;
@@ -28,7 +36,7 @@ export function CancellationIssued({draftId}:{draftId:string}) {
       <p><a href={`/policies/${view.policyId}?termId=${view.termId}&versionId=${view.versionId}&tab=Transactions`}>View cancellation transaction</a></p>
       <DataTable caption="Cancellation follow-up status" columns={['Action','Status']}>
         {view.consequences.map(item=><tr key={item.id}><th scope="row" style={{width:'45%',overflowWrap:'normal',wordBreak:'normal'}}>{names[item.kind]??item.kind}</th>
-          <td><span style={{whiteSpace:'nowrap'}}>{item.state}</span><p>{item.noticeOutcome==='demo-delivered'?'Demo delivery recorded':item.noticeOutcome==='demo-no-recipient'?'No recipient — attention required':item.kind==='cancellation-notice'?'Awaiting delivery':'Queued for document and task processing'}</p></td></tr>)}
-      </DataTable><p>Demo notices do not send external email. The listed document and task actions remain pending until their processors run.</p>
+          <td><span style={{whiteSpace:'nowrap'}}>{item.state}</span><p>{followUpDescription(item)}</p></td></tr>)}
+      </DataTable><p>Demo notices do not send external email. Follow-up actions show their saved status; failed actions need review.</p>
     </>:<p role="status">Loading the issued cancellation…</p>}</div></Panel>;
 }
