@@ -23,7 +23,7 @@ try{
  const prior=await readFile(output+'/active.json','utf8').then(JSON.parse).catch(e=>{if(e.code==='ENOENT')return null;throw e;});
  if(prior?.createdBy==='renewal preparation browser verification'&&fixtures.some(f=>f.policyId===prior.policyId)){
   path=`/api/v1/drafts/${prior.draftId}`;const old=await get(path);assert.equal(old.policyId,prior.policyId);assert.equal(old.proposal.reason,'Fictional renewal preparation browser journey');
-  if(old.state==='draft'){await page.goto(origin+`/drafts/${prior.draftId}`);if(old.lease?.active&&Date.parse(old.lease.expiresAt)>Date.now()){await field('Takeover or abandonment reason').fill('Resume owned fictional renewal browser proof');await button('Take over editing').click();}else await button('Acquire editing lease').click();await page.getByRole('heading',{name:'You are editing this draft',exact:true}).waitFor();await abandon();}
+  if(old.state==='draft'){await page.goto(origin+`/drafts/${prior.draftId}`);if(await button('Acquire editing lease').isEnabled())await button('Acquire editing lease').click();else {await field('Takeover or abandonment reason').fill('Resume owned fictional renewal browser proof');await button('Take over editing').click();}await page.getByRole('heading',{name:'You are editing this draft',exact:true}).waitFor();await abandon();}
  }
  for(const [index,fixture] of fixtures.entries()){
   const before=await get(`/api/v1/policies/${fixture.policyId}`);
@@ -45,7 +45,7 @@ try{
   const uploadReply=page.waitForResponse(r=>r.url().endsWith(path+'/renewal/experience/uploads')&&r.request().method()==='POST');await button('Upload experience evidence').click();assert.equal((await uploadReply).status(),201);await page.getByText('New evidence uploaded. Save the experience figures to attach it to this version.',{exact:true}).waitFor();
   for(const [name,value] of [['Observation starts','2025-09-16'],['Observation ends (exclusive)','2026-09-16'],['Number of claims','1'],['Claims paid (£)','600.00'],['Outstanding claims (£)','0.00'],['Earned premium (£)','1000.00'],['Source reference','Fictional supplied renewal statement']])await field(name).fill(value);
   await command('/renewal/experience','Save supplied experience','PUT');let experience=await get(path+'/renewal/experience');assert.equal(experience.experience.paid,'600.00');assert.equal(experience.review,null);
-  await page.reload();await field('Claims paid (£)').waitFor();assert.equal(await field('Claims paid (£)').inputValue(),'600.00');
+  await page.reload();await field('Claims paid (£)').waitFor();await page.waitForFunction(()=>document.querySelector('input[aria-label="Claims paid (£)"]')?.value==='600.00');assert.equal(await field('Claims paid (£)').inputValue(),'600.00');
   const download=await page.request.get(origin+`/api/v1/drafts/${draftId}/evidence-files/${experience.evidenceFileId}/content`);assert.equal(download.status(),200);assert.deepEqual(await download.body(),bytes);
   await button('Acquire editing lease').click();await page.getByRole('heading',{name:'You are editing this draft',exact:true}).waitFor();
   await field('Experience review reason').fill('Verified the fictional supplied claims statement and earned premium');await command(`/renewal/experience/${experience.experience.id}/reviews`,'Record experience review');
