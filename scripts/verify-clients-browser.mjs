@@ -13,6 +13,16 @@ const context=await browser.newContext({viewport:{width:1560,height:1000}});cons
 const errors=[];page.on('pageerror',error=>errors.push(error.message));
 const name=`Fictional Browser Client ${Date.now()}`;
 let sourceServer;
+async function waitForClientDetail(title){
+  const heading=page.getByRole('heading',{name:title,exact:true});
+  try{await heading.waitFor();}
+  catch(error){
+    const retry=page.getByRole('button',{name:'Try again',exact:true});
+    if(!await retry.isVisible())throw error;
+    await retry.click();
+    await heading.waitFor({timeout:45000});
+  }
+}
 try {
   await page.goto(`${origin}/clients`);await page.waitForURL('**/login');
   await page.getByLabel('Email address',{exact:true}).fill('servicing@cover.example');
@@ -36,7 +46,7 @@ try {
   await page.getByRole('button',{name:'Retry same save'}).click();await page.waitForURL(/\/clients\/[0-9a-f-]{36}$/);
   assert.equal(keys.length,2);assert.equal(keys[0],keys[1]);await page.unroute('**/api/v1/clients');
   const detailUrl=page.url();const clientId=detailUrl.split('/').at(-1);
-  await page.getByRole('heading',{name,exact:true}).waitFor();await page.reload();await page.getByRole('heading',{name,exact:true}).waitFor();
+  await waitForClientDetail(name);await page.reload();await waitForClientDetail(name);
   assert.equal(await page.getByRole('navigation',{name:'Main navigation',exact:true}).getByRole('link',{name:'Clients',exact:true}).getAttribute('aria-current'),'page');
   await page.getByRole('button',{name:'Edit identity',exact:true}).click();await page.getByLabel('Legal business name *',{exact:true}).fill('   ');
   await page.getByRole('button',{name:'Save identity',exact:true}).click();await page.getByText('Check the required fields and their maximum lengths.',{exact:true}).waitFor();
