@@ -4,8 +4,8 @@ milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
 stopped_at: Phase9 plan17 full v6 native SQL session75161 active; inspect .local/phase9-final-v6-start.json, sql.log and finish.json; do not duplicate.
-last_updated: "2026-09-23T05:33:00+00:00"
-last_activity: "2026-09-23 — Cancellation saved-status UI fix committed edd1f4e; current v6 frontend checks and two native browser cases pass. Full v6 native SQL gate active."
+last_updated: "2026-09-23T05:57:32+00:00"
+last_activity: "2026-09-23 — Full v6 native SQL gate and guarded continuation active; structural source ledger audit found no missing mappings. Saved long Commercial Combined PDF pagination finding recorded for final review."
 progress:
   total_phases: 13
   completed_phases: 8
