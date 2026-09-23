@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Phase9 v4 full64243 continues diagnostically with14 stale downgrade expectations; guarded repair-v2 session65117 will refuse the newest unreviewed case; correction not applied.
-last_updated: "2026-09-23T00:29:24.0135649+00:00"
+stopped_at: Phase9 v4 full64243 continues diagnostically with14 migration-expectation and4 renewal-browser-copy failures; repair-v2 session65117 will refuse before edits.
+last_updated: "2026-09-23T00:41:52.3558107+00:00"
 last_activity: "2026-09-22 — Full v4 found old expected547 versus correct MID retention52024; diagnostic run continues unchanged to gather all failures. Guarded follow-through will refuse this failed run."
 progress:
   total_phases: 13
@@ -43,7 +43,7 @@ Progress: eight of13 phases complete;97/99 currently defined plans complete. Lat
 
 ## Next work
 
-Review diagnostic full64243 and guarded compatibility repair-v2 session65117 without duplication. Old44048/80151 will refuse failed v4;57391 will refuse the commercial migration case;65117 will refuse the newly exposed incident migration case before edits. After the complete diagnostic, extend the reviewed test-only correction and focused inventory, then launch one replacement guarded continuation only after all older runners fail with zero stages. Inspect .local/phase9-v4-compatibility-repair-v2/report.json and checkpoint before any manual action. Unexpected failures stop the chain. Final source/goal review and completion require actual successful reports. Do not relaunch v3 or its supervisor; do not count interrupted gates as passes.
+Review diagnostic full64243 and guarded compatibility repair-v2 session65117 without duplication. Old44048/80151 will refuse failed v4;57391/65117 will refuse the later unreviewed cases before edits. After the complete diagnostic, extend the correction for the incident MID-priority assertion and four renewal-browser cases whose exact expected label predates commit8cb83c1, then launch one replacement guarded continuation only after all older runners fail with zero stages. Inspect .local/phase9-v4-compatibility-repair-v2/report.json and checkpoint before any manual action. Unexpected failures stop the chain. Final source/goal review and completion require actual successful reports. Do not relaunch v3 or its supervisor; do not count interrupted gates as passes.
 
 ## Evidence and continuity
 
