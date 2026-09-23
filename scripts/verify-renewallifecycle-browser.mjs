@@ -46,7 +46,7 @@ if(!process.argv.includes('--worker')) {
    const retry=page.waitForRequest(request=>request.url().endsWith(`/terms/${f.termId}/lapse`));await panel.getByRole('button',{name:'Retry same lapse',exact:true}).click();const repeated=await retry;
    for(const header of ['idempotency-key','if-match'])assert.equal(repeated.headers()[header],headers[header]);assert.equal(repeated.postData(),body);
   }
-  await panel.getByText('Renewal lapsed',{exact:true}).waitFor({timeout:90000});await panel.getByText('Demo notification: Delivered. No email is sent.',{exact:true}).waitFor({timeout:90000});
+  await panel.getByText('Renewal lapsed',{exact:true}).waitFor({timeout:90000});await panel.getByText('Legacy demo notification record: Delivered. No email is sent.',{exact:true}).waitFor({timeout:90000});
   const retained=await read();assert.equal(retained.lapseMode,f.automatic?'automatic':'manual');assert.equal(retained.timeline.expiringEnd,f.termEndsAt);assert.equal(retained.notificationState,'succeeded');assert.equal(retained.notificationAttempts.length,1);assert.equal(retained.notificationAttempts[0].outcome,'succeeded');
   if(!f.automatic)await capture('after','RenewalLifecycleView',retained);
   await panel.getByText('Notification attempts (1)',{exact:true}).click();await panel.scrollIntoViewIfNeeded();await page.screenshot({path:f.output+'/desktop.png'});

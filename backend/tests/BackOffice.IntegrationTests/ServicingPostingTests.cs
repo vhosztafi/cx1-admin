@@ -5,8 +5,6 @@ using BackOffice.Infrastructure.Policies;
 using BackOffice.Infrastructure.Quotes;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Xunit;
 
 namespace BackOffice.IntegrationTests;
@@ -19,8 +17,8 @@ public sealed partial class UnderwritingRuntimeTests
         var originalLines = JsonSerializer.Serialize(await db.Set<JournalLine>().AsNoTracking().OrderBy(x => x.Id).ToArrayAsync());
         var policy = await db.Set<Policy>().AsNoTracking().SingleAsync(x => x.Id == cycle.PolicyId);
         var original = await db.Set<PolicyTransaction>().AsNoTracking().SingleAsync(x => x.PolicyId == policy.Id);
-        // Upgrade an existing issued graph in place, retaining its byte-level history.
-        await db.GetService<IMigrator>().MigrateAsync("20260918115755_ServicingAccountingPeriods");
+        // Retained initial MID work prevents an unsafe downgrade; preserve the issued graph.
+        await VerifyRetainedTemplateDowngradeProtection(db, "20260918115755_ServicingAccountingPeriods", requiresTemplateGuard: false);
         await db.Database.MigrateAsync(); db.ChangeTracker.Clear();
         Assert.False(db.Database.HasPendingModelChanges());
         var rating = await db.Set<ServicingRatingResult>().AsNoTracking().SingleAsync(x => x.Id == cycle.CurrentRatingId);

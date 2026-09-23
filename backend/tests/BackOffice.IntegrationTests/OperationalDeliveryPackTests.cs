@@ -79,7 +79,7 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Equal(2,await db.Set<DemoProviderOperation>().CountAsync(x=>x.Kind==MessageDeliveryService.WorkKind));
         Assert.Equal(52000,(await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"UPDATE OperationalDeliveryAttachment SET OriginalName=N'changed.png' WHERE DeliveryId={first.Id}"))).Number);
         Assert.Equal(52000,(await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"UPDATE OperationalDelivery SET ContentJson=N'{{}}' WHERE Id={first.Id}"))).Number);
-        Assert.Equal(52000,(await Assert.ThrowsAsync<SqlException>(()=>db.GetService<IMigrator>().MigrateAsync("20260922083328_OperationalCommunication"))).Number);
+        await AssertRetainedMidDowngradeRefused(db, "20260922083328_OperationalCommunication");
         Assert.Equal(3,await db.Set<OperationalDelivery>().CountAsync());
     });
 }

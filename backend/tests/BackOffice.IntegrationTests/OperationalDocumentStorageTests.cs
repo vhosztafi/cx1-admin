@@ -63,7 +63,10 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Equal(request.PayloadJson,(await db.Set<PolicyDocumentRequest>().AsNoTracking().SingleAsync(x=>x.Id==request.Id)).PayloadJson);
         Assert.Equal("pending",(await db.Set<FileObject>().SingleAsync(x=>x.Id==file.Id)).State);
         Assert.Equal(file.Id,(await db.Set<DocumentVersionContent>().SingleAsync()).FileObjectId);
-        var refused = await Assert.ThrowsAsync<SqlException>(()=>migrator.MigrateAsync("20260921180754_OperationalDocumentTemplates"));
-        Assert.Contains("Retained document identities",refused.Message);
+        var retainedVersion = await db.Set<DocumentVersion>().AsNoTracking().SingleAsync(x => x.Id == version.Id);
+        var retainedContent = await db.Set<DocumentVersionContent>().AsNoTracking().SingleAsync(x => x.Id == content.Id);
+        await AssertRetainedMidDowngradeRefused(db, "20260921180754_OperationalDocumentTemplates");
+        Assert.Equal(retainedVersion.SourceHash, (await db.Set<DocumentVersion>().AsNoTracking().SingleAsync(x => x.Id == version.Id)).SourceHash);
+        Assert.Equal(retainedContent.FileObjectId, (await db.Set<DocumentVersionContent>().AsNoTracking().SingleAsync(x => x.Id == content.Id)).FileObjectId);
     });
 }

@@ -55,7 +55,7 @@ public sealed partial class UnderwritingRuntimeTests
         Assert.Equal(409,(await Assert.ThrowsAsync<OperationalAccessException>(()=>threads.UpdateDraft(f.Underwriter,message.ResourceId,queued.Etag!,write,"queued-edit",default))).Status);
         Assert.Equal(52000,(await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"UPDATE OperationalMessageDraft SET Body=N'changed' WHERE Id={message.ResourceId}"))).Number);
         Assert.Equal(52000,(await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM MessageDraftAttachment WHERE MessageId={message.ResourceId}"))).Number);
-        var rollback=await Assert.ThrowsAsync<SqlException>(()=>db.GetService<IMigrator>().MigrateAsync("20260921215507_TaskDocumentAttachments"));Assert.Equal(52000,rollback.Number);Assert.Contains("retained communication history",rollback.Message);
+        await AssertRetainedMidDowngradeRefused(db, "20260921215507_TaskDocumentAttachments");
         Assert.Equal(2,await db.Set<OperationalMessageDraft>().CountAsync());
         await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ClientAgencyRelationship SET State=N'inactive' WHERE Id={policy.RelationshipId}");
         var revokedRead=await Record.ExceptionAsync(()=>threads.ReadDraft(f.Underwriter,message.ResourceId,default));

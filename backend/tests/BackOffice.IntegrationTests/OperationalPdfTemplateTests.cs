@@ -50,8 +50,7 @@ public sealed partial class UnderwritingRuntimeTests
         }
         var original = requests.Single(x => x.Kind == "policy-schedule");
         Assert.True((await new PolicyDocumentRenderService(f.Factory, new PolicyDocumentRenderer()).RenderRetainedRequest(f.Underwriter, original.Id)).PageCount > 1);
-        var refused = await Assert.ThrowsAsync<SqlException>(() => migrator.MigrateAsync("20260921162248_OperationalFileObjects"));
-        Assert.Contains("downgrade would invalidate retained templates", refused.Message);
+        await AssertRetainedMidDowngradeRefused(db, "20260921162248_OperationalFileObjects");
         Assert.Equal(15, await db.Set<TemplateVersion>().CountAsync(x => x.EffectiveFrom == DocumentTemplateSeed.EffectiveFrom));
         Assert.Contains("20260921180754_OperationalDocumentTemplates", await db.Database.GetAppliedMigrationsAsync());
     });

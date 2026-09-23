@@ -36,7 +36,7 @@ public sealed partial class UnderwritingRuntimeTests
             await new QuoteIssueService(f.Factory,f.Clock).IssueAsync(f.Underwriter,f.QuoteId,setup.Version,setup.Input,Guid.NewGuid().ToString(),Guid.NewGuid());
             var term=await db.Set<PolicyTerm>().AsNoTracking().SingleAsync();var basis=await db.Set<PolicyVersion>().AsNoTracking().SingleAsync();
             using var host=ServicingRatingApiHost(db,f.Clock,false).WithWebHostBuilder(builder=>builder
-                .UseSetting("Cover:CancellationNoticeWorkerEnabled",issue?"true":"false").UseSetting("Cover:RenewalLifecycleWorkerEnabled","false").UseSetting("Cover:ServicingDeliveryWorkerEnabled","false")
+                .UseSetting("Cover:CancellationNoticeWorkerEnabled",issue?"true":"false").UseSetting("Cover:OperationalCancellationWorkerEnabled","false").UseSetting("Cover:RenewalLifecycleWorkerEnabled","false").UseSetting("Cover:ServicingDeliveryWorkerEnabled","false")
                 .ConfigureServices(services=>services.AddSingleton<TimeProvider>(f.Clock)));
             host.UseKestrel(0);using var client=host.CreateClient();
             var api=host.Services.GetRequiredService<IServer>().Features.Get<IServerAddressesFeature>()!.Addresses.Single();Assert.True(new Uri(api).IsLoopback);

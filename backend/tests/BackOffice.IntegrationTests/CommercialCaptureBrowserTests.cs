@@ -127,6 +127,7 @@ public sealed partial class QuoteStorageTests
                 .UseSetting("Cover:SqlConnection", db.Database.GetConnectionString())
                 .UseSetting("Cover:DataProtectionPath", Path.Combine(root.FullName, ".local/commercial-browser-keys", db.Database.GetDbConnection().Database))
                 .UseSetting("Cover:CancellationNoticeWorkerEnabled", cancellation?"true":"false")
+                .UseSetting("Cover:OperationalCancellationWorkerEnabled", "false")
                 .UseSetting("Cover:RenewalLifecycleWorkerEnabled", "false")
                 .UseSetting("Cover:ServicingDeliveryWorkerEnabled", servicingIssue ? "true" : "false")
                 .ConfigureServices(services => {

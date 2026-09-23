@@ -7,8 +7,6 @@ using BackOffice.Infrastructure.Policies;
 using BackOffice.Infrastructure.Quotes;
 using BackOffice.Infrastructure.Platform;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Xunit;
 
 namespace BackOffice.IntegrationTests;
@@ -16,7 +14,7 @@ namespace BackOffice.IntegrationTests;
 public sealed partial class UnderwritingRuntimeTests
 {
     [Fact]
-    public async Task RealSqlCommercialIssueMigrationRoundTripPreservesMotorPolicy()
+    public async Task RealSqlCommercialIssueMigrationRetainsMotorPolicyAndMidHistory()
     {
         await WithDatabase(async (db, password) =>
         {
@@ -25,8 +23,9 @@ public sealed partial class UnderwritingRuntimeTests
             var before = await db.Set<PolicyVersion>().AsNoTracking().SingleAsync();
             var reference = await db.Set<Policy>().Where(x => x.Id == outcome.ResourceId).Select(x => x.Reference).SingleAsync();
             db.ChangeTracker.Clear();
-            await db.GetService<IMigrator>().MigrateAsync("20260920045506_CommercialExposureStorage");
-            await db.GetService<IMigrator>().MigrateAsync();
+            // Current Motor Trade issue owns initial MID work. Its immutable
+            // history must refuse the downgrade before commercial issue storage.
+            await VerifyRetainedTemplateDowngradeProtection(db, "20260920045506_CommercialExposureStorage", requiresTemplateGuard: false);
             var after = await db.Set<PolicyVersion>().AsNoTracking().SingleAsync();
             Assert.Equal(before.SnapshotJson, after.SnapshotJson); Assert.Equal(before.ContentHash, after.ContentHash);
             Assert.Equal(reference, await db.Set<Policy>().Where(x => x.Id == outcome.ResourceId).Select(x => x.Reference).SingleAsync());

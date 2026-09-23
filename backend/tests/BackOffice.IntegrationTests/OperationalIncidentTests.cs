@@ -123,7 +123,11 @@ public sealed partial class UnderwritingRuntimeTests
         finally{await db.Database.ExecuteSqlRawAsync("DROP TRIGGER TR_IncidentRevision_TestFailure;");}
         Assert.Equal(3,await db.Set<IncidentRevision>().CountAsync());Assert.Equal(receiptCount,await db.Set<IdempotencyRecord>().CountAsync());Assert.Equal(auditCount,await db.Set<AuditEvent>().CountAsync());
         Assert.Equal("logged",await db.Set<OperationalIncident>().AsNoTracking().Where(x=>x.Id==incident.Id).Select(x=>x.State).SingleAsync());
-        Assert.Equal(52000,(await Assert.ThrowsAsync<SqlException>(()=>db.GetService<IMigrator>().MigrateAsync("20260922094628_OperationalDelivery"))).Number);
+        var retainedIncident = await db.Set<OperationalIncident>().AsNoTracking().SingleAsync(x=>x.Id==incident.Id);
+        var retainedRevisions = await db.Set<IncidentRevision>().AsNoTracking().Where(x=>x.IncidentId==incident.Id).OrderBy(x=>x.Id).ToArrayAsync();
+        await AssertRetainedMidDowngradeRefused(db, "20260922094628_OperationalDelivery");
+        Assert.Equal(retainedIncident.CurrentRevisionId,(await db.Set<OperationalIncident>().AsNoTracking().SingleAsync(x=>x.Id==incident.Id)).CurrentRevisionId);
+        Assert.Equal(retainedRevisions.Select(x=>x.Id),await db.Set<IncidentRevision>().AsNoTracking().Where(x=>x.IncidentId==incident.Id).OrderBy(x=>x.Id).Select(x=>x.Id).ToArrayAsync());
         var suspended=await db.Set<StaffUser>().SingleAsync(x=>x.Id==f.Underwriter.UserId);suspended.State="suspended";await db.SaveChangesAsync();
         await Assert.ThrowsAsync<OperationalAccessException>(()=>direct.SaveDescription(f.Underwriter,incident.Id,originalEtag,description.description,descriptionKey,default));
         Assert.Equal(3,await db.Set<IncidentRevision>().CountAsync());

@@ -4,8 +4,6 @@ using System.Text.Json;
 using BackOffice.Infrastructure.Persistence;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Xunit;
 
 namespace BackOffice.IntegrationTests;
@@ -14,10 +12,10 @@ public sealed partial class UnderwritingRuntimeTests
 {
     private static async Task VerifyServicingTermsStorage(BackOfficeDbContext db,DecisionFixture f,ServicingCycle cycle)
     {
-        // Demo initialization now retains servicing templates. Roll back only
-        // the empty delivery schema; older template kinds cannot be removed
-        // while their immutable seeded documents exist.
-        var migrator=db.GetService<IMigrator>();await migrator.MigrateAsync("20260918095455_ServicingTermsEvidence");await migrator.MigrateAsync();
+        // Retained initial MID work now protects the issued graph. Probe only
+        // the empty delivery schema when no newer retained history exists;
+        // preserve the original graph when its downgrade is correctly refused.
+        await VerifyRetainedTemplateDowngradeProtection(db, "20260918095455_ServicingTermsEvidence", requiresTemplateGuard: false);
         Assert.False(db.Database.HasPendingModelChanges());
         Assert.Equal(0,await db.Database.SqlQueryRaw<int>("SELECT COUNT(*) AS Value FROM ServicingTermsVersion").SingleAsync());
         var now=f.Clock.GetUtcNow();var rating=await db.Set<ServicingRatingResult>().AsNoTracking().SingleAsync(x=>x.Id==cycle.CurrentRatingId);

@@ -86,7 +86,11 @@ if(!process.argv.includes('--worker')) {
    await page.getByText('Demo delivery recorded',{exact:true}).waitFor();
    const response=await page.request.get(f.apiOrigin+issueUrl);assert.equal(response.status(),200);assert.equal(response.headers()['cache-control'],'no-store');
    const issued=await response.json();assert.equal(issued.transactionId,receipt.transactionId);assert.equal(issued.netAmount,approved.amounts.posting.invoiceDue);
-   assert.equal(issued.consequences.filter(x=>x.state==='pending').length,3);await capture('issued','CancellationIssuedView',issued);
+   await capture('issued','CancellationIssuedView',issued);
+   assert.deepEqual(issued.consequences.map(x=>x.id).sort(),receipt.consequenceIds.slice().sort());
+   const notice=issued.consequences.filter(x=>x.kind==='cancellation-notice');
+   assert.equal(notice.length,1);assert.equal(notice[0].state,'succeeded');assert.equal(notice[0].noticeOutcome,'demo-delivered');
+   assert.equal(issued.consequences.filter(x=>x.state==='pending').length,2);
    await page.reload();await page.getByText('Demo delivery recorded',{exact:true}).waitFor();
    const receiptPanel=page.locator('section.panel').filter({has:page.getByRole('heading',{name:'Issued cancellation',exact:true})});
    await receiptPanel.screenshot({path:f.output+'/issued-desktop.png'});await page.setViewportSize({width:390,height:844});
@@ -97,7 +101,7 @@ if(!process.argv.includes('--worker')) {
    assert.equal(policy.status(),200);const savedPolicy=await policy.json();await capture('policy','CancellationPolicyView',savedPolicy);
    assert.equal(savedPolicy.cancellationApprovalId,approved.approvalId);assert.equal(savedPolicy.ratingId,undefined);
    assert.deepEqual(errors,[]);await writeFile(f.output+'/report.json',JSON.stringify({product:f.product,draftId,transactionId:issued.transactionId,
-    checks:['actual cancellation issue','lost response exact retry','saved financial readback','registered demo notice dispatcher','three durable pending consequences','reload retains issue and notice','cancellation transaction navigation','390px containment']},null,2));
+    checks:['actual cancellation issue','lost response exact retry','saved financial readback','registered demo notice dispatcher','four durable consequence identities with delivered notice and two pending','reload retains issue and notice','cancellation transaction navigation','390px containment']},null,2));
   } else {
   await page.getByLabel('Takeover or abandonment reason',{exact:true}).fill('Fictional cancellation withdrawn after approval for browser verification');
   await page.getByLabel('I confirm this draft should be abandoned.',{exact:true}).check();await button('Abandon draft').click();await page.getByText('Abandoned',{exact:true}).waitFor();
