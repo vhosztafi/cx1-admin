@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Phase9 v4 full64243 continues with18 migration,4 renewal-copy and2 legacy cancellation-host failures; repair-v2 will refuse before edits.
-last_updated: "2026-09-23T01:50:19.9508598+00:00"
+stopped_at: Phase9 v4 full64243 continues with18 migration,4 renewal-copy and3 legacy cancellation-host failures; repair-v2 will refuse before edits.
+last_updated: "2026-09-23T03:08:46.4209350+00:00"
 last_activity: "2026-09-22 — Full v4 found old expected547 versus correct MID retention52024; diagnostic run continues unchanged to gather all failures. Guarded follow-through will refuse this failed run."
 progress:
   total_phases: 13
@@ -43,7 +43,7 @@ Progress: eight of13 phases complete;97/99 currently defined plans complete. Lat
 
 ## Next work
 
-Review diagnostic full64243 and guarded compatibility repair-v2 session65117 without duplication. Old44048/80151 will refuse failed v4;57391/65117 will refuse later unreviewed cases before edits. After the complete diagnostic, extend corrections for incident MID-priority, renewal exact copy and the legacy cancellation browser host that must explicitly disable the newer operational dispatcher. Launch one replacement guarded continuation only after all older runners fail with zero stages. Inspect .local/phase9-v4-compatibility-repair-v2/report.json and checkpoint before manual action. Unexpected failures stop the chain. Final source/goal review and completion require actual successful reports. Do not count interrupted gates as passes.
+Review diagnostic full64243 and guarded compatibility repair-v2 session65117 without duplication. Old44048/80151 will refuse failed v4;57391/65117 will refuse later unreviewed cases before edits. After the complete diagnostic, extend corrections for incident MID-priority, renewal exact copy and every legacy cancellation browser host, including CommercialCaptureBrowserTests, that must explicitly disable the newer operational dispatcher. Launch one replacement guarded continuation only after all older runners fail with zero stages. Inspect .local/phase9-v4-compatibility-repair-v2/report.json and checkpoint before manual action. Unexpected failures stop the chain. Final source/goal review and completion require actual successful reports. Do not count interrupted gates as passes.
 
 ## Evidence and continuity
 
