@@ -78,18 +78,18 @@ Core value: complete persistent insurance and servicing journeys with consistent
 - [x] **CC-02**: Staff can maintain locations, construction/protections, property sums insured, liabilities, wage rolls, business interruption and losses using product-specific JSON sections.
 - [x] **CC-03**: Staff can rate and refer CC risks using documented demo assumptions, including location exposure, estimated loss and postcode aggregation.
 - [x] **CC-04**: Staff can issue and service CC policies through adjustments, renewals, cancellation and historical views without Motor Trade-only tabs or validation.
-- [ ] **CC-05**: Staff can log CC property/liability incidents and generate product-appropriate document content through the shared operational infrastructure.
+- [x] **CC-05**: Staff can log CC property/liability incidents and generate product-appropriate document content through the shared operational infrastructure.
 
 ### Work management
 
-- [ ] **OPS-01**: Staff can view personal/team queues, create tasks, set priority/due date/owner, link records, change status and record completion reasons.
+- [x] **OPS-01**: Staff can view personal/team queues, create tasks, set priority/due date/owner, link records, change status and record completion reasons.
 - [x] **OPS-02**: Stored workflow rules create tasks for referrals, missing information, renewals, agency evidence and integration exceptions without duplicates.
-- [ ] **OPS-03**: Staff can add internal notes and send agency-visible thread messages with attachments, recipients and visibility enforced on the server.
-- [ ] **OPS-04**: Staff can generate, preview and download actual policy/quote/renewal/cancellation documents linked to the exact source version and template version.
-- [ ] **OPS-05**: Staff can upload and retrieve evidence files through authorised endpoints and see durable metadata, checksums and document version history.
-- [ ] **OPS-06**: Staff can send/resend a document pack and inspect delivery failures/retries; historical issued documents retain their original content.
-- [ ] **OPS-07**: Staff can log a Motor Trade or CC incident, select relevant risk items, send a demo claims handoff and view returned administrator summaries.
-- [ ] **OPS-08**: Staff can inspect and retry MID/data-reporting exceptions for relevant Motor Trade vehicles with stable request and response history.
+- [x] **OPS-03**: Staff can add internal notes and send agency-visible thread messages with attachments, recipients and visibility enforced on the server.
+- [x] **OPS-04**: Staff can generate, preview and download actual policy/quote/renewal/cancellation documents linked to the exact source version and template version.
+- [x] **OPS-05**: Staff can upload and retrieve evidence files through authorised endpoints and see durable metadata, checksums and document version history.
+- [x] **OPS-06**: Staff can send/resend a document pack and inspect delivery failures/retries; historical issued documents retain their original content.
+- [x] **OPS-07**: Staff can log a Motor Trade or CC incident, select relevant risk items, send a demo claims handoff and view returned administrator summaries.
+- [x] **OPS-08**: Staff can inspect and retry MID/data-reporting exceptions for relevant Motor Trade vehicles with stable request and response history.
 
 ### Accounting
 
@@ -186,7 +186,7 @@ Every v1 requirement has one owning delivery phase; later phases may consume its
 | UWR-05 | 6 | Complete — Phase6 verified2026-09-17 |
 | UWR-06 | 6 | Complete — Phase6 verified2026-09-17 |
 | UWR-07 | 6 | Complete — Phase6 verified2026-09-17 |
-| POL-01 | 7, 9, 10 | Partial — Phase7 policy/risk/history/transactions verified; later document/task/incident and reconciled finance views remain |
+| POL-01 | 7, 9, 10 | Partial — Phases7/9 policy, risk, history, transactions, documents, tasks, notes, messages and incidents verified; Phase10 reconciled finance view remains |
 | POL-02 | 7 | Complete |
 | POL-03 | 7 | Complete |
 | POL-04 | 7 | Complete |
@@ -199,15 +199,15 @@ Every v1 requirement has one owning delivery phase; later phases may consume its
 | CC-02 | 8 | Complete — 2026-09-21;08-VERIFICATION |
 | CC-03 | 8 | Complete — 2026-09-21;08-VERIFICATION |
 | CC-04 | 8 | Complete — 2026-09-21;08-VERIFICATION |
-| CC-05 | 8, 9 | Partial — exact Phase8 payloads/queued content verified; Phase9 incident logging/rendering/delivery remain |
-| OPS-01 | 9 | Pending |
+| CC-05 | 8, 9 | Complete — Phase8 product payloads plus Phase9 CC incident logging, actual document rendering and demo delivery verified2026-09-23;09-VERIFICATION |
+| OPS-01 | 9 | Complete — 2026-09-23;09-VERIFICATION |
 | OPS-02 | 9 | Complete (09-04) |
-| OPS-03 | 9 | Pending |
-| OPS-04 | 9 | Pending |
-| OPS-05 | 9 | Pending |
-| OPS-06 | 9 | Pending |
-| OPS-07 | 9 | Pending |
-| OPS-08 | 9 | Pending |
+| OPS-03 | 9 | Complete — 2026-09-23;09-VERIFICATION |
+| OPS-04 | 9 | Complete — 2026-09-23;09-VERIFICATION |
+| OPS-05 | 9 | Complete — 2026-09-23;09-VERIFICATION |
+| OPS-06 | 9 | Complete — 2026-09-23;09-VERIFICATION |
+| OPS-07 | 9 | Complete — 2026-09-23;09-VERIFICATION |
+| OPS-08 | 9 | Complete — 2026-09-23;09-VERIFICATION |
 | FIN-01 | 10 | Pending |
 | FIN-02 | 10 | Pending |
 | FIN-03 | 10 | Pending |

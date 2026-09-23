@@ -3,51 +3,37 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: executing
-stopped_at: Phase9 plans17/18 final v7 native SQL session12158 active; inspect .local/phase9-final-v7-start.json, sql.log and finish.json; do not duplicate.
-last_updated: "2026-09-23T13:42:00+00:00"
-last_activity: "2026-09-23 — Full v6 1887-case strict gate and retained operational/servicing/underwriting collectors passed. Two additive initializations preserved 89821 rows/215 files; owned preview restart and SQL/browser readbacks passed. Fresh current-source v7 gate active after two test-script-only corrections."
+stopped_at: Phase 9 complete; Phase 10 accounting and insurer reporting is next.
+last_updated: "2026-09-23T20:05:00+00:00"
+last_activity: "2026-09-23 — Phase 9 all 18 plans completed; final current-source native SQL, root/frontend, operational/retained journeys, source ledger and preserved demo restart passed."
 progress:
   total_phases: 13
-  completed_phases: 8
+  completed_phases: 9
   total_plans: 99
-  completed_plans: 97
-  percent: 62
+  completed_plans: 99
+  percent: 69
 ---
 
 # Project State
 
-## Project Reference
+## Project reference
 
-See PROJECT.md, REQUIREMENTS.md and ROADMAP.md.
-Core value: complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
-Current focus: Phase9 tasks, documents, communication and incidents.
+See PROJECT.md, REQUIREMENTS.md and ROADMAP.md. Core value: complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
 
-## Current Position
+## Current position
 
-Phase: 9 of13
-Plan: 17 of18 — source reconciliation and final current-source gate
-09-06 complete:72unique cases/7realSQL/no skips in.local/phase9-06-final-strict,412root and15 independent parsed PDFs with multi-page visual review. Future templates are additive; migration protects retained rows. No verification process remains running; see09-06-SUMMARY.
-Status: Executing09-17;09-16 complete. The full v6 SQL run passed exactly550/550 discovered cases and the fresh unit gate1337/1337, with1887 unique cases,485 named real SQL/process-restart cases and zero skips (`.local/phase9-final-v6/strict-report.json`). The operational collector, 13-stage retained servicing collector and four-stage underwriting collector passed. After two browser-test-only corrections (`e247fc7`, `f201f31`), a fresh v7 unit gate passed1337/1337 and the exact550-case native SQL run started from commit`f201f31`; inspect `.local/phase9-final-v7-start.json`, `sql.log` and `finish.json`. Do not duplicate it. Preservation report `.local/phase9-final-v6-preservation-v3/initializations/report.json` proves two additive runs preserved89821rows/176tables/215files with the same fingerprint. The original preservation wrapper hung on inherited background output handles; the owned preview was safely restarted and `.local/phase9-final-v6-preservation-v3/readbacks-report.json` passed all eight resumed readbacks. Earlier failed/interrupted runs remain retained, not acceptance evidence.
-Last activity: Phase8 completed2026-09-21; all16 summaries and08-VERIFICATION pass. Final strict gate1511 unique cases/383 realSQL/no skips and exact420-case integration inventory;399root/172frontend, commercial5/5 and retained servicing17/17 plus underwriting pass. No verification process remains running. Phase9 task SQL/API checks are complete:32 focused cases/3 realSQL,411root and57final contract checks. 09-03 task UI passed29focused cases/2realSQL and16browserchecks plus SQL readback;411root177frontend, build/lint/typecheck pass.
-09-04:41unique strict passes/8realSQL, all8typed adapters/fivefamilies, hosted dispatcher and18browserchecks plus SQL readback,411root177frontend54contracts; build/lint/typecheck pass. OPS-02 complete; no acceptance process remains running.
-09-05:47unique strict passes/4realSQL,8filesystem cases, all3legacy evidence bridges, hosted finalization and API host restart,412root55contracts; OpenAPI valid. Current gate.local/phase9-05-final-strict. No verification process remains running. OPS-05 history/UI obligations remain09-07/08.
-Progress: eight of13 phases complete;97/99 currently defined plans complete. Later phases still need detailed plans; the MVP is not100% complete.
+Phase 9, tasks/documents/communication/incidents, is complete on local automated evidence. Plans 09-01 through 09-18 have reviewed summaries. The final v7 gate from `f201f31` passed 1,337/1,337 unit and exactly 550/550 discovered integration cases, including 485 named real SQL/API process-restart cases: 1,887 unique IDs, no skips, unchanged integration assembly and 1,883 tracked source hashes. The streaming strict report is `.local/phase9-final-v7/strict-report.json`; the guarded root/frontend/ledger report is `.local/phase9-final-v7-followthrough/report.json` (421 root and 204 frontend tests, lint/typecheck/build passed). The previous complete v6 run also passed, but is not substituted for v7.
 
-## Decisions and boundaries
+The operational collector passed ten browser families and retained demo readbacks. Clean servicing passed 13 live stages and clean underwriting passed four stages including 37 quote/client/agency journeys. Two additive initializations preserved the same fingerprint of 89,821 business rows across 176 tables and 215 key/document files. After a verified owned preview restart, eight retained task, entry, incident, retry and response browser/API/SQL readbacks passed. See `09-VERIFICATION.md` and the paths in `09-18-SUMMARY.md` for exact evidence and failed-attempt history.
 
-- Both MotorTrade products and CommercialCombined use the shared back office. CC assumptions are authorised; frontend-code remains unchanged.
-- SQLServer relational core plus immutable versioned policy JSON; persistent deterministic demo adapters, local identity and original data-protection keys.
-- Current identity/scope and exact immutable provenance precede replay. Drafts never change issued cover.
-- POL-02..09 andCC-01..04 complete. POL-01 remains compound throughPhase9/10. CC-05 remains partial untilPhase9 incident logging/rendering/delivery exist.
-- ImportedAG-DEMO-QUOTES historical terms remain unchanged; supported CC demo uses independently approvedAG-0000154. The explicit local authority grant was approved and applied; no approval remains outstanding.
+The original source denominator is unchanged: 118 controls (109 Phase9 owned, nine Phase11/12 future), 509 original displays, 33 Commercial Combined claims displays, ten branches and 13 supplemental inherited agency displays. Every Phase9-owned identity has per-binding automated evidence. OPS-01 through OPS-08 and CC-05 are complete. POL-01 remains partial because Phase10 owns the reconciled finance view. The older retained Commercial Combined pack has a medium final-page margin/header issue; newer final schedule pages render normally. Human business/assistive-technology UAT belongs to Phase13. No milestone completion, hosted CI, Docker runtime, real external provider delivery or production deployment is claimed.
 
 ## Next work
 
-Wait for the active v7 full SQL result. `.local/phase9-final-v7-followthrough.ps1` is already queued as one guarded detached helper (`.local/phase9-final-v7-followthrough/report.json`): after a successful finish it will run the streaming strict check, root/frontend gates and per-binding source reconciliation sequentially. Do not launch duplicate checks. Once its report passes, complete plan17/18 summaries, verification, requirements, roadmap and demo runbook. Keep Phase11/12 controls and POL-01's Phase10 finance portion open. Do not count interrupted gates as passes.
+Start Phase 10 accounting and insurer reporting context with `$gsd-discuss-phase 10`, then plan it. Phases10–13 are not yet complete or fully planned; the v1.0 milestone remains active. Preserve the retained demo database, file root, data-protection keys and frontend-code. The current preview identities are in `.local/phase9-16-preview-pids.json`; verify process/binary/listener ownership before changing them. The inherited generated `apps/backoffice/next-env.d.ts` and `tsconfig.json` edits and untracked `.idea/` are not part of Phase9 commits.
 
-## Evidence and continuity
+## Decisions and continuity
 
-Phase8 final evidence:08-16-SUMMARY.md and08-VERIFICATION.md. Full integration session70737 ended successfully; strict.local/phase8-16-final-strict verifies1511/383 and exact inventory. Do not restart old acceptance queues. Current preview identities are in `.local/phase9-16-preview-pids.json` on5087/3100; verify process and listener identity before changing them.
+Motor Trade and Commercial Combined use the shared back office. SQL Server is the relational core with immutable versioned policy JSON, current identity/scope and exact source/template/file provenance before replay. Persistent deterministic demo adapters do not make real customer, carrier or administrator calls. The agency terms grant was explicitly approved and applied earlier; no approval remains outstanding. Demo retry scheduling was compressed for two retained jobs without changing their actual attempts or receipts.
 
-User authorised autonomous research/planning/implementation and explicitly requested continuous work. No routine confirmation is required. The existing continue-cover-mga-back-office-mvp heartbeat was confirmed ACTIVE every ten minutes, with quiet/no-duplicate intent. Old v4/v5 runs and waiting helpers are interrupted/stale evidence. Human business/assistive-technology UAT, hostedCI and Docker runtime remain unperformed. Generic GSD state commands can reset custom metadata and over-complete compound requirements; reconcile actual records instead.
-
+The user authorized autonomous implementation and requested continuous work. Historical v4/v5 interrupted gates and failed collectors remain retained as diagnostics, not acceptance evidence. The existing quiet `continue-cover-mga-back-office-mvp` heartbeat was confirmed active; avoid duplicate long gates.

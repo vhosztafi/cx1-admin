@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1–8 complete;97 currently defined implementation plans verified. Phase9 retained demonstrations09-16 are complete;09-17 source reconciliation and final current regression are active; the13-phase MVP remains in progress.
+**Status:** Autonomous progression authorised. Phases1–9 complete;99 currently defined implementation plans verified. Phase9 final current-source regression, source ledger and preserved demo restart passed2026-09-23; Phases10–13 and the13-phase MVP remain in progress.
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
@@ -18,7 +18,7 @@
 - [x] **Phase 6: Underwriting and first policy issue** — Complete the first quote-to-issued-policy journey.
 - [x] **Phase 7: Policy lifecycle and history** — Service issued policies without corrupting history. (completed 2026-09-19)
 - [x] **Phase 8: Commercial Combined back office** — Demonstrate shared workflows with a different risk structure.
-- [ ] **Phase 9: Tasks, documents, communication and incidents** — Make servicing activities and demo handoffs operational.
+- [x] **Phase 9: Tasks, documents, communication and incidents** — Make servicing activities and demo handoffs operational.
 - [ ] **Phase 10: Accounting and insurer reporting** — Reconcile policy movements through finance workflows.
 - [ ] **Phase 11: Configuration and account administration** — Expose controlled configuration and complete account functions.
 - [ ] **Phase 12: Dashboards, search and reports** — Provide trustworthy cross-module discovery and reporting.
@@ -184,7 +184,7 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 **Goal:** Make servicing activities and demo handoffs operational.
 **Depends on:** Phase 8
 **Requirements:** OPS-01 through OPS-08
-**Plans:** 18 sequential plans;16 complete.09-17 source fixes are verified in focused checks; its final current browser aggregate and09-18 full regression/restart remain pending. The reviewed549-case integration run is recorded in09-16-CHECKPOINT.
+**Plans:** 18 sequential plans; all18 complete.09-17 source reconciliation and operational/retained browser aggregates passed.09-18 final current-source gate passed1,887 unique unit/integration cases (485 named real SQL/process-restart), exact550-case integration discovery/no skips, root421, frontend204, lint/typecheck/build, two additive initializations and owned preview restart/readbacks. See09-VERIFICATION for limits and evidence.
 
 - [x] 09-01 — Reconcile operational source and closed data/API contracts (wave 1).
 - [x] 09-02 — Persist scoped subjects and task commands (wave 2, after09-01).
@@ -202,8 +202,8 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 - [x] 09-14 — Apply and recover exact Motor Trade MID submissions (wave 14, after09-13).
 - [x] 09-15 — Complete effective-dated cancellation operational consequences (wave 15, after09-14).
 - [x] 09-16 — Connect inherited operational obligations and persistent demo (wave 16, after09-15).
-- [ ] 09-17 — Reconcile full source coverage and operational browser acceptance (wave 17, after09-16).
-- [ ] 09-18 — Verify full current regression and preserved demo restart (wave 18, after09-17).
+- [x] 09-17 — Reconcile full source coverage and operational browser acceptance (wave 17, after09-16).
+- [x] 09-18 — Verify full current regression and preserved demo restart (wave 18, after09-17).
 
 **Wave dependencies:** Each wave is blocked on its predecessor completion and reviewed summary.09-01 source/contract closure is required before09-02;09-17 source/browser acceptance precedes09-18 full verification.
 
@@ -295,7 +295,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 6. Underwriting and first policy issue | 14/14 | Complete | 2026-09-17 |
 | 7. Policy lifecycle and history | 16/16 | Complete    | 2026-09-19 |
 | 8. Commercial Combined back office | 16/16 | Complete | 2026-09-21 |
-| 9. Tasks, documents, communication and incidents | 16/18 | In progress | — |
+| 9. Tasks, documents, communication and incidents | 18/18 | Complete | 2026-09-23 |
 | 10. Accounting and insurer reporting | 0/TBD | Not started | — |
 | 11. Configuration and account administration | 0/TBD | Not started | — |
 | 12. Dashboards, search and reports | 0/TBD | Not started | — |
