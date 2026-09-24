@@ -31,6 +31,7 @@ public sealed record ActorContext(Guid UserId,Guid? TeamId,Guid? AgencyId,IReadO
         "finance-read" => Roles.Contains("finance"),
         "finance-cash-write" => Roles.Contains("finance"),
         "finance-reconcile" => Roles.Contains("finance"),
+        "finance-refund-request" or "finance-refund-approve" => Roles.Contains("finance"),
         "statement-generate" => Roles.Contains("finance"),
         "finance-bordereau" => Roles.Contains("finance"),
         _ => false

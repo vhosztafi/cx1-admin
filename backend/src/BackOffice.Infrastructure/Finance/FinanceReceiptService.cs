@@ -207,6 +207,11 @@ public sealed class FinanceReceiptService(IDbContextFactory<BackOfficeDbContext>
                     .AsNoTracking().SingleAsync(ct);
                 if (await db.Set<Allocation>().AnyAsync(x => x.ReversalOfId == allocationId, ct))
                     throw new QuoteOperationException(409, "allocation-already-reversed");
+                if (await (from reserved in db.Set<RefundCashReservation>()
+                    join request in db.Set<RefundRequest>() on reserved.RefundRequestId equals request.Id
+                    where reserved.AllocationId == allocationId && request.State != "rejected"
+                    select reserved.Id).AnyAsync(ct))
+                    throw new QuoteOperationException(409, "reserved-allocation-cannot-reverse");
                 var now = time.GetUtcNow();
                 var period = await AccountingPeriods.HoldAsync(db, now, ct);
                 var reversal = new Allocation { ReceiptId = original.ReceiptId, ObligationId = original.ObligationId,
