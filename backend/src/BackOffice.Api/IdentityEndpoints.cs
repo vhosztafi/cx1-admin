@@ -43,7 +43,7 @@ public static class IdentityEndpoints
         builder.Services.AddAuthorization(options =>
         {
             options.FallbackPolicy=new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-            foreach (var capability in new[] {"platform-admin","integration-admin","integration-retry","audit-read","client-servicing","finance","subject-read","task-read","task-write","task-assign",
+            foreach (var capability in new[] {"platform-admin","integration-admin","integration-retry","audit-read","client-servicing","finance","finance-read","subject-read","task-read","task-write","task-assign",
                 "document-read","document-download","document-upload","document-generate",
                 "mid-read","mid-retry","incident-read","incident-write","incident-handoff","internal-note-read","internal-note-write","message-read","message-write","message-send","document-send",
                 "client-read","client-write","relationship-read","contact-write","support-internal-read","support-write","support-safe-read-explicit-grant","match-read","match-review","agency-read","agency-admin","quote-read","quote-capture",

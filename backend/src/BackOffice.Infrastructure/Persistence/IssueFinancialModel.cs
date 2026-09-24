@@ -39,6 +39,7 @@ public sealed partial class BackOfficeDbContext
         journal.HasAlternateKey(x => new { x.Id, x.TransactionId }); journal.HasIndex(x => new { x.TransactionId, x.Purpose }).IsUnique();
         journal.HasOne<IssueFinancialObligation>().WithMany().HasForeignKey(x => new { x.ObligationId, x.TransactionId }).HasPrincipalKey(x => new { x.Id, x.TransactionId }).OnDelete(DeleteBehavior.NoAction);
         journal.HasOne<AccountingPeriod>().WithMany().HasForeignKey(x => x.AccountingPeriodId).OnDelete(DeleteBehavior.NoAction);
+        // Retained first issues have no period; all new issue and servicing posts pin one.
         Check(journal, "Period", "([Purpose]='first-issue' AND [AccountingPeriodId] IS NULL AND [PostingDate] IS NULL) OR ([AccountingPeriodId] IS NOT NULL AND [PostingDate] IS NOT NULL)");
         Check(journal, "Purpose", "[Purpose] IN ('first-issue','adjustment','renewal','cancellation')"); Check(journal, "Currency", "[Currency]='GBP'"); Check(journal, "PostedAt", "[PostedAt] IS NULL OR [PostedAt]>=[CreatedAt]");
 

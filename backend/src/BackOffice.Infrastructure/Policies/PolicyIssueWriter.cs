@@ -76,7 +76,9 @@ internal static class PolicyIssueWriter
         var components = posting.Components.Select(x => new IssueFinancialComponent { ObligationId = obligation.Id, TransactionId = transaction.Id, Code = x.Code, Amount = x.Amount,
             CoverageStartsAt = term.StartsAt, CoverageEndsAt = term.EndsAt, CreatedAt = now, CreatedBy = actorId }).ToArray();
         db.AddRange(components); await db.SaveChangesAsync(token);
-        var journal = new Journal { TransactionId = transaction.Id, ObligationId = obligation.Id, CreatedAt = now, CreatedBy = actorId }; db.Add(journal); await db.SaveChangesAsync(token);
+        var heldPeriod = await AccountingPeriods.HoldAsync(db, now, token);
+        var journal = new Journal { TransactionId = transaction.Id, ObligationId = obligation.Id, AccountingPeriodId = heldPeriod.PeriodId,
+            PostingDate = heldPeriod.PostingDate, CreatedAt = now, CreatedBy = actorId }; db.Add(journal); await db.SaveChangesAsync(token);
         foreach (var line in posting.Lines)
             db.Add(new JournalLine { JournalId = journal.Id, TransactionId = transaction.Id, SourceComponentId = components.Single(x => x.Code == line.ComponentCode).Id,
                 ComponentCode = line.ComponentCode, AccountCode = line.AccountCode, Debit = line.Debit, Credit = line.Credit, CoverageStartsAt = term.StartsAt, CoverageEndsAt = term.EndsAt,

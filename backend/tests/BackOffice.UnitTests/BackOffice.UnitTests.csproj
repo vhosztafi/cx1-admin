@@ -6,6 +6,7 @@
     <PackageReference Include="xunit.runner.visualstudio" PrivateAssets="all" />
     <ProjectReference Include="../../src/BackOffice.Domain/BackOffice.Domain.csproj" />
     <ProjectReference Include="../../src/BackOffice.Application/BackOffice.Application.csproj" />
+    <ProjectReference Include="../../src/BackOffice.Infrastructure/BackOffice.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="../../../contracts/examples/quote-capture-*.json" LogicalName="QuoteExamples.%(Filename)%(Extension)" />

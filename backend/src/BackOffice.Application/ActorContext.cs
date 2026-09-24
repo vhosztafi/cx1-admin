@@ -28,6 +28,7 @@ public sealed record ActorContext(Guid UserId,Guid? TeamId,Guid? AgencyId,IReadO
         "agency-read" => Roles.Overlaps(["agency-admin","system-admin","underwriter","senior-underwriter"]),
         "agency-admin" => Roles.Overlaps(["agency-admin","system-admin"]),
         "finance" => Roles.Contains("finance"),
+        "finance-read" => Roles.Contains("finance"),
         _ => false
     };
 }
