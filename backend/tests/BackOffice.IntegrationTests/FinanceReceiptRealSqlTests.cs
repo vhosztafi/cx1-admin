@@ -178,4 +178,71 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.Equal(1, await db.Set<FinancePosting>().CountAsync(x => x.SourceKind == "receipt-application"));
         });
     }
+
+    [Fact]
+    public async Task RealSqlFinanceReceiptCrossedInvoiceOrderCannotPartiallyPostOrOverdraw()
+    {
+        await RunServicingRatingRequests("motor-trade-road-risks", "terms-prepare",
+            onAccepted: async (db, f, cycle, acceptance, fence, etag) =>
+        {
+            await new ServicingIssueService(f.Factory, f.Clock).IssueAsync(f.Underwriter, cycle.DraftId,
+                Convert.FromBase64String(etag.Trim('"')), fence,
+                new(cycle.Id, acceptance.RatingId, acceptance.TermsVersionId, acceptance.Id,
+                    acceptance.TermsHash, acceptance.AssuranceHash, "Issue fictional crossed invoice adjustment"),
+                Guid.NewGuid().ToString("N"), Guid.NewGuid());
+            db.ChangeTracker.Clear();
+            var invoices = await db.Set<IssueFinancialObligation>().AsNoTracking().OrderBy(x => x.Id).ToArrayAsync();
+            Assert.Equal(2, invoices.Length);
+            Assert.Equal(invoices[0].AgencyId, invoices[1].AgencyId);
+            Assert.Equal(invoices[0].DebtorKind, invoices[1].DebtorKind);
+            Assert.Equal(invoices[0].DebtorAgencyId, invoices[1].DebtorAgencyId);
+            Assert.Equal("agency", invoices[0].DebtorKind);
+            var actor = await FinanceLedgerActor(db);
+            var factory = f.Factory;
+            var clock = f.Clock;
+            var serviceA = new FinanceReceiptService(factory, new SqlCommandBoundary(factory, clock), clock);
+            var serviceB = new FinanceReceiptService(factory, new SqlCommandBoundary(factory, clock), clock);
+            var total = FinanceLedgerMath.Money(FinanceReceiptMath.Money(checked(
+                FinanceLedgerMath.Pence(invoices[0].InvoiceDue) + FinanceLedgerMath.Pence(invoices[1].InvoiceDue))));
+            var date = DateOnly.FromDateTime(clock.GetUtcNow().Date);
+            async Task<ReceiptView> Receipt(FinanceReceiptService service)
+            {
+                var saved = await service.RecordAsync(actor, invoices[0].AgencyId, total, "GBP", date,
+                    "Fictional crossed invoice race", "manual", Guid.NewGuid(), "agency", invoices[0].AgencyId,
+                    Guid.NewGuid().ToString("N"), Guid.NewGuid());
+                return await service.DetailAsync(actor, saved.ResourceId);
+            }
+            var a = await Receipt(serviceA);
+            var b = await Receipt(serviceB);
+            var forward = invoices.Select(x => new ReceiptAllocationInput(x.Id, FinanceLedgerMath.Money(x.InvoiceDue))).ToArray();
+            var reverse = forward.Reverse().ToArray();
+            async Task<string> Attempt(FinanceReceiptService service, ReceiptView receipt,
+                IReadOnlyList<ReceiptAllocationInput> items)
+            {
+                try
+                {
+                    await service.AllocateAsync(actor, receipt.Id, receipt.AssignmentId, items,
+                        Guid.NewGuid().ToString("N"), Guid.NewGuid());
+                    return "ok";
+                }
+                catch (QuoteOperationException error) { return error.Code; }
+            }
+            var outcomes = await Task.WhenAll(Attempt(serviceA, a, forward), Attempt(serviceB, b, reverse));
+            Assert.Single(outcomes, x => x == "ok");
+            Assert.Single(outcomes, x => x == "allocation-exceeds-residual");
+            var allocations = await db.Set<Allocation>().AsNoTracking().Where(x => x.ReversalOfId == null).ToArrayAsync();
+            Assert.Equal(2, allocations.Length);
+            Assert.Single(allocations.Select(x => x.ReceiptId).Distinct());
+            foreach (var invoice in invoices)
+                Assert.Equal(invoice.InvoiceDue, allocations.Single(x => x.ObligationId == invoice.Id).Amount);
+            var winner = allocations[0].ReceiptId;
+            Assert.Equal("0.00", (await serviceA.DetailAsync(actor, winner)).Residual);
+            Assert.Equal(total, (await serviceB.DetailAsync(actor, winner == a.Id ? b.Id : a.Id)).Residual);
+            Assert.Equal(2, await db.Set<FinancePosting>().CountAsync(x => x.SourceKind == "receipt"));
+            Assert.Equal(2, await db.Set<FinancePosting>().CountAsync(x => x.SourceKind == "receipt-application"));
+            Assert.Equal(0m, await db.Set<FinancePosting>().Where(x => x.SourceKind == "receipt-application")
+                .SumAsync(x => x.CashDelta));
+            Assert.False(db.Database.HasPendingModelChanges());
+        });
+    }
 }
