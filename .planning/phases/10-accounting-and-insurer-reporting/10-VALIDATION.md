@@ -37,7 +37,7 @@ After each implementation slice, run its unit and SQL negatives plus frontend te
 | 10-08 | FIN-05 | T10-08 | FinancePayment native SQL uncertain/retry/crash tests | 3/3 native SQL, 1/1 affected resume authority and 1/1 accepted outcome reruns, 5/5 API contract passed 2026-09-24; see 10-08-SUMMARY.md |
 | 10-09 | FIN-06 | T10-09 | FinanceBordereau native SQL version/validation/CSV tests | 8/8 unit, 2/2 native SQL and 2/2 API contract passed 2026-09-24; see 10-09-SUMMARY.md |
 | 10-10 | FIN-07 | T10-10 | FinanceSubmission native SQL adapter/replay tests | 2/2 native SQL, 1/1 changed-intent rerun and 4/4 API contract passed 2026-09-24; see 10-10-SUMMARY.md |
-| 10-11 | FIN-08 | T10-11 | FinancePeriod native SQL close/post race/correction tests | Pending |
+| 10-11 | FIN-08 | T10-11 | FinancePeriod native SQL close/post race/correction tests | 6/6 unit, 3/3 native SQL, 2/2 API contract and 8/8 affected SQL regression passed 2026-09-24; see 10-11-SUMMARY.md |
 | 10-12 | FIN-01..08, POL-01 | T10-12 | Finance UI component and saved-record browser tab/source tests | Pending |
 | 10-13 | FIN-01..08, POL-01 | T10-13 | Full current-source gate, retained initialization/restart, goal-backward verification | Pending |
 
