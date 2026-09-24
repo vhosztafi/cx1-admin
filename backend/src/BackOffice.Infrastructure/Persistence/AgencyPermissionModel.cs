@@ -14,7 +14,7 @@ public sealed partial class BackOfficeDbContext
         request.HasOne<StaffUser>().WithMany().HasForeignKey(x => x.DecisionBy).OnDelete(DeleteBehavior.NoAction);
         request.HasIndex(x => new { x.AgencyId, x.Permission }).IsUnique().HasFilter("[State] = 'pending'");
         request.HasIndex(x => new { x.AgencyId, x.CreatedAt, x.Id });
-        Check(request, "Permission", "[Permission] COLLATE Latin1_General_100_BIN2 = 'bordereau-download' AND DATALENGTH([Permission])=DATALENGTH(N'bordereau-download')");
+        Check(request, "Permission", "([Permission] COLLATE Latin1_General_100_BIN2 = 'bordereau-download' AND DATALENGTH([Permission])=DATALENGTH(N'bordereau-download')) OR ([Permission] COLLATE Latin1_General_100_BIN2 = 'statement-download' AND DATALENGTH([Permission])=DATALENGTH(N'statement-download'))");
         Check(request, "Requester", "[CreatedBy] IS NOT NULL AND [CreatedBy]=[RequestedBy] AND LEN(TRIM([Reason]))>0");
         Check(request, "Decision", "([State]='pending' AND [DecisionBy] IS NULL AND [DecisionReason] IS NULL AND [DecidedAt] IS NULL) OR ([State] IN ('granted','rejected') AND [DecisionBy] IS NOT NULL AND [DecisionBy]<>[RequestedBy] AND [DecisionReason] IS NOT NULL AND LEN(TRIM([DecisionReason]))>0 AND [DecidedAt] IS NOT NULL AND [DecidedAt]>=[CreatedAt])");
         request.ToTable(t => t.UseSqlOutputClause(false));

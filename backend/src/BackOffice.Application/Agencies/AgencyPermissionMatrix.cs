@@ -7,7 +7,7 @@ public sealed record AgencyPermissionMatrix(IReadOnlyList<AgencyMatrixColumn> Co
 
 public static class AgencyPermissionMatrixRules
 {
-    public static AgencyPermissionMatrix Build(string agencyState, bool bordereauGranted)
+    public static AgencyPermissionMatrix Build(string agencyState, bool bordereauGranted, bool statementGranted = false)
     {
         AgencyMatrixColumn[] columns = [new("broker-user", "Broker user"), new("broker-admin", "Broker administrator"), new("servicing", "Internal servicing"), new("agency-admin", "Internal administrator")];
         bool Internal(string role, string capability) => new ActorContext(Guid.Empty, null, null, new HashSet<string> { role }).HasCapability(capability);
@@ -25,6 +25,13 @@ public static class AgencyPermissionMatrixRules
                 "broker-user" => No(role),
                 "broker-admin" when agencyState != "active" => new(role, false, false, "Agency access inactive"),
                 "broker-admin" => new(role, bordereauGranted, false, bordereauGranted ? "Granted; downloads unavailable" : "Approval required"),
+                _ => Future(role)
+            }),
+            Row("statement-download", "Download own agency statements", role => role switch
+            {
+                "broker-user" or "broker-admin" or "broker-readonly" when agencyState != "active" => new(role, false, false, "Agency access inactive"),
+                "broker-user" or "broker-admin" or "broker-readonly" => new(role, statementGranted, statementGranted,
+                    statementGranted ? "Own agency statements" : "Approval required"),
                 _ => Future(role)
             }),
             Row("agency-user-manage", "Manage agency users", role => role.StartsWith("broker-", StringComparison.Ordinal)

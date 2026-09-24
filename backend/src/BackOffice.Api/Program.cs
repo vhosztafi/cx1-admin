@@ -79,6 +79,7 @@ builder.Services.AddScoped<BackOffice.Infrastructure.Policies.QuoteIssueService>
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.ServicingIssueService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.PolicyReadService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Finance.FinanceLedgerService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Finance.FinanceStatementService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.CommercialExposureReadModel>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.PolicyHistoryService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.ServicingDraftService>();
@@ -295,6 +296,7 @@ app.MapQuoteIssue();
 app.MapCommercialExposure();
 app.MapPolicies();
 app.MapFinanceLedger();
+app.MapFinanceStatements();
 app.MapTasks();
 app.MapCommunications();
 app.MapDeliveries();

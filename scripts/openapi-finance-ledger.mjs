@@ -7,7 +7,7 @@ export function addFinanceLedgerContracts({schemas,ref,operation,paths,id,instan
   effectiveAt:instant,postingDate:date,postedAt:instant,debtorKind:{type:'string',enum:['agency','relationship']},
   debtorId:nullable(id),debtorDelta:decimal,providerDelta:decimal,currency:{const:'GBP'},
   dueDate:nullable(date),status:{type:'string',enum:['outstanding','credit','no-balance','posted']},accountingPeriodId:nullable(id),
-  grossDue:nullable(decimal),tax:nullable(decimal),fee:nullable(decimal),commission:nullable(decimal),netDue:nullable(decimal)
+  grossDue:nullable(decimal),tax:nullable(decimal),fee:nullable(decimal),commission:nullable(decimal),netDue:nullable(decimal),agencyTermsVersionId:nullable(id)
  }};
  row.required=Object.keys(row.properties);
  schemas.FinanceLedgerRow=row;
@@ -46,6 +46,7 @@ export type FinanceLedgerRow = {
   currency: 'GBP'; dueDate: string | null; status: 'outstanding' | 'credit' | 'no-balance' | 'posted';
   accountingPeriodId: string | null; grossDue: FinanceMoney | null; tax: FinanceMoney | null;
   fee: FinanceMoney | null; commission: FinanceMoney | null; netDue: FinanceMoney | null;
+  agencyTermsVersionId: string | null;
 };
 export type FinanceLedgerPage = { page: number; pageSize: number; total: number; items: FinanceLedgerRow[] };
 export type FinanceAccountSummary = { agencyId: string; relationshipId: string | null; movementCount: number;

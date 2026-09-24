@@ -12,7 +12,7 @@ public sealed record FinanceLedgerRow(string SourceKey, string SourceKind, strin
     Guid? PolicyId, Guid? TransactionId, DateTimeOffset EffectiveAt, DateOnly PostingDate, DateTimeOffset PostedAt,
     string DebtorKind, Guid? DebtorId, string DebtorDelta, string ProviderDelta, string Currency, string? DueDate,
     string Status, Guid? AccountingPeriodId, string? GrossDue, string? Tax, string? Fee, string? Commission,
-    string? NetDue);
+    string? NetDue, Guid? AgencyTermsVersionId = null);
 public sealed record FinanceLedgerPage(int Page, int PageSize, int Total, IReadOnlyList<FinanceLedgerRow> Items);
 public sealed record FinanceAccountSummary(Guid AgencyId, Guid? RelationshipId, int MovementCount,
     string AgencyReceivable, string RelationshipReceivable, string ProviderPayable, string Currency);
@@ -23,7 +23,7 @@ public sealed record FinanceTransactionDetail(Guid TransactionId, Guid PolicyId,
 
 public sealed class FinanceLedgerService(IDbContextFactory<BackOfficeDbContext> factory)
 {
-    private sealed record Entry(FinanceLedgerRow View, long Debtor, long Provider);
+    internal sealed record Entry(FinanceLedgerRow View, long Debtor, long Provider);
 
     public async Task<FinanceLedgerPage> ListAsync(ActorContext actor, Guid agencyId, Guid? relationshipId = null,
         DateOnly? from = null, DateOnly? to = null, int page = 1, int pageSize = 50, CancellationToken token = default)
@@ -100,12 +100,16 @@ public sealed class FinanceLedgerService(IDbContextFactory<BackOfficeDbContext> 
         return result;
     }
 
-    private static async Task Authorize(BackOfficeDbContext db, ActorContext actor, Guid agencyId, Guid? relationshipId, CancellationToken token)
+    internal static async Task Authorize(BackOfficeDbContext db, ActorContext actor, Guid agencyId, Guid? relationshipId, CancellationToken token,
+        bool forWrite = false)
     {
         if (db.Database.CurrentTransaction is null) throw new InvalidOperationException("Finance read requires a held transaction.");
         if (!actor.HasCapability("finance-read")) throw new QuoteOperationException(403, "finance-scope-denied");
         // Match the shared agency -> user -> roles lock order used by quote scope.
-        if (!await db.Set<Agency>().FromSqlInterpolated($"SELECT * FROM Agency WITH(HOLDLOCK) WHERE Id={agencyId}").AnyAsync(token))
+        var agency = forWrite
+            ? db.Set<Agency>().FromSqlInterpolated($"SELECT * FROM Agency WITH(UPDLOCK,HOLDLOCK) WHERE Id={agencyId}")
+            : db.Set<Agency>().FromSqlInterpolated($"SELECT * FROM Agency WITH(HOLDLOCK) WHERE Id={agencyId}");
+        if (!await agency.AnyAsync(token))
             throw new QuoteOperationException(404, "finance-agency-not-found");
         var identity = await IdentitySnapshot.Lock(db, new IdentityReference(actor.UserId, null), token);
         if (identity is null || !actor.Roles.SetEquals(identity.Roles.Select(x => x.Code)) || identity.User.AgencyId is not null ||
@@ -115,12 +119,13 @@ public sealed class FinanceLedgerService(IDbContextFactory<BackOfficeDbContext> 
             throw new QuoteOperationException(404, "finance-relationship-not-found");
     }
 
-    private static async Task<List<Entry>> Load(BackOfficeDbContext db, Guid agencyId, Guid? relationshipId, Guid? policyId, CancellationToken token)
+    internal static async Task<List<Entry>> Load(BackOfficeDbContext db, Guid agencyId, Guid? relationshipId, Guid? policyId, CancellationToken token,
+        DateTimeOffset? cutoff = null)
     {
         var insurance = await (from j in db.Set<Journal>().AsNoTracking()
             join o in db.Set<IssueFinancialObligation>().AsNoTracking() on j.ObligationId equals o.Id
             join t in db.Set<PolicyTransaction>().AsNoTracking() on j.TransactionId equals t.Id
-            where j.PostedAt != null && o.AgencyId == agencyId && (relationshipId == null || o.RelationshipId == relationshipId)
+            where j.PostedAt != null && (cutoff == null || j.PostedAt <= cutoff) && o.AgencyId == agencyId && (relationshipId == null || o.RelationshipId == relationshipId)
                 && (policyId == null || o.PolicyId == policyId)
             select new { Journal = j, Obligation = o, Transaction = t }).ToArrayAsync(token);
         var ids = insurance.Select(x => x.Journal.Id).ToArray();
@@ -143,10 +148,10 @@ public sealed class FinanceLedgerService(IDbContextFactory<BackOfficeDbContext> 
                 due?.ToString("yyyy-MM-dd"), obligation.InvoiceDue < 0 ? "credit" : obligation.InvoiceDue > 0 ? "outstanding" : "no-balance", journal.AccountingPeriodId,
                 FinanceLedgerMath.Money(obligation.GrossDue), FinanceLedgerMath.Money(obligation.Tax),
                 FinanceLedgerMath.Money(obligation.Fee), FinanceLedgerMath.Money(obligation.Commission),
-                FinanceLedgerMath.Money(obligation.NetDue));
+                FinanceLedgerMath.Money(obligation.NetDue), obligation.AgencyTermsVersionId);
             entries.Add(new Entry(view, FinanceLedgerMath.Pence(obligation.InvoiceDue), FinanceLedgerMath.Pence(provider)));
         }
-        var postings = await db.Set<FinancePosting>().AsNoTracking().Where(x => x.AgencyId == agencyId &&
+        var postings = await db.Set<FinancePosting>().AsNoTracking().Where(x => x.AgencyId == agencyId && (cutoff == null || x.PostedAt <= cutoff) &&
             (relationshipId == null || x.RelationshipId == relationshipId) && (policyId == null || x.PolicyId == policyId)).ToArrayAsync(token);
         foreach (var posting in postings)
         {

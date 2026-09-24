@@ -7,10 +7,19 @@ public sealed class AgencyPermissionMatrixTests
     public void FutureWorkflowsNeverClaimAvailableOrGrantedAccess()
     {
         var matrix = AgencyPermissionMatrixRules.Build("active", true);
-        Assert.Equal(8, matrix.Rows.Count); Assert.Equal(4, matrix.Columns.Count);
+        Assert.Equal(9, matrix.Rows.Count); Assert.Equal(4, matrix.Columns.Count);
         foreach (var row in matrix.Rows.Where(x => x.Capability is "quote-create" or "policy-read" or "adjustment-create" or "referral-decide"))
             Assert.All(row.Cells, cell => { Assert.False(cell.Available); Assert.False(cell.Allowed); });
         Assert.All(matrix.Rows.Single(x => x.Capability == "other-agency-read").Cells.Where(x => x.Role.StartsWith("broker-")), cell => Assert.False(cell.Allowed));
+    }
+    [Fact]
+    public void StatementGrantAppearsOnlyForCurrentActiveOwnAgencyAccess()
+    {
+        var granted = AgencyPermissionMatrixRules.Build("active", false, true).Rows.Single(x => x.Capability == "statement-download");
+        Assert.True(granted.Cells.Single(x => x.Role == "broker-user").Available);
+        Assert.True(granted.Cells.Single(x => x.Role == "broker-admin").Allowed);
+        var suspended = AgencyPermissionMatrixRules.Build("suspended", false, true).Rows.Single(x => x.Capability == "statement-download");
+        Assert.False(suspended.Cells.Single(x => x.Role == "broker-user").Allowed);
     }
     [Theory]
     [InlineData(false)]

@@ -73,9 +73,9 @@ export function addAgencyContracts({schemas:s,ref:r,text:t,enumeration:e,object:
  s.AgencyMatrixColumn=o({role:t(50),label:t(100)});
  s.AgencyMatrixCell=o({role:t(50),allowed:b,available:b,label:t(200)});
  s.AgencyMatrixRow=o({capability:t(100),label:t(100),cells:bounded(r('AgencyMatrixCell'),4)});
- s.AgencyPermissionMatrix=o({columns:bounded(r('AgencyMatrixColumn'),4),rows:bounded(r('AgencyMatrixRow'),8)});
- s.AgencyPermissionRequest=o({id,agencyId:id,permission:{const:'bordereau-download'},requestedBy:id,requestedByLabel:t(200),reason:t(1000),state:e('pending','granted','rejected'),createdAt:instant,decisionBy:id,decisionByLabel:t(200),decidedAt:instant,decisionReason:t(1000),etag},['id','agencyId','permission','requestedBy','requestedByLabel','reason','state','createdAt','etag']);
- s.AgencyPermissionGrant=o({id,agencyId:id,permission:{const:'bordereau-download'},requestId:id,grantedBy:id,grantedByLabel:t(200),grantedAt:instant,revokedBy:id,revokedByLabel:t(200),revokedAt:instant,revocationReason:t(1000),etag},['id','agencyId','permission','requestId','grantedBy','grantedByLabel','grantedAt','etag']);
+ s.AgencyPermissionMatrix=o({columns:bounded(r('AgencyMatrixColumn'),4),rows:bounded(r('AgencyMatrixRow'),9)});
+ s.AgencyPermissionRequest=o({id,agencyId:id,permission:e('bordereau-download','statement-download'),requestedBy:id,requestedByLabel:t(200),reason:t(1000),state:e('pending','granted','rejected'),createdAt:instant,decisionBy:id,decisionByLabel:t(200),decidedAt:instant,decisionReason:t(1000),etag},['id','agencyId','permission','requestedBy','requestedByLabel','reason','state','createdAt','etag']);
+ s.AgencyPermissionGrant=o({id,agencyId:id,permission:e('bordereau-download','statement-download'),requestId:id,grantedBy:id,grantedByLabel:t(200),grantedAt:instant,revokedBy:id,revokedByLabel:t(200),revokedAt:instant,revocationReason:t(1000),etag},['id','agencyId','permission','requestId','grantedBy','grantedByLabel','grantedAt','etag']);
  s.AgencyActivity=o({id,occurredAt:instant,actorLabel:t(),action:t(100),summary:t(1000)});
  s.AgencySharedProduct=o({productCode,name:t(),effectiveFrom:date,effectiveTo:date,available:b},['productCode','name','effectiveFrom','available']);
  s.AgencySharedQuote=o({id,reference:t(40),clientName:t(),productCode:e('motor-trade-road-risks','motor-trade-combined'),state:e('draft','withdrawn'),updatedAt:instant,startDate:date},['id','reference','clientName','productCode','state','updatedAt']);
@@ -151,7 +151,7 @@ export function addAgencyContracts({schemas:s,ref:r,text:t,enumeration:e,object:
  paths['/agencies/{agencyId}/activity'].get['x-permission']='agency-read';
  op('get','/agencies/{agencyId}/notifications/{notificationId}','getAgencyNotification','agency-admin',{output:r('AgencyNotification')});
  op('post','/agencies/{agencyId}/notifications/{notificationId}/retry','retryAgencyNotification','agency-admin',{existing:true,input:reason,output:o({id}),status:202});
- op('post','/agencies/{agencyId}/permission-requests','requestAgencyPermission','agency-user-admin',{existing:true,input:o({permission:{const:'bordereau-download'},reason:t(1000)}),output:o({id}),status:202});
+ op('post','/agencies/{agencyId}/permission-requests','requestAgencyPermission','agency-user-admin',{existing:true,input:o({permission:e('bordereau-download','statement-download'),reason:t(1000)}),output:o({id}),status:202});
  op('post','/agencies/{agencyId}/permission-requests/{requestId}/decision','decideAgencyPermission','agency-admin-no-self-approval',{existing:true,input:o({outcome:e('approve','reject'),reason:t(1000)}),output:o({id})});
  op('post','/agencies/{agencyId}/permission-grants/{grantId}/revoke','revokeAgencyPermission','agency-admin',{existing:true,input:reason,output:o({id})});
  for(const [suffix,status] of [['permission-requests',202],['permission-requests/{requestId}/decision',200],['permission-grants/{grantId}/revoke',200]]) {

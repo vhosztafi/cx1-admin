@@ -8,10 +8,11 @@ public sealed record AgencyPermissionDecision(string State, string Reason);
 public static class AgencyPermissionRules
 {
     public const string BordereauDownload = "bordereau-download";
+    public const string StatementDownload = "statement-download";
 
     public static AgencyPermissionInput Request(string permission, string reason)
     {
-        if (permission != BordereauDownload) throw new AgencyCommandException(422, "invalid-agency-permission");
+        if (permission is not (BordereauDownload or StatementDownload)) throw new AgencyCommandException(422, "invalid-agency-permission");
         return new(permission, Reason(reason));
     }
 

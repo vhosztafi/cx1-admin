@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using System.Data;
 using System.Text.Json;
 using BackOffice.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -26,18 +27,19 @@ public sealed class SqlCommandBoundary(IDbContextFactory<BackOfficeDbContext> fa
 {
     public Task<CommandOutcome> ExecuteAsync<TRequest>(CommandIdentity identity,TRequest request,string eventType,
         Func<BackOfficeDbContext,CancellationToken,Task<CommandOutcome>> handler,CancellationToken cancellationToken = default)
-        => ExecuteCore(identity,request,eventType,null,handler,cancellationToken);
+        => ExecuteCore(identity,request,eventType,null,handler,cancellationToken,IsolationLevel.ReadCommitted);
 
     // Authorization runs in the same transaction before any receipt lookup, for
     // both a new command and replay. Its locks remain held through commit.
     public Task<CommandOutcome> ExecuteAuthorizedAsync<TRequest>(CommandIdentity identity,TRequest request,string eventType,
         Func<BackOfficeDbContext,CancellationToken,Task> authorize,
-        Func<BackOfficeDbContext,CancellationToken,Task<CommandOutcome>> handler,CancellationToken cancellationToken = default)
-        => ExecuteCore(identity,request,eventType,authorize ?? throw new ArgumentNullException(nameof(authorize)),handler,cancellationToken);
+        Func<BackOfficeDbContext,CancellationToken,Task<CommandOutcome>> handler,CancellationToken cancellationToken = default,
+        IsolationLevel isolation = IsolationLevel.ReadCommitted)
+        => ExecuteCore(identity,request,eventType,authorize ?? throw new ArgumentNullException(nameof(authorize)),handler,cancellationToken,isolation);
 
     private async Task<CommandOutcome> ExecuteCore<TRequest>(CommandIdentity identity,TRequest request,string eventType,
         Func<BackOfficeDbContext,CancellationToken,Task>? authorize,
-        Func<BackOfficeDbContext,CancellationToken,Task<CommandOutcome>> handler,CancellationToken cancellationToken)
+        Func<BackOfficeDbContext,CancellationToken,Task<CommandOutcome>> handler,CancellationToken cancellationToken,IsolationLevel isolation)
     {
         if (identity.ActorId == Guid.Empty || identity.CorrelationId == Guid.Empty || string.IsNullOrWhiteSpace(identity.Key) || identity.Key.Length > 200 || identity.Key != identity.Key.Trim() ||
             string.IsNullOrWhiteSpace(identity.Route) || identity.Route.Length > 200 || string.IsNullOrWhiteSpace(eventType) || eventType.Length > 100)
@@ -49,7 +51,7 @@ public sealed class SqlCommandBoundary(IDbContextFactory<BackOfficeDbContext> fa
         var requestHash=SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(request));
         var lockKey="CoverMGA.Command."+Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new[] {actorScope,identity.Route,identity.Key})));
         await using var db=await factory.CreateDbContextAsync(cancellationToken);
-        await using var transaction=await db.Database.BeginTransactionAsync(cancellationToken);
+        await using var transaction=await db.Database.BeginTransactionAsync(isolation,cancellationToken);
         await AcquireLockAsync(db,lockKey,cancellationToken);
         if (authorize is not null) await authorize(db,cancellationToken);
         var existing=await db.Set<IdempotencyRecord>().AsNoTracking().SingleOrDefaultAsync(x => x.ActorScope==actorScope && x.Route==identity.Route && x.Key==identity.Key,cancellationToken);

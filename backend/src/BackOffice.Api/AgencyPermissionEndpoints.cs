@@ -33,7 +33,8 @@ public static class AgencyPermissionEndpoints
             var state = await db.Set<Agency>().Where(x => x.Id == agencyId).Select(x => x.State).SingleAsync(token);
             var now = time.GetUtcNow();
             var granted = await db.Set<AgencyPermissionGrant>().AnyAsync(x => x.AgencyId == agencyId && x.Permission == AgencyPermissionRules.BordereauDownload && x.GrantedAt <= now && x.RevokedAt == null, token);
-            var result = AgencyPermissionMatrixRules.Build(state, granted);
+            var statementGranted = await db.Set<AgencyPermissionGrant>().AnyAsync(x => x.AgencyId == agencyId && x.Permission == AgencyPermissionRules.StatementDownload && x.GrantedAt <= now && x.RevokedAt == null, token);
+            var result = AgencyPermissionMatrixRules.Build(state, granted, statementGranted);
             await tx.CommitAsync(token); return Results.Json(result, ClientEndpoints.Json);
         }
         catch (Exception ex) when (IsError(ex)) { return Error(context, ex); }

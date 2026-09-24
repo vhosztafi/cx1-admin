@@ -6,6 +6,20 @@ public sealed partial class BackOfficeDbContext
 {
     private static void ConfigureFinance(ModelBuilder model)
     {
+        var statement = Record<FinanceStatementVersion>(model, "FinanceStatementVersion");
+        statement.ToTable(t => t.UseSqlOutputClause(false));
+        Text(statement, ("Opening", 32), ("Debits", 32), ("Credits", 32), ("Closing", 32));
+        Hash(statement, "SourceHash"); Hash(statement, "ContentHash");
+        Json(statement, "SourceIdsJson"); Json(statement, "SnapshotJson");
+        statement.Property(x => x.ContentBytes).HasColumnType("varbinary(max)");
+        statement.HasIndex(x => new { x.AgencyId, x.From, x.To, x.Version }).IsUnique();
+        statement.HasIndex(x => new { x.AgencyId, x.CreatedAt });
+        statement.HasOne<Agency>().WithMany().HasForeignKey(x => x.AgencyId).OnDelete(DeleteBehavior.NoAction);
+        statement.HasOne<AgencyTermsVersion>().WithMany().HasForeignKey(x => new { x.AgencyTermsVersionId, x.AgencyId })
+            .HasPrincipalKey(x => new { x.Id, x.AgencyId }).OnDelete(DeleteBehavior.NoAction);
+        Check(statement, "Window", "[From]<[To] AND [Version]>0 AND [SourceCutoff]>=[CreatedAt]");
+        Check(statement, "Hash", "[ContentHash]=HASHBYTES('SHA2_256',[ContentBytes])");
+        Check(statement, "Amounts", "TRY_CONVERT(decimal(15,2),[Opening])+TRY_CONVERT(decimal(15,2),[Debits])-TRY_CONVERT(decimal(15,2),[Credits])=TRY_CONVERT(decimal(15,2),[Closing]) AND TRY_CONVERT(decimal(15,2),[Debits])>=0 AND TRY_CONVERT(decimal(15,2),[Credits])>=0");
         var posting = Record<FinancePosting>(model, "FinancePosting");
         posting.ToTable(t => t.UseSqlOutputClause(false));
         Text(posting, ("SourceKind", 30), ("DebtorKind", 20), ("Currency", 3), ("Reason", 1000));

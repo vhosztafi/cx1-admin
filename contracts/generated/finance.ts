@@ -8,6 +8,7 @@ export type FinanceLedgerRow = {
   currency: 'GBP'; dueDate: string | null; status: 'outstanding' | 'credit' | 'no-balance' | 'posted';
   accountingPeriodId: string | null; grossDue: FinanceMoney | null; tax: FinanceMoney | null;
   fee: FinanceMoney | null; commission: FinanceMoney | null; netDue: FinanceMoney | null;
+  agencyTermsVersionId: string | null;
 };
 export type FinanceLedgerPage = { page: number; pageSize: number; total: number; items: FinanceLedgerRow[] };
 export type FinanceAccountSummary = { agencyId: string; relationshipId: string | null; movementCount: number;

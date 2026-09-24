@@ -9,6 +9,7 @@ public sealed class AgencyPermissionRulesTests
     public void AllowlistedRequestNormalizesReasonWithoutGrantingAuthority()
     {
         Assert.Equal(new AgencyPermissionInput("bordereau-download", "Fictional reporting need"), AgencyPermissionRules.Request("bordereau-download", " Fictional reporting need "));
+        Assert.Equal(AgencyPermissionRules.StatementDownload, AgencyPermissionRules.Request("statement-download", "Fictional statement need").Permission);
         Assert.False(AgencyAccessRules.Allows("broker-admin", "bordereau-download"));
     }
 
