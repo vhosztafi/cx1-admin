@@ -222,7 +222,25 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 **Goal:** Reconcile policy movements through finance workflows.
 **Depends on:** Phase 9
 **Requirements:** FIN-01 through FIN-08
-**Plans:** Not yet planned.
+**Plans:** 13 plans drafted; 0/13 complete.
+
+- [ ] 10-01 — Freeze finance source and data contracts (wave 1).
+- [ ] 10-02 — Build exact ledger and period posting foundation (wave 2, after 10-01).
+- [ ] 10-03 — Generate reconciled agency statements (wave 3, after 10-02).
+- [ ] 10-04 — Persist receipts, payers, allocations and reversals (wave 4, after 10-03).
+- [ ] 10-05 — Wire payment and account read flows (wave 5, after 10-04).
+- [ ] 10-06 — Import bank lines and reconcile without synthetic balances (wave 6, after 10-04).
+- [ ] 10-07 — Calculate refund entitlement and independent approvals (wave 7, after 10-04).
+- [ ] 10-08 — Execute retry-safe deterministic demo refund payments (wave 8, after 10-07).
+- [ ] 10-09 — Snapshot, validate, correct and export bordereau versions (wave 9, after 10-02).
+- [ ] 10-10 — Submit only exact valid bordereau versions (wave 10, after 10-09).
+- [ ] 10-11 — Close periods and post auditable later corrections (wave 11, after 10-06/08/10).
+- [ ] 10-12 — Complete accounting workspace and inherited navigation (wave 12, after 10-05/06/08/10/11).
+- [ ] 10-13 — Verify full finance acceptance and preserved demo (wave 13, after 10-12).
+
+**Wave dependencies:** Each plan reads the reviewed summaries of its listed dependencies. Waves 6, 7 and 9 have independent domain work after their earlier foundation; execution is sequential because the repository uses one SQL/demo environment.
+
+**Cross-cutting constraints:** Current authority before replay; immutable insurance and cash source identities; exact decimal/period semantics; ordered SQL locks for residuals and closure; persistent deterministic demo adapters only; additive migrations and retained demo preservation; meaningful native SQL and saved-record browser evidence. No real external payments or insurer submissions.
 
 **Success criteria:**
 
