@@ -34,6 +34,7 @@ builder.Services.AddScoped<BackOffice.Infrastructure.Operations.IncidentService>
 MessageDeliveryDispatcher.Register(builder);
 ClaimsDispatcher.Register(builder);
 MidDispatcher.Register(builder);
+FinanceSubmissionDispatcher.Register(builder);
 CancellationOperationsDispatcher.Register(builder);
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.ClaimsHandoffService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.ClaimsSummaryService>();
@@ -81,6 +82,7 @@ builder.Services.AddScoped<BackOffice.Infrastructure.Policies.PolicyReadService>
 builder.Services.AddScoped<BackOffice.Infrastructure.Finance.FinanceLedgerService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Finance.FinanceStatementService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Finance.FinanceBordereauService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Finance.FinanceSubmissionService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Finance.FinanceReceiptService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.CommercialExposureReadModel>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.PolicyHistoryService>();
@@ -300,6 +302,7 @@ app.MapPolicies();
 app.MapFinanceLedger();
 app.MapFinanceStatements();
 app.MapFinanceBordereaux();
+app.MapFinanceSubmissions();
 app.MapFinanceReceipts();
 app.MapTasks();
 app.MapCommunications();

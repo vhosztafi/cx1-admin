@@ -144,6 +144,14 @@ public sealed class FinanceBordereauService(IDbContextFactory<BackOfficeDbContex
                     .SingleOrDefaultAsync(ct) ?? throw new QuoteOperationException(404, "bordereau-not-found");
                 if (batch.CurrentVersionId != expectedVersionId)
                     throw new QuoteOperationException(412, "bordereau-version-stale");
+                var submission = await db.Set<FinanceBordereauSubmission>().AsNoTracking()
+                    .SingleOrDefaultAsync(x => x.BatchId == batchId, ct);
+                if (submission is { State: not ("submitted" or "rejected") } &&
+                    !await db.Set<DemoProviderOperation>().AsNoTracking().AnyAsync(x =>
+                        x.Kind == FinanceSubmissionWorker.WorkKind && x.OperationKey == submission.OperationKey &&
+                        x.ScenarioVersionId == submission.ScenarioVersionId &&
+                        x.RequestHash == submission.RequestHash && x.Result != null, ct))
+                    throw new QuoteOperationException(409, "batch-submission-pending");
                 var prior = await db.Set<FinanceBordereauVersion>().AsNoTracking().SingleAsync(x => x.Id == expectedVersionId, ct);
                 var originals = await db.Set<FinanceBordereauMember>().AsNoTracking()
                     .Where(x => x.VersionId == prior.Id).OrderBy(x => x.SourceJournalId).ToArrayAsync(ct);
@@ -215,7 +223,10 @@ public sealed class FinanceBordereauService(IDbContextFactory<BackOfficeDbContex
         Guid versionId, CancellationToken token = default)
     {
         var (batch, version, members) = await Read(actor, batchId, versionId, token);
-        if (batch.CurrentVersionId != version.Id || version.State != "valid" || version.ContentBytes is null || version.ContentHash is null ||
+        await using var db = await factory.CreateDbContextAsync(token);
+        var submitted = await db.Set<FinanceBordereauSubmission>().AsNoTracking().AnyAsync(x => x.BatchId == batchId &&
+            x.VersionId == versionId && x.State == "submitted" && x.ContentHash == version.ContentHash, token);
+        if ((batch.CurrentVersionId != version.Id && !submitted) || version.State != "valid" || version.ContentBytes is null || version.ContentHash is null ||
             (JsonSerializer.Deserialize<BordereauValidationIssue[]>(version.ValidationJson, Json)?.Length ?? -1) != 0)
             throw new QuoteOperationException(409, "bordereau-not-valid");
         if (!CryptographicOperations.FixedTimeEquals(Hash(members), version.MembersHash) ||
@@ -247,7 +258,7 @@ public sealed class FinanceBordereauService(IDbContextFactory<BackOfficeDbContex
         return (batch, version, members);
     }
 
-    private static async Task Authorize(BackOfficeDbContext db, ActorContext actor, Guid providerId,
+    internal static async Task Authorize(BackOfficeDbContext db, ActorContext actor, Guid providerId,
         CancellationToken token, bool write = false)
     {
         if (!actor.HasCapability("finance-bordereau")) throw new QuoteOperationException(403, "bordereau-scope-denied");
