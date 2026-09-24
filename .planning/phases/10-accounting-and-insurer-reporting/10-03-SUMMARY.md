@@ -94,7 +94,7 @@ The first published-terms SQL fixture attempts were rejected by existing provena
 ## Task commits
 
 1. `0b09236` — `feat(10-03): seal reconciled agency statement versions`
-2. Documentation and self-check commit follows this summary.
+2. `178924e` — `docs(10-03): record statement verification`.
 
 ## Self-Check: PASSED
 
