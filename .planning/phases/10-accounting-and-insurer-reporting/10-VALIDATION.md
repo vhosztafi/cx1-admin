@@ -34,7 +34,7 @@ After each implementation slice, run its unit and SQL negatives plus frontend te
 | 10-05 | FIN-03, FIN-01 | T10-05 | Receipt UI tests + saved browser flow | 5/5 frontend unit and 10/10 live browser checks passed 2026-09-24; ESLint and TypeScript green; see 10-05-SUMMARY.md |
 | 10-06 | FIN-04 | T10-06 | FinanceReconciliation unit + native SQL import/match/exclusion tests | 9/9 unit, 5/5 native SQL and 2/2 API contract passed 2026-09-24; see 10-06-SUMMARY.md |
 | 10-07 | FIN-05 | T10-07 | FinanceRefund unit + native SQL entitlement/authority/reservation tests | 8/8 unit, 1/1 native SQL and 2/2 API contract passed 2026-09-24; see 10-07-SUMMARY.md |
-| 10-08 | FIN-05 | T10-08 | FinancePayment native SQL uncertain/retry/crash tests | Pending |
+| 10-08 | FIN-05 | T10-08 | FinancePayment native SQL uncertain/retry/crash tests | 3/3 native SQL, 1/1 affected resume authority and 1/1 accepted outcome reruns, 5/5 API contract passed 2026-09-24; see 10-08-SUMMARY.md |
 | 10-09 | FIN-06 | T10-09 | FinanceBordereau native SQL version/validation/CSV tests | 8/8 unit, 2/2 native SQL and 2/2 API contract passed 2026-09-24; see 10-09-SUMMARY.md |
 | 10-10 | FIN-07 | T10-10 | FinanceSubmission native SQL adapter/replay tests | 2/2 native SQL, 1/1 changed-intent rerun and 4/4 API contract passed 2026-09-24; see 10-10-SUMMARY.md |
 | 10-11 | FIN-08 | T10-11 | FinancePeriod native SQL close/post race/correction tests | Pending |
