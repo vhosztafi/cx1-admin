@@ -225,7 +225,7 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 **Plans:** 13 plans; 1/13 complete.
 
 - [x] 10-01 — Freeze finance source and data contracts (wave 1).
-- [ ] 10-02 — Build exact ledger and period posting foundation (wave 2, after 10-01).
+- [x] 10-02 — Build exact ledger and period posting foundation (wave 2, after 10-01).
 - [ ] 10-03 — Generate reconciled agency statements (wave 3, after 10-02).
 - [ ] 10-04 — Persist receipts, payers, allocations and reversals (wave 4, after 10-03).
 - [ ] 10-05 — Wire payment and account read flows (wave 5, after 10-04).
