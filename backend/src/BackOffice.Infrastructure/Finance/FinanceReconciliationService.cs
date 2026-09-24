@@ -32,7 +32,7 @@ public sealed class FinanceReconciliationService(IDbContextFactory<BackOfficeDbC
 {
     private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
     // Paid refund joins receipt after its own durable outcome and SQL source guard.
-    private static readonly string[] CashSources = ["receipt", "refund"];
+    private static readonly string[] CashSources = ["receipt", "refund", "correction"];
 
     public Task<CommandOutcome> ImportAsync(ActorContext actor, Guid agencyId, string importKey,
         DateOnly valueDate, string reference, string signedAmount, string currency, string rawJson,

@@ -8,6 +8,8 @@ public sealed partial class BackOfficeDbContext
     {
         var period = Record<AccountingPeriod>(model, "AccountingPeriod"); period.ToTable(t => t.UseSqlOutputClause(false));
         Text(period, ("State", 10)); period.HasIndex(x => x.StartsOn).IsUnique();
+        Text(period, ("CloseReason", 1000)); Json(period, "CloseChecklistJson", true);
+        period.HasOne<StaffUser>().WithMany().HasForeignKey(x => x.ClosedBy).OnDelete(DeleteBehavior.NoAction);
         Check(period, "Interval", "[StartsOn]<[EndsOn]"); Check(period, "State", "[State] IN ('open','closed')");
 
         var obligation = Record<IssueFinancialObligation>(model, "IssueFinancialObligation"); obligation.ToTable(t => t.UseSqlOutputClause(false));

@@ -88,6 +88,7 @@ builder.Services.AddScoped<BackOffice.Infrastructure.Finance.FinanceReceiptServi
 builder.Services.AddScoped<BackOffice.Infrastructure.Finance.FinanceReconciliationService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Finance.FinanceRefundService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Finance.FinancePaymentService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Finance.FinancePeriodService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.CommercialExposureReadModel>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.PolicyHistoryService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Policies.ServicingDraftService>();
@@ -311,6 +312,7 @@ app.MapFinanceReceipts();
 app.MapFinanceReconciliations();
 app.MapFinanceRefunds();
 app.MapFinancePayments();
+app.MapFinancePeriods();
 app.MapTasks();
 app.MapCommunications();
 app.MapDeliveries();

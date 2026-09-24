@@ -356,7 +356,7 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => payments.ResumeAsync(actor,
                 queued.ResourceId, Version(pendingApplication.Etag),
                 "Acknowledged provider payment cannot be resumed as unsent", Key(), Guid.NewGuid()))).Status);
-            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE AccountingPeriod SET State='closed' WHERE Id={held.Id}");
+            await SetLegacyPeriodState(db, $"UPDATE AccountingPeriod SET State='closed' WHERE Id={held.Id}");
             var financeRoleId = await db.Set<Role>().Where(x => x.Code == "finance").Select(x => x.Id).SingleAsync();
             var underwriterRoleId = await db.Set<Role>().Where(x => x.Code == "underwriter").Select(x => x.Id).SingleAsync();
             await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE UserRole SET RoleId={underwriterRoleId} WHERE UserId={actor.UserId}");

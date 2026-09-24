@@ -46,14 +46,14 @@ public sealed partial class UnderwritingRuntimeTests
         await Assert.ThrowsAsync<DbUpdateException>(() => db.SaveChangesAsync()); db.ChangeTracker.Clear(); transaction.ServicingRatingId = rating.Id;
         db.Add(transaction); await db.SaveChangesAsync(); db.ChangeTracker.Clear();
         var periods = await db.Set<AccountingPeriod>().AsNoTracking().OrderBy(x => x.StartsOn).ToArrayAsync();
-        await db.Database.ExecuteSqlRawAsync("UPDATE AccountingPeriod SET State=N'closed'");
+        await SetLegacyPeriodStateRaw(db, "UPDATE AccountingPeriod SET State=N'closed'");
         await using (var tx = await db.Database.BeginTransactionAsync())
         {
             Assert.Equal("accounting-period-unavailable", (await Assert.ThrowsAsync<QuoteOperationException>(() => ServicingPostingService.WriteAsync(db, transaction.Id))).Code);
             await tx.RollbackAsync();
         }
         Assert.False(await db.Set<IssueFinancialObligation>().AnyAsync(x => x.TransactionId == transaction.Id));
-        await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE AccountingPeriod SET State=N'open' WHERE Id={periods[1].Id}");
+        await SetLegacyPeriodState(db, $"UPDATE AccountingPeriod SET State=N'open' WHERE Id={periods[1].Id}");
         IssueFinancialObligation obligation; IssueFinancialComponent[] components; Journal journal; JournalLine[] lines;
         await using (var tx = await db.Database.BeginTransactionAsync())
         {
@@ -95,9 +95,9 @@ public sealed partial class UnderwritingRuntimeTests
         db.AddRange(lines.SkipLast(1)); await db.SaveChangesAsync(); db.ChangeTracker.Clear();
         Assert.Equal(51192, (await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Journal SET PostedAt={now} WHERE Id={journal.Id}"))).Number);
         db.Add(lines.Last()); await db.SaveChangesAsync(); db.ChangeTracker.Clear();
-        await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE AccountingPeriod SET State=N'closed' WHERE Id={journal.AccountingPeriodId}");
+        await SetLegacyPeriodState(db, $"UPDATE AccountingPeriod SET State=N'closed' WHERE Id={journal.AccountingPeriodId}");
         Assert.Equal(51512, (await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Journal SET PostedAt={now} WHERE Id={journal.Id}"))).Number);
-        await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE AccountingPeriod SET State=N'open' WHERE Id={journal.AccountingPeriodId}");
+        await SetLegacyPeriodState(db, $"UPDATE AccountingPeriod SET State=N'open' WHERE Id={journal.AccountingPeriodId}");
         await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE Journal SET PostedAt={now} WHERE Id={journal.Id}");
         component.Id = Guid.NewGuid(); component.Ordinal = 3; db.Add(component);
         await Assert.ThrowsAsync<DbUpdateException>(() => db.SaveChangesAsync()); db.ChangeTracker.Clear();
@@ -124,7 +124,7 @@ public sealed partial class UnderwritingRuntimeTests
                 Assert.Equal(new DateOnly(2026, 9, 18), selected.PostingDate);
                 await tx.CommitAsync();
             }
-            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE AccountingPeriod SET State=N'closed' WHERE Id={periods[0].Id}");
+            await SetLegacyPeriodState(db, $"UPDATE AccountingPeriod SET State=N'closed' WHERE Id={periods[0].Id}");
             await using (var tx = await db.Database.BeginTransactionAsync())
             {
                 var selected = await AccountingPeriods.HoldAsync(db, now);
@@ -137,7 +137,7 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.Equal("closed", await db.Set<AccountingPeriod>().AsNoTracking().Where(x => x.Id == periods[0].Id).Select(x => x.State).SingleAsync());
             await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync($"UPDATE AccountingPeriod SET StartsOn={new DateOnly(2025,1,1)} WHERE Id={periods[0].Id}"));
             await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync($"DELETE AccountingPeriod WHERE Id={periods[0].Id}"));
-            await db.Database.ExecuteSqlRawAsync("UPDATE AccountingPeriod SET State=N'closed'");
+            await SetLegacyPeriodStateRaw(db, "UPDATE AccountingPeriod SET State=N'closed'");
             await using var missing = await db.Database.BeginTransactionAsync();
             var error = await Assert.ThrowsAsync<QuoteOperationException>(() => AccountingPeriods.HoldAsync(db, now));
             Assert.Equal("accounting-period-unavailable", error.Code);
@@ -158,11 +158,12 @@ public sealed partial class UnderwritingRuntimeTests
             await using var other = new SqlConnection(db.Database.GetConnectionString());
             await other.OpenAsync();
             await using var command = other.CreateCommand();
-            command.CommandText = "SET LOCK_TIMEOUT 300; UPDATE AccountingPeriod SET State=N'closed' WHERE Id=@id";
+            command.CommandText = "SET LOCK_TIMEOUT 300; UPDATE AccountingPeriod SET CloseReason=CloseReason WHERE Id=@id";
             command.Parameters.AddWithValue("@id", held.PeriodId);
             Assert.Equal(1222, (await Assert.ThrowsAsync<SqlException>(() => command.ExecuteNonQueryAsync())).Number);
             await tx.CommitAsync();
             Assert.Equal(1, await command.ExecuteNonQueryAsync());
+            await SetLegacyPeriodState(db, $"UPDATE AccountingPeriod SET State=N'closed' WHERE Id={held.PeriodId}");
             await using var next = await db.Database.BeginTransactionAsync();
             Assert.Equal(new DateOnly(2027,1,1), (await AccountingPeriods.HoldAsync(db, now)).PostingDate);
         });

@@ -28,7 +28,6 @@ export function addAgencyFinanceApi({schemas:s,ref:r,text:t,enumeration:e,object
 
  s.JournalLine=o({id,accountId:id,accountCode:t(60),debit:decimal,credit:decimal});
  s.Journal=o({id,transactionId:id,periodId:id,postedAt:instant,effectiveOn:date,reason:t(1000),currency,lines:a(r('JournalLine')),reversesJournalId:id},['id','periodId','postedAt','effectiveOn','reason','currency','lines']);
- s.JournalWrite=o({periodId:id,effectiveOn:date,reason:t(1000),currency,lines:a(o({accountId:id,debit:decimal,credit:decimal}))});
  s.Invoice=o({id,agencyId:id,transactionId:id,reference:t(40),kind:e('invoice','credit-note'),gross:decimal,brokerCommission:decimal,netDue:decimal,outstanding:decimal,currency,dueOn:date,journalId:id});
  s.Receipt=o({id,agencyId:id,amount:decimal,unallocated:decimal,receivedOn:date,bankReference:t(),currency,journalId:id},['id','amount','unallocated','receivedOn','bankReference','currency']);
  s.Allocation=o({id,receiptId:id,invoiceId:id,amount:decimal,reversalOfId:id,reason:t(1000)},['id','receiptId','invoiceId','amount','reason']);
@@ -41,7 +40,6 @@ export function addAgencyFinanceApi({schemas:s,ref:r,text:t,enumeration:e,object
  s.BordereauRow=o({id,transactionId:id,policyReference:t(40),productCode:s.Quote.properties.productCode,effectiveOn:date,processedOn:date,premium:decimal,tax:decimal,brokerCommission:decimal,currency,excluded:b,exclusionReason:t(1000),validationErrors:a(r('ValidationIssue'))},['id','transactionId','policyReference','productCode','effectiveOn','processedOn','premium','tax','brokerCommission','currency','excluded','validationErrors']);
  s.Statement=o({agencyId:id,from:date,to:date,openingBalance:decimal,closingBalance:decimal,currency,entries:a(o({id,postedOn:date,reference:t(40),kind:e('invoice','credit-note','receipt','refund','journal'),debit:decimal,credit:decimal,balance:decimal}))});
  list('/finance/journals','listJournals','finance-read',r('Journal'),[['policyId',id],['agencyId',id],['periodId',id]]);
- op('post','/finance/journals','postJournal','finance-post',{input:r('JournalWrite'),output:r('Journal'),status:201});
  op('get','/finance/journals/{journalId}','getJournal','finance-read',{output:r('Journal')});
  op('post','/finance/journals/{journalId}/reverse','reverseJournal','finance-post',{input:o({periodId:id,effectiveOn:date,reason:t(1000)}),output:r('Journal'),status:201});
  list('/finance/invoices','listInvoices','finance-read',r('Invoice'),[['policyId',id],['agencyId',id],['overdue',b]]);
@@ -58,9 +56,7 @@ export function addAgencyFinanceApi({schemas:s,ref:r,text:t,enumeration:e,object
  op('post','/finance/refunds/{refundId}/decision','decideRefund','finance-refund-approve-no-self-approval',{existing:true,input:o({outcome:e('approve','reject'),reason:t(1000)}),output:r('Refund')});
  op('post','/finance/refunds/{refundId}/pay','payRefund','finance-refund-pay',{existing:true,input:reason,output:r('Job'),status:202});
  op('post','/finance/refunds/{refundId}/retry','retryRefundPayment','finance-refund-pay',{existing:true,input:reason,output:r('Job'),status:202});
- list('/finance/periods','listAccountingPeriods','finance-read',r('Period'));
  op('post','/finance/periods','createAccountingPeriod','finance-period-admin',{input:o({startsOn:date,endsOn:date}),output:r('Period'),status:201});
- op('post','/finance/periods/{periodId}/close','closeAccountingPeriod','finance-period-close',{existing:true,input:reason,output:r('Period')});
  list('/finance/bank-lines','listBankLines','finance-read',r('BankLine'),[['unmatchedOnly',b],['from',date],['to',date]]);
  op('post','/finance/bank-imports','importBankLines','finance-bank-import',{input:o({source:t(100),importReference:t(),lines:a(o({lineReference:t(),occurredOn:date,amount:decimal,currency}))}),output:o({importedIds:a(id),duplicateCount:integer}),status:201});
  list('/finance/reconciliations','listReconciliations','finance-read',r('Reconciliation'));

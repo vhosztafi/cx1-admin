@@ -115,7 +115,7 @@ public sealed partial class UnderwritingRuntimeTests
             var setup = await AcceptedIssue(db, password);
             var f = setup.Source;
             var key = Guid.NewGuid().ToString("N");
-            await db.Database.ExecuteSqlRawAsync("UPDATE AccountingPeriod SET State=N'closed'");
+            await SetLegacyPeriodStateRaw(db, "UPDATE AccountingPeriod SET State=N'closed'");
 
             var issue = new QuoteIssueService(f.Factory, f.Clock);
             var error = await Assert.ThrowsAsync<QuoteOperationException>(() => issue.IssueAsync(
@@ -126,7 +126,7 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.Empty(await db.Set<Journal>().AsNoTracking().ToArrayAsync());
             Assert.False(await db.Set<IdempotencyRecord>().AnyAsync(x => x.Key == key));
 
-            await db.Database.ExecuteSqlRawAsync("UPDATE AccountingPeriod SET State=N'open'");
+            await SetLegacyPeriodStateRaw(db, "UPDATE AccountingPeriod SET State=N'open'");
             await issue.IssueAsync(f.Underwriter, f.QuoteId, setup.Version, setup.Input,
                 key, Guid.NewGuid());
             db.ChangeTracker.Clear();
@@ -144,7 +144,7 @@ public sealed partial class UnderwritingRuntimeTests
             var f = setup.Source;
             var key = Guid.NewGuid().ToString("N");
             await using var closing = await db.Database.BeginTransactionAsync();
-            await db.Database.ExecuteSqlRawAsync("UPDATE AccountingPeriod SET State=N'closed'");
+            await SetLegacyPeriodStateRaw(db, "UPDATE AccountingPeriod SET State=N'closed'");
 
             var issueTask = new QuoteIssueService(f.Factory, f.Clock).IssueAsync(
                 f.Underwriter, f.QuoteId, setup.Version, setup.Input, key, Guid.NewGuid());
@@ -192,7 +192,7 @@ public sealed partial class UnderwritingRuntimeTests
             {
                 var saved = Posting(f.Policy.AgencyId);
                 db.Add(saved);
-                await db.SaveChangesAsync();
+                await InsertLegacyCorrection(db);
                 Assert.Single(await db.Set<FinancePosting>().AsNoTracking().ToArrayAsync());
                 await Assert.ThrowsAsync<SqlException>(() => db.Database.ExecuteSqlInterpolatedAsync(
                     $"UPDATE FinancePosting SET DebtorDelta=2 WHERE Id={saved.Id}"));
@@ -201,7 +201,7 @@ public sealed partial class UnderwritingRuntimeTests
             db.ChangeTracker.Clear();
             Assert.False(await db.Set<FinancePosting>().AnyAsync());
 
-            await db.Database.ExecuteSqlInterpolatedAsync(
+            await SetLegacyPeriodState(db,
                 $"UPDATE AccountingPeriod SET State=N'closed' WHERE Id={period.Id}");
             db.Add(Posting(f.Policy.AgencyId));
             await Assert.ThrowsAsync<DbUpdateException>(() => db.SaveChangesAsync());
