@@ -27,7 +27,7 @@ After each implementation slice, run its unit and SQL negatives plus frontend te
 
 | Plan | Requirements | Threat | Mandatory automated family | State |
 | --- | --- | --- | --- | --- |
-| 10-01 | FIN-01..08, POL-01 | T10-01 | Finance contract/source inventory Node tests | Pending |
+| 10-01 | FIN-01..08, POL-01 | T10-01 | Finance contract/source inventory Node tests | 7/7 green 2026-09-24; contract evidence only |
 | 10-02 | FIN-01, FIN-08 | T10-02 | FinanceLedger unit + native SQL posting/legacy/period tests | Pending |
 | 10-03 | FIN-01, FIN-02, POL-01 | T10-03 | FinanceStatement unit + native SQL equation/download tests | Pending |
 | 10-04 | FIN-03 | T10-04 | FinanceReceipt unit + native SQL concurrent allocation/reversal tests | Pending |
