@@ -122,7 +122,6 @@ public sealed class FinanceReconciliationService(IDbContextFactory<BackOfficeDbC
                     throw new QuoteOperationException(409, "excluded-line-cannot-match");
                 var posting = await HoldPosting(db, postingId, ct);
                 if (posting.AgencyId != reconciliation.AgencyId || posting.Currency != line.Currency ||
-                    posting.PostingDate < reconciliation.From || posting.PostingDate >= reconciliation.To ||
                     !CashSources.Contains(posting.SourceKind, StringComparer.Ordinal) || posting.CashDelta == 0 ||
                     Math.Sign(posting.CashDelta) != Math.Sign(line.SignedAmount) || Math.Sign(amount) != Math.Sign(line.SignedAmount))
                     throw new QuoteOperationException(409, "bank-match-source-mismatch");
@@ -131,7 +130,7 @@ public sealed class FinanceReconciliationService(IDbContextFactory<BackOfficeDbC
                 if (Math.Abs((decimal)amount) > Math.Abs((decimal)lineResidual) ||
                     Math.Abs((decimal)amount) > Math.Abs((decimal)postingResidual))
                     throw new QuoteOperationException(409, "match-exceeds-residual");
-                var now = time.GetUtcNow();
+                var now = await MatchEventTime(db, posting, time.GetUtcNow(), ct);
                 var match = new ReconciliationMatch { ReconciliationId = reconciliationId,
                     BankLineId = bankLineId, FinancePostingId = postingId, SignedAmount = amount / 100m,
                     Reason = reason.Trim(), MatchedAt = now, CreatedAt = now, CreatedBy = actor.UserId };
@@ -164,10 +163,10 @@ public sealed class FinanceReconciliationService(IDbContextFactory<BackOfficeDbC
                 var reconciliation = await HoldReconciliation(db, original.ReconciliationId, ct);
                 Open(reconciliation);
                 await HoldLine(db, original.BankLineId, ct);
-                await HoldPosting(db, original.FinancePostingId, ct);
+                var posting = await HoldPosting(db, original.FinancePostingId, ct);
                 if (await db.Set<ReconciliationMatch>().AnyAsync(x => x.ReversalOfId == matchId, ct))
                     throw new QuoteOperationException(409, "bank-match-already-reversed");
-                var now = time.GetUtcNow();
+                var now = await MatchEventTime(db, posting, time.GetUtcNow(), ct);
                 var reversal = new ReconciliationMatch { ReconciliationId = original.ReconciliationId,
                     BankLineId = original.BankLineId, FinancePostingId = original.FinancePostingId,
                     SignedAmount = original.SignedAmount, ReversalOfId = matchId,
@@ -356,6 +355,15 @@ public sealed class FinanceReconciliationService(IDbContextFactory<BackOfficeDbC
     private static Task<FinancePosting> HoldPosting(BackOfficeDbContext db, Guid id, CancellationToken ct)
         => db.Set<FinancePosting>().FromSqlInterpolated($"SELECT * FROM FinancePosting WITH(UPDLOCK,HOLDLOCK) WHERE Id={id}")
             .AsNoTracking().SingleAsync(ct);
+    private static async Task<DateTimeOffset> MatchEventTime(BackOfficeDbContext db, FinancePosting posting,
+        DateTimeOffset now, CancellationToken ct)
+    {
+        var completed = await db.Set<Reconciliation>().AsNoTracking()
+            .Where(x => x.AgencyId == posting.AgencyId && x.From <= posting.PostingDate &&
+                posting.PostingDate < x.To && x.CompletedAt != null)
+            .MaxAsync(x => x.CompletedAt, ct);
+        return completed is not null && now <= completed ? completed.Value.AddTicks(1) : now;
+    }
     private static void Open(Reconciliation row)
     {
         if (row.CompletedAt is not null) throw new QuoteOperationException(409, "reconciliation-completed");
@@ -411,6 +419,11 @@ public sealed class FinanceReconciliationService(IDbContextFactory<BackOfficeDbC
         var postings = await db.Set<FinancePosting>().AsNoTracking().Where(x => x.AgencyId == row.AgencyId &&
             x.PostingDate >= row.From && x.PostingDate < row.To && x.SourceKind == "receipt" && x.CashDelta != 0)
             .OrderBy(x => x.PostingDate).ThenBy(x => x.Id).ToArrayAsync(ct);
+        var postingIds = postings.Select(x => x.Id).ToArray();
+        var completionCutoff = row.CompletedAt;
+        var targetMatches = await db.Set<ReconciliationMatch>().AsNoTracking()
+            .Where(x => postingIds.Contains(x.FinancePostingId) &&
+                (completionCutoff == null || x.MatchedAt <= completionCutoff)).ToArrayAsync(ct);
         var targetExplanations = await db.Set<ReconciliationTargetVariance>().AsNoTracking()
             .Where(x => x.ReconciliationId == row.Id).OrderByDescending(x => x.ExplainedAt)
             .ThenByDescending(x => x.Id).ToArrayAsync(ct);
@@ -439,7 +452,7 @@ public sealed class FinanceReconciliationService(IDbContextFactory<BackOfficeDbC
         foreach (var posting in postings)
         {
             var source = FinanceLedgerMath.Pence(posting.CashDelta);
-            var related = matches.Where(x => x.FinancePostingId == posting.Id).ToArray();
+            var related = targetMatches.Where(x => x.FinancePostingId == posting.Id).ToArray();
             var residual = FinanceReconciliationMath.Residual(source,
                 related.Where(x => x.ReversalOfId is null).Select(x => FinanceLedgerMath.Pence(x.SignedAmount)),
                 related.Where(x => x.ReversalOfId is not null).Select(x => FinanceLedgerMath.Pence(x.SignedAmount)));

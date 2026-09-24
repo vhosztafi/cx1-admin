@@ -49,7 +49,7 @@ internal static class FinanceBankMigrationSql
               AND p.SourceKind='receipt' AND p.CashDelta<>0
             OUTER APPLY(SELECT COALESCE(SUM(CASE WHEN m.ReversalOfId IS NULL THEN m.SignedAmount
               ELSE -m.SignedAmount END),0) Applied FROM ReconciliationMatch m
-              WHERE m.ReconciliationId=i.Id AND m.FinancePostingId=p.Id) net
+              WHERE m.FinancePostingId=p.Id) net
             OUTER APPLY(SELECT TOP(1) v.SignedResidual FROM ReconciliationTargetVariance v
               WHERE v.ReconciliationId=i.Id AND v.FinancePostingId=p.Id
               ORDER BY v.ExplainedAt DESC,v.Id DESC) latest
@@ -89,12 +89,15 @@ internal static class FinanceBankMigrationSql
             LEFT JOIN ReconciliationMatch original ON original.Id=i.ReversalOfId
             WHERE r.CompletedAt IS NOT NULL OR l.AgencyId<>r.AgencyId OR p.AgencyId<>r.AgencyId
               OR l.ValueDate<r.[From] OR l.ValueDate>=r.[To]
-              OR p.PostingDate<r.[From] OR p.PostingDate>=r.[To]
               OR l.Currency<>p.Currency OR p.SourceKind<>'receipt' OR p.CashDelta=0
               OR SIGN(i.SignedAmount)<>SIGN(l.SignedAmount)
               OR SIGN(i.SignedAmount)<>SIGN(p.CashDelta)
               OR ABS(i.SignedAmount)>ABS(l.SignedAmount)
               OR ABS(i.SignedAmount)>ABS(p.CashDelta)
+              OR EXISTS(SELECT 1 FROM Reconciliation closedSource
+                WHERE closedSource.AgencyId=p.AgencyId AND closedSource.[From]<=p.PostingDate
+                  AND p.PostingDate<closedSource.[To] AND closedSource.CompletedAt IS NOT NULL
+                  AND i.MatchedAt<=closedSource.CompletedAt)
               OR EXISTS(SELECT 1 FROM BankLineExclusion e WHERE e.BankLineId=i.BankLineId)
               OR (i.ReversalOfId IS NOT NULL AND (original.Id IS NULL OR original.ReversalOfId IS NOT NULL
                 OR original.ReconciliationId<>i.ReconciliationId OR original.BankLineId<>i.BankLineId
@@ -161,7 +164,7 @@ internal static class FinanceBankMigrationSql
             JOIN FinancePosting p WITH(UPDLOCK,HOLDLOCK) ON p.Id=i.FinancePostingId
             OUTER APPLY(SELECT COALESCE(SUM(CASE WHEN m.ReversalOfId IS NULL THEN m.SignedAmount
               ELSE -m.SignedAmount END),0) Applied FROM ReconciliationMatch m
-              WHERE m.ReconciliationId=i.ReconciliationId AND m.FinancePostingId=i.FinancePostingId) net
+              WHERE m.FinancePostingId=i.FinancePostingId) net
             WHERE r.CompletedAt IS NOT NULL OR p.AgencyId<>r.AgencyId
               OR p.PostingDate<r.[From] OR p.PostingDate>=r.[To]
               OR p.SourceKind<>'receipt' OR p.CashDelta=0

@@ -271,4 +271,46 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.False(db.Database.HasPendingModelChanges());
         });
     }
+
+    [Fact]
+    public async Task RealSqlFinanceReconciliationMatchesBankValueDateAfterCashPostingDate()
+    {
+        await WithDatabase(async (db, password) =>
+        {
+            var setup = await AcceptedIssue(db, password);
+            var f = setup.Source;
+            await new QuoteIssueService(f.Factory, f.Clock).IssueAsync(f.Underwriter, f.QuoteId,
+                setup.Version, setup.Input, Guid.NewGuid().ToString("N"), Guid.NewGuid());
+            db.ChangeTracker.Clear();
+            var agencyId = (await db.Set<IssueFinancialObligation>().AsNoTracking().SingleAsync()).AgencyId;
+            var actor = await FinanceLedgerActor(db);
+            var boundary = new SqlCommandBoundary(f.Factory, f.Clock);
+            var service = new FinanceReconciliationService(f.Factory, boundary, f.Clock);
+            var receipts = new FinanceReceiptService(f.Factory, boundary, f.Clock);
+            var date = DateOnly.FromDateTime(f.Clock.GetUtcNow().Date);
+            var receipt = await receipts.RecordAsync(actor, agencyId, "3.00", "GBP", date,
+                "Month boundary deposit", "manual", Guid.NewGuid(), "agency", agencyId,
+                Guid.NewGuid().ToString("N"), Guid.NewGuid());
+            var postingId = await db.Set<FinancePosting>().AsNoTracking().Where(x => x.SourceKind == "receipt" &&
+                x.SourceId == receipt.ResourceId).Select(x => x.Id).SingleAsync();
+            var cashPeriod = await service.CreateAsync(actor, agencyId, date, date.AddDays(1),
+                Guid.NewGuid().ToString("N"), Guid.NewGuid());
+            var bankPeriod = await service.CreateAsync(actor, agencyId, date.AddDays(1), date.AddDays(2),
+                Guid.NewGuid().ToString("N"), Guid.NewGuid());
+            Assert.Equal("3.00", (await service.DetailAsync(actor, cashPeriod.ResourceId)).Targets.Single().Residual);
+            await service.ExplainTargetAsync(actor, cashPeriod.ResourceId, postingId,
+                "Expected bank value date in next accounting window", Guid.NewGuid().ToString("N"), Guid.NewGuid());
+            await service.CompleteAsync(actor, cashPeriod.ResourceId, Guid.NewGuid().ToString("N"), Guid.NewGuid());
+            var bankLine = await service.ImportAsync(actor, agencyId, "next-period:row-1", date.AddDays(1),
+                "Month boundary deposit", "3.00", "GBP", "{\"source\":\"next-period\"}",
+                Guid.NewGuid().ToString("N"), Guid.NewGuid());
+            await service.MatchAsync(actor, bankPeriod.ResourceId, bankLine.ResourceId, postingId, "3.00",
+                "Bank value date follows posted cash date", Guid.NewGuid().ToString("N"), Guid.NewGuid());
+            Assert.Equal("3.00", (await service.DetailAsync(actor, cashPeriod.ResourceId)).Targets.Single().Residual);
+            Assert.True((await service.DetailAsync(actor, cashPeriod.ResourceId)).Targets.Single().Addressed);
+            Assert.Equal("0.00", (await service.DetailAsync(actor, bankPeriod.ResourceId)).Lines.Single().Residual);
+            await service.CompleteAsync(actor, bankPeriod.ResourceId, Guid.NewGuid().ToString("N"), Guid.NewGuid());
+            Assert.False(db.Database.HasPendingModelChanges());
+        });
+    }
 }
