@@ -35,8 +35,8 @@ public sealed partial class BackOfficeDbContext
         posting.HasOne<Policy>().WithMany().HasForeignKey(x => x.PolicyId).OnDelete(DeleteBehavior.NoAction);
         posting.HasOne<PolicyTransaction>().WithMany().HasForeignKey(x => x.TransactionId).OnDelete(DeleteBehavior.NoAction);
         posting.HasOne<AccountingPeriod>().WithMany().HasForeignKey(x => x.AccountingPeriodId).OnDelete(DeleteBehavior.NoAction);
-        // Allocations apply an existing receipt and never create another cash movement.
-        Check(posting, "Source", "[SourceKind] IN ('receipt','receipt-reversal','refund','correction') AND [SourceId]<>'00000000-0000-0000-0000-000000000000'");
+        // Applications reclassify suspense to a debtor, but never create cash.
+        Check(posting, "Source", "[SourceKind] IN ('receipt','receipt-application','receipt-application-reversal','receipt-reversal','refund','correction') AND [SourceId]<>'00000000-0000-0000-0000-000000000000'");
         Check(posting, "Currency", "[Currency]='GBP'");
         Check(posting, "Debtor", "[DebtorKind]='agency' OR ([DebtorKind]='relationship' AND [RelationshipId] IS NOT NULL)");
         Check(posting, "Amounts", "[DebtorDelta]<>0 OR [ProviderDelta]<>0 OR [CashDelta]<>0 OR [InternalDelta]<>0");

@@ -151,6 +151,7 @@ public sealed partial class BackOfficeDbContext(DbContextOptions<BackOfficeDbCon
         ConfigureServicingAcceptance(model);
         ConfigureIssueFinancials(model);
         ConfigureFinance(model);
+        ConfigureFinanceCash(model);
         ConfigureFinanceBordereaux(model);
         ConfigureServicingIssue(model);
         ConfigureRenewalPreparation(model);
