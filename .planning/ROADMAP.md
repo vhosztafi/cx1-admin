@@ -235,7 +235,7 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 - [x] 10-09 — Snapshot, validate, correct and export bordereau versions (wave 9, after 10-02).
 - [x] 10-10 — Submit only exact valid bordereau versions (wave 10, after 10-09).
 - [x] 10-11 — Close periods and post auditable later corrections (wave 11, after 10-06/08/10).
-- [ ] 10-12 — Complete accounting workspace and inherited navigation (wave 12, after 10-05/06/08/10/11).
+- [x] 10-12 — Complete accounting workspace and inherited navigation (wave 12, after 10-05/06/08/10/11).
 - [ ] 10-13 — Verify full finance acceptance and preserved demo (wave 13, after 10-12).
 
 **Wave dependencies:** Each plan reads the reviewed summaries of its listed dependencies. Waves 6, 7 and 9 have independent domain work after their earlier foundation; execution is sequential because the repository uses one SQL/demo environment.
