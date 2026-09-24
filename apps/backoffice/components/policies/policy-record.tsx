@@ -23,6 +23,7 @@ import {CommercialPolicyRecord} from './commercial-policy-record';
 import {isCommercialPolicy, type AnyPolicyTemporalView} from '../../lib/commercial-policy';
 import { PolicyRiskOverview } from './policy-risk-overview';
 import { PolicyDocumentRequests } from './policy-document-requests';
+import { PolicyFinance } from './policy-finance';
 
 const date = (value: string) => new Date(value).toLocaleString('en-GB', { timeZone: 'Europe/London', dateStyle: 'medium', timeStyle: 'short' });
 const tabs = ['Overview', 'Risk details', 'Cover', 'Drivers', 'Vehicles', 'Transactions', 'Documents', 'Tasks', 'Claims', 'Notes', 'Messages'] as const;
@@ -47,7 +48,7 @@ export function PolicyRecord({ policyId, questionLabels,selection,initialTab,ini
   </form></Panel>;
   if (!record.data) return <>{chronology}<Panel title="Policy record"><LoadFeedback error={record.error} retry={record.refresh} /></Panel></>;
   if (!('snapshot' in record.data)) return <>{chronology}<PolicyNoCover key={`${record.data.effectiveCutoff}:${record.data.knownCutoff}`} policyId={policyId} effectiveAt={record.data.effectiveCutoff} knownAt={record.data.knownCutoff}/></>;
-  if (isCommercialPolicy(record.data)) return <CommercialPolicyRecord initialTab={tab==='Transactions'||tab==='Documents'||tab==='Notes'||tab==='Messages'||tab==='Tasks'||tab==='Claims'?tab:undefined} initialIncident={initialIncident} cutoffs={cutoffs} onSelect={(value,next='Transactions')=>{setVersionSelection(value);setCutoffs('');setTab(next);window.history.replaceState(null,'','/policies/'+policyId+'?'+new URLSearchParams({...value,tab:next}));}} policy={record.data} chronology={chronology} refresh={record.refresh} questionLabels={questionLabels}/>;
+  if (isCommercialPolicy(record.data)) return <><CommercialPolicyRecord initialTab={tab==='Transactions'||tab==='Documents'||tab==='Notes'||tab==='Messages'||tab==='Tasks'||tab==='Claims'?tab:undefined} initialIncident={initialIncident} cutoffs={cutoffs} onSelect={(value,next='Transactions')=>{setVersionSelection(value);setCutoffs('');setTab(next);window.history.replaceState(null,'','/policies/'+policyId+'?'+new URLSearchParams({...value,tab:next}));}} policy={record.data} chronology={chronology} refresh={record.refresh} questionLabels={questionLabels}/><PolicyFinance policyId={policyId}/></>;
   const policy = record.data, snapshot = policy.snapshot, financial = policy.financials;
   const cancelled = !!snapshot.cancellation;
   const adjusted = cancelled || 'servicingIssueDecisionId' in snapshot.provenance;
@@ -68,7 +69,7 @@ export function PolicyRecord({ policyId, questionLabels,selection,initialTab,ini
   </div></Panel>;
   return <><div className="page-heading"><div><h1>{policy.reference}</h1><p>{cancelled ? 'Cancelled policy version' : renewal ? 'Renewed policy' : adjusted ? 'Adjusted policy' : 'New-business policy'} · Term {policy.termNumber} · Version {policy.versionSequence}</p></div><Link className="button" href={`/policies/${policy.id}?tab=Claims&incident=new`}>Log an incident</Link><Link className="button" href={`/quotes/${policy.sourceQuoteId}`}>Open source quote</Link><button className="button" onClick={()=>setTab('Notes')}>Add note</button><button className="button" onClick={()=>setTab('Documents')}>Send documents</button><TaskCreateEntry parent={{kind: "policy", id: policy.id, label: policy.reference}} /><button className="button" onClick={cancelDraft}>Cancel policy</button></div>
     <section className="quote-saved-banner" aria-label="Issued policy"><div><span className="quote-step-label">{product}</span><h2>{declaredName}</h2><p>Policy issued · {date(policy.issuedAt)} · London</p></div><Status tone={coverage === 'In force' ? 'success' : 'info'}>{coverage}</Status></section>
-    {chronology}
+    {chronology}<PolicyFinance policyId={policyId}/>
     <PolicyHistoryActions key={`${policy.id}:${policy.versionId}:${policy.effectiveCutoff}:${policy.knownCutoff}`} policy={policy} />
     <PolicyHistory policy={policy} questionLabels={questionLabels} cutoffs={cutoffs} onSelect={(value,nextTab='Transactions')=>{setVersionSelection(value);setCutoffs('');setTab(nextTab);window.history.replaceState(null,'','/policies/'+policyId+'?'+new URLSearchParams({termId:value.termId,versionId:value.versionId,tab:nextTab}));}} />
     {tab==='Drivers'||tab==='Vehicles'?<PolicyRiskHistory key={`${policy.versionId}:${tab}`} policy={policy} kind={tab==='Drivers'?'drivers':'vehicles'} questionLabels={questionLabels}/>:null}

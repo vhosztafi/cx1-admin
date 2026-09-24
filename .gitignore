@@ -13,3 +13,4 @@ frontend-code/
 **/bin/
 **/obj/
 .local/
+apps/backoffice/.local-next-*/
