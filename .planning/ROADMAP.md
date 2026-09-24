@@ -233,7 +233,7 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 - [ ] 10-07 — Calculate refund entitlement and independent approvals (wave 7, after 10-04).
 - [ ] 10-08 — Execute retry-safe deterministic demo refund payments (wave 8, after 10-07).
 - [x] 10-09 — Snapshot, validate, correct and export bordereau versions (wave 9, after 10-02).
-- [ ] 10-10 — Submit only exact valid bordereau versions (wave 10, after 10-09).
+- [x] 10-10 — Submit only exact valid bordereau versions (wave 10, after 10-09).
 - [ ] 10-11 — Close periods and post auditable later corrections (wave 11, after 10-06/08/10).
 - [ ] 10-12 — Complete accounting workspace and inherited navigation (wave 12, after 10-05/06/08/10/11).
 - [ ] 10-13 — Verify full finance acceptance and preserved demo (wave 13, after 10-12).
