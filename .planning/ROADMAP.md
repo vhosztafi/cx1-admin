@@ -227,7 +227,7 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 - [x] 10-01 — Freeze finance source and data contracts (wave 1).
 - [x] 10-02 — Build exact ledger and period posting foundation (wave 2, after 10-01).
 - [x] 10-03 — Generate reconciled agency statements (wave 3, after 10-02).
-- [ ] 10-04 — Persist receipts, payers, allocations and reversals (wave 4, after 10-03).
+- [x] 10-04 — Persist receipts, payers, allocations and reversals (wave 4, after 10-03).
 - [ ] 10-05 — Wire payment and account read flows (wave 5, after 10-04).
 - [ ] 10-06 — Import bank lines and reconcile without synthetic balances (wave 6, after 10-04).
 - [ ] 10-07 — Calculate refund entitlement and independent approvals (wave 7, after 10-04).

@@ -30,7 +30,7 @@ After each implementation slice, run its unit and SQL negatives plus frontend te
 | 10-01 | FIN-01..08, POL-01 | T10-01 | Finance contract/source inventory Node tests | 7/7 green 2026-09-24; contract evidence only |
 | 10-02 | FIN-01, FIN-08 | T10-02 | FinanceLedger unit + native SQL posting/legacy/period tests | 11/11 unit, 5/5 native SQL and 47/47 API contract passed 2026-09-24; see 10-02-SUMMARY.md |
 | 10-03 | FIN-01, FIN-02, POL-01 | T10-03 | FinanceStatement unit + native SQL equation/download tests | 20/20 focused unit and permission, 1/1 native SQL, 50/50 API contract passed 2026-09-24; see 10-03-SUMMARY.md |
-| 10-04 | FIN-03 | T10-04 | FinanceReceipt unit + native SQL concurrent allocation/reversal tests | Pending |
+| 10-04 | FIN-03 | T10-04 | FinanceReceipt unit + native SQL concurrent allocation/reversal tests | 11/11 unit, 4/4 native SQL and 2/2 API contract passed 2026-09-24; see 10-04-SUMMARY.md |
 | 10-05 | FIN-03, FIN-01 | T10-05 | Receipt UI tests + saved browser flow | Pending |
 | 10-06 | FIN-04 | T10-06 | FinanceReconciliation unit + native SQL import/match/exclusion tests | Pending |
 | 10-07 | FIN-05 | T10-07 | FinanceRefund unit + native SQL entitlement/authority/reservation tests | Pending |
