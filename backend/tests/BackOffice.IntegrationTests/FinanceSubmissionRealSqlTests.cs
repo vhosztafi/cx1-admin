@@ -66,6 +66,11 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => bordereaux.DownloadAsync(actor,
                 draft.BatchId, successor.Id))).Status);
             Assert.True((await submission.QueueAsync(actor, draft.BatchId, valid.Id, valid.ContentHash!, key, Guid.NewGuid())).Replayed);
+            await bordereaux.ValidateAsync(actor, draft.BatchId, successor.Id,
+                Guid.NewGuid().ToString("N"), Guid.NewGuid());
+            var changedIntent = await bordereaux.DetailAsync(actor, draft.BatchId);
+            Assert.Equal(409, (await Assert.ThrowsAsync<QuoteOperationException>(() => submission.QueueAsync(actor,
+                draft.BatchId, changedIntent.Id, changedIntent.ContentHash!, key, Guid.NewGuid()))).Status);
             await db.Database.ExecuteSqlInterpolatedAsync($"DELETE UserRole WHERE UserId={actor.UserId}");
             Assert.Equal(403, (await Assert.ThrowsAsync<QuoteOperationException>(() => submission.DetailAsync(actor,
                 draft.BatchId, valid.Id))).Status);
