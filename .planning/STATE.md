@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
 status: Ready to execute
-stopped_at: Phase 10 wave 4 complete; execution continues with 10-05, 10-06 and 10-07.
-last_updated: "2026-09-24T11:40:38Z"
-last_activity: "2026-09-24 — Phase 10 plan 10-10 exact bordereau submission complete with 2/2 native SQL and 4/4 API contract tests."
+stopped_at: Phase 10 receipt UI slice complete; execution continues with 10-06 and 10-07.
+last_updated: "2026-09-24T12:30:30Z"
+last_activity: "2026-09-24 — Phase 10 plan 10-05 saved receipt/account UI complete with 5/5 frontend tests and 10/10 live browser checks."
 progress:
   total_phases: 13
   completed_phases: 9
   total_plans: 112
-  completed_plans: 105
+  completed_plans: 106
   percent: 69
 ---
 
@@ -22,7 +22,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md. Core value: complete persistent 
 
 ## Current position
 
-Phase 10 accounting and insurer reporting has 13 structurally checked plans covering FIN-01 through FIN-08 and linked POL-01 finance. Plans 10-01 through 10-04 and 10-09 through 10-10 are complete; 10-05 through 10-08 and 10-11 through 10-13 remain. The planning evidence is in `10-RESEARCH.md`, `10-UI-SPEC.md`, `10-PATTERNS.md` and `10-VALIDATION.md`.
+Phase 10 accounting and insurer reporting has 13 structurally checked plans covering FIN-01 through FIN-08 and linked POL-01 finance. Plans 10-01 through 10-05 and 10-09 through 10-10 are complete; 10-06 through 10-08 and 10-11 through 10-13 remain. The planning evidence is in `10-RESEARCH.md`, `10-UI-SPEC.md`, `10-PATTERNS.md` and `10-VALIDATION.md`.
 
 Phase 9, tasks/documents/communication/incidents, is complete on local automated evidence. Plans 09-01 through 09-18 have reviewed summaries. The final v7 gate from `f201f31` passed 1,337/1,337 unit and exactly 550/550 discovered integration cases, including 485 named real SQL/API process-restart cases: 1,887 unique IDs, no skips, unchanged integration assembly and 1,883 tracked source hashes. The streaming strict report is `.local/phase9-final-v7/strict-report.json`; the guarded root/frontend/ledger report is `.local/phase9-final-v7-followthrough/report.json` (421 root and 204 frontend tests, lint/typecheck/build passed). The previous complete v6 run also passed, but is not substituted for v7.
 
@@ -32,7 +32,7 @@ The original source denominator is unchanged: 118 controls (109 Phase9 owned, ni
 
 ## Next work
 
-Execute Phase 10 from `10-05-PLAN.md`, `10-06-PLAN.md` and `10-07-PLAN.md` through subsequent dependency waves and final acceptance. Phases 10–13 are not complete; the v1.0 milestone remains active. Preserve the retained demo database, file root, data-protection keys and frontend-code. The current preview identities are in `.local/phase9-16-preview-pids.json`; verify process/binary/listener ownership before changing them. The inherited generated `apps/backoffice/next-env.d.ts` and `tsconfig.json` edits and untracked `.idea/` are not part of Phase 10 commits.
+Execute Phase 10 from `10-06-PLAN.md` and `10-07-PLAN.md` through subsequent dependency waves and final acceptance. Phases 10–13 are not complete; the v1.0 milestone remains active. Preserve the retained demo database, file root, data-protection keys and frontend-code. The current preview identities are in `.local/phase9-16-preview-pids.json`; verify process/binary/listener ownership before changing them. The inherited generated `apps/backoffice/next-env.d.ts` and `tsconfig.json` edits, untracked `.idea/`, and preview-generated `apps/backoffice/AGENTS.md` and `CLAUDE.md` are not part of Phase 10 commits.
 
 ## Decisions and continuity
 
