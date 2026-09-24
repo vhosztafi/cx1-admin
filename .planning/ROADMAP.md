@@ -230,7 +230,7 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 - [x] 10-04 — Persist receipts, payers, allocations and reversals (wave 4, after 10-03).
 - [x] 10-05 — Wire payment and account read flows (wave 5, after 10-04).
 - [x] 10-06 — Import bank lines and reconcile without synthetic balances (wave 6, after 10-04).
-- [ ] 10-07 — Calculate refund entitlement and independent approvals (wave 7, after 10-04).
+- [x] 10-07 — Calculate refund entitlement and independent approvals (wave 7, after 10-04).
 - [ ] 10-08 — Execute retry-safe deterministic demo refund payments (wave 8, after 10-07).
 - [x] 10-09 — Snapshot, validate, correct and export bordereau versions (wave 9, after 10-02).
 - [x] 10-10 — Submit only exact valid bordereau versions (wave 10, after 10-09).
