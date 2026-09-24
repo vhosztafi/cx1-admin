@@ -42,6 +42,14 @@ public sealed class FinanceReceiptService(IDbContextFactory<BackOfficeDbContext>
             async (db, ct) => await Authorize(db, actor, agencyId, payerKind == "relationship" ? payerId : null, ct, true),
             async (db, ct) =>
             {
+                if (originKind == "bank-import")
+                {
+                    var line = await db.Set<BankLine>().FromSqlInterpolated($"SELECT * FROM BankLine WITH(UPDLOCK,HOLDLOCK) WHERE Id={originId}")
+                        .AsNoTracking().SingleOrDefaultAsync(ct);
+                    if (line is null || line.AgencyId != agencyId || line.SignedAmount != FinanceReceiptMath.Money(pence) ||
+                        line.Currency != currency || line.ValueDate != receivedOn || line.Reference != bankReference.Trim())
+                        throw new QuoteOperationException(409, "receipt-bank-origin-invalid");
+                }
                 if (await db.Set<Receipt>().AnyAsync(x => x.OriginKind == originKind && x.OriginId == originId, ct))
                     throw new QuoteOperationException(409, "receipt-origin-conflict");
                 await ValidatePayer(db, agencyId, payerKind, payerId, ct);
