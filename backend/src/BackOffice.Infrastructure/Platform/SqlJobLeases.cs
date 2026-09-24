@@ -25,7 +25,7 @@ public sealed class SqlJobLeases(IDbContextFactory<BackOfficeDbContext> factory,
 
     private async Task<JobLease?> ClaimCoreAsync(string kind,Guid? workId,CancellationToken cancellationToken)
     {
-        if(kind is not (DiagnosticKind or "agency-notification" or "quote-lookup" or "quote-rating" or "servicing-rating" or "servicing-capacity" or "servicing-delivery" or "renewal-lapse-notification" or "cancellation-notice" or "capacity-escalation" or "quote-delivery" or "operational-delivery" or "operational-claims" or "mid-update" or "cancellation-mid-removal" or "cancellation-certificate-withdrawal" or "cancellation-task-close" or "finance-bordereau-submit"))throw new ArgumentException("Unsupported job kind.");
+        if(kind is not (DiagnosticKind or "agency-notification" or "quote-lookup" or "quote-rating" or "servicing-rating" or "servicing-capacity" or "servicing-delivery" or "renewal-lapse-notification" or "cancellation-notice" or "capacity-escalation" or "quote-delivery" or "operational-delivery" or "operational-claims" or "mid-update" or "cancellation-mid-removal" or "cancellation-certificate-withdrawal" or "cancellation-task-close" or "finance-bordereau-submit" or "finance-refund-payment"))throw new ArgumentException("Unsupported job kind.");
         await using var db=await factory.CreateDbContextAsync(cancellationToken);
         // REPEATABLE READ permits READPAST even when the database uses read-committed snapshots.
         await using var transaction=await db.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead,cancellationToken);
@@ -60,7 +60,7 @@ public sealed class SqlJobLeases(IDbContextFactory<BackOfficeDbContext> factory,
             JobFailure.ProviderRejected => "provider-rejected",
             JobFailure.InvalidPayload => "invalid-payload",
             JobFailure.ProviderConflict => "provider-conflict",
-            JobFailure.Superseded => lease.Kind == "operational-delivery" ? "delivery-context-unavailable" : lease.Kind == "operational-claims" ? "claims-context-unavailable" : lease.Kind is "mid-update" or "cancellation-mid-removal" ? "mid-context-unavailable" : lease.Kind == "finance-bordereau-submit" ? "submission-context-unavailable" : lease.Kind.StartsWith("cancellation-",StringComparison.Ordinal) ? "cancellation-context-unavailable" : "invitation-superseded",
+            JobFailure.Superseded => lease.Kind == "operational-delivery" ? "delivery-context-unavailable" : lease.Kind == "operational-claims" ? "claims-context-unavailable" : lease.Kind is "mid-update" or "cancellation-mid-removal" ? "mid-context-unavailable" : lease.Kind == "finance-bordereau-submit" ? "submission-context-unavailable" : lease.Kind == "finance-refund-payment" ? "payment-context-unavailable" : lease.Kind.StartsWith("cancellation-",StringComparison.Ordinal) ? "cancellation-context-unavailable" : "invitation-superseded",
             _ => throw new ArgumentOutOfRangeException(nameof(failure))
         };
         var transient=failure is JobFailure.ProviderUnavailable or JobFailure.ProviderTimeout;
@@ -88,6 +88,28 @@ public sealed class SqlJobLeases(IDbContextFactory<BackOfficeDbContext> factory,
 
     internal static async Task MarkTerminalAsync(BackOfficeDbContext db,OutboxWork job,string code,DateTimeOffset now,CancellationToken cancellationToken)
     {
+        if (job.Kind == "finance-refund-payment")
+        {
+            var payment = await db.Set<FinanceRefundPayment>().SingleOrDefaultAsync(x => x.WorkId == job.Id, cancellationToken);
+            var operation = payment is null ? null : await db.Set<DemoProviderOperation>().AsNoTracking()
+                .SingleOrDefaultAsync(x => x.Kind == job.Kind && x.OperationKey == job.OperationKey, cancellationToken);
+            if (payment is { State: "queued" } && operation is { State: "accepted", Result: not null } &&
+                operation.ScenarioVersionId == payment.ScenarioVersionId &&
+                System.Security.Cryptography.CryptographicOperations.FixedTimeEquals(operation.RequestHash, payment.RequestHash))
+            {
+                job.AttemptLimit = job.AttemptLimit switch
+                {
+                    6 => 12,
+                    12 => 18,
+                    18 => int.MaxValue,
+                    _ => job.AttemptLimit
+                };
+                job.State = "pending"; job.NextAttemptAt = now + TimeSpan.FromSeconds(5);
+                job.ErrorCode = "local-apply-pending"; job.LeaseToken = null; job.LeaseExpiresAt = null;
+                return;
+            }
+            if (payment is { State: "queued" }) payment.State = "failed";
+        }
         job.State="failed"; job.CompletedAt=now; job.ErrorCode=code; job.LeaseToken=null; job.LeaseExpiresAt=null;
         if (job.Kind == "finance-bordereau-submit")
         {

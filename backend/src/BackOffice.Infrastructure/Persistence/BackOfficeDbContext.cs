@@ -87,7 +87,7 @@ public sealed partial class BackOfficeDbContext(DbContextOptions<BackOfficeDbCon
         Check(work,"State","[State] IN ('pending','leased','succeeded','failed')");
         Check(work,"Attempts","[Attempts] >= 0");
         work.Property(x => x.AttemptLimit).HasDefaultValue(6);
-        Check(work,"AttemptLimit","[AttemptLimit] IN (6,12,18) AND [Attempts] <= [AttemptLimit]");
+        Check(work,"AttemptLimit","([AttemptLimit] IN (6,12,18) OR ([Kind]='finance-refund-payment' AND [AttemptLimit]=2147483647)) AND [Attempts] <= [AttemptLimit]");
         var exceptions = Record<JobException>(model,"JobException");
         Text(exceptions,("Code",100)); exceptions.HasIndex(x => x.WorkId).IsUnique();
         exceptions.HasOne<OutboxWork>().WithMany().HasForeignKey(x => x.WorkId).OnDelete(DeleteBehavior.NoAction);
@@ -154,6 +154,7 @@ public sealed partial class BackOfficeDbContext(DbContextOptions<BackOfficeDbCon
         ConfigureFinanceCash(model);
         ConfigureFinanceBank(model);
         ConfigureFinanceRefund(model);
+        ConfigureFinancePayment(model);
         ConfigureFinanceBordereaux(model);
         ConfigureFinanceSubmissions(model);
         ConfigureServicingIssue(model);

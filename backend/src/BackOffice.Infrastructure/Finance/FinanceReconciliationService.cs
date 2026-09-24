@@ -31,9 +31,8 @@ public sealed class FinanceReconciliationService(IDbContextFactory<BackOfficeDbC
     SqlCommandBoundary commands, TimeProvider time)
 {
     private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
-    // Only receipt currently has a source-bound cash posting. Later source
-    // kinds join this allowlist when their own durable rows/SQL guards exist.
-    private static readonly string[] CashSources = ["receipt"];
+    // Paid refund joins receipt after its own durable outcome and SQL source guard.
+    private static readonly string[] CashSources = ["receipt", "refund"];
 
     public Task<CommandOutcome> ImportAsync(ActorContext actor, Guid agencyId, string importKey,
         DateOnly valueDate, string reference, string signedAmount, string currency, string rawJson,
@@ -417,7 +416,7 @@ public sealed class FinanceReconciliationService(IDbContextFactory<BackOfficeDbC
             .OrderByDescending(x => x.ExplainedAt).ThenByDescending(x => x.Id).ToArrayAsync(ct);
         var latest = explanations.GroupBy(x => x.BankLineId).ToDictionary(x => x.Key, x => x.First());
         var postings = await db.Set<FinancePosting>().AsNoTracking().Where(x => x.AgencyId == row.AgencyId &&
-            x.PostingDate >= row.From && x.PostingDate < row.To && x.SourceKind == "receipt" && x.CashDelta != 0)
+            x.PostingDate >= row.From && x.PostingDate < row.To && CashSources.Contains(x.SourceKind) && x.CashDelta != 0)
             .OrderBy(x => x.PostingDate).ThenBy(x => x.Id).ToArrayAsync(ct);
         var postingIds = postings.Select(x => x.Id).ToArray();
         var completionCutoff = row.CompletedAt;
