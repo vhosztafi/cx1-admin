@@ -21,6 +21,7 @@ key-files:
     - backend/src/BackOffice.Infrastructure/Persistence/FinanceModel.cs
     - backend/src/BackOffice.Api/Program.cs
     - contracts/openapi.json
+    - docs/design/FINANCE-CONTRACTS.md
 decisions:
   - A receipt moves cash into suspense once; allocation and reversal change debtor and suspense balances with zero additional cash movement.
   - Current payer assignment ID is the strong If-Match version; reassignment requires all applications to have been reversed.
@@ -30,9 +31,9 @@ requirements: [FIN-03]
 requirements-completed: []
 metrics:
   completed: 2026-09-24
-  duration: approximately 65 minutes
+  duration: approximately 80 minutes
   tasks: 2
-  tests: 11 unit, 3 native SQL, 2 API contract
+  tests: 11 unit, 4 native SQL, 2 API contract
 ---
 
 # Phase 10 Plan 04: Scoped receipts and append-only applications
@@ -52,13 +53,13 @@ Receipt cash, payer identity, invoice applications and reversals now have durabl
 | --- | --- | --- |
 | Failing-first unit and native SQL compilation | Both failed before implementation on absent receipt math/service types | Initial RED runs during task 10-04-01 |
 | Receipt unit filter | 11 passed, 0 failed, 0 skipped | `.local/phase10-04-unit-final/phase10-04-unit.trx` |
-| Fresh native SQL receipt filter | 3 passed, 0 failed, 0 skipped on fresh migrated SQL Server databases | `.local/phase10-04-sql-concurrent-reversal/phase10-04-concurrent-reversal.trx` |
+| Fresh native SQL receipt filter | 4 passed, 0 failed, 0 skipped on fresh migrated SQL Server databases | `.local/phase10-04-four-case-final/phase10-04-four-case-final.trx` |
 | Receipt API contract tests | 2 passed, 0 skipped | `node --test tests/finance-receipt-contracts.test.mjs` |
 | OpenAPI generation and lint | 491 operations; valid with 104 retained warnings | `node scripts/generate-openapi.mjs`; `node scripts/lint-openapi.mjs` |
 | API build | Passed with 0 warnings | `dotnet build backend/src/BackOffice.Api/BackOffice.Api.csproj --no-restore` |
 | Staged diff and deletions | Whitespace check passed; no tracked deletion | `git diff --cached --check`; `git diff --diff-filter=D HEAD~1 HEAD` |
 
-The SQL tests use distinct command keys and connections to race for a receipt's last penny and for one invoice across two receipts. They also race an allocation against a reversal, reject a duplicate reversal, keep payer history after full reversal, reject unidentified-payer allocation, wrong debtor/currency and zero amount, and prove replay from a new service instance. A deleted stored finance role makes even the original replay key return 403. Direct SQL over-residual allocation, forged application posting and update of saved receipt/allocation rows fail. The test confirms cash sums once, debtor application and its reversal net to zero, and the EF model has no pending changes.
+The SQL tests use distinct command keys and connections to race for a receipt's last penny and for one invoice across two receipts. A fourth case creates first-issue and servicing invoices for the same agency, then races two receipts whose allocation arrays name those invoices in opposite orders. One command commits both applications and the other commits none; both invoice residuals and receipt residuals remain nonnegative, and no application duplicates cash. The suite also races an allocation against a reversal, rejects a duplicate reversal, keeps payer history after full reversal, rejects unidentified-payer allocation, wrong debtor/currency and zero amount, and proves replay from a new service instance. A deleted stored finance role makes even the original replay key return 403. Direct SQL over-residual allocation, forged application posting and update of saved receipt/allocation rows fail. The test confirms cash sums once, debtor application and its reversal net to zero, and the EF model has no pending changes.
 
 ## Source and security review
 
@@ -68,7 +69,7 @@ The SQL tests use distinct command keys and connections to race for a receipt's 
 
 ## Limitations and downstream handoff
 
-- The native suite proves same-receipt, same-invoice and allocation/reversal contention. A two-invoice crossed-order stress case remains for the broader 10-13 concurrency gate; the service already sorts invoice locks, and no negative residual or double cash result was observed in the focused cases.
+- The native suite proves same-receipt, same-invoice, crossed two-invoice and allocation/reversal contention. The 10-13 gate still owns broader load and retained-demo restart checks; no negative residual, partial posting or double cash result was observed in the focused cases.
 - 10-05 should build cash/statement presentation from posted source kinds without treating an application as a second cash receipt. 10-06 should bind any bank-import origin to a saved bank line. 10-12 must wire finance UI flows to these routes. FIN-03 remains subject to downstream UI and final verification and is not marked complete here.
 
 ## Deviations from Plan
@@ -76,6 +77,8 @@ The SQL tests use distinct command keys and connections to race for a receipt's 
 **[Rule 2 - Critical accounting guard]** The 10-02 posting-kind contract had no allocation kind. This plan added explicit source-bound `receipt-application` and `receipt-application-reversal` kinds with zero cash delta to avoid double counting while preserving balanced debtor reclassification. SQL guards and native tests verify this refinement. Commit: `e4f5ba5`.
 
 **[Rule 1 - SQL null-scope guard]** Review found nullable comparison could accept a null policy/transaction/relationship in a forged posting. The source-binding trigger now rejects null as well as unequal values; final fresh native SQL passed. Commit: `e4f5ba5`.
+
+The crossed-order fixture first used two separate first issues, which correctly belonged to different agencies and failed the same-payer setup assertion before reaching the race. A first issue plus its servicing issue supplied two valid same-agency invoices; the new case and full four-case filter passed. The finance contract text now states that receipt cash enters suspense once and application/reversal postings have zero cash delta. Commit: `311606d`.
 
 ## Threat Flags
 
@@ -87,7 +90,8 @@ The SQL tests use distinct command keys and connections to race for a receipt's 
 ## Task commits
 
 1. `e4f5ba5` — `feat(10-04): persist scoped receipts and append-only allocations`.
+2. `311606d` — `test(10-04): prove crossed invoice allocation race`.
 
 ## Self-Check: PASSED
 
-The summary, service and migration exist; commit `e4f5ba5` is present. No tracked file was deleted by the task commit, and only inherited frontend files and `.idea/` remain outside this plan.
+The summary, service and migration exist; commits `e4f5ba5` and `311606d` are present. No tracked file was deleted by either task commit, and only inherited frontend files and `.idea/` remain outside this plan.
