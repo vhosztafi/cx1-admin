@@ -3796,9 +3796,9 @@
       "status": "reviewed",
       "disposition": "opens-command-form",
       "operationIds": [
-        "postJournal"
+        "postFinanceJournalCorrection"
       ],
-      "reason": "Collect balanced lines/open period/reason and apply finance posting authority."
+      "reason": "Open the controlled correction command for an existing posted source, with balanced deltas, an eligible open period and current finance correction authority."
     },
     {
       "controlId": "CTL-f5d7587f3dea",
@@ -4082,7 +4082,7 @@
       "status": "reviewed",
       "disposition": "command",
       "operationIds": [
-        "allocateReceipt"
+        "allocateFinanceReceipt"
       ],
       "reason": "Match receipt to invoice under both residual locks and compatible agency scope; no duplicate cash posting."
     },
@@ -4121,7 +4121,7 @@
       "status": "reviewed",
       "disposition": "navigation-read",
       "operationIds": [
-        "getBordereau",
+        "getFinanceBordereau",
         "listBordereauRows"
       ],
       "reason": "Literal pAccounting tab selection Batch BX-2026-08; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."

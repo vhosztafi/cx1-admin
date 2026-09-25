@@ -2,8 +2,10 @@ import assert from 'node:assert/strict';
 import {readFile,writeFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {chromium} from 'playwright';
+import {createBrowserRouteDrain} from './browser-route-drain.mjs';
 
 const sources=['scripts/verify-task-browser.mjs','backend/src/BackOffice.Api/TaskSummaryEndpoints.cs','backend/tests/BackOffice.IntegrationTests/OperationalTaskBrowserTests.cs','apps/backoffice/app/globals.css',...['task-list','task-detail','task-create','task-create-entry','task-assignment','task-command','task-history','shared'].map(x=>`apps/backoffice/components/operations/${x}.tsx`),'apps/backoffice/lib/tasks-api.ts'];
+sources.push('scripts/browser-route-drain.mjs');
 const hash=createHash('sha256');for(const path of sources){hash.update(path);hash.update(await readFile(path));}const sourceHash=hash.digest('hex');
 if(!process.argv.includes('--worker')){
  const latest=JSON.parse(await readFile('.local/phase9-03-browser/latest.json','utf8'));
@@ -16,7 +18,8 @@ if(!process.argv.includes('--worker')){
  assert.ok(['localhost','127.0.0.1','[::1]'].includes(new URL(f.apiOrigin).hostname));assert.equal(new URL(f.webOrigin).hostname,'127.0.0.1');assert.notEqual(new URL(f.apiOrigin).port,'5000');
  const browser=await chromium.launch({channel:'chrome',headless:true}),page=await browser.newPage({viewport:{width:1480,height:980}});page.setDefaultTimeout(30000);
  const errors=[],cases=[];page.on('pageerror',error=>errors.push(error.message));
- await page.route('**/api/v1/**',async route=>{const url=new URL(route.request().url());const response=await route.fetch({url:f.apiOrigin+url.pathname+url.search});await route.fulfill({response});});
+ const apiProxy=createBrowserRouteDrain(page,errors);
+ await apiProxy.route('**/api/v1/**',async route=>{const url=new URL(route.request().url());const response=await route.fetch({url:f.apiOrigin+url.pathname+url.search});await route.fulfill({response});});
  const button=name=>page.getByRole('button',{name,exact:true});
  const confirm=async name=>{await page.getByRole('dialog').last().getByRole('button',{name,exact:true}).click();await page.getByRole('dialog').last().waitFor({state:'hidden'});};
  const form=name=>page.locator('form').filter({has:page.getByRole('button',{name,exact:true})});
@@ -55,7 +58,7 @@ if(!process.argv.includes('--worker')){
   await page.goto(f.webOrigin+'/tasks/'+createdId);await page.getByRole('heading',{name:'Browser persisted task',exact:true}).waitFor();await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:f.output+'/task-mobile.png',fullPage:true});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);cases.push('390px detail fits viewport');
   const history=(await api('/tasks/'+createdId+'/events')).body;assert.ok(history.items.some(x=>x.reason==='Browser reopened for follow-up'));cases.push('immutable history readback');
   await page.goto(f.webOrigin+'/tasks/'+f.workflowId);await page.getByRole('heading',{name:'Automatic follow-up',exact:true}).waitFor();await page.getByText('Review processing exception · Rule version 1',{exact:true}).waitFor();await page.getByText('The source condition has been resolved. Review and complete this task when your follow-up is finished.',{exact:true}).waitFor();assert.equal((await api('/tasks/'+f.workflowId)).body.state,'open');cases.push('workflow provenance separates source recovery from human completion');
-  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await page.screenshot({path:f.output+'/workflow-mobile.png',fullPage:true});await page.setViewportSize({width:1480,height:980});await page.screenshot({path:f.output+'/workflow-desktop.png',fullPage:true});cases.push('workflow provenance fits mobile and desktop');assert.deepEqual(errors,[]);
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await page.screenshot({path:f.output+'/workflow-mobile.png',fullPage:true});await page.setViewportSize({width:1480,height:980});await page.screenshot({path:f.output+'/workflow-desktop.png',fullPage:true});cases.push('workflow provenance fits mobile and desktop');await apiProxy.drain();assert.deepEqual(errors,[]);
   await writeFile(f.output+'/browser-report.json',JSON.stringify({sourceHash,cases,errors},null,2));console.log(`Passed ${cases.length} task browser checks.`);
- }catch(error){await page.screenshot({path:f.output+'/failure.png',fullPage:true}).catch(()=>{});throw error;}finally{await browser.close();}
+ }catch(error){await page.screenshot({path:f.output+'/failure.png',fullPage:true}).catch(()=>{});throw error;}finally{await apiProxy.close();await browser.close();}
 }

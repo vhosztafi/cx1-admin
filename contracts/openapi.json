@@ -115835,16 +115835,34 @@
                 ],
                 "anyOf": [
                   {
+                    "properties": {
+                      "policyReference": {
+                        "type": "string",
+                        "maxLength": 100
+                      }
+                    },
                     "required": [
                       "policyReference"
                     ]
                   },
                   {
+                    "properties": {
+                      "providerProductCode": {
+                        "type": "string",
+                        "maxLength": 100
+                      }
+                    },
                     "required": [
                       "providerProductCode"
                     ]
                   },
                   {
+                    "properties": {
+                      "agencyReference": {
+                        "type": "string",
+                        "maxLength": 100
+                      }
+                    },
                     "required": [
                       "agencyReference"
                     ]

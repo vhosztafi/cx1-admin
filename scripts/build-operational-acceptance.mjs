@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import {readdir,readFile,writeFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {spawn} from 'node:child_process';
-const dist='.local/next-phase9-acceptance';
+const dist=process.env.COVER_OPERATIONAL_ACCEPTANCE_DIST??'.local/next-phase9-acceptance';
+assert.match(dist,/^\.local\/next-[a-z0-9-]+$/,'Acceptance output must stay in an isolated local Next directory.');
 async function snapshot(){
  const paths=[];
  async function walk(path){for(const entry of await readdir(path,{withFileTypes:true})){const child=path+'/'+entry.name;if(entry.isDirectory())await walk(child);else if(entry.isFile())paths.push(child);}}

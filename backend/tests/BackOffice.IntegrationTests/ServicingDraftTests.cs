@@ -6,8 +6,6 @@ using BackOffice.Infrastructure.Policies;
 using BackOffice.Infrastructure.Quotes;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Xunit;
 
 namespace BackOffice.IntegrationTests;
@@ -76,13 +74,12 @@ public sealed partial class UnderwritingRuntimeTests
             var setup = await AcceptedIssue(db, password); var f = setup.Source;
             await new QuoteIssueService(f.Factory, f.Clock).IssueAsync(f.Underwriter, f.QuoteId, setup.Version, setup.Input, Guid.NewGuid().ToString(), Guid.NewGuid());
             var issued = await db.Set<PolicyVersion>().AsNoTracking().SingleAsync();
-            // Exercise the latest additive upgrade with an issued policy. The
-            // current fixture contains immutable servicing templates and cannot
-            // be downgraded to the pre-servicing-template schema without data loss.
-            var previous = db.Database.GetMigrations().SkipLast(1).Last();
+            // The issued graph retains MID history and published templates.
+            // The historical pre-draft boundary must refuse a downgrade rather
+            // than deleting those rows to manufacture an upgrade fixture.
             var credentials=await db.Set<UserCredential>().AsNoTracking().OrderBy(x=>x.Id).Select(x=>x.PasswordHash).ToArrayAsync();
-            await db.GetService<IMigrator>().MigrateAsync(previous);
-            await db.Database.MigrateAsync(); db.ChangeTracker.Clear();
+            await VerifyRetainedTemplateDowngradeProtection(db, "20260917030154_FirstPolicyIssueStorage");
+            Assert.Contains("20260917103444_ServicingDraftStorage", await db.Database.GetAppliedMigrationsAsync());
             Assert.Equal(issued.SnapshotJson,(await db.Set<PolicyVersion>().AsNoTracking().SingleAsync(x=>x.Id==issued.Id)).SnapshotJson);
             Assert.Equal(credentials,await db.Set<UserCredential>().AsNoTracking().OrderBy(x=>x.Id).Select(x=>x.PasswordHash).ToArrayAsync());
             var actor = f.Servicing.UserId; var now = f.Clock.GetUtcNow();

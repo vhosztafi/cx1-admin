@@ -14,11 +14,22 @@ if(!process.argv.includes('--worker')) {
  const f=JSON.parse(process.env.COVER_RENEWAL_BROWSER_FIXTURE);assert.ok(['localhost','127.0.0.1','[::1]'].includes(new URL(f.apiOrigin).hostname));assert.equal(new URL(f.webOrigin).hostname,'127.0.0.1');
  const browser=await chromium.launch({channel:'chrome',headless:true});const page=await browser.newPage({viewport:{width:1480,height:980}});page.setDefaultTimeout(45000);
  await page.clock.setFixedTime(new Date(f.clockNow));
- const errors=[];page.on('pageerror',error=>errors.push(error.message));
+ const errors=[],routeTasks=new Set();let closing=false;
+ page.on('pageerror',error=>errors.push(error.message));
  // The production web bundle has its original local API rewrite. This proxy
  // sends every browser request to the isolated real Kestrel API instead;
  // it does not mock responses. SSR uses the same API via its runtime origin.
- await page.route('**/api/v1/**',async route=>{const url=new URL(route.request().url());const response=await route.fetch({url:f.apiOrigin+url.pathname+url.search});await route.fulfill({response});});
+ await page.route('**/api/v1/**',route=>{
+  const work=(async()=>{try{
+   const url=new URL(route.request().url());
+   const response=await route.fetch({url:f.apiOrigin+url.pathname+url.search});
+   await route.fulfill({response});
+  }catch(error){
+   if(!closing)errors.push(String(error.message).split('Call log:')[0]);
+   await route.abort('failed').catch(()=>{});
+  }})();
+  routeTasks.add(work);work.finally(()=>routeTasks.delete(work));return work;
+ });
  async function read(){const response=await page.request.get(f.apiOrigin+`/api/v1/terms/${f.termId}/renewal-lifecycle`);assert.equal(response.status(),200,await response.text());return response.json();}
  async function capture(name,schema,data){const directory='.local/phase7-12-lifecycle-browser-responses';await mkdir(directory,{recursive:true});await writeFile(`${directory}/${f.product}-${f.automatic?'automatic':'manual'}-${name}.json`,JSON.stringify({schema,data}));}
  try {
@@ -54,8 +65,14 @@ if(!process.argv.includes('--worker')) {
   await page.reload();await panel.getByText('Renewal lapsed',{exact:true}).waitFor();assert.equal((await read()).lapseEventId,retained.lapseEventId);
   if(!f.automatic){await page.getByText('Lapsed',{exact:true}).waitFor();assert.equal(await page.getByRole('button',{name:'Acquire editing lease',exact:true}).isDisabled(),true);}
   const policyResponse=await page.request.get(f.apiOrigin+`/api/v1/policies/${f.policyId}`);assert.equal(policyResponse.status(),200);const policy=await policyResponse.json();assert.equal(policy.versionId,f.originalVersionId);assert.equal(policy.coverageState,f.automatic?'expired':'active');
+  // Finish background API proxy work before accepting the browser result.
+  await page.unrouteAll({behavior:'wait'});await Promise.allSettled([...routeTasks]);
   assert.deepEqual(errors,[]);await writeFile(f.output+'/report.json',JSON.stringify({completedAt:new Date().toISOString(),product:f.product,automatic:f.automatic,lifecycle:retained,
    checks:['real Next.js and Kestrel UI','isolated SQL database','actual manual command or clock-driven worker','one persistent demo notification','retained expiry and policy version','reload and 390px containment',...(!f.automatic?['lost response exact retry']:['pre-deadline checkpoint then exact configured deadline'])]},null,2));
  }catch(error){await page.screenshot({path:f.output+'/failure.png'}).catch(()=>{});await writeFile(f.output+'/failure.txt',String(error)+'\n'+await page.locator('body').innerText().catch(()=>''));throw error;}
- finally{await browser.close();}
+ finally{
+  closing=true;
+  try{await page.unrouteAll({behavior:'wait'});await Promise.allSettled([...routeTasks]);}
+  finally{await browser.close();}
+ }
 }

@@ -2,14 +2,17 @@ import assert from 'node:assert/strict';
 import {readFile,writeFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {chromium} from 'playwright';
+import {createBrowserRouteDrain} from './browser-route-drain.mjs';
 const sources=['scripts/verify-mid-browser.mjs','backend/tests/BackOffice.IntegrationTests/OperationalMidBrowserTests.cs','backend/src/BackOffice.Api/MidEndpoints.cs','backend/src/BackOffice.Api/MidDispatcher.cs','backend/src/BackOffice.Application/Operations/MidRules.cs',...['MidSnapshots','MidAuthority','MidSubmissionRegistration','MidSubmissionService','MidSubmissionWorker','MidSubmissionWorker.Apply','OperationalMidSeed'].map(x=>`backend/src/BackOffice.Infrastructure/Operations/${x}.cs`),'apps/backoffice/lib/mid-api.ts','apps/backoffice/components/operations/mid-submissions.tsx','apps/backoffice/components/policies/policy-record.tsx','apps/backoffice/components/policies/policyriskhistory.tsx','apps/backoffice/app/globals.css'];
+sources.push('scripts/browser-route-drain.mjs');
 const hash=createHash('sha256');for(const source of sources){hash.update(source);hash.update((await readFile(source,'utf8')).replaceAll('\r\n','\n').trimEnd());}const sourceHash=hash.digest('hex');
 if(!process.argv.includes('--worker')){
  const latest=JSON.parse(await readFile('.local/phase9-14-browser/motor-trade.json','utf8'));const report=JSON.parse(await readFile(latest.output+'/browser-report.json','utf8')),sql=JSON.parse(await readFile(latest.output+'/sql-readback.json','utf8'));assert.equal(latest.passed,true);assert.equal(sql.passed,true);assert.equal(report.sourceHash,sourceHash);assert.ok(report.cases.length>=9);assert.deepEqual(report.errors,[]);console.log(`${report.cases.length} MID browser checks and SQL readback.`);
 }else{
  const f=JSON.parse(process.env.COVER_MID_BROWSER_FIXTURE),browser=await chromium.launch({headless:true}),page=await browser.newPage({viewport:{width:1440,height:1000}}),cases=[],errors=[];page.on('pageerror',error=>errors.push(error.message));page.setDefaultTimeout(20000);
  const button=name=>page.getByRole('button',{name,exact:true});assert.equal(new URL(f.apiOrigin).hostname,'127.0.0.1');assert.notEqual(new URL(f.apiOrigin).port,'5000');
- await page.route('**/api/v1/**',async route=>{const url=new URL(route.request().url());const response=await route.fetch({url:f.apiOrigin+url.pathname+url.search});await route.fulfill({response});});
+ const apiProxy=createBrowserRouteDrain(page,errors);
+ await apiProxy.route('**/api/v1/**',async route=>{const url=new URL(route.request().url());const response=await route.fetch({url:f.apiOrigin+url.pathname+url.search});await route.fulfill({response});});
  const list=()=>page.evaluate(async path=>{const response=await fetch(path,{credentials:'same-origin',cache:'no-store'});if(!response.ok)throw new Error('Saved MID history unavailable');return response.json();},`/api/v1/versions/${f.versionId}/mid-submissions`);
  async function openVehicles(){await page.goto(f.webOrigin+`/policies/${f.policyId}`);await page.getByRole('tab',{name:'Vehicles',exact:true}).click();await page.getByRole('heading',{name:'MID submissions',exact:true}).waitFor();}
  try{
@@ -27,6 +30,6 @@ if(!process.argv.includes('--worker')){
   await page.setViewportSize({width:390,height:844});await panel.scrollIntoViewIfNeeded();assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true);await page.screenshot({path:f.output+'/mid-accepted-mobile.png'});cases.push('mobile submission history fits viewport with a scrollable item table');
   await page.setViewportSize({width:1440,height:1000});await page.getByRole('button',{name:/Open vehicle record:/}).first().click();const history=page.getByRole('region',{name:'Risk item history'});await history.getByRole('heading',{name:'MID submissions',exact:true}).waitFor();await history.getByRole('heading',{name:'Initial issue · Accepted',exact:true}).waitFor();cases.push('vehicle detail shows the same submitted item at its exact historical version');
   await page.reload();await page.getByRole('tab',{name:'Vehicles',exact:true}).click();await page.getByRole('heading',{name:'Initial issue · Accepted',exact:true}).waitFor();assert.equal((await list()).items[0].attempts.length,7);cases.push('accepted history survives page reload');
-  assert.deepEqual(errors,[]);await writeFile(f.output+'/browser-report.json',JSON.stringify({sourceHash,cases,errors,submissionId:f.submissionId},null,2));
- }catch(error){await page.screenshot({path:f.output+'/failure.png'}).catch(()=>{});await writeFile(f.output+'/browser-failure.json',JSON.stringify({sourceHash,cases,errors,error:String(error).split('\n')[0],locatorLog:error.name==='TimeoutError'?error.message:undefined},null,2));process.exitCode=1;}finally{await browser.close();}
+  await apiProxy.drain();assert.deepEqual(errors,[]);await writeFile(f.output+'/browser-report.json',JSON.stringify({sourceHash,cases,errors,submissionId:f.submissionId},null,2));
+ }catch(error){await page.screenshot({path:f.output+'/failure.png'}).catch(()=>{});await writeFile(f.output+'/browser-failure.json',JSON.stringify({sourceHash,cases,errors,error:String(error).split('\n')[0],locatorLog:error.name==='TimeoutError'?error.message:undefined},null,2));process.exitCode=1;}finally{await apiProxy.close();await browser.close();}
 }

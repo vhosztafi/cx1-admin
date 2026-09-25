@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {readFile,writeFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {chromium} from 'playwright';
+import {createBrowserRouteDrain} from './browser-route-drain.mjs';
 
 const sources=['scripts/verify-communication-browser.mjs','backend/tests/BackOffice.IntegrationTests/OperationalCommunicationBrowserTests.cs',
  'backend/src/BackOffice.Api/CommunicationEndpoints.cs','backend/src/BackOffice.Infrastructure/Operations/NoteService.cs','backend/src/BackOffice.Infrastructure/Operations/ThreadService.cs','backend/src/BackOffice.Infrastructure/Operations/ThreadService.Options.cs','backend/src/BackOffice.Infrastructure/Operations/CommunicationScope.cs',
@@ -10,6 +11,7 @@ const sources=['scripts/verify-communication-browser.mjs','backend/tests/BackOff
 sources.push('apps/backoffice/components/underwriting/referral-decisions.tsx');
 sources.push('apps/backoffice/components/operations/agency-response-tracking.tsx','apps/backoffice/components/agencies/agency-shared-open-items.tsx','backend/src/BackOffice.Infrastructure/Operations/AgencyResponseService.cs','backend/src/BackOffice.Infrastructure/Agencies/AgencySharingOpenItems.cs');
 sources.push('backend/src/BackOffice.Api/AgencySharingEndpoints.cs','backend/src/BackOffice.Api/AgencyContextEndpoints.cs','backend/src/BackOffice.Infrastructure/Agencies/AgencySharingPaging.cs','backend/src/BackOffice.Infrastructure/Persistence/Migrations/AgencyResponseTracking.Guards.cs');
+sources.push('scripts/browser-route-drain.mjs');
 const hash=createHash('sha256');for(const path of sources){hash.update(path);hash.update((await readFile(path,'utf8')).replaceAll('\r\n','\n').trimEnd());}const sourceHash=hash.digest('hex');
 if(!process.argv.includes('--worker')){
  for(const product of ['motor-trade','commercial-combined']){
@@ -24,7 +26,8 @@ if(!process.argv.includes('--worker')){
  const browser=await chromium.launch({channel:'chrome',headless:true}),page=await browser.newPage({viewport:{width:1480,height:980}});page.setDefaultTimeout(30000);
  const errors=[],cases=[],noteCommands=[],responseCommands=[];let loseNote=true,loseResponse=true;
  page.on('pageerror',error=>errors.push(error.message));
- await page.route('**/api/v1/**',async route=>{
+ const apiProxy=createBrowserRouteDrain(page,errors);
+ await apiProxy.route('**/api/v1/**',async route=>{
   try{
    const request=route.request(),url=new URL(request.url()),response=await route.fetch({url:f.apiOrigin+url.pathname+url.search});
    if(url.pathname.endsWith('/notes')&&request.method()==='POST'){
@@ -36,7 +39,7 @@ if(!process.argv.includes('--worker')){
     if(loseResponse&&response.status()===201){loseResponse=false;await route.abort('failed');return;}
    }
    await route.fulfill({response});
-  }catch{await route.abort('failed').catch(()=>{});}
+  }catch(error){await route.abort('failed').catch(()=>{});throw error;}
  });
  const button=name=>page.getByRole('button',{name,exact:true});
  async function api(path){return page.evaluate(async path=>{const response=await fetch('/api/v1'+path);return{status:response.status,body:await response.json()};},path);}
@@ -125,7 +128,7 @@ if(!process.argv.includes('--worker')){
   await tracking.getByText('Fictional requested information received',{exact:true}).waitFor();await page.reload();await page.getByRole('tab',{name:'Messages',exact:true}).click();await button('Browser underwriting information request').click();await tracking.getByText('Fictional requested information received',{exact:true}).waitFor();
   assert.equal((await api(`/agencies/${f.agencyId}/sharing/open-items?q=${tracked.reference}`)).body.totalCount,0);
   assert.deepEqual((await api(`/referrals?quoteId=${f.quoteId}&pageSize=50`)).body.items.map(x=>({id:x.id,state:x.state})),referralsBefore);cases.push('reasoned closure persists after reload, removes public open item and leaves underwriting decisions unchanged');
-  assert.deepEqual(errors,[]);await writeFile(f.output+'/browser-report.json',JSON.stringify({sourceHash,cases,errors,messageId:saved.id,informationMessageId:informationDraft.id},null,2));
+  await apiProxy.drain();assert.deepEqual(errors,[]);await writeFile(f.output+'/browser-report.json',JSON.stringify({sourceHash,cases,errors,messageId:saved.id,informationMessageId:informationDraft.id},null,2));
  }catch(error){await page.screenshot({path:f.output+'/failure.png'}).catch(()=>{});const selects=await page.locator('select').evaluateAll(nodes=>nodes.map(n=>({value:n.value,disabled:n.disabled,options:[...n.options].map(o=>({value:o.value,text:o.text}))}))).catch(()=>[]);await writeFile(f.output+'/browser-failure.json',JSON.stringify({sourceHash,cases,errors,relationshipId:f.relationshipId,selects,error:String(error).split('\n')[0],locatorLog:error.name==='TimeoutError'?error.message:undefined},null,2));process.exitCode=1;}
- finally{await browser.close();}
+ finally{await apiProxy.close();await browser.close();}
 }

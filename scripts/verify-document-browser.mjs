@@ -2,9 +2,11 @@ import assert from 'node:assert/strict';
 import {readFile,writeFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {chromium} from 'playwright';
+import {createBrowserRouteDrain} from './browser-route-drain.mjs';
 
 const sources=['scripts/verify-document-browser.mjs','backend/tests/BackOffice.IntegrationTests/OperationalDocumentBrowserTests.cs','apps/backoffice/app/globals.css','apps/backoffice/lib/documents-api.ts',...['document-list','document-preview','document-shared','document-command','document-generate','document-upload'].map(x=>`apps/backoffice/components/operations/${x}.tsx`),...['policy-record','commercial-policy-record'].map(x=>`apps/backoffice/components/policies/${x}.tsx`)];
 sources.push('backend/tests/BackOffice.IntegrationTests/RenewalLifecycleTests.cs','apps/backoffice/lib/tasks-api.ts',...['task-attachments','task-detail','task-command','document-legacy-evidence'].map(x=>`apps/backoffice/components/operations/${x}.tsx`),...['quotes/quote-receipt','quotes/commercial-receipt','agencies/agency-detail','clients/client-detail','underwriting/quote-terms','policies/servicingterms'].map(x=>`apps/backoffice/components/${x}.tsx`));
+sources.push('scripts/browser-route-drain.mjs');
 const hash=createHash('sha256');for(const path of sources){hash.update(path);hash.update((await readFile(path,'utf8')).replaceAll('\r\n','\n').trimEnd());}const sourceHash=hash.digest('hex');
 if(!process.argv.includes('--worker')){
  for(const product of ['motor-trade-road-risks','motor-trade-combined','commercial-combined','renewal']){
@@ -18,7 +20,8 @@ if(!process.argv.includes('--worker')){
  const browser=await chromium.launch({channel:'chrome',headless:true}),page=await browser.newPage({viewport:{width:1480,height:980}});page.setDefaultTimeout(30000);
  const errors=[],cases=[],commands=[];let loseGeneration=true;
  page.on('pageerror',e=>errors.push(e.message));
- await page.route('**/api/v1/**',async route=>{
+ const apiProxy=createBrowserRouteDrain(page,errors);
+ await apiProxy.route('**/api/v1/**',async route=>{
   const request=route.request(),url=new URL(request.url()),response=await route.fetch({url:f.apiOrigin+url.pathname+url.search});
   if(url.pathname.endsWith('/documents/generate')&&request.method()==='POST'){
    commands.push({body:request.postData(),key:request.headers()['idempotency-key'],status:response.status()});
@@ -72,7 +75,7 @@ if(!process.argv.includes('--worker')){
   if(f.servicingDraftId){
    await page.goto(f.webOrigin+`/drafts/${f.servicingDraftId}`);await button('Documents for prepared terms').click();await button('Generate document').click();const selector=page.getByLabel('Document and template',{exact:true});await selector.waitFor();const option=await selector.locator('option').evaluateAll(xs=>xs.find(x=>x.value.startsWith('renewal-invitation:'))?.value);assert.ok(option);await selector.selectOption(option);await page.getByLabel('Reason',{exact:true}).fill('Browser exact renewal terms');await button('Review generation').click();const invitation=await confirm('Generate document','/documents/generate');const exact=await ready(invitation.id);assert.equal(exact.sourceVersionId,f.servicingTermsId);assert.equal((await bytes(exact.id)).status,200);cases.push('servicing renewal workspace generates selected prepared terms as actual PDF');
   }
-  assert.deepEqual(errors,[]);await writeFile(f.output+'/browser-report.json',JSON.stringify({sourceHash,cases,errors,generatedId:original.id,replacementId:replacement.id,evidenceId:evidence.id},null,2));
+  await apiProxy.drain();assert.deepEqual(errors,[]);await writeFile(f.output+'/browser-report.json',JSON.stringify({sourceHash,cases,errors,generatedId:original.id,replacementId:replacement.id,evidenceId:evidence.id},null,2));
  }catch(error){await page.screenshot({path:f.output+'/failure.png',fullPage:true}).catch(()=>{});await writeFile(f.output+'/browser-failure.json',JSON.stringify({sourceHash,cases,errors,error:String(error)},null,2));throw error;}
- finally{await browser.close();}
+ finally{await apiProxy.close();await browser.close();}
 }

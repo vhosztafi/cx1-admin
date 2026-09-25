@@ -20,7 +20,7 @@ test('allocation, refund and adapter contracts state the risky counterexamples',
     assert.ok(contract.toLowerCase().includes(needle.toLowerCase()),`Missing ${needle}`);
   }
   assert.match(contract,/equal date\/reference\/amount with a different key is a distinct/);
-  assert.match(contract,/not a synthetic balancing journal/);
+  assert.match(contract,/no synthetic reconciliation posting is created/);
 });
 
 test('bordereau and closure contracts have immutable version and negative gates',()=>{

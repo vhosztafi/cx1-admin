@@ -102,8 +102,12 @@ public sealed partial class UnderwritingRuntimeTests
         await Assert.ThrowsAsync<SqlException>(()=>db.Database.ExecuteSqlInterpolatedAsync($"UPDATE AgencyResponseRequest SET ResolutionReason='Changed retained closure' WHERE Id={id}"));
         Assert.Equal(2,await db.Database.SqlQueryRaw<int>("SELECT COUNT(*) AS [Value] FROM AgencyResponseRequest").SingleAsync());
         var migrations=(await db.Database.GetAppliedMigrationsAsync()).ToArray();
-        Assert.EndsWith("AgencyResponseTracking",migrations[^1]);
-        await Assert.ThrowsAsync<SqlException>(()=>db.GetService<IMigrator>().MigrateAsync(migrations[^2]));
+        var responseMigration=Array.IndexOf(migrations,"20260922212339_AgencyResponseTracking");
+        Assert.True(responseMigration>0);
+        var downgrade=await Assert.ThrowsAsync<SqlException>(()=>
+            db.GetService<IMigrator>().MigrateAsync(migrations[responseMigration-1]));
+        Assert.Equal(52000,downgrade.Number);
+        Assert.Contains("Retained agency response requests prevent downgrade",downgrade.Message);
         Assert.Equal(2,await db.Database.SqlQueryRaw<int>("SELECT COUNT(*) AS [Value] FROM AgencyResponseRequest").SingleAsync());
         await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE ClientAgencyRelationship SET State='inactive' WHERE Id={quote.RelationshipId}");
         Assert.Empty((await AgencySharingService.OpenItems(db,broker,quote.AgencyId,new(At:f.Clock.GetUtcNow()))).Items);

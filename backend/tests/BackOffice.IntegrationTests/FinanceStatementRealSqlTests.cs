@@ -108,39 +108,29 @@ public sealed partial class UnderwritingRuntimeTests
             });
             await db.SaveChangesAsync();
             Assert.Equal(due.ToString("yyyy-MM-dd"), Assert.Single((await service.DetailAsync(actor, saved.Id)).Sources).DueDate);
-            var period = await db.Set<AccountingPeriod>().AsNoTracking().SingleAsync(x => x.Id == journal.AccountingPeriodId);
             var later = initialCutoff.AddSeconds(1);
-            db.Add(new FinancePosting
-            {
-                SourceKind = "correction", SourceId = Guid.NewGuid(), AgencyId = obligation.AgencyId,
-                RelationshipId = obligation.RelationshipId, PolicyId = obligation.PolicyId,
-                DebtorKind = "agency", AccountingPeriodId = period.Id, PostingDate = date,
-                EffectiveAt = later.AddDays(-90), PostedAt = later, CreatedAt = later,
-                DebtorDelta = -1m, ProviderDelta = -1m,
-                Reason = "Fictional late backdated correction", CreatedBy = actor.UserId
-            });
-            await db.SaveChangesAsync();
-            db.Add(new FinancePosting
-            {
-                SourceKind = "correction", SourceId = Guid.NewGuid(), AgencyId = obligation.AgencyId,
-                RelationshipId = obligation.RelationshipId, PolicyId = obligation.PolicyId,
-                DebtorKind = "relationship", AccountingPeriodId = period.Id, PostingDate = date,
-                EffectiveAt = later.AddDays(-90), PostedAt = later, CreatedAt = later,
-                DebtorDelta = 4m, ProviderDelta = 4m,
-                Reason = "Fictional separate debtor correction", CreatedBy = actor.UserId
-            });
-            await db.SaveChangesAsync();
+            var laterClock = new StatementClock(later);
+            var receiptService = new FinanceReceiptService(f.Factory,
+                new SqlCommandBoundary(f.Factory, laterClock), laterClock);
+            var recorded = await receiptService.RecordAsync(actor, obligation.AgencyId, "1.00", "GBP", date,
+                "Fictional late cash receipt", "manual", Guid.NewGuid(), "agency", obligation.AgencyId,
+                Guid.NewGuid().ToString("N"), Guid.NewGuid());
+            var receipt = await receiptService.DetailAsync(actor, recorded.ResourceId);
+            await receiptService.AllocateAsync(actor, receipt.Id, receipt.AssignmentId,
+                [new ReceiptAllocationInput(obligation.Id, "1.00")], Guid.NewGuid().ToString("N"), Guid.NewGuid());
             var frozen = await service.DetailAsync(actor, saved.Id);
             Assert.Equal(detail.SourceHash, frozen.SourceHash);
             Assert.Equal(download.Bytes, (await service.DownloadAsync(actor, saved.Id)).Bytes);
-            var laterClock = new StatementClock(later.AddSeconds(1));
-            var laterService = new FinanceStatementService(f.Factory, new SqlCommandBoundary(f.Factory, laterClock), laterClock);
+            var successorClock = new StatementClock(later.AddSeconds(1));
+            var laterService = new FinanceStatementService(f.Factory,
+                new SqlCommandBoundary(f.Factory, successorClock), successorClock);
             var successor = await laterService.GenerateAsync(actor, obligation.AgencyId, date, end,
                 Guid.NewGuid().ToString("N"), Guid.NewGuid());
             var laterDetail = await laterService.DetailAsync(actor, successor.ResourceId);
             Assert.Equal(2, laterDetail.Version);
-            Assert.Equal(2, laterDetail.Sources.Count);
-            Assert.DoesNotContain(laterDetail.Sources, x => x.Delta == "4.00");
+            Assert.Equal(3, laterDetail.Sources.Count);
+            Assert.Contains(laterDetail.Sources, x => x.SourceKind == "receipt" && x.Delta == "0.00");
+            Assert.Contains(laterDetail.Sources, x => x.SourceKind == "receipt-application" && x.Delta == "-1.00");
             Assert.NotEqual(detail.SourceHash, laterDetail.SourceHash);
             Assert.Equal(FinanceLedgerMath.Money(obligation.InvoiceDue - 1m), laterDetail.Closing);
             Assert.Equal(due.ToString("yyyy-MM-dd"), laterDetail.Sources.Single(x => x.SourceKind == "insurance").DueDate);

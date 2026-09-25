@@ -42,8 +42,10 @@ public sealed class AgencyPermissionApiTests
             async Task<bool> BordereauAllowed(string selected)
             {
                 var matrix = await Read(admin, selected + "/permission-matrix");
-                Assert.Equal(8, matrix.GetProperty("rows").GetArrayLength());
-                var cell = matrix.GetProperty("rows").EnumerateArray().Single(x => x.GetProperty("capability").GetString() == "bordereau-download").GetProperty("cells").EnumerateArray().Single(x => x.GetProperty("role").GetString() == "broker-admin");
+                var rows = matrix.GetProperty("rows");
+                Assert.Equal(9, rows.GetArrayLength());
+                Assert.Contains(rows.EnumerateArray(), x => x.GetProperty("capability").GetString() == "statement-download");
+                var cell = rows.EnumerateArray().Single(x => x.GetProperty("capability").GetString() == "bordereau-download").GetProperty("cells").EnumerateArray().Single(x => x.GetProperty("role").GetString() == "broker-admin");
                 Assert.False(cell.GetProperty("available").GetBoolean());
                 return cell.GetProperty("allowed").GetBoolean();
             }
