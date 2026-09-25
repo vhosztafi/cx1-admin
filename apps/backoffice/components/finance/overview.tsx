@@ -8,6 +8,7 @@ import {correctionCommand,exactSum,financeCommand,financeDownload,financeRequest
  periodCloseCommand,routeForFinanceTab,type WorkspaceCommand} from '../../lib/finance-workspace-api';
 import type {FinancePeriodReview} from '../../../../contracts/generated/finance-periods.ts';
 import type {FinanceRefundPage} from '../../../../contracts/generated/finance-refunds.ts';
+import type {EarnedPremiumReview} from '../../../../contracts/generated/finance-earnings.ts';
 
 type Pending={kind:'close'|'correction'|'export';command:WorkspaceCommand};
 const sourceId=(key:string)=>{const raw=key.split('/')[1];return raw&&/^[0-9a-f]{32}$/i.test(raw)?
@@ -22,7 +23,10 @@ export function FinanceOverview({agencyId,initialPeriodId}: {agencyId?:string;in
  const [rows,setRows]=useState<FinanceLedgerRow[]>([]),[account,setAccount]=useState<FinanceAccountSummary|null>(null);
  const [cash,setCash]=useState<FinanceReceiptPage['items']>([]);
  const [refunds,setRefunds]=useState<FinanceRefundPage|null>(null),[refundScope,setRefundScope]=useState('');
+ const [earnings,setEarnings]=useState<EarnedPremiumReview|null>(null),[earningScope,setEarningScope]=useState('');
+ const [earningError,setEarningError]=useState(''),[earningRefresh,setEarningRefresh]=useState(0);
  const loadGeneration=useRef(0);
+ const earningGeneration=useRef(0);
  const [source,setSource]=useState(''),[debtor,setDebtor]=useState(''),[provider,setProvider]=useState('');
  const [cashDelta,setCashDelta]=useState(''),[internalDelta,setInternalDelta]=useState('');
  const [reason,setReason]=useState(''),[closeReason,setCloseReason]=useState('');
@@ -39,13 +43,23 @@ export function FinanceOverview({agencyId,initialPeriodId}: {agencyId?:string;in
    agencyId?financeRequest<FinanceRefundPage>(`/api/v1/finance/agencies/${agencyId}/refunds?state=pending&page=1&pageSize=50`):Promise.resolve(null)]);
    if(generation!==loadGeneration.current)return;
    setPeriods(list);setRows(ledger);setAccount(summary);setCash(received);setRefunds(pendingRefunds);setRefundScope(agencyId??'');
-   setPeriodId(current=>current||list.find(item=>item.state==='open')?.id||list[0]?.id||'');setError('');}
+   setPeriodId(current=>current||list.find(item=>item.state==='open')?.id||list[0]?.id||'');setEarningRefresh(value=>value+1);setError('');}
   catch(cause){if(generation!==loadGeneration.current)return;setRefunds(null);setRefundScope('');if(cause instanceof FinanceCommandError&&cause.denied){setPeriods([]);setRows([]);setAccount(null);setCash([]);}
    setError(cause instanceof Error?cause.message:'Accounting overview could not be loaded.');}
  }
  useEffect(()=>{void Promise.resolve().then(load); // Initial saved read follows render.
  // eslint-disable-next-line react-hooks/exhaustive-deps
  },[agencyId]);
+ useEffect(()=>{const generation=++earningGeneration.current;void Promise.resolve().then(async()=>{
+  if(generation!==earningGeneration.current)return;
+  setEarnings(null);setEarningScope('');setEarningError('');
+  if(!agencyId||!periodId)return;
+  try{const saved=await financeRequest<EarnedPremiumReview>(`/api/v1/finance/agencies/${agencyId}/earned-premium?periodId=${periodId}`);
+   if(generation!==earningGeneration.current)return;setEarnings(saved);setEarningScope(`${agencyId}/${periodId}`);
+  }catch(cause){if(generation!==earningGeneration.current)return;setEarnings(null);setEarningScope('');
+   setEarningError(cause instanceof Error?cause.message:'Earned premium could not be loaded.');}
+ });
+ },[agencyId,periodId,earningRefresh]);
  const period=periods.find(item=>item.id===periodId);
  const inWindow=(date:string)=>period&&date>=period.from&&date<period.to;
  const issued=rows.filter(row=>row.sourceKind==='insurance'&&inWindow(row.postingDate));
@@ -56,6 +70,7 @@ export function FinanceOverview({agencyId,initialPeriodId}: {agencyId?:string;in
   const days=age(row.dueDate);return days>=lower&&days<=upper;}).map(row=>row.residual));
  const unmatched=cash.filter(item=>minorUnits(item.residual)>0);
  const scopedRefunds=refundScope===agencyId?refunds:null;
+ const scopedEarnings=earningScope===`${agencyId}/${periodId}`?earnings:null;
  const eligible=rows.filter(row=>row.sourceKind==='insurance'&&sourceId(row.sourceKey)&&
   periods.some(p=>p.state==='closed'&&row.postingDate>=p.from&&row.postingDate<p.to));
  async function run(next:Pending){setPending(next);setBusy(true);setError('');setNotice('');try{
@@ -87,6 +102,7 @@ export function FinanceOverview({agencyId,initialPeriodId}: {agencyId?:string;in
    <p className="finance-pad client-help">Posting basis {period.from} inclusive to {period.to} exclusive · view refreshed from saved SQL evidence. Balance uses posted debtor movements before period end; cash received uses receipt date.</p>
    {agencyId?<><div className="finance-measures">
     <div><span>Written premium</span><strong>{exactSum(issued.flatMap(row=>[row.grossDue??'0.00',decimalMoney(-minorUnits(row.tax??'0.00')),decimalMoney(-minorUnits(row.fee??'0.00'))]))}</strong></div>
+    <div><span>Earned premium</span><strong>{scopedEarnings?scopedEarnings.earnedPremium:'Unavailable'}</strong></div>
     <div><span>Tax</span><strong>{exactSum(issued.map(row=>row.tax??'0.00'))}</strong></div>
     <div><span>Fees</span><strong>{exactSum(issued.map(row=>row.fee??'0.00'))}</strong></div>
     <div><span>Commission</span><strong>{exactSum(issued.map(row=>row.commission??'0.00'))}</strong></div>
@@ -99,7 +115,11 @@ export function FinanceOverview({agencyId,initialPeriodId}: {agencyId?:string;in
     <div><span>1–30 days overdue</span><strong>{aged(1,30)}</strong></div>
     <div><span>31–60 days overdue</span><strong>{aged(31,60)}</strong></div>
     <div><span>61+ days overdue</span><strong>{aged(61,Number.MAX_SAFE_INTEGER)}</strong></div>
-   </div><p className="finance-pad client-help">Current scoped account: {account?.movementCount??0} saved movements. Invoice residual and ageing include saved receipt applications before the period end. Earned premium requires coverage earning evidence and is not inferred from written premium.</p></>
+   </div><p className="finance-pad client-help">Current scoped account: {account?.movementCount??0} saved movements. Invoice residual and ageing include saved receipt applications before the period end.</p>
+   {scopedEarnings?<div className="finance-pad"><p>Earned premium for {scopedEarnings.from} to {scopedEarnings.to} · {scopedEarnings.currency} · as of {scopedEarnings.asOf} · {scopedEarnings.basis} · {scopedEarnings.componentCount} saved premium components.</p>
+    <details><summary>Inspect {scopedEarnings.items.length} saved monthly source slices</summary><ul>{scopedEarnings.items.map(item=><li key={`${item.componentId}/${item.monthStart}`}>
+     {item.monthStart} · component {item.componentId} · <Link href={`/policies/${item.policyId}`}>policy {item.policyId}</Link> · saved month £{item.savedMonthPremium} · period £{item.periodEarnedPremium}
+    </li>)}</ul></details></div>:<p className="finance-pad" role={earningError?'alert':undefined}>{earningError||'Loading saved earned premium.'}</p>}</>
    :<p className="finance-pad">Choose an agency for scoped money and exact statement export.</p>}
    <div className="finance-pad operations-actions">
     <button className="button" disabled={!agencyId||busy||!!pending} onClick={()=>agencyId&&void run({kind:'export',

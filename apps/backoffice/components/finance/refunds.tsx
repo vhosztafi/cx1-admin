@@ -35,8 +35,11 @@ export function FinanceRefunds({agencyId,initialRefundId}:{agencyId:string;initi
   if(generation!==detailGeneration.current)return;
   if(saved.agencyId!==agencyId||saved.refundRequestId!==refundId)throw Error('Payment is outside this refund.');
   setPayment(saved);setPaymentId(id);}
- useEffect(()=>{detailGeneration.current++;setRefund(null);setPayment(null);setPaymentId('');setRefundId(initialRefundId??'');
-  if(initialRefundId)void Promise.resolve().then(()=>load(initialRefundId)); // Read after render.
+ useEffect(()=>{const generation=++detailGeneration.current;void Promise.resolve().then(()=>{
+  if(generation!==detailGeneration.current)return;
+  setRefund(null);setPayment(null);setPaymentId('');setRefundId(initialRefundId??'');
+  if(initialRefundId)void load(initialRefundId); // Read after render.
+ });
  // eslint-disable-next-line react-hooks/exhaustive-deps
  },[agencyId,initialRefundId]);
  useEffect(()=>{void Promise.resolve().then(()=>loadQueue());

@@ -16,4 +16,6 @@ First issue, servicing adjustment and cancellation writers call the shared earni
 
 Two focused native SQL cases passed with zero skips: immediate first-issue slices, simulated legacy backfill, repeat and tamper rejection; and immediate negative cancellation slices with exact signed sum. The API build passed without warnings.
 
+Two servicing posting cases later passed with zero skips for road risks and combined cover. They assert immediate per-component signed earning sums, positive and negative adjustment components, and no earning rows after the posting transaction rolls back (`.local/phase10-gap17-mta/`).
+
 Before retained migration/backfill, `.local/phase10-gap16-preservation/baseline` captured 198 tables and 215 files. The first run inspected 72 posted premium components and inserted 879 slices. Preservation verified 98,042 original rows and 215 files unchanged. A second capture included the new table (199 tables); the second run inspected the same 72 components, found 879 preexisting slices and inserted zero. Preservation verified all 98,921 then-current rows and 215 files unchanged. The demo database, keys and documents were retained.

@@ -31,6 +31,19 @@ try{
  const tabLabels=['Overview','Transactions','Broker accounts','Payments','Reconciliation','Bordereaux','Refunds'];
  for(const label of tabLabels)assert.equal(await page.getByRole('link',{name:label,exact:true}).count(),1);
  checks.push('seven accounting source tabs on live scoped overview');
+ const earningPeriods=await api('/finance/periods');assert.equal(earningPeriods.status,200);
+ let earningReview;
+ for(const candidate of earningPeriods.body){const result=await api(`/finance/agencies/${fixture.agencyId}/earned-premium?periodId=${candidate.id}`);
+  assert.equal(result.status,200,JSON.stringify(result));
+  if(result.body.componentCount>0){earningReview=result.body;break;}}
+ assert.ok(earningReview,'retained posted premium must have a sourced earning period');
+ await page.getByRole('combobox',{name:'Accounting period'}).selectOption(earningReview.periodId);
+ const earnedMeasure=page.locator('.finance-measures > div').filter({hasText:'Earned premium'}).locator('strong');
+ await earnedMeasure.filter({hasText:earningReview.earnedPremium}).waitFor();
+ await page.getByText(`Inspect ${earningReview.items.length} saved monthly source slices`,{exact:true}).click();
+ await page.getByText(`component ${earningReview.items[0].componentId}`,{exact:false}).first().waitFor();
+ await page.reload();await earnedMeasure.filter({hasText:earningReview.earnedPremium}).waitFor();
+ checks.push('earned premium and monthly source drilldown match saved period API across reload');
  const ledger=await api(`/finance/ledger?agencyId=${fixture.agencyId}&page=1&pageSize=50`);
  assert.equal(ledger.status,200);assert.ok(ledger.body.items.length>0);
  const insurance=ledger.body.items.find(row=>row.sourceKind==='insurance'&&row.transactionId&&row.policyId);

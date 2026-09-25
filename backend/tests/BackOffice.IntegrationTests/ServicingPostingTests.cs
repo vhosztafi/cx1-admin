@@ -1,5 +1,6 @@
 using System.Data;
 using System.Text.Json;
+using BackOffice.Infrastructure.Finance;
 using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Policies;
 using BackOffice.Infrastructure.Quotes;
@@ -64,6 +65,13 @@ public sealed partial class UnderwritingRuntimeTests
             components = await db.Set<IssueFinancialComponent>().AsNoTracking().Where(x => x.TransactionId == transaction.Id).ToArrayAsync();
             lines = await db.Set<JournalLine>().AsNoTracking().Where(x => x.TransactionId == transaction.Id).ToArrayAsync();
             Assert.Equal(8, components.Length); Assert.Equal(rating.Premium, obligation.Premium);
+            foreach (var premium in components.Where(x => x.Code == "premium"))
+            {
+                var earning = await db.Set<FinanceEarningSlice>().AsNoTracking()
+                    .Where(x => x.SourceComponentId == premium.Id).ToArrayAsync();
+                Assert.NotEmpty(earning);
+                Assert.Equal(FinanceLedgerMath.Pence(premium.Amount), earning.Sum(x => x.EarnedPence));
+            }
             Assert.Equal(0, lines.Sum(x => x.Debit - x.Credit));
             Assert.Equal(2, components.Where(x => x.Code == "premium").Select(x => x.CoverageStartsAt).Distinct().Count());
             if (await db.Set<Product>().Where(x => x.Id == policy.ProductId).Select(x => x.Code).SingleAsync() == "motor-trade-combined")
@@ -76,6 +84,7 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.All(lines, x => Assert.True((x.Debit > 0 && x.Credit == 0) || (x.Credit > 0 && x.Debit == 0)));
             await tx.RollbackAsync();
         }
+        Assert.False(await db.Set<FinanceEarningSlice>().AnyAsync(x => x.TransactionId == transaction.Id));
         db.ChangeTracker.Clear(); journal.PostedAt = null;
         db.Add(obligation); await db.SaveChangesAsync(); db.ChangeTracker.Clear();
         var component = components.First(x => x.Code == "premium"); var amount = component.Amount;
