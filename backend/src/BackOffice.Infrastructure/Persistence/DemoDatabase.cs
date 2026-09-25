@@ -63,6 +63,17 @@ public static class DemoDatabase
             db.Add(reviewer);db.Add(new UserRole{UserId=reviewer.Id,RoleId=role.Id});
             db.Add(new UserCredential{UserId=reviewer.Id,ProviderSubject=reviewer.NormalizedEmail,PasswordHash=new PasswordHasher<StaffUser>().HashPassword(reviewer,password)});
         }
+        // Refund decisions need a second current finance identity; keep the
+        // original finance user's credentials and roles untouched on reseed.
+        const string financeReviewerEmail="finance-reviewer@cover.example";
+        var financeReviewerNormalized=financeReviewerEmail.ToUpperInvariant();
+        if(!await db.Set<StaffUser>().AnyAsync(x=>x.NormalizedEmail==financeReviewerNormalized,cancellationToken))
+        {
+            var role=db.Set<Role>().Local.SingleOrDefault(x=>x.Code=="finance")??await db.Set<Role>().SingleAsync(x=>x.Code=="finance",cancellationToken);
+            var financeReviewer=new StaffUser{Email=financeReviewerEmail,NormalizedEmail=financeReviewerNormalized,DisplayName="Demo finance reviewer",TeamId=team.Id};
+            db.Add(financeReviewer);db.Add(new UserRole{UserId=financeReviewer.Id,RoleId=role.Id});
+            db.Add(new UserCredential{UserId=financeReviewer.Id,ProviderSubject=financeReviewer.NormalizedEmail,PasswordHash=new PasswordHasher<StaffUser>().HashPassword(financeReviewer,password)});
+        }
         var provider = await db.Set<CapacityProvider>().SingleOrDefaultAsync(x => x.Code == "demo-capacity",cancellationToken);
         if (provider is null) { provider = new CapacityProvider {Code="demo-capacity",Name="Fictional Demo Capacity"}; db.Add(provider); }
         var effective = new DateTimeOffset(2026,9,1,0,0,0,TimeSpan.Zero);
