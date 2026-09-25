@@ -40,6 +40,11 @@ After each implementation slice, run its unit and SQL negatives plus frontend te
 | 10-11 | FIN-08 | T10-11 | FinancePeriod native SQL close/post race/correction tests | 6/6 unit, 3/3 native SQL, 2/2 API contract and 8/8 affected SQL regression passed 2026-09-24; see 10-11-SUMMARY.md |
 | 10-12 | FIN-01..08, POL-01 | T10-12 | Finance UI component and saved-record browser tab/source tests | 5/5 frontend and 21/21 live browser passed 2026-09-24; TypeScript, lint, build green; earned premium/refund count remain partial; see 10-12-SUMMARY.md and 10-12-BINDINGS.md |
 | 10-13 | FIN-01..08, POL-01 | T10-13 | Full current-source gate, retained initialization/restart, goal-backward verification | Ten gates passed: 1,970 unique backend cases (511 real SQL), 451 root Node, 214 frontend Node, finance browser 21/21, operational suite 10 collectors; two additive inits unchanged and restart readback 7/7. Goal verifier found three gaps; see 10-VERIFICATION.md. |
+| 10-14 | FIN-05 | T10-14 | Native SQL scoped pending refund list/count, authority/revocation, frontend queue and saved-ID browser | Planned gap closure; no result yet |
+| 10-15 | FIN-01, FIN-08 | T10-15 | Exact signed monthly earning math, additive migration/backfill and native SQL source/hash tests | Planned gap closure; no result yet |
+| 10-16 | FIN-01, FIN-08 | T10-16 | Atomic issue/MTA/cancellation schedule writes and two-run retained backfill preservation | Planned gap closure; no result yet |
+| 10-17 | FIN-01, FIN-08 | T10-17 | Scoped period earned-premium API, closed cutoff, frontend/live browser basis | Planned gap closure; no result yet |
+| 10-18 | FIN-01, FIN-05, FIN-08, POL-01 | T10-18 | Legitimate retained refund/payment restart, fresh full current-source acceptance and independent verifier | Planned gap closure; no result yet |
 
 ## Required negative and edge cases
 

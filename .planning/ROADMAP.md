@@ -222,7 +222,7 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 **Goal:** Reconcile policy movements through finance workflows.
 **Depends on:** Phase 9
 **Requirements:** FIN-01 through FIN-08
-**Plans:** 13 plans; 13/13 complete. Goal verification found three gaps; Phase 10 remains open.
+**Plans:** 18 plans; 13/18 complete. Five gap-closure plans address the three goal-verification gaps; Phase 10 remains open.
 
 - [x] 10-01 — Freeze finance source and data contracts (wave 1).
 - [x] 10-02 — Build exact ledger and period posting foundation (wave 2, after 10-01).
@@ -237,6 +237,11 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 - [x] 10-11 — Close periods and post auditable later corrections (wave 11, after 10-06/08/10).
 - [x] 10-12 — Complete accounting workspace and inherited navigation (wave 12, after 10-05/06/08/10/11).
 - [x] 10-13 — Verify full finance acceptance and preserved demo (wave 13, after 10-12).
+- [ ] 10-14 — List agency-scoped pending refunds and link saved IDs (gap closure, wave 10, after 10-13).
+- [ ] 10-15 — Pin monthly earnings from posted premium components (gap closure, wave 11, after 10-14).
+- [ ] 10-16 — Schedule new posted sources and backfill retained earnings (gap closure, wave 12, after 10-15).
+- [ ] 10-17 — Show scoped earned premium and its period basis (gap closure, wave 13, after 10-16).
+- [ ] 10-18 — Prove retained refund/payment restart and repeat full acceptance (gap closure, wave 14, after 10-14/17).
 
 **Wave dependencies:** Each plan reads the reviewed summaries of its listed dependencies. Waves 6, 7 and 9 have independent domain work after their earlier foundation; execution is sequential because the repository uses one SQL/demo environment.
 
