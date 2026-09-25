@@ -9,7 +9,7 @@ This maps the full current-source inventory in `docs/design/finance-source-ledge
 | CTL-f5d7587f3dea | Overview unmatched receipt row opens its saved receipt ID | bound |
 | CTL-6a2ad506c5b6 | Overview bank reconciliation row opens scoped reconciliation | bound |
 | CTL-35a9de20c7a1 | Overview bordereau blocker opens provider/period workspace | bound |
-| CTL-74e24a6ada25 | Overview refund row opens scoped saved-ID review | partial: no refund list API for a current count |
+| CTL-74e24a6ada25 | Overview refund row reads the agency-scoped saved pending count and opens the saved refund ID; the queue shows approval progress | bound: live browser and retained refund journey prove pending count 1, direct ID, and count 0 after approval/payment |
 | CTL-740ea920a861 | Transactions posted-from/to window filters saved posting dates | bound |
 | CTL-d29d6b03b3a0 | Agency picker fixes transactions to the selected agency ID | bound |
 | CTL-51b829721081 | Transactions posting-state filter uses saved ledger status | bound |
@@ -31,7 +31,7 @@ This maps the full current-source inventory in `docs/design/finance-source-ledge
 | CTL-e834b4734421 | Agency record finance entry preserves agency ID and reads scoped saved account | bound |
 | CTL-f68f49a17b06 | Admin overview links to bordereaux under current finance authorization | bound |
 | CTL-92991f22c2a4 | Policy finance reads policy scope and links to its saved agency account | bound |
-| FIN-IMPLIED-overview-metrics | Overview shows exact written premium, tax, fees, commission, net, cash, closing and overdue residual from saved sources | partial: no pinned coverage earning schedule for earned premium |
+| FIN-IMPLIED-overview-metrics | Overview shows exact written premium, tax, fees, commission, net, cash, closing, overdue residual and period earned premium from pinned monthly source slices | bound: native SQL source/hash/read test and live period API/source drilldown across reload |
 | FIN-IMPLIED-ageing-buckets | Overview derives current, 1–30, 31–60 and 61+ invoice residual buckets as of selected period end | bound |
 | FIN-IMPLIED-transaction-status | Transactions display posted/credit/receivable evidence without inventing paid or write-off state | bound |
 | FIN-IMPLIED-receipt-view | Payments View opens selected saved receipt and survives reload | bound |
@@ -44,3 +44,5 @@ This maps the full current-source inventory in `docs/design/finance-source-ledge
 | FIN-IMPLIED-period-close | Overview shows blockers, reasoned guarded close and linked later correction | bound |
 
 `10-12` browser evidence: `.local/phase10-12-browser/browser-report.json` and desktop, mobile and 200% screenshots. The saved invalid batch had three distinct mapping failures; the second member was corrected with an identical replay key after a dropped response and the third was excluded with a reason.
+
+Gap-closure evidence: `.local/phase10-gap18-refund/journey.json` records the saved pending count and direct refund ID before independent approval and its zero count after payment; `.local/phase10-gap18-refund/sql-readback.json` checks the one accepted provider operation and cash posting. `.local/phase10-12-browser/browser-report.json` records 24 current-source UI checks, including scoped refund navigation and source-pinned earned-premium drilldown. `FinanceEarningRealSqlTests` checks additive backfill, source hash, scoped read and tamper rejection; `.local/phase10-gap16-preservation/` records the retained schedule backfill and repeat preservation.

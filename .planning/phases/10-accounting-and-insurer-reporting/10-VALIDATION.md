@@ -40,11 +40,11 @@ After each implementation slice, run its unit and SQL negatives plus frontend te
 | 10-11 | FIN-08 | T10-11 | FinancePeriod native SQL close/post race/correction tests | 6/6 unit, 3/3 native SQL, 2/2 API contract and 8/8 affected SQL regression passed 2026-09-24; see 10-11-SUMMARY.md |
 | 10-12 | FIN-01..08, POL-01 | T10-12 | Finance UI component and saved-record browser tab/source tests | 5/5 frontend and 21/21 live browser passed 2026-09-24; TypeScript, lint, build green; earned premium/refund count remain partial; see 10-12-SUMMARY.md and 10-12-BINDINGS.md |
 | 10-13 | FIN-01..08, POL-01 | T10-13 | Full current-source gate, retained initialization/restart, goal-backward verification | Ten gates passed: 1,970 unique backend cases (511 real SQL), 451 root Node, 214 frontend Node, finance browser 21/21, operational suite 10 collectors; two additive inits unchanged and restart readback 7/7. Goal verifier found three gaps; see 10-VERIFICATION.md. |
-| 10-14 | FIN-05 | T10-14 | Native SQL scoped pending refund list/count, authority/revocation, frontend queue and saved-ID browser | Planned gap closure; no result yet |
-| 10-15 | FIN-01, FIN-08 | T10-15 | Exact signed monthly earning math, additive migration/backfill and native SQL source/hash tests | Planned gap closure; no result yet |
-| 10-16 | FIN-01, FIN-08 | T10-16 | Atomic issue/MTA/cancellation schedule writes and two-run retained backfill preservation | Planned gap closure; no result yet |
-| 10-17 | FIN-01, FIN-08 | T10-17 | Scoped period earned-premium API, closed cutoff, frontend/live browser basis | Planned gap closure; no result yet |
-| 10-18 | FIN-01, FIN-05, FIN-08, POL-01 | T10-18 | Legitimate retained refund/payment restart, fresh full current-source acceptance and independent verifier | Planned gap closure; no result yet |
+| 10-14 | FIN-05 | T10-14 | Native SQL scoped pending refund list/count, authority/revocation, frontend queue and saved-ID browser | Focused native SQL 1/1, 214 frontend, 45 contract and 22 live browser checks passed; positive pending-to-approved UI transition is in `.local/phase10-gap18-refund/journey.json`. |
+| 10-15 | FIN-01, FIN-08 | T10-15 | Exact signed monthly earning math, additive migration/backfill and native SQL source/hash tests | Six focused unit cases and one native SQL source/backfill/tamper case passed; migration `20260925160442_FinanceEarningSlices` is additive. |
+| 10-16 | FIN-01, FIN-08 | T10-16 | Atomic issue/MTA/cancellation schedule writes and two-run retained backfill preservation | First issue and cancellation native SQL 2/2, two MTA SQL cases 2/2; retained backfill 72 sources/879 slices, second run zero; 98,042 original rows and 215 files preserved, then 98,921 rows and 215 files on repeat. |
+| 10-17 | FIN-01, FIN-08 | T10-17 | Scoped period earned-premium API, closed cutoff, frontend/live browser basis | Native SQL read/authority/tamper 1/1, 45 API contract, 214 frontend and 23 live browser checks passed; a synthetic closed-period test was rejected by the genuine close trigger, so closed-cutoff read still needs a legitimate closed-period run. |
+| 10-18 | FIN-01, FIN-05, FIN-08, POL-01 | T10-18 | Legitimate retained refund/payment restart, fresh full current-source acceptance and independent verifier | Authorized retained journey and SQL readback passed with one operation and posting; 10 saved restart readbacks passed after owned 5095/3193 process restart, two additive initializations preserved 100,635 rows and 215 files, root 451/451, web 214/214, lint/typecheck/build, live finance browser 25/25 and ten operational collectors passed. Unfiltered native SQL and strict TRX gate remain in progress. |
 
 ## Required negative and edge cases
 
@@ -66,5 +66,5 @@ Visual review at desktop, 390px and 200% zoom checks totals, focus, validation, 
 - [x] Every planned implementation slice has a named automated family.
 - [x] High-risk finance cases and current-scope replay are assigned.
 - [x] Tests, SQL constraints and real saved-record flows pass for the implemented journeys.
-- [x] Full current-source gate and seven preserved demo readbacks pass; refund/payment restart remains unproven with zero legitimate retained rows.
+- [x] Prior full current-source gate and seven preserved demo readbacks passed; a legitimate retained refund/payment now exists and its fresh restart readback is pending.
 - [ ] Set `nyquist_compliant: true` and `wave_0_complete: true` only after actual evidence.
