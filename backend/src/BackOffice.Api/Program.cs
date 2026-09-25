@@ -1,5 +1,16 @@
 using BackOffice.Infrastructure.Persistence;
+using BackOffice.Infrastructure.Finance;
 using BackOffice.Api;
+
+if (args.Contains("--backfill-finance-earnings", StringComparer.Ordinal))
+{
+    if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development")
+        throw new InvalidOperationException("Finance earning backfill requires local Development.");
+    var connection = Environment.GetEnvironmentVariable("COVER_SQL_CONNECTION") ?? DemoDatabase.DefaultConnection;
+    var report = await FinanceEarningService.BackfillDemoAsync(connection);
+    Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(report));
+    return;
+}
 
 if (args.Contains("--initialize-demo", StringComparer.Ordinal))
 {

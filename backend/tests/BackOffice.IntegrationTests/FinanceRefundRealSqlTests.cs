@@ -67,6 +67,16 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.True(credit.InvoiceDue < 0);
             Assert.True(await db.Set<Journal>().AnyAsync(x => x.ObligationId == credit.Id && x.PostedAt != null));
             var actor = await FinanceLedgerActor(db);
+            var earning = new FinanceEarningService(f.Factory);
+            Assert.Equal(0, await earning.BackfillAgencyAsync(actor, credit.AgencyId));
+            var returnedPremium = await db.Set<IssueFinancialComponent>().AsNoTracking()
+                .SingleAsync(x => x.ObligationId == credit.Id && x.Code == "premium");
+            var returnSlices = await db.Set<FinanceEarningSlice>().AsNoTracking()
+                .Where(x => x.SourceComponentId == returnedPremium.Id).ToArrayAsync();
+            Assert.NotEmpty(returnSlices);
+            Assert.True(returnedPremium.Amount < 0);
+            Assert.Equal(FinanceLedgerMath.Pence(returnedPremium.Amount),
+                returnSlices.Sum(x => x.EarnedPence));
             var boundary = new SqlCommandBoundary(f.Factory, f.Clock);
             var receipts = new FinanceReceiptService(f.Factory, boundary, f.Clock);
             var refunds = new FinanceRefundService(f.Factory, boundary, f.Clock);

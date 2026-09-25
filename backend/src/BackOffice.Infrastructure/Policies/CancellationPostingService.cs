@@ -1,4 +1,5 @@
 using BackOffice.Application.Policies;
+using BackOffice.Infrastructure.Finance;
 using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Quotes;
 using Microsoft.EntityFrameworkCore;
@@ -48,6 +49,7 @@ internal static class CancellationPostingService
                 PartyId=line.AccountCode=="fee-income"?null:line.AccountCode=="insurer-payable"?basis.ProviderId:line.AccountCode=="relationship-receivable"?basis.RelationshipId:basis.AgencyId,
                 CreatedAt=transaction.ProcessedAt,CreatedBy=transaction.CreatedBy});
         await db.SaveChangesAsync(token);journal.PostedAt=transaction.ProcessedAt;await db.SaveChangesAsync(token);
+        await FinanceEarningService.MaterializeObligationAsync(db,obligation.Id,token);
         return new(obligation.Id,journal.Id,period.PeriodId,period.PostingDate,posting.GrossDue,posting.InvoiceDue,posting.NetDue,posting.BrokerPayable);
     }
 }

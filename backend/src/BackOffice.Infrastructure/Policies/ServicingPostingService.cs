@@ -1,5 +1,6 @@
 using System.Text.Json;
 using BackOffice.Application.Policies;
+using BackOffice.Infrastructure.Finance;
 using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Quotes;
 using Microsoft.EntityFrameworkCore;
@@ -67,6 +68,7 @@ public static class ServicingPostingService
                 PartyId = line.AccountCode == "fee-income" ? null : line.AccountCode == "insurer-payable" ? provider : line.AccountCode == "relationship-receivable" ? policy.RelationshipId : policy.AgencyId,
                 CreatedAt = transaction.ProcessedAt, CreatedBy = transaction.CreatedBy });
         await db.SaveChangesAsync(token); journal.PostedAt = transaction.ProcessedAt; await db.SaveChangesAsync(token);
+        await FinanceEarningService.MaterializeObligationAsync(db, obligation.Id, token);
         return new(obligation.Id, journal.Id, period.PeriodId, period.PostingDate, posting.GrossDue, posting.InvoiceDue, posting.NetDue, posting.BrokerPayable);
     }
 }

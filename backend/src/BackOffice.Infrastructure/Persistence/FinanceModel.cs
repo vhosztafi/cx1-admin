@@ -6,6 +6,20 @@ public sealed partial class BackOfficeDbContext
 {
     private static void ConfigureFinance(ModelBuilder model)
     {
+        var earning = Record<FinanceEarningSlice>(model, "FinanceEarningSlice");
+        earning.ToTable(t => t.UseSqlOutputClause(false));
+        Hash(earning, "SourceHash");
+        earning.HasIndex(x => new { x.SourceComponentId, x.MonthStart }).IsUnique();
+        earning.HasIndex(x => new { x.AgencyId, x.MonthStart, x.SourcePostedAt });
+        earning.HasOne<IssueFinancialComponent>().WithMany().HasForeignKey(x => new { x.SourceComponentId, x.TransactionId })
+            .HasPrincipalKey(x => new { x.Id, x.TransactionId }).OnDelete(DeleteBehavior.NoAction);
+        earning.HasOne<IssueFinancialObligation>().WithMany().HasForeignKey(x => new { x.ObligationId, x.TransactionId })
+            .HasPrincipalKey(x => new { x.Id, x.TransactionId }).OnDelete(DeleteBehavior.NoAction);
+        earning.HasOne<Agency>().WithMany().HasForeignKey(x => x.AgencyId).OnDelete(DeleteBehavior.NoAction);
+        earning.HasOne<Policy>().WithMany().HasForeignKey(x => x.PolicyId).OnDelete(DeleteBehavior.NoAction);
+        Check(earning, "Interval", "[CoverageStartsAt]<[CoverageEndsAt]");
+        Check(earning, "Month", "DAY([MonthStart])=1");
+        Check(earning, "Version", "[AlgorithmVersion]=1");
         var statement = Record<FinanceStatementVersion>(model, "FinanceStatementVersion");
         statement.ToTable(t => t.UseSqlOutputClause(false));
         Text(statement, ("Opening", 32), ("Debits", 32), ("Credits", 32), ("Closing", 32));

@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using BackOffice.Application.Policies;
+using BackOffice.Infrastructure.Finance;
 using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Quotes;
 using BackOffice.Infrastructure.Underwriting;
@@ -86,6 +87,7 @@ internal static class PolicyIssueWriter
                 PartyId = line.AccountCode == "fee-income" ? null : line.AccountCode == "insurer-payable" ? provider : line.AccountCode == "relationship-receivable" ? quote.RelationshipId : quote.AgencyId,
                 CreatedAt = now, CreatedBy = actorId });
         await db.SaveChangesAsync(token); journal.PostedAt = now; await db.SaveChangesAsync(token);
+        await FinanceEarningService.MaterializeObligationAsync(db, obligation.Id, token);
         var documents = new List<Guid>();
         foreach (var template in templates)
         {
