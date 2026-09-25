@@ -1,12 +1,13 @@
 'use client';
 import Link from 'next/link';
-import {useEffect,useState} from 'react';
+import {useEffect,useRef,useState} from 'react';
 import {DataTable,EmptyState,Panel,Status} from '../primitives';
 import {accountSummary,decimalMoney,FinanceCommandError,invoiceCandidates,ledgerAll,minorUnits,receiptList,
  statementDetail,type FinanceAccountSummary,type FinanceLedgerRow,type FinanceReceiptPage} from '../../lib/finance-api';
 import {correctionCommand,exactSum,financeCommand,financeDownload,financeRequest,financeSend,
  periodCloseCommand,routeForFinanceTab,type WorkspaceCommand} from '../../lib/finance-workspace-api';
 import type {FinancePeriodReview} from '../../../../contracts/generated/finance-periods.ts';
+import type {FinanceRefundPage} from '../../../../contracts/generated/finance-refunds.ts';
 
 type Pending={kind:'close'|'correction'|'export';command:WorkspaceCommand};
 const sourceId=(key:string)=>{const raw=key.split('/')[1];return raw&&/^[0-9a-f]{32}$/i.test(raw)?
@@ -20,20 +21,26 @@ export function FinanceOverview({agencyId,initialPeriodId}: {agencyId?:string;in
  const [periods,setPeriods]=useState<FinancePeriodReview[]>([]),[periodId,setPeriodId]=useState(initialPeriodId??'');
  const [rows,setRows]=useState<FinanceLedgerRow[]>([]),[account,setAccount]=useState<FinanceAccountSummary|null>(null);
  const [cash,setCash]=useState<FinanceReceiptPage['items']>([]);
+ const [refunds,setRefunds]=useState<FinanceRefundPage|null>(null),[refundScope,setRefundScope]=useState('');
+ const loadGeneration=useRef(0);
  const [source,setSource]=useState(''),[debtor,setDebtor]=useState(''),[provider,setProvider]=useState('');
  const [cashDelta,setCashDelta]=useState(''),[internalDelta,setInternalDelta]=useState('');
  const [reason,setReason]=useState(''),[closeReason,setCloseReason]=useState('');
  const [pending,setPending]=useState<Pending|null>(null),[error,setError]=useState(''),[notice,setNotice]=useState('');
  const [busy,setBusy]=useState(false);
  async function load(){
-  try{const [list,ledger,summary,received]=await Promise.all([
+  const generation=++loadGeneration.current;
+  setRefunds(null);setRefundScope('');
+  try{const [list,ledger,summary,received,pendingRefunds]=await Promise.all([
    financeRequest<FinancePeriodReview[]>('/api/v1/finance/periods'),
    agencyId?ledgerAll(agencyId):Promise.resolve([]),
    agencyId?accountSummary(agencyId):Promise.resolve(null),
-   agencyId?receipts(agencyId):Promise.resolve([])]);
-   setPeriods(list);setRows(ledger);setAccount(summary);setCash(received);
+   agencyId?receipts(agencyId):Promise.resolve([]),
+   agencyId?financeRequest<FinanceRefundPage>(`/api/v1/finance/agencies/${agencyId}/refunds?state=pending&page=1&pageSize=50`):Promise.resolve(null)]);
+   if(generation!==loadGeneration.current)return;
+   setPeriods(list);setRows(ledger);setAccount(summary);setCash(received);setRefunds(pendingRefunds);setRefundScope(agencyId??'');
    setPeriodId(current=>current||list.find(item=>item.state==='open')?.id||list[0]?.id||'');setError('');}
-  catch(cause){if(cause instanceof FinanceCommandError&&cause.denied){setPeriods([]);setRows([]);setAccount(null);setCash([]);}
+  catch(cause){if(generation!==loadGeneration.current)return;setRefunds(null);setRefundScope('');if(cause instanceof FinanceCommandError&&cause.denied){setPeriods([]);setRows([]);setAccount(null);setCash([]);}
    setError(cause instanceof Error?cause.message:'Accounting overview could not be loaded.');}
  }
  useEffect(()=>{void Promise.resolve().then(load); // Initial saved read follows render.
@@ -48,6 +55,7 @@ export function FinanceOverview({agencyId,initialPeriodId}: {agencyId?:string;in
  const aged=(lower:number,upper:number)=>exactSum(invoices.filter(row=>{
   const days=age(row.dueDate);return days>=lower&&days<=upper;}).map(row=>row.residual));
  const unmatched=cash.filter(item=>minorUnits(item.residual)>0);
+ const scopedRefunds=refundScope===agencyId?refunds:null;
  const eligible=rows.filter(row=>row.sourceKind==='insurance'&&sourceId(row.sourceKey)&&
   periods.some(p=>p.state==='closed'&&row.postingDate>=p.from&&row.postingDate<p.to));
  async function run(next:Pending){setPending(next);setBusy(true);setError('');setNotice('');try{
@@ -107,8 +115,8 @@ export function FinanceOverview({agencyId,initialPeriodId}: {agencyId?:string;in
     <td><Link href={routeForFinanceTab('reconciliation',{agencyId})}>Review reconciliation</Link></td></tr>
    <tr><th scope="row">Bordereau validation</th><td>{period.blockers.some(item=>item.includes('bordereau'))?'Evidence still required':'No period close blocker reported'}</td>
     <td><Link href={routeForFinanceTab('bordereaux',{agencyId,periodId:period.id})}>Open bordereaux</Link></td></tr>
-   <tr><th scope="row">Refund approval</th><td>Open a saved refund ID to inspect its approval state</td>
-    <td><Link href={routeForFinanceTab('refunds',{agencyId})}>Review refunds</Link></td></tr>
+   <tr><th scope="row">Refund approval</th><td>{scopedRefunds?`${scopedRefunds.total} pending refund${scopedRefunds.total===1?'':'s'}`:'Loading saved refunds'}</td>
+    <td><Link href={routeForFinanceTab('refunds',{agencyId,refundId:scopedRefunds?.items[0]?.id})}>{scopedRefunds?.items[0]?'Open first saved refund':'Review refunds'}</Link></td></tr>
   </DataTable></Panel>}
  {period&&<Panel title="Period close" note={`Saved state: ${period.state} · source cutoff ${period.sourceCutoff??'not closed'}`}>
   {period.blockers.length?<DataTable caption="Current close blockers" columns={['Evidence still required']}>

@@ -4,7 +4,7 @@ import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {chromium} from 'playwright';
 
 const webOrigin=process.env.COVER_FINANCE_WEB_ORIGIN??'http://127.0.0.1:3192';
-assert.equal(new URL(webOrigin).hostname,'127.0.0.1');
+assert.ok(['127.0.0.1','localhost'].includes(new URL(webOrigin).hostname));
 const output='.local/phase10-12-browser';await mkdir(output,{recursive:true});
 const fixture=JSON.parse(await readFile('.local/phase10-05-browser/fixture.json','utf8'));
 const password=(await readFile('.local/demo-password.txt','utf8')).trim();
@@ -174,7 +174,22 @@ try{
  assert.equal(createHash('sha256').update(await readFile(await historical.path())).digest('hex').toUpperCase(),valid.body.contentHash);
  checks.push('submitted historical version remains downloadable byte-for-byte after linked successor');
  await goto('refunds');await page.getByRole('heading',{name:'Refunds',exact:true}).waitFor();
- assert.ok(await field('Credit obligation ID').count());checks.push('refund request, approval and payment entry use saved identities');
+ const savedRefunds=await api(`/finance/agencies/${fixture.agencyId}/refunds?page=1&pageSize=50`);
+ assert.equal(savedRefunds.status,200);assert.equal(savedRefunds.body.items.length<=savedRefunds.body.total,true);
+ await page.getByText(`${savedRefunds.body.total} saved refund${savedRefunds.body.total===1?'':'s'} for this agency`,{exact:true}).waitFor();
+ assert.ok(await field('Credit obligation ID').count());checks.push('refund queue and count read saved agency-scoped identities');
+ await goto('overview');
+ const pendingRefunds=await api(`/finance/agencies/${fixture.agencyId}/refunds?state=pending&page=1&pageSize=50`);
+ assert.equal(pendingRefunds.status,200);
+ const attention=page.getByRole('row',{name:/Refund approval/});
+ await attention.getByText(`${pendingRefunds.body.total} pending refund${pendingRefunds.body.total===1?'':'s'}`,{exact:true}).waitFor();
+ if(pendingRefunds.body.items.length){
+  const direct=attention.getByRole('link',{name:'Open first saved refund'});
+  assert.equal(new URL(await direct.getAttribute('href'),webOrigin).searchParams.get('refundId'),pendingRefunds.body.items[0].id);
+  await direct.focus();await page.keyboard.press('Enter');await page.waitForURL(new RegExp(`refundId=${pendingRefunds.body.items[0].id}`,'i'));
+  await page.reload();await page.getByRole('heading',{name:`Refund ${pendingRefunds.body.items[0].id}`}).waitFor();
+ }
+ checks.push('refund attention count and direct saved ID match scoped API across keyboard navigation and reload');
  const admin=await browser.newPage();admin.setDefaultTimeout(45000);await admin.goto(webOrigin+'/login');
  await admin.getByLabel('Email address').fill('system-admin@cover.example');await admin.getByLabel('Password').fill(password);
  await admin.getByRole('button',{name:'Sign in'}).click();await admin.waitForURL(webOrigin+'/');

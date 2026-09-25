@@ -11,6 +11,7 @@ public static class FinanceRefundEndpoints
     public static void MapFinanceRefunds(this WebApplication app)
     {
         app.MapPost("/api/v1/finance/credits/{id:guid}/refunds", Request).RequireAuthorization("finance-refund-request");
+        app.MapGet("/api/v1/finance/agencies/{agencyId:guid}/refunds", List).RequireAuthorization("finance-read");
         app.MapGet("/api/v1/finance/refunds/{id:guid}", Detail).RequireAuthorization("finance-read");
         app.MapPost("/api/v1/finance/refunds/{id:guid}/decisions", Decide).RequireAuthorization("finance-refund-approve");
     }
@@ -56,6 +57,20 @@ public static class FinanceRefundEndpoints
             var result = await service.DetailAsync(LocalIdentityService.Actor(context.User), id, context.RequestAborted);
             context.Response.Headers.ETag = result.Etag;
             return Results.Json(result);
+        });
+
+    private static async Task<IResult> List(Guid agencyId, HttpContext context, FinanceRefundService service)
+        => await Work(context, async () =>
+        {
+            if (context.Request.Query.Keys.Except(["state", "page", "pageSize"], StringComparer.Ordinal).Any() ||
+                context.Request.Query.Any(x => x.Value.Count != 1))
+                throw new QuoteOperationException(400, "refund-query-invalid");
+            int Number(string name, int fallback) => !context.Request.Query.ContainsKey(name) ? fallback :
+                int.TryParse(context.Request.Query[name], out var parsed) ? parsed :
+                throw new QuoteOperationException(400, "refund-query-invalid");
+            return Results.Json(await service.ListAsync(LocalIdentityService.Actor(context.User), agencyId,
+                context.Request.Query.TryGetValue("state", out var state) ? state.ToString() : null,
+                Number("page", 1), Number("pageSize", 50), context.RequestAborted));
         });
 
     private static byte[] Version(HttpRequest request)

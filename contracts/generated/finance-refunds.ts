@@ -10,3 +10,8 @@ export type FinanceRefund = { id:string; agencyId:string; policyId:string; credi
 export type FinanceRefundRequestResult = { id:string; state:'pending' };
 export type FinanceRefundDecisionResult = { id:string; refundId:string;
  state:'pending'|'approved'|'rejected' };
+export type FinanceRefundListItem = { id:string; agencyId:string; policyId:string;
+ amount:string; currency:'GBP'; state:'pending'|'approved'|'rejected';
+ requestedAt:string; approvalCount:number; requiredApprovals:1|2 };
+export type FinanceRefundPage = { page:number; pageSize:number; total:number;
+ items:FinanceRefundListItem[] };

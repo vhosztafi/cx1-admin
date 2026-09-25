@@ -1,11 +1,12 @@
 'use client';
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
-import {useEffect,useState} from 'react';
+import {useEffect,useRef,useState} from 'react';
 import {EmptyState,Panel,Status} from '../primitives';
 import {FinanceCommandError} from '../../lib/finance-api';
 import {financeCommand,financeRequest,financeSend,routeForFinanceTab,type WorkspaceCommand} from '../../lib/finance-workspace-api';
 import type {FinanceRefund} from '../../../../contracts/generated/finance-refunds.ts';
+import type {FinanceRefundPage} from '../../../../contracts/generated/finance-refunds.ts';
 import type {FinancePayment} from '../../../../contracts/generated/finance-payments.ts';
 
 const validId=(value:string)=>/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
@@ -17,21 +18,35 @@ export function FinanceRefunds({agencyId,initialRefundId}:{agencyId:string;initi
  const [creditId,setCreditId]=useState(''),[allocationId,setAllocationId]=useState(''),[sourceAmount,setSourceAmount]=useState('');
  const [amount,setAmount]=useState(''),[reason,setReason]=useState(''),[decision,setDecision]=useState<'approve'|'reject'>('approve');
  const [pending,setPending]=useState<Pending|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState('');
- async function load(id=refundId){try{if(!validId(id))throw Error('Enter a saved refund ID.');
+ const [queue,setQueue]=useState<FinanceRefundPage|null>(null),[queueScope,setQueueScope]=useState('');
+ const queueGeneration=useRef(0);
+ const detailGeneration=useRef(0);
+ async function loadQueue(page=1){const generation=++queueGeneration.current;setQueue(null);setQueueScope('');try{
+  const saved=await financeRequest<FinanceRefundPage>(`/api/v1/finance/agencies/${agencyId}/refunds?page=${page}&pageSize=50`);
+  if(generation!==queueGeneration.current)return;setQueue(saved);setQueueScope(agencyId);setError('');
+ }catch(cause){if(generation!==queueGeneration.current)return;setQueue(null);setQueueScope('');setError(cause instanceof Error?cause.message:'Saved refunds could not be loaded.');}}
+ async function load(id=refundId){const generation=++detailGeneration.current;try{if(!validId(id))throw Error('Enter a saved refund ID.');
   const saved=await financeRequest<FinanceRefund>(`/api/v1/finance/refunds/${id}`);
+  if(generation!==detailGeneration.current)return;
   if(saved.agencyId!==agencyId)throw Error('Refund is outside the selected agency.');
   setRefund(saved);setRefundId(id);setError('');if(validId(paymentId))await loadPayment(paymentId);
- }catch(cause){setRefund(null);setPayment(null);setError(cause instanceof Error?cause.message:'Refund could not be loaded.');}}
- async function loadPayment(id:string){const saved=await financeRequest<FinancePayment>(`/api/v1/finance/payments/${id}`);
+ }catch(cause){if(generation!==detailGeneration.current)return;setRefund(null);setPayment(null);setError(cause instanceof Error?cause.message:'Refund could not be loaded.');}}
+ async function loadPayment(id:string){const generation=detailGeneration.current;const saved=await financeRequest<FinancePayment>(`/api/v1/finance/payments/${id}`);
+  if(generation!==detailGeneration.current)return;
   if(saved.agencyId!==agencyId||saved.refundRequestId!==refundId)throw Error('Payment is outside this refund.');
   setPayment(saved);setPaymentId(id);}
- useEffect(()=>{if(initialRefundId)void Promise.resolve().then(()=>load(initialRefundId)); // Read after render.
+ useEffect(()=>{detailGeneration.current++;setRefund(null);setPayment(null);setPaymentId('');setRefundId(initialRefundId??'');
+  if(initialRefundId)void Promise.resolve().then(()=>load(initialRefundId)); // Read after render.
  // eslint-disable-next-line react-hooks/exhaustive-deps
  },[agencyId,initialRefundId]);
+ useEffect(()=>{void Promise.resolve().then(()=>loadQueue());
+ // eslint-disable-next-line react-hooks/exhaustive-deps
+ },[agencyId]);
  async function send(next:Pending){setPending(next);setBusy(true);setError('');setNotice('');try{
   const saved=await financeSend(next.command);const nextRefund=String(saved.refundId||saved.id||refundId);
   if(next.label==='Payment queue'&&validId(String(saved.paymentId)))setPaymentId(String(saved.paymentId));
   if(validId(nextRefund)){await load(nextRefund);router.push(routeForFinanceTab('refunds',{agencyId,refundId:nextRefund}));}
+  await loadQueue(queue?.page??1);
   setNotice(`${next.label} saved. Refresh the record to inspect its current state.`);setPending(null);
  }catch(cause){setError(cause instanceof Error?cause.message:'Saved outcome is uncertain.');
   if(!(cause instanceof FinanceCommandError&&cause.uncertain))setPending(null);}finally{setBusy(false);}}
@@ -45,6 +60,15 @@ export function FinanceRefunds({agencyId,initialRefundId}:{agencyId:string;initi
   {pending&&<div role="status" className="finance-recovery">Awaiting confirmation. The same command key and version are retained.
    <button className="button" disabled={busy} onClick={()=>void send(pending)}>Retry same action</button>
    <button className="button" disabled={busy} onClick={()=>{setPending(null);void load();}}>Review saved refund</button></div>}
+  <div className="finance-pad"><h3>Saved refunds</h3>
+   {queueScope===agencyId&&queue?<><p>{queue.total} saved refund{queue.total===1?'':'s'} for this agency</p>
+    {queue.items.length?<ul>{queue.items.map(item=><li key={item.id}>
+     <Link href={routeForFinanceTab('refunds',{agencyId,refundId:item.id})}>{item.id}</Link>
+     {' · '}{item.state} · £{item.amount} · {item.approvalCount}/{item.requiredApprovals} approvals
+    </li>)}</ul>:<p>No saved refunds for this agency.</p>}
+    <div className="operations-actions"><button className="button" disabled={queue.page<=1} onClick={()=>void loadQueue(queue.page-1)}>Previous refunds</button>
+     <button className="button" disabled={queue.page*queue.pageSize>=queue.total} onClick={()=>void loadQueue(queue.page+1)}>Next refunds</button></div></>
+   :<p>Loading saved refunds.</p>}</div>
   <div className="finance-pad finance-form"><label>Refund ID<input value={refundId} onChange={e=>setRefundId(e.target.value.trim())}/></label>
    <button className="button" disabled={!validId(refundId)} onClick={()=>void load().then(()=>router.push(routeForFinanceTab('refunds',{agencyId,refundId})))}>Open saved refund</button></div>
   {!refund?<div className="finance-pad"><h3>Request against saved credit</h3><p>Use the credit obligation from a posted negative insurance movement and a collected allocation for the same payer.</p>

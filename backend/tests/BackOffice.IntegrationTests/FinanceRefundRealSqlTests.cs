@@ -118,6 +118,15 @@ public sealed partial class UnderwritingRuntimeTests
                 """));
             var firstView = await refunds.DetailAsync(actor, first.ResourceId);
             Assert.Equal("pending", firstView.State);
+            var pendingPage = await refunds.ListAsync(actor, credit.AgencyId, "pending");
+            Assert.Equal(1, pendingPage.Total);
+            Assert.Equal(first.ResourceId, Assert.Single(pendingPage.Items).Id);
+            Assert.Equal(0, (await refunds.ListAsync(actor, credit.AgencyId, "approved")).Total);
+            Assert.Empty((await refunds.ListAsync(actor, credit.AgencyId, "pending", 2, 1)).Items);
+            Assert.Equal(404, (await Assert.ThrowsAsync<QuoteOperationException>(() =>
+                refunds.ListAsync(actor, Guid.NewGuid(), "pending"))).Status);
+            Assert.Equal(400, (await Assert.ThrowsAsync<QuoteOperationException>(() =>
+                refunds.ListAsync(actor, credit.AgencyId, "paid"))).Status);
             Assert.Equal(amountText, firstView.Amount);
             Assert.Equal(chosen.Length, firstView.Sources.Count);
             Assert.Equal(2, firstView.RequiredApprovals);
@@ -171,6 +180,8 @@ public sealed partial class UnderwritingRuntimeTests
             await refunds.DecideAsync(approver1, first.ResourceId, Version(firstView.Etag), "reject",
                 "Refund request rejected after review", Key(), Guid.NewGuid());
             Assert.Equal("rejected", (await refunds.DetailAsync(actor, first.ResourceId)).State);
+            Assert.Equal(0, (await refunds.ListAsync(actor, credit.AgencyId, "pending")).Total);
+            Assert.Equal(first.ResourceId, Assert.Single((await refunds.ListAsync(actor, credit.AgencyId, "rejected")).Items).Id);
             await using (var probe = await db.Database.BeginTransactionAsync())
             {
                 var fakeId = Guid.NewGuid();
@@ -189,6 +200,7 @@ public sealed partial class UnderwritingRuntimeTests
             var next = await refunds.RequestAsync(actor, credit.Id, amountText, chosen,
                 "Re-request after audited rejection", Key(), Guid.NewGuid());
             var current = await refunds.DetailAsync(actor, next.ResourceId);
+            Assert.Equal(next.ResourceId, Assert.Single((await refunds.ListAsync(actor, credit.AgencyId, "pending")).Items).Id);
             var approvalKey = Key();
             var originalVersion = Version(current.Etag);
             await refunds.DecideAsync(approver1, next.ResourceId, originalVersion, "approve",
@@ -205,9 +217,15 @@ public sealed partial class UnderwritingRuntimeTests
                 current = await refunds.DetailAsync(actor, next.ResourceId);
             }
             Assert.Equal("approved", current.State);
+            var approvedPage = await refunds.ListAsync(actor, credit.AgencyId, "approved");
+            Assert.Equal(1, approvedPage.Total);
+            Assert.Equal(current.RequiredApprovals, Assert.Single(approvedPage.Items).ApprovalCount);
+            Assert.Equal(0, (await refunds.ListAsync(actor, credit.AgencyId, "pending")).Total);
             Assert.Equal(current.RequiredApprovals, current.Decisions.Count(x => x.Kind == "approve"));
             Assert.Empty(await db.Set<FinancePosting>().Where(x => x.SourceKind == "refund").ToArrayAsync());
             await db.Database.ExecuteSqlInterpolatedAsync($"DELETE UserRole WHERE UserId={approver1.UserId}");
+            Assert.Equal(403, (await Assert.ThrowsAsync<QuoteOperationException>(() =>
+                refunds.ListAsync(approver1, credit.AgencyId, "pending"))).Status);
             Assert.Equal(403, (await Assert.ThrowsAsync<QuoteOperationException>(() => refunds.DecideAsync(approver1,
                 next.ResourceId, originalVersion, "approve",
                 "Independent finance approver confirmed cash", approvalKey, Guid.NewGuid()))).Status);

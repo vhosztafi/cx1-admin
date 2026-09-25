@@ -13,6 +13,11 @@ export function addFinanceRefundContracts({schemas,ref,operation,paths,id,instan
   decisions:{type:'array',items:ref('FinanceRefundDecision')},etag:{type:'string'}});
  schemas.FinanceRefundRequestResult=object({id,state:{const:'pending'}});
  schemas.FinanceRefundDecisionResult=object({id,refundId:id,state:{enum:['pending','approved','rejected']}});
+ schemas.FinanceRefundListItem=object({id,agencyId:id,policyId:id,amount:decimal,currency:{const:'GBP'},
+  state:{enum:['pending','approved','rejected']},requestedAt:instant,
+  approvalCount:{type:'integer',minimum:0},requiredApprovals:{type:'integer',enum:[1,2]}});
+ schemas.FinanceRefundPage=object({page:{type:'integer',minimum:1},pageSize:{type:'integer',minimum:1,maximum:100},
+  total:{type:'integer',minimum:0},items:{type:'array',items:ref('FinanceRefundListItem')}});
  delete paths['/finance/refunds/{refundId}']?.get;
  const write='current internal finance-refund-request and stored agency scope';
  operation('post','/finance/credits/{creditObligationId}/refunds','requestFinanceRefund',write,{
@@ -21,16 +26,23 @@ export function addFinanceRefundContracts({schemas,ref,operation,paths,id,instan
   output:ref('FinanceRefundRequestResult'),status:201});
  operation('get','/finance/refunds/{refundId}','getFinanceRefund',
   'current internal finance-read and stored agency scope',{output:ref('FinanceRefund')});
+ operation('get','/finance/agencies/{agencyId}/refunds','listFinanceRefunds',
+  'current internal finance-read and selected stored agency scope',{
+   output:ref('FinanceRefundPage'),query:[['state',{enum:['pending','approved','rejected']}],
+    ['page',{type:'integer',minimum:1,default:1}],
+    ['pageSize',{type:'integer',minimum:1,maximum:100,default:50}]]});
  operation('post','/finance/refunds/{refundId}/decisions','decideFinanceRefund',
   'current independent finance-refund-approve, amount limit, and stored agency scope',{
    existing:true,input:object({kind:{enum:['approve','reject']},reason}),
    output:ref('FinanceRefundDecisionResult'),status:201});
  for(const [path,method] of [['/finance/credits/{creditObligationId}/refunds','post'],
-  ['/finance/refunds/{refundId}','get'],['/finance/refunds/{refundId}/decisions','post']]){
+  ['/finance/refunds/{refundId}','get'],['/finance/agencies/{agencyId}/refunds','get'],
+  ['/finance/refunds/{refundId}/decisions','post']]){
   const op=paths[path][method];op['x-runtime-status']='phase-10-07-implemented';
   const success=op.responses[method==='get'?'200':'201'];
   success.headers={...success.headers,'Cache-Control':{schema:{type:'string',const:'no-store'}}};
-  if(method==='get')success.headers.ETag={schema:{type:'string'}};
+  if(path==='/finance/refunds/{refundId}')success.headers.ETag={schema:{type:'string'}};
+  else if(path==='/finance/agencies/{agencyId}/refunds')delete success.headers.ETag;
  }
 }
 
@@ -48,5 +60,10 @@ export type FinanceRefund = { id:string; agencyId:string; policyId:string; credi
 export type FinanceRefundRequestResult = { id:string; state:'pending' };
 export type FinanceRefundDecisionResult = { id:string; refundId:string;
  state:'pending'|'approved'|'rejected' };
+export type FinanceRefundListItem = { id:string; agencyId:string; policyId:string;
+ amount:string; currency:'GBP'; state:'pending'|'approved'|'rejected';
+ requestedAt:string; approvalCount:number; requiredApprovals:1|2 };
+export type FinanceRefundPage = { page:number; pageSize:number; total:number;
+ items:FinanceRefundListItem[] };
 `);
 }

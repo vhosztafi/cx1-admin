@@ -16,6 +16,9 @@ public sealed record RefundView(Guid Id, Guid AgencyId, Guid PolicyId, Guid Cred
     Guid RuleId, int RuleVersion, string ApprovalThreshold, int RequiredApprovals,
     Guid RequestedBy, DateTimeOffset RequestedAt, string Reason,
     IReadOnlyList<RefundSourceView> Sources, IReadOnlyList<RefundDecisionView> Decisions, string Etag);
+public sealed record RefundListItem(Guid Id, Guid AgencyId, Guid PolicyId, string Amount,
+    string Currency, string State, DateTimeOffset RequestedAt, int ApprovalCount, int RequiredApprovals);
+public sealed record RefundPage(int Page, int PageSize, int Total, IReadOnlyList<RefundListItem> Items);
 
 public sealed class FinanceRefundService(IDbContextFactory<BackOfficeDbContext> factory,
     SqlCommandBoundary commands, TimeProvider time)
@@ -211,6 +214,39 @@ public sealed class FinanceRefundService(IDbContextFactory<BackOfficeDbContext> 
                 FinanceLedgerMath.Pence(rule.SecondApprovalThreshold)), request.RequestedBy,
             request.RequestedAt, request.Reason, reservations, decisions,
             '"' + Convert.ToBase64String(request.RowVersion) + '"');
+    }
+
+    public async Task<RefundPage> ListAsync(ActorContext actor, Guid agencyId, string? state = null,
+        int page = 1, int pageSize = 50, CancellationToken token = default)
+    {
+        if (agencyId == Guid.Empty || page < 1 || pageSize is < 1 or > 100 ||
+            (long)(page - 1) * pageSize > int.MaxValue ||
+            state is not null and not ("pending" or "approved" or "rejected"))
+            throw new QuoteOperationException(400, "refund-query-invalid");
+        await using var db = await factory.CreateDbContextAsync(token);
+        await using var tx = await db.Database.BeginTransactionAsync(IsolationLevel.Serializable, token);
+        await Authorize(db, actor, agencyId, null, token, "finance-read");
+        var query = db.Set<RefundRequest>().AsNoTracking().Where(x => x.AgencyId == agencyId);
+        if (state is not null) query = query.Where(x => x.State == state);
+        var total = await query.CountAsync(token);
+        var requests = await query.OrderByDescending(x => x.RequestedAt).ThenBy(x => x.Id)
+            .Skip((page - 1) * pageSize).Take(pageSize).ToArrayAsync(token);
+        var requestIds = requests.Select(x => x.Id).ToArray();
+        var ruleIds = requests.Select(x => x.RuleId).Distinct().ToArray();
+        var rules = await db.Set<RefundApprovalRule>().AsNoTracking()
+            .Where(x => ruleIds.Contains(x.Id)).ToDictionaryAsync(x => x.Id, token);
+        var approvals = await db.Set<RefundDecision>().AsNoTracking()
+            .Where(x => requestIds.Contains(x.RefundRequestId) && x.Kind == "approve")
+            .GroupBy(x => x.RefundRequestId)
+            .Select(group => new { Id = group.Key, Count = group.Count() })
+            .ToDictionaryAsync(x => x.Id, x => x.Count, token);
+        var items = requests.Select(request => new RefundListItem(request.Id, request.AgencyId,
+            request.PolicyId, FinanceLedgerMath.Money(request.Amount), request.Currency,
+            request.State, request.RequestedAt, approvals.GetValueOrDefault(request.Id),
+            FinanceRefundMath.RequiredApprovals(FinanceLedgerMath.Pence(request.Amount),
+                FinanceLedgerMath.Pence(rules[request.RuleId].SecondApprovalThreshold)))).ToArray();
+        await tx.CommitAsync(token);
+        return new RefundPage(page, pageSize, total, items);
     }
 
     private static async Task Authorize(BackOfficeDbContext db, ActorContext actor, Guid agencyId,
