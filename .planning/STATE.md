@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
-status: Ready to execute
-stopped_at: Phase 10 accounting workspace slice complete; execution continues with 10-13.
-last_updated: "2026-09-24T17:22:00Z"
-last_activity: "2026-09-24 — Phase 10 plan 10-12 accounting workspace complete with 5/5 frontend and 21/21 live browser checks, plus TypeScript, lint and production build."
+status: Phase 10 gap closure needed
+stopped_at: Phase 10 plans complete; goal verification found three gaps.
+last_updated: "2026-09-25T11:59:14Z"
+last_activity: "2026-09-25 — Plan 10-13 final gate passed; independent goal verification found three remaining gaps."
 progress:
   total_phases: 13
   completed_phases: 9
   total_plans: 112
-  completed_plans: 111
+  completed_plans: 112
   percent: 69
 ---
 
@@ -22,7 +22,9 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md. Core value: complete persistent 
 
 ## Current position
 
-Phase 10 accounting and insurer reporting has 13 structurally checked plans covering FIN-01 through FIN-08 and linked POL-01 finance. Plans 10-01 through 10-12 are complete; 10-13 remains. The planning evidence is in `10-RESEARCH.md`, `10-UI-SPEC.md`, `10-PATTERNS.md` and `10-VALIDATION.md`.
+Phase 10 accounting and insurer reporting has 13 completed plans covering FIN-01 through FIN-08 and linked POL-01 finance. The final current-source gate passed 1,394 unit and 576 native SQL integration tests (1,970 unique, 511 real SQL, zero skips), 451 root and 214 frontend Node tests, lint/typecheck/build, 21 finance browser checks and ten operational collectors. Two additive demo initializations preserved 97,198 rows and 215 files; seven exact retained restart readbacks passed, including statement and submitted CSV hashes. See `10-13-SUMMARY.md` and `10-VERIFICATION.md`.
+
+Independent goal verification is `gaps_found` (14/16 must-haves): the overview lacks a saved scoped pending-refund count/direct record target and pinned monthly earned premium; the retained demo has no legitimate refund/payment row for a restart readback. Phase 10 and affected requirements remain open.
 
 Phase 9, tasks/documents/communication/incidents, is complete on local automated evidence. Plans 09-01 through 09-18 have reviewed summaries. The final v7 gate from `f201f31` passed 1,337/1,337 unit and exactly 550/550 discovered integration cases, including 485 named real SQL/API process-restart cases: 1,887 unique IDs, no skips, unchanged integration assembly and 1,883 tracked source hashes. The streaming strict report is `.local/phase9-final-v7/strict-report.json`; the guarded root/frontend/ledger report is `.local/phase9-final-v7-followthrough/report.json` (421 root and 204 frontend tests, lint/typecheck/build passed). The previous complete v6 run also passed, but is not substituted for v7.
 
@@ -32,7 +34,7 @@ The original source denominator is unchanged: 118 controls (109 Phase9 owned, ni
 
 ## Next work
 
-Execute Phase 10 from `10-13-PLAN.md` through final acceptance. Phases 10–13 are not complete; the v1.0 milestone remains active. Preserve the retained demo database, file root, data-protection keys and frontend-code. The current preview identities are in `.local/phase9-16-preview-pids.json`; verify process/binary/listener ownership before changing them. The inherited generated `apps/backoffice/next-env.d.ts` and `tsconfig.json` edits, untracked `.idea/`, and preview-generated `apps/backoffice/AGENTS.md` and `CLAUDE.md` are not part of Phase 10 commits.
+Plan Phase 10 gap closure with `$gsd-plan-phase 10 --gaps`, then execute the resulting gap plans. Phases 10–13 are not complete; the v1.0 milestone remains active. Preserve the retained demo database, file root, data-protection keys and frontend-code. The existing preview on port 3100 remains running; verify process/binary/listener ownership before changing it. The inherited generated `apps/backoffice/next-env.d.ts` and `tsconfig.json` edits, untracked `.idea/`, and preview-generated `apps/backoffice/AGENTS.md` and `CLAUDE.md` are not part of Phase 10 commits.
 
 ## Decisions and continuity
 

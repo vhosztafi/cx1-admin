@@ -39,7 +39,7 @@ After each implementation slice, run its unit and SQL negatives plus frontend te
 | 10-10 | FIN-07 | T10-10 | FinanceSubmission native SQL adapter/replay tests | 2/2 native SQL, 1/1 changed-intent rerun and 4/4 API contract passed 2026-09-24; see 10-10-SUMMARY.md |
 | 10-11 | FIN-08 | T10-11 | FinancePeriod native SQL close/post race/correction tests | 6/6 unit, 3/3 native SQL, 2/2 API contract and 8/8 affected SQL regression passed 2026-09-24; see 10-11-SUMMARY.md |
 | 10-12 | FIN-01..08, POL-01 | T10-12 | Finance UI component and saved-record browser tab/source tests | 5/5 frontend and 21/21 live browser passed 2026-09-24; TypeScript, lint, build green; earned premium/refund count remain partial; see 10-12-SUMMARY.md and 10-12-BINDINGS.md |
-| 10-13 | FIN-01..08, POL-01 | T10-13 | Full current-source gate, retained initialization/restart, goal-backward verification | Pending |
+| 10-13 | FIN-01..08, POL-01 | T10-13 | Full current-source gate, retained initialization/restart, goal-backward verification | Ten gates passed: 1,970 unique backend cases (511 real SQL), 451 root Node, 214 frontend Node, finance browser 21/21, operational suite 10 collectors; two additive inits unchanged and restart readback 7/7. Goal verifier found three gaps; see 10-VERIFICATION.md. |
 
 ## Required negative and edge cases
 
@@ -60,6 +60,6 @@ Visual review at desktop, 390px and 200% zoom checks totals, focus, validation, 
 
 - [x] Every planned implementation slice has a named automated family.
 - [x] High-risk finance cases and current-scope replay are assigned.
-- [ ] Tests, SQL constraints and real saved-record flows pass.
-- [ ] Full current-source gate and preserved demo readback pass.
+- [x] Tests, SQL constraints and real saved-record flows pass for the implemented journeys.
+- [x] Full current-source gate and seven preserved demo readbacks pass; refund/payment restart remains unproven with zero legitimate retained rows.
 - [ ] Set `nyquist_compliant: true` and `wave_0_complete: true` only after actual evidence.
