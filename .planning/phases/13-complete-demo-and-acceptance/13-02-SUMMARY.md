@@ -2,7 +2,8 @@
 phase: 13-complete-demo-and-acceptance
 plan: '02'
 status: complete
-requirements_completed: [ACC-02, ACC-05]
+requirements_completed: [ACC-05]
+requirements_partially_verified: [ACC-02]
 ---
 # 13-02 — Owned restart and visual acceptance
 
