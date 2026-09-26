@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Phase 13 complete; local automated scope
-last_updated: "2026-09-26T11:51:51.462Z"
+last_updated: "2026-09-26T12:14:45.210Z"
 progress:
   total_phases: 13
   completed_phases: 13
@@ -19,6 +19,8 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md. Core value: complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
 
 ## Current position
+
+Milestone audit completed: 82/83 requirements satisfied on recorded local evidence, 13/13 phase verifications and 131 summaries present. Audit status gaps_found: ACC-02 engine restart remains partial; human UAT also pending. Current integration wiring and 49 focused contract/ownership checks pass. See v1.0-MILESTONE-AUDIT.md. No archival or acceptance waiver applied.
 
 Phase 13 auto UAT recorded in 13-UAT.md: eight evidence-backed checks passed (six fresh, two reused); two human checks pending and one dedicated SQL engine restart blocked. First search navigation timed out, direct diagnostic and repeated journey passed; cause unconfirmed. No implementation regression reproduced. UAT is partial and milestone sign-off stays open.
 
