@@ -29,6 +29,7 @@ builder.Services.AddHealthChecks();
 builder.AddLocalIdentity();
 builder.Services.AddScoped<BackOffice.Infrastructure.Administration.ProductAdministration>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Reporting.SearchService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Reporting.DashboardService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Administration.AuthorityAdministration>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Administration.ConfigurationAdministration>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Administration.UserAdministration>();

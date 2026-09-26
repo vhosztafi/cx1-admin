@@ -33,7 +33,7 @@ public sealed class SearchService(IDbContextFactory<BackOfficeDbContext> factory
     {
         Validate(input);
         await using var db = await factory.CreateDbContextAsync(token);
-        await using var tx = await db.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead, token);
+        await using var tx = await db.Database.BeginTransactionAsync(IsolationLevel.Serializable, token);
         actor = await ReportingScope.Current(db, actor, token);
         var available = Kinds.Where(x => actor.HasCapability(Capability(x))).ToArray();
         if (input.Kind != "all") ReportingScope.Require(actor, Capability(input.Kind));
