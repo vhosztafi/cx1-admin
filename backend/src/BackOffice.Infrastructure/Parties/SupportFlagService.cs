@@ -42,6 +42,7 @@ public static class SupportFlagService
     {
         await AuthorizeCreateAsync(db,actor,originId,personId,input.VisibleRelationshipIds,token);
         ReviewDate(input,now);
+        await Administration.AdministrativeConfiguration.DemandFlag(db,input.TypeCode,input.ReviewOn,input.VisibleRelationshipIds.Length>0,now,token);
         var parents=await LockParents(db,input.VisibleRelationshipIds.Append(originId),token);var origin=parents.Single(x=>x.Id==originId);
         Version(origin.RowVersion,expected);
         var clientId=await new SupportFlagScope(actor).ValidateMembershipAsync(db,originId,personId,input.VisibleRelationshipIds,token);
@@ -53,6 +54,7 @@ public static class SupportFlagService
     {
         var authorized=await AuthorizeFlagAsync(db,actor,flagId,input.VisibleRelationshipIds,token);
         ReviewDate(input,now);
+        await Administration.AdministrativeConfiguration.DemandFlag(db,input.TypeCode,input.ReviewOn,input.VisibleRelationshipIds.Length>0,now,token);
         var priorIds=await db.Set<FlagVisibility>().Where(x=>x.FlagId==flagId).Select(x=>x.RelationshipId).ToArrayAsync(token);
         var parents=await LockParents(db,priorIds.Concat(input.VisibleRelationshipIds).Append(authorized.OriginRelationshipId),token);
         var flag=await LockFlag(db,flagId,expected,token);

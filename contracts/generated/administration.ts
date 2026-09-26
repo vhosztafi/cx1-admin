@@ -2,6 +2,9 @@
 export type ProductVersion = {id:string;productId:string;productCode:string;productName:string;version:number;state:'draft'|'published'|'retired';providerId:string;effectiveFrom:string;effectiveTo:string|null;schemaVersion:string;questionSetVersion:string;coverSections:string[];etag:string};
 export type Provider = {id:string;code:string;name:string;state:'active'|'inactive';etag:string};
 export type Catalogue = {products:{id:string;code:string;name:string}[];versions:ProductVersion[];providers:Provider[]};
+export type AdministrationSetting={id:string;scope:string;version:number;effectiveFrom:string|null;values:Record<string,unknown>;etag:string};
+export type AdministrationTemplate={id:string;productId:string;code:string;kind:string;version:number;effectiveFrom:string;effectiveTo:string;values:{title:string;notice:string};etag:string};
+export type ConfigurationAdministrationView={settings:AdministrationSetting[];templates:AdministrationTemplate[];teams:{id:string;name:string}[];products:{id:string;name:string}[]};
 export type AuthorityLimits = {[key:string]:string|number|boolean|number[]|AuthorityLimits};
 export type AdministrationAuthority = {id:string;productVersionId:string;binderVersionId:string;version:string;state:string;productName:string;effectiveFrom:string;effectiveTo:string;limits:AuthorityLimits;etag:string};
 export type AuthorityProposal = {sourceAuthorityId:string;sourceEtag:string;productVersionId:string;effectiveFrom:string;effectiveTo:string;limits:AuthorityLimits;routingTeamId:string;userIds:string[];reason:string};

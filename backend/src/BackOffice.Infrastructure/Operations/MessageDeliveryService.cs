@@ -39,6 +39,8 @@ public sealed partial class MessageDeliveryService(SqlCommandBoundary commands,T
     }
     internal async Task<CommandOutcome> Queue(BackOfficeDbContext db,ActorContext actor,DeliveryContent content,Guid? versionId,Guid? resendOf,CancellationToken token,Func<OperationalDelivery,Task>? associate=null)
     {
+        if (!(await Administration.AdministrativeConfiguration.Organisation(db,time.GetUtcNow(),token)).NotificationsEnabled)
+            throw new OperationalAccessException(409,"notifications-disabled");
         var now=time.GetUtcNow();var setting=await db.Set<SettingVersion>().Where(x=>x.Scope==WorkKind&&x.EffectiveFrom<=now).OrderByDescending(x=>x.Version).FirstOrDefaultAsync(token);
         if(setting is null||OperationalDeliverySeed.Scenario(setting) is null)throw new OperationalAccessException(503,"delivery-scenario-unavailable");
         var json=DeliverySnapshots.Serialize(content);

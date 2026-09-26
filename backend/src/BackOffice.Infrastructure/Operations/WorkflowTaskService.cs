@@ -48,7 +48,7 @@ public sealed class WorkflowTaskService(IDbContextFactory<BackOfficeDbContext> f
         }
         if (!source.Eligible) { await transaction.CommitAsync(token); return null; }
         var rule = current.Definition;
-        var row = await tasks.Insert(db, held, registration.ResourceId, new(rule.TaskType, rule.Title, rule.Priority, new("unassigned"), source.DueOn), rule.InitialState, rule.Checklist, token);
+        var row = await tasks.Insert(db, held, registration.ResourceId, new(rule.TaskType, rule.Title, rule.Priority, rule.AssignmentTeamId is Guid team ? new("team", TeamId: team) : new("unassigned"), source.DueOn), rule.InitialState, rule.Checklist, token);
         var binding = new WorkflowTaskBinding
         {
             TaskId = row.Id, SubjectId = row.SubjectId, RuleVersionId = current.Version.Id, RuleCode = rule.Code,

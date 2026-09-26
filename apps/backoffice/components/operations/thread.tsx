@@ -61,6 +61,7 @@ function ThreadWorkspace({ thread, actorId, initialAttachment }: { thread: Threa
   </section>;
 }
 function DraftComposer({ thread, actorId, initial, initialAttachment, saved }: { thread: ThreadView; actorId: string; initial?: MessageView; initialAttachment?:DocumentVersion; saved: () => void }) {
+  const templates=useCommunicationResource<{items:{id:string;name:string;body:string}[]}>('/api/v1/communication/templates');
   const [body, setBody] = useState(initial?.body ?? ''), [recipients, setRecipients] = useState(initial?.recipientContactIds ?? []), [attachments, setAttachments] = useState(initial?.attachmentVersionIds ?? (initialAttachment ? [initialAttachment.id] : []));
   const [etag, setEtag] = useState(initial?.etag), [latest, setLatest] = useState<MessageView>(), [error, setError] = useState(''), [request, setRequest] = useState<CommunicationConfirmation>();
   const [preview, setPreview] = useState<string>();
@@ -70,6 +71,7 @@ function DraftComposer({ thread, actorId, initial, initialAttachment, saved }: {
   return <section aria-label="Message draft"><h4>{initial ? 'Edit saved draft' : 'New message draft'}</h4>
     <form onSubmit={event => { event.preventDefault(); setError(''); try { setRequest({ command: communicationCommand(initial ? 'update-draft' : 'create-draft', initial?.id ?? thread.id, { body, recipientContactIds: recipients, attachmentVersionIds: attachments }, etag), label: 'Save draft', description: `Save this draft with ${recipients.length} recipients and ${attachments.length} selected file versions.` }); } catch (failure) { setError((failure as Error).message); } }}>
       <fieldset className="quote-reference-fields" disabled={!!request}><legend>Draft contents</legend>
+        {!!templates.data?.items.length&&<label>Insert message template (replaces draft text)<select value="" onChange={e=>{const template=templates.data!.items.find(x=>x.id===e.target.value);if(template)setBody(template.body);}}><option value="">Choose a template</option>{templates.data.items.map(x=><option key={x.id} value={x.id}>{x.name}</option>)}</select></label>}
         <label>Message text<textarea rows={6} maxLength={8000} value={body} onChange={event => setBody(event.target.value)} /></label>
         {thread.visibility === 'agency' && <ChoiceList<Option> url={`/api/v1/threads/${thread.id}/recipient-options`} label="Recipients" selected={recipients} change={setRecipients} maximum={50} describe={x => `${x.label} · ${x.email}`} />}
         <ChoiceList<DocumentVersion> url={`/api/v1/threads/${thread.id}/attachment-options`} label="Attachments" selected={attachments} change={setAttachments} maximum={20} describe={x => `${x.originalName} · file version ${x.number} · ${x.sourceLabel ?? 'Saved source'}`} preview={setPreview} />

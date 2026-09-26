@@ -15,6 +15,7 @@ public static class ClientReferences
         command.CommandText="SELECT NEXT VALUE FOR [ClientReferenceSequence]";
         var number=Convert.ToInt64(await command.ExecuteScalarAsync(token),CultureInfo.InvariantCulture);
         // D7 pads short values but never truncates a longer sequence value. Gaps after rollback are intentional.
-        return "CN-"+number.ToString("D7",CultureInfo.InvariantCulture);
+        var organisation = await Administration.AdministrativeConfiguration.Organisation(db, DateTimeOffset.UtcNow, token);
+        return organisation.ClientReferencePrefix+"-"+number.ToString("D7",CultureInfo.InvariantCulture);
     }
 }

@@ -12,7 +12,8 @@ public sealed record WorkflowTaskDefinition(
     [property: JsonRequired] string Family, [property: JsonRequired] string TaskType, [property: JsonRequired] string Title,
     [property: JsonRequired] string Priority, [property: JsonRequired] string InitialState,
     [property: JsonRequired] int DueDays, [property: JsonRequired] int LeadDays,
-    [property: JsonRequired] WorkflowChecklistDefinition[] Checklist);
+    [property: JsonRequired] WorkflowChecklistDefinition[] Checklist,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] Guid? AssignmentTeamId = null);
 
 // Published definitions are immutable SettingVersion values. The owning SQL
 // service must also check effective version, source ownership and event identity.
@@ -40,7 +41,8 @@ public static partial class WorkflowTaskRules
         if (rule is null || rule.Format != "workflow-task-1" || rule.Publication != "published" || !ValidCode(rule.Code) || scope != "workflow-task/" + rule.Code ||
             rule.DueDays is < 0 or > 365 || rule.LeadDays is < 0 or > 365 || rule.InitialState is not ("open" or "awaiting-information") ||
             !AllowedType(rule.Family, rule.TaskType) || rule.Checklist is null || rule.Checklist.Length > 20) throw Invalid();
-        TaskRules.ValidateWrite(new(rule.TaskType, rule.Title, rule.Priority, new("unassigned"), null));
+        if (rule.AssignmentTeamId == Guid.Empty) throw Invalid();
+        TaskRules.ValidateWrite(new(rule.TaskType, rule.Title, rule.Priority, rule.AssignmentTeamId is Guid team ? new("team", TeamId: team) : new("unassigned"), null));
         if (rule.Title.Length > 200) throw Invalid();
         var codes = new HashSet<string>(StringComparer.Ordinal);
         foreach (var item in rule.Checklist)
