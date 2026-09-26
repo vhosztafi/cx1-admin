@@ -286,7 +286,13 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 **Goal:** Provide trustworthy cross-module discovery and reporting.
 **Depends on:** Phase 11
 **Requirements:** RPT-01 through RPT-05
-**Plans:** Not yet planned.
+**Plans:** 5 direct plans; 0/5 complete.
+
+- [ ] 12-01 — Scoped global and advanced search (wave 1).
+- [ ] 12-02 — Stored dashboard queues and activity (wave 2).
+- [ ] 12-03 — Underwriting portfolio and renewal reports (wave 3).
+- [ ] 12-04 — Finance agency and exception reports (wave 4).
+- [ ] 12-05 — Saved reports CSV export and concise acceptance (wave 5).
 
 **Success criteria:**
 
@@ -332,7 +338,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 9. Tasks, documents, communication and incidents | 18/18 | Complete | 2026-09-23 |
 | 10. Accounting and insurer reporting | 18/18 | Complete | 2026-09-26 |
 | 11. Configuration and account administration | 6/6 | Complete    | 2026-09-26 |
-| 12. Dashboards, search and reports | 0/TBD | Not started | — |
+| 12. Dashboards, search and reports | 0/5 | Planned | — |
 | 13. Complete demo and acceptance | 0/TBD | Not started | — |
 
 ### Phase 3 downstream acceptance obligations

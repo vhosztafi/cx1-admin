@@ -2,12 +2,12 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to plan
+status: Phase 12 planned; ready to execute
 last_updated: "2026-09-26T08:47:00.727Z"
 progress:
   total_phases: 13
   completed_phases: 11
-  total_plans: 123
+  total_plans: 128
   completed_plans: 123
   percent: 85
 ---
@@ -32,7 +32,7 @@ The original source denominator is unchanged: 118 controls (109 Phase9 owned, ni
 
 ## Next work
 
-Next: plan Phase 12 directly under the lightweight delivery agreement, then execute its scoped slices. Phase 11 production ends at c2f2745. Preserve retained demo/keys/files and old port 3100/API 5087 preview. The Phase 11 fixture is separate; its API is stopped after final build. Inherited next-env.d.ts, tsconfig.json, .idea, generated AGENTS.md/CLAUDE.md and output files remain outside commits.
+Phase 12 has five direct plans covering RPT-01..05 and 66 original source controls. Continue with `$gsd-execute-phase 12 --auto --no-transition` as the planning auto-advance child. Phase 11 production ends at c2f2745. Preserve retained demo/keys/files and old port 3100/API 5087 preview. The Phase 11 fixture is separate; its API is stopped after final build. Inherited next-env.d.ts, tsconfig.json, .idea, generated AGENTS.md/CLAUDE.md and output files remain outside commits.
 
 ## Decisions and continuity
 

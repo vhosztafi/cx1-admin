@@ -1,0 +1,954 @@
+{
+  "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
+  "count": 66,
+  "note": "Unchanged original RPT control identities. Delivery bindings will record actual routes and any consolidated UI; this is not runtime evidence.",
+  "controls": [
+    {
+      "controlId": "CTL-65f74426ebeb",
+      "method": "pDashboard",
+      "label": "New Quote",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-65f74426ebeb",
+      "status": "reviewed",
+      "disposition": "client-only",
+      "operationIds": [],
+      "reason": "Open new-quote modal; its confirmed command is separately mapped. Opening alone does not create a quote."
+    },
+    {
+      "controlId": "CTL-b724d74c4705",
+      "method": "pDashboard",
+      "label": "Advanced Search",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-b724d74c4705",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "reason": "Literal navigation to search; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+    },
+    {
+      "controlId": "CTL-4d570852baac",
+      "method": "pDashboard",
+      "label": "View My Tasks",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-4d570852baac",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listTasks"
+      ],
+      "reason": "Literal navigation to tasks; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+    },
+    {
+      "controlId": "CTL-fe8b9578bac9",
+      "method": "pDashboard",
+      "label": "Open task dashboard",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-fe8b9578bac9",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listTasks"
+      ],
+      "reason": "Literal navigation to tasks; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+    },
+    {
+      "controlId": "CTL-9b21bc4b4158",
+      "method": "pDashboard",
+      "label": ".sections[0].rows[0]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-9b21bc4b4158",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getTask"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-aab579a02eec",
+      "method": "pDashboard",
+      "label": ".sections[0].rows[1]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-aab579a02eec",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listTasks"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-87b388c7c8df",
+      "method": "pDashboard",
+      "label": ".sections[0].rows[2]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-87b388c7c8df",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listTasks"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-9b1705e6a351",
+      "method": "pDashboard",
+      "label": ".sections[0].rows[3]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-9b1705e6a351",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listTasks"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-f1e307baa432",
+      "method": "pDashboard",
+      "label": ".sections[0].rows[4]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-f1e307baa432",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listTasks"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-9727252e7836",
+      "method": "pDashboard",
+      "label": ".sections[2].rows[0]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-9727252e7836",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicyDraft"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-edda1f6aa46a",
+      "method": "pDashboard",
+      "label": ".sections[2].rows[1]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-edda1f6aa46a",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getQuote"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-19d3f582abf2",
+      "method": "pSearch",
+      "label": "Record type",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-19d3f582abf2",
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "queryFields": [
+        {
+          "operationId": "searchRecords",
+          "parameter": "kind"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
+    },
+    {
+      "controlId": "CTL-9bebc3693170",
+      "method": "pSearch",
+      "label": "Status",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-9bebc3693170",
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "queryFields": [
+        {
+          "operationId": "searchRecords",
+          "parameter": "status"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
+    },
+    {
+      "controlId": "CTL-ba0bd4946547",
+      "method": "pSearch",
+      "label": "Product",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-ba0bd4946547",
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "queryFields": [
+        {
+          "operationId": "searchRecords",
+          "parameter": "productCode"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
+    },
+    {
+      "controlId": "CTL-8c99b56d1a25",
+      "method": "pSearch",
+      "label": "Agency",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-8c99b56d1a25",
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "queryFields": [
+        {
+          "operationId": "searchRecords",
+          "parameter": "agencyId"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
+    },
+    {
+      "controlId": "CTL-86419581e107",
+      "method": "pSearch",
+      "label": "Insurer",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-86419581e107",
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "queryFields": [
+        {
+          "operationId": "searchRecords",
+          "parameter": "providerId"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
+    },
+    {
+      "controlId": "CTL-4c406f9de95c",
+      "method": "pSearch",
+      "label": "Assigned underwriter",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-4c406f9de95c",
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "queryFields": [
+        {
+          "operationId": "searchRecords",
+          "parameter": "underwriterId"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
+    },
+    {
+      "controlId": "CTL-56825612fb50",
+      "method": "pSearch",
+      "label": "Inception from",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-56825612fb50",
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "queryFields": [
+        {
+          "operationId": "searchRecords",
+          "parameter": "inceptionFrom"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
+    },
+    {
+      "controlId": "CTL-b057804ffcf4",
+      "method": "pSearch",
+      "label": "Reference number",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-b057804ffcf4",
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "queryFields": [
+        {
+          "operationId": "searchRecords",
+          "parameter": "reference"
+        }
+      ],
+      "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
+    },
+    {
+      "controlId": "CTL-20afc88f9936",
+      "method": "pSearch",
+      "label": ".sections[1].rows[0]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-20afc88f9936",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getClient"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-2110da92d9ef",
+      "method": "pSearch",
+      "label": ".sections[1].rows[1]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-2110da92d9ef",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getClient"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-40fcfd970a2d",
+      "method": "pSearch",
+      "label": ".sections[1].rows[2]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-40fcfd970a2d",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getClient"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-81abf50e788b",
+      "method": "pSearch",
+      "label": ".sections[1].rows[3]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-81abf50e788b",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getClient"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-a59acda98567",
+      "method": "pSearch",
+      "label": ".sections[1].rows[4]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-a59acda98567",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getClient"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-88ec1711f348",
+      "method": "pSearch",
+      "label": ".sections[2].rows[0]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-88ec1711f348",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-4d7db22b2eb6",
+      "method": "pSearch",
+      "label": ".sections[2].rows[1]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-4d7db22b2eb6",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-c90c38f496a0",
+      "method": "pSearch",
+      "label": ".sections[2].rows[2]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-c90c38f496a0",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-6df898998fb4",
+      "method": "pSearch",
+      "label": ".sections[2].rows[3]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-6df898998fb4",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-ab627cc29c4c",
+      "method": "pSearch",
+      "label": ".sections[2].rows[4]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-ab627cc29c4c",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-1a16847c47fd",
+      "method": "pSearch",
+      "label": ".sections[2].rows[5]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-1a16847c47fd",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-c9f6bbebf1c5",
+      "method": "pSearch",
+      "label": ".sections[3].rows[0]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-c9f6bbebf1c5",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getQuote"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-143c4a9be1c6",
+      "method": "pSearch",
+      "label": ".sections[3].rows[1]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-143c4a9be1c6",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getMatchReview"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-04b07c7fde97",
+      "method": "pSearch",
+      "label": ".sections[3].rows[2]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-04b07c7fde97",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getQuote"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-7bb21bab60fd",
+      "method": "pSearch",
+      "label": ".sections[3].rows[3]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-7bb21bab60fd",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getQuote"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-4be52ebec533",
+      "method": "pSearch",
+      "label": ".sections[3].rows[4]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-4be52ebec533",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getQuote"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-826642db3a1c",
+      "method": "pSearch",
+      "label": ".sections[3].rows[5]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-826642db3a1c",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getQuote"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-f56493b673b3",
+      "method": "pSearch",
+      "label": ".sections[4].rows[0]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-f56493b673b3",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-8ae3c103cb9b",
+      "method": "pSearch",
+      "label": ".sections[4].rows[1]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-8ae3c103cb9b",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-a809ba59943d",
+      "method": "pSearch",
+      "label": ".sections[5].rows[0]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-a809ba59943d",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getAgency"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-d021643b2324",
+      "method": "pSearch",
+      "label": ".sections[5].rows[1]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-d021643b2324",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getAgency"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-b1d64f59e832",
+      "method": "pSearch",
+      "label": ".sections[5].rows[2]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-b1d64f59e832",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getAgency"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-fd3e0a56ce5d",
+      "method": "pSearch",
+      "label": ".sections[5].rows[3]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-fd3e0a56ce5d",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getAgency"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-41e4cb693a72",
+      "method": "pSearch",
+      "label": ".sections[5].rows[4]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-41e4cb693a72",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getAgency"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-72186486df6f",
+      "method": "pReporting",
+      "label": "Export (CSV)",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-72186486df6f",
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "exportReport",
+        "getJob",
+        "downloadDocumentVersion"
+      ],
+      "reason": "Persist scoped export from the selected report run and deliver actual CSV bytes."
+    },
+    {
+      "controlId": "CTL-f56bb23ea21a",
+      "method": "pReporting",
+      "label": "Underwriting",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-f56bb23ea21a",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition"
+      ],
+      "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    },
+    {
+      "controlId": "CTL-cc3769bd3bdf",
+      "method": "pReporting",
+      "label": "Policy portfolio",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-cc3769bd3bdf",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition"
+      ],
+      "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    },
+    {
+      "controlId": "CTL-ebe3b087664a",
+      "method": "pReporting",
+      "label": "Renewals",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-ebe3b087664a",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition"
+      ],
+      "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    },
+    {
+      "controlId": "CTL-24cf7d55af86",
+      "method": "pReporting",
+      "label": "Finance",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-24cf7d55af86",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listJournals",
+        "listReceipts"
+      ],
+      "reason": "Literal navigation to accounting; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+    },
+    {
+      "controlId": "CTL-50981eb7306e",
+      "method": "pReporting",
+      "label": "Agency performance",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-50981eb7306e",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition"
+      ],
+      "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    },
+    {
+      "controlId": "CTL-b6ddb24f81d1",
+      "method": "pReporting",
+      "label": "Compliance & exceptions",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-b6ddb24f81d1",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition"
+      ],
+      "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    },
+    {
+      "controlId": "CTL-3b59a2e0681f",
+      "method": "pReporting",
+      "label": ".sections[1].rows[0]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-3b59a2e0681f",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition"
+      ],
+      "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    },
+    {
+      "controlId": "CTL-aa34e10e0808",
+      "method": "pReporting",
+      "label": ".sections[1].rows[1]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-aa34e10e0808",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition"
+      ],
+      "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    },
+    {
+      "controlId": "CTL-f1d572756754",
+      "method": "pReporting",
+      "label": ".sections[1].rows[2]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-f1d572756754",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition"
+      ],
+      "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    },
+    {
+      "controlId": "CTL-01f8138dd157",
+      "method": "pReporting",
+      "label": ".sections[1].rows[3]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-01f8138dd157",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition"
+      ],
+      "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    },
+    {
+      "controlId": "CTL-ecba4b9c7a13",
+      "method": "pReporting",
+      "label": ".sections[1].rows[4]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-ecba4b9c7a13",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition"
+      ],
+      "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    },
+    {
+      "controlId": "CTL-10e7fba9ce9c",
+      "method": "pReporting",
+      "label": "Back to reports",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-10e7fba9ce9c",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listReports"
+      ],
+      "reason": "Literal pReporting tab selection Report library; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    },
+    {
+      "controlId": "CTL-26a1d0f6ca7e",
+      "method": "pReporting",
+      "label": "Period",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-26a1d0f6ca7e",
+      "status": "reviewed",
+      "disposition": "edit-then-command",
+      "operationIds": [
+        "runReport"
+      ],
+      "apiFields": [
+        {
+          "operationId": "runReport",
+          "field": "from"
+        }
+      ],
+      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
+    },
+    {
+      "controlId": "CTL-0722bfd85b0e",
+      "method": "pReporting",
+      "label": "Product",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-0722bfd85b0e",
+      "status": "reviewed",
+      "disposition": "edit-then-command",
+      "operationIds": [
+        "runReport"
+      ],
+      "apiFields": [
+        {
+          "operationId": "runReport",
+          "field": "productCode"
+        }
+      ],
+      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
+    },
+    {
+      "controlId": "CTL-66ec47549c4e",
+      "method": "pReporting",
+      "label": "Agency",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-66ec47549c4e",
+      "status": "reviewed",
+      "disposition": "edit-then-command",
+      "operationIds": [
+        "runReport"
+      ],
+      "apiFields": [
+        {
+          "operationId": "runReport",
+          "field": "agencyId"
+        }
+      ],
+      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
+    },
+    {
+      "controlId": "CTL-e9bb1df559d8",
+      "method": "pReporting",
+      "label": "Underwriter",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-e9bb1df559d8",
+      "status": "reviewed",
+      "disposition": "edit-then-command",
+      "operationIds": [
+        "runReport"
+      ],
+      "apiFields": [
+        {
+          "operationId": "runReport",
+          "field": "underwriterId"
+        }
+      ],
+      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
+    },
+    {
+      "controlId": "CTL-d722319a699d",
+      "method": "pReporting",
+      "label": ".sections[3].rows[0]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-d722319a699d",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listQuotes"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-ffe580c5746e",
+      "method": "pReporting",
+      "label": ".sections[3].rows[1]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-ffe580c5746e",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listQuotes"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-42d2acd90eed",
+      "method": "pReporting",
+      "label": ".sections[3].rows[2]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-42d2acd90eed",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listQuotes"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-ba14915ded51",
+      "method": "pReporting",
+      "label": ".sections[3].rows[3]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-ba14915ded51",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listQuotes"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-24e0517ea487",
+      "method": "pReporting",
+      "label": ".sections[3].rows[4]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-24e0517ea487",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listQuotes"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-d25a22b2d718",
+      "method": "pReporting",
+      "label": ".sections[3].rows[5]",
+      "requirement": "RPT-03",
+      "acceptanceId": "AT-d25a22b2d718",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listQuotes"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    }
+  ]
+}
