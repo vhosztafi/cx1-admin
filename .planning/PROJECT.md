@@ -18,7 +18,7 @@ Staff can complete a quote-to-policy-to-servicing journey and trust that its pol
 
 ### Validated
 
-Phases 1–11 are complete on the recorded local evidence. ADM-01..08 now include controlled configuration, independent sensitive approvals, local account/MFA security and audit/integration oversight. Earlier policy/operations/finance acceptance remains in the phase summaries. The MVP still needs Phase 12 reporting/discovery and Phase 13 broad acceptance and human UAT.
+Phases 1–12 are complete on the recorded local evidence. ADM-01..08 now include controlled configuration, independent sensitive approvals, local account/MFA security and audit/integration oversight. Earlier policy/operations/finance acceptance remains in the phase summaries. Phase 12 now supplies scoped discovery, live dashboard/alerts, eleven report definitions and owner favourites/CSV. Phase 13 broad acceptance and human UAT remain.
 
 ### Active
 
@@ -80,9 +80,9 @@ Updated by explicit user direction on 2026-09-26: prioritize delivery and remove
 
 Commit reviewed local work in manageable units. No production deployment, real payment/delivery or separate customer-facing funnel is authorised. Continue in this task; no additional user-owned tasks are needed.
 
-Last updated: 2026-09-26 — Phase 11 complete; autonomous Phase 12 transition.
+Last updated: 2026-09-26 — Phase 12 complete; autonomous Phase 13 transition.
 
 
 ## Current State
 
-Phase 11 complete: 6/6 plans, 123 completed plans across eleven of thirteen phases. Focused Phase 11 evidence covers 17 distinct backend cases (10 SQL), 45 API contract cases, two relevant frontend cases and saved browser journeys; no unfiltered SQL run. Phase 12 implements dashboards, search and reports. Phase 13 retains broad regression, human UAT, the Phase 10 closed-period readback and intermittent development navigation diagnostics. Retained production-like identity deployment was not performed; no live external integration or production deployment is claimed.
+Phase 12 complete: 5/5 plans, 128 completed plans across twelve of thirteen phases. Phase 12 adds nine distinct focused backend cases (five SQL), 45 API contract checks and 12 saved-browser assertions. All 66 original RPT controls retain their identities and have delivery bindings. The Phase 10 closed-period earned-premium follow-up is now covered through normal close/re-read, with signed cash/debt tested separately in the next open period. Phase 13 retains broad regression, human UAT and intermittent development navigation diagnostics. Retained identity deployment remains unperformed following the prior automatic approval rejection. No live external integration or production deployment is claimed.

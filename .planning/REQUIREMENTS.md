@@ -115,11 +115,11 @@ Core value: complete persistent insurance and servicing journeys with consistent
 
 ### Reporting and discovery
 
-- [ ] **RPT-01**: Staff can use global and advanced search across authorised clients, quotes, policies and registrations and navigate to matching records.
-- [ ] **RPT-02**: Staff can see dashboard counts, queues, recent activity and renewal/exception measures computed from stored records.
-- [ ] **RPT-03**: Staff can run distinct underwriting, portfolio, renewal, finance, agency-performance and compliance/exception reports with relevant filters and drill-down.
-- [ ] **RPT-04**: Staff can export authorised report results and manage recent/favourite reports; agency and sensitive-field restrictions apply to exports.
-- [ ] **RPT-05**: Staff can reconcile report measures and dashboard totals against underlying records, including empty results and defined date/earning bases.
+- [x] **RPT-01**: Staff can use global and advanced search across authorised clients, quotes, policies and registrations and navigate to matching records.
+- [x] **RPT-02**: Staff can see dashboard counts, queues, recent activity and renewal/exception measures computed from stored records.
+- [x] **RPT-03**: Staff can run distinct underwriting, portfolio, renewal, finance, agency-performance and compliance/exception reports with relevant filters and drill-down.
+- [x] **RPT-04**: Staff can export authorised report results and manage recent/favourite reports; agency and sensitive-field restrictions apply to exports.
+- [x] **RPT-05**: Staff can reconcile report measures and dashboard totals against underlying records, including empty results and defined date/earning bases.
 
 ### Demo acceptance
 
@@ -224,11 +224,11 @@ Every v1 requirement has one owning delivery phase; later phases may consume its
 | ADM-06 | 11 | Complete |
 | ADM-07 | 11 | Complete |
 | ADM-08 | 11 | Complete |
-| RPT-01 | 12 | Pending |
-| RPT-02 | 12 | Pending |
-| RPT-03 | 12 | Pending |
-| RPT-04 | 12 | Pending |
-| RPT-05 | 12 | Pending |
+| RPT-01 | 12 | Complete |
+| RPT-02 | 12 | Complete |
+| RPT-03 | 12 | Complete |
+| RPT-04 | 12 | Complete |
+| RPT-05 | 12 | Complete |
 | ACC-01 | 13 | Pending |
 | ACC-02 | 13 | Pending |
 | ACC-03 | 13 | Pending |

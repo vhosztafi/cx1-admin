@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Phase 12 executing; 4/5 plans complete
-last_updated: "2026-09-26T08:47:00.727Z"
+status: Phase 12 complete; Phase 13 next
+last_updated: "2026-09-26T10:36:44.525Z"
 progress:
   total_phases: 13
-  completed_phases: 11
+  completed_phases: 12
   total_plans: 128
-  completed_plans: 127
-  percent: 85
+  completed_plans: 128
+  percent: 92
 ---
 
 # Project State
@@ -19,6 +19,8 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md. Core value: complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
 
 ## Current position
+
+Phase 12 complete: 5/5 plans, RPT-01..05 delivered at 7179127. Nine distinct focused backend cases (five isolated SQL), 45 contract cases and 12 saved-browser assertions pass; all 66 original identities mapped. See 12-VERIFICATION.md. Closed-period earned readback is now covered. Next: Phase 13 demo and acceptance.
 
 Phase 11 complete: 6/6 plans; ADM-01..08 delivered. Seventeen distinct focused backend cases (ten SQL), 45 API contract cases, two relevant frontend cases, TypeScript/lint/build and saved browser families pass. See 11-VERIFICATION.md. Next: Phase 12 dashboards, search and reports. Retained identity deployment remains unperformed following the automatic approval rejection; isolated verification passed.
 
@@ -32,7 +34,7 @@ The original source denominator is unchanged: 118 controls (109 Phase9 owned, ni
 
 ## Next work
 
-Phase 12 has five direct plans covering RPT-01..05 and 66 original source controls. 12-01 search is complete at 5655102; 12-02 dashboard/alerts is complete; 12-03 insurance reports is complete; 12-04 finance/agency/exception reports is complete; continue 12-05 saved reports and CSV. Continue with `$gsd-execute-phase 12 --auto --no-transition` as the planning auto-advance child. Phase 11 production ends at c2f2745. Preserve retained demo/keys/files and old port 3100/API 5087 preview. The Phase 11 fixture is separate; its API is stopped after final build. Inherited next-env.d.ts, tsconfig.json, .idea, generated AGENTS.md/CLAUDE.md and output files remain outside commits.
+Phase 13 complete demo and acceptance is next. Continue the authorised lightweight auto-transition; use accumulated Phase 10 broad acceptance plus Phase 11/12 focused evidence and target concrete remaining risks. No repeated six-hour SQL run without a concrete need. Preserve retained demo/keys/files and the old 3100/5087 preview. Owned API 5095 is stopped; frontend 3193 and the isolated Phase 11/12 fixture remain available. Inherited next-env.d.ts, tsconfig.json, .idea, generated AGENTS.md/CLAUDE.md and output remain outside commits.
 
 ## Decisions and continuity
 

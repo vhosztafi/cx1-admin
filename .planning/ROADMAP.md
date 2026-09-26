@@ -21,7 +21,7 @@
 - [x] **Phase 9: Tasks, documents, communication and incidents** — Make servicing activities and demo handoffs operational.
 - [x] **Phase 10: Accounting and insurer reporting** — Reconcile policy movements through finance workflows.
 - [x] **Phase 11: Configuration and account administration** — Expose controlled configuration and complete account functions. (completed 2026-09-26)
-- [ ] **Phase 12: Dashboards, search and reports** — Provide trustworthy cross-module discovery and reporting.
+- [x] **Phase 12: Dashboards, search and reports** — Provide trustworthy cross-module discovery and reporting.
 - [ ] **Phase 13: Complete demo and acceptance** — Verify prototype completeness and deliver a repeatable demonstration.
 
 ## Phase details
@@ -292,7 +292,7 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 - [x] 12-02 — Stored dashboard queues and activity (wave 2).
 - [x] 12-03 — Underwriting portfolio and renewal reports (wave 3).
 - [x] 12-04 — Finance agency and exception reports (wave 4).
-- [ ] 12-05 — Saved reports CSV export and concise acceptance (wave 5).
+- [x] 12-05 — Saved reports CSV export and concise acceptance (wave 5).
 
 **Success criteria:**
 
@@ -338,7 +338,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 9. Tasks, documents, communication and incidents | 18/18 | Complete | 2026-09-23 |
 | 10. Accounting and insurer reporting | 18/18 | Complete | 2026-09-26 |
 | 11. Configuration and account administration | 6/6 | Complete    | 2026-09-26 |
-| 12. Dashboards, search and reports | 4/5 | In progress | — |
+| 12. Dashboards, search and reports | 5/5 | Complete | 2026-09-26 |
 | 13. Complete demo and acceptance | 0/TBD | Not started | — |
 
 ### Phase 3 downstream acceptance obligations
