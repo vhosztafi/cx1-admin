@@ -19,7 +19,7 @@
 - [x] **Phase 7: Policy lifecycle and history** — Service issued policies without corrupting history. (completed 2026-09-19)
 - [x] **Phase 8: Commercial Combined back office** — Demonstrate shared workflows with a different risk structure.
 - [x] **Phase 9: Tasks, documents, communication and incidents** — Make servicing activities and demo handoffs operational.
-- [ ] **Phase 10: Accounting and insurer reporting** — Reconcile policy movements through finance workflows.
+- [x] **Phase 10: Accounting and insurer reporting** — Reconcile policy movements through finance workflows.
 - [ ] **Phase 11: Configuration and account administration** — Expose controlled configuration and complete account functions.
 - [ ] **Phase 12: Dashboards, search and reports** — Provide trustworthy cross-module discovery and reporting.
 - [ ] **Phase 13: Complete demo and acceptance** — Verify prototype completeness and deliver a repeatable demonstration.
@@ -222,7 +222,7 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 **Goal:** Reconcile policy movements through finance workflows.
 **Depends on:** Phase 9
 **Requirements:** FIN-01 through FIN-08
-**Plans:** 18 plans; 13/18 complete. Five gap-closure plans address the three goal-verification gaps; Phase 10 remains open.
+**Plans:** 18 plans; 18/18 complete on local automated evidence. Three original gaps closed; focused residual coverage is tracked for Phase 13.
 
 - [x] 10-01 — Freeze finance source and data contracts (wave 1).
 - [x] 10-02 — Build exact ledger and period posting foundation (wave 2, after 10-01).
@@ -237,11 +237,11 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 - [x] 10-11 — Close periods and post auditable later corrections (wave 11, after 10-06/08/10).
 - [x] 10-12 — Complete accounting workspace and inherited navigation (wave 12, after 10-05/06/08/10/11).
 - [x] 10-13 — Verify full finance acceptance and preserved demo (wave 13, after 10-12).
-- [ ] 10-14 — List agency-scoped pending refunds and link saved IDs (gap closure, wave 10, after 10-13).
-- [ ] 10-15 — Pin monthly earnings from posted premium components (gap closure, wave 11, after 10-14).
-- [ ] 10-16 — Schedule new posted sources and backfill retained earnings (gap closure, wave 12, after 10-15).
-- [ ] 10-17 — Show scoped earned premium and its period basis (gap closure, wave 13, after 10-16).
-- [ ] 10-18 — Prove retained refund/payment restart and repeat full acceptance (gap closure, wave 14, after 10-14/17).
+- [x] 10-14 — List agency-scoped pending refunds and link saved IDs (gap closure, wave 10, after 10-13).
+- [x] 10-15 — Pin monthly earnings from posted premium components (gap closure, wave 11, after 10-14).
+- [x] 10-16 — Schedule new posted sources and backfill retained earnings (gap closure, wave 12, after 10-15).
+- [x] 10-17 — Show scoped earned premium and its period basis (gap closure, wave 13, after 10-16).
+- [x] 10-18 — Prove retained refund/payment restart and repeat full acceptance (gap closure, wave 14, after 10-14/17).
 
 **Wave dependencies:** Each plan reads the reviewed summaries of its listed dependencies. Waves 6, 7 and 9 have independent domain work after their earlier foundation; execution is sequential because the repository uses one SQL/demo environment.
 
@@ -319,7 +319,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 7. Policy lifecycle and history | 16/16 | Complete    | 2026-09-19 |
 | 8. Commercial Combined back office | 16/16 | Complete | 2026-09-21 |
 | 9. Tasks, documents, communication and incidents | 18/18 | Complete | 2026-09-23 |
-| 10. Accounting and insurer reporting | 0/TBD | Not started | — |
+| 10. Accounting and insurer reporting | 18/18 | Complete | 2026-09-26 |
 | 11. Configuration and account administration | 0/TBD | Not started | — |
 | 12. Dashboards, search and reports | 0/TBD | Not started | — |
 | 13. Complete demo and acceptance | 0/TBD | Not started | — |

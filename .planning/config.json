@@ -2,16 +2,17 @@
   "mode": "yolo",
   "granularity": "standard",
   "workflow": {
-    "research": true,
-    "plan_check": true,
+    "research": false,
+    "plan_check": false,
     "verifier": true,
     "auto_advance": true,
     "skip_discuss": true,
-    "nyquist_validation": true,
-    "code_review": true,
-    "ui_phase": true,
-    "ui_review": true,
-    "_auto_chain_active": true
+    "nyquist_validation": false,
+    "code_review": false,
+    "ui_phase": false,
+    "ui_review": false,
+    "_auto_chain_active": false,
+    "pattern_mapper": false
   },
   "planning": {
     "commit_docs": true,

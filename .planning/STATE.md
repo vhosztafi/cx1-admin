@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Functional Back Office MVP
-status: Ready to execute Phase 10 gap closure
-stopped_at: Phase 10 gap-closure plans 10-14 through 10-18 approved; execute next.
-last_updated: "2026-09-25T15:29:23Z"
-last_activity: "2026-09-25 — Planned five sequential gap-closure slices for the three Phase 10 verification gaps."
+status: Ready to plan Phase 11
+stopped_at: Phase 10 delivered; lighter workflow approved; plan Phase 11 next.
+last_updated: "2026-09-26"
+last_activity: "2026-09-26 — Closed Phase 10 and removed repeated exhaustive workflow barriers; Phase 11 next."
 progress:
   total_phases: 13
-  completed_phases: 9
+  completed_phases: 10
   total_plans: 117
-  completed_plans: 112
+  completed_plans: 117
   percent: 69
 ---
 
@@ -22,9 +22,7 @@ See PROJECT.md, REQUIREMENTS.md and ROADMAP.md. Core value: complete persistent 
 
 ## Current position
 
-Phase 10 accounting and insurer reporting has 13 completed plans covering FIN-01 through FIN-08 and linked POL-01 finance. The final current-source gate passed 1,394 unit and 576 native SQL integration tests (1,970 unique, 511 real SQL, zero skips), 451 root and 214 frontend Node tests, lint/typecheck/build, 21 finance browser checks and ten operational collectors. Two additive demo initializations preserved 97,198 rows and 215 files; seven exact retained restart readbacks passed, including statement and submitted CSV hashes. See `10-13-SUMMARY.md` and `10-VERIFICATION.md`.
-
-Independent goal verification is `gaps_found` (14/16 must-haves): the overview lacks a saved scoped pending-refund count/direct record target and pinned monthly earned premium; the retained demo has no legitimate refund/payment row for a restart readback. Five approved gap plans, 10-14 through 10-18, address these in sequence. Phase 10 and affected requirements remain open.
+Phase 10 is complete: 18/18 plans, three original gaps closed. Fresh acceptance passed 1,977 backend cases including 512 real SQL, zero skips; root 451 and web 214 tests, lint/typecheck/build, 25 finance browser checks, ten operational collectors, two preserved additive initializations and ten exact restart readbacks. See 10-VERIFICATION.md and 10-18-SUMMARY.md. The user approved a lighter workflow on 2026-09-26; PROJECT.md supersedes repeated exhaustive runbooks. Dedicated closed-period earned-premium read coverage and human UAT are tracked for Phase 13 and do not block Phase 11.
 
 Phase 9, tasks/documents/communication/incidents, is complete on local automated evidence. Plans 09-01 through 09-18 have reviewed summaries. The final v7 gate from `f201f31` passed 1,337/1,337 unit and exactly 550/550 discovered integration cases, including 485 named real SQL/API process-restart cases: 1,887 unique IDs, no skips, unchanged integration assembly and 1,883 tracked source hashes. The streaming strict report is `.local/phase9-final-v7/strict-report.json`; the guarded root/frontend/ledger report is `.local/phase9-final-v7-followthrough/report.json` (421 root and 204 frontend tests, lint/typecheck/build passed). The previous complete v6 run also passed, but is not substituted for v7.
 
@@ -34,7 +32,7 @@ The original source denominator is unchanged: 118 controls (109 Phase9 owned, ni
 
 ## Next work
 
-Execute Phase 10 gap plans 10-14 through 10-18 with `$gsd-execute-phase 10 --gaps-only`. Phases 10–13 are not complete; the v1.0 milestone remains active. Preserve the retained demo database, file root, data-protection keys and frontend-code. The existing preview on port 3100 remains running; verify process/binary/listener ownership before changing it. The inherited generated `apps/backoffice/next-env.d.ts` and `tsconfig.json` edits, untracked `.idea/`, and preview-generated `apps/backoffice/AGENTS.md` and `CLAUDE.md` are not part of Phase 10 commits.
+Next command: `$gsd-plan-phase 11 --auto`. Phase 11 configuration/account administration is not yet planned. Phases 11–13 remain; the v1.0 milestone is active. Preserve the retained demo database, file root, data-protection keys and frontend-code. The existing preview on port 3100 remains running; verify process/binary/listener ownership before changing it. The inherited generated `apps/backoffice/next-env.d.ts` and `tsconfig.json` edits, untracked `.idea/`, and preview-generated `apps/backoffice/AGENTS.md` and `CLAUDE.md` are not part of Phase 10 commits.
 
 ## Decisions and continuity
 

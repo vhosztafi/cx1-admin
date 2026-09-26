@@ -93,14 +93,14 @@ Core value: complete persistent insurance and servicing journeys with consistent
 
 ### Accounting
 
-- [ ] **FIN-01**: Finance users can inspect transaction-ledger entries and agency balances derived from issued insurance movements.
-- [ ] **FIN-02**: Finance users can generate and download agency statements with period filters and consistent opening/movement/closing balances.
-- [ ] **FIN-03**: Finance users can record demo receipts, assign payers, allocate/unallocate amounts to invoices and see residual balances without over-allocation.
-- [ ] **FIN-04**: Finance users can reconcile recorded bank lines against receipts/refunds/settlements and resolve or explain variances with an audit record.
-- [ ] **FIN-05**: Authorised finance users can approve/reject refunds within limits and execute a retry-safe demo payment with persisted outcome.
-- [ ] **FIN-06**: Finance users can generate versioned bordereau batches, inspect validation failures, correct data or exclude records with reasons, revalidate and export CSV.
-- [ ] **FIN-07**: Finance users can submit only valid bordereau batches through the demo adapter and inspect submission status and history.
-- [ ] **FIN-08**: Finance users can close a period and handle later corrections through auditable adjustments rather than editing posted entries.
+- [x] **FIN-01**: Finance users can inspect transaction-ledger entries and agency balances derived from issued insurance movements.
+- [x] **FIN-02**: Finance users can generate and download agency statements with period filters and consistent opening/movement/closing balances.
+- [x] **FIN-03**: Finance users can record demo receipts, assign payers, allocate/unallocate amounts to invoices and see residual balances without over-allocation.
+- [x] **FIN-04**: Finance users can reconcile recorded bank lines against receipts/refunds/settlements and resolve or explain variances with an audit record.
+- [x] **FIN-05**: Authorised finance users can approve/reject refunds within limits and execute a retry-safe demo payment with persisted outcome.
+- [x] **FIN-06**: Finance users can generate versioned bordereau batches, inspect validation failures, correct data or exclude records with reasons, revalidate and export CSV.
+- [x] **FIN-07**: Finance users can submit only valid bordereau batches through the demo adapter and inspect submission status and history.
+- [x] **FIN-08**: Finance users can close a period and handle later corrections through auditable adjustments rather than editing posted entries.
 
 ### Administration and accounts
 
@@ -186,7 +186,7 @@ Every v1 requirement has one owning delivery phase; later phases may consume its
 | UWR-05 | 6 | Complete — Phase6 verified2026-09-17 |
 | UWR-06 | 6 | Complete — Phase6 verified2026-09-17 |
 | UWR-07 | 6 | Complete — Phase6 verified2026-09-17 |
-| POL-01 | 7, 9, 10 | Partial — Phases7/9 policy, risk, history, transactions, documents, tasks, notes, messages and incidents verified; Phase10 reconciled finance view remains |
+| POL-01 | 7, 9, 10 | Partial — Phases7/9 policy, risk, history, transactions, documents, tasks, notes, messages and incidents verified; Phase10 reconciled finance view now verified; compound record checklist remains for Phase13 |
 | POL-02 | 7 | Complete |
 | POL-03 | 7 | Complete |
 | POL-04 | 7 | Complete |
@@ -208,14 +208,14 @@ Every v1 requirement has one owning delivery phase; later phases may consume its
 | OPS-06 | 9 | Complete — 2026-09-23;09-VERIFICATION |
 | OPS-07 | 9 | Complete — 2026-09-23;09-VERIFICATION |
 | OPS-08 | 9 | Complete — 2026-09-23;09-VERIFICATION |
-| FIN-01 | 10 | Pending |
-| FIN-02 | 10 | Pending |
-| FIN-03 | 10 | Pending |
-| FIN-04 | 10 | Pending |
-| FIN-05 | 10 | Pending |
-| FIN-06 | 10 | Pending |
-| FIN-07 | 10 | Pending |
-| FIN-08 | 10 | Pending |
+| FIN-01 | 10 | Complete — local automated evidence |
+| FIN-02 | 10 | Complete — local automated evidence |
+| FIN-03 | 10 | Complete — local automated evidence |
+| FIN-04 | 10 | Complete — local automated evidence |
+| FIN-05 | 10 | Complete — local automated evidence |
+| FIN-06 | 10 | Complete — local automated evidence |
+| FIN-07 | 10 | Complete — local automated evidence |
+| FIN-08 | 10 | Complete — local automated evidence |
 | ADM-01 | 11 | Pending |
 | ADM-02 | 11 | Pending |
 | ADM-03 | 11 | Pending |
