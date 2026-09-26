@@ -18,7 +18,7 @@ Staff can complete a quote-to-policy-to-servicing journey and trust that its pol
 
 ### Validated
 
-Phases 1–12 are complete on the recorded local evidence. ADM-01..08 now include controlled configuration, independent sensitive approvals, local account/MFA security and audit/integration oversight. Earlier policy/operations/finance acceptance remains in the phase summaries. Phase 12 now supplies scoped discovery, live dashboard/alerts, eleven report definitions and owner favourites/CSV. Phase 13 broad acceptance and human UAT remain.
+Phases 1–13 and all 131 implementation plans are complete on recorded local evidence. Phase 12 supplies scoped search, live dashboards/alerts, eleven reports and owner favourites/CSV. Phase 13 supplies current targeted regression, traceability, owned application restart, visual/keyboard checks, the short demo and developer handover. Human UAT and shared SQL engine restart remain unperformed; ACC-02 is partially verified. See docs/acceptance/ACCEPTANCE.md.
 
 ### Active
 

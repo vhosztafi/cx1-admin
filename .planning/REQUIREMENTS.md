@@ -37,8 +37,8 @@ Core value: complete persistent insurance and servicing journeys with consistent
 
 - [x] **AGY-01**: Staff can create and resume agency onboarding with contacts, products, commission terms, required evidence and activation checks.
 - [x] **AGY-02**: Authorised staff can maintain agency users and invitations, expire/resend/revoke invitations, suspend access and enforce internal/agency role separation.
-- [ ] **AGY-03**: Staff can view agency products, access settings, accounts and activity from persisted records.
-- [ ] **AGY-04**: Staff can inspect an internal agency-sharing view with field-level restrictions; an agency-scoped API identity cannot access another agency's records.
+- [x] **AGY-03**: Staff can view agency products, access settings, accounts and activity from persisted records.
+- [x] **AGY-04**: Staff can inspect an internal agency-sharing view with field-level restrictions; an agency-scoped API identity cannot access another agency's records.
 - [x] **AGY-05**: Agency activation and user invitation create persistent demo notifications with visible delivery outcomes.
 
 ### Product and quote capture
@@ -62,7 +62,7 @@ Core value: complete persistent insurance and servicing journeys with consistent
 
 ### Policy servicing
 
-- [ ] **POL-01**: Staff can inspect policy summary, product sections, drivers/vehicles, documents, transactions, finance, tasks, notes, messages and claims using linked persisted records.
+- [x] **POL-01**: Staff can inspect policy summary, product sections, drivers/vehicles, documents, transactions, finance, tasks, notes, messages and claims using linked persisted records.
 - [x] **POL-02**: Staff can create an adjustment draft, compare proposed changes by stable item identity, edit effective date and resume the draft without changing in-force cover.
 - [x] **POL-03**: Staff can acquire/release an expiring editing lease, take over with permission and reason, and receive a clear conflict when saving a stale revision.
 - [x] **POL-04**: Staff can rate, refer, obtain acceptance, issue or abandon an adjustment with recalculated premium and all issue prerequisites enforced.
@@ -123,12 +123,12 @@ Core value: complete persistent insurance and servicing journeys with consistent
 
 ### Demo acceptance
 
-- [ ] **ACC-01**: Business users can follow a documented demo script covering Motor Trade quote issue, blocked/referral adjustment, renewal, cancellation/refund and CC servicing.
+- [x] **ACC-01**: Business users can follow a documented demo script covering Motor Trade quote issue, blocked/referral adjustment, renewal, cancellation/refund and CC servicing.
 - [ ] **ACC-02**: Business users can restart the application and database and recover saved work, adapter outcomes, files, history and balances.
-- [ ] **ACC-03**: Reviewers can verify every prototype action has a working destination or documented domain-based disabled state and acceptance evidence.
-- [ ] **ACC-04**: Developers can run passing unit, component, API, real-SQL integration and critical browser checks, including permission denial, stale writes, rollback and retries.
-- [ ] **ACC-05**: Reviewers can compare rendered key screens with the prototype and confirm usable desktop/narrow layouts and keyboard interaction.
-- [ ] **ACC-06**: Developers can use setup, seed/reset, troubleshooting and module-boundary documentation to prepare later project-by-project improvements.
+- [x] **ACC-03**: Reviewers can verify every prototype action has a working destination or documented domain-based disabled state and acceptance evidence.
+- [x] **ACC-04**: Developers can run passing unit, component, API, real-SQL integration and critical browser checks, including permission denial, stale writes, rollback and retries.
+- [x] **ACC-05**: Reviewers can compare rendered key screens with the prototype and confirm usable desktop/narrow layouts and keyboard interaction.
+- [x] **ACC-06**: Developers can use setup, seed/reset, troubleshooting and module-boundary documentation to prepare later project-by-project improvements.
 
 ## Cross-cutting completion rules
 
@@ -152,12 +152,12 @@ Every v1 requirement has one owning delivery phase; later phases may consume its
 
 | Requirement | Phase | Status |
 |---|---|---|
-| DES-01 | 1 | Pending |
-| DES-02 | 1 | Pending |
-| DES-03 | 1 | Pending |
-| DES-04 | 1 | Pending |
-| DES-05 | 1 | Pending |
-| DES-06 | 1 | Pending |
+| DES-01 | 1 | Complete |
+| DES-02 | 1 | Complete |
+| DES-03 | 1 | Complete |
+| DES-04 | 1 | Complete |
+| DES-05 | 1 | Complete |
+| DES-06 | 1 | Complete |
 | FND-01 | 2 | Complete |
 | FND-02 | 2 | Complete |
 | FND-03 | 2 | Complete |
@@ -170,8 +170,8 @@ Every v1 requirement has one owning delivery phase; later phases may consume its
 | CLI-04 | 3 | Complete: saved intake review verified2026-09-14; quote integration due5 |
 | AGY-01 | 4 | Complete |
 | AGY-02 | 4 | Complete |
-| AGY-03 | 4 / 10 | Partial — Phase4 terms/access/activity complete; ledger/statements Phase10 |
-| AGY-04 | 4 / 5 / 6 / 9 | Partial — actual restricted quote/policy sharing verified; generic tasks due9 |
+| AGY-03 | 4 / 10 / 13 | Complete — compound evidence reconciled in Phase 13 acceptance record |
+| AGY-04 | 4 / 5 / 6 / 9 / 13 | Complete — compound evidence reconciled in Phase 13 acceptance record |
 | AGY-05 | 4 | Complete |
 | QUO-01 | 5 / 6 | Complete — Phase6 verified2026-09-17 |
 | QUO-02 | 5 | Complete — Phase5 verified2026-09-16 |
@@ -186,7 +186,7 @@ Every v1 requirement has one owning delivery phase; later phases may consume its
 | UWR-05 | 6 | Complete — Phase6 verified2026-09-17 |
 | UWR-06 | 6 | Complete — Phase6 verified2026-09-17 |
 | UWR-07 | 6 | Complete — Phase6 verified2026-09-17 |
-| POL-01 | 7, 9, 10 | Partial — Phases7/9 policy, risk, history, transactions, documents, tasks, notes, messages and incidents verified; Phase10 reconciled finance view now verified; compound record checklist remains for Phase13 |
+| POL-01 | 7 / 8 / 9 / 10 / 13 | Complete — compound evidence reconciled in Phase 13 acceptance record |
 | POL-02 | 7 | Complete |
 | POL-03 | 7 | Complete |
 | POL-04 | 7 | Complete |
@@ -229,11 +229,11 @@ Every v1 requirement has one owning delivery phase; later phases may consume its
 | RPT-03 | 12 | Complete |
 | RPT-04 | 12 | Complete |
 | RPT-05 | 12 | Complete |
-| ACC-01 | 13 | Pending |
-| ACC-02 | 13 | Pending |
-| ACC-03 | 13 | Pending |
-| ACC-04 | 13 | Pending |
-| ACC-05 | 13 | Pending |
-| ACC-06 | 13 | Pending |
+| ACC-01 | 13 | Complete on documented local evidence |
+| ACC-02 | 13 | Partial — application restart passed; database engine restart unperformed |
+| ACC-03 | 13 | Complete on documented local evidence |
+| ACC-04 | 13 | Complete on documented local evidence |
+| ACC-05 | 13 | Complete on automated visual/keyboard evidence; human review outstanding |
+| ACC-06 | 13 | Complete on documented local evidence |
 
 **Coverage:** 83 v1 requirements; 83 mapped; 0 unmapped. Completion is recorded per requirement above; compound requirements remain partial until their downstream acceptance passes.

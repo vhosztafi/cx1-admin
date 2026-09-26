@@ -1,6 +1,6 @@
 # Roadmap: v1.0 Functional Back Office MVP
 
-**Status:** Autonomous progression authorised. Phases1–9 complete;99 currently defined implementation plans verified. Phase9 final current-source regression, source ledger and preserved demo restart passed2026-09-23; Phases10–13 and the13-phase MVP remain in progress.
+**Status:** All 13 implementation phases and 131 plans complete on recorded local evidence. Milestone sign-off remains open for human UAT and the explicitly unperformed database engine restart (ACC-02).
 
 13 phases, 83 requirements, 100% ownership mapping. Phase numbers start at 1 because the sales snapshot belongs to a separate project. Every feature phase includes its own unit tests, persistence and demo seeds.
 
@@ -22,7 +22,7 @@
 - [x] **Phase 10: Accounting and insurer reporting** — Reconcile policy movements through finance workflows.
 - [x] **Phase 11: Configuration and account administration** — Expose controlled configuration and complete account functions. (completed 2026-09-26)
 - [x] **Phase 12: Dashboards, search and reports** — Provide trustworthy cross-module discovery and reporting.
-- [ ] **Phase 13: Complete demo and acceptance** — Verify prototype completeness and deliver a repeatable demonstration.
+- [x] **Phase 13: Complete demo and acceptance** — Verify prototype completeness and deliver a repeatable demonstration.
 
 ## Phase details
 
@@ -311,7 +311,7 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 
 - [x] 13-01 — Traceability and practical regression.
 - [x] 13-02 — Owned restart, navigation and visual acceptance.
-- [ ] 13-03 — Demo and developer handover.
+- [x] 13-03 — Demo and developer handover.
 
 **Success criteria:**
 
@@ -343,7 +343,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 10. Accounting and insurer reporting | 18/18 | Complete | 2026-09-26 |
 | 11. Configuration and account administration | 6/6 | Complete    | 2026-09-26 |
 | 12. Dashboards, search and reports | 5/5 | Complete | 2026-09-26 |
-| 13. Complete demo and acceptance | 2/3 | In progress | — |
+| 13. Complete demo and acceptance | 3/3 | Complete (local automated scope) | 2026-09-26 |
 
 ### Phase 3 downstream acceptance obligations
 

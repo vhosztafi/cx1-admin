@@ -29,3 +29,7 @@ All three planned implementation/acceptance slices are delivered under the 26 Se
 Human business/assistive UAT, shared SQL engine restart, Docker runtime, hosted CI, real provider/payment delivery and production deployment remain unperformed. The retained privileged-reviewer migration/provisioning remains unperformed after the earlier automatic approval rejection. The old 3100/5087 preview, retained database and its key/file roots were preserved. The current owned preview is available on localhost:3193 / API5095.
 
 The historical Commercial Combined PDF continuation has a documented tight margin; newer final schedules were previously verified. Earned report months crossing configured period boundaries return an explicit error. CSV and paging are current reruns, not historic row snapshots. These limitations are visible in the handover rather than hidden behind an extra implementation gate. No new runtime defect remained in the scoped acceptance checks.
+
+## Requirement reconciliation
+
+AGY-03, AGY-04 and POL-01 are reconciled in docs/acceptance/ACCEPTANCE.md against current component wiring and existing phase evidence. ACC-02 remains partially verified because database engine restart was not performed. All three planned Phase 13 slices are complete; this does not imply every acceptance obligation has human/environment sign-off.

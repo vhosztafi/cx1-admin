@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Phase 13 executing; 2/3 complete
-last_updated: "2026-09-26T10:36:44.525Z"
+status: Phase 13 complete; local automated scope
+last_updated: "2026-09-26T11:02:48.282Z"
 progress:
   total_phases: 13
-  completed_phases: 12
+  completed_phases: 13
   total_plans: 131
-  completed_plans: 130
-  percent: 92
+  completed_plans: 131
+  percent: 100
 ---
 
 # Project State
@@ -19,6 +19,10 @@ progress:
 See PROJECT.md, REQUIREMENTS.md and ROADMAP.md. Core value: complete persistent insurance and servicing journeys with consistent versions, decisions, documents and finance.
 
 ## Current position
+
+Phase 13 complete: 3/3 plans; all 131 implementation plans delivered. Current 1,400 backend unit tests, 214 frontend tests, all 451 distinct root cases across initial run/focused correction, eight restart/navigation checks and four loaded visual checks pass. See 13-VERIFICATION.md and docs/HANDOVER.md. Human UAT and shared SQL engine restart remain unperformed; ACC-02 stays partially verified. Milestone has not been archived.
+
+### Earlier phase evidence
 
 Phase 12 complete: 5/5 plans, RPT-01..05 delivered at 7179127. Nine distinct focused backend cases (five isolated SQL), 45 contract cases and 12 saved-browser assertions pass; all 66 original identities mapped. See 12-VERIFICATION.md. Closed-period earned readback is now covered. Next: Phase 13 demo and acceptance.
 
@@ -34,7 +38,7 @@ The original source denominator is unchanged: 118 controls (109 Phase9 owned, ni
 
 ## Next work
 
-Phase 13 complete demo and acceptance is next. Continue the authorised lightweight auto-transition; use accumulated Phase 10 broad acceptance plus Phase 11/12 focused evidence and target concrete remaining risks. No repeated six-hour SQL run without a concrete need. Preserve retained demo/keys/files and the old 3100/5087 preview. Owned API 5095 is stopped; frontend 3193 and the isolated Phase 11/12 fixture remain available. Inherited next-env.d.ts, tsconfig.json, .idea, generated AGENTS.md/CLAUDE.md and output remain outside commits.
+Implementation is complete through Phase 13. Next optional GSD command: `$gsd-verify-work 13` for human acceptance, then milestone audit/sign-off when ready. Reuse recorded evidence; no repeated six-hour SQL run without a concrete need. Preserve retained demo/keys/files and old 3100/5087 preview. Owned current API 5095 and frontend localhost:3193 use the isolated Phase 11/12 fixture. Inherited next-env.d.ts, tsconfig.json, .idea, generated AGENTS.md/CLAUDE.md and output remain outside commits.
 
 ## Decisions and continuity
 

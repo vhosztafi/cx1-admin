@@ -29,3 +29,15 @@ Four additional loaded-state visual checks passed in `loaded-visual.json`, with 
 Screenshots are in ignored `output/playwright/phase13/`. Scripts: `verify-acceptance-browser.mjs prepare|verify` and `verify-acceptance-visual.mjs`. Browser cookies are stored only under ignored `.local/phase13-tests`; never publish that storage-state file. The owned preview remains available at localhost:3193 with API 5095. Historical retained preview and SQL service were not stopped.
 
 The final shell check confirms the implemented Password tab without credential changes (`account-shell.json`). Sixteen local documentation links resolve. See [phase verification](../../.planning/phases/13-complete-demo-and-acceptance/13-VERIFICATION.md) and [developer handover](../HANDOVER.md).
+
+## Compound record reconciliation — 26 September 2026
+
+Current source wiring was reviewed against existing passing phase evidence; this is not a fresh issued-policy browser run in the Phase 11/12 fixture.
+
+| Requirement | Current wiring and recorded runtime evidence |
+|---|---|
+| AGY-03 | agency-detail.tsx loads persisted products, permission/access and activity; Accounts connects the agency-scoped accounting workspace. Phase 4 verifies agency administration and Phase 10 verifies ledger/statements and scoped balances. |
+| AGY-04 | Agency sharing provides restricted quote/policy projections and public response/open items. Private operational tasks are excluded. Phase 4/6/9 evidence covers grants, relationship scope and response disclosure; AgencySharingProjectionTests and OperationalAgencyResponseTests retain the regression cases. |
+| POL-01 | policy-record.tsx and commercial-policy-record.tsx connect product sections, Motor Trade drivers/vehicles, history/transactions, PolicyFinance, RecordDocuments, RecordTasks, RecordCommunications and RecordIncidents to actual policy/version IDs. Phases 7/8 verify product/lifecycle views, Phase 9 documents/tasks/communication/incidents and Phase 10 reconciled finance. |
+
+These three implementation requirements are complete on combined source review and recorded runtime evidence. Human end-to-end review remains outstanding. ACC-02 is only partially verified: owned application restart passed, but the shared SQL Server engine was not restarted. Its recovery procedure is documented; no database restart pass is claimed.
