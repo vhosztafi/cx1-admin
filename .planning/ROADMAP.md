@@ -263,7 +263,7 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 **Plans:** 6 plans; 0/6 complete. Direct planning under the lighter delivery agreement.
 
 - [x] 11-01 — Versioned product and scheme administration (wave 1).
-- [ ] 11-02 — Delegated authority and referral administration (wave 2).
+- [x] 11-02 — Delegated authority and referral administration (wave 2).
 - [ ] 11-03 — Workflow templates and organisation settings (wave 3).
 - [ ] 11-04 — Internal users teams and sensitive approvals (wave 4).
 - [ ] 11-05 — Account profile password sessions and local MFA (wave 5).
