@@ -108,10 +108,11 @@ public static class QuoteRatingEligibility
         {
             using var doc = JsonDocument.Parse(json); var root = doc.RootElement;
             if (root.ValueKind != JsonValueKind.Object) return false;
+            if (!ProductCoverRules.Valid(code, ProductCoverRules.Read(json, code))) return false;
             if (code == CommercialCaptureRules.ProductCode)
             {
                 var keys = new HashSet<string>(["demo", "kind", "schemaVersion", "productCode", "captureFormat", "questionSetVersion", "referenceVersion", "captureAvailable", "ratingAvailable"], StringComparer.Ordinal);
-                foreach (var property in root.EnumerateObject()) if (!keys.Remove(property.Name)) return false;
+                foreach (var property in root.EnumerateObject()) if (property.Name != "coverSections" && !keys.Remove(property.Name)) return false;
                 return keys.Count == 0 && root.GetProperty("demo").ValueKind == JsonValueKind.True &&
                     root.GetProperty("kind").GetString() == "commercial-combined-underwriting" && root.GetProperty("schemaVersion").GetString() == "1.0" &&
                     root.GetProperty("productCode").GetString() == code && root.GetProperty("captureFormat").GetString() == CommercialCaptureRules.Format &&
@@ -119,7 +120,7 @@ public static class QuoteRatingEligibility
                     root.GetProperty("captureAvailable").ValueKind == JsonValueKind.True && root.GetProperty("ratingAvailable").ValueKind == JsonValueKind.True;
             }
             var expected = new HashSet<string>(["demo", "kind", "schemaVersion", "productCode", "referenceVersion", "requestedSectionsRequired", "ratingAvailable"], StringComparer.Ordinal);
-            foreach (var property in root.EnumerateObject()) if (!expected.Remove(property.Name)) return false;
+            foreach (var property in root.EnumerateObject()) if (property.Name != "coverSections" && !expected.Remove(property.Name)) return false;
             return expected.Count == 0 && root.GetProperty("demo").ValueKind == JsonValueKind.True &&
                 root.GetProperty("kind").GetString() == "motor-trade-underwriting" && root.GetProperty("schemaVersion").GetString() == "1" &&
                 root.GetProperty("productCode").GetString() == code && root.GetProperty("referenceVersion").GetString() == QuoteCatalogueIdentity.Version &&

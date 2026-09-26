@@ -146,6 +146,7 @@ public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory,
     internal static async Task Append(BackOfficeDbContext db, Quote quote, EligibleQuoteCapture selection, PreparedQuoteCapture prepared,
         int number, string? reason, Guid actor, DateTimeOffset now, CancellationToken token)
     {
+        ProductCoverRules.EnsureProposal(selection.ProductVersion.Definition, selection.Product.Code, prepared.Input.Json);
         var revision = new QuoteRevision { ClientId = quote.ClientId, RelationshipId = quote.RelationshipId, QuoteId = quote.Id, AgencyId = quote.AgencyId, ProductId = quote.ProductId, Number = number,
             ProductVersionId = selection.Pins.ProductVersionId, AgencyTermsVersionId = selection.Pins.AgencyTermsVersionId,
             SchemaVersion = selection.Pins.SchemaVersion, QuestionSetVersion = selection.Pins.QuestionSetVersion,

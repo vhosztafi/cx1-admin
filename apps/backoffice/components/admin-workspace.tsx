@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import Link from 'next/link';
+import { ProductCatalogue } from './admin/catalogue';
 import { csrfToken } from '../lib/auth';
 import { operationalFetch, jobTone, type Job, type Integration, type AuditEntry, type Page } from '../lib/operations';
 import { DataTable, EmptyState, Panel, SectionTabs, Status } from './primitives';
@@ -28,7 +29,7 @@ export function AdminWorkspace({ requestedTab }: { requestedTab: string }) {
   const active = tabs.some(([key]) => key === requestedTab) ? requestedTab : 'overview';
   return <><div className="page-heading"><div><h1>Admin</h1><p>Configuration, integrations and operational oversight</p></div></div>
     <SectionTabs label="Administration sections" active={active} items={tabs.map(([key,label]) => ({key,label,href:`/admin?tab=${key}`}))} />
-    {active === 'integrations' ? <Integrations /> : active === 'audit' ? <AuditLog /> : active === 'overview' ? <Panel title="Administration"><div className="operations-overview"><h2>Demo operations</h2><p>Inspect persisted integration jobs and the audit record.</p><div className="operations-actions"><Link className="button" href="/admin?tab=integrations">Open integrations</Link><Link className="button" href="/admin?tab=audit">Open audit log</Link><Link className="button" href="/accounting?tab=bordereaux">Open bordereaux</Link></div></div></Panel> : <Panel title={tabs.find(([key]) => key === active)![1]}><EmptyState title="Configuration tools are not available yet">These controls will be added in the configuration phase. Integration monitoring and the audit log are available now.</EmptyState></Panel>}
+    {active === 'products' ? <ProductCatalogue /> : active === 'integrations' ? <Integrations /> : active === 'audit' ? <AuditLog /> : active === 'overview' ? <Panel title="Administration"><div className="operations-overview"><h2>Demo operations</h2><p>Inspect persisted integration jobs and the audit record.</p><div className="operations-actions"><Link className="button" href="/admin?tab=integrations">Open integrations</Link><Link className="button" href="/admin?tab=audit">Open audit log</Link><Link className="button" href="/accounting?tab=bordereaux">Open bordereaux</Link></div></div></Panel> : <Panel title={tabs.find(([key]) => key === active)![1]}><EmptyState title="Configuration tools are not available yet">These controls will be added in the configuration phase. Integration monitoring and the audit log are available now.</EmptyState></Panel>}
   </>;
 }
 

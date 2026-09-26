@@ -27,6 +27,7 @@ var builder = WebApplication.CreateBuilder(args.Where(x=>x is not ("--seed-comme
 builder.Services.AddProblemDetails();
 builder.Services.AddHealthChecks();
 builder.AddLocalIdentity();
+builder.Services.AddScoped<BackOffice.Infrastructure.Administration.ProductAdministration>();
 builder.Services.AddSingleton<PartyPaging>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.TaskService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.NoteService>();
@@ -291,6 +292,7 @@ app.MapOperationalJobs();
 app.MapOperationalReads();
 app.MapOperationalRetries();
 app.MapOperationalSettings();
+app.MapAdministration();
 app.MapClients();
 app.MapAgencies();
 app.MapAgencyStateRequests();
