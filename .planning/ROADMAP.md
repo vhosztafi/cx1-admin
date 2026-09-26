@@ -264,7 +264,7 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 
 - [x] 11-01 — Versioned product and scheme administration (wave 1).
 - [x] 11-02 — Delegated authority and referral administration (wave 2).
-- [ ] 11-03 — Workflow templates and organisation settings (wave 3).
+- [x] 11-03 — Workflow templates and organisation settings (wave 3).
 - [ ] 11-04 — Internal users teams and sensitive approvals (wave 4).
 - [ ] 11-05 — Account profile password sessions and local MFA (wave 5).
 - [ ] 11-06 — Audit integration oversight and concise acceptance (wave 6).
