@@ -1,0 +1,1134 @@
+{
+  "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
+  "count": 66,
+  "originalSnapshotUnchanged": true,
+  "bindings": [
+    {
+      "controlId": "CTL-65f74426ebeb",
+      "acceptanceId": "AT-65f74426ebeb",
+      "sourceMethod": "pDashboard",
+      "sourceLabel": "New Quote",
+      "route": "/quotes/new",
+      "operationIds": [],
+      "delivery": "Open existing quote capture. No write occurs until its confirmed command.",
+      "evidence": [
+        "dashboard-final.trx",
+        "dashboard-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-b724d74c4705",
+      "acceptanceId": "AT-b724d74c4705",
+      "sourceMethod": "pDashboard",
+      "sourceLabel": "Advanced Search",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "delivery": "Open the advanced search form.",
+      "evidence": [
+        "dashboard-final.trx",
+        "dashboard-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-4d570852baac",
+      "acceptanceId": "AT-4d570852baac",
+      "sourceMethod": "pDashboard",
+      "sourceLabel": "View My Tasks",
+      "route": "/tasks",
+      "operationIds": [
+        "listTasks"
+      ],
+      "delivery": "Open the existing task workspace; personal assignment is available through its filters and dashboard scope.",
+      "evidence": [
+        "dashboard-final.trx",
+        "dashboard-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-fe8b9578bac9",
+      "acceptanceId": "AT-fe8b9578bac9",
+      "sourceMethod": "pDashboard",
+      "sourceLabel": "Open task dashboard",
+      "route": "/tasks",
+      "operationIds": [
+        "listTasks"
+      ],
+      "delivery": "Open the existing task workspace; personal assignment is available through its filters and dashboard scope.",
+      "evidence": [
+        "dashboard-final.trx",
+        "dashboard-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-9b21bc4b4158",
+      "acceptanceId": "AT-9b21bc4b4158",
+      "sourceMethod": "pDashboard",
+      "sourceLabel": ".sections[0].rows[0]",
+      "route": "/",
+      "operationIds": [
+        "getDashboard"
+      ],
+      "delivery": "Stored scoped dashboard queue and live record link; prototype sample identities are replaced by returned record IDs.",
+      "evidence": [
+        "dashboard-final.trx",
+        "dashboard-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-aab579a02eec",
+      "acceptanceId": "AT-aab579a02eec",
+      "sourceMethod": "pDashboard",
+      "sourceLabel": ".sections[0].rows[1]",
+      "route": "/",
+      "operationIds": [
+        "getDashboard"
+      ],
+      "delivery": "Stored scoped dashboard queue and live record link; prototype sample identities are replaced by returned record IDs.",
+      "evidence": [
+        "dashboard-final.trx",
+        "dashboard-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-87b388c7c8df",
+      "acceptanceId": "AT-87b388c7c8df",
+      "sourceMethod": "pDashboard",
+      "sourceLabel": ".sections[0].rows[2]",
+      "route": "/",
+      "operationIds": [
+        "getDashboard"
+      ],
+      "delivery": "Stored scoped dashboard queue and live record link; prototype sample identities are replaced by returned record IDs.",
+      "evidence": [
+        "dashboard-final.trx",
+        "dashboard-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-9b1705e6a351",
+      "acceptanceId": "AT-9b1705e6a351",
+      "sourceMethod": "pDashboard",
+      "sourceLabel": ".sections[0].rows[3]",
+      "route": "/",
+      "operationIds": [
+        "getDashboard"
+      ],
+      "delivery": "Stored scoped dashboard queue and live record link; prototype sample identities are replaced by returned record IDs.",
+      "evidence": [
+        "dashboard-final.trx",
+        "dashboard-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-f1e307baa432",
+      "acceptanceId": "AT-f1e307baa432",
+      "sourceMethod": "pDashboard",
+      "sourceLabel": ".sections[0].rows[4]",
+      "route": "/",
+      "operationIds": [
+        "getDashboard"
+      ],
+      "delivery": "Stored scoped dashboard queue and live record link; prototype sample identities are replaced by returned record IDs.",
+      "evidence": [
+        "dashboard-final.trx",
+        "dashboard-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-9727252e7836",
+      "acceptanceId": "AT-9727252e7836",
+      "sourceMethod": "pDashboard",
+      "sourceLabel": ".sections[2].rows[0]",
+      "route": "/",
+      "operationIds": [
+        "getDashboard"
+      ],
+      "delivery": "Stored scoped dashboard queue and live record link; prototype sample identities are replaced by returned record IDs.",
+      "evidence": [
+        "dashboard-final.trx",
+        "dashboard-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-edda1f6aa46a",
+      "acceptanceId": "AT-edda1f6aa46a",
+      "sourceMethod": "pDashboard",
+      "sourceLabel": ".sections[2].rows[1]",
+      "route": "/",
+      "operationIds": [
+        "getDashboard"
+      ],
+      "delivery": "Stored scoped dashboard queue and live record link; prototype sample identities are replaced by returned record IDs.",
+      "evidence": [
+        "dashboard-final.trx",
+        "dashboard-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-19d3f582abf2",
+      "acceptanceId": "AT-19d3f582abf2",
+      "sourceMethod": "pSearch",
+      "sourceLabel": "Record type",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "delivery": "Applicable advanced filters use current saved IDs; registration/reference text is supported by global search.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-9bebc3693170",
+      "acceptanceId": "AT-9bebc3693170",
+      "sourceMethod": "pSearch",
+      "sourceLabel": "Status",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "delivery": "Applicable advanced filters use current saved IDs; registration/reference text is supported by global search.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-ba0bd4946547",
+      "acceptanceId": "AT-ba0bd4946547",
+      "sourceMethod": "pSearch",
+      "sourceLabel": "Product",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "delivery": "Applicable advanced filters use current saved IDs; registration/reference text is supported by global search.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-8c99b56d1a25",
+      "acceptanceId": "AT-8c99b56d1a25",
+      "sourceMethod": "pSearch",
+      "sourceLabel": "Agency",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "delivery": "Applicable advanced filters use current saved IDs; registration/reference text is supported by global search.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-86419581e107",
+      "acceptanceId": "AT-86419581e107",
+      "sourceMethod": "pSearch",
+      "sourceLabel": "Insurer",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "delivery": "Applicable advanced filters use current saved IDs; registration/reference text is supported by global search.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-4c406f9de95c",
+      "acceptanceId": "AT-4c406f9de95c",
+      "sourceMethod": "pSearch",
+      "sourceLabel": "Assigned underwriter",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "delivery": "Applicable advanced filters use current saved IDs; registration/reference text is supported by global search.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-56825612fb50",
+      "acceptanceId": "AT-56825612fb50",
+      "sourceMethod": "pSearch",
+      "sourceLabel": "Inception from",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "delivery": "Applicable advanced filters use current saved IDs; registration/reference text is supported by global search.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-b057804ffcf4",
+      "acceptanceId": "AT-b057804ffcf4",
+      "sourceMethod": "pSearch",
+      "sourceLabel": "Reference number",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords"
+      ],
+      "delivery": "Applicable advanced filters use current saved IDs; registration/reference text is supported by global search.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-20afc88f9936",
+      "acceptanceId": "AT-20afc88f9936",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[1].rows[0]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getClient"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-2110da92d9ef",
+      "acceptanceId": "AT-2110da92d9ef",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[1].rows[1]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getClient"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-40fcfd970a2d",
+      "acceptanceId": "AT-40fcfd970a2d",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[1].rows[2]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getClient"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-81abf50e788b",
+      "acceptanceId": "AT-81abf50e788b",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[1].rows[3]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getClient"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-a59acda98567",
+      "acceptanceId": "AT-a59acda98567",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[1].rows[4]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getClient"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-88ec1711f348",
+      "acceptanceId": "AT-88ec1711f348",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[2].rows[0]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-4d7db22b2eb6",
+      "acceptanceId": "AT-4d7db22b2eb6",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[2].rows[1]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-c90c38f496a0",
+      "acceptanceId": "AT-c90c38f496a0",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[2].rows[2]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-6df898998fb4",
+      "acceptanceId": "AT-6df898998fb4",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[2].rows[3]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-ab627cc29c4c",
+      "acceptanceId": "AT-ab627cc29c4c",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[2].rows[4]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-1a16847c47fd",
+      "acceptanceId": "AT-1a16847c47fd",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[2].rows[5]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-c9f6bbebf1c5",
+      "acceptanceId": "AT-c9f6bbebf1c5",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[3].rows[0]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getQuote"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-143c4a9be1c6",
+      "acceptanceId": "AT-143c4a9be1c6",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[3].rows[1]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getMatchReview"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-04b07c7fde97",
+      "acceptanceId": "AT-04b07c7fde97",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[3].rows[2]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getQuote"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-7bb21bab60fd",
+      "acceptanceId": "AT-7bb21bab60fd",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[3].rows[3]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getQuote"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-4be52ebec533",
+      "acceptanceId": "AT-4be52ebec533",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[3].rows[4]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getQuote"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-826642db3a1c",
+      "acceptanceId": "AT-826642db3a1c",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[3].rows[5]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getQuote"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-f56493b673b3",
+      "acceptanceId": "AT-f56493b673b3",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[4].rows[0]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getPolicyAsAt"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-8ae3c103cb9b",
+      "acceptanceId": "AT-8ae3c103cb9b",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[4].rows[1]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getPolicyAsAt"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-a809ba59943d",
+      "acceptanceId": "AT-a809ba59943d",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[5].rows[0]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getAgency"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-d021643b2324",
+      "acceptanceId": "AT-d021643b2324",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[5].rows[1]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getAgency"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-b1d64f59e832",
+      "acceptanceId": "AT-b1d64f59e832",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[5].rows[2]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getAgency"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-fd3e0a56ce5d",
+      "acceptanceId": "AT-fd3e0a56ce5d",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[5].rows[3]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getAgency"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-41e4cb693a72",
+      "acceptanceId": "AT-41e4cb693a72",
+      "sourceMethod": "pSearch",
+      "sourceLabel": ".sections[5].rows[4]",
+      "route": "/search",
+      "operationIds": [
+        "searchRecords",
+        "getAgency"
+      ],
+      "delivery": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records.",
+      "evidence": [
+        "search-corrected.trx",
+        "search-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-72186486df6f",
+      "acceptanceId": "AT-72186486df6f",
+      "sourceMethod": "pReporting",
+      "sourceLabel": "Export (CSV)",
+      "route": "/reporting",
+      "operationIds": [
+        "exportReport"
+      ],
+      "delivery": "Synchronous all-source CSV (10,000 maximum), current permission checks and formula-safe text. Replaces the prototype export job/document aliases.",
+      "evidence": [
+        "insurance-final.trx",
+        "finance-signed.trx",
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-f56bb23ea21a",
+      "acceptanceId": "AT-f56bb23ea21a",
+      "sourceMethod": "pReporting",
+      "sourceLabel": "Underwriting",
+      "route": "/reporting",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition",
+        "runReport"
+      ],
+      "delivery": "Current-role library category and distinct saved-source report definition; selected applicable filters execute the report.",
+      "evidence": [
+        "insurance-final.trx",
+        "finance-signed.trx",
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-cc3769bd3bdf",
+      "acceptanceId": "AT-cc3769bd3bdf",
+      "sourceMethod": "pReporting",
+      "sourceLabel": "Policy portfolio",
+      "route": "/reporting",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition",
+        "runReport"
+      ],
+      "delivery": "Current-role library category and distinct saved-source report definition; selected applicable filters execute the report.",
+      "evidence": [
+        "insurance-final.trx",
+        "finance-signed.trx",
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-ebe3b087664a",
+      "acceptanceId": "AT-ebe3b087664a",
+      "sourceMethod": "pReporting",
+      "sourceLabel": "Renewals",
+      "route": "/reporting",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition",
+        "runReport"
+      ],
+      "delivery": "Current-role library category and distinct saved-source report definition; selected applicable filters execute the report.",
+      "evidence": [
+        "insurance-final.trx",
+        "finance-signed.trx",
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-24cf7d55af86",
+      "acceptanceId": "AT-24cf7d55af86",
+      "sourceMethod": "pReporting",
+      "sourceLabel": "Finance",
+      "route": "/reporting",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition",
+        "runReport"
+      ],
+      "delivery": "Current-role library category and distinct saved-source report definition; selected applicable filters execute the report.",
+      "evidence": [
+        "insurance-final.trx",
+        "finance-signed.trx",
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-50981eb7306e",
+      "acceptanceId": "AT-50981eb7306e",
+      "sourceMethod": "pReporting",
+      "sourceLabel": "Agency performance",
+      "route": "/reporting",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition",
+        "runReport"
+      ],
+      "delivery": "Current-role library category and distinct saved-source report definition; selected applicable filters execute the report.",
+      "evidence": [
+        "insurance-final.trx",
+        "finance-signed.trx",
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-b6ddb24f81d1",
+      "acceptanceId": "AT-b6ddb24f81d1",
+      "sourceMethod": "pReporting",
+      "sourceLabel": "Compliance & exceptions",
+      "route": "/reporting",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition",
+        "runReport"
+      ],
+      "delivery": "Current-role library category and distinct saved-source report definition; selected applicable filters execute the report.",
+      "evidence": [
+        "insurance-final.trx",
+        "finance-signed.trx",
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-3b59a2e0681f",
+      "acceptanceId": "AT-3b59a2e0681f",
+      "sourceMethod": "pReporting",
+      "sourceLabel": ".sections[1].rows[0]",
+      "route": "/reporting",
+      "operationIds": [
+        "listSavedReports",
+        "getReportDefinition",
+        "runReport"
+      ],
+      "delivery": "Recent report samples are replaced by persisted owner recent runs. Select saved filters, then explicitly rerun current data.",
+      "evidence": [
+        "insurance-final.trx",
+        "finance-signed.trx",
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-aa34e10e0808",
+      "acceptanceId": "AT-aa34e10e0808",
+      "sourceMethod": "pReporting",
+      "sourceLabel": ".sections[1].rows[1]",
+      "route": "/reporting",
+      "operationIds": [
+        "listSavedReports",
+        "getReportDefinition",
+        "runReport"
+      ],
+      "delivery": "Recent report samples are replaced by persisted owner recent runs. Select saved filters, then explicitly rerun current data.",
+      "evidence": [
+        "insurance-final.trx",
+        "finance-signed.trx",
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-f1d572756754",
+      "acceptanceId": "AT-f1d572756754",
+      "sourceMethod": "pReporting",
+      "sourceLabel": ".sections[1].rows[2]",
+      "route": "/reporting",
+      "operationIds": [
+        "listSavedReports",
+        "getReportDefinition",
+        "runReport"
+      ],
+      "delivery": "Recent report samples are replaced by persisted owner recent runs. Select saved filters, then explicitly rerun current data.",
+      "evidence": [
+        "insurance-final.trx",
+        "finance-signed.trx",
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-01f8138dd157",
+      "acceptanceId": "AT-01f8138dd157",
+      "sourceMethod": "pReporting",
+      "sourceLabel": ".sections[1].rows[3]",
+      "route": "/reporting",
+      "operationIds": [
+        "listSavedReports",
+        "getReportDefinition",
+        "runReport"
+      ],
+      "delivery": "Recent report samples are replaced by persisted owner recent runs. Select saved filters, then explicitly rerun current data.",
+      "evidence": [
+        "insurance-final.trx",
+        "finance-signed.trx",
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-ecba4b9c7a13",
+      "acceptanceId": "AT-ecba4b9c7a13",
+      "sourceMethod": "pReporting",
+      "sourceLabel": ".sections[1].rows[4]",
+      "route": "/reporting",
+      "operationIds": [
+        "listSavedReports",
+        "getReportDefinition",
+        "runReport"
+      ],
+      "delivery": "Recent report samples are replaced by persisted owner recent runs. Select saved filters, then explicitly rerun current data.",
+      "evidence": [
+        "insurance-final.trx",
+        "finance-signed.trx",
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-10e7fba9ce9c",
+      "acceptanceId": "AT-10e7fba9ce9c",
+      "sourceMethod": "pReporting",
+      "sourceLabel": "Back to reports",
+      "route": "/reporting",
+      "operationIds": [],
+      "delivery": "Clear the selected report and return to the library.",
+      "evidence": [
+        "insurance-final.trx",
+        "finance-signed.trx",
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-26a1d0f6ca7e",
+      "acceptanceId": "AT-26a1d0f6ca7e",
+      "sourceMethod": "pReporting",
+      "sourceLabel": "Period",
+      "route": "/reporting",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition",
+        "runReport"
+      ],
+      "delivery": "Current-role library category and distinct saved-source report definition; selected applicable filters execute the report.",
+      "evidence": [
+        "insurance-final.trx",
+        "finance-signed.trx",
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-0722bfd85b0e",
+      "acceptanceId": "AT-0722bfd85b0e",
+      "sourceMethod": "pReporting",
+      "sourceLabel": "Product",
+      "route": "/reporting",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition",
+        "runReport"
+      ],
+      "delivery": "Current-role library category and distinct saved-source report definition; selected applicable filters execute the report.",
+      "evidence": [
+        "insurance-final.trx",
+        "finance-signed.trx",
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-66ec47549c4e",
+      "acceptanceId": "AT-66ec47549c4e",
+      "sourceMethod": "pReporting",
+      "sourceLabel": "Agency",
+      "route": "/reporting",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition",
+        "runReport"
+      ],
+      "delivery": "Current-role library category and distinct saved-source report definition; selected applicable filters execute the report.",
+      "evidence": [
+        "insurance-final.trx",
+        "finance-signed.trx",
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-e9bb1df559d8",
+      "acceptanceId": "AT-e9bb1df559d8",
+      "sourceMethod": "pReporting",
+      "sourceLabel": "Underwriter",
+      "route": "/reporting",
+      "operationIds": [
+        "listReports",
+        "getReportDefinition",
+        "runReport"
+      ],
+      "delivery": "Current-role library category and distinct saved-source report definition; selected applicable filters execute the report.",
+      "evidence": [
+        "insurance-final.trx",
+        "finance-signed.trx",
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-d722319a699d",
+      "acceptanceId": "AT-d722319a699d",
+      "sourceMethod": "pReporting",
+      "sourceLabel": ".sections[3].rows[0]",
+      "route": "/reporting",
+      "operationIds": [
+        "runReport",
+        "getQuote"
+      ],
+      "delivery": "Agency/month/product breakdown is calculated from filtered sources; each underlying quote opens its authorised actual detail. Replaces fixed sample list filters.",
+      "evidence": [
+        "insurance-final.trx",
+        "finance-signed.trx",
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-ffe580c5746e",
+      "acceptanceId": "AT-ffe580c5746e",
+      "sourceMethod": "pReporting",
+      "sourceLabel": ".sections[3].rows[1]",
+      "route": "/reporting",
+      "operationIds": [
+        "runReport",
+        "getQuote"
+      ],
+      "delivery": "Agency/month/product breakdown is calculated from filtered sources; each underlying quote opens its authorised actual detail. Replaces fixed sample list filters.",
+      "evidence": [
+        "insurance-final.trx",
+        "finance-signed.trx",
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-42d2acd90eed",
+      "acceptanceId": "AT-42d2acd90eed",
+      "sourceMethod": "pReporting",
+      "sourceLabel": ".sections[3].rows[2]",
+      "route": "/reporting",
+      "operationIds": [
+        "runReport",
+        "getQuote"
+      ],
+      "delivery": "Agency/month/product breakdown is calculated from filtered sources; each underlying quote opens its authorised actual detail. Replaces fixed sample list filters.",
+      "evidence": [
+        "insurance-final.trx",
+        "finance-signed.trx",
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-ba14915ded51",
+      "acceptanceId": "AT-ba14915ded51",
+      "sourceMethod": "pReporting",
+      "sourceLabel": ".sections[3].rows[3]",
+      "route": "/reporting",
+      "operationIds": [
+        "runReport",
+        "getQuote"
+      ],
+      "delivery": "Agency/month/product breakdown is calculated from filtered sources; each underlying quote opens its authorised actual detail. Replaces fixed sample list filters.",
+      "evidence": [
+        "insurance-final.trx",
+        "finance-signed.trx",
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-24e0517ea487",
+      "acceptanceId": "AT-24e0517ea487",
+      "sourceMethod": "pReporting",
+      "sourceLabel": ".sections[3].rows[4]",
+      "route": "/reporting",
+      "operationIds": [
+        "runReport",
+        "getQuote"
+      ],
+      "delivery": "Agency/month/product breakdown is calculated from filtered sources; each underlying quote opens its authorised actual detail. Replaces fixed sample list filters.",
+      "evidence": [
+        "insurance-final.trx",
+        "finance-signed.trx",
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    },
+    {
+      "controlId": "CTL-d25a22b2d718",
+      "acceptanceId": "AT-d25a22b2d718",
+      "sourceMethod": "pReporting",
+      "sourceLabel": ".sections[3].rows[5]",
+      "route": "/reporting",
+      "operationIds": [
+        "runReport",
+        "getQuote"
+      ],
+      "delivery": "Agency/month/product breakdown is calculated from filtered sources; each underlying quote opens its authorised actual detail. Replaces fixed sample list filters.",
+      "evidence": [
+        "insurance-final.trx",
+        "finance-signed.trx",
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    }
+  ],
+  "supplemental": [
+    {
+      "label": "Shell alerts",
+      "route": "/alerts",
+      "operationIds": [
+        "listNotifications",
+        "markNotificationRead"
+      ],
+      "evidence": [
+        "dashboard-final.trx",
+        "dashboard-browser.json"
+      ]
+    },
+    {
+      "label": "Owner favourites",
+      "route": "/reporting",
+      "operationIds": [
+        "listSavedReports",
+        "saveReport",
+        "updateSavedReport",
+        "deleteSavedReport"
+      ],
+      "evidence": [
+        "saved-duration-corrected.trx",
+        "saved-export-browser.json"
+      ]
+    }
+  ]
+}
+

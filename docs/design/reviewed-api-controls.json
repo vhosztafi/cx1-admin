@@ -224,11 +224,9 @@
     "status": "reviewed",
     "disposition": "command",
     "operationIds": [
-      "exportReport",
-      "getJob",
-      "downloadDocumentVersion"
+      "exportReport"
     ],
-    "reason": "Persist scoped export from the selected report run and deliver actual CSV bytes."
+    "reason": "Synchronous all-source CSV (10,000 maximum), current permission checks and formula-safe text. Replaces the prototype export job/document aliases."
   },
   {
     "controlId": "CTL-9a93665d17ad",
@@ -1394,7 +1392,7 @@
     "operationIds": [
       "searchRecords"
     ],
-    "reason": "Literal navigation to search; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+    "reason": "Open the advanced search form."
   },
   {
     "controlId": "CTL-4d570852baac",
@@ -1403,7 +1401,7 @@
     "operationIds": [
       "listTasks"
     ],
-    "reason": "Literal navigation to tasks; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+    "reason": "Open the existing task workspace; personal assignment is available through its filters and dashboard scope."
   },
   {
     "controlId": "CTL-fe8b9578bac9",
@@ -1412,7 +1410,7 @@
     "operationIds": [
       "listTasks"
     ],
-    "reason": "Literal navigation to tasks; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+    "reason": "Open the existing task workspace; personal assignment is available through its filters and dashboard scope."
   },
   {
     "controlId": "CTL-8045da3f31a1",
@@ -1910,9 +1908,10 @@
     "disposition": "navigation-read",
     "operationIds": [
       "listReports",
-      "getReportDefinition"
+      "getReportDefinition",
+      "runReport"
     ],
-    "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    "reason": "Current-role library category and distinct saved-source report definition; selected applicable filters execute the report."
   },
   {
     "controlId": "CTL-cc3769bd3bdf",
@@ -1920,9 +1919,10 @@
     "disposition": "navigation-read",
     "operationIds": [
       "listReports",
-      "getReportDefinition"
+      "getReportDefinition",
+      "runReport"
     ],
-    "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    "reason": "Current-role library category and distinct saved-source report definition; selected applicable filters execute the report."
   },
   {
     "controlId": "CTL-ebe3b087664a",
@@ -1930,19 +1930,21 @@
     "disposition": "navigation-read",
     "operationIds": [
       "listReports",
-      "getReportDefinition"
+      "getReportDefinition",
+      "runReport"
     ],
-    "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    "reason": "Current-role library category and distinct saved-source report definition; selected applicable filters execute the report."
   },
   {
     "controlId": "CTL-24cf7d55af86",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
-      "listJournals",
-      "listReceipts"
+      "listReports",
+      "getReportDefinition",
+      "runReport"
     ],
-    "reason": "Literal navigation to accounting; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+    "reason": "Current-role library category and distinct saved-source report definition; selected applicable filters execute the report."
   },
   {
     "controlId": "CTL-50981eb7306e",
@@ -1950,9 +1952,10 @@
     "disposition": "navigation-read",
     "operationIds": [
       "listReports",
-      "getReportDefinition"
+      "getReportDefinition",
+      "runReport"
     ],
-    "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    "reason": "Current-role library category and distinct saved-source report definition; selected applicable filters execute the report."
   },
   {
     "controlId": "CTL-b6ddb24f81d1",
@@ -1960,68 +1963,72 @@
     "disposition": "navigation-read",
     "operationIds": [
       "listReports",
-      "getReportDefinition"
+      "getReportDefinition",
+      "runReport"
     ],
-    "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    "reason": "Current-role library category and distinct saved-source report definition; selected applicable filters execute the report."
   },
   {
     "controlId": "CTL-3b59a2e0681f",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
-      "listReports",
-      "getReportDefinition"
+      "listSavedReports",
+      "getReportDefinition",
+      "runReport"
     ],
-    "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    "reason": "Recent report samples are replaced by persisted owner recent runs. Select saved filters, then explicitly rerun current data."
   },
   {
     "controlId": "CTL-aa34e10e0808",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
-      "listReports",
-      "getReportDefinition"
+      "listSavedReports",
+      "getReportDefinition",
+      "runReport"
     ],
-    "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    "reason": "Recent report samples are replaced by persisted owner recent runs. Select saved filters, then explicitly rerun current data."
   },
   {
     "controlId": "CTL-f1d572756754",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
-      "listReports",
-      "getReportDefinition"
+      "listSavedReports",
+      "getReportDefinition",
+      "runReport"
     ],
-    "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    "reason": "Recent report samples are replaced by persisted owner recent runs. Select saved filters, then explicitly rerun current data."
   },
   {
     "controlId": "CTL-01f8138dd157",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
-      "listReports",
-      "getReportDefinition"
+      "listSavedReports",
+      "getReportDefinition",
+      "runReport"
     ],
-    "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    "reason": "Recent report samples are replaced by persisted owner recent runs. Select saved filters, then explicitly rerun current data."
   },
   {
     "controlId": "CTL-ecba4b9c7a13",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
-      "listReports",
-      "getReportDefinition"
+      "listSavedReports",
+      "getReportDefinition",
+      "runReport"
     ],
-    "reason": "Literal pReporting tab selection Underwriting performance; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    "reason": "Recent report samples are replaced by persisted owner recent runs. Select saved filters, then explicitly rerun current data."
   },
   {
     "controlId": "CTL-10e7fba9ce9c",
     "status": "reviewed",
-    "disposition": "navigation-read",
-    "operationIds": [
-      "listReports"
-    ],
-    "reason": "Literal pReporting tab selection Report library; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    "disposition": "client-only",
+    "operationIds": [],
+    "reason": "Clear the selected report and return to the library."
   },
   {
     "controlId": "CTL-884d9ce1ee34",
@@ -9162,63 +9169,63 @@
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
-      "getTask"
+      "getDashboard"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Stored scoped dashboard queue and live record link; prototype sample identities are replaced by returned record IDs."
   },
   {
     "controlId": "CTL-aab579a02eec",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
-      "listTasks"
+      "getDashboard"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Stored scoped dashboard queue and live record link; prototype sample identities are replaced by returned record IDs."
   },
   {
     "controlId": "CTL-87b388c7c8df",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
-      "listTasks"
+      "getDashboard"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Stored scoped dashboard queue and live record link; prototype sample identities are replaced by returned record IDs."
   },
   {
     "controlId": "CTL-9b1705e6a351",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
-      "listTasks"
+      "getDashboard"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Stored scoped dashboard queue and live record link; prototype sample identities are replaced by returned record IDs."
   },
   {
     "controlId": "CTL-f1e307baa432",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
-      "listTasks"
+      "getDashboard"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Stored scoped dashboard queue and live record link; prototype sample identities are replaced by returned record IDs."
   },
   {
     "controlId": "CTL-9727252e7836",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
-      "getPolicyDraft"
+      "getDashboard"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Stored scoped dashboard queue and live record link; prototype sample identities are replaced by returned record IDs."
   },
   {
     "controlId": "CTL-edda1f6aa46a",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
-      "getQuote"
+      "getDashboard"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Stored scoped dashboard queue and live record link; prototype sample identities are replaced by returned record IDs."
   },
   {
     "controlId": "CTL-1fad476114e9",
@@ -9666,222 +9673,246 @@
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getClient"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-2110da92d9ef",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getClient"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-40fcfd970a2d",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getClient"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-81abf50e788b",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getClient"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-a59acda98567",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getClient"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-88ec1711f348",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getPolicy",
       "getPolicyAsAt"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-4d7db22b2eb6",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getPolicy",
       "getPolicyAsAt"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-c90c38f496a0",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getPolicy",
       "getPolicyAsAt"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-6df898998fb4",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getPolicy",
       "getPolicyAsAt"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-ab627cc29c4c",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getPolicy",
       "getPolicyAsAt"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-1a16847c47fd",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getPolicy",
       "getPolicyAsAt"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-c9f6bbebf1c5",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getQuote"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-143c4a9be1c6",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getMatchReview"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-04b07c7fde97",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getQuote"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-7bb21bab60fd",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getQuote"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-4be52ebec533",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getQuote"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-826642db3a1c",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getQuote"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-f56493b673b3",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getPolicyAsAt"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-8ae3c103cb9b",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getPolicyAsAt"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-a809ba59943d",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getAgency"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-d021643b2324",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getAgency"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-b1d64f59e832",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getAgency"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-fd3e0a56ce5d",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getAgency"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-41e4cb693a72",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
+      "searchRecords",
       "getAgency"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Search returns authorised real IDs and detail hrefs. Vehicle/registration samples are consolidated into matching quote or effective policy records."
   },
   {
     "controlId": "CTL-f5d7587f3dea",
@@ -9989,54 +10020,60 @@
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
-      "listQuotes"
+      "runReport",
+      "getQuote"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Agency/month/product breakdown is calculated from filtered sources; each underlying quote opens its authorised actual detail. Replaces fixed sample list filters."
   },
   {
     "controlId": "CTL-ffe580c5746e",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
-      "listQuotes"
+      "runReport",
+      "getQuote"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Agency/month/product breakdown is calculated from filtered sources; each underlying quote opens its authorised actual detail. Replaces fixed sample list filters."
   },
   {
     "controlId": "CTL-42d2acd90eed",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
-      "listQuotes"
+      "runReport",
+      "getQuote"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Agency/month/product breakdown is calculated from filtered sources; each underlying quote opens its authorised actual detail. Replaces fixed sample list filters."
   },
   {
     "controlId": "CTL-ba14915ded51",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
-      "listQuotes"
+      "runReport",
+      "getQuote"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Agency/month/product breakdown is calculated from filtered sources; each underlying quote opens its authorised actual detail. Replaces fixed sample list filters."
   },
   {
     "controlId": "CTL-24e0517ea487",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
-      "listQuotes"
+      "runReport",
+      "getQuote"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Agency/month/product breakdown is calculated from filtered sources; each underlying quote opens its authorised actual detail. Replaces fixed sample list filters."
   },
   {
     "controlId": "CTL-d25a22b2d718",
     "status": "reviewed",
     "disposition": "navigation-read",
     "operationIds": [
-      "listQuotes"
+      "runReport",
+      "getQuote"
     ],
-    "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    "reason": "Agency/month/product breakdown is calculated from filtered sources; each underlying quote opens its authorised actual detail. Replaces fixed sample list filters."
   },
   {
     "controlId": "CTL-a3d0b2052a2b",
@@ -10091,7 +10128,7 @@
     "status": "reviewed",
     "disposition": "client-only",
     "operationIds": [],
-    "reason": "Open new-quote modal; its confirmed command is separately mapped. Opening alone does not create a quote."
+    "reason": "Open existing quote capture. No write occurs until its confirmed command."
   },
   {
     "controlId": "CTL-1becc6b0d735",
@@ -10624,7 +10661,7 @@
         "parameter": "kind"
       }
     ],
-    "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
+    "reason": "Applicable advanced filters use current saved IDs; registration/reference text is supported by global search."
   },
   {
     "controlId": "CTL-9bebc3693170",
@@ -10639,7 +10676,7 @@
         "parameter": "status"
       }
     ],
-    "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
+    "reason": "Applicable advanced filters use current saved IDs; registration/reference text is supported by global search."
   },
   {
     "controlId": "CTL-ba0bd4946547",
@@ -10654,7 +10691,7 @@
         "parameter": "productCode"
       }
     ],
-    "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
+    "reason": "Applicable advanced filters use current saved IDs; registration/reference text is supported by global search."
   },
   {
     "controlId": "CTL-8c99b56d1a25",
@@ -10669,7 +10706,7 @@
         "parameter": "agencyId"
       }
     ],
-    "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
+    "reason": "Applicable advanced filters use current saved IDs; registration/reference text is supported by global search."
   },
   {
     "controlId": "CTL-86419581e107",
@@ -10684,7 +10721,7 @@
         "parameter": "providerId"
       }
     ],
-    "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
+    "reason": "Applicable advanced filters use current saved IDs; registration/reference text is supported by global search."
   },
   {
     "controlId": "CTL-4c406f9de95c",
@@ -10699,7 +10736,7 @@
         "parameter": "underwriterId"
       }
     ],
-    "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
+    "reason": "Applicable advanced filters use current saved IDs; registration/reference text is supported by global search."
   },
   {
     "controlId": "CTL-56825612fb50",
@@ -10714,7 +10751,7 @@
         "parameter": "from"
       }
     ],
-    "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
+    "reason": "Applicable advanced filters use current saved IDs; registration/reference text is supported by global search."
   },
   {
     "controlId": "CTL-b057804ffcf4",
@@ -10729,7 +10766,7 @@
         "parameter": "reference"
       }
     ],
-    "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."
+    "reason": "Applicable advanced filters use current saved IDs; registration/reference text is supported by global search."
   },
   {
     "controlId": "CTL-740ea920a861",
@@ -10856,6 +10893,8 @@
     "status": "reviewed",
     "disposition": "edit-then-command",
     "operationIds": [
+      "listReports",
+      "getReportDefinition",
       "runReport"
     ],
     "apiFields": [
@@ -10864,13 +10903,15 @@
         "field": "from"
       }
     ],
-    "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
+    "reason": "Current-role library category and distinct saved-source report definition; selected applicable filters execute the report."
   },
   {
     "controlId": "CTL-0722bfd85b0e",
     "status": "reviewed",
     "disposition": "edit-then-command",
     "operationIds": [
+      "listReports",
+      "getReportDefinition",
       "runReport"
     ],
     "apiFields": [
@@ -10879,13 +10920,15 @@
         "field": "productCode"
       }
     ],
-    "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
+    "reason": "Current-role library category and distinct saved-source report definition; selected applicable filters execute the report."
   },
   {
     "controlId": "CTL-66ec47549c4e",
     "status": "reviewed",
     "disposition": "edit-then-command",
     "operationIds": [
+      "listReports",
+      "getReportDefinition",
       "runReport"
     ],
     "apiFields": [
@@ -10894,13 +10937,15 @@
         "field": "agencyId"
       }
     ],
-    "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
+    "reason": "Current-role library category and distinct saved-source report definition; selected applicable filters execute the report."
   },
   {
     "controlId": "CTL-e9bb1df559d8",
     "status": "reviewed",
     "disposition": "edit-then-command",
     "operationIds": [
+      "listReports",
+      "getReportDefinition",
       "runReport"
     ],
     "apiFields": [
@@ -10909,7 +10954,7 @@
         "field": "underwriterId"
       }
     ],
-    "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
+    "reason": "Current-role library category and distinct saved-source report definition; selected applicable filters execute the report."
   },
   {
     "controlId": "CTL-55e62661c427",

@@ -6,6 +6,7 @@ using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Quotes;
 using Microsoft.EntityFrameworkCore;
 namespace BackOffice.Infrastructure.Reporting;
+[System.Text.Json.Serialization.JsonUnmappedMemberHandling(System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow)]
 public sealed record ReportFilters(DateOnly From,DateOnly To,string Basis="processed",Guid? AgencyId=null,Guid? ProviderId=null,string? ProductCode=null,Guid? UnderwriterId=null,int Offset=0);
 public sealed record ReportRow(Guid RecordId,string Kind,string Reference,string Label,string State,string Href,Guid? SourceId,Guid? SourceRuleId,Guid? AgencyId,string? ProductCode,DateTimeOffset At,DateOnly? BasisDate,Dictionary<string,string?> Values);
 public sealed record ReportValue(string Code,string? Value,string? Denominator);
@@ -31,7 +32,7 @@ public sealed partial class ReportService(IDbContextFactory<BackOfficeDbContext>
  public async Task<ReportResult> RunAsync(ActorContext actor,Guid id,ReportFilters filters,CancellationToken token=default)
  {
   await using var db=await factory.CreateDbContextAsync(token);await using var tx=await db.Database.BeginTransactionAsync(IsolationLevel.Serializable,token);actor=await ReportingScope.Current(db,actor,token);
-  var d=ReportCatalogue.Authorize(actor,id);Validate(d,filters);var now=time.GetUtcNow();var sources=await Load(db,actor,d,filters,now,token);var result=Result(d,filters,now,sources,false);await tx.CommitAsync(token);return result;
+  var d=ReportCatalogue.Authorize(actor,id);Validate(d,filters);var now=time.GetUtcNow();var sources=await Load(db,actor,d,filters,now,token);var result=Result(d,filters,now,sources,false);await SavedReportService.RecordRun(db,actor,result,token);await tx.CommitAsync(token);return result;
  }
  internal static void Validate(ReportDefinition d,ReportFilters f)
  {
@@ -59,6 +60,7 @@ public sealed partial class ReportService(IDbContextFactory<BackOfficeDbContext>
   if(d.Code=="finance")rows=rows.Concat(await ReadSources(CashMovements(db,f,from,to,now),f,token)).ToArray();
   if(d.Code=="agency-conversion")rows=rows.Concat(await ReadSources(ServiceTasks(db,actor,from,to),f,token)).ToArray();
   if(d.Code=="compliance")rows=rows.Concat(await ReadSources(SupportReviews(db,actor,from,to,DateOnly.FromDateTime(TimeZoneInfo.ConvertTimeBySystemTimeZoneId(now,"Europe/London").DateTime)),f,token)).Concat(await ReadSources(MidExceptions(db,from,to),f,token)).ToArray();
+  if(d.Code=="agency-conversion"&&rows.Any(x=>x.Kind=="task"&&x.Completed>0&&x.SourceRuleId==null))throw new QuoteOperationException(409,"report-task-completion-history-missing");
   if(rows.Length>10000)throw new QuoteOperationException(422,"report-too-large-narrow-filters");
   rows=rows.OrderBy(x=>x.At).ThenBy(x=>x.Id).ThenBy(x=>x.SourceId).ToArray();
   if(d.Code=="renewal-invitations")

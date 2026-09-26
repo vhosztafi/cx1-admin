@@ -31,6 +31,8 @@ builder.Services.AddScoped<BackOffice.Infrastructure.Administration.ProductAdmin
 builder.Services.AddScoped<BackOffice.Infrastructure.Reporting.SearchService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Reporting.DashboardService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Reporting.ReportService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Reporting.SavedReportService>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Reporting.ReportExportService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Administration.AuthorityAdministration>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Administration.ConfigurationAdministration>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Administration.UserAdministration>();
