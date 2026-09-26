@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Phase 12 executing; 3/5 plans complete
+status: Phase 12 executing; 4/5 plans complete
 last_updated: "2026-09-26T08:47:00.727Z"
 progress:
   total_phases: 13
   completed_phases: 11
   total_plans: 128
-  completed_plans: 126
+  completed_plans: 127
   percent: 85
 ---
 
@@ -32,10 +32,11 @@ The original source denominator is unchanged: 118 controls (109 Phase9 owned, ni
 
 ## Next work
 
-Phase 12 has five direct plans covering RPT-01..05 and 66 original source controls. 12-01 search is complete at 5655102; 12-02 dashboard/alerts is complete; 12-03 insurance reports is complete; continue 12-04 finance/agency/exception reports. Continue with `$gsd-execute-phase 12 --auto --no-transition` as the planning auto-advance child. Phase 11 production ends at c2f2745. Preserve retained demo/keys/files and old port 3100/API 5087 preview. The Phase 11 fixture is separate; its API is stopped after final build. Inherited next-env.d.ts, tsconfig.json, .idea, generated AGENTS.md/CLAUDE.md and output files remain outside commits.
+Phase 12 has five direct plans covering RPT-01..05 and 66 original source controls. 12-01 search is complete at 5655102; 12-02 dashboard/alerts is complete; 12-03 insurance reports is complete; 12-04 finance/agency/exception reports is complete; continue 12-05 saved reports and CSV. Continue with `$gsd-execute-phase 12 --auto --no-transition` as the planning auto-advance child. Phase 11 production ends at c2f2745. Preserve retained demo/keys/files and old port 3100/API 5087 preview. The Phase 11 fixture is separate; its API is stopped after final build. Inherited next-env.d.ts, tsconfig.json, .idea, generated AGENTS.md/CLAUDE.md and output files remain outside commits.
 
 ## Decisions and continuity
 
 Motor Trade and Commercial Combined use the shared back office. SQL Server is the relational core with immutable versioned policy JSON, current identity/scope and exact source/template/file provenance before replay. Persistent deterministic demo adapters do not make real customer, carrier or administrator calls. The agency terms grant was explicitly approved and applied earlier; no approval remains outstanding. Demo retry scheduling was compressed for two retained jobs without changing their actual attempts or receipts.
 
 The user authorized autonomous implementation and requested continuous work. Historical v4/v5 interrupted gates and failed collectors remain retained as diagnostics, not acceptance evidence. The existing quiet `continue-cover-mga-back-office-mvp` heartbeat was confirmed active; avoid duplicate long gates.
+

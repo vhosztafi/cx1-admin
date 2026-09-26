@@ -288,10 +288,10 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 **Requirements:** RPT-01 through RPT-05
 **Plans:** 5 direct plans; 0/5 complete.
 
-- [ ] 12-01 — Scoped global and advanced search (wave 1).
-- [ ] 12-02 — Stored dashboard queues and activity (wave 2).
-- [ ] 12-03 — Underwriting portfolio and renewal reports (wave 3).
-- [ ] 12-04 — Finance agency and exception reports (wave 4).
+- [x] 12-01 — Scoped global and advanced search (wave 1).
+- [x] 12-02 — Stored dashboard queues and activity (wave 2).
+- [x] 12-03 — Underwriting portfolio and renewal reports (wave 3).
+- [x] 12-04 — Finance agency and exception reports (wave 4).
 - [ ] 12-05 — Saved reports CSV export and concise acceptance (wave 5).
 
 **Success criteria:**
@@ -338,9 +338,10 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 9. Tasks, documents, communication and incidents | 18/18 | Complete | 2026-09-23 |
 | 10. Accounting and insurer reporting | 18/18 | Complete | 2026-09-26 |
 | 11. Configuration and account administration | 6/6 | Complete    | 2026-09-26 |
-| 12. Dashboards, search and reports | 1/5 | In progress | — |
+| 12. Dashboards, search and reports | 4/5 | In progress | — |
 | 13. Complete demo and acceptance | 0/TBD | Not started | — |
 
 ### Phase 3 downstream acceptance obligations
 
 CLI-01 is now complete: Phases3/5/6 verify clients, contacts/activity and navigation to actual linked quotes/policies. Phase 5 connects MatchSubmission to a real quote, implements automatic detection/rating blocks and guards reopening after downstream progression. Phase 9 connects persisted match information requests to the demo communication delivery workflow. Phase 13 checks these obligations before full requirement acceptance; placeholders and Recorded requests do not count as live records or Sent messages.
+
